@@ -1,0 +1,260 @@
+﻿@model WorkOrderEMS.Models.VendorSetupManagementModel
+@*@model dynamic*@
+@{
+    long UserType = 0; bool GloblaAdminUser, ITAdminUser, OnlyAdminUser, ManagerUser, EmployeeUser, ClientUser;
+    GloblaAdminUser = ITAdminUser = OnlyAdminUser = ManagerUser = EmployeeUser = ClientUser = false;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    if (ObjLogin != null)
+    {
+        UserType = ObjLogin.UserRoleId;
+
+        #region Get Active User Type Flag
+        /*Get Active User Type Flag*/
+
+        switch ((WorkOrderEMS.Helper.UserType)ObjLogin.UserRoleId)
+        {
+            case WorkOrderEMS.Helper.UserType.GlobalAdmin:
+                GloblaAdminUser = true;
+                break;
+            case WorkOrderEMS.Helper.UserType.ITAdministrator:
+                ITAdminUser = true;
+                break;
+            case WorkOrderEMS.Helper.UserType.Administrator:
+                OnlyAdminUser = true;
+                break;
+            case WorkOrderEMS.Helper.UserType.Manager:
+                ManagerUser = true;
+                break;
+            case WorkOrderEMS.Helper.UserType.Employee:
+                EmployeeUser = true;
+                break;
+            case WorkOrderEMS.Helper.UserType.Client:
+                ClientUser = true;
+                break;
+            default:
+                GloblaAdminUser = ITAdminUser = OnlyAdminUser = ManagerUser = EmployeeUser = ClientUser = false;
+                break;
+        }
+
+        /*Get Active User Type Flag*/
+        #endregion Get Active User Type Flag
+    }
+    else
+    {
+        WorkOrderEMS.Helper.AlertMessageClass ObjAlertMessageClass = new WorkOrderEMS.Helper.AlertMessageClass();
+        ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger; ViewBag.Message = WorkOrderEMS.Helper.CommonMessage.SessionExpired();
+        //throw new Exception(WorkOrderEMS.Helper.CommonMessage.SessionExpired());
+        //Server.Transfer("Error");
+        Response.Redirect("~/Views/Shared/_GlobalAdminLayout.cshtml");
+    }
+
+    string myModelprefix = ViewBag.myModelprefixName;
+    string UserTypeControlName = myModelprefix + "UserType";
+    var routeValues = HttpContext.Current.Request.RequestContext.RouteData.Values;
+    string Controller = string.Empty, ActionName = string.Empty;
+
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    string AccountDocPath = System.Configuration.ConfigurationManager.AppSettings["CompanyDocuments"];
+
+
+    if (routeValues != null)
+    {
+        if (routeValues.ContainsKey("controller"))
+        {
+            Controller = ViewContext.RouteData.GetRequiredString("controller");
+            //Controller = routeValues["controller"].ToString();
+        }
+        if (routeValues.ContainsKey("action"))
+        {
+            ActionName = ViewContext.RouteData.GetRequiredString("action");
+        }
+    }
+}
+<style>
+    .roundedtext {
+        border-radius: 12px
+    }
+
+    ::-webkit-input-placeholder {
+        font-style: italic;
+    }
+
+    :-moz-placeholder {
+        font-style: italic;
+    }
+
+    ::-moz-placeholder {
+        font-style: italic;
+    }
+
+    :-ms-input-placeholder {
+        font-style: italic;
+    }
+
+    .top-row > div {
+        float: left;
+        width: 48%;
+        margin-right: 4%;
+    }
+
+    input[type="radio"] {
+        height: 20px;
+        width: 20px;
+        background-color: #4475b5;
+        color: #4475b5;
+    }
+</style>
+@Html.ValidationSummary(true)
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.maskedinput-1.3.min.js")"></script>
+<div class="col-lg-12 col-md-12  col-sm-12  col-xs-12" id="myVendorAccountDetails">
+    <div class="panel-body">
+        <div class="row">
+            <div class="form-horizontal">
+                <div class="form">
+                    <div class="top-row">
+                        <div class="field-wrap">
+                            <label id="lblAccountPaymentMode">
+                                Pay Mode<span class="req">*</span>
+                            </label>
+                            @if (ViewBag.PaymentModeList != null)
+                            {
+                                {@Html.DropDownListFor(model => model.VendorAccountDetailsModel.PaymentMode, new SelectList(ViewBag.PaymentModeList, "PaymentModeId", "PaymentModeName"), "--Select Payment Mode--", new { @id = "PaymentMode" })}
+                        }
+                        else
+                        {<select id="PaymentMode"><option value="-1">@ViewBag.PaymentModeList</option></select>}
+                        </div>
+                    </div>
+                    <br />
+                    <div class="top-row wiredSelectHideShow" style="display:none;">
+                        <div class="field-wrap">
+                            <label>
+                                Bank Name<span class="req">*</span>
+                            </label>
+                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankName, null, new { @id = "BankName" })
+                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankName)
+                        </div>
+                        <div class="field-wrap">
+                            <label>
+                                Bank Location<span class="req">*</span>
+                            </label>
+                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankLocation, null, new { @id = "BankLocation" })
+                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankLocation)
+                        </div>
+                    </div>
+
+                    <div class="top-row wiredSelectHideShow" style="display:none;">
+                        <div class="field-wrap">
+                            <label>
+                                Account Number<span class="req">*</span>
+                            </label>
+                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.AccountNumber, null, new { @id = "AccountNumber" })
+                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.AccountNumber)
+                        </div>
+                        <div class="field-wrap">
+                            <label>
+                                IFSC Code<span class="req">*</span>
+                            </label>
+                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.IFSCCode, null, new { @id = "IFSCCode" })
+                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.IFSCCode)
+                        </div>
+
+                    </div>
+                    <div class="top-row wiredSelectHideShow" style="display:none;">
+                        <div class="field-wrap">
+                            <label>
+                                Swift OIC Code<span class="req">*</span>
+                            </label>
+                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.SwiftOICCode, null, new { @id = "SwiftOICCode" })
+                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.SwiftOICCode)
+                        </div>
+                        <div class="field-wrap">
+                            <label>
+                                Account Document
+                            </label>
+                            <div id="dvAccountPreview">
+                            </div>
+                            <input id="fileuploadAccount" type="file" style="margin-left:50%;" name="VendorAccountDetailsModel.AccountDocumentsFile" />
+                            <ul class="attachment">
+                                @if (Model.VendorAccountDetailsModel != null)
+                                {
+                                    <li style="margin-left :25%;margin-top:20px;">
+                                        <a class="title" href="@Url.Content(AccountDocPath + myModelprefix + "AccountDocuments")">@myModelprefix + "AccountDocuments"</a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="top-row CardSelectHideShow" style="display:none;">
+                        <div class="field-wrap">
+                            <label>
+                                Card Number<span class="req">*</span>
+                            </label>
+                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.CardNumber, null, new { @id = "CardNumber" })
+                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.CardNumber)
+                        </div>
+                        <div class="field-wrap">
+                            <label>
+                                Bank Name  <span class="req">*</span>
+                            </label>
+                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankName, null, new { @id = "BankName" })
+                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankName)
+                        </div>
+                    </div>
+                    <div class="top-row CardSelectHideShow" style="display:none;">
+                        <div class="field-wrap">
+                            <label>
+                                Card Holder Name<span class="req">*</span>
+                            </label>
+                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.CardHolderName, null, new { @id = "CardHolderName" })
+                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.CardHolderName)
+                        </div>
+                        <div class="field-wrap">
+                            <label>
+                                Expiration Date <span class="req">*</span>
+                            </label>
+                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.ExpirationDate, null, new { @id = "ExpirationDate", @onkeydown = "return false;" })
+                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.ExpirationDate)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(function () {
+            $("#fileuploadAccount").change(function () {
+                $("#dvAccountPreview").html("");
+                var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.pdf|.doc|.txt)$/;
+                if (regex.test($(this).val().toLowerCase())) {
+                    if ($.browser.msie && parseFloat(jQuery.browser.version) <= 9.0) {
+                        $("#dvAccountPreview").show();
+                        $("#dvAccountPreview")[0].filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = $(this).val();
+                    }
+                    else {
+                        if (typeof (FileReader) != "undefined") {
+                            $("#dvAccountPreview").show();
+                            // $("#dvContractPreview").append("<img />");
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
+                                $("#dvAccountPreview").attr("src", e.target.result);
+                            }
+                            reader.readAsDataURL($(this)[0].files[0]);
+                        } else {
+                            alert("This browser does not support FileReader.");
+                        }
+                    }
+                }
+            })
+        })
+        $('#ExpirationDate').datepicker({
+            format: "yyyy/mm/dd",
+            startDate: new Date()
+        });
+    });
+</script>
+
+

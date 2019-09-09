@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-md-8">
+        <h3>Flows:</h3>
+        @using (Html.BeginForm("MyAction", "Home", FormMethod.Post))
+        {
+            <div><input type="submit" name="submitButton" value="C2QB" /></div>
+            <br />
+        }
+    </div>
+</div>

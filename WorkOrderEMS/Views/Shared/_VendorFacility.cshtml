@@ -1,0 +1,373 @@
+﻿@model WorkOrderEMS.Models.VendorSetupManagementModel
+@*@model dynamic*@
+@{
+    long UserType = 0; bool GloblaAdminUser, ITAdminUser, OnlyAdminUser, ManagerUser, EmployeeUser, ClientUser;
+    GloblaAdminUser = ITAdminUser = OnlyAdminUser = ManagerUser = EmployeeUser = ClientUser = false;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    if (ObjLogin != null)
+    {
+        UserType = ObjLogin.UserRoleId;
+        #region Get Active User Type Flag
+        /*Get Active User Type Flag*/
+        switch ((WorkOrderEMS.Helper.UserType)ObjLogin.UserRoleId)
+        {
+            case WorkOrderEMS.Helper.UserType.GlobalAdmin:
+                GloblaAdminUser = true;
+                break;
+            case WorkOrderEMS.Helper.UserType.ITAdministrator:
+                ITAdminUser = true;
+                break;
+            case WorkOrderEMS.Helper.UserType.Administrator:
+                OnlyAdminUser = true;
+                break;
+            case WorkOrderEMS.Helper.UserType.Manager:
+                ManagerUser = true;
+                break;
+            case WorkOrderEMS.Helper.UserType.Employee:
+                EmployeeUser = true;
+                break;
+            case WorkOrderEMS.Helper.UserType.Client:
+                ClientUser = true;
+                break;
+            default:
+                GloblaAdminUser = ITAdminUser = OnlyAdminUser = ManagerUser = EmployeeUser = ClientUser = false;
+                break;
+        }
+
+        /*Get Active User Type Flag*/
+        #endregion Get Active User Type Flag
+    }
+    else
+    {
+        WorkOrderEMS.Helper.AlertMessageClass ObjAlertMessageClass = new WorkOrderEMS.Helper.AlertMessageClass();
+        ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger; ViewBag.Message = WorkOrderEMS.Helper.CommonMessage.SessionExpired();
+        //throw new Exception(WorkOrderEMS.Helper.CommonMessage.SessionExpired());
+        //Server.Transfer("Error");
+        Response.Redirect("~/Views/Shared/_GlobalAdminLayout.cshtml");
+    }
+
+    string myModelprefix = ViewBag.myModelprefixName;
+    string UserTypeControlName = myModelprefix + "UserType";
+    var routeValues = HttpContext.Current.Request.RequestContext.RouteData.Values;
+    string Controller = string.Empty, ActionName = string.Empty;
+
+    if (routeValues != null)
+    {
+        if (routeValues.ContainsKey("controller"))
+        {
+            Controller = ViewContext.RouteData.GetRequiredString("controller");
+            //Controller = routeValues["controller"].ToString();
+        }
+        if (routeValues.ContainsKey("action"))
+        {
+            ActionName = ViewContext.RouteData.GetRequiredString("action");
+        }
+    }
+    if (ViewBag.UpdateMode != null && ViewBag.UpdateMode == true)
+    {
+        //ViewBag.Title = "Update Item";
+
+    }
+
+
+    //Code written By gayatri
+    //on 24-Nov-2014
+    //For Binding Dropdown on the basis of the user type
+    string idState = string.Empty;
+    string idCountry = string.Empty;
+    string functionName = string.Empty;
+    string stateName = string.Empty;
+    string ddlAdminSelectName = string.Empty;
+    stateName = myModelprefix + "Address.StateId";
+    string Image = "~/Content/Images/ProjectLogo/no-profile-pic.jpg";
+    string imgaeserverpath = Url.Content("~/Content/eCountingDocs/ImageFacility/");
+    ddlAdminSelectName = myModelprefix + "Administrator";
+    long hiddnUserType = 0;
+    if (!string.IsNullOrEmpty(ViewBag.ActionSection) && (ViewBag.ActionSection == "employee" || ViewBag.ActionSection == "user"))
+    { hiddnUserType = Convert.ToInt64(WorkOrderEMS.Helper.UserType.Employee); }
+
+}
+@section scripts{
+    <script type="text/javascript">
+        var $_UrlImage = '@imgaeserverpath';
+    </script>
+    <script type="text/javascript">
+    $(window).bind('resize', function () {
+        var width = $('#jqGrid_containerVendorFacility').width();
+        $('#tbl_AllVendorFacilityDataList').setGridWidth(width);
+    });
+
+    </script>
+}
+<style>
+    .roundedtext {
+        border-radius: 12px
+    }
+
+    ::-webkit-input-placeholder {
+        font-style: italic;
+    }
+
+    :-moz-placeholder {
+        font-style: italic;
+    }
+
+    ::-moz-placeholder {
+        font-style: italic;
+    }
+
+    :-ms-input-placeholder {
+        font-style: italic;
+    }
+
+    .top-row > div {
+        float: left;
+        width: 48%;
+        margin-right: 4%;
+    }
+</style>
+
+@Html.ValidationSummary(true)
+<input type="hidden" value='@hiddnUserType' name='@UserTypeControlName'>
+<input type="hidden" name="UserModel.EmployeeCategory" id="UserCategory" value='@Controller' />
+@Html.AntiForgeryToken()
+<script src="~/GridListing/JqGridScript/ListNewVendorFacility.js"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.maskedinput-1.3.min.js")"></script>
+<div class="col-lg-12 col-md-12  col-sm-12  col-xs-12" id="myContractDetails">
+    <div class="panel-body">
+        <div class="row">
+            <div class="form-horizontal">
+                <div class="form">
+                    <div class="top-row">
+                        <div class="field-wrap">
+                            <label id="lblVendorFacilityName">
+                                Vendor Name <span class="req">*</span>
+                            </label>
+                            @Html.TextBox(myModelprefix + "VendorFacilityName", null, new { @id = "VendorFacilityName" })
+                            @Html.ValidationMessage(myModelprefix + "VendorFacilityName")
+                        </div>
+                    </div>
+                    <br /><br /><br />
+                    <div class="top-row">
+                        <div class="field-wrap">
+                            <label id="lblProductServiceType">
+                                Type<span class="req">*</span>
+                            </label>
+                            @Html.DropDownListFor(model => model.VendorFacilityModel.ProductServiceType, new List<SelectListItem>
+                                                                                            {
+                                                                                               new SelectListItem() {Text = "--Select Type--", Value="0"},
+                                                                                               new SelectListItem() {Text = "Product", Value="1"},
+                                                                                               new SelectListItem() {Text = "Service", Value="2"},
+                                                                                            }, new { @id = "ProductServiceType" })
+                            @Html.ValidationMessageFor(model => model.VendorFacilityModel.ProductServiceType)
+                        </div>
+                        <div class="field-wrap">
+                            <label>
+                                Product/Service Name  <span class="req">*</span>
+                            </label>
+                            @Html.TextBoxFor(model => model.VendorFacilityModel.ProductServiceName, null, new { @id = "ProductServiceName" })
+                            @Html.ValidationMessageFor(model => model.VendorFacilityModel.ProductServiceName)
+                        </div>
+                    </div>
+
+                    <div class="top-row">
+                        <div class="field-wrap">
+                            <label>
+                               $ Unit Cost<span class="req">*</span>
+                            </label>
+                            @Html.TextBoxFor(model => model.VendorFacilityModel.UnitCostForView, null, new { @id = "UnitCost" })
+                            @Html.ValidationMessageFor(model => model.VendorFacilityModel.UnitCostForView)
+                        </div>
+                        <div class="field-wrap">
+                            <label>
+                               % Tax  <span class="req">*</span>
+                            </label>
+                            @Html.TextBoxFor(model => model.VendorFacilityModel.Tax, null, new { @id = "Tax" })
+                            @Html.ValidationMessageFor(model => model.VendorFacilityModel.Tax)
+                        </div>
+                    </div>
+
+                    <div class="top-row">
+                        <div class="field-wrap">
+
+                            <label id="lblCostCode">
+                                Costcode<span class="req">*</span>
+                            </label>
+                            @if (ViewBag.CostCodeList != null)
+                            {
+                                {@Html.DropDownListFor(model => model.VendorFacilityModel.Costcode, new SelectList(ViewBag.CostCodeList, "CostCodeId", "CostCodeName"), "--Select Cost Code--", new { @id = "CostCode" })}
+                        }
+                        else
+                        {<select id="CostCodeData"><option value="-1">@ViewBag.CostCodeList</option></select>}
+                            @Html.ValidationMessageFor(model => model.VendorFacilityModel.Costcode)
+                        </div>
+                        <div class="field-wrap">
+                            <label>
+                                Product Image  <span class="req">*</span>
+                            </label>
+                            @if (Model.VendorFacilityModel != null)
+                            {
+                                Image = Model.VendorFacilityModel.ProductImage + "ProductImage";
+                            }
+
+                            <img id='imgProductImage' name='imgVehicleImage' src="@Url.Content(Image)"
+                                 class="img-rounded" alt="No Image " style="width:110px; height:110px; margin-left:55%;">
+                            <input id="fileuploadProduct" type="file" style="margin-left:auto;" name="VendorFacilityModel.ProductImageFile" />
+                           
+                                @Html.ValidationMessageFor(model => model.VendorFacilityModel.ProductImage)
+                                @Html.ValidationMessageFor(model => model.VendorFacilityModel.ProductImageFile)
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="button" name="Save" class="btn btn-default bluebutton pull-right" id="SaveProduct" style="border-radius:25px;width:110px;" value="Save Product" />
+        </div>
+    </div>
+</div>
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom:25px;">
+    <div id="jqGrid_containerVendorFacility">
+        <table id="tbl_AllVendorFacilityDataList" border="0" cellpadding="0" cellspacing="0"></table>
+        <div id="divAllVendorFacilityListPager"></div>
+    </div>
+</div>
+
+
+<script>
+    $('#UnitCost').simpleMoneyFormat();
+    $(document).ready(function () {
+        var ProductListModel = [];
+        var Productdata = [];
+        $('#lblProductServiceType').hide();
+        $('#lblCostCode').hide();
+        $("#tbl_AllVendorFacilityDataList").css("display", "");
+        $("#ProductServiceType").live("click", function () {
+            $("#lblProductServiceType").addClass('active highlight');
+            $("#lblProductServiceType").show();
+        });
+        $("#CostCode").live("click", function () {
+            $("#lblCostCode").addClass('active highlight');
+            $("#lblCostCode").show();
+        });
+        var curProduct;
+        $("#SaveProduct").click(function () {
+            if ($("#msform").valid()) {
+                var _ProductListModel = {};
+                var _Product = {};
+                curProduct = "";
+                _ProductListModel.ProductServiceType = $("#ProductServiceType").val();
+                _ProductListModel.ProductServiceName = $("#ProductServiceName").val();
+                _ProductListModel.UnitCostForView = $("#UnitCost").val();
+                _ProductListModel.Tax = $("#Tax").val();
+
+                _ProductListModel.CostCode = $('#CostCode').find('option:selected').val();
+                // _ProductListModel.Costcode = $("#CostCode").text();
+                _ProductListModel.ProductImage = $("#ProductImage").val();
+                var img = $("#fileuploadProduct").val();
+                if (img == "" || img == undefined || img == null) {
+                    _ProductListModel.ProductImageFile = "";
+                }
+                else {
+                    var ImageFile;
+                    file_data = $("#fileuploadProduct").prop("files")[0]; // Getting the properties of file from file field
+                    form_data = new FormData(); // Creating object of FormData class
+                    form_data.append("file", file_data) // Appending parameter named file with properties of file_field to form_data
+                    form_data.append("CallID", 11) // Adding extra parameters to form_data
+                    if (file_data != undefined) {
+                        $.ajax({
+                            url: '@Url.Action("UploadedImageFacalityProduct", "VendorManagement")',
+                            dataType: 'script',
+                            cache: false,
+                            contentType: false,
+                            processData: false,
+                            async: false,
+                            beforeSend: function () {
+                                new fn_showMaskloader('Please wait...');
+                            },
+                            data: form_data, // Setting the data attribute of ajax with file_data
+                            type: 'post',
+                            success: function (data) {
+                                _ProductListModel.ProfileImageFile = data;
+                                // return data;
+
+                            },
+                            error: function (e) { alert("error:" + e); },
+                            complete: function () {
+                                fn_hideMaskloader();
+
+                            }
+                        });
+                    }
+                    if (ImageFile == null || ImageFile == "") { } else {
+                        _ProductListModel.ProfileImageFile = JSON.parse(ImageFile);
+                    }
+                }
+                //Productdata.push({
+                //    "VendorType": ProductListModel.ProductServiceName,
+                //    "ProductServiceName": ProductListModel.ProductServiceName,
+                //    "UnitCost": ProductListModel.UnitCost,
+                //    "Tax": ProductListModel.Tax,
+                //    "Costcode": ProductListModel.Costcode,
+                //    "Image": ProductListModel.ProfileImageFile,
+                //    });
+                var data = $('#tbl_AllVendorFacilityDataList').jqGrid('getGridParam', 'data');
+                // var data = $('#tbl_AllVendorFacilityDataList').getRowData();
+                //if (data.length > 0) {
+                //    Productdata.push(data);
+                //}
+                ProductListModel.push(_ProductListModel);
+                _ProductListModel.CostCodeDisplay = $('#CostCode').find('option:selected').text();
+                var tt = _ProductListModel.ProfileImageFile;
+                var link = tt.slice(1, -1)
+                _ProductListModel.ProfileImageFile = $_HostPrefix + "Content/eCountingDocs/ImageFacility/" + link;
+                //_ProductListModel.ProfileImageFile = _ProductListModel.ProfileImageFile.replace('"', "");
+                Productdata.push(_ProductListModel);
+                $("#ProductList").val(JSON.stringify(ProductListModel));
+                //console.log(JSON.stringify(Productdata));
+                //$("#tbl_AllVendorFacilityDataList").css("display", "");
+                //$('#loading').css("display", "inline");
+
+                //$("#tbl_AllVendorFacilityDataList").style.display = "";
+                jQuery("#tbl_AllVendorFacilityDataList").jqGrid('setGridParam',
+                                 {
+                                     datatype: 'local',
+                                     data: Productdata
+                                 })
+                             .trigger("reloadGrid");
+            }
+            else {
+                return false;
+            }
+        });
+        $(function () {
+            $("#fileuploadProduct").change(function () {
+                var FType = ["jpg", "JPG", "PNG", "png", "JPEG", "jpeg", "gif", "GIF"]
+                if (this.files && this.files[0]) {
+                    var LoadImage = false;
+                    var FileExtension = this.value.split(".")[1];
+                    for (var v = 0; v < FType.length; v++) {
+                        if (FType[v] == FileExtension) {
+                            LoadImage = true;
+                        }
+                    }
+                    if (LoadImage == true) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            $('#imgProductImage')
+                                .attr('src', e.target.result)
+                                .width(150)
+                                .height(150);
+
+                        };
+                        reader.readAsDataURL(this.files[0]);
+                    } else {
+                        $(this).val("");
+                        alert("Please select image to upload!")
+                        return false;
+                    }
+                }
+            });
+        });
+    });
+</script>
+

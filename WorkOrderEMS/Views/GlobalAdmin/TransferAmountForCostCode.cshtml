@@ -1,0 +1,227 @@
+﻿@model WorkOrderEMS.Models.TranferAmountForCostCodeModel
+@{
+    ViewBag.Title = "Transfer Amount For Cost Code";
+    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+
+    long locationId = 0;
+    long userType = 0;
+    string loCId = ViewBag.LocationId;
+    string CostIdToTranfer = ViewBag.CostCodeToTransfer;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+    }
+}
+@section scripts{
+    <script type="text/javascript">
+    var budgetData = $('#BudgetAmount').val();
+    var $_locationId = '@locationId';
+        var $_userTypeId = '@userType';
+        var $_locId = '@loCId';
+        var $_BudgetAmt = budgetData;
+        var $_CostIdToTranfer = '@CostIdToTranfer';
+    </script>
+    <script src="~/GridListing/JqGridScript/ListTransferAmountForCostCode.js"></script>
+    @*<link href="~/Content/css/RadioButtonCss.css" rel="stylesheet" />*@
+    <script type="text/javascript">
+    $(window).bind('resize', function () {
+        var width = $('#jqGrid_containerCostCode').width();
+        $('#tbl_TransferAmountList').setGridWidth(width);
+    });
+
+    </script>
+}
+@Html.AntiForgeryToken()
+@Html.ValidationSummary(true)
+@*@using (Html.BeginForm("Index", "eFleetDriver", FormMethod.Post, new { enctype = "multipart/form-data", @id = "Driver_form" }))
+    {*@
+@Html.HiddenFor(model => model.AssignedPercent)
+@Html.HiddenFor(model => model.BCM_Id)
+@Html.HiddenFor(model => model.CLM_Id)
+@Html.HiddenFor(model => model.CostCode)
+@Html.HiddenFor(model => model.Year)
+@Html.HiddenFor(model => model.LocationIdToTransfer)
+@Html.HiddenFor(model => model.TransferMode)
+<div class="col-lg-12 col-md-12  col-sm-12  col-xs-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            Transfer Amount To Cost Code
+        </div>
+        <div class=" clearfix"></div>
+        <form class="form">
+            <br />
+            <div class="form-horizontal">
+                <div class="row" style="padding-left:6%;">                   
+                    <div class="form-group col-lg-6 col-md-6 col-sm-12  col-xs-12">
+                        <div class="col-sm-8">
+                            @*<input type="radio" id="NewAllocation" name="TransferAmountToCostCode" class="selectedObjects"  checked>
+                            <label for="test1">New Allocation</label>*@
+                            @Html.RadioButton("TransferAmountToCostCode", "NewAllocation", new { id = "NewAllocation", @name = "NewAllocation", @class = "selectedObjects ", @checked = "checked" }) New Allocation
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="padding-left:6%;">
+                    <div class="form-group col-lg-6 col-md-6 col-sm-12  col-xs-12">
+                        <div class="col-sm-8">
+                            @*<input type="radio" id="TransferFromOtherCostCode" name="TransferAmountToCostCode" class = "selectedObjects">
+                            <label for="test2">Transfer From Other Cost</label>*@
+                            @Html.RadioButton("TransferAmountToCostCode", "TransferFromOtherCostCode", new { id = "TransferFromOtherCostCode", @name = "TransferFromOtherCostCode ", @class = "selectedObjects " }) Transfer From Other Cost Code
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="padding-left:6%;">
+                    <div class="form-group col-lg-6 col-md-6 col-sm-12  col-xs-12">
+                        <div class="col-sm-8">
+                            @*<input type="radio" id="TransferFromOtherLocation" name="TransferAmountToCostCode" class = "selectedObjects">
+                            <label for="test3">Transfer From Other Location</label>*@
+                            @Html.RadioButton("TransferAmountToCostCode", "TransferFromOtherLocation", new { id = "TransferFromOtherLocation", @name = "TransferFromOtherLocation", @class = "selectedObjects " }) Transfer From Other Location
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row" id="NewAllocationAmt">
+                    <div class="form-group col-lg-6 col-md-6 col-sm-12  col-xs-12">
+                        @Html.LabelFor(model => model.TransferAmt, new { @class = "col-sm-4 control-label" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(model => model.TransferAmt, new { @Placeholder = "Budget Amount", @class = "Phone  form-control", @id = "NewAllocationId" })
+                            @Html.ValidationMessageFor(model => model.TransferAmt, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="row locationAmtTransfer" style="display:none">
+                    <div class="form-group col-lg-6 col-md-6 col-sm-12  col-xs-12">
+                        @Html.LabelFor(model => model.Location, new { @class = "col-sm-4 control-label" })
+                        <div class="col-sm-8">
+                            @if (Session != null)
+                            {
+                                if (Session["eTrac_UserLocations"] != null)
+                                {
+
+                                    @Html.DropDownList("Location", new SelectList((List<WorkOrderEMS.Models.UserLocations>)Session["eTrac_UserLocations"], "LocationId", "LocationName"), null, new { @class = "form-control", @id = "Location", @onchange = "BindCostCode()" })
+                                }
+                            }
+                        </div>
+                    </div>
+                    <div class="form-group col-lg-6 col-md-6 col-sm-12  col-xs-12">
+                        @Html.Label("Select Cost Code", new { @class = "col-sm-4 control-label star" })
+                        <div class="col-sm-8">
+                            <select id="CostCodeForLocation" class="form-control" onchange="GetCostCodeData()"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row locationAmtTransfer" style="display:none">
+                    <div class="form-group col-lg-6 col-md-6 col-sm-12  col-xs-12">
+                        @Html.Label("Budget Amount", new { @class = "col-sm-4 control-label star" })
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(model => model.TransferAmt, new { @Placeholder = "Budget Amount", @class = "form-control", @id = "TransferBudgetAmt" })
+                            @Html.ValidationMessageFor(model => model.TransferAmt, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <input type="submit" class="btn btn-primary" id="btnSaveTransferBudgetForCostCode" value="Submit" style="margin-left:90%;border-radius:25px;width:90px;">
+                <input type="button" onclick="location.href='@Url.Action("ListLocation", "GlobalAdmin")'" class="btn btn-default bluebutton " formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;margin-left:82%;margin-top: -55px;" />
+            </div><!-- tab-content -->
+        </form> <!-- /form -->
+        <div class="marbottom"></div>
+    </div>
+</div>
+@*}*@
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="divTransferAmt" style="display:none">
+    <div id="jqGrid_containerCostCode">
+        @*style="width:1321px;margin-left:-24px;"*@
+        <table id="tbl_TransferAmountList" border="0" cellpadding="0" cellspacing="0"></table>
+        <div id="divTransferAmountListPager"></div>
+    </div>
+</div>
+<div class="modal fade preview" id="myModalForCostCodeBudgetAmount" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:40%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">X</span></button>
+                <h4 class="modal-title" id="myModalLabel">Add Amount For Cost Code : </h4>
+            </div>
+            <div class="modal-body">
+                <div id="divDetailPreview" class="">
+                    <div class="row">
+                        <div class="" id="DivbudgetDetailsIndex">
+                            <div class="form-group">
+                                @Html.LabelFor(model => model.TransferAmt, htmlAttributes: new { @class = "control-label col-lg-4 star" })
+                                <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
+                                    @Html.TextBoxFor(model => model.TransferAmt, new { @class = "form-control", placeholder = "$", @id = "TransferAmountForSame" })
+                                    @Html.ValidationMessageFor(model => model.TransferAmt, "", new { @class = "text-danger" })
+                                    <span id="errormessage" style="color:red;display:none;">Amount not be Greater than Remaining Amount</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br /><br />
+            <div class="panel-footer">
+                <div class="text-right">
+                    <button data-dismiss="modal" class="btn btn-default" id="btnCancelqwe">Close</button>
+                    <input type="button" class="btn btn-primary" id="btnCostCode" value="OK" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var CostCodeForLocation = $("#CostCodeForLocation");
+    CostCodeForLocation.empty().append('<option selected="selected" value="0">--Select Cost Code--</option>');
+    var $locIdToRemove = $('#LocationIdToTransfer').val();
+    $("#Location option[value='" + $locIdToRemove + "']").remove();
+    function BindCostCode() {
+        var LocationName = $("#Location option:selected").text();
+        var locationId = $('#Location').find('option:selected').val();
+        $('#glassWidth').html('');
+        $.ajax({
+            type: 'POST',
+            url: '../GlobalAdmin/GetCostCodeListAsPerLocationId/',
+            data: { LocationId: locationId, BudgetAmount: 1000, CLM_Id: $_CostIdToTranfer },
+            //contentType: 'application/json; charset=utf-8',
+            datatype: 'json',
+            success: function (result) {
+                var CostCodeForLocation = $("#CostCodeForLocation");
+                for (var i = 0; i < result.length; i++) {
+                    CostCodeForLocation.append('<option value=' + result[i].CostCode + ' ' + 'BCM_Id=' + result[i].BCM_Id + ' ' + 'CLM_Id=' + result[i].CLM_Id + ' ' + 'RemainingAmount=' + result[i].RemainingAmount + '>' + result[i].Description + '' + '&nbsp;&nbsp;' + ':' + '&nbsp;&nbsp;' + '' + result[i].RemainingAmount + '</option>');
+                }
+            },
+            error: function (result) {
+                alert('Fail ');
+            }
+        });
+        if ($('#typeOfGlass').val() == 15) {
+            $('#CostCodeForLocation').append('<option value="19">19</option>');
+            $('#glassWidth').append('<option value="20">20</option>');
+            $('#glassWidth').append('<option value="21">21</option>');
+        }
+    }
+    $("input[type='radio']").change(function () {
+        if ($(this).val() == "NewAllocation") {
+            $("#NewAllocationAmt").show();
+            $(".locationAmtTransfer").hide();
+            $("#divTransferAmt").hide();
+            $("#TransferMode").val("NewAllocation");
+        }
+        else if ($(this).val() == "TransferFromOtherCostCode") {
+            $("#NewAllocationAmt").hide();
+            $(".locationAmtTransfer").hide();
+            $("#divTransferAmt").show();
+            $("#TransferMode").val("TransferFromOtherCostCode");
+        }
+        else if ($(this).val() == "TransferFromOtherLocation") {
+            $("#NewAllocationAmt").hide();
+            $(".locationAmtTransfer").show();
+            $("#divTransferAmt").hide();
+            $("#TransferMode").val("TransferFromOtherLocation");
+        }
+
+    });
+</script>
+

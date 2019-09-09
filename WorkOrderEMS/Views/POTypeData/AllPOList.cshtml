@@ -1,0 +1,148 @@
+﻿@model WorkOrderEMS.Models.POApproveRejectModel
+@{
+    ViewBag.Title = "PO List";
+    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+
+    long locationId = 0;
+    long userType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+    }
+}
+@section scripts{
+    <script type="text/javascript">
+    var $_locationId = '@locationId';
+    var $_userTypeId = '@userType';
+    </script>
+    <script src="~/GridListing/JqGridScript/ListAllPO.js"></script>
+    <script src="~/GridListing/JqGridScript/ListAllSelfCreatedPO.js"></script>
+    <script type="text/javascript">
+       $(window).bind('resize', function () {
+        var width = $('#jqGrid_containerPO,#jqGrid_containerSelfPO').width();//jqGrid_containerPOFacility
+        $('#tbl_AllPOList,#tbl_AllSelfPOList').setGridWidth(width);//tbl_AllPOFacilityList
+    });
+    </script>
+}
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div id="jqGrid_containerPO">
+        <table id="tbl_AllPOList" border="0" cellpadding="0" cellspacing="0"></table>
+        <div id="divAllPOListPager"></div>
+    </div>
+</div>
+
+<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div id="jqGrid_containerSelfPO" style="margin-top:50px;">
+        <table id="tbl_AllSelfPOList" border="0" cellpadding="0" cellspacing="0"></table>
+        <div id="divAllSelfPOListPager"></div>
+    </div>
+</div>
+<br />
+
+
+<div class="modal bs-example-modal-lg fade preview" id="myModalForGetPODetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">X</span></button>
+                <h4 class="modal-title" id="myModalLabel">PO Details</h4>
+            </div>
+            <div class="modal-body">
+                <div id="divDetailPreview" class="">
+                    <div class="row">
+                        <div class="" id="DivPODetailsIndex">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <label>PO ID</label>
+                                    <div id="lblPOId" class="form-control-static"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>PO Type</label>
+                                    <div id="lblPOType" class="form-control-static"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Company Name</label>
+                                    <div id="lblCompanyName" class="form-control-static"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>PO Status</label>
+                                    <div id="lblPOStatus" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <label>Location Name</label>
+                                    <div id="lblLocationName" class="form-control-static"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>PO Date</label>
+                                    <div id="lblPODate" class="form-control-static"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Delivery Date</label>
+                                    <div id="lblDeliveryDate" class="form-control-static"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Grand Total</label>
+                                    <div id="lblTotal" class="form-control-static"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <table id="records_table" class="table" cellpadding="1" cellspacing="1" border="1">
+                                <tr style="background-color:#0792bc;">
+                                    <th style="width:150px">Cost Code</th>
+                                    <th style="width:40px">Description</th>
+                                    <th style="width:150px">Unit Price</th>
+                                    <th style="width:150px">Quantity</th>
+                                    <th style="width:40px">Total</th>
+                                    <th style="width:40px">Tax</th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div><br /><br />
+            <div class="panel-footer">
+                <div class="text-right">
+                    <button type="button" class="btn btn-default bluebutton text-right" onclick="return AppprovePO();" id="btnApproveData">Approve</button>
+                    <button class="btn btn-danger" onclick="return RejectPO();" id="btnRejectPO">Reject</button>
+                    <button data-dismiss="modal" class="btn btn-default" id="btnCancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModelApproveReject" class="modal fade bs-example-modal-md">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Reject PO</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form">
+                    <div class="row">
+                        <div class="form-group">
+                            @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-lg-2 star" })
+                            <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
+                                @Html.TextBoxFor(model => model.Comment, new { @class = "form-control", @id = "CommentPO", @placeholder = "Comment", @style = "border-radios:0px;" })
+                                @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-default bluebutton" onclick="RejectPOAfterCommentPO();" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>

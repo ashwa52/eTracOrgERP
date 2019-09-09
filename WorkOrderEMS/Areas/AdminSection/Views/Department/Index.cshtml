@@ -1,0 +1,161 @@
+﻿@model WorkOrderEMS.Models.DepartmentModel
+@{
+    ViewBag.Title = "Add Department";
+    //Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    Layout = null;
+    string eTracScriptVersion = System.Configuration.ConfigurationManager.AppSettings["eTracScriptVersion"];
+    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+    long loginUserType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    long viewallloc = (Convert.ToInt64(Session["eTrac_SelectedDasboardLocationID"]));
+    string imgPath = (Convert.ToString(Session["eTrac_ProfileImage"]));
+    long locationId = 0;
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    long i = 1;
+    if (ObjLogin != null)
+    {
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+        loginUserType = ObjLogin.UserRoleId;
+        //loginUserContactNo = ObjLogin.ContactNo;
+        locationId = ObjLogin.LocationID;
+    }
+}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>@ViewBag.Title</title>
+    <!-- Favicon icon -->
+
+    <link rel="icon" href="~/Images/logo.png" type="image/gif" sizes="16x16">
+    <link href="~/Content/NewAdminContent/VENDOR/toastr/css/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/NewAdminContent/CSS/style.css" rel="stylesheet" />
+    <!--Js Grid-->
+    <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" /
+    <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />>
+    <script src="~/Areas/AdminSection/GridList/JsGrid/ListDepartment.js"></script>
+
+</head>
+<br />
+@Html.Hidden("GetURL", new { @id = "GetURL" })
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header" style="height: 45px;">
+                        <h4 class="card-title addWhite"><b>Departemnt List</b></h4>
+                        <a id="AddDepartment"><i class="fa fa-plus"></i></a>
+                    </div>
+
+                    <div class="card-body">
+                        <div id="JsListDepartment"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-hidden="true" id="myModalForDepartment">
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Department</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="divDetailPreview" class="">
+                    <form id="formDepartment" method="post">
+                        <div class="row">
+                            <div class="" id="DivContractDetailsIndex">
+                                <div class="basic-form" style="margin-right: 40px;">
+                                    @Html.HiddenFor(model => model.DeptId, new { @id = "DepartmentId" })
+                                    <div class="form-group row">
+                                        @Html.LabelFor(model => model.DepartmentName, new { @class = "col-lg-4 col-form-label" })
+                                        <div class="col-lg-4">
+                                            @Html.TextBoxFor(model => model.DepartmentName, new { @Placeholder = "Department Name", @id = "DepartmentName", @class = "form-control input-rounded required", @style = "width: 420px;" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer" style="background: white;">
+                <button type="button" class="btn btn-secondary" id="closeVSC" style="border-radius:100px;" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="SaveDeptData" style="border-radius:100px;">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Required vendors -->
+<script src="~/Content/NewAdminContent/VENDOR/global/global.min.js"></script>
+<script src="~/Scripts/NewAdminJS/quixnav-init.js"></script>
+<script src="~/Scripts/NewAdminJS/custom.min.js"></script>
+<!--removeIf(production)-->
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
+<!-- Demo scripts -->
+<script src="~/Scripts/NewAdminJS/styleSwitcher.js"></script>
+<script src="~/Content/NewAdminContent/VENDOR/toastr/js/toastr.min.js"></script>
+<script src="~/Scripts/NewAdminJS/plugins-init/toastr-init.js"></script>
+<script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
+
+@section Script{
+    <script>
+        var $_DeptListUrl = @Url.Action("GetListDepartment", "Department", new { area = "AdminSection" });
+        var $_hostingPrefix = '@hostingPrefix';
+        var isUpdate = '@ViewBag.IsUpdate';
+    </script>
+}
+<script>
+    $(document).ready(function () {
+         
+        $("#AddDepartment").click(function () {
+            debugger
+            @*var addNewUrl = "@Url.Action("Index", "Department")";
+            $('#RenderPageId').load(addNewUrl);*@
+            $("#DepartmentId").val("");
+            $("#DepartmentName").val("");
+            $("#SaveDeptData").text("Save")
+            $("#myModalForDepartment").modal("show");
+        })
+       
+        $('#SaveDeptData').on('click', function () {
+            debugger
+            if ($("#formDepartment").validate({
+                rules: {
+                   'DepartmentName': {required: true}
+                },
+                messages: {'DepartmentName': {
+                        required: "Please enter Department Name",
+                    }
+                 }
+              })) {
+                debugger
+                var dataObject = $("#formDepartment").serialize()
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("SaveDepartment", "Department", new { area = "AdminSection" })',
+                    data: dataObject,
+                    success: function (Data) {
+                        debugger
+                        toastr.success(Data.Message);
+                        $("#myModalForDepartment").modal("hide");
+                        $("#JsListDepartment").jsGrid("loadData");
+                        @*var addNewUrl = "@Url.Action("Index", "Department", new { area = "AdminSection" })";
+                        $('#RenderPageId').load(addNewUrl);*@
+                    },
+                    error: function (err) {
+                    }
+                });
+            }
+        });
+    });
+</script>

@@ -1,0 +1,135 @@
+﻿@model WorkOrderEMS.Models.MiscellaneousListModel
+@{
+    ViewBag.Title = "Miscellaneous List";
+    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+
+    long locationId = 0;
+    long userType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+    }
+}
+@section scripts{
+    <script type="text/javascript">
+    var $_locationId = '@locationId';
+    var $_userTypeId = '@userType';
+    </script>
+    <script src="~/GridListing/JqGridScript/MiscellaneousList/ListMiscellaneous.js"></script>
+    <script type="text/javascript">
+    $(window).bind('resize', function () {
+        var width = $('#jqGrid_containerMasterMisc, #jqGrid_containerChildMisc').width();
+        $('#tbl_MasterMiscellaneousList, #tbl_ChildMiscellaneousDetails').setGridWidth(width);
+    });
+    </script>
+}
+<style>
+    #tbl_MasterMiscellaneousList td:nth-child(2) {
+        cursor: pointer;
+    }
+</style>
+<div id="jqGrid_containerMasterMisc" style="width:98%;margin-left:16px;">
+    <table id="tbl_MasterMiscellaneousList" border="0" cellpadding="0" cellspacing="0"></table>
+    <div id="divMasterMiscellaneousListPager"></div>
+</div>
+<br />
+<br />
+<div id="jqGrid_containerChildMisc" style="width:98%;margin-left:16px;">
+    <table id="tbl_ChildMiscellaneousDetails" border="0" cellpadding="0" cellspacing="0"></table>
+    <div id="divChildMiscellaneousDetailsListPager"></div>
+</div>
+
+<div id="myModelRejectMicellaneous" class="modal fade bs-example-modal-md">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Reject Miscellaneous</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form">
+                    <div class="row">
+                        <div class="form-group">
+                            @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-lg-2 star" })
+                            <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
+                                @Html.TextBoxFor(model => model.Comment, new { @class = "form-control", @id = "CommentMiscellaneous", @placeholder = "Comment", @style = "border-radios:0px;" })
+                                @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-default bluebutton" onclick="RejectMiscAfterComment();" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade preview" id="myModalForMiscellaneousData" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">X</span></button>
+                <h4 class="modal-title" id="myModalLabel">Miscellaneous Details</h4>
+            </div>
+            <div class="modal-body">
+                <div id="divDetailPreview" class="">
+                    <div class="row">
+                        <div class="" id="DivMiscDetailsIndex">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <label>Misc Id</label>
+                                    <div id="lblMiscId" class="form-control-static"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Location Name</label>
+                                    <div id="lblLocationName" class="form-control-static"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Vendor Name</label>
+                                    <div id="lblVendorName" class="form-control-static"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>User Name</label>
+                                    <div id="lblUserName" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <label>Invoice Amount</label>
+                                    <div id="lblInvoiceAmount" class="form-control-static"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Misc Date</label>
+                                    <div id="lblMiscDate" class="form-control-static"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Comment</label>
+                                    <div id="lblComment" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group" id="divWoimg">
+                                    <label id="labelMiscImage">Misc Image</label>
+                                    <div id="lblMiscImage">
+                                        <canvas></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><br /><br />
+            <div class="panel-footer">
+                <div class="text-right">
+                    <button data-dismiss="modal" class="btn btn-default bluebutton" style="border-radius:25px;width:90px;" id="btnCancelqwe">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/Search/Searching.js"></script>

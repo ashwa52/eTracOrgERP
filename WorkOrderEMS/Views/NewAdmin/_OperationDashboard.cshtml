@@ -1,0 +1,462 @@
+﻿
+@{
+    //Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    Layout = null;
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+    long loginUserType = 0;
+    long locationId = 0;
+    long UserId = 0;
+    if (ObjLogin != null)
+    {
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+        loginUserType = ObjLogin.UserRoleId;
+        //loginUserContactNo = ObjLogin.ContactNo;
+        locationId = ObjLogin.LocationID;
+        UserId = ObjLogin.UserId;
+    }
+}
+@section scripts{
+    <script type="text/javascript">
+    var $_hostingPrefix = '@hostingPrefix';
+    var $_LocationId = '@locationId';
+    var $_UserID = '@UserId';
+    </script>
+}
+
+<!--**********************************
+           Content body start
+       ***********************************-->
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/material.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+
+<style>
+    .addWhite {
+        color: white;
+    }
+
+    .widthHeader {
+        height: 40px;
+    }
+</style>
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3" data-aos="fade-up">
+            <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
+                <div class="welcome-text">
+                    <h4>Hi, welcome back! @loginUserName</h4>
+                    <p class="mb-0">Operation Dashboard</p>
+                </div>
+            </div>
+            <div class="col-sm-7">
+                <button type="button" id="CreateWO" class="btn btn-primary pull-right" style="border-radius: 35px;">Create WO</button>
+            </div>
+            <div>
+                <button type="button" id="CreateQRC" class="btn btn-primary pull-right" style="border-radius: 35px;">Create QRC</button>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-4">
+                <div class="pricing_table_content mt-5" style="background-color: #3f4e62;color:white;">
+                    <p style="margin-left:70px;margin-top:-20px;font-size:20px;"><b>15</b></p>
+                    <div class="package" style="margin-top:-30px;"><i class="mdi mdi-qrcode" style="color:#fff;font-size:30px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>QRC</b></div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="pricing_table_content mt-5" style="background-color: #529F9D;color:white;">
+                    <p style="margin-left:70px;margin-top:-20px;font-size:20px;"><b>9</b></p>
+                    <div class="package" style="margin-top:-30px;"><i class="mdi mdi-cart" style="color:yellow;font-size:30px;margin-left: -10px;"></i>&nbsp;&nbsp;&nbsp;<b>Work order</b></div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="pricing_table_content mt-5" style="background-color: #3F8ADA;color:white;">
+                    <p style="margin-left:70px;margin-top:-20px;font-size:20px;"><b>5</b></p>
+                    <div class="package" style="margin-top:-30px;"><i class="mdi mdi-account-check" style="color:white;font-size:30px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>DAR</b></div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-body">
+                        <h4 class="card-title">QRC Count</h4>
+                        <div id="QRCCount"></div>
+                        @*<div id="EmployeeCount"></div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-body">
+                        <h4 class="card-title">DAR</h4>
+                        <div id="DARdiv"></div>
+                        @*<div id="c3-combination"></div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-xl-4 col-xxl-6 col-lg-6 col-md-6 col-sm-12">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header widthHeader ">
+                        <h4 class="card-title addWhite" style="color: white;"><span><b>eTrac Ticket</b></span></h4>
+                    </div>
+                    <div class="card-body" style="height: 339px;">
+                        <form action="index.html" class="agent-req-form">
+                            <div class="form-group">
+                                <input type="text" placeholder="Generated By *" class="form-control bg-white text-muted">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" placeholder="Ticket Date *" class="form-control bg-white text-muted">
+                            </div>
+                            <div class="form-group">
+                                <textarea rows="3" placeholder="Issue *" class="form-control bg-white text-muted"></textarea>
+                            </div>
+                            <div class="form-group text-right">
+                                <button type="submit" class="btn btn-primary" style="border-radius:25px;background-color:#0aa0cd;">Submit Ticket</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-xxl-6 col-lg-6 col-md-6 col-sm-12">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header widthHeader ">
+                        <h4 class="card-title addWhite" style="color: white;"><b>Active Users</b></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="widget-team">
+                            <div class="media">
+                                <img src="~/Content/NewAdminContent/IMAGES/avatar/twoPic.jpg" class="mr-3 rounded-circle">
+                                <div class="media-body">
+                                    <h5>Thomas Hardy</h5>
+                                    <p>thomas@yopmail.com</p>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <img src="~/Content/NewAdminContent/IMAGES/avatar/threePic.jpg" class="mr-3 rounded-circle">
+                                <div class="media-body">
+                                    <h5>George marley</h5>
+                                    <p>george@yopmail.com</p>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <img src="~/Content/NewAdminContent/IMAGES/avatar/jerry_grayson.jpg" class="mr-3 rounded-circle">
+                                <div class="media-body">
+                                    <h5>David Miller</h5>
+                                    <p>david@example.com</p>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <img src="~/Content/NewAdminContent/IMAGES/avatar/stefano.jpg" class="mr-3 rounded-circle">
+                                <div class="media-body">
+                                    <h5>Daniel Head</h5>
+                                    <p>daniel@yopmail.com</p>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <img src="~/Content/NewAdminContent/IMAGES/avatar/oneLogo.png" class="mr-3 rounded-circle">
+                                <div class="media-body">
+                                    <h5>John Tomas</h5>
+                                    <p>john@example.com</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 colmd-6 col-xxl-6 col-xl-4 col-lg-6">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header widthHeader ">
+                        <h4 class="card-title addWhite" style="color:white;"><b>Work Orders</b></h4>
+                        <div class="card-action">
+                            <div class="dropdown custom-dropdown">
+                                <div data-toggle="dropdown">
+                                    <i class="ti-more-alt"></i>
+                                </div>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="#">Option 1</a>
+                                    <a class="dropdown-item" href="#">Option 2</a>
+                                    <a class="dropdown-item" href="#">Option 3</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart py-4">
+                            <div id="WorkOrderPieChart" style="height: 236px;"></div>
+                            <canvas id="sold-product" style="display:none;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12" id="OperationCreateListDiv">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header" style="height: 45px;">
+                        <h4 class="card-title addWhite dispayListWOName" style="color: white;"><b>Work Order List</b></h4>
+                        <h4 class="card-title addWhite dispayCreateWOName" style="display:none;color: white;"><b>Create Work Order</b></h4>
+                        <div id="cover">
+                            <input type="checkbox" id="checkboxToggle">
+                            <div id="bar" title="Add Chart" style="transition: all ease-in-out 0.2s;">
+                            </div>
+                            <div id="knob" title="Add Chart"></div>
+                        </div>
+                    </div>
+                    <div class="card-body" id="WOList">
+                        <div id="ListWorkOrderAsssignment"></div>
+                    </div>
+                    <div class="card-body createWOForm" style="display:none;">
+                        @Html.Partial("~/Views/NewAdmin/WorkOrderView/_CreateWorkOrder.cshtml")
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12" id="OperationCreateQRCListDiv" style="display:none;">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header" style="height: 45px;">
+                        <h4 class="card-title addWhite dispayListQRCName" style="color: white;"><b>QRC List</b></h4>
+                        <h4 class="card-title addWhite dispayCreateQRCName" style="display:none;color: white;"><b>Create QRC</b></h4>
+                        <div id="cover">
+                            <input type="checkbox" id="checkboxToggle">
+                            <div id="bar" title="Add Chart" style="transition: all ease-in-out 0.2s;">
+                            </div>
+                            <div id="knob" title="Add Chart"></div>
+                        </div>
+                    </div>
+                    <div class="card-body" id="QRCList">
+                        <div id="ListQRC"></div>
+                    </div>
+                    @*<div class="card-body createQRCForm" style="display:none;">
+                        @Html.Partial("~/Views/NewAdmin/WorkOrderView/_CreateQRC.cshtml")
+                    </div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--**********************************
+    Content body end
+***********************************-->
+<script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
+<script src="~/GridListing/JsGridScript/ListWorkOrderAssignment.js"></script>
+
+<script>
+am4core.ready(function() {
+
+// Themes begin
+am4core.useTheme(am4themes_material);
+am4core.useTheme(am4themes_animated);
+// Themes end
+
+// Create chart instance
+var chart = am4core.create("WorkOrderPieChart", am4charts.PieChart);
+
+// Add data
+chart.data = [{
+    "Work Order": "Normal Work Order",
+    "Count": 7//dataJSON.CountPanel[0].ManagerCount
+}, {
+    "Work Order": "Continues Work Order",
+    "Count": 2
+}, {
+    "Work Order": "Special Work Order",
+    "Count": 5//dataJSON.CountPanel[0].EmpCount
+}, {
+    "Work Order": "Facility Request",
+    "Count": 4//dataJSON.CountPanel[0].ManagerCount
+}];
+
+// Add and configure Series
+var pieSeries = chart.series.push(new am4charts.PieSeries());
+pieSeries.dataFields.value = "Count";
+pieSeries.dataFields.category = "Work Order";
+pieSeries.innerRadius = am4core.percent(50);
+pieSeries.ticks.template.disabled = true;
+pieSeries.labels.template.disabled = true;
+
+var rgm = new am4core.RadialGradientModifier();
+rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, - 0.5);
+pieSeries.slices.template.fillModifier = rgm;
+pieSeries.slices.template.strokeModifier = rgm;
+pieSeries.slices.template.strokeOpacity = 0.4;
+pieSeries.slices.template.strokeWidth = 0;
+
+chart.legend = new am4charts.Legend();
+chart.legend.position = "right";
+
+}); // end am4core.ready()
+</script>
+<script>
+    var chart = AmCharts.makeChart("DARdiv", {
+    "theme": "none",
+    "type": "serial",
+    "startDuration": 7,
+    "dataProvider": [{
+        "Cost Code": "Travel",
+        "Budget": 4334,
+        "color": "#1740AE"
+    }, {
+        "Cost Code": "Marketing",
+        "Budget": 4000,
+        "color": "#758DCB"
+    }, {
+        "Cost Code": "Software Development",
+        "Budget": 4567,
+        "color": "#456EDA"
+    }, {
+        "Cost Code": "Shipping and Delivery",
+        "Budget": 2345,
+        "color": "#1AA897"
+    }, {
+        "Cost Code": "Other Expenses",
+        "Budget": 4354,
+        "color": "#456EDA"
+    }, {
+        "Cost Code": "Other Travel",
+        "Budget": 3466,
+        "color": "#86E2E8"
+    }],
+    "valueAxes": [{
+        "position": "left",
+        "axisAlpha":0,
+        "gridAlpha":0
+    }],
+    "graphs": [{
+        "balloonText": "[[category]]: <b>[[value]]</b>",
+        "colorField": "color",
+        "fillAlphas": 0.85,
+        "lineAlpha": 0.1,
+        "type": "column",
+        "topRadius":1,
+        "valueField": "Budget"
+    }],
+    "depth3D": 40,
+  "angle": 30,
+    "chartCursor": {
+        "categoryBalloonEnabled": false,
+        "cursorAlpha": 0,
+        "zoomable": false
+    },
+    "categoryField": "Cost Code",
+    "categoryAxis": {
+        "gridPosition": "start",
+        "axisAlpha":1,
+        "gridAlpha":0,
+        "labelRotation": 20,
+    },
+    "export": {
+    	"enabled": true
+     }
+
+}, 0);
+</script>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetDashboardHeadCount", "GlobalAdmin")",
+            data: {},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (jsondata) {
+        //successFuncPie(response);
+        if (jsondata != null && jsondata != "" && jsondata.dataJson.trim() != "") {
+            var dataJSON = JSON.parse(jsondata.dataJson);
+            dataJSON.CountPanel[0].AdminCount;
+            am4core.ready(function () {
+
+                // Themes begin
+                am4core.useTheme(am4themes_animated);
+                // Themes end
+
+                // Create chart instance
+                var chart = am4core.create("QRCCount", am4charts.PieChart);
+
+                // Add data
+                chart.data = [{
+                    "QRC": "Scanned QRC",
+                    "Count": 20
+                }, {
+                    "QRC": "Generated QRC",
+                    "Count": 5//dataJSON.CountPanel[0].EmpCount
+                }, {
+                    "QRC": "QRC Type",
+                    "Count": 3//dataJSON.CountPanel[0].ManagerCount
+                }];
+
+                // Add and configure Series
+                var pieSeries = chart.series.push(new am4charts.PieSeries());
+                pieSeries.dataFields.value = "Count";
+                pieSeries.dataFields.category = "QRC";
+                pieSeries.innerRadius = am4core.percent(50);
+                pieSeries.ticks.template.disabled = true;
+                pieSeries.labels.template.disabled = true;
+
+                var rgm = new am4core.RadialGradientModifier();
+                rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
+                pieSeries.slices.template.fillModifier = rgm;
+                pieSeries.slices.template.strokeModifier = rgm;
+                pieSeries.slices.template.strokeOpacity = 0.4;
+                pieSeries.slices.template.strokeWidth = 0;
+
+                chart.legend = new am4charts.Legend();
+                chart.legend.position = "right";
+
+            }); // end am4core.ready()
+        }
+    }
+        });
+        $("#CreateWO").click(function () {
+            debugger
+            $('html,body').animate({
+                scrollTop: $("#OperationCreateListDiv").offset().top
+            }, 'slow');
+            $("#WOList, .dispayListWOName").hide();
+            $(".createWOForm, .dispayCreateWOName").show();
+        });
+        $(".CreateWO").click(function () {
+            debugger
+            $('html,body').animate({
+                scrollTop: $("#OperationCreateQRCListDiv").offset().top
+            }, 'slow');
+            $("#OperationCreateListDiv").hide();
+            $(".dispayListQRCName, QRCList").hide();
+            $("#OperationCreateQRCListDiv, .dispayCreateQRCName, .createQRCForm").show();
+        });
+        
+        $("#checkboxToggle").change(function () {
+            debugger
+            var value = this.checked;
+            if (value == true)
+            {
+                $("#WOList, .dispayListWOName").hide();
+                $(".createWOForm, .dispayCreateWOName").show();
+            }
+            else {
+                $(".createWOForm, .dispayCreateWOName").hide();
+                $("#WOList, .dispayListWOName").show();
+            }
+            
+        });
+        
+    });
+</script>

@@ -1,0 +1,77 @@
+﻿@model WorkOrderEMS.Models.AccountModels.VendorTypeModel
+@using (Ajax.BeginForm("SaveVendorType", "VendorType", new AjaxOptions()
+{
+    HttpMethod = "POST",
+    OnSuccess = "success",
+
+}, new { @id = "VendorType" }))
+{ 
+@*@using (Html.BeginForm("SaveVendorType", "VendorType", new { area = "AdminSection" }, FormMethod.Post, new { enctype = "multipart/form-data", @id = "VendorType" }))
+{*@
+    <label id="popupmessage"> </label>
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    <div class="panel-body">
+        <div class="row">
+            <div class="">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.VendorType, htmlAttributes: new { @class = "control-label col-lg-4 col-md-4 col-sm-4 col-xs-12 star" })
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                            @Html.TextBoxFor(model => model.VendorType, new { @class = "form-control", @onkeypress = "return isNumberKey(event)", @placeholder = "Enter type." })
+                            @Html.ValidationMessageFor(model => model.VendorType, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <div class="form-group col-lg-12 col-md-12 col-sm-12  col-xs-12">
+                        <hr />
+                        <div class="pull-right">
+                            <button class="btn btn-default bluebutton saveclick" id="buttondisable" type="submit">Save</button>
+                            @*<a href="~/GlobalAdmin/WorkAssignmentList" class="btn btn-default bluebutton">Cancel</a>*@
+                            <button id="" data-dismiss="modal" class="btn btn-default bluebutton">Close</button>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="modal fade" id="myModallarge" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body" id="largeeditpopup" style="width: auto ;margin-left: 10px">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    #myModallarge .modal-body {
+        width: auto !important;
+        margin: 0px !important;
+    }
+</style>
+<script type="text/javascript">
+    function success(data) {
+        if (data != "") {
+            $("#myModallarge").modal('hide');
+            toastr.success('Record has been saved succesfully.');
+            jQuery("#tbl_VendorTypeList").jqGrid().trigger("reloadGrid");
+
+            setInterval(function () {
+                $("#message").html("");
+            }, 30000);
+        }
+        else {
+            $("#largeeditpopup").html(data);
+        }
+    }
+</script>
+

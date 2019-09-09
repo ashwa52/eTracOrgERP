@@ -1,0 +1,226 @@
+﻿@{
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    //Layout = null;
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+    long loginUserType = 0;
+    long locationId = 0;
+    if (ObjLogin != null)
+    {
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+        loginUserType = ObjLogin.UserRoleId;
+        //loginUserContactNo = ObjLogin.ContactNo;
+        locationId = ObjLogin.LocationID;
+    }
+}
+<!--**********************************
+           Content body start
+       ***********************************-->
+@*<link href="https://cdnjs.cloudflare.com/ajax/libs/orgchart/2.1.5/css/jquery.orgchart.css" rel="stylesheet" />*@
+@*<link href="~/Areas/AdminSection/Content/CSS/OrgChart.css" rel="stylesheet" />*@
+<script src="~/Areas/AdminSection/Content/JQUERY/DynamicAddJobDesc.js"></script>
+<style>
+    .addWhite {
+        color: white;
+    }
+
+    .widthHeader {
+        height: 40px;
+    }
+
+    #chart-container {
+        width: 100%;
+        height: 100%;
+    }
+
+    .orgchart {
+        background: #fff;
+    }
+
+        .orgchart td.left, .orgchart td.right, .orgchart td.top {
+            border-color: #aaa;
+        }
+
+        .orgchart td > .down {
+            background-color: #aaa;
+        }
+
+        .orgchart .middle-level .title {
+            background-color: #006699;
+        }
+
+        .orgchart .middle-level .content {
+            border-color: #006699;
+        }
+
+        .orgchart .product-dept .title {
+            background-color: #009933;
+        }
+
+        .orgchart .product-dept .content {
+            border-color: #009933;
+        }
+
+        .orgchart .rd-dept .title {
+            background-color: #993366;
+        }
+
+        .orgchart .rd-dept .content {
+            border-color: #993366;
+        }
+
+        .orgchart .pipeline1 .title {
+            background-color: #996633;
+        }
+
+        .orgchart .pipeline1 .content {
+            border-color: #996633;
+        }
+
+        .orgchart .frontend1 .title {
+            background-color: #cc0066;
+        }
+
+        .orgchart .frontend1 .content {
+            border-color: #cc0066;
+        }
+</style>
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3" data-aos="fade-up">
+            <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
+                <div class="welcome-text">
+                    <h4>Hi, welcome back! @loginUserName</h4>
+                    <p class="mb-0"> Admin Dashboard</p>
+                </div>
+            </div>
+        </div>
+        @Html.Partial("_AdminDashboard")
+        <br />
+        <div id="chart-container" style="display:none;height:480px;"class="card" data-aos="fade-up"></div>
+    </div>
+</div>
+
+
+<!--**********************************
+    Content body end
+***********************************-->
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>*@
+<script src="~/Scripts/jquery-3.2.1.min.js"></script>
+<script src="~/Areas/AdminSection/Content/JQUERY/GetOrg.js"></script>
+<link href="~/Areas/AdminSection/Content/CSS/GetOrg.css" rel="stylesheet" />
+@*<script src="http://www.getorgchart.com/GetOrgChart/getorgchart/getorgchart.js"></script>
+<link href="http://www.getorgchart.com/GetOrgChart/getorgchart/getorgchart.css" rel="stylesheet" />*@
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/orgchart/2.1.5/js/jquery.orgchart.js"></script>*@
+@*<script src="~/Areas/AdminSection/Content/JQUERY/OrganizationalChart.js"></script>*@
+
+<script type="text/javascript">
+    $("#ViewVSC").click(function () {
+        $("#chart-container").show();
+        var peopleElement = document.getElementById("chart-container");
+        var addNewUrl = "@Url.Action("GetChartDisplayData", "AdminDashboard", new { area = "AdminSection" })";
+        $.ajax({
+            type: "POST",
+            url: addNewUrl,
+            success: function (listData) {
+                debugger
+                $("#myModalForChart").modal("hide");
+                var tabledata = [];
+                
+                if (listData != null)
+                {
+                    for (var i = 0; i < listData.length; i++)
+                    {
+                        debugger
+                        var data = {};  
+                        if (i == 0)
+                        {
+                            listData[i].parentId = null;
+                        }
+                        data.id = listData[i].Id;
+                        data.parentId = listData[i].parentId;
+                        data.SeatingName = listData[i].SeatingName;
+                        data.JobDescription = listData[i].JobDescription;
+                        //var jobdet = listData[i].JobDescription.split(",");
+                        //var arrdata;
+                        //if (jobdet.length > 0)
+                        //{
+                        //    debugger
+                        //    for (var job = 0; job < jobdet.length; job++) {
+                        //        if (job == 0 && jobdet[job] != "") { data.job0 = jobdet[job]; arrdata = ["SeatingName", "job0", "DepartmentName"] }
+                        //        else if (job == 1 && jobdet[job] != "") { data.job1 = jobdet[job]; arrdata = ["SeatingName", "job0", "job1", "DepartmentName"] }
+                        //        else if (job == 2 && jobdet[job] != "") { data.job2 = jobdet[job]; arrdata = ["SeatingName", "job0", "job1", "job2", "DepartmentName"] }
+                        //        else if (job == 3 && jobdet[job] != "") { data.job3 = jobdet[job]; arrdata = ["SeatingName", "job0", "job1", "job2", "job3", "DepartmentName"] }
+                        //        else if (job == 4 && jobdet[job] != "") { data.job4 = jobdet[job]; arrdata = ["SeatingName", "job0", "job1", "job2", "job3", "job4", "DepartmentName"] }
+                        //        else if (job == 5 && jobdet[job] != "") { data.job5 = jobdet[job]; arrdata = ["SeatingName", "job0", "job1", "job2", "job3", "job4", "job5", "DepartmentName"] }
+                        //    }
+                            
+                        //}
+                                              
+                        data.DepartmentName = listData[i].DepartmentName;
+                        //data.RolesAndResponsibility = listData[i].RolesAndResponsibility;
+                        //data.image = listData[i].Image;
+                        tabledata.push(data);
+                    }                    
+                    var orgChart = new getOrgChart(peopleElement, {
+                        primaryFields: ["SeatingName", "JobDescription", "DepartmentName"],
+                        dataSource: tabledata,
+                    });
+                    $(".get-text-0").attr("y", "30"); $(".get-text-0").attr("y", "30");
+                    $(".get-text-1").attr("y", "65"); $(".get-text-2").attr("y", "90");
+                    $(".get-text-3").attr("y", "120"); $(".get-text-4").attr("y", "150");
+                    $(".get-text-4").attr("y", "180"); $(".get-text-6").attr("y", "210");
+                    $(".get-text-7").attr("y", "240"); $(".get-text-8").attr("y", "270");
+                    $(".get-text-9").attr("y", "300"); $(".get-text-10").attr("y", "330");
+                }
+            },
+            error: function (err) {
+            }
+        });
+
+    });
+    
+</script>
+@*<script type="text/javascript">
+
+        $(function() {
+        var datascource = {
+          'name': 'Rohit Kumar',
+          'title': 'general manager',
+          'children': [
+            { 'name': 'Manish Patel', 'title': 'department manager', 'collapsed': true,
+              'children': [
+                { 'name': 'Mohit Kumar', 'title': 'senior engineer', 'className': 'slide-up' },
+                { 'name': 'Ankita Rana', 'title': 'senior engineer', 'collapsed': true, 'className': 'slide-up',
+                  'children': [
+                    { 'name': 'Rahul Singh', 'title': 'engineer', 'className': 'slide-up' },
+                    { 'name': 'Preeti Dixit', 'title': 'engineer', 'className': 'slide-up' },
+                    { 'name': 'Sonu Singh', 'title': 'engineer', 'className': 'slide-up' }
+                  ]
+                }
+              ]
+            },
+            { 'name': 'Rajeev Sukhla', 'title': 'department manager',
+              'children': [
+                { 'name': 'Anil Panda', 'title': 'senior engineer' },
+                { 'name': 'Deepti Thakur', 'title': 'senior engineer', 'collapsed': true,
+                  'children': [
+                    { 'name': 'Paul Kenu', 'title': 'UE engineer', 'className': 'slide-up' },
+                    { 'name': 'Rishab Shukla', 'title': 'engineer', 'className': 'slide-up' },
+                    { 'name': 'Rizwan Ansari', 'title': 'engineer', 'className': 'slide-up' }
+                  ]
+                }
+              ]
+            }
+          ]
+        };
+        $('#chart-container').orgchart({
+          'data' : datascource,
+          'nodeContent': 'title'
+        });
+      });
+    </script>*@

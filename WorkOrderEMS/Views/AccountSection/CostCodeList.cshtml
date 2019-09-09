@@ -1,0 +1,148 @@
+﻿@model WorkOrderEMS.Models.CostCodeModel
+@{
+    ViewBag.Title = "Cost Code List";
+    Layout = "~/Views/Shared/_GlobalAdminLayout.cshtml";
+
+    long locationId = 0;
+    long userType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+    }
+}
+@section scripts{
+    <script type="text/javascript">
+    var $_locationId = '@locationId';
+    var $_userTypeId = '@userType';
+    </script>
+    <script src="~/GridListing/JqGridScript/ListCostCode.js"></script>
+    <script type="text/javascript">
+    $(window).bind('resize', function () {
+        var width = $('#jqGrid_container, #jqGrid_containerForSubCostCode').width(100);
+        //$('#jqGrid_container').css("margin-left", "-25px")
+        $('#tbl_CostCodeList, #tbl_SubCostCodeDetails').setGridWidth(width);
+    });
+    //$('#btnMyModalFORQRC').live("click", function () {
+    //    $('#myModalLicence').modal('show');
+    //});
+
+    </script>
+}
+
+<div id="jqGrid_container">
+    <table id="tbl_CostCodeList" border="0" cellpadding="0" cellspacing="0"></table>
+    <div id="divCostCodeListPager"></div>
+</div>
+<br />
+<br />
+<div id="jqGrid_containerForSubCostCode">
+    <table id="tbl_SubCostCodeDetails" border="0" cellpadding="0" cellspacing="0"></table>
+    <div id="divSubCostDetailsListPager"></div>
+</div>
+
+<!--Created by: Ashwajit Bansod, 
+    Created date : July-17-2018, 
+    Created For: To create a cost code form to add cost code-->
+<div class="modal fade preview" id="myModalForCostCode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:40%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">X</span></button>
+                <h4 class="modal-title" id="myModalLabel">Add Cost Code</h4>
+            </div>
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @using (Html.BeginForm("SaveCostCode", "AccountSection", FormMethod.Post, new { enctype = "multipart/form-data", @id = "Driver_form" }))
+            {
+                @Html.HiddenFor(model => model.LocationId);
+                <div class="modal-body">
+                    <div id="divDetailPreview" class="">
+                        <div class="row">
+                            <div class="" id="DivCostCodeDetailsIndex">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CostCode, htmlAttributes: new { @class = "control-label col-lg-4 star" })
+                                    <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
+                                        @Html.TextBoxFor(model => model.CostCode, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.CostCode, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <br /><br /><br />
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-lg-4 star" })
+                                    <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
+                                        @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br /><br />
+                <div class="panel-footer">
+                    <div class="text-right">
+                        @*<button type="button" class="btn btn-default bluebutton text-right" onclick="return PrintDivForVehicleDetails('DivVehicleDetailsIndex');" data-dismiss="modal">Print Details</button>*@
+                        <button data-dismiss="modal" class="btn btn-default" id="btnCancelqwe">Close</button>
+                        <input type="submit" class="btn btn-primary" id="btnSaveForCostCode" value="Save" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!--Created by: Ashwajit Bansod, 
+    Created date : July-17-2018, 
+    Created For: To create a Sub cost code form to add Sub cost code as per Master cost code -->
+<div class="modal fade preview" id="myModalForSubCostCode" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:40%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">X</span></button>
+                <h4 class="modal-title" id="myModalLabel">Add Sub Cost Code</h4>
+            </div>
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @using (Html.BeginForm("SaveCostCode", "AccountSection", FormMethod.Post, new { enctype = "multipart/form-data", @id = "Driver_form" }))
+            {
+                @Html.HiddenFor(model => model.LocationId);
+                <div class="modal-body">
+                    <div id="divDetailPreview" class="">
+                        <div class="row">
+                            <div class="" id="DivCostCodeDetailsIndex">
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.CostCode, htmlAttributes: new { @class = "control-label col-lg-4 star" })
+                                    <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
+                                        @Html.TextBoxFor(model => model.CostCode, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.CostCode, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <br /><br /><br />
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-lg-4 star" })
+                                    <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
+                                        @Html.TextBoxFor(model => model.Description, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <br /><br />
+                <div class="panel-footer">
+                    <div class="text-right">
+                        @*<button type="button" class="btn btn-default bluebutton text-right" onclick="return PrintDivForVehicleDetails('DivVehicleDetailsIndex');" data-dismiss="modal">Print Details</button>*@
+                        <button data-dismiss="modal" class="btn btn-default" id="btnCancelqwe">Close</button>
+                        <input type="submit" class="btn btn-primary" id="btnSaveForCostCode" value="Save" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

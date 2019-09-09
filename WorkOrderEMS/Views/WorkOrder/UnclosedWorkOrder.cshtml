@@ -1,0 +1,102 @@
+﻿
+@model WorkOrderEMS.Models.eFleetDriverModel
+@{
+    ViewBag.Title = "Unclosed WO List";
+    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+
+    long locationId = 0;
+    long userType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+    }
+}
+@section scripts{
+    <script type="text/javascript">
+    var $_locationId = '@locationId';
+    var $_userTypeId = '@userType';
+    </script>
+    <script src="~/GridListing/JqGridScript/ListeFleetDriver.js"></script>
+
+    <script type="text/javascript">
+    $(window).bind('resize', function () {
+        var width = $('#jqGrid_container').width();
+        $('#tbl_DriverList').setGridWidth(width);
+    });
+
+    </script>
+}
+
+
+<div class="modal fade preview" id="myModalForUnclosedWO" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">X</span></button>
+                <h4 class="modal-title" id="myModalLabel">Unlocsed Work Orders Details</h4>
+            </div>
+            <div class="modal-body">
+                <div id="divDetailPreview" class="">
+                    <div class="row">
+                        <div class="" id="DivVehicleDetailsIndex">
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <label>Driver Name</label>
+                                    <div id="lblDriverName" class="form-control-static"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Driver License Number</label>
+                                    <div id="lblDriverLicenseNo" class="form-control-static"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>CDL Type</label>
+                                    <div id="lblCDLType" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <div class="form-group">
+                                    <label>CDL Expiration</label>
+                                    <div id="lblCDLExpiration" class="form-control-static"></div>
+                                </div>
+                                <div class="form-group">
+                                    <label>MVR Expiration</label>
+                                    <div id="lblMVRExpiration" class="form-control-static"></div>
+                                </div>
+                                <div class="form-group" id="divWoimg">
+                                    <label id="labelDriverImage">Driver Image</label>
+                                    <div id="lblDriverImage">
+                                        <canvas></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><br /><br />
+            <div class="panel-footer">
+                <div class="text-right">
+                    @*<button type="button" class="btn btn-default bluebutton text-right" onclick="return PrintDivForVehicleDetails('DivVehicleDetailsIndex');" data-dismiss="modal">Print Details</button>*@
+                    <button data-dismiss="modal" class="btn btn-default bluebutton" id="btnCancelqwe">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#myModalForUnclosedWO').modal('show');;
+    })
+    function success(data) {
+
+        if (data != "") {
+            $("#myModallarge").modal('hide');
+            toastr.success(data.Message)
+        }
+    }
+</script>
+
+
+
