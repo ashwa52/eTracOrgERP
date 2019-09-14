@@ -3992,6 +3992,9 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
         </Function>
         <Function Name="spGetTaxDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetVehicleSeating" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetVehicleSeatingPermission" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="VSP_VST_Id" Type="bigint" Mode="In" />
+        </Function>
         <Function Name="spGetVendorAllDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CMP_Id" Type="bigint" Mode="In" />
         </Function>
@@ -7325,6 +7328,9 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
             <End Role="LocationMaster" EntitySet="LocationMasters" />
             <End Role="LoginLog" EntitySet="LoginLogs" />
           </AssociationSet>
+          <FunctionImport Name="spGetVehicleSeatingPermission" ReturnType="Collection(workorderEMSModel.spGetVehicleSeatingPermission_Result)">
+            <Parameter Name="VSP_VST_Id" Mode="In" Type="Int64" />
+          </FunctionImport>
           </EntityContainer>
         <ComplexType Name="CommonQeriesByVijay_Result">
           <Property Type="Int64" Name="VendorID" Nullable="false" />
@@ -14234,6 +14240,17 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="spGetVehicleSeatingPermission_Result">
+          <Property Type="Int64" Name="VSM_Id" Nullable="true" />
+          <Property Type="Int64" Name="VSM_VST_Id" Nullable="true" />
+          <Property Type="String" Name="VST_Title" Nullable="true" MaxLength="50" />
+          <Property Type="Int64" Name="SMD_MDL_Id" Nullable="false" />
+          <Property Type="Int64" Name="SMD_Id" Nullable="false" />
+          <Property Type="String" Name="MDL_ModuleName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="SMD_SubModuleName" Nullable="false" MaxLength="30" />
+          <Property Type="Int64" Name="VSM_UserTypeId" Nullable="true" />
+          <Property Type="String" Name="CodeName" Nullable="true" MaxLength="200" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -18275,6 +18292,21 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetVehicleSeatingPermission" FunctionName="workorderEMSModel.Store.spGetVehicleSeatingPermission">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetVehicleSeatingPermission_Result">
+                <ScalarProperty Name="VSM_Id" ColumnName="VSM_Id" />
+                <ScalarProperty Name="VSM_VST_Id" ColumnName="VSM_VST_Id" />
+                <ScalarProperty Name="VST_Title" ColumnName="VST_Title" />
+                <ScalarProperty Name="SMD_MDL_Id" ColumnName="SMD_MDL_Id" />
+                <ScalarProperty Name="SMD_Id" ColumnName="SMD_Id" />
+                <ScalarProperty Name="MDL_ModuleName" ColumnName="MDL_ModuleName" />
+                <ScalarProperty Name="SMD_SubModuleName" ColumnName="SMD_SubModuleName" />
+                <ScalarProperty Name="VSM_UserTypeId" ColumnName="VSM_UserTypeId" />
+                <ScalarProperty Name="CodeName" ColumnName="CodeName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

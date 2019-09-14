@@ -248,6 +248,41 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
             return Json(lst, JsonRequestBehavior.AllowGet);
         }
 
+
+        [HttpPost]
+        public JsonResult GetChartDetailsById(long CSVChartId)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            var lst = new AddChartModel();
+            if (Session != null)
+            {
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                }
+            }
+            try
+            {
+                if (CSVChartId > 0)
+                {
+                    lst = _IAdminDashboard.GetChartData(CSVChartId);
+                    if (lst != null)
+                    {
+                        return Json(lst, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(lst, JsonRequestBehavior.AllowGet);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message; ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger;
+            }
+            return Json(lst, JsonRequestBehavior.AllowGet);
+        }
+
         //public JsonResult DeleteJobTitleById(long JobTitleId)
         //{
         //    eTracLoginModel ObjLoginModel = null;

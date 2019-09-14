@@ -112,5 +112,32 @@ namespace WorkOrderEMS.Data.DataRepository
 
             }
         }
+        public List<spGetVehicleSeating_Result1> GetChartDetails()
+        {
+            try
+            {
+                var data = objworkorderEMSEntities.spGetVehicleSeating().ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw;
+
+            }
+        }
+
+        public List<spGetVehicleSeatingPermission_Result> GetAccessPermissionList(long VST_Id)
+        {
+            try
+            {
+                var data = objworkorderEMSEntities.spGetVehicleSeatingPermission(VST_Id).ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw;
+
+            }
+        }
     }
 }

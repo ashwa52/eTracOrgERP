@@ -46,9 +46,11 @@
             break;
     }
 }
+
 @section scripts{
 <script type="text/javascript">
-        var $_hostingPrefix = '@hostingPrefix';
+    var $_hostingPrefix = '@hostingPrefix';
+   
 </script>
 }
 <!DOCTYPE html>
@@ -72,6 +74,7 @@
     <link href="~/Content/NewAdminContent/CSS/style.css" rel="stylesheet" />
     @RenderSection("scripts", required: false)
 </head>
+
 <body>
     <!--*******************
         Preloader start
@@ -86,54 +89,54 @@
     <div id="main-wrapper">
 
         <!--**********************************
-            Nav header start
-        ***********************************-->
+        Nav header start
+    ***********************************-->
         <div class="nav-header">
             @if (GloblaAdminUser || ITAdminUser)
-            {
-                <a href="~/GlobalAdmin" class="brand-logo">
-                    <img src="~/Images/logo2.png" style="width: 110px;" />
-                    @*<span class="logo-abbr"></span>
-                        <span class="logo-compact">eTrac</span>
-                        <span class="brand-title">eTrac</span>*@
-                </a>
-            }
+        {
+            <a href="~/GlobalAdmin" class="brand-logo">
+                <img src="~/Images/logo2.png" style="width: 110px;" />
+                @*<span class="logo-abbr"></span>
+                <span class="logo-compact">eTrac</span>
+                <span class="brand-title">eTrac</span>*@
+            </a>
+    }
             @if (OnlyAdminUser)
-            {
-                <a href="~/Administrator" class="brand-logo">
-                    <img src="~/Images/logo2.png" style="width: 110px;" />
-                    @*<span class="logo-abbr"></span>
-                        <span class="logo-compact">eTrac</span>
-                        <span class="brand-title">eTrac</span>*@
-                </a>
-            }
+        {
+            <a href="~/Administrator" class="brand-logo">
+                <img src="~/Images/logo2.png" style="width: 110px;" />
+                @*<span class="logo-abbr"></span>
+                <span class="logo-compact">eTrac</span>
+                <span class="brand-title">eTrac</span>*@
+            </a>
+    }
             @if (ManagerUser)
-            {
-                <a href="~/Manager/Dashboard" class="brand-logo">
-                    <img src="~/Images/logo2.png" style="width: 110px;" />
-                    @*<span class="logo-abbr"></span>
-                        <span class="logo-compact">eTrac</span>
-                        <span class="brand-title">eTrac</span>*@
-                </a>
-            }
+        {
+            <a href="~/Manager/Dashboard" class="brand-logo">
+                <img src="~/Images/logo2.png" style="width: 110px;" />
+                @*<span class="logo-abbr"></span>
+                <span class="logo-compact">eTrac</span>
+                <span class="brand-title">eTrac</span>*@
+            </a>
+    }
             @if (EmployeeUser)
-            {
-                <a href="~/Employee/Dashboard" class="brand-logo">
-                    <img src="~/Images/logo2.png" style="width: 110px;" />
-                    @*<span class="logo-abbr"></span>
-                        <span class="logo-compact">eTrac</span>
-                        <span class="brand-title">eTrac</span>*@
-                </a>
-            }
+        {
+            <a href="~/Employee/Dashboard" class="brand-logo">
+                <img src="~/Images/logo2.png" style="width: 110px;" />
+                @*<span class="logo-abbr"></span>
+                <span class="logo-compact">eTrac</span>
+                <span class="brand-title">eTrac</span>*@
+            </a>
+    }
             @if (ClientUser)
-            {
-                <a href="~/Client" class="brand-logo">
-                    <img src="~/Images/logo2.png" style="width: 110px;" />
-                    @*<span class="logo-abbr"></span>
-                        <span class="logo-compact">eTrac</span>
-                        <span class="brand-title">eTrac</span>*@
-                </a>
-            }
+        {
+            <a href="~/Client" class="brand-logo">
+                <img src="~/Images/logo2.png" style="width: 110px;" />
+                @*<span class="logo-abbr"></span>
+                <span class="logo-compact">eTrac</span>
+                <span class="brand-title">eTrac</span>*@
+            </a>
+    }
             <div class="nav-control">
                 <div class="hamburger">
                     <span class="line"></span>
@@ -143,54 +146,54 @@
             </div>
         </div>
         <!--**********************************
-            Nav header end
-        ***********************************-->
+        Nav header end
+    ***********************************-->
         <!--Header-->
         @Html.Partial("_NewControlMenu")
 
         <!--Side Menu-->
         @if (@ViewBag.AccountSection == true)
-        {
-            @Html.Partial("_NewAdminSideMenu")
-        }
-        else
-        {
-        @Html.Partial("_NewSideMenu")
-        }
+    {
+        @Html.Partial("_NewAdminSideMenu")
+}
+else
+{
+    @Html.Partial("_NewSideMenu")
+}
         @*<a href="~/Views/Shared/_NewSideMenu.cshtml">~/Views/Shared/_NewSideMenu.cshtml</a>*@
         <!--**********************************
-            Content body start
-        ***********************************-->
+        Content body start
+    ***********************************-->
         <div id="RenderPageId">
             @RenderBody()
         </div>
         <!--**********************************
-            Content body end
-        ***********************************-->
+        Content body end
+    ***********************************-->
         <!--**********************************
-            Footer start
-        ***********************************-->
+        Footer start
+    ***********************************-->
         <div class="footer">
             <div class="copyright">
                 <p>Copyright © Designed &amp; Developed by <a href="@hostingPrefix" target="_blank">eTrac</a> 2019</p>
             </div>
         </div>
         <!--**********************************
-            Footer end
-        ***********************************-->
+        Footer end
+    ***********************************-->
         <!--**********************************
-           Support ticket button start
-        ***********************************-->
+       Support ticket button start
+    ***********************************-->
         <div class="support-ticket">
             <a href="https://docs.google.com/forms/d/e/1FAIpQLScfrU4Y7_zmErRJkR8ukaRlVgZ1AcAU7Kf4vOQuclNxqWQipQ/viewform" target="_blank" class="support-ticket-btn">Support</a>
         </div>
         <!--**********************************
-           Support ticket button end
-        ***********************************-->
+       Support ticket button end
+    ***********************************-->
         <!--removeIf(production)-->
         <!--**********************************
-            Right sidebar start
-        ***********************************-->
+        Right sidebar start
+    ***********************************-->
         <div class="sidebar-right">
             <a class="sidebar-right-trigger" href="javascript:void(0)">
                 <span><i class="fa fa-cog fa-spin"></i></span>
@@ -629,8 +632,8 @@
             </div>
         </div>
         <!--**********************************
-            Right sidebar end
-        ***********************************-->
+        Right sidebar end
+    ***********************************-->
         <!--endRemoveIf(production)-->
     </div>
     <!--**********************************
@@ -671,24 +674,19 @@
 
 </body>
 </html>
-@*<script>
-    $(document).ready(function () {
-        $("#menu li a").click(function (e) {
-            e.preventDefault(); // prevent default link button redirect behaviour
-            var url = $(this).attr("href");
-            $('#RenderPageId').load(url);
-        });
-    });
-</script>*@
+
 <script>
     $(document).ready(function () {
         //On Click menu add partial view
         $("#menu li a").click(function (e) {
             e.preventDefault(); // prevent default link button redirect behaviour
             var url = $(this).attr("href");
-            $('#RenderPageId').load(url);
-        });
-        
-        
+            var dashValue = $(this).attr("data-oldDash");            
+            if (dashValue == "Yes") {
+                window.location.href = url;
+            }else{
+              $('#RenderPageId').load(url);
+        }           
+        });             
     });
 </script>

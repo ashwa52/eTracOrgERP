@@ -142,7 +142,6 @@
         $(".jsgrid-insert-row").hide();
         $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
         $("#addNewlocation a").click(function (event) {
-            debugger
             if (hitCount == 1) {
                 hitCount++;
                 $(".jsgrid-insert-row").hide();
@@ -485,7 +484,6 @@ var chart = AmCharts.makeChart("chartdiv", {
         $('#main-wrapper').removeClass("menu-toggle");
         $(".hamburger").show();
         $("ul li a").click(function (e) {
-            debugger
             e.preventDefault(); // prevent default link button redirect behaviour
             var url = $(this).attr("href");
             $('#RenderPageId').load(url);

@@ -437,7 +437,6 @@
         //Edit location loca
         if('@ViewBag.UpdateMode' == 'True')
         {
-            debugger
             //Add Services for edoting
             var $_ServiceID = '@ViewBag.ServicesID';
             var Arr = $_ServiceID.split(',');
@@ -460,7 +459,6 @@
             }
             if($_ReportingTypeId != null && $_ReportingTypeId != "")
             {
-                debugger
                 jQuery("select#ReportingType option[value="+$_ReportingTypeId+"]").attr("selected", "selected");
                 $("#ReportingType").val($_ReportingTypeId);
             }

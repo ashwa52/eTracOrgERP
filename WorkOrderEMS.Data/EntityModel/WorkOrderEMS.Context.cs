@@ -4627,5 +4627,14 @@ namespace WorkOrderEMS.Data.EntityModel
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetJobTitle_Result>("spGetJobTitle", jBT_VST_IdParameter);
         }
+    
+        public virtual ObjectResult<spGetVehicleSeatingPermission_Result> spGetVehicleSeatingPermission(Nullable<long> vSP_VST_Id)
+        {
+            var vSP_VST_IdParameter = vSP_VST_Id.HasValue ?
+                new ObjectParameter("VSP_VST_Id", vSP_VST_Id) :
+                new ObjectParameter("VSP_VST_Id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVehicleSeatingPermission_Result>("spGetVehicleSeatingPermission", vSP_VST_IdParameter);
+        }
     }
 }

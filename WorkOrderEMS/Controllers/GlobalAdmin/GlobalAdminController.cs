@@ -2220,9 +2220,45 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 throw;
             }
         }
-
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date  : 09-Sept-2019
+        /// Created For : TO save Work Order image using AJAX for New UI
+        /// </summary>
+        /// <param name="File"></param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult WorkRequestAssignment(WorkRequestAssignmentModel objWorkRequestAssignmentModel, HttpPostedFileBase fileData)
+        public JsonResult UploadedWorkOrderImage(HttpPostedFileBase File)
+        {
+            eTracLoginModel ObjLoginModel = null;
+
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                if (File != null)
+                {
+
+                    string ImageName = ObjLoginModel.UserId + "_" + DateTime.Now.Ticks.ToString() + "_" + File.FileName.ToString();
+                    CommonHelper obj_CommonHelper = new CommonHelper();
+                    var res = obj_CommonHelper.UploadImage(File, Server.MapPath(ConfigurationManager.AppSettings["WorkRequestImage"]), ImageName);
+                    ViewBag.ImageUrl = res;
+                    if (res)
+                    {
+                        return Json(ImageName);
+                    }
+                    else { return Json(""); }
+                }
+                return Json("");
+            }
+            else
+            {
+                return Json("");
+            }
+        }
+
+        //Created By Bhushan Dod
+        [HttpPost]
+        public ActionResult WorkRequestAssignment(WorkRequestAssignmentModel objWorkRequestAssignmentModel)//, HttpPostedFileBase fileData)
         {
             HttpFileCollectionBase files = Request.Files;
             WorkRequestAssignmentModel _objWorkRequestAssignmentModel = new WorkRequestAssignmentModel();
@@ -2253,17 +2289,18 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                         objWorkRequestAssignmentModel.CreatedDate = DateTime.UtcNow;
                         objWorkRequestAssignmentModel.RequestBy = objeTracLoginModel.UserId;
                         objWorkRequestAssignmentModel.WorkRequestStatus = 14;
-                        if (fileData.ContentLength > 0)
-                        {
-                            var fileName = Path.GetFileName(fileData.FileName);
-                            //var path = Path.Combine(Server.MapPath("~/UploadFile/"), fileName);
-                            objWorkRequestAssignmentModel.WorkRequestImage = objWorkRequestAssignmentModel.WorkRequestImg != null ? objWorkRequestAssignmentModel.WorkRequestImg.FileName : string.Empty;
-                            //file.SaveAs(path);
-                        }
-                        else
-                        {
-                            objWorkRequestAssignmentModel.WorkRequestImage = objWorkRequestAssignmentModel.WorkRequestImg != null ? objWorkRequestAssignmentModel.WorkRequestImg.FileName : string.Empty;
-                        }
+                        //if (fileData.ContentLength > 0)
+                        //{
+                        //    var fileName = Path.GetFileName(fileData.FileName);
+                        //    //var path = Path.Combine(Server.MapPath("~/UploadFile/"), fileName);
+                        //    objWorkRequestAssignmentModel.WorkRequestImage = objWorkRequestAssignmentModel.WorkRequestImg != null ? objWorkRequestAssignmentModel.WorkRequestImg.FileName : string.Empty;
+                        //    //file.SaveAs(path);
+                        //}
+                        //else
+                        //{
+                        //will use if image not saved
+                            //objWorkRequestAssignmentModel.WorkRequestImage = objWorkRequestAssignmentModel.WorkRequestImg != null ? objWorkRequestAssignmentModel.WorkRequestImg.FileName : string.Empty;
+                        //}
                         objWorkRequestAssignmentModel.IsDeleted = false;
                         objWorkRequestAssignmentModel.LocationID = objeTracLoginModel.LocationID;
                         objWorkRequestAssignmentModel.WorkOrderCode = objLocCode.Address2.Substring(0, 3).ToUpper() + objWorkRequestAssignmentModel.WorkOrderCode.ToUpper();
@@ -2298,13 +2335,13 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                         objDAR.TaskType = (long)TaskTypeCategory.WorkOrderUpdate;
 
                     }
-                    if (objWorkRequestAssignmentModel.WorkOrderImage != null)
+                    if (objWorkRequestAssignmentModel.WorkRequestImage != null)
                     {
-                        string ImageName = objeTracLoginModel.UserId + "_" + DateTime.Now.Ticks.ToString() + "_" + objWorkRequestAssignmentModel.WorkOrderImage.FileName.ToString();
-                        CommonHelper obj_CommonHelper = new CommonHelper();
-                        obj_CommonHelper.UploadImage(objWorkRequestAssignmentModel.WorkOrderImage, Server.MapPath(ConfigurationManager.AppSettings["WorkRequestImage"]), ImageName);
-                        objWorkRequestAssignmentModel.AssignedWorkOrderImage = ImageName;
-                        objWorkRequestAssignmentModel.WorkRequestImage = ImageName;
+                        //string ImageName = objeTracLoginModel.UserId + "_" + DateTime.Now.Ticks.ToString() + "_" + objWorkRequestAssignmentModel.WorkOrderImage.FileName.ToString();
+                        //CommonHelper obj_CommonHelper = new CommonHelper();
+                        //obj_CommonHelper.UploadImage(objWorkRequestAssignmentModel.WorkOrderImage, Server.MapPath(ConfigurationManager.AppSettings["WorkRequestImage"]), ImageName);
+                        objWorkRequestAssignmentModel.AssignedWorkOrderImage = objWorkRequestAssignmentModel.WorkRequestImage;//= ImageName;
+                        //objWorkRequestAssignmentModel.WorkRequestImage //= ImageName;
                     }
 
                     _objWorkRequestAssignmentModel = _IGlobalAdmin.SaveWorkRequestAssignment(objWorkRequestAssignmentModel); //saving Data
@@ -2512,7 +2549,8 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 //return Json(_objWorkRequestAssignmentModel);
                 if (isUpdate == true) { return View("WorkAssignmentList"); }
                 else
-                    return View(new WorkRequestAssignmentModel());
+                    return Json(new { Message = ViewBag.Message, AlertMessageClass = ViewBag.AlertMessageClass }, JsonRequestBehavior.AllowGet);
+                //return View(new WorkRequestAssignmentModel());
             }
             catch (Exception)
             {

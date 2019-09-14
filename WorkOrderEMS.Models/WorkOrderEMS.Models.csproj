@@ -218,6 +218,8 @@
     <Compile Include="ManagerModels\WorkOrderModel.cs" />
     <Compile Include="ManagerModels\WorkRequestModel.cs" />
     <Compile Include="NewAdminLayoutModel\LocationDetailsModel.cs" />
+    <Compile Include="NewAdminModel\AccessPermisionTreeViewModel.cs" />
+    <Compile Include="NewAdminModel\AccessPermissionModel.cs" />
     <Compile Include="NewAdminModel\AdminChartModel.cs" />
     <Compile Include="NewAdminModel\DepartmentModel.cs" />
     <Compile Include="PDF\CharitableContributionForm.cs" />

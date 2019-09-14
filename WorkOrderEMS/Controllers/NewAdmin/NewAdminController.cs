@@ -22,17 +22,19 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         private readonly IDepartment _IDepartment;
         private readonly IGlobalAdmin _GlobalAdminManager;
         private readonly ICommonMethod _ICommonMethod;
+        private readonly IQRCSetup _IQRCSetup;
         private readonly string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private readonly string WorkRequestImagepath = ConfigurationManager.AppSettings["WorkRequestImage"];
         private readonly string ProfilePicPath = ConfigurationManager.AppSettings["ProfilePicPath"];
         private readonly string ConstantImages = ConfigurationManager.AppSettings["ConstantImages"];
         private readonly string NoImage = ConfigurationManager.AppSettings["DefaultImage"];
         
-        public NewAdminController(IDepartment _IDepartment, IGlobalAdmin _GlobalAdminManager, ICommonMethod _ICommonMethod)
+        public NewAdminController(IDepartment _IDepartment, IGlobalAdmin _GlobalAdminManager, ICommonMethod _ICommonMethod, IQRCSetup _IQRCSetup)
         {
             this._IDepartment = _IDepartment;
             this._GlobalAdminManager = _GlobalAdminManager;
             this._ICommonMethod = _ICommonMethod;
+            this._IQRCSetup = _IQRCSetup;
         }
         public ActionResult Index()
         {
@@ -188,6 +190,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         {
             return View();
         }
+        #region Operation
         /// <summary>
         /// Created By : Ashwajit Bansod
         /// Created Date : 23-August-2019
@@ -198,19 +201,21 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         public ActionResult OperationDashboard()
         {
             eTracLoginModel ObjLoginModel = null;
+            long Totalrecords = 0;
             GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
             var details = new LocationDetailsModel();
             if (Session["eTrac"] != null)
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);               
             }
+            #region WO
             UserType _UserType = (WorkOrderEMS.Helper.UserType)ObjLoginModel.UserRoleId;
             if (_UserType == UserType.Administrator)
                 ViewBag.Location = _ICommonMethod.GetLocationByAdminId(ObjLoginModel.UserId);
             else if (_UserType == UserType.Manager)
                 ViewBag.Location = _ICommonMethod.GetLocationByManagerId(ObjLoginModel.UserId);
             else
-                ViewBag.Location = _ICommonMethod.GetAllLocation();
+            ViewBag.Location = _ICommonMethod.GetAllLocation();
             ViewBag.AssignToUserWO = _GlobalAdminManager.GetLocationEmployeeWO(ObjLoginModel.LocationID);
             ViewBag.AssignToUser = _GlobalAdminManager.GetLocationEmployee(ObjLoginModel.LocationID);
             ViewBag.Asset = _ICommonMethod.GetAssetList(ObjLoginModel.LocationID);
@@ -221,9 +226,12 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             ViewBag.WorkRequestProjectTypeID = _ICommonMethod.GetGlobalCodeData("WORKREQUESTPROJECTTYPE");
             ViewBag.FacilityRequest = _ICommonMethod.GetGlobalCodeData("FACILITYREQUESTTYPE");
             ViewBag.StateId = _ICommonMethod.GetStateByCountryId(1);
+            #endregion WO
+
+         
             return PartialView("_OperationDashboard");
         }
-
+        
         /// <summary>
         /// Created BY : Ashwajit Bansod
         /// Created Date : 01-Sept-2019
@@ -291,5 +299,18 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 return Json(details, JsonRequestBehavior.AllowGet);
             }
         }
+        #endregion Operation
+        public ActionResult ePeopleDashboard()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
+            var details = new LocationDetailsModel();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }            
+            return PartialView("_ePeopleDashboard");
+        }
+        
     }
 }

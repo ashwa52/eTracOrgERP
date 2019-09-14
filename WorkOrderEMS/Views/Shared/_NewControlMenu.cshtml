@@ -3,6 +3,7 @@
     long loginUserType = 0, UserId = 0;
     WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
     string imgPath = (Convert.ToString(Session["eTrac_ProfileImage"]));
+    long locationId = 0;
     if (ObjLogin != null)
     {
         loginUserName = ObjLogin.FName + "'s";
@@ -10,6 +11,7 @@
         loginUserProfile = ObjLogin.UserProfile;
         loginUserType = ObjLogin.UserRoleId;
         UserId = ObjLogin.UserId;
+        locationId = ObjLogin.LocationID;
         //loginUserContactNo = ObjLogin.ContactNo;
     }
 
@@ -39,6 +41,12 @@
             GloblaAdminUser = ITAdminUser = OnlyAdminUser = ManagerUser = EmployeeUser = ClientUser = false;
             break;
     }
+}
+@section Script{
+    <script>
+    var $_locId = '@locationId';
+    $("#drp_MasterLocation").val($_locId).attr("selected", "selected");
+    </script>
 }
 
 <!--**********************************
@@ -85,23 +93,24 @@
                 <ul class="navbar-nav header-right">
                     @if (@ViewBag.AccountSection == true)
                     { }
-                    else { 
-                    <li class="nav-item"><a href="@Url.Action("Index", "AdminDashboard", new { area = "AdminSection" })"><i class="fa fa-user-circle" style="font-size:30px;color:ghostwhite;"></i></a></li>
+                    else
+                    {
+                        <li class="nav-item"><a href="@Url.Action("Index", "AdminDashboard", new { area = "AdminSection" })"><i class="fa fa-user-circle" style="font-size:30px;color:ghostwhite;" title="Admin"></i></a></li>
                     }
                     <li class="nav-item dropdown">
                         <div class="drpLocation pl-3 pr-3">
-                             @if (Session != null)
-                             {
-                                 if (Session["eTrac_UserLocations"] != null)
-                                 {
-                                     @Html.DropDownList("drp_MasterLocation", new SelectList((List<WorkOrderEMS.Models.UserLocations>)Session["eTrac_UserLocations"], "LocationId", "LocationName"), null, new { @class = "form-control input-rounded", @id = "drp_MasterLocation" })
-                                 }
-                             }
-                         </div>
+                            @if (Session != null)
+                            {
+                                if (Session["eTrac_UserLocations"] != null)
+                                {
+                                    @Html.DropDownList("drp_MasterLocation", new SelectList((List<WorkOrderEMS.Models.UserLocations>)Session["eTrac_UserLocations"], "LocationId", "LocationName"), null, new { @class = "form-control input-rounded", @id = "drp_MasterLocation" })
+                                }
+                            }
+                        </div>
                     </li>
                     @*<li class="nav-item">
-                        <a class="btn btn-secondary btn-rounded pl-3 pr-3 nav-link" href="https://docs.google.com/forms/d/e/1FAIpQLSdye2tgr3FPHpvN8wrwvzgIagvMwm8vpxOBoIijEVxEF3ZiaA/viewform" target="_blank">Hire Us</a>
-                    </li>*@
+                            <a class="btn btn-secondary btn-rounded pl-3 pr-3 nav-link" href="https://docs.google.com/forms/d/e/1FAIpQLSdye2tgr3FPHpvN8wrwvzgIagvMwm8vpxOBoIijEVxEF3ZiaA/viewform" target="_blank">Hire Us</a>
+                        </li>*@
                     <li class="nav-item dropdown">
                         <a class="nav-link" href="#" role="button" data-toggle="dropdown">
                             <i class="mdi mdi-wrench"></i>
@@ -137,7 +146,7 @@
                             </div>
                         </div>
                     </li>
-  
+
                     <li class="nav-item dropdown notification_dropdown">
                         <a class="nav-link" href="#" role="button" data-toggle="dropdown">
                             <i class="mdi mdi-bell"></i>

@@ -24,7 +24,7 @@ namespace WorkOrderEMS.Models
         [Display(Name = "Roles And Responsibility")]
         public string RolesAndResponsibility { get; set; }
         [Display(Name = "Department")]
-        public long Department { get; set; }
+        public long? Department { get; set; }
         public string Action { get; set; }
         public string IsActive { get; set; }
         public string DepartmentName { get; set; }

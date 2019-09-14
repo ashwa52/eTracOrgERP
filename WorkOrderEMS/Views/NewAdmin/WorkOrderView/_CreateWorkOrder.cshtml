@@ -51,6 +51,7 @@
     @Html.HiddenFor(model => model.WorkOrderCode)
     @Html.HiddenFor(model => model.WorkRequestAssignmentID)
     @Html.HiddenFor(model => model.WorkOrderCodeID)
+    @Html.HiddenFor(model => model.WorkRequestImage)
     <div class="basic-form">
         <div class="form-group row">
             <div class="col-sm-6">
@@ -206,7 +207,6 @@
 <script>
     $('.clockpicker').clockpicker();
     function WorkOrderImagereadURL(input) {
-        debugger
         var FType = ["jpg", "JPG", "PNG", "png", "JPEG", "jpeg", "gif", "GIF"]
         if (input.files && input.files[0]) {
             var LoadImage = false;
@@ -235,37 +235,79 @@
     }
 
     $("#SaveWO").click(function () {
-    debugger
-        $("#SaveWO").attr("disabled", true);
-        var dataObject = $("#WorkorderSave").serialize();
-        
-        var dataDetails = new FormData();
-        var files = $("#WorkOrderImage").get(0).files;
-        if (files.length > 0) {
-            dataDetails.append("WorkRequestImg", files[0]);
+        var dataObject;
+    $("#SaveWO").attr("disabled", true);
+    var ImageName;        
+        var img = $("#WorkOrderImage").val();
+        if (img == "" || img == undefined || img == null) {
+            ImageName = "";
+             dataObject = $("#WorkorderSave").serialize();
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("WorkRequestAssignment", "GlobalAdmin")',
+                data: dataObject,//{ objWorkRequestAssignmentModel: dataObject, fileData: file },
+                success: function (Data) {
+                    $("#SaveWO").attr("disabled", false);
+                    $("#WOList, .dispayListWOName").show();
+                    $(".createWOForm, .dispayCreateWOName").hide();
+                    $("#ListWorkOrderAsssignment").jsGrid("loadData");
+                    $("#ListWorkOrderAsssignment").jsGrid("refresh");
+                },
+                error: function (err) {
+                }
+            });
         }
-
-        var file = document.getElementById("WorkOrderImage").files[0];
-        //formdata.append(filename, file.files[0]);
-        $.ajax({
-            type: "POST",
-            url: '@Url.Action("WorkRequestAssignment", "GlobalAdmin")',
-            processData: false,
-            contentType:false,
-            //dataType: "json",
-            //contentType: "application/json; charset=utf-8",
-            data: { objWorkRequestAssignmentModel: dataObject, fileData: file },
-            success: function (Data) {
-                debugger
-                $("#SaveWO").attr("disabled", false);
-                $("#WOList, .dispayListWOName").show();
-                $(".createWOForm, .dispayCreateWOName").hide();
-                $("#ListWorkOrderAsssignment").jsGrid("loadData");
-                $("#ListWorkOrderAsssignment").jsGrid("refresh");
-            },
-            error: function (err) {
+        else {
+            var ImageFile;
+            file_data = $("#WorkOrderImage").prop("files")[0]; // Getting the properties of file from file field
+            form_data = new FormData(); // Creating object of FormData class
+            form_data.append("file", file_data) // Appending parameter named file with properties of file_field to form_data
+            form_data.append("CallID", 11) // Adding extra parameters to form_data
+            if (file_data != undefined) {
+                $.ajax({
+                    url: '@Url.Action("UploadedWorkOrderImage", "GlobalAdmin")',
+                    dataType: 'script',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: form_data, // Setting the data attribute of ajax with file_data
+                    type: 'post',
+                    success: function (dataLink) {
+                        ImageName = dataLink;
+                        var result = ImageName.substring(1, ImageName.length - 1);
+                        $("#WorkRequestImage").val(result);
+                        //dataObject.WorkRequestImage = ImageName;
+                        dataObject = $("#WorkorderSave").serialize();
+                        
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("WorkRequestAssignment", "GlobalAdmin")',
+                            data: dataObject,//{ objWorkRequestAssignmentModel: dataObject, fileData: file },
+                            success: function (Data) {
+                                $("#SaveWO").attr("disabled", false);
+                                $("#WOList, .dispayListWOName").show();
+                                $(".createWOForm, .dispayCreateWOName").hide();
+                                $("#ListWorkOrderAsssignment").jsGrid("loadData");
+                                $("#ListWorkOrderAsssignment").jsGrid("refresh");
+                            },
+                            error: function (err) {
+                            }
+                        });
+                        
+                    },
+                    error: function (e) { alert("error:" + e); },
+                });
             }
-        });
+        }
+        //var dataDetails = new FormData();
+        //var files = $("#WorkOrderImage").get(0).files;
+        //if (files.length > 0) {
+        //    dataDetails.append("WorkRequestImg", files[0]);
+        //}
+
+        //var file = document.getElementById("WorkOrderImage").files[0];
+        ////formdata.append(filename, file.files[0]);
+        
     });
 </script>
 

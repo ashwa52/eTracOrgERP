@@ -1,0 +1,239 @@
+﻿
+@model WorkOrderEMS.Models.QRCModel
+@{
+    ViewBag.Title = "QRC Setup";
+    //ViewBag.Title = "Register Vehicle";
+    //Layout = "~/Views/Shared/_EmployeeLayout.cshtml";
+    Layout = null;// "~/Views/Shared/_QRCLayout.cshtml";
+
+
+    long UserType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string Image = "~/Content/Images/ProjectLogo/no-profile-pic.jpg";
+    if (ObjLogin != null)
+    { UserType = ObjLogin.UserRoleId; }
+    else
+    {
+        WorkOrderEMS.Helper.AlertMessageClass ObjAlertMessageClass = new WorkOrderEMS.Helper.AlertMessageClass();
+        ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger; ViewBag.Message = WorkOrderEMS.Helper.CommonMessage.SessionExpired();
+        throw new Exception(WorkOrderEMS.Helper.CommonMessage.SessionExpired());
+    }
+
+
+    if (ViewBag.UpdateMode != null && ViewBag.UpdateMode == true)
+    { ViewBag.Title = "Update QRC"; }
+    string imgaeserverpath = Url.Content("~/Content/Images/constant/");
+
+    string _GetLocationByAdminURL;// = Url.Action("GetLocationByAdminID", "DropDown");
+                                  //string _GetLocationByManagerIDUrl = @Url.Action("GetLocationByManagerID", "DropDown");
+
+}
+<!--Multistep wizard CSS-->
+<style>
+    .error {
+        color: red;
+    }
+</style>
+@Scripts.Render("~/bundles/modernizr")
+<link href="@Url.Content("~/Content/NewAdminContent/CSS/RadioButtonCSS.css")" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/CSS/style.css" rel="stylesheet" />
+<br />
+@Html.AntiForgeryToken()
+@Html.ValidationSummary(true)
+
+<form action="@Url.Action("WorkRequestAssignment", "GlobalAdmin")" *@ method="post" id="QRCSave" class="step-form-horizontal" role="form" style="margin-left:80px;">
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.QRCId)
+    @Html.HiddenFor(model => model.MotorTypeVehicle, new { id = "hddnMotorTypeVehicle" })
+    @Html.HiddenFor(model => model.UpdateMode)
+
+    @Html.HiddenFor(model => model.VehicleTypeCaption, new { id = "VehicleTypeCaption" })
+    @Html.HiddenFor(model => model.QRCTYPE, new { id = "hiddnQRCTYPE" })
+    @Html.HiddenFor(model => model.QRCTYPECaption, new { id = "QRCTYPECaption" })
+    @Html.HiddenFor(model => model.MotorTypeCaption, new { id = "MotorTypeCaption" })
+    @Html.HiddenFor(model => model.SizeCaption, new { id = "SizeCaption" })
+    @Html.HiddenFor(model => model.QRCodeID, new { id = "QRCodeID" })
+    @Html.HiddenFor(model => model.QRCImageBase64)
+    <input type="hidden" id="EncryptLastQRC" value='@Model.EncryptLastQRC' />
+    <input type="hidden" id="@Model.UpdateMode" value="@ViewBag.UpdateMode" />
+
+    <div class="basic-form">
+        <div class="form-group row">
+            <div class="col-sm-6">
+                @Html.TextBoxFor(model => model.QRCName, new { @Placeholder = "QRC Name", @class = "form-control input-rounded required" })               
+                @Html.ValidationMessageFor(model => model.QRCName)
+            </div>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(model => model.SerialNo, new { @Placeholder = "Serial No", @class = "form-control input-rounded required" })
+                @Html.ValidationMessageFor(model => model.SerialNo)                
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-6">
+                 @if (Model != null && Model.QRCTypeList != null && Model.QRCTypeList.Count > 0)
+                  { @Html.DropDownListFor(model => model.QRCTYPE, new SelectList(Model.QRCTypeList, "GlobalCodeId", "CodeName"), "--Select--", new { @id = "QRCType", @class = "form-control input-rounded required requiredselect", @onchange = "tooglevehicletype();" })}
+                  else
+                  {<select id="QRCType" class="form-control"><option>--Select--</option></select>}
+                          <span class="QRCType" style="color: indianred"></span>                      
+                 @Html.ValidationMessageFor(model => model.QRCTYPE)
+            </div>
+            <div class="col-sm-6">
+                @if (Model != null && Model.QRCSize != null && Model.QRCSize.Count > 0)
+                {@Html.DropDownListFor(model => model.QRCDefaultSize, new SelectList(Model.QRCSize, "GlobalCodeId", "CodeName"), "--Select--", new { @id = "DefaultSize", @class = "form-control input-rounded required requiredselect", @onchange = "qrcSizeload();" })}
+                 else
+                 {<select id="DefaultSize" class="form-control"><option>--Select--</option></select>}
+                <span class="DefaultSize" style="color: indianred"></span>
+            </div>
+        </div>
+        <div class="form-group row showMotorVehicleType" style="display:none;">
+            @*<div class="col-sm-6">
+               @if (Model != null && Model.VehicleTypeList != null && Model.VehicleTypeList.Count > 0)
+                {@Html.DropDownListFor(model => model.VehicleType, new SelectList(Model.VehicleTypeList, "GlobalCodeId", "CodeName"), "--Select--", new { @id = "VehicleType", @class = "form-control input-rounded required requiredselect", @onchange = "loadmotortype();" });
+                }
+                else
+                { <select id="VehicleType" class="form-control"><option>--Select--</option></select>}
+                        @Html.ValidationMessageFor(model => model.VehicleType)
+            </div>*@
+            <div class="col-sm-6">           
+                  @if (Model != null && Model.MotorTypeList != null && Model.MotorTypeList.Count > 0)
+                   {
+                   <img id="imgvehicletype" src="" class="img-rounded" alt="" style="position: absolute; padding-left: 0px; left: 160px; "> @*"width: 64px;*@
+                   @Html.DropDownListFor(model => model.MotorType, new SelectList(Model.MotorTypeList, "GlobalCodeId", "CodeName"), "--Select--", new { @id = "MotorType", @style = "width: 131px;", @class = "form-control input-rounded required requiredselect", @onchange = "showvehicletypeimage(this);" })                   
+                   <input type="hidden" id="hddnimgaeserverpath" value="@imgaeserverpath">
+                   }
+                   else
+                   {<select id="MotorType" class="form-control"><option>--Select--</option></select>}
+                        @Html.ValidationMessageFor(model => model.MotorType)
+                 </div>            
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-6">
+                @Html.TextBoxFor(model => model.Make, new { @Placeholder = "Make", @class = "form-control input-rounded required" })
+                @Html.ValidationMessageFor(model => model.Make)               
+            </div>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(model => model.Model, new { @Placeholder = "Model", @class = "form-control input-rounded required" })
+                @Html.ValidationMessageFor(model => model.Model)
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-6">
+               @Html.TextAreaFor(model => model.SpecialNotes, new { @Placeholder = "QRC Special Notes", @class = "form-control input-rounded required" })
+               @Html.ValidationMessageFor(model => model.SpecialNotes)
+            </div>
+            <div class="col-sm-6">
+                <img id='LocationImage' name='LocationImage' src="@Url.Content(Image)"
+                     class="img-rounded" style="width:100px; height:100px;border-radius:25px;">
+                <input type="file" id="Location" name="LOCPicture" onchange="QRCImagereadURL(this);" value=" upload image" accept="image/*">
+            </div>
+        </div>
+    <input type="submit" id="SaveQRC" class="btn btn-primary pull-right" style="border-radius: 35px;width: 100px;background-color:#0aa0cd;" value="Save"/>
+</form>
+
+<!--**********************************
+    Content body end
+***********************************-->
+@*<script src="~/Content/NewAdminContent/VENDOR/jquery-steps/build/jquery.steps.min.js"></script>*@
+<!--Validation-->
+@*<script src="~/Scripts/bootstrap.min.js"></script>*@
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
+<script src="~/Scripts/NewAdminJS/QRCHideShowFunctionality.js"></script>
+<script>
+    function QRCImagereadURL(input) {
+        var FType = ["jpg", "JPG", "PNG", "png", "JPEG", "jpeg", "gif", "GIF"]
+        if (input.files && input.files[0]) {
+            var LoadImage = false;
+            var FileExtension = input.value.split(".")[1];
+            for (var v = 0; v < FType.length; v++) {
+                if (FType[v] == FileExtension) {
+                    LoadImage = true;
+                }
+            }
+            if (LoadImage == true) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#LocationImage')
+                       .attr('src', e.target.result)
+                       .width(150)
+                       .height(150);
+
+                };
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                $(input).val("");
+                alert("Please select image to upload!")
+                return false;
+            }
+        }
+    }
+
+    $("#SaveQRC").click(function () {
+        var dataObject;
+        $("#SaveQRC").attr("disabled", true);
+    var ImageName;
+        var img = $("#WorkOrderImage").val();
+        if (img == "" || img == undefined || img == null) {
+            ImageName = "";
+             dataObject = $("#WorkorderSave").serialize();
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("WorkRequestAssignment", "GlobalAdmin")',
+                data: dataObject,//{ objWorkRequestAssignmentModel: dataObject, fileData: file },
+                success: function (Data) {
+                    $("#SaveWO").attr("disabled", false);
+                    $("#WOList, .dispayListWOName").show();
+                    $(".createWOForm, .dispayCreateWOName").hide();
+                    $("#ListWorkOrderAsssignment").jsGrid("loadData");
+                    $("#ListWorkOrderAsssignment").jsGrid("refresh");
+                },
+                error: function (err) {
+                }
+            });
+        }
+        else {
+            var ImageFile;
+            file_data = $("#WorkOrderImage").prop("files")[0]; // Getting the properties of file from file field
+            form_data = new FormData(); // Creating object of FormData class
+            form_data.append("file", file_data) // Appending parameter named file with properties of file_field to form_data
+            form_data.append("CallID", 11) // Adding extra parameters to form_data
+            if (file_data != undefined) {
+                $.ajax({
+                    url: '@Url.Action("UploadedWorkOrderImage", "GlobalAdmin")',
+                    dataType: 'script',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: form_data, // Setting the data attribute of ajax with file_data
+                    type: 'post',
+                    success: function (dataLink) {
+                        ImageName = dataLink;
+                        var result = ImageName.substring(1, ImageName.length - 1);
+                        $("#WorkRequestImage").val(result);
+                        //dataObject.WorkRequestImage = ImageName;
+                        dataObject = $("#WorkorderSave").serialize();
+
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("WorkRequestAssignment", "GlobalAdmin")',
+                            data: dataObject,//{ objWorkRequestAssignmentModel: dataObject, fileData: file },
+                            success: function (Data) {
+                                $("#SaveWO").attr("disabled", false);
+                                $("#WOList, .dispayListWOName").show();
+                                $(".createWOForm, .dispayCreateWOName").hide();
+                                $("#ListWorkOrderAsssignment").jsGrid("loadData");
+                                $("#ListWorkOrderAsssignment").jsGrid("refresh");
+                            },
+                            error: function (err) {
+                            }
+                        });
+
+                    },
+                    error: function (e) { alert("error:" + e); },
+                });
+            }
+        }
+    });
+</script>
+
+

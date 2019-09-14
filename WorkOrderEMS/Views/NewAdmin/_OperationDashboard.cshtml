@@ -19,13 +19,13 @@
         UserId = ObjLogin.UserId;
     }
 }
-@section scripts{
+@*@section scripts{
     <script type="text/javascript">
     var $_hostingPrefix = '@hostingPrefix';
     var $_LocationId = '@locationId';
     var $_UserID = '@UserId';
     </script>
-}
+}*@
 
 <!--**********************************
            Content body start
@@ -49,6 +49,7 @@
     }
 </style>
 <div class="content-body">
+
     <!-- row -->
     <div class="container-fluid">
         <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3" data-aos="fade-up">
@@ -210,10 +211,10 @@
                         <h4 class="card-title addWhite dispayListWOName" style="color: white;"><b>Work Order List</b></h4>
                         <h4 class="card-title addWhite dispayCreateWOName" style="display:none;color: white;"><b>Create Work Order</b></h4>
                         <div id="cover">
-                            <input type="checkbox" id="checkboxToggle">
-                            <div id="bar" title="Add Chart" style="transition: all ease-in-out 0.2s;">
+                            <input type="checkbox" class="checkboxToggle" id="toggleWO">
+                            <div id="bar" title="Create WO" style="transition: all ease-in-out 0.2s;">
                             </div>
-                            <div id="knob" title="Add Chart"></div>
+                            <div id="knob" title="Create WO"></div>
                         </div>
                     </div>
                     <div class="card-body" id="WOList">
@@ -230,28 +231,37 @@
                     <div class="card-header" style="height: 45px;">
                         <h4 class="card-title addWhite dispayListQRCName" style="color: white;"><b>QRC List</b></h4>
                         <h4 class="card-title addWhite dispayCreateQRCName" style="display:none;color: white;"><b>Create QRC</b></h4>
+
                         <div id="cover">
-                            <input type="checkbox" id="checkboxToggle">
+                            <input type="checkbox" class="checkboxToggle" id="ToggleQRC">
                             <div id="bar" title="Add Chart" style="transition: all ease-in-out 0.2s;">
                             </div>
                             <div id="knob" title="Add Chart"></div>
                         </div>
+                        @*<div class="button-switch">
+                            <input type="checkbox" id="switch-orange" class="switch" />
+                            <label for="switch-orange" class="lbl-off">Off</label>
+                            <label for="switch-orange" class="lbl-on">On</label>
+                        </div>*@
                     </div>
-                    <div class="card-body" id="QRCList">
+                    <div class="card-body dispayListQRCName" id="QRCList" style="display:none;">
                         <div id="ListQRC"></div>
                     </div>
-                    @*<div class="card-body createQRCForm" style="display:none;">
-                        @Html.Partial("~/Views/NewAdmin/WorkOrderView/_CreateQRC.cshtml")
-                    </div>*@
+                    <div class="card-body createQRCForm" style="display:none;" id="QRCForm">                        
+                        @*@Html.Partial("~/Views/NewAdmin/QRCView/_QRCForm.cshtml")*@
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+<div class="loadSpinner" style="display:none;">
+    <img src="~/Images/LoaderCar_2.gif" />
+</div>
 <!--**********************************
     Content body end
 ***********************************-->
+<script src="~/GridListing/JsGridScript/ListQRCList.js"></script>
 <script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
 <script src="~/GridListing/JsGridScript/ListWorkOrderAssignment.js"></script>
 
@@ -302,7 +312,7 @@ chart.legend.position = "right";
 }); // end am4core.ready()
 </script>
 <script>
-    var chart = AmCharts.makeChart("DARdiv", {
+    var chartDAR = AmCharts.makeChart("DARdiv", {
     "theme": "none",
     "type": "serial",
     "startDuration": 7,
@@ -366,11 +376,9 @@ chart.legend.position = "right";
 }, 0);
 </script>
 
-
-
-
 <script>
     $(document).ready(function () {
+        $(".createQRCForm").load('@Url.Action("Index", "QRCSetup")')
         $.ajax({
             type: "GET",
             url: "@Url.Action("GetDashboardHeadCount", "GlobalAdmin")",
@@ -383,16 +391,9 @@ chart.legend.position = "right";
             var dataJSON = JSON.parse(jsondata.dataJson);
             dataJSON.CountPanel[0].AdminCount;
             am4core.ready(function () {
-
-                // Themes begin
                 am4core.useTheme(am4themes_animated);
-                // Themes end
-
-                // Create chart instance
-                var chart = am4core.create("QRCCount", am4charts.PieChart);
-
-                // Add data
-                chart.data = [{
+                var chartQRC = am4core.create("QRCCount", am4charts.PieChart);
+                chartQRC.data = [{
                     "QRC": "Scanned QRC",
                     "Count": 20
                 }, {
@@ -404,7 +405,7 @@ chart.legend.position = "right";
                 }];
 
                 // Add and configure Series
-                var pieSeries = chart.series.push(new am4charts.PieSeries());
+                var pieSeries = chartQRC.series.push(new am4charts.PieSeries());
                 pieSeries.dataFields.value = "Count";
                 pieSeries.dataFields.category = "QRC";
                 pieSeries.innerRadius = am4core.percent(50);
@@ -418,33 +419,33 @@ chart.legend.position = "right";
                 pieSeries.slices.template.strokeOpacity = 0.4;
                 pieSeries.slices.template.strokeWidth = 0;
 
-                chart.legend = new am4charts.Legend();
-                chart.legend.position = "right";
+                chartQRC.legend = new am4charts.Legend();
+                chartQRC.legend.position = "right";
 
             }); // end am4core.ready()
         }
     }
         });
         $("#CreateWO").click(function () {
-            debugger
             $('html,body').animate({
                 scrollTop: $("#OperationCreateListDiv").offset().top
             }, 'slow');
-            $("#WOList, .dispayListWOName").hide();
-            $(".createWOForm, .dispayCreateWOName").show();
+            $("#WOList, .dispayListWOName, .dispayListQRCName, .QRCList, #OperationCreateQRCListDiv, .dispayCreateQRCName, .createQRCForm").hide();
+            $(".createWOForm, .dispayCreateWOName, #OperationCreateListDiv").show();
         });
-        $(".CreateWO").click(function () {
+        $("#CreateQRC").click(function () {
             debugger
+            $("#OperationCreateQRCListDiv").show();
             $('html,body').animate({
                 scrollTop: $("#OperationCreateQRCListDiv").offset().top
             }, 'slow');
-            $("#OperationCreateListDiv").hide();
-            $(".dispayListQRCName, QRCList").hide();
-            $("#OperationCreateQRCListDiv, .dispayCreateQRCName, .createQRCForm").show();
+            $("#OperationCreateListDiv, #WOList, .dispayListWOName, .createWOForm, .dispayCreateWOName").hide();
+            $(".dispayListQRCName, #QRCList").hide();
+            $(".dispayCreateQRCName, .createQRCForm").show();
         });
         
-        $("#checkboxToggle").change(function () {
-            debugger
+        $("#toggleWO").change(function () {
+        
             var value = this.checked;
             if (value == true)
             {
@@ -454,9 +455,21 @@ chart.legend.position = "right";
             else {
                 $(".createWOForm, .dispayCreateWOName").hide();
                 $("#WOList, .dispayListWOName").show();
-            }
-            
+            }           
         });
-        
+        $("#ToggleQRC").change(function () {
+            debugger
+            $(".createWOForm").hide();
+            $("#OperationCreateListDiv").hide();
+            var value = this.checked;
+            if (value == true) {
+                $(".dispayListQRCName").hide();
+                $("#QRCForm").show();
+            }
+            else {
+                $("#QRCForm").hide();
+                $(".dispayListQRCName").show();
+            }
+        });
     });
 </script>

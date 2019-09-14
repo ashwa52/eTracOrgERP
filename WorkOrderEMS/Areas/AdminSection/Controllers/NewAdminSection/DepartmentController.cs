@@ -211,5 +211,43 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
                 { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
             }
         }
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 09-Sept-2019
+        /// Created For : To delete Department
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult DeleteDepartment(long id)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            var lst = new AddChartModel();
+            if (Session != null)
+            {
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                }
+            }
+            try
+            {
+                var data = _IDepartment.GetDepartmentData(id);
+                if (data != null)
+                {
+                    if(id > 0)
+                    {
+                        data.DeptId = id;
+                        var dataDetails = _IDepartment.DeleteDepartmentById(data);
+                    }                    
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message; ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger;
+            }
+            return Json(lst, JsonRequestBehavior.AllowGet);
+        }
     }
 }

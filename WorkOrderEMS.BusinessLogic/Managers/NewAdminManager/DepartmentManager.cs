@@ -69,7 +69,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             try
             {
                 lstDepartment = _DepartmentRepository.GetDepartmentList(txt, LocationId, UserId)
-                    .Select(x => new DepartmentModel()
+                    .Where(x => x.DPT_IsActive == "Y").Select(x => new DepartmentModel()
                     {
                         DepartmentName = x.DPT_Name,
                         IsActive_Grid = x.DPT_IsActive == "Y"?true:false,
@@ -132,7 +132,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
               if(Id > 0)
                 {
                     getDetails = _DepartmentRepository.GetDepartmentList(txt, LocationId, UserId).
-                        Where(x => x.DPT_Id == Id).Select(a => new DepartmentModel() {
+                        Where(x => x.DPT_Id == Id && x.DPT_IsActive == "Y").Select(a => new DepartmentModel() {
                             DepartmentName = a.DPT_Name,
                             IsActive = a.DPT_IsActive,
                             DeptId = a.DPT_Id,
@@ -146,6 +146,39 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 throw;
             }
             return getDetails;
+        }
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 09-Sept-2019
+        /// Created For : To delete Department by departmetn Id
+        /// </summary>
+        /// <param name="DeptId"></param>
+        /// <returns></returns>
+        public bool DeleteDepartmentById(DepartmentModel Obj)
+        {
+            bool isSaved = false;
+            try
+            {
+                var _DepartmentRepository = new DepartmentRepository();
+                string Action = string.Empty;
+                if (Obj.DeptId > 0)
+                {
+                    Obj.Action = "U";
+                    Obj.IsActive = "X";
+                    isSaved = _DepartmentRepository.IsDepetmentDeleted(Obj);                    
+                }
+                else
+                {
+                    isSaved = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SaveDepartment(DepartmentModel Obj)", "Exception While deleting Department.", Obj);
+                throw;
+            }
+            return isSaved;
         }
     }
 }

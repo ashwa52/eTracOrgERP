@@ -35,10 +35,10 @@
     <!--Js Grid-->
     <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" /
     <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />>
-    <script src="~/Areas/AdminSection/GridList/JsGrid/ListDepartment.js"></script>
 
 </head>
 <br />
+
 @Html.Hidden("GetURL", new { @id = "GetURL" })
 <div class="content-body">
     <div class="container-fluid">
@@ -46,10 +46,10 @@
             <div class="col-lg-12">
                 <div class="card" data-aos="fade-up">
                     <div class="card-header" style="height: 45px;">
-                        <h4 class="card-title addWhite"><b>Departemnt List</b></h4>
-                        <a id="AddDepartment"><i class="fa fa-plus"></i></a>
+                        <a id="BackToAdmin" title="Back" style="cursor:pointer;"><i class="fa fa-long-arrow-left fa-2x"></i></a>
+                        <a id="AddDepartment" title="Add Department" style="cursor:pointer;"><i class="fa fa-plus fa-2x"></i></a>
+                        <h4 class="card-title addWhite" style="margin-right: 1330px;color:white;"><b>Departement List</b></h4>
                     </div>
-
                     <div class="card-body">
                         <div id="JsListDepartment"></div>
                     </div>
@@ -115,42 +115,26 @@
     </script>
 }
 <script>
-    $(document).ready(function () {
-         
-        $("#AddDepartment").click(function () {
-            debugger
-            @*var addNewUrl = "@Url.Action("Index", "Department")";
-            $('#RenderPageId').load(addNewUrl);*@
-            $("#DepartmentId").val("");
-            $("#DepartmentName").val("");
-            $("#SaveDeptData").text("Save")
-            $("#myModalForDepartment").modal("show");
-        })
-       
+    $(document).ready(function () {     
         $('#SaveDeptData').on('click', function () {
-            debugger
             if ($("#formDepartment").validate({
                 rules: {
                    'DepartmentName': {required: true}
-                },
+            },
                 messages: {'DepartmentName': {
-                        required: "Please enter Department Name",
-                    }
-                 }
-              })) {
-                debugger
+                required: "Please enter Department Name",
+            }
+            }
+            })) {
                 var dataObject = $("#formDepartment").serialize()
                 $.ajax({
                     type: "POST",
                     url: '@Url.Action("SaveDepartment", "Department", new { area = "AdminSection" })',
                     data: dataObject,
                     success: function (Data) {
-                        debugger
                         toastr.success(Data.Message);
                         $("#myModalForDepartment").modal("hide");
                         $("#JsListDepartment").jsGrid("loadData");
-                        @*var addNewUrl = "@Url.Action("Index", "Department", new { area = "AdminSection" })";
-                        $('#RenderPageId').load(addNewUrl);*@
                     },
                     error: function (err) {
                     }
@@ -159,3 +143,11 @@
         });
     });
 </script>
+<script>
+    //$(document).ajaxSend(function() {
+        
+    //}).ajaxComplete(function() {
+    //    $("#image_loader").hide();
+    //});
+</script>
+<script src="~/Areas/AdminSection/GridList/JsGrid/ListDepartment.js"></script>

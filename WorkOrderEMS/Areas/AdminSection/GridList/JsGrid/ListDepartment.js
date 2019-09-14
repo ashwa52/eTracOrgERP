@@ -34,7 +34,6 @@
                         });
                     }},
                 onDataLoading: function (args) {
-                    debugger
                     return $.ajax({
                         type: "GET",
                         url: '../AdminSection/Department/GetListDepartment',
@@ -44,16 +43,10 @@
                 },
                 //data: response,
                 onRefreshed: function (args) {
-                    debugger
                     $(".jsgrid-insert-row").hide();
                     $(".jsgrid-filter-row").hide()
                     $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
-                    return $.ajax({
-                        type: "GET",
-                        url: '../AdminSection/Department/GetListDepartment',
-                        datatype: 'json',
-                        contentType: "application/json",
-                    });
+                        
                 },
                 fields: [
                     //{ name: "Id", visible: false },
@@ -65,13 +58,14 @@
                             var $customEditButton = $("<span>")
                                 .attr({ title: jsGrid.fields.control.prototype.editButtonTooltip })
                                 .attr({ id: "btn-edit-" + item.DeptId }).click(function (e) {
-                                    debugger
                                     var addNewUrl = "../AdminSection/Department/EditDepartment?Id=" + item.DeptId;
                                     $.ajax({
                                         type: "POST",
                                         url: addNewUrl,
+                                        beforeSend: function() {
+                                            $("#loading_image").show();
+                                        },
                                         success: function (editData) {
-                                            debugger
                                             //$("#jsGrid-basic").jsGrid("loadData");
                                             if (editData != null) {
                                                 $("#DepartmentId").val(editData.DeptId);
@@ -82,6 +76,9 @@
                                             
                                         },
                                         error: function (err) {
+                                        },
+                                        complete: function (data) {
+                                            $("#loading_image").hide();
                                         }
 
                                     });
@@ -93,15 +90,12 @@
                             var $customDeleteButton = $("<span>")
                                   .attr({ title: jsGrid.fields.control.prototype.deleteButtonTooltip })
                                   .attr({ id: "btn-delete-" + item.DeptId }).click(function (e) {
-                                      debugger
                                       $.ajax({
                                           type: "POST",
-                                          url: "../GlobalAdmin/DeleteLocation?id=" + item.Id,
+                                          url: "../Department/DeleteDepartment?id=" + item.DeptId,
                                           success: function (Data) {
-                                              debugger
-                                              //$("#jsGrid-basic").jsGrid("loadData");
-                                              var addNewUrl = "../GlobalAdmin/ListLocation";
-                                              $('#ViewModalEdit').load(addNewUrl);
+                                              $("#JsListDepartment").jsGrid("loadData");
+                                              toastr.success("Department Deleted successfully.");
                                           },
                                           error: function (err) {
                                           }
@@ -117,7 +111,6 @@
                     //{ type: "control" }
                 ],
                 rowClick: function (args) {
-                    debugger
                     this
                     console.log(args)
                     var getData = args.item;
@@ -134,16 +127,25 @@
 
 })(jQuery);
 $(document).ready(function () {
+    $("#AddDepartment").click(function () {
 
-    $(".EditRecord").click(function (event) {
+        $("#DepartmentId").val("");
+        $("#DepartmentName").val("");
+        $("#SaveDeptData").text("Save")
+        $("#myModalForDepartment").modal("show");
+    })
+    $("#BackToAdmin").click(function(){
         debugger
+        var url = "../AdminSection/AdminDashboard/Index";// @Url.Action("Index", "AdminDashboard", new { area = "AdminSection" });
+        window.location.href = url;
+    });
+    $(".EditRecord").click(function (event) {
         this
         event.preventDefault();
         var addNewUrl = "../GlobalAdmin/EditLocationSetup";
         $('#RenderPageId').load(addNewUrl);
     });
     $(".jsgrid-edit-button").click(function (event) {
-        debugger
         this;
         $(".jsgrid-insert-row").hide();
         event.preventDefault();

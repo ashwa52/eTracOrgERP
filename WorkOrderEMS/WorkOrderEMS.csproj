@@ -354,6 +354,7 @@
     <Compile Include="Areas\AdminSection\Controllers\CostCodeController.cs" />
     <Compile Include="Areas\AdminSection\Controllers\NewAdminSection\AdminDashboardController.cs" />
     <Compile Include="Areas\AdminSection\Controllers\NewAdminSection\DepartmentController.cs" />
+    <Compile Include="Areas\AdminSection\Controllers\NewAdminSection\OrgChartController.cs" />
     <Compile Include="Areas\AdminSection\Controllers\PaymentModeController.cs" />
     <Compile Include="Areas\AdminSection\Controllers\PaymentTermsController.cs" />
     <Compile Include="Areas\AdminSection\Controllers\PDFFormController.cs" />
@@ -481,9 +482,11 @@
     <Content Include="App_Readme\Elmah.txt" />
     <Content Include="Areas\AdminSection\Content\CSS\GetOrg.css" />
     <Content Include="Areas\AdminSection\Content\CSS\IconDisplayCSS.css" />
+    <Content Include="Areas\AdminSection\Content\CSS\jsTree.css" />
     <Content Include="Areas\AdminSection\Content\CSS\OrgChart.css" />
     <Content Include="Areas\AdminSection\Content\IMAGE\department.png" />
     <Content Include="Areas\AdminSection\Content\IMAGE\orgChart.png" />
+    <Content Include="Areas\AdminSection\Content\IMAGE\orgChartAdd.jpg" />
     <Content Include="Areas\AdminSection\Content\JQUERY\DynamicAddJobDesc.js" />
     <Content Include="Areas\AdminSection\Content\JQUERY\GetOrg.js" />
     <Content Include="Areas\AdminSection\Content\JQUERY\html2canvas.min.js" />
@@ -5113,6 +5116,7 @@
     <Content Include="GridListing\JqGridScript\WorkOrderWeekHistory.js" />
     <Content Include="GridListing\JqGridScript\WorkRequestAssignment.js" />
     <Content Include="GridListing\JqGridScript\WorkRequestList.js" />
+    <Content Include="GridListing\JsGridScript\ListQRCList.js" />
     <Content Include="GridListing\JsGridScript\ListWorkOrderAssignment.js" />
     <Content Include="Images\back2.jpg" />
     <Content Include="Images\back4.jpg" />
@@ -5137,6 +5141,8 @@
     <Content Include="Images\icon3.png" />
     <Content Include="Images\icon4.png" />
     <Content Include="Images\icons.png" />
+    <Content Include="Images\LoaderCar_2.gif" />
+    <Content Include="Images\LoadingCar.gif" />
     <Content Include="Images\LoadingSpinner.GIF" />
     <Content Include="Images\logo-etrac.png" />
     <Content Include="Images\logo.png" />
@@ -5850,6 +5856,7 @@
     <Content Include="Areas\AdminSection\Views\Shared\_AdminDashboard.cshtml" />
     <Content Include="Areas\AdminSection\Views\AdminDashboard\_AddChart.cshtml" />
     <Content Include="Areas\AdminSection\Views\Department\Index.cshtml" />
+    <Content Include="Areas\AdminSection\Views\OrgChart\_ViewChart.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\eTrac - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\eTrac - Web Deploy.pubxml" />
@@ -6086,6 +6093,7 @@
     <Content Include="Scripts\NewAdminJS\plugins-init\ui-slider-init.js" />
     <Content Include="Scripts\NewAdminJS\plugins-init\webticker-init.js" />
     <Content Include="Scripts\NewAdminJS\plugins-init\widgets-script-init.js" />
+    <Content Include="Scripts\NewAdminJS\QRCHideShowFunctionality.js" />
     <Content Include="Scripts\NewAdminJS\quixnav-init.js" />
     <Content Include="Scripts\NewAdminJS\settings.js" />
     <Content Include="Scripts\NewAdminJS\styleSwitcher.js" />
@@ -6359,6 +6367,8 @@
     <Content Include="Views\NewAdmin\_OperationDashboard.cshtml" />
     <Content Include="Views\Shared\_NewAdminSideMenu.cshtml" />
     <Content Include="Views\NewAdmin\WorkOrderView\_CreateWorkOrder.cshtml" />
+    <Content Include="Views\NewAdmin\_ePeopleDashboard.cshtml" />
+    <Content Include="Views\NewAdmin\QRCView\_QRCForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

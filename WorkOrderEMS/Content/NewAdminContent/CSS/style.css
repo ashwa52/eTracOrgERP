@@ -24306,7 +24306,7 @@ table.dataTable.display tbody td {
 }
 
 .jsgrid-table > tbody > tr > td {
-    padding: 1.2em;
+    /*padding: 1.2em; will use if we got any issue in table padding jsgrid*/
 }
 
 .jsgrid-table .jsgrid-insert-row input, .jsgrid-table .jsgrid-insert-row select, .jsgrid-table .jsgrid-edit-row input, .jsgrid-table .jsgrid-edit-row select {

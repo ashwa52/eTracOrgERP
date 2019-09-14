@@ -107,8 +107,9 @@ namespace WorkOrderEMS.Controllers.QRCSetup
                 //if (!string.IsNullOrEmpty(successCode) && successCode == "Success") 
                 //{
                 //    ModelState.AddModelError("", "Record Saved Sucessfully.");
-                //}
-                return View(data);
+                //}D:\Project\eTrac\WorkOrderEMS\Views\NewAdmin\QRCView\_QRCForm.cshtml
+                return PartialView("~/Views/NewAdmin/QRCView/_QRCForm.cshtml",data);
+                //return View(data);
             }
             catch (Exception ex)
             { ViewBag.Message = ex.Message; ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger; return View("Error"); }
@@ -418,7 +419,7 @@ namespace WorkOrderEMS.Controllers.QRCSetup
         }
 
         [HttpPost]
-        public JsonResult GetQRCList(bool _search, long? nd, int page, int rows, string sidx = null, string sord = null, long? locationId = 0, string SearchText = "", long SearchQRCType = 0)
+        public JsonResult GetQRCList(long? nd, int? page, int rows, string sidx = null, string sord = null, long? locationId =0, string SearchText = "", long SearchQRCType = 0)
         {
             JQGridResults result = new JQGridResults();
             List<JQGridRow> jqRows = new List<JQGridRow>();
@@ -461,6 +462,35 @@ namespace WorkOrderEMS.Controllers.QRCSetup
                 { string error = ex.Message; }
             }
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetQRCListForJsGrid(  long? locationId = 0, long? SearchQRCType =0) 
+        {
+            eTracLoginModel ObjLoginModel = null;
+            var QRCList = new List<QRCListModel>();
+            int? rows = 20; int? page = 1;
+            string sord = null; String sidx = null; string txtSearch = "";
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                ObjectParameter TotalRecords = new ObjectParameter("TotalRecords", typeof(int));
+                 QRCList = _IQRCSetup.GetAllQRCList(null, locationId, page, rows, sidx, sord, txtSearch, SearchQRCType, ObjLoginModel.UserId, TotalRecords);
+                try
+                {
+                    if(QRCList.Count() > 0)
+                    {
+                        return Json(QRCList, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(QRCList, JsonRequestBehavior.AllowGet);
+                    }
+                }
+               catch (Exception ex)
+                { string error = ex.Message; }
+            }
+            return Json(QRCList, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

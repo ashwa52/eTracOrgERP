@@ -14,5 +14,7 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
         List<AddChartModel> ListVehicleSeatingChart(long? LocationId);
         bool SaveJobTitleVSC(AddChartModel Obj);
         List<AddChartModel> GetJobTitleData(long CSVChartId);
+        AddChartModel GetChartData(long CSVChartId);
+        List<AccessPermisionTreeViewModel> ListTreeViewAccessPermission(long VST_Id);
     }
 }
