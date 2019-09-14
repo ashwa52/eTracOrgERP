@@ -3396,7 +3396,7 @@ getOrgChart.prototype._aY = function(d, b) {
                     type: "POST",
                     url: '../AdminSection/OrgChart/GetAccessDataList?VST_Id=' + c, //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
                     success: function (Data) {
-                        debugger
+                       
                         $("#myModalForAccessManagementTree").modal('show');
                     },
                     error: function (err) {
