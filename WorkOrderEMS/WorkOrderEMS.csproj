@@ -5116,6 +5116,8 @@
     <Content Include="GridListing\JqGridScript\WorkOrderWeekHistory.js" />
     <Content Include="GridListing\JqGridScript\WorkRequestAssignment.js" />
     <Content Include="GridListing\JqGridScript\WorkRequestList.js" />
+    <Content Include="GridListing\JsGridScript\ListMyOpening.js" />
+    <Content Include="GridListing\JsGridScript\ListOnBoarding.js" />
     <Content Include="GridListing\JsGridScript\ListQRCList.js" />
     <Content Include="GridListing\JsGridScript\ListWorkOrderAssignment.js" />
     <Content Include="Images\back2.jpg" />
@@ -6369,6 +6371,7 @@
     <Content Include="Views\NewAdmin\WorkOrderView\_CreateWorkOrder.cshtml" />
     <Content Include="Views\NewAdmin\_ePeopleDashboard.cshtml" />
     <Content Include="Views\NewAdmin\QRCView\_QRCForm.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_HiringOnBoarding.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
