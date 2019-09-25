@@ -474,6 +474,9 @@ namespace WorkOrderEMS.Controllers
                 {
                     ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
                     LocationId = ObjLoginModel.LocationID;
+                    if (LocationId>0) {
+                        objVendorApproveRejectModel.LLCM_Id = Convert.ToString(LocationId);
+                    }
                 }
                 if (!string.IsNullOrEmpty(objVendorApproveRejectModel.VendorId))
                 {

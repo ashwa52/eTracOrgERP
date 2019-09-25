@@ -1101,6 +1101,22 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Name="LLNC_IsApprove" Type="char" MaxLength="1" />
           <Property Name="LLNC_IsActive" Type="char" MaxLength="1" />
         </EntityType>
+        <EntityType Name="LogLocationCompanyMapping">
+          <Key>
+            <PropertyRef Name="LLCM_Id" />
+          </Key>
+          <Property Name="LLCM_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LLCM_LCM_Id" Type="bigint" Nullable="false" />
+          <Property Name="LLCM_CMP_Id" Type="bigint" Nullable="false" />
+          <Property Name="LLCM_LocationId" Type="bigint" Nullable="false" />
+          <Property Name="LLCM_ModifiedBy" Type="bigint" Nullable="false" />
+          <Property Name="LLCM_ModifiedOn" Type="datetime" Nullable="false" />
+          <Property Name="LLCM_ApprovedBy" Type="bigint" />
+          <Property Name="LLCM_ApprovedOn" Type="datetime" />
+          <Property Name="LLCM_Comment" Type="varchar" MaxLength="100" />
+          <Property Name="LLCM_IsApprove" Type="char" MaxLength="1" />
+          <Property Name="LLCM_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
         <EntityType Name="LogMiscellaneous">
           <Key>
             <PropertyRef Name="LMIS_Id" />
@@ -2861,6 +2877,42 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
             </Principal>
             <Dependent Role="LogLicense">
               <PropertyRef Name="LLNC_LNC_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LogLocationCompanyMapping_Company">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
+          <End Role="LogLocationCompanyMapping" Type="Self.LogLocationCompanyMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CMP_Id" />
+            </Principal>
+            <Dependent Role="LogLocationCompanyMapping">
+              <PropertyRef Name="LLCM_CMP_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LogLocationCompanyMapping_LocationCompanyMapping">
+          <End Role="LocationCompanyMapping" Type="Self.LocationCompanyMapping" Multiplicity="1" />
+          <End Role="LogLocationCompanyMapping" Type="Self.LogLocationCompanyMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LocationCompanyMapping">
+              <PropertyRef Name="LCM_Id" />
+            </Principal>
+            <Dependent Role="LogLocationCompanyMapping">
+              <PropertyRef Name="LLCM_LCM_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LogLocationCompanyMapping_LocationMaster">
+          <End Role="LocationMaster" Type="Self.LocationMaster" Multiplicity="1" />
+          <End Role="LogLocationCompanyMapping" Type="Self.LogLocationCompanyMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LocationMaster">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="LogLocationCompanyMapping">
+              <PropertyRef Name="LLCM_LocationId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -4694,6 +4746,7 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <EntitySet Name="LoginLog" EntityType="Self.LoginLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogInsurance" EntityType="Self.LogInsurance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogLicense" EntityType="Self.LogLicense" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LogLocationCompanyMapping" EntityType="Self.LogLocationCompanyMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogMiscellaneous" EntityType="Self.LogMiscellaneous" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogPODetail" EntityType="Self.LogPODetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LogPreBill" EntityType="Self.LogPreBill" Schema="dbo" store:Type="Tables" />
@@ -5142,6 +5195,18 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <AssociationSet Name="FK_LogLicense_License" Association="Self.FK_LogLicense_License">
             <End Role="License" EntitySet="License" />
             <End Role="LogLicense" EntitySet="LogLicense" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LogLocationCompanyMapping_Company" Association="Self.FK_LogLocationCompanyMapping_Company">
+            <End Role="Company" EntitySet="Company" />
+            <End Role="LogLocationCompanyMapping" EntitySet="LogLocationCompanyMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LogLocationCompanyMapping_LocationCompanyMapping" Association="Self.FK_LogLocationCompanyMapping_LocationCompanyMapping">
+            <End Role="LocationCompanyMapping" EntitySet="LocationCompanyMapping" />
+            <End Role="LogLocationCompanyMapping" EntitySet="LogLocationCompanyMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LogLocationCompanyMapping_LocationMaster" Association="Self.FK_LogLocationCompanyMapping_LocationMaster">
+            <End Role="LocationMaster" EntitySet="LocationMaster" />
+            <End Role="LogLocationCompanyMapping" EntitySet="LogLocationCompanyMapping" />
           </AssociationSet>
           <AssociationSet Name="FK_LogMiscellaneous_Company" Association="Self.FK_LogMiscellaneous_Company">
             <End Role="Company" EntitySet="Company" />
@@ -7304,6 +7369,19 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
             <Parameter Name="VSP_VST_Id" Mode="In" Type="Int64" />
           </FunctionImport>
           <EntitySet Name="TaxDetails" EntityType="workorderEMSModel.TaxDetail" />
+          <EntitySet Name="LogLocationCompanyMappings" EntityType="workorderEMSModel.LogLocationCompanyMapping" />
+          <AssociationSet Name="FK_LogLocationCompanyMapping_Company" Association="workorderEMSModel.FK_LogLocationCompanyMapping_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="LogLocationCompanyMapping" EntitySet="LogLocationCompanyMappings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LogLocationCompanyMapping_LocationCompanyMapping" Association="workorderEMSModel.FK_LogLocationCompanyMapping_LocationCompanyMapping">
+            <End Role="LocationCompanyMapping" EntitySet="LocationCompanyMappings" />
+            <End Role="LogLocationCompanyMapping" EntitySet="LogLocationCompanyMappings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LogLocationCompanyMapping_LocationMaster" Association="workorderEMSModel.FK_LogLocationCompanyMapping_LocationMaster">
+            <End Role="LocationMaster" EntitySet="LocationMasters" />
+            <End Role="LogLocationCompanyMapping" EntitySet="LogLocationCompanyMappings" />
+          </AssociationSet>
           </EntityContainer>
         <ComplexType Name="CommonQeriesByVijay_Result">
           <Property Type="Int64" Name="VendorID" Nullable="false" />
@@ -12974,6 +13052,7 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <NavigationProperty Name="Miscellaneous" Relationship="workorderEMSModel.FK_Miscellaneous_Company" FromRole="Company" ToRole="Miscellaneou" />
           <NavigationProperty Name="LocationCompanyMappings" Relationship="workorderEMSModel.FK_LocationCompanyMapping_Company" FromRole="Company" ToRole="LocationCompanyMapping" />
           <NavigationProperty Name="LogPreBills" Relationship="workorderEMSModel.FK_LogPreBill_Company" FromRole="Company" ToRole="LogPreBill" />
+          <NavigationProperty Name="LogLocationCompanyMappings" Relationship="workorderEMSModel.FK_LogLocationCompanyMapping_Company" FromRole="Company" ToRole="LogLocationCompanyMapping" />
         </EntityType>
         <Association Name="FK_Bill_Company">
           <End Type="workorderEMSModel.Company" Role="Company" Multiplicity="0..1" />
@@ -13670,6 +13749,7 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Name="LCM_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="Company" Relationship="workorderEMSModel.FK_LocationCompanyMapping_Company" FromRole="LocationCompanyMapping" ToRole="Company" />
           <NavigationProperty Name="LocationMaster" Relationship="workorderEMSModel.FK_LocationCompanyMapping_LocationMaster" FromRole="LocationCompanyMapping" ToRole="LocationMaster" />
+          <NavigationProperty Name="LogLocationCompanyMappings" Relationship="workorderEMSModel.FK_LogLocationCompanyMapping_LocationCompanyMapping" FromRole="LocationCompanyMapping" ToRole="LogLocationCompanyMapping" />
         </EntityType>
         <Association Name="FK_LocationCompanyMapping_Company">
           <End Type="workorderEMSModel.Company" Role="Company" Multiplicity="1" />
@@ -13864,6 +13944,7 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <NavigationProperty Name="QRCMasters" Relationship="workorderEMSModel.FK_QRCMaster_LocationMaster" FromRole="LocationMaster" ToRole="QRCMaster" />
           <NavigationProperty Name="QRCScanLogs" Relationship="workorderEMSModel.FK_QRCScanLog_LocationMaster" FromRole="LocationMaster" ToRole="QRCScanLog" />
           <NavigationProperty Name="LoginLogs1" Relationship="workorderEMSModel.FK_TrackEmployeeStatus_LocationMaster" FromRole="LocationMaster" ToRole="LoginLog" />
+          <NavigationProperty Name="LogLocationCompanyMappings" Relationship="workorderEMSModel.FK_LogLocationCompanyMapping_LocationMaster" FromRole="LocationMaster" ToRole="LogLocationCompanyMapping" />
         </EntityType>
         <Association Name="FK_AdminLocationMapping_LocationMaster">
           <End Type="workorderEMSModel.LocationMaster" Role="LocationMaster" Multiplicity="1" />
@@ -14234,6 +14315,61 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Name="TXD_TaxDocument" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="TXD_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
+        <EntityType Name="LogLocationCompanyMapping">
+          <Key>
+            <PropertyRef Name="LLCM_Id" />
+          </Key>
+          <Property Name="LLCM_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LLCM_LCM_Id" Type="Int64" Nullable="false" />
+          <Property Name="LLCM_CMP_Id" Type="Int64" Nullable="false" />
+          <Property Name="LLCM_LocationId" Type="Int64" Nullable="false" />
+          <Property Name="LLCM_ModifiedBy" Type="Int64" Nullable="false" />
+          <Property Name="LLCM_ModifiedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LLCM_ApprovedBy" Type="Int64" />
+          <Property Name="LLCM_ApprovedOn" Type="DateTime" Precision="3" />
+          <Property Name="LLCM_Comment" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LLCM_IsApprove" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="LLCM_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Company" Relationship="workorderEMSModel.FK_LogLocationCompanyMapping_Company" FromRole="LogLocationCompanyMapping" ToRole="Company" />
+          <NavigationProperty Name="LocationCompanyMapping" Relationship="workorderEMSModel.FK_LogLocationCompanyMapping_LocationCompanyMapping" FromRole="LogLocationCompanyMapping" ToRole="LocationCompanyMapping" />
+          <NavigationProperty Name="LocationMaster" Relationship="workorderEMSModel.FK_LogLocationCompanyMapping_LocationMaster" FromRole="LogLocationCompanyMapping" ToRole="LocationMaster" />
+        </EntityType>
+        <Association Name="FK_LogLocationCompanyMapping_Company">
+          <End Type="workorderEMSModel.Company" Role="Company" Multiplicity="1" />
+          <End Type="workorderEMSModel.LogLocationCompanyMapping" Role="LogLocationCompanyMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CMP_Id" />
+            </Principal>
+            <Dependent Role="LogLocationCompanyMapping">
+              <PropertyRef Name="LLCM_CMP_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LogLocationCompanyMapping_LocationCompanyMapping">
+          <End Type="workorderEMSModel.LocationCompanyMapping" Role="LocationCompanyMapping" Multiplicity="1" />
+          <End Type="workorderEMSModel.LogLocationCompanyMapping" Role="LogLocationCompanyMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LocationCompanyMapping">
+              <PropertyRef Name="LCM_Id" />
+            </Principal>
+            <Dependent Role="LogLocationCompanyMapping">
+              <PropertyRef Name="LLCM_LCM_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LogLocationCompanyMapping_LocationMaster">
+          <End Type="workorderEMSModel.LocationMaster" Role="LocationMaster" Multiplicity="1" />
+          <End Type="workorderEMSModel.LogLocationCompanyMapping" Role="LogLocationCompanyMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LocationMaster">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="LogLocationCompanyMapping">
+              <PropertyRef Name="LLCM_LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -18243,6 +18379,23 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
                 <ScalarProperty Name="TXD_TaxIdNumber" ColumnName="TXD_TaxIdNumber" />
                 <ScalarProperty Name="TXD_CMP_Id" ColumnName="TXD_CMP_Id" />
                 <ScalarProperty Name="TXD_Id" ColumnName="TXD_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LogLocationCompanyMappings">
+            <EntityTypeMapping TypeName="workorderEMSModel.LogLocationCompanyMapping">
+              <MappingFragment StoreEntitySet="LogLocationCompanyMapping">
+                <ScalarProperty Name="LLCM_IsActive" ColumnName="LLCM_IsActive" />
+                <ScalarProperty Name="LLCM_IsApprove" ColumnName="LLCM_IsApprove" />
+                <ScalarProperty Name="LLCM_Comment" ColumnName="LLCM_Comment" />
+                <ScalarProperty Name="LLCM_ApprovedOn" ColumnName="LLCM_ApprovedOn" />
+                <ScalarProperty Name="LLCM_ApprovedBy" ColumnName="LLCM_ApprovedBy" />
+                <ScalarProperty Name="LLCM_ModifiedOn" ColumnName="LLCM_ModifiedOn" />
+                <ScalarProperty Name="LLCM_ModifiedBy" ColumnName="LLCM_ModifiedBy" />
+                <ScalarProperty Name="LLCM_LocationId" ColumnName="LLCM_LocationId" />
+                <ScalarProperty Name="LLCM_CMP_Id" ColumnName="LLCM_CMP_Id" />
+                <ScalarProperty Name="LLCM_LCM_Id" ColumnName="LLCM_LCM_Id" />
+                <ScalarProperty Name="LLCM_Id" ColumnName="LLCM_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

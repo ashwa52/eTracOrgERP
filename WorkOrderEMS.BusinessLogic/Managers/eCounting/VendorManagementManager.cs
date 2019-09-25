@@ -680,21 +680,38 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         }
                         var IsApprove = _workorderems.spSetApprovalForVendorAllDetail(ObjApproveRejectVendorModel.Vendor,
                                                                              ObjApproveRejectVendorModel.Comment, Status, ObjApproveRejectVendorModel.UserId);
-                        if (ObjApproveRejectVendorModel.LLCM_Id != null)
+                        #region "TEQ"
+                        var _locationList = _workorderems.LocationCompanyMappings.Where(n => n.LCM_CMP_Id == ObjApproveRejectVendorModel.Vendor).ToList();
+                        if (_locationList != null)
                         {
-                            string[] LLCM_Id = ObjApproveRejectVendorModel.LLCM_Id.Split(',');
-                            for (int i = 0; i < LLCM_Id.Length; i++)
+                            foreach (var item in _locationList)
                             {
-                                if (LLCM_Id[i] != null && !string.IsNullOrEmpty(LLCM_Id[i]) && Convert.ToInt64(LLCM_Id[i], CultureInfo.InvariantCulture) > 0)
+                                long LocId = Convert.ToInt64(item.LCM_Id);
+                                var result = _workorderems.LocationCompanyMappings.Where(n => n.LCM_Id == LocId).FirstOrDefault();
+                                if (result != null)
                                 {
-                                    long LocId = Convert.ToInt64(LLCM_Id[i]);
-                                    var locationApprove = _workorderems.spSetApprovalForLocationCompanyMapping(LocId,
-                                                                                                   ObjApproveRejectVendorModel.Comment,
-                                                                                                   Status, ObjApproveRejectVendorModel.UserId);
-
+                                    result.LCM_IsActive = Status;
+                                    _workorderems.SaveChanges();
                                 }
-                            }
+                              
+                            } 
                         }
+                        #endregion
+                        //if (ObjApproveRejectVendorModel.LLCM_Id != null)
+                        //{
+                        //    string[] LLCM_Id = ObjApproveRejectVendorModel.LLCM_Id.Split(',');
+                        //    for (int i = 0; i < LLCM_Id.Length; i++)
+                        //    {
+                        //        if (LLCM_Id[i] != null && !string.IsNullOrEmpty(LLCM_Id[i]) && Convert.ToInt64(LLCM_Id[i], CultureInfo.InvariantCulture) > 0)
+                        //        {
+                        //            long LocId = Convert.ToInt64(LLCM_Id[i]);
+                        //            var locationApprove = _workorderems.spSetApprovalForLocationCompanyMapping(LocId,
+                        //                                                                           ObjApproveRejectVendorModel.Comment,
+                        //                                                                           Status, ObjApproveRejectVendorModel.UserId);
+
+                        //        }
+                        //    }
+                        //}
 
 
                         var facilityApprove = _workorderems.spSetApprovalForCompanyFacilityMapping(ObjApproveRejectVendorModel.Vendor,

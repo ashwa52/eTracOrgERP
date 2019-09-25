@@ -38,6 +38,7 @@ namespace WorkOrderEMS.Data.EntityModel
             this.Miscellaneous = new HashSet<Miscellaneou>();
             this.LocationCompanyMappings = new HashSet<LocationCompanyMapping>();
             this.LogPreBills = new HashSet<LogPreBill>();
+            this.LogLocationCompanyMappings = new HashSet<LogLocationCompanyMapping>();
         }
     
         public long CMP_Id { get; set; }
@@ -73,5 +74,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ICollection<Miscellaneou> Miscellaneous { get; set; }
         public virtual ICollection<LocationCompanyMapping> LocationCompanyMappings { get; set; }
         public virtual ICollection<LogPreBill> LogPreBills { get; set; }
+        public virtual ICollection<LogLocationCompanyMapping> LogLocationCompanyMappings { get; set; }
     }
 }

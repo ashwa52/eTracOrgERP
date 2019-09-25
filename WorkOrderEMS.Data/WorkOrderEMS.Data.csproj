@@ -306,6 +306,9 @@
     <Compile Include="EntityModel\LogLicense.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityModel\LogLocationCompanyMapping.cs">
+      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\LogMiscellaneou.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
