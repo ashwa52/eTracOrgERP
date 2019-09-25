@@ -91,13 +91,13 @@
     <script type="text/javascript">
         var $_UrlImage = '@imgaeserverpath';
     </script>
-    <script type="text/javascript">
+    @*<script type="text/javascript">
         $(window).bind('resize', function () {
             var width = $('#jqGrid_containerVendorFacility').width();
             $('#tbl_AllVendorFacilityDataList').setGridWidth(width);
         });
 
-    </script>
+    </script>*@
 }
 <style>
     .roundedtext {
@@ -131,103 +131,111 @@
 <input type="hidden" value='@hiddnUserType' name='@UserTypeControlName'>
 <input type="hidden" name="UserModel.EmployeeCategory" id="UserCategory" value='@Controller' />
 @Html.AntiForgeryToken()
-<script src="~/GridListing/JqGridScript/ListNewVendorFacility.js"></script>
+@*<script src="~/GridListing/JqGridScript/ListNewVendorFacility.js"></script>*@
 <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.maskedinput-1.3.min.js")"></script>
-<div class="col-lg-12 col-md-12  col-sm-12  col-xs-12" id="myContractDetails">
-    <div class="panel-body">
-        <div class="row">
-            <div class="form-horizontal">
-                <div class="form">
-                    <div class="top-row">
-                        <div class="field-wrap">
-                            <label id="lblVendorFacilityName">
-                                Vendor Name <span class="req">*</span>
-                            </label>
-                            @Html.TextBox(myModelprefix + "VendorFacilityName", null, new { @id = "VendorFacilityName" })
-                            @Html.ValidationMessage(myModelprefix + "VendorFacilityName")
-                        </div>
-                    </div>
-                    <br /><br /><br />
-                    <div class="top-row">
-                        <div class="field-wrap">
-                            <label id="lblProductServiceType">
-                                Type<span class="req">*</span>
-                            </label>
-                            @Html.DropDownListFor(model => model.VendorFacilityModel.ProductServiceType, new List<SelectListItem>
-                            {
-                                new SelectListItem() {Text = "--Select Type--", Value="0"},
-                                new SelectListItem() {Text = "Product", Value="1"},
-                                new SelectListItem() {Text = "Service", Value="2"},
-                            }, new { @id = "ProductServiceType" })
-                            @Html.ValidationMessageFor(model => model.VendorFacilityModel.ProductServiceType)
-                        </div>
-                        <div class="field-wrap">
-                            <label>
-                                Product/Service Name  <span class="req">*</span>
-                            </label>
-                            @Html.TextBoxFor(model => model.VendorFacilityModel.ProductServiceName, null, new { @id = "ProductServiceName" })
-                            @Html.ValidationMessageFor(model => model.VendorFacilityModel.ProductServiceName)
-                        </div>
-                    </div>
-
-                    <div class="top-row">
-                        <div class="field-wrap">
-                            <label>
-                                $ Unit Cost<span class="req">*</span>
-                            </label>
-                            @Html.TextBoxFor(model => model.VendorFacilityModel.UnitCostForView, null, new { @id = "UnitCost" })
-                            @Html.ValidationMessageFor(model => model.VendorFacilityModel.UnitCostForView)
-                        </div>
-                        <div class="field-wrap">
-                            <label>
-                                % Tax  <span class="req">*</span>
-                            </label>
-                            @Html.TextBoxFor(model => model.VendorFacilityModel.Tax, null, new { @id = "Tax" })
-                            @Html.ValidationMessageFor(model => model.VendorFacilityModel.Tax)
-                        </div>
-                    </div>
-
-                    <div class="top-row">
-                        <div class="field-wrap">
-
-                            <label id="lblCostCode">
-                                Costcode<span class="req">*</span>
-                            </label>
-                            @if (ViewBag.CostCodeList != null)
-                            {
-                                @Html.DropDownListFor(model => model.VendorFacilityModel.Costcode, new SelectList(ViewBag.CostCodeList, "CostCodeId", "CostCodeName"), "--Select Cost Code--", new { @id = "CostCode" })
-                            }
-                            else
-                            {<select id="CostCodeData"><option value="-1">@ViewBag.CostCodeList</option></select>}
-                            @Html.ValidationMessageFor(model => model.VendorFacilityModel.Costcode)
-                        </div>
-                        <div class="field-wrap">
-                            <label>
-                                Product Image  <span class="req">*</span>
-                            </label>
-                            @if (Model.VendorFacilityModel != null)
-                            {
-                                Image = Model.VendorFacilityModel.ProductImage + "ProductImage";
-                            }
-
-                            <img id='imgProductImage' name='imgVehicleImage' src="@Url.Content(Image)"
-                                 class="img-rounded" alt="No Image " style="width:110px; height:110px; margin-left:55%;">
-                            <input id="fileuploadProduct" type="file" style="margin-left:auto;" name="VendorFacilityModel.ProductImageFile" />
-
-                            @Html.ValidationMessageFor(model => model.VendorFacilityModel.ProductImage)
-                            @Html.ValidationMessageFor(model => model.VendorFacilityModel.ProductImageFile)
-
-                        </div>
-                    </div>
-                </div>
+<div class="panel panel-primary setup-content" id="myContractDetails">
+    <div class="basic-form">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">  Vendor Name <span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBox(myModelprefix + "VendorFacilityName", null, new { @id = "VendorFacilityName", @class = "form-control input-rounded" })
+                @Html.ValidationMessage(myModelprefix + "VendorFacilityName")
             </div>
-            <input type="button" name="Save" class="btn btn-default bluebutton pull-right" id="SaveProduct" style="border-radius:25px;width:110px;" value="Save Product" />
+
+            <label class="col-sm-2 col-form-label">Type<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.VendorFacilityModel.ProductServiceType, new List<SelectListItem>
+                             {
+                                 new SelectListItem() {Text = "--Select Type--", Value="0"},
+                                 new SelectListItem() {Text = "Product", Value="1"},
+                                 new SelectListItem() {Text = "Service", Value="2"},
+                             }, new { @id = "ProductServiceType" , @class = "form-control input-rounded"})
+                @Html.ValidationMessageFor(model => model.VendorFacilityModel.ProductServiceType)
+            </div>
+
         </div>
-    </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"> Product/Service Name <span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.VendorFacilityModel.ProductServiceName, null, new { @id = "ProductServiceName", @class = "form-control input-rounded" })
+                @Html.ValidationMessageFor(model => model.VendorFacilityModel.ProductServiceName)
+            </div>
+
+            <label class="col-sm-2 col-form-label"> $ Unit Cost<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.VendorFacilityModel.UnitCostForView, null, new { @id = "UnitCost", @class = "form-control input-rounded" })
+                @Html.ValidationMessageFor(model => model.VendorFacilityModel.UnitCostForView)
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">   % Tax  <span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.VendorFacilityModel.Tax, null, new { @id = "Tax" , @class = "form-control input-rounded"})
+                @Html.ValidationMessageFor(model => model.VendorFacilityModel.Tax)
+            </div>
+
+            <label class="col-sm-2 col-form-label">Costcode<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @if (ViewBag.CostCodeList != null)
+                {
+                    @Html.DropDownListFor(model => model.VendorFacilityModel.Costcode, new SelectList(ViewBag.CostCodeList, "CostCodeId", "CostCodeName"), "--Select Cost Code--", new { @id = "CostCode", @class = "form-control input-rounded" })
+                }
+                else
+                {<select id="CostCodeData" class = "form-control input-rounded"><option value="-1">@ViewBag.CostCodeList</option></select>}
+                @Html.ValidationMessageFor(model => model.VendorFacilityModel.Costcode)
+            </div>
+
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"> Product Image   <span class="req">*</span></label>
+            <div class="col-sm-4">
+                @if (Model.VendorFacilityModel != null)
+                {
+                    Image = Model.VendorFacilityModel.ProductImage + "ProductImage";
+                }
+                <input id="fileuploadProduct" type="file" style="margin-left:auto;" name="VendorFacilityModel.ProductImageFile" />
+                <img id='imgProductImage' name='imgVehicleImage' src="@Url.Content(Image)"
+                     class="img-rounded" alt="No Image " style="width:110px; height:110px; margin-left:55%;"> 
+                @Html.ValidationMessageFor(model => model.VendorFacilityModel.ProductImage)
+                @Html.ValidationMessageFor(model => model.VendorFacilityModel.ProductImageFile)
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-8"></div>
+                <div class="col-sm-4">
+                    <input type="button" name="Save" class="btn btn-primary pull-right" id="SaveProduct" style="border-radius:25px;width:110px;" value="Save Product" />
+                </div>
+
+
+
+            </div>
+        </div>
 </div>
+
+
+
+
+
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="margin-bottom:25px;">
     <div id="jqGrid_containerVendorFacility">
-        <table id="tbl_AllVendorFacilityDataList" border="0" cellpadding="0" cellspacing="0"></table>
+        <div class="card-header" style="height: 45px;">
+            <h4 class="card-title addWhite"><b>List of Facility</b></h4>
+        </div>
+        <table id="" border="0" cellpadding="0" cellspacing="0" class="table table-bordered table-striped verticle-middle table-responsive-sm">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Product/Service Name</th>
+                    <th>Unit Cost</th>
+                    <th>Tax</th>
+                    <th>Cost Code</th>
+                    <th>Product Image</th>
+                </tr>
+            </thead>
+            <tbody id="tbl_AllVendorFacilityDataList"></tbody>
+        </table>
         <div id="divAllVendorFacilityListPager"></div>
     </div>
     @Html.ValidationMessageFor(model => model.ProductList)
@@ -239,19 +247,20 @@
     $(document).ready(function () {
         var ProductListModel = [];
         var Productdata = [];
-        $('#lblProductServiceType').hide();
-        $('#lblCostCode').hide();
+        //$('#lblProductServiceType').hide();
+        //$('#lblCostCode').hide();
         $("#tbl_AllVendorFacilityDataList").css("display", "");
-        $("#ProductServiceType").live("click", function () {
-            $("#lblProductServiceType").addClass('active highlight');
-            $("#lblProductServiceType").show();
-        });
-        $("#CostCode").live("click", function () {
-            $("#lblCostCode").addClass('active highlight');
-            $("#lblCostCode").show();
-        });
+        //$("#ProductServiceType").on("click", function () {
+        //    $("#lblProductServiceType").addClass('active highlight');
+        //    $("#lblProductServiceType").show();
+        //});
+        //$("#CostCode").on("click", function () {
+        //    $("#lblCostCode").addClass('active highlight');
+        //    $("#lblCostCode").show();
+        //});
         var curProduct;
         $("#SaveProduct").click(function () {
+            
             if ($("#msform").valid()) {
                 var _ProductListModel = {};
                 var _Product = {};
@@ -269,7 +278,8 @@
                     alert('Select product image file');
                     return false;
                 }
-                else {
+                else
+                {
                     var ImageFile;
                     file_data = $("#fileuploadProduct").prop("files")[0]; // Getting the properties of file from file field
                     form_data = new FormData(); // Creating object of FormData class
@@ -283,9 +293,9 @@
                             contentType: false,
                             processData: false,
                             async: false,
-                            beforeSend: function () {
-                                new fn_showMaskloader('Please wait...');
-                            },
+                            //beforeSend: function () {
+                            //    new fn_showMaskloader('Please wait...');
+                            //},
                             data: form_data, // Setting the data attribute of ajax with file_data
                             type: 'post',
                             success: function (data) {
@@ -295,7 +305,7 @@
                             },
                             error: function (e) { alert("error:" + e); },
                             complete: function () {
-                                fn_hideMaskloader();
+                               // fn_hideMaskloader();
 
                             }
                         });
@@ -305,11 +315,12 @@
                         _ProductListModel.ProfileImageFile = JSON.parse(ImageFile);
                     }
                 }
-                var data = $('#tbl_AllVendorFacilityDataList').jqGrid('getGridParam', 'data');
-                if (data.findIndex(x=>x.ProductServiceName===_ProductListModel.ProductServiceName) >= 0) {
-                    alert('Product/Service Name already used');
-                    return false;
-                }
+                
+                //var data = $('#tbl_AllVendorFacilityDataList').jsGrid('getGridParam', 'data');
+                //if (data.findIndex(x=>x.ProductServiceName===_ProductListModel.ProductServiceName) >= 0) {
+                //    alert('Product/Service Name already used');
+                //    return false;
+                //}
                 ProductListModel.push(_ProductListModel);
                 _ProductListModel.CostCodeDisplay = $('#CostCode').find('option:selected').text();
                 var tt = _ProductListModel.ProfileImageFile;
@@ -317,11 +328,34 @@
                 _ProductListModel.ProfileImageFile = $_HostPrefix + "Content/eCountingDocs/ImageFacility/" + link;
                 Productdata.push(_ProductListModel);
                 $("#ProductList").val(JSON.stringify(ProductListModel));
-                jQuery("#tbl_AllVendorFacilityDataList").jqGrid('setGridParam',
-                {
-                    datatype: 'local',
-                    data: Productdata
-                }).trigger("reloadGrid");
+                
+                 $('#tbl_AllVendorFacilityDataList').html("");
+                var thHTML = '';
+                //thHTML += '<tr style="background-color:#0792bc;"><th>Cost Code</th><th>Facility Type</th><th>Description</th><th>Unit Price</th><th>Tax</th></tr>';
+                $('#tbl_AllVendorFacilityDataList').append(thHTML);
+                if (ProductListModel.length > 0) {
+                     
+                    for (i = 0; i < ProductListModel.length; i++) {
+                        var trHTML = '';
+                        
+                       var img1 = '<img style="width:100px!important" src="' + ProductListModel[i].ProfileImageFile + '"/>';
+                        trHTML +=
+                            '<tr><td>' + ProductListModel[i].ProductServiceType +
+                            '</td><td>' +ProductListModel[i].ProductServiceName +
+                            '</td><td>' + ProductListModel[i].UnitCostForView + 
+                            '</td><td>' + ProductListModel[i].Tax +
+                            '</td><td>' + ProductListModel[i].CostCodeDisplay +
+                            '</td><td>'+  img1 +
+                            '</td></tr>';
+
+                        $('#tbl_AllVendorFacilityDataList').append(trHTML);
+                    }
+                }
+                //jQuery("#tbl_AllVendorFacilityDataList").jsGrid('setGridParam',
+                //{
+                //    datatype: 'local',
+                //    data: Productdata
+                //}).trigger("reloadGrid");
             }
             else {
                 return false;

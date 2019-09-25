@@ -114,6 +114,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<LogPreBill> LogPreBills { get; set; }
         public virtual DbSet<NotificationDetail> NotificationDetails { get; set; }
         public virtual DbSet<LocationMaster> LocationMasters { get; set; }
+        public virtual DbSet<TaxDetail> TaxDetails { get; set; }
     
         public virtual ObjectResult<CommonQeriesByVijay_Result> CommonQeriesByVijay()
         {

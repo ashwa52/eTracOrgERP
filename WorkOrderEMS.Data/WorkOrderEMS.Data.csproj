@@ -1074,6 +1074,9 @@
     <Compile Include="EntityModel\ssp_UpdateWorkRequestStatus_Result1.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityModel\TaxDetail.cs">
+      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\TimeZone.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>

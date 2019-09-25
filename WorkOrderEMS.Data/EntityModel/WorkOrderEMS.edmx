@@ -1485,6 +1485,16 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Name="DeletedBy" Type="bigint" />
           <Property Name="DeletedOn" Type="datetime" />
         </EntityType>
+        <EntityType Name="TaxDetail">
+          <Key>
+            <PropertyRef Name="TXD_Id" />
+          </Key>
+          <Property Name="TXD_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TXD_CMP_Id" Type="bigint" Nullable="false" />
+          <Property Name="TXD_TaxIdNumber" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="TXD_TaxDocument" Type="nvarchar(max)" />
+          <Property Name="TXD_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
         <EntityType Name="TimeZones">
           <Key>
             <PropertyRef Name="TimezoneId" />
@@ -3888,16 +3898,12 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Parameter Name="CLM_LocationId" Type="bigint" Mode="In" />
           <Parameter Name="CLM_CCM_CostCode" Type="bigint" Mode="In" />
         </Function>
-        <Function Name="spGetDepartment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGeteFormTrack" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ApprovarId" Type="bigint" Mode="In" />
         </Function>
         <Function Name="spGetFormMaster" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetInsurance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CMP_Id" Type="bigint" Mode="In" />
-        </Function>
-        <Function Name="spGetJobTitle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="JBT_VST_Id" Type="bigint" Mode="In" />
         </Function>
         <Function Name="spGetLicense" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CMP_Id" Type="bigint" Mode="In" />
@@ -3991,10 +3997,6 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Parameter Name="CLM_CCM_CostCode" Type="bigint" Mode="In" />
         </Function>
         <Function Name="spGetTaxDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="spGetVehicleSeating" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
-        <Function Name="spGetVehicleSeatingPermission" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="VSP_VST_Id" Type="bigint" Mode="In" />
-        </Function>
         <Function Name="spGetVendorAllDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CMP_Id" Type="bigint" Mode="In" />
         </Function>
@@ -4307,12 +4309,6 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Parameter Name="LCCM_ApprovedBy" Type="bigint" Mode="In" />
           <Parameter Name="LCCM_IsActive" Type="char" Mode="In" />
         </Function>
-        <Function Name="spSetDepartment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="DPTAction" Type="char" Mode="In" />
-          <Parameter Name="DPT_Id" Type="bigint" Mode="In" />
-          <Parameter Name="DPT_Name" Type="varchar" Mode="In" />
-          <Parameter Name="DPT_IsActive" Type="char" Mode="In" />
-        </Function>
         <Function Name="spSeteformTrack" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EFTAction" Type="char" Mode="In" />
           <Parameter Name="EFT_Id" Type="bigint" Mode="In" />
@@ -4344,13 +4340,6 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Parameter Name="INS_ModifiedBy" Type="bigint" Mode="In" />
           <Parameter Name="INS_ApprovedBy" Type="bigint" Mode="In" />
           <Parameter Name="INS_IsActive" Type="char" Mode="In" />
-        </Function>
-        <Function Name="spSetJobTitle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="JBTAction" Type="char" Mode="In" />
-          <Parameter Name="JBT_Id" Type="bigint" Mode="In" />
-          <Parameter Name="JBT_JobTitle" Type="varchar" Mode="In" />
-          <Parameter Name="JBT_VST_Id" Type="bigint" Mode="In" />
-          <Parameter Name="JBT_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetLicense" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LNCAction" Type="char" Mode="In" />
@@ -4508,24 +4497,6 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Parameter Name="TXD_ModifiedBy" Type="bigint" Mode="In" />
           <Parameter Name="TXD_ApprovedBy" Type="bigint" Mode="In" />
           <Parameter Name="TXD_IsActive" Type="char" Mode="In" />
-        </Function>
-        <Function Name="spSetVehicleSeating" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="VSTAction" Type="char" Mode="In" />
-          <Parameter Name="VST_Id" Type="bigint" Mode="In" />
-          <Parameter Name="VST_Title" Type="varchar" Mode="In" />
-          <Parameter Name="VST_JobDescription" Type="varchar(max)" Mode="In" />
-          <Parameter Name="VST_RolesAndResponsiblities" Type="varchar(max)" Mode="In" />
-          <Parameter Name="VST_Level" Type="char" Mode="In" />
-          <Parameter Name="VST_ParentId" Type="bigint" Mode="In" />
-          <Parameter Name="VST_DPT_Id" Type="bigint" Mode="In" />
-          <Parameter Name="VST_IsActive" Type="char" Mode="In" />
-        </Function>
-        <Function Name="spSetVehicleSeating_DepartmentMapping" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="VDMAction" Type="char" Mode="In" />
-          <Parameter Name="VDM_Id" Type="bigint" Mode="In" />
-          <Parameter Name="VDM_VST_Id" Type="bigint" Mode="In" />
-          <Parameter Name="VDM_DPT_Id" Type="bigint" Mode="In" />
-          <Parameter Name="VDM_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetVendorType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="VDTAction" Type="char" Mode="In" />
@@ -4747,6 +4718,7 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <EntitySet Name="QuestionAnswer" EntityType="Self.QuestionAnswer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rule" EntityType="Self.Rule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ServiceMaster" EntityType="Self.ServiceMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TaxDetail" EntityType="Self.TaxDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TimeZones" EntityType="Self.TimeZones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TrackEmployeeStatus" EntityType="Self.TrackEmployeeStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRegistrations" EntityType="Self.UserRegistrations" Schema="dbo" store:Type="Tables" />
@@ -7331,6 +7303,7 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <FunctionImport Name="spGetVehicleSeatingPermission" ReturnType="Collection(workorderEMSModel.spGetVehicleSeatingPermission_Result)">
             <Parameter Name="VSP_VST_Id" Mode="In" Type="Int64" />
           </FunctionImport>
+          <EntitySet Name="TaxDetails" EntityType="workorderEMSModel.TaxDetail" />
           </EntityContainer>
         <ComplexType Name="CommonQeriesByVijay_Result">
           <Property Type="Int64" Name="VendorID" Nullable="false" />
@@ -14251,6 +14224,16 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Type="Int64" Name="VSM_UserTypeId" Nullable="true" />
           <Property Type="String" Name="CodeName" Nullable="true" MaxLength="200" />
         </ComplexType>
+        <EntityType Name="TaxDetail">
+          <Key>
+            <PropertyRef Name="TXD_Id" />
+          </Key>
+          <Property Name="TXD_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TXD_CMP_Id" Type="Int64" Nullable="false" />
+          <Property Name="TXD_TaxIdNumber" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TXD_TaxDocument" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="TXD_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -18208,46 +18191,6 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spSetDepartment" FunctionName="workorderEMSModel.Store.spSetDepartment" />
-          <FunctionImportMapping FunctionImportName="spGetDepartment" FunctionName="workorderEMSModel.Store.spGetDepartment">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="workorderEMSModel.spGetDepartment_Result">
-                <ScalarProperty Name="DPT_Id" ColumnName="DPT_Id" />
-                <ScalarProperty Name="DPT_Name" ColumnName="DPT_Name" />
-                <ScalarProperty Name="DPT_Date" ColumnName="DPT_Date" />
-                <ScalarProperty Name="DPT_IsActive" ColumnName="DPT_IsActive" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spSetVehicleSeating_DepartmentMapping" FunctionName="workorderEMSModel.Store.spSetVehicleSeating_DepartmentMapping" />
-          <FunctionImportMapping FunctionImportName="spSetVehicleSeating" FunctionName="workorderEMSModel.Store.spSetVehicleSeating" />
-          <FunctionImportMapping FunctionImportName="spGetVehicleSeating" FunctionName="workorderEMSModel.Store.spGetVehicleSeating">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="workorderEMSModel.spGetVehicleSeating_Result1">
-                <ScalarProperty Name="VST_Id" ColumnName="VST_Id" />
-                <ScalarProperty Name="VST_Title" ColumnName="VST_Title" />
-                <ScalarProperty Name="VST_JobDescription" ColumnName="VST_JobDescription" />
-                <ScalarProperty Name="VST_RolesAndResponsiblities" ColumnName="VST_RolesAndResponsiblities" />
-                <ScalarProperty Name="VST_Level" ColumnName="VST_Level" />
-                <ScalarProperty Name="VST_ParentId" ColumnName="VST_ParentId" />
-                <ScalarProperty Name="DPT_Id" ColumnName="DPT_Id" />
-                <ScalarProperty Name="DPT_Name" ColumnName="DPT_Name" />
-                <ScalarProperty Name="VST_IsActive" ColumnName="VST_IsActive" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spSetJobTitle" FunctionName="workorderEMSModel.Store.spSetJobTitle" />
-          <FunctionImportMapping FunctionImportName="spGetJobTitle" FunctionName="workorderEMSModel.Store.spGetJobTitle">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="workorderEMSModel.spGetJobTitle_Result">
-                <ScalarProperty Name="JBT_Id" ColumnName="JBT_Id" />
-                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
-                <ScalarProperty Name="JBT_VST_Id" ColumnName="JBT_VST_Id" />
-                <ScalarProperty Name="JBT_Date" ColumnName="JBT_Date" />
-                <ScalarProperty Name="JBT_IsActive" ColumnName="JBT_IsActive" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <EntitySetMapping Name="LocationMasters">
             <EntityTypeMapping TypeName="workorderEMSModel.LocationMaster">
               <MappingFragment StoreEntitySet="LocationMaster">
@@ -18292,21 +18235,17 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spGetVehicleSeatingPermission" FunctionName="workorderEMSModel.Store.spGetVehicleSeatingPermission">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="workorderEMSModel.spGetVehicleSeatingPermission_Result">
-                <ScalarProperty Name="VSM_Id" ColumnName="VSM_Id" />
-                <ScalarProperty Name="VSM_VST_Id" ColumnName="VSM_VST_Id" />
-                <ScalarProperty Name="VST_Title" ColumnName="VST_Title" />
-                <ScalarProperty Name="SMD_MDL_Id" ColumnName="SMD_MDL_Id" />
-                <ScalarProperty Name="SMD_Id" ColumnName="SMD_Id" />
-                <ScalarProperty Name="MDL_ModuleName" ColumnName="MDL_ModuleName" />
-                <ScalarProperty Name="SMD_SubModuleName" ColumnName="SMD_SubModuleName" />
-                <ScalarProperty Name="VSM_UserTypeId" ColumnName="VSM_UserTypeId" />
-                <ScalarProperty Name="CodeName" ColumnName="CodeName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+          <EntitySetMapping Name="TaxDetails">
+            <EntityTypeMapping TypeName="workorderEMSModel.TaxDetail">
+              <MappingFragment StoreEntitySet="TaxDetail">
+                <ScalarProperty Name="TXD_IsActive" ColumnName="TXD_IsActive" />
+                <ScalarProperty Name="TXD_TaxDocument" ColumnName="TXD_TaxDocument" />
+                <ScalarProperty Name="TXD_TaxIdNumber" ColumnName="TXD_TaxIdNumber" />
+                <ScalarProperty Name="TXD_CMP_Id" ColumnName="TXD_CMP_Id" />
+                <ScalarProperty Name="TXD_Id" ColumnName="TXD_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

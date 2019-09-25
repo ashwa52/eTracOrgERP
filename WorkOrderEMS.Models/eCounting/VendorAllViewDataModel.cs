@@ -76,6 +76,7 @@ namespace WorkOrderEMS.Models
         public string ExpirationDate { get; set; }
         public string BankLocation { get; set; }
         public string PolicyNumberAccount { get; set; }
+        public string Status { get; set; }
         //List of Vendor Facility
         public List<VendorFacilityModel> VendorFacilityModel { get; set; }
 

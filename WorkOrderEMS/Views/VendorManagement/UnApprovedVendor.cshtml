@@ -3,8 +3,9 @@
 @model WorkOrderEMS.Models.ApproveRejectVendorModel
 @{
     ViewBag.Title = "Un Approved company List";
-    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+    //Layout = "~/Views/Shared/_ManagerLayout.cshtml";
 
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
     long locationId = 0;
     long userType = 0;
     WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
@@ -21,31 +22,97 @@
     var $_userTypeId = '@userType';
     var $_VendorStatus = "false";
     </script>
-    @*<script src="~/GridListing/JqGridScript/CompanyList/ListAllCompany.js"></script>*@
-    <script type="text/javascript">
-    $(window).bind('resize', function () {
-        var width = $('#jqGrid_containerUnApproved').width();
-        $('#tbl_AllUnApprovedList').setGridWidth(width);
-    });
-    </script>
-    <script src="~/GridListing/JqGridScript/UnApprovedVendorList.js"></script>
-}
 
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div id="jqGrid_containerUnApproved">
-        <table id="tbl_AllUnApprovedList" border="0" cellpadding="0" cellspacing="0"></table>
-        <div id="divAllUnApprovedListPager"></div>
+    @*<script src="~/GridListing/JqGridScript/CompanyList/ListAllCompany.js"></script>*@
+    @*<script type="text/javascript">
+            $(window).bind('resize', function () {
+                var width = $('#jqGrid_containerUnApproved').width();
+                $('#tbl_AllUnApprovedList').setGridWidth(width);
+            });
+        </script>*@
+
+
+}
+<style>
+     label .req {
+        margin: 2px;
+        color: #ed2f35;
+    }
+      .form-control {
+        border: 1px solid #a0b3b0 !important;
+    }
+    .jsgrid-grid-body {
+        height: 100% !important;
+    }
+</style>
+<div class="content-body" style="min-height: 920px;">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3 aos-init aos-animate" data-aos="fade-up">
+            <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
+                <div class="welcome-text">
+                    <br /> <br />
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row justify-content-center">
+
+            <div class="col-lg-6">
+                <a href="@Url.Action("UnApprovedVendor", "VendorManagement")">
+                    <div class="pricing_table_content mt-5" style="background-color: #529F9D;color:white;">
+                       <p style="margin-top:-20px;font-size:20px;"><b> </b></p> 
+                        <div class="package" style="margin-top:-30px;"><i class="mdi mdi-cart" style="color:yellow;font-size:30px;margin-left: -10px;"></i>&nbsp;&nbsp;&nbsp;<b>SetUp Vendor</b></div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-6">
+                <a href="@Url.Action("CompanyList", "VendorManagement")" data-oldDash="Yes">
+                    <div class="pricing_table_content mt-5" style="background-color: #3F8ADA;color:white;">
+                       <p style="margin-top:-20px;font-size:20px;"><b> </b></p> 
+                        <div class="package" style="margin-top:-30px;"><i class="mdi mdi-account-check" style="color:white;font-size:30px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Vendor List</b></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <br>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card aos-init" data-aos="fade-up">
+                    <div class="card-header" style="height: 45px;">
+                        <div class="card-header headerSize" style="height:45px; padding:0;">
+                            <a href="javascript:void(0)"><span><i id="AddCompany" class="mdi mdi-plus" style="color:white;font-size:50px;"></i></span></a>
+                             <div class="basic-form">
+                                    <div class="form-group">
+                                        <input id="SearchText" type="text" style="margin-top:15px;" class="form-control input-rounded" placeholder="Vendor Name" onkeydown="doSearch()">
+                                    </div>
+                                </div> 
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="jsGrid-basic" class="jsgrid" style="position: relative; height: 400px; width: 100%;">
+                             
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-<br />
-@Html.HiddenFor(model => model.LLCM_Id, new { @Id = "LLCM_Id" })
+
+
 <div class="modal bs-example-modal-lg fade preview" id="myModalForGetUnApprovedVendorDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg ">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">X</span></button>
-                <h4 class="modal-title" id="myModalLabel">Vendor Details</h4>
+                <h5 class="modal-title" id="myModalLabel">Vendor Details</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
             </div>
+
             <div class="modal-body">
                 <div id="divVendorDetailPreview" class="">
                     <div class="row">
@@ -108,9 +175,11 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="row">
-                        <div style="background-color:#0792bc;height:2%;">
-                            <center><p style="color:white;"><b>Vendor Insurance & License Details</b></p></center>
+                        <div style="background-color:#0792bc;width:94%">
+
+                            <center><p style="color:white;margin:8px 0!important;"><b>Vendor Insurance & License Details</b></p></center>
                         </div>
                     </div>
                     <br />
@@ -155,8 +224,8 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div style="background-color:#0792bc;height:2%;">
-                            <center><p style="color:white;"><b>Vendor Contract Details</b></p></center>
+                        <div style="background-color:#0792bc;width:94%">
+                            <center><p style="color:white;margin:8px 0!important;"><b>Vendor Contract Details</b></p></center>
                         </div>
                     </div>
                     <br />
@@ -284,8 +353,8 @@
                     </div>
 
                     <div class="row">
-                        <div style="background-color:#0792bc;height:2%;">
-                            <center><p style="color:white;margin-top:4px;"><b>Vendor Account Details</b></p></center>
+                        <div style="background-color:#0792bc;width:94%">
+                            <center><p style="color:white;margin:8px 0!important;"><b>Vendor Account Details</b></p></center>
                         </div>
                     </div>
                     <br />
@@ -360,19 +429,68 @@
                     <br />
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <table id="UnVendorFacility_table" class="table" cellpadding="1" cellspacing="1" border="1"></table>
+                            <table id="UnVendorFacility_table" class="table" cellpadding="1" cellspacing="1" border="1" style="width:94%"></table>
                         </div>
                     </div>
                 </div>
-            </div><br /><br />
-            <div class="panel-footer">
-                <div class="text-right">
-                    <button type="button" class="btn btn-default bluebutton text-right" style="border-radius:25px;width:90px;" onclick="return AppproveVendor();" id="btnApproveData">Approve</button>
-                    <button class="btn btn-danger" onclick="return RejectVendor();" style="border-radius:25px;width:90px;" id="btnRejectPO">Reject</button>
-                    <button data-dismiss="modal" class="btn btn-default" style="border-radius:25px;width:90px;" id="btnCancel">Cancel</button>
-                </div>
             </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary bluebutton text-right" style="border-radius:25px;width:90px;" onclick="return AppproveVendor();" id="btnApproveData">Approve</button>
+                <button class="btn btn-danger" onclick="return RejectVendor();" style="border-radius:25px;width:90px;" id="btnRejectPO">Reject</button>
+                <button data-dismiss="modal" class="btn btn-secondary" style="border-radius:25px;width:90px;" id="btnCancel">Cancel</button>
+
+            </div>
+
         </div>
     </div>
 </div>
-<script src="~/Scripts/Search/Searching.js"></script>
+
+<div class="modal bs-example-modal-lg fade preview" id="myModelApproveRejectVendor" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Reject Vendor</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Comment<span class="req">*</span></label>
+                    <div class="col-sm-4">
+                        @Html.TextBoxFor(model => model.Comment, new { @class = "form-control", @id = "CommentVendor", @placeholder = "Comment", @style = "border-radios:0px;" })
+                       @*<span id="spn_valcomment" style="color:red"></span>*@
+                        @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary  bluebutton" onclick="RejectVendorAfterComment();" style="border-radius:25px;width:90px;" data-dismiss="modal">Ok</button>
+                <button data-dismiss="modal" class="btn btn-secondary" style="border-radius:25px;width:90px;" id="btnCancel">Cancel</button>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+ 
+
+<script src="~/GridListing/JqGridScript/UnApprovedVendorList.js"></script>
+@*<div class="content-body" style="min-height: 920px;">Cost Code
+        <div class="container-fluid">
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div id="jqGrid_containerUnApproved">
+                    <table id="tbl_AllUnApprovedList" border="0" cellpadding="0" cellspacing="0"></table>
+                    <div id="divAllUnApprovedListPager"></div>
+                </div>
+            </div>
+            <br />
+            @Html.HiddenFor(model => model.LLCM_Id, new { @Id = "LLCM_Id" })
+
+            <script src="~/Scripts/Search/Searching.js"></script>
+        </div>
+    </div>*@

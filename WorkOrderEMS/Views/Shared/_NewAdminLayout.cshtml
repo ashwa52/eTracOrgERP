@@ -5,6 +5,7 @@
     string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
     long loginUserType = 0;
     WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string AuthorizeUrl = WorkOrderEMS.Controllers.QuickBookData.HomeController.authorizeUrl2;
     long viewallloc = (Convert.ToInt64(Session["eTrac_SelectedDasboardLocationID"]));
     string imgPath = (Convert.ToString(Session["eTrac_ProfileImage"]));
     long locationId = 0;
@@ -47,12 +48,7 @@
     }
 }
 
-@section scripts{
-<script type="text/javascript">
-    var $_hostingPrefix = '@hostingPrefix';
-   
-</script>
-}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -65,14 +61,57 @@
 
     <link rel="icon" href="~/Images/logo.png" type="image/gif" sizes="16x16">
     <script src="~/Scripts/jquery-3.2.1.min.js"></script>
-  
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet" />
     <link href="~/Content/NewAdminContent/VENDOR/owl-carousel/css/owl.theme.default.min.css" rel="stylesheet" />
     <link href="~/Content/NewAdminContent/VENDOR/owl-carousel/css/owl.carousel.min.css" rel="stylesheet" />
     <link href="~/Content/NewAdminContent/VENDOR/jqvmap/css/jqvmap.min.css" rel="stylesheet" />
     <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
     <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
     <link href="~/Content/NewAdminContent/CSS/style.css" rel="stylesheet" />
+    
+    <link href="@Url.Content("~/Scripts/BootStrap-Multiselect/CSS/bootstrap-multiselect.css")" rel="stylesheet" />
+    <!-- Page-Level Plugin CSS - Dashboard -->
+    @*<link href="@Url.Content("~/Content/common/plugins/morris/morris-0.4.3.min.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/Content/common/plugins/timeline/timeline.css")" rel="stylesheet" />*@
+    <!-- SB Admin CSS - Include with every page -->
+    @*<link href="@Url.Content("~/Content/themes/base/jquery.ui.theme.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/Content/themes/base/jquery.ui.core.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/Content/themes/base/jquery.ui.all.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/Content/JqGridCSS/ui.jqgrid.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/Content/JqGridCSS/DilogPopup.css")" rel="stylesheet" />*@
+    <link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/Dashboard/plugins/daterangepicker/daterangepicker-bs3.css")" />
+    <!-- Bootstrap Color Picker -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/Dashboard/plugins/colorpicker/bootstrap-colorpicker.min.css")" />
+    <!-- Bootstrap time Picker -->
+    <link rel="stylesheet" href="@Url.Content("~/Content/Dashboard/plugins/timepicker/bootstrap-timepicker.min.css")" />
     @RenderSection("scripts", required: false)
+    <!--File Upload-->
+    <script type="text/javascript" src="@Url.Content("~/Scripts/1.9.1-js/jquery-ui-1.9.2.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/FileUpload/jquery.fileupload.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/FileUpload/jquery.fileupload-ui.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/FileUpload/jquery.iframe-transport.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.maskedinput-1.3.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/BootStrap-Multiselect/JS/bootstrap-multiselect.js")"></script>
+    <link href="~/Content/toastr.css" rel="stylesheet" />
+
+    <script type="text/javascript">
+    var $_hostingPrefix = '@hostingPrefix';
+        var $_HostPrefix = '@hostingPrefix';
+        $_AuthorizeURL = '@AuthorizeUrl';
+        $_IsConnectd = '@ViewBag.IsConnected';
+        var $_locationId = '@locationId';
+    </script>
+    <style>
+        .field-validation-error {
+            color: #b94a48;
+            font-size: 12px;
+        }
+    </style>
 </head>
 
 <body>
@@ -89,8 +128,8 @@
     <div id="main-wrapper">
 
         <!--**********************************
-        Nav header start
-    ***********************************-->
+            Nav header start
+        ***********************************-->
         <div class="nav-header">
             @if (GloblaAdminUser || ITAdminUser)
         {
@@ -632,10 +671,33 @@ else
             </div>
         </div>
         <!--**********************************
-        Right sidebar end
-    ***********************************-->
+            Right sidebar end
+        ***********************************-->
         <!--endRemoveIf(production)-->
     </div>
+    <!--Added By Ashwajit Bansod to open modal to connect quickbook-->
+    <div class="modal fade" id="ConnectToQuickBookModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="ConnectToQuickBookModalLabel">Connect to QuickBook</h4>
+
+                </div>
+                <div class="modal-body ">
+                    <div>
+                        <label>
+                            Please click on "Connect" to connect to QuickBook online.
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" id="ConnectToQuickBook" class="btn btn-primary">Connect</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End Modal connect to quickbook-->
     <!--**********************************
         Main wrapper end
     ***********************************-->
@@ -672,6 +734,31 @@ else
     <script src="~/Content/NewAdminContent/VENDOR/jquery.counterup/jquery.counterup.min.js"></script>
     <script src="~/Scripts/NewAdminJS/dashboard/dashboard-1.js"></script>
 
+
+    <script type="text/javascript" src="@Url.Content("~/Scripts/BootStrap-Multiselect/JS/bootstrap-multiselect.js")"></script>
+    @*<script type="text/javascript" src="@Url.Content("~/Scripts/BootStrap-Multiselect/JS/bootstrap-tooltip.js")"></script>*@
+    <script type="text/javascript" src="@Url.Content("~/Scripts/BootStrap-Multiselect/JS/bootstrap-confirmation.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/BootStrap-Multiselect/JS/bootbox.js")"></script>
+    <script src="@Url.Content("~/Content/Dashboard/bootstrap/js/jquery-ui.min.js")"></script>
+
+    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+    <script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.js")"></script>
+    <!-- Select2 -->
+    <script src="@Url.Content("~/Content/Dashboard/plugins/select2/select2.full.min.js")"></script>
+    <!-- InputMask -->
+    <script src="@Url.Content("~/Content/Dashboard/plugins/input-mask/jquery.inputmask.js")"></script>
+    <script src="@Url.Content("~/Content/Dashboard/plugins/input-mask/jquery.inputmask.date.extensions.js")"></script>
+    <script src="@Url.Content("~/Content/Dashboard/plugins/input-mask/jquery.inputmask.extensions.js")"></script>
+    <script src="~/Scripts/toastr.js"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+    <!-- daterangepicker -->
+
+    <script src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js")"></script>
+    <script src="@Url.Content("~/Content/Dashboard/plugins/daterangepicker/daterangepicker.js")"></script>
+    <!-- bootstrap color picker -->
+    <script src="@Url.Content("~/Content/Dashboard/plugins/colorpicker/bootstrap-colorpicker.min.js")"></script>
+    <!-- bootstrap time picker -->
+    <script src="@Url.Content("~/Content/Dashboard/plugins/timepicker/bootstrap-timepicker.min.js")"></script>
 </body>
 </html>
 
@@ -690,3 +777,73 @@ else
         });             
     });
 </script>
+
+<script>
+        $(document).ready(function () {
+                var i = 0;
+                $(".marqueeElement").last().addClass("last");
+                $(".marqueeElement").each(function () {
+                    var $this = $(this);
+                    $this.css("top", i);
+                    i += $this.height();
+                    doScroll($this);
+                });
+            });
+        //Open Modal to connect quickbook
+
+            if ($_AuthorizeURL == null || $_AuthorizeURL == "")
+            {
+                $("#ConnectToQuickBookModal").modal('show');
+            }
+            else {
+                @*if (@ViewBag.QuickBookMessage != null) {*@
+
+                    toastr.success(@ViewBag.QuickBookMessage)
+                    
+            }
+            $('#ConnectToQuickBook').click(function () {
+                $("#ConnectToQuickBookModal").modal('hide');
+                window.location.href = $_HostPrefix + "Home/Index/";
+            })
+            $('#showUnclosedWO').click(function () {
+                $("#myUnclosedWorkOrder").modal('show');
+                //var _ListModel = {};
+                //var Modeldata = [];
+                @*$.ajax({
+                    type: "GET",
+                    url: '@Url.Action("UnclosedWorkOrder", "WorkOrder")',
+                    //data: { LocationID: LocationID, LocationName: LocationName },
+                    //beforeSend: function () {
+                    //    new fn_showMaskloader('please wait...');
+                    //},
+                    success: function (Data) {
+                        debugger
+                        $("#myUnclosedWorkOrder").modal('show');
+
+                        Modeldata.push(Data.rows)
+
+                        jQuery("#tbl_unClosedWOList").jqGrid('setGridParam',
+                                 {
+                                     datatype: 'local',
+                                     data: Modeldata
+                                 }).trigger('reloadgrid');
+
+                    },
+                    error: function () {
+                    },
+                })*@
+
+
+            })
+
+            function doScroll($ele) {
+                var top = parseInt($ele.css("top"));
+                if (top < -80) { //bit arbitrary!
+                    var $lastEle = $(".last");
+                    $lastEle.removeClass("last");
+                    $ele.addClass("last");
+                    var top = (parseInt($lastEle.css("top")) + $lastEle.height());
+                    $ele.css("top", top);
+                }
+                $ele.animate({ top: (parseInt(top) - 60) }, 2000, 'linear', function () { doScroll($(this)) });
+            }</script>

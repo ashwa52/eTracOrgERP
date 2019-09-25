@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Mvc;
 
 namespace WorkOrderEMS.Models
 {
@@ -37,9 +38,10 @@ namespace WorkOrderEMS.Models
         [Required(ErrorMessage = "Insurance is required")]
         [RegularExpression("^[a-zA-Z0-9 ,]+$", ErrorMessage = "Special characters are not allowed.")]
         public string InsuranceCarries { get; set; }
-
+       
         [Required(ErrorMessage = "Policy Number is required")]
         [RegularExpression("^[a-zA-Z0-9 -]+$", ErrorMessage = "Special characters are not allowed.")]
+        [Remote("CheckInsPolicyNumberIsExists", "VendorManagement", HttpMethod = "POST", ErrorMessage = "Policy Number already in used.")]
         public string PolicyNumber { get; set; }
 
         [Required(ErrorMessage = "Insurance Expiration is required")]

@@ -15,100 +15,74 @@ var ListAccountDetails = 'VendorManagement/ListAccountOfVendor/';
 var LocationId; var VendorId;
 
 $(function () {
-    $("#tbl_AllCompanyDataList").jqGrid({
-        url: $_HostPrefix + Companyurl + '?LocationId=' + $_locationId,
-        datatype: 'json',
-        type: 'GET',
-        height: 400,
-        width: 700,
-        autowidth: true,
-        colNames: ['Vendor Id', 'Vendor Name', 'Address', 'Phone Number', 'Point Of Contact', 'Vendor Type', 'Status', 'Account', 'Insurance', 'Licesne', 'Actions'],
-        colModel: [{ name: 'VendorId', width: 30, sortable: true, hidden: true },
-        { name: 'CompanyNameLegal', width: 40, sortable: false },
-        { name: 'Address1', width: 20, sortable: true },
-        { name: 'Phone1', width: 40, sortable: false },
-        { name: 'PointOfContact', width: 20, sortable: true },
-        { name: 'VendorTypeData', width: 20, sortable: true },
-        { name: 'Status', width: 20, sortable: true, hidden: true },
-        { name: 'AccountStatus', width: 20, sortable: true, hidden: true },
-        { name: 'InsuranceStatus', width: 20, sortable: true, hidden: true },
-        { name: 'LicenseStatus', width: 20, sortable: true, hidden: true },
-        { name: 'act', index: 'act', width: 30, sortable: false }],
-        rownum: 10,
-        rowList: [10, 20, 30],
-        scrollOffset: 0,
-        pager: '#divAllCompanyDataListPager',
-        sortname: 'VendorId',
-        viewrecords: true,
-        gridview: true,
-        loadonce: false,
-        multiSort: true,
-        rownumbers: true,
-        emptyrecords: "No records to display",
-        shrinkToFit: true,
-        sortorder: 'asc',
-        gridComplete: function () {
-            var ids = jQuery("#tbl_AllCompanyDataList").jqGrid('getDataIDs');
-            jQuery('#tbl_AllCompanyDataList').addClass('order-table');
-            for (var i = 0; i < ids.length; i++) {
-                var cl = ids[i];
-                be = '<a href="javascript:void(0)" class="EditRecord" eid="' + cl + '" title="edit" style=" float: left;margin-right: 10px;cursor:pointer;"><span class="icon-pencil fa-2x texthover-greenlight"></span><span class="tooltips">Edit</span></a>';
-                ad = '<a href="javascript:void(0)" class="EditRecord" id="addAccountdetails" aid="' + cl + '" title="edit" style=" float: left;margin-right: 10px;cursor:pointer;"><span class="fa fa-university fa-2x texthover-greenlight"></span><span class="tooltips">List Account</span></a>';
-                fcl = '<a href="javascript:void(0)" class="Assign" id="FacilityListVendorData" title="Add Facility" fid="' + cl + '" style=" float: left;margin-right: 10px;cursor:pointer;"><span class="fa fa-list fa-2x texthover-bluelight"></span><span class="tooltips">Facility List</span></a>';
-                vi = '<a href="javascript:void(0)" class="Assign" id="ViewVendorData" title="view" vid="' + cl + '" style=" float: left;margin-right: 10px;cursor:pointer;"><span class="fa fa-list fa-2x texthover-bluelight"></span><span class="tooltips">View</span></a>';
-                ai = '<a href="javascript:void(0)" id="AddInsurance" class="Assign" InsuraceVendorId="' + cl + '" title="assign" style=" float: left;margin-right: 3px;cursor:pointer;"><span class="fa fa-medkit fa-2x texthover-yellowlight"></span><span class="tooltips">List Insurance/License</span></a>';
-                jQuery("#tbl_AllCompanyDataList").jqGrid('setRowData', ids[i], { act: be + vi + ad + ai + fcl }); ///+ qrc 
+    var act;
+    $("#tbl_AllCompanyDataList").jsGrid({
+        height: "170%",
+        width: "100%",
+        filtering: false,
+        editing: false,
+        inserting: false,
+        sorting: false,
+        paging: true,
+        autoload: true,
+        pageSize: 10,
+        pageButtonCount: 5,
 
-            }
-            var data = jQuery("#tbl_AllCompanyDataList").getRowData();
-            var ids = jQuery("#tbl_AllCompanyDataList").jqGrid('getDataIDs');
-            var rows = this.rows, c = rows.length;
-            for (var j = 0; j < ids.length; j++) {
-                var tt = ids[j];
-                if (data[j].AccountStatus == "W") {
-                    var AccId = $('tr[id^="' + tt + '"] td').find('a').eq(3).attr('aid');;
-                    //$('tr[id^="' + tt + '"]').css("background-color", "#74ED33");
-                    // //$("tr #" + tt).css("background-color", "#FB7869");
-                    // $('tr[id^="' + tt + '"]').removeClass("ui-widget-content jqgrow ui-row-ltr ui-state-hover ui-state-highlight");
-                    //$('tr[id^="' + tt + '"]').addClass("jqgrow");
-                    $('a[aid^="' + tt + '"]').addClass("BlinkData");
-
-                }
-                else if (data[j].InsuranceStatus == "W") {
-                    var licenseId = $('tr[id^="' + tt + '"] td').find('a').eq(3).attr('InsuraceVendorId');;
-                    //$('tr[id^="' + tt + '"]').css("background-color", "#74ED33");
-                    ////$("tr #" + tt).css("background-color", "#FB7869");
-                    //$('tr[id^="' + tt + '"]').removeClass("ui-widget-content jqgrow ui-row-ltr ui-state-hover ui-state-highlight");
-                    //$('tr[id^="' + tt + '"]').addClass("jqgrow");
-                    $('a[InsuraceVendorId^="' + licenseId + '"]').addClass("BlinkData");
-                }
-                else if (data[j].LicenseStatus == "W") {
-
-                    var licenseId = $('tr[id^="' + tt + '"] td').find('a').eq(3).attr('InsuraceVendorId');;
-                    $('tr[id^="' + tt + '"]').css("background-color", "#74ED33");
-                    //$("tr #" + tt).css("background-color", "#FB7869");
-                    $('tr[id^="' + tt + '"]').removeClass("ui-widget-content jqgrow ui-row-ltr ui-state-hover ui-state-highlight");
-                    $('tr[id^="' + tt + '"]').addClass("jqgrow");
-                    $('a[InsuraceVendorId^="' + licenseId + '"]').addClass("BlinkData");
-                }
-            }
-            if ($("#tbl_AllCompanyDataList").getGridParam("records") <= 20) {
-                $("#divAllCompanyDataListPager").hide();
-            }
-            else {
-                $("#divAllCompanyDataListPager").show();
-            }
-            if ($('#tbl_AllCompanyDataList').getGridParam('records') === 0) {
-                $('#tbl_AllCompanyDataList tbody').append("<div style='padding: 6px; font-size: 12px;'>No records found.</div>");
+        controller: {
+            loadData: function (filter) {
+                return $.ajax({
+                    type: "GET",
+                    url: $_HostPrefix + Companyurl + '?LocationId=' + $_locationId,
+                    data: filter,
+                    dataType: "json"
+                });
             }
         },
-        caption: ' <div><a href="javascript:void(0)"></a><input type="text" class="inputSearch light-table-filter" id="searchtext" placeholder="Vendor Name"  data-table="order-table" /></span></div>' //<span class="header_search"><input id="SearchText" class="inputSearch" placeholder="Serach By PO Number" style="width: 260px;" onkeydown="doSearch(arguments[0]||event)" type="text">
 
+        fields: [
+            //{ name: "VendorId", title: "Vendor Id", type: "text", width: 50 ,hidden:true },
+            { name: "CompanyNameLegal", title: "Vendor Name", type: "text", width: 50 },
+            { name: "Address1", title: "Address", type: "text", width: 50 },
+            { name: "Phone1", title: "Phone Number", type: "text", width: 50 },
+            { name: "PointOfContact", title: "Point Of Contact", type: "text", width: 50 },
+            { name: "VendorTypeData", title: "Vendor Type", type: "text", width: 50 },
+            //{ name: "Status", title: "Status", type: "text", width: 50, hidden: true},
+            {
+                name: "act", items: act, title: "Action", width: 50, css: "text-center", itemTemplate: function (value, item)
+                { 
+                    var $iconPencilForEdit = $("<i>").attr({ class: "fa fa-pencil" }).attr({ style:"color:green;font-size: 22px;" });
+                    var $iconPencilForAccount = $("<i>").attr({ class: "fa fa-university" }).attr({ style:"color:#ee82ee;font-size: 22px;" });
+                    var $iconPencilForFacility = $("<i>").attr({ class: "fa fa-list" }).attr({ style:"color:#3cb371;font-size: 22px;" });
+                    var $iconPencilForView = $("<i>").attr({ class: "fa fa-list" }).attr({ style:"color:bluelight;font-size: 22px;" });
+                    var $iconPencilForInsurance = $("<i>").attr({ class: "fa fa-medkit" }).attr({ style:"color:#ffa500;font-size: 22px;" });
+
+                    var $customEditButton = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "Edit" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {                   
+                        window.location.href = $_HostPrefix + editCompany + '?id=' + item.id;
+                    }).append($iconPencilForEdit);
+
+                    var $customButtonForAccount = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "Account Details" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                        window.location.href = $_HostPrefix + ListAccountDetails + '?id=' + item.id;
+                    }).append($iconPencilForAccount);
+
+                    var $customButtonForFacility = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "Facility Details" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                        window.location.href = $_HostPrefix + addFacilityDetails + '?id=' + item.id;
+                    }).append($iconPencilForFacility);
+
+                    var $customButtonForView = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "View " }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                        ViewVendorDetails();
+                    }).append($iconPencilForView);
+
+                    var $customButtonForInsurance = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "Insurance Details" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                        window.location.href = $_HostPrefix + GridListLicense + '?Vendorid=' + item.id + "&VendorStatus=" + $_VendorStatus;;
+                    }).append($iconPencilForInsurance);
+
+                    return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton).append($customButtonForAccount).append($customButtonForFacility).append($customButtonForView).append($customButtonForInsurance);
+                  }
+            }
+        ]
     });
-    if ($("#tbl_AllCompanyDataList").getGridParam("records") > 20) {
-        jQuery("#tbl_AllCompanyDataList").jqGrid('navGrid', '#divAllCompanyDataListPager', { edit: false, add: false, del: false, search: false, edittext: "Edit" });
-    }
 });
+
 var timeoutHnd;
 var flAuto = true;
 //function doSearch(ev) {
@@ -121,43 +95,44 @@ var flAuto = true;
 //    var txtSearch = jQuery("#SearchText").val();
 //    jQuery("#tbl_AllCompanyDataList").jqGrid('setGridParam', { url: $_HostPrefix + Companyurl + "?&LocationId=" + $_locationId, page: 1 }).trigger("reloadGrid");
 //}
-$(".EditRecord").live("click", function (event) {
-    var id = $(this).attr("eid");
-    window.location.href = $_HostPrefix + editCompany + '?id=' + id;
+$(".EditRecord").on("click", function (event) {
+   
 });
-$("#FacilityListVendorData").live("click", function (event) {
+$("#FacilityListVendorData").on("click", function (event) {
     var fid = $(this).attr("fid");
-    window.location.href = $_HostPrefix + addFacilityDetails + '?id=' + fid;
+    window.location.href = $_HostPrefix + addFacilityDetails + '?id=' + fid ;
 });
-$("#addAccountdetails").live("click", function (event) {
+$("#addAccountdetails").on("click", function (event) {
     var id = $(this).attr("aid");
     window.location.href = $_HostPrefix + ListAccountDetails + '?VendorId=' + id;
 });
 
-$("#AddInsurance").live("click", function (event) {
+$("#AddInsurance").on("click", function (event) {
     var id = $(this).attr("InsuraceVendorId");
     //window.location.href = $_HostPrefix + GridListLicense + '?Vendorid=' + id, '?VendorStatus=' + $_VendorStatus;
     window.location.href = $_HostPrefix + GridListLicense + '?Vendorid=' + id + "&VendorStatus=" + $_VendorStatus;
     //window.location.href = $_HostPrefix + addInsuranceAndLicenseDetails + '?id=' + id;
 });
 
-$("#AddCompany").live("click", function (event) {
+$("#AddCompany").on("click", function (event) {
     window.location.href = $_HostPrefix + AddCompany;
 });
 
 
-$("#ViewVendorData").live("click", function (event) {
+function ViewVendorDetails(event) {
     VendorId = $(this).attr("vid");
     var rowData = jQuery("#tbl_AllCompanyDataList").getRowData(VendorId);
     //var VendorName = rowData['CompanyNameLegal'];
     //$("#lblVendorName").html(VendorName);
     // $("#labellWorkRequestStatus").show();
     //$("#lblWorkRequestStatus").show();
-    if (rowData.Status == "Y") {
+    if (rowData.Status == "Y")
+    {
         $("#btnApproveData").hide();
         $('#btnRejectPO').hide();
     }
-    else {
+    else
+    {
         $("#btnApproveData").show();
         $('#btnRejectPO').show();
     }
@@ -188,11 +163,7 @@ $("#ViewVendorData").live("click", function (event) {
             $("#lblAccountNumber").html(result.AccountNumber); $("#lblIFSCCode").html(result.IFSCCode);
             $("#lblSwiftOICCode").html(result.SwiftOICCode); $("#lblCardNumber").html(result.CardNumber);
             $("#lblCardHolderName").html(result.CardHolderName); $("#lblExpirationDate").html(result.CardHolderName);
-            $("#lblPolicyNumber").html(result.PolicyNumberAccount);
-            if (VendorId)
-                $('a#vendorEditBtn').attr('href', $_HostPrefix + editCompany + '?id=' + VendorId);
-            else
-                $('a#vendorEditBtn').removeAttr('href');
+            $("#lblPolicyNumber").html(result.PolicyNumberAccount); 
             if (result.LocationAssignedModel != null) {
                 if (result.LocationAssignedModel.length > 0) {
                     var arr = [];
@@ -207,8 +178,8 @@ $("#ViewVendorData").live("click", function (event) {
                     //$('#LLCM_Id').html(llcm);
                 }
             }
-            $('#VendorFacility_table').html('');
             if (result.VendorFacilityModel != null) {
+                $('#records_table').html('');
                 var arrData = [];
                 var thHTML = '';
                 thHTML += '<tr style="background-color:#0792bc;"><th>Cost Code</th><th>Facility Type</th><th>Description</th><th>Unit Price</th><th>Tax</th></tr>';
@@ -217,22 +188,23 @@ $("#ViewVendorData").live("click", function (event) {
                     for (i = 0; i < result.VendorFacilityModel.length; i++) {
                         var trHTML = '';
                         trHTML +=
-                            '<tr><td>' + result.VendorFacilityModel[i].Costcode +
-                            '</td><td>' + result.VendorFacilityModel[i].ProductServiceType +
-                            '</td><td>' + result.VendorFacilityModel[i].ProductServiceName +
-                            '</td><td>' + result.VendorFacilityModel[i].UnitCost +
-                            '</td><td>' + result.VendorFacilityModel[i].Tax +
-                            '</td></tr>'; 
+                           '<tr><td>' + result.VendorFacilityModel[i].Costcode +
+                           '</td><td>' + result.VendorFacilityModel[i].ProductServiceType +
+                           '</td><td>' + result.VendorFacilityModel[i].ProductServiceName +
+                           '</td><td>' + result.VendorFacilityModel[i].UnitCost +
+                           '</td><td>' + result.VendorFacilityModel[i].Tax +
+                           '</td></tr>';
+
                         $('#VendorFacility_table').append(trHTML);
                     }
                 }
             }
         }
     });
-    // $("#lblPOStatus").html(POStatus);
+   // $("#lblPOStatus").html(POStatus);
     $('.modal-title').text("Vendor All Details");
     $("#myModalForGetVendorDetails").modal('show');
-});
+};
 
 function RejectVendor() {
     $("#myModelApproveRejectVendor").modal('show');
@@ -241,13 +213,14 @@ function AppproveVendor() {
     callAjaxVendor();
 }
 function RejectVendorAfterComment() {
-    if ($("#msform").valid()) {
+    if ($("#msform").valid())
+    {
         callAjaxVendor();
     }
     else {
         return false;
     }
-
+    
 }
 function callAjaxVendor() {
     var objData = new Object();

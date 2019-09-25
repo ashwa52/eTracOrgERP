@@ -39,7 +39,10 @@
             $('.CardSelectHideShow').hide()
             $('.wiredSelectHideShow').hide();
         }
-        if ($("#msform").valid()) {
+        
+        if ($("#msform").valid()) 
+        {
+         
             if ($('#VendorFacilityInformation').is(":visible") && $('#ProductList').val() === '') {
                 alert('Add atleast one product/service');
                 return false;
@@ -51,7 +54,7 @@
             next_fs = $(this).parent().next();
 
             //activate next step on progressbar using the index of next_fs
-            $("#progressbar li").eq($("fieldset").index(next_fs)).addClass("active");
+            $("#progressbar div").eq($("fieldset").index(next_fs)).addClass("active");
             //CopyLocationDetails();
             //show the next fieldset
             next_fs.show();
@@ -90,7 +93,7 @@
         previous_fs = $(this).parent().prev();
 
         //de-activate current step on progressbar
-        $("#progressbar li").eq($("fieldset").index(current_fs)).removeClass("active");
+        $("#progressbar div").eq($("fieldset").index(current_fs)).removeClass("active");
 
 
 

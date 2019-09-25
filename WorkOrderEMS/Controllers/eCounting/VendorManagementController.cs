@@ -290,7 +290,7 @@ namespace WorkOrderEMS.Controllers
                     {
                         ViewBag.Message = CommonMessage.UpdateSuccessMessage();
                         ViewBag.AlertMessageClass = ObjAlertMessageClass.Success;
-                        return View("CompanyList");
+                        return View("UnApprovedVendor");
                     }
                     else
                     {
@@ -306,6 +306,20 @@ namespace WorkOrderEMS.Controllers
             }
             return View("CompanyList");
         }
+
+        #region "Ajay Kumar"
+        public JsonResult IsTaxNumberIsExists(string TaxNo)
+        {
+            bool result = _IVendorManagement.TaxNumberIsExists(TaxNo);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult CheckInsPolicyNumberIsExists(VendorSetupManagementModel Obj)
+        { 
+            bool result = _IVendorManagement.InsPolicyNumberIsExists(Obj.VendorInsuranceModel.PolicyNumber);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
 
         /// <summary>
         /// Created By : Ashwajit Bansod
@@ -381,40 +395,16 @@ namespace WorkOrderEMS.Controllers
                     LocationId = ObjLoginModel.LocationID;
                 }
                 UserId = ObjLoginModel.UserId;
-            }
-            JQGridResults result = new JQGridResults();
-            List<JQGridRow> rowss = new List<JQGridRow>();
-            sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
-            sidx = string.IsNullOrEmpty(sidx) ? "UserEmail" : sidx;
+            } 
             txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
             try
             {
-                var AllCompanyList = _IVendorManagement.GetAllCompanyDataList(LocationId, rows, TotalRecords, sidx, sord);
-                foreach (var company in AllCompanyList.rows)
-                {
-                    JQGridRow row = new JQGridRow();
-                    row.id = Cryptography.GetEncryptedData(Convert.ToString(company.VendorId), true);
-                    row.cell = new string[10];
-                    row.cell[0] = company.VendorId.ToString();
-                    row.cell[1] = company.CompanyNameLegal.ToString();
-                    row.cell[2] = company.Address1.ToString();
-                    row.cell[3] = company.Phone1.ToString();
-                    row.cell[4] = company.PointOfContact.ToString();
-                    row.cell[5] = company.VendorTypeData.ToString();
-                    row.cell[6] = company.Status.ToString();
-                    row.cell[7] = company.AccountStatus;
-                    row.cell[8] = company.InsuranceStatus;
-                    row.cell[9] = company.LicenseStatus;
-                    rowss.Add(row);
-                }
-                result.rows = rowss.ToArray();
-                result.page = Convert.ToInt32(page);
-                result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
-                result.records = Convert.ToInt32(TotalRecords.Value);
+                var AllCompanyList = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord);
+                return Json(AllCompanyList.ToList(), JsonRequestBehavior.AllowGet); 
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
-            return Json(result, JsonRequestBehavior.AllowGet);
+             
         }
 
         /// <summary>
@@ -445,8 +435,7 @@ namespace WorkOrderEMS.Controllers
                     UserId = ObjLoginModel.UserId;
                 }
                 if (!string.IsNullOrEmpty(VendorId))
-                {
-                    VendorId = Cryptography.GetDecryptedData(VendorId, true);
+                { 
                     long.TryParse(VendorId, out Vendor);
                 }
                 if (Vendor > 0)
@@ -488,7 +477,7 @@ namespace WorkOrderEMS.Controllers
                 }
                 if (!string.IsNullOrEmpty(objVendorApproveRejectModel.VendorId))
                 {
-                    objVendorApproveRejectModel.VendorId = Cryptography.GetDecryptedData(objVendorApproveRejectModel.VendorId, true);
+                   // objVendorApproveRejectModel.VendorId = Cryptography.GetDecryptedData(objVendorApproveRejectModel.VendorId, true);
                     long.TryParse(objVendorApproveRejectModel.VendorId, out VendorId);
                 }
                 objVendorApproveRejectModel.UserId = ObjLoginModel.UserId;
@@ -1444,50 +1433,28 @@ namespace WorkOrderEMS.Controllers
         /// <param name="UserType"></param>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult GetAllUnApprovedVendorList(string _search, long? LocationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
+        public JsonResult GetAllUnApprovedVendorList(string _search,  long? LocationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
         {
             eTracLoginModel ObjLoginModel = null;
             long UserId = 0;
             LocationId = 0;
             if (Session != null && Session["eTrac"] != null)
             {
-                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-                //if (LocationId == null)
-                //{
-                //    LocationId = ObjLoginModel.LocationID;
-                //}
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]); 
                 UserId = ObjLoginModel.UserId;
-            }
-            JQGridResults result = new JQGridResults();
-            List<JQGridRow> rowss = new List<JQGridRow>();
-            sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
-            sidx = string.IsNullOrEmpty(sidx) ? "UserEmail" : sidx;
+            } 
             txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
             try
             {
-                var AllCompanyList = _IVendorManagement.GetAllCompanyDataList(LocationId, rows, TotalRecords, sidx, sord);
-                foreach (var company in AllCompanyList.rows)
-                {
-                    JQGridRow row = new JQGridRow();
-                    row.id = Cryptography.GetEncryptedData(Convert.ToString(company.VendorId), true);
-                    row.cell = new string[7];
-                    row.cell[0] = company.VendorId.ToString();
-                    row.cell[1] = company.CompanyNameLegal.ToString();
-                    row.cell[2] = company.Address1.ToString();
-                    row.cell[3] = company.Phone1.ToString();
-                    row.cell[4] = company.PointOfContact.ToString();
-                    row.cell[5] = company.VendorTypeData.ToString();
-                    row.cell[6] = company.Status.ToString();
-                    rowss.Add(row);
-                }
-                result.rows = rowss.ToArray();
-                result.page = Convert.ToInt32(page);
-                result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
-                result.records = Convert.ToInt32(TotalRecords.Value);
+                var AllCompanyList = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord);
+                return Json(AllCompanyList.ToList(), JsonRequestBehavior.AllowGet);
+                
             }
             catch (Exception ex)
-            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
-            return Json(result, JsonRequestBehavior.AllowGet);
+            {
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+           
         }
 
         /// <summary>

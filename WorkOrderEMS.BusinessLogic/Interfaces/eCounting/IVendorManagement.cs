@@ -46,5 +46,10 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
         bool SaveFacilityDetails(VendorFacilityModel obj);
 
         long GetVendorId(string CompanyName);
+
+       
+        bool TaxNumberIsExists(string taxNumber);
+        bool InsPolicyNumberIsExists(string InsPolicyNumber);
+          IList<VendorSetupManagementModel> GetAllCompanyDataList1(long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
     }
 }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Mvc;
 using WorkOrderEMS.Helper;
 
 namespace WorkOrderEMS.Models
@@ -14,6 +15,7 @@ namespace WorkOrderEMS.Models
     {
         public string Status { get; set; }
         public long? VendorId { get; set; }
+        public string id { get; set; }
         public long UserId { get; set; }
         public string VendorTypeData { get; set; }
         public long QuickBookVendorId { get; set; }
@@ -74,6 +76,7 @@ namespace WorkOrderEMS.Models
 
         [Required]
         [RegularExpression("^[a-zA-Z0-9, -@]+$", ErrorMessage = "Special characters are not allowed.")]
+        [Remote("IsTaxNumberIsExists", "VendorManagement", ErrorMessage = "Tax No already in used.")]
         public string TaxNo { get; set; }
         //public string Address2Country { get; set; }
 
@@ -83,6 +86,7 @@ namespace WorkOrderEMS.Models
         [RegularExpression("^[0-9]+$", ErrorMessage = "Special characters or letters are not allowed.")]
         public string Phone1 { get; set; }
         [StringLength(12, ErrorMessage = "Invalid Phone2", MinimumLength = 8)]
+        [RegularExpression("^[0-9]+$", ErrorMessage = "Special characters or letters are not allowed.")]
         public string Phone2 { get; set; }
         [Required]
         [EmailAddress(ErrorMessage = "Invalid Email Address")]

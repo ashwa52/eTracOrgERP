@@ -246,6 +246,7 @@
         <AssociationConnector Association="workorderEMSModel.FK_QRCMaster_LocationMaster" />
         <AssociationConnector Association="workorderEMSModel.FK_QRCScanLog_LocationMaster" />
         <AssociationConnector Association="workorderEMSModel.FK_TrackEmployeeStatus_LocationMaster" />
+        <EntityTypeShape EntityType="workorderEMSModel.TaxDetail" Width="1.5" PointX="3.375" PointY="17.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

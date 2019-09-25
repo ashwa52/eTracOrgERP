@@ -494,7 +494,66 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 throw;
             }
         }
+        public IList<VendorSetupManagementModel> GetAllCompanyDataList1(long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
+        {
+            var Results = new List<VendorSetupManagementModel>();
+            try
+            {
+                var objCompanyListDetails = new CompanyListDetails();
 
+                int pageindex = Convert.ToInt32(pageIndex) - 1;
+                int pageSize = Convert.ToInt32(numberOfRows);
+                if (LocationId > 0)
+                {
+                    Results = _workorderems.spGetCompanyList(LocationId)  // .CompanyFacilityMappings.Where(x => x.CFM_CMP_Id == VendorId)
+                   .Select(a => new VendorSetupManagementModel()
+                   {
+                       id=Cryptography.GetEncryptedData(Convert.ToString(a.CMP_Id),true),
+                       VendorId = a.CMP_Id,
+                       CompanyNameLegal = a.CMP_NameLegal,
+                       Address1 = a.Address1,
+                       Phone1 = a.COD_Phone1,
+                       PointOfContact = a.COD_PointOfContact,
+                       VendorTypeData = a.VDT_VendorType,
+                       Status = a.Status,
+                       AccountStatus = a.AccountStatus,
+                       InsuranceStatus = a.InsuranceStatus,
+                      LicenseStatus = a.InsuranceStatus, 
+                     
+                   }).Where(x => x.Status == "Y").OrderByDescending(x => x.VendorId).ToList();
+                }
+                else
+                {
+                    Results = _workorderems.spGetCompanyList(LocationId)  // .CompanyFacilityMappings.Where(x => x.CFM_CMP_Id == VendorId)
+                    .Select(a => new VendorSetupManagementModel()
+                    {
+                        VendorId = a.CMP_Id,
+                        CompanyNameLegal = a.CMP_NameLegal,
+                        Address1 = a.Address1,
+                        Phone1 = a.COD_Phone1,
+                        PointOfContact = a.COD_PointOfContact,
+                        VendorTypeData = a.VDT_VendorType,
+                        Status = a.Status == "W" ? "Waiting" : a.Status == "N" ? "Rejected":"Y",
+                    // = a.Status == "W" ? "Waiting" : "Rejected",
+                        AccountStatus = a.AccountStatus,
+                        InsuranceStatus = a.InsuranceStatus,
+                        LicenseStatus = a.InsuranceStatus,
+                    }).Where(x => x.Status != "Y").OrderByDescending(x => x.VendorId).ToList();
+                }
+                //int totRecords = Results.Count();
+                //var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
+                //objCompanyListDetails.pageindex = pageindex;
+                //objCompanyListDetails.total = totalPages;
+                //objCompanyListDetails.records = totRecords;
+                //objCompanyListDetails.rows = Results.ToList();
+                return Results.ToList();
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public CompanyListDetails GetAllCompanyDataList(long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)", "Exception While Getting List of all company.", null);
+                throw;
+            }
+        }
         /// <summary>
         /// Created By : Ashwajit Bansod
         /// Created Date : 15-OCT-2018
@@ -1649,5 +1708,37 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
             return true;
         }
+
+        #region "Ajay Kumar"
+        /// <summary>
+        /// Created By : Ajay Kumar
+        /// Created Date : 19-Sep-2019
+        /// Crated For : To check duplicate TXD_TaxIdNumber  for vendor
+        /// </summary>
+        /// <param name="taxNumber"></param>
+        /// <returns></returns>
+        public bool TaxNumberIsExists(string taxNumber)
+        {
+            bool result = false;
+            var status = _workorderems.TaxDetails.Any(u => u.TXD_TaxIdNumber.ToLower() == taxNumber.Trim().ToLower());
+            result = status == true ? result = false : result = true;
+            return result;
+        }
+
+        /// <summary>
+        /// Created By : Ajay Kumar
+        /// Created Date : 19-Sep-2019
+        /// Crated For : To check duplicate INS_PolicyNumber  for vendor
+        /// </summary>
+        /// <param name="InsPolicyNumber"></param>
+        /// <returns></returns>
+        public bool InsPolicyNumberIsExists(string InsPolicyNumber)
+        {
+            bool result = false;
+            var status = _workorderems.Insurances.Any(u => u.INS_PolicyNumber.ToLower() == InsPolicyNumber.Trim().ToLower());
+            result = status == true ? result = false : result = true;
+            return result;
+        }
+        #endregion
     }
 }
