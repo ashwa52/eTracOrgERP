@@ -117,7 +117,6 @@ namespace WorkOrderEMS.Controllers.QRCSetup
         }
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
         public ActionResult Index(QRCModel ObjQRCModel)
         {
             DARModel objDAR;
