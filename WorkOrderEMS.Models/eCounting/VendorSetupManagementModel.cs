@@ -38,7 +38,7 @@ namespace WorkOrderEMS.Models
         [RegularExpression("^[a-zA-Z0-9, -]+$", ErrorMessage = "Special characters are not allowed.")]
         public string JobTile { get; set; }
 
-        
+
         //public string SSN { get; set; }
 
         [Required]
@@ -79,17 +79,22 @@ namespace WorkOrderEMS.Models
 
         [Required]
         [DisplayName("Phone1")]
+        [StringLength(12, ErrorMessage = "Invalid Phone1", MinimumLength = 8)]
         [RegularExpression("^[0-9]+$", ErrorMessage = "Special characters or letters are not allowed.")]
         public string Phone1 { get; set; }
+        [StringLength(12, ErrorMessage = "Invalid Phone2", MinimumLength = 8)]
         public string Phone2 { get; set; }
+        [Required]
+        [EmailAddress(ErrorMessage = "Invalid Email Address")]
         public string VendorEmail { get; set; }
+        [Url(ErrorMessage = "Invalid Website URL")]
         public string Website { get; set; }
 
         [Required]
         [DisplayName("Vendor Type")]
         public long? VendorType { get; set; }
 
-       // public int PaymentTerm { get; set; }
+        // public int PaymentTerm { get; set; }
         //public string GracePeriod { get; set; }
         public bool IsAddress2Same { get; set; }
         public string SelectedLcation { get; set; }
@@ -105,6 +110,7 @@ namespace WorkOrderEMS.Models
         public long PointOfContactId { get; set; }
         public int? CostDuringPeriod { get; set; }
         public string InvoicingFrequency { get; set; }
+        [Required(ErrorMessage ="Please add atleat one product/service")]
         public string ProductList { get; set; }
         public Result Result { get; set; }
         public long? CompanyType { get; set; }
@@ -113,6 +119,7 @@ namespace WorkOrderEMS.Models
         public string AccountStatus { get; set; }
         public string InsuranceStatus { get; set; }
         public string LicenseStatus { get; set; }
+        public long? COD_ID { get; set; }
 
         public VendorInsuranceModel VendorInsuranceModel { get; set; }
         public VendorFacilityModel VendorFacilityModel { get; set; }

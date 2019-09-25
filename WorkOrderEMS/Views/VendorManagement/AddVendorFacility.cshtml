@@ -1,6 +1,6 @@
 ﻿@model WorkOrderEMS.Models.VendorFacilityModel
 @{
-    ViewBag.Title = "Add Company Facility for company :"+ ViewBag.VendorName;
+    ViewBag.Title = "Add Company Facility for company :" + ViewBag.VendorName;
     Layout = "~/Views/Shared/_ManagerLayout.cshtml";
 
     long locationId = 0;
@@ -23,14 +23,14 @@
     var $_VendorStatus = "false";
     </script>
     <script type="text/javascript">
-    $(window).bind('resize', function () {
-        var width = $('#jqGrid_containerAddVendorFacility').width();
-        $('#tbl_AllFacilityDetailsList').setGridWidth(width);
-    });
+        $(window).bind('resize', function () {
+            var width = $('#jqGrid_containerAddVendorFacility').width();
+            $('#tbl_AllFacilityDetailsList').setGridWidth(width);
+        });
     </script>
     <script src="~/GridListing/JqGridScript/CompanyList/ListCompanyProduct.js"></script>
 }
-    <link href="~/Content/eFleetVehicle/eFleetstyle.css" rel="stylesheet" />
+<link href="~/Content/eFleetVehicle/eFleetstyle.css" rel="stylesheet" />
 @Html.AntiForgeryToken()
 <div class="col-lg-12 col-md-12  col-sm-12  col-xs-12">
     <div class="panel panel-default">
@@ -48,9 +48,9 @@
                             <div class="top-row">
                                 <div class="field-wrap">
                                     <label id="lblVendorName">
-                                        Vendor Name 
+                                        Vendor Name
                                     </label>
-                                    @Html.TextBoxFor(model => model.VendorName, new { @id = "VendorName", @readonly = "readonly",@style= "background-color:#EBEBE4" })
+                                    @Html.TextBoxFor(model => model.VendorName, new { @id = "VendorName", @readonly = "readonly", @style = "background-color:#EBEBE4" })
                                 </div>
                             </div>
                             <br /><br /><br />
@@ -79,16 +79,16 @@
                             <div class="top-row">
                                 <div class="field-wrap">
                                     <label>
-                                      $  Unit Cost<span class="req">*</span>
+                                        $  Unit Cost<span class="req">*</span>
                                     </label>
-                                    @Html.TextBoxFor(model => model.UnitCost, null, new { @id = "UnitCost"})
+                                    @Html.TextBoxFor(model => model.UnitCost, null, new { @id = "UnitCost" })
                                     @Html.ValidationMessageFor(model => model.UnitCost)
                                 </div>
                                 <div class="field-wrap">
                                     <label>
-                                       % Tax  <span class="req">*</span>
+                                        % Tax  <span class="req">*</span>
                                     </label>
-                                    @Html.TextBoxFor(model => model.Tax, null, new { @id = "Tax"})
+                                    @Html.TextBoxFor(model => model.Tax, null, new { @id = "Tax" })
                                     @Html.ValidationMessageFor(model => model.Tax)
                                 </div>
                             </div>
@@ -110,14 +110,17 @@
                                     <label>
                                         Product Image  <span class="req">*</span>
                                     </label>
+                                    @Html.ValidationMessageFor(model => model.ProductImageFile)
                                     @if (Model.ProductImage != null)
                                     {
                                         Image = Model.ProductImage + "ProductImage";
                                     }
                                     <img id='imgFacilityProductImage' name='imgVehicleImage' src="@Url.Content(Image)"
                                          class="img-rounded" alt="No Image " style="width:110px; height:110px; margin-left:55%;">
-                                    <input id="fileuploadAdddProduct" type="file" style="margin-left:auto;" name="VendorFacilityModel.ProductImageFile" />
-                                    @Html.ValidationMessageFor(model => model.ProductImage)
+                                    @Html.TextBoxFor(m => m.ProductImageFile, new { id = "fileuploadAdddProduct", type = "file", @style = "margin-left:auto;" })
+                                    @*<input id="fileuploadAdddProduct" type="file"  name="VendorFacilityModel.ProductImageFile" />*@
+
+
                                 </div>
                             </div>
                         </div>
@@ -136,40 +139,36 @@
         <div id="divAllFacilityDetailsListPager"></div>
     </div>
 </div>
+
 <script src="~/Scripts/eFleetVehicle/reg.js"></script>
 <script>
     $(document).ready(function () {
+        $('#msform').submit(function () { 
+           if(!$('#msform').valid())
+                return false;
+        });
         $('#VendorName').val($_VendorName);
         $('#lblVendorName').addClass('active highlight');
-        
+
     })
     $(function () {
         $("#fileuploadAdddProduct").change(function () {
-            var FType = ["jpg", "JPG", "PNG", "png", "JPEG", "jpeg", "gif", "GIF"]
-            if (this.files && this.files[0]) {
-                var LoadImage = false;
-                var FileExtension = this.value.split(".")[1];
-                for (var v = 0; v < FType.length; v++) {
-                    if (FType[v] == FileExtension) {
-                        LoadImage = true;
-                    }
-                }
-                if (LoadImage == true) {
-                    var reader = new FileReader();
-                    reader.onload = function (e) {
-                        $('#imgFacilityProductImage')
-                            .attr('src', e.target.result)
-                            .width(150)
-                            .height(150);
-
-                    };
-                    reader.readAsDataURL(this.files[0]);
-                } else {
-                    $(this).val("");
-                    alert("Please select image to upload!")
-                    return false;
-                }
+            var allowedExtensions = /(\.jpg|\.png|\.jpeg|\.gif)$/i;
+            if (!allowedExtensions.exec($(this).val().toLowerCase())) {
+                alert("Invalid file type");
+                $("#imgFacilityProductImage").attr("src",'@Url.Content(Image)');
+                $(this).val("");
+                return false;
             }
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#imgFacilityProductImage')
+                    .attr('src', e.target.result)
+                    .width(150)
+                    .height(150);
+
+            };
+            reader.readAsDataURL(this.files[0]);
         });
     });
 </script>

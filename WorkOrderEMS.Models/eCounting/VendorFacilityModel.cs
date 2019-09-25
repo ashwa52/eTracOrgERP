@@ -24,8 +24,9 @@ namespace WorkOrderEMS.Models
         [Required(ErrorMessage = "Select product/service is required")]
         public string ProductServiceType { get; set; }
 
-        
+
         //[RegularExpression("^[0-9 ,]+$", ErrorMessage = "Special characters or letters are not allowed.")]
+        [Required(ErrorMessage = "UnitCost is required")]
         public decimal? UnitCost { get; set; }
 
         [Required(ErrorMessage = "Unit cost is required")]

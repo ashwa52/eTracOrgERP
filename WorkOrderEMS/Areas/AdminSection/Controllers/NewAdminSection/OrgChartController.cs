@@ -55,10 +55,5 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
             }
             return this.Json(lstOfTree, JsonRequestBehavior.AllowGet);
         }
-
-        public JsonResult SaveAccessPermission()
-        {
-            return null;
-        }
     }
 }

@@ -224,32 +224,16 @@
 </div>
 
 <script>
-    $(document).ready(function () {
-        $(function () {
-            $("#fileuploadAccount").change(function () {
-                $("#dvAccountPreview").html("");
-                var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.pdf|.doc|.txt)$/;
-                if (regex.test($(this).val().toLowerCase())) {
-                    if ($.browser.msie && parseFloat(jQuery.browser.version) <= 9.0) {
-                        $("#dvAccountPreview").show();
-                        $("#dvAccountPreview")[0].filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = $(this).val();
-                    }
-                    else {
-                        if (typeof (FileReader) != "undefined") {
-                            $("#dvAccountPreview").show();
-                            // $("#dvContractPreview").append("<img />");
-                            var reader = new FileReader();
-                            reader.onload = function (e) {
-                                $("#dvAccountPreview").attr("src", e.target.result);
-                            }
-                            reader.readAsDataURL($(this)[0].files[0]);
-                        } else {
-                            alert("This browser does not support FileReader.");
-                        }
-                    }
-                }
-            })
-        })
+    $(document).ready(function () { 
+        $("#fileuploadAccount").change(function () {
+            $("#dvAccountPreview").html("");
+            var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
+            if (!allowedExtensions.exec($(this).val().toLowerCase())) {
+                alert("Invalid file type");
+                $(this).val("");
+                return false;
+            }
+        }) 
         $('#ExpirationDate').datepicker({
             format: "yyyy/mm/dd",
             startDate: new Date()

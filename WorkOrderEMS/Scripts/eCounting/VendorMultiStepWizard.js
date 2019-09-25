@@ -3,9 +3,10 @@
     var current_fs, next_fs, previous_fs; //fieldsets
     var left, opacity, scale; //fieldset properties which we will animate
     var animating; //flag to prevent quick multi-click glitches
-
+    $(document).on('click', '.field-wrap label', function () {
+        $(this).next('input[type="text"]').focus();
+    })
     $(".next").click(function () {
-        debugger
         var VendorTypeValue = $('#VendorType').val();
         var vendorName = $('#CompanyName').val(); $('#SecondaryCompany').val(vendorName);
         var PaymentMode = $('#PrimaryPaymentMode').val();
@@ -17,8 +18,7 @@
         $('#SecondaryCompany,#VendorFacilityName').attr('readonly', true);
         $('#VendorTypeContract,#PaymentMode').attr('disabled', 'disabled');
         $('#VendorFacilityName').val(vendorName);
-        if (VendorTypeValue == 1 || VendorTypeValue == 2 || VendorTypeValue == 3)
-        {
+        if (VendorTypeValue == 1 || VendorTypeValue == 2 || VendorTypeValue == 3) {
             $('.ShowHideIfVendor123').show();
             $('.hidelatefine').show();
         }
@@ -26,7 +26,7 @@
             $('.ShowHideIfVendor123').hide();
             $('.hidelatefine').hide();
         }
-            
+
         if (PaymentMode == 1 || PaymentModeText == "Card") {
             $('.CardSelectHideShow').show()
             $('.wiredSelectHideShow').hide();
@@ -39,7 +39,11 @@
             $('.CardSelectHideShow').hide()
             $('.wiredSelectHideShow').hide();
         }
-         if ($("#msform").valid()) {
+        if ($("#msform").valid()) {
+            if ($('#VendorFacilityInformation').is(":visible") && $('#ProductList').val() === '') {
+                alert('Add atleast one product/service');
+                return false;
+            }
             if (animating) return false;
             animating = true;
 
@@ -75,7 +79,7 @@
             });
         }
     });
-    
+
 
 
     $(".previous").click(function () {
@@ -122,7 +126,7 @@
 
     $('#msform').find('input, textarea, select').on('keyup blur focus', function (e) {
         var $this = $(this),
-              label = $this.prev('label');
+            label = $this.prev('label');
         if (e.type === 'keyup') {
             if ($this.val() === '') {
                 label.removeClass('active highlight');

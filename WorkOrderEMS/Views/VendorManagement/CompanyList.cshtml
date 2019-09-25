@@ -20,16 +20,16 @@
             var $_VendorStatus = "true";
     </script>
     <script src="~/GridListing/JqGridScript/CompanyList/ListAllCompany.js"></script>
-    
+
     <script type="text/javascript">
-    $(window).bind('resize', function () {
-        var width = $('#jqGrid_containerCompany').width();
-        $('#divAllCompanyDataListPager').setGridWidth(width);
-    });
+        $(window).bind('resize', function () {
+            var width = $('#jqGrid_containerCompany').width();
+            $('#divAllCompanyDataListPager').setGridWidth(width);
+        });
 
     </script>
 }
-    <link href="~/Content/Blink.css" rel="stylesheet" />
+<link href="~/Content/Blink.css" rel="stylesheet" />
 
 <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
     <div id="jqGrid_containerCompany">
@@ -368,8 +368,9 @@
             </div><br /><br />
             <div class="panel-footer">
                 <div class="text-right">
-                    <button type="button" class="btn btn-default bluebutton text-right" style="border-radius:25px;width:90px;" onclick="return AppproveVendor();" id="btnApproveData">Approve</button>
-                    <button class="btn btn-danger" onclick="return RejectVendor();" style="border-radius:25px;width:90px;" id="btnRejectPO">Reject</button>
+                    @*<button type="button" class="btn btn-default bluebutton text-right" style="border-radius:25px;width:90px;" onclick="return AppproveVendor();" id="btnApproveData">Approve</button>
+                        <button class="btn btn-danger" onclick="return RejectVendor();" style="border-radius:25px;width:90px;" id="btnRejectPO">Reject</button>*@
+                    <a id="vendorEditBtn" class="btn btn-info" style="border-radius:25px;width:90px;" >Edit</a>
                     <button data-dismiss="modal" class="btn btn-default" style="border-radius:25px;width:90px;" id="btnCancel">Cancel</button>
                 </div>
             </div>
@@ -380,26 +381,28 @@
 <div id="myModelApproveRejectVendor" class="modal fade bs-example-modal-md">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Reject Vendor</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form">
-                    <div class="row">
-                        <div class="form-group">
-                            @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-lg-2 star" })
-                            <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
-                                @Html.TextBoxFor(model => model.Comment, new { @class = "form-control", @id = "CommentVendor", @placeholder = "Comment", @style = "border-radios:0px;" })
-                                @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+            <form id="msform">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">Reject Vendor</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form">
+                        <div class="row">
+                            <div class="form-group">
+                                @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-lg-2 star" })
+                                <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
+                                    @Html.TextBoxFor(model => model.Comment, new { @class = "form-control", @id = "CommentVendor", @placeholder = "Comment", @style = "border-radios:0px;" })
+                                    @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-default bluebutton" onclick="RejectVendorAfterComment();" style="border-radius:25px;width:90px;" data-dismiss="modal">Ok</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default bluebutton" onclick="RejectVendorAfterComment();" style="border-radius:25px;width:90px;">Ok</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

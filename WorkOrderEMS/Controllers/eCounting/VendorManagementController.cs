@@ -36,7 +36,7 @@ namespace WorkOrderEMS.Controllers
         private string DocFacilityPath = ConfigurationManager.AppSettings["VendorImageFacility"];
         private string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
 
-        public VendorManagementController( ICommonMethod _ICommonMethod, IGlobalAdmin _IGlobalAdmin, IVendorManagement _IVendorManagement, IBillDataManager _IBillDataManager)
+        public VendorManagementController(ICommonMethod _ICommonMethod, IGlobalAdmin _IGlobalAdmin, IVendorManagement _IVendorManagement, IBillDataManager _IBillDataManager)
         {
             this._IGlobalAdmin = _IGlobalAdmin;
             this._ICommonMethod = _ICommonMethod;
@@ -65,7 +65,7 @@ namespace WorkOrderEMS.Controllers
                 ViewBag.LocationListData = _ICommonMethod.ListAllLocation();
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ViewBag.Message = ex.Message; ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger; return View("Error");
             }
@@ -131,136 +131,136 @@ namespace WorkOrderEMS.Controllers
                     {
                         //if (Session["realmId"] != null)
                         //{
-                            string realmId = CallbackController.RealMId.ToString(); // Session["realmId"].ToString();
-                            try
+                        string realmId = CallbackController.RealMId.ToString(); // Session["realmId"].ToString();
+                        try
+                        {
+                            string AccessToken = CallbackController.AccessToken.ToString();// Session["access_token"].ToString();
+                            var principal = User as ClaimsPrincipal;
+                            OAuth2RequestValidator oauthValidator = new OAuth2RequestValidator(AccessToken);
+
+                            // Create a ServiceContext with Auth tokens and realmId
+                            ServiceContext serviceContext = new ServiceContext(realmId, IntuitServicesType.QBO, oauthValidator);
+                            serviceContext.IppConfiguration.MinorVersion.Qbo = "23";
+                            DataService commonServiceQBO = new DataService(serviceContext);
+                            // Create a QuickBooks QueryService using ServiceContext
+
+                            PhysicalAddress vendorAddr = new PhysicalAddress();
+                            EmailAddress vendoremail = new EmailAddress();
+                            TelephoneNumber mobileNumber = new TelephoneNumber();
+                            WebSiteAddress websiteaddr = new WebSiteAddress();
+                            ModificationMetaData metaData = new ModificationMetaData();
+                            Vendor vendor = new Vendor();
+
+                            QueryService<Account> querySvcAccount = new QueryService<Account>(serviceContext);
+                            //List<Account> accountData customerQueryService.ExecuteIdsQuery(SELECT FROM Customer MaxResults 1000)
+                            List<Account> accountData = querySvcAccount.ExecuteIdsQuery("SELECT * FROM Account MaxResults 1000").ToList();
+                            // vendor.PrimaryPhone.FreeFormNumber =
+
+                            //Mandatory Fields
+                            vendor.GivenName = Obj.PointOfContact;
+                            vendor.DisplayName = Obj.PointOfContact;
+                            if (Obj.VendorAccountDetailsModel.AccountNumber != null)
                             {
-                                string AccessToken = CallbackController.AccessToken.ToString();// Session["access_token"].ToString();
-                                var principal = User as ClaimsPrincipal;
-                                OAuth2RequestValidator oauthValidator = new OAuth2RequestValidator(AccessToken);
+                                vendor.AcctNum = Obj.VendorAccountDetailsModel.AccountNumber;
+                            }
+                            vendor.CompanyName = Obj.CompanyNameLegal;
+                            vendor.Active = true;
+                            vendor.PrintOnCheckName = Obj.CompanyNameLegal;
+                            vendor.TaxIdentifier = Obj.TaxNo;
+                            vendor.Suffix = Obj.JobTile;
 
-                                // Create a ServiceContext with Auth tokens and realmId
-                                ServiceContext serviceContext = new ServiceContext(realmId, IntuitServicesType.QBO, oauthValidator);
-                                serviceContext.IppConfiguration.MinorVersion.Qbo = "23";
-                                DataService commonServiceQBO = new DataService(serviceContext);
-                                // Create a QuickBooks QueryService using ServiceContext
+                            //vendor.ShipAddr.
+                            //Address
+                            vendorAddr.City = Obj.Address1City;
+                            vendorAddr.Country = "USA";
+                            vendorAddr.Line1 = Obj.Address1;
 
-                                PhysicalAddress vendorAddr = new PhysicalAddress();
-                                EmailAddress vendoremail = new EmailAddress();
-                                TelephoneNumber mobileNumber = new TelephoneNumber();
-                                WebSiteAddress websiteaddr = new WebSiteAddress();
-                                ModificationMetaData metaData = new ModificationMetaData();
-                                Vendor vendor = new Vendor();
+                            //End Address
 
-                                QueryService<Account> querySvcAccount = new QueryService<Account>(serviceContext);
-                                //List<Account> accountData customerQueryService.ExecuteIdsQuery(SELECT FROM Customer MaxResults 1000)
-                                List<Account> accountData = querySvcAccount.ExecuteIdsQuery("SELECT * FROM Account MaxResults 1000").ToList();
-                                // vendor.PrimaryPhone.FreeFormNumber =
+                            //Email
+                            if (Obj.VendorEmail != null)
+                            {
+                                vendoremail.Address = Obj.VendorEmail;
+                            }
+                            //End Email
 
-                                //Mandatory Fields
-                                vendor.GivenName = Obj.PointOfContact;
-                                vendor.DisplayName = Obj.PointOfContact;
-                                if (Obj.VendorAccountDetailsModel.AccountNumber != null)
+                            //Mobile Number
+                            mobileNumber.FreeFormNumber = Obj.Phone1;
+
+                            //End Mobile Number
+
+                            //Website
+                            if (Obj.Website != null)
+                            {
+                                websiteaddr.URI = Obj.Website;
+                            }
+                            //End Website
+
+                            //Created Time
+                            metaData.CreateTime = DateTime.UtcNow;
+                            //End Created Time
+                            vendor.BillAddr = vendorAddr;
+                            vendor.PrimaryEmailAddr = vendoremail;
+                            vendor.Mobile = mobileNumber;
+                            vendor.WebAddr = websiteaddr;
+                            vendor.MetaData = metaData;
+                            vendor.PrimaryPhone = mobileNumber;
+                            Vendor resultVendor = commonServiceQBO.Add(vendor) as Vendor;
+                            var resultQuickBook = _IVendorManagement.SaveQuickBookId(resultVendor.Id, Obj.VendorId);
+                            if (Obj.VendorFacilityListModel.Count() > 0)
+                            {
+                                foreach (var item in Obj.VendorFacilityListModel)
                                 {
-                                    vendor.AcctNum = Obj.VendorAccountDetailsModel.AccountNumber;
-                                }
-                                vendor.CompanyName = Obj.CompanyNameLegal;
-                                vendor.Active = true;
-                                vendor.PrintOnCheckName = Obj.CompanyNameLegal;
-                                vendor.TaxIdentifier = Obj.TaxNo;
-                                vendor.Suffix = Obj.JobTile;
-                                
-                                //vendor.ShipAddr.
-                                //Address
-                                vendorAddr.City = Obj.Address1City;
-                                vendorAddr.Country = "USA";
-                                vendorAddr.Line1 = Obj.Address1;
-
-                                //End Address
-
-                                //Email
-                                if(Obj.VendorEmail != null)
-                                {
-                                    vendoremail.Address = Obj.VendorEmail;
-                                }                                
-                                //End Email
-
-                                //Mobile Number
-                                mobileNumber.FreeFormNumber = Obj.Phone1;
-
-                                //End Mobile Number
-
-                                //Website
-                                if (Obj.Website != null)
-                                {
-                                    websiteaddr.URI = Obj.Website;
-                                }
-                                //End Website
-
-                                //Created Time
-                                metaData.CreateTime = DateTime.UtcNow;
-                                //End Created Time
-                                vendor.BillAddr = vendorAddr;
-                                vendor.PrimaryEmailAddr = vendoremail;
-                                vendor.Mobile = mobileNumber;
-                                vendor.WebAddr = websiteaddr;
-                                vendor.MetaData = metaData;
-                                vendor.PrimaryPhone = mobileNumber;
-                                Vendor resultVendor = commonServiceQBO.Add(vendor) as Vendor;
-                                var resultQuickBook = _IVendorManagement.SaveQuickBookId(resultVendor.Id, Obj.VendorId);
-                                if(Obj.VendorFacilityListModel.Count() > 0)
-                                {
-                                    foreach (var item in Obj.VendorFacilityListModel)
+                                    item.UnitCostForView.Replace(",", "");
+                                    item.UnitCost = Convert.ToDecimal(item.UnitCostForView);
+                                    long CostCodeId = Convert.ToInt64(item.Costcode);
+                                    var costCodeName = _IBillDataManager.GetCostCodeData(CostCodeId);
+                                    var dataget = accountData.Where(x => x.Name == costCodeName.Description).FirstOrDefault();
+                                    var itemdata = new Item();
+                                    itemdata.Description = item.ProductServiceName;
+                                    itemdata.Name = item.ProductServiceName;
+                                    itemdata.FullyQualifiedName = item.ProductServiceName;
+                                    itemdata.IncomeAccountRef = new ReferenceType()
                                     {
-                                        item.UnitCostForView.Replace(",", "");
-                                        item.UnitCost = Convert.ToDecimal(item.UnitCostForView);
-                                        long CostCodeId = Convert.ToInt64(item.Costcode);
-                                        var costCodeName = _IBillDataManager.GetCostCodeData(CostCodeId);
-                                        var dataget = accountData.Where(x => x.Name == costCodeName.Description).FirstOrDefault();
-                                        var itemdata = new Item();
-                                        itemdata.Description = item.ProductServiceName;
-                                        itemdata.Name = item.ProductServiceName;
-                                        itemdata.FullyQualifiedName = item.ProductServiceName;
-                                        itemdata.IncomeAccountRef = new ReferenceType()
-                                        {
-                                            name = dataget.Name,
-                                            Value = dataget.Id
-                                        };
-                                        itemdata.PrefVendorRef = new ReferenceType()
-                                        {
-                                            name = resultVendor.DisplayName,
-                                            Value = resultVendor.Id
-                                        };
-                                        itemdata.UnitPrice = Convert.ToDecimal(item.UnitCost);
-                                        itemdata.Active = true;
-                                        if(item.ProductServiceType == "1")
-                                        {
-                                            itemdata.Type = ItemTypeEnum.NonInventory;
-                                            itemdata.ItemCategoryType = "Product";
-                                        }
-                                        else
-                                        {
-                                            itemdata.Type = ItemTypeEnum.Service;
-                                            itemdata.ItemCategoryType = "Service";
-                                        }
-                                        itemdata.TypeSpecified = true;
-                                        itemdata.PurchaseCost = Convert.ToDecimal(item.UnitCost);
-                                        itemdata.Taxable = true;
-                                        itemdata.UnitPriceSpecified = true;
-                                        itemdata.AvgCost = Convert.ToDecimal(item.UnitCost);
-                                        itemdata.ActiveSpecified = true;
-                                        itemdata.PurchaseCostSpecified = true;
-                                        //itemdata.RatePercentSpecified = true;
-                                        
-                                        Item resultItem = commonServiceQBO.Add(itemdata) as Item;
+                                        name = dataget.Name,
+                                        Value = dataget.Id
+                                    };
+                                    itemdata.PrefVendorRef = new ReferenceType()
+                                    {
+                                        name = resultVendor.DisplayName,
+                                        Value = resultVendor.Id
+                                    };
+                                    itemdata.UnitPrice = Convert.ToDecimal(item.UnitCost);
+                                    itemdata.Active = true;
+                                    if (item.ProductServiceType == "1")
+                                    {
+                                        itemdata.Type = ItemTypeEnum.NonInventory;
+                                        itemdata.ItemCategoryType = "Product";
                                     }
+                                    else
+                                    {
+                                        itemdata.Type = ItemTypeEnum.Service;
+                                        itemdata.ItemCategoryType = "Service";
+                                    }
+                                    itemdata.TypeSpecified = true;
+                                    itemdata.PurchaseCost = Convert.ToDecimal(item.UnitCost);
+                                    itemdata.Taxable = true;
+                                    itemdata.UnitPriceSpecified = true;
+                                    itemdata.AvgCost = Convert.ToDecimal(item.UnitCost);
+                                    itemdata.ActiveSpecified = true;
+                                    itemdata.PurchaseCostSpecified = true;
+                                    //itemdata.RatePercentSpecified = true;
+
+                                    Item resultItem = commonServiceQBO.Add(itemdata) as Item;
                                 }
                             }
-                            catch (Exception ex)
-                            {
-                                ViewBag.Message = ex.Message; ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger;
-                            }
-                            ViewBag.Message = CommonMessage.VendorSave();
-                            ViewBag.AlertMessageClass = ObjAlertMessageClass.Success;
+                        }
+                        catch (Exception ex)
+                        {
+                            ViewBag.Message = ex.Message; ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger;
+                        }
+                        ViewBag.Message = CommonMessage.VendorSave();
+                        ViewBag.AlertMessageClass = ObjAlertMessageClass.Success;
                         //return View("CompanyList");
                         return View("UnApprovedVendor");
 
@@ -271,7 +271,7 @@ namespace WorkOrderEMS.Controllers
                         //    ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger;
                         //    return View("VendorManagementSetup");
                         //}
-                    }                   
+                    }
                 }
                 else
                 {
@@ -290,7 +290,7 @@ namespace WorkOrderEMS.Controllers
                     {
                         ViewBag.Message = CommonMessage.UpdateSuccessMessage();
                         ViewBag.AlertMessageClass = ObjAlertMessageClass.Success;
-                        return View("UnApprovedVendor");
+                        return View("CompanyList");
                     }
                     else
                     {
@@ -318,7 +318,7 @@ namespace WorkOrderEMS.Controllers
         public JsonResult UploadedImageFacalityProduct(HttpPostedFileBase File)
         {
             eTracLoginModel ObjLoginModel = null;
-            
+
             if (Session["eTrac"] != null)
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
@@ -330,8 +330,8 @@ namespace WorkOrderEMS.Controllers
                     ViewBag.ImageUrl = res;
                     if (res)
                     {
-                        
-                        return Json(ImageName);                
+
+                        return Json(ImageName);
                     }
                     else { return Json(""); }
                 }
@@ -451,7 +451,7 @@ namespace WorkOrderEMS.Controllers
                 }
                 if (Vendor > 0)
                 {
-                     getData = _IVendorManagement.GetAllVendorData(Vendor);
+                    getData = _IVendorManagement.GetAllVendorData(Vendor);
                 }
                 else
                 {
@@ -459,7 +459,7 @@ namespace WorkOrderEMS.Controllers
                     ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Json(ex.Message, JsonRequestBehavior.AllowGet);
             }
@@ -484,7 +484,7 @@ namespace WorkOrderEMS.Controllers
                 if (Session != null && Session["eTrac"] != null)
                 {
                     ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-                    LocationId = ObjLoginModel.LocationID;                   
+                    LocationId = ObjLoginModel.LocationID;
                 }
                 if (!string.IsNullOrEmpty(objVendorApproveRejectModel.VendorId))
                 {
@@ -492,7 +492,7 @@ namespace WorkOrderEMS.Controllers
                     long.TryParse(objVendorApproveRejectModel.VendorId, out VendorId);
                 }
                 objVendorApproveRejectModel.UserId = ObjLoginModel.UserId;
-                objVendorApproveRejectModel. Vendor = VendorId;
+                objVendorApproveRejectModel.Vendor = VendorId;
                 if (objVendorApproveRejectModel.Vendor > 0)
                 {
                     result = _IVendorManagement.ApproveVendorByVendorId(objVendorApproveRejectModel);
@@ -553,11 +553,11 @@ namespace WorkOrderEMS.Controllers
                         ViewBag.LocationListData = _ICommonMethod.ListAllLocation();
                         ViewBag.AllocatedLocation = _IVendorManagement.ListAllAlocatedLocatioForVender(_VendorId);
                         return View("VendorManagementSetup", _VendorModel);
-                    }                   
-                   
+                    }
+
                 }
                 else
-                {                   
+                {
                     ViewBag.AlertMessageClass = new AlertMessageClass().Danger;
                     ViewBag.Message = Result.DoesNotExist;
                     return null;
@@ -594,14 +594,14 @@ namespace WorkOrderEMS.Controllers
                     if (!string.IsNullOrEmpty(id))
                     {
                         ViewBag.IsAddAccountDetails = true;
-                        
+
                         //id = Cryptography.GetDecryptedData(id, true);
                         long _VendorId = 0;
                         long.TryParse(id, out _VendorId);
                         obj.VendorId = _VendorId;
-                        var  vendor_id = Cryptography.GetEncryptedData(id, true);
+                        var vendor_id = Cryptography.GetEncryptedData(id, true);
                         ViewBag.VendorIdForCancel = vendor_id;
-                        ViewBag.PaymentModeList = _IVendorManagement.PaymentModeList();                      
+                        ViewBag.PaymentModeList = _IVendorManagement.PaymentModeList();
                         return View("AddVendorAccount", obj);
                     }
                 }
@@ -641,7 +641,7 @@ namespace WorkOrderEMS.Controllers
                         Obj.VendorAccountDetailsModel.AccountDocuments = FileName;
                     }
                     var result = _IVendorManagement.SaveVendorAccount(Obj);
-                    if(result.Result == Result.Completed)
+                    if (result.Result == Result.Completed)
                     {
                         ViewBag.Message = CommonMessage.UpdateSuccessMessage();
                         ViewBag.AlertMessageClass = ObjAlertMessageClass.Success;
@@ -756,7 +756,7 @@ namespace WorkOrderEMS.Controllers
 
                         }
                     }
-                    else if(Obj.VendorInsuranceModel == null && 
+                    else if (Obj.VendorInsuranceModel == null &&
                         Obj.VendorInsuranceModel.InsuranceID > 0 || Obj.VendorInsuranceModel.LicenseId > 0)
                     {
                         ViewBag.VendorId = Obj.VendorId;
@@ -805,7 +805,7 @@ namespace WorkOrderEMS.Controllers
             {
                 if (vendorId > 0)
                 {
-                     result = _IVendorManagement.ListAllocatedLocatioForVender(vendorId);
+                    result = _IVendorManagement.ListAllocatedLocatioForVender(vendorId);
                     if (result != null)
                     {
                         return Json(result, JsonRequestBehavior.AllowGet);
@@ -830,7 +830,7 @@ namespace WorkOrderEMS.Controllers
         /// </summary>
         /// <returns></returns>
         public ActionResult ListInsuranceLicenseView(string Vendorid, bool? VendorStatus)
-        {            
+        {
             try
             {
                 eTracLoginModel objLoginSession = new eTracLoginModel();
@@ -844,7 +844,7 @@ namespace WorkOrderEMS.Controllers
                     ViewBag.VendorStatus = VendorStatus;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ViewBag.Message = ex.Message;
                 ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger;
@@ -869,7 +869,7 @@ namespace WorkOrderEMS.Controllers
         /// <param name="UserType"></param>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult ListInsurance(string _search, long? VendorId, long? LocationId,bool VendorStatus, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
+        public JsonResult ListInsurance(string _search, long? VendorId, long? LocationId, bool VendorStatus, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
         {
             eTracLoginModel ObjLoginModel = null;
             long UserId = 0;
@@ -901,7 +901,7 @@ namespace WorkOrderEMS.Controllers
                     row.cell[2] = insurance.InsuranceCarries.ToString();
                     row.cell[3] = insurance.PolicyNumber.ToString();
                     row.cell[4] = insurance.InsuranceExpirationDate.ToString();
-                    row.cell[5] = insurance.InsuranceDocument == null ? null: insurance.InsuranceDocument.ToString();
+                    row.cell[5] = insurance.InsuranceDocument == null ? null : insurance.InsuranceDocument.ToString();
                     row.cell[6] = insurance.Status.ToString();
                     rowss.Add(row);
                 }
@@ -1061,7 +1061,7 @@ namespace WorkOrderEMS.Controllers
                     var details = _IVendorManagement.GetInsuranceLicenseCompanyDetails(_id, "Insurance");
                     obj.VendorId = VendorID;
                     obj.VendorInsuranceModel.InsuranceID = _id;
-                    
+
                     return View("AddNewInsuranceAndLicenseVendor", obj);
                 }
                 else
@@ -1084,7 +1084,7 @@ namespace WorkOrderEMS.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult AddLicense(string id,long VendorID)
+        public ActionResult AddLicense(string id, long VendorID)
         {
             eTracLoginModel ObjLoginModel = null;
             var obj = new VendorSetupManagementModel();
@@ -1102,7 +1102,7 @@ namespace WorkOrderEMS.Controllers
                     id = Cryptography.GetDecryptedData(id, true);
                     long.TryParse(id, out _id);
                 }
-                if(VendorID > 0)
+                if (VendorID > 0)
                 {
                     var vendor_Id = Cryptography.GetEncryptedData(VendorID.ToString(), true);
                     ViewBag.VendorIdForCancel = vendor_Id;
@@ -1111,11 +1111,11 @@ namespace WorkOrderEMS.Controllers
                 if (_id > 0)
                 {
                     var details = _IVendorManagement.GetInsuranceLicenseCompanyDetails(_id, "License");
-                   
+
                     obj.VendorId = VendorID;
                     objVendorInsuranceModel.LicenseId = _id;
                     obj.VendorInsuranceModel = details;
-                    
+
                     return View("AddNewInsuranceAndLicenseVendor", obj);
                 }
                 else
@@ -1170,11 +1170,11 @@ namespace WorkOrderEMS.Controllers
                     string Message = "";
                     if (IsActive == "Y")
                     {
-                        Message = IsInsuranceLicense+" is Activeted.";
+                        Message = IsInsuranceLicense + " is Activeted.";
                     }
                     else
                     {
-                        Message = IsInsuranceLicense+" is Deactiveted.";
+                        Message = IsInsuranceLicense + " is Deactiveted.";
                     }
                     ViewBag.Message = Message;
                     ViewBag.AlertMessageClass = ObjAlertMessageClass.Success;
@@ -1265,9 +1265,9 @@ namespace WorkOrderEMS.Controllers
                     row.id = Cryptography.GetEncryptedData(Convert.ToString(accounts.AccountID), true);
                     row.cell = new string[9];
                     row.cell[0] = accounts.AccountID.ToString();
-                    row.cell[1] = accounts.BankName == null ?"N/A": accounts.BankName.ToString();
+                    row.cell[1] = accounts.BankName == null ? "N/A" : accounts.BankName.ToString();
                     row.cell[2] = accounts.BankLocation == null ? "N/A" : accounts.BankLocation.ToString();
-                    row.cell[3] = accounts.AccountNumber == null ? "N/A": accounts.AccountNumber.ToString();
+                    row.cell[3] = accounts.AccountNumber == null ? "N/A" : accounts.AccountNumber.ToString();
                     row.cell[4] = accounts.CardNumber == null ? "N/A" : accounts.CardNumber.ToString();
                     row.cell[5] = accounts.IFSCCode == null ? "N/A" : accounts.IFSCCode.ToString();
                     row.cell[6] = accounts.SwiftOICCode == null ? "N/A" : accounts.SwiftOICCode.ToString();
@@ -1328,7 +1328,7 @@ namespace WorkOrderEMS.Controllers
                     }
                     else
                     {
-                        Message =  "Account is Deactiveted.";
+                        Message = "Account is Deactiveted.";
                     }
                     ViewBag.Message = Message;
                     ViewBag.AlertMessageClass = ObjAlertMessageClass.Success;
@@ -1427,7 +1427,7 @@ namespace WorkOrderEMS.Controllers
             }
             return View();
         }
-        
+
         /// <summary>
         /// Created By : Ashwajit Bansod
         /// Created Date : 23-Feb-2019
@@ -1444,7 +1444,7 @@ namespace WorkOrderEMS.Controllers
         /// <param name="UserType"></param>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult GetAllUnApprovedVendorList(string _search,  long? LocationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
+        public JsonResult GetAllUnApprovedVendorList(string _search, long? LocationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
         {
             eTracLoginModel ObjLoginModel = null;
             long UserId = 0;
@@ -1554,7 +1554,7 @@ namespace WorkOrderEMS.Controllers
         /// <param name="UserType"></param>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult ListCompanyFacilityByVendorId(string _search,long? VendorId, long? LocationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
+        public JsonResult ListCompanyFacilityByVendorId(string _search, long? VendorId, long? LocationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
         {
             eTracLoginModel ObjLoginModel = null;
             long UserId = 0;
@@ -1574,7 +1574,7 @@ namespace WorkOrderEMS.Controllers
             txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
             try
             {
-                var AllFacilityList = _IVendorManagement.GetFacilityListCompanyDetails(VendorId,LocationId, rows, TotalRecords, sidx, sord);
+                var AllFacilityList = _IVendorManagement.GetFacilityListCompanyDetails(VendorId, LocationId, rows, TotalRecords, sidx, sord);
                 foreach (var facility in AllFacilityList.rows)
                 {
                     JQGridRow row = new JQGridRow();
@@ -1586,7 +1586,7 @@ namespace WorkOrderEMS.Controllers
                     row.cell[3] = facility.UnitCost.ToString();
                     row.cell[4] = facility.Tax.ToString();
                     row.cell[5] = facility.Costcode.ToString();
-                    row.cell[6] = facility.ProductImage == null ? null : HostingPrefix + DocFacilityPath.Replace("~", "")  + facility.ProductImage.ToString();
+                    row.cell[6] = facility.ProductImage == null ? null : HostingPrefix + DocFacilityPath.Replace("~", "") + facility.ProductImage.ToString();
                     rowss.Add(row);
                 }
                 result.rows = rowss.ToArray();
@@ -1627,7 +1627,7 @@ namespace WorkOrderEMS.Controllers
                     var details = _IVendorManagement.GetVendorDetailsByVendorId(obj.VendorId);
                     obj.VendorName = details.CompanyNameLegal;
                     var saveFacility = _IVendorManagement.SaveFacilityDetails(obj);
-                    if(saveFacility == true)
+                    if (saveFacility == true)
                     {
                         ViewBag.Message = CommonMessage.Successful();
                         ViewBag.AlertMessageClass = ObjAlertMessageClass.Success;
@@ -1640,17 +1640,17 @@ namespace WorkOrderEMS.Controllers
                     ViewBag.CostCodeList = _IVendorManagement.ListAllCostCode();
                     ViewBag.VendorId = obj.VendorId;
                     ViewBag.VendorName = details.CompanyNameLegal;
-                    if(obj.VendorId > 0)
+                    if (obj.VendorId > 0)
                     {
                         var id = Cryptography.GetEncryptedData(Convert.ToString(obj.VendorId), true);
                         ViewBag.VendorIdForCancel = id;
                     }
-                    
+
                     ModelState.Clear();
                 }
-               
+
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ViewBag.Message = ex.Message;
                 ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger;

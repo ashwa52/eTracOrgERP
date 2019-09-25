@@ -92,10 +92,10 @@
         var $_UrlImage = '@imgaeserverpath';
     </script>
     <script type="text/javascript">
-    $(window).bind('resize', function () {
-        var width = $('#jqGrid_containerVendorFacility').width();
-        $('#tbl_AllVendorFacilityDataList').setGridWidth(width);
-    });
+        $(window).bind('resize', function () {
+            var width = $('#jqGrid_containerVendorFacility').width();
+            $('#tbl_AllVendorFacilityDataList').setGridWidth(width);
+        });
 
     </script>
 }
@@ -154,11 +154,11 @@
                                 Type<span class="req">*</span>
                             </label>
                             @Html.DropDownListFor(model => model.VendorFacilityModel.ProductServiceType, new List<SelectListItem>
-                                                                                            {
-                                                                                               new SelectListItem() {Text = "--Select Type--", Value="0"},
-                                                                                               new SelectListItem() {Text = "Product", Value="1"},
-                                                                                               new SelectListItem() {Text = "Service", Value="2"},
-                                                                                            }, new { @id = "ProductServiceType" })
+                            {
+                                new SelectListItem() {Text = "--Select Type--", Value="0"},
+                                new SelectListItem() {Text = "Product", Value="1"},
+                                new SelectListItem() {Text = "Service", Value="2"},
+                            }, new { @id = "ProductServiceType" })
                             @Html.ValidationMessageFor(model => model.VendorFacilityModel.ProductServiceType)
                         </div>
                         <div class="field-wrap">
@@ -173,14 +173,14 @@
                     <div class="top-row">
                         <div class="field-wrap">
                             <label>
-                               $ Unit Cost<span class="req">*</span>
+                                $ Unit Cost<span class="req">*</span>
                             </label>
                             @Html.TextBoxFor(model => model.VendorFacilityModel.UnitCostForView, null, new { @id = "UnitCost" })
                             @Html.ValidationMessageFor(model => model.VendorFacilityModel.UnitCostForView)
                         </div>
                         <div class="field-wrap">
                             <label>
-                               % Tax  <span class="req">*</span>
+                                % Tax  <span class="req">*</span>
                             </label>
                             @Html.TextBoxFor(model => model.VendorFacilityModel.Tax, null, new { @id = "Tax" })
                             @Html.ValidationMessageFor(model => model.VendorFacilityModel.Tax)
@@ -195,10 +195,10 @@
                             </label>
                             @if (ViewBag.CostCodeList != null)
                             {
-                                {@Html.DropDownListFor(model => model.VendorFacilityModel.Costcode, new SelectList(ViewBag.CostCodeList, "CostCodeId", "CostCodeName"), "--Select Cost Code--", new { @id = "CostCode" })}
-                        }
-                        else
-                        {<select id="CostCodeData"><option value="-1">@ViewBag.CostCodeList</option></select>}
+                                @Html.DropDownListFor(model => model.VendorFacilityModel.Costcode, new SelectList(ViewBag.CostCodeList, "CostCodeId", "CostCodeName"), "--Select Cost Code--", new { @id = "CostCode" })
+                            }
+                            else
+                            {<select id="CostCodeData"><option value="-1">@ViewBag.CostCodeList</option></select>}
                             @Html.ValidationMessageFor(model => model.VendorFacilityModel.Costcode)
                         </div>
                         <div class="field-wrap">
@@ -213,10 +213,10 @@
                             <img id='imgProductImage' name='imgVehicleImage' src="@Url.Content(Image)"
                                  class="img-rounded" alt="No Image " style="width:110px; height:110px; margin-left:55%;">
                             <input id="fileuploadProduct" type="file" style="margin-left:auto;" name="VendorFacilityModel.ProductImageFile" />
-                           
-                                @Html.ValidationMessageFor(model => model.VendorFacilityModel.ProductImage)
-                                @Html.ValidationMessageFor(model => model.VendorFacilityModel.ProductImageFile)
-                            
+
+                            @Html.ValidationMessageFor(model => model.VendorFacilityModel.ProductImage)
+                            @Html.ValidationMessageFor(model => model.VendorFacilityModel.ProductImageFile)
+
                         </div>
                     </div>
                 </div>
@@ -230,6 +230,7 @@
         <table id="tbl_AllVendorFacilityDataList" border="0" cellpadding="0" cellspacing="0"></table>
         <div id="divAllVendorFacilityListPager"></div>
     </div>
+    @Html.ValidationMessageFor(model => model.ProductList)
 </div>
 
 
@@ -261,11 +262,12 @@
                 _ProductListModel.Tax = $("#Tax").val();
 
                 _ProductListModel.CostCode = $('#CostCode').find('option:selected').val();
-                // _ProductListModel.Costcode = $("#CostCode").text();
                 _ProductListModel.ProductImage = $("#ProductImage").val();
                 var img = $("#fileuploadProduct").val();
                 if (img == "" || img == undefined || img == null) {
                     _ProductListModel.ProductImageFile = "";
+                    alert('Select product image file');
+                    return false;
                 }
                 else {
                     var ImageFile;
@@ -298,42 +300,28 @@
                             }
                         });
                     }
-                    if (ImageFile == null || ImageFile == "") { } else {
+                    if (ImageFile == null || ImageFile == "") {
+                    } else {
                         _ProductListModel.ProfileImageFile = JSON.parse(ImageFile);
                     }
                 }
-                //Productdata.push({
-                //    "VendorType": ProductListModel.ProductServiceName,
-                //    "ProductServiceName": ProductListModel.ProductServiceName,
-                //    "UnitCost": ProductListModel.UnitCost,
-                //    "Tax": ProductListModel.Tax,
-                //    "Costcode": ProductListModel.Costcode,
-                //    "Image": ProductListModel.ProfileImageFile,
-                //    });
                 var data = $('#tbl_AllVendorFacilityDataList').jqGrid('getGridParam', 'data');
-                // var data = $('#tbl_AllVendorFacilityDataList').getRowData();
-                //if (data.length > 0) {
-                //    Productdata.push(data);
-                //}
+                if (data.findIndex(x=>x.ProductServiceName===_ProductListModel.ProductServiceName) >= 0) {
+                    alert('Product/Service Name already used');
+                    return false;
+                }
                 ProductListModel.push(_ProductListModel);
                 _ProductListModel.CostCodeDisplay = $('#CostCode').find('option:selected').text();
                 var tt = _ProductListModel.ProfileImageFile;
                 var link = tt.slice(1, -1)
                 _ProductListModel.ProfileImageFile = $_HostPrefix + "Content/eCountingDocs/ImageFacility/" + link;
-                //_ProductListModel.ProfileImageFile = _ProductListModel.ProfileImageFile.replace('"', "");
                 Productdata.push(_ProductListModel);
                 $("#ProductList").val(JSON.stringify(ProductListModel));
-                //console.log(JSON.stringify(Productdata));
-                //$("#tbl_AllVendorFacilityDataList").css("display", "");
-                //$('#loading').css("display", "inline");
-
-                //$("#tbl_AllVendorFacilityDataList").style.display = "";
                 jQuery("#tbl_AllVendorFacilityDataList").jqGrid('setGridParam',
-                                 {
-                                     datatype: 'local',
-                                     data: Productdata
-                                 })
-                             .trigger("reloadGrid");
+                {
+                    datatype: 'local',
+                    data: Productdata
+                }).trigger("reloadGrid");
             }
             else {
                 return false;
@@ -341,23 +329,15 @@
         });
         $(function () {
             $("#fileuploadProduct").change(function () {
-                var FType = ["jpg", "JPG", "PNG", "png", "JPEG", "jpeg", "gif", "GIF"]
+                 var allowedExtensions = /(\.jpg|\.png|\.jpeg|\.gif)$/i;
                 if (this.files && this.files[0]) {
-                    var LoadImage = false;
-                    var FileExtension = this.value.split(".")[1];
-                    for (var v = 0; v < FType.length; v++) {
-                        if (FType[v] == FileExtension) {
-                            LoadImage = true;
-                        }
-                    }
-                    if (LoadImage == true) {
+                    if (allowedExtensions.exec($(this).val().toLowerCase())) {
                         var reader = new FileReader();
                         reader.onload = function (e) {
                             $('#imgProductImage')
                                 .attr('src', e.target.result)
                                 .width(150)
                                 .height(150);
-
                         };
                         reader.readAsDataURL(this.files[0]);
                     } else {
@@ -365,6 +345,12 @@
                         alert("Please select image to upload!")
                         return false;
                     }
+                }
+                else {
+                     $('#imgProductImage')
+                                .attr('src', '@Url.Content(Image)')
+                                .width(150)
+                                .height(150);
                 }
             });
         });

@@ -105,6 +105,7 @@ $("#AddCompany").live("click", function (event) {
 
 
 $("#ViewUnApprovedVendorData").live("click", function (event) {
+    debugger
     VendorId = $(this).attr("vid");
     var rowData = jQuery("#tbl_AllUnApprovedList").getRowData(VendorId);
     if (rowData.Status == "Y") {

@@ -13,14 +13,14 @@
     if (ViewBag.UpdateMode != null && ViewBag.UpdateMode == true)
     {
         ViewBag.Title = "Update Vendor"; LocationIdData = ViewBag.AllocatedLocation; //ServiceId = ViewBag.ServicesID;
-        //LocationIdData = ViewBag.AllocatedLocation;
+                                                                                     //LocationIdData = ViewBag.AllocatedLocation;
     }
     string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
     string CompanyDocPath = System.Configuration.ConfigurationManager.AppSettings["CompanyDocuments"];
     string url = Url.Action("CompanyList", "VendorManagement");
 }
 @section scripts{
-<script type="text/javascript">
+    <script type="text/javascript">
         var $_locationId = '@locationId';
         var $_userTypeId = '@userType';
         var IsUpdate = '@ViewBag.UpdateMode';
@@ -28,8 +28,8 @@
         //var $_LocationIdData = @ViewBag.AllocatedLocation;
         var ServiceID;
         var LocationIDs;
-        
-</script>
+
+    </script>
 }
 <link href="~/Content/eCounting/VendorWizard.css" rel="stylesheet" />
 @*<link href="~/Content/eFleetVehicle/eFleetstyle.css" rel="stylesheet" />*@
@@ -49,327 +49,339 @@
 <div class="col-lg-12 col-md-12  col-sm-12  col-xs-12">
     <div class="panel panel-default">
         <div class="panel-heading">
-            Set Up Vendor
+            @(ViewBag.UpdateMode ? "Vendor Details" : "Set Up Vendor")
         </div>
         @using (Html.BeginForm("VendorManagementSetup", "VendorManagement", FormMethod.Post, new { enctype = "multipart/form-data", id = "msform" }))
-    {
-        <!-- progressbar -->
-    if (ViewBag.UpdateMode == false)
-    {
-        <ul id="progressbar">
-            <li class="active" style="width: 20%;"><span>Vendor<p>Details to setup Company</p></span></li>
-            <li style="width: 20%;"><span>Insurance & License<p>Insurance & License Information</p></span></li>
-            <li style="width: 20%;"><span> Vendor Contract<p> Vendor Contract Information</p></span></li>
-            <li style="width: 20%;"><span> Vendor Facility<p> Vendor Facility Information</p></span></li>
-            <li style="width: 20%;"><span>Account<p>Account Details</p></span></li>
-        </ul>
-}
-    <!-- fieldsets -->
-    @Html.HiddenFor(model => model.StateAfterIsSame, new { @id = "StateAfterIsSame" })
-    @Html.HiddenFor(model => model.ProductList, new { @id = "ProductList" })
-    @Html.HiddenFor(model => model.VendorId, new { @id = "VendorId" })
-    @*@Html.HiddenFor(model => model.VendorType, new { @id = "VendorTypeForEdit" })*@
-    @Html.HiddenFor(model => model.CompanyDocEdit, new { @id = "CompanyDocEdit" })
-    @Html.HiddenFor(model => model.CompanyId)
-    <fieldset id="VendorSetUp">
-        @*<link href="~/Content/eFleetVehicle/VendorRegistrationCSS.css" rel="stylesheet" />*@
-        <div class="row">
-            <div class="panel-body">
-                <div class="form-horizontal">
-                    @Html.ValidationSummary(true)
-                    <div class="form">
-                        <div class="top-row">
-                            <div class="field-wrap" style="width: 30%;">
-                                <label id="lblVendorType">
-                                    Vendor Type<span class="req">*</span>
-                                </label>
-                                @if (ViewBag.VendorType != null)
-                            {
-                                {@Html.DropDownListFor(model => model.VendorType, new SelectList(ViewBag.VendorType, "VendorTypeId", "VendorTypeName"), "--Select Vendor Type--", new { @id = "VendorType" })}
-                    }
-                    else
-                    {<select id="Address2State"><option value="-1">@ViewBag.StateList</option></select>}
-                                <div class="errorspace">
-                                    @Html.ValidationMessageFor(model => model.VendorType)
-                                </div>
-                            </div>
-                            <div class="field-wrap" style="width: 30%;">
-                                <label>
-                                    Vendor Name<span class="req">*</span>
-                                </label>
-                                @Html.TextBoxFor(model => model.CompanyNameLegal, new { @id = "CompanyName" })
+        {
+            <!-- progressbar -->
+            if (ViewBag.UpdateMode == false)
+            {
+                <ul id="progressbar">
+                    <li class="active" style="width: 20%;"><span>Vendor<p>Details to setup Company</p></span></li>
+                    <li style="width: 20%;"><span>Insurance & License<p>Insurance & License Information</p></span></li>
+                    <li style="width: 20%;"><span> Vendor Contract<p> Vendor Contract Information</p></span></li>
+                    <li style="width: 20%;"><span> Vendor Facility<p> Vendor Facility Information</p></span></li>
+                    <li style="width: 20%;"><span>Account<p>Account Details</p></span></li>
+                </ul>
+            }
+            <!-- fieldsets -->
+            @Html.HiddenFor(model => model.StateAfterIsSame, new { @id = "StateAfterIsSame" })
+            @Html.HiddenFor(model => model.ProductList, new { @id = "ProductList" })
+            @Html.HiddenFor(model => model.VendorId, new { @id = "VendorId" })
+            @*@Html.HiddenFor(model => model.VendorType, new { @id = "VendorTypeForEdit" })*@
+            @Html.HiddenFor(model => model.CompanyDocEdit, new { @id = "CompanyDocEdit" })
+            @Html.HiddenFor(model => model.CompanyId)
+            @*@Html.HiddenFor(model => model.COD_ID)*@
+            <fieldset id="VendorSetUp">
+                @*<link href="~/Content/eFleetVehicle/VendorRegistrationCSS.css" rel="stylesheet" />*@
+                <div class="row">
+                    <div class="panel-body">
+                        <div class="form-horizontal">
+                            @Html.ValidationSummary(true)
+                            <div class="form">
+                                <div class="top-row">
+                                    <div class="field-wrap" style="width: 30%;">
+                                        <label id="lblVendorType">
+                                            Vendor Type<span class="req">*</span>
+                                        </label>
+                                        @if (ViewBag.VendorType != null)
+                                        {
+                                            @Html.DropDownListFor(model => model.VendorType, new SelectList(ViewBag.VendorType, "VendorTypeId", "VendorTypeName"), "--Select Vendor Type--", new { @id = "VendorType" })
+                                            if (ViewBag.UpdateMode)
+                                            {
+                                                @Html.HiddenFor(model => model.VendorType)
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <select id="Address2State"><option value="-1">@ViewBag.StateList</option></select>
+                                        }
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.VendorType)
+                                        </div>
+                                    </div>
+                                    <div class="field-wrap" style="width: 30%;">
+                                        <label>
+                                            Vendor Name<span class="req">*</span>
+                                        </label>
+                                        @Html.TextBoxFor(model => model.CompanyNameLegal, new { @id = "CompanyName" })
 
-                                <div class="errorspace">
-                                    @Html.ValidationMessageFor(model => model.CompanyNameLegal)
-                                </div>
-                            </div>
-                            <div class="field-wrap" style="width: 30%;">
-                                <label>
-                                    Vendor Name DBA
-                                </label>
-                                @Html.TextBoxFor(model => model.CompanyNameDBA)
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.CompanyNameLegal)
+                                        </div>
+                                    </div>
+                                    <div class="field-wrap" style="width: 30%;">
+                                        <label>
+                                            Vendor Name DBA
+                                        </label>
+                                        @Html.TextBoxFor(model => model.CompanyNameDBA)
 
-                                <div class="errorspace">
-                                    @Html.ValidationMessageFor(model => model.CompanyNameDBA)
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.CompanyNameDBA)
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="top-row">
-                            <div class="field-wrap" style="width: 30%;">
-                                <label>
-                                    Point Of Contact<span class="req">*</span>
-                                </label>
-                                @Html.TextBoxFor(model => model.PointOfContact)
-                                <div class="errorspace">
-                                    @Html.ValidationMessageFor(model => model.PointOfContact)
-                                </div>
-                            </div>
-                            <div class="field-wrap" style="width: 30%;">
-                                <label>
-                                    Job Tile<span class="req">*</span>
-                                </label>
-                                @Html.TextBoxFor(model => model.JobTile)
+                                <div class="top-row">
+                                    <div class="field-wrap" style="width: 30%;">
+                                        <label>
+                                            Point Of Contact<span class="req">*</span>
+                                        </label>
+                                        @Html.TextBoxFor(model => model.PointOfContact)
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.PointOfContact)
+                                        </div>
+                                    </div>
+                                    <div class="field-wrap" style="width: 30%;">
+                                        <label>
+                                            Job Tile<span class="req">*</span>
+                                        </label>
+                                        @Html.TextBoxFor(model => model.JobTile)
 
-                                <div class="errorspace">
-                                    @Html.ValidationMessageFor(model => model.JobTile)
-                                </div>
-                            </div>
-                            <div class="field-wrap" style="width: 30%;">
-                                <label>
-                                    Tax Id Number<span class="req">*</span>
-                                </label>
-                                @Html.TextBoxFor(model => model.TaxNo, new { @id = "TaxNo" })
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.JobTile)
+                                        </div>
+                                    </div>
+                                    <div class="field-wrap" style="width: 30%;">
+                                        <label>
+                                            Tax Id Number<span class="req">*</span>
+                                        </label>
+                                        @Html.TextBoxFor(model => model.TaxNo, new { @id = "TaxNo" })
 
-                                <div class="errorspace">
-                                    @Html.ValidationMessageFor(model => model.TaxNo)
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.TaxNo)
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
 
-                        <div class="top-row">
-                            <div class="field-wrap" style="width: 30%;">
-                                <label>
-                                    Company Address<span class="req">*</span>
-                                </label>
-                                @Html.TextBoxFor(model => model.Address1, new { @id = "Address1" })
-                                <div class="errorspace">
-                                    @Html.ValidationMessageFor(model => model.Address1)
-                                </div>
-                            </div>
-                            <div class="field-wrap" style="width: 30%;">
-                                <label>
-                                    City<span class="req">*</span>
-                                </label>
-                                @Html.TextBoxFor(model => model.Address1City, new { @id = "Address1City" })
+                                <div class="top-row">
+                                    <div class="field-wrap" style="width: 30%;">
+                                        <label>
+                                            Company Address<span class="req">*</span>
+                                        </label>
+                                        @Html.TextBoxFor(model => model.Address1, new { @id = "Address1" })
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.Address1)
+                                        </div>
+                                    </div>
+                                    <div class="field-wrap" style="width: 30%;">
+                                        <label>
+                                            City<span class="req">*</span>
+                                        </label>
+                                        @Html.TextBoxFor(model => model.Address1City, new { @id = "Address1City" })
 
-                                <div class="errorspace">
-                                    @Html.ValidationMessageFor(model => model.Address1City)
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.Address1City)
+                                        </div>
+                                    </div>
+                                    <div class="field-wrap" style="width: 30%;">
+                                        <label id="lblCompanyState">
+                                            State<span class="req">*</span>
+                                        </label>
+                                        @if (ViewBag.StateList != null)
+                                        {
+                                            @Html.DropDownListFor(model => model.Address1State, new SelectList(ViewBag.StateList, "StateId", "StateName"), "--Select State--", new { @id = "Address1State" })
+                                        }
+                                        else
+                                        {
+                                            <select id="Address2State"><option value="-1">@ViewBag.StateList</option></select>
+                                        }
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.Address1State)
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="field-wrap" style="width: 30%;">
-                                <label id="lblCompanyState">
-                                    State<span class="req">*</span>
-                                </label>
-                                @if (ViewBag.StateList != null)
-                            {
-                                {@Html.DropDownListFor(model => model.Address1State, new SelectList(ViewBag.StateList, "StateId", "StateName"), "--Select State--", new { @id = "Address1State" })}
-                    }
-                    else
-                    {<select id="Address2State"><option value="-1">@ViewBag.StateList</option></select>}
-                                <div class="errorspace">
-                                    @Html.ValidationMessageFor(model => model.Address1State)
+                                <div class="top-row">
+                                    <div class="field-wrap">
+                                        <span>
+                                            @Html.CheckBoxFor(model => model.IsAddress2Same, new { @class = "SameAddress" })
+                                            Is Shipping address is same as Company address
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="top-row">
-                            <div class="field-wrap">
-                                <span>
-                                    @Html.CheckBoxFor(model => model.IsAddress2Same, new { @class = "SameAddress" })
-                                    Is Shipping address is same as Company address
-                                </span>
-                            </div>
-                        </div>
-                        <br />
-                        <br />
-                        <div class="top-row">
-                            <div class="field-wrap" style="width: 30%;">
-                                <label id="lblShippingAddress">
-                                    Shipping Address
-                                </label>
-                                @Html.TextBoxFor(model => model.Address2, new { @id = "Address2" })
-                                <div class="errorspace">
-                                    @Html.ValidationMessageFor(model => model.Address2)
+                                <br />
+                                <br />
+                                <div class="top-row">
+                                    <div class="field-wrap" style="width: 30%;">
+                                        <label id="lblShippingAddress">
+                                            Shipping Address
+                                        </label>
+                                        @Html.TextBoxFor(model => model.Address2, new { @id = "Address2" })
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.Address2)
+                                        </div>
+                                    </div>
+                                    <div class="field-wrap" style="width: 30%;">
+                                        <label id="lblShipingCity">
+                                            City
+                                        </label>
+                                        @Html.TextBoxFor(model => model.Address2City, new { @id = "Address2City" })
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.Address2City)
+                                        </div>
+                                    </div>
+                                    <div class="field-wrap" style="width: 30%;">
+                                        <label id="lblAddress2">
+                                            State
+                                        </label>
+                                        @if (ViewBag.StateList != null)
+                                        {
+                                            @Html.DropDownListFor(model => model.Address2State, new SelectList(ViewBag.StateList, "StateId", "StateName"), "--Select State--", new { @id = "Address2State" })
+                                        }
+                                        else
+                                        {
+                                            <select id="Address2State"><option value="-1">@ViewBag.StateList</option></select>
+                                        }
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.Address2State)
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="field-wrap" style="width: 30%;">
-                                <label id="lblShipingCity">
-                                    City
-                                </label>
-                                @Html.TextBoxFor(model => model.Address2City, new { @id = "Address2City" })
-                                <div class="errorspace">
-                                    @Html.ValidationMessageFor(model => model.Address2City)
-                                </div>
-                            </div>
-                            <div class="field-wrap" style="width: 30%;">
-                                <label id="lblAddress2">
-                                    State
-                                </label>
-                                @if (ViewBag.StateList != null)
-                            {
-                                {@Html.DropDownListFor(model => model.Address2State, new SelectList(ViewBag.StateList, "StateId", "StateName"), "--Select State--", new { @id = "Address2State" })}
-                    }
-                    else
-                    {<select id="Address2State"><option value="-1">@ViewBag.StateList</option></select>}
-                                <div class="errorspace">
-                                    @Html.ValidationMessageFor(model => model.Address2State)
-                                </div>
-                            </div>
-                        </div>
-                        <div class="top-row">
-                            <div class="field-wrap" style="width: 30%;">
-                                <label>
-                                    Phone 1<span class="req">*</span>
-                                </label>
-                                @Html.TextBoxFor(model => model.Phone1, new { @maxLength = "10" })
-                                <div class="errorspace">
-                                    @Html.ValidationMessageFor(model => model.Phone1)
-                                </div>
-                            </div>
-                            <div class="field-wrap" style="width: 30%;">
-                                <label>
-                                    Phone 2
-                                </label>
-                                @Html.TextBoxFor(model => model.Phone2, new { @maxLength = "10" })
+                                <div class="top-row">
+                                    <div class="field-wrap" style="width: 30%;">
+                                        <label>
+                                            Phone 1<span class="req">*</span>
+                                        </label>
+                                        @Html.TextBoxFor(model => model.Phone1, new { @maxLength = "10" })
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.Phone1)
+                                        </div>
+                                    </div>
+                                    <div class="field-wrap" style="width: 30%;">
+                                        <label>
+                                            Phone 2
+                                        </label>
+                                        @Html.TextBoxFor(model => model.Phone2, new { @maxLength = "10" })
 
-                                <div class="errorspace">
-                                    @Html.ValidationMessageFor(model => model.Phone2)
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.Phone2)
+                                        </div>
+                                    </div>
+                                    <div class="field-wrap" style="width: 30%;">
+                                        <label>
+                                            E-mail<span class="req">*</span>
+                                        </label>
+                                        @Html.TextBoxFor(model => model.VendorEmail, new { @id = "Email" })
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.VendorEmail)
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="field-wrap" style="width: 30%;">
-                                <label>
-                                    E-mail<span class="req">*</span>
-                                </label>
-                                @Html.TextBoxFor(model => model.VendorEmail, new { @id = "Email" })
-                                <div class="errorspace">
-                                    @Html.ValidationMessageFor(model => model.VendorEmail)
-                                </div>
-                            </div>
-                        </div>
-                        <div class="top-row">
-                            <div class="field-wrap" style="width: 30%;">
-                                <label>
-                                    Website
-                                </label>
-                                @Html.TextBoxFor(model => model.Website, new { pattern = "http://www.*" })
+                                <div class="top-row">
+                                    <div class="field-wrap" style="width: 30%;">
+                                        <label>
+                                            Website
+                                        </label>
+                                        @Html.TextBoxFor(model => model.Website, new { pattern = "http://www.*" })
 
-                                <div class="errorspace">
-                                    @Html.ValidationMessageFor(model => model.Website)
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.Website)
+                                        </div>
+                                    </div>
+                                    <div class="field-wrap" style="width: 30%;">
+                                        <label style="margin-left:-13px;" id="lblDoc">
+                                            Company Documents<span class="req"></span>
+                                        </label>
+                                        <div id="dvCompanyPreview">
+                                        </div>
+                                        <input id="fileuploadCompany" type="file" style="margin-left:50%;" name="CompanyDocumentsFile" />
+                                        <ul class="attachment">
+                                            @if (Model.CompanyDocuments != null && Model.CompanyDocuments != "")
+                                            {
+                                                <li style="margin-left :25%;margin-top:20px;">
+                                                    <a class="title" href="@Url.Content(Model.CompanyDocuments)">@ViewBag.CompanyDocEdit</a>
+                                                </li>
+                                            }
+                                        </ul>
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.CompanyDocuments)
+                                        </div>
+                                    </div>
+                                    @if (ViewBag.UpdateMode == true)
+                                    {
+                                        <div class="field-wrap" style="width: 30%;">
+                                            <labe style="color:cornflowerblue">
+                                                Select Location&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;
+                                            </labe>
+                                            @if (ViewBag.LocationListData != null)
+                                            {
+                                                {@Html.DropDownListFor(model => model.VendorContractModel.SectVendorToLocation, new SelectList(ViewBag.LocationListData, "LocationId", "LocationName"), new { @id = "SelectVendorToLocation", @style = "width:50%;", @multiple = "multiple", @class = "form-control" })}
+                                        }
+                                        else
+                                        {<select id="VendorContractModel.SectVendorToLocation"><option value="-1">@ViewBag.LocationListData</option></select>}
+                                            @Html.ValidationMessageFor(model => model.VendorContractModel.SectVendorToLocation)
+                                            @Html.Hidden("SelectedLcation")
+                                        </div>
+                                    }
                                 </div>
                             </div>
-                            <div class="field-wrap" style="width: 30%;">
-                                <label style="margin-left:-13px;" id="lblDoc">
-                                    Company Documents<span class="req"></span>
-                                </label>
-                                <div id="dvCompanyPreview">
-                                </div>
-                                <input id="fileuploadCompany" type="file" style="margin-left:50%;" name="CompanyDocumentsFile" />
-                                <ul class="attachment">
-                                    @if (Model.CompanyDocuments != null && Model.CompanyDocuments != "")
-                                {
-                                    <li style="margin-left :25%;margin-top:20px;">
-                                        <a class="title" href="@Url.Content(Model.CompanyDocuments)">@ViewBag.CompanyDocEdit</a>
-                                    </li>
-                            }
-                                </ul>
-                                <div class="errorspace">
-                                    @Html.ValidationMessageFor(model => model.CompanyDocuments)
-                                </div>
-                            </div>
-                            @if (ViewBag.UpdateMode == true)
-                        {
-                            <div class="field-wrap" style="width: 30%;">
-                                <labe style="color:cornflowerblue">
-                                    Select Location&nbsp;:&nbsp;&nbsp;&nbsp;&nbsp;
-                                </labe>
-                                @if (ViewBag.LocationListData != null)
-                            {
-                                {@Html.DropDownListFor(model => model.VendorContractModel.SectVendorToLocation, new SelectList(ViewBag.LocationListData, "LocationId", "LocationName"), new { @id = "SelectVendorToLocation", @style = "width:50%;", @multiple = "multiple", @class = "form-control" })}
-                    }
-                    else
-                    {<select id="VendorContractModel.SectVendorToLocation"><option value="-1">@ViewBag.LocationListData</option></select>}
-                                @Html.ValidationMessageFor(model => model.VendorContractModel.SectVendorToLocation)
-                                @Html.Hidden("SelectedLcation")
-                            </div>
-                    }
                         </div>
                     </div>
+                    <div class="clearfix"></div>
                 </div>
-            </div>
-            <div class="clearfix"></div>
-        </div>
-        @if (ViewBag.UpdateMode == false)
-    {
-        <input type="button" id="LocationNext" name="next" class="btn btn-success next  nxt-btn" style="border-radius:25px;width:90px;" value="Next" />
-        <input type="button" onclick="location.href='@Url.Action("CompanyList", "VendorManagement")'" class="btn btn-default bluebutton nxt-btn" style="border-radius:25px;width:90px;" formnovalidate="formnovalidate" value="Cancel" />
-}
-else
-{
-    @*<input type="button" name="previous" class="btn btn-default bluebutton previous prv-last-btn pull-right marginright10 marginbottom10 LRmar" value="Previous" style="border-radius:25px;width:90px;" />*@
-    <button type="submit" onclick="return validateCustomFields(this);" class="btn btn-success pull-right marginright10 marginbottom10 Lmar10" style="border-radius:25px;width:150px;">Save &amp; Update </button>
-    <input type="button" onclick="location.href='@Url.Action("CompanyList", "VendorManagement")'" class="btn btn-default bluebutton pull-right marginright10 marginbottom10 Lmar10" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
-}
-    </fieldset>
-    <fieldset id="VendorInsurance">
-        @{ViewBag.myModelprefixName = "VendorInsuranceModel."; ViewBag.ActionSection = "VendorInsurance";}
-        <div id="divInsurance">
-            @Html.Partial("VendorInsurance")
-        </div>
+                @if (ViewBag.UpdateMode == false)
+                {
+                    <input type="button" id="LocationNext" name="next" class="btn btn-success next  nxt-btn" style="border-radius:25px;width:90px;" value="Next" />
+                    <input type="button" onclick="location.href='@Url.Action("CompanyList", "VendorManagement")'" class="btn btn-default bluebutton nxt-btn" style="border-radius:25px;width:90px;" formnovalidate="formnovalidate" value="Cancel" />
+                }
+                else
+                {
+                    @*<input type="button" name="previous" class="btn btn-default bluebutton previous prv-last-btn pull-right marginright10 marginbottom10 LRmar" value="Previous" style="border-radius:25px;width:90px;" />*@
+                    <button type="submit" class="btn btn-success pull-right marginright10 marginbottom10 Lmar10" style="border-radius:25px;width:150px;">Save &amp; Update </button>
+                    <input type="button" onclick="location.href='@Url.Action("CompanyList", "VendorManagement")'" class="btn btn-default bluebutton pull-right marginright10 marginbottom10 Lmar10" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
+                }
+            </fieldset>
+            <fieldset id="VendorInsurance">
+                @{ViewBag.myModelprefixName = "VendorInsuranceModel."; ViewBag.ActionSection = "VendorInsurance";}
+                <div id="divInsurance">
+                    @Html.Partial("VendorInsurance")
+                </div>
 
-        @*<input type="button" name="next" class="btn btn-default bluebutton next  nxt-btn" value="Next" />
-        <input type="button" name="previous" class="btn btn-default bluebutton previous prv-btn mrgL5" value="Previous" />
-        <input type="button" onclick="callCancel();" class="btn btn-default bluebutton nxt-btn" formnovalidate="formnovalidate" value="Cancel" />*@
+                @*<input type="button" name="next" class="btn btn-default bluebutton next  nxt-btn" value="Next" />
+                    <input type="button" name="previous" class="btn btn-default bluebutton previous prv-btn mrgL5" value="Previous" />
+                    <input type="button" onclick="callCancel();" class="btn btn-default bluebutton nxt-btn" formnovalidate="formnovalidate" value="Cancel" />*@
 
-        <input type="button" name="next" class="btn btn-success next  nxt-btn" value="Next" style="border-radius:25px;width:90px;" />&nbsp; &nbsp;
-        <input type="button" name="previous" class="btn btn-default bluebutton previous prev_btn" value="Previous" style="border-radius:25px;width:90px;" />&nbsp; &nbsp;
-        <input type="button" onclick="callCancel();" class="btn btn-default bluebutton nxt-btn" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
+                <input type="button" name="next" class="btn btn-success next  nxt-btn" value="Next" style="border-radius:25px;width:90px;" />&nbsp; &nbsp;
+                <input type="button" name="previous" class="btn btn-default bluebutton previous prev_btn" value="Previous" style="border-radius:25px;width:90px;" />&nbsp; &nbsp;
+                <input type="button" onclick="callCancel();" class="btn btn-default bluebutton nxt-btn" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
 
-    </fieldset>
+            </fieldset>
 
-    <fieldset id="VendorContractInformation">
-        @{ViewBag.myModelprefixName = "VendorContractModel."; ViewBag.ActionSection = "VendorContract";}
-        <div id="divVendorContract">
-            @Html.Partial("_VendorContract")
-        </div>
+            <fieldset id="VendorContractInformation">
+                @{ViewBag.myModelprefixName = "VendorContractModel."; ViewBag.ActionSection = "VendorContract";}
+                <div id="divVendorContract">
+                    @Html.Partial("_VendorContract")
+                </div>
 
-        <input type="button" name="next" class="btn btn-success next  nxt-btn" value="Next" style="border-radius:25px;width:90px;" />
-        <input type="button" name="previous" class="btn btn-default bluebutton previous prev_btn" value="Previous" style="border-radius:25px;width:90px;" />
-        <input type="button" onclick="callCancel();" class="btn btn-default bluebutton nxt-btn" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
+                <input type="button" name="next" class="btn btn-success next  nxt-btn" value="Next" style="border-radius:25px;width:90px;" />
+                <input type="button" name="previous" class="btn btn-default bluebutton previous prev_btn" value="Previous" style="border-radius:25px;width:90px;" />
+                <input type="button" onclick="callCancel();" class="btn btn-default bluebutton nxt-btn" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
 
-    </fieldset>
-    <fieldset id="VendorFacilityInformation">
-        @{ViewBag.myModelprefixName = "VendorFacilityModel."; ViewBag.ActionSection = "VendorFacility";}
-        <div id="divFacility">
-            @Html.Partial("_VendorFacility")
-        </div>
-        <br /><br />
-        <input type="button" name="next" class="btn btn-success next  nxt-btn" value="Next" style="border-radius:25px;width:90px;" />
-        <input type="button" name="previous" class="btn btn-default bluebutton previous prev_btn" value="Previous" style="border-radius:25px;width:90px;" />
-        <input type="button" onclick="callCancel();" class="btn btn-default bluebutton nxt-btn" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
+            </fieldset>
+            <fieldset id="VendorFacilityInformation">
+                @{ViewBag.myModelprefixName = "VendorFacilityModel."; ViewBag.ActionSection = "VendorFacility";}
+                <div id="divFacility">
+                    @Html.Partial("_VendorFacility")
+                </div>
+                <br /><br />
+                <input type="button" name="next" class="btn btn-success next  nxt-btn" value="Next" style="border-radius:25px;width:90px;" />
+                <input type="button" name="previous" class="btn btn-default bluebutton previous prev_btn" value="Previous" style="border-radius:25px;width:90px;" />
+                <input type="button" onclick="callCancel();" class="btn btn-default bluebutton nxt-btn" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
 
-    </fieldset>
+            </fieldset>
 
-    <fieldset id="VendorAccountDetails">
-        @{ViewBag.myModelprefixName = "VendorAccountDetailsModel."; ViewBag.ActionSection = "VendorAccountDetail";}
-        <div id="divFacility">
-            @Html.Partial("_VendorAccountDetails")
-        </div>
-        <div class="clearfix"></div>
-        <input type="button" name="previous" class="btn btn-default bluebutton previous prv-last-btn pull-right marginright10 marginbottom10 LRmar" value="Previous" style="border-radius:25px;width:90px;" />
-        <button type="submit" id="Savebtndata" onclick="return validateCustomFields(this);" class="btn btn-success pull-right marginright10 marginbottom10 Lmar10" style="border-radius:25px;width:150px;">Save &amp; Update </button>
-        <input type="button" onclick="callCancel();" class="btn btn-default bluebutton pull-right marginright10 marginbottom10 Lmar10" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
+            <fieldset id="VendorAccountDetails">
+                @{ViewBag.myModelprefixName = "VendorAccountDetailsModel."; ViewBag.ActionSection = "VendorAccountDetail";}
+                <div id="divFacility">
+                    @Html.Partial("_VendorAccountDetails")
+                </div>
+                <div class="clearfix"></div>
+                <input type="button" name="previous" class="btn btn-default bluebutton previous prv-last-btn pull-right marginright10 marginbottom10 LRmar" value="Previous" style="border-radius:25px;width:90px;" />
+                <button type="submit" id="Savebtndata" class="btn btn-success pull-right marginright10 marginbottom10 Lmar10" style="border-radius:25px;width:150px;">Save &amp; Update </button>
+                <input type="button" onclick="callCancel();" class="btn btn-default bluebutton pull-right marginright10 marginbottom10 Lmar10" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
 
-    </fieldset>
-}
+            </fieldset>
+
+        }
     </div>
 
 </div>
@@ -377,24 +389,29 @@ else
 
 <div class="clearfix"></div>
 <script>
-    $("#Savebtndata").live("click", function (event){
-    debugger
-        $(function () {
-            fn_showMaskloader('Please wait...Loading');
-        })
-    });
 
-    $(document).ready(function () {
-        $("#lblVendorType").hide(); $("#lblCompanyState").hide(); $("#lblAddress2").hide();
+    $(function () { 
+        setTimeout(function () {
+            $('input[name="VendorEmail"]').val('@Model.VendorEmail');
+        }, 1000);
+        $("#Savebtndata").on("click", function (event) {
+            if (!$("#msform").valid()) {
+                return false;
+            }
+            fn_showMaskloader('Please wait...Loading');
+        });
+        $("#lblVendorType").hide();
+        $("#lblCompanyState").hide();
+        $("#lblAddress2").hide();
         $(".SameAddress").change(function () {
             var AddrState1;
             var AddrCountry1;
             if (this.checked) {
-                    var Addr1 = $("#Address1").val();
-                    var AddrCity1 = $("#Address1City").val();
+                var Addr1 = $("#Address1").val();
+                var AddrCity1 = $("#Address1City").val();
                 $("#Address2").val(Addr1);
                 $("#Address2City").val(AddrCity1);
-                    AddrState1 = $('#Address1State').find('option:selected').val();
+                AddrState1 = $('#Address1State').find('option:selected').val();
                 $('#StateAfterIsSame').val(AddrState1);
                 $('#Address2State').val(AddrState1).trigger('change');
                 $('#Address2,#Address2City').attr('readonly', true);
@@ -404,12 +421,14 @@ else
                 $("#lblAddress2").show();
                 }
             else {
-                //$('#Address2,#Address2City').val("");
+                $('#Address2,#Address2City').val("");
+                $('#Address2State').val('');
                 $('#Address2,#Address2City,#Address2State').css("background-color", "white");
                 $('#Address2,#Address2City,select #Address2State').attr('readonly', false);
+                $('#Address2State').removeAttr('disabled');
                 $('#Address2,#Address2City,#Address2State').removeClass('input-disabled');
-                }
-                });
+            }
+        });
         $("#VendorType").live("click", function () {
             $("#lblVendorType").addClass('active highlight');
             $("#lblVendorType").show();
@@ -421,42 +440,27 @@ else
         $("#Address2State").live("click", function () {
             $("#lblAddress2").addClass('active highlight');
             $("#lblAddress2").show();
-            });
-        $(function () {
-            $("#fileuploadCompany").change(function () {
-                $("#dvCompanyPreview").html("");
-                    var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.pdf|.doc|.txt)$/;
-                    if (regex.test($(this).val().toLowerCase())) {
-                        if ($.browser.msie && parseFloat(jQuery.browser.version) <= 9.0) {
-                        $("#dvCompanyPreview").show();
-                        $("#dvCompanyPreview")[0].filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = $(this).val();
-                        }
-                    else {
-                            if (typeof (FileReader) != "undefined") {
-                            $("#dvCompanyPreview").show();
-                                //$("#dvCompanyPreview").append("<img />");
-                                var reader = new FileReader();
-                                reader.onload = function (e) {
-                                $("#dvCompanyPreview img").attr("src", e.target.result);
-                                }
-                                reader.readAsDataURL($(this)[0].files[0]);
-                            } else {
-                                alert("This browser does not support FileReader.");
-                            }
-                        }
-                    }
-                })
         });
+        $("#fileuploadCompany").change(function () {
+            $("#dvCompanyPreview").html("");
+            var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
+            if (!allowedExtensions.exec($(this).val().toLowerCase())) {
+                alert("Invalid file type");
+                $(this).val("");
+                return false;
+            }
+        })
     if (IsUpdate == "True")
         {
             $("#lblVendorType,#lblCompanyState").show();
             $('label').addClass('active highlight');
             $('#Address2,#Address2City,#Address2State,#TaxNo,#VendorType').css("background-color", "#EBEBE4");
             $('#Address2,#Address2City,#TaxNo').attr('readonly', true);
-            $('#Address2State,#VendorType').attr('disabled', 'disabled');
+            $('#Address2State,select#VendorType').attr("disabled", true);
+            $("#VendorType").val(@Model.VendorType);
             $("#VendorTypeForEdit").val(@ViewBag.VendorTypeIdData);
             $('#VendorId').val(@ViewBag.VendorId);
-            $("#Email").val(e_mail);
+            $('input[name="VendorEmail"]').val('@Model.VendorEmail');
             $('#lblDoc').css("margin-top", "19px");
             LocationIDs = '@LocationIdData';
             $('#SelectVendorToLocation').multiselect({

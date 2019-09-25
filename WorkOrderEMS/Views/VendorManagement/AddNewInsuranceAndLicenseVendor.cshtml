@@ -84,127 +84,127 @@
             Add Insurance/License
         </div>
         @using (Html.BeginForm("AddInsuraceAndLicenseDetails", "VendorManagement", FormMethod.Post, new { enctype = "multipart/form-data", id = "msform" }))
-    {
+        {
             @Html.HiddenFor(model => model.VendorId)
             @Html.HiddenFor(model => model.VendorInsuranceModel.InsuranceID)
             @Html.HiddenFor(model => model.VendorInsuranceModel.LicenseId)
-        <div class="row">
-            <div class="panel-body">
-                <div class="form-horizontal">
-                    <div class="form">
-                        @if (ViewBag.IsInsurance == false)
-                        {
-                        @*<div class="top-row">
-                            <div class="field-wrap">
-                                <label style="font-size:16px;">
-                                    1) Is Company has certificate to Add?<span class="req">*</span>
-                                </label>
-                                <br /><br />
-                                <span style="margin-left:50px;margin-top:-10px;">
-                                    @Html.RadioButtonFor(model => model.VendorInsuranceModel.IsCompanyCertificate, "YesCertificate", true)&nbsp;Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                    @Html.RadioButtonFor(model => model.VendorInsuranceModel.IsCompanyCertificate, "NoCertificate", new { @style = "margin-left:20%;" })&nbsp;No
+            <div class="row">
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="form">
+                            @if (ViewBag.IsInsurance == false)
+                            {
+                                @*<div class="top-row">
+                                        <div class="field-wrap">
+                                            <label style="font-size:16px;">
+                                                1) Is Company has certificate to Add?<span class="req">*</span>
+                                            </label>
+                                            <br /><br />
+                                            <span style="margin-left:50px;margin-top:-10px;">
+                                                @Html.RadioButtonFor(model => model.VendorInsuranceModel.IsCompanyCertificate, "YesCertificate", true)&nbsp;Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                @Html.RadioButtonFor(model => model.VendorInsuranceModel.IsCompanyCertificate, "NoCertificate", new { @style = "margin-left:20%;" })&nbsp;No
 
-                                    @Html.ValidationMessageFor(model => model.VendorInsuranceModel.IsCompanyCertificate)
-                                </span>
-                            </div>
-                        </div>
-                        <br /><br />*@
-                        <div class="top-row HideRowIfNo">
-                            <div class="field-wrap">
-                                <label>
-                                    License Name<span class="req">*</span>
-                                </label>
-                                @Html.TextBoxFor(model => model.VendorInsuranceModel.LicenseName, null, new { @id = "LicenseName", @required = "required", @pattern = @"^([a-zA-Z .&'-]+)$" })
-                                @Html.ValidationMessageFor(model => model.VendorInsuranceModel.LicenseName)
-                                @*@Html.ValidationMessage(myModelprefix + "LicenseName")*@
-                            </div>
-                            <div class="field-wrap">
-                                <label>
-                                    License Number  <span class="req">*</span>
-                                </label>
-                                @Html.TextBoxFor(model => model.VendorInsuranceModel.LicenseNumber, null, new { @id = "LicenseNumber", @required = "required", @pattern = @"^([a-zA-Z0-9]+)$" })
-                                @Html.ValidationMessageFor(model => model.VendorInsuranceModel.LicenseNumber)
-                            </div>
-                        </div>
+                                                @Html.ValidationMessageFor(model => model.VendorInsuranceModel.IsCompanyCertificate)
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <br /><br />*@
+                                <div class="top-row HideRowIfNo">
+                                    <div class="field-wrap">
+                                        <label>
+                                            License Name<span class="req">*</span>
+                                        </label>
+                                        @Html.TextBoxFor(model => model.VendorInsuranceModel.LicenseName, null, new { @id = "LicenseName", @required = "required", @pattern = @"^([a-zA-Z .&'-]+)$" })
+                                        @Html.ValidationMessageFor(model => model.VendorInsuranceModel.LicenseName)
+                                        @*@Html.ValidationMessage(myModelprefix + "LicenseName")*@
+                                    </div>
+                                    <div class="field-wrap">
+                                        <label>
+                                            License Number  <span class="req">*</span>
+                                        </label>
+                                        @Html.TextBoxFor(model => model.VendorInsuranceModel.LicenseNumber, null, new { @id = "LicenseNumber", @required = "required", @pattern = @"^([a-zA-Z0-9]+)$" })
+                                        @Html.ValidationMessageFor(model => model.VendorInsuranceModel.LicenseNumber)
+                                    </div>
+                                </div>
 
-                        <div class="top-row HideRowIfNo">
-                            <div class="field-wrap">
-                                <label>
-                                    Expiration Date<span class="req">*</span>
-                                </label>
-                                @Html.TextBoxFor(model => model.VendorInsuranceModel.LicenseExpirationDate, null, new { @id = "LicenseExpirationDate", @onkeydown = "return false;" })
-                                @Html.ValidationMessageFor(model => model.VendorInsuranceModel.LicenseExpirationDate)
-                            </div>
-                            <div class="field-wrap">
-                                <label>
-                                    License Document<span class="req">*</span>
-                                </label>
-                                <div id="dvLicensePreview">
+                                <div class="top-row HideRowIfNo">
+                                    <div class="field-wrap">
+                                        <label>
+                                            Expiration Date<span class="req">*</span>
+                                        </label>
+                                        @Html.TextBoxFor(model => model.VendorInsuranceModel.LicenseExpirationDate, null, new { @id = "LicenseExpirationDate", @onkeydown = "return false;" })
+                                        @Html.ValidationMessageFor(model => model.VendorInsuranceModel.LicenseExpirationDate)
+                                    </div>
+                                    <div class="field-wrap">
+                                        <label>
+                                            License Document<span class="req">*</span>
+                                        </label>
+                                        <div id="dvLicensePreview">
+                                        </div>
+                                        <input id="fileuploadLicense" type="file" style="margin-left:50%;" name="VendorInsuranceModel.LicenseDocumentFile" />
+                                        <ul class="attachment">
+                                            @if (Model.VendorInsuranceModel != null)
+                                            {
+                                                <li style="margin-left :25%;margin-top:20px;">
+                                                    <a class="title" href="@Url.Content(VendorInsuranceDocPath)">@Model.VendorInsuranceModel.LicenseDocument"</a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
                                 </div>
-                                <input id="fileuploadLicense" type="file" style="margin-left:50%;" name="VendorInsuranceModel.LicenseDocumentFile" />
-                                <ul class="attachment">
-                                    @if (Model.VendorInsuranceModel != null)
-                                    {
-                                    <li style="margin-left :25%;margin-top:20px;">
-                                        <a class="title" href="@Url.Content(VendorInsuranceDocPath)">@Model.VendorInsuranceModel.LicenseDocument"</a>
-                                    </li>
-                                    }
-                                </ul>
-                            </div>
-                        </div>
-                        }
-                        else
-                        {
-                        
-                        <div class="top-row HideRowInsurance" >
-                            <div class="field-wrap">
-                                <label>
-                                    Insurance Carries<span class="req">*</span>
-                                </label>
-                                @Html.TextBoxFor(model => model.VendorInsuranceModel.InsuranceCarries, null, new { @id = "InsuranceCarries" })
-                                @Html.ValidationMessageFor(model => model.VendorInsuranceModel.InsuranceCarries)
-                            </div>
-                            <div class="field-wrap">
-                                <label>
-                                    Policy Number  <span class="req">*</span>
-                                </label>
-                                @Html.TextBoxFor(model => model.VendorInsuranceModel.PolicyNumber, null, new { @id = "PolicyNumber" })
-                                @Html.ValidationMessageFor(model => model.VendorInsuranceModel.PolicyNumber)
-                            </div>
-                        </div>
-                        <div class="top-row HideRowInsurance" >
-                            <div class="field-wrap">
-                                <label>
-                                    Expiration Date<span class="req">*</span>
-                                </label>
-                                @Html.TextBoxFor(model => model.VendorInsuranceModel.InsuranceExpirationDate, null, new { @id = "InsuranceExpirationDate", @onkeydown = "return false;" })
-                                @Html.ValidationMessageFor(model => model.VendorInsuranceModel.InsuranceExpirationDate)
-                            </div>
-                            <div class="field-wrap">
-                                <label>
-                                    Insurance Document<span class="req">*</span>
-                                </label>
-                                <div id="dvInsurancePreview">
+                            }
+                            else
+                            {
+
+                                <div class="top-row HideRowInsurance">
+                                    <div class="field-wrap">
+                                        <label>
+                                            Insurance Carries<span class="req">*</span>
+                                        </label>
+                                        @Html.TextBoxFor(model => model.VendorInsuranceModel.InsuranceCarries, null, new { @id = "InsuranceCarries" })
+                                        @Html.ValidationMessageFor(model => model.VendorInsuranceModel.InsuranceCarries)
+                                    </div>
+                                    <div class="field-wrap">
+                                        <label>
+                                            Policy Number  <span class="req">*</span>
+                                        </label>
+                                        @Html.TextBoxFor(model => model.VendorInsuranceModel.PolicyNumber, null, new { @id = "PolicyNumber" })
+                                        @Html.ValidationMessageFor(model => model.VendorInsuranceModel.PolicyNumber)
+                                    </div>
                                 </div>
-                                <input id="fileuploadInsurance" type="file" style="margin-left:50%;" name="VendorInsuranceModel.InsuranceDocumentFile" />
-                                <ul class="attachment">
-                                    @if (Model.VendorInsuranceModel != null)
-                                    {
-                                    <li style="margin-left :25%;margin-top:20px;">
-                                        <a class="title" href="@Url.Content(VendorInsuranceDocPath + "InsuranceDocument")">@Model.VendorInsuranceModel.InsuranceDocument + "InsuranceDocument"</a>
-                                    </li>
-                                    }
-                                </ul>
-                            </div>
+                                <div class="top-row HideRowInsurance">
+                                    <div class="field-wrap">
+                                        <label>
+                                            Expiration Date<span class="req">*</span>
+                                        </label>
+                                        @Html.TextBoxFor(model => model.VendorInsuranceModel.InsuranceExpirationDate, null, new { @id = "InsuranceExpirationDate", @onkeydown = "return false;" })
+                                        @Html.ValidationMessageFor(model => model.VendorInsuranceModel.InsuranceExpirationDate)
+                                    </div>
+                                    <div class="field-wrap">
+                                        <label>
+                                            Insurance Document<span class="req">*</span>
+                                        </label>
+                                        <div id="dvInsurancePreview">
+                                        </div>
+                                        <input id="fileuploadInsurance" type="file" style="margin-left:50%;" name="VendorInsuranceModel.InsuranceDocumentFile" />
+                                        <ul class="attachment">
+                                            @if (Model.VendorInsuranceModel != null)
+                                            {
+                                                <li style="margin-left :25%;margin-top:20px;">
+                                                    <a class="title" href="@Url.Content(VendorInsuranceDocPath + "InsuranceDocument")">@Model.VendorInsuranceModel.InsuranceDocument + "InsuranceDocument"</a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            }
                         </div>
-                        }
                     </div>
+                    <button type="submit" class="btn btn-success pull-right marginright10 marginbottom10 Lmar10" style="border-radius:25px;width:150px;">Save </button>
+                    <input type="button" onclick="location.href='@Url.Action("ListInsuranceLicenseView", "VendorManagement",new {Vendorid = ViewBag.VendorIdForCancel,VendorStatus = true})'" class="btn btn-default bluebutton pull-right marginright10 marginbottom10 Lmar10" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
                 </div>
-                 <button type="submit"  class="btn btn-success pull-right marginright10 marginbottom10 Lmar10" style="border-radius:25px;width:150px;">Save </button>
-                 <input type="button" onclick="location.href='@Url.Action("ListInsuranceLicenseView", "VendorManagement",new {Vendorid = ViewBag.VendorIdForCancel,VendorStatus = true})'" class="btn btn-default bluebutton pull-right marginright10 marginbottom10 Lmar10" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
             </div>
-        </div>
-       }
+        }
     </div>
 </div>
 
@@ -212,9 +212,8 @@
 <script>
     $(document).ready(function () {
         var contractVal;
-        $("#ContractHolder").change(function ()
-        {
-           contractVal = $("#ContractHolder option:selected").val();
+        $("#ContractHolder").change(function () {
+            contractVal = $("#ContractHolder option:selected").val();
             $("#myModalForContract").modal('show');
         })
         //$("input[type='radio']").change(function () {
@@ -258,48 +257,23 @@
         $(function () {
             $("#fileuploadLicense").change(function () {
                 $("#dvLicensePreview").html("");
-                var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.pdf|.doc|.txt)$/;
-                if (regex.test($(this).val().toLowerCase())) {
-                    if ($.browser.msie && parseFloat(jQuery.browser.version) <= 9.0) {
-                        $("#dvLicensePreview").show();
-                        $("#dvLicensePreview")[0].filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = $(this).val();
-                    }
-                    else {
-                        if (typeof (FileReader) != "undefined") {
-                            $("#dvLicensePreview").show();
-                            $("#dvLicensePreview").append("<img />");
-                            var reader = new FileReader();
-                            reader.onload = function (e) {
-                                $("#dvLicensePreview img").attr("src", e.target.result);
-                            }
-                            reader.readAsDataURL($(this)[0].files[0]);
-                        } else {
-                            alert("This browser does not support FileReader.");
-                        }
-                    }
+                var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
+                if (!allowedExtensions.exec($(this).val().toLowerCase())) {
+                    alert("Invalid file type");
+                    $(this).val("");
+                    return false;
                 }
             })
+
+
+
             $("#fileuploadInsurance").change(function () {
                 $("#dvInsurancePreview").html("");
-                var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.pdf|.doc|.txt)$/;
-                if (regex.test($(this).val().toLowerCase())) {
-                    if ($.browser.msie && parseFloat(jQuery.browser.version) <= 9.0) {
-                        $("#dvInsurancePreview").show();
-                        $("#dvInsurancePreview")[0].filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = $(this).val();
-                    }
-                    else {
-                        if (typeof (FileReader) != "undefined") {
-                            $("#dvInsurancePreview").show();
-                            $("#dvInsurancePreview").append("<img />");
-                            var reader = new FileReader();
-                            reader.onload = function (e) {
-                                $("#dvInsurancePreview img").attr("src", e.target.result);
-                            }
-                            reader.readAsDataURL($(this)[0].files[0]);
-                        } else {
-                            alert("This browser does not support FileReader.");
-                        }
-                    }
+                var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
+                if (!allowedExtensions.exec($(this).val().toLowerCase())) {
+                    alert("Invalid file type");
+                    $(this).val("");
+                    return false;
                 }
             })
         });
