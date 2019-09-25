@@ -108,8 +108,26 @@
 }
             </li>
             <li><a href="@Url.Action("ListLocation", "GlobalAdmin")"><i class="fa fa-location-arrow"></i><span class="nav-text">Location</span></a></li>
-            <li><a href="@Url.Action("OperationDashboard", "NewAdmin")"><i class="mdi mdi-speedometer"></i><span class="nav-text">Operation</span></a></li>
-            <li><a href="@Url.Action("ePeopleDashboard", "NewAdmin")"><i class="fa fa-users"></i><span class="nav-text">ePeople</span></a></li>
+            <li>
+                <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-cogs"></i><span class="nav-text">Operation</span></a>
+                <ul aria-expanded="false">
+                    <li><a href="@Url.Action("EMaintananceDashboard", "NewAdmin")" data-oldDash="No"><i class="fa fa-wrench"></i>eMaintanace</a></li>
+                    <li><a href="@Url.Action("EScanDashboard", "NewAdmin")" data-oldDash="No"><i class="fa fa-print"></i>eScan</a></li>
+                    <li><a href="@Url.Action( "DARDashboard", "NewAdmin")" data-oldDash="No"><i class="fa fa-list"></i>DAR</a></li>
+                    <li><a href="@Url.Action( "WorkOrderReport", "GlobalAdmin")" data-oldDash="Yes"><i class="fa fa-area-chart"></i>Report</a></li>
+                </ul>
+            </li>
+            @*<li><a href="@Url.Action("OperationDashboard", "NewAdmin")"><i class="mdi mdi-speedometer"></i><span class="nav-text">Operation</span></a></li>*@
+            <li>
+                <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-user-circle-o"></i><span class="nav-text">ePeople</span></a>
+                <ul aria-expanded="false">
+                    <li><a href="@Url.Action("OperationDashboard", "NewAdmin")" data-oldDash="No">Employee Management</a></li>
+                    <li><a href="@Url.Action("OperationDashboard", "NewAdmin")" data-oldDash="No">Hiring & Onboarding</a></li>
+                    <li><a href="@Url.Action( "OperationDashboard", "NewAdmin")" data-oldDash="No">Performance Management</a></li>
+                    <li><a href="@Url.Action( "OperationDashboard", "NewAdmin")" data-oldDash="No">eTime </a></li>
+                </ul>
+            </li>
+            @*<li><a href="@Url.Action("ePeopleDashboard", "NewAdmin")"><i class="fa fa-users"></i><span class="nav-text">ePeople</span></a></li>*@
             <li>
                 <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-user-circle-o"></i><span class="nav-text">Manage User</span></a>
                 <ul aria-expanded="false">

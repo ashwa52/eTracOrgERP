@@ -86,8 +86,6 @@
 
 
                 Work Order <span>Details</span>
-
-
             </div>
             <div class="panel-body">
                 <div class="panel-body">
@@ -979,8 +977,7 @@
                 format: "mm/dd/yyyy",
                 startDate: startDate,
                 autoclose: true
-            })
-                .on('changeDate', function (selected) {
+            }).on('changeDate', function (selected) {
                     FromEndDate = new Date(selected.date.valueOf());
                     FromEndDate.setDate(FromEndDate.getDate(new Date(selected.date.valueOf())));
                     $('#StartDate').datepicker('setEndDate', FromEndDate);

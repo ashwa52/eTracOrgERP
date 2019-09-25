@@ -1,0 +1,461 @@
+﻿
+@{
+    Layout = null;
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+    long loginUserType = 0;
+    long locationId = 0;
+    long UserId = 0;
+    if (ObjLogin != null)
+    {
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+        loginUserType = ObjLogin.UserRoleId;
+        locationId = ObjLogin.LocationID;
+        UserId = ObjLogin.UserId;
+    }
+}
+@section scripts{
+
+}
+
+<!--**********************************
+           Content body start
+       ***********************************-->
+<script src="~/Content/NewAdminContent/JQUERY/Charts/core.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/charts.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/material.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/animated.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/amchart3.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/serial3.js"></script>
+@*<script src="~/Content/NewAdminContent/JQUERY/Charts/amcharts.js"></script>
+    <script src="~/Content/NewAdminContent/JQUERY/Charts/serial.js"></script>*@
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+@*<link href="~/Content/NewAdminContent/CSS/clockPicker.css" rel="stylesheet" />*@
+<link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
+
+<style>
+    .addWhite {
+        color: white;
+    }
+
+    .widthHeader {
+        height: 40px;
+    }
+
+    .setLableDiv {
+        margin-top: 7px;
+    }
+</style>
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3" data-aos="fade-up">
+            <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
+                <div class="welcome-text">
+                    <h4>Hi, welcome back! @loginUserName</h4>
+                    <p class="mb-0">eMaintanance Dashboard</p>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <button type="button" id="CreateWO" class="btn btn-primary pull-right" style="border-radius: 35px;">Create Work Order</button>
+            </div>
+        </div>
+        @*<div class="col-sm-12" style="background: #0f3c61;height: 36px;">
+                <span style="font-size: 14px; color: white;"><b>eMaintanance Dashboard</b></span>
+            </div>*@
+        @*<div class="row justify-content-center">
+                <div class="col-lg-3">
+                    <div class="pricing_table_content mt-5" style="background-color: #3f4e62;color:white;">
+                        <p style="margin-left:70px;margin-top:-20px;font-size:20px;"><b>15</b></p>
+                        <div class="package" style="margin-top:-30px;"><i class="mdi mdi-qrcode" style="color:#fff;font-size:30px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Normal</b></div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="pricing_table_content mt-5" style="background-color: #529F9D;color:white;">
+                        <p style="margin-left:70px;margin-top:-20px;font-size:20px;"><b>9</b></p>
+                        <div class="package" style="margin-top:-30px;"><i class="mdi mdi-cart" style="color:yellow;font-size:30px;margin-left: -10px;"></i>&nbsp;&nbsp;&nbsp;<b>Special</b></div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="pricing_table_content mt-5" style="background-color: #3F8ADA;color:white;">
+                        <p style="margin-left:70px;margin-top:-20px;font-size:20px;"><b>5</b></p>
+                        <div class="package" style="margin-top:-30px;"><i class="mdi mdi-account-check" style="color:white;font-size:30px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Continues</b></div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="pricing_table_content mt-5" style="background-color: #3F8ADA;color:white;">
+                        <p style="margin-left:70px;margin-top:-20px;font-size:20px;"><b>5</b></p>
+                        <div class="package" style="margin-top:-30px;"><i class="mdi mdi-account-check" style="color:white;font-size:30px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Facility</b></div>
+                    </div>
+                </div>
+            </div>*@
+        <br />
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header widthHeader ">
+                        <h4 class="card-title addWhite" style="color: white;"><b>Work Order Count</b></h4>
+                    </div>
+                    <div class="card-body chart">
+                        <div id="WorkOrderPieChart" style="height: 236px;"></div>
+                        <canvas id="sold-product" style="display:none;"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header widthHeader ">
+                        <h4 class="card-title addWhite" style="color: white;"><b>Urgent Work Order</b></h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="SafetyHazardChart" style="height: 236px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-lg-12" id="OperationCreateListDiv">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header" style="height: 45px;">
+                        <h4 class="card-title addWhite dispayListWOName" style="color: white;"><b>Work Order List</b></h4>
+                        <h4 class="card-title addWhite dispayCreateWOName" style="display:none;color: white;"><b>Create Work Order</b></h4>
+                        <div class="onoffswitch2" style="margin-left: 997px;margin-top: 6px;"><input type="checkbox" name="onoffswitch2" class="onoffswitch2-checkbox" id="toggleWOTesting"><label for="toggleWOTesting" class="onoffswitch2-label"><span class="onoffswitch2-inner"></span><span class="onoffswitch2-switch"></span></label></div>
+                    </div>
+                    <div class="card-body" id="WOList">
+                        <div id="ListWorkOrderAsssignment"></div>
+                    </div>
+                    <div class="card-body createWOForm" style="display:none;" id="WOFormDetails">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--WO Modals-->
+<div class="modal fade" id="myModalForDeleteWO">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Work Order</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="divDetailPreview" class="">
+                    <div class="row">
+                        <label>Are you sure want to delete Work Order?</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background: white;">
+                <button type="button" class="btn btn-secondary" id="NotDelete" style="border-radius:100px;" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" id="DeleteWO" style="border-radius:100px;">Conform</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="ModalDetailWOPreview">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Work Order Details</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="divDetailPreview" class="">
+                    <div class="row">
+                        <div class="" id="DivWorkDetailsIndex">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label"><strong>Work Order ID :</strong></label>
+                                <div class="col-sm-4">
+                                    <div id="lblCodeNo" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" id="labelWorkRequestType"><strong>Work Request Type :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblWorkRequestType" class="form-control-static"></div>
+                                </div>
+                                <label class="col-sm-3 col-form-label"><strong>Priority Level :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblPriorityLevel" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label"><strong>Project Type :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblProjectType" class="form-control-static"></div>
+                                </div>
+                                <div id="divWoimg">
+                                    <label class="col-sm-2 col-form-label" id="labellAssignedWorkImage">Work Order Image :</label>
+                                    <div class="col-sm-4 custom-size" id="lblAssignedWorkImage">
+                                        <img style="width: 200px!important; height: 200px!important;" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label id="labellWorkRequestStatus" class="col-sm-3 col-form-label"><strong>Work Request Status :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblWorkRequestStatus" class="form-control-static"></div>
+                                </div>
+                                <label class="col-sm-3 col-form-label"><strong>Submitted On :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblSubmittedOn" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label id="labellProblemDescription" class="col-sm-3 col-form-label"><strong>Problem Description :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblProblemDescription" class="form-control-static"></div>
+                                </div>
+                                <label class="col-sm-3 col-form-label" id="labelQRCType"><strong>QRC Type :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblQRCType" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div id="divEmpAssigned">
+                                    <label id="lblAssignToUser" class="col-sm-3 col-form-label"><strong>Employee Assigned</strong></label>
+                                    <div class="col-sm-3 custom-size" id="lblProfile">
+                                        <img style="width: 200px!important; height: 200px!important;" />
+                                    </div>
+                                </div>
+                                <label class="col-sm-3 col-form-label"><strong>Location :</strong></label>
+                                <div class="col-sm-2">
+                                    <div id="lblLocationName" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label id="labellStartDate" class="col-sm-3 col-form-label"><strong>Start Date :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblStartDate" class="form-control-static"></div>
+                                </div>
+                                <label class="col-sm-3 col-form-label" id="labellEndDate"><strong>End Date :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblEndDate" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label id="labellTimeAssigned" class="col-sm-4 col-form-label"><strong>Time Assigned :</strong></label>
+                                <div class="col-sm-2">
+                                    <div id="lblTimeAssigned" class="form-control-static"></div>
+                                </div>
+                                <label class="col-sm-3 col-form-label" id="labellVehicleMake"><strong>Vehicle Make :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblVehicleMake" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label id="labellVehicleModel" class="col-sm-3 col-form-label"><strong>Vehicle Model :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblVehicleModel" class="form-control-static"></div>
+                                </div>
+                                <label class="col-sm-3 col-form-label" id="labellVehicleYear"><strong>Vehicle Year :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblVehicleYear" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label id="labellVehicleColor" class="col-sm-3 col-form-label"><strong>Vehicle Color :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblVehicleColor" class="form-control-static"></div>
+                                </div>
+                                <label class="col-sm-3 col-form-label" id="labellStartTime"><strong>Start Time :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblStartTime" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label id="labellWeekdays" class="col-sm-3 col-form-label"><strong>Weekdays :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblWeekdays" class="form-control-static"></div>
+                                </div>
+                                <label class="col-sm-3 col-form-label" id="labellCustomerName"><strong>Customer Name :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblCustomerName" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label id="labellCustomerContact" class="col-sm-3 col-form-label"><strong>Customer Contact :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblCustomerContact" class="form-control-static"></div>
+                                </div>
+                                <label class="col-sm-3 col-form-label" id="labellDriverLicenseNo"><strong>Driver License No :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblDriverLicenseNo" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label id="labelTotalTimeTaken" class="col-sm-3 col-form-label"><strong>Total Time Taken :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblTotalTimeTaken" class="form-control-static"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="PrintDetails" onclick="return PrintDivForWorkDetails('DivWorkDetailsIndex');" style="border-radius:100px;" data-dismiss="modal">Print Details</button>
+                <button type="button" class="btn btn-primary" id="CloseWO" style="border-radius:100px;">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade " tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-hidden="true" id="myModalForAssignEmployeeData">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Assign Employee</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="divDetailPreviewAssignData" class="">
+
+                </div>
+            </div>
+            <div class="modal-footer" style="background: white;">
+                <button type="button" class="btn btn-secondary" id="closeVSC" style="border-radius:100px;" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="SaveAssignedData" style="border-radius:100px;">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End WO Modals-->
+<!--**********************************
+    Content body end
+***********************************-->
+<script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
+<script src="~/GridListing/JsGridScript/ListWorkOrderAssignment.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+
+<script>
+    am4core.ready(function () {
+        am4core.useTheme(am4themes_animated);
+        var chartQRC = am4core.create("SafetyHazardChart", am4charts.PieChart);
+        chartQRC.data = [{
+            "WO": "Safety Hazard",
+            "Count": 20
+        }, {
+            "WO": "Urgent",
+            "Count": 5//dataJSON.CountPanel[0].EmpCount
+        }];
+        var pieSeries = chartQRC.series.push(new am4charts.PieSeries());
+        pieSeries.dataFields.value = "Count";
+        pieSeries.dataFields.category = "WO";
+        pieSeries.innerRadius = am4core.percent(50);
+        pieSeries.ticks.template.disabled = true;
+        pieSeries.labels.template.disabled = true;
+        pieSeries.slices.template.stroke = am4core.color("#fff");
+        var rgm = new am4core.RadialGradientModifier();
+        rgm.brightnesses.push(-0.10, -0.10, -0.5, 0, -0.5);
+        pieSeries.slices.template.fillModifier = rgm;
+        pieSeries.slices.template.strokeModifier = rgm;
+        pieSeries.slices.template.strokeOpacity = 0.4;
+        pieSeries.slices.template.strokeWidth = 0;
+        chartQRC.legend = new am4charts.Legend();
+
+        chartQRC.legend.position = "right";
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        $('#FromDate,#ToDate').datepicker({
+            format: "yyyy/mm/dd",
+        });
+        $('#Year').datepicker({
+            format: "yyyy"
+        });
+        $("#WOFormDetails").load('@Url.Action("WorkRequestAssignment", "GlobalAdmin")')
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetDashboardHeadCount", "GlobalAdmin")",
+            data: {},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (jsondata) {
+                debugger
+                var arrData = [];
+            if (jsondata != null && jsondata != "" && jsondata.dataJson.trim() != "") {
+            var dataJSON = JSON.parse(jsondata.dataJson);
+            dataJSON.CountPanel[0].AdminCount;
+            if (dataJSON.WorkProjectType.length > 0) {
+                for (i = 0; i < dataJSON.WorkProjectType.length; i++) {
+
+                    if (dataJSON.WorkProjectType[i].Title == 'Continuous Request')
+                        dataJSON.WorkProjectType[i].Title = 'CR';
+                    if (dataJSON.WorkProjectType[i].Title == 'Facility Request')
+                        dataJSON.WorkProjectType[i].Title = 'FR';
+                    if (dataJSON.WorkProjectType[i].Title == 'Special Project')
+                        dataJSON.WorkProjectType[i].Title = 'SP';
+                    if (dataJSON.WorkProjectType[i].Title == 'Work Request')
+                        dataJSON.WorkProjectType[i].Title = 'WR';
+                    arrData.push({
+                        "Work Order": dataJSON.WorkProjectType[i].Title,
+                        "Count": parseInt(dataJSON.WorkProjectType[i].Value)
+                    });
+                }
+            }
+            am4core.ready(function () {
+                am4core.useTheme(am4themes_material);
+                am4core.useTheme(am4themes_animated);
+                var chart = am4core.create("WorkOrderPieChart", am4charts.PieChart);
+                chart.data = arrData;
+                var pieSeries = chart.series.push(new am4charts.PieSeries());
+                pieSeries.dataFields.value = "Count";
+                pieSeries.dataFields.category = "Work Order";
+                pieSeries.innerRadius = am4core.percent(50);
+                pieSeries.ticks.template.disabled = true;
+                pieSeries.labels.template.disabled = true;
+                var rgm = new am4core.RadialGradientModifier();
+                rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
+                pieSeries.slices.template.fillModifier = rgm;
+                pieSeries.slices.template.strokeModifier = rgm;
+                pieSeries.slices.template.strokeOpacity = 0.4;
+                pieSeries.slices.template.strokeWidth = 0;
+                chart.legend = new am4charts.Legend();
+                chart.legend.position = "right";
+            });
+        }
+    }
+});
+
+        $("#CreateWO").click(function () {
+            $("#toggleWOTesting").prop("checked", true);
+            $(".glowbuttonActiveDeactive").removeClass("butttonActive");
+            $(this).addClass('butttonActive');
+            $("#WOList, .dispayListWOName").hide();
+            $(".createWOForm, .dispayCreateWOName").show();
+            $("#WOFormDetails").load('@Url.Action("WorkRequestAssignment", "GlobalAdmin")')
+            $('html,body').animate({
+                scrollTop: $("#OperationCreateListDiv").offset().top
+            }, 'slow');
+        });
+        $('#toggleWOTesting').change(function () {
+            debugger
+            var WOTesting = $('#toggleWOTesting').prop('checked') == true ? true : false;
+            if (WOTesting == true) {
+                $("#WOList, .dispayListWOName").hide();
+                $(".createWOForm, .dispayCreateWOName").show();
+            }
+            else {
+                $(".createWOForm, .dispayCreateWOName").hide();
+                $("#WOList, .dispayListWOName").show();
+            }
+        })
+    });
+</script>
+

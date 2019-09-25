@@ -3392,16 +3392,37 @@ getOrgChart.prototype._aY = function(d, b) {
             //this.insertNode(c)
         } else {
             if (a == "details") {
-                $.ajax({
-                    type: "POST",
-                    url: '../AdminSection/OrgChart/GetAccessDataList?VST_Id=' + c, //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
-                    success: function (Data) {
-                       debugger
+               debugger
+                        homogeneous = new kendo.data.HierarchicalDataSource({
+                            transport: {
+                                read: {
+                                    url: "../AdminSection/OrgChart/GetAccessDataList",
+                                    data: { VST_Id: c },
+                                    dataType: "json"
+                                }
+                            },
+                            schema: {
+                                model: {
+                                    id: "id",
+                                    children: "item"
+                                }
+                            }
+                        });
+                debugger
+                        $("#treeData").kendoTreeView({
+                            dataSource: homogeneous,
+                            dataTextField: ["name"],
+                            checkboxes: {
+                                checkChildren: true
+                            },
+                            check: onCheck,
+                            dataBound: function (e) {
+                                var treeView = $('#treeData').data('kendoTreeView');
+                                treeView.expand(".k-item");
+                            }
+                        });
                         $("#myModalForAccessManagementTree").modal('show');
-                    },
-                    error: function (err) {
-                    }
-                });              
+                       
                // this.showDetailsView(c)
             } else {
                 if (a == "edit") {

@@ -23,18 +23,20 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         private readonly IGlobalAdmin _GlobalAdminManager;
         private readonly ICommonMethod _ICommonMethod;
         private readonly IQRCSetup _IQRCSetup;
+        private readonly IePeopleManager _IePeopleManager;
         private readonly string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private readonly string WorkRequestImagepath = ConfigurationManager.AppSettings["WorkRequestImage"];
         private readonly string ProfilePicPath = ConfigurationManager.AppSettings["ProfilePicPath"];
         private readonly string ConstantImages = ConfigurationManager.AppSettings["ConstantImages"];
         private readonly string NoImage = ConfigurationManager.AppSettings["DefaultImage"];
         
-        public NewAdminController(IDepartment _IDepartment, IGlobalAdmin _GlobalAdminManager, ICommonMethod _ICommonMethod, IQRCSetup _IQRCSetup)
+        public NewAdminController(IDepartment _IDepartment, IGlobalAdmin _GlobalAdminManager, ICommonMethod _ICommonMethod, IQRCSetup _IQRCSetup, IePeopleManager _IePeopleManager)
         {
             this._IDepartment = _IDepartment;
             this._GlobalAdminManager = _GlobalAdminManager;
             this._ICommonMethod = _ICommonMethod;
             this._IQRCSetup = _IQRCSetup;
+            this._IePeopleManager = _IePeopleManager;
         }
         public ActionResult Index()
         {
@@ -208,30 +210,81 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);               
             }
-            #region WO
-            UserType _UserType = (WorkOrderEMS.Helper.UserType)ObjLoginModel.UserRoleId;
-            if (_UserType == UserType.Administrator)
-                ViewBag.Location = _ICommonMethod.GetLocationByAdminId(ObjLoginModel.UserId);
-            else if (_UserType == UserType.Manager)
-                ViewBag.Location = _ICommonMethod.GetLocationByManagerId(ObjLoginModel.UserId);
-            else
-            ViewBag.Location = _ICommonMethod.GetAllLocation();
-            ViewBag.AssignToUserWO = _GlobalAdminManager.GetLocationEmployeeWO(ObjLoginModel.LocationID);
-            ViewBag.AssignToUser = _GlobalAdminManager.GetLocationEmployee(ObjLoginModel.LocationID);
-            ViewBag.Asset = _ICommonMethod.GetAssetList(ObjLoginModel.LocationID);
-            ViewBag.GetAssetListWO = _ICommonMethod.GetAssetListWO(ObjLoginModel.LocationID);
-            ViewBag.UpdateMode = false;
-            ViewBag.PriorityLevel = _ICommonMethod.GetGlobalCodeData("WORKPRIORITY");
-            ViewBag.WorkRequestType = _ICommonMethod.GetGlobalCodeData("WORKREQUESTTYPE");
-            ViewBag.WorkRequestProjectTypeID = _ICommonMethod.GetGlobalCodeData("WORKREQUESTPROJECTTYPE");
-            ViewBag.FacilityRequest = _ICommonMethod.GetGlobalCodeData("FACILITYREQUESTTYPE");
-            ViewBag.StateId = _ICommonMethod.GetStateByCountryId(1);
-            #endregion WO
-
-         
+            //#region WO
+            //UserType _UserType = (WorkOrderEMS.Helper.UserType)ObjLoginModel.UserRoleId;
+            //if (_UserType == UserType.Administrator)
+            //    ViewBag.Location = _ICommonMethod.GetLocationByAdminId(ObjLoginModel.UserId);
+            //else if (_UserType == UserType.Manager)
+            //    ViewBag.Location = _ICommonMethod.GetLocationByManagerId(ObjLoginModel.UserId);
+            //else
+            //ViewBag.Location = _ICommonMethod.GetAllLocation();
+            //ViewBag.AssignToUserWO = _GlobalAdminManager.GetLocationEmployeeWO(ObjLoginModel.LocationID);
+            //ViewBag.AssignToUser = _GlobalAdminManager.GetLocationEmployee(ObjLoginModel.LocationID);
+            //ViewBag.Asset = _ICommonMethod.GetAssetList(ObjLoginModel.LocationID);
+            //ViewBag.GetAssetListWO = _ICommonMethod.GetAssetListWO(ObjLoginModel.LocationID);
+            //ViewBag.UpdateMode = false;
+            //ViewBag.PriorityLevel = _ICommonMethod.GetGlobalCodeData("WORKPRIORITY");
+            //ViewBag.WorkRequestType = _ICommonMethod.GetGlobalCodeData("WORKREQUESTTYPE");
+            //ViewBag.WorkRequestProjectTypeID = _ICommonMethod.GetGlobalCodeData("WORKREQUESTPROJECTTYPE");
+            //ViewBag.FacilityRequest = _ICommonMethod.GetGlobalCodeData("FACILITYREQUESTTYPE");
+            //ViewBag.StateId = _ICommonMethod.GetStateByCountryId(1);
+            //#endregion WO        
             return PartialView("_OperationDashboard");
         }
-        
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 24-Sept-2019
+        /// Created For : To View eMaiantanace
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult EMaintananceDashboard()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
+            var details = new LocationDetailsModel();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            } 
+            return PartialView("~/Views/NewAdmin/WorkOrderView/_WorkOrderDashboard.cshtml");
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 24-Sept-2019
+        /// Created For : To View eScan
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult EScanDashboard()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
+            var details = new LocationDetailsModel();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            return PartialView("~/Views/NewAdmin/QRCView/_eScanDashboard.cshtml");
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 24-Sept-2019
+        /// Created For : To View DAR
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult DARDashboard()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
+            var details = new LocationDetailsModel();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            return PartialView("~/Views/NewAdmin/DAR/_DARDashboard.cshtml");
+        }
         /// <summary>
         /// Created BY : Ashwajit Bansod
         /// Created Date : 01-Sept-2019
@@ -286,6 +339,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             {
                 foreach (var item in data)
                 {
+                    item.id = Cryptography.GetEncryptedData(item.WorkRequestAssignmentID.ToString(), true);
                     item.QRCType =  String.IsNullOrEmpty(item.QRCType) ? ((item.eFleetVehicleID != null && item.eFleetVehicleID != "" ? "Shuttle Bus" : "N/A")) : item.QRCType + " (" + item.QRCodeID + ")";
                     item.FacilityRequestType = (item.FacilityRequestType == null || item.FacilityRequestType.TrimWhiteSpace() == "" || item.FacilityRequestType.Trim() == "") ? "N/A" : item.FacilityRequestType;
                     item.ProfileImage = item.ProfileImage == null ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + item.ProfileImage;
@@ -300,6 +354,8 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
         }
         #endregion Operation
+
+        #region ePeople
         public ActionResult ePeopleDashboard()
         {
             eTracLoginModel ObjLoginModel = null;
@@ -311,6 +367,111 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }            
             return PartialView("_ePeopleDashboard");
         }
-        
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 23-Sept-2019
+        /// Created For : To get All user List by location
+        /// </summary>
+        /// <param name="LocationId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult GetUserList(long? LocationId)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            var details = new List<UserModelList>();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                if (LocationId == 0)
+                {
+                    LocationId = Convert.ToInt32(ObjLoginModel.LocationID);
+                }
+            }
+            var data = _IePeopleManager.GetUserList(LocationId);
+            if (data.Count() > 0)
+            {
+                foreach (var item in data)
+                {                   
+                    item.ProfileImage = item.ProfileImage == null ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + item.ProfileImage;                    
+                    details.Add(item);
+                }
+                return Json(details, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(details, JsonRequestBehavior.AllowGet);
+            }
+        }
+        #endregion ePeople
+        [HttpGet]
+        public JsonResult GeDARList(long? LocationId, int? TastType, long? EmployeeId, string FromDate, string ToDate, string FromTime, string ToTime)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            DARManager objDARDetailsList = new DARManager();
+            var details = new List<WorkRequestAssignmentModelList>();
+            long UserId = 0;
+            string sord = null; String sidx = null; string txtSearch = "";
+            GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                UserId = ObjLoginModel.UserId;
+                if (LocationId == 0)
+                {
+                    LocationId = Convert.ToInt32(ObjLoginModel.LocationID);
+                    UserId = ObjLoginModel.UserId;
+                }
+            }
+            //Getting client date time. 
+            var clientdt = DateTime.UtcNow.GetClientDateTimeNow();
+            //flag status for if user filter record in time span so to date is till midnight. 
+            bool isUTCDay = true;
+            //Fetching record like 2017-06-11T00:00:00-04:00 to 2017-06-12T00:0000-04:00
+            string fromDate = (FromDate == null || FromDate == " " || FromDate == "") ? clientdt.Date.ToString() : FromDate;
+            string toDate = (ToDate == null || ToDate == " " || ToDate == "") ? clientdt.AddDays(1).Date.ToString() : ToDate;
+
+            //maintaining flag  if interval date come then need to fetch record till midnight of todate day
+            if (ToDate != null && ToDate != "" && FromDate != "null")
+            {
+                DateTime tt = Convert.ToDateTime(toDate);
+                if (tt.ToLongTimeString() == "12:00:00 AM")
+                    isUTCDay = false;
+            }
+
+            if (fromDate != null && toDate != null)
+            {
+                DateTime frmd = Convert.ToDateTime(fromDate);
+                DateTime tod = Convert.ToDateTime(toDate);
+                ////if interval date come then need to fetch record till midnight of todate day
+                if ((frmd.Date != tod.Date) && (tod.ToLongTimeString() == "12:00:00 AM") && isUTCDay == false)
+                {
+                    tod = tod.AddDays(1).Date;
+                    toDate = tod.ToString();
+                }
+                if ((frmd.Date == tod.Date) && (tod.ToLongTimeString() == "12:00:00 AM"))
+                {
+                    tod = tod.AddDays(1).Date;
+                    toDate = tod.ToString();
+                }
+            }
+            //Converting datetime from userTZ to UTC
+            fromDate = Convert.ToDateTime(fromDate).ConvertClientTZtoUTC().ToString();
+            toDate = Convert.ToDateTime(toDate).ConvertClientTZtoUTC().ToString();
+            int? rows = 20; int? page = 1;
+            sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
+            sidx = string.IsNullOrEmpty(sidx) ? "CreatedDate" : sidx;
+            var obj_Common_B = new Common_B();
+            ObjectParameter paramTotalRecords = new ObjectParameter("TotalRecords", typeof(int));
+           var data  = objDARDetailsList.GetDARDetails(UserId, LocationId, EmployeeId, TastType, page, rows, sord, sord, txtSearch, paramTotalRecords, fromDate, toDate);           
+            if (data.Count() > 0)
+            {               
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+        }  
     }
 }

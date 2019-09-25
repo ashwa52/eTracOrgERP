@@ -6,11 +6,13 @@
 
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 @*@Styles.Render("~/scripts/clockpickercss")
-@Scripts.Render("~/scripts/clockpickerjs")*@
+    @Scripts.Render("~/scripts/clockpickerjs")*@
+<link href="~/Content/NewAdminContent/CSS/clockPicker.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/CSS/style.css" rel="stylesheet" />
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
 
-<link href="~/Scripts/DurationFlipbox/jtsage-datebox-4.1.1.bootstrap.min.css" rel="stylesheet" />
-<script src="~/Scripts/DurationFlipbox/jquery.mousewheel.min.js"></script>
-<script src="~/Scripts/DurationFlipbox/jtsage-datebox-4.1.1.bootstrap.min.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/clockPicker.js"></script>
 
 <style>
     .ui-datebox-container {
@@ -130,7 +132,7 @@
                     <div class="form-group col-lg-12 col-md-12 col-sm-12  col-xs-12">
                         <hr />
                         <div class="pull-right">
-                            <button class="btn btn-default bluebutton saveclick" id="buttondisable" type="submit" >Save</button>
+                            <button class="btn btn-default bluebutton saveclick" id="buttondisable" type="submit">Save</button>
                             @*<a href="~/GlobalAdmin/WorkAssignmentList" class="btn btn-default bluebutton">Cancel</a>*@
                             <button id="" data-dismiss="modal" class="btn btn-default bluebutton">Close</button>
                         </div>
@@ -142,7 +144,7 @@
     </div>
 }
 <div class="modal fade" id="myModallarge" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog" >
+    <div class="modal-dialog">
         <div class="modal-content" style="">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
@@ -156,14 +158,14 @@
 </div>
 
 <style>
-    #myModallarge .modal-body {width:auto !important; margin:0px !important; }
-    
-   
-
+    #myModallarge .modal-body {
+        width: auto !important;
+        margin: 0px !important;
+    }
 </style>
 <script type="text/javascript">
-    
- 
+
+
     function success(data) {
 
 
@@ -199,7 +201,7 @@
         //$("#buttondisable").click(function () {
         //    $("#buttondisable").prop("disabled", true);
         //    $("#buttondisable").css('background-color', '#0aa0cd');
-        //})       
+        //})
     })
       //  $('.clockpicker').clockpicker();
 </script>

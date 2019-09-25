@@ -48,7 +48,13 @@
     }
 }
 
-
+@section scripts{
+<script type="text/javascript">
+    debugger
+    var $_hostingPrefix = '@hostingPrefix';
+    var $_LocationId = $("#drp_MasterLocation option:selected").val(@locationId);
+</script>
+}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -269,22 +275,22 @@
             Content body end
         ***********************************-->
         <!--**********************************
-            Footer start
-        ***********************************-->
+        Footer start
+    ***********************************-->
         <div class="footer">
             <div class="copyright">
                 <p>Copyright © Designed &amp; Developed by <a href="@hostingPrefix" target="_blank">eTrac</a> 2019</p>
             </div>
-        </div>
+        </div>*@
         <!--**********************************
             Footer end
         ***********************************-->
         <!--**********************************
-           Support ticket button start
-        ***********************************-->
+       Support ticket button start
+    ***********************************-->
         <div class="support-ticket">
             <a href="https://docs.google.com/forms/d/e/1FAIpQLScfrU4Y7_zmErRJkR8ukaRlVgZ1AcAU7Kf4vOQuclNxqWQipQ/viewform" target="_blank" class="support-ticket-btn">Support</a>
-        </div>
+        </div>*@
         <!--**********************************
            Support ticket button end
         ***********************************-->
@@ -830,8 +836,13 @@
 
 <script>
     $(document).ready(function () {
+        $("#drp_MasterLocation1 option:selected").val(@locationId);
+        $("#drp_MasterLocation1").val(@locationId).attr("selected", "selected");
         //On Click menu add partial view
         $("#menu li a").click(function (e) {
+            
+                //new fn_showMaskloader('Please wait...');
+            
             e.preventDefault(); // prevent default link button redirect behaviour
             var url = $(this).attr("href");
             var dashValue = $(this).attr("data-oldDash");            

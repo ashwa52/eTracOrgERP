@@ -577,7 +577,7 @@ function generateqrcodeByVJ(id, sizeGenerate) {
                 image: 'http://localhost:57572/Images/upload.jpg'
             };
             //$('"#'+mycontainer+'"').empty().qrcode(options);
-
+            debugger
             $('#container2').empty().qrcode(options);
             //$("#container").attr('class', 'show');
 
