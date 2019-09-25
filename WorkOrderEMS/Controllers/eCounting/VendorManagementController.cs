@@ -308,9 +308,9 @@ namespace WorkOrderEMS.Controllers
         }
 
         #region "Ajay Kumar"
-        public JsonResult IsTaxNumberIsExists(string TaxNo)
+        public JsonResult IsTaxNumberIsExists(string TaxNo,long? VendorId)
         {
-            bool result = _IVendorManagement.TaxNumberIsExists(TaxNo);
+            bool result = _IVendorManagement.TaxNumberIsExists(TaxNo,Convert.ToInt32(VendorId));
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
@@ -319,6 +319,48 @@ namespace WorkOrderEMS.Controllers
             bool result = _IVendorManagement.InsPolicyNumberIsExists(Obj.VendorInsuranceModel.PolicyNumber);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+       
+        public ActionResult FileImport(string id)
+        {
+            return View();
+        }
+        
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 09-Oct-2018
+        /// Created For : To store product Image 
+        /// </summary>
+        /// <param name="File"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult FileImport(HttpPostedFileBase File)
+        {
+            eTracLoginModel ObjLoginModel = null;
+
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                if (File != null)
+                {
+                    string ImageName = ObjLoginModel.UserId + "_" + DateTime.Now.Ticks.ToString() + "_" + File.FileName.ToString();
+                    CommonHelper obj_CommonHelper = new CommonHelper();
+                    var res = obj_CommonHelper.UploadImage(File, Server.MapPath(ConfigurationManager.AppSettings["VendorImportFilePath"]), ImageName);
+                    ViewBag.ImageUrl = res;
+                    if (res)
+                    {
+
+                        return Json(ImageName);
+                    }
+                    else { return Json(""); }
+                }
+                return Json("");
+            }
+            else
+            {
+                return Json("");
+            }
+        }
+
         #endregion
 
         /// <summary>

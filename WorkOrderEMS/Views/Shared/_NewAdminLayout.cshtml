@@ -69,8 +69,10 @@
     <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
     <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
     <link href="~/Content/NewAdminContent/CSS/style.css" rel="stylesheet" />
-    
     <link href="@Url.Content("~/Scripts/BootStrap-Multiselect/CSS/bootstrap-multiselect.css")" rel="stylesheet" />
+    <!--Js Grid-->
+    <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+    <link href="http://js-grid.com/css/jsgrid-theme.min.css" rel="stylesheet" /> 
     <!-- Page-Level Plugin CSS - Dashboard -->
     @*<link href="@Url.Content("~/Content/common/plugins/morris/morris-0.4.3.min.css")" rel="stylesheet" />
         <link href="@Url.Content("~/Content/common/plugins/timeline/timeline.css")" rel="stylesheet" />*@
@@ -89,6 +91,59 @@
     <!-- Bootstrap time Picker -->
     <link rel="stylesheet" href="@Url.Content("~/Content/Dashboard/plugins/timepicker/bootstrap-timepicker.min.css")" />
     @RenderSection("scripts", required: false)
+    <style>
+        #loader-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1000;
+        }
+
+        #loader {
+            display: block;
+            position: relative;
+            left: 50%;
+            top: 50%;
+            width: 150px;
+            height: 150px;
+            margin: -75px 0 0 -75px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            border-top-color: #3498db;
+            -webkit-animation: spin 2s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+            animation: spin 2s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+        }
+
+            #loader:before {
+                content: "";
+                position: absolute;
+                top: 5px;
+                left: 5px;
+                right: 5px;
+                bottom: 5px;
+                border-radius: 50%;
+                border: 3px solid transparent;
+                border-top-color: #e74c3c;
+                -webkit-animation: spin 3s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+                animation: spin 3s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+            }
+
+            #loader:after {
+                content: "";
+                position: absolute;
+                top: 15px;
+                left: 15px;
+                right: 15px;
+                bottom: 15px;
+                border-radius: 50%;
+                border: 3px solid transparent;
+                border-top-color: #f9c922;
+                -webkit-animation: spin 1.5s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+                animation: spin 1.5s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+            }
+    </style>
     <!--File Upload-->
     <script type="text/javascript" src="@Url.Content("~/Scripts/1.9.1-js/jquery-ui-1.9.2.min.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/FileUpload/jquery.fileupload.js")"></script>
@@ -98,13 +153,14 @@
     <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.min.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/BootStrap-Multiselect/JS/bootstrap-multiselect.js")"></script>
     <link href="~/Content/toastr.css" rel="stylesheet" />
-
+    <script src="@Url.Content("~/Content/common/plugins/Loader/maskLoader.js")"></script>
     <script type="text/javascript">
     var $_hostingPrefix = '@hostingPrefix';
         var $_HostPrefix = '@hostingPrefix';
         $_AuthorizeURL = '@AuthorizeUrl';
         $_IsConnectd = '@ViewBag.IsConnected';
         var $_locationId = '@locationId';
+           $_JqueryLoader = '@hostingPrefix';
     </script>
     <style>
         .field-validation-error {
@@ -128,54 +184,54 @@
     <div id="main-wrapper">
 
         <!--**********************************
-            Nav header start
-        ***********************************-->
+        Nav header start
+    ***********************************-->
         <div class="nav-header">
             @if (GloblaAdminUser || ITAdminUser)
-        {
-            <a href="~/GlobalAdmin" class="brand-logo">
-                <img src="~/Images/logo2.png" style="width: 110px;" />
-                @*<span class="logo-abbr"></span>
-                <span class="logo-compact">eTrac</span>
-                <span class="brand-title">eTrac</span>*@
-            </a>
-    }
+            {
+                <a href="~/GlobalAdmin" class="brand-logo">
+                    <img src="~/Images/logo2.png" style="width: 110px;" />
+                    @*<span class="logo-abbr"></span>
+                    <span class="logo-compact">eTrac</span>
+                    <span class="brand-title">eTrac</span>*@
+                </a>
+            }
             @if (OnlyAdminUser)
-        {
-            <a href="~/Administrator" class="brand-logo">
-                <img src="~/Images/logo2.png" style="width: 110px;" />
-                @*<span class="logo-abbr"></span>
-                <span class="logo-compact">eTrac</span>
-                <span class="brand-title">eTrac</span>*@
-            </a>
-    }
+            {
+                <a href="~/Administrator" class="brand-logo">
+                    <img src="~/Images/logo2.png" style="width: 110px;" />
+                    @*<span class="logo-abbr"></span>
+                    <span class="logo-compact">eTrac</span>
+                    <span class="brand-title">eTrac</span>*@
+                </a>
+            }
             @if (ManagerUser)
-        {
-            <a href="~/Manager/Dashboard" class="brand-logo">
-                <img src="~/Images/logo2.png" style="width: 110px;" />
-                @*<span class="logo-abbr"></span>
-                <span class="logo-compact">eTrac</span>
-                <span class="brand-title">eTrac</span>*@
-            </a>
-    }
+            {
+                <a href="~/Manager/Dashboard" class="brand-logo">
+                    <img src="~/Images/logo2.png" style="width: 110px;" />
+                    @*<span class="logo-abbr"></span>
+                    <span class="logo-compact">eTrac</span>
+                    <span class="brand-title">eTrac</span>*@
+                </a>
+            }
             @if (EmployeeUser)
-        {
-            <a href="~/Employee/Dashboard" class="brand-logo">
-                <img src="~/Images/logo2.png" style="width: 110px;" />
-                @*<span class="logo-abbr"></span>
-                <span class="logo-compact">eTrac</span>
-                <span class="brand-title">eTrac</span>*@
-            </a>
-    }
+            {
+                <a href="~/Employee/Dashboard" class="brand-logo">
+                    <img src="~/Images/logo2.png" style="width: 110px;" />
+                    @*<span class="logo-abbr"></span>
+                    <span class="logo-compact">eTrac</span>
+                    <span class="brand-title">eTrac</span>*@
+                </a>
+            }
             @if (ClientUser)
-        {
-            <a href="~/Client" class="brand-logo">
-                <img src="~/Images/logo2.png" style="width: 110px;" />
-                @*<span class="logo-abbr"></span>
-                <span class="logo-compact">eTrac</span>
-                <span class="brand-title">eTrac</span>*@
-            </a>
-    }
+            {
+                <a href="~/Client" class="brand-logo">
+                    <img src="~/Images/logo2.png" style="width: 110px;" />
+                    @*<span class="logo-abbr"></span>
+                    <span class="logo-compact">eTrac</span>
+                    <span class="brand-title">eTrac</span>*@
+                </a>
+            }
             <div class="nav-control">
                 <div class="hamburger">
                     <span class="line"></span>
@@ -192,13 +248,16 @@
 
         <!--Side Menu-->
         @if (@ViewBag.AccountSection == true)
-    {
-        @Html.Partial("_NewAdminSideMenu")
-}
-else
-{
-    @Html.Partial("_NewSideMenu")
-}
+        {
+            @Html.Partial("_NewAdminSideMenu")
+        }
+        else
+        {
+            @Html.Partial("_NewSideMenu")
+        }
+        <div id="loader-wrapper" style="display:none;">
+            <div id="loader"></div>
+        </div>
         @*<a href="~/Views/Shared/_NewSideMenu.cshtml">~/Views/Shared/_NewSideMenu.cshtml</a>*@
         <!--**********************************
         Content body start
@@ -671,8 +730,8 @@ else
             </div>
         </div>
         <!--**********************************
-            Right sidebar end
-        ***********************************-->
+        Right sidebar end
+    ***********************************-->
         <!--endRemoveIf(production)-->
     </div>
     <!--Added By Ashwajit Bansod to open modal to connect quickbook-->

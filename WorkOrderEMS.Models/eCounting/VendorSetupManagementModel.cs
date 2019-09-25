@@ -76,7 +76,7 @@ namespace WorkOrderEMS.Models
 
         [Required]
         [RegularExpression("^[a-zA-Z0-9, -@]+$", ErrorMessage = "Special characters are not allowed.")]
-        [Remote("IsTaxNumberIsExists", "VendorManagement", ErrorMessage = "Tax No already in used.")]
+        [Remote("IsTaxNumberIsExists", "VendorManagement", AdditionalFields = "VendorId", ErrorMessage = "Tax No already in used.")]
         public string TaxNo { get; set; }
         //public string Address2Country { get; set; }
 

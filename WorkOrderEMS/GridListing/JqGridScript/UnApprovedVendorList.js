@@ -343,6 +343,7 @@ function RejectVendor() {
     $("#myModelApproveRejectVendor").modal('show');
 }
 function AppproveVendor() {
+    $("#CommentVendor").val("");
     $("#btnApproveData").addClass("disabled");
     callAjaxVendor();
 }
@@ -373,9 +374,9 @@ function callAjaxVendor() {
         datatype: 'application/json',
         contentType: 'application/json',
         data: JSON.stringify({ objVendorApproveRejectModel: objData }),
-        //beforeSend: function () {
-        //    new fn_showMaskloader('Please wait...');
-        //},
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
         success: function (result) { 
             toastr.success(result);
             $("#myModalForGetUnApprovedVendorDetails").modal('hide');
@@ -384,8 +385,8 @@ function callAjaxVendor() {
             $("#jsGrid-basic").jsGrid("loadData"); 
         },
         error: function () { toastr.error(result); },
-        //complete: function () {
-        //    fn_hideMaskloader();
-        //}
+        complete: function () {
+            fn_hideMaskloader();
+        }
     });
 }

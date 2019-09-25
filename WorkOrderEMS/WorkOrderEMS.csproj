@@ -6363,6 +6363,7 @@
     <Content Include="Views\NewAdmin\WorkOrderView\_CreateWorkOrder.cshtml" />
     <Content Include="Views\NewAdmin\_ePeopleDashboard.cshtml" />
     <Content Include="Views\NewAdmin\QRCView\_QRCForm.cshtml" />
+    <Content Include="Views\VendorManagement\FileImport.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6399,6 +6400,7 @@
     <Folder Include="Content\Images\RulesViolation\" />
     <Folder Include="Content\Images\UserSignature\" />
     <Folder Include="Content\Images\VendorDocs\" />
+    <Folder Include="Content\ImportFile\" />
     <Folder Include="Content\NewAdminContent\VENDOR\tinymce\skins\lightgray\img\plugins\" />
     <Folder Include="Content\PDFForms\PDFFormAfterFilling\" />
     <Folder Include="Content\ProjectDocs\VendorAckForm\" />

@@ -90,354 +90,350 @@
         </div>
 
     </div>
-</div>
-@*<link href="~/Content/Blink.css" rel="stylesheet" />*@
- 
-@*<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div id="jqGrid_containerCompany">
-        <table id="tbl_AllCompanyDataList" border="0" cellpadding="0" cellspacing="0"></table>
-        <div id="divAllCompanyDataListPager"></div>
-    </div>
-</div>*@
+</div> 
 <br />
-
-
 <div class="modal bs-example-modal-lg fade preview" id="myModalForGetVendorDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg ">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">X</span></button>
-                <h4 class="modal-title" id="myModalLabel">Vendor Details</h4>
+                <h5 class="modal-title" id="myModalLabel">Vendor Details</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
             </div>
+
             <div class="modal-body">
                 <div id="divVendorDetailPreview" class="">
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Vendor Name</label>
-                                <div id="lblVendorNameLegal" class="form-control-static"></div>
+                    <div id="divVendorDetailPreview" class="">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Vendor Name</label>
+                                    <div id="lblVendorNameLegal" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Vendor Name DBA</label>
+                                    <div id="lblVendorNameDBA" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Vendor Type</label>
+                                    <div id="lblVendorType" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Point Of Contact</label>
+                                    <div id="lblPointOfContact" class="form-control-static"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Vendor Name DBA</label>
-                                <div id="lblVendorNameDBA" class="form-control-static"></div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Address</label>
+                                    <div id="lblAddress" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Phone1</label>
+                                    <div id="lblPhone1" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Phone2</label>
+                                    <div id="lblPhone2" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <div id="lblEmail" class="form-control-static"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Vendor Type</label>
-                                <div id="lblVendorType" class="form-control-static"></div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Website</label>
+                                    <div id="lblWebsite" class="form-control-static"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Point Of Contact</label>
-                                <div id="lblPointOfContact" class="form-control-static"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Address</label>
-                                <div id="lblAddress" class="form-control-static"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Phone1</label>
-                                <div id="lblPhone1" class="form-control-static"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Phone2</label>
-                                <div id="lblPhone2" class="form-control-static"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Email</label>
-                                <div id="lblEmail" class="form-control-static"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Website</label>
-                                <div id="lblWebsite" class="form-control-static"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div style="background-color:#0792bc;height:2%;">
-                            <center><p style="color:white;"><b>Vendor Insurance & License Details</b></p></center>
-                        </div>
-                    </div>
-                    <br />
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>License Name</label>
-                                <div id="lblLicenseName" class="form-control-static"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>License Number</label>
-                                <div id="lblLicenseNumber" class="form-control-static"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>License Expiration Date</label>
-                                <div id="lblLicenseExpirationDate" class="form-control-static"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Insurance Carries</label>
-                                <div id="lblInsuranceCarries" class="form-control-static"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Policy Number</label>
-                                <div id="lblPolicyNumber" class="form-control-static"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Insurance Expiration Date</label>
-                                <div id="lblInsuranceExpirationDate" class="form-control-static"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div style="background-color:#0792bc;height:2%;">
-                            <center><p style="color:white;"><b>Vendor Contract Details</b></p></center>
-                        </div>
-                    </div>
-                    <br />
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>First Company</label>
-                                <div id="lblFirstCompany" class="form-control-static"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Secondary Company</label>
-                                <div id="lblSecondaryCompany" class="form-control-static"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Vendor Type</label>
-                                <div id="lblVendorTypeContract" class="form-control-static"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Contract Type</label>
-                                <div id="lblContractType" class="form-control-static"></div>
-                            </div>
-                        </div>
-                    </div>
+                        <div class="row">
+                            <div style="background-color:#0792bc;width:94%">
 
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Contract issued by</label>
-                                <div id="lblContractissuedby" class="form-control-static"></div>
+                                <center><p style="color:white;margin:8px 0!important;"><b>Vendor Insurance & License Details</b></p></center>
                             </div>
                         </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Contract executed by</label>
-                                <div id="lblContractexecutedby" class="form-control-static"></div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>License Name</label>
+                                    <div id="lblLicenseName" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>License Number</label>
+                                    <div id="lblLicenseNumber" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>License Expiration Date</label>
+                                    <div id="lblLicenseExpirationDate" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Insurance Carries</label>
+                                    <div id="lblInsuranceCarries" class="form-control-static"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Primary Payment Mode</label>
-                                <div id="lblPrimaryPaymentMode" class="form-control-static"></div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Policy Number</label>
+                                    <div id="lblPolicyNumber" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Insurance Expiration Date</label>
+                                    <div id="lblInsuranceExpirationDate" class="form-control-static"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Payment Term</label>
-                                <div id="lblPaymentTerm" class="form-control-static"></div>
+                        <div class="row">
+                            <div style="background-color:#0792bc;width:94%">
+                                <center><p style="color:white;margin:8px 0!important;"><b>Vendor Contract Details</b></p></center>
                             </div>
                         </div>
-                    </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>First Company</label>
+                                    <div id="lblFirstCompany" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Secondary Company</label>
+                                    <div id="lblSecondaryCompany" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Vendor Type</label>
+                                    <div id="lblVendorTypeContract" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Contract Type</label>
+                                    <div id="lblContractType" class="form-control-static"></div>
+                                </div>
+                            </div>
+                        </div>
 
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Grace Period</label>
-                                <div id="lblGracePeriod" class="form-control-static"></div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Contract issued by</label>
+                                    <div id="lblContractissuedby" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Contract executed by</label>
+                                    <div id="lblContractexecutedby" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Primary Payment Mode</label>
+                                    <div id="lblPrimaryPaymentMode" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Payment Term</label>
+                                    <div id="lblPaymentTerm" class="form-control-static"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Invoicing Frequency</label>
-                                <div id="lblInvoicingFrequency" class="form-control-static"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Start Date</label>
-                                <div id="lblStartDate" class="form-control-static"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>End Date</label>
-                                <div id="lblEndDate" class="form-control-static"></div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Cost During Period</label>
-                                <div id="lblCostDuringPeriod" class="form-control-static"></div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Grace Period</label>
+                                    <div id="lblGracePeriod" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Invoicing Frequency</label>
+                                    <div id="lblInvoicingFrequency" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Start Date</label>
+                                    <div id="lblStartDate" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>End Date</label>
+                                    <div id="lblEndDate" class="form-control-static"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Annual Value Of Aggriment</label>
-                                <div id="lblAnnualValueOfAggriment" class="form-control-static"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Minimum Bill Amount</label>
-                                <div id="lblMinimumBillAmount" class="form-control-static"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Bill Due Date</label>
-                                <div id="lblBillDueDate" class="form-control-static"></div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label> Late Fine/Fee</label>
-                                <div id="lblLateFineFee" class="form-control-static"></div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Cost During Period</label>
+                                    <div id="lblCostDuringPeriod" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Annual Value Of Aggriment</label>
+                                    <div id="lblAnnualValueOfAggriment" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Minimum Bill Amount</label>
+                                    <div id="lblMinimumBillAmount" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Bill Due Date</label>
+                                    <div id="lblBillDueDate" class="form-control-static"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Location</label>
-                                <div id="lblSelectedLocation" class="form-control-static"></div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <div style="background-color:#0792bc;height:2%;">
-                            <center><p style="color:white;margin-top:4px;"><b>Vendor Account Details</b></p></center>
-                        </div>
-                    </div>
-                    <br />
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Pay Mode</label>
-                                <div id="lblPayMode" class="form-control-static"></div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label> Late Fine/Fee</label>
+                                    <div id="lblLateFineFee" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Location</label>
+                                    <div id="lblSelectedLocation" class="form-control-static"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Bank Name</label>
-                                <div id="lblBankName" class="form-control-static"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label> Bank Location</label>
-                                <div id="lblBankLocation" class="form-control-static"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Account Number</label>
-                                <div id="lblAccountNumber" class="form-control-static"></div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>IFSC Code</label>
-                                <div id="lblIFSCCode" class="form-control-static"></div>
+                        <div class="row">
+                            <div style="background-color:#0792bc;width:94%">
+                                <center><p style="color:white;margin:8px 0!important;"><b>Vendor Account Details</b></p></center>
                             </div>
                         </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Swift OIC Code</label>
-                                <div id="lblSwiftOICCode" class="form-control-static"></div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Pay Mode</label>
+                                    <div id="lblPayMode" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Bank Name</label>
+                                    <div id="lblBankName" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label> Bank Location</label>
+                                    <div id="lblBankLocation" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Account Number</label>
+                                    <div id="lblAccountNumber" class="form-control-static"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label> Card Number</label>
-                                <div id="lblCardNumber" class="form-control-static"></div>
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Policy Number</label>
-                                <div id="lblPolicyNumber" class="form-control-static"></div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="row">
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Card Holder Name</label>
-                                <div id="lblCardHolderName" class="form-control-static"></div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>IFSC Code</label>
+                                    <div id="lblIFSCCode" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Swift OIC Code</label>
+                                    <div id="lblSwiftOICCode" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label> Card Number</label>
+                                    <div id="lblCardNumber" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Policy Number</label>
+                                    <div id="lblPolicyNumber" class="form-control-static"></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label>Expiration Date</label>
-                                <div id="lblExpirationDate" class="form-control-static"></div>
+
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Card Holder Name</label>
+                                    <div id="lblCardHolderName" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Expiration Date</label>
+                                    <div id="lblExpirationDate" class="form-control-static"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <table id="VendorFacility_table" class="table" cellpadding="1" cellspacing="1" border="1"></table>
                             </div>
                         </div>
                     </div>
-                    <br />
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <table id="VendorFacility_table" class="table" cellpadding="1" cellspacing="1" border="1"></table>
-                        </div>
-                    </div>
-                </div>
-            </div><br /><br />
-            <div class="panel-footer">
-                <div class="text-right">
-                    <button type="button" class="btn btn-default bluebutton text-right" style="border-radius:25px;width:90px;" onclick="return AppproveVendor();" id="btnApproveData">Approve</button>
-                    <button class="btn btn-danger" onclick="return RejectVendor();" style="border-radius:25px;width:90px;" id="btnRejectPO">Reject</button>
-                    <button data-dismiss="modal" class="btn btn-default" style="border-radius:25px;width:90px;" id="btnCancel">Cancel</button>
                 </div>
             </div>
+            <div class="modal-footer">
+                  
+                <button data-dismiss="modal" class="btn btn-secondary" style="border-radius:25px;width:90px;" id="btnCancel">Cancel</button> 
+            </div>
+
         </div>
     </div>
 </div>
+
+ 
 
 <div id="myModelApproveRejectVendor" class="modal fade bs-example-modal-md">
     <div class="modal-dialog">

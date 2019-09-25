@@ -678,6 +678,9 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                             ApproveRemoveSatus = "Removed";
                             Status = "N";
                         }
+
+
+
                         var IsApprove = _workorderems.spSetApprovalForVendorAllDetail(ObjApproveRejectVendorModel.Vendor,
                                                                              ObjApproveRejectVendorModel.Comment, Status, ObjApproveRejectVendorModel.UserId);
                         #region "TEQ"
@@ -1734,11 +1737,20 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// </summary>
         /// <param name="taxNumber"></param>
         /// <returns></returns>
-        public bool TaxNumberIsExists(string taxNumber)
+        public bool TaxNumberIsExists(string taxNumber,long VendorId)
         {
             bool result = false;
-            var status = _workorderems.TaxDetails.Any(u => u.TXD_TaxIdNumber.ToLower() == taxNumber.Trim().ToLower());
-            result = status == true ? result = false : result = true;
+            if (VendorId > 0)
+            {
+                var status = _workorderems.TaxDetails.Any(u => u.TXD_TaxIdNumber.ToLower() == taxNumber.Trim().ToLower() && u.TXD_Id != VendorId);
+                result = status == true ? result = true : result = false;
+            }
+            else
+            {
+                var status = _workorderems.TaxDetails.Any(u => u.TXD_TaxIdNumber.ToLower() == taxNumber.Trim().ToLower());
+                result = status == true ? result = false : result = true;
+            }
+           
             return result;
         }
 
