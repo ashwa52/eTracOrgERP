@@ -45,6 +45,7 @@
 <link href="@Url.Content("~/Content/NewAdminContent/CSS/RadioButtonCSS.css")" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/CSS/clockPicker.css" rel="stylesheet" />
 <link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/toastr/css/toastr.min.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/CSS/style.css" rel="stylesheet" />
 <br />
 @Html.AntiForgeryToken()
@@ -485,11 +486,11 @@
         <div class="ContinuesWODIV" style="display:none;">
             <div class="form-group row">
                 <div class="col-sm-6">
-                    @Html.TextAreaFor(model => model.ProblemDesc, new { @Placeholder = "Problem Description", @class = "form-control input-rounded required " })
+                    @Html.TextAreaFor(model => model.ProblemDesc, new { @Placeholder = "Problem Description", id = "ProblemDescCont", @class = "form-control input-rounded required " })
                     @Html.ValidationMessageFor(model => model.ProblemDesc)
                 </div>
                 <div class="col-sm-6">
-                    @Html.TextBoxFor(model => model.AssignedTimeInterval, new { @class = "form-control input-rounded required clockpicker", @onkeypress = "return isNumberKey(event)", @id = "txtAssignedTime", @placeholder = "Choose Time" })
+                    @Html.TextBoxFor(model => model.AssignedTimeInterval, new { @class = "form-control input-rounded required clockpicker", @onkeypress = "return isNumberKey(event)", @id = "txtAssignedTimeCont", @placeholder = "Choose Time" })
                     <span class="pull-left text-info" style="color:gray;"><i>(HH:MM i.e 00:30)</i></span>
                     @Html.ValidationMessageFor(model => model.AssignedTimeInterval)
                 </div>
@@ -525,15 +526,15 @@
                         {
                             if (Model.AssignedWeekDaysList.Exists(x => x == per.Name))
                             {
-                                <span class="checkbox squaredTwo weekday @per.Name ">
-                                    <input type="checkbox" class="large" id='@per.ID' checked="checked" name='@per.Name' />&nbsp;<span>@per.Name</span>
+                                <span class="checkbox squaredTwo weekday @per.Name " style="margin-left:15px;">
+                                    <input type="checkbox" class="large" id='@per.ID' checked="checked" name='@per.Name' />&nbsp;<span style="margin-left:20px;">@per.Name</span>
                                     <label for="squaredTwo"></label>
                                 </span>
                             }
                             else
                             {
-                                <span class="checkbox squaredTwo weekday @per.Name ">
-                                    <input type="checkbox" class="large" id='@per.ID' name='@per.Name' />&nbsp;<span>@per.Name</span>
+                                <span class="checkbox squaredTwo weekday @per.Name " style="margin-left:15px;">
+                                    <input type="checkbox" class="large" id='@per.ID' name='@per.Name' />&nbsp;<span style="margin-left:20px;">@per.Name</span>
                                     <label for="squaredTwo"></label>
                                 </span>
                             }
@@ -562,7 +563,6 @@
         </div>
         <input type="submit" id="SaveWO" class="btn btn-primary pull-right" style="border-radius: 35px;width: 100px;background-color:#0aa0cd;" value="Save" />
 </form>
-
 <!--**********************************
     Content body end
 ***********************************-->
@@ -596,17 +596,24 @@
 @*<script src="~/Scripts/bootstrap.min.js"></script>*@
 <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
-
 <script src="~/Content/NewAdminContent/VENDOR/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
 <script src="~/Scripts/NewAdminJS/plugins-init/bootstrap-multiselect-init.js"></script>
 <script type="text/javascript" src="~/Scripts/BindDropDown/DropDownList.js"></script>
 <script src="~/Scripts/NewAdminJS/WorkOrderHideShowFunctionality.js"></script>
-<script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
 <script src="~/Content/NewAdminContent/JQUERY/MaskLoaderNew.js"></script>
 <script src="~/Content/NewAdminContent/JQUERY/clockPicker.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+<script src="~/Content/NewAdminContent/VENDOR/toastr/js/toastr.min.js"></script>
+<script src="~/Scripts/NewAdminJS/plugins-init/toastr-init.js"></script>
 @*<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.0/jquery.validate.min.js"></script>*@
 <script>
 
+    $('#StartDate,#EndDate').datepicker({
+        format: "yyyy/mm/dd",
+    });
+    $("#Year").datepicker({
+        format: "yyyy",
+    });
     var updateMode = "@ViewBag.UpdateMode";
     var ProjectType = "@Model.WorkRequestProjectType";
     var WorkRequestType = '@Model.WorkRequestType';
@@ -642,9 +649,10 @@
                     $("#ddlWorkRequestType").val(WorkRequestType);
                     $("#ddlPriorityLevel").val(priorityLevelData);
                     $(".WorkRequestDIV").hide();
-                    $(".ContinuesWODIV, #OperationCreateListDiv , .createWOForm").show();
+                    $(".ContinuesWODIV, #OperationCreateListDiv , .createWOForm, .AssignToUserForSPecial, .dispayCreateWOName").show();
                     $(".NormalWODIV").attr({ style: "display:none;" })
                     $("#WOList, .dispayListWOName , .NormalWODIV").hide();
+                    $(".dispayCreateWOName").html("Update Work Order");
                 }
             }
             if(priorityLevelData != "")
@@ -711,8 +719,8 @@
 
     $("#SaveWO").click(function () {
         debugger
-        //if ($("#WorkorderSave").valid())
-        //{
+        if ($("#WorkorderSave").valid())
+        {
             var dataObject;
             var img = "";
             var ImageName = "";
@@ -743,7 +751,8 @@
                 $("#ddlAssignToUserForSpecialWO").val($("#ddlAssignToUser").val());
             }
             else if (projectTypeData == 279) {
-       
+                $("#ProblemDesc").val($("#ProblemDescCont").val());
+                $("#txtAssignedTime").val($("#txtAssignedTimeCont").val());
                 img = $("#WorkOrderContImage").val();
                 if (img == "" || img == undefined || img == null) {
                 }
@@ -793,7 +802,7 @@
                         $("#WOList, .dispayListWOName").show();
                         $(".createWOForm, .dispayCreateWOName").hide();
                         $("#ListWorkOrderAsssignment").jsGrid("loadData");
-
+                        toastr.success(Data.Message);
                         //$("#ListWorkOrderAsssignment").jsGrid("refresh");
                     },
                     error: function (err) {
@@ -807,10 +816,7 @@
                 if (file_data != undefined) {
                     $.ajax({
                         url: '@Url.Action("UploadedWorkOrderImage", "GlobalAdmin")',
-                        dataType: 'script',
-                        beforeSend: function () {
-                            new fn_showMaskloader('Please wait...');
-                        },
+                        dataType: 'script',                       
                         cache: false,
                         contentType: false,
                         processData: false,
@@ -826,6 +832,9 @@
                             $.ajax({
                                 type: "POST",
                                 url: '@Url.Action("WorkRequestAssignment", "GlobalAdmin")',
+                                beforeSend: function () {
+                                    new fn_showMaskloader('Please wait...');
+                                },
                                 data: dataObject,//{ objWorkRequestAssignmentModel: dataObject, fileData: file },
                                 success: function (Data) {
                                     $("#WOFormDetails").load('@Url.Action("WorkRequestAssignment", "GlobalAdmin")')
@@ -834,25 +843,25 @@
                                     $(".createWOForm, .dispayCreateWOName").hide();
                                     $("#ListWorkOrderAsssignment").jsGrid("loadData");
                                     $("#ListWorkOrderAsssignment").jsGrid("refresh");
+                                    toastr.success(Data.Message);
                                 },
                                 error: function (err) {
+                                },
+                                complete: function () {
+                                    fn_hideMaskloader();
                                 }
                             });
 
                         },
-                        error: function (e) { alert("error:" + e); },
-                        complete: function () {
-                            fn_hideMaskloader();
-                        }
+                        error: function (e) { alert("error:" + e); }
+                       
                     });
                 }
             }
-        //    return true;
-        //}
-        //else {
-        //    return false;
-
-        //}
+        }
+        else {
+            return false;
+        }
     });
 </script>
 

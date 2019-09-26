@@ -99,6 +99,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                               success: function (Data) {
                                                   $("#myModalForDeleteWO").modal("hide");
                                                   $("#ListWorkOrderAsssignment").jsGrid("loadData");
+                                                  toastr.success(Data.Message);
                                               },
                                               error: function (err) {
                                               }

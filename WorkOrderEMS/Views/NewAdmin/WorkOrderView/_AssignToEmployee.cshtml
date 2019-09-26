@@ -103,7 +103,8 @@
                 debugger
                  $("#divDetailPreviewAssignData").html("");
                  $("#myModalForAssignEmployeeData").modal('hide');
-                 $("#ListWorkOrderAsssignment").jsGrid("loadData");
+                 toastr.success(Data.Message);
+                 $("#ListWorkOrderAsssignment").jsGrid("loadData");                 
             },
             error: function (err) {
             }

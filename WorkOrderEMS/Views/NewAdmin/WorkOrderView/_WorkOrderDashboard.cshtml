@@ -20,7 +20,6 @@
 @section scripts{
 
 }
-
 <!--**********************************
            Content body start
        ***********************************-->
@@ -30,13 +29,11 @@
 <script src="~/Content/NewAdminContent/JQUERY/Charts/animated.js"></script>
 <script src="~/Content/NewAdminContent/JQUERY/Charts/amchart3.js"></script>
 <script src="~/Content/NewAdminContent/JQUERY/Charts/serial3.js"></script>
-@*<script src="~/Content/NewAdminContent/JQUERY/Charts/amcharts.js"></script>
-    <script src="~/Content/NewAdminContent/JQUERY/Charts/serial.js"></script>*@
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
-@*<link href="~/Content/NewAdminContent/CSS/clockPicker.css" rel="stylesheet" />*@
 <link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />
 <link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/toastr/css/toastr.min.css" rel="stylesheet" />
 
 <style>
     .addWhite {
@@ -94,7 +91,6 @@
                     </div>
                 </div>
             </div>*@
-        <br />
         <div class="row">
             <div class="col-lg-6">
                 <div class="card" data-aos="fade-up">
@@ -118,7 +114,6 @@
                 </div>
             </div>
         </div>
-        <br />
         <div class="row">
             <div class="col-lg-12" id="OperationCreateListDiv">
                 <div class="card" data-aos="fade-up">
@@ -326,7 +321,7 @@
                 </div>
             </div>
             <div class="modal-footer" style="background: white;">
-                <button type="button" class="btn btn-secondary" id="closeVSC" style="border-radius:100px;" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" id="closeAssign" style="border-radius:100px;" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" id="SaveAssignedData" style="border-radius:100px;">Save</button>
             </div>
         </div>
@@ -339,6 +334,8 @@
 <script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
 <script src="~/GridListing/JsGridScript/ListWorkOrderAssignment.js"></script>
 <script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+<script src="~/Content/NewAdminContent/VENDOR/toastr/js/toastr.min.js"></script>
+<script src="~/Scripts/NewAdminJS/plugins-init/toastr-init.js"></script>
 
 <script>
     am4core.ready(function () {
@@ -365,7 +362,6 @@
         pieSeries.slices.template.strokeOpacity = 0.4;
         pieSeries.slices.template.strokeWidth = 0;
         chartQRC.legend = new am4charts.Legend();
-
         chartQRC.legend.position = "right";
     });
 </script>
@@ -373,12 +369,6 @@
 <script>
     $(document).ready(function () {
 
-        $('#FromDate,#ToDate').datepicker({
-            format: "yyyy/mm/dd",
-        });
-        $('#Year').datepicker({
-            format: "yyyy"
-        });
         $("#WOFormDetails").load('@Url.Action("WorkRequestAssignment", "GlobalAdmin")')
         $.ajax({
             type: "GET",
@@ -408,37 +398,43 @@
                         "Count": parseInt(dataJSON.WorkProjectType[i].Value)
                     });
                 }
+
+                am4core.ready(function () {
+                    am4core.useTheme(am4themes_material);
+                    am4core.useTheme(am4themes_animated);
+                    var chart = am4core.create("WorkOrderPieChart", am4charts.PieChart);
+                    chart.data = arrData;
+                    var pieSeries = chart.series.push(new am4charts.PieSeries());
+                    pieSeries.dataFields.value = "Count";
+                    pieSeries.dataFields.category = "Work Order";
+                    pieSeries.innerRadius = am4core.percent(50);
+                    pieSeries.ticks.template.disabled = true;
+                    pieSeries.labels.template.disabled = true;
+                    var rgm = new am4core.RadialGradientModifier();
+                    rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
+                    pieSeries.slices.template.fillModifier = rgm;
+                    pieSeries.slices.template.strokeModifier = rgm;
+                    pieSeries.slices.template.strokeOpacity = 0.4;
+                    pieSeries.slices.template.strokeWidth = 0;
+                    chart.legend = new am4charts.Legend();
+                    chart.legend.position = "right";
+                });
             }
-            am4core.ready(function () {
-                am4core.useTheme(am4themes_material);
-                am4core.useTheme(am4themes_animated);
-                var chart = am4core.create("WorkOrderPieChart", am4charts.PieChart);
-                chart.data = arrData;
-                var pieSeries = chart.series.push(new am4charts.PieSeries());
-                pieSeries.dataFields.value = "Count";
-                pieSeries.dataFields.category = "Work Order";
-                pieSeries.innerRadius = am4core.percent(50);
-                pieSeries.ticks.template.disabled = true;
-                pieSeries.labels.template.disabled = true;
-                var rgm = new am4core.RadialGradientModifier();
-                rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
-                pieSeries.slices.template.fillModifier = rgm;
-                pieSeries.slices.template.strokeModifier = rgm;
-                pieSeries.slices.template.strokeOpacity = 0.4;
-                pieSeries.slices.template.strokeWidth = 0;
-                chart.legend = new am4charts.Legend();
-                chart.legend.position = "right";
-            });
+            else {
+                $('#WorkOrderPieChart').html('');
+                $('#WorkOrderPieChart').append('<span style="color:black;">').html('No Work Order generated today.');
+            }
         }
     }
 });
 
         $("#CreateWO").click(function () {
-            $("#toggleWOTesting").prop("checked", true);
+            $("#toggleWOTesting").prop("checked", false);
             $(".glowbuttonActiveDeactive").removeClass("butttonActive");
             $(this).addClass('butttonActive');
             $("#WOList, .dispayListWOName").hide();
             $(".createWOForm, .dispayCreateWOName").show();
+            $(".dispayCreateWOName").html("Create Work Order");
             $("#WOFormDetails").load('@Url.Action("WorkRequestAssignment", "GlobalAdmin")')
             $('html,body').animate({
                 scrollTop: $("#OperationCreateListDiv").offset().top
@@ -450,6 +446,7 @@
             if (WOTesting == true) {
                 $("#WOList, .dispayListWOName").hide();
                 $(".createWOForm, .dispayCreateWOName").show();
+                $(".dispayCreateWOName").html("Create Work Order");
             }
             else {
                 $(".createWOForm, .dispayCreateWOName").hide();
