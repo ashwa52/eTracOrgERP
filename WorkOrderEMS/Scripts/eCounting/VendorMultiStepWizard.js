@@ -52,9 +52,10 @@
 
             current_fs = $(this).parent();
             next_fs = $(this).parent().next();
-
+             
             //activate next step on progressbar using the index of next_fs
-            $("#progressbar div").eq($("fieldset").index(next_fs)).addClass("active");
+            $("#progressbar div a").eq($("fieldset").index(current_fs)).removeClass("active btn-success");
+            $("#progressbar div a").eq($("fieldset").index(next_fs)).addClass("active btn-success");
             //CopyLocationDetails();
             //show the next fieldset
             next_fs.show();
@@ -93,9 +94,9 @@
         previous_fs = $(this).parent().prev();
 
         //de-activate current step on progressbar
-        $("#progressbar div").eq($("fieldset").index(current_fs)).removeClass("active");
 
-
+        $("#progressbar div a").eq($("fieldset").index(current_fs)).removeClass("active btn-success"); 
+        $("#progressbar div a").eq($("fieldset").index(previous_fs)).addClass("active btn-success");
 
         //show the previous fieldset
         previous_fs.show();
@@ -158,6 +159,7 @@
     });
 
     $('.tab a').on('click', function (e) {
+         
         e.preventDefault();
         $(this).parent().addClass('active');
         $(this).parent().siblings().removeClass('active');

@@ -184,16 +184,16 @@
     <div id="main-wrapper">
 
         <!--**********************************
-        Nav header start
-    ***********************************-->
+            Nav header start
+        ***********************************-->
         <div class="nav-header">
             @if (GloblaAdminUser || ITAdminUser)
             {
                 <a href="~/GlobalAdmin" class="brand-logo">
                     <img src="~/Images/logo2.png" style="width: 110px;" />
                     @*<span class="logo-abbr"></span>
-                    <span class="logo-compact">eTrac</span>
-                    <span class="brand-title">eTrac</span>*@
+                        <span class="logo-compact">eTrac</span>
+                        <span class="brand-title">eTrac</span>*@
                 </a>
             }
             @if (OnlyAdminUser)
@@ -201,8 +201,8 @@
                 <a href="~/Administrator" class="brand-logo">
                     <img src="~/Images/logo2.png" style="width: 110px;" />
                     @*<span class="logo-abbr"></span>
-                    <span class="logo-compact">eTrac</span>
-                    <span class="brand-title">eTrac</span>*@
+                        <span class="logo-compact">eTrac</span>
+                        <span class="brand-title">eTrac</span>*@
                 </a>
             }
             @if (ManagerUser)
@@ -210,8 +210,8 @@
                 <a href="~/Manager/Dashboard" class="brand-logo">
                     <img src="~/Images/logo2.png" style="width: 110px;" />
                     @*<span class="logo-abbr"></span>
-                    <span class="logo-compact">eTrac</span>
-                    <span class="brand-title">eTrac</span>*@
+                        <span class="logo-compact">eTrac</span>
+                        <span class="brand-title">eTrac</span>*@
                 </a>
             }
             @if (EmployeeUser)
@@ -219,8 +219,8 @@
                 <a href="~/Employee/Dashboard" class="brand-logo">
                     <img src="~/Images/logo2.png" style="width: 110px;" />
                     @*<span class="logo-abbr"></span>
-                    <span class="logo-compact">eTrac</span>
-                    <span class="brand-title">eTrac</span>*@
+                        <span class="logo-compact">eTrac</span>
+                        <span class="brand-title">eTrac</span>*@
                 </a>
             }
             @if (ClientUser)
@@ -228,8 +228,8 @@
                 <a href="~/Client" class="brand-logo">
                     <img src="~/Images/logo2.png" style="width: 110px;" />
                     @*<span class="logo-abbr"></span>
-                    <span class="logo-compact">eTrac</span>
-                    <span class="brand-title">eTrac</span>*@
+                        <span class="logo-compact">eTrac</span>
+                        <span class="brand-title">eTrac</span>*@
                 </a>
             }
             <div class="nav-control">
@@ -241,8 +241,8 @@
             </div>
         </div>
         <!--**********************************
-        Nav header end
-    ***********************************-->
+            Nav header end
+        ***********************************-->
         <!--Header-->
         @Html.Partial("_NewControlMenu")
 
@@ -260,38 +260,38 @@
         </div>
         @*<a href="~/Views/Shared/_NewSideMenu.cshtml">~/Views/Shared/_NewSideMenu.cshtml</a>*@
         <!--**********************************
-        Content body start
-    ***********************************-->
+            Content body start
+        ***********************************-->
         <div id="RenderPageId">
             @RenderBody()
         </div>
         <!--**********************************
-        Content body end
-    ***********************************-->
+            Content body end
+        ***********************************-->
         <!--**********************************
-        Footer start
-    ***********************************-->
+            Footer start
+        ***********************************-->
         <div class="footer">
             <div class="copyright">
                 <p>Copyright © Designed &amp; Developed by <a href="@hostingPrefix" target="_blank">eTrac</a> 2019</p>
             </div>
         </div>
         <!--**********************************
-        Footer end
-    ***********************************-->
+            Footer end
+        ***********************************-->
         <!--**********************************
-       Support ticket button start
-    ***********************************-->
+           Support ticket button start
+        ***********************************-->
         <div class="support-ticket">
             <a href="https://docs.google.com/forms/d/e/1FAIpQLScfrU4Y7_zmErRJkR8ukaRlVgZ1AcAU7Kf4vOQuclNxqWQipQ/viewform" target="_blank" class="support-ticket-btn">Support</a>
         </div>
         <!--**********************************
-       Support ticket button end
-    ***********************************-->
+           Support ticket button end
+        ***********************************-->
         <!--removeIf(production)-->
         <!--**********************************
-        Right sidebar start
-    ***********************************-->
+            Right sidebar start
+        ***********************************-->
         <div class="sidebar-right">
             <a class="sidebar-right-trigger" href="javascript:void(0)">
                 <span><i class="fa fa-cog fa-spin"></i></span>
@@ -730,20 +730,22 @@
             </div>
         </div>
         <!--**********************************
-        Right sidebar end
-    ***********************************-->
+            Right sidebar end
+        ***********************************-->
         <!--endRemoveIf(production)-->
     </div>
     <!--Added By Ashwajit Bansod to open modal to connect quickbook-->
-    <div class="modal fade" id="ConnectToQuickBookModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <div class="modal bs-example-modal-lg fade preview" id="ConnectToQuickBookModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg ">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                     <h4 class="modal-title" id="ConnectToQuickBookModalLabel">Connect to QuickBook</h4>
-
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>×</span>
+                    </button>
                 </div>
-                <div class="modal-body ">
+
+                <div class="modal-body">
                     <div>
                         <label>
                             Please click on "Connect" to connect to QuickBook online.
@@ -752,10 +754,13 @@
                 </div>
                 <div class="modal-footer">
                     <button type="submit" id="ConnectToQuickBook" class="btn btn-primary">Connect</button>
+                    <button data-dismiss="modal" class="btn btn-secondary" style="border-radius:25px;width:90px;" id="btnCancel">Cancel</button>
                 </div>
+
             </div>
         </div>
     </div>
+ 
     <!--End Modal connect to quickbook-->
     <!--**********************************
         Main wrapper end
