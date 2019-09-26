@@ -107,101 +107,16 @@
             <a href="~/Client"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
 }
             </li>
-            <li><a href="@Url.Action("ListLocation", "GlobalAdmin")"><i class="mdi mdi-speedometer"></i><span class="nav-text">Location</span></a></li>
-            @*<li class="nav-label">Navigation</li>
-        <li><a href="index.html"><i class="mdi mdi-speedometer"></i><span class="nav-text">Home</span></a></li>*@
-            <li><a href="@Url.Action("OperationDashboard", "NewAdmin")"><i class="mdi mdi-speedometer"></i><span class="nav-text">Operation</span></a></li>
-            <li><a href="@Url.Action("ePeopleDashboard", "NewAdmin")"><i class="fa fa-users"></i><span class="nav-text">ePeople</span></a></li>
-            <li>
-                <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-user-circle-o"></i><span class="nav-text">Manage User</span></a>
-                <ul aria-expanded="false">
-                    <li><a href="~/GlobalAdmin/listclient" data-oldDash="Yes">All User List</a></li>
-                    <li><a href="~/Common/CreateUser" data-oldDash="Yes">Register User</a></li>
-                    <li><a href="~/GlobalAdmin/NotAssignedUsers" data-oldDash="Yes">UnAssigned User</a></li>
-                    <li><a href="~/GlobalAdmin/UnVerifiedUsers" data-oldDash="Yes">UnVerified User</a></li>
-                </ul>
-            </li>
-            <li>
-                <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-car"></i><span class="nav-text">eFleet</span></a>
-                <ul aria-expanded="false">
-                    <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-car"></i>Driver</a>
-                        <ul aria-expanded="false">
-                            <li><a href="~/eFleetDriver/Index" data-oldDash="Yes">Register Driver</a></li>
-                            <li><a href="~/eFleetDriver/ListDriver" data-oldDash="Yes">List Driver</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">Vehicle</a>
-                        <ul aria-expanded="false">
-                            <li><a href="~/eFleetVehicle/Index" data-oldDash="Yes">Register Vehicle</a></li>
-                            <li><a href="~/eFleetVehicle/ListVehicle" data-oldDash="Yes">List Vehicle</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">Maintenance</a>
-                        <ul aria-expanded="false">
-                            <li><a href="~/eFleetMaintenance/Index" data-oldDash="Yes">Enter Maintenance</a></li>
-                            <li><a href="~/eFleetMaintenance/ListeFleetMaintenance" data-oldDash="Yes">List Maintenace</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">Preventive Maintenance</a>
-                        <ul aria-expanded="false">
-                            <li><a href="~/eFleetPreventativeMaintenance/Index" data-oldDash="Yes">Schedule PM</a></li>
-                            <li><a href="~/eFleetPreventativeMaintenance/ListeFleetPM" data-oldDash="Yes">List PM</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false" data-oldDash="Yes">Vehicle Incident</a>
-                        <ul aria-expanded="false">
-                            <li><a href="~/eFleetVehicleIncidentReporting/Index" data-oldDash="Yes">Report Incident</a></li>
-                            <li><a href="~/eFleetVehicleIncidentReporting/ListeFleetVehicleIncident" data-oldDash="Yes">List Incident</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">Passenger Tracking</a>
-                        <ul aria-expanded="false">
-                            <li><a href="~/passenger/create" data-oldDash="Yes">Create Route</a></li>
-                            <li><a href="~/passenger/listpassengerroute" data-oldDash="Yes">List Passenger Route</a></li>
-                            <li><a href="~/passenger/listpassengercount" data-oldDash="Yes">List Passenger Count</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">Fueling</a>
-                        <ul aria-expanded="false">
-                            <li><a href="~/fueling/listfueling" data-oldDash="Yes">List Fueling</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="has-arrow" href="~/GlobalAdmin/eFleetReport" aria-expanded="false" data-oldDash="Yes">Reports</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-usd"></i><span class="nav-text">eCounting</span></a>
-                <ul aria-expanded="false">
-                    <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">Vendor Management </a>
-                        <ul aria-expanded="false">
-                            <li><a href="~/VendorManagement/UnApprovedVendor" data-oldDash="Yes">Setup Vendor</a></li>
-                            <li><a href="~/VendorManagement/CompanyList" data-oldDash="Yes">Vendor List</a></li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">Financial Form</a>
-                        <ul aria-expanded="false">
-                            <li><a href="~/PDFData/PDFList" data-oldDash="Yes">Financial Form List</a></li>
-                        </ul>
-                    </li>
-                 
-                    <li><a href="~/eCountingReport/eCountingReport" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i>Reports</a></li>
-                    <li><a href="~/POTypeData/AllPOList" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i>PO</a></li>
-                    <li><a href="~/Miscellaneous/ViewMiscellaneous" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i>Miscellaneous</a></li>
-                    <li><a href="~/Bill/ListPreBillView" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i>Bills</a></li>
-                    <li><a href="~/Payment/PaymentView" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i>Payment Desk</a></li>
-                </ul>
-            </li>
+            <li><a href="@Url.Action("ListCostCode", "CostCode")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Cost Code</span></a></li>
+            <li><a href="@Url.Action("Index", "Rule")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Rules</span></a></li>
+            <li><a href="@Url.Action("Index", "PaymentTerms")" data-oldDash="Yes"><i class="fa fa-users"></i><span class="nav-text">Payment Term</span></a></li>
+            <li><a href="@Url.Action("Index", "PaymentMode")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Payment Mode</span></a></li>
+            <li><a href="@Url.Action("Index", "ContractType")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Contract Type</span></a></li>
+            <li><a href="@Url.Action("Index", "POType")" data-oldDash="Yes"><i class="fa fa-users"></i><span class="nav-text">PO Type</span></a></li>
+            <li><a href="@Url.Action("Index", "VendorType")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Vendor Type</span></a></li>
+            <li><a href="@Url.Action("CompanyListAdmin", "AdminCompany")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Admin Company</span></a></li>
+            <li><a href="@Url.Action("Index", "PDFForm")" data-oldDash="Yes"><i class="fa fa-users"></i><span class="nav-text">PDF Form</span></a></li>
+            <li><a href="@Url.Action("SendMail", "SendEmailTemplate")" data-oldDash="Yes"><i class="fa fa-users"></i><span class="nav-text">Send Mail</span></a></li>
         </ul>
     </div>
 </div>
