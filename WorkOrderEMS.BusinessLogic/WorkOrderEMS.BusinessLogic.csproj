@@ -174,6 +174,7 @@
     <Compile Include="Interfaces\Admin\IVendorType.cs" />
     <Compile Include="Interfaces\Admin\NewAdmin\IAdminDashboard.cs" />
     <Compile Include="Interfaces\Admin\NewAdmin\IDepartment.cs" />
+    <Compile Include="Interfaces\Admin\NewAdmin\IePeopleManager.cs" />
     <Compile Include="Interfaces\Admin\Rule\IRuleManager.cs" />
     <Compile Include="Interfaces\eCounting\IBillDataManager.cs" />
     <Compile Include="Interfaces\eCounting\IeCountingReport.cs" />
@@ -259,6 +260,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Managers\ManagerAppManager\ManagerAppeMaintenanceManager.cs" />
+    <Compile Include="Managers\NewAdminManager\ePeopleManager.cs" />
     <Compile Include="Managers\NewAdminManager\VehicleSeatingChartManager.cs" />
     <Compile Include="Managers\NewAdminManager\DepartmentManager.cs" />
     <Compile Include="Managers\NewEmployeeApp\NewEmployeeAppManager.cs" />

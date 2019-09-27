@@ -227,7 +227,8 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
@@ -242,26 +243,31 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Mvc.Extensions">
       <HintPath>..\packages\System.Web.Mvc.Extensions.Mvc.4.1.0.9\lib\net40\System.Web.Mvc.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web" />
-    <Reference Include="System.Web.Abstractions" />
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.3\lib\net45\System.Web.Razor.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Routing" />
     <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
@@ -388,6 +394,7 @@
     <Compile Include="Controllers\Manager\ManagerController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controllers\NewAdmin\EPeopleController.cs" />
     <Compile Include="Controllers\NewAdmin\NewAdminController.cs" />
     <Compile Include="Controllers\PDF\PDFDataController.cs" />
     <Compile Include="Controllers\QRCSetup\QRCSetupController.cs" />
@@ -1534,6 +1541,7 @@
     <Content Include="Content\KendoTreeView\kendo.material.mobile.min.css" />
     <Content Include="Content\nanoscroller.css" />
     <Content Include="Content\NewAdminContent\CSS\clockPicker.css" />
+    <Content Include="Content\NewAdminContent\CSS\Common.css" />
     <Content Include="Content\NewAdminContent\CSS\MultstepWizardNew.css" />
     <Content Include="Content\NewAdminContent\CSS\perfect-scrollbar.css" />
     <Content Include="Content\NewAdminContent\CSS\RadioButtonCSS.css" />
@@ -1649,7 +1657,16 @@
     <Content Include="Content\NewAdminContent\IMAGES\user\7.jpg" />
     <Content Include="Content\NewAdminContent\IMAGES\user\8.png" />
     <Content Include="Content\NewAdminContent\IMAGES\user\form-user.png" />
+    <Content Include="Content\NewAdminContent\JQUERY\Charts\amchart3.js" />
+    <Content Include="Content\NewAdminContent\JQUERY\Charts\amcharts.js" />
+    <Content Include="Content\NewAdminContent\JQUERY\Charts\animated.js" />
+    <Content Include="Content\NewAdminContent\JQUERY\Charts\charts.js" />
+    <Content Include="Content\NewAdminContent\JQUERY\Charts\core.js" />
+    <Content Include="Content\NewAdminContent\JQUERY\Charts\material.js" />
+    <Content Include="Content\NewAdminContent\JQUERY\Charts\serial.js" />
+    <Content Include="Content\NewAdminContent\JQUERY\Charts\serial3.js" />
     <Content Include="Content\NewAdminContent\JQUERY\clockPicker.js" />
+    <Content Include="Content\NewAdminContent\JQUERY\MaskLoaderNew.js" />
     <Content Include="Content\NewAdminContent\JQUERY\tinymce.min.js" />
     <Content Include="Content\NewAdminContent\VENDOR\amcharts\amcharts.js" />
     <Content Include="Content\NewAdminContent\VENDOR\amcharts\ammap.js" />
@@ -5110,6 +5127,10 @@
     <Content Include="GridListing\JqGridScript\WorkOrderWeekHistory.js" />
     <Content Include="GridListing\JqGridScript\WorkRequestAssignment.js" />
     <Content Include="GridListing\JqGridScript\WorkRequestList.js" />
+    <Content Include="GridListing\JsGridScript\ListDAR.js" />
+    <Content Include="GridListing\JsGridScript\ListEmployeeManagement.js" />
+    <Content Include="GridListing\JsGridScript\ListMyOpening.js" />
+    <Content Include="GridListing\JsGridScript\ListOnBoarding.js" />
     <Content Include="GridListing\JsGridScript\ListQRCList.js" />
     <Content Include="GridListing\JsGridScript\ListWorkOrderAssignment.js" />
     <Content Include="Images\back2.jpg" />
@@ -6363,7 +6384,12 @@
     <Content Include="Views\NewAdmin\WorkOrderView\_CreateWorkOrder.cshtml" />
     <Content Include="Views\NewAdmin\_ePeopleDashboard.cshtml" />
     <Content Include="Views\NewAdmin\QRCView\_QRCForm.cshtml" />
-    <Content Include="Views\VendorManagement\FileImport.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_HiringOnBoarding.cshtml" />
+    <Content Include="Views\NewAdmin\WorkOrderView\_AssignToEmployee.cshtml" />
+    <Content Include="Views\NewAdmin\WorkOrderView\_WorkOrderDashboard.cshtml" />
+    <Content Include="Views\NewAdmin\QRCView\_eScanDashboard.cshtml" />
+    <Content Include="Views\NewAdmin\DAR\_DARDashboard.cshtml" />
+    <Content Include="Views\NewAdmin\_Reports.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

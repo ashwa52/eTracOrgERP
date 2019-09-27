@@ -223,7 +223,7 @@
                             </label>
                             @Html.TextBoxFor(model => model.BillDate, "{0:MM/dd/yyyy}", new { @id = "BillDate", @onkeydown = "return false;" })
                         </div>
-                        <div class="field-wrap">
+                        @*<div class="field-wrap">
                             @if (Session != null)
                             {
                                 if (Session["eTrac_UserLocations"] != null)
@@ -233,7 +233,7 @@
                                     @Html.Hidden("AllocateLocationID")
                                 }
                             }
-                        </div>
+                        </div>*@
                     </div>
                     <!-- End Div for Recurrence -->
 

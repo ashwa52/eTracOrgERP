@@ -929,6 +929,10 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         ObjQRCMaster.CreatedBy = _CreatedBy;
                         ObjQRCMaster.CreatedDate = _createdOn;
                         ObjQRCMaster.ModuleNameId = _moduleNameId;
+                        if (ObjQRCModel.LocationPictureName != null)
+                            ObjQRCMaster.LocationPicture = ObjQRCModel.LocationPictureName;
+                        if (ObjQRCModel.AssetPictureName != null)
+                            ObjQRCMaster.AssetPicture = ObjQRCModel.AssetPictureName;
                         ObjQRCMasterRepository.Add(ObjQRCMaster);
                         found = true;
 
@@ -957,10 +961,12 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                             ObjQRCMaster.Make = ObjQRCModel.Make;
                             ObjQRCMaster.Model = ObjQRCModel.Model;
 
-                            if (ObjQRCModel.LOCPicture != null)
-                                ObjQRCMaster.LocationPicture = ObjQRCModel.LocationPicture;
-                            if (ObjQRCModel.AssetPictureUrl != null)
-                                ObjQRCMaster.AssetPicture = ObjQRCModel.AssetPicture;
+                            if (ObjQRCModel.LocationPictureName != null)
+                                //ObjQRCMaster.LocationPicture = ObjQRCModel.LocationPicture;
+                                ObjQRCMaster.LocationPicture = ObjQRCModel.LocationPictureName;
+                            if (ObjQRCModel.AssetPictureName != null)
+                                //ObjQRCMaster.AssetPicture = ObjQRCModel.AssetPicture;
+                                ObjQRCMaster.AssetPicture = ObjQRCModel.AssetPictureName;
 
                             ObjQRCMaster.VendorName = ObjQRCModel.VendorName;
                             ObjQRCMaster.PointOfContact = ObjQRCModel.PointOfContact;

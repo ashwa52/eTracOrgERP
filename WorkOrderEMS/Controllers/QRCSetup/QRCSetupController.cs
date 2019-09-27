@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using WorkOrderEMS.BusinessLogic;
@@ -116,7 +117,6 @@ namespace WorkOrderEMS.Controllers.QRCSetup
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Index(QRCModel ObjQRCModel)
         {
             DARModel objDAR;
@@ -154,11 +154,17 @@ namespace WorkOrderEMS.Controllers.QRCSetup
 
                     if (ObjQRCModel.WarrantyDocument != null)
                         ObjQRCModel.WarrantyDoc = DateTime.Now.Ticks + "_" + ObjQRCModel.WarrantyDocument.FileName.Replace(" ", "");
-                    if (ObjQRCModel.LOCPicture != null)
-                        ObjQRCModel.LocationPicture = DateTime.Now.Ticks + "_" + ObjQRCModel.LOCPicture.FileName.Replace(" ", "");
-                    if (ObjQRCModel.AssetPictureUrl != null)
-                        ObjQRCModel.AssetPicture = DateTime.Now.Ticks + "_" + ObjQRCModel.AssetPictureUrl.FileName.Replace(" ", "");
-
+                    if (ObjQRCModel.LocationPictureName != null && ObjQRCModel.LocationPicture != null)
+                    {
+                        //ObjQRCModel.LocationPictureName
+                        string ext = ObjQRCModel.LocationPictureName.Substring(ObjQRCModel.LocationPictureName.LastIndexOf("fakepath\\") + 9);                       
+                        ObjQRCModel.LocationPictureName = DateTime.Now.Ticks + "_" + ext;
+                    }
+                    if (ObjQRCModel.AssetPictureName != null && ObjQRCModel.AssetPicture != null)
+                    {
+                        string ext = ObjQRCModel.AssetPictureName.Substring(ObjQRCModel.AssetPictureName.LastIndexOf("fakepath\\") + 9);
+                        ObjQRCModel.AssetPictureName = DateTime.Now.Ticks + "_" + ext;
+                    }
                     ObjQRCModel.CreatedBy = ObjLoginModel.UserId;
                     ObjQRCModel.LocationId = ObjLoginModel.LocationID;
 
@@ -187,12 +193,17 @@ namespace WorkOrderEMS.Controllers.QRCSetup
                         {
                             ObjCommonHelper.UploadImage(ObjQRCModel.WarrantyDocument, path, ObjQRCModel.WarrantyDoc);
                         }
-                        if (ObjQRCModel.LOCPicture != null)
+                        if (ObjQRCModel.LocationPicture != null && ObjQRCModel.LocationPictureName != null)
                         {
-                            ObjCommonHelper.UploadImage(ObjQRCModel.LOCPicture, path, ObjQRCModel.LocationPicture);
+                            ObjQRCModel.LocationPicture = ObjQRCModel.LocationPicture.Split(',')[1];
+                            //string ImageName = ObjLoginModel.UserId + "_" + DateTime.Now.Ticks.ToString() + "_" + File.FileName.ToString();
+                            ObjCommonHelper.UploadQRCImage(ObjQRCModel.LocationPicture, path, ObjQRCModel.LocationPictureName);
                         }
-                        if (ObjQRCModel.AssetPictureUrl != null)
-                        { ObjCommonHelper.UploadImage(ObjQRCModel.AssetPictureUrl, path, ObjQRCModel.AssetPicture); }
+                        if (ObjQRCModel.AssetPicture != null && ObjQRCModel.AssetPictureName != null)
+                        {
+                            ObjQRCModel.AssetPicture = ObjQRCModel.AssetPicture.Split(',')[1];
+                            ObjCommonHelper.UploadQRCImage(ObjQRCModel.AssetPicture, path, ObjQRCModel.AssetPictureName);
+                        }
 
                         if (_fnResult == Result.Completed)
                         {
@@ -327,8 +338,8 @@ namespace WorkOrderEMS.Controllers.QRCSetup
             //    //ViewBag.AdministratorList = _IGlobalAdmin.GetAllITAdministratorList(0, 1, 1000, "UserEmail", "asc", "", Convert.ToInt64(UserType.Manager), out Totalrecords);
             //    ViewBag.AdministratorList = _ICommonMethod.GetManagersBYLocationId(ObjLoginModel.LocationID);
             //}
-
-            return View(ObjQRCModel);
+            return Json(ViewBag.RefreshMode, JsonRequestBehavior.AllowGet);
+            //return View(ObjQRCModel);
             // return RedirectToAction("Index","QRCSetup");
         }
 
@@ -373,8 +384,8 @@ namespace WorkOrderEMS.Controllers.QRCSetup
                     {
                         ViewBag.LocationByAdmin = _ICommonMethod.GetLocationByAdminId(ObjQRCModel.Allotedto);
                     }
-
-                    return View("Index", ObjQRCModel);
+                  //  return View("Index", ObjQRCModel);
+                  return View("~/Views/NewAdmin/QRCView/_QRCForm.cshtml", ObjQRCModel);
                 }
                 else
                 {
@@ -465,7 +476,7 @@ namespace WorkOrderEMS.Controllers.QRCSetup
         }
 
         [HttpGet]
-        public JsonResult GetQRCListForJsGrid(  long? locationId = 0, long? SearchQRCType =0) 
+        public JsonResult GetQRCListForJsGrid(  long? locationId = 0, long? SearchQRCType = null) 
         {
             eTracLoginModel ObjLoginModel = null;
             var QRCList = new List<QRCListModel>();
@@ -475,11 +486,17 @@ namespace WorkOrderEMS.Controllers.QRCSetup
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
                 ObjectParameter TotalRecords = new ObjectParameter("TotalRecords", typeof(int));
-                 QRCList = _IQRCSetup.GetAllQRCList(null, locationId, page, rows, sidx, sord, txtSearch, SearchQRCType, ObjLoginModel.UserId, TotalRecords);
+                var data = _IQRCSetup.GetAllQRCList(null, locationId, page, rows, sidx, sord, txtSearch, SearchQRCType, ObjLoginModel.UserId, TotalRecords);
                 try
                 {
-                    if(QRCList.Count() > 0)
+                    if(data.Count() > 0)
                     {
+                        foreach (var item in data)
+                        {
+                            item.id = item.EncryptQRC;
+                            QRCList.Add(item);
+                        }
+                        
                         return Json(QRCList, JsonRequestBehavior.AllowGet);
                     }
                     else
@@ -813,6 +830,76 @@ namespace WorkOrderEMS.Controllers.QRCSetup
             }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// Created By : Ashwajit bansod
+        /// Created Date : 20-Sept-2019
+        /// Created For : To upload Assets image as per New UI throught AJAX
+        /// </summary>
+        /// <param name="File"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult UploadedAssetsImage(HttpPostedFileBase File)
+        {
+            eTracLoginModel ObjLoginModel = null;
 
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                if (File != null)
+                {
+                    path = Server.MapPath(path);
+                    string ImageName = ObjLoginModel.UserId + "_" + DateTime.Now.Ticks.ToString() + "_" + File.FileName.ToString();
+                    CommonHelper obj_CommonHelper = new CommonHelper();
+                    var res = obj_CommonHelper.UploadImage(File, path, ImageName);
+                    ViewBag.ImageUrl = res;
+                    if (res)
+                    {
+                        return Json(ImageName);
+                    }
+                    else { return Json(""); }
+                }
+                return Json("");
+            }
+            else
+            {
+                return Json("");
+            }
+        }
+
+        /// <summary>
+        /// Created By : Ashwajit bansod
+        /// Created Date : 20-Sept-2019
+        /// Created For : To upload Location image as per New UI throught AJAX
+        /// </summary>
+        /// <param name="File"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult UploadedLocationImage(HttpPostedFileBase File)
+        {
+            eTracLoginModel ObjLoginModel = null;
+
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                if (File != null)
+                {
+                    path = Server.MapPath(path);
+                    string ImageName = ObjLoginModel.UserId + "_" + DateTime.Now.Ticks.ToString() + "_" + File.FileName.ToString();
+                    CommonHelper obj_CommonHelper = new CommonHelper();
+                    var res = obj_CommonHelper.UploadImage(File, path, ImageName);
+                    ViewBag.ImageUrl = res;
+                    if (res)
+                    {
+                        return Json(ImageName);
+                    }
+                    else { return Json(""); }
+                }
+                return Json("");
+            }
+            else
+            {
+                return Json("");
+            }
+        }
     }
 }

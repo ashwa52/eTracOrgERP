@@ -171,6 +171,8 @@ namespace WorkOrderEMS.Models
         public Nullable<long> QRCID { get; set; }
         public long RoleId { get; set; }
         public long Location { get; set; }
+        public string id { get; set; }
+        public List<UserModelList> ChildrenList { get; set; }
 
     }
 

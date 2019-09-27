@@ -43,10 +43,12 @@
     }
 }
 @section Script{
-    <script>
-    var $_locId = '@locationId';
+<script>
+    debugger
+        var $_locId = '@locationId';
+        $("#drp_MasterLocation option:selected").val($_locId);
     $("#drp_MasterLocation").val($_locId).attr("selected", "selected");
-    </script>
+</script>
 }
 
 <!--**********************************
@@ -102,8 +104,8 @@
                             @if (Session != null)
                             {
                                 if (Session["eTrac_UserLocations"] != null)
-                                {
-                                    @Html.DropDownList("drp_MasterLocation", new SelectList((List<WorkOrderEMS.Models.UserLocations>)Session["eTrac_UserLocations"], "LocationId", "LocationName"), null, new { @class = "form-control input-rounded", @id = "drp_MasterLocation" })
+                                {                           
+                                    @Html.DropDownList("drp_MasterLocation", new SelectList((List<WorkOrderEMS.Models.UserLocations>)Session["eTrac_UserLocations"], "LocationId", "LocationName"), null, new { @class = "form-control input-rounded", @id = "drp_MasterLocation1" })
                                 }
                             }
                         </div>
@@ -205,15 +207,14 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right animated fadeInRight">
                             <div class="profile_title">
-                                <h5>User Id : <span>eTrac @UserId</span></h5>
-                                <p class="m
-                                   b-0">@loginUserEmail</p>
+                                @*<h5>User Id : <span>eTrac @UserId</span></h5>*@
+                                <p class="mb-0">@loginUserEmail</p>
                             </div>
                             <a href="#!" class="dropdown-item">
                                 <i class="mdi mdi-account"></i>
                                 <span class="ml-2">My Profile</span>
                             </a>
-                            <a href="#!" class="dropdown-item">
+                            @*<a href="#!" class="dropdown-item">
                                 <i class="mdi mdi-wallet"></i>
                                 <span class="ml-2">My Wallet</span>
                             </a>
@@ -228,8 +229,12 @@
                             <a href="#!" class="dropdown-item">
                                 <i class="mdi mdi-lock"></i>
                                 <span class="ml-2">Lock Screen</span>
-                            </a>
-                            <a href="@Url.Action("LogOut", "Login", new { id = ObjLogin.UserId })" class="dropdown-item">
+                            </a>*@
+                            @*<a href="../Login/LogOut?id='@ObjLogin.UserId'" class="dropdown-item">
+                                <i class="mdi mdi-power"></i>
+                                <span class="ml-2">Logout</span>
+                            </a>*@
+                            <a href="javascript:void(0)" id="logout" class="dropdown-item">
                                 <i class="mdi mdi-power"></i>
                                 <span class="ml-2">Logout</span>
                             </a>
@@ -243,3 +248,29 @@
 <!--**********************************
     Header end ti-comment-alt
 ***********************************-->
+<script>
+    @{long Location = ((WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"]).LocationID;}
+    if ('@Location' != undefined || '@Location' > '0' || '@Location' != '') {
+        $("#drp_MasterLocation1").val(@Location);
+    }
+    $("#logout").click(function () {
+        window.location.href = '../Login/LogOut?id=@ObjLogin.UserId'
+    });
+    $("#drp_MasterLocation1").change(function () {
+        var LocationID = $(this).val();
+        var LocationName = $("#drp_MasterLocation1 option:selected").text();
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("SetUserSelectedLocation", "Login")',
+            data: { LocationID: LocationID, LocationName: LocationName },
+            success: function (Data) {
+                $("#ListWorkOrderAsssignment").jsGrid("loadData");
+                $("#ListQRC").jsGrid("loadData");
+                $("#ListDAR").jsGrid("loadData");
+            },
+            error: function () {
+            }
+        })
+        //------END------//
+    })
+</script>

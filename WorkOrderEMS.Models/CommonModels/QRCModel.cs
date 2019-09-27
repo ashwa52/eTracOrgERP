@@ -102,10 +102,12 @@ namespace WorkOrderEMS.Models
         [DataMember]
         [Display(Name = "Asset Picture")]
         public string AssetPicture { get; set; }
+        public string AssetPictureName { get; set; }
         public HttpPostedFileBase AssetPictureUrl { get; set; }
         [DataMember]
         [Display(Name = "Location Picture")]
         public string LocationPicture { get; set; }
+        public string LocationPictureName { get; set; }
         public HttpPostedFileBase LOCPicture { get; set; }
         [DataMember]
         [Display(Name = "Vendor Name")]
@@ -252,6 +254,8 @@ namespace WorkOrderEMS.Models
         public Nullable<bool> CheckOutStatus { get; set; }
         public string LocationName { get; set; }
         public string QRCSize { get; set; }
+
+        public string id { get; set; }
     }
 
 }

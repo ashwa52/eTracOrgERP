@@ -418,16 +418,12 @@ function RejectVendorAfterComment() {
        
         callAjaxVendor();
     }
-    else {
-        
+    else {       
         return false;
     }
-
 }
-function callAjaxVendor() { 
-    
-    var objData = new Object();
-    
+function callAjaxVendor() {    
+    var objData = new Object();    
     objData.VendorId = VendorId;
     objData.LocationId = $_locationId;
     objData.Comment = $("#CommentVendor").val();

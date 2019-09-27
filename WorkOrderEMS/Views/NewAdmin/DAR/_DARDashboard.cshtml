@@ -1,0 +1,168 @@
+﻿
+@{
+    //Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    Layout = null;
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+    long loginUserType = 0;
+    long locationId = 0;
+    long UserId = 0;
+    if (ObjLogin != null)
+    {
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+        loginUserType = ObjLogin.UserRoleId;
+        //loginUserContactNo = ObjLogin.ContactNo;
+        locationId = ObjLogin.LocationID;
+        UserId = ObjLogin.UserId;
+    }
+}
+<!--**********************************
+           Content body start
+       ***********************************-->
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/CSS/clockPicker.css" rel="stylesheet" />
+
+<style>
+    .addWhite {
+        color: white;
+    }
+
+    .widthHeader {
+        height: 40px;
+    }
+
+    .setLableDiv {
+        margin-top: 7px;
+    }
+</style>
+<div class="content-body">
+
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3" data-aos="fade-up">
+            <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
+                <div class="welcome-text">
+                    <h4>Hi, welcome back! @loginUserName</h4>
+                    <p class="mb-0">DAR Dashboard</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12" id="OperationDARListDiv">
+                <div class="card" data-aos="fade-up">                   
+                    <div class="card-header" style="height: 45px;">
+                        <div class="basic-form">
+                            <div class="form-group">
+                                <input type="text" style="margin-top: 15px;width: 120px;" id="FromDate" class="form-control input-rounded" placeholder="From Date">
+                            </div>
+                        </div>
+                        <div class="basic-form" style="margin-left: -368px;">
+                            <div class="form-group">
+                                <input type="text" style="margin-top: 15px;width: 120px;" id="FromTime" class="form-control input-rounded clockpicker" placeholder="From Time">
+                            </div>
+                        </div>
+                        <div class="basic-form" style="margin-left: -370px;">
+                            <div class="form-group">
+                                <input type="text" style="margin-top: 15px;width: 120px;" id="ToDate" class="form-control input-rounded" placeholder="To Date">
+                            </div>
+                        </div>
+                        <div class="basic-form" style=" margin-left: -299px;">
+                            <div class="form-group">
+                                <input type="text" style="margin-top: 15px;width: 120px;" id="ToTime" class="form-control input-rounded clockpicker" placeholder="To Time">
+                            </div>
+                        </div>
+                        <div class="basic-form" style="margin-left: -320px;">
+                            <div class="form-group">
+                                <input type="text" style="margin-top: 15px;width: 120px;" class="form-control input-rounded" placeholder="All Work Request Type">
+                            </div>
+                        </div>
+                        <div class="basic-form" style="margin-left: -340px;">
+                            <div class="form-group">
+                                <input type="text" style="margin-top: 15px;width: 120px;" class="form-control input-rounded" placeholder="All Employee">
+                            </div>
+                        </div>
+                        <div class="basic-form">
+                            <div class="form-group">
+                                <input type="button" style="margin-top: 15px;width: 120px;background: green;border-radius: 35px;" id="ShowDAR" class="btn btn-primary" value="Show DAR" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body dispayListDAR" id="DARList">
+                        <div id="ListDAR"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--WO Modals-->
+<div class="modal fade" id="myModalForDeleteWO">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Work Order</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="divDetailPreview" class="">
+                    <div class="row">
+                        <label>Are you sure want to delete Work Order?</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background: white;">
+                <button type="button" class="btn btn-secondary" id="NotDelete" style="border-radius:100px;" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" id="DeleteWO" style="border-radius:100px;">Conform</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--**********************************
+    Content body end
+***********************************-->
+<script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
+<script src="~/GridListing/JsGridScript/ListDAR.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/clockPicker.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+<script>
+    $(document).ready(function () {
+        $('#FromDate,#ToDate').datepicker({
+            format: "yyyy/mm/dd",
+        });
+        $(".clockpicker").clockpicker();
+        $('#Year').datepicker({
+            format: "yyyy"
+        });
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetDashboardHeadCount", "GlobalAdmin")",
+            data: {},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (jsondata) {
+        if (jsondata != null && jsondata != "" && jsondata.dataJson.trim() != "") {
+            var dataJSON = JSON.parse(jsondata.dataJson);
+            dataJSON.CountPanel[0].AdminCount;
+        }
+    }
+});
+
+        $("#ListDARData").click(function () {
+            $(".glowbuttonActiveDeactive").removeClass("butttonActive");
+            $(this).addClass('butttonActive');
+            $('html,body').animate({
+                scrollTop: $("#OperationDARListDiv").offset().top
+            }, 'slow');
+            $("#OperationDARListDiv").show();
+        });
+    });
+</script>
+
