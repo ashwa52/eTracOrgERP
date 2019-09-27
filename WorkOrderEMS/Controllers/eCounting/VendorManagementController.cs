@@ -425,7 +425,7 @@ namespace WorkOrderEMS.Controllers
         /// <param name="UserType"></param>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult GetAllCompanyListList(string _search, long? LocatonId, long? LocationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
+        public JsonResult GetAllCompanyListList(string _search, long? LocationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
         {
             eTracLoginModel ObjLoginModel = null;
             long UserId = 0;
@@ -438,11 +438,21 @@ namespace WorkOrderEMS.Controllers
                 }
                 UserId = ObjLoginModel.UserId;
             } 
-            txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
+              
             try
             {
-                var AllCompanyList = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord);
-                return Json(AllCompanyList.ToList(), JsonRequestBehavior.AllowGet); 
+                if (_search != null && _search != "")
+                {
+                    var AllCompanyListForSearch = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord).Where(x => x.CompanyNameLegal.ToLower() == _search.ToLower().Trim()).ToList();
+                    return Json(AllCompanyListForSearch.ToList(), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    var AllCompanyList = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord);
+                    return Json(AllCompanyList.ToList(), JsonRequestBehavior.AllowGet);
+                }
+
+                
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
@@ -916,37 +926,18 @@ namespace WorkOrderEMS.Controllers
                 }
                 UserId = ObjLoginModel.UserId;
             }
-            JQGridResults result = new JQGridResults();
-            List<JQGridRow> rowss = new List<JQGridRow>();
+          
             sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
             sidx = string.IsNullOrEmpty(sidx) ? "UserEmail" : sidx;
             txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
             try
             {
                 var AllInsuranceList = _IVendorManagement.GetAllInsuranceDataList(VendorId, LocationId, VendorStatus, rows, TotalRecords, sidx, sord);
-                foreach (var insurance in AllInsuranceList.rows)
-                {
-                    JQGridRow row = new JQGridRow();
-                    row.id = Cryptography.GetEncryptedData(Convert.ToString(insurance.InsuranceID), true);
-                    row.cell = new string[7];
-                    row.cell[0] = insurance.InsuranceID.ToString();
-                    row.cell[1] = insurance.VendorListId.ToString();
-                    //row.cell[2] = insurance.VendorName.ToString();
-                    row.cell[2] = insurance.InsuranceCarries.ToString();
-                    row.cell[3] = insurance.PolicyNumber.ToString();
-                    row.cell[4] = insurance.InsuranceExpirationDate.ToString();
-                    row.cell[5] = insurance.InsuranceDocument == null ? null : insurance.InsuranceDocument.ToString();
-                    row.cell[6] = insurance.Status.ToString();
-                    rowss.Add(row);
-                }
-                result.rows = rowss.ToArray();
-                result.page = Convert.ToInt32(page);
-                result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
-                result.records = Convert.ToInt32(TotalRecords.Value);
+                return Json(AllInsuranceList, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
-            return Json(result, JsonRequestBehavior.AllowGet);
+            
         }
 
         /// <summary>
@@ -979,36 +970,21 @@ namespace WorkOrderEMS.Controllers
                 }
                 UserId = ObjLoginModel.UserId;
             }
-            JQGridResults result = new JQGridResults();
-            List<JQGridRow> rowss = new List<JQGridRow>();
+            //JQGridResults result = new JQGridResults();
+            //List<JQGridRow> rowss = new List<JQGridRow>();
             sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
             sidx = string.IsNullOrEmpty(sidx) ? "UserEmail" : sidx;
             txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
             try
             {
                 var AllLicenseList = _IVendorManagement.GetAllLicenseDataList(VendorId, LocationId, VendorStatus, rows, TotalRecords, sidx, sord);
-                foreach (var license in AllLicenseList.rows)
-                {
-                    JQGridRow row = new JQGridRow();
-                    row.id = Cryptography.GetEncryptedData(Convert.ToString(license.LicenseId), true);
-                    row.cell = new string[7];
-                    row.cell[0] = license.LicenseId.ToString();
-                    row.cell[1] = license.VendorListId.ToString();
-                    row.cell[2] = license.LicenseName.ToString();
-                    row.cell[3] = license.LicenseNumber.ToString();
-                    row.cell[4] = license.LicenseExpirationDate.ToString();
-                    row.cell[5] = license.LicenseDocument == null ? "" : license.LicenseDocument.ToString();
-                    row.cell[6] = license.Status.ToString();
-                    rowss.Add(row);
-                }
-                result.rows = rowss.ToArray();
-                result.page = Convert.ToInt32(page);
-                result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
-                result.records = Convert.ToInt32(TotalRecords.Value);
+                return Json(AllLicenseList, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
-            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
-            return Json(result, JsonRequestBehavior.AllowGet);
+            {
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+           
         }
 
         /// <summary>
@@ -1285,38 +1261,16 @@ namespace WorkOrderEMS.Controllers
                 }
                 UserId = ObjLoginModel.UserId;
             }
-            JQGridResults result = new JQGridResults();
-            List<JQGridRow> rowss = new List<JQGridRow>();
-            sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
-            sidx = string.IsNullOrEmpty(sidx) ? "UserEmail" : sidx;
-            txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
+            
             try
             {
                 var AllAccountsList = _IVendorManagement.GetAllAccountsDataList(VendorId, LocationId, rows, TotalRecords, sidx, sord);
-                foreach (var accounts in AllAccountsList.rows)
-                {
-                    JQGridRow row = new JQGridRow();
-                    row.id = Cryptography.GetEncryptedData(Convert.ToString(accounts.AccountID), true);
-                    row.cell = new string[9];
-                    row.cell[0] = accounts.AccountID.ToString();
-                    row.cell[1] = accounts.BankName == null ? "N/A" : accounts.BankName.ToString();
-                    row.cell[2] = accounts.BankLocation == null ? "N/A" : accounts.BankLocation.ToString();
-                    row.cell[3] = accounts.AccountNumber == null ? "N/A" : accounts.AccountNumber.ToString();
-                    row.cell[4] = accounts.CardNumber == null ? "N/A" : accounts.CardNumber.ToString();
-                    row.cell[5] = accounts.IFSCCode == null ? "N/A" : accounts.IFSCCode.ToString();
-                    row.cell[6] = accounts.SwiftOICCode == null ? "N/A" : accounts.SwiftOICCode.ToString();
-                    row.cell[7] = accounts.AccountDocuments == null ? "" : accounts.AccountDocuments.ToString();
-                    row.cell[8] = accounts.Status.ToString();
-                    rowss.Add(row);
-                }
-                result.rows = rowss.ToArray();
-                result.page = Convert.ToInt32(page);
-                result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
-                result.records = Convert.ToInt32(TotalRecords.Value);
+                return Json(AllAccountsList, JsonRequestBehavior.AllowGet);
+
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
-            return Json(result, JsonRequestBehavior.AllowGet);
+          
         }
 
         /// <summary>
@@ -1487,12 +1441,21 @@ namespace WorkOrderEMS.Controllers
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]); 
                 UserId = ObjLoginModel.UserId;
-            } 
-            txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
+            }  
             try
-            {
-                var AllCompanyList = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord);
-                return Json(AllCompanyList.ToList(), JsonRequestBehavior.AllowGet);
+              {
+                
+                if (_search != null && _search != "")
+                {
+                 var  AllCompanyListForSearch = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord).Where(x => x.CompanyNameLegal.ToLower() == _search.ToLower().Trim()).ToList();
+                    return Json(AllCompanyListForSearch.ToList(), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    var AllCompanyList = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord);
+                    return Json(AllCompanyList.ToList(), JsonRequestBehavior.AllowGet);
+                }
+               
                 
             }
             catch (Exception ex)
@@ -1579,36 +1542,15 @@ namespace WorkOrderEMS.Controllers
                 }
                 UserId = ObjLoginModel.UserId;
             }
-            JQGridResults result = new JQGridResults();
-            List<JQGridRow> rowss = new List<JQGridRow>();
-            sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
-            sidx = string.IsNullOrEmpty(sidx) ? "UserEmail" : sidx;
-            txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
+       
             try
             {
-                var AllFacilityList = _IVendorManagement.GetFacilityListCompanyDetails(VendorId, LocationId, rows, TotalRecords, sidx, sord);
-                foreach (var facility in AllFacilityList.rows)
-                {
-                    JQGridRow row = new JQGridRow();
-                    row.id = Cryptography.GetEncryptedData(Convert.ToString(facility.FacilityId), true);
-                    row.cell = new string[7];
-                    row.cell[0] = facility.VendorId.ToString();
-                    row.cell[1] = facility.ProductServiceType.ToString();
-                    row.cell[2] = facility.ProductServiceName.ToString();
-                    row.cell[3] = facility.UnitCost.ToString();
-                    row.cell[4] = facility.Tax.ToString();
-                    row.cell[5] = facility.Costcode.ToString();
-                    row.cell[6] = facility.ProductImage == null ? null : HostingPrefix + DocFacilityPath.Replace("~", "") + facility.ProductImage.ToString();
-                    rowss.Add(row);
-                }
-                result.rows = rowss.ToArray();
-                result.page = Convert.ToInt32(page);
-                result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
-                result.records = Convert.ToInt32(TotalRecords.Value);
+                var AllFacilityList = _IVendorManagement.GetFacilityListCompanyDetails(VendorId, LocationId, rows, TotalRecords, sidx, sord).ToList();
+                return Json(AllFacilityList, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
-            return Json(result, JsonRequestBehavior.AllowGet);
+            
         }
 
         /// <summary>

@@ -68,6 +68,8 @@ $(function () {
                 } }
         ]
     });
+   
+
 });
 $(function () {
     //$("#tbl_AllUnApprovedList").jqGrid({
@@ -134,7 +136,7 @@ $(function () {
     //}
 });
 function ViewDetails(item) {
-    debugger
+     
     VendorId = item.VendorId;
     
     $.ajax({
@@ -221,10 +223,71 @@ function ViewDetails(item) {
 var timeoutHnd;
 var flAuto = true;
 function doSearch(ev) {
-    if (timeoutHnd)
-        clearTimeout(timeoutHnd)
-    timeoutHnd = setTimeout(gridReload, 500)
+    var act;
+    $("#jsGrid-basic").jsGrid({
+        height: "170%",
+        width: "100%",
+        filtering: false,
+        editing: false,
+        inserting: false,
+        sorting: false,
+        paging: true,
+        autoload: true,
+        pageSize: 10,
+        pageButtonCount: 5,
+
+        controller: {
+            loadData: function (filter) {
+                return $.ajax({
+                    type: "GET",
+                    url: $_HostPrefix + UnApprovedCompanyurl + '?_search=' + $("#SearchText").val(),//'/VendorManagement/GetAllUnApprovedVendorList',
+                    data: filter,
+                    dataType: "json"
+                });
+            }
+        },
+
+        fields: [
+            { name: "VendorId", title: "Vendor Id", type: "text", width: 50 },
+            { name: "CompanyNameLegal", title: "Vendor Name", type: "text", width: 50 },
+            { name: "Address1", title: "Address", type: "text", width: 50 },
+            { name: "Phone1", title: "Phone Number", type: "text", width: 50 },
+            { name: "PointOfContact", title: "Point Of Contact", type: "text", width: 50 },
+            { name: "VendorTypeData", title: "Vendor Type", type: "text", width: 50 },
+            { name: "Status", title: "Status", type: "text", width: 50 },
+            {
+                name: "act", items: act, title: "View Details", width: 50, css: "text-center", itemTemplate: function (value, item) {
+                    //TO add icon edit and delete to perform update and delete operation
+                    var $iconPencil = $("<i>").attr({ class: "fa fa-list" }).attr({ style: "color:black;font-size: 22px;" });
+
+                    var $customEditButton = $("<span style='padding: 0 5px 0 0;'>")
+                        .attr({ title: "View Details" })
+                        .attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+
+                            ViewDetails(item);
+                            //var addNewUrl = "../GlobalAdmin/EditLocationSetup?loc=" + item.Id;
+                            //$('#RenderPageId').load(addNewUrl);
+                            //e.stopPropagation();
+                        }).append($iconPencil);
+
+
+                    return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton);
+
+                    //var ed = "<a href='javascript:void(0)' class='EditRecord' Id='" + item.Id + "' style='margin-right: 10px;cursor:pointer;'><span class='mdi mdi-pencil fa-1x' style='color:yellow;'></span></a>";
+                    //var de = "<a href='javascript:void(0)' class='DeleteRecord' Id='" + item.Id + "' style='margin-right: 10px;cursor:pointer;'><span class='mdi mdi-delete fa-1x' style='color:black;'></span></a>";
+                    //var vi = "<a href='javascript:void(0)' class='ViewRecord' Id='" + item.Id + "' style='margin-right: 10px;cursor:pointer;'><span class='mdi mdi-eye fa-1x' style='color:black'></span></a>";
+                    ////return $("<span>").attr("class", ed);
+                    //var alldiv = "<span>" + ed + "</span>" + "<span>" + de + "</span>" + "<span>" + vi + "</span>";
+                    //return $("<div>").html(alldiv);
+                }
+            }
+        ]
+    });
 }
+function filter(args) {
+    debugger
+   
+} 
 //function gridReload() {
 
 //    var txtSearch = jQuery("#SearchText").val();

@@ -44,6 +44,9 @@
     .jsgrid-grid-body {
         height: 100% !important;
     }
+     .headerSize {
+        height: 36px;
+    }
 </style>
 <div class="content-body" style="min-height: 920px;">
     <!-- row -->
@@ -86,7 +89,7 @@
                             <a href="javascript:void(0)"><span><i id="AddCompany" class="mdi mdi-plus" style="color:white;font-size:50px;"></i></span></a>
                              <div class="basic-form">
                                     <div class="form-group">
-                                        <input id="SearchText" type="text" style="margin-top:15px;" class="form-control input-rounded" placeholder="Vendor Name" onkeydown="doSearch()">
+                                        <input id="SearchText" type="text" style="margin-top:15px;" class="form-control input-rounded" placeholder="Vendor Name" onkeyup="doSearch()">
                                     </div>
                                 </div> 
                         </div>

@@ -7,10 +7,8 @@
     if (ObjLogin != null)
     {
         UserType = ObjLogin.UserRoleId;
-
         #region Get Active User Type Flag
-        /*Get Active User Type Flag*/
-
+        /*Get Active User Type Flag*/ 
         switch ((WorkOrderEMS.Helper.UserType)ObjLogin.UserRoleId)
         {
             case WorkOrderEMS.Helper.UserType.GlobalAdmin:

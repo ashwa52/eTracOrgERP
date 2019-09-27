@@ -92,11 +92,81 @@ $(function () {
 
 var timeoutHnd;
 var flAuto = true;
-//function doSearch(ev) {
-//    if (timeoutHnd)
-//        clearTimeout(timeoutHnd)
-//    timeoutHnd = setTimeout(gridReload, 500)
-//}
+function doSearch() {
+    var act;
+    
+    var _searchresult = $("#SearchText").val();
+    $("#tbl_AllCompanyDataList").jsGrid({
+        height: "170%",
+        width: "100%",
+        filtering: false,
+        editing: false,
+        inserting: false,
+        sorting: false,
+        paging: true,
+        autoload: true,
+        pageSize: 10,
+        pageButtonCount: 5,
+
+        controller: {
+            loadData: function (filter) {
+                return $.ajax({
+                    type: "GET",
+                    url: $_HostPrefix + Companyurl + '?_search=' + _searchresult + '&LocationId=' + $_locationId ,
+                    data: filter,
+                    dataType: "json"
+                });
+            }
+        },
+
+        fields: [
+            //{ name: "VendorId", title: "Vendor Id", type: "text", width: 50 ,hidden:true },
+            { name: "CompanyNameLegal", title: "Vendor Name", type: "text", width: 50 },
+            { name: "Address1", title: "Address", type: "text", width: 50 },
+            { name: "Phone1", title: "Phone Number", type: "text", width: 50 },
+            { name: "PointOfContact", title: "Point Of Contact", type: "text", width: 50 },
+            { name: "VendorTypeData", title: "Vendor Type", type: "text", width: 50 },
+            //{ name: "Status", title: "Status", type: "text", width: 50, hidden: true},
+            {
+
+                name: "act", type: "control", items: act, title: "Action", width: 50, css: "text-center", itemTemplate: function (value, item) {
+                    var $iconPencilForEdit = $("<i>").attr({ class: "fa fa-pencil" }).attr({ style: "color:green;font-size: 22px;" });
+                    var $iconPencilForAccount = $("<i>").attr({ class: "fa fa-university" }).attr({ style: "color:#ee82ee;font-size: 22px;" });
+                    var $iconPencilForFacility = $("<i>").attr({ class: "fa fa-list" }).attr({ style: "color:#3cb371;font-size: 22px;" });
+                    var $iconPencilForView = $("<i>").attr({ class: "fa fa-eye" }).attr({ style: "color:bluelight;font-size: 22px;" });
+                    var $iconPencilForInsurance = $("<i>").attr({ class: "fa fa-medkit" }).attr({ style: "color:#ffa500;font-size: 22px;" });
+                    var $iconPencilForImport = $("<i>").attr({ class: "fa fa-upload" }).attr({ style: "color:#0080ff;font-size: 22px;" });
+
+                    var $customEditButton = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "Edit" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                        window.location.href = $_HostPrefix + editCompany + '?id=' + item.id;
+                    }).append($iconPencilForEdit);
+
+                    var $customButtonForAccount = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "Account Details" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                        window.location.href = $_HostPrefix + ListAccountDetails + '?VendorId=' + item.id;
+                    }).append($iconPencilForAccount);
+
+                    var $customButtonForFacility = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "Facility Details" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                        window.location.href = $_HostPrefix + addFacilityDetails + '?id=' + item.id;
+                    }).append($iconPencilForFacility);
+
+                    var $customButtonForView = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "View " }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                        ViewVendorDetails(item.VendorId);
+                    }).append($iconPencilForView);
+
+                    var $customButtonForInsurance = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "Insurance Details" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                        window.location.href = $_HostPrefix + GridListLicense + '?Vendorid=' + item.id + "&VendorStatus=" + $_VendorStatus;;
+                    }).append($iconPencilForInsurance);
+
+                    var $customButtonFileImport = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "File Import" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                        window.location.href = $_HostPrefix + addFileImport + '?id=' + item.id;
+                    }).append($iconPencilForImport);
+
+                    return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton).append($customButtonForAccount).append($customButtonForFacility).append($customButtonForView).append($customButtonForInsurance).append($customButtonFileImport);
+                }
+            }
+        ]
+    });
+}
 //function gridReload() {
 
 //    var txtSearch = jQuery("#SearchText").val();

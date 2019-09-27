@@ -1069,11 +1069,11 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <param name="sortColumnName"></param>
         /// <param name="sortOrderBy"></param>
         /// <returns></returns>
-        public InsuranceLicenseListDetails GetAllInsuranceDataList(long? VendorId, long? LocationId, bool VendorStatus, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
+        public List<VendorInsuranceModel> GetAllInsuranceDataList(long? VendorId, long? LocationId, bool VendorStatus, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
         {
             try
             {
-                var objDetails = new InsuranceLicenseListDetails();
+                //var objDetails = new List<VendorInsuranceModel>();
                 int pageindex = Convert.ToInt32(pageIndex) - 1;
                 int pageSize = Convert.ToInt32(numberOfRows);
                 var Results = new List<VendorInsuranceModel>();
@@ -1105,13 +1105,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         Status = a.INS_IsActive == "E" ? "Expired" : a.INS_IsActive == "N" ? "Deactivated" : "Activated"
                     }).ToList();
                 }
-                int totRecords = Results.Count();
-                var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
-                objDetails.pageindex = pageindex;
-                objDetails.total = totalPages;
-                objDetails.records = totRecords;
-                objDetails.rows = Results.ToList();
-                return objDetails;
+                
+                return Results.ToList();
             }
             catch (Exception ex)
             {
@@ -1169,7 +1164,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <param name="sortColumnName"></param>
         /// <param name="sortOrderBy"></param>
         /// <returns></returns>
-        public InsuranceLicenseListDetails GetAllLicenseDataList(long? VendorId, long? LocationId, bool status, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
+        public List<VendorInsuranceModel> GetAllLicenseDataList(long? VendorId, long? LocationId, bool status, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
         {
             try
             {
@@ -1205,13 +1200,13 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         Status = a.Status == "E" ? "Expired" : a.Status == "N" ? "Deactivated" : "Activated"
                     }).Where(x => x.Status == "N").ToList();
                 }
-                int totRecords = Results.Count();
-                var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
-                objDetails.pageindex = pageindex;
-                objDetails.total = totalPages;
-                objDetails.records = totRecords;
-                objDetails.rows = Results.ToList();
-                return objDetails;
+                //int totRecords = Results.Count();
+                //var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
+                //objDetails.pageindex = pageindex;
+                //objDetails.total = totalPages;
+                //objDetails.records = totRecords;
+                //objDetails.rows = Results.ToList();
+                return Results;
             }
             catch (Exception ex)
             {
@@ -1280,14 +1275,14 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <param name="sortColumnName"></param>
         /// <param name="sortOrderBy"></param>
         /// <returns></returns>
-        public VendorAccountDetails GetAllAccountsDataList(long? VendorId, long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
+        public List<VendorAccountDetailsModel> GetAllAccountsDataList(long? VendorId, long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
         {
             try
             {
-                var objDetails = new VendorAccountDetails();
+                var objDetails = new List<VendorAccountDetailsModel>();
                 int pageindex = Convert.ToInt32(pageIndex) - 1;
                 int pageSize = Convert.ToInt32(numberOfRows);
-                var Results = _workorderems.spGetCompanyAccountDetail(VendorId)  // .CompanyFacilityMappings.Where(x => x.CFM_CMP_Id == VendorId)
+                  objDetails = _workorderems.spGetCompanyAccountDetail(VendorId)  // .CompanyFacilityMappings.Where(x => x.CFM_CMP_Id == VendorId)
                     .Select(a => new VendorAccountDetailsModel()
                     {
                         AccountID = a.CAD_Id,
@@ -1301,13 +1296,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         Status = a.CAD_IsActive == "E" ? "Expired" : a.CAD_IsActive == "N" ? "Deactivated" : "Activated"
                     }).ToList();
 
-                int totRecords = Results.Count();
-                var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
-                objDetails.pageindex = pageindex;
-                objDetails.total = totalPages;
-                objDetails.records = totRecords;
-                objDetails.rows = Results.ToList();
-                return objDetails;
+               
+                return objDetails.ToList();
             }
             catch (Exception ex)
             {
@@ -1637,14 +1627,13 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <param name="sortColumnName"></param>
         /// <param name="sortOrderBy"></param>
         /// <returns></returns>
-        public CompanyFacilityModelDetails GetFacilityListCompanyDetails(long? VendorId, long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
+        public List<VendorFacilityModel> GetFacilityListCompanyDetails(long? VendorId, long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
         {
             try
             {
-                var objDetails = new CompanyFacilityModelDetails();
-                int pageindex = Convert.ToInt32(pageIndex) - 1;
-                int pageSize = Convert.ToInt32(numberOfRows);
-                var Results = _workorderems.spGetCompanyFacilityMapping(LocationId, VendorId)  // .CompanyFacilityMappings.Where(x => x.CFM_CMP_Id == VendorId)
+               var objDetails = new List<VendorFacilityModel>();
+                
+                objDetails = _workorderems.spGetCompanyFacilityMapping(LocationId, VendorId)  // .CompanyFacilityMappings.Where(x => x.CFM_CMP_Id == VendorId)
                     .Select(a => new VendorFacilityModel()
                     {
                         Costcode = a.CFM_CCD_CostCode,
@@ -1657,12 +1646,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         Amount = a.BCM_BalanceAmount
                     }).ToList();
 
-                int totRecords = Results.Count();
-                var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
-                objDetails.pageindex = pageindex;
-                objDetails.total = totalPages;
-                objDetails.records = totRecords;
-                objDetails.rows = Results.ToList();
+                
+                 
                 return objDetails;
             }
             catch (Exception ex)

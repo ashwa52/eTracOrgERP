@@ -172,7 +172,7 @@
                                 <div class="stepwizard">
                                     <div class="stepwizard-row setup-panel" id="progressbar">
                                         @*if (ViewBag.UpdateMode == false)
-                                            {*@
+                        {*@
                                         <div class="stepwizard-step col-xs-2">
                                             <a href="#step-1" type="button" class="btn btn-circledata btn-default btn-success active">1</a>
                                             <p><small>Vendor Details to setup Company</small></p>
@@ -425,6 +425,7 @@
                                 }
                                 else
                                 {
+
                                     @*<input type="button" name="previous" class="btn btn-default bluebutton previous prv-last-btn pull-right marginright10 marginbottom10 LRmar" value="Previous" style="border-radius:25px;width:90px;" />*@
                                     <button type="submit" onclick="return validateCustomFields(this);" class="btn btn-success pull-right marginright10 marginbottom10 Lmar10" style="border-radius:25px;width:150px;">Save &amp; Update </button>
                                     <input type="button" onclick="location.href='@Url.Action("CompanyList", "VendorManagement")'" class="btn btn-default bluebutton pull-right marginright10 marginbottom10 Lmar10" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
@@ -443,16 +444,15 @@
                                 </div>
 
                                 @*<input type="button" name="next" class="btn btn-default bluebutton next  nxt-btn" value="Next" />
-                                    <input type="button" name="previous" class="btn btn-default bluebutton previous prv-btn mrgL5" value="Previous" />
-                                    <input type="button" onclick="callCancel();" class="btn btn-default bluebutton nxt-btn" formnovalidate="formnovalidate" value="Cancel" />*@
+                <input type="button" name="previous" class="btn btn-default bluebutton previous prv-btn mrgL5" value="Previous" />
+                <input type="button" onclick="callCancel();" class="btn btn-default bluebutton nxt-btn" formnovalidate="formnovalidate" value="Cancel" />*@
 
-                       <!-- <input type="button" name="next" class="btn btn-success next nxt-btn" value="Next" style="border-radius:25px;width:90px;" />&nbsp; &nbsp;-->
-                        <a href="javascript:void(0)" id="" class="next fa fa-long-arrow-right previousBtndata pull-right" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>
-                        <a href="javascript:void(0)" class="previous fa fa-long-arrow-left pull-left" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>
+                                <!-- <input type="button" name="next" class="btn btn-success next nxt-btn" value="Next" style="border-radius:25px;width:90px;" />&nbsp; &nbsp;-->
+                                <a href="javascript:void(0)" id="" class="next fa fa-long-arrow-right previousBtndata pull-right" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>
+                                <a href="javascript:void(0)" class="previous fa fa-long-arrow-left pull-left" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>
 
-                        <!--<input type="button" name="previous" class="btn btn-default bluebutton previous prev_btn" value="Previous" style="border-radius:25px;width:90px;" />&nbsp; &nbsp;-->
-
-                        <!--<input type="button" onclick="callCancel();" class="btn btn-default bluebutton nxt-btn" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />-->
+                                <!--<input type="button" name="previous" class="btn btn-default bluebutton previous prev_btn" value="Previous" style="border-radius:25px;width:90px;" />&nbsp; &nbsp;-->
+                                <!--<input type="button" onclick="callCancel();" class="btn btn-default bluebutton nxt-btn" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />-->
 
                             </fieldset>
 
@@ -477,7 +477,7 @@
                                 <a href="javascript:void(0)" id="" class="next nxt-btn fa fa-long-arrow-right previousBtndata pull-right" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>
                                 <a href="javascript:void(0)" class="previous fa fa-long-arrow-left pull-left prev_btn" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>
                                 @*<input type="button" name="next" class="fa fa-long-arrow-right previousBtndata next  nxt-btn pull-right" value="Next" style="border-radius:25px;width:90px;" />
-                               <input type="button" name="previous" class="btn btn-default bluebutton previous prev_btn" value="Previous" style="border-radius:25px;width:90px;" />*@
+                <input type="button" name="previous" class="btn btn-default bluebutton previous prev_btn" value="Previous" style="border-radius:25px;width:90px;" />*@
                                 @*<input type="button" onclick="callCancel();" class="btn btn-default bluebutton nxt-btn" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />*@
 
                             </fieldset>
@@ -491,12 +491,12 @@
                                 <!--<input type="button" name="previous" class="btn btn-default bluebutton previous prv-last-btn pull-right marginright10 marginbottom10 LRmar" value="Previous" style="border-radius:25px;width:90px;" />-->
 
                                 <a href="javascript:void(0)" class="previous fa fa-long-arrow-left pull-left" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>
-                               <button type="submit" id="Savebtndata" class="btn btn-success pull-right marginright10 marginbottom10 Lmar10" style="border-radius:25px;width:150px;">Save &amp; Update </button>
-                                @*<input type="button" onclick="callCancel();" class="btn btn-default bluebutton pull-right marginright10 marginbottom10 Lmar10" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />*@ 
+                                <button type="submit" id="Savebtndata" class="btn btn-success pull-right marginright10 marginbottom10 Lmar10" style="border-radius:25px;width:150px;">Save &amp; Update </button>
+                                <input type="button" onclick="callCancel();" class="btn btn-default bluebutton pull-right marginright10 marginbottom10 Lmar10" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
 
                             </fieldset>
                         }
-
+                       
                     </div>
                 </div>
             </div>
@@ -622,7 +622,9 @@
 
 
     }
-        function callCancel() {
+   
+    });
+     function callCancel() {
             bootbox.confirm("Are you sure you want to cancel?", function (result) {
                 if (result) {
                     var vars = [], hash;
@@ -634,15 +636,13 @@
                     }
                     var Loc = decodeURIComponent(vars.loc);
                     if (Loc == undefined || Loc == null || Loc == "undefined") {
-                        window.location.href = "../VendorManagement/VendorManagementSetup";
+                        window.location.href = "/VendorManagement/VendorManagementSetup";
                     }
                     else {
-                        window.location.href = "../VendorManagement/VendorManagementSetup";
+                        window.location.href = "/VendorManagement/VendorManagementSetup";
                     }
                     //console.log(history.go(-1));
                 }
             });
         }
-    });
-
 </script>

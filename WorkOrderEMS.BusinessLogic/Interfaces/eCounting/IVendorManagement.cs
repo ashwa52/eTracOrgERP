@@ -21,13 +21,13 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
         VendorSetupManagementModel SaveVendorAccount(VendorSetupManagementModel Obj);
         VendorSetupManagementModel SaveVendorInsuranceLicense(VendorSetupManagementModel Obj);
         List<LocationListServiceModel> ListAllocatedLocatioForVender(long VendorId);
-        InsuranceLicenseListDetails GetAllInsuranceDataList(long? VendorId, long? LocationId, bool VendorStatus, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
+        List<VendorInsuranceModel> GetAllInsuranceDataList(long? VendorId, long? LocationId, bool VendorStatus, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
         //InsuranceLicenseListDetails GetAllInsuranceDataList(long? VendorId, long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
         VendorInsuranceModel GetDetailsById(long Id);
-        InsuranceLicenseListDetails GetAllLicenseDataList(long? VendorId, long? LocationId, bool status, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
+        List<VendorInsuranceModel> GetAllLicenseDataList(long? VendorId, long? LocationId, bool status, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
         //InsuranceLicenseListDetails GetAllLicenseDataList(long? VendorId, long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
         bool ActiveInsuranceLicenseById(long InsuranceId, long UserId, string IsActive, string IsInsuranceLicense);
-        VendorAccountDetails GetAllAccountsDataList(long? VendorId, long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
+        List<VendorAccountDetailsModel> GetAllAccountsDataList(long? VendorId, long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
 
         bool ActiveAccountsById(long AccountsId, long UserId, string IsActive);
         VendorAccountDetailsModel GetAccountDetailsById(long Id);
@@ -42,7 +42,7 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
         VendorAccountDetailsModel GetAccountDetailsByVendorId(long VendorId);
         VendorInsuranceModel GetInsuranceLicenseCompanyDetails(long Id, string modelStatus);
         string ListAllAlocatedLocatioForVender(long VendorId);
-        CompanyFacilityModelDetails GetFacilityListCompanyDetails(long? VendorId, long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
+        List<VendorFacilityModel> GetFacilityListCompanyDetails(long? VendorId, long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
         bool SaveFacilityDetails(VendorFacilityModel obj);
 
         long GetVendorId(string CompanyName); 
