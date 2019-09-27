@@ -528,6 +528,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     .Select(a => new VendorSetupManagementModel()
                     {
                         VendorId = a.CMP_Id,
+                        id = Cryptography.GetEncryptedData(Convert.ToString(a.CMP_Id), true),
                         CompanyNameLegal = a.CMP_NameLegal,
                         Address1 = a.Address1,
                         Phone1 = a.COD_Phone1,
@@ -1083,9 +1084,11 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     .Select(a => new VendorInsuranceModel()
                     {
                         InsuranceID = a.INS_Id,
+                        Id=Cryptography.GetEncryptedData(Convert.ToString(a.INS_Id), true),
                         VendorListId = a.INS_CMP_Id,
                         InsuranceCarries = a.INS_IncuranceCarrier,
                         InsuranceExpirationDate = a.INS_ExpirationDate,
+                        DisplayLicenseExpirationDate = a.INS_ExpirationDate.ToString("MM/dd/yyyy"),
                         PolicyNumber = a.INS_PolicyNumber,
                         InsuranceDocument = a.INS_InsuranceDocument,
                         Status = a.INS_IsActive == "E" ? "Expired" : a.INS_IsActive == "N" ? "Deactivated" : "Activated"
@@ -1097,9 +1100,11 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     .Select(a => new VendorInsuranceModel()
                     {
                         InsuranceID = a.INS_Id,
+                        Id = Cryptography.GetEncryptedData(Convert.ToString(a.INS_Id), true),
                         VendorListId = a.INS_CMP_Id,
                         InsuranceCarries = a.INS_IncuranceCarrier,
                         InsuranceExpirationDate = a.INS_ExpirationDate,
+                        DisplayLicenseExpirationDate = a.INS_ExpirationDate.ToString("MM/dd/yyyy"),
                         PolicyNumber = a.INS_PolicyNumber,
                         InsuranceDocument = a.INS_InsuranceDocument,
                         Status = a.INS_IsActive == "E" ? "Expired" : a.INS_IsActive == "N" ? "Deactivated" : "Activated"
@@ -1174,13 +1179,18 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 var Results = new List<VendorInsuranceModel>();
                 if (status == true)
                 {
-                    Results = _workorderems.Licenses.Where(x => x.LNC_CMP_Id == VendorId) // .CompanyFacilityMappings.Where(x => x.CFM_CMP_Id == VendorId)
-                    .Select(a => new VendorInsuranceModel()
+
+                    var _result = _workorderems.Licenses.Where(x => x.LNC_CMP_Id == VendorId).ToList();
+
+                    Results = _result.Select(a => new VendorInsuranceModel()
                     {
+                       
                         LicenseId = a.LNC_Id,
+                        Id = Cryptography.GetEncryptedData(Convert.ToString(a.LNC_Id), true),
                         LicenseName = a.LNC_LicenseName,
                         LicenseNumber = a.LNC_LicenseNumber,
                         LicenseExpirationDate = a.LNC_ExpirationDate,
+                        DisplayLicenseExpirationDate= a.LNC_ExpirationDate.ToString("MM/dd/yyyy"),
                         VendorListId = a.LNC_CMP_Id,
                         LicenseDocument = a.LNC_LicenseDocument,
                         Status = a.LNC_IsActive == "E" ? "Expired" : a.LNC_IsActive == "N" ? "Deactivated" : "Activated"
@@ -1191,10 +1201,13 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     Results = _workorderems.spGetLicense(VendorId).Where(x => x.Status == "N")  // .CompanyFacilityMappings.Where(x => x.CFM_CMP_Id == VendorId)
                     .Select(a => new VendorInsuranceModel()
                     {
+
                         LicenseId = a.LNC_Id,
+                        Id = Cryptography.GetEncryptedData(Convert.ToString(a.LNC_Id), true),
                         LicenseName = a.LNC_LicenseName,
                         LicenseNumber = a.LNC_LicenseNumber,
                         LicenseExpirationDate = a.LNC_ExpirationDate,
+                        DisplayLicenseExpirationDate = a.LNC_ExpirationDate.ToString("MM/dd/yyyy"),
                         VendorListId = a.LNC_CMP_Id,
                         LicenseDocument = a.LNC_LicenseDocument,
                         Status = a.Status == "E" ? "Expired" : a.Status == "N" ? "Deactivated" : "Activated"
@@ -1214,7 +1227,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 throw;
             }
         }
-
+   
         /// <summary>
         /// Created By : Ashwajit Bansod
         /// Created Date : 07-Dec-2018
@@ -1286,6 +1299,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     .Select(a => new VendorAccountDetailsModel()
                     {
                         AccountID = a.CAD_Id,
+                        Id= Cryptography.GetEncryptedData(Convert.ToString(a.CAD_Id), true),
                         AccountDocuments = a.CAD_AccountDocument,
                         AccountNumber = a.CAD_AccountNumber,
                         BankLocation = a.CAD_BankLocation,

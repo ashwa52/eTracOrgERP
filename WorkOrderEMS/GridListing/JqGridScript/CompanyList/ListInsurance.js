@@ -4,7 +4,7 @@ var InsuranceDoc = '../VendorManagement/InsuranceDownload/';
 var addInsuranceDetails = 'VendorManagement/AddInsurace/';
 var Insurance = true;
 $(function () {
-
+    var act;
     $("#tbl_LicenseAndInsuranceList").jsGrid({
         height: "170%",
         width: "100%",
@@ -31,8 +31,47 @@ $(function () {
         fields: [ 
             { name: "InsuranceCarries", title: "Insurance Carries", type: "text", width: 50 },
             { name: "PolicyNumber", title: "Policy Number", type: "text", width: 50 },
-            { name: "InsuranceExpirationDate", title: "Expiration Date", type: "text", width: 50 },
+            { name: "DisplayLicenseExpirationDate", title: "Expiration Date", type: "text", width: 50 },
             { name: "Status", title: "Status", type: "text", width: 50 }, 
+            {
+                name: "act", type: "control", items: act, title: "Action", width: 50, css: "text-center", itemTemplate: function (value, item) {
+
+                    var $iconPencilForAccountApprove = $("<i>").attr({ class: "fa fa-check" }).attr({ style: "color:green;font-size: 22px;" });
+                    var $iconPencilForAccountDeactivate = $("<i>").attr({ class: "fa fa-close" }).attr({ style: "color:red;font-size: 22px;" });
+                    var $iconFileFordocument = $("<i>").attr({ class: "fa fa-download" }).attr({ style: "color:#0080ff;font-size: 22px;" });
+                    var $iconForExpired = $("<i>").attr({ class: "fa fa-close" }).attr({ style: "color:#0080ff;font-size: 22px;" });
+                    if (item.Status == "Activated")
+                    {
+                        $customButtonForAcandDeActive = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "Click to Deactivate" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                            ActiveDeActiveInsurance(item.Id, "N");
+                        }).append($iconPencilForAccountApprove);
+                    }
+                    else if (item.Status == "Deactivated")
+                    {
+                        $customButtonForAcandDeActive = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "Click to Active" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                            ActiveDeActiveInsurance(item.Id, "Y");
+                        }).append($iconPencilForAccountDeactivate);
+
+
+                    }
+                    if (item.Status == "Expired") {
+                        $customButtonForAcandDeActive = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "Click to Update" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                            UpdateInsurance(item.Id);
+
+                        }).append($iconForExpired);
+
+                    }
+                    if (item.InsuranceDocument == null || item.InsuranceDocument == "" || item.InsuranceDocument == '' || item.InsuranceDocument == undefined) {
+                    }
+                    else {
+                        var $customButtonForFile = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "Receipt file" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                            window.location.href = $_HostPrefix + InsuranceDoc + '?Id=' + item.Id + '&Insurance=' + Insurance;
+                        }).append($iconFileFordocument);
+                    }
+
+                    return $("<div>").attr({ class: "btn-toolbar" }).append($customButtonForAcandDeActive).append($customButtonForFile);
+                }
+            }
         ]
     });
 
@@ -116,28 +155,29 @@ $(function () {
 function AddInsurance() {
     window.location.href = $_HostPrefix + addInsuranceDetails + '?VendorID=' + $_VendorID;
 };
-$("#UpdateInuranceLicense").on("click", function (event) {
-    var id = $(this).attr("aid");
+function UpdateInsurance(id) {
+    
     window.location.href = $_HostPrefix + addDetails + '?id=' + id + "&VendorID=" + $_VendorID;;
-});
+};
 
-$("#ActiveInsurance").on("click", function (event) {
-    var id = $(this).attr("iid");
-    var IsActive = $(this).attr("IsActive");
+function ActiveDeActiveInsurance(id, Status)
+{
+     
     var IsInsurance = "Insurance";
     $.ajax({
         type: "POST",
-        url: $_HostPrefix + ActiveInsurance + "?InsuranceLicenseId=" + id + "&IsActive=" + IsActive + "&IsInsuranceLicense=" + IsInsurance,
+        url: $_HostPrefix + ActiveInsurance + "?InsuranceLicenseId=" + id + "&IsActive=" + Status + "&IsInsuranceLicense=" + IsInsurance,
         ///data:{},
         contentType: "application/json; charset=utf-8",
         beforesend: function () {
             new fn_showmaskloader('please wait...');
         },
         success: function (result) {
-            $('#tbl_LicenseAndInsuranceList').trigger("reloadGrid");
+          
+            $("#tbl_LicenseAndInsuranceList").jsGrid("loadData"); 
             toastr.success(result);
         },
         error: function (xhr, status, error) {
         },
     });
-});
+};

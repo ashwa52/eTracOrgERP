@@ -48,6 +48,8 @@ namespace WorkOrderEMS.Models
         public Nullable<DateTime> InsuranceExpirationDate { get; set; }
         public string InsuranceDocument { get; set; }
         public HttpPostedFileBase InsuranceDocumentFile { get; set; }
+        public string Id { get; set; }
+        public string DisplayLicenseExpirationDate { get; set; }
 
     }
     public class InsuranceLicenseListDetails

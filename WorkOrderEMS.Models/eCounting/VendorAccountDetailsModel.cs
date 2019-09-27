@@ -48,6 +48,7 @@ namespace WorkOrderEMS.Models
         public string BankLocation { get; set; }
         public decimal BalanceAmount { get; set; }
         public long? QuickbookAcountId { get; set; }
+        public string Id { get; set; }
     }
 
     public class VendorAccountDetails

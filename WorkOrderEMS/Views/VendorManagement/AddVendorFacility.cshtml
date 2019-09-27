@@ -32,6 +32,9 @@
 }
 
 <style>
+        .m-0{
+        margin:0px !important;
+    }
     .jsgrid-grid-body {
         height: 100% !important;
     }
@@ -59,7 +62,7 @@
             <div class="col-xl-12 col-xxl-12">
                 <div class="card aos-init aos-animate" data-aos="fade-up">
                     <div class="card-header headerSize">
-                        <h4 class="card-title" style="color:white;"><strong> Add Facility</strong></h4>
+                        <h4 class="card-title m-0" style="color:white;"><strong> Add Facility</strong></h4>
                     </div>
                     <div class="card-body"> 
                         @using (Html.BeginForm("SaveVendorFacility", "VendorManagement", FormMethod.Post, new { enctype = "multipart/form-data", id = "msform" }))
@@ -176,8 +179,8 @@
                         <div class="card-header headerSize" style="height:45px;">
 
                             <div class="basic-form">
-                                <div class="form-group">
-                                    <p>List of Facility</p>
+                                <div class="form-group m-0">
+                                    <p class="m-0">List of Facility</p>
                                 </div>
                             </div>
                         </div>

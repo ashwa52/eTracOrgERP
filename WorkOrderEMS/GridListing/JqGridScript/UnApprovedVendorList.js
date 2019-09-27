@@ -48,7 +48,8 @@ $(function () {
 
                     var $customEditButton = $("<span style='padding: 0 5px 0 0;'>")
                         .attr({ title:"View Details"})
-                        .attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                        .attr({ id: "btn-edit-" + item.Id }).click(function (e)
+                        {
                             
                             ViewDetails(item);
                             //var addNewUrl = "../GlobalAdmin/EditLocationSetup?loc=" + item.Id;

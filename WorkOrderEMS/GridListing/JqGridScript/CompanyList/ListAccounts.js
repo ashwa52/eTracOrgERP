@@ -4,6 +4,7 @@ var AccountsDoc = 'VendorManagement/AccountDocDownload/';
 var addAccountDetails = 'VendorManagement/AddAccountDetails/';
 var Insurance = true;
 $(function () {
+    var act;
     $("#tbl_AccountList").jsGrid({
         height: "170%",
         width: "100%",
@@ -37,6 +38,48 @@ $(function () {
             { name: "IFSCCode", title: "IFSCCode", type: "text", width: 50 },
             { name: "SwiftOICCode", title: "Swift OIC Code", type: "text", width: 50 },
             { name: "Status", title: "Status", type: "text", width: 50 },
+             
+            {
+
+                name: "act", type: "control", items: act, title: "Action", width: 50, css: "text-center", itemTemplate: function (value, item) {
+
+                    var $iconPencilForAccountApprove = $("<i>").attr({ class: "fa fa-check" }).attr({ style: "color:green;font-size: 22px;" });
+                    var $iconPencilForAccountDeactivate = $("<i>").attr({ class: "fa fa-close" }).attr({ style: "color:red;font-size: 22px;" });
+                    var $iconFileFordocument = $("<i>").attr({ class: "fa fa-download" }).attr({ style: "color:#0080ff;font-size: 22px;" });
+                    var $iconForExpired = $("<i>").attr({ class: "fa fa-close" }).attr({ style: "color:#0080ff;font-size: 22px;" }); 
+                    if (item.Status == "Activated")
+                    {
+                        $customButtonForAcandDeActive = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "Click to Deactivate" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                              ActiveDeActiveAccount(item.Id,"N"); 
+                        }).append($iconPencilForAccountApprove);
+                    }
+                    else if (item.Status == "Deactivated")
+                    {
+                        $customButtonForAcandDeActive = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "Click to Active" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                            ActiveDeActiveAccount(item.Id, "Y");
+                        }).append($iconPencilForAccountDeactivate);
+                         
+
+                    }
+                    if (item.Status == "Expired")
+                    {
+                        $customButtonForAcandDeActive = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "Click to Update" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                          
+                        }).append($iconForExpired);
+                        
+                    } 
+                    if (item.AccountDocuments == null || item.AccountDocuments == "" || item.AccountDocuments == '' || item.AccountDocuments == undefined) {
+                    }
+                    else
+                    {
+                        var $customButtonForFile = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "Receipt file" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                            window.location.href = $_HostPrefix + AccountsDoc + '?Id=' + item.Id;
+                       }).append($iconFileFordocument); 
+                    }
+                    
+                    return $("<div>").attr({ class: "btn-toolbar" }).append($customButtonForAcandDeActive).append($customButtonForFile); 
+                }
+            }
             
 
 
@@ -85,7 +128,8 @@ $(function () {
     //            if (Data.Status == "Activated") {
     //                be = '<a href="javascript:void(0)" class="Assign" title="Active" IsActive="N" id="ActiveAccount" iid="' + cl + '" style=" float: left;margin-right: 10px;cursor:pointer;"><span class="fa fa-check fa-2x texthover-yellowlight"></span><span class="tooltips">Click to deactivate</span></a>';
     //            }
-    //            else if (Data.Status == "Deactivated") {
+    //            else if (Data.Status == "Deactivated") 
+    //    {
     //                be = '<a href="javascript:void(0)" class="deleteRecord" title="delete" IsActive="Y" id="ActiveAccount" iid="' + cl + '" style=" float: left;margin-right: 10px;cursor:pointer;"><span class="fa fa-check fa-2x texthover-bluelight"></span><span class="tooltips" style="width:100px;">Click to Active</span></a>';
     //            }
     //            var file = "";
@@ -123,22 +167,21 @@ function AddAccountDetails() {
     window.location.href = $_HostPrefix + addAccountDetails + '?id=' + $_VendorID;
 };
 
-$("#ActiveAccount").on("click", function (event) {
-    var id = $(this).attr("iid");
-    var IsActive = $(this).attr("IsActive");
+function ActiveDeActiveAccount(id, Status) { 
     $.ajax({
         type: "POST",
-        url: $_HostPrefix + ActiveAccounts + "?AccountsId=" + id + "&IsActive=" + IsActive ,
+        url: $_HostPrefix + ActiveAccounts + "?AccountsId=" + id + "&IsActive=" + Status ,
         ///data:{},
         contentType: "application/json; charset=utf-8",
         beforesend: function () {
             new fn_showmaskloader('please wait...');
         },
         success: function (result) {
-            $('#tbl_AccountList').trigger("reloadGrid");
+            $("#tbl_AccountList").jsGrid("loadData"); 
+           // $('#tbl_AccountList').trigger("reloadGrid");
             toastr.success(result);
         },
         error: function (xhr, status, error) {
         },
     });
-});
+};
