@@ -432,8 +432,9 @@ namespace WorkOrderEMS.Controllers
             if (Session != null && Session["eTrac"] != null)
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-                if (LocationId == null)
+                if(ObjLoginModel != null)
                 {
+
                     LocationId = ObjLoginModel.LocationID;
                 }
                 UserId = ObjLoginModel.UserId;
@@ -1441,6 +1442,7 @@ namespace WorkOrderEMS.Controllers
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]); 
                 UserId = ObjLoginModel.UserId;
+                LocationId = ObjLoginModel.LocationID;
             }  
             try
               {

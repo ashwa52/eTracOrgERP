@@ -59,7 +59,7 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8">b
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>eTrac</title>
@@ -851,7 +851,22 @@
             }else{
               $('#RenderPageId').load(url);
         }           
-        });             
+        });   
+        $("#drp_MasterLocation1").change(function () { 
+            var LocationID = $(this).val();
+            var LocationName = $("#drp_MasterLocation1 option:selected").text();
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SetUserSelectedLocation", "Login")',
+                data: { LocationID: LocationID, LocationName: LocationName },
+                success: function (Data) { 
+                    $('.jsgrid').jsGrid("loadData");
+                },
+                error: function () {
+                }
+            })
+            //------END------//
+        });
     });
 </script>
 
