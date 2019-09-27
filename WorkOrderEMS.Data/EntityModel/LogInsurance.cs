@@ -29,7 +29,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string LINS_IsApprove { get; set; }
         public string LINS_IsActive { get; set; }
     
-        public virtual Insurance Insurance { get; set; }
         public virtual Company Company { get; set; }
+        public virtual Insurance Insurance { get; set; }
     }
 }

@@ -19,6 +19,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         workorderEMSEntities _workorderems = new workorderEMSEntities();
         private string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private string Path = ConfigurationManager.AppSettings["CompanyDocument"];
+        private string DocFacilityPath = ConfigurationManager.AppSettings["VendorImageFacility"];
 
         /// <summary>
         /// Created By : Ashwajit Bansod
@@ -294,7 +295,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                 item.UnitCost = Convert.ToDecimal(unitcost);
                                 var saveVendorFacility = _workorderems.spSetCompanyFacilityMapping(Action, null, VendorId, item.Costcode,
                                                                           item.ProductServiceType, item.ProductServiceName, item.UnitCost, item.Tax, Obj.UserId,
-                                                                          null, "Y");
+                                                                          null, "Y",item.VenderProductImageName);
 
                                 Obj.Result = Result.Completed;
                             }
@@ -1656,8 +1657,9 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         ProductServiceName = a.CFM_Discription,
                         VendorId = a.CFM_CMP_Id,
                         ProductServiceType = a.CFM_FacilityType == "1" ? "Product" : "Services",
-                        Amount = a.BCM_BalanceAmount
-                    }).ToList();
+                        Amount = a.BCM_BalanceAmount,
+                        VenderProductImageName = HostingPrefix + DocFacilityPath.Replace("~", "") + Convert.ToString(a.CFM_ImageName)
+            }).ToList();
 
                 
                  
@@ -1692,7 +1694,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     Action = "I";
                     var saveVendorFacility = _workorderems.spSetCompanyFacilityMapping(Action, null, obj.VendorId, obj.Costcode,
                                                                          obj.ProductServiceType, obj.ProductServiceName, obj.UnitCost, obj.Tax, obj.UserId,
-                                                                         obj.UserId, "Y");
+                                                                         obj.UserId, "Y",obj.VenderProductImageName);
                     IsSaved = true;
                     var userData = _workorderems.UserRegistrations.Where(x => x.UserId == obj.UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
                     var VendorData = _workorderems.spGetVendorAllDetail(obj.VendorId).FirstOrDefault();
@@ -1767,5 +1769,31 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             return result;
         }
         #endregion
+        public bool SaveContractAllocation(ContractLocationAllocation obj)
+        {
+            string Action = "";
+            bool IsSaved = false;
+            try
+            {
+                if (obj != null)//&& obj.VendorId > 0
+                {
+
+                    Action = "I";
+                    var saveVendorFacility = "";//_workorderems.spSetVenderLocationAllocation(Action, null, obj.CntId, obj.LocationId, obj.AllocationId,obj.IsActive);
+                    IsSaved = true;
+                }
+                else
+                {
+                    IsSaved = false;
+                    return IsSaved;
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "SaveContractallocation", "Exception While adding allocation details.", obj);
+                throw;
+            }
+            return true;
+        }
     }
 }

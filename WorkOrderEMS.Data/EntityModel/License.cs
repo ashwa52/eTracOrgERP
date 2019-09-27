@@ -27,7 +27,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string LNC_LicenseDocument { get; set; }
         public string LNC_IsActive { get; set; }
     
-        public virtual ICollection<LogLicense> LogLicenses { get; set; }
         public virtual Company Company { get; set; }
+        public virtual ICollection<LogLicense> LogLicenses { get; set; }
     }
 }

@@ -19,6 +19,7 @@ namespace WorkOrderEMS.Data.EntityModel
             this.AdminLocationMappings = new HashSet<AdminLocationMapping>();
             this.Bills = new HashSet<Bill>();
             this.BudgetLocationMappings = new HashSet<BudgetLocationMapping>();
+            this.ContractLocationAllocations = new HashSet<ContractLocationAllocation>();
             this.CostCodeLocationMappings = new HashSet<CostCodeLocationMapping>();
             this.eFleetDrivers = new HashSet<eFleetDriver>();
             this.eFleetFuelings = new HashSet<eFleetFueling>();
@@ -27,6 +28,7 @@ namespace WorkOrderEMS.Data.EntityModel
             this.eFleetVehicleIncidents = new HashSet<eFleetVehicleIncident>();
             this.eFleetVehicleInspectionLogs = new HashSet<eFleetVehicleInspectionLog>();
             this.eFleetVehicleScanLogs = new HashSet<eFleetVehicleScanLog>();
+            this.eFormTracks = new HashSet<eFormTrack>();
             this.EmailLogs = new HashSet<EmailLog>();
             this.EmployeeLocationMappings = new HashSet<EmployeeLocationMapping>();
             this.LocationClientMappings = new HashSet<LocationClientMapping>();
@@ -35,16 +37,19 @@ namespace WorkOrderEMS.Data.EntityModel
             this.LocationServices = new HashSet<LocationService>();
             this.LogBills = new HashSet<LogBill>();
             this.LoginLogs = new HashSet<LoginLog>();
+            this.LogLocationCompanyMappings = new HashSet<LogLocationCompanyMapping>();
             this.LogMiscellaneous = new HashSet<LogMiscellaneou>();
             this.LogPODetails = new HashSet<LogPODetail>();
+            this.LogPODetailEmergencies = new HashSet<LogPODetailEmergency>();
             this.LogPreBills = new HashSet<LogPreBill>();
             this.ManagerLocationMappings = new HashSet<ManagerLocationMapping>();
             this.Miscellaneous = new HashSet<Miscellaneou>();
             this.PODetails = new HashSet<PODetail>();
+            this.PODetailEmergencies = new HashSet<PODetailEmergency>();
+            this.PreBills = new HashSet<PreBill>();
             this.QRCMasters = new HashSet<QRCMaster>();
             this.QRCScanLogs = new HashSet<QRCScanLog>();
             this.LoginLogs1 = new HashSet<LoginLog>();
-            this.LogLocationCompanyMappings = new HashSet<LogLocationCompanyMapping>();
         }
     
         public long LocationId { get; set; }
@@ -89,6 +94,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ICollection<AdminLocationMapping> AdminLocationMappings { get; set; }
         public virtual ICollection<Bill> Bills { get; set; }
         public virtual ICollection<BudgetLocationMapping> BudgetLocationMappings { get; set; }
+        public virtual ICollection<ContractLocationAllocation> ContractLocationAllocations { get; set; }
         public virtual ICollection<CostCodeLocationMapping> CostCodeLocationMappings { get; set; }
         public virtual ICollection<eFleetDriver> eFleetDrivers { get; set; }
         public virtual ICollection<eFleetFueling> eFleetFuelings { get; set; }
@@ -97,6 +103,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ICollection<eFleetVehicleIncident> eFleetVehicleIncidents { get; set; }
         public virtual ICollection<eFleetVehicleInspectionLog> eFleetVehicleInspectionLogs { get; set; }
         public virtual ICollection<eFleetVehicleScanLog> eFleetVehicleScanLogs { get; set; }
+        public virtual ICollection<eFormTrack> eFormTracks { get; set; }
         public virtual ICollection<EmailLog> EmailLogs { get; set; }
         public virtual ICollection<EmployeeLocationMapping> EmployeeLocationMappings { get; set; }
         public virtual GlobalCode GlobalCode { get; set; }
@@ -106,15 +113,18 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ICollection<LocationService> LocationServices { get; set; }
         public virtual ICollection<LogBill> LogBills { get; set; }
         public virtual ICollection<LoginLog> LoginLogs { get; set; }
+        public virtual ICollection<LogLocationCompanyMapping> LogLocationCompanyMappings { get; set; }
         public virtual ICollection<LogMiscellaneou> LogMiscellaneous { get; set; }
         public virtual ICollection<LogPODetail> LogPODetails { get; set; }
+        public virtual ICollection<LogPODetailEmergency> LogPODetailEmergencies { get; set; }
         public virtual ICollection<LogPreBill> LogPreBills { get; set; }
         public virtual ICollection<ManagerLocationMapping> ManagerLocationMappings { get; set; }
         public virtual ICollection<Miscellaneou> Miscellaneous { get; set; }
         public virtual ICollection<PODetail> PODetails { get; set; }
+        public virtual ICollection<PODetailEmergency> PODetailEmergencies { get; set; }
+        public virtual ICollection<PreBill> PreBills { get; set; }
         public virtual ICollection<QRCMaster> QRCMasters { get; set; }
         public virtual ICollection<QRCScanLog> QRCScanLogs { get; set; }
         public virtual ICollection<LoginLog> LoginLogs1 { get; set; }
-        public virtual ICollection<LogLocationCompanyMapping> LogLocationCompanyMappings { get; set; }
     }
 }

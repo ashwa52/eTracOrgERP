@@ -33,8 +33,8 @@ namespace WorkOrderEMS.Data.EntityModel
         public string BLL_InvoiceDocument { get; set; }
         public string BLL_IsActive { get; set; }
     
-        public virtual ICollection<LogBill> LogBills { get; set; }
         public virtual Company Company { get; set; }
         public virtual LocationMaster LocationMaster { get; set; }
+        public virtual ICollection<LogBill> LogBills { get; set; }
     }
 }

@@ -35,8 +35,8 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<long> DeletedBy { get; set; }
         public Nullable<System.DateTime> DeletedDate { get; set; }
     
-        public virtual GlobalCode GlobalCode { get; set; }
         public virtual ICollection<eFleetPassengerTrackingCount> eFleetPassengerTrackingCounts { get; set; }
+        public virtual GlobalCode GlobalCode { get; set; }
         public virtual UserRegistration UserRegistration { get; set; }
     }
 }

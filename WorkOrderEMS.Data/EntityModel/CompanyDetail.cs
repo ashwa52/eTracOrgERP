@@ -38,7 +38,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string COD_Website { get; set; }
         public string COD_IsActive { get; set; }
     
-        public virtual ICollection<LogCompanyDetail> LogCompanyDetails { get; set; }
         public virtual Company Company { get; set; }
+        public virtual ICollection<LogCompanyDetail> LogCompanyDetails { get; set; }
     }
 }

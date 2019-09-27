@@ -27,7 +27,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string INS_InsuranceDocument { get; set; }
         public string INS_IsActive { get; set; }
     
-        public virtual ICollection<LogInsurance> LogInsurances { get; set; }
         public virtual Company Company { get; set; }
+        public virtual ICollection<LogInsurance> LogInsurances { get; set; }
     }
 }

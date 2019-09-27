@@ -18,6 +18,8 @@ namespace WorkOrderEMS.Data.EntityModel
         {
             this.Bills = new HashSet<Bill>();
             this.CompanyAccountDetails = new HashSet<CompanyAccountDetail>();
+            this.CompanyAccountTransactions = new HashSet<CompanyAccountTransaction>();
+            this.CompanyAccountTransactions1 = new HashSet<CompanyAccountTransaction>();
             this.CompanyDetails = new HashSet<CompanyDetail>();
             this.CompanyFacilityMappings = new HashSet<CompanyFacilityMapping>();
             this.CompanyQBKs = new HashSet<CompanyQBK>();
@@ -25,6 +27,7 @@ namespace WorkOrderEMS.Data.EntityModel
             this.Contracts1 = new HashSet<Contract>();
             this.Insurances = new HashSet<Insurance>();
             this.Licenses = new HashSet<License>();
+            this.LocationCompanyMappings = new HashSet<LocationCompanyMapping>();
             this.LogBills = new HashSet<LogBill>();
             this.LogCompanies = new HashSet<LogCompany>();
             this.LogCompanyAccountDetails = new HashSet<LogCompanyAccountDetail>();
@@ -34,11 +37,11 @@ namespace WorkOrderEMS.Data.EntityModel
             this.LogContracts1 = new HashSet<LogContract>();
             this.LogInsurances = new HashSet<LogInsurance>();
             this.LogLicenses = new HashSet<LogLicense>();
-            this.LogMiscellaneous = new HashSet<LogMiscellaneou>();
-            this.Miscellaneous = new HashSet<Miscellaneou>();
-            this.LocationCompanyMappings = new HashSet<LocationCompanyMapping>();
-            this.LogPreBills = new HashSet<LogPreBill>();
             this.LogLocationCompanyMappings = new HashSet<LogLocationCompanyMapping>();
+            this.LogMiscellaneous = new HashSet<LogMiscellaneou>();
+            this.LogPreBills = new HashSet<LogPreBill>();
+            this.Miscellaneous = new HashSet<Miscellaneou>();
+            this.PreBills = new HashSet<PreBill>();
         }
     
         public long CMP_Id { get; set; }
@@ -54,6 +57,8 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual CompanyType CompanyType { get; set; }
         public virtual VendorType VendorType { get; set; }
         public virtual ICollection<CompanyAccountDetail> CompanyAccountDetails { get; set; }
+        public virtual ICollection<CompanyAccountTransaction> CompanyAccountTransactions { get; set; }
+        public virtual ICollection<CompanyAccountTransaction> CompanyAccountTransactions1 { get; set; }
         public virtual ICollection<CompanyDetail> CompanyDetails { get; set; }
         public virtual ICollection<CompanyFacilityMapping> CompanyFacilityMappings { get; set; }
         public virtual ICollection<CompanyQBK> CompanyQBKs { get; set; }
@@ -61,6 +66,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ICollection<Contract> Contracts1 { get; set; }
         public virtual ICollection<Insurance> Insurances { get; set; }
         public virtual ICollection<License> Licenses { get; set; }
+        public virtual ICollection<LocationCompanyMapping> LocationCompanyMappings { get; set; }
         public virtual ICollection<LogBill> LogBills { get; set; }
         public virtual ICollection<LogCompany> LogCompanies { get; set; }
         public virtual ICollection<LogCompanyAccountDetail> LogCompanyAccountDetails { get; set; }
@@ -70,10 +76,10 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ICollection<LogContract> LogContracts1 { get; set; }
         public virtual ICollection<LogInsurance> LogInsurances { get; set; }
         public virtual ICollection<LogLicense> LogLicenses { get; set; }
-        public virtual ICollection<LogMiscellaneou> LogMiscellaneous { get; set; }
-        public virtual ICollection<Miscellaneou> Miscellaneous { get; set; }
-        public virtual ICollection<LocationCompanyMapping> LocationCompanyMappings { get; set; }
-        public virtual ICollection<LogPreBill> LogPreBills { get; set; }
         public virtual ICollection<LogLocationCompanyMapping> LogLocationCompanyMappings { get; set; }
+        public virtual ICollection<LogMiscellaneou> LogMiscellaneous { get; set; }
+        public virtual ICollection<LogPreBill> LogPreBills { get; set; }
+        public virtual ICollection<Miscellaneou> Miscellaneous { get; set; }
+        public virtual ICollection<PreBill> PreBills { get; set; }
     }
 }

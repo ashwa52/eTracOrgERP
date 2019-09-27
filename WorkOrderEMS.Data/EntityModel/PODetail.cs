@@ -32,10 +32,10 @@ namespace WorkOrderEMS.Data.EntityModel
         public string POD_EmergencyPODocument { get; set; }
         public string POD_IsActive { get; set; }
     
+        public virtual LocationMaster LocationMaster { get; set; }
         public virtual ICollection<LogPODetail> LogPODetails { get; set; }
         public virtual PONumber PONumber { get; set; }
         public virtual POType POType { get; set; }
         public virtual ICollection<POFacilityItem> POFacilityItems { get; set; }
-        public virtual LocationMaster LocationMaster { get; set; }
     }
 }

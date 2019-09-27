@@ -10,16 +10,13 @@
 namespace WorkOrderEMS.Data.EntityModel
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class spGetCompanyFacilityMapping_Result1
+    public partial class Message
     {
-        public long CFM_Id { get; set; }
-        public long CFM_CMP_Id { get; set; }
-        public long CFM_CCD_CostCode { get; set; }
-        public string CFM_FacilityType { get; set; }
-        public string CFM_Discription { get; set; }
-        public Nullable<decimal> CFM_Rate { get; set; }
-        public Nullable<decimal> CFM_Tax { get; set; }
-        public string CFM_IsActive { get; set; }
+        public int MessageID { get; set; }
+        public string Message1 { get; set; }
+        public string EmptyMessage { get; set; }
+        public Nullable<System.DateTime> Date { get; set; }
     }
 }

@@ -18,5 +18,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public string PON_IsActive { get; set; }
     
         public virtual PODetail PODetail { get; set; }
+        public virtual PODetailEmergency PODetailEmergency { get; set; }
     }
 }

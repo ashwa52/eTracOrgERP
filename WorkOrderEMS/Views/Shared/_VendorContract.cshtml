@@ -375,17 +375,24 @@
                         @*@Html.DropDownList("Services", new SelectList(ViewBag.Services, "ServiceID", "ServiceName", "Description"), new { @id = "ddlLocationMultiple", @multiple = "multiple", @class = "form-control" })*@
                         <span style="display: none; color:red;" class="">Select at least one location.</span>
                         @Html.Hidden("LocationAllocateId")
+                        @Html.Hidden("LocationIds")
                     </div>
+                </div>
+                <div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    <table class="col-sm-12 col-xs-12" style="width:600px" id="percentageTable"></table>
+
+                    <label class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 red" style="font-size: 12px;color: #888080;" id="location-note-id"><strong>Note</strong> : Sum of all fields should be 100</label>
                 </div>
             </div>
             <div class="modal-footer">
-                <button data-dismiss="modal" class="btn btn-primary" id="YesForSameCompany">Ok</button>
+                <button data-dismiss="modal" class="btn btn-success pull-right get-blue" id="SaveLocationAllocation">Save</button>
                 <button data-dismiss="modal" class="btn btn-secondary" id="btnCancelForSameCompany">cancel</button>
 
-            </div>
 
+            </div>
         </div>
     </div>
+
 </div>
 
 
@@ -394,26 +401,10 @@
 <script>
     $('#CostDuringPeriod,#AnnualValueOfAggriment,#MinimumBillAmount,#LateFine').simpleMoneyFormat();
     $(document).ready(function () {
+        $('#SaveLocationAllocation, #location-note-id').hide();
         var ServiceID;
         var LocationIDs;// = ViewBag.LocationListData;
-        $('#ddlLocationMultiple').multiselect({
-
-            maxHeight: '300',
-            onChange: function (element, checked) {
-                var LocationId = $('#ddlLocationMultiple option:selected');
-                var Location = [];
-                $(LocationId).each(function (index, Services) {
-                    //if (index > 0) {
-                    var ll = $(LocationId).val();
-                    if (ll != undefined && parseInt(ll) > 0) {
-                        //alert(parseInt(ss));// found
-                        Location.push([$(this).val()]);
-                    }
-                    //}
-                });
-                $("#LocationAllocateId").val(Location);
-            }
-        });
+      $('#ddlLocationMultiple').multiselect({            maxHeight: '300',            onChange: function (element, checked) {                var LocationId = $('#ddlLocationMultiple option:selected');                var Location = [];                //to show hide save button on multi select                if (LocationId.length > 0) {                    $('#SaveLocationAllocation, #location-note-id').show();                } else {                    $('#SaveLocationAllocation, #location-note-id').hide();                }                var inputValue = $('.location-allocation-input').map(function (i, ele) {                    return { value: $(ele).val(), id: $(ele).attr('id') };                });                $("#percentageTable").html('');                $(LocationId).each(function (index, Services) {                    //if (index > 0) {                    var ll = $(LocationId).val();                    var llText = $(this).text();                    if (ll != undefined && parseInt(ll) > 0) {                        var markup = "<tr><td width='60%'> % for - '" + llText + "'</td><td width='40%' style='padding: 6px 0;'><input value='' type='number' max='100' class='location-allocation-input form-control input-rounded' id='id_" + $(this).val() + "'></td></tr>";                        Location.push({ value: $(this).val(), id: 'id_' + $(this).val() });                        $("#percentageTable").append(markup);                        $.each(inputValue, function (i, val) {                            $('input#' + val.id).val(val.value);                        });                    }                });                $("#LocationAllocateId").val(Location);                var inputs = $('input.location-allocation-input[type=number]').map(function (i, v) {                    return {                        LocationId: $(this).attr('id').replace("id_", ""),                        Percentage: $(this).val()                    };                });                $('#LocationIds').val(JSON.stringify(inputs));            }      });       
         //var Arr = LocationIDs.split(',');
 
         //for (var i = 0; i < Arr.length; i++) {
@@ -518,6 +509,7 @@
             }
 
         })
+          $('#SaveLocationAllocation').click(function () {            var sumNumber = 0;            var inputs = $('input.location-allocation-input[type=number]').map(function (i, v) {                return {                    LocationId: $(this).attr('id').replace("id_", ""),                    Percentage: $(this).val()                };            });            $('input.location-allocation-input[type=number]').each(function (i, item) {                var grade = $(item).val();                sumNumber = Number(sumNumber) + Number(grade);            })            if (inputs.length === 0) {                 alert("Select atleast one location");                return false;            }            else if (sumNumber != 100 ) {                alert("Sum of percentage should be equal to 100");                return false;            }            //else {            //    $.ajax({            //        type: "POST",            //        data: { data: inputValue },            //        url: 'eCounting/VendorManagement/SaveContractAllocation/',            //        contentType: "application/json; charset=utf-8",            //        error: function (xhr, status, error) {            //        },            //        success: function (result) {            //        }            //    });            //}        });
 
     });
 </script>

@@ -10,16 +10,16 @@
 namespace WorkOrderEMS.Data.EntityModel
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class spGetCompanyFacilityMapping_Result2
+    public partial class CompanyLocationCostCodeMapping
     {
-        public long CFM_Id { get; set; }
-        public long CFM_CMP_Id { get; set; }
-        public long CFM_CCD_CostCode { get; set; }
-        public string CFM_FacilityType { get; set; }
-        public Nullable<decimal> CFM_Rate { get; set; }
-        public Nullable<decimal> CFM_Tax { get; set; }
-        public string CFM_Discription { get; set; }
-        public string CFM_IsActive { get; set; }
+        public long CLC_Id { get; set; }
+        public long CLC_CMP_Id { get; set; }
+        public long CLC_CLM_Id { get; set; }
+        public System.DateTime CLC_Date { get; set; }
+        public string CLC_IsActive { get; set; }
+    
+        public virtual CostCodeLocationMapping CostCodeLocationMapping { get; set; }
     }
 }

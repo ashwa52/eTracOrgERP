@@ -72,9 +72,9 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual GlobalCode GlobalCode3 { get; set; }
         public virtual GlobalCode GlobalCode4 { get; set; }
         public virtual GlobalCode GlobalCode5 { get; set; }
+        public virtual LocationMaster LocationMaster { get; set; }
         public virtual ICollection<QRCMasterLog> QRCMasterLogs { get; set; }
         public virtual ICollection<QRCScanLog> QRCScanLogs { get; set; }
         public virtual ICollection<UserRegistration> UserRegistrations { get; set; }
-        public virtual LocationMaster LocationMaster { get; set; }
     }
 }

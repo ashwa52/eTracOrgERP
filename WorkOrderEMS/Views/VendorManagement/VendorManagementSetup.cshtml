@@ -385,7 +385,7 @@
 
                                             <label class="col-sm-2 col-form-label" for="VendorName"> Website</label>
                                             <div class="col-sm-4">
-                                                @Html.TextBoxFor(model => model.Website, new { pattern = "http://www.*", @class = "form-control input-rounded" })
+                                                @Html.TextBoxFor(model => model.Website, new { pattern = "http://www.*", @class = "form-control input-rounded",@placeholder="eg format : http://www.google.com/" })
                                                 <div class="errorspace">
                                                     @Html.ValidationMessageFor(model => model.Website)
                                                 </div>

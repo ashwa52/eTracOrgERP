@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Models;
 
 namespace WorkOrderEMS.BusinessLogic.Interfaces
@@ -49,5 +50,6 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
         bool TaxNumberIsExists(string taxNumber,long VendorId);
         bool InsPolicyNumberIsExists(string InsPolicyNumber);
           IList<VendorSetupManagementModel> GetAllCompanyDataList1(long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
+        bool SaveContractAllocation(ContractLocationAllocation obj);
     }
 }

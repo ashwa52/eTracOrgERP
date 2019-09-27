@@ -37,6 +37,7 @@ namespace WorkOrderEMS.Data.EntityModel
             this.ManagerLocationMappings = new HashSet<ManagerLocationMapping>();
             this.QRCMasterLogs = new HashSet<QRCMasterLog>();
             this.QRCScanLogs = new HashSet<QRCScanLog>();
+            this.SubCostCodes = new HashSet<SubCostCode>();
         }
     
         public long UserId { get; set; }
@@ -110,5 +111,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual QRCMaster QRCMaster { get; set; }
         public virtual ICollection<QRCMasterLog> QRCMasterLogs { get; set; }
         public virtual ICollection<QRCScanLog> QRCScanLogs { get; set; }
+        public virtual ICollection<SubCostCode> SubCostCodes { get; set; }
     }
 }

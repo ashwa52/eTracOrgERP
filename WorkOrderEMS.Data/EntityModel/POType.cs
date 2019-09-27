@@ -17,7 +17,9 @@ namespace WorkOrderEMS.Data.EntityModel
         public POType()
         {
             this.LogPODetails = new HashSet<LogPODetail>();
+            this.LogPODetailEmergencies = new HashSet<LogPODetailEmergency>();
             this.PODetails = new HashSet<PODetail>();
+            this.PODetailEmergencies = new HashSet<PODetailEmergency>();
         }
     
         public long POT_Id { get; set; }
@@ -25,6 +27,8 @@ namespace WorkOrderEMS.Data.EntityModel
         public string POT_IsActive { get; set; }
     
         public virtual ICollection<LogPODetail> LogPODetails { get; set; }
+        public virtual ICollection<LogPODetailEmergency> LogPODetailEmergencies { get; set; }
         public virtual ICollection<PODetail> PODetails { get; set; }
+        public virtual ICollection<PODetailEmergency> PODetailEmergencies { get; set; }
     }
 }

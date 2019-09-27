@@ -218,6 +218,7 @@
             $("#myModalForContract").modal('show');
         })
         $("input[type='radio']").change(function () {
+            
             if ($(this).val() == "YesCertificate") {
                 $(".HideRowIfNo").show();
             }
@@ -232,6 +233,7 @@
                 $(".HideRowInsurance").hide();
             }
             else if ($(this).val() == "Vendor") {
+                
                 $(".ContractExecutedByHideShow").show();
                 $('.ContractExecutedClass').prop('checked', true);
             }

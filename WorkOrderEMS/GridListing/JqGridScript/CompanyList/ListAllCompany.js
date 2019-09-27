@@ -158,10 +158,12 @@ function doSearch() {
                         window.location.href = $_HostPrefix + GridListLicense + '?Vendorid=' + item.id + "&VendorStatus=" + $_VendorStatus;;
                     }).append($iconPencilForInsurance);
 
-                    var $customButtonFileImport = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "File Import" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
-                        window.location.href = $_HostPrefix + addFileImport + '?id=' + item.id;
-                    }).append($iconPencilForImport);
-
+                  
+                    if (item.VendorTypeData == "AssetLander") {
+                        var $customButtonFileImport = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "File Import" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                            window.location.href = $_HostPrefix + addFileImport + '?id=' + item.id;
+                        }).append($iconPencilForImport);
+                    }
                     return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton).append($customButtonForAccount).append($customButtonForFacility).append($customButtonForView).append($customButtonForInsurance).append($customButtonFileImport);
                 }
             }

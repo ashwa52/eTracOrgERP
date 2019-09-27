@@ -1,6 +1,7 @@
 ﻿var facilityList = 'VendorManagement/ListCompanyFacilityByVendorId/'
 
 $(function () {
+    var act = "";
     $("#tbl_AllFacilityDetailsList").jsGrid({
         height: "170%",
         width: "100%",
@@ -32,7 +33,17 @@ $(function () {
             { name: "UnitCost", title: "Unit Cost", type: "text", width: 50 },
             { name: "Tax", title: "Tax", type: "text", width: 50 },
             { name: "Costcode", title: "Costcode", type: "text", width: 50 },
-            { name: "ProductImage", title: "ProductImage", type: "text", width: 50 },
+            //{ name: "VenderProductImageName", title: "ProductImage", type: "image", width: 50 },
+            {
+                name: "act", type: "control", items: act, title: "Action", width: 50, css: "text-center", itemTemplate: function (value, item) {
+
+                    $customButtonForAcandDeActive = $("<img style='padding: 0 5px 0 0;height: 50px;!important' src='" + item.VenderProductImageName + "'>").attr({ title: "Click to Update" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                         
+
+                    });
+                    return $("<div>").attr({ class: "btn-toolbar" }).append($customButtonForAcandDeActive);
+                }
+            }
              
              
         ]
@@ -98,8 +109,7 @@ $(function () {
 });
 
 function imageFormat(cellvalue, options, rowObject) {
-    if (cellvalue == "")
-    { return ""; }
+    if (cellvalue == "") { return '<img src="/Content/Images/clear.png"/>'; }
     else {
         return '<img src="' + cellvalue + '" class="gridimage" id="productImage" onclick="EnlargeImageView(this);"/>';
     }

@@ -17,6 +17,7 @@ using WorkOrderEMS.BusinessLogic;
 using WorkOrderEMS.BusinessLogic.Interfaces;
 using WorkOrderEMS.BusinessLogic.Interfaces.eCounting;
 using WorkOrderEMS.Controllers.QuickBookData;
+using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Helpers;
 using WorkOrderEMS.Models;
@@ -1442,7 +1443,7 @@ namespace WorkOrderEMS.Controllers
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]); 
                 UserId = ObjLoginModel.UserId;
-                LocationId = ObjLoginModel.LocationID;
+                //LocationId = ObjLoginModel.LocationID;
             }  
             try
               {
@@ -1547,6 +1548,7 @@ namespace WorkOrderEMS.Controllers
        
             try
             {
+                
                 var AllFacilityList = _IVendorManagement.GetFacilityListCompanyDetails(VendorId, LocationId, rows, TotalRecords, sidx, sord).ToList();
                 return Json(AllFacilityList, JsonRequestBehavior.AllowGet);
             }
@@ -1582,6 +1584,11 @@ namespace WorkOrderEMS.Controllers
                 {
                     var details = _IVendorManagement.GetVendorDetailsByVendorId(obj.VendorId);
                     obj.VendorName = details.CompanyNameLegal;
+                    string ImageName = ObjLoginModel.UserId + "_" + DateTime.Now.Ticks.ToString() + "_" + obj.ProductImageFile.FileName.ToString();
+                    CommonHelper obj_CommonHelper = new CommonHelper();
+                    var res = obj_CommonHelper.UploadImage(obj.ProductImageFile, Server.MapPath(ConfigurationManager.AppSettings["VendorImageFacility"]), ImageName);
+                    ViewBag.ImageUrl = res;
+                    obj.VenderProductImageName = ImageName;
                     var saveFacility = _IVendorManagement.SaveFacilityDetails(obj);
                     if (saveFacility == true)
                     {
@@ -1612,6 +1619,22 @@ namespace WorkOrderEMS.Controllers
                 ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger;
             }
             return View("AddVendorFacility", model);
+        }
+
+        public ActionResult SaveContractAllocation(ContractLocationAllocation obj)
+        {
+            try
+            {
+                if (obj != null)
+                {
+                    var saveFacility = _IVendorManagement.SaveContractAllocation(obj);
+                }
+                    return Json("");
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }            
         }
     }
 }

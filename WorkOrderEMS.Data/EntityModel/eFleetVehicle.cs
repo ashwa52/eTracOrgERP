@@ -16,14 +16,14 @@ namespace WorkOrderEMS.Data.EntityModel
     {
         public eFleetVehicle()
         {
+            this.DefectReportDetails = new HashSet<DefectReportDetail>();
             this.eFleetFuelings = new HashSet<eFleetFueling>();
             this.eFleetMaintenances = new HashSet<eFleetMaintenance>();
+            this.eFleetPassengerTrackingCounts = new HashSet<eFleetPassengerTrackingCount>();
             this.eFleetVehicleIncidents = new HashSet<eFleetVehicleIncident>();
+            this.eFleetVehicleInspectionLogs = new HashSet<eFleetVehicleInspectionLog>();
             this.eFleetVehicleMasterLogs = new HashSet<eFleetVehicleMasterLog>();
             this.eFleetVehicleScanLogs = new HashSet<eFleetVehicleScanLog>();
-            this.eFleetVehicleInspectionLogs = new HashSet<eFleetVehicleInspectionLog>();
-            this.DefectReportDetails = new HashSet<DefectReportDetail>();
-            this.eFleetPassengerTrackingCounts = new HashSet<eFleetPassengerTrackingCount>();
             this.WorkRequestAssignments = new HashSet<WorkRequestAssignment>();
         }
     
@@ -65,15 +65,15 @@ namespace WorkOrderEMS.Data.EntityModel
         public string EngineExteriorDetails { get; set; }
         public string EmergencyAccessoriesDetails { get; set; }
     
+        public virtual ICollection<DefectReportDetail> DefectReportDetails { get; set; }
         public virtual ICollection<eFleetFueling> eFleetFuelings { get; set; }
         public virtual ICollection<eFleetMaintenance> eFleetMaintenances { get; set; }
+        public virtual ICollection<eFleetPassengerTrackingCount> eFleetPassengerTrackingCounts { get; set; }
         public virtual GlobalCode GlobalCode { get; set; }
         public virtual ICollection<eFleetVehicleIncident> eFleetVehicleIncidents { get; set; }
+        public virtual ICollection<eFleetVehicleInspectionLog> eFleetVehicleInspectionLogs { get; set; }
         public virtual ICollection<eFleetVehicleMasterLog> eFleetVehicleMasterLogs { get; set; }
         public virtual ICollection<eFleetVehicleScanLog> eFleetVehicleScanLogs { get; set; }
-        public virtual ICollection<eFleetVehicleInspectionLog> eFleetVehicleInspectionLogs { get; set; }
-        public virtual ICollection<DefectReportDetail> DefectReportDetails { get; set; }
-        public virtual ICollection<eFleetPassengerTrackingCount> eFleetPassengerTrackingCounts { get; set; }
         public virtual ICollection<WorkRequestAssignment> WorkRequestAssignments { get; set; }
     }
 }

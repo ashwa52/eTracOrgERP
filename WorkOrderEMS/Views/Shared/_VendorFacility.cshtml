@@ -257,6 +257,7 @@
         $("#SaveProduct").click(function () {
             
             if ($("#msform").valid()) {
+                debugger
                 var _ProductListModel = {};
                 var _Product = {};
                 curProduct = "";
@@ -275,6 +276,7 @@
                 }
                 else
                 {
+                     
                     var ImageFile;
                     file_data = $("#fileuploadProduct").prop("files")[0]; // Getting the properties of file from file field
                     form_data = new FormData(); // Creating object of FormData class
@@ -294,7 +296,17 @@
                             data: form_data, // Setting the data attribute of ajax with file_data
                             type: 'post',
                             success: function (data) {
+                                debugger
                                 _ProductListModel.ProfileImageFile = data;
+                                _ProductListModel.VenderProductImageName = JSON.parse(data);
+                                //$("#ProductServiceType").val(0);
+                                //$("#ProductServiceName").val("");
+                                //$("#UnitCost").val("");
+                                //$('#CostCode').val("");
+                                //$("#ProductImage").val("");
+                                //$("#Tax").val(""); 
+                                //$("#fileuploadProduct").val(""); 
+                                //$("#imgProductImage").attr("src","")
                                 // return data;
 
                             },

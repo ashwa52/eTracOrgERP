@@ -35,8 +35,8 @@ namespace WorkOrderEMS.Data.EntityModel
         public string LPOD_RUL_Level { get; set; }
         public string LPOD_RUL_CurrentLevel { get; set; }
     
-        public virtual POType POType { get; set; }
-        public virtual PODetail PODetail { get; set; }
         public virtual LocationMaster LocationMaster { get; set; }
+        public virtual PODetail PODetail { get; set; }
+        public virtual POType POType { get; set; }
     }
 }

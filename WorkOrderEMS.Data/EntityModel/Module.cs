@@ -16,8 +16,9 @@ namespace WorkOrderEMS.Data.EntityModel
     {
         public Module()
         {
-            this.Rules = new HashSet<Rule>();
             this.eForms = new HashSet<eForm>();
+            this.eFormTracks = new HashSet<eFormTrack>();
+            this.Rules = new HashSet<Rule>();
         }
     
         public long MDL_Id { get; set; }
@@ -25,7 +26,8 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<System.DateTime> MDL_Date { get; set; }
         public string MDL_IsActive { get; set; }
     
-        public virtual ICollection<Rule> Rules { get; set; }
         public virtual ICollection<eForm> eForms { get; set; }
+        public virtual ICollection<eFormTrack> eFormTracks { get; set; }
+        public virtual ICollection<Rule> Rules { get; set; }
     }
 }

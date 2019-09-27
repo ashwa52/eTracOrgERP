@@ -14,10 +14,17 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class TaxDetail
     {
+        public TaxDetail()
+        {
+            this.LogTaxDetails = new HashSet<LogTaxDetail>();
+        }
+    
         public long TXD_Id { get; set; }
         public long TXD_CMP_Id { get; set; }
         public string TXD_TaxIdNumber { get; set; }
         public string TXD_TaxDocument { get; set; }
         public string TXD_IsActive { get; set; }
+    
+        public virtual ICollection<LogTaxDetail> LogTaxDetails { get; set; }
     }
 }

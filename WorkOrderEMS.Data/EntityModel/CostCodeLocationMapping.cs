@@ -18,6 +18,7 @@ namespace WorkOrderEMS.Data.EntityModel
         {
             this.BudgetCostCodeMappings = new HashSet<BudgetCostCodeMapping>();
             this.BudgetCostCodeMappings1 = new HashSet<BudgetCostCodeMapping>();
+            this.CompanyLocationCostCodeMappings = new HashSet<CompanyLocationCostCodeMapping>();
         }
     
         public long CLM_Id { get; set; }
@@ -26,10 +27,9 @@ namespace WorkOrderEMS.Data.EntityModel
         public long CLM_CCD_CostCode { get; set; }
         public string CLM_IsActive { get; set; }
     
-        public virtual CostCode CostCode { get; set; }
-        public virtual CostCodeMaster CostCodeMaster { get; set; }
         public virtual ICollection<BudgetCostCodeMapping> BudgetCostCodeMappings { get; set; }
         public virtual ICollection<BudgetCostCodeMapping> BudgetCostCodeMappings1 { get; set; }
+        public virtual ICollection<CompanyLocationCostCodeMapping> CompanyLocationCostCodeMappings { get; set; }
         public virtual LocationMaster LocationMaster { get; set; }
     }
 }

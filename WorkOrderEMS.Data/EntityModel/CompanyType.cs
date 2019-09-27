@@ -16,15 +16,15 @@ namespace WorkOrderEMS.Data.EntityModel
     {
         public CompanyType()
         {
-            this.LogCompanies = new HashSet<LogCompany>();
             this.Companies = new HashSet<Company>();
+            this.LogCompanies = new HashSet<LogCompany>();
         }
     
         public long COT_Id { get; set; }
         public string COT_CompanyType { get; set; }
         public string COT_IsActive { get; set; }
     
-        public virtual ICollection<LogCompany> LogCompanies { get; set; }
         public virtual ICollection<Company> Companies { get; set; }
+        public virtual ICollection<LogCompany> LogCompanies { get; set; }
     }
 }
