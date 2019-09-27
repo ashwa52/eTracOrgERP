@@ -286,6 +286,24 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             return PartialView("~/Views/NewAdmin/DAR/_DARDashboard.cshtml");
         }
         /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created Date : 26-Sept-2019
+        /// Created For : To View Report of WO, DAR, QRC
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult OperationReports()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
+            var details = new LocationDetailsModel();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            return PartialView("~/Views/NewAdmin/_Reports.cshtml");
+        }
+        /// <summary>
         /// Created BY : Ashwajit Bansod
         /// Created Date : 01-Sept-2019
         /// Created For : TO get Work order List

@@ -74,6 +74,7 @@ $("#ddlWorkRequestProjectType").change(function () {
             startDate: startDate,
             autoclose: true
         }).on('changeDate', function (selected) {
+            debugger
             FromEndDate = new Date(selected.date.valueOf());
             FromEndDate.setDate(FromEndDate.getDate(new Date(selected.date.valueOf())));
             $('#StartDate').datepicker('setEndDate', FromEndDate);
@@ -105,6 +106,7 @@ $("#ddlWorkRequestProjectType").change(function () {
             for (var i = 0 ; i <= totalDays; i++) {
                 sDate.setDate(sDate.getDate() + 1);
                 $("#chkboxdivCR").find("span").each(function () {
+                    debugger
                     if ($(this).hasClass(weekday[sDate.getDay()])) {
                         $(this).removeClass('hide');
                         $(this).addClass('show');
