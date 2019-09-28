@@ -176,16 +176,14 @@
         </div>
 
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label" style="font-size:16px;">  Contract issued by<span class="req">*</span></label>
+            <label class="col-sm-2 col-form-label">  Contract issued by<span class="req">*</span></label>
             <div class="col-sm-4">
-                @Html.RadioButtonFor(model => model.VendorContractModel.ContractIssuedBy, "Own")<span class="radio_span">
-                    &nbsp;Own &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </span>
-                @Html.RadioButtonFor(model => model.VendorContractModel.ContractIssuedBy, "Vendor", new { @style = "margin-left:20%;", @class = "radio" })<span class="radio_span">
-                    &nbsp;Vendor
-                </span>
-                @Html.ValidationMessageFor(model => model.VendorContractModel.ContractIssuedBy)
-            </div>
+                @Html.RadioButtonFor(model => model.VendorContractModel.ContractIssuedBy, "Own",new { @class="rbtn" })<span class="radio_span">
+    &nbsp;Own &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    @Html.RadioButtonFor(model => model.VendorContractModel.ContractIssuedBy, "Vendor", new { @style = "margin-left:20%;", @class = "radio rbtn" })<span class="radio_span">
+    &nbsp;Vendor</span>
+    @Html.ValidationMessageFor(model => model.VendorContractModel.ContractIssuedBy)
+</div>
 
             <label class="col-sm-2 col-form-label">  Select Location<span class="req">*</span></label>
             <div class="col-sm-4">
@@ -193,7 +191,7 @@
                 @if (ViewBag.LocationListData != null)
                 {
                     {@Html.DropDownListFor(model => model.VendorContractModel.SectVendorToLocation, new SelectList(ViewBag.LocationListData, "LocationId", "LocationName"), new { @id = "SelectVendorToLocation", @style = "width:50%;", @multiple = "multiple", @class = "form-control" })}
-                <span id="vendorAllocationRequiredError" class="field-validation-error" data-valmsg-for="VendorContractModel.MinimumBillAmountForView" data-valmsg-replace="true">
+                <span id="vendorAllocationRequiredError" class="field-validation-error"  data-valmsg-replace="true">
 
                 </span>
             }
@@ -212,21 +210,19 @@
             </div>
         </div>
 
-        <div class="form-group row ContractExecutedByHideShow" style="display:none;">
-            <label class="col-sm-2 col-form-label" style="font-size:16px;"> Contract executed by <span class="req">*</span></label>
+        <div class="form-group row ContractExecutedByHideShow1" style="display:none;">
+            <label class="col-sm-2 col-form-label"> Contract executed by <span class="req">*</span></label>
             <div class="col-sm-4">
                 @Html.RadioButtonFor(model => model.VendorContractModel.ContractExecutedBy, "Own", false)<span class="radio_span">
-                    &nbsp;Own &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </span>
-                @Html.RadioButtonFor(model => model.VendorContractModel.ContractExecutedBy, "Vendor", new { @class = "ContractExecutedClass", @style = "margin-left:20%;" })<span class="radio_span">
-                    &nbsp;Vendor
-                </span>
-                @Html.ValidationMessageFor(model => model.VendorContractModel.ContractExecutedBy)
-            </div>
+    &nbsp;Own &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    @Html.RadioButtonFor(model => model.VendorContractModel.ContractExecutedBy, "Vendor", new { @class = "ContractExecutedClass", @style = "margin-left:20%;" })<span class="radio_span">
+    &nbsp;Vendor</span>
+    @Html.ValidationMessageFor(model => model.VendorContractModel.ContractExecutedBy)
+</div>
         </div>
 
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label" style="font-size:16px;">  Primary Payment Mode<span class="req">*</span></label>
+            <label class="col-sm-2 col-form-label">  Primary Payment Mode<span class="req">*</span></label>
             <div class="col-sm-4">
                 @if (ViewBag.PaymentModeList != null)
                 {
@@ -274,28 +270,23 @@
         </div>
 
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label" style="font-size:16px;">Is Reccurence for PO.?<span class="req">*</span></label>
+            <label class="col-sm-2 col-form-label">Is Reccurence for PO.?<span class="req">*</span></label>
             <div class="col-sm-4">
                 @Html.RadioButtonFor(model => model.VendorContractModel.ReccurenceForPO, "Y")<span class="radio_span">
-                    &nbsp;Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </span>
-                @Html.RadioButtonFor(model => model.VendorContractModel.ReccurenceForPO, "N", new { @style = "margin-left:20%;" })<span class="radio_span">
-                    &nbsp;No
-                </span>
-                @Html.ValidationMessageFor(model => model.VendorContractModel.ReccurenceForPO)
-            </div>
+    &nbsp;Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    @Html.RadioButtonFor(model => model.VendorContractModel.ReccurenceForPO, "N", new { @style = "margin-left:20%;" })<span class="radio_span">
+    &nbsp;No</span>
+    @Html.ValidationMessageFor(model => model.VendorContractModel.ReccurenceForPO)
+</div>
 
             <label class="col-sm-2 col-form-label AllocationNeededClass" style="display:none;"> Allocation Needed :<span class="req">*</span></label>
             <div class="col-sm-4 AllocationNeededClass" style="display:none;">
                 @Html.RadioButtonFor(model => model.VendorContractModel.AllocationNeeded, 1, false)<span class="radio_span">
-                    &nbsp;Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </span>
-                @Html.RadioButtonFor(model => model.VendorContractModel.AllocationNeeded, 2, new { @style = "margin-left:20%;" })<span class="radio_span">
-                    &nbsp;No
-                </span>
-                @Html.ValidationMessageFor(model => model.VendorContractModel.AllocationNeeded)
-
-            </div>
+    &nbsp;Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    @Html.RadioButtonFor(model => model.VendorContractModel.AllocationNeeded, 2, new { @style = "margin-left:20%;" })<span class="radio_span">
+    &nbsp;No</span>
+    @Html.ValidationMessageFor(model => model.VendorContractModel.AllocationNeeded)
+</div>
 
         </div>
 
@@ -597,7 +588,19 @@
             $('#LocationIds').val(JSON.stringify(inputs));
             $('#myModalForContract').modal('hide');
         });
+        $(".rbtn").change(function ()
+        {
 
+            if ($(this).val() == "Own")
+            {
+               $(".ContractExecutedByHideShow1").hide();
+            }
+            else if ($(this).val() == "Vendor")
+            {
+                 $(".ContractExecutedByHideShow1").show();
+            }
+           
+        });
     });
 </script>
 
