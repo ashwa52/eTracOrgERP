@@ -46,10 +46,11 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
         List<VendorFacilityModel> GetFacilityListCompanyDetails(long? VendorId, long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
         bool SaveFacilityDetails(VendorFacilityModel obj);
 
-        long GetVendorId(string CompanyName); 
-        bool TaxNumberIsExists(string taxNumber,long VendorId);
+        long GetVendorId(string CompanyName);
+        bool TaxNumberIsExists(string taxNumber, long VendorId);
+        VendorCompanyContractDocument GetCompany_ContractDocument(long VendorId);
         bool InsPolicyNumberIsExists(string InsPolicyNumber);
-          IList<VendorSetupManagementModel> GetAllCompanyDataList1(long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
+        IList<VendorSetupManagementModel> GetAllCompanyDataList1(long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
         bool SaveContractAllocation(ContractLocationAllocation obj);
     }
 }

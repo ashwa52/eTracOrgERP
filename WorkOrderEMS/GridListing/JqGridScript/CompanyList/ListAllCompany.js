@@ -5,6 +5,7 @@ var addAccountDetails = 'VendorManagement/AddAccountDetails/';
 var GridListLicense = 'VendorManagement/ListInsuranceLicenseView';
 var addFacilityDetails = 'VendorManagement/AddFacilityDetails/';
 var addFileImport = 'VendorManagement/FileImport/';
+var venderDocument = 'VendorManagement/VenderDocument/';
 
 var ListAccountDetails = 'VendorManagement/ListAccountOfVendor/';
 //var EditPO = 'POTypeData/EditPOByPOId/';
@@ -12,7 +13,7 @@ var ListAccountDetails = 'VendorManagement/ListAccountOfVendor/';
 //+ '<select id="ApproveData" class="" onchange="doSearch(arguments[0]||event);">'
 //+ '<option value="Approve">Approved PO</option>'
 //+ '<option value="NotApprove">Not Approved</option>'
-//+ '</select>';
+//+ '</select>'; 
 var LocationId; var VendorId;
 
 $(function () {
@@ -51,14 +52,19 @@ $(function () {
             {
                
                 name: "act", type: "control", items: act, title: "Action", width: 50, css: "text-center", itemTemplate: function (value, item)
-                { 
+                {  
                     var $iconPencilForEdit = $("<i>").attr({ class: "fa fa-pencil" }).attr({ style:"color:green;font-size: 22px;" });
                     var $iconPencilForAccount = $("<i>").attr({ class: "fa fa-university" }).attr({ style:"color:#ee82ee;font-size: 22px;" });
                     var $iconPencilForFacility = $("<i>").attr({ class: "fa fa-list" }).attr({ style:"color:#3cb371;font-size: 22px;" });
                     var $iconPencilForView = $("<i>").attr({ class: "fa fa-eye" }).attr({ style:"color:bluelight;font-size: 22px;" });
                     var $iconPencilForInsurance = $("<i>").attr({ class: "fa fa-medkit" }).attr({ style: "color:#ffa500;font-size: 22px;" });
                     var $iconPencilForImport = $("<i>").attr({ class: "fa fa-upload" }).attr({ style: "color:#0080ff;font-size: 22px;" });
-                     
+                    var $iconFileForImport = $("<i>").attr({ class: "fa fa-file" }).attr({ style: "color:#a1a8c3;font-size: 22px;" });
+
+                    var $customFileButton = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "Document" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                        window.location.href = $_HostPrefix + venderDocument + '?id=' + item.id;
+                    }).append($iconFileForImport);
+
                     var $customEditButton = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "Edit" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {                   
                         window.location.href = $_HostPrefix + editCompany + '?id=' + item.id;
                     }).append($iconPencilForEdit);
@@ -83,7 +89,7 @@ $(function () {
                             window.location.href = $_HostPrefix + addFileImport + '?id=' + item.id;
                         }).append($iconPencilForImport);
                     }
-                    return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton).append($customButtonForAccount).append($customButtonForFacility).append($customButtonForView).append($customButtonForInsurance).append($customButtonFileImport);
+                    return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton).append($customButtonForAccount).append($customButtonForFacility).append($customButtonForView).append($customButtonForInsurance).append($customButtonFileImport).append($customFileButton);
                   }
             }
         ]

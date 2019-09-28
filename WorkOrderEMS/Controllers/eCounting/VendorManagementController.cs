@@ -79,9 +79,10 @@ namespace WorkOrderEMS.Controllers
         /// Created For : To save all vendor data
         /// </summary>
         /// <param name="Obj"></param>
+        /// <param name="LocationIds"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult VendorManagementSetup(VendorSetupManagementModel Obj)
+        public ActionResult VendorManagementSetup(VendorSetupManagementModel Obj, string LocationIds)
         {
             eTracLoginModel objLoginSession = new eTracLoginModel();
             objLoginSession = (eTracLoginModel)Session["eTrac"];
@@ -307,25 +308,33 @@ namespace WorkOrderEMS.Controllers
             }
             return View("CompanyList");
         }
-
-        #region "Ajay Kumar"
-        public JsonResult IsTaxNumberIsExists(string TaxNo,long? VendorId)
+        #region
+        public ActionResult VenderDocument(string id)
         {
-            bool result = _IVendorManagement.TaxNumberIsExists(TaxNo,Convert.ToInt32(VendorId));
+            long VendorId = 0;
+            long.TryParse(Cryptography.GetDecryptedData(id, true), out VendorId);  
+            var result = _IVendorManagement.GetCompany_ContractDocument(VendorId);
+            return View(result);
+        }
+        #endregion
+        #region "Ajay Kumar"
+        public JsonResult IsTaxNumberIsExists(string TaxNo, long? VendorId)
+        {
+            bool result = _IVendorManagement.TaxNumberIsExists(TaxNo, Convert.ToInt32(VendorId));
             return Json(result, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public JsonResult CheckInsPolicyNumberIsExists(VendorSetupManagementModel Obj)
-        { 
+        {
             bool result = _IVendorManagement.InsPolicyNumberIsExists(Obj.VendorInsuranceModel.PolicyNumber);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-       
+
         public ActionResult FileImport(string id)
         {
             return View();
         }
-        
+
         /// <summary>
         /// Created By : Ashwajit Bansod
         /// Created Date : 09-Oct-2018
@@ -433,14 +442,14 @@ namespace WorkOrderEMS.Controllers
             if (Session != null && Session["eTrac"] != null)
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-                if(ObjLoginModel != null)
+                if (ObjLoginModel != null)
                 {
 
                     LocationId = ObjLoginModel.LocationID;
                 }
                 UserId = ObjLoginModel.UserId;
-            } 
-              
+            }
+
             try
             {
                 if (_search != null && _search != "")
@@ -454,11 +463,11 @@ namespace WorkOrderEMS.Controllers
                     return Json(AllCompanyList.ToList(), JsonRequestBehavior.AllowGet);
                 }
 
-                
+
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
-             
+
         }
 
         /// <summary>
@@ -489,7 +498,7 @@ namespace WorkOrderEMS.Controllers
                     UserId = ObjLoginModel.UserId;
                 }
                 if (!string.IsNullOrEmpty(VendorId))
-                { 
+                {
                     long.TryParse(VendorId, out Vendor);
                 }
                 if (Vendor > 0)
@@ -528,13 +537,14 @@ namespace WorkOrderEMS.Controllers
                 {
                     ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
                     LocationId = ObjLoginModel.LocationID;
-                    if (LocationId>0) {
+                    if (LocationId > 0)
+                    {
                         objVendorApproveRejectModel.LLCM_Id = Convert.ToString(LocationId);
                     }
                 }
                 if (!string.IsNullOrEmpty(objVendorApproveRejectModel.VendorId))
                 {
-                   // objVendorApproveRejectModel.VendorId = Cryptography.GetDecryptedData(objVendorApproveRejectModel.VendorId, true);
+                    // objVendorApproveRejectModel.VendorId = Cryptography.GetDecryptedData(objVendorApproveRejectModel.VendorId, true);
                     long.TryParse(objVendorApproveRejectModel.VendorId, out VendorId);
                 }
                 objVendorApproveRejectModel.UserId = ObjLoginModel.UserId;
@@ -928,7 +938,7 @@ namespace WorkOrderEMS.Controllers
                 }
                 UserId = ObjLoginModel.UserId;
             }
-          
+
             sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
             sidx = string.IsNullOrEmpty(sidx) ? "UserEmail" : sidx;
             txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
@@ -939,7 +949,7 @@ namespace WorkOrderEMS.Controllers
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
-            
+
         }
 
         /// <summary>
@@ -986,7 +996,7 @@ namespace WorkOrderEMS.Controllers
             {
                 return Json(ex.Message, JsonRequestBehavior.AllowGet);
             }
-           
+
         }
 
         /// <summary>
@@ -1263,7 +1273,7 @@ namespace WorkOrderEMS.Controllers
                 }
                 UserId = ObjLoginModel.UserId;
             }
-            
+
             try
             {
                 var AllAccountsList = _IVendorManagement.GetAllAccountsDataList(VendorId, LocationId, rows, TotalRecords, sidx, sord);
@@ -1272,7 +1282,7 @@ namespace WorkOrderEMS.Controllers
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
-          
+
         }
 
         /// <summary>
@@ -1434,23 +1444,23 @@ namespace WorkOrderEMS.Controllers
         /// <param name="UserType"></param>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult GetAllUnApprovedVendorList(string _search,  long? LocationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
+        public JsonResult GetAllUnApprovedVendorList(string _search, long? LocationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
         {
             eTracLoginModel ObjLoginModel = null;
             long UserId = 0;
             LocationId = 0;
             if (Session != null && Session["eTrac"] != null)
             {
-                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]); 
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
                 UserId = ObjLoginModel.UserId;
                 //LocationId = ObjLoginModel.LocationID;
-            }  
+            }
             try
-              {
-                
+            {
+
                 if (_search != null && _search != "")
                 {
-                 var  AllCompanyListForSearch = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord).Where(x => x.CompanyNameLegal.ToLower() == _search.ToLower().Trim()).ToList();
+                    var AllCompanyListForSearch = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord).Where(x => x.CompanyNameLegal.ToLower() == _search.ToLower().Trim()).ToList();
                     return Json(AllCompanyListForSearch.ToList(), JsonRequestBehavior.AllowGet);
                 }
                 else
@@ -1458,14 +1468,14 @@ namespace WorkOrderEMS.Controllers
                     var AllCompanyList = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord);
                     return Json(AllCompanyList.ToList(), JsonRequestBehavior.AllowGet);
                 }
-               
-                
+
+
             }
             catch (Exception ex)
             {
                 return Json(ex.Message, JsonRequestBehavior.AllowGet);
             }
-           
+
         }
 
         /// <summary>
@@ -1545,16 +1555,16 @@ namespace WorkOrderEMS.Controllers
                 }
                 UserId = ObjLoginModel.UserId;
             }
-       
+
             try
             {
-                
+
                 var AllFacilityList = _IVendorManagement.GetFacilityListCompanyDetails(VendorId, LocationId, rows, TotalRecords, sidx, sord).ToList();
                 return Json(AllFacilityList, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
-            
+
         }
 
         /// <summary>
@@ -1629,12 +1639,12 @@ namespace WorkOrderEMS.Controllers
                 {
                     var saveFacility = _IVendorManagement.SaveContractAllocation(obj);
                 }
-                    return Json("");
+                return Json("");
             }
             catch (Exception ex)
             {
                 throw;
-            }            
+            }
         }
     }
 }
