@@ -19,6 +19,7 @@ namespace WorkOrderEMS.Models
         public decimal? InvoiceAmount { get; set; }
         public string MISDate { get; set; }
         public string Status { get; set; }
+        public bool MiscStatus { get; set; }    
         public string Document { get; set; }
         public string Comment { get; set; }
         public long MId { get; set; }

@@ -967,6 +967,9 @@
     <Compile Include="EntityModel\SP_GetAllWorkRequestCreatedByClient_Result.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityModel\sp_GetCompany_ContractDocument_Result.cs">
+      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\sp_GetCountDashboardForManager_Result.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>

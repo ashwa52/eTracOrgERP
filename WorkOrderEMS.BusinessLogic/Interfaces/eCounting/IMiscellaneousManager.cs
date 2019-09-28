@@ -14,8 +14,10 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
         ServiceResponseModel<List<MiscellaneousModel>> GetMiscellaneousList(ServiceBaseModel ObjServiceBaseModel);
         ServiceResponseModel<miscellaneousNumberModel> GetMiscellaneousNumberData(ServiceBaseModel ObjServiceBaseModel);
         ServiceResponseModel<MiscellaneousDetails> SaveMiscellaneous(MiscellaneousDetails Obj);
-        MiscellaneousListDetails GetListMiscellaneous(long? UserId, long? Location, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
-        MiscellaneousListDetails GetListMiscellaneousByMiscId(long? UserId, long? MiscId, long? Location, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
+        //MiscellaneousListDetails GetListMiscellaneous(long? UserId, long? Location, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
+        List<MiscellaneousListModel> GetListMiscellaneous(long? UserId, long? Location, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
+        //MiscellaneousListDetails GetListMiscellaneousByMiscId(long? UserId, long? MiscId, long? Location, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
+        List<MiscellaneousListModel> GetListMiscellaneousByMiscId(long? UserId, long? MiscId, long? Location, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
         bool ApproveMiscellaneous(List<MiscellaneousListModel> Obj, string UserName, long UserId, long LocationId, long MiscQbkId, long VendorDetailsId);
         //bool ApproveMiscellaneous(List<MiscellaneousListModel> Obj, string UserName, long UserId, long LocationId, long MiscQbkId);
         ServiceResponseModel<List<LocationServiceModel>> GetLocationList(ServiceBaseModel ObjServiceBaseModel);

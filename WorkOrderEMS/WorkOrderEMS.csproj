@@ -6390,6 +6390,7 @@
     <Content Include="Views\NewAdmin\QRCView\_eScanDashboard.cshtml" />
     <Content Include="Views\NewAdmin\DAR\_DARDashboard.cshtml" />
     <Content Include="Views\NewAdmin\_Reports.cshtml" />
+    <Content Include="Views\VendorManagement\VenderDocument.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

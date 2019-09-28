@@ -176,21 +176,26 @@
         </div>
 
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">  Contract issued by<span class="req">*</span></label>
+            <label class="col-sm-2 col-form-label" style="font-size:16px;">  Contract issued by<span class="req">*</span></label>
             <div class="col-sm-4">
-                @Html.RadioButtonFor(model => model.VendorContractModel.ContractIssuedBy, "Own",new { @class="rbtn" })<span class="radio_span">
-    &nbsp;Own &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    @Html.RadioButtonFor(model => model.VendorContractModel.ContractIssuedBy, "Vendor", new { @style = "margin-left:20%;", @class = "radio rbtn" })<span class="radio_span">
-    &nbsp;Vendor</span>
-    @Html.ValidationMessageFor(model => model.VendorContractModel.ContractIssuedBy)
-</div>
+                @Html.RadioButtonFor(model => model.VendorContractModel.ContractIssuedBy, "Own")<span class="radio_span">
+                    &nbsp;Own &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </span>
+                @Html.RadioButtonFor(model => model.VendorContractModel.ContractIssuedBy, "Vendor", new { @style = "margin-left:20%;", @class = "radio" })<span class="radio_span">
+                    &nbsp;Vendor
+                </span>
+                @Html.ValidationMessageFor(model => model.VendorContractModel.ContractIssuedBy)
+            </div>
 
             <label class="col-sm-2 col-form-label">  Select Location<span class="req">*</span></label>
             <div class="col-sm-4">
 
                 @if (ViewBag.LocationListData != null)
                 {
-                    {@Html.DropDownListFor(model => model.VendorContractModel.SectVendorToLocation, new SelectList(ViewBag.LocationListData, "LocationId", "LocationName"), new { @id = "SelectVendorToLocation",@style = "width:50%;",@multiple = "multiple", @class = "form-control" })}
+                    {@Html.DropDownListFor(model => model.VendorContractModel.SectVendorToLocation, new SelectList(ViewBag.LocationListData, "LocationId", "LocationName"), new { @id = "SelectVendorToLocation", @style = "width:50%;", @multiple = "multiple", @class = "form-control" })}
+                <span id="vendorAllocationRequiredError" class="field-validation-error" data-valmsg-for="VendorContractModel.MinimumBillAmountForView" data-valmsg-replace="true">
+
+                </span>
             }
             @*@if (ViewBag.LocationListData != null)
                 {
@@ -207,19 +212,21 @@
             </div>
         </div>
 
-        <div class="form-group row ContractExecutedByHideShow1" style="display:none;">
-            <label class="col-sm-2 col-form-label"> Contract executed by <span class="req">*</span></label>
+        <div class="form-group row ContractExecutedByHideShow" style="display:none;">
+            <label class="col-sm-2 col-form-label" style="font-size:16px;"> Contract executed by <span class="req">*</span></label>
             <div class="col-sm-4">
                 @Html.RadioButtonFor(model => model.VendorContractModel.ContractExecutedBy, "Own", false)<span class="radio_span">
-    &nbsp;Own &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    @Html.RadioButtonFor(model => model.VendorContractModel.ContractExecutedBy, "Vendor", new { @class = "ContractExecutedClass", @style = "margin-left:20%;" })<span class="radio_span">
-    &nbsp;Vendor</span>
-    @Html.ValidationMessageFor(model => model.VendorContractModel.ContractExecutedBy)
-</div>
+                    &nbsp;Own &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </span>
+                @Html.RadioButtonFor(model => model.VendorContractModel.ContractExecutedBy, "Vendor", new { @class = "ContractExecutedClass", @style = "margin-left:20%;" })<span class="radio_span">
+                    &nbsp;Vendor
+                </span>
+                @Html.ValidationMessageFor(model => model.VendorContractModel.ContractExecutedBy)
+            </div>
         </div>
 
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">  Primary Payment Mode<span class="req">*</span></label>
+            <label class="col-sm-2 col-form-label" style="font-size:16px;">  Primary Payment Mode<span class="req">*</span></label>
             <div class="col-sm-4">
                 @if (ViewBag.PaymentModeList != null)
                 {
@@ -267,23 +274,28 @@
         </div>
 
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label">Is Reccurence for PO.?<span class="req">*</span></label>
+            <label class="col-sm-2 col-form-label" style="font-size:16px;">Is Reccurence for PO.?<span class="req">*</span></label>
             <div class="col-sm-4">
                 @Html.RadioButtonFor(model => model.VendorContractModel.ReccurenceForPO, "Y")<span class="radio_span">
-    &nbsp;Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    @Html.RadioButtonFor(model => model.VendorContractModel.ReccurenceForPO, "N", new { @style = "margin-left:20%;" })<span class="radio_span">
-    &nbsp;No</span>
-    @Html.ValidationMessageFor(model => model.VendorContractModel.ReccurenceForPO)
-</div>
+                    &nbsp;Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </span>
+                @Html.RadioButtonFor(model => model.VendorContractModel.ReccurenceForPO, "N", new { @style = "margin-left:20%;" })<span class="radio_span">
+                    &nbsp;No
+                </span>
+                @Html.ValidationMessageFor(model => model.VendorContractModel.ReccurenceForPO)
+            </div>
 
             <label class="col-sm-2 col-form-label AllocationNeededClass" style="display:none;"> Allocation Needed :<span class="req">*</span></label>
             <div class="col-sm-4 AllocationNeededClass" style="display:none;">
                 @Html.RadioButtonFor(model => model.VendorContractModel.AllocationNeeded, 1, false)<span class="radio_span">
-    &nbsp;Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    @Html.RadioButtonFor(model => model.VendorContractModel.AllocationNeeded, 2, new { @style = "margin-left:20%;" })<span class="radio_span">
-    &nbsp;No</span>
-    @Html.ValidationMessageFor(model => model.VendorContractModel.AllocationNeeded)
-</div>
+                    &nbsp;Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                </span>
+                @Html.RadioButtonFor(model => model.VendorContractModel.AllocationNeeded, 2, new { @style = "margin-left:20%;" })<span class="radio_span">
+                    &nbsp;No
+                </span>
+                @Html.ValidationMessageFor(model => model.VendorContractModel.AllocationNeeded)
+
+            </div>
 
         </div>
 
@@ -355,7 +367,7 @@
     <div class="modal-dialog modal-lg ">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Location Allocation</h5>
+                <h5 class="modal-title" id="myModalLabel">Location Allocation (Splitting Vendor Payments)</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>×</span>
                 </button>
@@ -363,30 +375,18 @@
 
             <div class="modal-body">
                 <div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                    @Html.Label("Location", new { @class = "col-sm-4 control-label star" })
-                    <div class="col-sm-8">
-                        @if (ViewBag.LocationListData != null)
-                        {
-                            {@Html.DropDownList(myModelprefix + "AllocateToLocation", new SelectList(ViewBag.LocationListData, "LocationId", "LocationName"), new { @id = "ddlLocationMultiple", @multiple = "multiple", @class = "form-control" })}
-                    }
-                    else
-                    {<select id="VendorContractModel.AllocateToLocation"><option value="-1">@ViewBag.LocationListData</option></select>}
-                        @* @Html.DropDownList("AllocateToLocation", new SelectList((List<WorkOrderEMS.Models.UserLocations>)Session["eTrac_UserLocations"], "LocationId", "LocationName"), new { @id = "ddlLocationMultiple", @multiple = "multiple", @class = "form-control" })*@
-                        @*@Html.DropDownList("Services", new SelectList(ViewBag.Services, "ServiceID", "ServiceName", "Description"), new { @id = "ddlLocationMultiple", @multiple = "multiple", @class = "form-control" })*@
-                        <span style="display: none; color:red;" class="">Select at least one location.</span>
-                        @Html.Hidden("LocationAllocateId")
-                        @Html.Hidden("LocationIds")
+                    <div id="saveAllocationError" class="alert alert-danger" style="width:600px;display:none;" role="alert">
+                        This is a danger alert with . Give it a click if you like.
                     </div>
-                </div>
-                <div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                    @Html.Hidden("LocationIds")
                     <table class="col-sm-12 col-xs-12" style="width:600px" id="percentageTable"></table>
 
-                    <label class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 red" style="font-size: 12px;color: #888080;" id="location-note-id"><strong>Note</strong> : Sum of all fields should be 100</label>
+                    <label class="form-group col-lg-12 col-md-12 col-sm-12 col-xs-12 red" style="font-size: 12px;color: #888080;" id="location-note-id"><strong>Note: </strong>Sum of all fields should be 100</label>
                 </div>
             </div>
             <div class="modal-footer">
-                <button data-dismiss="modal" class="btn btn-success pull-right get-blue" id="SaveLocationAllocation">Save</button>
-                <button data-dismiss="modal" class="btn btn-secondary" id="btnCancelForSameCompany">cancel</button>
+                <button type="button" class="btn btn-success pull-right get-blue" id="SaveLocationAllocation">Save</button>
+                <button type="button" data-dismiss="modal" class="btn btn-secondary" id="btnCancelForSameCompany">cancel</button>
 
 
             </div>
@@ -402,18 +402,76 @@
     $('#CostDuringPeriod,#AnnualValueOfAggriment,#MinimumBillAmount,#LateFine').simpleMoneyFormat();
     $(document).ready(function () {
         $('#SaveLocationAllocation, #location-note-id').hide();
+        $('#VendorContractModel_AllocationNeeded[value="1"]').attr('disabled', 'disabled');
+        $('#VendorContractModel_AllocationNeeded[value="2"]').attr('checked', 'checked');
         var ServiceID;
         var LocationIDs;// = ViewBag.LocationListData;
-      $('#ddlLocationMultiple').multiselect({            maxHeight: '300',            onChange: function (element, checked) {                var LocationId = $('#ddlLocationMultiple option:selected');                var Location = [];                //to show hide save button on multi select                if (LocationId.length > 0) {                    $('#SaveLocationAllocation, #location-note-id').show();                } else {                    $('#SaveLocationAllocation, #location-note-id').hide();                }                var inputValue = $('.location-allocation-input').map(function (i, ele) {                    return { value: $(ele).val(), id: $(ele).attr('id') };                });                $("#percentageTable").html('');                $(LocationId).each(function (index, Services) {                    //if (index > 0) {                    var ll = $(LocationId).val();                    var llText = $(this).text();                    if (ll != undefined && parseInt(ll) > 0) {                        var markup = "<tr><td width='60%'> % for - '" + llText + "'</td><td width='40%' style='padding: 6px 0;'><input value='' type='number' max='100' class='location-allocation-input form-control input-rounded' id='id_" + $(this).val() + "'></td></tr>";                        Location.push({ value: $(this).val(), id: 'id_' + $(this).val() });                        $("#percentageTable").append(markup);                        $.each(inputValue, function (i, val) {                            $('input#' + val.id).val(val.value);                        });                    }                });                $("#LocationAllocateId").val(Location);                var inputs = $('input.location-allocation-input[type=number]').map(function (i, v) {                    return {                        LocationId: $(this).attr('id').replace("id_", ""),                        Percentage: $(this).val()                    };                });                $('#LocationIds').val(JSON.stringify(inputs));            }      });       
-        //var Arr = LocationIDs.split(',');
+        $('#VendorContractModel_AllocationNeeded[value="1"]').click(function () {
+            $('#myModalForContract').modal('show');
+            if ($("#percentageTable tr").length === 0) {
+                locationAllocationPercentage();
+            }
+        });
+        $('#VendorContractModel_ReccurenceForPO[value="N"]').click(function () {
+            $('#VendorContractModel_AllocationNeeded[value="2"]').click();
+        });
+        $('#myModalForContract button[data-dismiss="modal"]').click(function () {
+            $('#VendorContractModel_AllocationNeeded[value="2"]').click();
+        })
+        $('#VendorContractModel_AllocationNeeded[value="2"]').click(function () {
+            $("#percentageTable").html('');
+            $('#LocationIds').val('');
+            $('#SaveLocationAllocation, #location-note-id').hide();
+        });
+        function locationAllocationPercentage() {
+            var LocationId = $('#SelectVendorToLocation option[value!="multiselect-all"]:selected');
+            var Location = [];
+            if (LocationId.length > 0) {
+                $('#SaveLocationAllocation, #location-note-id').show();
+            } else {
+                $('#SaveLocationAllocation, #location-note-id').hide();
+            }
+            var inputValue = $('.location-allocation-input').map(function (i, ele) {
+                return { value: $(ele).val(), id: $(ele).attr('id') };
+            });
+            $("#percentageTable").html('');
+            var value = parseInt(100 / LocationId.length);
+            var firstValue = value;
+            if (value * LocationId.length < 100) {
+                firstValue = value + parseInt(100 - (value * LocationId.length));
+            }
+            $(LocationId).each(function (index, Services) {
+                var ll = $(LocationId).val();
+                var llText = $(this).text();
+                if (ll != undefined && parseInt(ll) > 0) {
+                    var markup = "<tr><td width='60%'> " + llText + "</td><td width='40%' style='padding: 6px 0;'><input value='" + (index === 0 ? firstValue : value) + "' type='number' max='100' class='location-allocation-input form-control input-rounded' id='id_" + $(this).val() + "'></td></tr>";
+                    Location.push({ value: $(this).val(), id: 'id_' + $(this).val() });
+                    $("#percentageTable").append(markup);
 
-        //for (var i = 0; i < Arr.length; i++) {
-        //    $("#ddlLocationMultiple").multiselect("select", $.trim(Arr[i]));
-        //}
-        //$("#ddlLocationMultiple").multiselect('rebuild');
+                }
+            });
+            $.each(inputValue, function (i, val) {
+                $('input#' + val.id).val(val.value);
+            });
+            $("#LocationAllocateId").val(Location);
+        }
         $('#SelectVendorToLocation').multiselect({
             maxHeight: '300',
             onChange: function (element, checked) {
+                $('#vendorAllocationRequiredError').html('');
+                if ($("#percentageTable tr").length > 0) {
+                    $("#percentageTable").html('');
+                    toastr.warning("Please reallocate vendor payment spilts.");
+                    $('#vendorAllocationRequiredError').html('Please reallocate vendor payment spilts.');
+                    $('#VendorContractModel_AllocationNeeded[value="2"]').click();
+                }
+                var LocationId = $('#SelectVendorToLocation option[value!="multiselect-all"]:selected');
+                if (LocationId.length > 1) {
+                    $('#VendorContractModel_AllocationNeeded[value="1"]').removeAttr('disabled');
+                }
+                else {
+                    $('#VendorContractModel_AllocationNeeded[value="1"]').attr('disabled', 'disabled');
+                }
                 var VendorLocation = $('#SelectVendorToLocation option:selected');
                 var VendorLoc = [];
                 $(VendorLocation).each(function (index, Services) {
@@ -469,20 +527,27 @@
         });
         $(function () {
             $("#fileuploadContract").change(function () {
-                $("#dvContractPreview").html(""); 
-                var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
-                var size = this.files[0].size;
-                if (!allowedExtensions.exec($(this).val().toLowerCase())) {
-                    $(this).val('');
-                    alert("Invalid file type");
-                    return false;
+                $("#dvContractPreview").html("");
+                var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.pdf|.doc|.txt)$/;
+                if (regex.test($(this).val().toLowerCase())) {
+                    if ($.browser.msie && parseFloat(jQuery.browser.version) <= 9.0) {
+                        $("#dvContractPreview").show();
+                        $("#dvContractPreview")[0].filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = $(this).val();
+                    }
+                    else {
+                        if (typeof (FileReader) != "undefined") {
+                            $("#dvContractPreview").show();
+                            // $("#dvContractPreview").append("<img />");
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
+                                $("#dvContractPreview").attr("src", e.target.result);
+                            }
+                            reader.readAsDataURL($(this)[0].files[0]);
+                        } else {
+                            alert("This browser does not support FileReader.");
+                        }
+                    }
                 }
-                else if (size >= 4194304) {
-                    alert("Max file size 4 mb.");
-                    $(this).val("");
-                    return false;
-                }
-                
             })
         })
 
@@ -502,20 +567,37 @@
             }
 
         })
-          $('#SaveLocationAllocation').click(function () {            var sumNumber = 0;            var inputs = $('input.location-allocation-input[type=number]').map(function (i, v) {                return {                    LocationId: $(this).attr('id').replace("id_", ""),                    Percentage: $(this).val()                };            });            $('input.location-allocation-input[type=number]').each(function (i, item) {                var grade = $(item).val();                sumNumber = Number(sumNumber) + Number(grade);            })            if (inputs.length === 0) {                 alert("Select atleast one location");                return false;            }            else if (sumNumber != 100 ) {                alert("Sum of percentage should be equal to 100");                return false;            }            //else {            //    $.ajax({            //        type: "POST",            //        data: { data: inputValue },            //        url: 'eCounting/VendorManagement/SaveContractAllocation/',            //        contentType: "application/json; charset=utf-8",            //        error: function (xhr, status, error) {            //        },            //        success: function (result) {            //        }            //    });            //}        });
-        $(".rbtn").change(function ()
-        {
-
-            if ($(this).val() == "Own")
-            {
-               $(".ContractExecutedByHideShow1").hide();
+        var saveAllocationError = $('#saveAllocationError');
+        $('#SaveLocationAllocation').click(function () {
+            saveAllocationError.hide();
+            var sumNumber = 0;
+            var inputs = $('input.location-allocation-input[type=number]').map(function (i, v) {
+                return {
+                    LocationId: parseInt($(this).attr('id').replace("id_", "")),
+                    Percentage: $(this).val()
+                };
+            }).get();
+            if (inputs.filter(x => x.Percentage <= 0).length > 0) { 
+                saveAllocationError.html("Percentage should be greater than zero").show();
+                return false;
             }
-            else if ($(this).val() == "Vendor")
-            {
-                 $(".ContractExecutedByHideShow1").show();
+            $('input.location-allocation-input[type=number]').each(function (i, item) {
+                var grade = $(item).val();
+                sumNumber = Number(sumNumber) + Number(grade);
+            })
+            if (inputs.length === 0) {
+                saveAllocationError.html("Select atleast one location").show(); 
+                return false;
             }
-           
+            else if (sumNumber != 100) {
+                saveAllocationError.html("Sum of percentage should be equal to 100").show(); 
+                return false;
+            }
+            $('#vendorAllocationRequiredError').html('');
+            $('#LocationIds').val(JSON.stringify(inputs));
+            $('#myModalForContract').modal('hide');
         });
+
     });
 </script>
 

@@ -13,6 +13,7 @@ namespace WorkOrderEMS.Models
 {
     public class VendorSetupManagementModel
     {
+        public string LocationIds { get; set; }
         public string Status { get; set; }
         public long? VendorId { get; set; }
         public string id { get; set; }
@@ -114,7 +115,7 @@ namespace WorkOrderEMS.Models
         public long PointOfContactId { get; set; }
         public int? CostDuringPeriod { get; set; }
         public string InvoicingFrequency { get; set; }
-        [Required(ErrorMessage ="Please add atleat one product/service")]
+        [Required(ErrorMessage = "Please add atleat one product/service")]
         public string ProductList { get; set; }
         public Result Result { get; set; }
         public long? CompanyType { get; set; }
@@ -131,7 +132,17 @@ namespace WorkOrderEMS.Models
         public VendorAccountDetailsModel VendorAccountDetailsModel { get; set; }
         public List<VendorFacilityModel> VendorFacilityListModel { get; set; }
     }
-
+    public class VendorCompanyContractDocument
+    {
+        public long VendorId { get; set; }
+        public string CNT_ContractDocument { get; set; }
+        public string CMP_CompanyDocument { get; set; }
+    }
+    public class LocationAllocation
+    {
+        public int LocationId { get; set; }
+        public string Percentage { get; set; }
+    }
     public class CompanyListDetails
     {
         public int total { get; set; }
