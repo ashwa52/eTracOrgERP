@@ -23,6 +23,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string LMIS_InvoiceDocument { get; set; }
         public string LMIS_Comment { get; set; }
         public string Status { get; set; }
+        public bool MiscStatus { get; set; }
         public long LMIS_LocationId { get; set; }
         public long LMIS_ModifiedBy { get; set; }
     }
