@@ -218,14 +218,18 @@ namespace WorkOrderEMS.Controllers
                                     var costCodeName = _IBillDataManager.GetCostCodeData(CostCodeId);
                                     var dataget = accountData.Where(x => x.Name == costCodeName.Description).FirstOrDefault();
                                     var itemdata = new Item();
-                                    itemdata.Description = item.ProductServiceName;
-                                    itemdata.Name = item.ProductServiceName;
-                                    itemdata.FullyQualifiedName = item.ProductServiceName;
-                                    itemdata.IncomeAccountRef = new ReferenceType()
+                                    if (dataget != null)
                                     {
-                                        name = dataget.Name,
-                                        Value = dataget.Id
-                                    };
+                                        
+                                        itemdata.Description = item.ProductServiceName;
+                                        itemdata.Name = item.ProductServiceName;
+                                        itemdata.FullyQualifiedName = item.ProductServiceName;
+                                        itemdata.IncomeAccountRef = new ReferenceType()
+                                        {
+                                            name = dataget.Name,
+                                            Value = dataget.Id
+                                        };
+                                    }
                                     itemdata.PrefVendorRef = new ReferenceType()
                                     {
                                         name = resultVendor.DisplayName,
@@ -291,7 +295,7 @@ namespace WorkOrderEMS.Controllers
                     {
                         ViewBag.Message = CommonMessage.UpdateSuccessMessage();
                         ViewBag.AlertMessageClass = ObjAlertMessageClass.Success;
-                        return View("UnApprovedVendor");
+                        return View("CompanyList");
                     }
                     else
                     {
@@ -469,7 +473,7 @@ namespace WorkOrderEMS.Controllers
         /// <param name="VendorId"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult GetAllVendorDataToView(string VendorId)
+        public JsonResult GetAllVendorDataToView(string VendorId, string Status)
         {
             var getData = new VendorAllViewDataModel();
             try
@@ -494,7 +498,7 @@ namespace WorkOrderEMS.Controllers
                 }
                 if (Vendor > 0)
                 {
-                    getData = _IVendorManagement.GetAllVendorData(Vendor);
+                    getData = _IVendorManagement.GetAllVendorData(Vendor, Status);
                 }
                 else
                 {

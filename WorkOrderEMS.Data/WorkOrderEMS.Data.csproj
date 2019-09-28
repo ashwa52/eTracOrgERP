@@ -871,6 +871,9 @@
     <Compile Include="EntityModel\spGetVendorAllDetailForApproval_Result.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityModel\spGetVendorAllDetailForEditApproval_Result.cs">
+      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\spGetVendorAllDetail_Result.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>

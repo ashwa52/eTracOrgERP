@@ -199,36 +199,24 @@ $("#AddCompany").on("click", function (event) {
 });
 
 
-function ViewVendorDetails(VendorId) { 
-   // alert(VendorId);
-    //var VendorName = rowData['CompanyNameLegal'];
-    //$("#lblVendorName").html(VendorName);
-    // $("#labellWorkRequestStatus").show();
-    //$("#lblWorkRequestStatus").show();
-    //if (rowData.Status == "Y")
-    //{
-    //    $("#btnApproveData").hide();
-    //    $('#btnRejectPO').hide();
-    //}
-    //else
-    //{
-    //    $("#btnApproveData").show();
-    //    $('#btnRejectPO').show();
-    //}
+function ViewVendorDetails(VendorId) {  
     $.ajax({
         type: "post",
-        url: '../VendorManagement/GetAllVendorDataToView' + '?VendorId=' + VendorId,
+        url: '../VendorManagement/GetAllVendorDataToView' + '?VendorId=' + VendorId + "&Status=" + 'U',
         datatype: 'json',
         success: function (result) {
             $("#lblVendorNameLegal").html(result.CompanyNameLegal); $("#lblVendorNameDBA").html(result.CompanyNameDBA);
             $("#lblVendorType").html(result.VendorTypeData); $("#lblPointOfContact").html(result.PointOfContact);
             $("#lblAddress").html(result.Address1); $("#lblPhone1").html(result.Phone1);
             $("#lblPhone2").html(result.Phone2); $("#lblEmail").html(result.Email);
-            $("#lblWebsite").html(result.Website); $("#lblLicenseName").html(result.CompanyNameLegal);
+            $("#lblWebsite").html(result.Website); $("#lblLicenseName").html(result.LicenseName); 
             $("#lblLicenseNumber").html(result.LicenseNumber); $("#lblLicenseExpirationDate").html(result.LicenseExpirationDate);
             $("#lblInsuranceCarries").html(result.InsuranceCarries); $("#lblPolicyNumber").html(result.PolicyNumber);
-            $("#lblInsuranceExpirationDate").html(result.InsuranceExpirationDate); $("#lblFirstCompany").html(result.CompanyNameLegal);
-            $("#lblSecondaryCompany").html(result.SecondaryCompany); $("#lblVendorTypeContract").html(result.VendorTypeData);
+            $("#lblInsuranceExpirationDate").html(result.InsuranceExpirationDate);
+            $("#lblFirstCompany").html(result.DisplayFirstCompany);
+
+            $("#lblSecondaryCompany").html(result.CompanyNameLegal);
+            $("#lblVendorTypeContract").html(result.VendorTypeData);
             $("#lblContractType").html(result.ContractType); $("#lblContractissuedby").html(result.ContractIssuedBy);
             $("#lblContractexecutedby").html(result.ContractExecutedBy);
             $("#lblPrimaryPaymentMode").html(result.PrimaryPaymentMode); $("#lblPaymentTerm").html(result.PaymentTerm);

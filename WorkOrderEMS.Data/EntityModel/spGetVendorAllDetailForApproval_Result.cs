@@ -41,9 +41,12 @@ namespace WorkOrderEMS.Data.EntityModel
         public string CAD_IFSCcode { get; set; }
         public string CAD_SwiftBICcode { get; set; }
         public string CAD_AccountDocument { get; set; }
+        public string CAD_CardHolderName { get; set; }
+        public Nullable<System.DateTime> CAD_CardExpirationDate { get; set; }
         public string LNC_LicenseNumber { get; set; }
         public Nullable<System.DateTime> LNC_ExpirationDate { get; set; }
         public string LNC_LicenseDocument { get; set; }
+        public string LNC_LicenseName { get; set; }
         public string INS_IncuranceCarrier { get; set; }
         public string INS_PolicyNumber { get; set; }
         public Nullable<System.DateTime> INS_ExpirationDate { get; set; }

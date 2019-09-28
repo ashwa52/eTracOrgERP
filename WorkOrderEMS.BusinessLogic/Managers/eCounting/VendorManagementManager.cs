@@ -281,11 +281,12 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         }
                         if (Obj.VendorAccountDetailsModel != null)
                         {
+                            Obj.VendorAccountDetailsModel.BankName = Obj.VendorAccountDetailsModel.BankName == null ? Obj.VendorAccountDetailsModel.BankName = Obj.VendorAccountDetailsModel.BankNameForCard : Obj.VendorAccountDetailsModel.BankName;
                             var saveAccountDetails = _workorderems.spSetCompanyAccountDetail(Action, null, VendorId, Primarymode,
                                                                           Obj.VendorAccountDetailsModel.BankName, Obj.VendorAccountDetailsModel.BankLocation,
                                                                           Obj.VendorAccountDetailsModel.AccountNumber, Obj.VendorAccountDetailsModel.CardNumber,
                                                                           Obj.VendorAccountDetailsModel.IFSCCode, Obj.VendorAccountDetailsModel.SwiftOICCode,
-                                                                          Obj.VendorAccountDetailsModel.AccountDocuments, Obj.UserId, null, "Y", Obj.VendorAccountDetailsModel.BalanceAmount, Obj.VendorAccountDetailsModel.QuickbookAcountId);
+                                                                          Obj.VendorAccountDetailsModel.AccountDocuments, Obj.UserId, null, "Y", Obj.VendorAccountDetailsModel.BalanceAmount, Obj.VendorAccountDetailsModel.QuickbookAcountId, Obj.VendorAccountDetailsModel.CardHolderName, Obj.VendorAccountDetailsModel.ExpirationDate);
                         }
                         if (Obj.VendorFacilityListModel != null)
                         {
@@ -380,7 +381,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     Action = "U";
                     var Vendor = context.spSetCompany(Action, Obj.VendorId, Obj.CompanyNameLegal, Obj.CompanyNameDBA,
                                                          Obj.VendorType, COT_ID, Obj.CompanyDocuments, Obj.UserId,
-                                                         null, "N").FirstOrDefault();
+                                                         null, "Y").FirstOrDefault();
                     var companyDetais = context.CompanyDetails.Where(x => x.COD_CMP_Id == Obj.CompanyId && x.COD_IsActive == "Y").FirstOrDefault();
                     if(companyDetais != null)
                     { 
@@ -388,24 +389,30 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                                                Obj.JobTile, null, Obj.Address1, Obj.Address1City,
                                                                Obj.Address1State, 1, Obj.Address2, Obj.Address2City,
                                                                Obj.StateAfterIsSame, 1, Obj.Phone1, Obj.Phone2,
-                                                               Obj.VendorEmail, Obj.Website, Obj.UserId, null, "N");
+                                                               Obj.VendorEmail, Obj.Website, Obj.UserId, null, "Y");
                     ///var SaveTax = _workorderems.spSetTaxDetail(Action, null, Obj.VendorId, Obj.TaxNo, null, Obj.UserId, null, "N");
                     }
+                    var _companyLogDetails = _workorderems.LogCompanies.Where(n => n.LCMP_CMP_Id == Obj.VendorId && n.LCMP_IsApprove == "W").OrderByDescending(x=>x.LCMP_Id).FirstOrDefault();
+                    if (_companyLogDetails !=null) {
+                        _companyLogDetails.LCMP_IsApprove = "Y";
+                        _workorderems.SaveChanges();
 
-                    string LocIds = "";
-                    if (Obj.SelectedLcation != null)
-                    {
-                        string[] LoctionIds = Obj.SelectedLcation.Split(',');
-                        for (int i = 0; i < LoctionIds.Length; i++)
-                        {
-                            if (LoctionIds[i] != null && !string.IsNullOrEmpty(LoctionIds[i]) && Convert.ToInt64(LoctionIds[i], CultureInfo.InvariantCulture) > 0)
-                            {
-                                long LocId = Convert.ToInt64(LoctionIds[i]);
-                                var lmcId = _workorderems.LocationCompanyMappings.Where(x => x.LCM_LocationId == LocId && x.LCM_CMP_Id == Obj.CompanyId).Select(x=>x.LCM_Id).FirstOrDefault();
-                                var saveLocationAllocation = _workorderems.spSetLocationCompanyMapping(Action, lmcId, LocId, Obj.VendorId, Obj.UserId, null, "Y");
-                            }
-                        }
                     }
+
+                    //string LocIds = "";
+                    //if (Obj.SelectedLcation != null)
+                    //{
+                    //    string[] LoctionIds = Obj.SelectedLcation.Split(',');
+                    //    for (int i = 0; i < LoctionIds.Length; i++)
+                    //    {
+                    //        if (LoctionIds[i] != null && !string.IsNullOrEmpty(LoctionIds[i]) && Convert.ToInt64(LoctionIds[i], CultureInfo.InvariantCulture) > 0)
+                    //        {
+                    //            long LocId = Convert.ToInt64(LoctionIds[i]);
+                    //            var lmcId = _workorderems.LocationCompanyMappings.Where(x => x.LCM_LocationId == LocId && x.LCM_CMP_Id == Obj.CompanyId).Select(x=>x.LCM_Id).FirstOrDefault();
+                    //            var saveLocationAllocation = _workorderems.spSetLocationCompanyMapping(Action, lmcId, LocId, Obj.VendorId, Obj.UserId, null, "Y");
+                    //        }
+                    //    }
+                    //}
 
                     Obj.Result = Result.UpdatedSuccessfully;
                     #region Save DAR
@@ -563,68 +570,125 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// </summary>
         /// <param name="VendorId"></param>
         /// <returns></returns>
-        public VendorAllViewDataModel GetAllVendorData(long VendorId)
+        public VendorAllViewDataModel GetAllVendorData(long VendorId,string Status)
         {
             var vendorData = new VendorAllViewDataModel();
             try
             {
+                //spGetVendorAllDetailForEditApproval
+                if (Status == "U") {
+                    vendorData = _workorderems.spGetVendorAllDetailForEditApproval(VendorId).Select
+                       (x => new VendorAllViewDataModel()
+                       {
+                           CompanyNameLegal = x.CMP_NameLegal,
+                           CompanyNameDBA = x.CMP_NameDBA,
+                           Address1 = x.COD_Address1 + "-" + x.COD_Addr1City,
+                           Address2 = x.COD_Address2 + "-" + x.COD_Addr2City,
+                           Email = x.COD_Email == null ? "N/A" : x.COD_Email,
+                           Website = x.COD_Website == null ? "N/A" : x.COD_Website,
+                           Phone1 = x.COD_Phone1,
+                           Phone2 = x.COD_Phone2 == null ? "N/A" : x.COD_Phone2,
+                           PointOfContact = x.COD_PointOfContact,
+                           JobTile = x.COD_JobTitle,
+                           VendorTypeData = x.VDT_VendorType,
 
-                vendorData = _workorderems.spGetVendorAllDetailForApproval(VendorId).Select
-                (x => new VendorAllViewDataModel()
+                        //this is for Insurance and License
+                        LicenseNumber = x.LNC_LicenseNumber == null ? "N/A" : x.LNC_LicenseNumber,
+                           LicenseExpirationDate = x.LNC_ExpirationDate == null ? "N/A" : x.LNC_ExpirationDate.ToString("yyyy/MM/dd"),
+                           InsuranceCarries = x.INS_IncuranceCarrier == null ? "N/A" : x.INS_IncuranceCarrier,
+                           InsuranceExpirationDate = x.INS_ExpirationDate == null ? "N/A" : x.INS_ExpirationDate.ToString("yyyy/MM/dd"),
+                           PolicyNumber = x.INS_PolicyNumber == null ? "N/A" : x.INS_PolicyNumber,
+                           LicenseName = x.LNC_LicenseName,
+                        //This is for Contract
+                        SecondaryCompany = x.CNT_CMP_IdSecondParty.ToString(),
+                           ContractType = x.CTT_ContractType,
+                           ContractIssuedBy = x.CNT_IssuedBy,
+                           ContractExecutedBy = x.CNT_ExcutedBy,
+                           PrimaryPaymentMode = x.PMD_PaymentMode,
+                           PaymentTerm = x.PTM_Term,
+                           GracePeriod = x.CNT_GracePeriod,
+                           InvoicingFrequecy = x.CNT_invoicingFrequency,
+                           StartDate = x.CNT_StartDate.ToString("yyyy/MM/dd"),
+                           EndDate = x.CNT_EndDate.ToString("yyyy/MM/dd"),
+                           CostDuringPeriod = x.CNT_CostDuringPeriod == 0 ? 0 : x.CNT_CostDuringPeriod,
+                           AnnualValueOfAggriment = x.CNT_AnnualValueOfAggreement == 0 ? 0 : x.CNT_AnnualValueOfAggreement,
+                           MinimumBillAmount = x.CNT_MinimumBillAmount == null ? 0 : x.CNT_MinimumBillAmount,
+                           BillDueDate = x.CNT_BillDueDate == null ? "N/A" : x.CNT_BillDueDate.ToString("yyyy/MM/dd"),
+                           LateFine = x.CNT_LateFeeFine == null ? 0 : x.CNT_LateFeeFine,
+                        //This is for account Details
+                        AccountNumber = x.CAD_AccountNumber == null ? "N/A" : x.CAD_AccountNumber,
+                           BankName = x.CAD_CardOrBankName == null ? "N/A" : x.CAD_CardOrBankName,
+                           BankLocation = x.CAD_BankLocation == null ? "N/A" : x.CAD_BankLocation,
+                           IFSCCode = x.CAD_IFSCcode == null ? "N/A" : x.CAD_IFSCcode,
+                           SwiftOICCode = x.CAD_SwiftBICcode == null ? "N/A" : x.CAD_SwiftBICcode,
+                           CardNumber = x.CAD_CreditCardNumber == null ? "N/A" : x.CAD_CreditCardNumber,
+                           PolicyNumberAccount = x.INS_PolicyNumber == null ? "N/A" : x.INS_PolicyNumber,
+                           CardHolderName = x.CAD_CardHolderName == null ? "N/A" : x.CAD_CardHolderName,
+                           FirstCompany = (long)x.CNT_CMP_IdFirsParty,
+                           ExpirationDate = x.CAD_CardExpirationDate.ToString("yyyy/MM/dd"),
+                       }).FirstOrDefault();
+                }
+                else
                 {
-                    CompanyNameLegal = x.CMP_NameLegal,
-                    CompanyNameDBA = x.CMP_NameDBA,
-                    Address1 = x.COD_Address1 + "-" + x.COD_Addr1City,
-                    Address2 = x.COD_Address2 + "-" + x.COD_Addr2City,
-                    Email = x.COD_Email == null ? "N/A" : x.COD_Email,
-                    Website = x.COD_Website == null ? "N/A" : x.COD_Website,
-                    Phone1 = x.COD_Phone1,
-                    Phone2 = x.COD_Phone2 == null ? "N/A" : x.COD_Phone2,
-                    PointOfContact = x.COD_PointOfContact,
-                    JobTile = x.COD_JobTitle,
-                    VendorTypeData = x.VDT_VendorType,
+                    vendorData = _workorderems.spGetVendorAllDetailForApproval(VendorId).Select
+                    (x => new VendorAllViewDataModel()
+                    {
+                        CompanyNameLegal = x.CMP_NameLegal,
+                        CompanyNameDBA = x.CMP_NameDBA,
+                        Address1 = x.COD_Address1 + "-" + x.COD_Addr1City,
+                        Address2 = x.COD_Address2 + "-" + x.COD_Addr2City,
+                        Email = x.COD_Email == null ? "N/A" : x.COD_Email,
+                        Website = x.COD_Website == null ? "N/A" : x.COD_Website,
+                        Phone1 = x.COD_Phone1,
+                        Phone2 = x.COD_Phone2 == null ? "N/A" : x.COD_Phone2,
+                        PointOfContact = x.COD_PointOfContact,
+                        JobTile = x.COD_JobTitle,
+                        VendorTypeData = x.VDT_VendorType,
 
                     //this is for Insurance and License
                     LicenseNumber = x.LNC_LicenseNumber == null ? "N/A" : x.LNC_LicenseNumber,
-                    LicenseExpirationDate = x.LNC_ExpirationDate == null ? "N/A" : x.LNC_ExpirationDate.ToString("yyyy/MM/dd"),
-                    InsuranceCarries = x.INS_IncuranceCarrier == null ? "N/A" : x.INS_IncuranceCarrier,
-                    InsuranceExpirationDate = x.INS_ExpirationDate == null ? "N/A" : x.INS_ExpirationDate.ToString("yyyy/MM/dd"),
-                    PolicyNumber = x.INS_PolicyNumber == null ? "N/A" : x.INS_PolicyNumber,
-
+                        LicenseExpirationDate = x.LNC_ExpirationDate == null ? "N/A" : x.LNC_ExpirationDate.ToString("yyyy/MM/dd"),
+                        InsuranceCarries = x.INS_IncuranceCarrier == null ? "N/A" : x.INS_IncuranceCarrier,
+                        InsuranceExpirationDate = x.INS_ExpirationDate == null ? "N/A" : x.INS_ExpirationDate.ToString("yyyy/MM/dd"),
+                        PolicyNumber = x.INS_PolicyNumber == null ? "N/A" : x.INS_PolicyNumber,
+                        LicenseName = x.LNC_LicenseName,
                     //This is for Contract
                     SecondaryCompany = x.CNT_CMP_IdSecondParty.ToString(),
-                    ContractType = x.CTT_ContractType,
-                    ContractIssuedBy = x.CNT_IssuedBy,
-                    ContractExecutedBy = x.CNT_ExcutedBy,
-                    PrimaryPaymentMode = x.PMD_PaymentMode,
-                    PaymentTerm = x.PTM_Term,
-                    GracePeriod = x.CNT_GracePeriod,
-                    InvoicingFrequecy = x.CNT_invoicingFrequency,
-                    StartDate = x.CNT_StartDate.ToString("yyyy/MM/dd"),
-                    EndDate = x.CNT_EndDate.ToString("yyyy/MM/dd"),
-                    CostDuringPeriod = x.CNT_CostDuringPeriod == 0 ? 0 : x.CNT_CostDuringPeriod,
-                    AnnualValueOfAggriment = x.CNT_AnnualValueOfAggreement == 0 ? 0 : x.CNT_AnnualValueOfAggreement,
-                    MinimumBillAmount = x.CNT_MinimumBillAmount == null ? 0 : x.CNT_MinimumBillAmount,
-                    BillDueDate = x.CNT_BillDueDate == null ? "N/A" : x.CNT_BillDueDate.ToString("yyyy/MM/dd"),
-                    LateFine = x.CNT_LateFeeFine == null ? 0 : x.CNT_LateFeeFine,
+                        ContractType = x.CTT_ContractType,
+                        ContractIssuedBy = x.CNT_IssuedBy,
+                        ContractExecutedBy = x.CNT_ExcutedBy,
+                        PrimaryPaymentMode = x.PMD_PaymentMode,
+                        PaymentTerm = x.PTM_Term,
+                        GracePeriod = x.CNT_GracePeriod,
+                        InvoicingFrequecy = x.CNT_invoicingFrequency,
+                        StartDate = x.CNT_StartDate.ToString("yyyy/MM/dd"),
+                        EndDate = x.CNT_EndDate.ToString("yyyy/MM/dd"),
+                        CostDuringPeriod = x.CNT_CostDuringPeriod == 0 ? 0 : x.CNT_CostDuringPeriod,
+                        AnnualValueOfAggriment = x.CNT_AnnualValueOfAggreement == 0 ? 0 : x.CNT_AnnualValueOfAggreement,
+                        MinimumBillAmount = x.CNT_MinimumBillAmount == null ? 0 : x.CNT_MinimumBillAmount,
+                        BillDueDate = x.CNT_BillDueDate == null ? "N/A" : x.CNT_BillDueDate.ToString("yyyy/MM/dd"),
+                        LateFine = x.CNT_LateFeeFine == null ? 0 : x.CNT_LateFeeFine,
                     //This is for account Details
                     AccountNumber = x.CAD_AccountNumber == null ? "N/A" : x.CAD_AccountNumber,
-                    BankName = x.CAD_CardOrBankName == null ? "N/A" : x.CAD_CardOrBankName,
-                    BankLocation = x.CAD_BankLocation == null ? "N/A" : x.CAD_BankLocation,
-                    IFSCCode = x.CAD_IFSCcode == null ? "N/A" : x.CAD_IFSCcode,
-                    SwiftOICCode = x.CAD_SwiftBICcode == null ? "N/A" : x.CAD_SwiftBICcode,
-                    CardNumber = x.CAD_CreditCardNumber == null ? "N/A" : x.CAD_CreditCardNumber,
-                    PolicyNumberAccount = x.INS_PolicyNumber == null ? "N/A" : x.INS_PolicyNumber,
-                    CardHolderName = x.CAD_CardOrBankName == null ? "N/A" : x.CAD_CardOrBankName,
-                    //ExpirationDate = x.
-                }).FirstOrDefault();
+                        BankName = x.CAD_CardOrBankName == null ? "N/A" : x.CAD_CardOrBankName,
+                        BankLocation = x.CAD_BankLocation == null ? "N/A" : x.CAD_BankLocation,
+                        IFSCCode = x.CAD_IFSCcode == null ? "N/A" : x.CAD_IFSCcode,
+                        SwiftOICCode = x.CAD_SwiftBICcode == null ? "N/A" : x.CAD_SwiftBICcode,
+                        CardNumber = x.CAD_CreditCardNumber == null ? "N/A" : x.CAD_CreditCardNumber,
+                        PolicyNumberAccount = x.INS_PolicyNumber == null ? "N/A" : x.INS_PolicyNumber,
+                        CardHolderName = x.CAD_CardHolderName == null ? "N/A" : x.CAD_CardHolderName,
+                        FirstCompany = (long)x.CNT_CMP_IdFirsParty,
+                        ExpirationDate = x.CAD_CardExpirationDate.ToString("yyyy/MM/dd"),
+                    }).FirstOrDefault();
+
+                }
                 vendorData.VendorFacilityModel = _workorderems.spGetCompanyFacilityMappingForApproval(VendorId).Select
                 (x => new VendorFacilityModel()
                 {
                     Costcode = x.CFM_CCD_CostCode,
                     //FacilityId= x.,
                     ProductServiceName = x.CFM_Discription,
-                    ProductServiceType = x.CFM_FacilityType,
+                    ProductServiceType = x.CFM_FacilityType=="1" ? "Product":"Service",
                     Tax = x.CFM_Tax,
                     UnitCost = x.CFM_Rate,
                 }).ToList();
@@ -635,7 +699,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     LocationId = x.LLCM_LocationId,
                     LLCM_Id = x.LLCM_Id
                 }).ToList();
-
+                vendorData.DisplayFirstCompany = GetFirstCompanyByVendorId(Convert.ToInt32(vendorData.FirstCompany));
             }
             catch (Exception ex)
             {
@@ -644,6 +708,9 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
             return vendorData;
         }
+
+
+
 
         /// <summary>
         /// Created By : Ashwajit Bansod
@@ -930,7 +997,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                                                       Obj.VendorAccountDetailsModel.BankName, Obj.VendorAccountDetailsModel.BankLocation,
                                                                       Obj.VendorAccountDetailsModel.AccountNumber, Obj.VendorAccountDetailsModel.CardNumber,
                                                                       Obj.VendorAccountDetailsModel.IFSCCode, Obj.VendorAccountDetailsModel.SwiftOICCode,
-                                                                      Obj.VendorAccountDetailsModel.AccountDocuments, Obj.UserId, null, "Y", Obj.VendorAccountDetailsModel.BalanceAmount, Obj.VendorAccountDetailsModel.QuickbookAcountId);
+                                                                      Obj.VendorAccountDetailsModel.AccountDocuments, Obj.UserId, null, "Y", Obj.VendorAccountDetailsModel.BalanceAmount, Obj.VendorAccountDetailsModel.QuickbookAcountId, Obj.VendorAccountDetailsModel.CardHolderName, Obj.VendorAccountDetailsModel.ExpirationDate);
                         objVendorManagement.Result = Result.Completed;
                     }
                     var userData = _workorderems.UserRegistrations.Where(x => x.UserId == Obj.UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
@@ -1342,7 +1409,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         .FirstOrDefault();
                     var Update = _workorderems.spSetCompanyAccountDetail(action, AccountsId, getDetails.LCAD_CMP_Id, getDetails.LCAD_PMD_Id,
                                                                       getDetails.LCAD_CardOrBankName, getDetails.LCAD_BankLocation, getDetails.LCAD_AccountNumber,
-                                                                      getDetails.LCAD_CreditCardNumber, getDetails.LCAD_IFSCcode, getDetails.LCAD_SwiftBICcode, getDetails.LCAD_AccountDocument, UserId, getDetails.LCAD_ApprovedBy, IsActive, getDetails.LCAD_Balance, null);
+                                                                      getDetails.LCAD_CreditCardNumber, getDetails.LCAD_IFSCcode, getDetails.LCAD_SwiftBICcode, getDetails.LCAD_AccountDocument, UserId, getDetails.LCAD_ApprovedBy, IsActive, getDetails.LCAD_Balance, null, getDetails.LCAD_CardHolderName,getDetails.LCAD_CardExpirationDate);
                     result = true;
                 }
                 else
@@ -1767,6 +1834,32 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             var status = _workorderems.Insurances.Any(u => u.INS_PolicyNumber.ToLower() == InsPolicyNumber.Trim().ToLower());
             result = status == true ? result = false : result = true;
             return result;
+        }
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 16-OCT-2018
+        /// Created For : To Approve or Reject Vendor By Using vendor Id
+        /// </summary>
+        /// <param name="ObjApproveRejectVendorModel"></param>
+        /// <returns></returns>
+        public  string GetFirstCompanyByVendorId(int firstcompanyId)
+        { 
+            string _Name = "";
+            try
+            {
+                var _result = _workorderems.Companies.Where(x => x.CMP_Id == firstcompanyId).FirstOrDefault();
+                if (_result!=null) 
+                {
+                    _Name = _result.CMP_NameLegal;
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public string ApprovePOByPOId(long Id)", "Exception While Approving PO.", null);
+                throw;
+            }
+            return _Name;
         }
         #endregion
         public bool SaveContractAllocation(ContractLocationAllocation obj)

@@ -176,11 +176,11 @@
         </div>
 
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label" style="font-size:16px;">  Contract issued by<span class="req">*</span></label>
+            <label class="col-sm-2 col-form-label">  Contract issued by<span class="req">*</span></label>
             <div class="col-sm-4">
-                @Html.RadioButtonFor(model => model.VendorContractModel.ContractIssuedBy, "Own")<span class="radio_span">
+                @Html.RadioButtonFor(model => model.VendorContractModel.ContractIssuedBy, "Own",new { @class="rbtn" })<span class="radio_span">
     &nbsp;Own &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-    @Html.RadioButtonFor(model => model.VendorContractModel.ContractIssuedBy, "Vendor", new { @style = "margin-left:20%;", @class = "radio" })<span class="radio_span">
+    @Html.RadioButtonFor(model => model.VendorContractModel.ContractIssuedBy, "Vendor", new { @style = "margin-left:20%;", @class = "radio rbtn" })<span class="radio_span">
     &nbsp;Vendor</span>
     @Html.ValidationMessageFor(model => model.VendorContractModel.ContractIssuedBy)
 </div>
@@ -207,8 +207,8 @@
             </div>
         </div>
 
-        <div class="form-group row ContractExecutedByHideShow" style="display:none;">
-            <label class="col-sm-2 col-form-label" style="font-size:16px;"> Contract executed by <span class="req">*</span></label>
+        <div class="form-group row ContractExecutedByHideShow1" style="display:none;">
+            <label class="col-sm-2 col-form-label"> Contract executed by <span class="req">*</span></label>
             <div class="col-sm-4">
                 @Html.RadioButtonFor(model => model.VendorContractModel.ContractExecutedBy, "Own", false)<span class="radio_span">
     &nbsp;Own &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -219,7 +219,7 @@
         </div>
 
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label" style="font-size:16px;">  Primary Payment Mode<span class="req">*</span></label>
+            <label class="col-sm-2 col-form-label">  Primary Payment Mode<span class="req">*</span></label>
             <div class="col-sm-4">
                 @if (ViewBag.PaymentModeList != null)
                 {
@@ -267,7 +267,7 @@
         </div>
 
         <div class="form-group row">
-            <label class="col-sm-2 col-form-label" style="font-size:16px;">Is Reccurence for PO.?<span class="req">*</span></label>
+            <label class="col-sm-2 col-form-label">Is Reccurence for PO.?<span class="req">*</span></label>
             <div class="col-sm-4">
                 @Html.RadioButtonFor(model => model.VendorContractModel.ReccurenceForPO, "Y")<span class="radio_span">
     &nbsp;Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
@@ -469,27 +469,20 @@
         });
         $(function () {
             $("#fileuploadContract").change(function () {
-                $("#dvContractPreview").html("");
-                var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.pdf|.doc|.txt)$/;
-                if (regex.test($(this).val().toLowerCase())) {
-                    if ($.browser.msie && parseFloat(jQuery.browser.version) <= 9.0) {
-                        $("#dvContractPreview").show();
-                        $("#dvContractPreview")[0].filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = $(this).val();
-                    }
-                    else {
-                        if (typeof (FileReader) != "undefined") {
-                            $("#dvContractPreview").show();
-                            // $("#dvContractPreview").append("<img />");
-                            var reader = new FileReader();
-                            reader.onload = function (e) {
-                                $("#dvContractPreview").attr("src", e.target.result);
-                            }
-                            reader.readAsDataURL($(this)[0].files[0]);
-                        } else {
-                            alert("This browser does not support FileReader.");
-                        }
-                    }
+                $("#dvContractPreview").html(""); 
+                var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
+                var size = this.files[0].size;
+                if (!allowedExtensions.exec($(this).val().toLowerCase())) {
+                    $(this).val('');
+                    alert("Invalid file type");
+                    return false;
                 }
+                else if (size >= 4194304) {
+                    alert("Max file size 4 mb.");
+                    $(this).val("");
+                    return false;
+                }
+                
             })
         })
 
@@ -510,7 +503,19 @@
 
         })
           $('#SaveLocationAllocation').click(function () {            var sumNumber = 0;            var inputs = $('input.location-allocation-input[type=number]').map(function (i, v) {                return {                    LocationId: $(this).attr('id').replace("id_", ""),                    Percentage: $(this).val()                };            });            $('input.location-allocation-input[type=number]').each(function (i, item) {                var grade = $(item).val();                sumNumber = Number(sumNumber) + Number(grade);            })            if (inputs.length === 0) {                 alert("Select atleast one location");                return false;            }            else if (sumNumber != 100 ) {                alert("Sum of percentage should be equal to 100");                return false;            }            //else {            //    $.ajax({            //        type: "POST",            //        data: { data: inputValue },            //        url: 'eCounting/VendorManagement/SaveContractAllocation/',            //        contentType: "application/json; charset=utf-8",            //        error: function (xhr, status, error) {            //        },            //        success: function (result) {            //        }            //    });            //}        });
+        $(".rbtn").change(function ()
+        {
 
+            if ($(this).val() == "Own")
+            {
+               $(".ContractExecutedByHideShow1").hide();
+            }
+            else if ($(this).val() == "Vendor")
+            {
+                 $(".ContractExecutedByHideShow1").show();
+            }
+           
+        });
     });
 </script>
 

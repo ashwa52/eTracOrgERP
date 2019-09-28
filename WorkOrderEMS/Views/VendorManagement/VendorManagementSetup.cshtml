@@ -205,11 +205,15 @@
                             <!-- fieldsets -->
                             @Html.HiddenFor(model => model.StateAfterIsSame, new { @id = "StateAfterIsSame" })
                             @Html.HiddenFor(model => model.ProductList, new { @id = "ProductList" })
+
                             @Html.HiddenFor(model => model.VendorId, new { @id = "VendorId" })
-                            @*@Html.HiddenFor(model => model.VendorType, new { @id = "VendorTypeForEdit" })*@
+
                             @Html.HiddenFor(model => model.CompanyDocEdit, new { @id = "CompanyDocEdit" })
                             @Html.HiddenFor(model => model.CompanyId)
-
+                            if (ViewBag.UpdateMode != false)
+                            {
+                                @Html.HiddenFor(model => model.VendorType, new { @id = "VendorTypeForEdit" })
+                            }
                             <br />
                             <fieldset id="VendorSetUp">
                                 @*<link href="~/Content/eFleetVehicle/VendorRegistrationCSS.css" rel="stylesheet" />*@
@@ -221,6 +225,7 @@
                                             <div class="col-sm-4">
                                                 @if (ViewBag.VendorType != null)
                                                 {
+
                                                     @Html.DropDownListFor(model => model.VendorType, new SelectList(ViewBag.VendorType, "VendorTypeId", "VendorTypeName"), "--Select Vendor Type--", new { @id = "VendorType", @class = "form-control input-rounded" })
                                                 }
                                                 else
@@ -385,7 +390,7 @@
 
                                             <label class="col-sm-2 col-form-label" for="VendorName"> Website</label>
                                             <div class="col-sm-4">
-                                                @Html.TextBoxFor(model => model.Website, new { pattern = "http://www.*", @class = "form-control input-rounded",@placeholder="eg format : http://www.google.com/" })
+                                                @Html.TextBoxFor(model => model.Website, new { pattern = "http://www.*", @class = "form-control input-rounded", @placeholder = "eg format : http://www.google.com/" })
                                                 <div class="errorspace">
                                                     @Html.ValidationMessageFor(model => model.Website)
                                                 </div>
@@ -496,7 +501,7 @@
 
                             </fieldset>
                         }
-                       
+
                     </div>
                 </div>
             </div>
@@ -562,20 +567,29 @@
         $("#fileuploadCompany").change(function () {
             $("#dvCompanyPreview").html("");
             var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
+            var size = this.files[0].size;
             if (!allowedExtensions.exec($(this).val().toLowerCase())) {
                 alert("Invalid file type");
                 $(this).val("");
                 return false;
             }
+            else if (size >= 4194304) {
+                alert("Max file size 4 mb.");
+                $(this).val("");
+                return false;
+            }
         })
+
     if (IsUpdate == "True")
-        {
+    {
+
             $("#lblVendorType,#lblCompanyState").show();
             $('label').addClass('active highlight');
             $('#Address2,#Address2City,#Address2State,#TaxNo,#VendorType').css("background-color", "#EBEBE4");
             $('#Address2,#Address2City,#TaxNo').attr('readonly', true);
+            
+             $("#VendorType").val(@ViewBag.VendorTypeIdData);
             $('#Address2State,#VendorType').attr('disabled', 'disabled');
-            $("#VendorTypeForEdit").val(@ViewBag.VendorTypeIdData);
             $('#VendorId').val(@ViewBag.VendorId);
             $("#Email").val(e_mail);
             $('#lblDoc').css("margin-top", "19px");
@@ -622,7 +636,7 @@
 
 
     }
-   
+
     });
      function callCancel() {
             bootbox.confirm("Are you sure you want to cancel?", function (result) {

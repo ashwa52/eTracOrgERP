@@ -146,15 +146,26 @@ function ViewDetails(item) {
         datatype: 'json',
         success: function (result) { 
             
-            $("#lblVendorNameLegal").html(result.CompanyNameLegal); $("#lblVendorNameDBA").html(result.CompanyNameDBA);
-            $("#lblVendorType").html(result.VendorTypeData); $("#lblPointOfContact").html(result.PointOfContact);
-            $("#lblAddress").html(result.Address1); $("#lblPhone1").html(result.Phone1);
-            $("#lblPhone2").html(result.Phone2); $("#lblEmail").html(result.Email);
-            $("#lblWebsite").html(result.Website); $("#lblLicenseName").html(result.CompanyNameLegal);
-            $("#lblLicenseNumber").html(result.LicenseNumber); $("#lblLicenseExpirationDate").html(result.LicenseExpirationDate);
-            $("#lblInsuranceCarries").html(result.InsuranceCarries); $("#lblPolicyNumber").html(result.PolicyNumber);
-            $("#lblInsuranceExpirationDate").html(result.InsuranceExpirationDate); $("#lblFirstCompany").html(result.CompanyNameLegal);
-            $("#lblSecondaryCompany").html(result.SecondaryCompany); $("#lblVendorTypeContract").html(result.VendorTypeData);
+            $("#lblVendorNameLegal").html(result.CompanyNameLegal);
+            $("#lblVendorNameDBA").html(result.CompanyNameDBA);
+            $("#lblVendorType").html(result.VendorTypeData);
+            $("#lblPointOfContact").html(result.PointOfContact);
+            $("#lblAddress").html(result.Address1);
+            $("#lblPhone1").html(result.Phone1);
+            $("#lblPhone2").html(result.Phone2);
+            $("#lblEmail").html(result.Email);
+            $("#lblWebsite").html(result.Website);
+
+            $("#lblLicenseName").html(result.LicenseName);            
+            $("#lblLicenseNumber").html(result.LicenseNumber);
+            $("#lblLicenseExpirationDate").html(result.LicenseExpirationDate);
+            $("#lblInsuranceCarries").html(result.InsuranceCarries);
+            $("#lblPolicyNumber").html(result.PolicyNumber);
+            $("#lblInsuranceExpirationDate").html(result.InsuranceExpirationDate);
+            $("#lblFirstCompany").html(result.DisplayFirstCompany);
+
+            $("#lblSecondaryCompany").html(result.CompanyNameLegal);
+            $("#lblVendorTypeContract").html(result.VendorTypeData);
             $("#lblContractType").html(result.ContractType); $("#lblContractissuedby").html(result.ContractIssuedBy);
             $("#lblContractexecutedby").html(result.ContractExecutedBy);
             $("#lblPrimaryPaymentMode").html(result.PrimaryPaymentMode); $("#lblPaymentTerm").html(result.PaymentTerm);
@@ -167,7 +178,8 @@ function ViewDetails(item) {
             $("#lblBankName").html(result.BankName); $("#lblBankLocation").html(result.BankLocation);
             $("#lblAccountNumber").html(result.AccountNumber); $("#lblIFSCCode").html(result.IFSCCode);
             $("#lblSwiftOICCode").html(result.SwiftOICCode); $("#lblCardNumber").html(result.CardNumber);
-            $("#lblCardHolderName").html(result.CardHolderName); $("#lblExpirationDate").html(result.CardHolderName);
+            $("#lblCardHolderName").html(result.CardHolderName);
+            $("#lblExpirationDate").html(result.ExpirationDate);
             $("#lblPolicyNumber").html(result.PolicyNumberAccount);
             if (item.Status == "Rejected") {
                 $("#btnApproveData").hide();
@@ -357,7 +369,8 @@ $("#ViewUnApprovedVendorData").on("click", function (event) {
             $("#lblBankName").html(result.BankName); $("#lblBankLocation").html(result.BankLocation);
             $("#lblAccountNumber").html(result.AccountNumber); $("#lblIFSCCode").html(result.IFSCCode);
             $("#lblSwiftOICCode").html(result.SwiftOICCode); $("#lblCardNumber").html(result.CardNumber);
-            $("#lblCardHolderName").html(result.CardHolderName); $("#lblExpirationDate").html(result.CardHolderName);
+            $("#lblCardHolderName").html(result.CardHolderName);
+            $("#lblExpirationDate").html(result.ExpirationDate);
             $("#lblPolicyNumber").html(result.PolicyNumberAccount);
             if (result.LocationAssignedModel != null) {
                 if (result.LocationAssignedModel.length > 0) {

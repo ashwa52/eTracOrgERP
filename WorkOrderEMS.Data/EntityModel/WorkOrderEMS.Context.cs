@@ -37,7 +37,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<BudgetCostCodeMapping> BudgetCostCodeMappings { get; set; }
         public virtual DbSet<BudgetLocationMapping> BudgetLocationMappings { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
-        public virtual DbSet<CompanyAccountDetail> CompanyAccountDetails { get; set; }
         public virtual DbSet<CompanyAccountTransaction> CompanyAccountTransactions { get; set; }
         public virtual DbSet<CompanyDetail> CompanyDetails { get; set; }
         public virtual DbSet<CompanyFacilityMapping> CompanyFacilityMappings { get; set; }
@@ -82,7 +81,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<LocationService> LocationServices { get; set; }
         public virtual DbSet<LogBill> LogBills { get; set; }
         public virtual DbSet<LogCompany> LogCompanies { get; set; }
-        public virtual DbSet<LogCompanyAccountDetail> LogCompanyAccountDetails { get; set; }
         public virtual DbSet<LogCompanyDetail> LogCompanyDetails { get; set; }
         public virtual DbSet<LogCompanyFacilityMapping> LogCompanyFacilityMappings { get; set; }
         public virtual DbSet<LogContract> LogContracts { get; set; }
@@ -132,6 +130,8 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<WorkRequestAssignment> WorkRequestAssignments { get; set; }
         public virtual DbSet<IdleEmployee> IdleEmployees { get; set; }
         public virtual DbSet<QRCMaster1> QRCMaster1 { get; set; }
+        public virtual DbSet<CompanyAccountDetail> CompanyAccountDetails { get; set; }
+        public virtual DbSet<LogCompanyAccountDetail> LogCompanyAccountDetails { get; set; }
     
         public virtual ObjectResult<CommonQeriesByVijay_Result> CommonQeriesByVijay()
         {
@@ -2569,15 +2569,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVendorAllDetail_Result1>("spGetVendorAllDetail", cMP_IdParameter);
         }
     
-        public virtual ObjectResult<spGetVendorAllDetailForApproval_Result> spGetVendorAllDetailForApproval(Nullable<long> cMP_Id)
-        {
-            var cMP_IdParameter = cMP_Id.HasValue ?
-                new ObjectParameter("CMP_Id", cMP_Id) :
-                new ObjectParameter("CMP_Id", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVendorAllDetailForApproval_Result>("spGetVendorAllDetailForApproval", cMP_IdParameter);
-        }
-    
         public virtual ObjectResult<spGetCompanyFacilityMappingForApproval_Result> spGetCompanyFacilityMappingForApproval(Nullable<long> cMP_Id)
         {
             var cMP_IdParameter = cMP_Id.HasValue ?
@@ -3544,75 +3535,6 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("BCM_BudgetYear", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdateBalanceAmount", cLM_IdParameter, costCodeAmountParameter, bCM_BudgetYearParameter);
-        }
-    
-        public virtual int spSetCompanyAccountDetail(string cADAction, Nullable<long> cAD_Id, Nullable<long> cAD_CMP_Id, Nullable<long> cAD_PMD_Id, string cAD_CardOrBankName, string cAD_BankLocation, string cAD_AccountNumber, string cAD_CreditCardNumber, string cAD_IFSCcode, string cAD_SwiftBICcode, string cAD_AccountDocument, Nullable<long> cAD_ModifiedBy, Nullable<long> cAD_ApprovedBy, string cAD_IsActive, Nullable<decimal> cAD_Balance, Nullable<long> cAD_QBKId)
-        {
-            var cADActionParameter = cADAction != null ?
-                new ObjectParameter("CADAction", cADAction) :
-                new ObjectParameter("CADAction", typeof(string));
-    
-            var cAD_IdParameter = cAD_Id.HasValue ?
-                new ObjectParameter("CAD_Id", cAD_Id) :
-                new ObjectParameter("CAD_Id", typeof(long));
-    
-            var cAD_CMP_IdParameter = cAD_CMP_Id.HasValue ?
-                new ObjectParameter("CAD_CMP_Id", cAD_CMP_Id) :
-                new ObjectParameter("CAD_CMP_Id", typeof(long));
-    
-            var cAD_PMD_IdParameter = cAD_PMD_Id.HasValue ?
-                new ObjectParameter("CAD_PMD_Id", cAD_PMD_Id) :
-                new ObjectParameter("CAD_PMD_Id", typeof(long));
-    
-            var cAD_CardOrBankNameParameter = cAD_CardOrBankName != null ?
-                new ObjectParameter("CAD_CardOrBankName", cAD_CardOrBankName) :
-                new ObjectParameter("CAD_CardOrBankName", typeof(string));
-    
-            var cAD_BankLocationParameter = cAD_BankLocation != null ?
-                new ObjectParameter("CAD_BankLocation", cAD_BankLocation) :
-                new ObjectParameter("CAD_BankLocation", typeof(string));
-    
-            var cAD_AccountNumberParameter = cAD_AccountNumber != null ?
-                new ObjectParameter("CAD_AccountNumber", cAD_AccountNumber) :
-                new ObjectParameter("CAD_AccountNumber", typeof(string));
-    
-            var cAD_CreditCardNumberParameter = cAD_CreditCardNumber != null ?
-                new ObjectParameter("CAD_CreditCardNumber", cAD_CreditCardNumber) :
-                new ObjectParameter("CAD_CreditCardNumber", typeof(string));
-    
-            var cAD_IFSCcodeParameter = cAD_IFSCcode != null ?
-                new ObjectParameter("CAD_IFSCcode", cAD_IFSCcode) :
-                new ObjectParameter("CAD_IFSCcode", typeof(string));
-    
-            var cAD_SwiftBICcodeParameter = cAD_SwiftBICcode != null ?
-                new ObjectParameter("CAD_SwiftBICcode", cAD_SwiftBICcode) :
-                new ObjectParameter("CAD_SwiftBICcode", typeof(string));
-    
-            var cAD_AccountDocumentParameter = cAD_AccountDocument != null ?
-                new ObjectParameter("CAD_AccountDocument", cAD_AccountDocument) :
-                new ObjectParameter("CAD_AccountDocument", typeof(string));
-    
-            var cAD_ModifiedByParameter = cAD_ModifiedBy.HasValue ?
-                new ObjectParameter("CAD_ModifiedBy", cAD_ModifiedBy) :
-                new ObjectParameter("CAD_ModifiedBy", typeof(long));
-    
-            var cAD_ApprovedByParameter = cAD_ApprovedBy.HasValue ?
-                new ObjectParameter("CAD_ApprovedBy", cAD_ApprovedBy) :
-                new ObjectParameter("CAD_ApprovedBy", typeof(long));
-    
-            var cAD_IsActiveParameter = cAD_IsActive != null ?
-                new ObjectParameter("CAD_IsActive", cAD_IsActive) :
-                new ObjectParameter("CAD_IsActive", typeof(string));
-    
-            var cAD_BalanceParameter = cAD_Balance.HasValue ?
-                new ObjectParameter("CAD_Balance", cAD_Balance) :
-                new ObjectParameter("CAD_Balance", typeof(decimal));
-    
-            var cAD_QBKIdParameter = cAD_QBKId.HasValue ?
-                new ObjectParameter("CAD_QBKId", cAD_QBKId) :
-                new ObjectParameter("CAD_QBKId", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetCompanyAccountDetail", cADActionParameter, cAD_IdParameter, cAD_CMP_IdParameter, cAD_PMD_IdParameter, cAD_CardOrBankNameParameter, cAD_BankLocationParameter, cAD_AccountNumberParameter, cAD_CreditCardNumberParameter, cAD_IFSCcodeParameter, cAD_SwiftBICcodeParameter, cAD_AccountDocumentParameter, cAD_ModifiedByParameter, cAD_ApprovedByParameter, cAD_IsActiveParameter, cAD_BalanceParameter, cAD_QBKIdParameter);
         }
     
         public virtual ObjectResult<string> spGetAccountCategory(string action, string accountCategory)
@@ -4657,6 +4579,118 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("CFM_ImageName", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetCompanyFacilityMapping", cFMActionParameter, cFM_IdParameter, cFM_CMP_IdParameter, cFM_CCD_CostCodeParameter, cFM_FacilityTypeParameter, cFM_DiscriptionParameter, cFM_RateParameter, cFM_TaxParameter, cFM_ModifiedByParameter, cFM_ApprovedByParameter, cFM_IsActiveParameter, cFM_ImageNameParameter);
+        }
+    
+        public virtual int spSetApprovalForCompanyAccountDetail(Nullable<long> lCAD_Id, string lCAD_Comment, string lCAD_IsApprove)
+        {
+            var lCAD_IdParameter = lCAD_Id.HasValue ?
+                new ObjectParameter("LCAD_Id", lCAD_Id) :
+                new ObjectParameter("LCAD_Id", typeof(long));
+    
+            var lCAD_CommentParameter = lCAD_Comment != null ?
+                new ObjectParameter("LCAD_Comment", lCAD_Comment) :
+                new ObjectParameter("LCAD_Comment", typeof(string));
+    
+            var lCAD_IsApproveParameter = lCAD_IsApprove != null ?
+                new ObjectParameter("LCAD_IsApprove", lCAD_IsApprove) :
+                new ObjectParameter("LCAD_IsApprove", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApprovalForCompanyAccountDetail", lCAD_IdParameter, lCAD_CommentParameter, lCAD_IsApproveParameter);
+        }
+    
+        public virtual ObjectResult<spGetVendorAllDetailForApproval_Result> spGetVendorAllDetailForApproval(Nullable<long> cMP_Id)
+        {
+            var cMP_IdParameter = cMP_Id.HasValue ?
+                new ObjectParameter("CMP_Id", cMP_Id) :
+                new ObjectParameter("CMP_Id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVendorAllDetailForApproval_Result>("spGetVendorAllDetailForApproval", cMP_IdParameter);
+        }
+    
+        public virtual int spSetCompanyAccountDetail(string cADAction, Nullable<long> cAD_Id, Nullable<long> cAD_CMP_Id, Nullable<long> cAD_PMD_Id, string cAD_CardOrBankName, string cAD_BankLocation, string cAD_AccountNumber, string cAD_CreditCardNumber, string cAD_IFSCcode, string cAD_SwiftBICcode, string cAD_AccountDocument, Nullable<long> cAD_ModifiedBy, Nullable<long> cAD_ApprovedBy, string cAD_IsActive, Nullable<decimal> cAD_Balance, Nullable<long> cAD_QBKId, string cAD_CardHolderName, Nullable<System.DateTime> cAD_CardExpirationDate)
+        {
+            var cADActionParameter = cADAction != null ?
+                new ObjectParameter("CADAction", cADAction) :
+                new ObjectParameter("CADAction", typeof(string));
+    
+            var cAD_IdParameter = cAD_Id.HasValue ?
+                new ObjectParameter("CAD_Id", cAD_Id) :
+                new ObjectParameter("CAD_Id", typeof(long));
+    
+            var cAD_CMP_IdParameter = cAD_CMP_Id.HasValue ?
+                new ObjectParameter("CAD_CMP_Id", cAD_CMP_Id) :
+                new ObjectParameter("CAD_CMP_Id", typeof(long));
+    
+            var cAD_PMD_IdParameter = cAD_PMD_Id.HasValue ?
+                new ObjectParameter("CAD_PMD_Id", cAD_PMD_Id) :
+                new ObjectParameter("CAD_PMD_Id", typeof(long));
+    
+            var cAD_CardOrBankNameParameter = cAD_CardOrBankName != null ?
+                new ObjectParameter("CAD_CardOrBankName", cAD_CardOrBankName) :
+                new ObjectParameter("CAD_CardOrBankName", typeof(string));
+    
+            var cAD_BankLocationParameter = cAD_BankLocation != null ?
+                new ObjectParameter("CAD_BankLocation", cAD_BankLocation) :
+                new ObjectParameter("CAD_BankLocation", typeof(string));
+    
+            var cAD_AccountNumberParameter = cAD_AccountNumber != null ?
+                new ObjectParameter("CAD_AccountNumber", cAD_AccountNumber) :
+                new ObjectParameter("CAD_AccountNumber", typeof(string));
+    
+            var cAD_CreditCardNumberParameter = cAD_CreditCardNumber != null ?
+                new ObjectParameter("CAD_CreditCardNumber", cAD_CreditCardNumber) :
+                new ObjectParameter("CAD_CreditCardNumber", typeof(string));
+    
+            var cAD_IFSCcodeParameter = cAD_IFSCcode != null ?
+                new ObjectParameter("CAD_IFSCcode", cAD_IFSCcode) :
+                new ObjectParameter("CAD_IFSCcode", typeof(string));
+    
+            var cAD_SwiftBICcodeParameter = cAD_SwiftBICcode != null ?
+                new ObjectParameter("CAD_SwiftBICcode", cAD_SwiftBICcode) :
+                new ObjectParameter("CAD_SwiftBICcode", typeof(string));
+    
+            var cAD_AccountDocumentParameter = cAD_AccountDocument != null ?
+                new ObjectParameter("CAD_AccountDocument", cAD_AccountDocument) :
+                new ObjectParameter("CAD_AccountDocument", typeof(string));
+    
+            var cAD_ModifiedByParameter = cAD_ModifiedBy.HasValue ?
+                new ObjectParameter("CAD_ModifiedBy", cAD_ModifiedBy) :
+                new ObjectParameter("CAD_ModifiedBy", typeof(long));
+    
+            var cAD_ApprovedByParameter = cAD_ApprovedBy.HasValue ?
+                new ObjectParameter("CAD_ApprovedBy", cAD_ApprovedBy) :
+                new ObjectParameter("CAD_ApprovedBy", typeof(long));
+    
+            var cAD_IsActiveParameter = cAD_IsActive != null ?
+                new ObjectParameter("CAD_IsActive", cAD_IsActive) :
+                new ObjectParameter("CAD_IsActive", typeof(string));
+    
+            var cAD_BalanceParameter = cAD_Balance.HasValue ?
+                new ObjectParameter("CAD_Balance", cAD_Balance) :
+                new ObjectParameter("CAD_Balance", typeof(decimal));
+    
+            var cAD_QBKIdParameter = cAD_QBKId.HasValue ?
+                new ObjectParameter("CAD_QBKId", cAD_QBKId) :
+                new ObjectParameter("CAD_QBKId", typeof(long));
+    
+            var cAD_CardHolderNameParameter = cAD_CardHolderName != null ?
+                new ObjectParameter("CAD_CardHolderName", cAD_CardHolderName) :
+                new ObjectParameter("CAD_CardHolderName", typeof(string));
+    
+            var cAD_CardExpirationDateParameter = cAD_CardExpirationDate.HasValue ?
+                new ObjectParameter("CAD_CardExpirationDate", cAD_CardExpirationDate) :
+                new ObjectParameter("CAD_CardExpirationDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetCompanyAccountDetail", cADActionParameter, cAD_IdParameter, cAD_CMP_IdParameter, cAD_PMD_IdParameter, cAD_CardOrBankNameParameter, cAD_BankLocationParameter, cAD_AccountNumberParameter, cAD_CreditCardNumberParameter, cAD_IFSCcodeParameter, cAD_SwiftBICcodeParameter, cAD_AccountDocumentParameter, cAD_ModifiedByParameter, cAD_ApprovedByParameter, cAD_IsActiveParameter, cAD_BalanceParameter, cAD_QBKIdParameter, cAD_CardHolderNameParameter, cAD_CardExpirationDateParameter);
+        }
+    
+        public virtual ObjectResult<spGetVendorAllDetailForEditApproval_Result> spGetVendorAllDetailForEditApproval(Nullable<long> cMP_Id)
+        {
+            var cMP_IdParameter = cMP_Id.HasValue ?
+                new ObjectParameter("CMP_Id", cMP_Id) :
+                new ObjectParameter("CMP_Id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVendorAllDetailForEditApproval_Result>("spGetVendorAllDetailForEditApproval", cMP_IdParameter);
         }
     }
 }

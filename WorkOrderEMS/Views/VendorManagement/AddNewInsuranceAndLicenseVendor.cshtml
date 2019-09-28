@@ -222,9 +222,15 @@
         $(function () {
             $("#fileuploadLicense").change(function () {
                 $("#dvLicensePreview").html("");
+                var size = this.files[0].size;
                 var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
                 if (!allowedExtensions.exec($(this).val().toLowerCase())) {
                     alert("Invalid file type");
+                    $(this).val("");
+                    return false;
+                }
+                else if (size >= 4194304) {
+                    alert("Max file size 4 mb.");
                     $(this).val("");
                     return false;
                 }
@@ -235,8 +241,14 @@
             $("#fileuploadInsurance").change(function () {
                 $("#dvInsurancePreview").html("");
                 var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
+                var size = this.files[0].size; 
                 if (!allowedExtensions.exec($(this).val().toLowerCase())) {
                     alert("Invalid file type");
+                    $(this).val("");
+                    return false;
+                }
+                else if (size >= 4194304) {
+                    alert("Max file size 4 mb.");
                     $(this).val("");
                     return false;
                 }

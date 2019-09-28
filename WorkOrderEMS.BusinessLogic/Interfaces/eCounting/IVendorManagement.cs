@@ -16,7 +16,7 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
         List<CostCodeListData> ListAllCostCode();
         VendorSetupManagementModel ProcessVendorSetup(VendorSetupManagementModel Obj);
         CompanyListDetails GetAllCompanyDataList(long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
-        VendorAllViewDataModel GetAllVendorData(long VendorId);
+        VendorAllViewDataModel GetAllVendorData(long VendorId, string Status = null);
         string ApproveVendorByVendorId(ApproveRejectVendorModel ObjApproveRejectVendorModel);
         VendorSetupManagementModel GetVendorDetailsByVendorId(long VendorId);
         VendorSetupManagementModel SaveVendorAccount(VendorSetupManagementModel Obj);

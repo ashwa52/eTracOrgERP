@@ -64,7 +64,7 @@ namespace WorkOrderEMS.Models
         public string EndDate { get; set; }
         public decimal? LateFine { get; set; }
         public long SectVendorToLocation { get; set; }
-
+        public string DisplayFirstCompany { get; set; }
         //Vendor Account Details
         public long PaymentMode { get; set; }
         public string BankName { get; set; }

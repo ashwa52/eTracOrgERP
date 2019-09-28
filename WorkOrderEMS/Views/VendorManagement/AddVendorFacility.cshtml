@@ -62,7 +62,7 @@
             <div class="col-xl-12 col-xxl-12">
                 <div class="card aos-init aos-animate" data-aos="fade-up">
                     <div class="card-header headerSize">
-                        <h4 class="card-title m-0" style="color:white;"><strong> Add Facility</strong></h4>
+                        <h4 class="card-title m-0" style="color:white;"><strong> Add Products/Services</strong></h4>
                     </div>
                     <div class="card-body"> 
                         @using (Html.BeginForm("SaveVendorFacility", "VendorManagement", FormMethod.Post, new { enctype = "multipart/form-data", id = "msform" }))
@@ -180,7 +180,7 @@
 
                             <div class="basic-form">
                                 <div class="form-group m-0">
-                                    <p class="m-0">List of Facility</p>
+                                    <p class="m-0">List of Products/Services</p>
                                 </div>
                             </div>
                         </div>
@@ -199,9 +199,16 @@
 <script src="~/Scripts/eFleetVehicle/reg.js"></script>
 <script>
     $(document).ready(function () {
-        $('#msform').submit(function () {
-           if(!$('#msform').valid())
-                return false;
+        $('#msform').submit(function () { 
+             fn_showMaskloader('Please wait...'); 
+            if (!$('#msform').valid()) {
+                fn_hideMaskloader();
+              return false;
+            }
+            fn_hideMaskloader();
+                
+              
+            
         });
         $('#VendorName').val($_VendorName);
         $('#lblVendorName').addClass('active highlight');
@@ -210,9 +217,15 @@
     $(function () {
         $("#fileuploadAdddProduct").change(function () {
             var allowedExtensions = /(\.jpg|\.png|\.jpeg|\.gif)$/i;
+            var size = this.files[0].size;
             if (!allowedExtensions.exec($(this).val().toLowerCase())) {
                 alert("Invalid file type");
                 $("#imgFacilityProductImage").attr("src",'@Url.Content(Image)');
+                $(this).val("");
+                return false;
+            }
+            else if (size >= 4194304) {
+                alert("Max file size 4 mb.");
                 $(this).val("");
                 return false;
             }
