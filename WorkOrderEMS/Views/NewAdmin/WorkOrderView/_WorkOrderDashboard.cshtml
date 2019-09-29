@@ -117,18 +117,66 @@
         <div class="row">
             <div class="col-lg-12" id="OperationCreateListDiv">
                 <div class="card" data-aos="fade-up">
-                    <div class="card-header" style="height: 45px;">
-                        <h4 class="card-title addWhite dispayListWOName" style="color: white;"><b>Work Order List</b></h4>
-                        <h4 class="card-title addWhite dispayCreateWOName" style="display:none;color: white;"><b>Create Work Order</b></h4>
-                        <div class="onoffswitch2" style="margin-left: 997px;margin-top: 6px;"><input type="checkbox" name="onoffswitch2" class="onoffswitch2-checkbox" id="toggleWOTesting"><label for="toggleWOTesting" class="onoffswitch2-label"><span class="onoffswitch2-inner"></span><span class="onoffswitch2-switch"></span></label></div>
-                    </div>
-                    <div class="card-body" id="WOList">
-                        <div id="ListWorkOrderAsssignment"></div>
-                    </div>
-                    <div class="card-body createWOForm" style="display:none;" id="WOFormDetails">
+                    <div style="height: 45px;background:#0aa0cd;">
+                        <div class="form-group row" style="margin-top:6px;margin-left:10px;">
+                            <h4 class="addWhite dispayCreateWOName " style="color: white;margin-top: 6px;margin-left: 20px;display:none;"><b>Create Work Order</b></h4>
+                            @*<h4 class=" addWhite dispayListWOName" style="color: white;margin-top: 12px;margin-left: 20px;"><b>Work Order List</b></h4>*@
+                            <div class="col-sm-2">
+                                <input type="text" id="SearchbyAssignUser" class="form-control input-rounded dispayListWOName"  placeholder="Search by Assign User">
+                            </div>
+                            <div class="col-sm-2" >
+                                <select class="form-control input-rounded dispayListWOName" id="QRCTypeList" >
+                                    <option value="">All Select</option>                                '
+                                    <option value="36">Vehicle</option>
+                                    <option value="37">Trash Can</option>
+                                    <option value="38">Elevator</option>
+                                    <option value="39">Gate Arm</option>
+                                    <option value="40">Ticket Spitter</option>
+                                    <option value="41">Bus Station</option>
+                                    <option value="42">Emergency Phone Systems</option>
+                                    <option value="43">Moving Walkway</option>
+                                    <option value="44">Escalators</option>
+                                    <option value="45">Bathroom</option>
+                                    <option value="46">Equipment</option>
+                                    <option value="47">Devices</option>
+                                    <option value="101">Parking Facility</option>
+                                    <option value="102">Non Asset Type</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2" >
+                                <select class="form-control input-rounded dispayListWOName" id="SelectStatusOfWO" >
+                                    <option value="">Select All</option>
+                                    <option value="14">Pending</option>
+                                    <option value="15">In Progress</option>
+                                    <option value="16">Complete</option>
+                                    <option value="341">Decline</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <select class="form-control input-rounded dispayListWOName" id="SelectWOType">
+                                    <option value="">Select All</option>
+                                    <option value="128">Work Request</option>
+                                    <option value="129">Special Project</option>
+                                    <option value="256">Facility Request</option>
+                                    <option value="279">Continuous Request</option>
+                                </select>
+                            </div>
+
+                            <div class="onoffswitch2" style="margin-left: 997px;margin-top: -34px;"><input type="checkbox" name="onoffswitch2" class="onoffswitch2-checkbox" id="toggleWOTesting"><label for="toggleWOTesting" class="onoffswitch2-label"><span class="onoffswitch2-inner"></span><span class="onoffswitch2-switch"></span></label></div>
+                        </div>
+                           @*<div class="card-header" style="height: 45px;">
+                           <h4 class="card-title addWhite dispayListWOName" style="color: white;"><b>Work Order List</b></h4>
+                           <h4 class="card-title addWhite dispayCreateWOName" style="display:none;color: white;"><b>Create Work Order</b></h4>
+                           <div class="onoffswitch2" style="margin-left: 997px;margin-top: 6px;"><input type="checkbox" name="onoffswitch2" class="onoffswitch2-checkbox" id="toggleWOTesting"><label for="toggleWOTesting" class="onoffswitch2-label"><span class="onoffswitch2-inner"></span><span class="onoffswitch2-switch"></span></label></div>
+                           </div>*@
+                     </div>
+                        <div class="card-body" id="WOList">
+                            <div id="ListWorkOrderAsssignment"></div>
+                        </div>
+                        <div class="card-body createWOForm" style="display:none;" id="WOFormDetails">
+                        </div>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
 </div>
@@ -336,6 +384,7 @@
 <script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
 <script src="~/Content/NewAdminContent/VENDOR/toastr/js/toastr.min.js"></script>
 <script src="~/Scripts/NewAdminJS/plugins-init/toastr-init.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/MaskLoaderNew.js"></script>
 
 <script>
     am4core.ready(function () {
@@ -452,7 +501,7 @@
                 $(".createWOForm, .dispayCreateWOName").hide();
                 $("#WOList, .dispayListWOName").show();
             }
-        })
+        });
     });
 </script>
 

@@ -480,7 +480,7 @@ namespace WorkOrderEMS.Controllers.QRCSetup
         {
             eTracLoginModel ObjLoginModel = null;
             var QRCList = new List<QRCListModel>();
-            int? rows = 20; int? page = 1;
+            int? rows = 500; int? page = 1;
             string sord = null; String sidx = null; string txtSearch = "";
             if (Session["eTrac"] != null)
             {

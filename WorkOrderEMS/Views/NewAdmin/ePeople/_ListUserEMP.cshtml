@@ -1,0 +1,116 @@
+﻿@model IEnumerable<WorkOrderEMS.Models.UserListViewEmployeeManagementModel>
+@*@model WorkOrderEMS.Models.UserListViewEmployeeManagementModel*@
+@{
+    /**/
+
+    ViewBag.Title = "User List View";
+    //ViewBag.Title = "Register Vehicle";
+    //Layout = "~/Views/Shared/_EmployeeLayout.cshtml";
+    Layout = null;// "~/Views/Shared/_QRCLayout.cshtml";
+
+
+    long UserType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string Image = "~/Content/Images/ProjectLogo/no-profile-pic.jpg";
+    if (ObjLogin != null)
+    { UserType = ObjLogin.UserRoleId; }
+    else
+    {
+        WorkOrderEMS.Helper.AlertMessageClass ObjAlertMessageClass = new WorkOrderEMS.Helper.AlertMessageClass();
+        ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger; ViewBag.Message = WorkOrderEMS.Helper.CommonMessage.SessionExpired();
+        throw new Exception(WorkOrderEMS.Helper.CommonMessage.SessionExpired());
+    }
+
+
+    if (ViewBag.UpdateMode != null && ViewBag.UpdateMode == true)
+    { ViewBag.Title = "Update QRC"; }
+    string imgaeserverpath = Url.Content("~/Content/Images/constant/");
+
+    string _GetLocationByAdminURL;// = Url.Action("GetLocationByAdminID", "DropDown");
+                                  //string _GetLocationByManagerIDUrl = @Url.Action("GetLocationByManagerID", "DropDown");
+
+}
+<style>
+    .imgCss {
+        height: 70px;
+        width: 70px;
+        border-radius: 50px;
+    }
+    .borderForUserSeperation {
+        border: 1px solid gray;
+        margin-top: 12px;
+        margin-right: 12px;
+    }
+    .borderForContentDown{
+        margin-top:10px;
+    }
+    .toShowJobitle {
+        margin-bottom: -3px;
+    }
+    .dot {
+        height: 35px;
+        width: 35px;
+        
+        border-radius: 50%;
+        display: inline-block;
+    }
+    .iconMargin{
+        margin-top:10px;
+    }
+</style>
+@foreach (var item in Model)
+{
+    <div class="row borderForUserSeperation" >
+        <div class="col-lg-6 borderForContentDown">
+            <div class="form-group">
+                <img src="@item.ProfilePhoto" class="imgCss" /><br />
+                <label><strong>@item.EmployeeName</strong> </label>
+                <p  class="form-control-static toShowJobitle setLableDiv">@item.JobTitle</p>
+                <p  class="form-control-static toShowJobitle setLableDiv">@item.DepartmentName</p>
+                <div class="iconMargin">
+                    <a style="cursor:pointer"><span class="dot" style="background-color: green;"><i class="fa fa-check-circle" aria-hidden="true" style="color:black;margin-top:11px;margin-left:12px;"></i></span></a>
+                    <a style="cursor:pointer"><span class="dot" style="background-color: #36CA7E;margin-left:12px;"><i class="fa fa-eye" aria-hidden="true" style="color:black;margin-top:11px;margin-left:12px;"></i></span></a>
+                    <a style="cursor:pointer"><span class="dot" style="background-color: #D26C36;margin-left:12px;"><i class="fa fa-pencil" aria-hidden="true" style="color:black;margin-top:11px;margin-left:12px;"></i></span></a>
+                    <a style="cursor:pointer"><span class="dot" style="background-color: #32ACDA;margin-left:12px;"><i class="fa fa-user" aria-hidden="true" style="color:black;margin-top:11px;margin-left:12px;"></i></span></a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-6 borderForContentDown">
+            <div class="form-group">
+               <label><strong>Job Description</strong></label>
+                @if (item.JobDescList != null)
+                {
+                    foreach (var item1 in item.JobDescList)
+                    {
+                    <p class="form-control-static toShowJobitle setLableDiv">- &nbsp;&nbsp;@item1</p>
+                    }
+                }
+
+            </div>
+        </div>
+    </div>
+}
+@*<hr />
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="form-group">
+                <img src="~/Content/Images/ProfilePic/4_636842919602380756.png" style="height:70px;width:70px;border-radius:50px;" />
+                <label><strong>George Smith</strong> </label>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="form-group">
+                <p id="lblVehicleType" class="form-control-static setLableDiv">Employee</p>
+                <p id="lblVehicleType" class="form-control-static setLableDiv">Finance Department</p>
+                <p id="lblVehicleType" class="form-control-static setLableDiv">eTrac, LMAC</p>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <p id="lblVehicleType" class="form-control-static setLableDiv">Status : online</p>
+                <p id="lblVehicleType" class="form-control-static setLableDiv">Finance Department</p>
+                <p id="lblVehicleType" class="form-control-static setLableDiv">Example, Example</p>
+            </div>
+        </div>
+    </div>*@

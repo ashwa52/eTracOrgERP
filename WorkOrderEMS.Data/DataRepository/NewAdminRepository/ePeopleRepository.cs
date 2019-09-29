@@ -30,5 +30,81 @@ namespace WorkOrderEMS.Data
                 throw;
             }
         }
+        /// <summary>
+        /// Creted By : Ashwajit Bansod
+        /// Created Date : 04-Oct-2019
+        /// Created For : To Get User Details by their manager Id 
+        /// </summary>
+        /// <param name="EmployeeId"></param>
+        /// <returns></returns>
+        public List<spGetOrgnizationListview_Result> GetUserListByUserId(string EmployeeId)
+        {
+            try
+            {
+                var data = objworkorderEMSEntities.spGetOrgnizationListview(EmployeeId).ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit bansod
+        /// Created For : To get self details by Employee Id
+        /// </summary>
+        /// <param name="EmployeeId"></param>
+        /// <returns></returns>
+        public spGetOrgnizationCommonview_Result GetUserSelfDetailsByUserId(string EmployeeId)
+        {
+            try
+            {
+                var data = objworkorderEMSEntities.spGetOrgnizationCommonview(EmployeeId).FirstOrDefault();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Created By : Ashwajit bansod
+        /// Created Date : 04-Oct-2019
+        /// Created For : To get Position in VCS Chart by  Id
+        /// </summary>
+        /// <param name="EmployeeId"></param>
+        /// <returns></returns>
+        public spGetOrgnizationPositionView_Result UserPositionVCS(string EmployeeId)
+        {
+            try
+            {
+                var data = objworkorderEMSEntities.spGetOrgnizationPositionView(EmployeeId).FirstOrDefault();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created For : To get user data list
+        /// Created Date : 05-oct-2019
+        /// </summary>
+        /// <param name="EmployeeId"></param>
+        /// <returns></returns>
+        public List<spGetOrgnizationUserView_Result> UserTreeViewDetails(string EmployeeId)
+        {
+            try
+            {
+                var data = objworkorderEMSEntities.spGetOrgnizationUserView(EmployeeId).ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }

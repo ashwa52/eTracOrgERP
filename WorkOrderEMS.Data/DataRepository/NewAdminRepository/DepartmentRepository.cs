@@ -29,7 +29,7 @@ namespace WorkOrderEMS.Data.DataRepository
             return isSave;
         }
         //Get Department List
-        public List<spGetDepartment_Result> GetDepartmentList(string txt, long? LocationId, long? UserId)
+        public List<spGetDepartment_Result1> GetDepartmentList(string txt, long? LocationId, long? UserId)
         {
             try
             {

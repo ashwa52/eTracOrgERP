@@ -11,9 +11,11 @@ namespace WorkOrderEMS.Data.EntityModel
 {
     using System;
     
-    public partial class sp_GetCompany_ContractDocument_Result
+    public partial class spGetDepartment_Result1
     {
-        public string CNT_ContractDocument { get; set; }
-        public string CMP_CompanyDocument { get; set; }
+        public long DPT_Id { get; set; }
+        public string DPT_Name { get; set; }
+        public Nullable<System.DateTime> DPT_Date { get; set; }
+        public string DPT_IsActive { get; set; }
     }
 }

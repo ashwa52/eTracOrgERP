@@ -325,15 +325,14 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         /// <param name="sidx"></param>
         /// <param name="txtSearch"></param>
         /// <returns></returns>
-
         //public JsonResult GetWorkOrderList(int LocationId,long? workRequestProjectId, long UserId, long?RequestedBy ,  string filter, string filterqrc, string filterwrtype,int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, String sidx = null, string txtSearch = null)        
         [HttpGet]
-        public JsonResult GetWorkOrderList(long LocationId, long workRequestProjectId)
+        public JsonResult GetWorkOrderList(long LocationId, long workRequestProjectId, string filterwrtype, string filterqrc , string filter)
         {
             eTracLoginModel ObjLoginModel = null;
             var details = new List<WorkRequestAssignmentModelList>();
             long UserId = 0, RequestedBy = 0;
-            string filter = ""; string filterqrc = ""; string filterwrtype = ""; int? rows = 20; int? page = 1;
+            int? rows = 20; int? page = 1;
             int? TotalRecords = 10; string sord = null; String sidx = null; string txtSearch = "";
             GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
             if (Session["eTrac"] != null)
@@ -350,8 +349,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             DateTime StartDate = DateTime.UtcNow;
             DateTime EndDate = DateTime.UtcNow;
             var obj_Common_B = new Common_B();
-            ObjectParameter paramTotalRecords = new ObjectParameter("TotalRecords", typeof(int));
-            //var data = _GlobalAdminManager.GetAllWorkRequestAssignmentList(workRequestAssignmentId, RequestedBy, OperationName, page, rows, sord, sidx, txtSearch, LocationId, UserId, StartDate, EndDate, filter, filterqrc, filterwrtype, paramTotalRecords);
+            ObjectParameter paramTotalRecords = new ObjectParameter("TotalRecords", typeof(int));           
             var data = _GlobalAdminManager.GetAllWorkRequestAssignmentList(workRequestProjectId, RequestedBy, "GetAllWorkRequestAssignment", page, rows, sidx, sord, txtSearch, LocationId, UserId, StartDate, EndDate, (filter == "All" ? "" : filter), (filterqrc == "All" ? "" : filterqrc), (filterwrtype == "All" ? "" : filterwrtype), paramTotalRecords);
             if (data.Count() > 0)
             {
@@ -383,7 +381,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
             }            
-            return PartialView("_ePeopleDashboard");
+            return PartialView("~/Views/NewAdmin/ePeople/_EmployeeManagement.cshtml");
         }
 
         /// <summary>

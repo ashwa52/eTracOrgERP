@@ -55,45 +55,37 @@
         </div>
         <div class="row">
             <div class="col-lg-12" id="OperationDARListDiv">
-                <div class="card" data-aos="fade-up">                   
-                    <div class="card-header" style="height: 45px;">
-                        <div class="basic-form">
-                            <div class="form-group">
-                                <input type="text" style="margin-top: 15px;width: 120px;" id="FromDate" class="form-control input-rounded" placeholder="From Date">
+                <div class="card" data-aos="fade-up">         
+                    <div style="height: 45px;background:#0aa0cd;">
+                        <div class="form-group row" style="margin-top:6px;margin-left:10px;">
+                            <div class="col-sm-1">
+                                <input type="text"  id="FromDate" class="form-control input-rounded" style="width: 120px;" placeholder="From Date">
+                            </div>
+                            <div class="col-sm-1">
+                                <input type="text" style="width: 120px;margin-left: 16px;" id="FromTime" class="form-control input-rounded clockpicker" placeholder="From Time">
+                            </div>
+                            <div class="col-sm-1">
+                                <input type="text" style="width: 120px;margin-left: 32px;" id="ToDate" class="form-control input-rounded" placeholder="To Date">
+                            </div>
+                            <div class="col-sm-1">
+                                <input type="text" style="width: 120px;margin-left: 48px;" id="ToTime" class="form-control input-rounded clockpicker" placeholder="To Time">
+                            </div>
+                            <div class="col-sm-1">
+                                <select class="form-control input-rounded" id="workRequestTypeDAR" style="width: 125px;margin-left: 64px;">
+                                    <option value="0">All Request Type</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-1">
+                                <select class="form-control input-rounded" style="width: 122px;margin-left: 87px;" id="allEmployee">
+                                    <option value="0">All Employee</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="button" style="width: 120px;background: green;border-radius: 35px;margin-left: 137px;" id="ShowDAR" class="btn btn-primary" value="Show DAR" />
                             </div>
                         </div>
-                        <div class="basic-form" style="margin-left: -368px;">
-                            <div class="form-group">
-                                <input type="text" style="margin-top: 15px;width: 120px;" id="FromTime" class="form-control input-rounded clockpicker" placeholder="From Time">
-                            </div>
-                        </div>
-                        <div class="basic-form" style="margin-left: -370px;">
-                            <div class="form-group">
-                                <input type="text" style="margin-top: 15px;width: 120px;" id="ToDate" class="form-control input-rounded" placeholder="To Date">
-                            </div>
-                        </div>
-                        <div class="basic-form" style=" margin-left: -299px;">
-                            <div class="form-group">
-                                <input type="text" style="margin-top: 15px;width: 120px;" id="ToTime" class="form-control input-rounded clockpicker" placeholder="To Time">
-                            </div>
-                        </div>
-                        <div class="basic-form" style="margin-left: -320px;">
-                            <div class="form-group">
-                                <input type="text" style="margin-top: 15px;width: 120px;" class="form-control input-rounded" placeholder="All Work Request Type">
-                            </div>
-                        </div>
-                        <div class="basic-form" style="margin-left: -340px;">
-                            <div class="form-group">
-                                <input type="text" style="margin-top: 15px;width: 120px;" class="form-control input-rounded" placeholder="All Employee">
-                            </div>
-                        </div>
-                        <div class="basic-form">
-                            <div class="form-group">
-                                <input type="button" style="margin-top: 15px;width: 120px;background: green;border-radius: 35px;" id="ShowDAR" class="btn btn-primary" value="Show DAR" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-body dispayListDAR" id="DARList">
+                     </div>
+                  <div class="card-body dispayListDAR" id="DARList">
                         <div id="ListDAR"></div>
                     </div>
                 </div>
@@ -151,9 +143,41 @@
         if (jsondata != null && jsondata != "" && jsondata.dataJson.trim() != "") {
             var dataJSON = JSON.parse(jsondata.dataJson);
             dataJSON.CountPanel[0].AdminCount;
-        }
-    }
-});
+           }
+         }
+        });
+        $.ajax({
+            url: '../Common/GetTaskType',
+            data: JSON.stringify({ taskType: "TASKTYPECATEGORY" }),
+            async: false,
+            type: 'POST',
+            contentType: "application/json",
+            success: function (result) {
+                var TaskTypeDll = $("#workRequestTypeDAR").html();
+                $.each(result, function (i, v) {
+                    TaskTypeDll = TaskTypeDll + '<option value="' + v.Value + '">' + v.Text + '</option>';
+                });
+                $("#workRequestTypeDAR").append(TaskTypeDll);
+            },
+            error: function (er) {
+            }
+        });
+        $.ajax({
+            url: '../DropDown/GetEmployeeByLocation',
+            data: JSON.stringify({ LocationId: $("#drp_MasterLocation1").val() }),
+            async: false,
+            type: 'POST',
+            contentType: "application/json",
+            success: function (result) {
+                var EmployeeDDL = $("#allEmployee").html();
+                $.each(result, function (i, v) {
+                    EmployeeDDL = EmployeeDDL + '<option value="' + v.Value + '">' + v.Text + '</option>';
+                });
+                $("#allEmployee").append(EmployeeDDL);
+            },
+            error: function (er) {
+            }
+        });
 
         $("#ListDARData").click(function () {
             $(".glowbuttonActiveDeactive").removeClass("butttonActive");

@@ -38,6 +38,22 @@
     .hide {
         display: none;
     }
+
+    .ui-datepicker-calendar {
+        display: none;
+    }
+
+    .ui-datepicker-month {
+        display: none;
+    }
+
+    .ui-datepicker-prev {
+        display: none;
+    }
+
+    .ui-datepicker-next {
+        display: none;
+    }
 </style>
 @Scripts.Render("~/bundles/modernizr")
 <link href="~/Content/NewAdminContent/VENDOR/bootstrap-multiselect/css/bootstrap-multiselect.css" rel="stylesheet" />
@@ -45,13 +61,14 @@
 <link href="@Url.Content("~/Content/NewAdminContent/CSS/RadioButtonCSS.css")" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/CSS/clockPicker.css" rel="stylesheet" />
 <link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/VENDOR/toastr/css/toastr.min.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/CSS/style.css" rel="stylesheet" />
 <br />
 @Html.AntiForgeryToken()
 @Html.ValidationSummary(true)
 
-<form action="@Url.Action("WorkRequestAssignment", "GlobalAdmin")" *@ method="post" id="WorkorderSave" class="step-form-horizontal" role="form" style="margin-left:80px;">
+<form action="@Url.Action("WorkRequestAssignment", "GlobalAdmin")" *@ method="post" id="WorkorderSave" class="step-form-horizontal" role="form" style="margin-left:20px;">
     @Html.ValidationSummary(true)
     @Html.HiddenFor(model => model.WorkOrderCode)
     @Html.HiddenFor(model => model.WorkRequestAssignmentID)
@@ -418,11 +435,11 @@
         <div class="FacilityRequestDIV" id="FacilityDIVData" style="display:none;">
             <div class="form-group row">
                 <div class="col-sm-6">
-                    @Html.TextBoxFor(model => model.CustomerName, new { @Placeholder = "Customer Name", @class = "form-control input-rounded required " })
+                    @Html.TextBoxFor(model => model.CustomerName, new { @Placeholder = "Customer Name*", @class = "form-control input-rounded required redStar" })
                     @Html.ValidationMessageFor(model => model.CustomerName)
                 </div>
                 <div class="col-sm-6">
-                    @Html.TextBoxFor(model => model.CustomerContact, new { @class = "form-control input-rounded required", @onkeypress = "return isNumberKey(event)", @id = "CustomerContact", @placeholder = "Customer Number" })
+                    @Html.TextBoxFor(model => model.CustomerContact, new { @class = "form-control input-rounded required redStar", @onkeypress = "return isNumberKey(event)", @id = "CustomerContact", @placeholder = "Customer Number*" })
                     @Html.ValidationMessageFor(model => model.AssignedTimeInterval)
                 </div>
             </div>
@@ -432,23 +449,23 @@
                     @Html.ValidationMessageFor(model => model.VehicleColor)
                 </div>
                 <div class="col-sm-6">
-                    @Html.TextBoxFor(model => model.VehicleMake, new { @class = "form-control input-rounded required", @id = "VehicleMake", @placeholder = "Vehicle Make" })
+                    @Html.TextBoxFor(model => model.VehicleMake, new { @class = "form-control input-rounded required redStar", @id = "VehicleMake", @placeholder = "Vehicle Make*" })
                     @Html.ValidationMessageFor(model => model.AssignedTimeInterval)
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-sm-6">
-                    @Html.TextBoxFor(model => model.VehicleModel, new { @Placeholder = "Vehicle Model", @class = "form-control input-rounded required " })
+                    @Html.TextBoxFor(model => model.VehicleModel, new { @Placeholder = "Vehicle Model*", @class = "form-control input-rounded required redStar " })
                     @Html.ValidationMessageFor(model => model.VehicleModel)
                 </div>
                 <div class="col-sm-6">
-                    @Html.TextBoxFor(model => model.DriverLicenseNo, new { @class = "form-control input-rounded required", @id = "DriverLicenseNo", @placeholder = "Driver License No" })
+                    @Html.TextBoxFor(model => model.DriverLicenseNo, new { @class = "form-control input-rounded required redStar", @id = "DriverLicenseNo", @placeholder = "Driver License No*" })
                     @Html.ValidationMessageFor(model => model.DriverLicenseNo)
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-sm-6">
-                    @Html.TextBoxFor(model => model.VehicleYear, new { @Placeholder = "Vehicle Year", @id = "Year", @class = "form-control input-rounded required " })
+                    @Html.TextBoxFor(model => model.VehicleYear, new { @Placeholder = "Vehicle Year", @id = "YearFR", @class = "form-control input-rounded required " })
                     @Html.ValidationMessageFor(model => model.VehicleYear)
                 </div>
                 <div class="col-sm-6">
@@ -462,7 +479,7 @@
                     @Html.ValidationMessageFor(model => model.Address)
                 </div>
                 <div class="col-sm-6">
-                    @Html.TextBoxFor(model => model.City, new { @class = "form-control input-rounded required", @id = "City", @placeholder = "City" })
+                    @Html.TextBoxFor(model => model.City, new { @class = "form-control input-rounded required redStar", @id = "City", @placeholder = "City*" })
                     @Html.ValidationMessageFor(model => model.City)
                 </div>
             </div>
@@ -472,7 +489,7 @@
                     @Html.ValidationMessageFor(model => model.StateId)
                 </div>
                 <div class="col-sm-6">
-                    @Html.TextBoxFor(model => model.ZipCode, new { @class = "form-control input-rounded required", @id = "ZipCode", @placeholder = "Zip Code" })
+                    @Html.TextBoxFor(model => model.ZipCode, new { @class = "form-control input-rounded required redStar", @minLength = "5", @maxLength = "5", @pattern = "[0-9]", @id = "ZipCode", @placeholder = "Zip Code*" })
                     @Html.ValidationMessageFor(model => model.ZipCode)
                 </div>
             </div>
@@ -601,18 +618,24 @@
 <script type="text/javascript" src="~/Scripts/BindDropDown/DropDownList.js"></script>
 <script src="~/Scripts/NewAdminJS/WorkOrderHideShowFunctionality.js"></script>
 <script src="~/Content/NewAdminContent/JQUERY/MaskLoaderNew.js"></script>
-<script src="~/Content/NewAdminContent/JQUERY/clockPicker.js"></script>
 <script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+@*<script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>*@
+<script src="~/Content/NewAdminContent/JQUERY/clockPicker.js"></script>
 <script src="~/Content/NewAdminContent/VENDOR/toastr/js/toastr.min.js"></script>
 <script src="~/Scripts/NewAdminJS/plugins-init/toastr-init.js"></script>
 @*<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.0/jquery.validate.min.js"></script>*@
 <script>
-
+    $("#ZipCode").keypress(function (e) {
+        if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+            return false;
+        }
+    });
     $('#StartDate,#EndDate').datepicker({
         format: "yyyy/mm/dd",
     });
-    $("#Year").datepicker({
-        format: "yyyy",
+    $('#YearFR').datepicker({
+        minViewMode: 2,
+        format: 'yyyy'
     });
     var updateMode = "@ViewBag.UpdateMode";
     var ProjectType = "@Model.WorkRequestProjectType";
@@ -797,13 +820,16 @@
                         new fn_showMaskloader('Please wait...');
                     },
                     success: function (Data) {
-                        $("#WOFormDetails").load('@Url.Action("WorkRequestAssignment", "GlobalAdmin")')
+                        debugger
+                        var url = '@Url.Action("EMaintananceDashboard", "NewAdmin")';
+                        $('#RenderPageId').load(url);
+                        //$('#RenderPageId').load("@Url.Action("EMaintananceDashboard", "NewAdmin")");
+                        @*$("#WOFormDetails").load('@Url.Action("WorkRequestAssignment", "GlobalAdmin")')
                         $("#SaveWO").attr("disabled", false);
                         $("#WOList, .dispayListWOName").show();
                         $(".createWOForm, .dispayCreateWOName").hide();
-                        $("#ListWorkOrderAsssignment").jsGrid("loadData");
+                        $("#ListWorkOrderAsssignment").jsGrid("loadData");*@
                         toastr.success(Data.Message);
-                        
                     },
                     error: function (err) {
                     },
@@ -816,7 +842,7 @@
                 if (file_data != undefined) {
                     $.ajax({
                         url: '@Url.Action("UploadedWorkOrderImage", "GlobalAdmin")',
-                        dataType: 'script',                       
+                        dataType: 'script',
                         cache: false,
                         contentType: false,
                         processData: false,
@@ -854,7 +880,7 @@
 
                         },
                         error: function (e) { alert("error:" + e); }
-                       
+
                     });
                 }
             }

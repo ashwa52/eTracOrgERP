@@ -106,7 +106,7 @@ namespace WorkOrderEMS.BusinessLogic
                    RolesAndResponsibility = x.VST_RolesAndResponsiblities,
                    IsActive = x.VST_IsActive,
                    SeatingName  = x.VST_Title,
-                   Image = HostingPrefix + ProfileImagePath.Replace("~", "") + "no-profile-pic.jpg"
+                   //Image = HostingPrefix + ProfileImagePath.Replace("~", "") + "no-profile-pic.jpg"
                }).ToList();
                 if(data.Count() > 0)
                 {
