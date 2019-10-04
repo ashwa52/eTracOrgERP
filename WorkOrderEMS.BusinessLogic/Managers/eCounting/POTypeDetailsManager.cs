@@ -202,7 +202,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <param name="sortColumnName"></param>
         /// <param name="sortOrderBy"></param>
         /// <returns></returns>
-        public POTypeDetails GetPOTypeDetailsOfCompanyFacilityList(long? UserId, long? LocationID, long? VendorId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
+        public List<POTypeDataModel> GetPOTypeDetailsOfCompanyFacilityList(long? UserId, long? LocationID, long? VendorId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
         {
             try
             {
@@ -215,7 +215,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 Resource.Add(new ResourceData() { ResourceId = 4, ResourceName = "O" });
                 Resource.Add(new ResourceData() { ResourceId = 5, ResourceName = "E" });
 
-                var objPOTypeModelDetails = new POTypeDetails();
+                var objPOTypeModelDetails = new List<POTypeDetails>();
                 int pageindex = Convert.ToInt32(pageIndex) - 1;
                 int pageSize = Convert.ToInt32(numberOfRows);
                 var Results = _workorderems.spGetPOFacilityItem(LocationID, VendorId).Select(x => new POTypeDataModel()
@@ -252,13 +252,13 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 //        StatusCalculation = "0"
                 //    }).ToList();
 
-                int totRecords = Results.Count();
-                var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
-                objPOTypeModelDetails.pageindex = pageindex;
-                objPOTypeModelDetails.total = totalPages;
-                objPOTypeModelDetails.records = totRecords;
-                objPOTypeModelDetails.rows = Results.ToList();
-                return objPOTypeModelDetails;
+                //int totRecords = Results.Count();
+                //var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
+                //objPOTypeModelDetails.pageindex = pageindex;
+                //objPOTypeModelDetails.total = totalPages;
+                //objPOTypeModelDetails.records = totRecords;
+                //objPOTypeModelDetails.rows = Results.ToList();
+                return Results.ToList();  
             }
             catch (Exception ex)
             {
@@ -656,14 +656,14 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 
         }
 
-        public POListDetails GetAllPOList(long? UserId, long? LocationId, string status, long? UserTypeId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
+        public List<POListModel> GetAllPOList(long? UserId, long? LocationId, string status, long? UserTypeId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
         {
             long Type = Convert.ToInt64(UserType.Employee);
             //LocationId = 0; //To get all PO for user to approve for all location as per SQL Developer will change if client want to change
             var Results = new List<POListModel>();
             try
             {
-                var objPOTypeModelDetails = new POListDetails();
+               // var objPOTypeModelDetails = new POListDetails();
                 int pageindex = Convert.ToInt32(pageIndex) - 1;
                 int pageSize = Convert.ToInt32(numberOfRows);
                 if (UserTypeId != Type)
@@ -672,16 +672,18 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                    .Select(a => new POListModel()
                    {
                        LogPOId = a.LPOD_POD_Id,
-                       PODate = a.LPOD_PODate,
+                       DisplayLogPOId="PO"+ a.LPOD_POD_Id,
+                       DisplayPODate = a.LPOD_PODate!=null?a.LPOD_PODate.ToString("yyyy/MM/dd") : "N/A",
                        LocationName = a.LocationName,
-                       DeliveryDate = a.LPOD_DeliveryDate,
+                       DisplayDeliveryDate = a.LPOD_DeliveryDate != null ? a.LPOD_DeliveryDate.ToString("yyyy/MM/dd") : "N/A",
                        CompanyName = a.CMP_NameLegal,
                        POStatus = a.PO_Status,
                        POType = a.POT_POType,
-                       POStatusToDisplay = a.PO_Status,
+                       POStatusToDisplay = (a.PO_Status == "W") ? "Waiting" : (a.PO_Status == "Y") ? "Approved" : "Reject",
                        LogId = a.LPOD_Id,
                        Total = a.LPOD_POAmount,
-                       CreatedBy = a.LPOD_ApprovedBy
+                       CreatedBy = a.LPOD_ApprovedBy,
+                       id= Cryptography.GetEncryptedData(Convert.ToString(a.LPOD_POD_Id), true),
                    }).OrderByDescending(x => x.LogPOId).ToList();
                 }
                 else
@@ -690,26 +692,28 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     .Select(a => new POListModel()
                     {
                         LogPOId = a.LPOD_POD_Id,
-                        PODate = a.LPOD_PODate,
+                        DisplayLogPOId = "PO" + a.LPOD_POD_Id,
+                        DisplayPODate = a.LPOD_PODate != null ? a.LPOD_PODate.ToString("yyyy/MM/dd") : "N/A",
                         LocationName = a.LocationName,
-                        DeliveryDate = a.LPOD_DeliveryDate,
+                        DisplayDeliveryDate = a.LPOD_DeliveryDate != null ? a.LPOD_DeliveryDate.ToString("yyyy/MM/dd") : "N/A",
                         CompanyName = a.CMP_NameLegal,
                         POStatus = a.PO_Status,
                         POType = a.POT_POType,
-                        POStatusToDisplay = a.PO_Status,
+                        POStatusToDisplay = (a.PO_Status == "W") ? "Waiting" : (a.PO_Status == "Y") ? "Approved" : "Reject",
                         LogId = a.LPOD_Id,
                         Total = a.LPOD_POAmount,
-                        CreatedBy = a.LPOD_ApprovedBy
+                        CreatedBy = a.LPOD_ApprovedBy,
+                        id = Cryptography.GetEncryptedData(Convert.ToString(a.LPOD_POD_Id), true),
                     }).Where(x => x.CreatedBy == UserId).OrderByDescending(x => x.LogPOId).ToList();
                 }
 
-                int totRecords = Results.Count();
-                var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
-                objPOTypeModelDetails.pageindex = pageindex;
-                objPOTypeModelDetails.total = totalPages;
-                objPOTypeModelDetails.records = totRecords;
-                objPOTypeModelDetails.rows = Results.ToList();
-                return objPOTypeModelDetails;
+                //int totRecords = Results.Count();
+                //var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
+                //objPOTypeModelDetails.pageindex = pageindex;
+                //objPOTypeModelDetails.total = totalPages;
+                //objPOTypeModelDetails.records = totRecords;
+                //objPOTypeModelDetails.rows = Results.ToList();
+                return Results;
             }
             catch (Exception ex)
             {
@@ -795,6 +799,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                             returnvalue = CommonMessage.PORemoved();
                             ApptoveRemoveSatus = "Reject";
                             Status = "N";
+                            StatusApproval = "N";
                         }
 
                         //var getPODetails = _workorderems.spGetPODetail(objPOApproveRejectModel.POId).FirstOrDefault();
@@ -1013,7 +1018,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             var getPODetails = new PODetail();
             try
             {
-                getPODetails = _workorderems.PODetails.Where(x => x.POD_Id == objPOApproveRejectModel.POId).FirstOrDefault();                             
+                getPODetails = _workorderems.PODetails.Where(x => x.POD_Id == objListData.LogPOId).FirstOrDefault();                             
             }
             catch(Exception ex)
             {
@@ -1099,11 +1104,11 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
         }
 
-        public POTypeDetails GetPOFacilityListForEditByPOId(long? UserId, long? POId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
+        public List<POTypeDataModel> GetPOFacilityListForEditByPOId(long? UserId, long? POId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
         {
             try
             {
-                var objPOTypeModelDetails = new POTypeDetails();
+                var objPOTypeModelDetails = new List<POTypeDataModel>();
                 int pageindex = Convert.ToInt32(pageIndex) - 1;
                 int pageSize = Convert.ToInt32(numberOfRows);
                 var Results = _workorderems.spGetPOFacilityItemForEdit(POId)  // .CompanyFacilityMappings.Where(x => x.CFM_CMP_Id == VendorId)
@@ -1124,12 +1129,12 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         POId = a.CFM_Id
                     }).ToList();
 
-                int totRecords = Results.Count();
-                var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
-                objPOTypeModelDetails.pageindex = pageindex;
-                objPOTypeModelDetails.total = totalPages;
-                objPOTypeModelDetails.records = totRecords;
-                objPOTypeModelDetails.rows = Results.ToList();
+                //int totRecords = Results.Count();
+                //var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
+                //objPOTypeModelDetails.pageindex = pageindex;
+                //objPOTypeModelDetails.total = totalPages;
+                //objPOTypeModelDetails.records = totRecords;
+                objPOTypeModelDetails  = Results.ToList();
                 return objPOTypeModelDetails;
             }
             catch (Exception ex)
@@ -1483,23 +1488,22 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <param name="sortColumnName"></param>
         /// <param name="sortOrderBy"></param>
         /// <returns></returns>
-        public POListDetails GetAllSelfPOList(long? UserId, long? LocationId, string status, long? UserTypeId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
+        public List<POListModel> GetAllSelfPOList(long? UserId, long? LocationId, string status, long? UserTypeId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
         {
             long Type = Convert.ToInt64(UserType.Employee);
             var Results = new List<POListModel>();
             try
-            {
-                var objPOTypeModelDetails = new POListDetails();
-                int pageindex = Convert.ToInt32(pageIndex) - 1;
-                int pageSize = Convert.ToInt32(numberOfRows);
-
+            { 
                 Results = _workorderems.spGetSelfPOList(UserId)  // .CompanyFacilityMappings.Where(x => x.CFM_CMP_Id == VendorId)
                 .Select(a => new POListModel()
                 {
+                    id= Cryptography.GetEncryptedData(Convert.ToString(a.LPOD_POD_Id), true),
                     LogPOId = a.LPOD_POD_Id,
-                    PODate = a.LPOD_PODate,
+                    DisplayLogPOId="PO"+ a.LPOD_POD_Id,
+                    DisplayPODate = a.LPOD_PODate != null ? a.LPOD_PODate.ToString("yyyy/MM/dd") : "N/A",
                     LocationName = a.LocationName,
                     DeliveryDate = a.LPOD_DeliveryDate,
+                    DisplayDeliveryDate= a.LPOD_DeliveryDate != null ? a.LPOD_DeliveryDate.ToString("yyyy/MM/dd") : "N/A",
                     CompanyName = a.CMP_NameLegal,
                     POStatus = a.PO_Status,
                     POType = a.POT_POType,
@@ -1507,15 +1511,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     LogId = a.LPOD_Id,
                     Total = a.LPOD_POAmount,
                     UserName = a.Employee_Name
-                }).OrderByDescending(x => x.LogPOId).ToList();
-
-                int totRecords = Results.Count();
-                var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
-                objPOTypeModelDetails.pageindex = pageindex;
-                objPOTypeModelDetails.total = totalPages;
-                objPOTypeModelDetails.records = totRecords;
-                objPOTypeModelDetails.rows = Results.ToList();
-                return objPOTypeModelDetails;
+                }).OrderByDescending(x => x.LogPOId).ToList(); 
+                return Results;
             }
             catch (Exception ex)
             {
