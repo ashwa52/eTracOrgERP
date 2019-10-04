@@ -279,7 +279,7 @@ function RowClickbillType(id, rowData) {
                             $('#POrecords_table').html('');
                             var arrData = [];
                             var thHTML = '';
-                            var GrandTotal;
+                            var GrandTotal = 0;
                             var totalsum;
                             thHTML += '<tr style="background-color:#0792bc;color:#fff;text-weight:light;"><th>Cost Code</th><th>Description</th><th>Unit Price</th><th>Quantity</th><th>Total</th><th>Tax</th></tr>';
                             $('#POrecords_table').append(thHTML); 
