@@ -140,7 +140,8 @@ function RejectPOAfterCommentPO() {
 function callAjaxPO()
 {
     var objData = new Object();
-    objData.LocationId = $_locationId;    
+    objData.LocationId = $_locationId; 
+    debugger;
     var data = jQuery("#tbl_AllPOList").getRowData(POApproveRemoveId);
     objData.POApproveRemoveId = POApproveRemoveId;
     for (var j = 0; j < DataLists.length; j++)

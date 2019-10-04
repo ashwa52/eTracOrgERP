@@ -24,7 +24,7 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
         POListDetails GetAllPOList(long? UserId, long? LocationId, string status, long? UserTypeId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
         //POListDetails GetAllPOList(long? UserId, long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
         string ApprovePOByPOId(POApproveRejectModel objPOApproveRejectModel, POListModel objListData);
-        POTypeDetails GetAllPOFacilityByPOIdList(long? UserId, long? POId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
+        List<POTypeDataModel> GetAllPOFacilityByPOIdList(long? UserId, long? POId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
         POTypeDataModel GetPODetailsById(long POId);
         POTypeDetails GetPOFacilityListForEditByPOId(long? UserId, long? POId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
         ServiceResponseModel<List<POListModel>> GetAllPOListForMobile(POCommonServiceModel objPOCommonServiceModel);

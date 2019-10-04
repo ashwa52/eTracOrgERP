@@ -1,7 +1,9 @@
 ﻿@model WorkOrderEMS.Models.PaymentModel
 @{
     ViewBag.Title = "Payment Desk List";
-    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+    //Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
 
     long locationId = 0;
     long userType = 0;
@@ -21,25 +23,33 @@
     <script src="~/GridListing/JqGridScript/PaymentList/ListPaymentBill.js"></script>
     <script src="~/GridListing/JqGridScript/PaymentList/ListPaidPaymentBillList.js"></script>
     <script type="text/javascript">
-    $(window).bind('resize', function () {
-        var width = $('#jqGrid_containerPayment').width();
-        $('#tbl_PaymentList').setGridWidth(width);
-    });
-    $(window).bind('resize', function () {
-        var width = $('#jqGrid_containerPayment,#jqGrid_containerPaidPayment').width();
-        $('#tbl_PaymentList,#tbl_PaymentPaidList').setGridWidth(width);
-    });
+        //$(window).bind('resize', function () {
+        //    var width = $('#jqGrid_containerPayment').width();
+        //    $('#tbl_PaymentList').setGridWidth(width);
+        //});
+        //$(window).bind('resize', function () {
+        //    var width = $('#jqGrid_containerPayment,#jqGrid_containerPaidPayment').width();
+        //    $('#tbl_PaymentList,#tbl_PaymentPaidList').setGridWidth(width);
+        //});
     </script>
 }
 <style>
+    .form-control.input-rounded {
+    border: 1px solid #CACABC !important;
+}
     input[type="radio"] {
         height: 20px;
         width: 20px;
         color: #4475b5;
     }
+
     .CSSClass {
         color: blue;
         text-decoration: underline;
+    }
+
+    .jsgrid-grid-body {
+        height: 100% !important;
     }
 </style>
 <style>
@@ -47,27 +57,77 @@
         border-left: 2px solid #007ea4;
         height: 150px;
     }
-    #tbl_PaymentList td:nth-child(6) {
+
+    #tbl_PaymentPaidList td:nth-child(6) {
+        cursor: pointer;
+    }
+
+    #tbl_PaymentList td:nth-child(2) {
         cursor: pointer;
     }
 </style>
 
-<div id="jqGrid_containerPayment" style="width:98%;margin-left:16px;">
-    <table id="tbl_PaymentList" border="0" cellpadding="0" cellspacing="0"></table>
-    <div id="divPaymentListPager"></div>
-</div>
-<br /><br />
-<div id="jqGrid_containerPaidPayment" style="width:98%;margin-left:16px;">
-    <table id="tbl_PaymentPaidList" border="0" cellpadding="0" cellspacing="0"></table>
-    <div id="divPaymentPaidListPager"></div>
+<div class="content-body" style="min-height: 920px;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card aos-init" data-aos="fade-up">
+                    <div class="card-header" style="height: 45px;">
+                        <div class="card-header headerSize" style="height:45px; padding:0;">
+                            <div class="basic-form">
+                                <div class="form-group">
+                                    @Html.DropDownList("BillTypeDll", new List<SelectListItem>
+
+                       {
+                          new SelectListItem{ Text="Bill Type", Value = "0" },
+                          new SelectListItem{ Text="ManualBill", Value = "ManualBill" },
+                          new SelectListItem{ Text="PO", Value = "PO" },
+                          new SelectListItem{ Text="MISC", Value = "MISC" }
+                       }, new { @class = "input-rounded",@style="margin-top:15px;" })
+                                </div>
+                            </div>
+
+                            <div class="basic-form">
+                                <div class="form-group">
+                                    <input id="SearchText" type="text" style="margin-top:15px;" class="form-control input-rounded" placeholder="Vendor Name" onkeyup="doPaymentSearch()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body jqGrid_containerPayment">
+                        <div id="tbl_PaymentList" class="jsgrid" style="position: relative; height: 400px; width: 100%;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card aos-init" data-aos="fade-up">
+                    <div class="card-header" style="height: 45px;">
+                        <div class="card-header headerSize" style="height:45px; padding:0;">
+                            <div class="basic-form">
+                                <div class="form-group">                                    
+                                    <input id="SearchTextResult" type="text" style="margin-top:15px;" class="form-control input-rounded" placeholder="Vendor Name" onkeyup="doPaymentSearchresult()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body jqGrid_containerPaidPayment">
+                        <div id="tbl_PaymentPaidList" class="jsgrid" style="position: relative; height: 400px; width: 100%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="modal fade preview" id="myModalForBillData" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog ">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">X</span></button>
-                <h4 class="modal-title" id="myModalLabel">Bill Details</h4>
+                <h5 class="modal-title" id="myModalLabel">Bill Details</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>                
             </div>
             <div class="modal-body">
                 <div id="divDetailPreview" class="">
@@ -136,25 +196,25 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">Bill</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
             </div>
-            <div class="modal-body">
+            <div class="modal-body m-0">
                 <form class="form">
-                    <div class="row">
+                    
                         <div class="form-group">
-                            @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-lg-2 star" })
-                            <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
-                                @Html.TextBoxFor(model => model.Comment, new { @class = "form-control", @id = "CommentPay", @placeholder = "Comment", @style = "border-radios:0px;" })
+                            @Html.Label("Comment", htmlAttributes: new { @class = "control-label star" })
+                            
+                                @Html.TextBoxFor(model => model.Comment, new { @class = "form-control input-rounded", @id = "CommentPay", @placeholder = "Comment", @style = "border-radios:0px;" })
                                 @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
 
-                            </div>
                         </div>
-                    </div>
+                 
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-default bluebutton" style="border-radius:25px;width:90px;" onclick="CancelAction();">Ok</button>
+                <button type="submit" class="btn btn-primary" style="border-radius:25px;width:90px;" onclick="CancelAction();">Ok</button>
             </div>
         </div>
     </div>
@@ -164,23 +224,22 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" id="myModalLabel">Make Payment</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                
             </div>
-            <div class="modal-body">
+            <div class="modal-body m-0">
                 <form class="form">
-                    <div class="row">
-                        <div class="col-sm-5">
-                            <label style="text-align:center;">From</label>
+                    <div class="row mb-3">
+                        <div class="col-sm-6">
+                            <label style="text-align: center;width: 100%;padding: 3px 0;background-color: #ececec;">From</label>
                             <div class="form-group">
                                 <label>Operating Company Name</label>
                                 <div id="lblVendorNameFrom" class="form-control-static"></div>
                             </div>
                         </div>
-                        <div class="col-sm-2 vl"></div>
-
-                        <div class="col-sm-5">
-                            <label style="text-align:center;">To</label>
+                        <div class="col-sm-6 vl">
+                            <label style="text-align: center;width: 100%;padding: 3px 0;background-color: #ececec;">To</label>
                             <div class="form-group">
                                 <label>Vendor Name</label>
                                 <div id="lblVendorNameTo" class="form-control-static"></div>
@@ -192,59 +251,65 @@
                         </div>
                     </div>
                     @Html.HiddenFor(model => model.CompanyAccountId, new { @id = "CompanyAccountId" })
-                    <div class="row whenCheque">
+                    <div class="whenCheque">
                         <div class="form-group">
-                            @Html.Label("Checque No", htmlAttributes: new { @class = "control-label col-lg-2 star" })
-                            <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
+                            @Html.Label("Checque No", htmlAttributes: new { @class = "control-label  star" })
+                          
                                 @Html.TextBoxFor(model => model.ChequeNo, new { @class = "form-control", @id = "ChequeNo", @placeholder = "Comment", @style = "border-radios:0px;" })
                                 @Html.ValidationMessageFor(model => model.ChequeNo, "", new { @class = "text-danger" })
-                            </div>
+                           
                         </div>
                     </div>
                     <hr id="hr1" style="display:none;" />
-                    <div class="row WhenCard">
+                    <div class="WhenCard">
                         <div class="form-group">
-                            @Html.Label("CARD Number:", htmlAttributes: new { @class = "control-label col-lg-2 star" })
-                            <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
-                                <div id="dvOptions"></div>
-                                @*@foreach(var item in Model.CardNumber)
-                    {
-                        @Html.RadioButtonFor(m=> m.CARDNo,item.CardNo)
-                        @Html.Label(item.CardNo)
-                    }*@
-                                @Html.ValidationMessageFor(model => model.CardNumber, "", new { @class = "text-danger" })
-                            </div>
+                            @Html.Label("CARD Number:", htmlAttributes: new { @class = "control-label star" })
+
+                            <div id="dvOptions"></div>
+                            <input type="radio" name="Card" value="1st"> 4444-444-4343-4444<br>
+                            <input type="radio" name="Card" value="2nd"> 3333-2222-4343-1111<br>
+                            <input type="radio" name="Card" value="3rd"> 8888-6666-4343-3333
+                            @*@foreach(var item in Model.CardNumber)
+        {
+            @Html.RadioButtonFor(m=> m.CARDNo,item.CardNo)
+            @Html.Label(item.CardNo)
+        }*@
+                            @Html.ValidationMessageFor(model => model.CardNumber, "", new { @class = "text-danger" })
+
                         </div>
                     </div>
                     <hr id="hr2" style="display:none;" />
-                    <div class="row WhenWired">
+                    <div class="WhenWired">
                         <div class="form-group">
-                            @Html.Label("Account Number:", htmlAttributes: new { @class = "control-label col-lg-2 star" })
-                            <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
-                                <div id="dvOptionsWired"></div>
-                                @*@foreach(var item in Model.AccountNumber)
-                    {
-                        @Html.RadioButtonFor(m=> m.AccountNo,item.AccountNumber)
-                        @Html.Label(item.AccountNumber)
-                    }*@
-                                @Html.ValidationMessageFor(model => model.CARDNo, "", new { @class = "text-danger" })
-                            </div>
+                            @Html.Label("Account Number:", htmlAttributes: new { @class = "control-label star" })
+
+                            <div id="dvOptionsWired"></div>
+                            <input type="radio" name="Account" value="Ac1st"> Smp00813004000<br>
+                            <input type="radio" name="Account" value="Ac2nd"> Gpdsamp3636511<br>
+                            <input type="radio" name="Account" value="Ac3rd"> icigp009238494
+                            @*@foreach(var item in Model.AccountNumber)
+        {
+            @Html.RadioButtonFor(m=> m.AccountNo,item.AccountNumber)
+            @Html.Label(item.AccountNumber)
+        }*@
+                            @Html.ValidationMessageFor(model => model.CARDNo, "", new { @class = "text-danger" })
+
                         </div>
                     </div>
                     <hr id="hr3" style="display:none;" />
-                    <div class="row WhenMisc">
+                    <div class="WhenMisc">
                         <div class="form-group">
-                            @Html.Label("Employee Account No", htmlAttributes: new { @class = "control-label col-lg-2 star" })
-                            <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
+                            @Html.Label("Employee Account No", htmlAttributes: new { @class = "control-label star" })
+                           
                                 @Html.TextBoxFor(model => model.AccNo, new { @class = "form-control", @id = "AccNo", @placeholder = "Employee Account No", @style = "border-radios:0px;" })
                                 @Html.ValidationMessageFor(model => model.AccountNo, "", new { @class = "text-danger" })
-                            </div>
+                           
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-default bluebutton" style="border-radius:25px;width:170px;" onclick="PayAction();">Make Payment</button>
+                <button type="submit" class="btn btn-primary bluebutton" style="border-radius:25px;width:170px;" onclick="PayAction();">Make Payment</button>
             </div>
         </div>
     </div>
@@ -255,51 +320,51 @@
     <div class="modal-dialog modal-lg ">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">X</span></button>
-                <h4 class="modal-title" id="myModalLabel">PO Details</h4>
+                <h5 class="modal-title" id="myModalLabel">PO Details</h5>
+                <button type="button" class="close pull-right" data-dismiss="modal">
+                    <span>×</span>
+                </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body m-0">
                 <div id="divDetailPreview" class="">
-                    <div class="row">
+                    
                         <div class="" id="DivPODetailsIndex">
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                <div class="form-group">
+                            <div class="row">
+                                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                     <label>PO ID</label>
                                     <div id="lblPOId" class="form-control-static"></div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                     <label>PO Type</label>
                                     <div id="lblPOType" class="form-control-static"></div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                     <label>Company Name</label>
                                     <div id="lblCompanyName" class="form-control-static"></div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                     <label>Grand Total</label>
                                     <div id="lblTotal" class="form-control-static"></div>
                                 </div>
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                <div class="form-group">
+                                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                     <label>Location Name</label>
                                     <div id="lblLocationName" class="form-control-static"></div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                     <label>PO Date</label>
                                     <div id="lblPODate" class="form-control-static"></div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                     <label>Delivery Date</label>
                                     <div id="lblDeliveryDate" class="form-control-static"></div>
-                                </div>                                
+                                </div>
+
                             </div>
-                        </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <table id="POrecords_table" class="table" cellpadding="1" cellspacing="1" border="1">
-                                <tr style="background-color:#0792bc;">
+                                <tr style="background-color: #0792bc;color: #fff !important;">
                                     <th style="width:150px">Cost Code</th>
                                     <th style="width:40px">Description</th>
                                     <th style="width:150px">Unit Price</th>
@@ -312,19 +377,19 @@
                     </div>
                 </div>
             </div><br /><br />
-            <div class="panel-footer">
+            <div class="panel-footer p-3">
                 <div class="text-right">
-                    <button data-dismiss="modal" class="btn btn-default" id="btnCancel">Cancel</button>
+                    <button data-dismiss="modal" class="btn btn-primary" id="btnCancel">Cancel</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <script>
-    $(document).ready(function(){
-       $(".drpLocation").hide();
+    $(document).ready(function () {
+        $(".drpLocation").hide();
     })
-    $("#RejectBill").live("click", function (event) {
+    $("#RejectBill").on("click", function (event) {
         $("#myModelRejectBill").modal('show');
     });
 </script>

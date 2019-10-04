@@ -641,26 +641,26 @@ namespace WorkOrderEMS.Controllers.eCounting
             try
             {
                 var AllPOFacilityList = _IPOTypeDetails.GetAllPOFacilityByPOIdList(UserId, Id, rows, TotalRecords, sidx, sord);
-                foreach (var poFacilityList in AllPOFacilityList.rows)
-                {
-                    grandTotal += poFacilityList.UnitPrice * poFacilityList.Quantity;
-                    poFacilityList.TotalPrice = grandTotal;
-                    poFacilityList.TotalPrice = poFacilityList.UnitPrice * poFacilityList.Quantity;
-                    JQGridRow row = new JQGridRow();
-                    row.id = Cryptography.GetEncryptedData(Convert.ToString(poFacilityList.COM_FacilityId), true);
-                    row.cell = new string[10];
-                    row.cell[0] = poFacilityList.COM_FacilityId.ToString();
-                    row.cell[1] = poFacilityList.CostCode.ToString();
-                    row.cell[2] = poFacilityList.FacilityType.ToString();
-                    row.cell[3] = poFacilityList.COM_Facility_Desc.ToString();
-                    row.cell[4] = poFacilityList.UnitPrice.ToString();
-                    row.cell[5] = poFacilityList.Tax.ToString();
-                    row.cell[6] = poFacilityList.Quantity.ToString();
-                    row.cell[7] = poFacilityList.Total.ToString();
-                    row.cell[8] = poFacilityList.TotalPrice.ToString(); 
-                    row.cell[9] = poFacilityList.CostCodeName.ToString();
-                    rowss.Add(row);
-                }
+                //foreach (var poFacilityList in AllPOFacilityList.rows)
+                //{
+                //    grandTotal += poFacilityList.UnitPrice * poFacilityList.Quantity;
+                //    poFacilityList.TotalPrice = grandTotal;
+                //    poFacilityList.TotalPrice = poFacilityList.UnitPrice * poFacilityList.Quantity;
+                //    JQGridRow row = new JQGridRow();
+                //    row.id = Cryptography.GetEncryptedData(Convert.ToString(poFacilityList.COM_FacilityId), true);
+                //    row.cell = new string[10];
+                //    row.cell[0] = poFacilityList.COM_FacilityId.ToString();
+                //    row.cell[1] = poFacilityList.CostCode.ToString();
+                //    row.cell[2] = poFacilityList.FacilityType.ToString();
+                //    row.cell[3] = poFacilityList.COM_Facility_Desc.ToString();
+                //    row.cell[4] = poFacilityList.UnitPrice.ToString();
+                //    row.cell[5] = poFacilityList.Tax.ToString();
+                //    row.cell[6] = poFacilityList.Quantity.ToString();
+                //    row.cell[7] = poFacilityList.Total.ToString();
+                //    row.cell[8] = poFacilityList.TotalPrice.ToString(); 
+                //    row.cell[9] = poFacilityList.CostCodeName.ToString();
+                //    rowss.Add(row);
+                //}
                 result.rows = rowss.ToArray();
                 result.page = Convert.ToInt32(page);
                 result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);

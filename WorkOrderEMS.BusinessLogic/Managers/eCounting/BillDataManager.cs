@@ -247,14 +247,16 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <param name="textSearch"></param>
         /// <param name="statusType"></param>
         /// <returns></returns>
-        public BillListApproveDetails GetListPreBill(long? UserId, long? Location, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType)
+        public List<BillListApproveModel> GetListPreBill(long? UserId, long? Location, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType)
         {
             try
             {
-                var objBillListApproveDetails = new BillListApproveDetails();
-                int pageindex = Convert.ToInt32(pageIndex) - 1;
-                int pageSize = Convert.ToInt32(numberOfRows);
-                var Results = _workorderems.spGetPreBillList(Location)
+                var resultList = new List<BillListApproveModel>();
+
+                //var objBillListApproveDetails = new BillListApproveDetails();
+                //int pageindex = Convert.ToInt32(pageIndex) - 1;
+                //int pageSize = Convert.ToInt32(numberOfRows);
+                resultList = _workorderems.spGetPreBillList(Location)
                     .Select(a => new BillListApproveModel()
                     {
                         BillId = a.LPBL_PBL_Id,
@@ -269,15 +271,15 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         Status = a.Status,
                         VendorId = a.VendorId,
                         LBLL_Id = a.LPBL_Id
-                    }).OrderByDescending(x => x.BillId).ToList();
-                int totRecords = Results.Count();
-                var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
-                //Results = Results.OrderByDescending(s => s.CostCode);
-                objBillListApproveDetails.pageindex = pageindex;
-                objBillListApproveDetails.total = totalPages;
-                objBillListApproveDetails.records = totRecords;
-                objBillListApproveDetails.rows = Results.ToList();
-                return objBillListApproveDetails;
+                    }).OrderByDescending(x => x.BillId).ToList(); // 
+                //int totRecords = Results.Count();
+                //var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
+                ////Results = Results.OrderByDescending(s => s.CostCode);
+                //objBillListApproveDetails.pageindex = pageindex;
+                //objBillListApproveDetails.total = totalPages;
+                //objBillListApproveDetails.records = totRecords;
+                //objBillListApproveDetails.rows = Results.ToList();
+                return resultList;
             }
             catch (Exception ex)
             {

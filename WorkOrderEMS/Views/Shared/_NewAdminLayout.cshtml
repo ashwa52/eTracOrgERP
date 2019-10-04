@@ -49,11 +49,11 @@
 }
 
 @section scripts{
-<script type="text/javascript">
+    <script type="text/javascript">
     debugger
     var $_hostingPrefix = '@hostingPrefix';
     var $_LocationId = $("#drp_MasterLocation option:selected").val(@locationId);
-</script>
+    </script>
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -78,7 +78,7 @@
     <link href="@Url.Content("~/Scripts/BootStrap-Multiselect/CSS/bootstrap-multiselect.css")" rel="stylesheet" />
     <!--Js Grid-->
     <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
-    <link href="http://js-grid.com/css/jsgrid-theme.min.css" rel="stylesheet" /> 
+    <link href="http://js-grid.com/css/jsgrid-theme.min.css" rel="stylesheet" />
     <!-- Page-Level Plugin CSS - Dashboard -->
     @*<link href="@Url.Content("~/Content/common/plugins/morris/morris-0.4.3.min.css")" rel="stylesheet" />
         <link href="@Url.Content("~/Content/common/plugins/timeline/timeline.css")" rel="stylesheet" />*@
@@ -166,7 +166,7 @@
         $_AuthorizeURL = '@AuthorizeUrl';
         $_IsConnectd = '@ViewBag.IsConnected';
         var $_locationId = '@locationId';
-           $_JqueryLoader = '@hostingPrefix';
+        $_JqueryLoader = '@hostingPrefix';
     </script>
     <style>
         .field-validation-error {
@@ -275,22 +275,22 @@
             Content body end
         ***********************************-->
         <!--**********************************
-        Footer start
-    ***********************************-->
+            Footer start
+        ***********************************-->
         @*<div class="footer">
-            <div class="copyright">
-                <p>Copyright © Designed &amp; Developed by <a href="@hostingPrefix" target="_blank">eTrac</a> 2019</p>
-            </div>
-        </div>*@
+                <div class="copyright">
+                    <p>Copyright © Designed &amp; Developed by <a href="@hostingPrefix" target="_blank">eTrac</a> 2019</p>
+                </div>
+            </div>*@
         <!--**********************************
             Footer end
         ***********************************-->
         <!--**********************************
-       Support ticket button start
-    ***********************************-->
+           Support ticket button start
+        ***********************************-->
         @*<div class="support-ticket">
-            <a href="https://docs.google.com/forms/d/e/1FAIpQLScfrU4Y7_zmErRJkR8ukaRlVgZ1AcAU7Kf4vOQuclNxqWQipQ/viewform" target="_blank" class="support-ticket-btn">Support</a>
-        </div>*@
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLScfrU4Y7_zmErRJkR8ukaRlVgZ1AcAU7Kf4vOQuclNxqWQipQ/viewform" target="_blank" class="support-ticket-btn">Support</a>
+            </div>*@
         <!--**********************************
            Support ticket button end
         ***********************************-->
@@ -765,6 +765,7 @@
 
             </div>
         </div>
+       
     </div>
 
     <!--End Modal connect to quickbook-->
@@ -840,26 +841,26 @@
         $("#drp_MasterLocation1").val(@locationId).attr("selected", "selected");
         //On Click menu add partial view
         $("#menu li a").click(function (e) {
-            
+
                 //new fn_showMaskloader('Please wait...');
-            
+
             e.preventDefault(); // prevent default link button redirect behaviour
             var url = $(this).attr("href");
-            var dashValue = $(this).attr("data-oldDash");            
+            var dashValue = $(this).attr("data-oldDash");
             if (dashValue == "Yes") {
                 window.location.href = url;
             }else{
               $('#RenderPageId').load(url);
-        }           
-        });   
-        $("#drp_MasterLocation1").change(function () { 
+        }
+        });
+        $("#drp_MasterLocation1").change(function () {
             var LocationID = $(this).val();
             var LocationName = $("#drp_MasterLocation1 option:selected").text();
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("SetUserSelectedLocation", "Login")',
                 data: { LocationID: LocationID, LocationName: LocationName },
-                success: function (Data) { 
+                success: function (Data) {
                     $('.jsgrid').jsGrid("loadData");
                 },
                 error: function () {
@@ -879,9 +880,9 @@
             $this.css("top", i);
             i += $this.height();
             doScroll($this);
-        }); 
+        });
     });
- 
+
         //Open Modal to connect quickbook
 
             if ($_AuthorizeURL == null || $_AuthorizeURL == "")
@@ -892,7 +893,7 @@
                 @*if (@ViewBag.QuickBookMessage != null) {*@
 
                     toastr.success(@ViewBag.QuickBookMessage)
-                    
+
             }
             $('#ConnectToQuickBook').click(function () {
                 $("#ConnectToQuickBookModal").modal('hide');

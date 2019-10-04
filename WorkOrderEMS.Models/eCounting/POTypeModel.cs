@@ -81,7 +81,7 @@ namespace WorkOrderEMS.Models
         public decimal? Total { get; set; }
         public long QBK_Id { get; set; }
 
-        public POTypeDetails NewPOTypeDetails { get; set; }
+        public List<POTypeDataModel> NewPOTypeDetails { get; set; }
     }
     public class POTypeDetails
     {

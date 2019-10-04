@@ -8,86 +8,255 @@ var MiscNumberDetail = 'Payment/GetMiscellaneousNumber/';
 var CostCodeId; var id;
 var vehcileApprovalStatus = '';
 var IsCancel = false;
+var GridValue = {};
 var BillTypeDll = '<select id="BillTypeDll">'
         + '<option value="0" >Bill Type</option>'
         + '<option value="ManualBill" >ManualBill</option>'
         + '<option value="PO" >PO</option>'
-        + '<option value="MISC" >MISC</option></select>';
+        + '<option value="MISC">MISC</option></select>';
 $(function () {
-    $("#tbl_PaymentList").jqGrid({
-        url: $_HostPrefix + PaymentUrl + '?LocationId=' + $_locationId,
-        datatype: 'json',
-        type: 'GET',
-        height: 400,
-        width: 650,
-        autowidth: true,
-        colNames: ['Bill No', 'Location Name', 'Vendor Name/Employee Name', 'Operating Company', 'Bill Type', 'Bill Amount', 'Bill Date', 'Grace Period', 'Payment Mode', 'Status', 'VendorId', 'OperatingCompanyId', 'LocationId', 'LLBL_ID', 'Action'],
-        colModel: [{ name: 'BillNo', width: 20, sortable: true },
-        { name: 'LocationName', width: 40, sortable: false },
-        { name: 'VendorName', width: 50, sortable: true },
-        { name: 'OperatingCompany', width: 50, sortable: true },
-        { name: 'BillType', width: 30, sortable: false },
-        { name: 'BillAmount', width: 20, sortable: true },
-        { name: 'BillDate', width: 30, sortable: true },
-        { name: 'GracePeriod', width: 10, sortable: true },
-        { name: 'PaymentMode', width: 20, sortable: true },
-        { name: 'Status', width: 20, sortable: true, hidden:true },
-        { name: 'VendorId', width: 20, sortable: true, hidden: true },
-        { name: 'OperatingCompanyId', width: 20, sortable: true, hidden: true },
-        { name: 'LocationId', width: 20, sortable: true, hidden: true },
-        { name: 'LLBL_ID', width: 20, sortable: true, hidden: true },
-        { name: 'act', index: 'act', width: 50, sortable: false }], 
-        rownum: 10,
-        rowList: [10, 20, 30],
-        scrollOffset: 0,
-        pager: '#divPaymentListPager',
-        sortname: 'BillId',
-        viewrecords: true,
-        gridview: true,
-        loadonce: false,
-        multiSort: true,
-        rownumbers: true,
-        emptyrecords: "No records to display",
-        shrinkToFit: true,
-        sortorder: 'asc',
-        gridComplete: function () {
-            var ids = jQuery("#tbl_PaymentList").jqGrid('getDataIDs');
-            jQuery('#tbl_PaymentList').addClass('order-table');
-            for (var i = 0; i < ids.length; i++) {
-                var cl = ids[i];
-                rowData = $('#tbl_PaymentList').jqGrid('getRowData', cl);
-                bi = '<div><a href="javascript:void(0)" id="PayBill" title="view" BId="' + cl + '" style=" float: left;margin-right: 6px;cursor:pointer;"><button class="btn btn-success" style="border-radius:25px;width:80px;">Pay</button></a>'
-                ci = '<a href="javascript:void(0)"  title="view" id="CancelBill" cid="' + cl + '" style=" float: left;cursor:pointer;"><button class="btn btn-primary" style="border-radius:25px;width:80px;">Cancel</button></a></div>';
-                jQuery("#tbl_PaymentList").jqGrid('setRowData', ids[i], { act: bi + ci }); ///+ qrc 
 
-                if (rowData['BillType'] === "PO") {
-                    $('#tbl_PaymentList').jqGrid('setCell', cl, 'BillType', '', 'CSSClass');
-                    //$('#tbl_PaymentList').jqGrid('setRowData', cl, { BillType:});
-                }
-            }
-            if ($("#tbl_PaymentList").getGridParam("records") <= 20) {
-                $("#divPaymentListPager").hide();
-            }
-            else {
-                $("#divPaymentListPager").show();
-            }
-            if ($('#tbl_PaymentList').getGridParam('records') === 0) {
-                $('#tbl_PaymentList tbody').append("<div style='padding: 6px; font-size: 12px;'>No records found.</div>");
+    $("#SearchText").keyup(function () {
+        doPaymentSearch()
+    });
+
+    var act;
+    $("#tbl_PaymentList").jsGrid({
+        height: "170%",
+        width: "100%",
+        filtering: false,
+        editing: false,
+        inserting: false,
+        sorting: false,
+        paging: true,
+        autoload: true,
+        pageSize: 10,
+        pageButtonCount: 5,
+
+        controller: {
+            loadData: function (filter) {
+                return $.ajax({
+                    type: "GET",
+                    url: $_HostPrefix + PaymentUrl + '?LocationId=' + $_locationId,
+                    data: filter,
+                    dataType: "json"
+                });
             }
         },
-        caption: '<div class="header_search">' + BillTypeDll + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><input type="text" class="inputSearch light-table-filter" id="searchPaymentBilltext" placeholder="Vendor Name"  data-table="order-table" /></span></div>',
-        onCellSelect: function (rowid, iCol, id) {
-            var rowData = $(this).jqGrid("getRowData", rowid);
-            //var rid = jQuery('#tbl_CostCodeList').jqGrid("getGridParam", "selrow");           
-            var rid = $('#tbl_PaymentList').jqGrid('getCell', rowid, iCol);
-            if (iCol == 5 && id == "PO") { //You clicked on admin block
-                var row = jQuery('#tbl_PaymentList').jqGrid("getRowData", rowid);
+        fields: [
+            { name: "BillNo", title: "Bill No", type: "text", width: 20 },
+            { name: "LocationName", title: "Location Name", type: "text", width: 30 },
+            { name: "VendorName", title: "Vendor Name/Employee name", type: "text", width: 35 },
+            { name: "OperatingCompany", title: "Operating Company", type: "text", width: 30 },
+            {
+                name: "BillType", title: "Bill Type", type: "text", width: 20, itemTemplate: function (value, item) {
+                    debugger;
+                    var $text = $("<a>").text(item.BillType);
+                    return $("<div>").append($text).click(function () {
+                        RowClickbillType(value,item)
+                    });
+                }
+            },
+            { name: "BillAmount", title: "Bill Amount", type: "text", width: 20 },
+            { name: "DisplayDate", title: "Bill Date", type: "text", width: 30 },
+            { name: "BillDate", title: "Bill Date", type: "text", width: 30, visible: false  },
+            { name: "GracePeriod", title: "Grace Period", type: "text", width: 10 },
+            { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20 },//, visible: false 
+            { name: "Status", title: "Status", type: "text", width: 20, visible: false },
+            { name: "VendorId", title: "VendorId", type: "text", width: 20, visible: false },
+            { name: "OperatingCompanyId", title: "Operating Company Id", type: "text", width: 20, visible: false  },
+            { name: "LocationId", title: "Location Id", type: "text", width: 20, visible: false },
+            { name: "LLBL_ID", title: "LLBL ID", type: "text", width: 50, visible: false },
+            {
+                name: "act", items: act, title: "Action", width: 50, css: "text-center", itemTemplate: function (value, item) {
+                    var $iconCheck = $("<i>").attr({ class: "fa fa-credit-card" }).attr({ style: "color:green;font-size: 22px;" });
+                    var $iconClose = $("<i>").attr({ class: "fa fa-close" }).attr({ style: "color:red;font-size: 22px;" });
+
+                    var $customCheck = $("<span style='padding: 0 5px 0 0;'>")
+                        .attr({ title: "Pay Bill" })
+                        .attr({ id: "PayBill" + item.BillNo }).click(function (e) {
+                            PayBillSave(item);
+                        }).append($iconCheck);
+
+                    var $customCancel = $("<span style='padding: 0 5px 0 0;'>")
+                        .attr({ title: "Cancel Bill" })
+                        .attr({ id: "CancelBill" + item.BillNo }).click(function (e) {
+                            CancelBill(item);
+                        }).append($iconClose);
+                    return $("<div>").attr({ class: "btn-toolbar" }).append($customCheck).append($customCancel);
+                }
+            }         
+        ]
+    });
+
+    //$("#tbl_PaymentList").jqGrid({
+    //    url: $_HostPrefix + PaymentUrl + '?LocationId=' + $_locationId,
+    //    datatype: 'json',
+    //    type: 'GET',
+    //    height: 400,
+    //    width: 650,
+    //    autowidth: true,
+    //    colNames: ['Bill No', 'Location Name', 'Vendor Name/Employee Name', 'Operating Company', 'Bill Type', 'Bill Amount', 'Bill Date', 'Grace Period', 'Payment Mode', 'Status', 'VendorId', 'OperatingCompanyId', 'LocationId', 'LLBL_ID', 'Action'],
+    //    colModel: [{ name: 'BillNo', width: 20, sortable: true },
+    //    { name: 'LocationName', width: 40, sortable: false },
+    //    { name: 'VendorName', width: 50, sortable: true },
+    //    { name: 'OperatingCompany', width: 50, sortable: true },
+    //    { name: 'BillType', width: 30, sortable: false },
+    //    { name: 'BillAmount', width: 20, sortable: true },
+    //    { name: 'BillDate', width: 30, sortable: true },
+    //    { name: 'GracePeriod', width: 10, sortable: true },
+    //    { name: 'PaymentMode', width: 20, sortable: true },
+    //    { name: 'Status', width: 20, sortable: true, hidden:true },
+    //    { name: 'VendorId', width: 20, sortable: true, hidden: true },
+    //    { name: 'OperatingCompanyId', width: 20, sortable: true, hidden: true },
+    //    { name: 'LocationId', width: 20, sortable: true, hidden: true },
+    //    { name: 'LLBL_ID', width: 20, sortable: true, hidden: true },
+    //    { name: 'act', index: 'act', width: 50, sortable: false }], 
+    //    rownum: 10,
+    //    rowList: [10, 20, 30],
+    //    scrollOffset: 0,
+    //    pager: '#divPaymentListPager',
+    //    sortname: 'BillId',
+    //    viewrecords: true,
+    //    gridview: true,
+    //    loadonce: false,
+    //    multiSort: true,
+    //    rownumbers: true,
+    //    emptyrecords: "No records to display",
+    //    shrinkToFit: true,
+    //    sortorder: 'asc',
+    //    gridComplete: function () {
+    //        var ids = jQuery("#tbl_PaymentList").jqGrid('getDataIDs');
+    //        jQuery('#tbl_PaymentList').addClass('order-table');
+    //        for (var i = 0; i < ids.length; i++) {
+    //            var cl = ids[i];
+    //            rowData = $('#tbl_PaymentList').jqGrid('getRowData', cl);
+    //            bi = '<div><a href="javascript:void(0)" id="PayBill" title="view" BId="' + cl + '" style=" float: left;margin-right: 6px;cursor:pointer;"><button class="btn btn-success" style="border-radius:25px;width:80px;">Pay</button></a>'
+    //            ci = '<a href="javascript:void(0)"  title="view" id="CancelBill" cid="' + cl + '" style=" float: left;cursor:pointer;"><button class="btn btn-primary" style="border-radius:25px;width:80px;">Cancel</button></a></div>';
+    //            jQuery("#tbl_PaymentList").jqGrid('setRowData', ids[i], { act: bi + ci }); ///+ qrc 
+
+    //            if (rowData['BillType'] === "PO") {
+    //                $('#tbl_PaymentList').jqGrid('setCell', cl, 'BillType', '', 'CSSClass');
+    //                //$('#tbl_PaymentList').jqGrid('setRowData', cl, { BillType:});
+    //            }
+    //        }
+    //        if ($("#tbl_PaymentList").getGridParam("records") <= 20) {
+    //            $("#divPaymentListPager").hide();
+    //        }
+    //        else {
+    //            $("#divPaymentListPager").show();
+    //        }
+    //        if ($('#tbl_PaymentList').getGridParam('records') === 0) {
+    //            $('#tbl_PaymentList tbody').append("<div style='padding: 6px; font-size: 12px;'>No records found.</div>");
+    //        }
+    //    },
+    //    caption: '<div class="header_search">' + BillTypeDll + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><input type="text" class="inputSearch light-table-filter" id="searchPaymentBilltext" placeholder="Vendor Name"  data-table="order-table" /></span></div>',
+    //    onCellSelect: function (rowid, iCol, id) {
+    //        var rowData = $(this).jqGrid("getRowData", rowid);
+    //        //var rid = jQuery('#tbl_CostCodeList').jqGrid("getGridParam", "selrow");           
+    //        var rid = $('#tbl_PaymentList').jqGrid('getCell', rowid, iCol);
+    //        if (iCol == 5 && id == "PO") { //You clicked on admin block
+    //            var row = jQuery('#tbl_PaymentList').jqGrid("getRowData", rowid);
+    //            $.ajax({
+    //                type: "post",
+    //                url: $_HostPrefix + PODetail + '?POId=' + rowData.BillNo,
+    //                datatype: 'json',
+    //                type: 'GET',
+    //                success: function (result) {
+    //                    if (result.PONumber != null && result.PONumber != "" && result.PONumber != undefined) {
+    //                        if (result.POType == 1) {
+    //                            result.POType = "Normal PO";
+    //                        }
+    //                        else if (result.POType == 2) {
+    //                            result.POType = "Reccuring PO";
+    //                        }
+    //                        else if (result.POType == 2) {
+    //                            result.POType = "Emeregency PO";
+    //                        }
+    //                        else {
+    //                            result.POType = "Manual PO";
+    //                        }
+    //                        $("#lblPOId").html(result.PONumber);
+    //                        $("#lblPOType").html(result.POType);
+    //                        $("#lblCompanyName").html(rowData.VendorName);
+    //                        $("#lblLocationName").html(rowData.LocationName);
+    //                        $("#lblPODate").html(result.IssueDateDisplay);
+    //                        $("#lblDeliveryDate").html(result.DeliveryDateDisplay);
+    //                        $('#POrecords_table').html('');
+    //                        var arrData = [];
+    //                        var thHTML = '';
+    //                        var GrandTotal;
+    //                        thHTML += '<tr style="background-color:#0792bc;"><th>Cost Code</th><th>Description</th><th>Unit Price</th><th>Quantity</th><th>Total</th><th>Tax</th></tr>';
+    //                        $('#POrecords_table').append(thHTML);
+    //                        if (result.NewPOTypeDetails.rows.length > 0) {
+    //                            for (i = 0; i < result.NewPOTypeDetails.rows.length; i++) {
+    //                                DataLists = result.NewPOTypeDetails.rows;
+    //                                GrandTotal = result.NewPOTypeDetails.rows[i].TotalPrice
+    //                                var trHTML = '';
+    //                                trHTML +=
+    //                                   '<tr><td>' + result.NewPOTypeDetails.rows[i].CostCodeName +
+    //                                   '</td><td>' + result.NewPOTypeDetails.rows[i].COM_Facility_Desc +
+    //                                   '</td><td>' + result.NewPOTypeDetails.rows[i].UnitPrice +
+    //                                   '</td><td>' + result.NewPOTypeDetails.rows[i].Quantity +
+    //                                   '</td><td>' + result.NewPOTypeDetails.rows[i].Total +
+    //                                   '</td><td>' + result.NewPOTypeDetails.rows[i].Tax +
+    //                                   '</td></tr>';
+    //                                $('#POrecords_table').append(trHTML);
+    //                            }
+    //                        }
+    //                        $('#lblTotal').html(GrandTotal);
+
+    //                        $("#lblPOStatus").html(result.POStatus);
+    //                        $('.modal-title').text("PO Details");
+    //                        $("#myModalForPODetails").modal('show');
+    //                    }
+    //                    else {
+    //                        toastr.success(result)
+    //                    }
+    //                }
+    //            });
+    //        }
+    //        else if (iCol == 5 && id == "MIS")
+    //        {
+    //            debugger
+    //            var getMiscData;
+    //            $.ajax({
+    //                url: $_HostPrefix + MiscNumberDetail + '?MiscId=' + rowData.BillNo,
+    //                datatype: 'json',
+    //                type: 'GET',
+    //                success: function (result) {
+    //                    if(result != null)
+    //                    {
+    //                        getMiscData = result;
+    //                    }
+    //                }
+    //            })
+    //            $.ajax({
+    //                url: $_HostPrefix + miscDetails + '?MiscId=' + getMiscData,
+    //                datatype: 'json',
+    //                type: 'GET',
+    //                success: function (result) {
+    //                }
+    //            })
+    //        }
+    //    }
+    //});
+    //if ($("#tbl_PaymentList").getGridParam("records") > 20) {
+    //    jQuery("#tbl_PaymentList").jqGrid('navGrid', '#divPaymentListPager', { edit: false, add: false, del: false, search: false, edittext: "Edit" });
+    //}
+});
+
+function RowClickbillType(id, rowData) {
+    debugger;
+    if (id == "PO") { //You clicked on admin block
+                //var row = jQuery('#tbl_PaymentList').jqGrid("getRowData", rowid);
                 $.ajax({
                     type: "post",
                     url: $_HostPrefix + PODetail + '?POId=' + rowData.BillNo,
                     datatype: 'json',
                     type: 'GET',
                     success: function (result) {
+                        debugger;
                         if (result.PONumber != null && result.PONumber != "" && result.PONumber != undefined) {
                             if (result.POType == 1) {
                                 result.POType = "Normal PO";
@@ -111,9 +280,11 @@ $(function () {
                             var arrData = [];
                             var thHTML = '';
                             var GrandTotal;
-                            thHTML += '<tr style="background-color:#0792bc;"><th>Cost Code</th><th>Description</th><th>Unit Price</th><th>Quantity</th><th>Total</th><th>Tax</th></tr>';
+                            thHTML += '<tr style="background-color:#0792bc;color:#fff;text-weight:light;"><th>Cost Code</th><th>Description</th><th>Unit Price</th><th>Quantity</th><th>Total</th><th>Tax</th></tr>';
                             $('#POrecords_table').append(thHTML);
-                            if (result.NewPOTypeDetails.rows.length > 0) {
+                            debugger;
+                            if (result.NewPOTypeDetails.Count > 0) {
+                                
                                 for (i = 0; i < result.NewPOTypeDetails.rows.length; i++) {
                                     DataLists = result.NewPOTypeDetails.rows;
                                     GrandTotal = result.NewPOTypeDetails.rows[i].TotalPrice
@@ -141,7 +312,7 @@ $(function () {
                     }
                 });
             }
-            else if (iCol == 5 && id == "MIS")
+            else if (id == "MIS")
             {
                 debugger
                 var getMiscData;
@@ -164,40 +335,132 @@ $(function () {
                     }
                 })
             }
-        }
+}
+
+function formatDate(date) { //not used 
+    debugger;
+    var monthNames = [
+        "January", "February", "March",
+        "April", "May", "June", "July",
+        "August", "September", "October",
+        "November", "December"
+    ];
+
+    var day = date.getDate();
+    var monthIndex = date.getMonth();
+    var year = date.getFullYear();
+
+    return day + ' ' + monthNames[monthIndex] + ' ' + year;
+    debugger;
+}
+
+function doPaymentSearch() {
+
+    var _searchresult = $("#SearchText").val();
+
+    var act;
+    $("#tbl_PaymentList").jsGrid({
+        height: "170%",
+        width: "100%",
+        filtering: false,
+        editing: false,
+        inserting: false,
+        sorting: false,
+        paging: true,
+        autoload: true,
+        pageSize: 10,
+        pageButtonCount: 5,
+
+        controller: {
+            loadData: function (filter) {
+                return $.ajax({
+                    type: "GET",
+                    url: $_HostPrefix + PaymentUrl + '?LocationId=' + $_locationId + '&txtSearch=' + _searchresult,
+                    data: filter,
+                    dataType: "json"
+                });
+            }
+        },
+        fields: [
+            { name: "BillNo", title: "Bill No", type: "text", width: 20 },
+            { name: "LocationName", title: "Location Name", type: "text", width: 30 },
+            { name: "VendorName", title: "Vendor Name/Employee name", type: "text", width: 35 },
+            { name: "OperatingCompany", title: "Operating Company", type: "text", width: 30 },
+            {
+                name: "BillType", title: "Bill Type", type: "text", width: 20, itemTemplate: function (value, item) {//rowid, iCol, id // value, item
+                    debugger;
+                    var $text = $("<a>").text(item.BillType);
+                    return $("<div>").append($text).click(function () {
+                        RowClickbillType(value, item)
+                    });
+                }
+            },
+            { name: "BillAmount", title: "Bill Amount", type: "text", width: 20 },
+            { name: "DisplayDate", title: "Bill Date", type: "text", width: 30 },
+            { name: "BillDate", title: "Bill Date", type: "text", width: 30, visible: false },
+            { name: "GracePeriod", title: "Grace Period", type: "text", width: 10 },
+            { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20 },//, visible: false 
+            { name: "Status", title: "Status", type: "text", width: 20, visible: false },
+            { name: "VendorId", title: "VendorId", type: "text", width: 20, visible: false },
+            { name: "OperatingCompanyId", title: "Operating Company Id", type: "text", width: 20, visible: false },
+            { name: "LocationId", title: "Location Id", type: "text", width: 20, visible: false },
+            { name: "LLBL_ID", title: "LLBL ID", type: "text", width: 50, visible: false },
+            {
+                name: "act", items: act, title: "Action", width: 50, css: "text-center", itemTemplate: function (value, item) {
+                    var $iconCheck = $("<i>").attr({ class: "fa fa-check" }).attr({ style: "color:green;font-size: 22px;" });
+                    var $iconClose = $("<i>").attr({ class: "fa fa-close" }).attr({ style: "color:red;font-size: 22px;" });
+
+                    var $customCheck = $("<span style='padding: 0 5px 0 0;'>")
+                        .attr({ title: "Pay Bill" })
+                        .attr({ id: "PayBill" }).click(function (e) {
+                            PayBill(item);
+                        }).append($iconCheck);
+
+                    var $customCancel = $("<span style='padding: 0 5px 0 0;'>")
+                        .attr({ title: "Cancel Bill" })
+                        .attr({ id: "CancelBill" }).click(function (e) {
+                            CancelBill(item);
+                        }).append($iconClose);
+                    return $("<div>").attr({ class: "btn-toolbar" }).append($customCheck).append($customCancel);
+                }
+            }
+        ]
     });
-    if ($("#tbl_PaymentList").getGridParam("records") > 20) {
-        jQuery("#tbl_PaymentList").jqGrid('navGrid', '#divPaymentListPager', { edit: false, add: false, del: false, search: false, edittext: "Edit" });
-    }
-});
-var timeoutHnd;
-var flAuto = true;
-function doSearch(ev) {
-    if (timeoutHnd)
-        clearTimeout(timeoutHnd)
-    timeoutHnd = setTimeout(gridReload, 500)
 }
 
-function gridReload() {
+//function gridReload() {
 
-    jQuery("#tbl_PaymentList").jqGrid('setGridParam', { url: $_HostPrefix + GetListBill + "?LocationId=" + $_locationId, page: 1 }).trigger("reloadGrid");
-}
-function RejectBillAfterCommentBill() {
-    callAjaxbill()
-}
-function ApproveBill() {
-    callAjaxbill()
-}
+//    jQuery("#tbl_PaymentList").jqGrid('setGridParam', { url: $_HostPrefix + GetListBill + "?LocationId=" + $_locationId, page: 1 }).trigger("reloadGrid");
+//}
+//function RejectBillAfterCommentBill() {
+//    callAjaxbill()
+//}
+//function ApproveBill() {
+//    callAjaxbill()
+//}
 
-$("#PayBill").live("click", function (event) {
-    id = $(this).attr("BId");
-    callAccountDetailsVendor();
+function PayBillSave(item) {
+    debugger;//
+    //id = $(this).attr("PayBill");
+    GridValue = item;
+    callAccountDetailsVendor(item);
     IsCancel = false;
     $("#myModelPayBill").modal('show');
-});
-function callAccountDetailsVendor()
+}
+
+function CancelBill(item) {
+    debugger;//
+    //id = $(this).attr("CancelBill");
+    GridValue = item;
+    IsCancel = true;
+    callAccountDetailsVendor(item);
+    $('#myModelCancelBill').modal('show');
+}
+
+function callAccountDetailsVendor(data)
 {
-    var data = jQuery("#tbl_PaymentList").getRowData(id); 
+    //alert(data);
+    //var data = jQuery("#tbl_PaymentList").getRowData(id); 
     if (data.PaymentMode == "MISC") {
         $('.WhenMisc').show();
         $('.WhenWired').hide();
@@ -280,12 +543,6 @@ function callAccountDetailsVendor()
     $("#lblPaymentModeTo").html(data.PaymentMode);
 }
 
-$("#CancelBill").live("click", function (event) {
-    id = $(this).attr("cid");
-    IsCancel = true;
-    callAccountDetailsVendor();
-    $('#myModelCancelBill').modal('show');
-});
 function PayAction()
 {
     if ($('.form').valid()) {
@@ -308,8 +565,9 @@ function CancelAction()
     }
 }
 function callAjaxPayment() {      //$("#ApproveBill").live("click", function (event) {
- debugger
-    var GridData = $('#tbl_PaymentList').getRowData(id);
+    debugger;
+    //var GridData = $('#tbl_PaymentList').getRowData(id);
+    var GridData = GridValue;
     var obj = new Object();
     obj.Comment = $("#CommentPay").val();
     obj.ChequeNo = $("#ChequeNo").val();
@@ -349,8 +607,8 @@ function callAjaxPayment() {      //$("#ApproveBill").live("click", function (ev
         },
         success: function (result) {
             toastr.success(result);
-            jQuery("#tbl_PaymentList").trigger("reloadGrid");
-            jQuery("#tbl_PaymentPaidList").trigger("reloadGrid");
+            //jQuery("#tbl_PaymentList").trigger("reloadGrid");
+            //jQuery("#tbl_PaymentPaidList").trigger("reloadGrid");
         },
         error: function () { alert(" Something went wrong..") },
         complete: function () {
@@ -359,10 +617,11 @@ function callAjaxPayment() {      //$("#ApproveBill").live("click", function (ev
     });
 }
 
-$("#viewBill").live("click", function (event) {
+$("#viewBill").on("click", function (event) {
     id = $(this).attr("vid");
 
-    var rowData = jQuery("#tbl_BillList").getRowData(id);
+    //var rowData = jQuery("#tbl_BillList").getRowData(id);
+    var GridData = GridValue;
     if (rowData.Status != "W") {
         $('#ApproveBill').hide();
         $('#RejectBill').hide();
