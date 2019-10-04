@@ -280,22 +280,25 @@ function RowClickbillType(id, rowData) {
                             var arrData = [];
                             var thHTML = '';
                             var GrandTotal;
+                            var totalsum;
                             thHTML += '<tr style="background-color:#0792bc;color:#fff;text-weight:light;"><th>Cost Code</th><th>Description</th><th>Unit Price</th><th>Quantity</th><th>Total</th><th>Tax</th></tr>';
-                            $('#POrecords_table').append(thHTML);
-                            debugger;
-                            if (result.NewPOTypeDetails.Count > 0) {
+                            $('#POrecords_table').append(thHTML); 
+                            if (result.NewPOTypeDetails.length > 0) {
                                 
-                                for (i = 0; i < result.NewPOTypeDetails.rows.length; i++) {
-                                    DataLists = result.NewPOTypeDetails.rows;
-                                    GrandTotal = result.NewPOTypeDetails.rows[i].TotalPrice
+                                for (i = 0; i < result.NewPOTypeDetails.length; i++) {
+
+                                    GrandTotal = parseInt(GrandTotal) + parseInt(result.NewPOTypeDetails[i].UnitPrice * result.NewPOTypeDetails[i].Quantity);
+                                    totalsum = result.NewPOTypeDetails[i].UnitPrice * result.NewPOTypeDetails[i].Quantity;
+                                    DataLists = result.NewPOTypeDetails;
+                                    //GrandTotal = result.NewPOTypeDetails[i].TotalPrice // pre- result.NewPOTypeDetails[i].Total
                                     var trHTML = '';
                                     trHTML +=
-                                       '<tr><td>' + result.NewPOTypeDetails.rows[i].CostCodeName +
-                                       '</td><td>' + result.NewPOTypeDetails.rows[i].COM_Facility_Desc +
-                                       '</td><td>' + result.NewPOTypeDetails.rows[i].UnitPrice +
-                                       '</td><td>' + result.NewPOTypeDetails.rows[i].Quantity +
-                                       '</td><td>' + result.NewPOTypeDetails.rows[i].Total +
-                                       '</td><td>' + result.NewPOTypeDetails.rows[i].Tax +
+                                       '<tr><td>' + result.NewPOTypeDetails[i].CostCodeName +
+                                       '</td><td>' + result.NewPOTypeDetails[i].COM_Facility_Desc +
+                                       '</td><td>' + result.NewPOTypeDetails[i].UnitPrice +
+                                       '</td><td>' + result.NewPOTypeDetails[i].Quantity +
+                                       '</td><td>' + totalsum +
+                                       '</td><td>' + result.NewPOTypeDetails[i].Tax +
                                        '</td></tr>';
                                     $('#POrecords_table').append(trHTML);
                                 }
