@@ -1901,7 +1901,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     {                       
                         objData.ReadDate = DateTime.UtcNow;
                         repository.Update(objData);
-                        repository.SaveChanges();
+                        _db.SaveChanges();
                         isUpdate = true;
                     }
                 }

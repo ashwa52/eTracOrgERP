@@ -252,7 +252,8 @@ function ViewVendorDetails(VendorId) {
                     //$('#LLCM_Id').html(llcm);
                 }
             }
-            if (result.VendorFacilityModel != null) {
+            if (result.VendorFacilityModel != null)
+            {
                 $('#records_table').html('');
                 var arrData = [];
                 var thHTML = '';
