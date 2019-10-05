@@ -66,7 +66,12 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
 
         #region Employee Management
-
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="LocationId"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult GetUserTreeViewList(string Id, long? LocationId)
         {
