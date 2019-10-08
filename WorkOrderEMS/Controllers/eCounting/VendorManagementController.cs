@@ -458,8 +458,9 @@ namespace WorkOrderEMS.Controllers
             {
                 if (_search != null && _search != "")
                 {
-                    var AllCompanyListForSearch = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord).Where(x => x.CompanyNameLegal.ToLower() == _search.ToLower().Trim()).ToList();
-                    return Json(AllCompanyListForSearch.ToList(), JsonRequestBehavior.AllowGet);
+                    var AllCompanyListForSearch = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord);
+                    var FilteredList = AllCompanyListForSearch.Where(x => x.CompanyNameLegal.ToLower().Contains(_search.ToLower().Trim())).ToList();
+                    return Json(FilteredList.ToList(), JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
@@ -1464,8 +1465,9 @@ namespace WorkOrderEMS.Controllers
 
                 if (_search != null && _search != "")
                 {
-                    var AllCompanyListForSearch = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord).Where(x => x.CompanyNameLegal.ToLower() == _search.ToLower().Trim()).ToList();
-                    return Json(AllCompanyListForSearch.ToList(), JsonRequestBehavior.AllowGet);
+                    var AllCompanyListForSearch = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord).Where(x => !String.IsNullOrEmpty(x.CompanyNameLegal));
+                    var FilteredList = AllCompanyListForSearch.Where(x => x.CompanyNameLegal.ToLower().Contains(_search.ToLower().Trim())).ToList();
+                    return Json(FilteredList.ToList(), JsonRequestBehavior.AllowGet);
                 }
                 else
                 {

@@ -181,6 +181,7 @@
     <Compile Include="eCounting\BillNumber.cs" />
     <Compile Include="eCounting\Bill\BillFacilityModel.cs" />
     <Compile Include="eCounting\CompanyFacility\CompanyFacilityModel.cs" />
+    <Compile Include="eCounting\DebitMemo\DebitMemoModel.cs" />
     <Compile Include="eCounting\eCountingReport\eCountingCountDetailReportModel.cs" />
     <Compile Include="eCounting\eCountingReport\eCountingPaymentDetailsReport.cs" />
     <Compile Include="eCounting\eCountingReport\PaymentSummaryReportModel.cs" />
