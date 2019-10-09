@@ -4487,6 +4487,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         <Function Name="spGetCompanyAccountDetailForPayment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CAD_CMP_Id" Type="bigint" Mode="In" />
         </Function>
+        <Function Name="spGetCompanyCountForGraph" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetCompanyDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetCompanyDetailEdit" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CMP_ID" Type="bigint" Mode="In" />
@@ -8218,8 +8219,9 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="CAD_CardExpirationDate" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="spGetVendorAllDetailForEditApproval" ReturnType="Collection(workorderEMSModel.spGetVendorAllDetailForEditApproval_Result)">
-            <Parameter Name="CMP_Id" Mode="In" Type="Int64" />
+          <Parameter Name="CMP_Id" Mode="In" Type="Int64" />
           </FunctionImport>
+          <FunctionImport Name="spGetCompanyCountForGraph" ReturnType="Collection(workorderEMSModel.spGetCompanyCountForGraph_Result)" />
           </EntityContainer>
         <ComplexType Name="CommonQeriesByVijay_Result">
           <Property Type="Int64" Name="VendorID" Nullable="false" />
@@ -15708,6 +15710,12 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="Decimal" Name="CNT_LateFeeFine" Nullable="true" Precision="18" Scale="2" />
           <Property Type="String" Name="CNT_ContractDocument" Nullable="true" />
         </ComplexType>
+        <ComplexType Name="spGetCompanyCountForGraph_Result">
+          <Property Type="Int64" Name="TotalVendorCount" Nullable="true" />
+          <Property Type="Int64" Name="ApprovedVendorCount" Nullable="true" />
+          <Property Type="Int64" Name="WaitingVendorCount" Nullable="true" />
+          <Property Type="Int64" Name="RejectedVendorCount" Nullable="true" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -20063,6 +20071,16 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
                 <ScalarProperty Name="CNT_BillDueDate" ColumnName="CNT_BillDueDate" />
                 <ScalarProperty Name="CNT_LateFeeFine" ColumnName="CNT_LateFeeFine" />
                 <ScalarProperty Name="CNT_ContractDocument" ColumnName="CNT_ContractDocument" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetCompanyCountForGraph" FunctionName="workorderEMSModel.Store.spGetCompanyCountForGraph" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetCompanyCountForGraph_Result">
+                <ScalarProperty Name="TotalVendorCount" ColumnName="TotalVendorCount" />
+                <ScalarProperty Name="ApprovedVendorCount" ColumnName="ApprovedVendorCount" />
+                <ScalarProperty Name="WaitingVendorCount" ColumnName="WaitingVendorCount" />
+                <ScalarProperty Name="RejectedVendorCount" ColumnName="RejectedVendorCount" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

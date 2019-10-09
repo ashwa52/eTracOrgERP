@@ -4692,5 +4692,10 @@ namespace WorkOrderEMS.Data.EntityModel
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVendorAllDetailForEditApproval_Result>("spGetVendorAllDetailForEditApproval", cMP_IdParameter);
         }
+    
+        public virtual ObjectResult<spGetCompanyCountForGraph_Result> spGetCompanyCountForGraph()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCompanyCountForGraph_Result>("spGetCompanyCountForGraph");
+        }
     }
 }

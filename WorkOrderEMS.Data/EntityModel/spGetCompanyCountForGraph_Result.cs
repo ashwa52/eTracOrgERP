@@ -11,9 +11,11 @@ namespace WorkOrderEMS.Data.EntityModel
 {
     using System;
     
-    public partial class sp_GetCompany_ContractDocument_Result
+    public partial class spGetCompanyCountForGraph_Result
     {
-        public string CNT_ContractDocument { get; set; }
-        public string CMP_CompanyDocument { get; set; }
+        public Nullable<long> TotalVendorCount { get; set; }
+        public Nullable<long> ApprovedVendorCount { get; set; }
+        public Nullable<long> WaitingVendorCount { get; set; }
+        public Nullable<long> RejectedVendorCount { get; set; }
     }
 }
