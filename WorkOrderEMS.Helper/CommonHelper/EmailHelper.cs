@@ -233,6 +233,9 @@ namespace WorkOrderEMS.Helper
         public string CalculatedAmount { get; set; }
         public string CostCode { get; set; }
 
+        public string EmployeeImage { get; set; }
+        public string CreatedBy { get; set; }
+
 
         public bool SendEmailWithTemplate(string[] attachedUrl = null)
         {

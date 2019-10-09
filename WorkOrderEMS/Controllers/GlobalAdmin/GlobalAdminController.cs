@@ -4218,5 +4218,21 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
         //    return Json(Result, JsonRequestBehavior.AllowGet);
         //}
         #endregion Budget
+
+        ///Get Unseen Notification
+        ///
+        [HttpGet]
+        public JsonResult GetUnseenNotifications()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            long UserId = 0;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                UserId = ObjLoginModel.UserId;
+            }
+            return Json(_ICommonMethod.GetUnseenNotifications(UserId),JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

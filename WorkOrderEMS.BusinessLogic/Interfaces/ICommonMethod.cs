@@ -119,7 +119,7 @@ namespace WorkOrderEMS.BusinessLogic
         /// <returns></returns>
         List<EmailToUserModel> GetUsersToEmail(long locationId, long? employeeId);
 
-       // List<SelectListItem> GetAssetList(long LocationID);
+        // List<SelectListItem> GetAssetList(long LocationID);
 
         List<LocationListModel> GetLocationByAdminId(long? adminId);
 
@@ -163,7 +163,7 @@ namespace WorkOrderEMS.BusinessLogic
         /// <returns></returns>
 
         bool EmailLog(long userId, long? sentTo, string emailId, string subject, long locationId);
-   
+
         IsMapped isUserMappedWithLocation(long UserID, long LocationID);
         List<PermissionDetailsModel> GetPermissionsWithFilterByUserTypeLocationId(long locationId, long UserID);
 
@@ -193,5 +193,6 @@ namespace WorkOrderEMS.BusinessLogic
         bool UpdateNotificationDetail(NotificationDetailModel obj);
         List<EmailHelper> GetUnseenList(NotificationDetailModel objDetails);
         ServiceResponseModel<List<POListSelfServiceModel>> GetPOList(eTracLoginModel obj);
+        List<EmailHelper> GetUnseenNotifications(long UserId);
     }
 }

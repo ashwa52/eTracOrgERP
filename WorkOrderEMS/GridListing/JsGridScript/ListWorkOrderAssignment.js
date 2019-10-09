@@ -155,6 +155,142 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
     //})
     //basic jsgrid table
 
+    $("#UrgentWorkOrdersList").jsGrid({
+        width: "100%",
+        height: "400px",
+        filtering: true,
+        inserting: true,
+        editing: true,
+        sorting: true,
+        paging: true,
+        autoload: true,
+        pageSize: 10,
+        pageButtonCount: 5,
+        loadMessage: "Please, wait...",
+        controller: {
+            loadData: function (filter) {
+                return $.ajax({
+                    type: "GET",
+                    url: '../GlobalAdmin/GetUnseenNotifications',
+                    datatype: 'json',
+                    contentType: "application/json",
+                });
+            }
+        },
+        onRefreshed: function (args) {
+            $(".jsgrid-insert-row").hide();
+            $(".jsgrid-filter-row").hide()
+            $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
+
+        },
+        fields: [
+            {
+                name: "EmployeeImage", title: "Profile Image",
+                itemTemplate: function (val, item) {
+                    return $("<img>").attr("src", val).css({ height: 50, width: 50, "border-radius": "50px" }).on("click", function () {
+                    });
+                }
+            },
+            { name: "CreatedBy", width: 150, title: "Assigned By", css: "text-center" },
+
+            {
+                name: "act", title: "Action", width: 150, css: "text-center", itemTemplate: function (value, item) {
+                    var $iconAssign = "";
+                    var $iconPencil = $("<i>").attr({ class: "fa fa-pencil" }).attr({ style: "color:yellow;font-size:22px;" });
+                    var $iconTrash = $("<i>").attr({ class: "fa fa-trash" }).attr({ style: "color:red;font-size:26px;margin-left:8px;" });
+                    if (item.PriorityLevel != 11 && item.WorkRequestStatusName == "Pending") {
+                        $iconAssign = $("<i>").attr({ class: "fa fa-file-text" }).attr({ style: "color:green;font-size:26px;margin-left:8px;" });
+                    }
+                    else {
+
+                    }
+                    var $customEditButton = $("<span>")
+                        .attr({ title: jsGrid.fields.control.prototype.editButtonTooltip })
+                        .attr({ id: "btn-edit-" + item.id }).click(function (e) {
+                            var addNewUrl = "../GlobalAdmin/Edit?Id=" + item.id;
+                            $('#WOFormDetails').load(addNewUrl);
+                            e.stopPropagation();
+                        }).append($iconPencil);
+                    var $customDeleteButton = $("<span>")
+                        .attr({ title: jsGrid.fields.control.prototype.deleteButtonTooltip })
+                        .attr({ id: "btn-delete-" + item.id }).click(function (e) {
+                            $("#myModalForDeleteWO").modal("show");
+                            $("#DeleteWO").click(function (e) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: "../GlobalAdmin/DeleteWorkRequest?id=" + item.id,
+                                    success: function (Data) {
+                                        $("#myModalForDeleteWO").modal("hide");
+                                        $("#ListWorkOrderAsssignment").jsGrid("loadData");
+                                        toastr.success(Data.Message);
+                                    },
+                                    error: function (err) {
+                                    }
+
+                                });
+                            });
+
+                            e.stopPropagation();
+                        }).append($iconTrash);
+                    var $customAssignButton = $("<span>")
+                        .attr({ title: jsGrid.fields.control.prototype.assignButtonTooltip })
+                        .attr({ id: "btn-assign-" + item.id }).click(function (e) {
+                            $.ajax({
+                                type: "GET",
+                                data: { 'id': item.id, 'ProblemDesc': item.ProblemDesc, 'PriorityLevel': item.PriorityLevel, 'ProjectDesc': item.ProjectDesc, 'WorkRequestType': item.WorkRequestType, 'locationId': item.LocationID, 'AssignedTime': item.AssignedTime, 'AssignToUserId': item.AssignToUserId },
+                                url: '../GlobalAdmin/_AssignWorkAssignmentRequest/',
+                                contentType: "application/json; charset=utf-8",
+                                error: function (xhr, status, error) {
+                                },
+                                success: function (result) {
+                                    $("#divDetailPreviewAssignData").html(result);
+                                    $("#myModalForAssignEmployeeData").modal('show');
+                                }
+                            });
+                            e.stopPropagation();
+                        }).append($iconAssign);
+                    return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton).append($customDeleteButton).append($customAssignButton);
+                }
+            },
+        ],
+        rowClick: function (args) {
+            this
+            console.log(args)
+            var getData = args.item;
+            var keys = Object.keys(getData);
+            ViewWODetails(getData);
+
+            var text = [];
+
+        }
+    });
+
+
+
+    //$.ajax({
+    //    type: "GET",
+    //    url: '../GlobalAdmin/GetUnseenNotifications',
+    //    datatype: 'json',
+    //    contentType: "application/json",
+    //    success: function (response) {
+    //        debugger;
+    //        var $tr = null;
+    //            $.each(response, function (i, item) {
+    //                 $tr = $('<tr>').append(
+    //                    $('<td>').text(item.EmployeeImage),
+    //                    $('<td>').text(item.UserName),
+    //                    $('<td>').text(item.CustomerName)
+    //                );
+
+    //            });
+    //        var divContainer = document.getElementById("apps");
+    //        divContainer.innerHTML = "";
+    //        divContainer.appendChild($tr);
+    //    },
+    //    error: function (data) {
+    //        debugger;
+    //    }
+    //});
 
 })(jQuery);
 $(document).ready(function () {
