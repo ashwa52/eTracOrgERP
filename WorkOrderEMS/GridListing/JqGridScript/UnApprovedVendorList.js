@@ -298,7 +298,7 @@ function doSearch(ev) {
     });
 }
 function filter(args) {
-    debugger
+ 
    
 } 
 //function gridReload() {

@@ -4724,5 +4724,10 @@ namespace WorkOrderEMS.Data.EntityModel
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetOrgnizationUserView_Result>("spGetOrgnizationUserView", employeeIdParameter);
         }
+    
+        public virtual ObjectResult<spGetCompanyCountForGraph_Result> spGetCompanyCountForGraph()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCompanyCountForGraph_Result>("spGetCompanyCountForGraph");
+        }
     }
 }

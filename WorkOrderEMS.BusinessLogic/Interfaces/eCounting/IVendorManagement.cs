@@ -52,5 +52,6 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
         bool InsPolicyNumberIsExists(string InsPolicyNumber);
         IList<VendorSetupManagementModel> GetAllCompanyDataList1(long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
         bool SaveContractAllocation(ContractLocationAllocation obj);
+        CompanyCountForGraph GetCompanyCountForGraph();
     }
 }

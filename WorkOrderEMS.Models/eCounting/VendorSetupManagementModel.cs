@@ -150,4 +150,11 @@ namespace WorkOrderEMS.Models
         public int records { get; set; }
         public List<VendorSetupManagementModel> rows { get; set; }
     }
+    public class CompanyCountForGraph
+    {
+        public Nullable<long> TotalVendorCount { get; set; }
+        public Nullable<long> ApprovedVendorCount { get; set; }
+        public Nullable<long> WaitingVendorCount { get; set; }
+        public Nullable<long> RejectedVendorCount { get; set; }
+    }
 }

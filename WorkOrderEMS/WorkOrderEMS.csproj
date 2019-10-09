@@ -372,6 +372,7 @@
     <Compile Include="Controllers\Common\Schedular.cs" />
     <Compile Include="Controllers\DAR\DARController.cs" />
     <Compile Include="Controllers\eCounting\BillController.cs" />
+    <Compile Include="Controllers\eCounting\DebitMemoController.cs" />
     <Compile Include="Controllers\eCounting\eCountingReportController.cs" />
     <Compile Include="Controllers\eCounting\MiscellaneousController.cs" />
     <Compile Include="Controllers\eCounting\PaymentController.cs" />
@@ -6455,6 +6456,7 @@
     <Folder Include="Content\ProjectDocs\VendorW9Form\" />
     <Folder Include="obj\" />
     <Folder Include="ReportPDF\FullPageReport\eFleet\" />
+    <Folder Include="Views\DebitMemo\" />
     <Folder Include="Views\NewClient\" />
   </ItemGroup>
   <ItemGroup>

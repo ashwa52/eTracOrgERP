@@ -322,6 +322,63 @@ namespace WorkOrderEMS.Controllers
         }
         #endregion
         #region "Ajay Kumar"
+        [HttpGet]
+        public JsonResult GetDashboardForVendorCount() 
+        {
+            try
+            {
+                long LocationID = 0;
+                if ((eTracLoginModel)Session["eTrac"] != null)
+                { 
+                    eTracLoginModel objLoginSession = new eTracLoginModel();
+                    objLoginSession = (eTracLoginModel)Session["eTrac"]; 
+                    if (Session["eTrac_SelectedDasboardLocationID"] != null)
+                    {
+                        if (Convert.ToInt64(Session["eTrac_SelectedDasboardLocationID"]) != 0)
+                        {
+                            LocationID = objLoginSession.LocationID;
+                        }
+                    }
+                    CompanyCountForGraph model = new CompanyCountForGraph();
+                    var data = _IVendorManagement.GetCompanyCountForGraph();
+                    if (data !=null) 
+                    {
+                        if (data.WaitingVendorCount > 0)
+                        {
+                            model.WaitingVendorCount = (data.WaitingVendorCount * 100) / data.TotalVendorCount;
+                        }
+                        else
+                        {
+                            model.WaitingVendorCount = 0;
+                        }
+                        if (data.RejectedVendorCount > 0)
+                        {
+                            model.RejectedVendorCount = (data.RejectedVendorCount * 100) / data.TotalVendorCount;
+                        }
+                        else
+                        {
+                            model.RejectedVendorCount = 0;
+                        }
+                        if (data.ApprovedVendorCount > 0)
+                        {
+                            model.ApprovedVendorCount = (data.ApprovedVendorCount * 100) / data.TotalVendorCount;
+                        }
+                        else
+                        {
+                            model.ApprovedVendorCount = 0;
+                        }
+                    }
+                    return Json(new { model }, JsonRequestBehavior.AllowGet);
+                }
+                else { return Json(null, JsonRequestBehavior.AllowGet); }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { ex.InnerException }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
         public JsonResult IsTaxNumberIsExists(string TaxNo, long? VendorId)
         {
             bool result = _IVendorManagement.TaxNumberIsExists(TaxNo, Convert.ToInt32(VendorId));
@@ -458,8 +515,9 @@ namespace WorkOrderEMS.Controllers
             {
                 if (_search != null && _search != "")
                 {
-                    var AllCompanyListForSearch = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord).Where(x => x.CompanyNameLegal.ToLower() == _search.ToLower().Trim()).ToList();
-                    return Json(AllCompanyListForSearch.ToList(), JsonRequestBehavior.AllowGet);
+                    var AllCompanyListForSearch = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord);
+                    var FilteredList = AllCompanyListForSearch.Where(x => x.CompanyNameLegal.ToLower().Contains(_search.ToLower().Trim())).ToList();
+                    return Json(FilteredList.ToList(), JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
@@ -1464,8 +1522,9 @@ namespace WorkOrderEMS.Controllers
 
                 if (_search != null && _search != "")
                 {
-                    var AllCompanyListForSearch = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord).Where(x => x.CompanyNameLegal.ToLower() == _search.ToLower().Trim()).ToList();
-                    return Json(AllCompanyListForSearch.ToList(), JsonRequestBehavior.AllowGet);
+                    var AllCompanyListForSearch = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord).Where(x => !String.IsNullOrEmpty(x.CompanyNameLegal));
+                    var FilteredList = AllCompanyListForSearch.Where(x => x.CompanyNameLegal.ToLower().Contains(_search.ToLower().Trim())).ToList();
+                    return Json(FilteredList.ToList(), JsonRequestBehavior.AllowGet);
                 }
                 else
                 {

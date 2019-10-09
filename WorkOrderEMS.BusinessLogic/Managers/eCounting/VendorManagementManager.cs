@@ -1825,6 +1825,27 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// </summary>
         /// <param name="taxNumber"></param>
         /// <returns></returns>
+        public CompanyCountForGraph GetCompanyCountForGraph()
+        {
+            CompanyCountForGraph model = new CompanyCountForGraph();
+            var result = _workorderems.spGetCompanyCountForGraph().FirstOrDefault();
+            if (result != null) {
+                model.RejectedVendorCount = result.RejectedVendorCount;
+                model.ApprovedVendorCount = result.ApprovedVendorCount;
+                model.WaitingVendorCount = result.WaitingVendorCount;
+                model.TotalVendorCount = result.TotalVendorCount;
+            }
+            return model;
+        }
+
+
+        /// <summary>
+        /// Created By : Ajay Kumar
+        /// Created Date : 19-Sep-2019
+        /// Crated For : To check duplicate TXD_TaxIdNumber  for vendor
+        /// </summary>
+        /// <param name="taxNumber"></param>
+        /// <returns></returns>
         public bool TaxNumberIsExists(string taxNumber, long VendorId)
         {
             bool result = false;
