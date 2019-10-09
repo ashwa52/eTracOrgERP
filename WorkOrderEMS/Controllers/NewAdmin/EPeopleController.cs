@@ -46,7 +46,6 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                     LocationId = Convert.ToInt32(ObjLoginModel.LocationID);
                 }
             }
-
             var id = Cryptography.GetDecryptedData(Id, true);
             long _UserId = 0;
             long.TryParse(id, out _UserId);
