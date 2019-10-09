@@ -1,0 +1,189 @@
+﻿@model WorkOrderEMS.Models.Employee.EmployeeModel
+@{
+	ViewBag.Title = "Index";
+	Layout = "~/Views/Shared/_GuestLayout.cshtml";
+}
+<style>
+	.info {
+		display: inline-block;
+		margin: 10px;
+	}
+
+	.profile {
+		display: inline-block;
+	}
+
+		.profile img {
+			width: 50px;
+			height: auto;
+			border-radius: 50%;
+			border: 1px solid #ddd;
+		}
+
+
+
+	.middle {
+		text-align: center;
+		background-color: yellow;
+		margin-top: 5px;
+	}
+
+	.input-rounded {
+		border: 1px solid #000;
+	}
+
+	.btnverify {
+		background-color: #0CCC14;
+		width: 157px;
+		height: 58px;
+		font-size: 20px;
+		color: wheat;
+	}
+
+	label {
+		margin-bottom: 0;
+	}
+	.form-control:disabled, .form-control[readonly] {
+		background: #ddd;
+		opacity: 1;
+	}
+	
+input[type=checkbox] { display:none; } /* to hide the checkbox itself */
+input[type=checkbox] + label:before {
+  font-family: FontAwesome;
+  display: inline-block;
+}
+
+input[type=checkbox] + label:before { content: "\f096"; } /* unchecked icon */
+input[type=checkbox] + label:before { letter-spacing: 10px; } /* space between checkbox and label */
+
+input[type=checkbox]:checked + label:before { content: "\f046"; } /* checked icon */
+input[type=checkbox]:checked + label:before { letter-spacing: 5px; } /* allow space for check mark */
+</style>
+<script>
+	function EnableEdit(elm) {
+		var inputs = $('.basic-form :input');
+		if (elm.checked) {
+			inputs.each(function (i, elm) {
+				$(elm).removeAttr('disabled');
+			})
+		}
+		else {
+			inputs.each(function (i, elm) {
+				$(elm).attr('disabled',true);
+			})
+		}
+	}
+</script>
+
+<div class="card" style="width: 80%;margin: auto;">
+	<div class="card-header">On-Boarding/Personal Information</div>
+	<div class="card-body">
+		<div class="top">
+			<div class="profile">
+				<img src="~/Content/Dashboard/images/user2.jpg" />
+			</div>
+			<div class="info">
+				<span style="color:black"><b>Employee Id</b>: @Model.EmpId</span>
+			</div>
+		</div>
+		@Html.AntiForgeryToken()
+		@using (Html.BeginForm())
+		{
+			<div class="middle" style="cursor:pointer">
+				<label>
+
+					<input id="box1" type="checkbox" onchange="EnableEdit(this);" />
+					<label for="box1">Enable To Edit</label>
+				</label>
+			</div>
+			<div class="bottom-sec" style="margin-top: 10px;">
+
+				<div class="basic-form">
+					<div class="form-group row">
+						<div class="col-sm-4">
+							@Html.HiddenFor(model => model.EmpId)
+							@Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "First Name", @disabled = "disabled" } })
+
+
+						</div>
+						<div class="col-sm-4">
+
+							@Html.EditorFor(model => model.MiddleName, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Middle Name", @disabled = "disabled" } })
+
+
+						</div>
+						<div class="col-sm-4">
+
+							@Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Last Name", @disabled = "disabled" } })
+
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-sm-12">
+							@Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Street Address1", @disabled = "disabled" } })
+
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-sm-6">
+							@Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "City", @disabled = "disabled" } })
+
+
+						</div>
+						<div class="col-sm-6">
+							@Html.DropDownListFor(model => model.State, new SelectList(ViewBag.StateList, "StateId", "StateName"), "State", new { @id = "Address1State", @class = "form-control input-rounded" })
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-sm-3">
+							@Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Zip", @disabled = "disabled" } })
+
+
+						</div>
+						<div class="col-sm-3">
+							@Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Phone", @disabled = "disabled" } })
+
+
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-sm-6">
+
+							@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Email", @disabled = "disabled" } })
+
+						</div>
+						<div class="col-sm-6">
+
+							@Html.EditorFor(model => model.Dob, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-sm-6">
+
+							@Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Social Security Number" } })
+
+
+						</div>
+						<div class="col-sm-6">
+
+							@Html.EditorFor(model => model.Cityzenship, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Cityzenship" } })
+
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-sm-6">
+							@Html.EditorFor(model => model.Cityzenship, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Driver License Number" } })
+
+
+						</div>
+					</div>
+					<div style="float:right">
+						<button class="btn btnverify" type="submit">Verify</button>
+					</div>
+				</div>
+
+			</div>
+		}
+	</div>
+</div>

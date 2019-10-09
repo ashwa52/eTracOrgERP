@@ -1,0 +1,19 @@
+﻿@model WorkOrderEMS.Data.EntityModel.spGetInterviewQuestion_Result
+@if (Model != null)
+{
+	<div class="col-md-12 question">
+		<span>Question @((int)Session["eTrac_questions_number"]+1):</span>
+		<span>@Model.INQ_Question</span>
+	</div>
+	<div class="col-md-12 qusOpt">
+		<input type="hidden" id="selectAns" />
+		<input type="hidden" id="q_id" value="@Model.INQ_Id" />
+		<input type="hidden" value="@Session["eTrac_questions_number"]" id="hdn_qusnum" />
+		<button class="btn btn-default btnyes" onclick="RecordYes();">Yes</button>
+		<button class="btn btn-default btnNo">No</button>
+	</div>
+}
+else
+{
+<h1>No Questions Aligned</h1>
+}

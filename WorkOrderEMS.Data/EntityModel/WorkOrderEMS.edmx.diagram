@@ -246,6 +246,10 @@
         <AssociationConnector Association="workorderEMSModel.FK_QRCMaster_LocationMaster" />
         <AssociationConnector Association="workorderEMSModel.FK_QRCScanLog_LocationMaster" />
         <AssociationConnector Association="workorderEMSModel.FK_TrackEmployeeStatus_LocationMaster" />
+        <EntityTypeShape EntityType="workorderEMSModel.Citizenship" Width="1.5" PointX="14.375" PointY="17.75" />
+        <EntityTypeShape EntityType="workorderEMSModel.EmployeeAddress" Width="1.5" PointX="16.375" PointY="18.75" />
+        <EntityTypeShape EntityType="workorderEMSModel.Employee" Width="3.375" PointX="23.625" PointY="17.25" />
+        <EntityTypeShape EntityType="workorderEMSModel.ApplicantInfo" Width="1.5" PointX="3.375" PointY="17.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

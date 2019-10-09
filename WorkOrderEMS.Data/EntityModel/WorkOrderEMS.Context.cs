@@ -114,6 +114,10 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<LogPreBill> LogPreBills { get; set; }
         public virtual DbSet<NotificationDetail> NotificationDetails { get; set; }
         public virtual DbSet<LocationMaster> LocationMasters { get; set; }
+        public virtual DbSet<Citizenship> Citizenships { get; set; }
+        public virtual DbSet<EmployeeAddress> EmployeeAddresses { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<ApplicantInfo> ApplicantInfoes { get; set; }
     
         public virtual ObjectResult<CommonQeriesByVijay_Result> CommonQeriesByVijay()
         {
@@ -4635,6 +4639,255 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("VSP_VST_Id", typeof(long));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVehicleSeatingPermission_Result>("spGetVehicleSeatingPermission", vSP_VST_IdParameter);
+        }
+    
+        public virtual ObjectResult<spGetMyOpening_Result> spGetMyOpening()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetMyOpening_Result>("spGetMyOpening");
+        }
+    
+        public virtual ObjectResult<spGetJobPosting_Result> spGetJobPosting(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("employeeId", employeeId) :
+                new ObjectParameter("employeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetJobPosting_Result>("spGetJobPosting", employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetApplicantInfo_Result> spGetApplicantInfo(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantInfo_Result>("spGetApplicantInfo", employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<spSetEmployee_Result> spSetEmployee(string eMPAction, Nullable<long> eMP_Id, string eMP_EmployeeID, Nullable<long> eMP_API_ApplicantId, string eMP_FirstName, string eMP_MiddleName, string eMP_LastName, string eMP_Email, Nullable<long> eMP_Phone, string eMP_DrivingLicenseNumber, Nullable<System.DateTime> eMP_DateOfBirth, string eMP_SSN, string eMP_Photo, string eMP_MilitaryService, string eMP_Gender, Nullable<long> eMP_JobTitleId, Nullable<long> eMP_ManagerId, Nullable<System.DateTime> eMP_DateOfJoining, Nullable<long> eMP_LocationId, Nullable<long> eMP_IsCreatedBy, Nullable<System.DateTime> eMP_IsCreatedOn, string eMP_IsActive, Nullable<long> userType, string eMA_Address, string eMA_City, string eMA_State, Nullable<int> eMA_Zip, string cTZ_Citizenship)
+        {
+            var eMPActionParameter = eMPAction != null ?
+                new ObjectParameter("EMPAction", eMPAction) :
+                new ObjectParameter("EMPAction", typeof(string));
+    
+            var eMP_IdParameter = eMP_Id.HasValue ?
+                new ObjectParameter("EMP_Id", eMP_Id) :
+                new ObjectParameter("EMP_Id", typeof(long));
+    
+            var eMP_EmployeeIDParameter = eMP_EmployeeID != null ?
+                new ObjectParameter("EMP_EmployeeID", eMP_EmployeeID) :
+                new ObjectParameter("EMP_EmployeeID", typeof(string));
+    
+            var eMP_API_ApplicantIdParameter = eMP_API_ApplicantId.HasValue ?
+                new ObjectParameter("EMP_API_ApplicantId", eMP_API_ApplicantId) :
+                new ObjectParameter("EMP_API_ApplicantId", typeof(long));
+    
+            var eMP_FirstNameParameter = eMP_FirstName != null ?
+                new ObjectParameter("EMP_FirstName", eMP_FirstName) :
+                new ObjectParameter("EMP_FirstName", typeof(string));
+    
+            var eMP_MiddleNameParameter = eMP_MiddleName != null ?
+                new ObjectParameter("EMP_MiddleName", eMP_MiddleName) :
+                new ObjectParameter("EMP_MiddleName", typeof(string));
+    
+            var eMP_LastNameParameter = eMP_LastName != null ?
+                new ObjectParameter("EMP_LastName", eMP_LastName) :
+                new ObjectParameter("EMP_LastName", typeof(string));
+    
+            var eMP_EmailParameter = eMP_Email != null ?
+                new ObjectParameter("EMP_Email", eMP_Email) :
+                new ObjectParameter("EMP_Email", typeof(string));
+    
+            var eMP_PhoneParameter = eMP_Phone.HasValue ?
+                new ObjectParameter("EMP_Phone", eMP_Phone) :
+                new ObjectParameter("EMP_Phone", typeof(long));
+    
+            var eMP_DrivingLicenseNumberParameter = eMP_DrivingLicenseNumber != null ?
+                new ObjectParameter("EMP_DrivingLicenseNumber", eMP_DrivingLicenseNumber) :
+                new ObjectParameter("EMP_DrivingLicenseNumber", typeof(string));
+    
+            var eMP_DateOfBirthParameter = eMP_DateOfBirth.HasValue ?
+                new ObjectParameter("EMP_DateOfBirth", eMP_DateOfBirth) :
+                new ObjectParameter("EMP_DateOfBirth", typeof(System.DateTime));
+    
+            var eMP_SSNParameter = eMP_SSN != null ?
+                new ObjectParameter("EMP_SSN", eMP_SSN) :
+                new ObjectParameter("EMP_SSN", typeof(string));
+    
+            var eMP_PhotoParameter = eMP_Photo != null ?
+                new ObjectParameter("EMP_Photo", eMP_Photo) :
+                new ObjectParameter("EMP_Photo", typeof(string));
+    
+            var eMP_MilitaryServiceParameter = eMP_MilitaryService != null ?
+                new ObjectParameter("EMP_MilitaryService", eMP_MilitaryService) :
+                new ObjectParameter("EMP_MilitaryService", typeof(string));
+    
+            var eMP_GenderParameter = eMP_Gender != null ?
+                new ObjectParameter("EMP_Gender", eMP_Gender) :
+                new ObjectParameter("EMP_Gender", typeof(string));
+    
+            var eMP_JobTitleIdParameter = eMP_JobTitleId.HasValue ?
+                new ObjectParameter("EMP_JobTitleId", eMP_JobTitleId) :
+                new ObjectParameter("EMP_JobTitleId", typeof(long));
+    
+            var eMP_ManagerIdParameter = eMP_ManagerId.HasValue ?
+                new ObjectParameter("EMP_ManagerId", eMP_ManagerId) :
+                new ObjectParameter("EMP_ManagerId", typeof(long));
+    
+            var eMP_DateOfJoiningParameter = eMP_DateOfJoining.HasValue ?
+                new ObjectParameter("EMP_DateOfJoining", eMP_DateOfJoining) :
+                new ObjectParameter("EMP_DateOfJoining", typeof(System.DateTime));
+    
+            var eMP_LocationIdParameter = eMP_LocationId.HasValue ?
+                new ObjectParameter("EMP_LocationId", eMP_LocationId) :
+                new ObjectParameter("EMP_LocationId", typeof(long));
+    
+            var eMP_IsCreatedByParameter = eMP_IsCreatedBy.HasValue ?
+                new ObjectParameter("EMP_IsCreatedBy", eMP_IsCreatedBy) :
+                new ObjectParameter("EMP_IsCreatedBy", typeof(long));
+    
+            var eMP_IsCreatedOnParameter = eMP_IsCreatedOn.HasValue ?
+                new ObjectParameter("EMP_IsCreatedOn", eMP_IsCreatedOn) :
+                new ObjectParameter("EMP_IsCreatedOn", typeof(System.DateTime));
+    
+            var eMP_IsActiveParameter = eMP_IsActive != null ?
+                new ObjectParameter("EMP_IsActive", eMP_IsActive) :
+                new ObjectParameter("EMP_IsActive", typeof(string));
+    
+            var userTypeParameter = userType.HasValue ?
+                new ObjectParameter("UserType", userType) :
+                new ObjectParameter("UserType", typeof(long));
+    
+            var eMA_AddressParameter = eMA_Address != null ?
+                new ObjectParameter("EMA_Address", eMA_Address) :
+                new ObjectParameter("EMA_Address", typeof(string));
+    
+            var eMA_CityParameter = eMA_City != null ?
+                new ObjectParameter("EMA_City", eMA_City) :
+                new ObjectParameter("EMA_City", typeof(string));
+    
+            var eMA_StateParameter = eMA_State != null ?
+                new ObjectParameter("EMA_State", eMA_State) :
+                new ObjectParameter("EMA_State", typeof(string));
+    
+            var eMA_ZipParameter = eMA_Zip.HasValue ?
+                new ObjectParameter("EMA_Zip", eMA_Zip) :
+                new ObjectParameter("EMA_Zip", typeof(int));
+    
+            var cTZ_CitizenshipParameter = cTZ_Citizenship != null ?
+                new ObjectParameter("CTZ_Citizenship", cTZ_Citizenship) :
+                new ObjectParameter("CTZ_Citizenship", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSetEmployee_Result>("spSetEmployee", eMPActionParameter, eMP_IdParameter, eMP_EmployeeIDParameter, eMP_API_ApplicantIdParameter, eMP_FirstNameParameter, eMP_MiddleNameParameter, eMP_LastNameParameter, eMP_EmailParameter, eMP_PhoneParameter, eMP_DrivingLicenseNumberParameter, eMP_DateOfBirthParameter, eMP_SSNParameter, eMP_PhotoParameter, eMP_MilitaryServiceParameter, eMP_GenderParameter, eMP_JobTitleIdParameter, eMP_ManagerIdParameter, eMP_DateOfJoiningParameter, eMP_LocationIdParameter, eMP_IsCreatedByParameter, eMP_IsCreatedOnParameter, eMP_IsActiveParameter, userTypeParameter, eMA_AddressParameter, eMA_CityParameter, eMA_StateParameter, eMA_ZipParameter, cTZ_CitizenshipParameter);
+        }
+    
+        public virtual int spCheckEmployeeIDAvailability(string employeeID, ObjectParameter availability)
+        {
+            var employeeIDParameter = employeeID != null ?
+                new ObjectParameter("EmployeeID", employeeID) :
+                new ObjectParameter("EmployeeID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spCheckEmployeeIDAvailability", employeeIDParameter, availability);
+        }
+    
+        public virtual ObjectResult<spGetEmployeePersonalInfo_Result> spGetEmployeePersonalInfo(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEmployeePersonalInfo_Result>("spGetEmployeePersonalInfo", employeeIdParameter);
+        }
+    
+        public virtual int spGetInterviewCanStart(Nullable<long> applicantId, ObjectParameter isStart)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("ApplicantId", applicantId) :
+                new ObjectParameter("ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetInterviewCanStart", applicantIdParameter, isStart);
+        }
+    
+        public virtual ObjectResult<spGetInterviewerList_Result> spGetInterviewerList(Nullable<long> applicantId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("ApplicantId", applicantId) :
+                new ObjectParameter("ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInterviewerList_Result>("spGetInterviewerList", applicantIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetInterviewQuestion_Result> spGetInterviewQuestion(string isExempt)
+        {
+            var isExemptParameter = isExempt != null ?
+                new ObjectParameter("IsExempt", isExempt) :
+                new ObjectParameter("IsExempt", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInterviewQuestion_Result>("spGetInterviewQuestion", isExemptParameter);
+        }
+    
+        public virtual int spSetInterviewAnswer(Nullable<long> iNA_INQ_Id, Nullable<long> iNA_API_ApplicantId, string iNA_EMP_EmployeeID, string iNA_Answer, string iNA_Comments)
+        {
+            var iNA_INQ_IdParameter = iNA_INQ_Id.HasValue ?
+                new ObjectParameter("INA_INQ_Id", iNA_INQ_Id) :
+                new ObjectParameter("INA_INQ_Id", typeof(long));
+    
+            var iNA_API_ApplicantIdParameter = iNA_API_ApplicantId.HasValue ?
+                new ObjectParameter("INA_API_ApplicantId", iNA_API_ApplicantId) :
+                new ObjectParameter("INA_API_ApplicantId", typeof(long));
+    
+            var iNA_EMP_EmployeeIDParameter = iNA_EMP_EmployeeID != null ?
+                new ObjectParameter("INA_EMP_EmployeeID", iNA_EMP_EmployeeID) :
+                new ObjectParameter("INA_EMP_EmployeeID", typeof(string));
+    
+            var iNA_AnswerParameter = iNA_Answer != null ?
+                new ObjectParameter("INA_Answer", iNA_Answer) :
+                new ObjectParameter("INA_Answer", typeof(string));
+    
+            var iNA_CommentsParameter = iNA_Comments != null ?
+                new ObjectParameter("INA_Comments", iNA_Comments) :
+                new ObjectParameter("INA_Comments", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetInterviewAnswer", iNA_INQ_IdParameter, iNA_API_ApplicantIdParameter, iNA_EMP_EmployeeIDParameter, iNA_AnswerParameter, iNA_CommentsParameter);
+        }
+    
+        public virtual int spSetInterviewerIsOnline(Nullable<long> applicantId, string employeeID, string isAvailable, string iNA_Comments)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("ApplicantId", applicantId) :
+                new ObjectParameter("ApplicantId", typeof(long));
+    
+            var employeeIDParameter = employeeID != null ?
+                new ObjectParameter("EmployeeID", employeeID) :
+                new ObjectParameter("EmployeeID", typeof(string));
+    
+            var isAvailableParameter = isAvailable != null ?
+                new ObjectParameter("IsAvailable", isAvailable) :
+                new ObjectParameter("IsAvailable", typeof(string));
+    
+            var iNA_CommentsParameter = iNA_Comments != null ?
+                new ObjectParameter("INA_Comments", iNA_Comments) :
+                new ObjectParameter("INA_Comments", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetInterviewerIsOnline", applicantIdParameter, employeeIDParameter, isAvailableParameter, iNA_CommentsParameter);
+        }
+    
+        public virtual ObjectResult<spGetApplicantInfoForMyInterview_Result> spGetApplicantInfoForMyInterview(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantInfoForMyInterview_Result>("spGetApplicantInfoForMyInterview", employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spGetInterviewScore(Nullable<long> applicantId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("ApplicantId", applicantId) :
+                new ObjectParameter("ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetInterviewScore", applicantIdParameter);
         }
     }
 }

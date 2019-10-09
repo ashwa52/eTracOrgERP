@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
 using System.Web.Mvc;
+using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
 using WorkOrderEMS.Models.CommonModels;
+using WorkOrderEMS.Models.Employee;
+using WorkOrderEMS.Models.NewAdminModel;
 using WorkOrderEMS.Models.SuperAdminModels;
 using WorkOrderEMS.Models.UserModels;
 
@@ -263,6 +266,13 @@ namespace WorkOrderEMS.BusinessLogic
         List<ContractDropdownDetailsModel> ListClientInvoicingTerm();
         List<listForEmployeeDevice> send30SecFRNotificaitonToAllManager(long LocationId, long UserId);
         List<listForEmployeeDevice> GetAllManagerList(long LocationId, long UserId);
-       // BudgetDetails GetListBudgetDetails(long? LocationId, long? UserId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
-    }
+		List<MyOpeningModel> GetMyOpenings();
+		List<JobPosting> GetJobPostong(long userId);
+		List<spGetApplicantInfo_Result> GetApplicantInfo(long userId);
+		bool SaveApplicantInfo(OnboardingDetailRequestModel onboardingDetailRequestModel);
+		bool SaveGuestEmployeeBasicInfo(GuestEmployeeBasicInfoRequestModel guestEmployeeBasicInfoRequestModel);
+		InterviewersViewModel GetInterviewersList(long applicantId, long userId);
+		IEnumerable<spGetInterviewQuestion_Result> GetInterviewQuestions();
+		// BudgetDetails GetListBudgetDetails(long? LocationId, long? UserId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
+	}
 }

@@ -61,6 +61,41 @@
           <Property Name="DeletedBy" Type="bigint" />
           <Property Name="DeletedOn" Type="datetime" />
         </EntityType>
+        <EntityType Name="ApplicantInfo">
+          <Key>
+            <PropertyRef Name="API_ApplicantId" />
+          </Key>
+          <Property Name="API_ApplicantId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="API_FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="API_MiddleName" Type="varchar" MaxLength="50" />
+          <Property Name="API_LastName" Type="varchar" MaxLength="50" />
+          <Property Name="API_HomeAddress" Type="varchar" MaxLength="100" />
+          <Property Name="API_City" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="API_State" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="API_Zip" Type="int" />
+          <Property Name="API_Resume" Type="nvarchar(max)" />
+          <Property Name="API_CoverLetter" Type="varchar(max)" />
+          <Property Name="API_PhoneNumber" Type="bigint" Nullable="false" />
+          <Property Name="API_Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="API_DLNumber" Type="varchar" MaxLength="50" />
+          <Property Name="API_Photo" Type="nvarchar(max)" />
+          <Property Name="API_Citizenship" Type="varchar" MaxLength="50" />
+          <Property Name="API_MilitaryService" Type="char" MaxLength="1" />
+          <Property Name="API_Gender" Type="varchar" MaxLength="20" />
+          <Property Name="API_HighestEducation" Type="varchar" MaxLength="30" />
+          <Property Name="API_AnyRefOrEmployeeInELITE" Type="varchar" MaxLength="100" />
+          <Property Name="API_EverELITEWorkFrom" Type="date" />
+          <Property Name="API_EverELITEWorkTo" Type="date" />
+          <Property Name="API_WorkEligibleInUS" Type="char" MaxLength="1" />
+          <Property Name="API_JobPostingId" Type="bigint" />
+          <Property Name="API_JobTitleID" Type="bigint" Nullable="false" />
+          <Property Name="API_HiringManagerID" Type="varchar" MaxLength="20" />
+          <Property Name="API_DateOfJoining" Type="date" />
+          <Property Name="API_DesireSalary" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="API_ApplicantStatus" Type="char" MaxLength="1" />
+          <Property Name="API_Date" Type="datetime" />
+          <Property Name="API_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
         <EntityType Name="Bill">
           <Key>
             <PropertyRef Name="BLL_Id" />
@@ -115,6 +150,20 @@
           <Property Name="BLM_BudgetYear" Type="int" Nullable="false" />
           <Property Name="BLM_Date" Type="date" Nullable="false" />
           <Property Name="BLM_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="Citizenship">
+          <Key>
+            <PropertyRef Name="CTZ_Id" />
+          </Key>
+          <Property Name="CTZ_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CTZ_Citizenship" Type="varchar" MaxLength="50" />
+          <Property Name="CTZ_EMP_EmployeeID" Type="varchar" MaxLength="50" />
+          <Property Name="CTZ_lawfulResident" Type="varchar" MaxLength="30" />
+          <Property Name="CTZ_AlienRegisteationNumber" Type="varchar" MaxLength="20" />
+          <Property Name="CTZ_FormI94" Type="nvarchar(max)" />
+          <Property Name="CTZ_ForeignPassport" Type="varchar" MaxLength="100" />
+          <Property Name="CTZ_Date" Type="datetime" />
+          <Property Name="CTZ_IsActive" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
@@ -672,6 +721,46 @@
           <Property Name="IfNoThenDescription" Type="nvarchar(max)" />
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="WorkOrderAssignmentId" Type="bigint" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EMP_Id" />
+          </Key>
+          <Property Name="EMP_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EMP_EmployeeID" Type="varchar" MaxLength="20" />
+          <Property Name="EMP_API_ApplicantId" Type="bigint" />
+          <Property Name="EMP_FirstName" Type="varchar" MaxLength="30" />
+          <Property Name="EMP_MiddleName" Type="varchar" MaxLength="30" />
+          <Property Name="EMP_LastName" Type="varchar" MaxLength="30" />
+          <Property Name="EMP_Email" Type="varchar" MaxLength="50" />
+          <Property Name="EMP_Phone" Type="bigint" />
+          <Property Name="EMP_DrivingLicenseNumber" Type="varchar" MaxLength="50" />
+          <Property Name="EMP_DateOfBirth" Type="date" />
+          <Property Name="EMP_SSN" Type="varchar" MaxLength="50" />
+          <Property Name="EMP_Photo" Type="nvarchar(max)" />
+          <Property Name="EMP_MilitaryService" Type="char" MaxLength="1" />
+          <Property Name="EMP_Gender" Type="varchar" MaxLength="20" />
+          <Property Name="EMP_JobTitleId" Type="bigint" />
+          <Property Name="EMP_ManagerId" Type="varchar" MaxLength="20" />
+          <Property Name="EMP_DateOfJoining" Type="date" />
+          <Property Name="EMP_LocationId" Type="bigint" />
+          <Property Name="EMP_IsCreatedBy" Type="bigint" />
+          <Property Name="EMP_IsCreatedOn" Type="datetime" />
+          <Property Name="EMP_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="EmployeeAddress">
+          <Key>
+            <PropertyRef Name="EMA_Id" />
+          </Key>
+          <Property Name="EMA_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EMA_EMP_EmployeeID" Type="varchar" MaxLength="20" />
+          <Property Name="EMA_Address" Type="varchar" MaxLength="100" />
+          <Property Name="EMA_City" Type="varchar" MaxLength="50" />
+          <Property Name="EMA_State" Type="varchar" MaxLength="50" />
+          <Property Name="EMA_Zip" Type="int" />
+          <Property Name="EMA_AddressPhoneNo" Type="bigint" />
+          <Property Name="EMA_Date" Type="datetime" />
+          <Property Name="EMA_IsActive" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="EmployeeLocationMapping">
           <Key>
@@ -3813,6 +3902,10 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Parameter Name="RUL_ConditionDays" Type="numeric" Mode="In" />
           <Parameter Name="RUL_ConditionDate" Type="datetime" Mode="In" />
         </Function>
+        <Function Name="spCheckEmployeeIDAvailability" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
+          <Parameter Name="Availability" Type="varchar" Mode="InOut" />
+        </Function>
         <Function Name="spGet_eForms" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetAccountCategory" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Action" Type="char" Mode="In" />
@@ -3822,6 +3915,12 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Parameter Name="CLMAction" Type="char" Mode="In" />
           <Parameter Name="CLM_LocationId" Type="bigint" Mode="In" />
           <Parameter Name="CLM_CCM_CostCode" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="spGetApplicantInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spGetApplicantInfoForMyInterview" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
         </Function>
         <Function Name="spGetApprovedBillList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CMP_Id" Type="bigint" Mode="In" />
@@ -3892,9 +3991,28 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
         <Function Name="spGeteFormTrack" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ApprovarId" Type="bigint" Mode="In" />
         </Function>
+        <Function Name="spGetEmployeePersonalInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spGetFormMaster" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetInsurance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CMP_Id" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="spGetInterviewCanStart" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ApplicantId" Type="bigint" Mode="In" />
+          <Parameter Name="IsStart" Type="char" Mode="InOut" />
+        </Function>
+        <Function Name="spGetInterviewerList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ApplicantId" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="spGetInterviewQuestion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IsExempt" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spGetInterviewScore" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ApplicantId" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="spGetJobPosting" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="employeeId" Type="varchar" Mode="In" />
         </Function>
         <Function Name="spGetJobTitle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="JBT_VST_Id" Type="bigint" Mode="In" />
@@ -3916,6 +4034,7 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
         </Function>
         <Function Name="spGetMisNumber" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetModule" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetMyOpening" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetPaymentMode" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetPaymentSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LocationId" Type="bigint" Mode="In" />
@@ -4325,6 +4444,36 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Parameter Name="EFT_Comment" Type="varchar" Mode="In" />
           <Parameter Name="EFT_IsActive" Type="char" Mode="In" />
         </Function>
+        <Function Name="spSetEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EMPAction" Type="char" Mode="In" />
+          <Parameter Name="EMP_Id" Type="bigint" Mode="In" />
+          <Parameter Name="EMP_EmployeeID" Type="varchar" Mode="In" />
+          <Parameter Name="EMP_API_ApplicantId" Type="bigint" Mode="In" />
+          <Parameter Name="EMP_FirstName" Type="varchar" Mode="In" />
+          <Parameter Name="EMP_MiddleName" Type="varchar" Mode="In" />
+          <Parameter Name="EMP_LastName" Type="varchar" Mode="In" />
+          <Parameter Name="EMP_Email" Type="varchar" Mode="In" />
+          <Parameter Name="EMP_Phone" Type="bigint" Mode="In" />
+          <Parameter Name="EMP_DrivingLicenseNumber" Type="varchar" Mode="In" />
+          <Parameter Name="EMP_DateOfBirth" Type="date" Mode="In" />
+          <Parameter Name="EMP_SSN" Type="varchar" Mode="In" />
+          <Parameter Name="EMP_Photo" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="EMP_MilitaryService" Type="char" Mode="In" />
+          <Parameter Name="EMP_Gender" Type="varchar" Mode="In" />
+          <Parameter Name="EMP_JobTitleId" Type="bigint" Mode="In" />
+          <Parameter Name="EMP_ManagerId" Type="bigint" Mode="In" />
+          <Parameter Name="EMP_DateOfJoining" Type="date" Mode="In" />
+          <Parameter Name="EMP_LocationId" Type="bigint" Mode="In" />
+          <Parameter Name="EMP_IsCreatedBy" Type="bigint" Mode="In" />
+          <Parameter Name="EMP_IsCreatedOn" Type="datetime" Mode="In" />
+          <Parameter Name="EMP_IsActive" Type="char" Mode="In" />
+          <Parameter Name="UserType" Type="bigint" Mode="In" />
+          <Parameter Name="EMA_Address" Type="varchar" Mode="In" />
+          <Parameter Name="EMA_City" Type="varchar" Mode="In" />
+          <Parameter Name="EMA_State" Type="varchar" Mode="In" />
+          <Parameter Name="EMA_Zip" Type="int" Mode="In" />
+          <Parameter Name="CTZ_Citizenship" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spSetFormMaster" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FRMAction" Type="char" Mode="In" />
           <Parameter Name="FRM_Id" Type="bigint" Mode="In" />
@@ -4344,6 +4493,19 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Parameter Name="INS_ModifiedBy" Type="bigint" Mode="In" />
           <Parameter Name="INS_ApprovedBy" Type="bigint" Mode="In" />
           <Parameter Name="INS_IsActive" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetInterviewAnswer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="INA_INQ_Id" Type="bigint" Mode="In" />
+          <Parameter Name="INA_API_ApplicantId" Type="bigint" Mode="In" />
+          <Parameter Name="INA_EMP_EmployeeID" Type="varchar" Mode="In" />
+          <Parameter Name="INA_Answer" Type="char" Mode="In" />
+          <Parameter Name="INA_Comments" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spSetInterviewerIsOnline" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ApplicantId" Type="bigint" Mode="In" />
+          <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
+          <Parameter Name="IsAvailable" Type="char" Mode="In" />
+          <Parameter Name="INA_Comments" Type="varchar" Mode="In" />
         </Function>
         <Function Name="spSetJobTitle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="JBTAction" Type="char" Mode="In" />
@@ -4669,10 +4831,12 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <EntitySet Name="AddressMaster" EntityType="Self.AddressMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AdminEmployeeMapping" EntityType="Self.AdminEmployeeMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AdminLocationMapping" EntityType="Self.AdminLocationMapping" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ApplicantInfo" EntityType="Self.ApplicantInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BillType" EntityType="Self.BillType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BudgetCostCodeMapping" EntityType="Self.BudgetCostCodeMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BudgetLocationMapping" EntityType="Self.BudgetLocationMapping" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Citizenship" EntityType="Self.Citizenship" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompanyAccountDetail" EntityType="Self.CompanyAccountDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompanyDetail" EntityType="Self.CompanyDetail" Schema="dbo" store:Type="Tables" />
@@ -4702,6 +4866,8 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <EntitySet Name="eForm" EntityType="Self.eForm" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmailLog" EntityType="Self.EmailLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EMaintenanceSurvey" EntityType="Self.EMaintenanceSurvey" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeAddress" EntityType="Self.EmployeeAddress" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeLocationMapping" EntityType="Self.EmployeeLocationMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ExceptionLog" EntityType="Self.ExceptionLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GlobalCodes" EntityType="Self.GlobalCodes" Schema="dbo" store:Type="Tables" />
@@ -7329,7 +7495,84 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
             <End Role="LoginLog" EntitySet="LoginLogs" />
           </AssociationSet>
           <FunctionImport Name="spGetVehicleSeatingPermission" ReturnType="Collection(workorderEMSModel.spGetVehicleSeatingPermission_Result)">
-            <Parameter Name="VSP_VST_Id" Mode="In" Type="Int64" />
+          <Parameter Name="VSP_VST_Id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spGetMyOpening" ReturnType="Collection(workorderEMSModel.spGetMyOpening_Result)" />
+          <FunctionImport Name="spGetJobPosting" ReturnType="Collection(workorderEMSModel.spGetJobPosting_Result)" >
+          <Parameter Name="employeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetApplicantInfo" ReturnType="Collection(workorderEMSModel.spGetApplicantInfo_Result)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetEmployee" ReturnType="Collection(workorderEMSModel.spSetEmployee_Result)">
+            <Parameter Name="EMPAction" Mode="In" Type="String" />
+            <Parameter Name="EMP_Id" Mode="In" Type="Int64" />
+            <Parameter Name="EMP_EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="EMP_API_ApplicantId" Mode="In" Type="Int64" />
+            <Parameter Name="EMP_FirstName" Mode="In" Type="String" />
+            <Parameter Name="EMP_MiddleName" Mode="In" Type="String" />
+            <Parameter Name="EMP_LastName" Mode="In" Type="String" />
+            <Parameter Name="EMP_Email" Mode="In" Type="String" />
+            <Parameter Name="EMP_Phone" Mode="In" Type="Int64" />
+            <Parameter Name="EMP_DrivingLicenseNumber" Mode="In" Type="String" />
+            <Parameter Name="EMP_DateOfBirth" Mode="In" Type="DateTime" />
+            <Parameter Name="EMP_SSN" Mode="In" Type="String" />
+            <Parameter Name="EMP_Photo" Mode="In" Type="String" />
+            <Parameter Name="EMP_MilitaryService" Mode="In" Type="String" />
+            <Parameter Name="EMP_Gender" Mode="In" Type="String" />
+            <Parameter Name="EMP_JobTitleId" Mode="In" Type="Int64" />
+            <Parameter Name="EMP_ManagerId" Mode="In" Type="Int64" />
+            <Parameter Name="EMP_DateOfJoining" Mode="In" Type="DateTime" />
+            <Parameter Name="EMP_LocationId" Mode="In" Type="Int64" />
+            <Parameter Name="EMP_IsCreatedBy" Mode="In" Type="Int64" />
+            <Parameter Name="EMP_IsCreatedOn" Mode="In" Type="DateTime" />
+            <Parameter Name="EMP_IsActive" Mode="In" Type="String" />
+            <Parameter Name="UserType" Mode="In" Type="Int64" />
+            <Parameter Name="EMA_Address" Mode="In" Type="String" />
+            <Parameter Name="EMA_City" Mode="In" Type="String" />
+            <Parameter Name="EMA_State" Mode="In" Type="String" />
+            <Parameter Name="EMA_Zip" Mode="In" Type="Int32" />
+            <Parameter Name="CTZ_Citizenship" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Citizenships" EntityType="workorderEMSModel.Citizenship" />
+          <EntitySet Name="EmployeeAddresses" EntityType="workorderEMSModel.EmployeeAddress" />
+          <FunctionImport Name="spCheckEmployeeIDAvailability">
+            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="Availability" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetEmployeePersonalInfo" ReturnType="Collection(workorderEMSModel.spGetEmployeePersonalInfo_Result)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Employees" EntityType="workorderEMSModel.Employee" />
+          <EntitySet Name="ApplicantInfoes" EntityType="workorderEMSModel.ApplicantInfo" />
+          <FunctionImport Name="spGetInterviewCanStart">
+            <Parameter Name="ApplicantId" Mode="In" Type="Int64" />
+            <Parameter Name="IsStart" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetInterviewerList" ReturnType="Collection(workorderEMSModel.spGetInterviewerList_Result)">
+          <Parameter Name="ApplicantId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spGetInterviewQuestion" ReturnType="Collection(workorderEMSModel.spGetInterviewQuestion_Result)">
+          <Parameter Name="IsExempt" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetInterviewAnswer">
+            <Parameter Name="INA_INQ_Id" Mode="In" Type="Int64" />
+            <Parameter Name="INA_API_ApplicantId" Mode="In" Type="Int64" />
+            <Parameter Name="INA_EMP_EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="INA_Answer" Mode="In" Type="String" />
+            <Parameter Name="INA_Comments" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetInterviewerIsOnline">
+            <Parameter Name="ApplicantId" Mode="In" Type="Int64" />
+            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="IsAvailable" Mode="In" Type="String" />
+            <Parameter Name="INA_Comments" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetApplicantInfoForMyInterview" ReturnType="Collection(workorderEMSModel.spGetApplicantInfoForMyInterview_Result)">
+            <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetInterviewScore" ReturnType="Collection(Int32)">
+            <Parameter Name="ApplicantId" Mode="In" Type="Int64" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="CommonQeriesByVijay_Result">
@@ -14251,6 +14494,261 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Type="Int64" Name="VSM_UserTypeId" Nullable="true" />
           <Property Type="String" Name="CodeName" Nullable="true" MaxLength="200" />
         </ComplexType>
+        <ComplexType Name="spGetMyOpening_Result">
+          <Property Type="Int64" Name="API_ApplicantId" Nullable="false" />
+          <Property Type="String" Name="API_FirstName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="API_MiddleName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_LastName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_HomeAddress" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="API_City" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="API_State" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="API_PhoneNumber" Nullable="false" />
+          <Property Type="String" Name="API_Email" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="API_DLNumber" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_Photo" Nullable="true" />
+          <Property Type="String" Name="API_Citizenship" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_Gender" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="API_HighestEducation" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="API_AnyRefOrEmployeeInELITE" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="API_EverELITEWorkFrom" Nullable="true" />
+          <Property Type="DateTime" Name="API_EverELITEWorkTo" Nullable="true" />
+          <Property Type="String" Name="API_WorkEligibleInUS" Nullable="true" MaxLength="1" />
+          <Property Type="Int64" Name="JPS_JobPostingId" Nullable="true" />
+          <Property Type="DateTime" Name="JobPostingDate" Nullable="true" Precision="23" />
+          <Property Type="Int64" Name="API_JobTitleID" Nullable="false" />
+          <Property Type="String" Name="API_HiringManagerID" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="API_DateOfJoining" Nullable="true" />
+          <Property Type="Decimal" Name="API_DesireSalary" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="API_ApplicantStatus" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="API_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="HiringManager" Nullable="true" MaxLength="403" />
+        </ComplexType>
+        <ComplexType Name="spGetJobPosting_Result">
+          <Property Type="Int64" Name="JPS_JobPostingId" Nullable="false" />
+          <Property Type="Int64" Name="JBT_Id" Nullable="true" />
+          <Property Type="String" Name="JPS_HiringManagerID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="Int32" Name="PositionCount" Nullable="true" />
+          <Property Type="Int32" Name="ApplicantCount" Nullable="true" />
+          <Property Type="String" Name="JobPostingDate" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="Duration" Nullable="true" />
+          <Property Type="String" Name="Status" Nullable="false" MaxLength="5" />
+        </ComplexType>
+        <ComplexType Name="spGetApplicantInfo_Result">
+          <Property Type="Int64" Name="API_ApplicantId" Nullable="false" />
+          <Property Type="String" Name="API_FirstName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="API_MiddleName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_LastName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_HomeAddress" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="API_City" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="API_State" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="API_PhoneNumber" Nullable="false" />
+          <Property Type="String" Name="API_Email" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="API_DLNumber" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_Photo" Nullable="true" />
+          <Property Type="String" Name="API_Citizenship" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_Gender" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="API_HighestEducation" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="API_AnyRefOrEmployeeInELITE" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="API_EverELITEWorkFrom" Nullable="true" />
+          <Property Type="DateTime" Name="API_EverELITEWorkTo" Nullable="true" />
+          <Property Type="String" Name="API_WorkEligibleInUS" Nullable="true" MaxLength="1" />
+          <Property Type="Int64" Name="JPS_JobPostingId" Nullable="true" />
+          <Property Type="DateTime" Name="JobPostingDate" Nullable="true" Precision="23" />
+          <Property Type="Int64" Name="VST_Id" Nullable="true" />
+          <Property Type="Int64" Name="API_JobTitleID" Nullable="false" />
+          <Property Type="DateTime" Name="API_DateOfJoining" Nullable="true" />
+          <Property Type="Decimal" Name="API_DesireSalary" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="API_ApplicantStatus" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="API_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="VST_Title" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="HiringManager" Nullable="true" MaxLength="403" />
+          <Property Type="Int32" Name="API_Zip" Nullable="true" />
+          <Property Type="String" Name="API_Resume" Nullable="true" />
+          <Property Type="String" Name="API_CoverLetter" Nullable="true" />
+          <Property Type="String" Name="API_MilitaryService" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="API_HiringManagerId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="INS_EMP_InterviewerEmployeeId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="INS_IsHiringManager" Nullable="true" MaxLength="1" />
+          <Property Type="DateTime" Name="INS_InterviewDateTime" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="spSetEmployee_Result">
+          <Property Type="String" Name="EmployeeID" Nullable="true" MaxLength="50" />
+          <Property Type="Int64" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <EntityType Name="Citizenship">
+          <Key>
+            <PropertyRef Name="CTZ_Id" />
+          </Key>
+          <Property Name="CTZ_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CTZ_Citizenship" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CTZ_EMP_EmployeeID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CTZ_lawfulResident" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CTZ_AlienRegisteationNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CTZ_FormI94" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CTZ_ForeignPassport" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CTZ_Date" Type="DateTime" Precision="3" />
+          <Property Name="CTZ_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="EmployeeAddress">
+          <Key>
+            <PropertyRef Name="EMA_Id" />
+          </Key>
+          <Property Name="EMA_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EMA_EMP_EmployeeID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EMA_Address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EMA_City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMA_State" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMA_Zip" Type="Int32" />
+          <Property Name="EMA_AddressPhoneNo" Type="Int64" />
+          <Property Name="EMA_Date" Type="DateTime" Precision="3" />
+          <Property Name="EMA_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="spGetEmployeePersonalInfo_Result">
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="Int64" Name="EMP_API_ApplicantId" Nullable="true" />
+          <Property Type="String" Name="EMP_FirstName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMP_MiddleName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMP_LastName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMP_Email" Nullable="true" MaxLength="50" />
+          <Property Type="Int64" Name="EMP_Phone" Nullable="true" />
+          <Property Type="String" Name="EMP_DrivingLicenseNumber" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="EMP_DateOfBirth" Nullable="true" />
+          <Property Type="String" Name="EMP_SSN" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EMP_Photo" Nullable="true" />
+          <Property Type="String" Name="EMP_Gender" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EMP_MilitaryService" Nullable="true" MaxLength="1" />
+          <Property Type="Int64" Name="EMP_JobTitleId" Nullable="true" />
+          <Property Type="Int64" Name="EMP_ManagerId" Nullable="true" />
+          <Property Type="DateTime" Name="EMP_DateOfJoining" Nullable="true" />
+          <Property Type="Int64" Name="EMP_LocationId" Nullable="true" />
+          <Property Type="String" Name="EMA_Address" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="EMA_City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EMA_State" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="EMA_Zip" Nullable="true" />
+          <Property Type="String" Name="CTZ_Citizenship" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EMP_Id" />
+          </Key>
+          <Property Name="EMP_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EMP_EmployeeID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_API_ApplicantId" Type="Int64" />
+          <Property Name="EMP_FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_MiddleName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_Phone" Type="Int64" />
+          <Property Name="EMP_DrivingLicenseNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_DateOfBirth" Type="DateTime" Precision="0" />
+          <Property Name="EMP_SSN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EMP_MilitaryService" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="EMP_Gender" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_JobTitleId" Type="Int64" />
+          <Property Name="EMP_ManagerId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_DateOfJoining" Type="DateTime" Precision="0" />
+          <Property Name="EMP_LocationId" Type="Int64" />
+          <Property Name="EMP_IsCreatedBy" Type="Int64" />
+          <Property Name="EMP_IsCreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="EMP_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ApplicantInfo">
+          <Key>
+            <PropertyRef Name="API_ApplicantId" />
+          </Key>
+          <Property Name="API_ApplicantId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="API_FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_HomeAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="API_City" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_State" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_Zip" Type="Int32" />
+          <Property Name="API_Resume" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="API_CoverLetter" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="API_PhoneNumber" Type="Int64" Nullable="false" />
+          <Property Name="API_Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_DLNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="API_Citizenship" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_MilitaryService" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="API_Gender" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="API_HighestEducation" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="API_AnyRefOrEmployeeInELITE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="API_EverELITEWorkFrom" Type="DateTime" Precision="0" />
+          <Property Name="API_EverELITEWorkTo" Type="DateTime" Precision="0" />
+          <Property Name="API_WorkEligibleInUS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="API_JobPostingId" Type="Int64" />
+          <Property Name="API_JobTitleID" Type="Int64" Nullable="false" />
+          <Property Name="API_HiringManagerID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="API_DateOfJoining" Type="DateTime" Precision="0" />
+          <Property Name="API_DesireSalary" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="API_ApplicantStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="API_Date" Type="DateTime" Precision="3" />
+          <Property Name="API_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="spGetInterviewerList_Result">
+          <Property Type="Int64" Name="INS_API_ApplicantId" Nullable="true" />
+          <Property Type="String" Name="INS_EMP_InterviewerEmployeeId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="INS_IsHiringManager" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="ProfileImage" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="INS_IsAvailable" Nullable="true" MaxLength="1" />
+          <Property Type="DateTime" Name="INS_AvailableTime" Nullable="true" Precision="23" />
+          <Property Type="String" Name="INS_Comments" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="InterviwerName" Nullable="true" MaxLength="401" />
+        </ComplexType>
+        <ComplexType Name="spGetInterviewQuestion_Result">
+          <Property Type="Int64" Name="INQ_Id" Nullable="false" />
+          <Property Type="String" Name="INQ_QuestionType" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="INQ_Question" Nullable="true" />
+          <Property Type="String" Name="INQ_Exempt" Nullable="true" MaxLength="1" />
+          <Property Type="DateTime" Name="INQ_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="INQ_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetApplicantInfoForMyInterview_Result">
+          <Property Type="Int64" Name="API_ApplicantId" Nullable="false" />
+          <Property Type="String" Name="API_FirstName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="API_MiddleName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_LastName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_HomeAddress" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="API_City" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="API_State" Nullable="false" MaxLength="50" />
+          <Property Type="Int32" Name="API_Zip" Nullable="true" />
+          <Property Type="String" Name="API_Resume" Nullable="true" />
+          <Property Type="String" Name="API_CoverLetter" Nullable="true" />
+          <Property Type="Int64" Name="API_PhoneNumber" Nullable="false" />
+          <Property Type="String" Name="API_Email" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="API_DLNumber" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_Photo" Nullable="true" />
+          <Property Type="String" Name="API_Citizenship" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_MilitaryService" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="API_Gender" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="API_HighestEducation" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="API_AnyRefOrEmployeeInELITE" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="API_EverELITEWorkFrom" Nullable="true" />
+          <Property Type="DateTime" Name="API_EverELITEWorkTo" Nullable="true" />
+          <Property Type="String" Name="API_WorkEligibleInUS" Nullable="true" MaxLength="1" />
+          <Property Type="Int64" Name="JPS_JobPostingId" Nullable="true" />
+          <Property Type="DateTime" Name="JobPostingDate" Nullable="true" Precision="23" />
+          <Property Type="Int64" Name="VST_Id" Nullable="true" />
+          <Property Type="Int64" Name="API_JobTitleID" Nullable="false" />
+          <Property Type="String" Name="API_HiringManagerId" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="API_DateOfJoining" Nullable="true" />
+          <Property Type="Decimal" Name="API_DesireSalary" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="API_ApplicantStatus" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="API_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="VST_Title" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="HiringManager" Nullable="true" MaxLength="403" />
+          <Property Type="String" Name="INS_EMP_InterviewerEmployeeId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="INS_IsHiringManager" Nullable="true" MaxLength="1" />
+          <Property Type="DateTime" Name="INS_InterviewDateTime" Nullable="true" Precision="23" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -18307,6 +18805,302 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetMyOpening" FunctionName="workorderEMSModel.Store.spGetMyOpening">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetMyOpening_Result">
+                <ScalarProperty Name="API_ApplicantId" ColumnName="API_ApplicantId" />
+                <ScalarProperty Name="API_FirstName" ColumnName="API_FirstName" />
+                <ScalarProperty Name="API_MiddleName" ColumnName="API_MiddleName" />
+                <ScalarProperty Name="API_LastName" ColumnName="API_LastName" />
+                <ScalarProperty Name="API_HomeAddress" ColumnName="API_HomeAddress" />
+                <ScalarProperty Name="API_City" ColumnName="API_City" />
+                <ScalarProperty Name="API_State" ColumnName="API_State" />
+                <ScalarProperty Name="API_PhoneNumber" ColumnName="API_PhoneNumber" />
+                <ScalarProperty Name="API_Email" ColumnName="API_Email" />
+                <ScalarProperty Name="API_DLNumber" ColumnName="API_DLNumber" />
+                <ScalarProperty Name="API_Photo" ColumnName="API_Photo" />
+                <ScalarProperty Name="API_Citizenship" ColumnName="API_Citizenship" />
+                <ScalarProperty Name="API_Gender" ColumnName="API_Gender" />
+                <ScalarProperty Name="API_HighestEducation" ColumnName="API_HighestEducation" />
+                <ScalarProperty Name="API_AnyRefOrEmployeeInELITE" ColumnName="API_AnyRefOrEmployeeInELITE" />
+                <ScalarProperty Name="API_EverELITEWorkFrom" ColumnName="API_EverELITEWorkFrom" />
+                <ScalarProperty Name="API_EverELITEWorkTo" ColumnName="API_EverELITEWorkTo" />
+                <ScalarProperty Name="API_WorkEligibleInUS" ColumnName="API_WorkEligibleInUS" />
+                <ScalarProperty Name="JPS_JobPostingId" ColumnName="JPS_JobPostingId" />
+                <ScalarProperty Name="JobPostingDate" ColumnName="JobPostingDate" />
+                <ScalarProperty Name="API_JobTitleID" ColumnName="API_JobTitleID" />
+                <ScalarProperty Name="API_HiringManagerID" ColumnName="API_HiringManagerID" />
+                <ScalarProperty Name="API_DateOfJoining" ColumnName="API_DateOfJoining" />
+                <ScalarProperty Name="API_DesireSalary" ColumnName="API_DesireSalary" />
+                <ScalarProperty Name="API_ApplicantStatus" ColumnName="API_ApplicantStatus" />
+                <ScalarProperty Name="API_IsActive" ColumnName="API_IsActive" />
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="HiringManager" ColumnName="HiringManager" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetJobPosting" FunctionName="workorderEMSModel.Store.spGetJobPosting">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetJobPosting_Result">
+                <ScalarProperty Name="JPS_JobPostingId" ColumnName="JPS_JobPostingId" />
+                <ScalarProperty Name="JBT_Id" ColumnName="JBT_Id" />
+                <ScalarProperty Name="JPS_HiringManagerID" ColumnName="JPS_HiringManagerID" />
+                <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
+                <ScalarProperty Name="PositionCount" ColumnName="PositionCount" />
+                <ScalarProperty Name="ApplicantCount" ColumnName="ApplicantCount" />
+                <ScalarProperty Name="JobPostingDate" ColumnName="JobPostingDate" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetApplicantInfo" FunctionName="workorderEMSModel.Store.spGetApplicantInfo">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetApplicantInfo_Result">
+                <ScalarProperty Name="API_ApplicantId" ColumnName="API_ApplicantId" />
+                <ScalarProperty Name="API_FirstName" ColumnName="API_FirstName" />
+                <ScalarProperty Name="API_MiddleName" ColumnName="API_MiddleName" />
+                <ScalarProperty Name="API_LastName" ColumnName="API_LastName" />
+                <ScalarProperty Name="API_HomeAddress" ColumnName="API_HomeAddress" />
+                <ScalarProperty Name="API_City" ColumnName="API_City" />
+                <ScalarProperty Name="API_State" ColumnName="API_State" />
+                <ScalarProperty Name="API_PhoneNumber" ColumnName="API_PhoneNumber" />
+                <ScalarProperty Name="API_Email" ColumnName="API_Email" />
+                <ScalarProperty Name="API_DLNumber" ColumnName="API_DLNumber" />
+                <ScalarProperty Name="API_Photo" ColumnName="API_Photo" />
+                <ScalarProperty Name="API_Citizenship" ColumnName="API_Citizenship" />
+                <ScalarProperty Name="API_Gender" ColumnName="API_Gender" />
+                <ScalarProperty Name="API_HighestEducation" ColumnName="API_HighestEducation" />
+                <ScalarProperty Name="API_AnyRefOrEmployeeInELITE" ColumnName="API_AnyRefOrEmployeeInELITE" />
+                <ScalarProperty Name="API_EverELITEWorkFrom" ColumnName="API_EverELITEWorkFrom" />
+                <ScalarProperty Name="API_EverELITEWorkTo" ColumnName="API_EverELITEWorkTo" />
+                <ScalarProperty Name="API_WorkEligibleInUS" ColumnName="API_WorkEligibleInUS" />
+                <ScalarProperty Name="JPS_JobPostingId" ColumnName="JPS_JobPostingId" />
+                <ScalarProperty Name="JobPostingDate" ColumnName="JobPostingDate" />
+                <ScalarProperty Name="VST_Id" ColumnName="VST_Id" />
+                <ScalarProperty Name="API_JobTitleID" ColumnName="API_JobTitleID" />
+                <ScalarProperty Name="API_DateOfJoining" ColumnName="API_DateOfJoining" />
+                <ScalarProperty Name="API_DesireSalary" ColumnName="API_DesireSalary" />
+                <ScalarProperty Name="API_ApplicantStatus" ColumnName="API_ApplicantStatus" />
+                <ScalarProperty Name="API_IsActive" ColumnName="API_IsActive" />
+                <ScalarProperty Name="VST_Title" ColumnName="VST_Title" />
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="HiringManager" ColumnName="HiringManager" />
+                <ScalarProperty Name="API_Zip" ColumnName="API_Zip" />
+                <ScalarProperty Name="API_Resume" ColumnName="API_Resume" />
+                <ScalarProperty Name="API_CoverLetter" ColumnName="API_CoverLetter" />
+                <ScalarProperty Name="API_MilitaryService" ColumnName="API_MilitaryService" />
+                <ScalarProperty Name="API_HiringManagerId" ColumnName="API_HiringManagerId" />
+                <ScalarProperty Name="INS_EMP_InterviewerEmployeeId" ColumnName="INS_EMP_InterviewerEmployeeId" />
+                <ScalarProperty Name="INS_IsHiringManager" ColumnName="INS_IsHiringManager" />
+                <ScalarProperty Name="INS_InterviewDateTime" ColumnName="INS_InterviewDateTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetEmployee" FunctionName="workorderEMSModel.Store.spSetEmployee">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spSetEmployee_Result">
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Citizenships">
+            <EntityTypeMapping TypeName="workorderEMSModel.Citizenship">
+              <MappingFragment StoreEntitySet="Citizenship">
+                <ScalarProperty Name="CTZ_IsActive" ColumnName="CTZ_IsActive" />
+                <ScalarProperty Name="CTZ_Date" ColumnName="CTZ_Date" />
+                <ScalarProperty Name="CTZ_ForeignPassport" ColumnName="CTZ_ForeignPassport" />
+                <ScalarProperty Name="CTZ_FormI94" ColumnName="CTZ_FormI94" />
+                <ScalarProperty Name="CTZ_AlienRegisteationNumber" ColumnName="CTZ_AlienRegisteationNumber" />
+                <ScalarProperty Name="CTZ_lawfulResident" ColumnName="CTZ_lawfulResident" />
+                <ScalarProperty Name="CTZ_EMP_EmployeeID" ColumnName="CTZ_EMP_EmployeeID" />
+                <ScalarProperty Name="CTZ_Citizenship" ColumnName="CTZ_Citizenship" />
+                <ScalarProperty Name="CTZ_Id" ColumnName="CTZ_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeAddresses">
+            <EntityTypeMapping TypeName="workorderEMSModel.EmployeeAddress">
+              <MappingFragment StoreEntitySet="EmployeeAddress">
+                <ScalarProperty Name="EMA_IsActive" ColumnName="EMA_IsActive" />
+                <ScalarProperty Name="EMA_Date" ColumnName="EMA_Date" />
+                <ScalarProperty Name="EMA_AddressPhoneNo" ColumnName="EMA_AddressPhoneNo" />
+                <ScalarProperty Name="EMA_Zip" ColumnName="EMA_Zip" />
+                <ScalarProperty Name="EMA_State" ColumnName="EMA_State" />
+                <ScalarProperty Name="EMA_City" ColumnName="EMA_City" />
+                <ScalarProperty Name="EMA_Address" ColumnName="EMA_Address" />
+                <ScalarProperty Name="EMA_EMP_EmployeeID" ColumnName="EMA_EMP_EmployeeID" />
+                <ScalarProperty Name="EMA_Id" ColumnName="EMA_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spCheckEmployeeIDAvailability" FunctionName="workorderEMSModel.Store.spCheckEmployeeIDAvailability" />
+          <FunctionImportMapping FunctionImportName="spGetEmployeePersonalInfo" FunctionName="workorderEMSModel.Store.spGetEmployeePersonalInfo">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetEmployeePersonalInfo_Result">
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EMP_API_ApplicantId" ColumnName="EMP_API_ApplicantId" />
+                <ScalarProperty Name="EMP_FirstName" ColumnName="EMP_FirstName" />
+                <ScalarProperty Name="EMP_MiddleName" ColumnName="EMP_MiddleName" />
+                <ScalarProperty Name="EMP_LastName" ColumnName="EMP_LastName" />
+                <ScalarProperty Name="EMP_Email" ColumnName="EMP_Email" />
+                <ScalarProperty Name="EMP_Phone" ColumnName="EMP_Phone" />
+                <ScalarProperty Name="EMP_DrivingLicenseNumber" ColumnName="EMP_DrivingLicenseNumber" />
+                <ScalarProperty Name="EMP_DateOfBirth" ColumnName="EMP_DateOfBirth" />
+                <ScalarProperty Name="EMP_SSN" ColumnName="EMP_SSN" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="EMP_Gender" ColumnName="EMP_Gender" />
+                <ScalarProperty Name="EMP_MilitaryService" ColumnName="EMP_MilitaryService" />
+                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
+                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
+                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
+                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
+                <ScalarProperty Name="EMA_Address" ColumnName="EMA_Address" />
+                <ScalarProperty Name="EMA_City" ColumnName="EMA_City" />
+                <ScalarProperty Name="EMA_State" ColumnName="EMA_State" />
+                <ScalarProperty Name="EMA_Zip" ColumnName="EMA_Zip" />
+                <ScalarProperty Name="CTZ_Citizenship" ColumnName="CTZ_Citizenship" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="workorderEMSModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="EMP_IsActive" ColumnName="EMP_IsActive" />
+                <ScalarProperty Name="EMP_IsCreatedOn" ColumnName="EMP_IsCreatedOn" />
+                <ScalarProperty Name="EMP_IsCreatedBy" ColumnName="EMP_IsCreatedBy" />
+                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
+                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
+                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
+                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
+                <ScalarProperty Name="EMP_Gender" ColumnName="EMP_Gender" />
+                <ScalarProperty Name="EMP_MilitaryService" ColumnName="EMP_MilitaryService" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="EMP_SSN" ColumnName="EMP_SSN" />
+                <ScalarProperty Name="EMP_DateOfBirth" ColumnName="EMP_DateOfBirth" />
+                <ScalarProperty Name="EMP_DrivingLicenseNumber" ColumnName="EMP_DrivingLicenseNumber" />
+                <ScalarProperty Name="EMP_Phone" ColumnName="EMP_Phone" />
+                <ScalarProperty Name="EMP_Email" ColumnName="EMP_Email" />
+                <ScalarProperty Name="EMP_LastName" ColumnName="EMP_LastName" />
+                <ScalarProperty Name="EMP_MiddleName" ColumnName="EMP_MiddleName" />
+                <ScalarProperty Name="EMP_FirstName" ColumnName="EMP_FirstName" />
+                <ScalarProperty Name="EMP_API_ApplicantId" ColumnName="EMP_API_ApplicantId" />
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EMP_Id" ColumnName="EMP_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApplicantInfoes">
+            <EntityTypeMapping TypeName="workorderEMSModel.ApplicantInfo">
+              <MappingFragment StoreEntitySet="ApplicantInfo">
+                <ScalarProperty Name="API_IsActive" ColumnName="API_IsActive" />
+                <ScalarProperty Name="API_Date" ColumnName="API_Date" />
+                <ScalarProperty Name="API_ApplicantStatus" ColumnName="API_ApplicantStatus" />
+                <ScalarProperty Name="API_DesireSalary" ColumnName="API_DesireSalary" />
+                <ScalarProperty Name="API_DateOfJoining" ColumnName="API_DateOfJoining" />
+                <ScalarProperty Name="API_HiringManagerID" ColumnName="API_HiringManagerID" />
+                <ScalarProperty Name="API_JobTitleID" ColumnName="API_JobTitleID" />
+                <ScalarProperty Name="API_JobPostingId" ColumnName="API_JobPostingId" />
+                <ScalarProperty Name="API_WorkEligibleInUS" ColumnName="API_WorkEligibleInUS" />
+                <ScalarProperty Name="API_EverELITEWorkTo" ColumnName="API_EverELITEWorkTo" />
+                <ScalarProperty Name="API_EverELITEWorkFrom" ColumnName="API_EverELITEWorkFrom" />
+                <ScalarProperty Name="API_AnyRefOrEmployeeInELITE" ColumnName="API_AnyRefOrEmployeeInELITE" />
+                <ScalarProperty Name="API_HighestEducation" ColumnName="API_HighestEducation" />
+                <ScalarProperty Name="API_Gender" ColumnName="API_Gender" />
+                <ScalarProperty Name="API_MilitaryService" ColumnName="API_MilitaryService" />
+                <ScalarProperty Name="API_Citizenship" ColumnName="API_Citizenship" />
+                <ScalarProperty Name="API_Photo" ColumnName="API_Photo" />
+                <ScalarProperty Name="API_DLNumber" ColumnName="API_DLNumber" />
+                <ScalarProperty Name="API_Email" ColumnName="API_Email" />
+                <ScalarProperty Name="API_PhoneNumber" ColumnName="API_PhoneNumber" />
+                <ScalarProperty Name="API_CoverLetter" ColumnName="API_CoverLetter" />
+                <ScalarProperty Name="API_Resume" ColumnName="API_Resume" />
+                <ScalarProperty Name="API_Zip" ColumnName="API_Zip" />
+                <ScalarProperty Name="API_State" ColumnName="API_State" />
+                <ScalarProperty Name="API_City" ColumnName="API_City" />
+                <ScalarProperty Name="API_HomeAddress" ColumnName="API_HomeAddress" />
+                <ScalarProperty Name="API_LastName" ColumnName="API_LastName" />
+                <ScalarProperty Name="API_MiddleName" ColumnName="API_MiddleName" />
+                <ScalarProperty Name="API_FirstName" ColumnName="API_FirstName" />
+                <ScalarProperty Name="API_ApplicantId" ColumnName="API_ApplicantId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetInterviewCanStart" FunctionName="workorderEMSModel.Store.spGetInterviewCanStart" />
+          <FunctionImportMapping FunctionImportName="spGetInterviewerList" FunctionName="workorderEMSModel.Store.spGetInterviewerList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetInterviewerList_Result">
+                <ScalarProperty Name="INS_API_ApplicantId" ColumnName="INS_API_ApplicantId" />
+                <ScalarProperty Name="INS_EMP_InterviewerEmployeeId" ColumnName="INS_EMP_InterviewerEmployeeId" />
+                <ScalarProperty Name="INS_IsHiringManager" ColumnName="INS_IsHiringManager" />
+                <ScalarProperty Name="ProfileImage" ColumnName="ProfileImage" />
+                <ScalarProperty Name="INS_IsAvailable" ColumnName="INS_IsAvailable" />
+                <ScalarProperty Name="INS_AvailableTime" ColumnName="INS_AvailableTime" />
+                <ScalarProperty Name="INS_Comments" ColumnName="INS_Comments" />
+                <ScalarProperty Name="InterviwerName" ColumnName="InterviwerName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetInterviewQuestion" FunctionName="workorderEMSModel.Store.spGetInterviewQuestion">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetInterviewQuestion_Result">
+                <ScalarProperty Name="INQ_Id" ColumnName="INQ_Id" />
+                <ScalarProperty Name="INQ_QuestionType" ColumnName="INQ_QuestionType" />
+                <ScalarProperty Name="INQ_Question" ColumnName="INQ_Question" />
+                <ScalarProperty Name="INQ_Exempt" ColumnName="INQ_Exempt" />
+                <ScalarProperty Name="INQ_Date" ColumnName="INQ_Date" />
+                <ScalarProperty Name="INQ_IsActive" ColumnName="INQ_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetInterviewAnswer" FunctionName="workorderEMSModel.Store.spSetInterviewAnswer" />
+          <FunctionImportMapping FunctionImportName="spSetInterviewerIsOnline" FunctionName="workorderEMSModel.Store.spSetInterviewerIsOnline" />
+          <FunctionImportMapping FunctionImportName="spGetApplicantInfoForMyInterview" FunctionName="workorderEMSModel.Store.spGetApplicantInfoForMyInterview">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetApplicantInfoForMyInterview_Result">
+                <ScalarProperty Name="API_ApplicantId" ColumnName="API_ApplicantId" />
+                <ScalarProperty Name="API_FirstName" ColumnName="API_FirstName" />
+                <ScalarProperty Name="API_MiddleName" ColumnName="API_MiddleName" />
+                <ScalarProperty Name="API_LastName" ColumnName="API_LastName" />
+                <ScalarProperty Name="API_HomeAddress" ColumnName="API_HomeAddress" />
+                <ScalarProperty Name="API_City" ColumnName="API_City" />
+                <ScalarProperty Name="API_State" ColumnName="API_State" />
+                <ScalarProperty Name="API_Zip" ColumnName="API_Zip" />
+                <ScalarProperty Name="API_Resume" ColumnName="API_Resume" />
+                <ScalarProperty Name="API_CoverLetter" ColumnName="API_CoverLetter" />
+                <ScalarProperty Name="API_PhoneNumber" ColumnName="API_PhoneNumber" />
+                <ScalarProperty Name="API_Email" ColumnName="API_Email" />
+                <ScalarProperty Name="API_DLNumber" ColumnName="API_DLNumber" />
+                <ScalarProperty Name="API_Photo" ColumnName="API_Photo" />
+                <ScalarProperty Name="API_Citizenship" ColumnName="API_Citizenship" />
+                <ScalarProperty Name="API_MilitaryService" ColumnName="API_MilitaryService" />
+                <ScalarProperty Name="API_Gender" ColumnName="API_Gender" />
+                <ScalarProperty Name="API_HighestEducation" ColumnName="API_HighestEducation" />
+                <ScalarProperty Name="API_AnyRefOrEmployeeInELITE" ColumnName="API_AnyRefOrEmployeeInELITE" />
+                <ScalarProperty Name="API_EverELITEWorkFrom" ColumnName="API_EverELITEWorkFrom" />
+                <ScalarProperty Name="API_EverELITEWorkTo" ColumnName="API_EverELITEWorkTo" />
+                <ScalarProperty Name="API_WorkEligibleInUS" ColumnName="API_WorkEligibleInUS" />
+                <ScalarProperty Name="JPS_JobPostingId" ColumnName="JPS_JobPostingId" />
+                <ScalarProperty Name="JobPostingDate" ColumnName="JobPostingDate" />
+                <ScalarProperty Name="VST_Id" ColumnName="VST_Id" />
+                <ScalarProperty Name="API_JobTitleID" ColumnName="API_JobTitleID" />
+                <ScalarProperty Name="API_HiringManagerId" ColumnName="API_HiringManagerId" />
+                <ScalarProperty Name="API_DateOfJoining" ColumnName="API_DateOfJoining" />
+                <ScalarProperty Name="API_DesireSalary" ColumnName="API_DesireSalary" />
+                <ScalarProperty Name="API_ApplicantStatus" ColumnName="API_ApplicantStatus" />
+                <ScalarProperty Name="API_IsActive" ColumnName="API_IsActive" />
+                <ScalarProperty Name="VST_Title" ColumnName="VST_Title" />
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="HiringManager" ColumnName="HiringManager" />
+                <ScalarProperty Name="INS_EMP_InterviewerEmployeeId" ColumnName="INS_EMP_InterviewerEmployeeId" />
+                <ScalarProperty Name="INS_IsHiringManager" ColumnName="INS_IsHiringManager" />
+                <ScalarProperty Name="INS_InterviewDateTime" ColumnName="INS_InterviewDateTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetInterviewScore" FunctionName="workorderEMSModel.Store.spGetInterviewScore" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
