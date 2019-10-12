@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -289,7 +290,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                                                           Obj.VendorAccountDetailsModel.BankName, Obj.VendorAccountDetailsModel.BankLocation,
                                                                           Obj.VendorAccountDetailsModel.AccountNumber, Obj.VendorAccountDetailsModel.CardNumber,
                                                                           Obj.VendorAccountDetailsModel.IFSCCode, Obj.VendorAccountDetailsModel.SwiftOICCode,
-                                                                          Obj.VendorAccountDetailsModel.AccountDocuments, Obj.UserId, null, "Y", Obj.VendorAccountDetailsModel.BalanceAmount, Obj.VendorAccountDetailsModel.QuickbookAcountId, Obj.VendorAccountDetailsModel.CardHolderName, Obj.VendorAccountDetailsModel.ExpirationDate);
+                                                                          Obj.VendorAccountDetailsModel.AccountDocuments, Obj.UserId, null, "Y", Obj.VendorAccountDetailsModel.BalanceAmount, Obj.VendorAccountDetailsModel.QuickbookAcountId, Obj.VendorAccountDetailsModel.CardHolderName, Obj.VendorAccountDetailsModel.ExpirationDate,"Y");
                         }
                         if (Obj.VendorFacilityListModel != null)
                         {
@@ -997,7 +998,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                                                       Obj.VendorAccountDetailsModel.BankName, Obj.VendorAccountDetailsModel.BankLocation,
                                                                       Obj.VendorAccountDetailsModel.AccountNumber, Obj.VendorAccountDetailsModel.CardNumber,
                                                                       Obj.VendorAccountDetailsModel.IFSCCode, Obj.VendorAccountDetailsModel.SwiftOICCode,
-                                                                      Obj.VendorAccountDetailsModel.AccountDocuments, Obj.UserId, null, "Y", Obj.VendorAccountDetailsModel.BalanceAmount, Obj.VendorAccountDetailsModel.QuickbookAcountId, Obj.VendorAccountDetailsModel.CardHolderName, Obj.VendorAccountDetailsModel.ExpirationDate);
+                                                                      Obj.VendorAccountDetailsModel.AccountDocuments, Obj.UserId, null, "Y", Obj.VendorAccountDetailsModel.BalanceAmount, Obj.VendorAccountDetailsModel.QuickbookAcountId, Obj.VendorAccountDetailsModel.CardHolderName, Obj.VendorAccountDetailsModel.ExpirationDate,"N");
                         objVendorManagement.Result = Result.Completed;
                     }
                     var userData = _workorderems.UserRegistrations.Where(x => x.UserId == Obj.UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
@@ -1374,7 +1375,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                       CardNumber = a.CAD_CreditCardNumber,
                       IFSCCode = a.CAD_IFSCcode,
                       SwiftOICCode = a.CAD_SwiftBICcode,
-                      Status = a.CAD_IsActive == "E" ? "Expired" : a.CAD_IsActive == "N" ? "Deactivated" : "Activated"
+                      Status = a.CAD_IsActive == "E" ? "Expired" : a.CAD_IsActive == "N" ? "Deactivated" : "Activated",
+                      IsPrimary=a.CAD_IsPrimary
                   }).ToList();
 
 
@@ -1409,7 +1411,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         .FirstOrDefault();
                     var Update = _workorderems.spSetCompanyAccountDetail(action, AccountsId, getDetails.LCAD_CMP_Id, getDetails.LCAD_PMD_Id,
                                                                       getDetails.LCAD_CardOrBankName, getDetails.LCAD_BankLocation, getDetails.LCAD_AccountNumber,
-                                                                      getDetails.LCAD_CreditCardNumber, getDetails.LCAD_IFSCcode, getDetails.LCAD_SwiftBICcode, getDetails.LCAD_AccountDocument, UserId, getDetails.LCAD_ApprovedBy, IsActive, getDetails.LCAD_Balance, null, getDetails.LCAD_CardHolderName,getDetails.LCAD_CardExpirationDate);
+                                                                      getDetails.LCAD_CreditCardNumber, getDetails.LCAD_IFSCcode, getDetails.LCAD_SwiftBICcode, getDetails.LCAD_AccountDocument, UserId, getDetails.LCAD_ApprovedBy, IsActive, getDetails.LCAD_Balance, null, getDetails.LCAD_CardHolderName,getDetails.LCAD_CardExpirationDate," ");
                     result = true;
                 }
                 else
@@ -1812,13 +1814,49 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             return result;
         }
         #region "Ajay Kumar"
-        /// <summary>
-        /// Created By : Ajay Kumar
-        /// Created Date : 19-Sep-2019
-        /// Crated For : To check duplicate TXD_TaxIdNumber  for vendor
-        /// </summary>
-        /// <param name="taxNumber"></param>
-        /// <returns></returns>
+       
+        public void SetPrimaryAccount(long VendorId,long AccountId)
+        {
+            try
+            {
+                var _companyDetails = _workorderems.CompanyAccountDetails.Where(n => n.CAD_CMP_Id == VendorId && n.CAD_Id != AccountId).ToList();
+                if (_companyDetails != null)
+                {
+                    _companyDetails.ForEach(a => a.CAD_IsPrimary = "N"); 
+                    _workorderems.SaveChanges();
+
+                }
+                var _companyDetails1 = _workorderems.CompanyAccountDetails.Where(n => n.CAD_CMP_Id == VendorId && n.CAD_Id == AccountId).ToList();
+                if (_companyDetails1 != null)
+                {
+                    _companyDetails1.ForEach(a => a.CAD_IsPrimary = "Y"); 
+                    _workorderems.SaveChanges();
+
+                }
+                var _companyLogDetails = _workorderems.LogCompanyAccountDetails.Where(n => n.LCAD_CMP_Id == VendorId && n.LCAD_CAD_Id  != AccountId).ToList();
+                if (_companyLogDetails != null)
+                {
+                    _companyLogDetails.ForEach(a => a.LCAD_IsPrimary = "N"); 
+                    _workorderems.SaveChanges();
+                   
+
+                }
+                var _companyLogDetails1 = _workorderems.LogCompanyAccountDetails.Where(n => n.LCAD_CMP_Id == VendorId && n.LCAD_CAD_Id == AccountId).ToList();
+                if (_companyLogDetails1 != null)
+                {
+                    _companyLogDetails1.ForEach(a => a.LCAD_IsPrimary = "Y");
+                    _workorderems.SaveChanges();
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+          
+        }
         public CompanyCountForGraph GetCompanyCountForGraph()
         {
             CompanyCountForGraph model = new CompanyCountForGraph();
@@ -1831,7 +1869,26 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
             return model;
         }
-
+        public List<LocationAllocationCompanyCountForGraph> GetCompanyAllocationLocationCountForGraph()
+        {
+            List<LocationAllocationCompanyCountForGraph> modellist = new List<LocationAllocationCompanyCountForGraph>();
+              var result = _workorderems.spGetCompanyAllocationLocationCountForGraph().ToList();
+            if (result.Count()>0)
+            {
+                Random r = new Random();
+                foreach (var item in result)
+                {
+                     
+                    LocationAllocationCompanyCountForGraph model = new LocationAllocationCompanyCountForGraph();
+                    model.LocationName = item.LocationName;
+                    model.VendorCount = item.VendorCount;
+                    model.colour =   String.Format("#{0:X6}", r.Next(0x1000000)); // = "#A197B9";
+                    modellist.Add(model);
+                }
+                
+            }
+            return modellist;
+        }
 
         /// <summary>
         /// Created By : Ajay Kumar

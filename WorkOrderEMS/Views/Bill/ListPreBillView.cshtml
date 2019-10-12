@@ -4,7 +4,7 @@
     //Layout = "~/Views/Shared/_ManagerLayout.cshtml";
     Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
     long locationId = 0;
-    long userType = 0;
+    long userType = 0;  
     WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
 
     if (ObjLogin != null)
@@ -161,7 +161,7 @@
                 <a href="@Url.Action("ListPreBillView", "Bill")">
                     <div class="pricing_table_content mt-5" style="background-color: #529F9D;color:white;">
                         <p style="margin-top:-20px;font-size:20px;"><b> </b></p>
-                        <div class="package" style="margin-top:-30px;"><i class="mdi mdi-cart" style="color:yellow;font-size:30px;margin-left: -10px;"></i>&nbsp;&nbsp;&nbsp;<b>SetUp Bill</b></div>
+                        <div class="package" style="margin-top:-30px;"><i class="mdi mdi-cart" style="color:yellow;font-size:30px;margin-left: -10px;"></i>&nbsp;&nbsp;&nbsp;<b>Bills</b></div>
                     </div>
                 </a>
             </div>

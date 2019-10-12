@@ -322,6 +322,100 @@ namespace WorkOrderEMS.Controllers
         }
         #endregion
         #region "Ajay Kumar"
+        [HttpPost]
+        public JsonResult PrimeryAccounts(string AccountsId, string IsActive,string VendorId)
+        {
+            try
+            {
+                eTracLoginModel ObjLoginModel = null;
+                bool result = false;
+                long _AccountsId = 0;
+                long _VendorsId = 0;
+                if (Session != null)
+                {
+                    if (Session["eTrac"] != null)
+                    {
+                        ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                        if (Convert.ToInt64(Session["eTrac_SelectedDasboardLocationID"]) == 0)
+                        {
+                            (Session["eTrac_SelectedDasboardLocationID"]) = ObjLoginModel.LocationID;
+                        }
+                    }
+                }
+                long UserId = ObjLoginModel.UserId;
+                if (!string.IsNullOrEmpty(AccountsId))
+                {
+                    AccountsId = Cryptography.GetDecryptedData(AccountsId, true);
+                    long.TryParse(AccountsId, out _AccountsId);
+                }
+                if (!string.IsNullOrEmpty(VendorId))
+                {
+                   
+                    long.TryParse(VendorId, out _VendorsId);
+                }
+                if (IsActive == "Y")
+                {
+                    result = _IVendorManagement.ActiveAccountsById(_AccountsId, UserId, IsActive);
+                    _IVendorManagement.SetPrimaryAccount(_VendorsId, _AccountsId);
+                }
+                else
+                {
+                    _IVendorManagement.SetPrimaryAccount(_VendorsId,_AccountsId );
+                }
+                if (result == true)
+                {
+                    string Message = "";
+                    if (IsActive == "Y")
+                    {
+                        Message = "Account is Activeted.";
+                    } 
+                    ViewBag.Message = Message;
+                    ViewBag.AlertMessageClass = ObjAlertMessageClass.Success;
+                    return Json(Message, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    ViewBag.Message = "Error while activating payment mode.";
+                    ViewBag.AlertMessageClass = ObjAlertMessageClass.Success;
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+        }
+
+
+        [HttpGet]
+        public JsonResult GetDashboardForLocationAllocaionVendorCount()
+        {
+            try
+            {
+                long LocationID = 0;
+                if ((eTracLoginModel)Session["eTrac"] != null)
+                {
+                    eTracLoginModel objLoginSession = new eTracLoginModel();
+                    objLoginSession = (eTracLoginModel)Session["eTrac"];
+                    if (Session["eTrac_SelectedDasboardLocationID"] != null)
+                    {
+                        if (Convert.ToInt64(Session["eTrac_SelectedDasboardLocationID"]) != 0)
+                        {
+                            LocationID = objLoginSession.LocationID;
+                        }
+                    }
+                     
+                    var data = _IVendorManagement.GetCompanyAllocationLocationCountForGraph();
+                  
+                    return Json(new { data }, JsonRequestBehavior.AllowGet);
+                }
+                else { return Json(null, JsonRequestBehavior.AllowGet); }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { ex.InnerException }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
         [HttpGet]
         public JsonResult GetDashboardForVendorCount() 
         {
@@ -343,30 +437,9 @@ namespace WorkOrderEMS.Controllers
                     var data = _IVendorManagement.GetCompanyCountForGraph();
                     if (data !=null) 
                     {
-                        if (data.WaitingVendorCount > 0)
-                        {
-                            model.WaitingVendorCount = (data.WaitingVendorCount * 100) / data.TotalVendorCount;
-                        }
-                        else
-                        {
-                            model.WaitingVendorCount = 0;
-                        }
-                        if (data.RejectedVendorCount > 0)
-                        {
-                            model.RejectedVendorCount = (data.RejectedVendorCount * 100) / data.TotalVendorCount;
-                        }
-                        else
-                        {
-                            model.RejectedVendorCount = 0;
-                        }
-                        if (data.ApprovedVendorCount > 0)
-                        {
-                            model.ApprovedVendorCount = (data.ApprovedVendorCount * 100) / data.TotalVendorCount;
-                        }
-                        else
-                        {
-                            model.ApprovedVendorCount = 0;
-                        }
+                        model.WaitingVendorCount= data.WaitingVendorCount > 0 ?  ((data.WaitingVendorCount * 100) / data.TotalVendorCount) : 0;
+                        model.RejectedVendorCount = data.RejectedVendorCount > 0 ? ((data.RejectedVendorCount * 100) / data.TotalVendorCount) : 0;
+                        model.ApprovedVendorCount = data.ApprovedVendorCount > 0 ? ((data.ApprovedVendorCount * 100) / data.TotalVendorCount) : 0; 
                     }
                     return Json(new { model }, JsonRequestBehavior.AllowGet);
                 }
@@ -1515,7 +1588,7 @@ namespace WorkOrderEMS.Controllers
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
                 UserId = ObjLoginModel.UserId;
-                //LocationId = ObjLoginModel.LocationID;
+                 //LocationId = ObjLoginModel.LocationID;
             }
             try
             {

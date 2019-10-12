@@ -526,126 +526,121 @@
 
 <script src="~/GridListing/JqGridScript/UnApprovedVendorList.js"></script>
 <script>
-    var chart = AmCharts.makeChart("chartdiv", {
-    "theme": "none",
-    "type": "serial",
-    "startDuration": 7,
-    "dataProvider": [{
-        "Cost Code": "Hetikundi",
-        "Budget": 4334,
-        "color": "#1740AE"
-    }, {
-        "Cost Code": "Jacksonville International Airport",
-        "Budget": 4000,
-        "color": "#758DCB"
-    }, {
-        "Cost Code": "Jacksonvilley",
-        "Budget": 2906,
-        "color": "#75AFCB"
-    }, {
-        "Cost Code": "Karanja",
-        "Budget": 3588,
-        "color": "#86E2E8"
-    }, {
-        "Cost Code": "Lane Stadium",
-        "Budget": 2133,
-        "color": "#2E1BA0"
-    }, {
-        "Cost Code": "Las Vegas",
-        "Budget": 4567,
-        "color": "#456EDA"
-    }, {
-        "Cost Code": "New York",
-        "Budget": 2345,
-        "color": "#1AA897"
-    }, {
-        "Cost Code": "Orlando Airport",
-        "Budget": 4354,
-        "color": "#456EDA"
-    }, {
-        "Cost Code": "Pheonix mall",
-        "Budget": 3466,
-        "color": "#86E2E8"
-    }],
-    "valueAxes": [{
-        "position": "left",
-        "axisAlpha":0,
-        "gridAlpha":0
-    }],
-    "graphs": [{
-        "balloonText": "[[category]]: <b>[[value]]</b>",
-        "colorField": "color",
-        "fillAlphas": 0.85,
-        "lineAlpha": 0.1,
-        "type": "column",
-        "topRadius":1,
-        "valueField": "Budget"
-    }],
-    "depth3D": 40,
-  "angle": 30,
-    "chartCursor": {
-        "categoryBalloonEnabled": false,
-        "cursorAlpha": 0,
-        "zoomable": false
-    },
-    "categoryField": "Cost Code",
-    "categoryAxis": {
-        "gridPosition": "start",
-        "axisAlpha":1,
-        "gridAlpha":0,
-        "labelRotation": 20,
-    },
-    "export": {
-    	"enabled": true
-     }
-
-}, 0);
     $(document).ready(function () {
 
+    $.ajax({
+        type: "GET",
+        url: "@Url.Action("GetDashboardForVendorCount", "VendorManagement")",
+        data: {},
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (dataJSON) {
 
-        am4core.ready(function () {
+            am4core.ready(function () {
 
-            // Themes begin
-            am4core.useTheme(am4themes_animated);
-            // Themes end
+                // Themes begin
+                am4core.useTheme(am4themes_animated);
+                // Themes end
 
-            // Create chart instance
-            var chart = am4core.create("EmployeeCount1", am4charts.PieChart);
+                // Create chart instance
+                var chart = am4core.create("EmployeeCount1", am4charts.PieChart);
 
-            // Add data
-            chart.data = [{
-                "User": "Approved",
-                "Count":  6
-            }, {
-                "User": "UnApproved",
-                "Count": 5//dataJSON.CountPanel[0].EmpCount
-            }, {
-                "User": "Rejected",
-                "Count": 3//dataJSON.CountPanel[0].ManagerCount
-            }];
+                // Add data
+                chart.data = [{
+                    "User": "Approved",
+                    "Count": dataJSON.model.ApprovedVendorCount,
+                }, {
+                    "User": "Waiting",
+                    "Count":dataJSON.model.WaitingVendorCount,
+                }, {
+                    "User": "Rejected",
+                    "Count": dataJSON.model.RejectedVendorCount,
+                }];
 
-            // Add and configure Series
-            var pieSeries = chart.series.push(new am4charts.PieSeries());
-            pieSeries.dataFields.value = "Count";
-            pieSeries.dataFields.category = "User";
-            pieSeries.innerRadius = am4core.percent(50);
-            pieSeries.ticks.template.disabled = true;
-            pieSeries.labels.template.disabled = true;
+                // Add and configure Series
+                var pieSeries = chart.series.push(new am4charts.PieSeries());
+                pieSeries.dataFields.value = "Count";
+                pieSeries.dataFields.category = "User";
+                pieSeries.innerRadius = am4core.percent(50);
+                pieSeries.ticks.template.disabled = true;
+                pieSeries.labels.template.disabled = true;
 
-            var rgm = new am4core.RadialGradientModifier();
-            rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
-            pieSeries.slices.template.fillModifier = rgm;
-            pieSeries.slices.template.strokeModifier = rgm;
-            pieSeries.slices.template.strokeOpacity = 0.4;
-            pieSeries.slices.template.strokeWidth = 0;
+                var rgm = new am4core.RadialGradientModifier();
+                rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
+                pieSeries.slices.template.fillModifier = rgm;
+                pieSeries.slices.template.strokeModifier = rgm;
+                pieSeries.slices.template.strokeOpacity = 0.4;
+                pieSeries.slices.template.strokeWidth = 0;
 
-            chart.legend = new am4charts.Legend();
-            chart.legend.position = "right";
+                chart.legend = new am4charts.Legend();
+                chart.legend.position = "right";
 
-        }); // end am4core.ready()
+            }); // end am4core.ready()
+
     }
+    });
 
-    );
+        var  chartData =[];
+         $.ajax({
+        type: "GET",
+        url: "@Url.Action("GetDashboardForLocationAllocaionVendorCount", "VendorManagement")",
+        data: {},
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+             success: function (_result) {
+                 $.each(_result.data, function (index, value)
+                 {
+                     chartData.push(value);
+
+                  });
+
+          AmCharts.makeChart("chartdiv", {
+        "theme": "none",
+        "type": "serial",
+        "startDuration": 7,
+          "dataProvider":chartData,
+
+
+        "valueAxes": [{
+            "position": "left",
+            "axisAlpha": 0,
+            "gridAlpha": 0
+        }],
+        "graphs": [{
+            "balloonText": "[[category]]: <b>[[value]]</b>",
+            "colorField": "colour",
+            "fillAlphas": 0.85,
+            "lineAlpha": 0.1,
+            "type": "column",
+            "topRadius": 1,
+            "valueField": "VendorCount"
+        }],
+        "depth3D": 40,
+        "angle": 30,
+        "chartCursor": {
+            "categoryBalloonEnabled": false,
+            "cursorAlpha": 0,
+            "zoomable": false
+        },
+        "categoryField": "LocationName",
+        "categoryAxis": {
+            "gridPosition": "start",
+            "axisAlpha": 1,
+            "gridAlpha": 0,
+            "labelRotation": 20,
+        },
+        "export": {
+            "enabled": true
+        }
+
+    }, 0);
+
+
+
+
+    }
+    });
+    });
 </script>
 @*<div class="content-body" style="min-height: 920px;">Cost Code
         <div class="container-fluid">

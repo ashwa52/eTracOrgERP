@@ -157,4 +157,11 @@ namespace WorkOrderEMS.Models
         public Nullable<long> WaitingVendorCount { get; set; }
         public Nullable<long> RejectedVendorCount { get; set; }
     }
+    public class LocationAllocationCompanyCountForGraph
+    {
+        public string LocationName { get; set; }
+        public int VendorCount { get; set; }
+        public string colour { get; set; }
+
+    }
 }

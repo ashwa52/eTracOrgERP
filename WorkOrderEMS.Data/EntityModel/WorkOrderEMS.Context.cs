@@ -3550,15 +3550,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("spGetAccountCategory", actionParameter, accountCategoryParameter);
         }
     
-        public virtual ObjectResult<spGetCompanyAccountDetail_Result1> spGetCompanyAccountDetail(Nullable<long> cMP_Id)
-        {
-            var cMP_IdParameter = cMP_Id.HasValue ?
-                new ObjectParameter("CMP_Id", cMP_Id) :
-                new ObjectParameter("CMP_Id", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCompanyAccountDetail_Result1>("spGetCompanyAccountDetail", cMP_IdParameter);
-        }
-    
         public virtual int spSetPaymentStatusForBill(Nullable<long> lBLL_Id, string lBLL_Comment, string lBLL_IsApprove, Nullable<long> lBLL_ApprovedBy)
         {
             var lBLL_IdParameter = lBLL_Id.HasValue ?
@@ -4607,7 +4598,246 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVendorAllDetailForApproval_Result>("spGetVendorAllDetailForApproval", cMP_IdParameter);
         }
     
-        public virtual int spSetCompanyAccountDetail(string cADAction, Nullable<long> cAD_Id, Nullable<long> cAD_CMP_Id, Nullable<long> cAD_PMD_Id, string cAD_CardOrBankName, string cAD_BankLocation, string cAD_AccountNumber, string cAD_CreditCardNumber, string cAD_IFSCcode, string cAD_SwiftBICcode, string cAD_AccountDocument, Nullable<long> cAD_ModifiedBy, Nullable<long> cAD_ApprovedBy, string cAD_IsActive, Nullable<decimal> cAD_Balance, Nullable<long> cAD_QBKId, string cAD_CardHolderName, Nullable<System.DateTime> cAD_CardExpirationDate)
+        public virtual ObjectResult<spGetVendorAllDetailForEditApproval_Result> spGetVendorAllDetailForEditApproval(Nullable<long> cMP_Id)
+        {
+            var cMP_IdParameter = cMP_Id.HasValue ?
+                new ObjectParameter("CMP_Id", cMP_Id) :
+                new ObjectParameter("CMP_Id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVendorAllDetailForEditApproval_Result>("spGetVendorAllDetailForEditApproval", cMP_IdParameter);
+        }
+    
+        public virtual ObjectResult<spGetCompanyCountForGraph_Result> spGetCompanyCountForGraph()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCompanyCountForGraph_Result>("spGetCompanyCountForGraph");
+        }
+    
+        public virtual int ExcuteAutoBill(string invoicingFrequency, Nullable<System.DateTime> billDueDate, Nullable<decimal> minimumBillAmount, Nullable<long> vendorId)
+        {
+            var invoicingFrequencyParameter = invoicingFrequency != null ?
+                new ObjectParameter("invoicingFrequency", invoicingFrequency) :
+                new ObjectParameter("invoicingFrequency", typeof(string));
+    
+            var billDueDateParameter = billDueDate.HasValue ?
+                new ObjectParameter("BillDueDate", billDueDate) :
+                new ObjectParameter("BillDueDate", typeof(System.DateTime));
+    
+            var minimumBillAmountParameter = minimumBillAmount.HasValue ?
+                new ObjectParameter("MinimumBillAmount", minimumBillAmount) :
+                new ObjectParameter("MinimumBillAmount", typeof(decimal));
+    
+            var vendorIdParameter = vendorId.HasValue ?
+                new ObjectParameter("VendorId", vendorId) :
+                new ObjectParameter("VendorId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ExcuteAutoBill", invoicingFrequencyParameter, billDueDateParameter, minimumBillAmountParameter, vendorIdParameter);
+        }
+    
+        [DbFunction("workorderEMSEntities", "fnGetManager")]
+        public virtual IQueryable<fnGetManager_Result> fnGetManager(Nullable<long> userId)
+        {
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnGetManager_Result>("[workorderEMSEntities].[fnGetManager](@UserId)", userIdParameter);
+        }
+    
+        [DbFunction("workorderEMSEntities", "fun_GetClientDateTime_O")]
+        public virtual IQueryable<Nullable<System.DateTime>> fun_GetClientDateTime_O(Nullable<System.DateTime> tOCONVERTDATE, Nullable<int> oFFSET)
+        {
+            var tOCONVERTDATEParameter = tOCONVERTDATE.HasValue ?
+                new ObjectParameter("TOCONVERTDATE", tOCONVERTDATE) :
+                new ObjectParameter("TOCONVERTDATE", typeof(System.DateTime));
+    
+            var oFFSETParameter = oFFSET.HasValue ?
+                new ObjectParameter("OFFSET", oFFSET) :
+                new ObjectParameter("OFFSET", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Nullable<System.DateTime>>("[workorderEMSEntities].[fun_GetClientDateTime_O](@TOCONVERTDATE, @OFFSET)", tOCONVERTDATEParameter, oFFSETParameter);
+        }
+    
+        public virtual int SetAutoBill()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SetAutoBill");
+        }
+    
+        public virtual ObjectResult<signalRPushNotifyForWorkOrder_Result> signalRPushNotifyForWorkOrder(Nullable<System.DateTime> signalRDate)
+        {
+            var signalRDateParameter = signalRDate.HasValue ?
+                new ObjectParameter("SignalRDate", signalRDate) :
+                new ObjectParameter("SignalRDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<signalRPushNotifyForWorkOrder_Result>("signalRPushNotifyForWorkOrder", signalRDateParameter);
+        }
+    
+        public virtual ObjectResult<sp_GetIdleDetailsOfEmployeeForIdleReport_Result> sp_GetIdleDetailsOfEmployeeForIdleReport(Nullable<long> locationId, Nullable<long> userId, Nullable<System.DateTime> idleTime)
+        {
+            var locationIdParameter = locationId.HasValue ?
+                new ObjectParameter("LocationId", locationId) :
+                new ObjectParameter("LocationId", typeof(long));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(long));
+    
+            var idleTimeParameter = idleTime.HasValue ?
+                new ObjectParameter("IdleTime", idleTime) :
+                new ObjectParameter("IdleTime", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetIdleDetailsOfEmployeeForIdleReport_Result>("sp_GetIdleDetailsOfEmployeeForIdleReport", locationIdParameter, userIdParameter, idleTimeParameter);
+        }
+    
+        public virtual ObjectResult<spGetCompanyLocationCostCodeMapping_Result> spGetCompanyLocationCostCodeMapping(Nullable<long> cLC_LocationId)
+        {
+            var cLC_LocationIdParameter = cLC_LocationId.HasValue ?
+                new ObjectParameter("CLC_LocationId", cLC_LocationId) :
+                new ObjectParameter("CLC_LocationId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCompanyLocationCostCodeMapping_Result>("spGetCompanyLocationCostCodeMapping", cLC_LocationIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetCompanyType_Result> spGetCompanyType()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCompanyType_Result>("spGetCompanyType");
+        }
+    
+        public virtual ObjectResult<spGetContract_Result> spGetContract()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetContract_Result>("spGetContract");
+        }
+    
+        public virtual ObjectResult<spGetContractLocationAllocation_Result> spGetContractLocationAllocation()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetContractLocationAllocation_Result>("spGetContractLocationAllocation");
+        }
+    
+        public virtual ObjectResult<spGetLocationCompanyMapping_Result> spGetLocationCompanyMapping(Nullable<long> cMP_LocationId)
+        {
+            var cMP_LocationIdParameter = cMP_LocationId.HasValue ?
+                new ObjectParameter("CMP_LocationId", cMP_LocationId) :
+                new ObjectParameter("CMP_LocationId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetLocationCompanyMapping_Result>("spGetLocationCompanyMapping", cMP_LocationIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetPreBillDetail_Result> spGetPreBillDetail(Nullable<long> pBL_Id)
+        {
+            var pBL_IdParameter = pBL_Id.HasValue ?
+                new ObjectParameter("PBL_Id", pBL_Id) :
+                new ObjectParameter("PBL_Id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPreBillDetail_Result>("spGetPreBillDetail", pBL_IdParameter);
+        }
+    
+        public virtual int spSetApprovalForCompany(Nullable<long> lCMP_Id, string lCMP_Comment, string lCMP_IsApprove)
+        {
+            var lCMP_IdParameter = lCMP_Id.HasValue ?
+                new ObjectParameter("LCMP_Id", lCMP_Id) :
+                new ObjectParameter("LCMP_Id", typeof(long));
+    
+            var lCMP_CommentParameter = lCMP_Comment != null ?
+                new ObjectParameter("LCMP_Comment", lCMP_Comment) :
+                new ObjectParameter("LCMP_Comment", typeof(string));
+    
+            var lCMP_IsApproveParameter = lCMP_IsApprove != null ?
+                new ObjectParameter("LCMP_IsApprove", lCMP_IsApprove) :
+                new ObjectParameter("LCMP_IsApprove", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApprovalForCompany", lCMP_IdParameter, lCMP_CommentParameter, lCMP_IsApproveParameter);
+        }
+    
+        public virtual int spSetApprovalForCompanyDetail(Nullable<long> lCOD_Id, string lCOD_Comment, string lCOD_IsApprove)
+        {
+            var lCOD_IdParameter = lCOD_Id.HasValue ?
+                new ObjectParameter("LCOD_Id", lCOD_Id) :
+                new ObjectParameter("LCOD_Id", typeof(long));
+    
+            var lCOD_CommentParameter = lCOD_Comment != null ?
+                new ObjectParameter("LCOD_Comment", lCOD_Comment) :
+                new ObjectParameter("LCOD_Comment", typeof(string));
+    
+            var lCOD_IsApproveParameter = lCOD_IsApprove != null ?
+                new ObjectParameter("LCOD_IsApprove", lCOD_IsApprove) :
+                new ObjectParameter("LCOD_IsApprove", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApprovalForCompanyDetail", lCOD_IdParameter, lCOD_CommentParameter, lCOD_IsApproveParameter);
+        }
+    
+        public virtual int spSetApprovalForCompanyLocationCostCodeMapping(Nullable<long> lCLC_Id, string lCLC_Comment, string lCLC_IsApprove)
+        {
+            var lCLC_IdParameter = lCLC_Id.HasValue ?
+                new ObjectParameter("LCLC_Id", lCLC_Id) :
+                new ObjectParameter("LCLC_Id", typeof(long));
+    
+            var lCLC_CommentParameter = lCLC_Comment != null ?
+                new ObjectParameter("LCLC_Comment", lCLC_Comment) :
+                new ObjectParameter("LCLC_Comment", typeof(string));
+    
+            var lCLC_IsApproveParameter = lCLC_IsApprove != null ?
+                new ObjectParameter("LCLC_IsApprove", lCLC_IsApprove) :
+                new ObjectParameter("LCLC_IsApprove", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApprovalForCompanyLocationCostCodeMapping", lCLC_IdParameter, lCLC_CommentParameter, lCLC_IsApproveParameter);
+        }
+    
+        public virtual int spSetApprovalForContract(Nullable<long> lCNT_Id, string lCNT_Comment, string lCNT_IsApprove)
+        {
+            var lCNT_IdParameter = lCNT_Id.HasValue ?
+                new ObjectParameter("LCNT_Id", lCNT_Id) :
+                new ObjectParameter("LCNT_Id", typeof(long));
+    
+            var lCNT_CommentParameter = lCNT_Comment != null ?
+                new ObjectParameter("LCNT_Comment", lCNT_Comment) :
+                new ObjectParameter("LCNT_Comment", typeof(string));
+    
+            var lCNT_IsApproveParameter = lCNT_IsApprove != null ?
+                new ObjectParameter("LCNT_IsApprove", lCNT_IsApprove) :
+                new ObjectParameter("LCNT_IsApprove", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApprovalForContract", lCNT_IdParameter, lCNT_CommentParameter, lCNT_IsApproveParameter);
+        }
+    
+        public virtual int spSetApprovalForInsurance(Nullable<long> lINS_Id, string lINS_Comment, string lINS_IsApprove)
+        {
+            var lINS_IdParameter = lINS_Id.HasValue ?
+                new ObjectParameter("LINS_Id", lINS_Id) :
+                new ObjectParameter("LINS_Id", typeof(long));
+    
+            var lINS_CommentParameter = lINS_Comment != null ?
+                new ObjectParameter("LINS_Comment", lINS_Comment) :
+                new ObjectParameter("LINS_Comment", typeof(string));
+    
+            var lINS_IsApproveParameter = lINS_IsApprove != null ?
+                new ObjectParameter("LINS_IsApprove", lINS_IsApprove) :
+                new ObjectParameter("LINS_IsApprove", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApprovalForInsurance", lINS_IdParameter, lINS_CommentParameter, lINS_IsApproveParameter);
+        }
+    
+        public virtual int spSetApprovalForLicense(Nullable<long> lLNC_Id, string lLNC_Comment, string lLNC_IsApprove)
+        {
+            var lLNC_IdParameter = lLNC_Id.HasValue ?
+                new ObjectParameter("LLNC_Id", lLNC_Id) :
+                new ObjectParameter("LLNC_Id", typeof(long));
+    
+            var lLNC_CommentParameter = lLNC_Comment != null ?
+                new ObjectParameter("LLNC_Comment", lLNC_Comment) :
+                new ObjectParameter("LLNC_Comment", typeof(string));
+    
+            var lLNC_IsApproveParameter = lLNC_IsApprove != null ?
+                new ObjectParameter("LLNC_IsApprove", lLNC_IsApprove) :
+                new ObjectParameter("LLNC_IsApprove", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApprovalForLicense", lLNC_IdParameter, lLNC_CommentParameter, lLNC_IsApproveParameter);
+        }
+    
+        public virtual ObjectResult<spGetCompanyAllocationLocationCountForGraph_Result> spGetCompanyAllocationLocationCountForGraph()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCompanyAllocationLocationCountForGraph_Result>("spGetCompanyAllocationLocationCountForGraph");
+        }
+    
+        public virtual int spSetCompanyAccountDetail(string cADAction, Nullable<long> cAD_Id, Nullable<long> cAD_CMP_Id, Nullable<long> cAD_PMD_Id, string cAD_CardOrBankName, string cAD_BankLocation, string cAD_AccountNumber, string cAD_CreditCardNumber, string cAD_IFSCcode, string cAD_SwiftBICcode, string cAD_AccountDocument, Nullable<long> cAD_ModifiedBy, Nullable<long> cAD_ApprovedBy, string cAD_IsActive, Nullable<decimal> cAD_Balance, Nullable<long> cAD_QBKId, string cAD_CardHolderName, Nullable<System.DateTime> cAD_CardExpirationDate, string cAD_IsPrimary)
         {
             var cADActionParameter = cADAction != null ?
                 new ObjectParameter("CADAction", cADAction) :
@@ -4681,21 +4911,20 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("CAD_CardExpirationDate", cAD_CardExpirationDate) :
                 new ObjectParameter("CAD_CardExpirationDate", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetCompanyAccountDetail", cADActionParameter, cAD_IdParameter, cAD_CMP_IdParameter, cAD_PMD_IdParameter, cAD_CardOrBankNameParameter, cAD_BankLocationParameter, cAD_AccountNumberParameter, cAD_CreditCardNumberParameter, cAD_IFSCcodeParameter, cAD_SwiftBICcodeParameter, cAD_AccountDocumentParameter, cAD_ModifiedByParameter, cAD_ApprovedByParameter, cAD_IsActiveParameter, cAD_BalanceParameter, cAD_QBKIdParameter, cAD_CardHolderNameParameter, cAD_CardExpirationDateParameter);
+            var cAD_IsPrimaryParameter = cAD_IsPrimary != null ?
+                new ObjectParameter("CAD_IsPrimary", cAD_IsPrimary) :
+                new ObjectParameter("CAD_IsPrimary", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetCompanyAccountDetail", cADActionParameter, cAD_IdParameter, cAD_CMP_IdParameter, cAD_PMD_IdParameter, cAD_CardOrBankNameParameter, cAD_BankLocationParameter, cAD_AccountNumberParameter, cAD_CreditCardNumberParameter, cAD_IFSCcodeParameter, cAD_SwiftBICcodeParameter, cAD_AccountDocumentParameter, cAD_ModifiedByParameter, cAD_ApprovedByParameter, cAD_IsActiveParameter, cAD_BalanceParameter, cAD_QBKIdParameter, cAD_CardHolderNameParameter, cAD_CardExpirationDateParameter, cAD_IsPrimaryParameter);
         }
     
-        public virtual ObjectResult<spGetVendorAllDetailForEditApproval_Result> spGetVendorAllDetailForEditApproval(Nullable<long> cMP_Id)
+        public virtual ObjectResult<spGetCompanyAccountDetail_Result> spGetCompanyAccountDetail(Nullable<long> cMP_Id)
         {
             var cMP_IdParameter = cMP_Id.HasValue ?
                 new ObjectParameter("CMP_Id", cMP_Id) :
                 new ObjectParameter("CMP_Id", typeof(long));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVendorAllDetailForEditApproval_Result>("spGetVendorAllDetailForEditApproval", cMP_IdParameter);
-        }
-    
-        public virtual ObjectResult<spGetCompanyCountForGraph_Result> spGetCompanyCountForGraph()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCompanyCountForGraph_Result>("spGetCompanyCountForGraph");
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCompanyAccountDetail_Result>("spGetCompanyAccountDetail", cMP_IdParameter);
         }
     }
 }

@@ -36,6 +36,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<long> CAD_QBKId { get; set; }
         public string CAD_CardHolderName { get; set; }
         public Nullable<System.DateTime> CAD_CardExpirationDate { get; set; }
+        public string CAD_IsPrimary { get; set; }
     
         public virtual Company Company { get; set; }
         public virtual PaymentMode PaymentMode { get; set; }

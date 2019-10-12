@@ -429,8 +429,10 @@ function checkValOfQuantity(data, _itemIndexVal) {
     else {
         for (var i = 0; i < AllGridData.length; i++) {
             var rowIdData = ids[i];
-            if (AllGridData[i].CostCode == rowData.CostCode) {
-                $("#tbl_CompanyFacilityDataList").jqGrid("setCell", rowIdData, "RemainingAmt", CalculateRemainingAmt);
+            if (AllGridData[i].CostCode == rowData.CostCode)
+            { 
+                rowData.RemainingAmt = CalculateRemainingAmt;
+               // $("#tbl_CompanyFacilityDataList").jqGrid("setCell", rowIdData, "RemainingAmt", CalculateRemainingAmt);
             }
         }
     }

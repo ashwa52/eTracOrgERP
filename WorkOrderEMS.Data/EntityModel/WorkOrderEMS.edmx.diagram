@@ -275,13 +275,13 @@
         <AssociationConnector Association="workorderEMSModel.FK_QRCMasterLog_UserRegistrations" />
         <AssociationConnector Association="workorderEMSModel.FK_QRCScanLog_UserRegistrations" />
         <AssociationConnector Association="workorderEMSModel.FK_SubCostCode_UserRegistrations" />
-        <EntityTypeShape EntityType="workorderEMSModel.CompanyAccountDetail" Width="1.5" PointX="11.25" PointY="191.625" />
+        <EntityTypeShape EntityType="workorderEMSModel.CompanyAccountDetail" Width="1.5" PointX="11.25" PointY="191.5" />
+        <EntityTypeShape EntityType="workorderEMSModel.LogCompanyAccountDetail" Width="1.5" PointX="19.5" PointY="195.125" />
         <AssociationConnector Association="workorderEMSModel.FK_CompanyAccountDetail_Company" />
+        <AssociationConnector Association="workorderEMSModel.FK_LogCompanyAccountDetail_Company" />
         <AssociationConnector Association="workorderEMSModel.FK_CompanyAccountDetail_PaymentMode" />
         <AssociationConnector Association="workorderEMSModel.FK_CompanyAccountTransaction_CompanyAccountDetailCr" />
         <AssociationConnector Association="workorderEMSModel.FK_CompanyAccountTransaction_CompanyAccountDetailDr" />
-        <EntityTypeShape EntityType="workorderEMSModel.LogCompanyAccountDetail" Width="1.5" PointX="19.5" PointY="195.25" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogCompanyAccountDetail_Company" />
         <AssociationConnector Association="workorderEMSModel.FK_LogCompanyAccountDetail_CompanyAccountDetail" />
         <AssociationConnector Association="workorderEMSModel.FK_LogCompanyAccountDetail_PaymentMode" />
       </Diagram>
