@@ -12,16 +12,16 @@ namespace WorkOrderEMS.Data.EntityModel
     using System;
     using System.Collections.Generic;
     
-    public partial class BillFacilityItem
+    public partial class Citizenship
     {
-        public long BFI_Id { get; set; }
-        public long BFI_PBL_Id { get; set; }
-        public long BFI_CFM_Id { get; set; }
-        public Nullable<long> BFI_Unit { get; set; }
-        public Nullable<decimal> BFI_Rate { get; set; }
-        public string BFI_IsActive { get; set; }
-    
-        public virtual CompanyFacilityMapping CompanyFacilityMapping { get; set; }
-        public virtual PreBillNumber PreBillNumber { get; set; }
+        public long CTZ_Id { get; set; }
+        public string CTZ_Citizenship { get; set; }
+        public string CTZ_EMP_EmployeeID { get; set; }
+        public string CTZ_lawfulResident { get; set; }
+        public string CTZ_AlienRegisteationNumber { get; set; }
+        public string CTZ_FormI94 { get; set; }
+        public string CTZ_ForeignPassport { get; set; }
+        public Nullable<System.DateTime> CTZ_Date { get; set; }
+        public string CTZ_IsActive { get; set; }
     }
 }

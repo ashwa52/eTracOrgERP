@@ -10,13 +10,13 @@
 namespace WorkOrderEMS.Data.EntityModel
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class spGetJobTitle_Result1
+    public partial class VehicleSeating_DepartmentMapping
     {
-        public long JBT_Id { get; set; }
-        public string JBT_JobTitle { get; set; }
-        public long JBT_VST_Id { get; set; }
-        public Nullable<System.DateTime> JBT_Date { get; set; }
-        public string JBT_IsActive { get; set; }
+        public long VDM_Id { get; set; }
+        public long VDM_VST_Id { get; set; }
+        public long VDM_DPT_Id { get; set; }
+        public string VDM_IsActive { get; set; }
     }
 }

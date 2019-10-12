@@ -10,17 +10,26 @@
 namespace WorkOrderEMS.Data.EntityModel
 {
     using System;
+    using System.Collections.Generic;
     
-    public partial class spGetVehicleSeating_Result2
+    public partial class VehicleSeating
     {
+        public VehicleSeating()
+        {
+            this.JobTitles = new HashSet<JobTitle>();
+        }
+    
         public long VST_Id { get; set; }
         public string VST_Title { get; set; }
         public string VST_JobDescription { get; set; }
         public string VST_RolesAndResponsiblities { get; set; }
         public string VST_Level { get; set; }
         public long VST_ParentId { get; set; }
-        public Nullable<long> DPT_Id { get; set; }
-        public string DPT_Name { get; set; }
+        public long VST_DPT_Id { get; set; }
+        public Nullable<System.DateTime> VST_Date { get; set; }
         public string VST_IsActive { get; set; }
+    
+        public virtual Department Department { get; set; }
+        public virtual ICollection<JobTitle> JobTitles { get; set; }
     }
 }

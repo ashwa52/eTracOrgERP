@@ -284,6 +284,17 @@
         <AssociationConnector Association="workorderEMSModel.FK_CompanyAccountTransaction_CompanyAccountDetailDr" />
         <AssociationConnector Association="workorderEMSModel.FK_LogCompanyAccountDetail_CompanyAccountDetail" />
         <AssociationConnector Association="workorderEMSModel.FK_LogCompanyAccountDetail_PaymentMode" />
+        <EntityTypeShape EntityType="workorderEMSModel.ApplicantInfo" Width="1.5" PointX="0.75" PointY="14.75" />
+        <EntityTypeShape EntityType="workorderEMSModel.Citizenship" Width="1.5" PointX="14.75" PointY="5.75" />
+        <EntityTypeShape EntityType="workorderEMSModel.Department" Width="1.5" PointX="14.75" PointY="1.5" />
+        <EntityTypeShape EntityType="workorderEMSModel.Employee" Width="1.5" PointX="14.75" PointY="9.75" />
+        <EntityTypeShape EntityType="workorderEMSModel.EmployeeAddress" Width="1.5" PointX="2.75" PointY="15.75" />
+        <EntityTypeShape EntityType="workorderEMSModel.JobPosting" Width="1.5" PointX="4.75" PointY="15.75" />
+        <EntityTypeShape EntityType="workorderEMSModel.JobTitle" Width="1.5" PointX="19.25" PointY="1.5" />
+        <EntityTypeShape EntityType="workorderEMSModel.VehicleSeating" Width="1.5" PointX="17" PointY="1" />
+        <EntityTypeShape EntityType="workorderEMSModel.VehicleSeating_DepartmentMapping" Width="1.5" PointX="6.75" PointY="15.75" />
+        <AssociationConnector Association="workorderEMSModel.FK_VehicleSeating_Department" />
+        <AssociationConnector Association="workorderEMSModel.FK_JobTitle_VehicleSeating" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

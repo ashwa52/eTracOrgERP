@@ -12,16 +12,18 @@ namespace WorkOrderEMS.Data.EntityModel
     using System;
     using System.Collections.Generic;
     
-    public partial class BillFacilityItem
+    public partial class Department
     {
-        public long BFI_Id { get; set; }
-        public long BFI_PBL_Id { get; set; }
-        public long BFI_CFM_Id { get; set; }
-        public Nullable<long> BFI_Unit { get; set; }
-        public Nullable<decimal> BFI_Rate { get; set; }
-        public string BFI_IsActive { get; set; }
+        public Department()
+        {
+            this.VehicleSeatings = new HashSet<VehicleSeating>();
+        }
     
-        public virtual CompanyFacilityMapping CompanyFacilityMapping { get; set; }
-        public virtual PreBillNumber PreBillNumber { get; set; }
+        public long DPT_Id { get; set; }
+        public string DPT_Name { get; set; }
+        public Nullable<System.DateTime> DPT_Date { get; set; }
+        public string DPT_IsActive { get; set; }
+    
+        public virtual ICollection<VehicleSeating> VehicleSeatings { get; set; }
     }
 }

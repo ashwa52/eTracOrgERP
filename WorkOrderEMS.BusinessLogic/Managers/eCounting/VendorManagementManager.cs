@@ -298,12 +298,12 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                             {
                                 var unitcost = item.UnitCostForView.Replace(",", "");
                                 item.UnitCost = Convert.ToDecimal(unitcost);
-                                //var saveVendorFacility = _workorderems.spSetCompanyFacilityMapping(Action, null, VendorId, item.Costcode,
-                                //                                          item.ProductServiceType, item.ProductServiceName, item.UnitCost, item.Tax, Obj.UserId,
-                                //                                          null, "Y", item.VenderProductImageName);
                                 var saveVendorFacility = _workorderems.spSetCompanyFacilityMapping(Action, null, VendorId, item.Costcode,
                                                                           item.ProductServiceType, item.ProductServiceName, item.UnitCost, item.Tax, Obj.UserId,
-                                                                          null, "Y");
+                                                                          null, "Y", item.VenderProductImageName);
+                                //var saveVendorFacility = _workorderems.spSetCompanyFacilityMapping(Action, null, VendorId, item.Costcode,
+                                //                                          item.ProductServiceType, item.ProductServiceName, item.UnitCost, item.Tax, Obj.UserId,
+                                //                                          null, "Y");
 
                                 Obj.Result = Result.Completed;
                             }
@@ -1764,12 +1764,12 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 {
 
                     Action = "I";
-                    //var saveVendorFacility = _workorderems.spSetCompanyFacilityMapping(Action, null, obj.VendorId, obj.Costcode,
-                    //                                                     obj.ProductServiceType, obj.ProductServiceName, obj.UnitCost, obj.Tax, obj.UserId,
-                    //                                                     obj.UserId, "Y", obj.VenderProductImageName);
                     var saveVendorFacility = _workorderems.spSetCompanyFacilityMapping(Action, null, obj.VendorId, obj.Costcode,
-                                                                        obj.ProductServiceType, obj.ProductServiceName, obj.UnitCost, obj.Tax, obj.UserId,
-                                                                        obj.UserId, "Y");
+                                                                         obj.ProductServiceType, obj.ProductServiceName, obj.UnitCost, obj.Tax, obj.UserId,
+                                                                         obj.UserId, "Y", obj.VenderProductImageName);
+                    //var saveVendorFacility = _workorderems.spSetCompanyFacilityMapping(Action, null, obj.VendorId, obj.Costcode,
+                    //                                                    obj.ProductServiceType, obj.ProductServiceName, obj.UnitCost, obj.Tax, obj.UserId,
+                    //                                                    obj.UserId, "Y");
                     IsSaved = true;
                     var userData = _workorderems.UserRegistrations.Where(x => x.UserId == obj.UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
                     var VendorData = _workorderems.spGetVendorAllDetail(obj.VendorId).FirstOrDefault();

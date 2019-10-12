@@ -132,6 +132,15 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<QRCMaster1> QRCMaster1 { get; set; }
         public virtual DbSet<CompanyAccountDetail> CompanyAccountDetails { get; set; }
         public virtual DbSet<LogCompanyAccountDetail> LogCompanyAccountDetails { get; set; }
+        public virtual DbSet<ApplicantInfo> ApplicantInfoes { get; set; }
+        public virtual DbSet<Citizenship> Citizenships { get; set; }
+        public virtual DbSet<Department> Departments { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<EmployeeAddress> EmployeeAddresses { get; set; }
+        public virtual DbSet<JobPosting> JobPostings { get; set; }
+        public virtual DbSet<JobTitle> JobTitles { get; set; }
+        public virtual DbSet<VehicleSeating> VehicleSeatings { get; set; }
+        public virtual DbSet<VehicleSeating_DepartmentMapping> VehicleSeating_DepartmentMapping { get; set; }
     
         public virtual ObjectResult<CommonQeriesByVijay_Result> CommonQeriesByVijay()
         {
@@ -4925,6 +4934,338 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("CMP_Id", typeof(long));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCompanyAccountDetail_Result>("spGetCompanyAccountDetail", cMP_IdParameter);
+        }
+    
+        public virtual int spGetJobTitle1(Nullable<long> jBT_VST_Id)
+        {
+            var jBT_VST_IdParameter = jBT_VST_Id.HasValue ?
+                new ObjectParameter("JBT_VST_Id", jBT_VST_Id) :
+                new ObjectParameter("JBT_VST_Id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetJobTitle1", jBT_VST_IdParameter);
+        }
+    
+        public virtual int spGetVehicleSeating1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetVehicleSeating1");
+        }
+    
+        public virtual int spGetVehicleSeating_DepartmentMapping()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetVehicleSeating_DepartmentMapping");
+        }
+    
+        public virtual int spGetVehicleSeatingPermission1(Nullable<long> vSP_VST_Id)
+        {
+            var vSP_VST_IdParameter = vSP_VST_Id.HasValue ?
+                new ObjectParameter("VSP_VST_Id", vSP_VST_Id) :
+                new ObjectParameter("VSP_VST_Id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetVehicleSeatingPermission1", vSP_VST_IdParameter);
+        }
+    
+        public virtual int spGetVehicleSeatingPermissionType(Nullable<long> vPT_UserId, Nullable<long> vPT_SMD_Id)
+        {
+            var vPT_UserIdParameter = vPT_UserId.HasValue ?
+                new ObjectParameter("VPT_UserId", vPT_UserId) :
+                new ObjectParameter("VPT_UserId", typeof(long));
+    
+            var vPT_SMD_IdParameter = vPT_SMD_Id.HasValue ?
+                new ObjectParameter("VPT_SMD_Id", vPT_SMD_Id) :
+                new ObjectParameter("VPT_SMD_Id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetVehicleSeatingPermissionType", vPT_UserIdParameter, vPT_SMD_IdParameter);
+        }
+    
+        public virtual int spSetApprovalForTaxDetail(Nullable<long> lTXD_Id, string lTXD_Comment, string lTXD_IsApprove)
+        {
+            var lTXD_IdParameter = lTXD_Id.HasValue ?
+                new ObjectParameter("LTXD_Id", lTXD_Id) :
+                new ObjectParameter("LTXD_Id", typeof(long));
+    
+            var lTXD_CommentParameter = lTXD_Comment != null ?
+                new ObjectParameter("LTXD_Comment", lTXD_Comment) :
+                new ObjectParameter("LTXD_Comment", typeof(string));
+    
+            var lTXD_IsApproveParameter = lTXD_IsApprove != null ?
+                new ObjectParameter("LTXD_IsApprove", lTXD_IsApprove) :
+                new ObjectParameter("LTXD_IsApprove", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApprovalForTaxDetail", lTXD_IdParameter, lTXD_CommentParameter, lTXD_IsApproveParameter);
+        }
+    
+        public virtual int spSetDepartment1(string dPTAction, Nullable<long> dPT_Id, string dPT_Name, string dPT_IsActive)
+        {
+            var dPTActionParameter = dPTAction != null ?
+                new ObjectParameter("DPTAction", dPTAction) :
+                new ObjectParameter("DPTAction", typeof(string));
+    
+            var dPT_IdParameter = dPT_Id.HasValue ?
+                new ObjectParameter("DPT_Id", dPT_Id) :
+                new ObjectParameter("DPT_Id", typeof(long));
+    
+            var dPT_NameParameter = dPT_Name != null ?
+                new ObjectParameter("DPT_Name", dPT_Name) :
+                new ObjectParameter("DPT_Name", typeof(string));
+    
+            var dPT_IsActiveParameter = dPT_IsActive != null ?
+                new ObjectParameter("DPT_IsActive", dPT_IsActive) :
+                new ObjectParameter("DPT_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetDepartment1", dPTActionParameter, dPT_IdParameter, dPT_NameParameter, dPT_IsActiveParameter);
+        }
+    
+        public virtual int spSetJobTitle1(string jBTAction, Nullable<long> jBT_Id, string jBT_JobTitle, Nullable<long> jBT_VST_Id, string jBT_IsActive)
+        {
+            var jBTActionParameter = jBTAction != null ?
+                new ObjectParameter("JBTAction", jBTAction) :
+                new ObjectParameter("JBTAction", typeof(string));
+    
+            var jBT_IdParameter = jBT_Id.HasValue ?
+                new ObjectParameter("JBT_Id", jBT_Id) :
+                new ObjectParameter("JBT_Id", typeof(long));
+    
+            var jBT_JobTitleParameter = jBT_JobTitle != null ?
+                new ObjectParameter("JBT_JobTitle", jBT_JobTitle) :
+                new ObjectParameter("JBT_JobTitle", typeof(string));
+    
+            var jBT_VST_IdParameter = jBT_VST_Id.HasValue ?
+                new ObjectParameter("JBT_VST_Id", jBT_VST_Id) :
+                new ObjectParameter("JBT_VST_Id", typeof(long));
+    
+            var jBT_IsActiveParameter = jBT_IsActive != null ?
+                new ObjectParameter("JBT_IsActive", jBT_IsActive) :
+                new ObjectParameter("JBT_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetJobTitle1", jBTActionParameter, jBT_IdParameter, jBT_JobTitleParameter, jBT_VST_IdParameter, jBT_IsActiveParameter);
+        }
+    
+        public virtual int spSetVehicleSeating1(string vSTAction, Nullable<long> vST_Id, string vST_Title, string vST_JobDescription, string vST_RolesAndResponsiblities, string vST_Level, Nullable<long> vST_ParentId, Nullable<long> vST_DPT_Id, string vST_IsActive)
+        {
+            var vSTActionParameter = vSTAction != null ?
+                new ObjectParameter("VSTAction", vSTAction) :
+                new ObjectParameter("VSTAction", typeof(string));
+    
+            var vST_IdParameter = vST_Id.HasValue ?
+                new ObjectParameter("VST_Id", vST_Id) :
+                new ObjectParameter("VST_Id", typeof(long));
+    
+            var vST_TitleParameter = vST_Title != null ?
+                new ObjectParameter("VST_Title", vST_Title) :
+                new ObjectParameter("VST_Title", typeof(string));
+    
+            var vST_JobDescriptionParameter = vST_JobDescription != null ?
+                new ObjectParameter("VST_JobDescription", vST_JobDescription) :
+                new ObjectParameter("VST_JobDescription", typeof(string));
+    
+            var vST_RolesAndResponsiblitiesParameter = vST_RolesAndResponsiblities != null ?
+                new ObjectParameter("VST_RolesAndResponsiblities", vST_RolesAndResponsiblities) :
+                new ObjectParameter("VST_RolesAndResponsiblities", typeof(string));
+    
+            var vST_LevelParameter = vST_Level != null ?
+                new ObjectParameter("VST_Level", vST_Level) :
+                new ObjectParameter("VST_Level", typeof(string));
+    
+            var vST_ParentIdParameter = vST_ParentId.HasValue ?
+                new ObjectParameter("VST_ParentId", vST_ParentId) :
+                new ObjectParameter("VST_ParentId", typeof(long));
+    
+            var vST_DPT_IdParameter = vST_DPT_Id.HasValue ?
+                new ObjectParameter("VST_DPT_Id", vST_DPT_Id) :
+                new ObjectParameter("VST_DPT_Id", typeof(long));
+    
+            var vST_IsActiveParameter = vST_IsActive != null ?
+                new ObjectParameter("VST_IsActive", vST_IsActive) :
+                new ObjectParameter("VST_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetVehicleSeating1", vSTActionParameter, vST_IdParameter, vST_TitleParameter, vST_JobDescriptionParameter, vST_RolesAndResponsiblitiesParameter, vST_LevelParameter, vST_ParentIdParameter, vST_DPT_IdParameter, vST_IsActiveParameter);
+        }
+    
+        public virtual int spSetVehicleSeating_DepartmentMapping1(string vDMAction, Nullable<long> vDM_Id, Nullable<long> vDM_VST_Id, Nullable<long> vDM_DPT_Id, string vDM_IsActive)
+        {
+            var vDMActionParameter = vDMAction != null ?
+                new ObjectParameter("VDMAction", vDMAction) :
+                new ObjectParameter("VDMAction", typeof(string));
+    
+            var vDM_IdParameter = vDM_Id.HasValue ?
+                new ObjectParameter("VDM_Id", vDM_Id) :
+                new ObjectParameter("VDM_Id", typeof(long));
+    
+            var vDM_VST_IdParameter = vDM_VST_Id.HasValue ?
+                new ObjectParameter("VDM_VST_Id", vDM_VST_Id) :
+                new ObjectParameter("VDM_VST_Id", typeof(long));
+    
+            var vDM_DPT_IdParameter = vDM_DPT_Id.HasValue ?
+                new ObjectParameter("VDM_DPT_Id", vDM_DPT_Id) :
+                new ObjectParameter("VDM_DPT_Id", typeof(long));
+    
+            var vDM_IsActiveParameter = vDM_IsActive != null ?
+                new ObjectParameter("VDM_IsActive", vDM_IsActive) :
+                new ObjectParameter("VDM_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetVehicleSeating_DepartmentMapping1", vDMActionParameter, vDM_IdParameter, vDM_VST_IdParameter, vDM_DPT_IdParameter, vDM_IsActiveParameter);
+        }
+    
+        public virtual ObjectResult<spGetEmployeePersonalInfo_Result> spGetEmployeePersonalInfo(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEmployeePersonalInfo_Result>("spGetEmployeePersonalInfo", employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetOrgnizationCommonview_Result> spGetOrgnizationCommonview(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetOrgnizationCommonview_Result>("spGetOrgnizationCommonview", employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetOrgnizationListview_Result> spGetOrgnizationListview(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetOrgnizationListview_Result>("spGetOrgnizationListview", employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetOrgnizationPositionView_Result> spGetOrgnizationPositionView(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetOrgnizationPositionView_Result>("spGetOrgnizationPositionView", employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetOrgnizationUserView_Result> spGetOrgnizationUserView(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetOrgnizationUserView_Result>("spGetOrgnizationUserView", employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<spSetEmployee_Result> spSetEmployee(string eMPAction, Nullable<long> eMP_Id, string eMP_EmployeeID, Nullable<long> eMP_API_ApplicantId, string eMP_FirstName, string eMP_MiddleName, string eMP_LastName, string eMP_Email, Nullable<long> eMP_Phone, string eMP_DrivingLicenseNumber, Nullable<System.DateTime> eMP_DateOfBirth, string eMP_SSN, string eMP_Photo, string eMP_MilitaryService, Nullable<long> eMP_Gender, Nullable<long> eMP_JobTitleId, Nullable<long> eMP_ManagerId, Nullable<System.DateTime> eMP_DateOfJoining, Nullable<long> eMP_LocationId, Nullable<long> eMP_IsCreatedBy, Nullable<System.DateTime> eMP_IsCreatedOn, string eMP_IsActive, Nullable<long> userType, string eMA_Address, string eMA_City, string eMA_State, Nullable<int> eMA_Zip, string cTZ_Citizenship)
+        {
+            var eMPActionParameter = eMPAction != null ?
+                new ObjectParameter("EMPAction", eMPAction) :
+                new ObjectParameter("EMPAction", typeof(string));
+    
+            var eMP_IdParameter = eMP_Id.HasValue ?
+                new ObjectParameter("EMP_Id", eMP_Id) :
+                new ObjectParameter("EMP_Id", typeof(long));
+    
+            var eMP_EmployeeIDParameter = eMP_EmployeeID != null ?
+                new ObjectParameter("EMP_EmployeeID", eMP_EmployeeID) :
+                new ObjectParameter("EMP_EmployeeID", typeof(string));
+    
+            var eMP_API_ApplicantIdParameter = eMP_API_ApplicantId.HasValue ?
+                new ObjectParameter("EMP_API_ApplicantId", eMP_API_ApplicantId) :
+                new ObjectParameter("EMP_API_ApplicantId", typeof(long));
+    
+            var eMP_FirstNameParameter = eMP_FirstName != null ?
+                new ObjectParameter("EMP_FirstName", eMP_FirstName) :
+                new ObjectParameter("EMP_FirstName", typeof(string));
+    
+            var eMP_MiddleNameParameter = eMP_MiddleName != null ?
+                new ObjectParameter("EMP_MiddleName", eMP_MiddleName) :
+                new ObjectParameter("EMP_MiddleName", typeof(string));
+    
+            var eMP_LastNameParameter = eMP_LastName != null ?
+                new ObjectParameter("EMP_LastName", eMP_LastName) :
+                new ObjectParameter("EMP_LastName", typeof(string));
+    
+            var eMP_EmailParameter = eMP_Email != null ?
+                new ObjectParameter("EMP_Email", eMP_Email) :
+                new ObjectParameter("EMP_Email", typeof(string));
+    
+            var eMP_PhoneParameter = eMP_Phone.HasValue ?
+                new ObjectParameter("EMP_Phone", eMP_Phone) :
+                new ObjectParameter("EMP_Phone", typeof(long));
+    
+            var eMP_DrivingLicenseNumberParameter = eMP_DrivingLicenseNumber != null ?
+                new ObjectParameter("EMP_DrivingLicenseNumber", eMP_DrivingLicenseNumber) :
+                new ObjectParameter("EMP_DrivingLicenseNumber", typeof(string));
+    
+            var eMP_DateOfBirthParameter = eMP_DateOfBirth.HasValue ?
+                new ObjectParameter("EMP_DateOfBirth", eMP_DateOfBirth) :
+                new ObjectParameter("EMP_DateOfBirth", typeof(System.DateTime));
+    
+            var eMP_SSNParameter = eMP_SSN != null ?
+                new ObjectParameter("EMP_SSN", eMP_SSN) :
+                new ObjectParameter("EMP_SSN", typeof(string));
+    
+            var eMP_PhotoParameter = eMP_Photo != null ?
+                new ObjectParameter("EMP_Photo", eMP_Photo) :
+                new ObjectParameter("EMP_Photo", typeof(string));
+    
+            var eMP_MilitaryServiceParameter = eMP_MilitaryService != null ?
+                new ObjectParameter("EMP_MilitaryService", eMP_MilitaryService) :
+                new ObjectParameter("EMP_MilitaryService", typeof(string));
+    
+            var eMP_GenderParameter = eMP_Gender.HasValue ?
+                new ObjectParameter("EMP_Gender", eMP_Gender) :
+                new ObjectParameter("EMP_Gender", typeof(long));
+    
+            var eMP_JobTitleIdParameter = eMP_JobTitleId.HasValue ?
+                new ObjectParameter("EMP_JobTitleId", eMP_JobTitleId) :
+                new ObjectParameter("EMP_JobTitleId", typeof(long));
+    
+            var eMP_ManagerIdParameter = eMP_ManagerId.HasValue ?
+                new ObjectParameter("EMP_ManagerId", eMP_ManagerId) :
+                new ObjectParameter("EMP_ManagerId", typeof(long));
+    
+            var eMP_DateOfJoiningParameter = eMP_DateOfJoining.HasValue ?
+                new ObjectParameter("EMP_DateOfJoining", eMP_DateOfJoining) :
+                new ObjectParameter("EMP_DateOfJoining", typeof(System.DateTime));
+    
+            var eMP_LocationIdParameter = eMP_LocationId.HasValue ?
+                new ObjectParameter("EMP_LocationId", eMP_LocationId) :
+                new ObjectParameter("EMP_LocationId", typeof(long));
+    
+            var eMP_IsCreatedByParameter = eMP_IsCreatedBy.HasValue ?
+                new ObjectParameter("EMP_IsCreatedBy", eMP_IsCreatedBy) :
+                new ObjectParameter("EMP_IsCreatedBy", typeof(long));
+    
+            var eMP_IsCreatedOnParameter = eMP_IsCreatedOn.HasValue ?
+                new ObjectParameter("EMP_IsCreatedOn", eMP_IsCreatedOn) :
+                new ObjectParameter("EMP_IsCreatedOn", typeof(System.DateTime));
+    
+            var eMP_IsActiveParameter = eMP_IsActive != null ?
+                new ObjectParameter("EMP_IsActive", eMP_IsActive) :
+                new ObjectParameter("EMP_IsActive", typeof(string));
+    
+            var userTypeParameter = userType.HasValue ?
+                new ObjectParameter("UserType", userType) :
+                new ObjectParameter("UserType", typeof(long));
+    
+            var eMA_AddressParameter = eMA_Address != null ?
+                new ObjectParameter("EMA_Address", eMA_Address) :
+                new ObjectParameter("EMA_Address", typeof(string));
+    
+            var eMA_CityParameter = eMA_City != null ?
+                new ObjectParameter("EMA_City", eMA_City) :
+                new ObjectParameter("EMA_City", typeof(string));
+    
+            var eMA_StateParameter = eMA_State != null ?
+                new ObjectParameter("EMA_State", eMA_State) :
+                new ObjectParameter("EMA_State", typeof(string));
+    
+            var eMA_ZipParameter = eMA_Zip.HasValue ?
+                new ObjectParameter("EMA_Zip", eMA_Zip) :
+                new ObjectParameter("EMA_Zip", typeof(int));
+    
+            var cTZ_CitizenshipParameter = cTZ_Citizenship != null ?
+                new ObjectParameter("CTZ_Citizenship", cTZ_Citizenship) :
+                new ObjectParameter("CTZ_Citizenship", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSetEmployee_Result>("spSetEmployee", eMPActionParameter, eMP_IdParameter, eMP_EmployeeIDParameter, eMP_API_ApplicantIdParameter, eMP_FirstNameParameter, eMP_MiddleNameParameter, eMP_LastNameParameter, eMP_EmailParameter, eMP_PhoneParameter, eMP_DrivingLicenseNumberParameter, eMP_DateOfBirthParameter, eMP_SSNParameter, eMP_PhotoParameter, eMP_MilitaryServiceParameter, eMP_GenderParameter, eMP_JobTitleIdParameter, eMP_ManagerIdParameter, eMP_DateOfJoiningParameter, eMP_LocationIdParameter, eMP_IsCreatedByParameter, eMP_IsCreatedOnParameter, eMP_IsActiveParameter, userTypeParameter, eMA_AddressParameter, eMA_CityParameter, eMA_StateParameter, eMA_ZipParameter, cTZ_CitizenshipParameter);
         }
     }
 }

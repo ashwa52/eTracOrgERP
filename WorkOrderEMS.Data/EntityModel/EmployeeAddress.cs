@@ -12,16 +12,16 @@ namespace WorkOrderEMS.Data.EntityModel
     using System;
     using System.Collections.Generic;
     
-    public partial class BillFacilityItem
+    public partial class EmployeeAddress
     {
-        public long BFI_Id { get; set; }
-        public long BFI_PBL_Id { get; set; }
-        public long BFI_CFM_Id { get; set; }
-        public Nullable<long> BFI_Unit { get; set; }
-        public Nullable<decimal> BFI_Rate { get; set; }
-        public string BFI_IsActive { get; set; }
-    
-        public virtual CompanyFacilityMapping CompanyFacilityMapping { get; set; }
-        public virtual PreBillNumber PreBillNumber { get; set; }
+        public long EMA_Id { get; set; }
+        public string EMA_EMP_EmployeeID { get; set; }
+        public string EMA_Address { get; set; }
+        public string EMA_City { get; set; }
+        public string EMA_State { get; set; }
+        public Nullable<int> EMA_Zip { get; set; }
+        public Nullable<long> EMA_AddressPhoneNo { get; set; }
+        public Nullable<System.DateTime> EMA_Date { get; set; }
+        public string EMA_IsActive { get; set; }
     }
 }
