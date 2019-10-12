@@ -490,6 +490,18 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             {
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
-        }  
+        }
+
+        public ActionResult PerformanceManagement()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
+            var details = new LocationDetailsModel();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            return PartialView("_PerformanceManagement");
+        }
     }
 }

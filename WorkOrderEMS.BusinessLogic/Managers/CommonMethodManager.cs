@@ -2360,13 +2360,15 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                           FacilityRequest = a.q.FacilityRequestId,
                                           AddressFacilityReq = a.q.Address,
                                           LicensePlateNo = a.q.LicensePlateNo,
-                                          CreatedBy=assignedBy.FirstName+assignedBy.LastName,
-                                          EmployeeImage = assignedBy.ProfileImage
+                                          CreatedBy=assignedBy.FirstName+" "+assignedBy.LastName,
+                                          EmployeeImage = assignedBy.ProfileImage// == null ? HostingPrefix + "/Content/Images/ProjectLogo/no-profile-pic.jpg" : HostingPrefix + (ConfigurationManager.AppSettings["WorkRequestImage"]).Replace("~", "") + assignedBy.ProfileImage
 
 
                                       }).FirstOrDefault();
                             if (obj != null)
                             {
+                                obj.EmployeeImage = assignedBy.ProfileImage == null ? HostingPrefix + "/Content/Images/ProfilePic/no-profile-pic.jpg" : HostingPrefix + (ConfigurationManager.AppSettings["ProfilePicPath"]).Replace("~", "") + assignedBy.ProfileImage;
+
                                 obj.WorkOrderImage = obj.WorkOrderImage == null ? HostingPrefix + "/Content/Images/WorkRequest/no-asset-pic.png" : HostingPrefix + (ConfigurationManager.AppSettings["WorkRequestImage"]).Replace("~", "") + obj.WorkOrderImage;
                                 //obj.AssignedTime = obj.AssignedTime.ToString("HH:mm");
                                 ///This is to check if it is manager then the notification make it non workable

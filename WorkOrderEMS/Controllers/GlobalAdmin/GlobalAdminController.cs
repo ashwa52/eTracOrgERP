@@ -4222,7 +4222,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
         ///Get Unseen Notification
         ///
         [HttpGet]
-        public JsonResult GetUnseenNotifications()
+        public ActionResult GetUnseenNotifications()
         {
             eTracLoginModel ObjLoginModel = null;
             long UserId = 0;
@@ -4231,7 +4231,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
                 UserId = ObjLoginModel.UserId;
             }
-            return Json(_ICommonMethod.GetUnseenNotifications(UserId),JsonRequestBehavior.AllowGet);
+            return PartialView("_Notifications",_ICommonMethod.GetUnseenNotifications(UserId));
         }
 
     }
