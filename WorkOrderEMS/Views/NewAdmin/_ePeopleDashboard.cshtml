@@ -1,6 +1,5 @@
 ﻿
 @{
-    //Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
     Layout = null;
     string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
     WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
@@ -58,17 +57,8 @@
                     <p class="mb-0">ePeople Dashboard</p>
                 </div>
             </div>
-            <div class="col-sm-3">
-                <button type="button" id="EmplooyeeManagement" class="btn btn-primary pull-right glowbuttonActiveDeactive butttonActiveEmployee" style="border-radius: 35px;">Employee Management</button>
-            </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <div>
-                <button type="button" id="HiringOnBoard" class="btn btn-primary pull-right glowbuttonActiveDeactive" style="border-radius: 35px;">Hiring On Boarding</button>
-            </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <div>
-                <button type="button" id="eTime" class="btn btn-primary pull-right glowbuttonActiveDeactive" style="border-radius: 35px;">eTime</button>
-            </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <div>
-                <button type="button" id="PerformanceManagement" class="btn btn-primary pull-right glowbuttonActiveDeactive" style="border-radius: 35px;">Performance Management</button>
+            <div class="col-sm-8">
+                <button type="button" id="EmplooyeeManagement" class="btn btn-primary pull-right" style="border-radius: 35px;">Employee Management</button>
             </div>
         </div>
         <div class="row justify-content-center">

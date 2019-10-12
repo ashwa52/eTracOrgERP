@@ -20,7 +20,6 @@ namespace WorkOrderEMS.Data.EntityModel
             this.CompanyAccountTransactions = new HashSet<CompanyAccountTransaction>();
             this.CompanyAccountTransactions1 = new HashSet<CompanyAccountTransaction>();
             this.CompanyDetails = new HashSet<CompanyDetail>();
-            this.CompanyFacilityMappings = new HashSet<CompanyFacilityMapping>();
             this.CompanyQBKs = new HashSet<CompanyQBK>();
             this.Contracts = new HashSet<Contract>();
             this.Contracts1 = new HashSet<Contract>();
@@ -30,7 +29,6 @@ namespace WorkOrderEMS.Data.EntityModel
             this.LogBills = new HashSet<LogBill>();
             this.LogCompanies = new HashSet<LogCompany>();
             this.LogCompanyDetails = new HashSet<LogCompanyDetail>();
-            this.LogCompanyFacilityMappings = new HashSet<LogCompanyFacilityMapping>();
             this.LogContracts = new HashSet<LogContract>();
             this.LogContracts1 = new HashSet<LogContract>();
             this.LogInsurances = new HashSet<LogInsurance>();
@@ -42,6 +40,8 @@ namespace WorkOrderEMS.Data.EntityModel
             this.PreBills = new HashSet<PreBill>();
             this.CompanyAccountDetails = new HashSet<CompanyAccountDetail>();
             this.LogCompanyAccountDetails = new HashSet<LogCompanyAccountDetail>();
+            this.CompanyFacilityMappings = new HashSet<CompanyFacilityMapping>();
+            this.LogCompanyFacilityMappings = new HashSet<LogCompanyFacilityMapping>();
         }
     
         public long CMP_Id { get; set; }
@@ -59,7 +59,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ICollection<CompanyAccountTransaction> CompanyAccountTransactions { get; set; }
         public virtual ICollection<CompanyAccountTransaction> CompanyAccountTransactions1 { get; set; }
         public virtual ICollection<CompanyDetail> CompanyDetails { get; set; }
-        public virtual ICollection<CompanyFacilityMapping> CompanyFacilityMappings { get; set; }
         public virtual ICollection<CompanyQBK> CompanyQBKs { get; set; }
         public virtual ICollection<Contract> Contracts { get; set; }
         public virtual ICollection<Contract> Contracts1 { get; set; }
@@ -69,7 +68,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ICollection<LogBill> LogBills { get; set; }
         public virtual ICollection<LogCompany> LogCompanies { get; set; }
         public virtual ICollection<LogCompanyDetail> LogCompanyDetails { get; set; }
-        public virtual ICollection<LogCompanyFacilityMapping> LogCompanyFacilityMappings { get; set; }
         public virtual ICollection<LogContract> LogContracts { get; set; }
         public virtual ICollection<LogContract> LogContracts1 { get; set; }
         public virtual ICollection<LogInsurance> LogInsurances { get; set; }
@@ -81,5 +79,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ICollection<PreBill> PreBills { get; set; }
         public virtual ICollection<CompanyAccountDetail> CompanyAccountDetails { get; set; }
         public virtual ICollection<LogCompanyAccountDetail> LogCompanyAccountDetails { get; set; }
+        public virtual ICollection<CompanyFacilityMapping> CompanyFacilityMappings { get; set; }
+        public virtual ICollection<LogCompanyFacilityMapping> LogCompanyFacilityMappings { get; set; }
     }
 }

@@ -10,6 +10,9 @@ namespace WorkOrderEMS.BusinessLogic
     public interface IePeopleManager
     {
         List<UserModelList> GetUserList(long? LocationId);
-        UserModelList GetUserHeirarchyList(long? LocationId, long? UserId);
+        List<UserModelList> GetUserHeirarchyList(long? LocationId, long? UserId);
+        List<UserListViewEmployeeManagementModel> GetUserListByUserId(long? LocationId, long? UserId);
+        UserListViewEmployeeManagementModel GetVCSPositionByUserId(long? UserId);
+        List<UserListViewEmployeeManagementModel> GetUserTreeViewList(long UserId);
     }
 }

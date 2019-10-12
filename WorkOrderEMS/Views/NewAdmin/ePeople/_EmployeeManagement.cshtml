@@ -1,0 +1,352 @@
+﻿
+@{
+    Layout = null;
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+    long loginUserType = 0;
+    long locationId = 0;
+    long UserId = 0;
+    if (ObjLogin != null)
+    {
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+        loginUserType = ObjLogin.UserRoleId;
+        //loginUserContactNo = ObjLogin.ContactNo;
+        locationId = ObjLogin.LocationID;
+        UserId = ObjLogin.UserId;
+    }
+}
+
+<!--**********************************
+           Content body start
+       ***********************************-->
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/material.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />
+<link href="~/Areas/AdminSection/Content/CSS/GetOrg.css" rel="stylesheet" />
+<style>
+    .addWhite {
+        color: white;
+    }
+
+    .widthHeader {
+        height: 40px;
+    }
+</style>
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3" data-aos="fade-up">
+            <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
+                <div class="welcome-text">
+                    <h4>Hi, welcome back! @loginUserName</h4>
+                    <p class="mb-0">Employee Management Dashboard</p>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <button type="button" id="EmplooyeeManagement" class="btn btn-primary pull-right" style="border-radius: 35px;">Employee Management</button>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header widthHeader ">
+                        <h4 class="card-title addWhite" style="color: white;">Employee</h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="QRCCount"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header widthHeader ">
+                        <h4 class="card-title addWhite" style="color: white;">eTime</h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="eTimediv"></div>
+                        @*<div id="c3-combination"></div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-lg-12" id="EmployeeManagementDiv">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header" style="height: 45px;">
+                        <h4 class="card-title addWhite"><b>Employee Management</b></h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="ListEmployeeManagement"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("~/Views/NewAdmin/ePeople/_TreeUserViewEMP.cshtml")
+@*@Html.Partial("~/Views/NewAdmin/ePeople/_ListUserEMP.cshtml")*@
+<div class="modal fade  bd-example-modal-lg" @*data-backdrop="false"*@ id="ModalProfilePreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">View Profile</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="viewProfileData">
+                </div>
+            </div>
+            <div class="modal-footer" style="background: white;">
+                <button type="button" class="btn btn-secondary" id="close" style="border-radius:100px;" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForUserList">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">User List</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="ViewUserListDetails">                   
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer" style="background: white;">
+            <button type="button" class="btn btn-secondary" id="closeUserView" style="border-radius:100px;" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+
+  <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForViewVCSData">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">User Vehicle Seating Chart</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="card-body">
+                        <div id="containerForViewChart"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background: white;">
+                <button type="button" class="btn btn-secondary" id="closeVSC" style="border-radius:100px;" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+
+  <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForChangeStatusData">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title">User Change Status</h5>
+                  <button type="button" class="close" data-dismiss="modal">
+                      <span>&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <div class="card-body">
+                      <div id="containerForChangeStatus"></div>
+                  </div>
+              </div>
+          </div>
+          <div class="modal-footer" style="background: white;">
+              <button type="button" class="btn btn-secondary" id="closeStatus" style="border-radius:100px;" data-dismiss="modal">Close</button>
+          </div>
+      </div>
+  </div>
+
+<!--**********************************
+    Content body end
+***********************************-->
+<script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
+<script src="~/Areas/AdminSection/Content/JQUERY/GetOrg.js"></script>
+<script src="~/GridListing/JsGridScript/ListOnBoarding.js"></script>
+<script src="~/GridListing/JsGridScript/ListMyOpening.js"></script>
+<script src="~/GridListing/JsGridScript/ListEmployeeManagement.js"></script>
+<script>
+am4core.ready(function() {
+
+// Themes begin
+am4core.useTheme(am4themes_material);
+am4core.useTheme(am4themes_animated);
+// Themes end
+
+// Create chart instance
+var chart = am4core.create("EmployeePieChart", am4charts.PieChart);
+
+// Add data
+chart.data = [{
+    "User Type": "Administrator",
+    "Count": 2//dataJSON.CountPanel[0].ManagerCount
+}, {
+    "User Type": "Manager",
+    "Count": 4
+}, {
+    "User Type": "Employee",
+    "Count": 12//dataJSON.CountPanel[0].EmpCount
+}];
+
+// Add and configure Series
+var pieSeries = chart.series.push(new am4charts.PieSeries());
+pieSeries.dataFields.value = "Count";
+pieSeries.dataFields.category = "User Type";
+pieSeries.innerRadius = am4core.percent(50);
+pieSeries.ticks.template.disabled = true;
+pieSeries.labels.template.disabled = true;
+
+var rgm = new am4core.RadialGradientModifier();
+rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, - 0.5);
+pieSeries.slices.template.fillModifier = rgm;
+pieSeries.slices.template.strokeModifier = rgm;
+pieSeries.slices.template.strokeOpacity = 0.4;
+pieSeries.slices.template.strokeWidth = 0;
+
+chart.legend = new am4charts.Legend();
+chart.legend.position = "right";
+
+}); // end am4core.ready()
+</script>
+<script>
+    var chartDAR = AmCharts.makeChart("eTimediv", {
+    "theme": "none",
+    "type": "serial",
+    "startDuration": 7,
+    "dataProvider": [{
+        "Cost Code": "Travel",
+        "Budget": 4334,
+        "color": "#1740AE"
+    }, {
+        "Cost Code": "Marketing",
+        "Budget": 4000,
+        "color": "#758DCB"
+    }, {
+        "Cost Code": "Other Travel",
+        "Budget": 3466,
+        "color": "#86E2E8"
+    }],
+    "valueAxes": [{
+        "position": "left",
+        "axisAlpha":0,
+        "gridAlpha":0
+    }],
+    "graphs": [{
+        "balloonText": "[[category]]: <b>[[value]]</b>",
+        "colorField": "color",
+        "fillAlphas": 0.85,
+        "lineAlpha": 0.1,
+        "type": "column",
+        "topRadius":1,
+        "valueField": "Budget"
+    }],
+    "depth3D": 40,
+    "angle": 30,
+    "chartCursor": {
+        "categoryBalloonEnabled": false,
+        "cursorAlpha": 0,
+        "zoomable": false
+    },
+    "categoryField": "Cost Code",
+    "categoryAxis": {
+        "gridPosition": "start",
+        "axisAlpha":1,
+        "gridAlpha":0,
+        "labelRotation": 20,
+    },
+    "export": {
+    	"enabled": true
+     }
+
+}, 0);
+</script>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetDashboardHeadCount", "GlobalAdmin")",
+            data: {},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (jsondata) {
+        //successFuncPie(response);
+        if (jsondata != null && jsondata != "" && jsondata.dataJson.trim() != "") {
+            var dataJSON = JSON.parse(jsondata.dataJson);
+            dataJSON.CountPanel[0].AdminCount;
+            am4core.ready(function () {
+                am4core.useTheme(am4themes_animated);
+                var chartQRC = am4core.create("QRCCount", am4charts.PieChart);
+                chartQRC.data = [{
+                    "UserType": "Administrator",
+                    "Count": 20
+                }, {
+                    "UserType": "Manager",
+                    "Count": 5//dataJSON.CountPanel[0].EmpCount
+                }, {
+                    "UserType": "Employee",
+                    "Count": 3//dataJSON.CountPanel[0].ManagerCount
+                }];
+
+                // Add and configure Series
+                var pieSeries = chartQRC.series.push(new am4charts.PieSeries());
+                pieSeries.dataFields.value = "Count";
+                pieSeries.dataFields.category = "UserType";
+                pieSeries.innerRadius = am4core.percent(50);
+                pieSeries.ticks.template.disabled = true;
+                pieSeries.labels.template.disabled = true;
+
+                var rgm = new am4core.RadialGradientModifier();
+                rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
+                pieSeries.slices.template.fillModifier = rgm;
+                pieSeries.slices.template.strokeModifier = rgm;
+                pieSeries.slices.template.strokeOpacity = 0.4;
+                pieSeries.slices.template.strokeWidth = 0;
+
+                chartQRC.legend = new am4charts.Legend();
+                chartQRC.legend.position = "right";
+
+            }); // end am4core.ready()
+        }
+    }
+        });
+
+        $("#HiringOnBoard").click(function () {
+            $("#hiringOnBordingDiv").show();
+            $("#EmployeeManagementDiv").hide();
+            $('html,body').animate({
+                scrollTop: $("#hiringOnBordingDiv").offset().top
+            }, 'slow');
+        });
+
+        $("#EmplooyeeManagement").click(function () {
+            $("#EmployeeManagementDiv").show();
+            $("#hiringOnBordingDiv").hide();
+            $('html,body').animate({
+                scrollTop: $("#EmployeeManagementDiv").offset().top
+            }, 'slow');
+        });
+ });
+</script>
+
