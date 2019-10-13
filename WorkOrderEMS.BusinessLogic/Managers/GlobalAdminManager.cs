@@ -3800,6 +3800,36 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 										  Status = x.API_ApplicantStatus,
 										  Image = x.API_Photo,
 										  JobTitle = x.JBT_JobTitle,
+										  ApplicantId = x.API_ApplicantId,
+										  DesireSalary=x.API_DesireSalary
+									  }
+									).ToList();
+					return myOpenings;
+				}
+			}
+			catch (Exception ex)
+			{
+				return null;
+			}
+		}
+		public List<MyOpeningModel> GetMyInterviews(long userId)
+		{
+			try
+			{
+				using (workorderEMSEntities Context = new workorderEMSEntities())
+				{
+					var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
+					var myOpenings = (from x in Context.spGetApplicantInfoForMyInterview(empid)
+									  select new MyOpeningModel
+									  {
+										  Email = x.API_Email,
+										  FirstName = x.API_FirstName,
+										  LastName = x.API_LastName,
+										  PhoneNumber = x.API_PhoneNumber,
+										  MiddleName = x.API_MiddleName,
+										  Status = x.API_ApplicantStatus,
+										  Image = x.API_Photo,
+										  JobTitle = x.JBT_JobTitle,
 										  ApplicantId = x.API_ApplicantId
 									  }
 									).ToList();
@@ -3811,7 +3841,6 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 				return null;
 			}
 		}
-
 		public List<JobPosting> GetJobPostong(long userId)
 		{
 			using (workorderEMSEntities context = new workorderEMSEntities())
@@ -3928,6 +3957,81 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 			}
 		}
 
+		public bool SaveInterviewAnswers(InterviewAnswerModel model,long UserId)
+		{
+			try
+			{
+				using (workorderEMSEntities context = new workorderEMSEntities())
+				{
+					var EmpId = context.UserRegistrations.Where(x => x.UserId == UserId)?.FirstOrDefault().EmployeeID;
+					var res= context.spSetInterviewAnswer(model.QusId, model.ApplicantId,EmpId, model.Answer, model.Comment);
+					if (res > 0)
+						return true;
+					else
+						return false;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+		public bool IsInterviewerOnline(long ApplicantId, long UserId, string IsAvailable, string Comment)
+		{
+			try
+			{
+				using (workorderEMSEntities context = new workorderEMSEntities())
+				{
+					var EmpId = context.UserRegistrations.Where(x => x.UserId == UserId)?.FirstOrDefault().EmployeeID;
+					var res = context.spSetInterviewerIsOnline(ApplicantId, EmpId,IsAvailable,Comment);
+					if (res > 0)
+						return true;
+					else
+						return false;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+		public int GetScore(long ApplicantId)
+		{
+			try
+			{
+				using (workorderEMSEntities context = new workorderEMSEntities())
+				{
+					var res = context.spGetInterviewScore(ApplicantId).FirstOrDefault();
+					if (res.HasValue)
+						return res.Value;
+					else
+						return 0;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+		public bool CheckIfAllRespondedForQuestion(long ApplicantId)
+		{
+			try
+			{
+				using (workorderEMSEntities context = new workorderEMSEntities())
+				{
+					ObjectParameter isStart = new ObjectParameter("IsNext", "");
+					var res = context.spGetNextQuestion(ApplicantId, isStart);
+					if (isStart.Value.ToString().Equals("y", StringComparison.OrdinalIgnoreCase))
+						return true;
+					else
+						return false;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
 	}
 
 	public class loc

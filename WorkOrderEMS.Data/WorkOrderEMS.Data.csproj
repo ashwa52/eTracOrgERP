@@ -102,7 +102,6 @@
     <Compile Include="DataRepository\FuelingRepository.cs" />
     <Compile Include="DataRepository\GlobalAdminRepository.cs" />
     <Compile Include="DataRepository\GlobalCodesRepository.cs" />
-    <Compile Include="DataRepository\GuestUserRepository.cs" />
     <Compile Include="DataRepository\HoursOfServicesRepository.cs" />
     <Compile Include="DataRepository\LocationClientMappingRepository.cs" />
     <Compile Include="DataRepository\LocationMasterRepository.cs" />
@@ -197,6 +196,9 @@
     <Compile Include="EntityModel\DefectReportDetail.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityModel\DirectDepositForm.cs">
+      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\eFleetDriver.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
@@ -246,6 +248,9 @@
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\EmployeeAddress.cs">
+      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\EmployeeHandbook.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\EmployeeLocationMapping.cs">
@@ -624,6 +629,9 @@
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\spGetDepartment_Result.cs">
+      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\spGetDirectDepositForm_Result.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\spGeteFormTrack_Result.cs">
@@ -1150,7 +1158,6 @@
     <Compile Include="Interfaces\IEmailLogRepository.cs" />
     <Compile Include="Interfaces\IFuelingRepository.cs" />
     <Compile Include="Interfaces\IGlobalCodesRepository.cs" />
-    <Compile Include="Interfaces\IGuestUserRepository.cs" />
     <Compile Include="Interfaces\IHoursOfServicesRepository.cs" />
     <Compile Include="Interfaces\IInsurance.cs" />
     <Compile Include="Interfaces\ILocationClientMappingRepository.cs" />

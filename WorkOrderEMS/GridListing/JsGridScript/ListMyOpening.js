@@ -74,6 +74,73 @@ function myOpenings() {
 				title: '', width: 60, itemTemplate: function (value, item) {
 					return $("<div>").append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-exclamation-triangle white"))
 						.append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-gg-circle white"))
+						.append($("<div>").addClass("action1 inline actionbox").append($("<a>").attr({ "onclick": "TakeInterview(" + JSON.stringify(item) + ")", "href": "#" }).append("<i>").addClass("fa fa-diamond white")))
+						.append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-check-circle white"))
+						.append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-check white"));
+				}
+			}
+		]
+	});
+
+
+	String.prototype.capitalize = function () {
+		return this.charAt(0).toUpperCase() + this.slice(1);
+	};
+
+
+}
+function MyInterviews() {
+	$("#myinterviews").jsGrid({
+		width: "100%",
+		height: "300px",
+		filtering: true,
+		sorting: true,
+		paging: true,
+		autoload: true,
+		pageSize: 10,
+		pageButtonCount: 5,
+
+		controller: {
+			loadData: function () {
+				var deferred = $.Deferred();
+
+				$.ajax({
+					url: '/NewAdmin/MyInterviews',
+					dataType: 'json',
+					success: function (data) {
+						debugger;
+						deferred.resolve(data);
+					}
+				});
+
+				return deferred.promise();
+			}
+		},
+		fields: [
+			{
+				title: "Applicant Image", name: "Image", width: 60,
+				itemTemplate: function (value) {
+					return $("<div>").append($("<img>").addClass("client-photo").attr("src", value === '' || value === "null" ? "https://www.w3schools.com/howto/img_avatar.png" : value));
+				}
+			},
+			{
+				title: "Applicant Name", width: 60, itemTemplate: function (v, i) {
+					return i.FirstName + ' ' + i.LastName;
+				}
+			},
+			{
+				title: "Rating", width: 60,
+				itemTemplate: function () {
+					return $("<i>").addClass("fa fa-star").append($("<i>").addClass("fa fa-star")).append($("<i>").addClass("fa fa-star"))
+						.append($("<i>").addClass("fa fa-star")).append($("<i>").addClass("fa fa-star"));
+				}
+			},
+			{ title: "Phone", width: 60, name: "PhoneNumber" },
+			{ title: "Email", width: 60, name: "Email" },
+			{ title: "Status", width: 60, name: "Status" },
+			{
+				title: '', width: 60, itemTemplate: function (value, item) {
+					return $("<div>")
 						.append($("<div>").addClass("action1 inline actionbox").append($("<a>").attr({ "onclick": "TakeInterview(" + JSON.stringify(item) + ")", "href": "#" }).append("<i>").addClass("fa fa-diamond white")));
 				}
 			}
@@ -129,7 +196,8 @@ function MyOpeningSummery() {
 			{
 				name: " ", width: 100, align: "center", Title: "",
 				itemTemplate: function (value) {
-					return $("<div>").append("<i>").addClass("fa fa-envelope-o fa-lg actionBtn")
+					return $("<div>").append($("<div>").append("<i>").addClass("fa fa-pie-chart fa-lg actionBtn"))
+						.append($("<div>").append("<i>").addClass("fa fa-envelope-o fa-lg actionBtn"))
 						.append($("<div>").append("<i>").addClass("fa fa-trash fa-lg actionBtn"));
 				}
 			}
@@ -201,32 +269,67 @@ function Getquestions(id) {
 		}
 	});
 }
-function RecordYes() {
-	$("#selectAns").val('Y');
-	$("#commentbox").prop('required', true);
+function RecordYes(isFinal) {
+	if (!isFinal) {
+		$("#selectAns").val('Y');
+		document.querySelector('#commentbox').required = false;
+		$("#lblmsg").hide();
+	}
+	else {
+		$("#selectAns").val('Y');
+		document.querySelector('#commentboxlast').required = true;
+	}
+
 }
-function RecordNo() {
-	$("#selectAns").val('N');
+function RecordNo(isFinal) {
+	if (!isFinal) {
+		$("#selectAns").val('N');
+		$("#commentbox").prop('required', true);
+	} else {
+		$("#selectAns").val('N');
+		document.querySelector('#commentboxlast').required = false;
+		$("#lblmsglast").hide();
+	}
 }
 function SaveAndNext() {
 	debugger;
-	var qus_num = $("#hdn_qusnum").val();
-	if (qus_num >= 0) {
-		var opt_val = $("#selectAns").val();
-		if (opt_val == undefined || opt_val == '' || opt_val == null) {
-			alert('Please select an option');
-			return;
-		}
-	}
+	if (CheckIfOptionNotSelected())
+		return;
 	if ($("#commentbox").prop('required')) {
 		var value = $("#commentbox").val();
 		if (value == '' || value == undefined) {
+			$("#lblmsg").show();
+			$("#lblmsg").css("display","block");
 			return;
 		}
 	}
-	if (id != null)
-		id += 1;
+	if (SaveAnswer(function (data) {
+		if (data) {
+			$("#commentbox").val('');
+			var INA_API_ApplicantId = $("#applicant_id").val();
+			CheckIfAllResponded(INA_API_ApplicantId, function (responseForNextQuestion) {
+				if (responseForNextQuestion) {
+					Getquestions(null);
+				}
+				else {
+					alert("All interviewers are not responded yet!!!");
+					return;
+				}
+			})
+			
+		}
+		else {
+			alert('Something went wrong please try again!!! ');
+			return;
+		}
 
+
+	}));
+
+
+
+}
+function SaveAnswer(callback) {
 	var INA_INQ_Id = $("#q_id").val();
 	var INA_API_ApplicantId = $("#applicant_id").val();
 	var INA_EMP_EmployeeID = '';
@@ -237,6 +340,91 @@ function SaveAndNext() {
 	console.log(INA_EMP_EmployeeID);
 	console.log(INA_Answer);
 	console.log(INA_Comments);
+	$.ajax({
+		url: '/NewAdmin/SaveAnswers',
+		method: 'POST',
+		async: false,
+		cache: false,
+		data: { QusId: INA_INQ_Id, ApplicantId: INA_API_ApplicantId, Answer: INA_Answer, Comment: INA_Comments },
+		success: callback
+	});
+}
+function GoOnline(elm, empid) {
 
-	Getquestions(null);
+	var ApplicantId = $("#applicant_id").val();;
+	var comment = '';
+	var IsAvailable = 'Y';
+	$.ajax({
+		url: '/NewAdmin/CanInterviewerIsOnline',
+		method: 'POST',
+		data: { ApplicantId: ApplicantId, IsAvailable: IsAvailable, Comment: comment },
+		success: function (response) {
+			if (response == true) {
+				$("#icnOnline").hide();
+				if ($(elm).is(':checked')) {
+					debugger;
+					console.log('This is firing');
+					$('.toggle-off').removeClass('active');
+					$('.toggle-on').addClass('active');
+					$("#" + empid).css("background", "#43D84A");
+				} else {
+					$('.toggle-off').addClass('active');
+					$('.toggle-on').removeClass('active');
+					$("#"+empid).css("background", "#fff");
+				}
+			}
+			else {
+				$('.toggle-off').addClass('active');
+			$('.toggle-on').removeClass('active');
+				$("#"+empid).css("background", "#fff");
+			}
+		}
+	});
+}
+function CheckIfOptionNotSelected() {
+	var qus_num = $("#hdn_qusnum").val();
+	if (qus_num >= 0) {
+		var opt_val = $("#selectAns").val();
+		if (opt_val == undefined || opt_val == '' || opt_val == null) {
+			alert('Please select an option');
+			return true;
+		}
+	}
+}
+function GetScore(callback) {
+	var ApplicantId = $("#applicant_id").val();
+	$.ajax({
+		url: '/NewAdmin/GetScore?ApplicantId=' + ApplicantId,
+		method: 'GET',
+		success: callback
+	});
+}
+function FinishInterview() {
+	if (CheckIfOptionNotSelected())
+		return;
+	
+	if ($("#commentboxlast").prop('required')) {
+		var isCommentRequired = $("#commentboxlast").val();
+		if (isCommentRequired == '' || isCommentRequired == undefined || isCommentRequired == null) {
+			$("#lblmsglast").show();
+			$("#lblmsglast").css("display", "block");
+			return;
+		}
+	}
+	if (SaveAnswer(function (data) {
+		GetScore(function (response) {
+			$("#startInterview").empty();
+			$("#startInterview").html("<div class='col-md-12' style='text-align:center'><div class='card cardscore'><label style='color:green'>Total Score:</label><label>" + response + "</label></div><div><label style='font-size:20px;color:white;'>Thanks For The Interview</label><a style='margin:20px;' href='/NewAdmin#' class='btn btn-default btnfinish'>Exit</a></div></div>");
+		});
+	}));
+}
+function CheckIfAllResponded(applicantId, callback) {
+	$.ajax({
+		url: '/NewAdmin/CheckNextQuestion?ApplicantId=' + applicantId,
+		method: 'GET',
+		success: callback
+	});
+}
+function MarkAbsent() {
+
 }

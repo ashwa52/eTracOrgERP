@@ -1,4 +1,4 @@
-﻿@model WorkOrderEMS.Models.Employee.EmployeeModel
+﻿@model WorkOrderEMS.Models.Employee.EmployeeVIewModel
 @{
 	ViewBag.Title = "Index";
 	Layout = "~/Views/Shared/_GuestLayout.cshtml";
@@ -14,7 +14,7 @@
 	}
 
 		.profile img {
-			width: 50px;
+			width: 100px;
 			height: auto;
 			border-radius: 50%;
 			border: 1px solid #ddd;
@@ -25,7 +25,8 @@
 	.middle {
 		text-align: center;
 		background-color: yellow;
-		margin-top: 5px;
+		margin-top: 12px;
+		height:28px;
 	}
 
 	.input-rounded {
@@ -41,7 +42,7 @@
 	}
 
 	label {
-		margin-bottom: 0;
+		margin-top:3px;
 	}
 	.form-control:disabled, .form-control[readonly] {
 		background: #ddd;
@@ -67,11 +68,13 @@ input[type=checkbox]:checked + label:before { letter-spacing: 5px; } /* allow sp
 			inputs.each(function (i, elm) {
 				$(elm).removeAttr('disabled');
 			})
+			$("#hdnIsEditEnable").val(true);
 		}
 		else {
 			inputs.each(function (i, elm) {
 				$(elm).attr('disabled',true);
 			})
+			$("#hdnIsEditEnable").val(false);
 		}
 	}
 </script>
@@ -88,11 +91,12 @@ input[type=checkbox]:checked + label:before { letter-spacing: 5px; } /* allow sp
 			</div>
 		</div>
 		@Html.AntiForgeryToken()
+		@Html.ValidationSummary(true)
 		@using (Html.BeginForm())
 		{
 			<div class="middle" style="cursor:pointer">
 				<label>
-
+					@Html.HiddenFor(x=>x.IsEditEnable,new { @id="hdnIsEditEnable"})
 					<input id="box1" type="checkbox" onchange="EnableEdit(this);" />
 					<label for="box1">Enable To Edit</label>
 				</label>
@@ -102,84 +106,92 @@ input[type=checkbox]:checked + label:before { letter-spacing: 5px; } /* allow sp
 				<div class="basic-form">
 					<div class="form-group row">
 						<div class="col-sm-4">
+							<span>First Name</span>
 							@Html.HiddenFor(model => model.EmpId)
 							@Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "First Name", @disabled = "disabled" } })
-
+							@Html.ValidationMessageFor(x => x.FirstName,"",new {@class="text-danger" })
 
 						</div>
 						<div class="col-sm-4">
-
+							<span>Middle Name</span>
 							@Html.EditorFor(model => model.MiddleName, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Middle Name", @disabled = "disabled" } })
-
+							@Html.ValidationMessageFor(x => x.MiddleName, "", new { @class = "text-danger" })
 
 						</div>
 						<div class="col-sm-4">
-
+							<span>Last Name</span>
 							@Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Last Name", @disabled = "disabled" } })
-
+							@Html.ValidationMessageFor(x => x.LastName, "", new { @class = "text-danger" })
 						</div>
 					</div>
 					<div class="form-group row">
 						<div class="col-sm-12">
+							<span>Address</span>
 							@Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Street Address1", @disabled = "disabled" } })
-
+							@Html.ValidationMessageFor(x => x.Address, "", new { @class = "text-danger" })
 						</div>
 					</div>
 					<div class="form-group row">
 						<div class="col-sm-6">
+							<span>City</span>
 							@Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "City", @disabled = "disabled" } })
-
-
+							@Html.ValidationMessageFor(x => x.City, "", new { @class = "text-danger" })
 						</div>
 						<div class="col-sm-6">
-							@Html.DropDownListFor(model => model.State, new SelectList(ViewBag.StateList, "StateId", "StateName"), "State", new { @id = "Address1State", @class = "form-control input-rounded" })
+							<span>State</span>
+							@Html.DropDownListFor(model => model.State, new SelectList(ViewBag.StateList, "StateId", "StateName"), "State", new { @id = "Address1State", @class = "form-control input-rounded", @disabled = "disabled" })
+							@Html.ValidationMessageFor(x => x.State, "", new { @class = "text-danger" })
 						</div>
 					</div>
 					<div class="form-group row">
 						<div class="col-sm-3">
+							<span>Zip</span>
 							@Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Zip", @disabled = "disabled" } })
-
+							@Html.ValidationMessageFor(x => x.Zip, "", new { @class = "text-danger" })
 
 						</div>
 						<div class="col-sm-3">
+							<span>Phone</span>
 							@Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Phone", @disabled = "disabled" } })
-
+							@Html.ValidationMessageFor(x => x.Phone, "", new { @class = "text-danger" })
 
 						</div>
 					</div>
 					<div class="form-group row">
 						<div class="col-sm-6">
-
+							<span>Email</span>
 							@Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Email", @disabled = "disabled" } })
-
+							@Html.ValidationMessageFor(x => x.Email, "", new { @class = "text-danger" })
 						</div>
 						<div class="col-sm-6">
-
-							@Html.EditorFor(model => model.Dob, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
-						</div>
-					</div>
-					<div class="form-group row">
-						<div class="col-sm-6">
-
-							@Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Social Security Number" } })
-
-
-						</div>
-						<div class="col-sm-6">
-
-							@Html.EditorFor(model => model.Cityzenship, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Cityzenship" } })
-
+							<span>Date Of Birth</span>
+							@Html.EditorFor(model => model.Dob, @"{0:yyyy\/MM\/dd}", new { htmlAttributes = new { @class = "form-control input-rounded", @disabled = "disabled", placeholder = "DOB" } })
+							@Html.ValidationMessageFor(x => x.Dob, "", new { @class = "text-danger" })
 						</div>
 					</div>
 					<div class="form-group row">
 						<div class="col-sm-6">
-							@Html.EditorFor(model => model.Cityzenship, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Driver License Number" } })
+							<span>Social Security Number</span>
+							@Html.EditorFor(model => model.SocialSecurityNumber, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Social Security Number", @disabled = "disabled" } })
 
+							@Html.ValidationMessageFor(x => x.SocialSecurityNumber, "", new { @class = "text-danger" })
+						</div>
+						<div class="col-sm-6">
+							<span>Cityzenship</span>
+							@Html.EditorFor(model => model.Cityzenship, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Cityzenship", @disabled = "disabled" } })
+							@Html.ValidationMessageFor(x => x.Cityzenship, "", new { @class = "text-danger" })
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-sm-6">
+							<span>Driver's License Number</span>
+							@Html.EditorFor(model => model.DlNumber, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Driver License Number", @disabled = "disabled" } })
+							@Html.ValidationMessageFor(x => x.DlNumber, "", new { @class = "text-danger" })
 
 						</div>
 					</div>
 					<div style="float:right">
-						<button class="btn btnverify" type="submit">Verify</button>
+						<button class="btn btnverify" type="submit" disabled="disabled">Verify</button>
 					</div>
 				</div>
 

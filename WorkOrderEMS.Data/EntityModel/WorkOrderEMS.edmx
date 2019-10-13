@@ -395,6 +395,25 @@
           <Property Name="DeletedBy" Type="bigint" />
           <Property Name="DeletedDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="DirectDepositForm">
+          <Key>
+            <PropertyRef Name="DDF_Id" />
+          </Key>
+          <Property Name="DDF_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DDF_EMP_EmployeeID" Type="varchar" MaxLength="20" />
+          <Property Name="DDF_BankName_1" Type="varchar" MaxLength="30" />
+          <Property Name="DDF_AccountType_1" Type="varchar" MaxLength="20" />
+          <Property Name="DDF_AccountNumber_1" Type="varchar" MaxLength="20" />
+          <Property Name="DDF_BankRoutingNumber_1" Type="varchar" MaxLength="20" />
+          <Property Name="DDF_PrcentageOrDollarAmount_1" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="DDF_BankName_2" Type="varchar" MaxLength="30" />
+          <Property Name="DDF_AccountType_2" Type="varchar" MaxLength="20" />
+          <Property Name="DDF_AccountNumber_2" Type="varchar" MaxLength="20" />
+          <Property Name="DDF_BankRoutingNumber_2" Type="varchar" MaxLength="20" />
+          <Property Name="DDF_VoidCkeck" Type="nvarchar(max)" />
+          <Property Name="DDF_Date" Type="datetime" />
+          <Property Name="DDF_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
         <EntityType Name="eFleetDriver">
           <Key>
             <PropertyRef Name="DriverID" />
@@ -761,6 +780,15 @@
           <Property Name="EMA_AddressPhoneNo" Type="bigint" />
           <Property Name="EMA_Date" Type="datetime" />
           <Property Name="EMA_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="EmployeeHandbook">
+          <Key>
+            <PropertyRef Name="EHB_Id" />
+          </Key>
+          <Property Name="EHB_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EHB_EMP_EmployeeID" Type="varchar" MaxLength="20" />
+          <Property Name="EHB_Date" Type="datetime" />
+          <Property Name="EHB_IsActive" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="EmployeeLocationMapping">
           <Key>
@@ -3988,8 +4016,14 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Parameter Name="CLM_CCM_CostCode" Type="bigint" Mode="In" />
         </Function>
         <Function Name="spGetDepartment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetDirectDepositForm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spGeteFormTrack" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ApprovarId" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="spGetEmployeeHandbook" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
         </Function>
         <Function Name="spGetEmployeePersonalInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
@@ -4035,6 +4069,10 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
         <Function Name="spGetMisNumber" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetModule" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetMyOpening" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetNextQuestion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ApplicantId" Type="bigint" Mode="In" />
+          <Parameter Name="IsNext" Type="char" Mode="InOut" />
+        </Function>
         <Function Name="spGetPaymentMode" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetPaymentSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LocationId" Type="bigint" Mode="In" />
@@ -4432,6 +4470,21 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Parameter Name="DPT_Name" Type="varchar" Mode="In" />
           <Parameter Name="DPT_IsActive" Type="char" Mode="In" />
         </Function>
+        <Function Name="spSetDirectDepositForm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="DDFAction" Type="char" Mode="In" />
+          <Parameter Name="DDF_EMP_EmployeeID" Type="varchar" Mode="In" />
+          <Parameter Name="DDF_BankName_1" Type="varchar" Mode="In" />
+          <Parameter Name="DDF_AccountType_1" Type="varchar" Mode="In" />
+          <Parameter Name="DDF_AccountNumber_1" Type="varchar" Mode="In" />
+          <Parameter Name="DDF_BankRoutingNumber_1" Type="varchar" Mode="In" />
+          <Parameter Name="DDF_PrcentageOrDollarAmount_1" Type="numeric" Mode="In" />
+          <Parameter Name="DDF_BankName_2" Type="varchar" Mode="In" />
+          <Parameter Name="DDF_AccountType_2" Type="varchar" Mode="In" />
+          <Parameter Name="DDF_AccountNumber_2" Type="varchar" Mode="In" />
+          <Parameter Name="DDF_BankRoutingNumber_2" Type="varchar" Mode="In" />
+          <Parameter Name="DDF_VoidCkeck" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="DDF_IsActive" Type="char" Mode="In" />
+        </Function>
         <Function Name="spSeteformTrack" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EFTAction" Type="char" Mode="In" />
           <Parameter Name="EFT_Id" Type="bigint" Mode="In" />
@@ -4473,6 +4526,12 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Parameter Name="EMA_State" Type="varchar" Mode="In" />
           <Parameter Name="EMA_Zip" Type="int" Mode="In" />
           <Parameter Name="CTZ_Citizenship" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spSetEmployeeHandbook" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EHBAction" Type="char" Mode="In" />
+          <Parameter Name="EHB_Id" Type="bigint" Mode="In" />
+          <Parameter Name="EHB_EMP_EmployeeID" Type="varchar" Mode="In" />
+          <Parameter Name="EHB_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetFormMaster" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FRMAction" Type="char" Mode="In" />
@@ -4851,6 +4910,7 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <EntitySet Name="DARDetails" EntityType="Self.DARDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DashboardWidgetSetting" EntityType="Self.DashboardWidgetSetting" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DefectReportDetails" EntityType="Self.DefectReportDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DirectDepositForm" EntityType="Self.DirectDepositForm" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="eFleetDriver" EntityType="Self.eFleetDriver" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="eFleetFueling" EntityType="Self.eFleetFueling" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="eFleetMaintenance" EntityType="Self.eFleetMaintenance" Schema="dbo" store:Type="Tables" />
@@ -4868,6 +4928,7 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <EntitySet Name="EMaintenanceSurvey" EntityType="Self.EMaintenanceSurvey" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeAddress" EntityType="Self.EmployeeAddress" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeHandbook" EntityType="Self.EmployeeHandbook" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeLocationMapping" EntityType="Self.EmployeeLocationMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ExceptionLog" EntityType="Self.ExceptionLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GlobalCodes" EntityType="Self.GlobalCodes" Schema="dbo" store:Type="Tables" />
@@ -7569,10 +7630,43 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
             <Parameter Name="INA_Comments" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetApplicantInfoForMyInterview" ReturnType="Collection(workorderEMSModel.spGetApplicantInfoForMyInterview_Result)">
-            <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetInterviewScore" ReturnType="Collection(Int32)">
+          <Parameter Name="ApplicantId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spGetNextQuestion">
             <Parameter Name="ApplicantId" Mode="In" Type="Int64" />
+            <Parameter Name="IsNext" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="DirectDepositForms" EntityType="workorderEMSModel.DirectDepositForm" />
+          <EntitySet Name="EmployeeHandbooks" EntityType="workorderEMSModel.EmployeeHandbook" />
+          <FunctionImport Name="spGetDirectDepositForm" ReturnType="Collection(workorderEMSModel.spGetDirectDepositForm_Result)">
+            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetEmployeeHandbook" ReturnType="Collection(String)">
+            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetDirectDepositForm">
+            <Parameter Name="DDFAction" Mode="In" Type="String" />
+            <Parameter Name="DDF_EMP_EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="DDF_BankName_1" Mode="In" Type="String" />
+            <Parameter Name="DDF_AccountType_1" Mode="In" Type="String" />
+            <Parameter Name="DDF_AccountNumber_1" Mode="In" Type="String" />
+            <Parameter Name="DDF_BankRoutingNumber_1" Mode="In" Type="String" />
+            <Parameter Name="DDF_PrcentageOrDollarAmount_1" Mode="In" Type="Decimal" />
+            <Parameter Name="DDF_BankName_2" Mode="In" Type="String" />
+            <Parameter Name="DDF_AccountType_2" Mode="In" Type="String" />
+            <Parameter Name="DDF_AccountNumber_2" Mode="In" Type="String" />
+            <Parameter Name="DDF_BankRoutingNumber_2" Mode="In" Type="String" />
+            <Parameter Name="DDF_VoidCkeck" Mode="In" Type="String" />
+            <Parameter Name="DDF_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetEmployeeHandbook">
+            <Parameter Name="EHBAction" Mode="In" Type="String" />
+            <Parameter Name="EHB_Id" Mode="In" Type="Int64" />
+            <Parameter Name="EHB_EMP_EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="EHB_IsActive" Mode="In" Type="String" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="CommonQeriesByVijay_Result">
@@ -14749,6 +14843,48 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Type="String" Name="INS_IsHiringManager" Nullable="true" MaxLength="1" />
           <Property Type="DateTime" Name="INS_InterviewDateTime" Nullable="true" Precision="23" />
         </ComplexType>
+        <EntityType Name="DirectDepositForm">
+          <Key>
+            <PropertyRef Name="DDF_Id" />
+          </Key>
+          <Property Name="DDF_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DDF_EMP_EmployeeID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DDF_BankName_1" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="DDF_AccountType_1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DDF_AccountNumber_1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DDF_BankRoutingNumber_1" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DDF_PrcentageOrDollarAmount_1" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="DDF_BankName_2" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="DDF_AccountType_2" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DDF_AccountNumber_2" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DDF_BankRoutingNumber_2" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DDF_VoidCkeck" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DDF_Date" Type="DateTime" Precision="3" />
+          <Property Name="DDF_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="EmployeeHandbook">
+          <Key>
+            <PropertyRef Name="EHB_Id" />
+          </Key>
+          <Property Name="EHB_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EHB_EMP_EmployeeID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EHB_Date" Type="DateTime" Precision="3" />
+          <Property Name="EHB_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="spGetDirectDepositForm_Result">
+          <Property Type="String" Name="DDF_EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="DDF_BankName_1" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="DDF_AccountType_1" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="DDF_AccountNumber_1" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="DDF_BankRoutingNumber_1" Nullable="true" MaxLength="20" />
+          <Property Type="Decimal" Name="DDF_PrcentageOrDollarAmount_1" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="DDF_BankName_2" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="DDF_AccountType_2" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="DDF_AccountNumber_2" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="DDF_BankRoutingNumber_2" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="DDF_VoidCkeck" Nullable="true" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -19101,6 +19237,58 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spGetInterviewScore" FunctionName="workorderEMSModel.Store.spGetInterviewScore" />
+          <FunctionImportMapping FunctionImportName="spGetNextQuestion" FunctionName="workorderEMSModel.Store.spGetNextQuestion" />
+          <EntitySetMapping Name="DirectDepositForms">
+            <EntityTypeMapping TypeName="workorderEMSModel.DirectDepositForm">
+              <MappingFragment StoreEntitySet="DirectDepositForm">
+                <ScalarProperty Name="DDF_IsActive" ColumnName="DDF_IsActive" />
+                <ScalarProperty Name="DDF_Date" ColumnName="DDF_Date" />
+                <ScalarProperty Name="DDF_VoidCkeck" ColumnName="DDF_VoidCkeck" />
+                <ScalarProperty Name="DDF_BankRoutingNumber_2" ColumnName="DDF_BankRoutingNumber_2" />
+                <ScalarProperty Name="DDF_AccountNumber_2" ColumnName="DDF_AccountNumber_2" />
+                <ScalarProperty Name="DDF_AccountType_2" ColumnName="DDF_AccountType_2" />
+                <ScalarProperty Name="DDF_BankName_2" ColumnName="DDF_BankName_2" />
+                <ScalarProperty Name="DDF_PrcentageOrDollarAmount_1" ColumnName="DDF_PrcentageOrDollarAmount_1" />
+                <ScalarProperty Name="DDF_BankRoutingNumber_1" ColumnName="DDF_BankRoutingNumber_1" />
+                <ScalarProperty Name="DDF_AccountNumber_1" ColumnName="DDF_AccountNumber_1" />
+                <ScalarProperty Name="DDF_AccountType_1" ColumnName="DDF_AccountType_1" />
+                <ScalarProperty Name="DDF_BankName_1" ColumnName="DDF_BankName_1" />
+                <ScalarProperty Name="DDF_EMP_EmployeeID" ColumnName="DDF_EMP_EmployeeID" />
+                <ScalarProperty Name="DDF_Id" ColumnName="DDF_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeHandbooks">
+            <EntityTypeMapping TypeName="workorderEMSModel.EmployeeHandbook">
+              <MappingFragment StoreEntitySet="EmployeeHandbook">
+                <ScalarProperty Name="EHB_IsActive" ColumnName="EHB_IsActive" />
+                <ScalarProperty Name="EHB_Date" ColumnName="EHB_Date" />
+                <ScalarProperty Name="EHB_EMP_EmployeeID" ColumnName="EHB_EMP_EmployeeID" />
+                <ScalarProperty Name="EHB_Id" ColumnName="EHB_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetDirectDepositForm" FunctionName="workorderEMSModel.Store.spGetDirectDepositForm">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetDirectDepositForm_Result">
+                <ScalarProperty Name="DDF_EMP_EmployeeID" ColumnName="DDF_EMP_EmployeeID" />
+                <ScalarProperty Name="DDF_BankName_1" ColumnName="DDF_BankName_1" />
+                <ScalarProperty Name="DDF_AccountType_1" ColumnName="DDF_AccountType_1" />
+                <ScalarProperty Name="DDF_AccountNumber_1" ColumnName="DDF_AccountNumber_1" />
+                <ScalarProperty Name="DDF_BankRoutingNumber_1" ColumnName="DDF_BankRoutingNumber_1" />
+                <ScalarProperty Name="DDF_PrcentageOrDollarAmount_1" ColumnName="DDF_PrcentageOrDollarAmount_1" />
+                <ScalarProperty Name="DDF_BankName_2" ColumnName="DDF_BankName_2" />
+                <ScalarProperty Name="DDF_AccountType_2" ColumnName="DDF_AccountType_2" />
+                <ScalarProperty Name="DDF_AccountNumber_2" ColumnName="DDF_AccountNumber_2" />
+                <ScalarProperty Name="DDF_BankRoutingNumber_2" ColumnName="DDF_BankRoutingNumber_2" />
+                <ScalarProperty Name="DDF_VoidCkeck" ColumnName="DDF_VoidCkeck" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetEmployeeHandbook" FunctionName="workorderEMSModel.Store.spGetEmployeeHandbook" />
+          <FunctionImportMapping FunctionImportName="spSetDirectDepositForm" FunctionName="workorderEMSModel.Store.spSetDirectDepositForm" />
+          <FunctionImportMapping FunctionImportName="spSetEmployeeHandbook" FunctionName="workorderEMSModel.Store.spSetEmployeeHandbook" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

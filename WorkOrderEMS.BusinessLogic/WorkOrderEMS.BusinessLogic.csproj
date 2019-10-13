@@ -201,6 +201,7 @@
     <Compile Include="Interfaces\eFleet\IEfleetVehicle.cs" />
     <Compile Include="Interfaces\IEmailDetail.cs" />
     <Compile Include="Interfaces\IEmployeeManager.cs" />
+    <Compile Include="Interfaces\IGuestUserRepository.cs" />
     <Compile Include="Interfaces\ILogin.cs" />
     <Compile Include="Interfaces\IManageManager.cs" />
     <Compile Include="Interfaces\IManagerAppeMaintenance.cs" />
@@ -253,6 +254,7 @@
     <Compile Include="Managers\GlobalAdminManager.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Managers\GuestUserRepository.cs" />
     <Compile Include="Managers\HubManager.cs" />
     <Compile Include="Managers\LoginManager.cs" />
     <Compile Include="Managers\ManageManager.cs">

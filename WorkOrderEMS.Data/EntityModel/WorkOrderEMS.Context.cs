@@ -118,6 +118,8 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<EmployeeAddress> EmployeeAddresses { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<ApplicantInfo> ApplicantInfoes { get; set; }
+        public virtual DbSet<DirectDepositForm> DirectDepositForms { get; set; }
+        public virtual DbSet<EmployeeHandbook> EmployeeHandbooks { get; set; }
     
         public virtual ObjectResult<CommonQeriesByVijay_Result> CommonQeriesByVijay()
         {
@@ -4888,6 +4890,111 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("ApplicantId", typeof(long));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetInterviewScore", applicantIdParameter);
+        }
+    
+        public virtual int spGetNextQuestion(Nullable<long> applicantId, ObjectParameter isNext)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("ApplicantId", applicantId) :
+                new ObjectParameter("ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetNextQuestion", applicantIdParameter, isNext);
+        }
+    
+        public virtual ObjectResult<spGetDirectDepositForm_Result> spGetDirectDepositForm(string employeeID)
+        {
+            var employeeIDParameter = employeeID != null ?
+                new ObjectParameter("EmployeeID", employeeID) :
+                new ObjectParameter("EmployeeID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetDirectDepositForm_Result>("spGetDirectDepositForm", employeeIDParameter);
+        }
+    
+        public virtual ObjectResult<string> spGetEmployeeHandbook(string employeeID)
+        {
+            var employeeIDParameter = employeeID != null ?
+                new ObjectParameter("EmployeeID", employeeID) :
+                new ObjectParameter("EmployeeID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("spGetEmployeeHandbook", employeeIDParameter);
+        }
+    
+        public virtual int spSetDirectDepositForm(string dDFAction, string dDF_EMP_EmployeeID, string dDF_BankName_1, string dDF_AccountType_1, string dDF_AccountNumber_1, string dDF_BankRoutingNumber_1, Nullable<decimal> dDF_PrcentageOrDollarAmount_1, string dDF_BankName_2, string dDF_AccountType_2, string dDF_AccountNumber_2, string dDF_BankRoutingNumber_2, string dDF_VoidCkeck, string dDF_IsActive)
+        {
+            var dDFActionParameter = dDFAction != null ?
+                new ObjectParameter("DDFAction", dDFAction) :
+                new ObjectParameter("DDFAction", typeof(string));
+    
+            var dDF_EMP_EmployeeIDParameter = dDF_EMP_EmployeeID != null ?
+                new ObjectParameter("DDF_EMP_EmployeeID", dDF_EMP_EmployeeID) :
+                new ObjectParameter("DDF_EMP_EmployeeID", typeof(string));
+    
+            var dDF_BankName_1Parameter = dDF_BankName_1 != null ?
+                new ObjectParameter("DDF_BankName_1", dDF_BankName_1) :
+                new ObjectParameter("DDF_BankName_1", typeof(string));
+    
+            var dDF_AccountType_1Parameter = dDF_AccountType_1 != null ?
+                new ObjectParameter("DDF_AccountType_1", dDF_AccountType_1) :
+                new ObjectParameter("DDF_AccountType_1", typeof(string));
+    
+            var dDF_AccountNumber_1Parameter = dDF_AccountNumber_1 != null ?
+                new ObjectParameter("DDF_AccountNumber_1", dDF_AccountNumber_1) :
+                new ObjectParameter("DDF_AccountNumber_1", typeof(string));
+    
+            var dDF_BankRoutingNumber_1Parameter = dDF_BankRoutingNumber_1 != null ?
+                new ObjectParameter("DDF_BankRoutingNumber_1", dDF_BankRoutingNumber_1) :
+                new ObjectParameter("DDF_BankRoutingNumber_1", typeof(string));
+    
+            var dDF_PrcentageOrDollarAmount_1Parameter = dDF_PrcentageOrDollarAmount_1.HasValue ?
+                new ObjectParameter("DDF_PrcentageOrDollarAmount_1", dDF_PrcentageOrDollarAmount_1) :
+                new ObjectParameter("DDF_PrcentageOrDollarAmount_1", typeof(decimal));
+    
+            var dDF_BankName_2Parameter = dDF_BankName_2 != null ?
+                new ObjectParameter("DDF_BankName_2", dDF_BankName_2) :
+                new ObjectParameter("DDF_BankName_2", typeof(string));
+    
+            var dDF_AccountType_2Parameter = dDF_AccountType_2 != null ?
+                new ObjectParameter("DDF_AccountType_2", dDF_AccountType_2) :
+                new ObjectParameter("DDF_AccountType_2", typeof(string));
+    
+            var dDF_AccountNumber_2Parameter = dDF_AccountNumber_2 != null ?
+                new ObjectParameter("DDF_AccountNumber_2", dDF_AccountNumber_2) :
+                new ObjectParameter("DDF_AccountNumber_2", typeof(string));
+    
+            var dDF_BankRoutingNumber_2Parameter = dDF_BankRoutingNumber_2 != null ?
+                new ObjectParameter("DDF_BankRoutingNumber_2", dDF_BankRoutingNumber_2) :
+                new ObjectParameter("DDF_BankRoutingNumber_2", typeof(string));
+    
+            var dDF_VoidCkeckParameter = dDF_VoidCkeck != null ?
+                new ObjectParameter("DDF_VoidCkeck", dDF_VoidCkeck) :
+                new ObjectParameter("DDF_VoidCkeck", typeof(string));
+    
+            var dDF_IsActiveParameter = dDF_IsActive != null ?
+                new ObjectParameter("DDF_IsActive", dDF_IsActive) :
+                new ObjectParameter("DDF_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetDirectDepositForm", dDFActionParameter, dDF_EMP_EmployeeIDParameter, dDF_BankName_1Parameter, dDF_AccountType_1Parameter, dDF_AccountNumber_1Parameter, dDF_BankRoutingNumber_1Parameter, dDF_PrcentageOrDollarAmount_1Parameter, dDF_BankName_2Parameter, dDF_AccountType_2Parameter, dDF_AccountNumber_2Parameter, dDF_BankRoutingNumber_2Parameter, dDF_VoidCkeckParameter, dDF_IsActiveParameter);
+        }
+    
+        public virtual int spSetEmployeeHandbook(string eHBAction, Nullable<long> eHB_Id, string eHB_EMP_EmployeeID, string eHB_IsActive)
+        {
+            var eHBActionParameter = eHBAction != null ?
+                new ObjectParameter("EHBAction", eHBAction) :
+                new ObjectParameter("EHBAction", typeof(string));
+    
+            var eHB_IdParameter = eHB_Id.HasValue ?
+                new ObjectParameter("EHB_Id", eHB_Id) :
+                new ObjectParameter("EHB_Id", typeof(long));
+    
+            var eHB_EMP_EmployeeIDParameter = eHB_EMP_EmployeeID != null ?
+                new ObjectParameter("EHB_EMP_EmployeeID", eHB_EMP_EmployeeID) :
+                new ObjectParameter("EHB_EMP_EmployeeID", typeof(string));
+    
+            var eHB_IsActiveParameter = eHB_IsActive != null ?
+                new ObjectParameter("EHB_IsActive", eHB_IsActive) :
+                new ObjectParameter("EHB_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetEmployeeHandbook", eHBActionParameter, eHB_IdParameter, eHB_EMP_EmployeeIDParameter, eHB_IsActiveParameter);
         }
     }
 }

@@ -1476,6 +1476,7 @@
     <Content Include="Content\Images\EnforcementPic\computer-desktop-backgrounds.jpg" />
     <Content Include="Content\Images\EnforcementPic\defaultImage.png" />
     <Content Include="Content\Images\EnforcementPic\Infraction.jpg" />
+    <Content Include="Content\Images\land.gif" />
     <Content Include="Content\Images\LocationLogo\actions_file_document_doc_new_paper.png" />
     <Content Include="Content\Images\LocationLogo\user_lock.png" />
     <Content Include="Content\Images\ProfilePic\index.jpg" />
@@ -5130,6 +5131,7 @@
     <Content Include="Images\CarLogo.png" />
     <Content Include="Images\Credit_Card.png" />
     <Content Include="Images\delete.png" />
+    <Content Include="Images\DIRECT-DEPOSIT.jpg" />
     <Content Include="Images\etrac-logo-inner.jpg" />
     <Content Include="Images\eTrac380-light.png" />
     <Content Include="Images\eTrac380-light1.png" />
@@ -5145,6 +5147,7 @@
     <Content Include="Images\icon3.png" />
     <Content Include="Images\icon4.png" />
     <Content Include="Images\icons.png" />
+    <Content Include="Images\image-form.jpg" />
     <Content Include="Images\LoaderCar_2.gif" />
     <Content Include="Images\LoadingCar.gif" />
     <Content Include="Images\LoadingSpinner.GIF" />
@@ -5914,6 +5917,7 @@
     <Content Include="Scripts\FileUpload\jquery.fileupload-ui.js" />
     <Content Include="Scripts\FileUpload\jquery.fileupload.js" />
     <Content Include="Scripts\FileUpload\jquery.iframe-transport.js" />
+    <Content Include="Scripts\Guest\GuestUser.js" />
     <Content Include="Scripts\ImageUpload\FileUpload.js" />
     <Content Include="Scripts\iwc-all.min.js" />
     <Content Include="Scripts\iwc-signalr.js" />
@@ -6384,6 +6388,10 @@
     <Content Include="Views\NewAdmin\ePeople\_interviewers.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\_questionsview.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\_questions.cshtml" />
+    <Content Include="Views\Guest\LandingPage.cshtml" />
+    <Content Include="Views\Guest\_directDepositeForm.cshtml" />
+    <Content Include="Views\Guest\_employeeHandbook.cshtml" />
+    <Content Include="Views\Guest\ThankYou.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

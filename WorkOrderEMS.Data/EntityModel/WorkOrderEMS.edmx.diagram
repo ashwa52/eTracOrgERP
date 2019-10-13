@@ -250,6 +250,8 @@
         <EntityTypeShape EntityType="workorderEMSModel.EmployeeAddress" Width="1.5" PointX="16.375" PointY="18.75" />
         <EntityTypeShape EntityType="workorderEMSModel.Employee" Width="3.375" PointX="23.625" PointY="17.25" />
         <EntityTypeShape EntityType="workorderEMSModel.ApplicantInfo" Width="1.5" PointX="3.375" PointY="17.75" />
+        <EntityTypeShape EntityType="workorderEMSModel.DirectDepositForm" Width="1.5" PointX="18.375" PointY="19" />
+        <EntityTypeShape EntityType="workorderEMSModel.EmployeeHandbook" Width="1.5" PointX="5.375" PointY="20" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -15,6 +15,7 @@ using WorkOrderEMS.Helper;
 using WorkOrderEMS.Helpers;
 using WorkOrderEMS.Models;
 using WorkOrderEMS.Models.CommonModels;
+using WorkOrderEMS.Models.Employee;
 using WorkOrderEMS.Models.NewAdminModel;
 
 namespace WorkOrderEMS.Controllers.NewAdmin
@@ -321,6 +322,13 @@ namespace WorkOrderEMS.Controllers.NewAdmin
 			return Json(myOpenings, JsonRequestBehavior.AllowGet);
 		}
 		[HttpGet]
+		public ActionResult MyInterviews()
+		{
+			var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+			var myOpenings = _GlobalAdminManager.GetMyInterviews(ObjLoginModel.UserId);
+			return Json(myOpenings, JsonRequestBehavior.AllowGet);
+		}
+		[HttpGet]
 		public ActionResult GetJobPostong()
 		{
 			var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
@@ -338,6 +346,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
 		public PartialViewResult GetInterviewers(long applicantId)
 		{
 			Session["eTrac_questions_number"] = null;
+			Session["eTrac_questions"] = null;
 			var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
 			var interviewersList = _GlobalAdminManager.GetInterviewersList(applicantId, ObjLoginModel.UserId);
 			return PartialView("ePeople/_interviewers", interviewersList);
@@ -345,7 +354,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
 		[HttpGet]
 		public PartialViewResult GetInterviewQuestionView()
 		{
-			var questions = _GlobalAdminManager.GetInterviewQuestions();
+			var questions = _GlobalAdminManager.GetInterviewQuestions().Where(x=>x.INQ_Id==1).ToList();
 			Session["eTrac_questions"] = questions;
 			return PartialView("ePeople/_questionsview");
 		}
@@ -358,15 +367,23 @@ namespace WorkOrderEMS.Controllers.NewAdmin
 			{
 				if (Session["eTrac_questions_number"] != null)
 				{
-					if (num <= questions.Count())
+					num = (int)Session["eTrac_questions_number"];
+					num += 1;
+					if (num <= questions.Count()-1)
 					{
-						 num = (int)Session["eTrac_questions_number"];
-						num += 1;
 						Session["eTrac_questions_number"] = num;
 						var currentQus = questions.Skip(num).Take(1).FirstOrDefault();
+
 						return PartialView("ePeople/_questions", currentQus);
 					}
-					return PartialView("ePeople/_questions", null);
+					return PartialView("ePeople/_questions", new spGetInterviewQuestion_Result
+					{
+						INQ_QuestionType="LastQuestion",
+						INQ_Exempt="Y",
+						INQ_Id=9999,
+						INQ_Question="Did applicant have any question?",
+						INQ_IsActive="Y"
+					});
 				}
 				else
 				{
@@ -376,6 +393,13 @@ namespace WorkOrderEMS.Controllers.NewAdmin
 				}
 			}
 			return PartialView("ePeople/_questions", null);
+		}
+		[HttpPost]
+		public JsonResult SaveAnswers(InterviewAnswerModel model)
+		{
+			var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+			var isAnsSaveSuccess = _GlobalAdminManager.SaveInterviewAnswers(model, ObjLoginModel.UserId);
+			return Json(true ? true : false, JsonRequestBehavior.AllowGet);
 		}
 		public FileStreamResult GetPDF()
 		{
@@ -411,7 +435,26 @@ namespace WorkOrderEMS.Controllers.NewAdmin
 		{
 			return Json(_ICommonMethod.GetStateByCountryId(1), JsonRequestBehavior.AllowGet);
 		}
+		[HttpPost]
+		public JsonResult CanInterviewerIsOnline(long ApplicantId, string IsAvailable, string Comment)
+		{
+			var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+			var res = _GlobalAdminManager.IsInterviewerOnline(ApplicantId, ObjLoginModel.UserId, IsAvailable, Comment);
+			return Json(res, JsonRequestBehavior.AllowGet);
 
+		}
+		[HttpGet]
+		public JsonResult GetScore(long ApplicantId)
+		{
+			var res = _GlobalAdminManager.GetScore(ApplicantId);
+			return Json(res, JsonRequestBehavior.AllowGet);
+		}
+		[HttpGet]
+		public JsonResult CheckNextQuestion(long ApplicantId)
+		{
+			var res = _GlobalAdminManager.CheckIfAllRespondedForQuestion(ApplicantId);
+			return Json(res, JsonRequestBehavior.AllowGet);
+		}
 
 		/// <summary>
 		/// Method to  validate the duplicate employee id ie alternativeemail in db col.

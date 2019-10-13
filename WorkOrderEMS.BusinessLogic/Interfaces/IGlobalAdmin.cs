@@ -273,6 +273,11 @@ namespace WorkOrderEMS.BusinessLogic
 		bool SaveGuestEmployeeBasicInfo(GuestEmployeeBasicInfoRequestModel guestEmployeeBasicInfoRequestModel);
 		InterviewersViewModel GetInterviewersList(long applicantId, long userId);
 		IEnumerable<spGetInterviewQuestion_Result> GetInterviewQuestions();
+		bool SaveInterviewAnswers(InterviewAnswerModel model, long UserId);
+		List<MyOpeningModel> GetMyInterviews(long userId);
+		bool IsInterviewerOnline(long ApplicantId, long UserId, string IsAvailable, string Comment);
+		int GetScore(long ApplicantId);
+		bool CheckIfAllRespondedForQuestion(long ApplicantId);
 		// BudgetDetails GetListBudgetDetails(long? LocationId, long? UserId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
 	}
 }

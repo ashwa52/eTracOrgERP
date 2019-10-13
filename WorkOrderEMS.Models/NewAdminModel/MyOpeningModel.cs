@@ -17,6 +17,7 @@ namespace WorkOrderEMS.Models.NewAdminModel
 		public string Image { get; set; }
 		public string JobTitle { get; set; }
 		public long ApplicantId { get; set; }
+		public decimal? DesireSalary { get; set; }
 	}
 	public class JobPosting
 	{

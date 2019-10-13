@@ -109,8 +109,8 @@
 		float: right;
 		position: static;
 		margin-right: -33px;
-		margin-top: 12px;
-		font-size: 12px;
+		margin-top: 9px;
+		font-size: 20px;
 	}
 
 	.devider {
@@ -119,11 +119,6 @@
 	}
 </style>
 <link href="~/Content/guest.css" rel="stylesheet" />
-<script>
-	function OpenForm(formname) {
-		$("#educationVerificationModel").modal('show');
-	}
-</script>
 <div class="card" style="width: 80%;margin: auto;">
 	<div class="card-header">On-Boarding/Personal File</div>
 	<div class="card-body">
@@ -136,7 +131,7 @@
 								<i class="fa fa-list fa-lg" aria-hidden="true"></i>
 							</div>
 							<div class="lock">
-								<i class="fa fa-lock" style="color:#FFDFB0" aria-hidden="true"></i>
+								<i class="fa fa-lock fa-lg" style="color:#FFDFB0" aria-hidden="true"></i>
 							</div>
 						</div>
 					</div>
@@ -149,7 +144,7 @@
 								<i class="fa fa-table fa-lg" aria-hidden="true"></i>
 							</div>
 							<div class="lock">
-								<i class="fa fa-lock" style="color:#FFDFB0" aria-hidden="true"></i>
+								<i class="fa fa-unlock" style="color:#FFDFB0" aria-hidden="true"></i>
 							</div>
 						</div>
 					</div>
@@ -166,7 +161,7 @@
 					<label>Emergency Contact Form</label>
 
 				</div>
-				<div class="inline">
+				<div class="inline" onclick="OpenForm('employeehandbook')">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
@@ -176,11 +171,14 @@
 					</div>
 					<label>Employee Handbook</label>
 				</div>
-				<div class="inline">
+				<div class="inline" onclick="OpenForm('directdeposite')">
 
 					<div class="bluesky">
 						<div class="int">
 							<i class="fa fa-th fa-lg" aria-hidden="true"></i>
+						</div>
+						<div class="lock">
+							<i class="@(Session["etrac_isDirectDepositeSaved"]!=null && (bool)Session["etrac_isDirectDepositeSaved"]==false?"fa fa-lock":"fa fa-unlock")" style="color:#FFDFB0" aria-hidden="true"></i>
 						</div>
 					</div>
 
@@ -265,8 +263,8 @@
 
 	</div>
 	<div class="row" style="margin-right: 144px;margin-bottom: 13px;">
-		<div class="col-md-12 bottom-area">
-			<button class="btn btn-default btnsubmit">
+		<div class="col-md-12 bottom-area"> 
+			<button class="btn btn-default btnsubmit" onclick="ThankYou();">
 				Submit
 			</button>
 		</div>
@@ -274,8 +272,13 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="educationVerificationModel" role="dialog">
-	<div class="modal-dialog modal-lg">
-		@{ Html.RenderPartial("_educationVarificationForm");}
+<div class="modal fade" id="formModel" role="dialog" style="background:#fff" data-backdrop="true">
+	<div style="float:right;cursor:pointer;" onclick="closeModel();">
+		<i class="fa fa-times fa-lg" aria-hidden="true"></i>
+	</div>
+	<div class="modal-dialog modal-lg" >
+		<div class="modal-content" id="formid">
+			
+		</div>
 	</div>
 </div>

@@ -96,7 +96,7 @@ namespace WorkOrderEMS.Infrastructure
                 For<IMainPDFFormManager>().Use<MainPDFFormManager>();
                 For<IDepartment>().Use<DepartmentManager>();
                 For<IAdminDashboard>().Use<VehicleSeatingChartManager>();
-				For<IGuestUserRepository>().Use<GuestUserRepository>();
+				For<IGuestUser>().Use<GuestUserRepository>();
 			}
         }
     }
