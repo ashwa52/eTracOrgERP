@@ -13,6 +13,7 @@ using WorkOrderEMS.Helper;
 using WorkOrderEMS.Helpers;
 using WorkOrderEMS.Models;
 using WorkOrderEMS.Models.CommonModels;
+using WorkOrderEMS.Models.NewAdminModel;
 
 namespace WorkOrderEMS.Controllers.NewAdmin
 {
@@ -502,6 +503,83 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
             }
             return PartialView("_PerformanceManagement");
+        }
+        public ActionResult userAssessmentView()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
+            var details = new LocationDetailsModel();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            List<GWCQUestionModel> ListQuestions = new List<GWCQUestionModel>();
+            ListQuestions = _GlobalAdminManager.GetGWCQuestions("30");
+            return PartialView("userAssessmentView", ListQuestions);
+        }
+        public ActionResult PerformanceManagementGrid()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
+            var details = new LocationDetailsModel();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            return PartialView("_306090Grid");
+        }
+        /// <summary>
+        /// Created By : Mayur Sahu
+        /// Created Date : 13-Oct-2019
+        /// Created For : To Get Performance 306090 list
+        /// </summary>
+        /// <param name="_search"></param>
+        /// <param name="UserId"></param>
+        /// <param name="locationId"></param>
+        /// <param name="rows"></param>
+        /// <param name="page"></param>
+        /// <param name="TotalRecords"></param>
+        /// <param name="sord"></param>
+        /// <param name="txtSearch"></param>
+        /// <param name="sidx"></param>
+        /// <param name="UserType"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult GetListOf306090ForJSGrid(string _search, long? UserId, long? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            var detailsList = new List<PerformanceModel>();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                if (locationId == null)
+                {
+                    locationId = ObjLoginModel.LocationID;
+                }
+                
+            }
+            if (UserType == null)
+            {
+                UserType = "All Users";
+            }
+            sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
+            sidx = string.IsNullOrEmpty(sidx) ? "Name" : sidx;
+            txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch;
+            long TotalRows = 0;
+            try
+            {
+                long paramTotalRecords = 0;
+                List<PerformanceModel> ITAdministratorList = _GlobalAdminManager.GetListOf306090ForJSGrid(ObjLoginModel.UserName, Convert.ToInt64(locationId), page, rows, sidx, sord, txtSearch, UserType, out paramTotalRecords);
+                foreach (var ITAdmin in ITAdministratorList)
+                {
+                    ITAdmin.EMP_Photo = (ITAdmin.EMP_Photo == "" || ITAdmin.EMP_Photo == null) ? "" : HostingPrefix + ProfilePicPath.Replace("~/", "") + ITAdmin.EMP_Photo;
+                    ITAdmin.EMP_EmployeeID = Cryptography.GetEncryptedData(ITAdmin.EMP_EmployeeID.ToString(), true);
+                    detailsList.Add(ITAdmin);
+                }
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+            return Json(detailsList, JsonRequestBehavior.AllowGet);
         }
     }
 }

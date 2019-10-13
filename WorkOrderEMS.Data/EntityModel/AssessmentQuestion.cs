@@ -12,16 +12,13 @@ namespace WorkOrderEMS.Data.EntityModel
     using System;
     using System.Collections.Generic;
     
-    public partial class BillFacilityItem
+    public partial class AssessmentQuestion
     {
-        public long BFI_Id { get; set; }
-        public long BFI_PBL_Id { get; set; }
-        public long BFI_CFM_Id { get; set; }
-        public Nullable<long> BFI_Unit { get; set; }
-        public Nullable<decimal> BFI_Rate { get; set; }
-        public string BFI_IsActive { get; set; }
-    
-        public virtual PreBillNumber PreBillNumber { get; set; }
-        public virtual CompanyFacilityMapping CompanyFacilityMapping { get; set; }
+        public long ASQ_Id { get; set; }
+        public string ASQ_AssessmentType { get; set; }
+        public string ASQ_QuestionType { get; set; }
+        public string ASQ_Question { get; set; }
+        public Nullable<System.DateTime> ASQ_Date { get; set; }
+        public string ASQ_IsActive { get; set; }
     }
 }

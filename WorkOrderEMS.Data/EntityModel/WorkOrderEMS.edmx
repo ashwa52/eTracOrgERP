@@ -70,6 +70,17 @@
           <Property Name="DeletedBy" Type="bigint" />
           <Property Name="DeletedOn" Type="datetime" />
         </EntityType>
+        <EntityType Name="AssessmentQuestion">
+          <Key>
+            <PropertyRef Name="ASQ_Id" />
+          </Key>
+          <Property Name="ASQ_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ASQ_AssessmentType" Type="varchar" MaxLength="20" />
+          <Property Name="ASQ_QuestionType" Type="varchar" MaxLength="20" />
+          <Property Name="ASQ_Question" Type="varchar(max)" />
+          <Property Name="ASQ_Date" Type="datetime" />
+          <Property Name="ASQ_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
         <EntityType Name="Bill">
           <Key>
             <PropertyRef Name="BLL_Id" />
@@ -4460,6 +4471,12 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="FromDate" Type="date" Mode="In" />
           <Parameter Name="ToDate" Type="date" Mode="In" />
         </Function>
+        <Function Name="spGetAssessmentList306090" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spGetAssessmentQuestion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="AssessmentType" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spGetBillFacilityItemForApproval" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="PBL_Id" Type="bigint" Mode="In" />
         </Function>
@@ -4838,7 +4855,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="CFM_ModifiedBy" Type="bigint" Mode="In" />
           <Parameter Name="CFM_ApprovedBy" Type="bigint" Mode="In" />
           <Parameter Name="CFM_IsActive" Type="char" Mode="In" />
-          <Parameter Name="CFM_ImageName" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="spSetCompanyLocationCostCodeMapping" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CLCAction" Type="char" Mode="In" />
@@ -5269,6 +5285,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="AddressMaster" EntityType="Self.AddressMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AdminEmployeeMapping" EntityType="Self.AdminEmployeeMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AdminLocationMapping" EntityType="Self.AdminLocationMapping" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AssessmentQuestion" EntityType="Self.AssessmentQuestion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BillFacilityItem" EntityType="Self.BillFacilityItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BillType" EntityType="Self.BillType" Schema="dbo" store:Type="Tables" />
@@ -7386,7 +7403,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="CFM_ModifiedBy" Mode="In" Type="Int64" />
             <Parameter Name="CFM_ApprovedBy" Mode="In" Type="Int64" />
             <Parameter Name="CFM_IsActive" Mode="In" Type="String" />
-            <Parameter Name="CFM_ImageName" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="AccountCategories" EntityType="workorderEMSModel.AccountCategory" />
           <EntitySet Name="AddressMasters" EntityType="workorderEMSModel.AddressMaster" />
@@ -7400,7 +7416,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="Companies" EntityType="workorderEMSModel.Company" />
           <EntitySet Name="CompanyAccountTransactions" EntityType="workorderEMSModel.CompanyAccountTransaction" />
           <EntitySet Name="CompanyDetails" EntityType="workorderEMSModel.CompanyDetail" />
-          <EntitySet Name="CompanyFacilityMappings" EntityType="workorderEMSModel.CompanyFacilityMapping" />
           <EntitySet Name="CompanyLocationCostCodeMappings" EntityType="workorderEMSModel.CompanyLocationCostCodeMapping" />
           <EntitySet Name="CompanyQBKs" EntityType="workorderEMSModel.CompanyQBK" />
           <EntitySet Name="CompanyTypes" EntityType="workorderEMSModel.CompanyType" />
@@ -7523,10 +7538,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <End Role="Bill" EntitySet="Bills" />
             <End Role="LogBill" EntitySet="LogBills" />
           </AssociationSet>
-          <AssociationSet Name="FK_BillFacilityItem_CompanyFacilityMapping" Association="workorderEMSModel.FK_BillFacilityItem_CompanyFacilityMapping">
-            <End Role="CompanyFacilityMapping" EntitySet="CompanyFacilityMappings" />
-            <End Role="BillFacilityItem" EntitySet="BillFacilityItems" />
-          </AssociationSet>
           <AssociationSet Name="FK_BillFacilityItem_PreBillNumber" Association="workorderEMSModel.FK_BillFacilityItem_PreBillNumber">
             <End Role="PreBillNumber" EntitySet="PreBillNumbers" />
             <End Role="BillFacilityItem" EntitySet="BillFacilityItems" />
@@ -7562,10 +7573,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <AssociationSet Name="FK_CompanyDetail_Company" Association="workorderEMSModel.FK_CompanyDetail_Company">
             <End Role="Company" EntitySet="Companies" />
             <End Role="CompanyDetail" EntitySet="CompanyDetails" />
-          </AssociationSet>
-          <AssociationSet Name="FK_CompanyFacilityMapping_Company" Association="workorderEMSModel.FK_CompanyFacilityMapping_Company">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="CompanyFacilityMapping" EntitySet="CompanyFacilityMappings" />
           </AssociationSet>
           <AssociationSet Name="FK_CompanyQBK_Company" Association="workorderEMSModel.FK_CompanyQBK_Company">
             <End Role="Company" EntitySet="Companies" />
@@ -8218,7 +8225,23 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="CAD_CardExpirationDate" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="spGetVendorAllDetailForEditApproval" ReturnType="Collection(workorderEMSModel.spGetVendorAllDetailForEditApproval_Result)">
-            <Parameter Name="CMP_Id" Mode="In" Type="Int64" />
+          <Parameter Name="CMP_Id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spGetAssessmentList306090" ReturnType="Collection(workorderEMSModel.spGetAssessmentList306090_Result)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="CompanyFacilityMappings" EntityType="workorderEMSModel.CompanyFacilityMapping" />
+          <AssociationSet Name="FK_BillFacilityItem_CompanyFacilityMapping" Association="workorderEMSModel.FK_BillFacilityItem_CompanyFacilityMapping">
+            <End Role="CompanyFacilityMapping" EntitySet="CompanyFacilityMappings" />
+            <End Role="BillFacilityItem" EntitySet="BillFacilityItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompanyFacilityMapping_Company" Association="workorderEMSModel.FK_CompanyFacilityMapping_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="CompanyFacilityMapping" EntitySet="CompanyFacilityMappings" />
+          </AssociationSet>
+          <EntitySet Name="AssessmentQuestions" EntityType="workorderEMSModel.AssessmentQuestion" />
+          <FunctionImport Name="spGetAssessmentQuestion" ReturnType="Collection(workorderEMSModel.spGetAssessmentQuestion_Result)">
+            <Parameter Name="AssessmentType" Mode="In" Type="String" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="CommonQeriesByVijay_Result">
@@ -11353,8 +11376,8 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="BFI_Unit" Type="Int64" />
           <Property Name="BFI_Rate" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="BFI_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <NavigationProperty Name="CompanyFacilityMapping" Relationship="workorderEMSModel.FK_BillFacilityItem_CompanyFacilityMapping" FromRole="BillFacilityItem" ToRole="CompanyFacilityMapping" />
           <NavigationProperty Name="PreBillNumber" Relationship="workorderEMSModel.FK_BillFacilityItem_PreBillNumber" FromRole="BillFacilityItem" ToRole="PreBillNumber" />
+          <NavigationProperty Name="CompanyFacilityMapping" Relationship="workorderEMSModel.FK_BillFacilityItem_CompanyFacilityMapping" FromRole="BillFacilityItem" ToRole="CompanyFacilityMapping" />
         </EntityType>
         <EntityType Name="BillType">
           <Key>
@@ -11414,7 +11437,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <NavigationProperty Name="CompanyAccountTransactions" Relationship="workorderEMSModel.FK_CompanyAccountTransaction_CompanyCr" FromRole="Company" ToRole="CompanyAccountTransaction" />
           <NavigationProperty Name="CompanyAccountTransactions1" Relationship="workorderEMSModel.FK_CompanyAccountTransaction_CompanyDr" FromRole="Company" ToRole="CompanyAccountTransaction" />
           <NavigationProperty Name="CompanyDetails" Relationship="workorderEMSModel.FK_CompanyDetail_Company" FromRole="Company" ToRole="CompanyDetail" />
-          <NavigationProperty Name="CompanyFacilityMappings" Relationship="workorderEMSModel.FK_CompanyFacilityMapping_Company" FromRole="Company" ToRole="CompanyFacilityMapping" />
           <NavigationProperty Name="CompanyQBKs" Relationship="workorderEMSModel.FK_CompanyQBK_Company" FromRole="Company" ToRole="CompanyQBK" />
           <NavigationProperty Name="Contracts" Relationship="workorderEMSModel.FK_Contract_CompanyIdFirstParty" FromRole="Company" ToRole="Contract" />
           <NavigationProperty Name="Contracts1" Relationship="workorderEMSModel.FK_Contract_CompanyIdSecontParty" FromRole="Company" ToRole="Contract" />
@@ -11436,6 +11458,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <NavigationProperty Name="PreBills" Relationship="workorderEMSModel.FK_PreBill_Company" FromRole="Company" ToRole="PreBill" />
           <NavigationProperty Name="CompanyAccountDetails" Relationship="workorderEMSModel.FK_CompanyAccountDetail_Company" FromRole="Company" ToRole="CompanyAccountDetail" />
           <NavigationProperty Name="LogCompanyAccountDetails" Relationship="workorderEMSModel.FK_LogCompanyAccountDetail_Company" FromRole="Company" ToRole="LogCompanyAccountDetail" />
+          <NavigationProperty Name="CompanyFacilityMappings" Relationship="workorderEMSModel.FK_CompanyFacilityMapping_Company" FromRole="Company" ToRole="CompanyFacilityMapping" />
         </EntityType>
         <EntityType Name="CompanyAccountTransaction">
           <Key>
@@ -11482,23 +11505,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="COD_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="Company" Relationship="workorderEMSModel.FK_CompanyDetail_Company" FromRole="CompanyDetail" ToRole="Company" />
           <NavigationProperty Name="LogCompanyDetails" Relationship="workorderEMSModel.FK_LogCompanyDetail_CompanyDetail" FromRole="CompanyDetail" ToRole="LogCompanyDetail" />
-        </EntityType>
-        <EntityType Name="CompanyFacilityMapping">
-          <Key>
-            <PropertyRef Name="CFM_Id" />
-          </Key>
-          <Property Name="CFM_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CFM_CMP_Id" Type="Int64" Nullable="false" />
-          <Property Name="CFM_CCD_CostCode" Type="Int64" Nullable="false" />
-          <Property Name="CFM_FacilityType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="CFM_Discription" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="CFM_Rate" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="CFM_Tax" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="CFM_Date" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="CFM_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="CFM_ImageName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="BillFacilityItems" Relationship="workorderEMSModel.FK_BillFacilityItem_CompanyFacilityMapping" FromRole="CompanyFacilityMapping" ToRole="BillFacilityItem" />
-          <NavigationProperty Name="Company" Relationship="workorderEMSModel.FK_CompanyFacilityMapping_Company" FromRole="CompanyFacilityMapping" ToRole="Company" />
         </EntityType>
         <EntityType Name="CompanyLocationCostCodeMapping">
           <Key>
@@ -13542,18 +13548,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_BillFacilityItem_CompanyFacilityMapping">
-          <End Type="workorderEMSModel.CompanyFacilityMapping" Role="CompanyFacilityMapping" Multiplicity="1" />
-          <End Type="workorderEMSModel.BillFacilityItem" Role="BillFacilityItem" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CompanyFacilityMapping">
-              <PropertyRef Name="CFM_Id" />
-            </Principal>
-            <Dependent Role="BillFacilityItem">
-              <PropertyRef Name="BFI_CFM_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_BillFacilityItem_PreBillNumber">
           <End Type="workorderEMSModel.PreBillNumber" Role="PreBillNumber" Multiplicity="1" />
           <End Type="workorderEMSModel.BillFacilityItem" Role="BillFacilityItem" Multiplicity="*" />
@@ -13659,18 +13653,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </Principal>
             <Dependent Role="CompanyDetail">
               <PropertyRef Name="COD_CMP_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CompanyFacilityMapping_Company">
-          <End Type="workorderEMSModel.Company" Role="Company" Multiplicity="1" />
-          <End Type="workorderEMSModel.CompanyFacilityMapping" Role="CompanyFacilityMapping" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Company">
-              <PropertyRef Name="CMP_Id" />
-            </Principal>
-            <Dependent Role="CompanyFacilityMapping">
-              <PropertyRef Name="CFM_CMP_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -15707,6 +15689,74 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="DateTime" Name="CNT_BillDueDate" Nullable="true" />
           <Property Type="Decimal" Name="CNT_LateFeeFine" Nullable="true" Precision="18" Scale="2" />
           <Property Type="String" Name="CNT_ContractDocument" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetAssessmentList306090_Result">
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EMP_Photo" Nullable="true" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+          <Property Type="String" Name="DepartmentName" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
+          <Property Type="DateTime" Name="EMP_DateOfJoining" Nullable="true" />
+          <Property Type="Int32" Name="Assesment" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="CompanyFacilityMapping">
+          <Key>
+            <PropertyRef Name="CFM_Id" />
+          </Key>
+          <Property Name="CFM_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CFM_CMP_Id" Type="Int64" Nullable="false" />
+          <Property Name="CFM_CCD_CostCode" Type="Int64" Nullable="false" />
+          <Property Name="CFM_FacilityType" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CFM_Discription" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CFM_Rate" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CFM_Tax" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CFM_Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CFM_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="CFM_ImageName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BillFacilityItems" Relationship="workorderEMSModel.FK_BillFacilityItem_CompanyFacilityMapping" FromRole="CompanyFacilityMapping" ToRole="BillFacilityItem" />
+          <NavigationProperty Name="Company" Relationship="workorderEMSModel.FK_CompanyFacilityMapping_Company" FromRole="CompanyFacilityMapping" ToRole="Company" />
+        </EntityType>
+        <Association Name="FK_BillFacilityItem_CompanyFacilityMapping">
+          <End Type="workorderEMSModel.CompanyFacilityMapping" Role="CompanyFacilityMapping" Multiplicity="1" />
+          <End Type="workorderEMSModel.BillFacilityItem" Role="BillFacilityItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyFacilityMapping">
+              <PropertyRef Name="CFM_Id" />
+            </Principal>
+            <Dependent Role="BillFacilityItem">
+              <PropertyRef Name="BFI_CFM_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyFacilityMapping_Company">
+          <End Type="workorderEMSModel.Company" Role="Company" Multiplicity="1" />
+          <End Type="workorderEMSModel.CompanyFacilityMapping" Role="CompanyFacilityMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CMP_Id" />
+            </Principal>
+            <Dependent Role="CompanyFacilityMapping">
+              <PropertyRef Name="CFM_CMP_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="AssessmentQuestion">
+          <Key>
+            <PropertyRef Name="ASQ_Id" />
+          </Key>
+          <Property Name="ASQ_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ASQ_AssessmentType" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ASQ_QuestionType" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ASQ_Question" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ASQ_Date" Type="DateTime" Precision="3" />
+          <Property Name="ASQ_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="spGetAssessmentQuestion_Result">
+          <Property Type="Int64" Name="ASQ_Id" Nullable="false" />
+          <Property Type="String" Name="ASQ_AssessmentType" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ASQ_QuestionType" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ASQ_Question" Nullable="true" />
         </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
@@ -18134,22 +18184,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CompanyFacilityMappings">
-            <EntityTypeMapping TypeName="workorderEMSModel.CompanyFacilityMapping">
-              <MappingFragment StoreEntitySet="CompanyFacilityMapping">
-                <ScalarProperty Name="CFM_ImageName" ColumnName="CFM_ImageName" />
-                <ScalarProperty Name="CFM_IsActive" ColumnName="CFM_IsActive" />
-                <ScalarProperty Name="CFM_Date" ColumnName="CFM_Date" />
-                <ScalarProperty Name="CFM_Tax" ColumnName="CFM_Tax" />
-                <ScalarProperty Name="CFM_Rate" ColumnName="CFM_Rate" />
-                <ScalarProperty Name="CFM_Discription" ColumnName="CFM_Discription" />
-                <ScalarProperty Name="CFM_FacilityType" ColumnName="CFM_FacilityType" />
-                <ScalarProperty Name="CFM_CCD_CostCode" ColumnName="CFM_CCD_CostCode" />
-                <ScalarProperty Name="CFM_CMP_Id" ColumnName="CFM_CMP_Id" />
-                <ScalarProperty Name="CFM_Id" ColumnName="CFM_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="CompanyLocationCostCodeMappings">
             <EntityTypeMapping TypeName="workorderEMSModel.CompanyLocationCostCodeMapping">
               <MappingFragment StoreEntitySet="CompanyLocationCostCodeMapping">
@@ -20063,6 +20097,58 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
                 <ScalarProperty Name="CNT_BillDueDate" ColumnName="CNT_BillDueDate" />
                 <ScalarProperty Name="CNT_LateFeeFine" ColumnName="CNT_LateFeeFine" />
                 <ScalarProperty Name="CNT_ContractDocument" ColumnName="CNT_ContractDocument" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetAssessmentList306090" FunctionName="workorderEMSModel.Store.spGetAssessmentList306090">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetAssessmentList306090_Result">
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
+                <ScalarProperty Name="Assesment" ColumnName="Assesment" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="CompanyFacilityMappings">
+            <EntityTypeMapping TypeName="workorderEMSModel.CompanyFacilityMapping">
+              <MappingFragment StoreEntitySet="CompanyFacilityMapping">
+                <ScalarProperty Name="CFM_ImageName" ColumnName="CFM_ImageName" />
+                <ScalarProperty Name="CFM_IsActive" ColumnName="CFM_IsActive" />
+                <ScalarProperty Name="CFM_Date" ColumnName="CFM_Date" />
+                <ScalarProperty Name="CFM_Tax" ColumnName="CFM_Tax" />
+                <ScalarProperty Name="CFM_Rate" ColumnName="CFM_Rate" />
+                <ScalarProperty Name="CFM_Discription" ColumnName="CFM_Discription" />
+                <ScalarProperty Name="CFM_FacilityType" ColumnName="CFM_FacilityType" />
+                <ScalarProperty Name="CFM_CCD_CostCode" ColumnName="CFM_CCD_CostCode" />
+                <ScalarProperty Name="CFM_CMP_Id" ColumnName="CFM_CMP_Id" />
+                <ScalarProperty Name="CFM_Id" ColumnName="CFM_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AssessmentQuestions">
+            <EntityTypeMapping TypeName="workorderEMSModel.AssessmentQuestion">
+              <MappingFragment StoreEntitySet="AssessmentQuestion">
+                <ScalarProperty Name="ASQ_IsActive" ColumnName="ASQ_IsActive" />
+                <ScalarProperty Name="ASQ_Date" ColumnName="ASQ_Date" />
+                <ScalarProperty Name="ASQ_Question" ColumnName="ASQ_Question" />
+                <ScalarProperty Name="ASQ_QuestionType" ColumnName="ASQ_QuestionType" />
+                <ScalarProperty Name="ASQ_AssessmentType" ColumnName="ASQ_AssessmentType" />
+                <ScalarProperty Name="ASQ_Id" ColumnName="ASQ_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetAssessmentQuestion" FunctionName="workorderEMSModel.Store.spGetAssessmentQuestion">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetAssessmentQuestion_Result">
+                <ScalarProperty Name="ASQ_Id" ColumnName="ASQ_Id" />
+                <ScalarProperty Name="ASQ_AssessmentType" ColumnName="ASQ_AssessmentType" />
+                <ScalarProperty Name="ASQ_QuestionType" ColumnName="ASQ_QuestionType" />
+                <ScalarProperty Name="ASQ_Question" ColumnName="ASQ_Question" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

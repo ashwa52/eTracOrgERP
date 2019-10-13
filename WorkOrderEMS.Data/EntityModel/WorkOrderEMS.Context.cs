@@ -39,7 +39,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<CompanyAccountTransaction> CompanyAccountTransactions { get; set; }
         public virtual DbSet<CompanyDetail> CompanyDetails { get; set; }
-        public virtual DbSet<CompanyFacilityMapping> CompanyFacilityMappings { get; set; }
         public virtual DbSet<CompanyLocationCostCodeMapping> CompanyLocationCostCodeMappings { get; set; }
         public virtual DbSet<CompanyQBK> CompanyQBKs { get; set; }
         public virtual DbSet<CompanyType> CompanyTypes { get; set; }
@@ -132,6 +131,8 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<QRCMaster1> QRCMaster1 { get; set; }
         public virtual DbSet<CompanyAccountDetail> CompanyAccountDetails { get; set; }
         public virtual DbSet<LogCompanyAccountDetail> LogCompanyAccountDetails { get; set; }
+        public virtual DbSet<CompanyFacilityMapping> CompanyFacilityMappings { get; set; }
+        public virtual DbSet<AssessmentQuestion> AssessmentQuestions { get; set; }
     
         public virtual ObjectResult<CommonQeriesByVijay_Result> CommonQeriesByVijay()
         {
@@ -4528,7 +4529,7 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCompanyFacilityMapping_Result>("spGetCompanyFacilityMapping", location_IdParameter, cMP_IdParameter);
         }
     
-        public virtual int spSetCompanyFacilityMapping(string cFMAction, Nullable<long> cFM_Id, Nullable<long> cFM_CMP_Id, Nullable<long> cFM_CCD_CostCode, string cFM_FacilityType, string cFM_Discription, Nullable<decimal> cFM_Rate, Nullable<decimal> cFM_Tax, Nullable<long> cFM_ModifiedBy, Nullable<long> cFM_ApprovedBy, string cFM_IsActive, string cFM_ImageName)
+        public virtual int spSetCompanyFacilityMapping(string cFMAction, Nullable<long> cFM_Id, Nullable<long> cFM_CMP_Id, Nullable<long> cFM_CCD_CostCode, string cFM_FacilityType, string cFM_Discription, Nullable<decimal> cFM_Rate, Nullable<decimal> cFM_Tax, Nullable<long> cFM_ModifiedBy, Nullable<long> cFM_ApprovedBy, string cFM_IsActive)
         {
             var cFMActionParameter = cFMAction != null ?
                 new ObjectParameter("CFMAction", cFMAction) :
@@ -4574,11 +4575,7 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("CFM_IsActive", cFM_IsActive) :
                 new ObjectParameter("CFM_IsActive", typeof(string));
     
-            var cFM_ImageNameParameter = cFM_ImageName != null ?
-                new ObjectParameter("CFM_ImageName", cFM_ImageName) :
-                new ObjectParameter("CFM_ImageName", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetCompanyFacilityMapping", cFMActionParameter, cFM_IdParameter, cFM_CMP_IdParameter, cFM_CCD_CostCodeParameter, cFM_FacilityTypeParameter, cFM_DiscriptionParameter, cFM_RateParameter, cFM_TaxParameter, cFM_ModifiedByParameter, cFM_ApprovedByParameter, cFM_IsActiveParameter, cFM_ImageNameParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetCompanyFacilityMapping", cFMActionParameter, cFM_IdParameter, cFM_CMP_IdParameter, cFM_CCD_CostCodeParameter, cFM_FacilityTypeParameter, cFM_DiscriptionParameter, cFM_RateParameter, cFM_TaxParameter, cFM_ModifiedByParameter, cFM_ApprovedByParameter, cFM_IsActiveParameter);
         }
     
         public virtual int spSetApprovalForCompanyAccountDetail(Nullable<long> lCAD_Id, string lCAD_Comment, string lCAD_IsApprove)
@@ -4691,6 +4688,24 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("CMP_Id", typeof(long));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVendorAllDetailForEditApproval_Result>("spGetVendorAllDetailForEditApproval", cMP_IdParameter);
+        }
+    
+        public virtual ObjectResult<spGetAssessmentList306090_Result> spGetAssessmentList306090(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentList306090_Result>("spGetAssessmentList306090", employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetAssessmentQuestion_Result> spGetAssessmentQuestion(string assessmentType)
+        {
+            var assessmentTypeParameter = assessmentType != null ?
+                new ObjectParameter("AssessmentType", assessmentType) :
+                new ObjectParameter("AssessmentType", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentQuestion_Result>("spGetAssessmentQuestion", assessmentTypeParameter);
         }
     }
 }

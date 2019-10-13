@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
 using WorkOrderEMS.Models.CommonModels;
+using WorkOrderEMS.Models.NewAdminModel;
 using WorkOrderEMS.Models.SuperAdminModels;
 using WorkOrderEMS.Models.UserModels;
 
@@ -264,5 +265,7 @@ namespace WorkOrderEMS.BusinessLogic
         List<listForEmployeeDevice> send30SecFRNotificaitonToAllManager(long LocationId, long UserId);
         List<listForEmployeeDevice> GetAllManagerList(long LocationId, long UserId);
        // BudgetDetails GetListBudgetDetails(long? LocationId, long? UserId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
+        List<PerformanceModel> GetListOf306090ForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords);
+        List<GWCQUestionModel> GetGWCQuestions(string AssessmetType);
     }
 }

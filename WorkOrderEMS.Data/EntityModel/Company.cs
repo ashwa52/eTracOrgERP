@@ -20,7 +20,6 @@ namespace WorkOrderEMS.Data.EntityModel
             this.CompanyAccountTransactions = new HashSet<CompanyAccountTransaction>();
             this.CompanyAccountTransactions1 = new HashSet<CompanyAccountTransaction>();
             this.CompanyDetails = new HashSet<CompanyDetail>();
-            this.CompanyFacilityMappings = new HashSet<CompanyFacilityMapping>();
             this.CompanyQBKs = new HashSet<CompanyQBK>();
             this.Contracts = new HashSet<Contract>();
             this.Contracts1 = new HashSet<Contract>();
@@ -42,6 +41,7 @@ namespace WorkOrderEMS.Data.EntityModel
             this.PreBills = new HashSet<PreBill>();
             this.CompanyAccountDetails = new HashSet<CompanyAccountDetail>();
             this.LogCompanyAccountDetails = new HashSet<LogCompanyAccountDetail>();
+            this.CompanyFacilityMappings = new HashSet<CompanyFacilityMapping>();
         }
     
         public long CMP_Id { get; set; }
@@ -59,7 +59,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ICollection<CompanyAccountTransaction> CompanyAccountTransactions { get; set; }
         public virtual ICollection<CompanyAccountTransaction> CompanyAccountTransactions1 { get; set; }
         public virtual ICollection<CompanyDetail> CompanyDetails { get; set; }
-        public virtual ICollection<CompanyFacilityMapping> CompanyFacilityMappings { get; set; }
         public virtual ICollection<CompanyQBK> CompanyQBKs { get; set; }
         public virtual ICollection<Contract> Contracts { get; set; }
         public virtual ICollection<Contract> Contracts1 { get; set; }
@@ -81,5 +80,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ICollection<PreBill> PreBills { get; set; }
         public virtual ICollection<CompanyAccountDetail> CompanyAccountDetails { get; set; }
         public virtual ICollection<LogCompanyAccountDetail> LogCompanyAccountDetails { get; set; }
+        public virtual ICollection<CompanyFacilityMapping> CompanyFacilityMappings { get; set; }
     }
 }

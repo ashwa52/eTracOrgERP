@@ -1,7 +1,7 @@
-﻿
-@{
+﻿@{
     //Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
     Layout = null;
+
     string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
     WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
     string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
@@ -38,6 +38,7 @@
 <script src="https://www.amcharts.com/lib/3/serial.js"></script>
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+
 <link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />
 <style>
     .addWhite {
@@ -50,7 +51,7 @@
 </style>
 <div class="content-body">
     <!-- row -->
-    <div class="container-fluid">
+    <div class="container-fluid performanceDashboard">
         <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3" data-aos="fade-up">
             <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
                 <div class="welcome-text">
@@ -58,47 +59,8 @@
                     @*<p class="mb-0">ePeople Dashboard</p>*@
                 </div>
             </div>
-            <div class="col-sm-12 col-xs-12 col-md-12 glowbuttonActiveDeactive" style=" display: block;color: #fff;background-color: #5D78FF;border-color: #5D78FF;"> Performance Dashboard</div>
-            @*Commented on 10/5/2019*@
-            @*<div class="col-sm-3">
-                    <button type="button" id="EmplooyeeManagement" class="btn btn-primary pull-right glowbuttonActiveDeactive butttonActiveEmployee" style="border-radius: 35px;">Employee Management</button>
-                </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <div>
-                    <button type="button" id="HiringOnBoard" class="btn btn-primary pull-right glowbuttonActiveDeactive" style="border-radius: 35px;">Hiring On Boarding</button>
-                </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <div>
-                    <button type="button" id="eTime" class="btn btn-primary pull-right glowbuttonActiveDeactive" style="border-radius: 35px;">eTime</button>
-                </div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <div>
-                    <button type="button" id="PerformanceManagement" class="btn btn-primary pull-right glowbuttonActiveDeactive" style="border-radius: 35px;">Performance Management</button>
-                </div>*@
+            <div class="col-sm-12 col-xs-12 col-md-12 glowbuttonActiveDeactive"> Performance Dashboard</div>
         </div>
-        @*<div class="row justify-content-center">
-                <div class="col-lg-3">
-                    <div class="pricing_table_content mt-5" style="background-color: #3f4e62;color:white;">
-                        <p style="margin-left:70px;margin-top:-20px;font-size:20px;"><b>15</b></p>
-                        <div class="package" style="margin-top:-30px;"><i class="fa fa-users" style="color:#fff;font-size:30px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Hiring On Board</b></div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="pricing_table_content mt-5" style="background-color: #529F9D;color:white;">
-                        <p style="margin-left:70px;margin-top:-20px;font-size:20px;"><b>9</b></p>
-                        <div class="package" style="margin-top:-30px;"><i class="fa fa-users" style="color:yellow;font-size:30px;margin-left: -10px;"></i>&nbsp;&nbsp;&nbsp;<b>Employee Management</b></div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="pricing_table_content mt-5" style="background-color: #3F8ADA;color:white;">
-                        <p style="margin-left:70px;margin-top:-20px;font-size:20px;"><b>5</b></p>
-                        <div class="package" style="margin-top:-30px;"><i class="fa fa-clock-o" style="color:white;font-size:30px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>eTime</b></div>
-                    </div>
-                </div>
-                <div class="col-lg-3">
-                    <div class="pricing_table_content mt-5" style="background-color: #529F9D;color:white;">
-                        <p style="margin-left:70px;margin-top:-20px;font-size:20px;"><b>4</b></p>
-                        <div class="package" style="margin-top:-30px;"><i class="fa fa-users" style="color:green;font-size:30px;margin-left: -20px;"></i>&nbsp;&nbsp;&nbsp;<b>Performance Management</b></div>
-                    </div>
-                </div>
-            </div>*@
         <br />
         <div class="row">
             <div class="col-lg-6">
@@ -260,18 +222,48 @@
                     </div>
                 </div>
             </div>
-
             <div class="col-lg-12" id="EmployeeManagementDiv">
-                <div class="card" data-aos="fade-up">
-                    <div class="card-header" style="height: 45px;">
-                        <h4 class="card-title addWhite"><b>Performance Management</b></h4>
+                @Html.Partial("~/Views/NewAdmin/_306090Grid.cshtml")
+                @*<div class="card" data-aos="fade-up">
+            <div class="card-header" style="height: 45px; display:none">
+                <h4 class="card-title addWhite"><b>Performance Management</b></h4>
+            </div>
+            <div class="card-body">
+                <div class="custom-tab-1">
+                    <ul class="nav nav-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-toggle="tab" href="#th306090">30-60-90</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#Expectations">Q-Expectations</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-toggle="tab" href="#Evaluations">Q-Evaluations</a>
+                        </li>
+
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="th306090" role="tabpanel">
+
+
+                        </div>
+                        <div class="tab-pane fade" id="Expectations">
+                            Expectations
+                        </div>
+                        <div class="tab-pane fade" id="Evaluations">
+                            Evaluations
+                        </div>
+
                     </div>
-                    <div class="card-body">
-                        <div id="ListEmployeeManagement"></div>
-                    </div>
+
                 </div>
             </div>
+        </div>*@
+
+            </div>
         </div>
+
+
     </div>
 </div>
 @Html.Partial("~/Views/NewAdmin/ePeople/_HiringOnBoarding.cshtml")
@@ -303,7 +295,7 @@
 <script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
 <script src="~/GridListing/JsGridScript/ListOnBoarding.js"></script>
 <script src="~/GridListing/JsGridScript/ListMyOpening.js"></script>
-<script src="~/GridListing/JsGridScript/ListEmployeeManagement.js"></script>
+<script src="~/GridListing/JsGridScript/List306090.js"></script>
 <script>
     am4core.ready(function () {
 
@@ -348,56 +340,56 @@
     }); // end am4core.ready()
 </script>
 <script>
-    var chartDAR = AmCharts.makeChart("eTimediv", {
-        "theme": "none",
-        "type": "serial",
-        "startDuration": 7,
-        "dataProvider": [{
-            "Cost Code": "Travel",
-            "Budget": 4334,
-            "color": "#1740AE"
-        }, {
-            "Cost Code": "Marketing",
-            "Budget": 4000,
-            "color": "#758DCB"
-        }, {
-            "Cost Code": "Other Travel",
-            "Budget": 3466,
-            "color": "#86E2E8"
-        }],
-        "valueAxes": [{
-            "position": "left",
-            "axisAlpha": 0,
-            "gridAlpha": 0
-        }],
-        "graphs": [{
-            "balloonText": "[[category]]: <b>[[value]]</b>",
-            "colorField": "color",
-            "fillAlphas": 0.85,
-            "lineAlpha": 0.1,
-            "type": "column",
-            "topRadius": 1,
-            "valueField": "Budget"
-        }],
-        "depth3D": 40,
-        "angle": 30,
-        "chartCursor": {
-            "categoryBalloonEnabled": false,
-            "cursorAlpha": 0,
-            "zoomable": false
-        },
-        "categoryField": "Cost Code",
-        "categoryAxis": {
-            "gridPosition": "start",
-            "axisAlpha": 1,
-            "gridAlpha": 0,
-            "labelRotation": 20,
-        },
-        "export": {
-            "enabled": true
-        }
+    //var chartDAR = AmCharts.makeChart("eTimediv", {
+    //    "theme": "none",
+    //    "type": "serial",
+    //    "startDuration": 7,
+    //    "dataProvider": [{
+    //        "Cost Code": "Travel",
+    //        "Budget": 4334,
+    //        "color": "#1740AE"
+    //    }, {
+    //        "Cost Code": "Marketing",
+    //        "Budget": 4000,
+    //        "color": "#758DCB"
+    //    }, {
+    //        "Cost Code": "Other Travel",
+    //        "Budget": 3466,
+    //        "color": "#86E2E8"
+    //    }],
+    //    "valueAxes": [{
+    //        "position": "left",
+    //        "axisAlpha": 0,
+    //        "gridAlpha": 0
+    //    }],
+    //    "graphs": [{
+    //        "balloonText": "[[category]]: <b>[[value]]</b>",
+    //        "colorField": "color",
+    //        "fillAlphas": 0.85,
+    //        "lineAlpha": 0.1,
+    //        "type": "column",
+    //        "topRadius": 1,
+    //        "valueField": "Budget"
+    //    }],
+    //    "depth3D": 40,
+    //    "angle": 30,
+    //    "chartCursor": {
+    //        "categoryBalloonEnabled": false,
+    //        "cursorAlpha": 0,
+    //        "zoomable": false
+    //    },
+    //    "categoryField": "Cost Code",
+    //    "categoryAxis": {
+    //        "gridPosition": "start",
+    //        "axisAlpha": 1,
+    //        "gridAlpha": 0,
+    //        "labelRotation": 20,
+    //    },
+    //    "export": {
+    //        "enabled": true
+    //    }
 
-    }, 0);
+    //}, 0);
 </script>
 
 <script>
@@ -416,6 +408,54 @@
             am4core.ready(function () {
                 am4core.useTheme(am4themes_animated);
                 var chartQRC = am4core.create("QRCCount", am4charts.PieChart);
+                chartQRC.data = [{
+                    "UserType": "Administrator",
+                    "Count": 20
+                }, {
+                    "UserType": "Manager",
+                    "Count": 5//dataJSON.CountPanel[0].EmpCount
+                }, {
+                    "UserType": "Employee",
+                    "Count": 3//dataJSON.CountPanel[0].ManagerCount
+                }];
+
+                // Add and configure Series
+                var pieSeries = chartQRC.series.push(new am4charts.PieSeries());
+                pieSeries.dataFields.value = "Count";
+                pieSeries.dataFields.category = "UserType";
+                pieSeries.innerRadius = am4core.percent(50);
+                pieSeries.ticks.template.disabled = true;
+                pieSeries.labels.template.disabled = true;
+
+                var rgm = new am4core.RadialGradientModifier();
+                rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
+                pieSeries.slices.template.fillModifier = rgm;
+                pieSeries.slices.template.strokeModifier = rgm;
+                pieSeries.slices.template.strokeOpacity = 0.4;
+                pieSeries.slices.template.strokeWidth = 0;
+
+                chartQRC.legend = new am4charts.Legend();
+                chartQRC.legend.position = "right";
+
+            }); // end am4core.ready()
+        }
+    }
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetDashboardHeadCount", "GlobalAdmin")",
+            data: {},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (jsondata) {
+        //successFuncPie(response);
+        if (jsondata != null && jsondata != "" && jsondata.dataJson.trim() != "") {
+            var dataJSON = JSON.parse(jsondata.dataJson);
+            dataJSON.CountPanel[0].AdminCount;
+            am4core.ready(function () {
+                am4core.useTheme(am4themes_animated);
+                var chartQRC = am4core.create("eTimediv", am4charts.PieChart);
                 chartQRC.data = [{
                     "UserType": "Administrator",
                     "Count": 20

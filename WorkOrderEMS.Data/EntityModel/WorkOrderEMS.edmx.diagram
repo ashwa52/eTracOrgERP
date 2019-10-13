@@ -17,7 +17,6 @@
         <EntityTypeShape EntityType="workorderEMSModel.Company" Width="1.5" PointX="9" PointY="184.5" />
         <EntityTypeShape EntityType="workorderEMSModel.CompanyAccountTransaction" Width="1.5" PointX="13.5" PointY="187.375" />
         <EntityTypeShape EntityType="workorderEMSModel.CompanyDetail" Width="1.5" PointX="11.25" PointY="176.5" />
-        <EntityTypeShape EntityType="workorderEMSModel.CompanyFacilityMapping" Width="1.5" PointX="11.25" PointY="205" />
         <EntityTypeShape EntityType="workorderEMSModel.CompanyLocationCostCodeMapping" Width="1.5" PointX="7.5" PointY="176.75" />
         <EntityTypeShape EntityType="workorderEMSModel.CompanyQBK" Width="1.5" PointX="11.25" PointY="182.125" />
         <EntityTypeShape EntityType="workorderEMSModel.CompanyType" Width="1.5" PointX="6.75" PointY="188.75" />
@@ -116,7 +115,6 @@
         <AssociationConnector Association="workorderEMSModel.FK_Bill_Company" />
         <AssociationConnector Association="workorderEMSModel.FK_Bill_LocationMaster" />
         <AssociationConnector Association="workorderEMSModel.FK_LogBill_Bill" />
-        <AssociationConnector Association="workorderEMSModel.FK_BillFacilityItem_CompanyFacilityMapping" />
         <AssociationConnector Association="workorderEMSModel.FK_BillFacilityItem_PreBillNumber" />
         <AssociationConnector Association="workorderEMSModel.FK_BudgetCostCodeMapping_CostCodeLocationMapping" />
         <AssociationConnector Association="workorderEMSModel.FK_BudgetCostCodeMapping_CostCodeLocationMappingTransfer" />
@@ -126,7 +124,6 @@
         <AssociationConnector Association="workorderEMSModel.FK_CompanyAccountTransaction_CompanyCr" />
         <AssociationConnector Association="workorderEMSModel.FK_CompanyAccountTransaction_CompanyDr" />
         <AssociationConnector Association="workorderEMSModel.FK_CompanyDetail_Company" />
-        <AssociationConnector Association="workorderEMSModel.FK_CompanyFacilityMapping_Company" />
         <AssociationConnector Association="workorderEMSModel.FK_CompanyQBK_Company" />
         <AssociationConnector Association="workorderEMSModel.FK_Contract_CompanyIdFirstParty" />
         <AssociationConnector Association="workorderEMSModel.FK_Contract_CompanyIdSecontParty" />
@@ -284,6 +281,10 @@
         <AssociationConnector Association="workorderEMSModel.FK_LogCompanyAccountDetail_Company" />
         <AssociationConnector Association="workorderEMSModel.FK_LogCompanyAccountDetail_CompanyAccountDetail" />
         <AssociationConnector Association="workorderEMSModel.FK_LogCompanyAccountDetail_PaymentMode" />
+        <EntityTypeShape EntityType="workorderEMSModel.CompanyFacilityMapping" Width="1.5" PointX="11.25" PointY="205.75" />
+        <AssociationConnector Association="workorderEMSModel.FK_BillFacilityItem_CompanyFacilityMapping" />
+        <AssociationConnector Association="workorderEMSModel.FK_CompanyFacilityMapping_Company" />
+        <EntityTypeShape EntityType="workorderEMSModel.AssessmentQuestion" Width="1.5" PointX="14.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

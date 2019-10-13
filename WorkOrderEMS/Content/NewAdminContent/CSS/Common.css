@@ -271,4 +271,28 @@ div#UrgentWorkOrdersList .btn-success {
     background-color: #1DC9B7;
     border-color: #1DC9B7;
 }
+.row.page-titles.mx-0.mb-0.mb-md-3.mb-sm-3.aos-init.aos-animate {
+    padding: 0;
+    margin-bottom: 0 !important;
+}
+.col-sm-12.col-xs-12.col-md-12.glowbuttonActiveDeactive {
+    height: 33px;
+    text-align: center;
+    font-size: 24px;
+    display: block;
+    color: black;
+    background-color: #FFFF01;
+    border-color: #5D78FF;
+}
+.performanceDashboard .card.aos-init.aos-animate {
+    margin-bottom: 0;
+}
+.performanceDashboard a.nav-link {
+    text-align: center;
+    width: 200px;
+}
+#profileArea table {
+    color: black;
+}
+
     

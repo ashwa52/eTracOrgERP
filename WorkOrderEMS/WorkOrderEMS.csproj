@@ -5128,6 +5128,7 @@
     <Content Include="GridListing\JqGridScript\WorkRequestAssignment.js" />
     <Content Include="GridListing\JqGridScript\WorkRequestList.js" />
     <Content Include="GridListing\JsGridScript\ListDAR.js" />
+    <Content Include="GridListing\JsGridScript\List306090.js" />
     <Content Include="GridListing\JsGridScript\ListEmployeeManagement.js" />
     <Content Include="GridListing\JsGridScript\ListMyOpening.js" />
     <Content Include="GridListing\JsGridScript\ListOnBoarding.js" />
@@ -6393,6 +6394,9 @@
     <Content Include="Views\VendorManagement\VenderDocument.cshtml" />
     <Content Include="Views\NewAdmin\_PerformanceManagement.cshtml" />
     <Content Include="Views\GlobalAdmin\_Notifications.cshtml" />
+    <Content Include="Views\NewAdmin\_userAssessmentView.cshtml" />
+    <Content Include="Views\NewAdmin\_306090Grid.cshtml" />
+    <Content Include="Views\NewAdmin\userAssessmentView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
