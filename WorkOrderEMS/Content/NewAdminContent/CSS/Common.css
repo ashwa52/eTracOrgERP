@@ -266,7 +266,7 @@ div#UrgentWorkOrdersList .info {
         content: "n";
         background-color: #0074D9;
     }
-div#UrgentWorkOrdersList .btn-success {
+div#UrgentWorkOrdersList .btn-success, div#profileArea .btn-success {
     color: #fff;
     background-color: #1DC9B7;
     border-color: #1DC9B7;
@@ -294,5 +294,7 @@ div#UrgentWorkOrdersList .btn-success {
 #profileArea table {
     color: black;
 }
-
+button#draft,button#submit {
+    width: 200px;
+}
     
