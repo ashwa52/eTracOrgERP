@@ -31,6 +31,17 @@
 		margin-left: auto;
 		margin-right: auto;
 	}
+	input[type="checkbox"]:after {
+		line-height: 1.5em !important;
+		content: '' !important;
+		display: block !important;
+		margin-top: -3px !important;
+		margin-left: -3px !important;
+		border: 1px solid transparent !important;
+		border-radius: 0px !important;
+		line-height: 1.3 !important;
+		background: none !important;
+	}
 </style>
 <div class="p1">
 	<div class="row">
@@ -52,8 +63,13 @@
 		to ask questions about the policies in this handbook, and I understand that any future questions I may have about this Employee Handbook or its contents will be answered by the Manager or
 		their designated representative. Upon separation of employment, I will return this employee handbook to my direct manager as I recognize it is Company property.
 	</p>
-	<p> @Html.TextBoxFor(x => x.Signature, new { @style = "width:290px;", @class = "text-line" })<br />Employee's Signature</p>
-	<p>@Html.TextBoxFor(x => x.EmployeeName, new { @style = "width:290px;", @class = "text-line" })<br />Employee's Name (Print)</p>
-	<p>@Html.TextBoxFor(x => x.Date, new { @style = "width:290px;", @class = "text-line" })<br />Date</p>
+	@using (Html.BeginForm("_EmployeeHandbook", "Guest", FormMethod.Post, new { id = "employeeHandbook" }))
+	{
+		<p> @Html.TextBoxFor(x => x.Signature, new { @style = "width:290px;", @class = "text-line" })<br />Employee's Signature</p>
+		<p>@Html.TextBoxFor(x => x.EmployeeName, new { @style = "width:290px;", @class = "text-line" })<br />Employee's Name (Print)</p>
+		<p>@Html.TextBoxFor(x => x.Date, new { @style = "width:290px;", @class = "text-line" })<br />Date</p>
+		<p> @Html.CheckBoxFor(x => x.IsSave, new { @style = "height: 18px;width: 31px;", onchange = "SubmitForm(this,employeeHandbook)" })    i hereby declare that the above information is true to the best of my knowledge </p>
+
+	}
 
 </div>

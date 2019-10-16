@@ -321,7 +321,7 @@ namespace WorkOrderEMS.Controllers.Login
 							case ((Int64)(UserType.GuestUser)):
 								//Session["eTrac_UserLocations"] = _ILogin.GetEmployeeAssignedLocation(result.UserId);
 								//QuickBookIndex();
-								return RedirectToAction("Index", "Guest");
+								return RedirectToAction("LandingPage", "Guest");
 								break;
 						}
 

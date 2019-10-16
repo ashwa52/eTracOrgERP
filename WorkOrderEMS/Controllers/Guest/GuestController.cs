@@ -81,7 +81,6 @@ namespace WorkOrderEMS.Controllers.Guest
 			{
 				var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
 				_IGuestUserRepository.SetDirectDepositeFormData(model, ObjLoginModel.UserId);
-				Session["etrac_isDirectDepositeSaved"] = false;
 				return Json(true,JsonRequestBehavior.AllowGet);
 			}
 			ViewBag.NotSaved = true;
@@ -94,6 +93,18 @@ namespace WorkOrderEMS.Controllers.Guest
 			EmployeeHandbookModel model = new EmployeeHandbookModel();
 			var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
 			model = _IGuestUserRepository.GetEmployeeHandBookByUserId(ObjLoginModel.UserId);
+			return PartialView("_employeeHandbook", model);
+		}
+		[HttpPost]
+		public ActionResult _EmployeeHandbook(EmployeeHandbookModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+				_IGuestUserRepository.SetEmployeeHandbookData(model, ObjLoginModel.UserId);
+				return Json(true, JsonRequestBehavior.AllowGet);
+			}
+			ViewBag.NotSaved = true;
 			return PartialView("_employeeHandbook", model);
 		}
 	}

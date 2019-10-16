@@ -79,7 +79,7 @@
 			<p>@Html.TextBoxFor(x => x.Date, new { @style = "width:290px;", @class = "text-line" })<br />Date</p>
 			<p style="font-weight:bold;">Important: Attach Voided Check (Not Deposit Slip) Below <U>Or Acquire An Official Direct Deposit Form From You Financial Institution.</U></p>
 			<img class="center" src="~/Images/DIRECT-DEPOSIT.jpg" alt="background image" />
-			<p> @Html.CheckBoxFor(x => x.IsSave, new { @style = "height: 18px;width: 31px;", onchange = "SubmitForm()" })    i hereby declare that the above information is true to the best of my knowledge </p>
+			<p> @Html.CheckBoxFor(x => x.IsSave, new { @style = "height: 18px;width: 31px;", onchange = "SubmitForm(this,depositeForm)" })    i hereby declare that the above information is true to the best of my knowledge </p>
 		}
 	</div>
 </div>

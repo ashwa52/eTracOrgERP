@@ -161,24 +161,27 @@
 					<label>Emergency Contact Form</label>
 
 				</div>
-				<div class="inline" onclick="OpenForm('employeehandbook')">
+				<div class="inline" onclick="OpenForm('employeehandbook')" id="employeeHandbookicn">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
 								<i class="fa fa-book fa-lg" aria-hidden="true"></i>
 							</div>
+							<div class="lock">
+								<i class="fa fa-unlock" style="color:#FFDFB0" aria-hidden="true"></i>
+							</div>
 						</div>
 					</div>
 					<label>Employee Handbook</label>
 				</div>
-				<div class="inline" onclick="OpenForm('directdeposite')">
+				<div class="inline" onclick="OpenForm('directdeposite')" id="directdepositeicn">
 
 					<div class="bluesky">
 						<div class="int">
 							<i class="fa fa-th fa-lg" aria-hidden="true"></i>
 						</div>
-						<div class="lock">
-							<i class="@(Session["etrac_isDirectDepositeSaved"]!=null && (bool)Session["etrac_isDirectDepositeSaved"]==false?"fa fa-lock":"fa fa-unlock")" style="color:#FFDFB0" aria-hidden="true"></i>
+						<div class="lock" >
+							<i class="fa fa-unlock" style="color:#FFDFB0" aria-hidden="true"></i>
 						</div>
 					</div>
 
