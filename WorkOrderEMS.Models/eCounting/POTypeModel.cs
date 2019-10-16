@@ -22,6 +22,7 @@ namespace WorkOrderEMS.Models
 
         [Required(ErrorMessage = "Vendor is required")]
         public long? Vendor { get; set; }
+        public long? SelectedVendor { get; set; }
         public long PointOfContactId { get; set; }
         public string PointOfContactName { get; set; }
         public string PointOfContactNameHidden { get; set; }

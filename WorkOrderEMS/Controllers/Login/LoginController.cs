@@ -212,6 +212,8 @@ namespace WorkOrderEMS.Controllers.Login
                 string loginMessage = "";
                 if (ModelState.IsValid)
                 {
+                     
+
                     eTracLoginModel result = _ILogin.AuthenticateUser(eTracLogin);
                     //result.RememberMe = eTracLogin.RememberMe;
                     if (result.UserId > 0)

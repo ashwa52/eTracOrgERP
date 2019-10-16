@@ -1,8 +1,20 @@
 ﻿
 var clients;
 var $_LocationId = $("#drp_MasterLocation1 option:selected").val();
-var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_RequestedBy=0;//= $("#drp_MasterLocation option:selected").val();
+var $_OperationName = "",$_filterwrtype ="",$_filter = "",  $_filterqrc = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_RequestedBy=0;//= $("#drp_MasterLocation option:selected").val();
+$("#QRCTypeList").change(function () {  
+    $_filterqrc = $("#QRCTypeList option:selected").val();
+    $("#ListWorkOrderAsssignment").jsGrid("loadData");
 
+});
+$("#SelectWOType").change(function () {
+    $_filterwrtype = $("#SelectWOType option:selected").val();
+    $("#ListWorkOrderAsssignment").jsGrid("loadData");
+});
+$("#SelectStatusOfWO").change(function () {
+    $_filter = $("#SelectStatusOfWO option:selected").text();
+    $("#ListWorkOrderAsssignment").jsGrid("loadData");
+});
 (function ($) {
     'use strict'
     var data;
@@ -22,7 +34,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
             loadData: function (filter) {
                 return $.ajax({
                     type: "GET",
-                    url: '../NewAdmin/GetWorkOrderList?LocationId=' + $("#drp_MasterLocation1 option:selected").val() + '&workRequestProjectId=' + $_workRequestAssignmentId,
+                    url: '../NewAdmin/GetWorkOrderList?LocationId=' + $("#drp_MasterLocation1 option:selected").val() + '&workRequestProjectId=' + $_workRequestAssignmentId + '&filterwrtype=' + $_filterwrtype + '&filterqrc=' + $_filterqrc + '&filter=' + $_filter,
                     datatype: 'json',
                     contentType: "application/json",
                 });

@@ -2571,13 +2571,11 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             WorkRequestAssignmentRepository _WorkRequestAssignmentRepository = new WorkRequestAssignmentRepository();
             try
             {
-
                 return _WorkRequestAssignmentRepository.GetAllWorkRequestAssignmentList(workRequestAssignmentId, requestedBy, operationName, pageIndex, numberOfRows, sortColumnName, sortOrderBy, textSearch, LocationID, UserID, StartDate, EndDate, filter, filterqrc, filterwrtype, totalRecords);
             }
             catch (Exception ex)
             {
                 Exception_B.Exception_B.exceptionHandel_Runtime(ex, "List<WorkRequestAssignmentModelList> GetAllWorkRequestAssignment(long? workRequestAssignmentId, long? requestedBy, string operationName, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string textSearch, long LocationID, long UserID, DateTime StartDate, DateTime EndDate, string filter, ObjectParameter totalRecords)", "fromC#", operationName);
-
                 throw;
             }
         }

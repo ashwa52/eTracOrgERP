@@ -1541,6 +1541,12 @@
     <Content Include="Content\KendoTreeView\kendo.material.min.css" />
     <Content Include="Content\KendoTreeView\kendo.material.mobile.min.css" />
     <Content Include="Content\nanoscroller.css" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\CSS\custom.css" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\CSS\JqueryScripttop.css" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\CSS\micro-clearfix.css" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\CSS\reset-html5.css" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\CSS\stiff-chart.css" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\JS\stiffChart.js" />
     <Content Include="Content\NewAdminContent\CSS\clockPicker.css" />
     <Content Include="Content\NewAdminContent\CSS\Common.css" />
     <Content Include="Content\NewAdminContent\CSS\MultstepWizardNew.css" />
@@ -5129,7 +5135,6 @@
     <Content Include="GridListing\JqGridScript\WorkRequestAssignment.js" />
     <Content Include="GridListing\JqGridScript\WorkRequestList.js" />
     <Content Include="GridListing\JsGridScript\ListDAR.js" />
-    <Content Include="GridListing\JsGridScript\ListDebitMemo.js" />
     <Content Include="GridListing\JsGridScript\ListEmployeeManagement.js" />
     <Content Include="GridListing\JsGridScript\ListMyOpening.js" />
     <Content Include="GridListing\JsGridScript\ListOnBoarding.js" />
@@ -5874,6 +5879,16 @@
     <Content Include="Areas\AdminSection\Views\AdminDashboard\_AddChart.cshtml" />
     <Content Include="Areas\AdminSection\Views\Department\Index.cshtml" />
     <Content Include="Areas\AdminSection\Views\OrgChart\_ViewChart.cshtml" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\CSS\maps\custom.css.map" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\CSS\maps\micro-clearfix.css.map" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\CSS\maps\reset-html5.css.map" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\CSS\maps\stiff-chart.css.map" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\SCSS\custom.scss" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\SCSS\micro-clearfix.scss" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\SCSS\reset-html5.scss" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\SCSS\stiff-chart.scss" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\SCSS\_horizontal.scss" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\SCSS\_vertical.scss" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\eTrac - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\eTrac - Web Deploy.pubxml" />
@@ -6393,7 +6408,11 @@
     <Content Include="Views\NewAdmin\DAR\_DARDashboard.cshtml" />
     <Content Include="Views\NewAdmin\_Reports.cshtml" />
     <Content Include="Views\VendorManagement\VenderDocument.cshtml" />
-    <Content Include="Views\DebitMemo\Index.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_EmployeeManagement.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_TreeUserViewEMP.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_ListUserEMP.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_VSCPointingChart.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_StatusChangeEMP.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6437,6 +6456,7 @@
     <Folder Include="Content\ProjectDocs\VendorW9Form\" />
     <Folder Include="obj\" />
     <Folder Include="ReportPDF\FullPageReport\eFleet\" />
+    <Folder Include="Views\DebitMemo\" />
     <Folder Include="Views\NewClient\" />
   </ItemGroup>
   <ItemGroup>

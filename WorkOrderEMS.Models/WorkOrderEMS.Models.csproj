@@ -236,6 +236,7 @@
     <Compile Include="ManagerModels\WorkOrderModel.cs" />
     <Compile Include="ManagerModels\WorkRequestModel.cs" />
     <Compile Include="NewAdminLayoutModel\LocationDetailsModel.cs" />
+    <Compile Include="NewAdminLayoutModel\UserListViewEmployeeManagementModel.cs" />
     <Compile Include="NewAdminModel\AccessPermisionTreeViewModel.cs" />
     <Compile Include="NewAdminModel\AccessPermissionModel.cs" />
     <Compile Include="NewAdminModel\AdminChartModel.cs" />
