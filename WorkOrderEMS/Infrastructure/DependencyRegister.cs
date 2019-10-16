@@ -95,6 +95,7 @@ namespace WorkOrderEMS.Infrastructure
                 For<IDepartment>().Use<DepartmentManager>();
                 For<IAdminDashboard>().Use<VehicleSeatingChartManager>();
                 For<IePeopleManager>().Use<ePeopleManager>();
+                For<IDebitMemo>().Use<DebitMemoManager>();
             }
         }
     }

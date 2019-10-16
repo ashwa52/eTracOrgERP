@@ -11,9 +11,11 @@ namespace WorkOrderEMS.Data.EntityModel
 {
     using System;
     
-    public partial class sp_GetCompany_ContractDocument_Result
+    public partial class sp_GetIdleDetailsOfEmployeeForIdleReport_Result
     {
-        public string CNT_ContractDocument { get; set; }
-        public string CMP_CompanyDocument { get; set; }
+        public Nullable<int> Response { get; set; }
+        public string ResponseMessage { get; set; }
+        public Nullable<int> ResponseLocation { get; set; }
+        public Nullable<System.DateTime> ResponseTimeForNextIdleCall { get; set; }
     }
 }

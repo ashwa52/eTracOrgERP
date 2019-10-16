@@ -11,19 +11,19 @@ namespace WorkOrderEMS.Data.EntityModel
 {
     using System;
     
-    public partial class spGetMiscellaneousDetail_Result4
+    public partial class spGetDebitMemoList_Result
     {
-        public long LMIS_Id { get; set; }
-        public long LMIS_MIS_Id { get; set; }
+        public long DBM_Id { get; set; }
+        public long DBM_LocationId { get; set; }
         public string LocationName { get; set; }
+        public Nullable<long> LCM_CMP_Id { get; set; }
+        public Nullable<long> CMP_Id { get; set; }
         public string CMP_NameLegal { get; set; }
-        public string Employee_Name { get; set; }
-        public Nullable<decimal> MISAmount { get; set; }
-        public string MISDate { get; set; }
-        public string LMIS_InvoiceDocument { get; set; }
-        public string LMIS_Comment { get; set; }
-        public string Status { get; set; }
-        public long LMIS_LocationId { get; set; }
-        public long LMIS_ModifiedBy { get; set; }
+        public Nullable<long> DBM_PurchaseOrder { get; set; }
+        public long DBM_DebitAmount { get; set; }
+        public string DBM_Note { get; set; }
+        public Nullable<int> DBM_Status { get; set; }
+        public string DBM_DocumentName { get; set; }
+        public Nullable<System.DateTime> DBM_CreatedDate { get; set; }
     }
 }

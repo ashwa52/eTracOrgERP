@@ -88,7 +88,7 @@ function doSearch() {
 
     var act;
     var _searchresult = $("#searchPreBilltext").val();
-    debugger;
+    
     $("#tbl_PreBillList").jsGrid({
         height: "170%",
         width: "100%",

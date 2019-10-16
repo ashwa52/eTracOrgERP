@@ -132,6 +132,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<QRCMaster1> QRCMaster1 { get; set; }
         public virtual DbSet<CompanyAccountDetail> CompanyAccountDetails { get; set; }
         public virtual DbSet<LogCompanyAccountDetail> LogCompanyAccountDetails { get; set; }
+        public virtual DbSet<DebitMemo> DebitMemoes { get; set; }
     
         public virtual ObjectResult<CommonQeriesByVijay_Result> CommonQeriesByVijay()
         {
@@ -4691,6 +4692,12180 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("CMP_Id", typeof(long));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVendorAllDetailForEditApproval_Result>("spGetVendorAllDetailForEditApproval", cMP_IdParameter);
+        }
+    
+        public virtual int ExcuteAutoBill(string invoicingFrequency, Nullable<System.DateTime> billDueDate, Nullable<decimal> minimumBillAmount, Nullable<long> vendorId)
+        {
+            var invoicingFrequencyParameter = invoicingFrequency != null ?
+                new ObjectParameter("invoicingFrequency", invoicingFrequency) :
+                new ObjectParameter("invoicingFrequency", typeof(string));
+    
+            var billDueDateParameter = billDueDate.HasValue ?
+                new ObjectParameter("BillDueDate", billDueDate) :
+                new ObjectParameter("BillDueDate", typeof(System.DateTime));
+    
+            var minimumBillAmountParameter = minimumBillAmount.HasValue ?
+                new ObjectParameter("MinimumBillAmount", minimumBillAmount) :
+                new ObjectParameter("MinimumBillAmount", typeof(decimal));
+    
+            var vendorIdParameter = vendorId.HasValue ?
+                new ObjectParameter("VendorId", vendorId) :
+                new ObjectParameter("VendorId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ExcuteAutoBill", invoicingFrequencyParameter, billDueDateParameter, minimumBillAmountParameter, vendorIdParameter);
+        }
+    
+        [DbFunction("workorderEMSEntities", "fnGetManager")]
+        public virtual IQueryable<fnGetManager_Result> fnGetManager(Nullable<long> userId)
+        {
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<fnGetManager_Result>("[workorderEMSEntities].[fnGetManager](@UserId)", userIdParameter);
+        }
+    
+        [DbFunction("workorderEMSEntities", "fun_GetClientDateTime_O")]
+        public virtual IQueryable<Nullable<System.DateTime>> fun_GetClientDateTime_O(Nullable<System.DateTime> tOCONVERTDATE, Nullable<int> oFFSET)
+        {
+            var tOCONVERTDATEParameter = tOCONVERTDATE.HasValue ?
+                new ObjectParameter("TOCONVERTDATE", tOCONVERTDATE) :
+                new ObjectParameter("TOCONVERTDATE", typeof(System.DateTime));
+    
+            var oFFSETParameter = oFFSET.HasValue ?
+                new ObjectParameter("OFFSET", oFFSET) :
+                new ObjectParameter("OFFSET", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<Nullable<System.DateTime>>("[workorderEMSEntities].[fun_GetClientDateTime_O](@TOCONVERTDATE, @OFFSET)", tOCONVERTDATEParameter, oFFSETParameter);
+        }
+    
+        public virtual int SetAutoBill()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SetAutoBill");
+        }
+    
+        public virtual ObjectResult<signalRPushNotifyForWorkOrder_Result> signalRPushNotifyForWorkOrder(Nullable<System.DateTime> signalRDate)
+        {
+            var signalRDateParameter = signalRDate.HasValue ?
+                new ObjectParameter("SignalRDate", signalRDate) :
+                new ObjectParameter("SignalRDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<signalRPushNotifyForWorkOrder_Result>("signalRPushNotifyForWorkOrder", signalRDateParameter);
+        }
+    
+        public virtual ObjectResult<sp_GetIdleDetailsOfEmployeeForIdleReport_Result> sp_GetIdleDetailsOfEmployeeForIdleReport(Nullable<long> locationId, Nullable<long> userId, Nullable<System.DateTime> idleTime)
+        {
+            var locationIdParameter = locationId.HasValue ?
+                new ObjectParameter("LocationId", locationId) :
+                new ObjectParameter("LocationId", typeof(long));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(long));
+    
+            var idleTimeParameter = idleTime.HasValue ?
+                new ObjectParameter("IdleTime", idleTime) :
+                new ObjectParameter("IdleTime", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<sp_GetIdleDetailsOfEmployeeForIdleReport_Result>("sp_GetIdleDetailsOfEmployeeForIdleReport", locationIdParameter, userIdParameter, idleTimeParameter);
+        }
+    
+        public virtual ObjectResult<spGetCompanyLocationCostCodeMapping_Result> spGetCompanyLocationCostCodeMapping(Nullable<long> cLC_LocationId)
+        {
+            var cLC_LocationIdParameter = cLC_LocationId.HasValue ?
+                new ObjectParameter("CLC_LocationId", cLC_LocationId) :
+                new ObjectParameter("CLC_LocationId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCompanyLocationCostCodeMapping_Result>("spGetCompanyLocationCostCodeMapping", cLC_LocationIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetCompanyType_Result> spGetCompanyType()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCompanyType_Result>("spGetCompanyType");
+        }
+    
+        public virtual ObjectResult<spGetContract_Result> spGetContract()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetContract_Result>("spGetContract");
+        }
+    
+        public virtual ObjectResult<spGetContractLocationAllocation_Result> spGetContractLocationAllocation()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetContractLocationAllocation_Result>("spGetContractLocationAllocation");
+        }
+    
+        public virtual ObjectResult<spGetLocationCompanyMapping_Result> spGetLocationCompanyMapping(Nullable<long> cMP_LocationId)
+        {
+            var cMP_LocationIdParameter = cMP_LocationId.HasValue ?
+                new ObjectParameter("CMP_LocationId", cMP_LocationId) :
+                new ObjectParameter("CMP_LocationId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetLocationCompanyMapping_Result>("spGetLocationCompanyMapping", cMP_LocationIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetPreBillDetail_Result> spGetPreBillDetail(Nullable<long> pBL_Id)
+        {
+            var pBL_IdParameter = pBL_Id.HasValue ?
+                new ObjectParameter("PBL_Id", pBL_Id) :
+                new ObjectParameter("PBL_Id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPreBillDetail_Result>("spGetPreBillDetail", pBL_IdParameter);
+        }
+    
+        public virtual int spSetApprovalForCompany(Nullable<long> lCMP_Id, string lCMP_Comment, string lCMP_IsApprove)
+        {
+            var lCMP_IdParameter = lCMP_Id.HasValue ?
+                new ObjectParameter("LCMP_Id", lCMP_Id) :
+                new ObjectParameter("LCMP_Id", typeof(long));
+    
+            var lCMP_CommentParameter = lCMP_Comment != null ?
+                new ObjectParameter("LCMP_Comment", lCMP_Comment) :
+                new ObjectParameter("LCMP_Comment", typeof(string));
+    
+            var lCMP_IsApproveParameter = lCMP_IsApprove != null ?
+                new ObjectParameter("LCMP_IsApprove", lCMP_IsApprove) :
+                new ObjectParameter("LCMP_IsApprove", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApprovalForCompany", lCMP_IdParameter, lCMP_CommentParameter, lCMP_IsApproveParameter);
+        }
+    
+        public virtual int spSetApprovalForCompanyDetail(Nullable<long> lCOD_Id, string lCOD_Comment, string lCOD_IsApprove)
+        {
+            var lCOD_IdParameter = lCOD_Id.HasValue ?
+                new ObjectParameter("LCOD_Id", lCOD_Id) :
+                new ObjectParameter("LCOD_Id", typeof(long));
+    
+            var lCOD_CommentParameter = lCOD_Comment != null ?
+                new ObjectParameter("LCOD_Comment", lCOD_Comment) :
+                new ObjectParameter("LCOD_Comment", typeof(string));
+    
+            var lCOD_IsApproveParameter = lCOD_IsApprove != null ?
+                new ObjectParameter("LCOD_IsApprove", lCOD_IsApprove) :
+                new ObjectParameter("LCOD_IsApprove", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApprovalForCompanyDetail", lCOD_IdParameter, lCOD_CommentParameter, lCOD_IsApproveParameter);
+        }
+    
+        public virtual int spSetApprovalForCompanyLocationCostCodeMapping(Nullable<long> lCLC_Id, string lCLC_Comment, string lCLC_IsApprove)
+        {
+            var lCLC_IdParameter = lCLC_Id.HasValue ?
+                new ObjectParameter("LCLC_Id", lCLC_Id) :
+                new ObjectParameter("LCLC_Id", typeof(long));
+    
+            var lCLC_CommentParameter = lCLC_Comment != null ?
+                new ObjectParameter("LCLC_Comment", lCLC_Comment) :
+                new ObjectParameter("LCLC_Comment", typeof(string));
+    
+            var lCLC_IsApproveParameter = lCLC_IsApprove != null ?
+                new ObjectParameter("LCLC_IsApprove", lCLC_IsApprove) :
+                new ObjectParameter("LCLC_IsApprove", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApprovalForCompanyLocationCostCodeMapping", lCLC_IdParameter, lCLC_CommentParameter, lCLC_IsApproveParameter);
+        }
+    
+        public virtual int spSetApprovalForContract(Nullable<long> lCNT_Id, string lCNT_Comment, string lCNT_IsApprove)
+        {
+            var lCNT_IdParameter = lCNT_Id.HasValue ?
+                new ObjectParameter("LCNT_Id", lCNT_Id) :
+                new ObjectParameter("LCNT_Id", typeof(long));
+    
+            var lCNT_CommentParameter = lCNT_Comment != null ?
+                new ObjectParameter("LCNT_Comment", lCNT_Comment) :
+                new ObjectParameter("LCNT_Comment", typeof(string));
+    
+            var lCNT_IsApproveParameter = lCNT_IsApprove != null ?
+                new ObjectParameter("LCNT_IsApprove", lCNT_IsApprove) :
+                new ObjectParameter("LCNT_IsApprove", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApprovalForContract", lCNT_IdParameter, lCNT_CommentParameter, lCNT_IsApproveParameter);
+        }
+    
+        public virtual int spSetApprovalForInsurance(Nullable<long> lINS_Id, string lINS_Comment, string lINS_IsApprove)
+        {
+            var lINS_IdParameter = lINS_Id.HasValue ?
+                new ObjectParameter("LINS_Id", lINS_Id) :
+                new ObjectParameter("LINS_Id", typeof(long));
+    
+            var lINS_CommentParameter = lINS_Comment != null ?
+                new ObjectParameter("LINS_Comment", lINS_Comment) :
+                new ObjectParameter("LINS_Comment", typeof(string));
+    
+            var lINS_IsApproveParameter = lINS_IsApprove != null ?
+                new ObjectParameter("LINS_IsApprove", lINS_IsApprove) :
+                new ObjectParameter("LINS_IsApprove", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApprovalForInsurance", lINS_IdParameter, lINS_CommentParameter, lINS_IsApproveParameter);
+        }
+    
+        public virtual int spSetApprovalForLicense(Nullable<long> lLNC_Id, string lLNC_Comment, string lLNC_IsApprove)
+        {
+            var lLNC_IdParameter = lLNC_Id.HasValue ?
+                new ObjectParameter("LLNC_Id", lLNC_Id) :
+                new ObjectParameter("LLNC_Id", typeof(long));
+    
+            var lLNC_CommentParameter = lLNC_Comment != null ?
+                new ObjectParameter("LLNC_Comment", lLNC_Comment) :
+                new ObjectParameter("LLNC_Comment", typeof(string));
+    
+            var lLNC_IsApproveParameter = lLNC_IsApprove != null ?
+                new ObjectParameter("LLNC_IsApprove", lLNC_IsApprove) :
+                new ObjectParameter("LLNC_IsApprove", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApprovalForLicense", lLNC_IdParameter, lLNC_CommentParameter, lLNC_IsApproveParameter);
+        }
+    
+        public virtual int spSetApprovalForTaxDetail(Nullable<long> lTXD_Id, string lTXD_Comment, string lTXD_IsApprove)
+        {
+            var lTXD_IdParameter = lTXD_Id.HasValue ?
+                new ObjectParameter("LTXD_Id", lTXD_Id) :
+                new ObjectParameter("LTXD_Id", typeof(long));
+    
+            var lTXD_CommentParameter = lTXD_Comment != null ?
+                new ObjectParameter("LTXD_Comment", lTXD_Comment) :
+                new ObjectParameter("LTXD_Comment", typeof(string));
+    
+            var lTXD_IsApproveParameter = lTXD_IsApprove != null ?
+                new ObjectParameter("LTXD_IsApprove", lTXD_IsApprove) :
+                new ObjectParameter("LTXD_IsApprove", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApprovalForTaxDetail", lTXD_IdParameter, lTXD_CommentParameter, lTXD_IsApproveParameter);
+        }
+    
+        public virtual int spSetVenderLocationAllocation(string cLAAction, Nullable<long> cLA_Id, Nullable<long> cLA_CNT_Id, Nullable<long> cLA_LocationId, Nullable<decimal> cLA_Allocation, string cLA_IsActive)
+        {
+            var cLAActionParameter = cLAAction != null ?
+                new ObjectParameter("CLAAction", cLAAction) :
+                new ObjectParameter("CLAAction", typeof(string));
+    
+            var cLA_IdParameter = cLA_Id.HasValue ?
+                new ObjectParameter("CLA_Id", cLA_Id) :
+                new ObjectParameter("CLA_Id", typeof(long));
+    
+            var cLA_CNT_IdParameter = cLA_CNT_Id.HasValue ?
+                new ObjectParameter("CLA_CNT_Id", cLA_CNT_Id) :
+                new ObjectParameter("CLA_CNT_Id", typeof(long));
+    
+            var cLA_LocationIdParameter = cLA_LocationId.HasValue ?
+                new ObjectParameter("CLA_LocationId", cLA_LocationId) :
+                new ObjectParameter("CLA_LocationId", typeof(long));
+    
+            var cLA_AllocationParameter = cLA_Allocation.HasValue ?
+                new ObjectParameter("CLA_Allocation", cLA_Allocation) :
+                new ObjectParameter("CLA_Allocation", typeof(decimal));
+    
+            var cLA_IsActiveParameter = cLA_IsActive != null ?
+                new ObjectParameter("CLA_IsActive", cLA_IsActive) :
+                new ObjectParameter("CLA_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetVenderLocationAllocation", cLAActionParameter, cLA_IdParameter, cLA_CNT_IdParameter, cLA_LocationIdParameter, cLA_AllocationParameter, cLA_IsActiveParameter);
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_00023588_74eb_4dab_a617_3cdd3f98cca6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_00023588_74eb_4dab_a617_3cdd3f98cca6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_000968d0_c237_4d03_8bc2_7e4ad07d3d1c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_000968d0_c237_4d03_8bc2_7e4ad07d3d1c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_000cd34a_c5cf_4444_9b18_b839af6bef49()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_000cd34a_c5cf_4444_9b18_b839af6bef49");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0016bc79_c2d8_4e0a_b2ba_54d319b19184()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0016bc79_c2d8_4e0a_b2ba_54d319b19184");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_001b6e37_de3a_47df_9220_b866ef85de0c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_001b6e37_de3a_47df_9220_b866ef85de0c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_00af5e4e_4125_4096_a421_c3e33d2ce0ec()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_00af5e4e_4125_4096_a421_c3e33d2ce0ec");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_00b725b8_c646_4096_adea_02691d9e561a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_00b725b8_c646_4096_adea_02691d9e561a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_00c44cbf_1c80_4253_9672_2d7319881666()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_00c44cbf_1c80_4253_9672_2d7319881666");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_00f3b088_8bed_460e_8633_fe0e8e40a7a5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_00f3b088_8bed_460e_8633_fe0e8e40a7a5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_01177efc_2fa9_44b9_961e_cbbf7bb3e945()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_01177efc_2fa9_44b9_961e_cbbf7bb3e945");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_013e55ff_f58d_4b53_a644_e28ee91d06a5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_013e55ff_f58d_4b53_a644_e28ee91d06a5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_013e8e69_6658_4e1d_a0c3_438d494f889b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_013e8e69_6658_4e1d_a0c3_438d494f889b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_013ea4b5_fadf_4fb6_a7ef_b9b4f6d42a09()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_013ea4b5_fadf_4fb6_a7ef_b9b4f6d42a09");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_015fe807_31b9_434b_a65f_a6468fb411d7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_015fe807_31b9_434b_a65f_a6468fb411d7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_018ad543_2ec5_4ee3_9221_254a8f933660()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_018ad543_2ec5_4ee3_9221_254a8f933660");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_01b182d9_ea2a_4855_a279_0c8c266a0776()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_01b182d9_ea2a_4855_a279_0c8c266a0776");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_01b5109b_cfa8_46e3_8e7f_1a8c3294a353()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_01b5109b_cfa8_46e3_8e7f_1a8c3294a353");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_01bd2d16_1b43_423e_ac37_2ebdd0bdee73()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_01bd2d16_1b43_423e_ac37_2ebdd0bdee73");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_01d7d0d9_842c_4a51_8cb7_9944a4c52bfe()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_01d7d0d9_842c_4a51_8cb7_9944a4c52bfe");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_020283a7_fef6_4c8d_ab17_eee8801a8fad()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_020283a7_fef6_4c8d_ab17_eee8801a8fad");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_020f0c89_ec1b_4a90_ae52_449d9d3a54d4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_020f0c89_ec1b_4a90_ae52_449d9d3a54d4");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_021bc58c_2a1d_446a_91ea_783a0af9b9c2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_021bc58c_2a1d_446a_91ea_783a0af9b9c2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_022c7bab_ea91_4f6d_a1c2_c5d5b8d5254c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_022c7bab_ea91_4f6d_a1c2_c5d5b8d5254c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0282ce49_fe5a_49b2_8061_e6ab417d2cb5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0282ce49_fe5a_49b2_8061_e6ab417d2cb5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_028daf63_0bb5_4f3a_9099_fc8fbb25d90d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_028daf63_0bb5_4f3a_9099_fc8fbb25d90d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_02a544e5_1258_413f_b48f_221be449fbba()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_02a544e5_1258_413f_b48f_221be449fbba");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_02a76e35_d62e_4b85_a4b8_82100febe841()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_02a76e35_d62e_4b85_a4b8_82100febe841");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_02bac4d0_d810_4fc2_813e_da198da79c06()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_02bac4d0_d810_4fc2_813e_da198da79c06");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_02c07201_128d_4123_be49_8b2fa8538cc3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_02c07201_128d_4123_be49_8b2fa8538cc3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_02d1b918_4f7b_489f_91c4_5cb0bc44fc3a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_02d1b918_4f7b_489f_91c4_5cb0bc44fc3a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_02d5675f_71c7_4b9c_8b7f_ae585ea1d640()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_02d5675f_71c7_4b9c_8b7f_ae585ea1d640");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0303ffe0_531a_46c9_949c_12f008d1fa8e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0303ffe0_531a_46c9_949c_12f008d1fa8e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_03109e64_f4bc_4012_9b37_f71de7a50b3b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_03109e64_f4bc_4012_9b37_f71de7a50b3b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_034366c4_1469_4498_9cb0_4eeba405075f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_034366c4_1469_4498_9cb0_4eeba405075f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0349ae8a_2b12_4aac_b36f_9a92fd76eb0f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0349ae8a_2b12_4aac_b36f_9a92fd76eb0f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_036869e6_8ee7_4c90_9859_c62f8afe0466()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_036869e6_8ee7_4c90_9859_c62f8afe0466");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0374a850_4d8c_42a1_8be5_6502121e42f4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0374a850_4d8c_42a1_8be5_6502121e42f4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0377f4fe_f51e_4e6d_88da_782588d8fe70()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0377f4fe_f51e_4e6d_88da_782588d8fe70");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_03c4d039_9d7e_49f3_bd84_1049469580ad()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_03c4d039_9d7e_49f3_bd84_1049469580ad");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_03c81cd8_af94_446d_90b4_12b84e6d8f2c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_03c81cd8_af94_446d_90b4_12b84e6d8f2c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_03dff45c_cb29_4e7f_aede_2da59acef7f1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_03dff45c_cb29_4e7f_aede_2da59acef7f1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0417f3b3_30d4_4060_b8d3_7f165befceb9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0417f3b3_30d4_4060_b8d3_7f165befceb9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0429d0b4_012e_4010_acc8_d4afe4c56559()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0429d0b4_012e_4010_acc8_d4afe4c56559");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0445892c_6f85_4822_b7f3_d3928967177f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0445892c_6f85_4822_b7f3_d3928967177f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_045f1018_e4e6_4e26_9e25_51e0bd13c6d5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_045f1018_e4e6_4e26_9e25_51e0bd13c6d5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_04746050_de65_4859_85c1_4eaec3f62b19()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_04746050_de65_4859_85c1_4eaec3f62b19");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_04975a94_1ca7_427b_97a9_1df4f629dbd3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_04975a94_1ca7_427b_97a9_1df4f629dbd3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_04c15a7e_d1e1_44e0_9a39_c0af77f437e5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_04c15a7e_d1e1_44e0_9a39_c0af77f437e5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_04fd4236_7791_4b5f_aea9_13bae4c18e26()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_04fd4236_7791_4b5f_aea9_13bae4c18e26");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_04fe2f13_1bf7_4124_82c9_0cf5d1353e64()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_04fe2f13_1bf7_4124_82c9_0cf5d1353e64");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_05030705_4fea_426d_8fd4_efd98d061dc6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_05030705_4fea_426d_8fd4_efd98d061dc6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0595e442_334c_48c6_8bd1_2611ae75ab68()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0595e442_334c_48c6_8bd1_2611ae75ab68");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_05dc8897_c163_47da_abb5_968ae7cb388f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_05dc8897_c163_47da_abb5_968ae7cb388f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_05eb072d_c36f_45ae_8be3_4b1d1250f963()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_05eb072d_c36f_45ae_8be3_4b1d1250f963");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_05ff410e_3016_4a01_9ff4_dc970e9c82ee()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_05ff410e_3016_4a01_9ff4_dc970e9c82ee");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_060cf0eb_ed77_48c0_b5cb_bb9da123406f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_060cf0eb_ed77_48c0_b5cb_bb9da123406f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_061011e7_d723_43d8_9c83_d6dbc82c8dd0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_061011e7_d723_43d8_9c83_d6dbc82c8dd0");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_0610dbf3_5d0e_4418_8fdb_7474c54d3530()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_0610dbf3_5d0e_4418_8fdb_7474c54d3530");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_06479a74_6ad4_48b2_ba33_e6bbe4fad303()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_06479a74_6ad4_48b2_ba33_e6bbe4fad303");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_06525d98_51bd_4230_a4d5_934113907a3b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_06525d98_51bd_4230_a4d5_934113907a3b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_06668603_bd22_44c4_8fe7_a1ff4139ab3f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_06668603_bd22_44c4_8fe7_a1ff4139ab3f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_066aca23_e48a_47fb_ad96_15c280bbc9b1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_066aca23_e48a_47fb_ad96_15c280bbc9b1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_068a7666_9613_4344_8541_55924e41d3cb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_068a7666_9613_4344_8541_55924e41d3cb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_06a594c3_de4e_4ad6_9103_5b6394d641f1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_06a594c3_de4e_4ad6_9103_5b6394d641f1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_06be645d_0ce6_4814_a19c_1b47490ec5b5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_06be645d_0ce6_4814_a19c_1b47490ec5b5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_06c555e9_6e83_40dc_90fd_23a989a48761()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_06c555e9_6e83_40dc_90fd_23a989a48761");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_070835bc_101b_41e1_b8ad_d53f0688628a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_070835bc_101b_41e1_b8ad_d53f0688628a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_071b175d_8a9a_4f31_bb81_204ce07d1d4e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_071b175d_8a9a_4f31_bb81_204ce07d1d4e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_07223008_b41b_4cae_8072_5f45cdf6c954()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_07223008_b41b_4cae_8072_5f45cdf6c954");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_0731914f_d09f_4671_941c_ed1a3da95184()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_0731914f_d09f_4671_941c_ed1a3da95184");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0733fc1e_4ae4_4b74_b61b_1e2031085cbb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0733fc1e_4ae4_4b74_b61b_1e2031085cbb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0760ff83_d1dc_4d09_bea1_adb1050104da()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0760ff83_d1dc_4d09_bea1_adb1050104da");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0764667a_eeab_4843_99e7_2bfdb901475e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0764667a_eeab_4843_99e7_2bfdb901475e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0767d848_68bb_4e7a_b51b_664d1c25cbe3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0767d848_68bb_4e7a_b51b_664d1c25cbe3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_076b2d2f_da5e_4e3b_80c4_c3ad9ca3a489()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_076b2d2f_da5e_4e3b_80c4_c3ad9ca3a489");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_076f4159_40f2_4641_b0b0_b1fdb97920e4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_076f4159_40f2_4641_b0b0_b1fdb97920e4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_07948fa8_9e83_4b80_9757_7b2e6bb430c2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_07948fa8_9e83_4b80_9757_7b2e6bb430c2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_07a7b4c4_de2c_4bb5_85d5_e5ed101f69a1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_07a7b4c4_de2c_4bb5_85d5_e5ed101f69a1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_07b07f2e_dfd0_4abe_b6d0_ca3e61b640db()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_07b07f2e_dfd0_4abe_b6d0_ca3e61b640db");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_07c18ce4_a5e0_4bb1_9fc5_5aeeeaab29c7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_07c18ce4_a5e0_4bb1_9fc5_5aeeeaab29c7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_07c3ce76_5334_4307_a7ad_9eef58259392()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_07c3ce76_5334_4307_a7ad_9eef58259392");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_080a7bac_6e6d_4133_9fba_474609b99470()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_080a7bac_6e6d_4133_9fba_474609b99470");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_082a448d_b8e2_44b8_8de3_17b46907c59d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_082a448d_b8e2_44b8_8de3_17b46907c59d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_086b55ea_38b2_44f6_ad97_432fa699ada9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_086b55ea_38b2_44f6_ad97_432fa699ada9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_087cfb5c_7bd7_4c23_8fe9_77e1ce69ca11()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_087cfb5c_7bd7_4c23_8fe9_77e1ce69ca11");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_08e27f8f_1dae_45f6_bf41_8fb883e6094c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_08e27f8f_1dae_45f6_bf41_8fb883e6094c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_08f27e84_de47_431e_bfca_6b4ca0163b9d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_08f27e84_de47_431e_bfca_6b4ca0163b9d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_09078760_dcc9_4a12_9852_568c2b7c432a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_09078760_dcc9_4a12_9852_568c2b7c432a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0932a9e9_aa41_4d1f_a235_4a3909193c81()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0932a9e9_aa41_4d1f_a235_4a3909193c81");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_098b5046_bc7e_412e_873d_b67cc1db435a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_098b5046_bc7e_412e_873d_b67cc1db435a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_09984306_0495_4184_8b3e_ca1c2b981fd9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_09984306_0495_4184_8b3e_ca1c2b981fd9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_09e0213d_45a6_4e2b_a944_4235daf7bc97()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_09e0213d_45a6_4e2b_a944_4235daf7bc97");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0a14cadf_a6d4_489f_bcab_dd903160c291()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0a14cadf_a6d4_489f_bcab_dd903160c291");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0a4ea6cd_b6a5_445a_9a02_0e9fd1ad3b3f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0a4ea6cd_b6a5_445a_9a02_0e9fd1ad3b3f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0a5e8a94_845a_4f61_8c38_75a6e60c5f34()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0a5e8a94_845a_4f61_8c38_75a6e60c5f34");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0a6aa7fd_f21d_486a_b957_866ed3db762d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0a6aa7fd_f21d_486a_b957_866ed3db762d");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_0aaa7b06_50e7_4b3b_b848_7737fa7c112d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_0aaa7b06_50e7_4b3b_b848_7737fa7c112d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0ab48dda_4a8c_48fb_b79d_c66060966d58()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0ab48dda_4a8c_48fb_b79d_c66060966d58");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0acddbdc_ff5b_480b_b56f_2ab70aedcdb1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0acddbdc_ff5b_480b_b56f_2ab70aedcdb1");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_0ad06610_ba69_4bdd_aafd_9612c91ef6b9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_0ad06610_ba69_4bdd_aafd_9612c91ef6b9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0ad92a8a_e7cf_4cae_8339_636ec30be3ce()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0ad92a8a_e7cf_4cae_8339_636ec30be3ce");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0ae211ae_16ad_4b99_9aa7_78aad4bf9525()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0ae211ae_16ad_4b99_9aa7_78aad4bf9525");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0aec8fcb_030d_41ac_ab2b_ab48cb9aff2e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0aec8fcb_030d_41ac_ab2b_ab48cb9aff2e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0b023889_a593_40f8_adf7_3b1a91c718c3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0b023889_a593_40f8_adf7_3b1a91c718c3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0b267cf3_2bdc_4738_874e_fb07a918b986()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0b267cf3_2bdc_4738_874e_fb07a918b986");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0b607632_a998_47c2_87d1_530934883003()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0b607632_a998_47c2_87d1_530934883003");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0b60de0a_35a9_4a00_a848_08c4c18b5b8f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0b60de0a_35a9_4a00_a848_08c4c18b5b8f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0ba1a4f4_141b_4f91_83dd_69db10fb12c2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0ba1a4f4_141b_4f91_83dd_69db10fb12c2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0bc5a2e8_46b7_44c8_b5bc_fdd6bbda24e6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0bc5a2e8_46b7_44c8_b5bc_fdd6bbda24e6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0bcc056c_ae44_4c13_9307_73a89cda2c77()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0bcc056c_ae44_4c13_9307_73a89cda2c77");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0c1ef2eb_b19c_4c72_bb71_911e9157ea93()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0c1ef2eb_b19c_4c72_bb71_911e9157ea93");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0c7b626a_1585_43dc_b263_38e873f6ef9e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0c7b626a_1585_43dc_b263_38e873f6ef9e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0c7bb466_098e_427d_88d2_6cef4ffac57c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0c7bb466_098e_427d_88d2_6cef4ffac57c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0cd6ed55_90a8_49c4_b070_6b2ff1ae19c7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0cd6ed55_90a8_49c4_b070_6b2ff1ae19c7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0cfcc2b5_319d_4831_bea5_dd43418ba457()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0cfcc2b5_319d_4831_bea5_dd43418ba457");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0d0e3bef_613a_4028_a4d5_2bcbd64c2186()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0d0e3bef_613a_4028_a4d5_2bcbd64c2186");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0d43fb9f_7b17_46d4_b443_3d1bda0f9482()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0d43fb9f_7b17_46d4_b443_3d1bda0f9482");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0d48c82f_767a_437b_8702_867ea192facf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0d48c82f_767a_437b_8702_867ea192facf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0d530464_0808_4fbb_b9cb_680f52acd7b4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0d530464_0808_4fbb_b9cb_680f52acd7b4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0d589a1b_f17d_427e_a767_e03ed8b8ee6f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0d589a1b_f17d_427e_a767_e03ed8b8ee6f");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_0d6e09d2_2475_4a86_aa0c_6e6618bf3ca0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_0d6e09d2_2475_4a86_aa0c_6e6618bf3ca0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0d7f4dec_a9d7_4132_a45b_bddb8b6342d5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0d7f4dec_a9d7_4132_a45b_bddb8b6342d5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0d95be7d_d642_49f4_864a_75b234832b54()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0d95be7d_d642_49f4_864a_75b234832b54");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0d9de037_61e2_4601_aef0_b894edbf14f7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0d9de037_61e2_4601_aef0_b894edbf14f7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0db375cf_db70_498c_8943_28e3aa3f9a6f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0db375cf_db70_498c_8943_28e3aa3f9a6f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0dc4aaef_163b_4e8a_83c7_99a1937c1b4a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0dc4aaef_163b_4e8a_83c7_99a1937c1b4a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0dcdda36_f3d9_4724_b770_942345fdf5ce()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0dcdda36_f3d9_4724_b770_942345fdf5ce");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0df3b98d_041d_48a6_8f1c_14f365533e9d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0df3b98d_041d_48a6_8f1c_14f365533e9d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0e268c7b_2033_4703_b1fb_5ca940df9eca()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0e268c7b_2033_4703_b1fb_5ca940df9eca");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0e302d9e_e040_4cc8_b0d6_e35c38fa4e54()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0e302d9e_e040_4cc8_b0d6_e35c38fa4e54");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0e6c6a1e_fa7f_47ed_ae3e_012306acd09f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0e6c6a1e_fa7f_47ed_ae3e_012306acd09f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0e890a5e_1518_4c82_ad56_0d55a03edca0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0e890a5e_1518_4c82_ad56_0d55a03edca0");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_0e9cf67a_2de8_46ec_b53d_e896f4723aa9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_0e9cf67a_2de8_46ec_b53d_e896f4723aa9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0eab8bd9_77a8_4e78_b66a_481a3f81cc9d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0eab8bd9_77a8_4e78_b66a_481a3f81cc9d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0ed540d1_f184_40c4_b598_7f5be6e3be36()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0ed540d1_f184_40c4_b598_7f5be6e3be36");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0edb316e_0606_433f_a659_656e7fe843ac()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0edb316e_0606_433f_a659_656e7fe843ac");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0f0bd37c_297b_4405_baaf_547cb930f905()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0f0bd37c_297b_4405_baaf_547cb930f905");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0f0eb131_114f_4140_9cfb_cf6f9fbfcc8c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0f0eb131_114f_4140_9cfb_cf6f9fbfcc8c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0f60d89a_5bdb_4846_9393_2b85c5c79500()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0f60d89a_5bdb_4846_9393_2b85c5c79500");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_0f84cd0e_ff12_453f_ae8d_6a4bca8d05da()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_0f84cd0e_ff12_453f_ae8d_6a4bca8d05da");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0f8e28f6_a654_4bb2_8955_22eeca0aed0e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0f8e28f6_a654_4bb2_8955_22eeca0aed0e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0f8ee73c_efb4_43d3_9d45_e497adc9e8c4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0f8ee73c_efb4_43d3_9d45_e497adc9e8c4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0f908608_9685_447d_8054_026e0969b367()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0f908608_9685_447d_8054_026e0969b367");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0fbb67a7_9cef_4a15_95ef_8b748e11cc0c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0fbb67a7_9cef_4a15_95ef_8b748e11cc0c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_0fbdc46c_ceec_40c9_84a2_62a958952abf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_0fbdc46c_ceec_40c9_84a2_62a958952abf");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_100051ba_1cff_42d1_9798_ca64869cba7c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_100051ba_1cff_42d1_9798_ca64869cba7c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_100c2fb0_475c_40b1_a551_d007c1d81806()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_100c2fb0_475c_40b1_a551_d007c1d81806");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1025a7d6_e86e_4950_9b59_36541f06d437()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1025a7d6_e86e_4950_9b59_36541f06d437");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_103a36a0_e9fb_4dc5_9012_0b07afce62bf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_103a36a0_e9fb_4dc5_9012_0b07afce62bf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1043befc_3a23_49e3_8dba_96a26d1dc776()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1043befc_3a23_49e3_8dba_96a26d1dc776");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_104e85e6_a567_4ee6_905a_931eded38648()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_104e85e6_a567_4ee6_905a_931eded38648");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_109fd139_46a3_4084_9ca2_115e1c88e2fa()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_109fd139_46a3_4084_9ca2_115e1c88e2fa");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_10a899c1_9fce_4053_95da_f4b1ee532d1e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_10a899c1_9fce_4053_95da_f4b1ee532d1e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_10c1e820_c75c_4e4d_acff_27d486b7a9d2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_10c1e820_c75c_4e4d_acff_27d486b7a9d2");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_10d25d04_7fd5_46eb_a385_69bf68328c6a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_10d25d04_7fd5_46eb_a385_69bf68328c6a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_10d9d894_8951_4755_9833_02c261295027()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_10d9d894_8951_4755_9833_02c261295027");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_10f75ad1_ed36_4c60_9b32_3b0d908de308()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_10f75ad1_ed36_4c60_9b32_3b0d908de308");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1104d7fc_6738_47e0_b971_485fd6c376d6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1104d7fc_6738_47e0_b971_485fd6c376d6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1113d2b0_51ca_4952_841d_8bc650e96379()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1113d2b0_51ca_4952_841d_8bc650e96379");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_112ccf21_b43f_4965_b02f_c4abdee3f9b2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_112ccf21_b43f_4965_b02f_c4abdee3f9b2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1135ac7f_828c_4d43_bc6d_a6de1a3b3a11()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1135ac7f_828c_4d43_bc6d_a6de1a3b3a11");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_116f12aa_33a8_4f6b_af3c_f05c58e6f9bb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_116f12aa_33a8_4f6b_af3c_f05c58e6f9bb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1173860e_3439_4924_b06c_e4edc5b6fa4d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1173860e_3439_4924_b06c_e4edc5b6fa4d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_117744bd_6002_426c_bfcc_bb493fc6328b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_117744bd_6002_426c_bfcc_bb493fc6328b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_118d0cb0_8e76_4dcb_92a9_cc46441071ef()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_118d0cb0_8e76_4dcb_92a9_cc46441071ef");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_119ff091_6ec8_44fa_80f0_60fe2f1cfd21()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_119ff091_6ec8_44fa_80f0_60fe2f1cfd21");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_11b54131_5ffc_441c_b14b_a9e643c4763d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_11b54131_5ffc_441c_b14b_a9e643c4763d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_11e5597e_fb62_43ac_b22a_749176fabc34()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_11e5597e_fb62_43ac_b22a_749176fabc34");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_11e665db_4b08_4b86_9501_1e0f19e902ad()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_11e665db_4b08_4b86_9501_1e0f19e902ad");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_121d35b2_ebd0_46ea_80a1_4df81f909eb6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_121d35b2_ebd0_46ea_80a1_4df81f909eb6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_122b8dfb_3a5b_4fd4_a177_4c1cca34e2c5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_122b8dfb_3a5b_4fd4_a177_4c1cca34e2c5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_12388078_965b_4e97_b1de_321dfcbca1ea()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_12388078_965b_4e97_b1de_321dfcbca1ea");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_125ebe62_207a_46b8_96f2_d0466e9e064b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_125ebe62_207a_46b8_96f2_d0466e9e064b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_12661a4a_e6c4_4d91_90fe_ad9692fcce45()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_12661a4a_e6c4_4d91_90fe_ad9692fcce45");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_128de154_82cb_4337_87b2_d9e10c62310f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_128de154_82cb_4337_87b2_d9e10c62310f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_12a34ecd_e3ba_43c1_81ad_dabc159666f1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_12a34ecd_e3ba_43c1_81ad_dabc159666f1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_12b97821_4331_475b_a17a_93bb613e1efe()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_12b97821_4331_475b_a17a_93bb613e1efe");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_12c3ee5c_fff9_4eca_a94b_a9f73e47b19a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_12c3ee5c_fff9_4eca_a94b_a9f73e47b19a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_12ce86c3_1d75_4042_bb9a_191b2be948d4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_12ce86c3_1d75_4042_bb9a_191b2be948d4");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_12e1a45e_96a7_4010_83e0_05078a56c640()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_12e1a45e_96a7_4010_83e0_05078a56c640");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_12fcf17b_92e6_4770_be60_589de7ac3d62()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_12fcf17b_92e6_4770_be60_589de7ac3d62");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_12feeb43_57b8_4ba4_bb7d_3d8c1eb6d980()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_12feeb43_57b8_4ba4_bb7d_3d8c1eb6d980");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_13102441_3317_4463_8fb9_7138730af065()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_13102441_3317_4463_8fb9_7138730af065");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_13231a8e_65b2_405e_8f4d_42512d366ae8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_13231a8e_65b2_405e_8f4d_42512d366ae8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_132a6b12_6127_4655_ac53_4e52fb449518()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_132a6b12_6127_4655_ac53_4e52fb449518");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_13537a99_7de2_45cc_8823_3b6914da6fca()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_13537a99_7de2_45cc_8823_3b6914da6fca");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_13579249_8b8d_438e_8597_990c412ddf9a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_13579249_8b8d_438e_8597_990c412ddf9a");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_1380415d_e99d_48d1_ae56_99116895af1a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_1380415d_e99d_48d1_ae56_99116895af1a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_139b4f81_b303_409d_a144_aaf252948c2a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_139b4f81_b303_409d_a144_aaf252948c2a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_139e5581_6745_48e0_b12e_a7ed75ba69bb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_139e5581_6745_48e0_b12e_a7ed75ba69bb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_13a14b60_2941_4fd6_8b4b_4d8de44bd2b5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_13a14b60_2941_4fd6_8b4b_4d8de44bd2b5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_13de4a79_15dc_458d_afa3_307105db1778()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_13de4a79_15dc_458d_afa3_307105db1778");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_13e83d90_4098_466c_a00a_018b1d742431()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_13e83d90_4098_466c_a00a_018b1d742431");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_14018f59_a34d_4def_9404_ff052611688e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_14018f59_a34d_4def_9404_ff052611688e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_140a1e7f_0ec7_48ab_8eaa_dfe324bed747()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_140a1e7f_0ec7_48ab_8eaa_dfe324bed747");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_143bf64f_cc37_488f_b0d2_8ffba16797a5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_143bf64f_cc37_488f_b0d2_8ffba16797a5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1447eb0b_801f_4d4b_bd29_e6f13191c217()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1447eb0b_801f_4d4b_bd29_e6f13191c217");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_147de9d3_a85d_4560_9f4d_390e3a5ac077()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_147de9d3_a85d_4560_9f4d_390e3a5ac077");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1491940b_7fd4_4518_b4d6_e7385b508bc4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1491940b_7fd4_4518_b4d6_e7385b508bc4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_149422d9_5744_478c_9fa4_9817ec9991e5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_149422d9_5744_478c_9fa4_9817ec9991e5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_149e6185_b70e_4362_b07e_e269f31488d5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_149e6185_b70e_4362_b07e_e269f31488d5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_14a7d49b_90fc_4414_b367_372e42d7bdd5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_14a7d49b_90fc_4414_b367_372e42d7bdd5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_15071203_cd24_486d_9864_ff3c4e422693()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_15071203_cd24_486d_9864_ff3c4e422693");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_15365eb0_bc43_4908_84f3_53ff74668fbf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_15365eb0_bc43_4908_84f3_53ff74668fbf");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_158abbf2_ac7b_4a76_9904_89b4dddc341d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_158abbf2_ac7b_4a76_9904_89b4dddc341d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_15a228f2_62b0_4ef2_b3a8_99e8a9e5c2ac()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_15a228f2_62b0_4ef2_b3a8_99e8a9e5c2ac");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_15eb7684_72be_44d0_9ed9_01328a171cca()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_15eb7684_72be_44d0_9ed9_01328a171cca");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_161a5d74_2f25_4228_89e2_59f9b6f5c890()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_161a5d74_2f25_4228_89e2_59f9b6f5c890");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_16a275cc_3bb1_41de_a3fd_8b4f1db55548()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_16a275cc_3bb1_41de_a3fd_8b4f1db55548");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_16bb16f8_53af_48ec_8141_9f433b90e651()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_16bb16f8_53af_48ec_8141_9f433b90e651");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_16c4359e_2ef1_4e5a_80c9_084048a636b5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_16c4359e_2ef1_4e5a_80c9_084048a636b5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_16d5a2a4_394f_470c_beec_5bfa4dfeee60()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_16d5a2a4_394f_470c_beec_5bfa4dfeee60");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_16e609da_4a5d_48cd_b7e2_464430d2325e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_16e609da_4a5d_48cd_b7e2_464430d2325e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_17260a42_f0c2_40bd_a90f_9347929b40dc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_17260a42_f0c2_40bd_a90f_9347929b40dc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_17375b06_f4b3_42e1_8ee0_1e9926837bba()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_17375b06_f4b3_42e1_8ee0_1e9926837bba");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1738b3ae_8649_4e80_add4_db852d25a82c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1738b3ae_8649_4e80_add4_db852d25a82c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_179448ec_2950_47ec_ace4_c4e0c0a80133()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_179448ec_2950_47ec_ace4_c4e0c0a80133");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1796b2ed_ea2f_4775_bb27_ab025a301b4d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1796b2ed_ea2f_4775_bb27_ab025a301b4d");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_179f88b1_a97b_4919_ad1d_49b5f15432cb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_179f88b1_a97b_4919_ad1d_49b5f15432cb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_17bc8e52_694d_4b94_ad86_ab1e48b2a9b3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_17bc8e52_694d_4b94_ad86_ab1e48b2a9b3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_17ca4bb8_df31_4595_bad1_9b661fd565b8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_17ca4bb8_df31_4595_bad1_9b661fd565b8");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_17d90700_d76e_4808_adb2_79d11a84fc9b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_17d90700_d76e_4808_adb2_79d11a84fc9b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1812453c_428a_4f29_bf9c_af71767cace1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1812453c_428a_4f29_bf9c_af71767cace1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_18442112_2cb3_4d90_a97e_d8ada348e091()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_18442112_2cb3_4d90_a97e_d8ada348e091");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_184c2bdc_3a28_4c31_985a_d336d3a2a80f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_184c2bdc_3a28_4c31_985a_d336d3a2a80f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_18515c21_f7fa_426d_bfff_39060e659502()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_18515c21_f7fa_426d_bfff_39060e659502");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_186a1cf0_630b_4eec_bdbd_832542e673e8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_186a1cf0_630b_4eec_bdbd_832542e673e8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_189ef764_c6e8_4bb7_85e2_14cabb1b3f3f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_189ef764_c6e8_4bb7_85e2_14cabb1b3f3f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_18ce38dd_cd57_41f9_ac66_ce66115093b8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_18ce38dd_cd57_41f9_ac66_ce66115093b8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_18e8daba_808a_478a_8fb0_95083fbbc1cb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_18e8daba_808a_478a_8fb0_95083fbbc1cb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1926bfbc_ecb9_41ad_942e_4cec32d83ecf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1926bfbc_ecb9_41ad_942e_4cec32d83ecf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_192714d9_5a6f_4599_9cee_384af107e072()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_192714d9_5a6f_4599_9cee_384af107e072");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_194e9efa_aa20_4498_add2_0a51585c8901()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_194e9efa_aa20_4498_add2_0a51585c8901");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_196ddebd_2c3b_4894_9254_8fde0a3aa201()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_196ddebd_2c3b_4894_9254_8fde0a3aa201");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_196f6819_f493_4c16_9af4_942e3ef4ef5f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_196f6819_f493_4c16_9af4_942e3ef4ef5f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_199fefce_cef5_4589_923a_3a64078f4a3e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_199fefce_cef5_4589_923a_3a64078f4a3e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_19b8ea88_5d6e_40d2_bcb7_31a7b9600b69()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_19b8ea88_5d6e_40d2_bcb7_31a7b9600b69");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_19e37873_ec01_4201_9024_07f66b15c6d9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_19e37873_ec01_4201_9024_07f66b15c6d9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_19ffd954_7097_4453_901d_f316a64bc83a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_19ffd954_7097_4453_901d_f316a64bc83a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1a58f356_3c26_4754_bd2e_b174f8f13ad3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1a58f356_3c26_4754_bd2e_b174f8f13ad3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1a665277_fbb2_4622_9b71_71bc158f73fd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1a665277_fbb2_4622_9b71_71bc158f73fd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1aab0fe1_b3fe_4741_9f86_126fa2ea5de6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1aab0fe1_b3fe_4741_9f86_126fa2ea5de6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1aaf7f8d_2a1c_4c15_8be3_1f77ecd45bd0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1aaf7f8d_2a1c_4c15_8be3_1f77ecd45bd0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1ab8d839_f9ac_4678_979e_17d33663e357()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1ab8d839_f9ac_4678_979e_17d33663e357");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1ad66141_8c6a_4750_b601_6bf8b35a87e8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1ad66141_8c6a_4750_b601_6bf8b35a87e8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1adc2efd_cfd0_41b7_ae53_60709a439cb2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1adc2efd_cfd0_41b7_ae53_60709a439cb2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1ae912bf_cd7e_4c06_869c_574f992e923a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1ae912bf_cd7e_4c06_869c_574f992e923a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1b067194_4763_4a14_a748_e1aff5b81207()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1b067194_4763_4a14_a748_e1aff5b81207");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1b41b771_7ecd_485e_9a6e_2e1d81c16eca()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1b41b771_7ecd_485e_9a6e_2e1d81c16eca");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1b4fbbd4_2a3a_4da9_9ed3_41bcc3e064a6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1b4fbbd4_2a3a_4da9_9ed3_41bcc3e064a6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1b65f203_16af_4534_a646_3068a80d623e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1b65f203_16af_4534_a646_3068a80d623e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1b7d1adc_8e90_46d4_8b77_09abcacaee37()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1b7d1adc_8e90_46d4_8b77_09abcacaee37");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1b7fbbe0_984b_422f_807e_fe140197f879()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1b7fbbe0_984b_422f_807e_fe140197f879");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1b80ef13_0614_4b49_944b_86bbe14df1ed()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1b80ef13_0614_4b49_944b_86bbe14df1ed");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1b86b1c7_06f0_457d_a950_1e1fd281a6be()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1b86b1c7_06f0_457d_a950_1e1fd281a6be");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1b9c4e11_038f_458f_a8a3_6c657db9c656()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1b9c4e11_038f_458f_a8a3_6c657db9c656");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1ba69a5a_651b_42d3_8031_74308a1235d8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1ba69a5a_651b_42d3_8031_74308a1235d8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1ba73b27_e22c_4fc9_a0c8_03c59d0d9777()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1ba73b27_e22c_4fc9_a0c8_03c59d0d9777");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1baa8620_8a66_413b_b198_6972ecce44cb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1baa8620_8a66_413b_b198_6972ecce44cb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1bab336f_1ab4_4fb2_b3de_d23c9dd286f3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1bab336f_1ab4_4fb2_b3de_d23c9dd286f3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1bb76433_0438_4395_a98c_e52794b16c01()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1bb76433_0438_4395_a98c_e52794b16c01");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1bb84068_26f3_4127_9df7_547c5ab76cdd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1bb84068_26f3_4127_9df7_547c5ab76cdd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1c107e8d_930a_493d_a305_82a38e3f4492()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1c107e8d_930a_493d_a305_82a38e3f4492");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1c10d10a_4b35_4eff_abad_aab6e09035d3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1c10d10a_4b35_4eff_abad_aab6e09035d3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1c226668_61e8_4d15_a079_3cf459789f79()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1c226668_61e8_4d15_a079_3cf459789f79");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1c2635c3_9fb1_4c78_9b2f_505ac1bfae3e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1c2635c3_9fb1_4c78_9b2f_505ac1bfae3e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1c47c133_e3e1_40d9_8b79_158b874ebebb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1c47c133_e3e1_40d9_8b79_158b874ebebb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1c74d7ed_7a60_42cd_8b19_ad4d079f039b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1c74d7ed_7a60_42cd_8b19_ad4d079f039b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1c7abf6c_1dbd_427f_9b36_f2e1e095d86e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1c7abf6c_1dbd_427f_9b36_f2e1e095d86e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1c7aee90_cdce_4780_9bf7_ede06e6aeebd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1c7aee90_cdce_4780_9bf7_ede06e6aeebd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1c92632e_72bc_4be6_8ea9_d575d356789a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1c92632e_72bc_4be6_8ea9_d575d356789a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1c9d5472_8db3_45ad_84b6_41b64047ebfa()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1c9d5472_8db3_45ad_84b6_41b64047ebfa");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1cf570f9_1166_4f23_85f1_484d652f53f1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1cf570f9_1166_4f23_85f1_484d652f53f1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1d52bd20_705b_44bd_89d5_640d0481c227()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1d52bd20_705b_44bd_89d5_640d0481c227");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1d674c5d_959a_41be_b23a_82dbe2550961()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1d674c5d_959a_41be_b23a_82dbe2550961");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1d68ebfe_7a26_4b19_ba36_76e9190dba4f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1d68ebfe_7a26_4b19_ba36_76e9190dba4f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1d785205_6c62_418f_865a_57b5a7bdba41()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1d785205_6c62_418f_865a_57b5a7bdba41");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1d9bbfe3_c0eb_4e4e_9dfd_e45657433b4e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1d9bbfe3_c0eb_4e4e_9dfd_e45657433b4e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1d9bf545_2ef6_4620_b742_9cf4db4b23b6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1d9bf545_2ef6_4620_b742_9cf4db4b23b6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1db789e3_f16c_4fcf_a49b_1df840ac4429()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1db789e3_f16c_4fcf_a49b_1df840ac4429");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1dd79179_a728_4835_bc94_be6a3169b766()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1dd79179_a728_4835_bc94_be6a3169b766");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1dde00b2_039c_4ef0_a825_ece82b920609()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1dde00b2_039c_4ef0_a825_ece82b920609");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1e271048_4c75_4df4_8a1e_463382e3aff7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1e271048_4c75_4df4_8a1e_463382e3aff7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1e37a862_8d18_43bd_836a_6ecbb223d0dc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1e37a862_8d18_43bd_836a_6ecbb223d0dc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1e471d74_f0a5_4c5a_aa55_1a171e0a6e49()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1e471d74_f0a5_4c5a_aa55_1a171e0a6e49");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1e557870_a740_4f31_a7d6_429da8d87631()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1e557870_a740_4f31_a7d6_429da8d87631");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_1e615bd3_00d7_4989_bfc7_bf41ddd319a6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_1e615bd3_00d7_4989_bfc7_bf41ddd319a6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1e7aecfc_4d80_4dd7_ab00_0e0524106ef8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1e7aecfc_4d80_4dd7_ab00_0e0524106ef8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1e7d65e7_dc52_4567_9f9e_fcea57d316aa()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1e7d65e7_dc52_4567_9f9e_fcea57d316aa");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1ee80104_3682_4a3e_aff2_9fb39ee97fdb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1ee80104_3682_4a3e_aff2_9fb39ee97fdb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1effa45e_5779_4680_8dc5_5733c52708b9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1effa45e_5779_4680_8dc5_5733c52708b9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1f1892f3_1638_4f96_8097_b34a5edf79e2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1f1892f3_1638_4f96_8097_b34a5edf79e2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1f3cd5aa_3b87_409a_80e0_9e00ed6451a8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1f3cd5aa_3b87_409a_80e0_9e00ed6451a8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1f81b19b_fb16_4783_ab4a_0f090a294178()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1f81b19b_fb16_4783_ab4a_0f090a294178");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1f929ef5_6a85_4a6e_a44c_9b3d0e59bf89()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1f929ef5_6a85_4a6e_a44c_9b3d0e59bf89");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1fa56c1d_5bb9_4fd8_a5d9_5f325b53fae9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1fa56c1d_5bb9_4fd8_a5d9_5f325b53fae9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1facda14_ddd9_4245_b628_09628ec32ab1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1facda14_ddd9_4245_b628_09628ec32ab1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1fcf262f_c3c9_45ae_84d1_45070ddb96de()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1fcf262f_c3c9_45ae_84d1_45070ddb96de");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1fe5b639_c980_4dc8_bfe1_2aafe66643ee()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1fe5b639_c980_4dc8_bfe1_2aafe66643ee");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_1fecbd74_e763_4cb5_9fc8_c3b3000bbb66()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_1fecbd74_e763_4cb5_9fc8_c3b3000bbb66");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_20074890_694b_473d_a93a_044d92d5c3ec()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_20074890_694b_473d_a93a_044d92d5c3ec");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_20081edc_ce0e_4f8e_bced_4a9813090178()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_20081edc_ce0e_4f8e_bced_4a9813090178");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2009b7c1_a93d_4f2f_b628_7f1521f2b7a9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2009b7c1_a93d_4f2f_b628_7f1521f2b7a9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_200ac95b_ae72_44a4_bdee_86001093e075()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_200ac95b_ae72_44a4_bdee_86001093e075");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_201ecab4_57a6_458e_956f_c40013aea941()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_201ecab4_57a6_458e_956f_c40013aea941");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_20266d91_8012_4af1_8d25_3a748ca2ade4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_20266d91_8012_4af1_8d25_3a748ca2ade4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_204052ab_a7d3_4647_a422_e43bba39881c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_204052ab_a7d3_4647_a422_e43bba39881c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_207ae730_ab84_467d_8667_66bc39fd206f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_207ae730_ab84_467d_8667_66bc39fd206f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_20c339a6_f591_4f02_aaab_1da182968a04()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_20c339a6_f591_4f02_aaab_1da182968a04");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_20c67425_c2ff_4763_b791_3eff62ef64f6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_20c67425_c2ff_4763_b791_3eff62ef64f6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_20d3d75e_b53b_4590_8d7b_4fae269254a7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_20d3d75e_b53b_4590_8d7b_4fae269254a7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_21010f31_d17d_4046_a819_a9ec52a4210d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_21010f31_d17d_4046_a819_a9ec52a4210d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2147e195_8c93_428c_88a8_fd814b9d3178()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2147e195_8c93_428c_88a8_fd814b9d3178");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_2165efaf_2bdb_40ee_a3e5_319f1fc25483()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_2165efaf_2bdb_40ee_a3e5_319f1fc25483");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_21663ba7_8204_43ed_a83d_0b0c8820f7e9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_21663ba7_8204_43ed_a83d_0b0c8820f7e9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2176c2bf_8792_434d_8ec9_caf56fc94dbd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2176c2bf_8792_434d_8ec9_caf56fc94dbd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_219a93a8_2aa5_4076_974b_a61cfa943c99()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_219a93a8_2aa5_4076_974b_a61cfa943c99");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_21a1cdf8_b7e0_4638_a01c_b9753bde7b37()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_21a1cdf8_b7e0_4638_a01c_b9753bde7b37");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_21a66b65_2585_41c0_8a0a_1500f574457e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_21a66b65_2585_41c0_8a0a_1500f574457e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_21a6e7de_e8ba_4b31_a4e1_c5f1837d023e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_21a6e7de_e8ba_4b31_a4e1_c5f1837d023e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_21c4fbd4_b33a_47e5_b97c_2af14358a758()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_21c4fbd4_b33a_47e5_b97c_2af14358a758");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_21c84c0f_913b_4295_b774_a9b6a51dfae4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_21c84c0f_913b_4295_b774_a9b6a51dfae4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_21d4d777_a699_4efb_b106_d22151a8a7ee()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_21d4d777_a699_4efb_b106_d22151a8a7ee");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_21e09c34_36ed_4274_8a16_3e9a2df48237()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_21e09c34_36ed_4274_8a16_3e9a2df48237");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_21f935c9_ac41_433f_be06_fa3907208b34()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_21f935c9_ac41_433f_be06_fa3907208b34");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2223affb_8383_4079_82e6_59d1966a4a0d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2223affb_8383_4079_82e6_59d1966a4a0d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_222bf495_13c6_4d18_b065_07242b559abd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_222bf495_13c6_4d18_b065_07242b559abd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2233657f_cf28_4b3e_8540_e13931d55d81()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2233657f_cf28_4b3e_8540_e13931d55d81");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_226873b9_8356_4b9d_9809_7cbe31405c10()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_226873b9_8356_4b9d_9809_7cbe31405c10");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_226cd9e5_739d_481f_a0eb_60398958a09e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_226cd9e5_739d_481f_a0eb_60398958a09e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_22876fb8_a1d8_41da_aaa2_096ee15c5dcd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_22876fb8_a1d8_41da_aaa2_096ee15c5dcd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2291da12_28d0_49bb_9198_87db5aef1ef5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2291da12_28d0_49bb_9198_87db5aef1ef5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2298d3d1_346c_418a_aadf_3423b418f913()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2298d3d1_346c_418a_aadf_3423b418f913");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_22a2610f_0907_4176_80a9_68cb527ec58d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_22a2610f_0907_4176_80a9_68cb527ec58d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_22abc9d5_00cc_4594_8743_60bd93ef8387()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_22abc9d5_00cc_4594_8743_60bd93ef8387");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_22ac19af_f159_48c8_89e9_b554a0ecc0c8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_22ac19af_f159_48c8_89e9_b554a0ecc0c8");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_22d896d9_fe10_462f_9455_fb8a02aee652()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_22d896d9_fe10_462f_9455_fb8a02aee652");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_22e0c525_2e83_40de_a620_45de6ce80217()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_22e0c525_2e83_40de_a620_45de6ce80217");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_22e8de86_b482_4f15_ae48_2bd46e0f090f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_22e8de86_b482_4f15_ae48_2bd46e0f090f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_23355492_23a7_4552_94f0_8e79d3a251bd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_23355492_23a7_4552_94f0_8e79d3a251bd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_23846462_5bcd_4776_a8a7_f9d705449148()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_23846462_5bcd_4776_a8a7_f9d705449148");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_23a21604_d8da_4d4d_8ac8_0bc4b9223c5b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_23a21604_d8da_4d4d_8ac8_0bc4b9223c5b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_23c089f7_b3a4_484c_8072_04095a48ea0e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_23c089f7_b3a4_484c_8072_04095a48ea0e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_23d0e37c_46bd_4e22_be0f_5193ce38b4b2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_23d0e37c_46bd_4e22_be0f_5193ce38b4b2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_243213e6_eac5_4af5_b30e_acfab7c05519()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_243213e6_eac5_4af5_b30e_acfab7c05519");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_245f069e_1070_4427_b537_1567e88a0241()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_245f069e_1070_4427_b537_1567e88a0241");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_24be189b_eb06_4953_af9b_0fe8cdec8e73()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_24be189b_eb06_4953_af9b_0fe8cdec8e73");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_24c49fcd_4764_48e8_9b64_79690503b40b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_24c49fcd_4764_48e8_9b64_79690503b40b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_24d6dfd8_eb47_4416_920d_44e5fdcb2ad9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_24d6dfd8_eb47_4416_920d_44e5fdcb2ad9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2504f0ca_f0d1_462b_8c7a_cb6aa1c29f30()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2504f0ca_f0d1_462b_8c7a_cb6aa1c29f30");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2506a743_58e9_4e3a_8374_40b0fd1f5e7f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2506a743_58e9_4e3a_8374_40b0fd1f5e7f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_25483851_c409_42b5_aaf7_11f13c2c404b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_25483851_c409_42b5_aaf7_11f13c2c404b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_25514646_b255_4099_8a7a_4f1b3b91b9c8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_25514646_b255_4099_8a7a_4f1b3b91b9c8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_25848efc_b593_451d_9c29_b2faffcd3040()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_25848efc_b593_451d_9c29_b2faffcd3040");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_258fd884_604e_49f2_aa5a_4b0ecad1e9b4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_258fd884_604e_49f2_aa5a_4b0ecad1e9b4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_25ab0193_2583_4b24_aa38_89b93659c7ff()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_25ab0193_2583_4b24_aa38_89b93659c7ff");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_25d20b15_e2fe_4fcd_88ec_aa69f152916e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_25d20b15_e2fe_4fcd_88ec_aa69f152916e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_25f8e49e_44b7_4b09_90e5_ea8bbca4f6b4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_25f8e49e_44b7_4b09_90e5_ea8bbca4f6b4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2616c782_22f0_4aa4_b6b2_035b30985698()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2616c782_22f0_4aa4_b6b2_035b30985698");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_26173e0b_af85_450c_96df_ba0d7a826d6a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_26173e0b_af85_450c_96df_ba0d7a826d6a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_26a9e8be_4fd4_4d1b_8a22_17280e2c4fd0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_26a9e8be_4fd4_4d1b_8a22_17280e2c4fd0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_26b618d1_4afc_4a14_91a5_3274f3693ee1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_26b618d1_4afc_4a14_91a5_3274f3693ee1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_270352bf_1225_4c6f_815c_26c65ec708bb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_270352bf_1225_4c6f_815c_26c65ec708bb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_270f1b2a_240b_4b9b_9e82_004350905cf7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_270f1b2a_240b_4b9b_9e82_004350905cf7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2717215a_8b85_4524_98bc_77b860c5eccf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2717215a_8b85_4524_98bc_77b860c5eccf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_271ca094_3e83_4853_9d1f_a90051ffedb8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_271ca094_3e83_4853_9d1f_a90051ffedb8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_271cb055_3428_4a9d_9245_c9ea96ba0bb1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_271cb055_3428_4a9d_9245_c9ea96ba0bb1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_27433ce1_97c5_422e_b555_52f0145ec989()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_27433ce1_97c5_422e_b555_52f0145ec989");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_278fe6a7_8b2c_4d1a_9d6c_68d281244645()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_278fe6a7_8b2c_4d1a_9d6c_68d281244645");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_27c434a6_94bb_4d5e_b966_90279b399f75()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_27c434a6_94bb_4d5e_b966_90279b399f75");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_27e2dfb4_70fd_4b56_8026_6ee2101d25df()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_27e2dfb4_70fd_4b56_8026_6ee2101d25df");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_28059a99_18d2_4890_96b3_f8891efab1a6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_28059a99_18d2_4890_96b3_f8891efab1a6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_28123426_5ea8_48c7_9f24_3c7d1ce72646()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_28123426_5ea8_48c7_9f24_3c7d1ce72646");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_284b108d_2a77_414f_a182_c1773d10e5e6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_284b108d_2a77_414f_a182_c1773d10e5e6");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_2883ef54_7b02_474b_a8d3_2010a9a4c5cb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_2883ef54_7b02_474b_a8d3_2010a9a4c5cb");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_28851124_5833_421f_861d_e6abe9f1291e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_28851124_5833_421f_861d_e6abe9f1291e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_28ab58e2_dc67_4680_9e74_01f8317845d5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_28ab58e2_dc67_4680_9e74_01f8317845d5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_28b3b938_d6bd_40ab_83da_59a89e551d61()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_28b3b938_d6bd_40ab_83da_59a89e551d61");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_28bc63d0_05cb_4518_b085_64ac2fd23780()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_28bc63d0_05cb_4518_b085_64ac2fd23780");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_291ae84b_8812_4d33_83a7_4e725a42bad9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_291ae84b_8812_4d33_83a7_4e725a42bad9");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_29314b51_6239_4d83_9475_cffdb4c25ae3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_29314b51_6239_4d83_9475_cffdb4c25ae3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2936f6f9_aa3c_45bb_ac51_ce031a726568()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2936f6f9_aa3c_45bb_ac51_ce031a726568");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_294440e5_b783_45ac_86c2_c9509af8f807()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_294440e5_b783_45ac_86c2_c9509af8f807");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2962db7b_4a1b_4575_a764_708f6b8adc0d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2962db7b_4a1b_4575_a764_708f6b8adc0d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2997d7e5_7dea_4440_b746_6baae36062ad()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2997d7e5_7dea_4440_b746_6baae36062ad");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_29cdc3de_409e_4360_9cb7_b91cec8878ff()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_29cdc3de_409e_4360_9cb7_b91cec8878ff");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2a12ef8b_d602_49e7_a700_6a4d198b29d9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2a12ef8b_d602_49e7_a700_6a4d198b29d9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2a1c8b41_5817_4c7b_a5ab_6ddf851df4a9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2a1c8b41_5817_4c7b_a5ab_6ddf851df4a9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2a283ef8_2392_40b6_97a1_c437a90d877e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2a283ef8_2392_40b6_97a1_c437a90d877e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2a3158de_b88f_478e_a2d5_6542ff8f2ef9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2a3158de_b88f_478e_a2d5_6542ff8f2ef9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2a373aa0_6458_463d_9566_4d503a162adb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2a373aa0_6458_463d_9566_4d503a162adb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2a38cc20_6560_4951_80df_6ae43057d1de()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2a38cc20_6560_4951_80df_6ae43057d1de");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2a4d1e8c_50d0_47d6_b119_4f26cda08130()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2a4d1e8c_50d0_47d6_b119_4f26cda08130");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_2a60b921_0704_4fa2_bc1f_6f9951f964f0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_2a60b921_0704_4fa2_bc1f_6f9951f964f0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2a663fae_2b98_4f23_8950_de6fc2b8d137()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2a663fae_2b98_4f23_8950_de6fc2b8d137");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2a8d36c9_bfba_4bed_b09a_4259bbe97d47()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2a8d36c9_bfba_4bed_b09a_4259bbe97d47");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2a9bfa02_1d1f_4a00_91ec_3e219c3064da()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2a9bfa02_1d1f_4a00_91ec_3e219c3064da");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2a9e8adf_d2fb_42f3_8384_9267338e5993()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2a9e8adf_d2fb_42f3_8384_9267338e5993");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2abf7bf4_82fa_413c_80d5_ad815c64f572()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2abf7bf4_82fa_413c_80d5_ad815c64f572");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_2addc643_a489_4431_86aa_4f9ef6d38d92()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_2addc643_a489_4431_86aa_4f9ef6d38d92");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_2adf98fd_d71e_4e52_a992_d4fd8b963106()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_2adf98fd_d71e_4e52_a992_d4fd8b963106");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_2aee7444_2532_4116_8255_1098b34ee0e8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_2aee7444_2532_4116_8255_1098b34ee0e8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2af2b68a_174e_4379_94e6_58dbacf93315()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2af2b68a_174e_4379_94e6_58dbacf93315");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2b115790_c82b_4b0d_893b_f8f57a1dc4f2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2b115790_c82b_4b0d_893b_f8f57a1dc4f2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2b4007dc_f381_4a4e_a201_302c745f3b85()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2b4007dc_f381_4a4e_a201_302c745f3b85");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2b523d4d_f0a2_48bf_a55e_06a21d3b6d04()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2b523d4d_f0a2_48bf_a55e_06a21d3b6d04");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2b5ccb64_3974_4df7_8634_b8a662eee6e0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2b5ccb64_3974_4df7_8634_b8a662eee6e0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2b900595_b762_4492_af8b_aec91317d7f3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2b900595_b762_4492_af8b_aec91317d7f3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2b987066_f7ca_43f6_bbf9_62d166256e88()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2b987066_f7ca_43f6_bbf9_62d166256e88");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2bc4e0f3_39a5_415b_8c2f_c712b0188e77()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2bc4e0f3_39a5_415b_8c2f_c712b0188e77");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2bcd0b67_6af1_428f_958d_bc5f49970815()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2bcd0b67_6af1_428f_958d_bc5f49970815");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2bed0bf9_1bb3_4391_9e83_32bc7c46096c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2bed0bf9_1bb3_4391_9e83_32bc7c46096c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2bee4141_5b31_4c7b_9c64_11553317f302()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2bee4141_5b31_4c7b_9c64_11553317f302");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2c1715f8_ab71_46fe_8827_a723be3f3fa1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2c1715f8_ab71_46fe_8827_a723be3f3fa1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2c2feb90_5dd8_493b_bad4_ea34b6b3219b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2c2feb90_5dd8_493b_bad4_ea34b6b3219b");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_2c3a7f17_6be3_4c8d_b43e_bc0175e056e9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_2c3a7f17_6be3_4c8d_b43e_bc0175e056e9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2c5a46b7_f22a_4bab_bc40_9ac13aeefd8c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2c5a46b7_f22a_4bab_bc40_9ac13aeefd8c");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_2cb87963_f449_47d2_9f4e_9846b6c680cc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_2cb87963_f449_47d2_9f4e_9846b6c680cc");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_2cb995ac_782a_45e5_9163_887033b4dc6c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_2cb995ac_782a_45e5_9163_887033b4dc6c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2cd380e2_2b1e_4b4f_a832_d4eee932700d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2cd380e2_2b1e_4b4f_a832_d4eee932700d");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_2d2242a0_8a09_48ab_aaec_e4095bbf81f0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_2d2242a0_8a09_48ab_aaec_e4095bbf81f0");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_2dcaed22_9926_4282_84f9_39666188aabd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_2dcaed22_9926_4282_84f9_39666188aabd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2df6e64d_f1d5_41d3_afa6_d0a557d3c0c8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2df6e64d_f1d5_41d3_afa6_d0a557d3c0c8");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_2dfd9275_234b_494f_adc0_092a21e3656b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_2dfd9275_234b_494f_adc0_092a21e3656b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2e0049d4_752b_458d_a809_e744ce442257()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2e0049d4_752b_458d_a809_e744ce442257");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2e154760_4e1b_4d07_80c9_8975fcf7e128()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2e154760_4e1b_4d07_80c9_8975fcf7e128");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2e466217_2dd5_4664_8c5b_d792c981a7ef()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2e466217_2dd5_4664_8c5b_d792c981a7ef");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2f099d65_4654_47c5_bdbf_755b30376226()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2f099d65_4654_47c5_bdbf_755b30376226");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2f57a35f_b119_4c38_ab11_043b793ee8de()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2f57a35f_b119_4c38_ab11_043b793ee8de");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_2f90bce0_4a91_49c6_b399_8cbe2d82b3ba()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_2f90bce0_4a91_49c6_b399_8cbe2d82b3ba");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2f94dfef_c232_4e6e_b667_896dcb4a321c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2f94dfef_c232_4e6e_b667_896dcb4a321c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2f9b4f61_c19e_4785_bcaa_9a37c92fc12e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2f9b4f61_c19e_4785_bcaa_9a37c92fc12e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2fae064f_1bd9_4e94_9663_84c471fbfc98()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2fae064f_1bd9_4e94_9663_84c471fbfc98");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2fb851b1_fc55_4dd9_8414_fd2d0a5e60f9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2fb851b1_fc55_4dd9_8414_fd2d0a5e60f9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2fbb57ef_7b7d_4a4d_b69b_6cfce7f830f2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2fbb57ef_7b7d_4a4d_b69b_6cfce7f830f2");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_2fec94c8_588e_46d9_8b0b_b84ef79c6c2f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_2fec94c8_588e_46d9_8b0b_b84ef79c6c2f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2fef441b_c37f_4748_84ce_9626c331d7fa()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2fef441b_c37f_4748_84ce_9626c331d7fa");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_2fef643e_0603_4ab8_8b2f_1a2c6f72e483()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_2fef643e_0603_4ab8_8b2f_1a2c6f72e483");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_301a3374_2696_44c1_b757_530d0d3d1eba()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_301a3374_2696_44c1_b757_530d0d3d1eba");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_302c38e5_b915_49db_994b_b5bf4cf9854a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_302c38e5_b915_49db_994b_b5bf4cf9854a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_30346d71_5292_4886_bb0c_a82248a84459()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_30346d71_5292_4886_bb0c_a82248a84459");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_305daf2d_c276_4878_bfd4_fe3d1fe4bbe2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_305daf2d_c276_4878_bfd4_fe3d1fe4bbe2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3081ea30_fb50_442d_9232_c689d99657bc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3081ea30_fb50_442d_9232_c689d99657bc");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_3092f240_9cd2_4189_8b6c_470a406be65c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_3092f240_9cd2_4189_8b6c_470a406be65c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_30bbf95f_d918_4100_aeb2_d1ed0dd002af()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_30bbf95f_d918_4100_aeb2_d1ed0dd002af");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_30bd5883_fff1_4b7c_a95a_6d6bbc869ad5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_30bd5883_fff1_4b7c_a95a_6d6bbc869ad5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_30c47497_afff_4346_91f9_b8db4e57c9de()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_30c47497_afff_4346_91f9_b8db4e57c9de");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_311d472f_8f8f_47bd_9fe2_f47c7527b892()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_311d472f_8f8f_47bd_9fe2_f47c7527b892");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3150cf6b_9b75_4ebb_b9dc_ed97bb39cc43()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3150cf6b_9b75_4ebb_b9dc_ed97bb39cc43");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_31592e8e_f4f9_480e_ad93_b061bfb914fe()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_31592e8e_f4f9_480e_ad93_b061bfb914fe");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_31679436_a02d_448e_9abe_84b32796647d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_31679436_a02d_448e_9abe_84b32796647d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_318bc4de_a72f_4bde_8578_382b510f90e9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_318bc4de_a72f_4bde_8578_382b510f90e9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3190c0c3_8b47_4405_bf2c_a4b3fcc4df52()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3190c0c3_8b47_4405_bf2c_a4b3fcc4df52");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3193f73f_2f1d_44d3_abcf_64e354f8ffc5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3193f73f_2f1d_44d3_abcf_64e354f8ffc5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_319557f4_cbde_4884_b3d0_29b3d61eebe8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_319557f4_cbde_4884_b3d0_29b3d61eebe8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_31b5b905_d131_4548_a7f4_3e12f92f5b2d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_31b5b905_d131_4548_a7f4_3e12f92f5b2d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_31bcb819_eee7_4555_b881_6c72acdd19e0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_31bcb819_eee7_4555_b881_6c72acdd19e0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_31c0e075_2ee3_478b_a4a5_4aca82d299c1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_31c0e075_2ee3_478b_a4a5_4aca82d299c1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_31c93041_7deb_4500_96dd_900dfd26bffe()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_31c93041_7deb_4500_96dd_900dfd26bffe");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_31e03ba9_28d7_4220_95ed_f73f7d879ca9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_31e03ba9_28d7_4220_95ed_f73f7d879ca9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3233ee4c_a30e_4ec4_b67e_75b75da26b15()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3233ee4c_a30e_4ec4_b67e_75b75da26b15");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_323b0804_ef48_479b_a24c_b7dec9303a4d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_323b0804_ef48_479b_a24c_b7dec9303a4d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_32533a1d_6081_49e2_a11d_079e997ef199()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_32533a1d_6081_49e2_a11d_079e997ef199");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_325a376b_f0d2_4b62_8f97_16fd374b2c50()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_325a376b_f0d2_4b62_8f97_16fd374b2c50");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3273e62e_cfb7_4e44_a351_c7c12ca9f5d3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3273e62e_cfb7_4e44_a351_c7c12ca9f5d3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_327c7c8f_fde7_464d_9bc6_c41afcecdfae()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_327c7c8f_fde7_464d_9bc6_c41afcecdfae");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_327e586e_87d7_4cc6_9ee2_736bba0674ad()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_327e586e_87d7_4cc6_9ee2_736bba0674ad");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_327ebe15_0a40_45a3_90a4_cbb5cbaee1d6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_327ebe15_0a40_45a3_90a4_cbb5cbaee1d6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3291d477_91f9_4612_aa9b_b5edc2aa93de()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3291d477_91f9_4612_aa9b_b5edc2aa93de");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_32b73e15_4293_4963_8d76_003c4a5d1851()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_32b73e15_4293_4963_8d76_003c4a5d1851");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_32f75d2e_ca7e_46bd_a88f_6dcef0346ecc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_32f75d2e_ca7e_46bd_a88f_6dcef0346ecc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_330103c5_f5c0_46ba_9dab_e173b4f27c69()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_330103c5_f5c0_46ba_9dab_e173b4f27c69");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_330de8a2_d061_42b4_9084_e6df2b95bbbe()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_330de8a2_d061_42b4_9084_e6df2b95bbbe");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_330ea839_42ef_475d_b666_044084d0c88b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_330ea839_42ef_475d_b666_044084d0c88b");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_33315f55_2840_4ab6_a4b6_d0447cf629ca()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_33315f55_2840_4ab6_a4b6_d0447cf629ca");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3366c71f_14b2_4f15_b4e1_b9d7897fe69b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3366c71f_14b2_4f15_b4e1_b9d7897fe69b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_33743cd1_ab98_4f5c_817c_ffe7c48446aa()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_33743cd1_ab98_4f5c_817c_ffe7c48446aa");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_340c7758_1d2d_4866_b828_fa585fee2a5b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_340c7758_1d2d_4866_b828_fa585fee2a5b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_34447408_d335_400b_b9f8_c2adaeae69b7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_34447408_d335_400b_b9f8_c2adaeae69b7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3491476f_5d71_416b_8ce5_225cce210e6b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3491476f_5d71_416b_8ce5_225cce210e6b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_34b6c2d1_2535_4626_be70_7be8c8e5adec()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_34b6c2d1_2535_4626_be70_7be8c8e5adec");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_34c822d5_4474_43dc_9b12_32fcf75bfb2b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_34c822d5_4474_43dc_9b12_32fcf75bfb2b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_34c8e22c_8697_4707_bd2a_c530bfb06b3a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_34c8e22c_8697_4707_bd2a_c530bfb06b3a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_34d9fa97_ccea_4076_9c42_82aa840cc50e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_34d9fa97_ccea_4076_9c42_82aa840cc50e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3506f4fd_d0b4_47ec_b075_fb136a322886()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3506f4fd_d0b4_47ec_b075_fb136a322886");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3517033f_090e_4781_8b77_2a92f9c3c14b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3517033f_090e_4781_8b77_2a92f9c3c14b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_35420b4f_2d21_4186_ae14_ee77de5cb1b7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_35420b4f_2d21_4186_ae14_ee77de5cb1b7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_356b37d0_0ed1_4b98_88a6_467650a76a5e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_356b37d0_0ed1_4b98_88a6_467650a76a5e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_356f9921_a74f_4c93_b0c6_14eaa41e0523()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_356f9921_a74f_4c93_b0c6_14eaa41e0523");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_358f84d7_59c4_4936_a9fb_4dfb923ccce7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_358f84d7_59c4_4936_a9fb_4dfb923ccce7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_35988f75_8c50_492b_9aa9_69ca19d47caa()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_35988f75_8c50_492b_9aa9_69ca19d47caa");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_36709eb6_e5bf_4050_90a1_e0f6d52ac636()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_36709eb6_e5bf_4050_90a1_e0f6d52ac636");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_36a7ab1e_4ee3_4845_b2c1_da968c18e26a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_36a7ab1e_4ee3_4845_b2c1_da968c18e26a");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_36dda69b_37c1_4606_be58_09e4e5d09fd3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_36dda69b_37c1_4606_be58_09e4e5d09fd3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_36fc3682_6992_4d34_bff8_9c063dda9c80()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_36fc3682_6992_4d34_bff8_9c063dda9c80");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_371922fe_9528_4037_af7a_2bdb69ba2c0a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_371922fe_9528_4037_af7a_2bdb69ba2c0a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3739fb66_7a7a_4114_a2eb_423a3b45f93c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3739fb66_7a7a_4114_a2eb_423a3b45f93c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_37481a9b_42de_4a0a_a1b2_1d23d90d649e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_37481a9b_42de_4a0a_a1b2_1d23d90d649e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3763225e_7c61_4157_a1c4_27833396bcde()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3763225e_7c61_4157_a1c4_27833396bcde");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3771686b_d27b_4bf0_9529_1b393a4aa56f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3771686b_d27b_4bf0_9529_1b393a4aa56f");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_378d042b_49c6_4464_957d_afc84cdd7eca()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_378d042b_49c6_4464_957d_afc84cdd7eca");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_379af2b5_85fa_488a_8982_693d2331ee6c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_379af2b5_85fa_488a_8982_693d2331ee6c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_37bf6c7e_d1c1_4604_8dd1_f5d8e7da8d0b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_37bf6c7e_d1c1_4604_8dd1_f5d8e7da8d0b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_37d0bbc4_e993_47b4_98f3_e13140d2a25f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_37d0bbc4_e993_47b4_98f3_e13140d2a25f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_37eb7f68_4b81_4019_86f7_f957bd39c136()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_37eb7f68_4b81_4019_86f7_f957bd39c136");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_38245c8d_b304_4a18_839b_86b87d69c4ff()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_38245c8d_b304_4a18_839b_86b87d69c4ff");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3869e144_b6c1_41a8_903b_0a7be204b888()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3869e144_b6c1_41a8_903b_0a7be204b888");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_386e72a2_295c_4192_9074_5de7a3830745()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_386e72a2_295c_4192_9074_5de7a3830745");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_38a5a08a_1d22_4825_9352_5a5bdf34135d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_38a5a08a_1d22_4825_9352_5a5bdf34135d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_38b2b781_749f_496d_be3a_38de614459c2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_38b2b781_749f_496d_be3a_38de614459c2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_38c7af39_c988_4c43_aa2e_5132cf5513ff()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_38c7af39_c988_4c43_aa2e_5132cf5513ff");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_393937b8_bacf_4af4_9190_4a7cb61df3a3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_393937b8_bacf_4af4_9190_4a7cb61df3a3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_39393faf_e386_44c4_9442_0a3eae02c572()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_39393faf_e386_44c4_9442_0a3eae02c572");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3939dfb6_7302_4e8c_93e6_1554fc820cf3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3939dfb6_7302_4e8c_93e6_1554fc820cf3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3983d6de_7a44_4b55_b1c1_eba9c1e8851e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3983d6de_7a44_4b55_b1c1_eba9c1e8851e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_39945683_3b6d_43c7_8fa1_51979210135f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_39945683_3b6d_43c7_8fa1_51979210135f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3996d7ee_8d3a_4351_8eff_1378fc589a6a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3996d7ee_8d3a_4351_8eff_1378fc589a6a");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_39b94ab9_1a09_4f06_992b_308717f54f24()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_39b94ab9_1a09_4f06_992b_308717f54f24");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_39d72815_efe4_4303_9b58_59d73255a7b3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_39d72815_efe4_4303_9b58_59d73255a7b3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_39dee601_21e7_447f_94ae_bd517274724f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_39dee601_21e7_447f_94ae_bd517274724f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_39e7e42b_710f_4666_8030_97270481122c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_39e7e42b_710f_4666_8030_97270481122c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3a17a432_45fd_4b99_8a7b_362c0b1aae74()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3a17a432_45fd_4b99_8a7b_362c0b1aae74");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3a19a095_ed0d_4871_aeb1_b6b1ccfacb0e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3a19a095_ed0d_4871_aeb1_b6b1ccfacb0e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3a19b3fe_067d_4dc4_a2f1_0a48f2b76384()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3a19b3fe_067d_4dc4_a2f1_0a48f2b76384");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3a7160af_363c_4753_ad6f_28ad07476212()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3a7160af_363c_4753_ad6f_28ad07476212");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_3a727d73_66ef_44e6_b326_92ab2d946bb6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_3a727d73_66ef_44e6_b326_92ab2d946bb6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3ad6d2b9_08c2_4346_b984_f9493afd3490()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3ad6d2b9_08c2_4346_b984_f9493afd3490");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3afb0959_84df_4682_a655_08bbaf1ddfff()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3afb0959_84df_4682_a655_08bbaf1ddfff");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3b2f7ed8_3e59_4f6e_bda6_46a917b031d0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3b2f7ed8_3e59_4f6e_bda6_46a917b031d0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3b39c9a7_74fd_435d_8bc8_932f766b09a3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3b39c9a7_74fd_435d_8bc8_932f766b09a3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3b40a4d1_72d7_423c_9974_79263a2d1c5a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3b40a4d1_72d7_423c_9974_79263a2d1c5a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3b59b409_56f2_4c80_bc61_1b36306bcd46()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3b59b409_56f2_4c80_bc61_1b36306bcd46");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3b6c0d35_c1a2_4745_b12d_5f18f87b1647()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3b6c0d35_c1a2_4745_b12d_5f18f87b1647");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3b88aa38_5c23_4ec1_b885_fd9d88ab5b74()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3b88aa38_5c23_4ec1_b885_fd9d88ab5b74");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_3b966304_5b63_4b0c_a596_a7469e54cc0f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_3b966304_5b63_4b0c_a596_a7469e54cc0f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3b9acfba_b72c_480e_90c6_354d819f3c69()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3b9acfba_b72c_480e_90c6_354d819f3c69");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3b9ca2e8_76be_49a5_b154_2fc52ef6c5ff()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3b9ca2e8_76be_49a5_b154_2fc52ef6c5ff");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3bb278ab_e747_4689_87bd_57a1f8a13ee6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3bb278ab_e747_4689_87bd_57a1f8a13ee6");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_3bbe9db6_74e9_495f_bc72_22a53d6de52b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_3bbe9db6_74e9_495f_bc72_22a53d6de52b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3bbec215_a6f2_480b_85aa_810027bb5cf9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3bbec215_a6f2_480b_85aa_810027bb5cf9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3c03f518_4a3b_4db6_842e_e87a189bb119()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3c03f518_4a3b_4db6_842e_e87a189bb119");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3c24afdf_1f3c_44f8_9d02_d0da476ff959()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3c24afdf_1f3c_44f8_9d02_d0da476ff959");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3c2a70c3_1996_4fb9_b654_a7629fc47736()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3c2a70c3_1996_4fb9_b654_a7629fc47736");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3c529202_1a07_4fc9_b23d_eecfcaac90a4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3c529202_1a07_4fc9_b23d_eecfcaac90a4");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_3c7b5653_b9e5_43b2_abec_bf2f42f38962()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_3c7b5653_b9e5_43b2_abec_bf2f42f38962");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3ca053b8_d716_4b59_96fc_5c7b385193a6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3ca053b8_d716_4b59_96fc_5c7b385193a6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3ca1ce76_f5b1_4246_af6e_4a982a0abdfe()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3ca1ce76_f5b1_4246_af6e_4a982a0abdfe");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3cb94d80_e527_46ac_b5f6_9889818304c3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3cb94d80_e527_46ac_b5f6_9889818304c3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3d216099_463c_418b_b670_51191d43d40f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3d216099_463c_418b_b670_51191d43d40f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3d3f28e8_489b_4634_9bd5_256da5d9885f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3d3f28e8_489b_4634_9bd5_256da5d9885f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3d7d6885_0f0b_402c_8b25_c7eede36d7bf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3d7d6885_0f0b_402c_8b25_c7eede36d7bf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3d91ddb4_3a89_4055_9612_a0f3057b588f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3d91ddb4_3a89_4055_9612_a0f3057b588f");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_3da10f44_f1b7_4545_800d_9a2f91139d98()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_3da10f44_f1b7_4545_800d_9a2f91139d98");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3de2b773_33b2_4b9d_9c83_d2c5c643aa82()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3de2b773_33b2_4b9d_9c83_d2c5c643aa82");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3de33bed_7d8f_43ae_b6ba_bdcd9f9b209d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3de33bed_7d8f_43ae_b6ba_bdcd9f9b209d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3df4f8df_bae6_4800_9e45_d7dbc0ce804f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3df4f8df_bae6_4800_9e45_d7dbc0ce804f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3e142e22_8ce0_4ee4_96fd_b764ad32889b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3e142e22_8ce0_4ee4_96fd_b764ad32889b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3e3af863_f3b2_4388_a454_ad907d7515c7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3e3af863_f3b2_4388_a454_ad907d7515c7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3e5c1e98_d446_495b_99cd_a9e1ce116eac()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3e5c1e98_d446_495b_99cd_a9e1ce116eac");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3e6be9b6_cc4f_4d8f_b2f1_20edfc9f2604()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3e6be9b6_cc4f_4d8f_b2f1_20edfc9f2604");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3e870299_c003_4c82_8f49_7caf5f527745()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3e870299_c003_4c82_8f49_7caf5f527745");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3e9bdb91_0316_4f16_ae51_e431af959b69()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3e9bdb91_0316_4f16_ae51_e431af959b69");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3ec82f7f_770f_48c7_83fa_0f45ad7f008f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3ec82f7f_770f_48c7_83fa_0f45ad7f008f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3edade73_5ea1_4f99_81fe_e7a55ab20db3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3edade73_5ea1_4f99_81fe_e7a55ab20db3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3ef3c737_b1cc_48ae_b7d5_bb8c4dc29cdd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3ef3c737_b1cc_48ae_b7d5_bb8c4dc29cdd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3efd3961_53f6_45f4_af3d_14c047515250()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3efd3961_53f6_45f4_af3d_14c047515250");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3f00e62f_a204_42af_b2f1_b7aa9b53f8fa()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3f00e62f_a204_42af_b2f1_b7aa9b53f8fa");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3f1bd1a9_c46b_497b_8402_00d0140fef45()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3f1bd1a9_c46b_497b_8402_00d0140fef45");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3f1fb21d_2ea0_429c_ae0a_4afcc2524c70()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3f1fb21d_2ea0_429c_ae0a_4afcc2524c70");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3f72869c_bb1f_497c_b1f9_3fdbce1a65c2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3f72869c_bb1f_497c_b1f9_3fdbce1a65c2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_3f7e1f77_e2da_4ef1_98df_8703b8d8174e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_3f7e1f77_e2da_4ef1_98df_8703b8d8174e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4001ced4_f596_4dd7_818e_cbf19b46e83c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4001ced4_f596_4dd7_818e_cbf19b46e83c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4021ebd0_8aab_4771_8132_5cc94988da80()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4021ebd0_8aab_4771_8132_5cc94988da80");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4054f637_74c5_4a25_87af_7ee6017fbcc9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4054f637_74c5_4a25_87af_7ee6017fbcc9");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_405984f4_71da_4a07_bede_dbb396116d02()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_405984f4_71da_4a07_bede_dbb396116d02");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_406ed62e_c02f_49d2_b2c8_6411ffdcb175()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_406ed62e_c02f_49d2_b2c8_6411ffdcb175");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_407b871e_ddbb_40b0_8ee4_65b8067b5d0e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_407b871e_ddbb_40b0_8ee4_65b8067b5d0e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_40866d3c_f405_4c60_bf60_4fcbe71608c2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_40866d3c_f405_4c60_bf60_4fcbe71608c2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_40a25129_2296_495e_8dce_8686db808c6e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_40a25129_2296_495e_8dce_8686db808c6e");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_40e12451_82e4_4f81_8caa_55996ebd874d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_40e12451_82e4_4f81_8caa_55996ebd874d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_41160eee_9e09_42e1_ba1e_7acd29519f14()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_41160eee_9e09_42e1_ba1e_7acd29519f14");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_411eb203_dead_46fa_b0bd_90a30d706bc5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_411eb203_dead_46fa_b0bd_90a30d706bc5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4127b26f_3a6c_4748_a690_fb8a09660b3c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4127b26f_3a6c_4748_a690_fb8a09660b3c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_414fb162_b776_4957_8966_91017d39627a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_414fb162_b776_4957_8966_91017d39627a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4151fa73_7a62_4b1b_8c3d_0b4faefc7e5c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4151fa73_7a62_4b1b_8c3d_0b4faefc7e5c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_415b4bec_8e3f_4903_b420_52fc214d2dfe()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_415b4bec_8e3f_4903_b420_52fc214d2dfe");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4173ec9f_56ce_4b3f_a2bd_01720649e2a8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4173ec9f_56ce_4b3f_a2bd_01720649e2a8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_418b4420_e853_479a_854f_19b18663dac1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_418b4420_e853_479a_854f_19b18663dac1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_41dffb47_e7c0_4642_b360_e788128cb300()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_41dffb47_e7c0_4642_b360_e788128cb300");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_41f580ac_f259_4ef4_b70f_12985f5c7d24()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_41f580ac_f259_4ef4_b70f_12985f5c7d24");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4209be7c_43ac_423e_ab34_682f2a79bc1f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4209be7c_43ac_423e_ab34_682f2a79bc1f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_420c6577_396d_4580_bac2_e644a1c4825f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_420c6577_396d_4580_bac2_e644a1c4825f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4210610b_c201_49e4_8c13_ff26ed3475aa()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4210610b_c201_49e4_8c13_ff26ed3475aa");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_42273529_ffc5_41e8_81a5_e9143d2cab1e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_42273529_ffc5_41e8_81a5_e9143d2cab1e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4228aeb9_edc7_43bf_a78d_53d786ce2807()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4228aeb9_edc7_43bf_a78d_53d786ce2807");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_423b31ed_a49e_46b7_905e_d41f4294e862()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_423b31ed_a49e_46b7_905e_d41f4294e862");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4248e10b_e464_4bd0_9e84_460b88f6c067()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4248e10b_e464_4bd0_9e84_460b88f6c067");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_425b76a9_2216_4fac_a5f6_0c4f41b34f03()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_425b76a9_2216_4fac_a5f6_0c4f41b34f03");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_42724c18_f788_4bd9_ade3_77345d27bc6c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_42724c18_f788_4bd9_ade3_77345d27bc6c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_42917448_da93_4a41_b6cb_1b4f1bad5d37()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_42917448_da93_4a41_b6cb_1b4f1bad5d37");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4299107b_e280_46eb_8eb6_71988f0202c6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4299107b_e280_46eb_8eb6_71988f0202c6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_42a22377_dee6_44db_96bd_08f900da2aa7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_42a22377_dee6_44db_96bd_08f900da2aa7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_42d4fb93_786d_49e1_9d26_d6132cf9b739()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_42d4fb93_786d_49e1_9d26_d6132cf9b739");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_42fc8ebd_9a62_423e_9fe1_6942df56c41a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_42fc8ebd_9a62_423e_9fe1_6942df56c41a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_431c6e9c_edd8_4077_b40d_bd4d0c746f20()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_431c6e9c_edd8_4077_b40d_bd4d0c746f20");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4347e843_8375_47b1_b62a_fdcfaa3397f2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4347e843_8375_47b1_b62a_fdcfaa3397f2");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_4375bdcc_9791_4991_ab1a_a83e41c461f5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_4375bdcc_9791_4991_ab1a_a83e41c461f5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_439cb397_b181_4850_b057_bcb47df0e457()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_439cb397_b181_4850_b057_bcb47df0e457");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_43a83a39_fb75_4387_9df3_32c1e95c13a0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_43a83a39_fb75_4387_9df3_32c1e95c13a0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_43de0f57_19b7_4128_b352_f718f9bbb4eb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_43de0f57_19b7_4128_b352_f718f9bbb4eb");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_43f1b768_b9bd_466a_8235_74cb8740e15b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_43f1b768_b9bd_466a_8235_74cb8740e15b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4403eff1_58b0_480d_8cab_2b2092cd5bae()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4403eff1_58b0_480d_8cab_2b2092cd5bae");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_44198969_1061_4042_9ba4_36d807a72640()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_44198969_1061_4042_9ba4_36d807a72640");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_442476a4_71ce_4568_8d81_a29b933f1e19()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_442476a4_71ce_4568_8d81_a29b933f1e19");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_4426f07e_0926_4386_ab2a_d9f9983d21b0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_4426f07e_0926_4386_ab2a_d9f9983d21b0");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_4440623f_59c0_4e7e_9135_710a6a279fa0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_4440623f_59c0_4e7e_9135_710a6a279fa0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_444a57fa_6f7c_4c74_b0f0_4f3ae116001d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_444a57fa_6f7c_4c74_b0f0_4f3ae116001d");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_4456287e_f7ab_4a87_b805_8f310a35ea22()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_4456287e_f7ab_4a87_b805_8f310a35ea22");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_44667e5a_c098_4c2e_9e79_e4a7cf0bfcb4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_44667e5a_c098_4c2e_9e79_e4a7cf0bfcb4");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_446d5cf8_4a94_4acd_931a_aa66dd4098ae()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_446d5cf8_4a94_4acd_931a_aa66dd4098ae");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_44859758_9ff0_4660_bc79_02f8a0bdd840()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_44859758_9ff0_4660_bc79_02f8a0bdd840");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_44b3c5a0_13b7_4fa2_a1ae_a1e4a8ce5463()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_44b3c5a0_13b7_4fa2_a1ae_a1e4a8ce5463");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_44c09783_2190_445b_9ada_fe5abb779024()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_44c09783_2190_445b_9ada_fe5abb779024");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_44d3d61d_eee7_4da8_b7e1_37fef8f5716b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_44d3d61d_eee7_4da8_b7e1_37fef8f5716b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_44e17f36_cf2d_49eb_8bb4_0cffd28e50be()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_44e17f36_cf2d_49eb_8bb4_0cffd28e50be");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_44ef7a5f_354f_4bec_b060_664414aecd36()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_44ef7a5f_354f_4bec_b060_664414aecd36");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_44f3cc7a_313e_4409_9764_43d7331004a2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_44f3cc7a_313e_4409_9764_43d7331004a2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_44feef1b_f7d8_4aa6_ba5f_9c45d6e19569()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_44feef1b_f7d8_4aa6_ba5f_9c45d6e19569");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_453bb6c1_2e4b_4595_8139_12661e37df18()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_453bb6c1_2e4b_4595_8139_12661e37df18");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_455a0e62_5afe_4a63_8137_eefeb65f0616()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_455a0e62_5afe_4a63_8137_eefeb65f0616");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_457a3862_14a5_47e4_8266_897fe094ca5a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_457a3862_14a5_47e4_8266_897fe094ca5a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_458ac3db_7566_4124_8258_4c3a1f3269d0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_458ac3db_7566_4124_8258_4c3a1f3269d0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_45b89485_dc45_4512_9fd5_e7d5976672f8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_45b89485_dc45_4512_9fd5_e7d5976672f8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_45b8df9c_3644_4b35_8c63_097aee86bf26()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_45b8df9c_3644_4b35_8c63_097aee86bf26");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_45fac6d4_3014_4922_866b_5667f88a14b9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_45fac6d4_3014_4922_866b_5667f88a14b9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4619ffb6_6706_4cca_a9ba_e505064bbf95()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4619ffb6_6706_4cca_a9ba_e505064bbf95");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4635433a_67c7_4ee7_80d3_5b652876190c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4635433a_67c7_4ee7_80d3_5b652876190c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_465b6a9f_f644_4639_995e_1bed8bf4b957()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_465b6a9f_f644_4639_995e_1bed8bf4b957");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_46920b33_0171_4042_8c33_5986409cc044()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_46920b33_0171_4042_8c33_5986409cc044");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_46ac2770_6e81_4215_8871_747269d8cc61()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_46ac2770_6e81_4215_8871_747269d8cc61");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_46ca080d_96c1_4ed5_8c42_1ddecfa9f9d6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_46ca080d_96c1_4ed5_8c42_1ddecfa9f9d6");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_46cbc2f4_9fe4_4612_9aee_b88e2a9c75dc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_46cbc2f4_9fe4_4612_9aee_b88e2a9c75dc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_46ea601d_2306_4a80_967d_535f807d17a8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_46ea601d_2306_4a80_967d_535f807d17a8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_46f338d4_dba3_4bd6_bc2f_e2adfd83214d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_46f338d4_dba3_4bd6_bc2f_e2adfd83214d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_46fa5f32_d343_4c86_8acb_e6ce66c069a8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_46fa5f32_d343_4c86_8acb_e6ce66c069a8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_471c2c05_1b2a_4196_98f2_377932a438f5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_471c2c05_1b2a_4196_98f2_377932a438f5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_473ace26_ecdb_4980_b115_10b36053235f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_473ace26_ecdb_4980_b115_10b36053235f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_475e5d57_28b5_49e9_821c_e8ff6e80e027()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_475e5d57_28b5_49e9_821c_e8ff6e80e027");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_47745d4e_7200_4c81_9378_600f5e76179c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_47745d4e_7200_4c81_9378_600f5e76179c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_47871774_c900_4233_b320_af1c9749e071()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_47871774_c900_4233_b320_af1c9749e071");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_47880e08_a3a3_47db_88b7_4e94aaf409bf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_47880e08_a3a3_47db_88b7_4e94aaf409bf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_479d1d85_7841_46f6_94c0_d1d309781982()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_479d1d85_7841_46f6_94c0_d1d309781982");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_47f14054_1328_4bfe_8690_60e915cbd5ae()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_47f14054_1328_4bfe_8690_60e915cbd5ae");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_47f3bcf2_418f_43d0_87f2_de37b281b678()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_47f3bcf2_418f_43d0_87f2_de37b281b678");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_47feb6a6_9b8f_4908_9e9a_4c321a126c07()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_47feb6a6_9b8f_4908_9e9a_4c321a126c07");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_483c2eae_0d17_45a9_b6ec_01055c6377c5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_483c2eae_0d17_45a9_b6ec_01055c6377c5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_48416dd1_e101_48b1_bf89_dca60f87ef89()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_48416dd1_e101_48b1_bf89_dca60f87ef89");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4851a97d_d25f_41e3_9a10_a9c85be6ed5a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4851a97d_d25f_41e3_9a10_a9c85be6ed5a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4853ce0e_00cb_49cb_9dbe_26a4daef1890()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4853ce0e_00cb_49cb_9dbe_26a4daef1890");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4859f3b5_178d_4d93_bf47_0b044bbf05a4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4859f3b5_178d_4d93_bf47_0b044bbf05a4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_487af0a2_df1b_4b8a_a37a_0c219277b2ca()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_487af0a2_df1b_4b8a_a37a_0c219277b2ca");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_48ae5ed0_b733_49f4_94e0_54fffbc87451()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_48ae5ed0_b733_49f4_94e0_54fffbc87451");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_48af1437_d8c0_459a_8e93_e3be70568a9f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_48af1437_d8c0_459a_8e93_e3be70568a9f");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_48c97d88_3fea_41fc_af69_8ea5f8cb9051()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_48c97d88_3fea_41fc_af69_8ea5f8cb9051");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_490bd39f_c8ad_4129_b6f3_3de86fa05a28()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_490bd39f_c8ad_4129_b6f3_3de86fa05a28");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_494c7ff1_3e7d_410f_afd1_5568d1495735()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_494c7ff1_3e7d_410f_afd1_5568d1495735");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_49550bcb_1a65_4096_9117_93f599341c4c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_49550bcb_1a65_4096_9117_93f599341c4c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_49642e17_9f85_4775_8eda_22ec5a6d1ea1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_49642e17_9f85_4775_8eda_22ec5a6d1ea1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_496f8d66_3ce3_4e11_a075_1b385ffd3e1d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_496f8d66_3ce3_4e11_a075_1b385ffd3e1d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_496fda12_cb47_4042_8c8a_d36821c8fb45()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_496fda12_cb47_4042_8c8a_d36821c8fb45");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_49d89a9f_107d_435e_b8a2_c8f7e2bb78ae()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_49d89a9f_107d_435e_b8a2_c8f7e2bb78ae");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_49f66010_b63e_4196_bea3_4bc64b0a7e36()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_49f66010_b63e_4196_bea3_4bc64b0a7e36");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4a188bf7_2af6_4f8c_bb80_6d95ee8d75c1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4a188bf7_2af6_4f8c_bb80_6d95ee8d75c1");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_4a1a5243_79bf_4d23_9d2f_3157ee52e1a5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_4a1a5243_79bf_4d23_9d2f_3157ee52e1a5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4a22277e_ffb3_4510_bc9c_522aaf1abad0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4a22277e_ffb3_4510_bc9c_522aaf1abad0");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_4a2fce7f_ee27_4f4d_bfc3_8ce1746210e8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_4a2fce7f_ee27_4f4d_bfc3_8ce1746210e8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4a3a064c_4062_4235_aa35_b3f1a225b6fe()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4a3a064c_4062_4235_aa35_b3f1a225b6fe");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4a80b746_ca5c_43e1_8f88_642d6ff66d2f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4a80b746_ca5c_43e1_8f88_642d6ff66d2f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4a8b64eb_769f_4827_b15a_a6e7d031fbb2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4a8b64eb_769f_4827_b15a_a6e7d031fbb2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4a8ca512_d056_4ae0_a314_69731139ac6a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4a8ca512_d056_4ae0_a314_69731139ac6a");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_4adfb7d6_6293_4ede_95c8_da66d6eb42c8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_4adfb7d6_6293_4ede_95c8_da66d6eb42c8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4af9dd3a_cab7_4718_9081_f7bf27781d2c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4af9dd3a_cab7_4718_9081_f7bf27781d2c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4b066909_2a66_4479_860f_c918f07f3db9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4b066909_2a66_4479_860f_c918f07f3db9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4b1a68ce_01c0_4201_ae29_c57eca6e841b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4b1a68ce_01c0_4201_ae29_c57eca6e841b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4b5a52b7_8e57_4c17_bfeb_e287a6f4069e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4b5a52b7_8e57_4c17_bfeb_e287a6f4069e");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_4b74f92c_8d93_40c5_99e9_7f3519928930()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_4b74f92c_8d93_40c5_99e9_7f3519928930");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4b7cce6c_f3dc_4015_866d_cc60695bc36c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4b7cce6c_f3dc_4015_866d_cc60695bc36c");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_4b96e335_1854_41dd_abe0_e6649366c6be()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_4b96e335_1854_41dd_abe0_e6649366c6be");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4ba519f2_7a0c_4eba_ad9f_29ea27792be1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4ba519f2_7a0c_4eba_ad9f_29ea27792be1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4bb62339_f651_49cc_8b28_d115052f95c6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4bb62339_f651_49cc_8b28_d115052f95c6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4bc15966_cb8b_4cce_9c5f_1f92dfe140f8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4bc15966_cb8b_4cce_9c5f_1f92dfe140f8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4bc1aa05_f2ec_4ad3_af5d_4e9353e87ac7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4bc1aa05_f2ec_4ad3_af5d_4e9353e87ac7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4bc6b75b_3429_49df_9499_9171dcaa5e3d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4bc6b75b_3429_49df_9499_9171dcaa5e3d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4c03a839_f725_4628_8691_22b5d8bbca0f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4c03a839_f725_4628_8691_22b5d8bbca0f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4c07579e_8b32_4bc1_8ffc_e50ffa98d763()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4c07579e_8b32_4bc1_8ffc_e50ffa98d763");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4c43bc53_6361_41c3_95a5_396153996d85()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4c43bc53_6361_41c3_95a5_396153996d85");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4c5d76c5_c7f4_4311_8b9c_94894d07e943()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4c5d76c5_c7f4_4311_8b9c_94894d07e943");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4cd1f1da_66e7_4fe8_b9a1_663be77672e2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4cd1f1da_66e7_4fe8_b9a1_663be77672e2");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_4cd787dc_310b_45c6_8981_920930a8c2f9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_4cd787dc_310b_45c6_8981_920930a8c2f9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4cd99f5e_a1fb_4c41_b138_aa47b2a72863()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4cd99f5e_a1fb_4c41_b138_aa47b2a72863");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4cdd04e5_de5f_49eb_a655_c7c6c095f975()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4cdd04e5_de5f_49eb_a655_c7c6c095f975");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4d498e53_0928_43e7_a4f4_aada808b7638()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4d498e53_0928_43e7_a4f4_aada808b7638");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4d505cda_ba76_4375_be6e_7ed5b799bfc1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4d505cda_ba76_4375_be6e_7ed5b799bfc1");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_4d53e06b_e197_4e1c_b3cb_13727ce49a94()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_4d53e06b_e197_4e1c_b3cb_13727ce49a94");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_4d7bd7ab_142f_44f4_9157_bf69407df5e0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_4d7bd7ab_142f_44f4_9157_bf69407df5e0");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_4dbb395b_bd38_4be1_8b2b_c188f24a6a0c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_4dbb395b_bd38_4be1_8b2b_c188f24a6a0c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4dbb8b4c_9115_4925_b45f_32782ac78df8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4dbb8b4c_9115_4925_b45f_32782ac78df8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4dd579de_f16d_40d7_9893_9a6a59c520e0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4dd579de_f16d_40d7_9893_9a6a59c520e0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4dfe4e1c_fb3d_47de_9ecc_533c1fa5034d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4dfe4e1c_fb3d_47de_9ecc_533c1fa5034d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4e1e799a_1413_4b62_bf81_d2da6f36c895()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4e1e799a_1413_4b62_bf81_d2da6f36c895");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4e215cf5_6da4_4c7b_878f_188865df9a46()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4e215cf5_6da4_4c7b_878f_188865df9a46");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4e405006_f23a_4320_83a2_66aea24f49bb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4e405006_f23a_4320_83a2_66aea24f49bb");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_4e4ee666_acf6_4277_a79e_d93b75d2d53a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_4e4ee666_acf6_4277_a79e_d93b75d2d53a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4e6cfbf3_525f_43ed_8d18_f4ef86ca2dd4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4e6cfbf3_525f_43ed_8d18_f4ef86ca2dd4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4e6fa6fc_a7f8_446c_a42a_128e7edad900()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4e6fa6fc_a7f8_446c_a42a_128e7edad900");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4e89da12_a410_4a42_844e_f0f369aff0f6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4e89da12_a410_4a42_844e_f0f369aff0f6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4e8e0b44_07fc_4329_8cae_0ea02606bc22()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4e8e0b44_07fc_4329_8cae_0ea02606bc22");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4f08413f_fa75_4211_8d25_a7da602c8fa2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4f08413f_fa75_4211_8d25_a7da602c8fa2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4f16edaf_78e3_4e88_a09b_b609e073d8dd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4f16edaf_78e3_4e88_a09b_b609e073d8dd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4f2d7b25_93b0_484a_add0_8d818a07643c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4f2d7b25_93b0_484a_add0_8d818a07643c");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_4f70b791_0f59_47d8_b221_0c677a9d4734()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_4f70b791_0f59_47d8_b221_0c677a9d4734");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_4f759cc4_01f7_46fe_a6ba_9d562d1d9308()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_4f759cc4_01f7_46fe_a6ba_9d562d1d9308");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4fc4d81f_de64_4bdd_af80_64a74c773d17()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4fc4d81f_de64_4bdd_af80_64a74c773d17");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4fd5c7f0_67dd_4c7d_a2b1_20b4c32c1744()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4fd5c7f0_67dd_4c7d_a2b1_20b4c32c1744");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_4feae473_3021_4f89_b704_452881fe28eb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_4feae473_3021_4f89_b704_452881fe28eb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5021c504_220e_4e9f_86d3_0ccf6ea56a80()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5021c504_220e_4e9f_86d3_0ccf6ea56a80");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_502e11c8_ef36_43d9_8477_33e70ffb67e3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_502e11c8_ef36_43d9_8477_33e70ffb67e3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_502faa97_0405_47d9_a516_797e105082cc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_502faa97_0405_47d9_a516_797e105082cc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_504cd4fe_5db0_4ac0_bece_b87f4eb02fd6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_504cd4fe_5db0_4ac0_bece_b87f4eb02fd6");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_50582d35_4f99_4bfe_a025_37f676389b13()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_50582d35_4f99_4bfe_a025_37f676389b13");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5064dfbd_de97_4e79_b82f_65972e515393()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5064dfbd_de97_4e79_b82f_65972e515393");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5067c33d_6517_4f6c_a3f0_6d16e0d91a72()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5067c33d_6517_4f6c_a3f0_6d16e0d91a72");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_508e64f3_6bc4_4d19_a7ff_46ed6fb74089()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_508e64f3_6bc4_4d19_a7ff_46ed6fb74089");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_50b502b0_5df5_478c_8fb6_14d91b5c34fb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_50b502b0_5df5_478c_8fb6_14d91b5c34fb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_50bd3795_1232_4db4_b6fa_92cd55cff026()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_50bd3795_1232_4db4_b6fa_92cd55cff026");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_50c3f17a_fcd7_4e08_b84e_a5e2acdaa0a6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_50c3f17a_fcd7_4e08_b84e_a5e2acdaa0a6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_50e7c299_46f7_4f14_8b70_3f23e0f02538()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_50e7c299_46f7_4f14_8b70_3f23e0f02538");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_510799a2_131d_47d0_aa3f_5c0d1a95afb2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_510799a2_131d_47d0_aa3f_5c0d1a95afb2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_51219752_1617_4a87_ac1d_70131475f268()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_51219752_1617_4a87_ac1d_70131475f268");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_512b0aeb_6126_48fe_a076_895741185340()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_512b0aeb_6126_48fe_a076_895741185340");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_513c67e4_917d_4118_847e_df2fe8d9d1e2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_513c67e4_917d_4118_847e_df2fe8d9d1e2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_514839a8_67b2_44b5_bae2_16f35f14d549()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_514839a8_67b2_44b5_bae2_16f35f14d549");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_5160710c_90de_413f_8d72_3d51cb2659e6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_5160710c_90de_413f_8d72_3d51cb2659e6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_51962b1e_43a0_4eec_a493_36a8e5ae35de()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_51962b1e_43a0_4eec_a493_36a8e5ae35de");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_5237beec_f833_42ec_b96f_d7e0299f9a3d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_5237beec_f833_42ec_b96f_d7e0299f9a3d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_523a16e8_734d_478b_81a9_dfa1ef1712bd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_523a16e8_734d_478b_81a9_dfa1ef1712bd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_524cb71f_38eb_4dce_a526_c8731e400e43()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_524cb71f_38eb_4dce_a526_c8731e400e43");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_52580f5c_9114_4d36_871a_ce1253684ad6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_52580f5c_9114_4d36_871a_ce1253684ad6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_52582640_6d0b_48fe_aa94_b8cd9f905b50()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_52582640_6d0b_48fe_aa94_b8cd9f905b50");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5264edf0_6356_43ff_a005_78096c5905a5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5264edf0_6356_43ff_a005_78096c5905a5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_529dccd1_6c35_4bf6_9a14_fdfcc0114a0d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_529dccd1_6c35_4bf6_9a14_fdfcc0114a0d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_52a02517_80d6_42fd_ae1f_275c532b923b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_52a02517_80d6_42fd_ae1f_275c532b923b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_52ad7728_7787_4fbf_8f1b_209369c6ef64()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_52ad7728_7787_4fbf_8f1b_209369c6ef64");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_52be8828_0d97_4ccf_810e_88e23254a94c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_52be8828_0d97_4ccf_810e_88e23254a94c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_52e34d22_f9fc_4153_81e9_f42839f4795f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_52e34d22_f9fc_4153_81e9_f42839f4795f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_52f6ddf3_345a_40d1_a9b0_d7fd5e96ed78()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_52f6ddf3_345a_40d1_a9b0_d7fd5e96ed78");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_52f8e9cf_88b4_460d_8391_a962032aa6d8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_52f8e9cf_88b4_460d_8391_a962032aa6d8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_530288ab_6d83_4691_9ae7_3a3796bf67bd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_530288ab_6d83_4691_9ae7_3a3796bf67bd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5323af14_ca37_4e80_b046_ce2b0f1196a2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5323af14_ca37_4e80_b046_ce2b0f1196a2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5327fb77_b158_4b0f_9bde_9db5ddae9a8b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5327fb77_b158_4b0f_9bde_9db5ddae9a8b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_532827fe_7db1_4597_a4ec_a9f96e0b24ad()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_532827fe_7db1_4597_a4ec_a9f96e0b24ad");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_53c93b84_989a_429a_937c_030bf5e8d889()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_53c93b84_989a_429a_937c_030bf5e8d889");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_541df01a_58b5_4b13_b277_1307e68d2afa()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_541df01a_58b5_4b13_b277_1307e68d2afa");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5428ca88_8f43_4f27_a479_61ce3094479a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5428ca88_8f43_4f27_a479_61ce3094479a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_54342fdd_3a62_4d5f_af65_abff1b397207()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_54342fdd_3a62_4d5f_af65_abff1b397207");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5453ce52_6296_4059_9afc_1475912e6d1b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5453ce52_6296_4059_9afc_1475912e6d1b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_54770223_2da0_45ba_b627_8d6cdab2712f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_54770223_2da0_45ba_b627_8d6cdab2712f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_54b6c003_9a8f_4b49_8425_e5f829315566()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_54b6c003_9a8f_4b49_8425_e5f829315566");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_54bedae4_3cb1_410c_a9eb_71a3e6919bdf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_54bedae4_3cb1_410c_a9eb_71a3e6919bdf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_54d1739a_36df_4b8d_a3d0_f270776ba134()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_54d1739a_36df_4b8d_a3d0_f270776ba134");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_54fa0a95_3781_4354_a021_f5903b5ff525()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_54fa0a95_3781_4354_a021_f5903b5ff525");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5502b6e6_78cb_4f9d_a069_8dbb8794806c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5502b6e6_78cb_4f9d_a069_8dbb8794806c");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_550bc85f_8805_473b_aa04_b0fbef117c3b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_550bc85f_8805_473b_aa04_b0fbef117c3b");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_5546a870_b147_44bd_b29a_a56c432b735c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_5546a870_b147_44bd_b29a_a56c432b735c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_55592132_dcea_4bc6_96bc_37ad8b9a6f1f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_55592132_dcea_4bc6_96bc_37ad8b9a6f1f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_556368e1_c93b_448d_b284_40c180cfc524()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_556368e1_c93b_448d_b284_40c180cfc524");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_5580de2d_6fac_4211_abec_31402f61fb60()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_5580de2d_6fac_4211_abec_31402f61fb60");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_559c8d87_d039_4c23_911e_285e74eca0f6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_559c8d87_d039_4c23_911e_285e74eca0f6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_55ef443e_7db8_49a1_8fd9_09b3dc11afa5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_55ef443e_7db8_49a1_8fd9_09b3dc11afa5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_55f6266f_5952_40f1_b3fe_b83acee42c42()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_55f6266f_5952_40f1_b3fe_b83acee42c42");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_561a9213_5056_4916_82b3_fbd9a965f601()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_561a9213_5056_4916_82b3_fbd9a965f601");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5624e281_3a33_404f_8027_c99c83e4d07d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5624e281_3a33_404f_8027_c99c83e4d07d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_56357d1f_fa33_4c35_8acd_62ca29f3509c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_56357d1f_fa33_4c35_8acd_62ca29f3509c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_565b3db8_d7e0_47b1_a794_00213e5ffb68()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_565b3db8_d7e0_47b1_a794_00213e5ffb68");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_568abf4f_a219_45c2_be97_3fd1a459490d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_568abf4f_a219_45c2_be97_3fd1a459490d");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_5695a224_78bf_494b_bb46_df3edf9a8c6e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_5695a224_78bf_494b_bb46_df3edf9a8c6e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_56b51553_7df6_4a76_9219_5e652e61f1c4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_56b51553_7df6_4a76_9219_5e652e61f1c4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_56fe4fe2_4c5e_4aea_a181_abc6f753c4e4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_56fe4fe2_4c5e_4aea_a181_abc6f753c4e4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5719fc03_0caf_4a32_a89c_316b2511de3d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5719fc03_0caf_4a32_a89c_316b2511de3d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_572628b2_9b17_41fe_8ee0_86f49cbf141b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_572628b2_9b17_41fe_8ee0_86f49cbf141b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_57388d0d_a64e_4085_8fd1_5790032485c5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_57388d0d_a64e_4085_8fd1_5790032485c5");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_574c9d17_e02c_49a7_843d_afafb5c013fc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_574c9d17_e02c_49a7_843d_afafb5c013fc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_574f9354_98b4_47f7_8d56_5c61b6b24bae()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_574f9354_98b4_47f7_8d56_5c61b6b24bae");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_57803255_1d65_4187_8f3d_05be9946bf29()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_57803255_1d65_4187_8f3d_05be9946bf29");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_57b57adb_8974_42fe_9297_1d7839459ceb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_57b57adb_8974_42fe_9297_1d7839459ceb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_57befa02_dd95_4df5_a9ae_34912ad0f599()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_57befa02_dd95_4df5_a9ae_34912ad0f599");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_57d1fffd_e13a_400e_82b1_2040a67d51bd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_57d1fffd_e13a_400e_82b1_2040a67d51bd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_57d86a37_a1e6_40c6_9736_ababcb819384()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_57d86a37_a1e6_40c6_9736_ababcb819384");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5838e813_5a07_41a9_83da_324976d250e5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5838e813_5a07_41a9_83da_324976d250e5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_584a9584_38a6_4007_840f_3882dbacbbce()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_584a9584_38a6_4007_840f_3882dbacbbce");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5865bc4b_8800_40af_89ea_24e14941ab8b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5865bc4b_8800_40af_89ea_24e14941ab8b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_587114ca_a897_4bcc_8df7_fde8cabc930f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_587114ca_a897_4bcc_8df7_fde8cabc930f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_588085b8_37b5_4d0b_b5db_df0eef37b860()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_588085b8_37b5_4d0b_b5db_df0eef37b860");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_588f02ef_bbc4_4452_b76b_ecb66740526c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_588f02ef_bbc4_4452_b76b_ecb66740526c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_58aae989_4770_4523_bcfe_2bd08e90481c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_58aae989_4770_4523_bcfe_2bd08e90481c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_58c0d67f_4ba3_4046_922b_73e6234ab246()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_58c0d67f_4ba3_4046_922b_73e6234ab246");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_58d3a69e_f837_404f_b134_337da1b3adf7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_58d3a69e_f837_404f_b134_337da1b3adf7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5900b0fe_93c1_4532_88f9_e7a27752d143()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5900b0fe_93c1_4532_88f9_e7a27752d143");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_59201f01_58f5_4e9f_8d30_3ab0ee29dac0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_59201f01_58f5_4e9f_8d30_3ab0ee29dac0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_59567820_9c11_42c0_9859_f5dad268930c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_59567820_9c11_42c0_9859_f5dad268930c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_596233d7_067d_44b8_a69b_41d888ee59a8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_596233d7_067d_44b8_a69b_41d888ee59a8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_596fc3ec_781c_4add_b00c_723a1a6c8bba()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_596fc3ec_781c_4add_b00c_723a1a6c8bba");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5991fff3_1f4c_4255_8e62_38e58f6ed874()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5991fff3_1f4c_4255_8e62_38e58f6ed874");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5998a2f8_67eb_43db_b4ba_7819978a8bca()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5998a2f8_67eb_43db_b4ba_7819978a8bca");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_599c21a3_61e5_4ff8_813e_2dad42c4f1e3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_599c21a3_61e5_4ff8_813e_2dad42c4f1e3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_59b83457_5a6f_4747_9e7a_fda36ff0772c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_59b83457_5a6f_4747_9e7a_fda36ff0772c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_59c2d4f6_505a_4d37_a3a3_48aad806b22d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_59c2d4f6_505a_4d37_a3a3_48aad806b22d");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_59c97195_224f_432e_a6f1_1c22ebc90613()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_59c97195_224f_432e_a6f1_1c22ebc90613");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5a02b6c4_f8e1_48ef_a487_3a3d56e67696()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5a02b6c4_f8e1_48ef_a487_3a3d56e67696");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5a18f2bb_be81_4b4f_b80a_deb09401fb75()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5a18f2bb_be81_4b4f_b80a_deb09401fb75");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5a1a90a0_70e7_4d71_bd8e_b15d3f5fa9f7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5a1a90a0_70e7_4d71_bd8e_b15d3f5fa9f7");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_5a834e4c_3f89_4ed8_b8ee_e7981f9bb746()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_5a834e4c_3f89_4ed8_b8ee_e7981f9bb746");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5a90ad23_cc41_4036_80a0_b675c749abbc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5a90ad23_cc41_4036_80a0_b675c749abbc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5aabee61_79e1_446d_8c32_3dd5be9bfc4e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5aabee61_79e1_446d_8c32_3dd5be9bfc4e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5aadb25b_713f_4512_bdf0_b325c26a6982()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5aadb25b_713f_4512_bdf0_b325c26a6982");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5ad4e59d_b386_4409_9df8_ee05c6b02c7d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5ad4e59d_b386_4409_9df8_ee05c6b02c7d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5ae0fe76_37fd_40e7_b890_5305d9c11b1b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5ae0fe76_37fd_40e7_b890_5305d9c11b1b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5afdf491_901e_4c2d_878d_2dc9ee93ae81()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5afdf491_901e_4c2d_878d_2dc9ee93ae81");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5b13afaa_22f1_4109_b6ee_f13a789cba9d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5b13afaa_22f1_4109_b6ee_f13a789cba9d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5b38c94f_e39c_4780_b772_5f6c81789207()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5b38c94f_e39c_4780_b772_5f6c81789207");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5b3a7f0b_0412_4844_aeb2_cf285c1b2c0b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5b3a7f0b_0412_4844_aeb2_cf285c1b2c0b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5b6288da_4ee7_4b31_812e_3c8715801c60()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5b6288da_4ee7_4b31_812e_3c8715801c60");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5b6d5b96_c238_49ab_a7ae_beff7cf54e60()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5b6d5b96_c238_49ab_a7ae_beff7cf54e60");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5b7dd926_53f6_4580_9242_46094a9d4eb7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5b7dd926_53f6_4580_9242_46094a9d4eb7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5bb30413_33fa_473b_9313_2948e37cbe3b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5bb30413_33fa_473b_9313_2948e37cbe3b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5bc39e48_2147_4bb7_95e1_209e30f5372a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5bc39e48_2147_4bb7_95e1_209e30f5372a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5be4612a_7f1f_44e8_ae86_7e426a962981()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5be4612a_7f1f_44e8_ae86_7e426a962981");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5bf5d51b_4a21_4510_a45b_f65f23ea223f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5bf5d51b_4a21_4510_a45b_f65f23ea223f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5bfd8552_df2d_4ff4_aee5_b04540186296()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5bfd8552_df2d_4ff4_aee5_b04540186296");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5c197bf1_0253_4bad_a3f5_f427ad103629()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5c197bf1_0253_4bad_a3f5_f427ad103629");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_5c29174e_6c5f_45e8_bf92_166f9ab243cb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_5c29174e_6c5f_45e8_bf92_166f9ab243cb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5c2a6204_1b73_417d_9c20_e394743b76a5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5c2a6204_1b73_417d_9c20_e394743b76a5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5c6a74f1_85a9_4c81_868d_4b6e8b905a3d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5c6a74f1_85a9_4c81_868d_4b6e8b905a3d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5c6f0b40_79e8_435c_a0a6_45a9b415be83()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5c6f0b40_79e8_435c_a0a6_45a9b415be83");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5c773447_131b_42c6_9c33_ae083e19126d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5c773447_131b_42c6_9c33_ae083e19126d");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_5ce931fb_beff_42f4_b536_339f2da26f3d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_5ce931fb_beff_42f4_b536_339f2da26f3d");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_5d1019af_a9e4_43fb_b407_860c7c37db49()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_5d1019af_a9e4_43fb_b407_860c7c37db49");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5d686ba1_9168_4f98_9e95_14c1603375fc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5d686ba1_9168_4f98_9e95_14c1603375fc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5d92ca3c_6090_4b6a_88cb_81c790bbf08e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5d92ca3c_6090_4b6a_88cb_81c790bbf08e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5d982240_3b78_45e4_ac39_2b3dbf7c45b0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5d982240_3b78_45e4_ac39_2b3dbf7c45b0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5d98865d_ae6f_4c50_8c74_d6616c1d2950()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5d98865d_ae6f_4c50_8c74_d6616c1d2950");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5da4929d_c47e_4893_8ba4_2235c964fc30()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5da4929d_c47e_4893_8ba4_2235c964fc30");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5da6a125_15ac_406b_90fa_abaa0561aaa0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5da6a125_15ac_406b_90fa_abaa0561aaa0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5db23da6_cc8e_413b_bf01_0ee091c74f38()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5db23da6_cc8e_413b_bf01_0ee091c74f38");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_5e1c7ab8_c02d_42b9_8ffc_511f5dfee9ab()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_5e1c7ab8_c02d_42b9_8ffc_511f5dfee9ab");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5e1df1ee_45e9_40df_a9c3_c71f4f2bf11f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5e1df1ee_45e9_40df_a9c3_c71f4f2bf11f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5e72e602_e91e_430b_bbe2_a436be7ac691()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5e72e602_e91e_430b_bbe2_a436be7ac691");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5e93f622_c107_4bbd_859a_f65797ebc98f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5e93f622_c107_4bbd_859a_f65797ebc98f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5eaa1c87_81b6_49d6_9c1b_c4b03465b342()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5eaa1c87_81b6_49d6_9c1b_c4b03465b342");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5ecff120_03ad_4614_a901_d605db388926()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5ecff120_03ad_4614_a901_d605db388926");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_5ee884ef_d7ed_4b2f_87bb_09aba830751a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_5ee884ef_d7ed_4b2f_87bb_09aba830751a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5ee91b86_ac95_42c7_948f_455b57a3fb05()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5ee91b86_ac95_42c7_948f_455b57a3fb05");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5eebefd2_2360_4462_acde_8aa7eee01335()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5eebefd2_2360_4462_acde_8aa7eee01335");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5eeecfb2_9ead_4612_b872_0393e8a6af55()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5eeecfb2_9ead_4612_b872_0393e8a6af55");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_5ef5189d_92cf_4188_80de_9686fc37f878()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_5ef5189d_92cf_4188_80de_9686fc37f878");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5f003412_2eeb_47e6_90ff_0f08beef99fe()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5f003412_2eeb_47e6_90ff_0f08beef99fe");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5f9cd541_2fad_4f56_9423_6ec1c72915d3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5f9cd541_2fad_4f56_9423_6ec1c72915d3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5f9ffb2e_d5c3_4d9d_a83a_76e24c979c33()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5f9ffb2e_d5c3_4d9d_a83a_76e24c979c33");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_5fc1b4ed_d640_447b_9689_25abecac13ba()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_5fc1b4ed_d640_447b_9689_25abecac13ba");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_5fc6a2e0_5a5d_4e4f_b10b_6033de132009()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_5fc6a2e0_5a5d_4e4f_b10b_6033de132009");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_5fe9d914_b53e_4059_94e9_fe014b78e668()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_5fe9d914_b53e_4059_94e9_fe014b78e668");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6002e7e7_3737_4a8c_abf3_a11fdb030cfd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6002e7e7_3737_4a8c_abf3_a11fdb030cfd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6006d401_f045_4c84_9d2d_abec80737495()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6006d401_f045_4c84_9d2d_abec80737495");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_601cbb1c_0728_4bae_8f19_3d940c2beb89()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_601cbb1c_0728_4bae_8f19_3d940c2beb89");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_602f1526_8763_4e95_8535_064848847d87()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_602f1526_8763_4e95_8535_064848847d87");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6068f3ab_4097_4cb3_b978_8719cbc45290()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6068f3ab_4097_4cb3_b978_8719cbc45290");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6099e437_db80_44fb_bd05_8950e82a1257()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6099e437_db80_44fb_bd05_8950e82a1257");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_60af93fa_f46e_4af7_9520_f50444fba7b6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_60af93fa_f46e_4af7_9520_f50444fba7b6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_60cd4bfd_3b62_4709_aad1_c2d76722e235()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_60cd4bfd_3b62_4709_aad1_c2d76722e235");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_60f57af4_e5d7_4c7a_811f_4097528eeafe()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_60f57af4_e5d7_4c7a_811f_4097528eeafe");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6114ae19_1cab_4613_a659_004034f2da0e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6114ae19_1cab_4613_a659_004034f2da0e");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_61578853_3ae5_487c_bb38_d8c24c86828a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_61578853_3ae5_487c_bb38_d8c24c86828a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_616387ee_1067_4729_bbd7_74c5717b9e16()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_616387ee_1067_4729_bbd7_74c5717b9e16");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_616d3c63_c116_45ed_bcf9_8220211a2f5a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_616d3c63_c116_45ed_bcf9_8220211a2f5a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_618411bd_a2eb_4e71_87f0_4fe52bcdd1b2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_618411bd_a2eb_4e71_87f0_4fe52bcdd1b2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_619d49a9_3de1_47e8_b3fe_e0db0239b5a9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_619d49a9_3de1_47e8_b3fe_e0db0239b5a9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_619db3a9_7ba9_4198_b4f3_1d3f385c2780()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_619db3a9_7ba9_4198_b4f3_1d3f385c2780");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_61a41f18_96bb_41f0_8b34_2eee387cad68()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_61a41f18_96bb_41f0_8b34_2eee387cad68");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_61be996f_571b_478d_8dca_d85dd5732475()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_61be996f_571b_478d_8dca_d85dd5732475");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_61e7e978_ecc4_4d84_96be_be398ccd056e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_61e7e978_ecc4_4d84_96be_be398ccd056e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_62036201_613f_4f99_8f1f_5ee2652dd627()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_62036201_613f_4f99_8f1f_5ee2652dd627");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6207ecb5_7e73_4304_a599_411729d36557()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6207ecb5_7e73_4304_a599_411729d36557");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_621115e6_d04e_4e50_b96b_f4eb61c78f07()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_621115e6_d04e_4e50_b96b_f4eb61c78f07");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_62122f89_1778_4a89_b945_1a965bab197a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_62122f89_1778_4a89_b945_1a965bab197a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_62189259_e34f_4755_bdf1_454cf7e9d45a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_62189259_e34f_4755_bdf1_454cf7e9d45a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_621b0b72_7358_4da4_bdde_e7f3887c55d0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_621b0b72_7358_4da4_bdde_e7f3887c55d0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_622033f3_3915_41f0_9d75_5e61d6b69e30()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_622033f3_3915_41f0_9d75_5e61d6b69e30");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6222b3b5_6962_4675_bd62_382bd5fab672()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6222b3b5_6962_4675_bd62_382bd5fab672");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_625df5ff_d732_4dc7_a4eb_b4995294eda9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_625df5ff_d732_4dc7_a4eb_b4995294eda9");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_627c294d_43a5_4d76_ab87_5befb07ae1b8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_627c294d_43a5_4d76_ab87_5befb07ae1b8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_62853885_1ea9_4f78_b793_23851ced96bc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_62853885_1ea9_4f78_b793_23851ced96bc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_629a7e23_8baf_4559_9596_e948fbcdec75()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_629a7e23_8baf_4559_9596_e948fbcdec75");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_62a191fb_8829_4c81_a17f_7b541619e114()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_62a191fb_8829_4c81_a17f_7b541619e114");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_63534228_dde4_4c13_9550_72df82b6e241()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_63534228_dde4_4c13_9550_72df82b6e241");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6371280c_4fa9_4861_9221_48f87e8a594f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6371280c_4fa9_4861_9221_48f87e8a594f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_639d9ca6_a3fc_4aa4_8889_2b2b3bb0218d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_639d9ca6_a3fc_4aa4_8889_2b2b3bb0218d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_63cf537a_314c_4424_b95a_b09142ef2556()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_63cf537a_314c_4424_b95a_b09142ef2556");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_642726d9_6364_44c2_bc56_c0adb2cbf0af()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_642726d9_6364_44c2_bc56_c0adb2cbf0af");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_642cb54b_194f_404a_8761_dac01e6c436a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_642cb54b_194f_404a_8761_dac01e6c436a");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_6441c565_1027_4101_87c4_d796f5613b8e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_6441c565_1027_4101_87c4_d796f5613b8e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6474920a_fb0d_43f5_99d2_496cdcdada9e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6474920a_fb0d_43f5_99d2_496cdcdada9e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_649b6b1b_0326_47fa_807e_a067dd6d5305()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_649b6b1b_0326_47fa_807e_a067dd6d5305");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_64b129b8_8496_4da6_bfb3_9710079f309a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_64b129b8_8496_4da6_bfb3_9710079f309a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_64b156c6_d91d_49bf_82e1_723cd6dce5aa()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_64b156c6_d91d_49bf_82e1_723cd6dce5aa");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_64b95d2a_df5e_4ecc_aaf2_13ae97f62644()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_64b95d2a_df5e_4ecc_aaf2_13ae97f62644");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_65019de9_3450_45f0_ba3c_ea3fcd6780ca()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_65019de9_3450_45f0_ba3c_ea3fcd6780ca");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6511e6b9_ef3c_4780_97a5_29810984e85a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6511e6b9_ef3c_4780_97a5_29810984e85a");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_6516ad2c_e4fe_41cc_a8a9_0387fc746235()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_6516ad2c_e4fe_41cc_a8a9_0387fc746235");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6516fa2c_7cf1_463c_8104_afb65d6ee032()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6516fa2c_7cf1_463c_8104_afb65d6ee032");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_65462e33_df81_4645_b3b3_7d6e11c3bfa2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_65462e33_df81_4645_b3b3_7d6e11c3bfa2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_65471c91_56b4_4f6e_874d_52c3505fca81()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_65471c91_56b4_4f6e_874d_52c3505fca81");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6552aeea_e597_4c82_b7e0_ca3c6775248e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6552aeea_e597_4c82_b7e0_ca3c6775248e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_655c1a80_bac7_4a47_bdeb_e0013d147abf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_655c1a80_bac7_4a47_bdeb_e0013d147abf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_658a7384_cd0b_4161_84ce_a27f1b413ce0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_658a7384_cd0b_4161_84ce_a27f1b413ce0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_658cd6d6_5b0c_45cb_8585_1baeee445fa6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_658cd6d6_5b0c_45cb_8585_1baeee445fa6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6649f7b5_8cc7_446e_b9af_37c601d7cf18()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6649f7b5_8cc7_446e_b9af_37c601d7cf18");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_66624224_ab69_4056_884f_f4ad8d028f4c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_66624224_ab69_4056_884f_f4ad8d028f4c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_667169f7_c729_4b26_a862_828b919fac52()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_667169f7_c729_4b26_a862_828b919fac52");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_66836e28_3b3b_4d15_addf_172052999a71()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_66836e28_3b3b_4d15_addf_172052999a71");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_66994066_c910_4a99_bb61_9d5314f9a48c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_66994066_c910_4a99_bb61_9d5314f9a48c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_66a0a452_6310_4b30_83b4_a796b41af61f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_66a0a452_6310_4b30_83b4_a796b41af61f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_66a20211_e9d3_4a56_83a0_e449a224b1a6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_66a20211_e9d3_4a56_83a0_e449a224b1a6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_66c8e2a8_db17_41fc_b464_94b5515c71e5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_66c8e2a8_db17_41fc_b464_94b5515c71e5");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_66e20926_3553_4a57_84b4_fb5242147157()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_66e20926_3553_4a57_84b4_fb5242147157");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_66f26b83_7437_46e5_bb05_4511e9bcbd63()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_66f26b83_7437_46e5_bb05_4511e9bcbd63");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_673357fc_77f9_42d8_a219_f16ad3a59feb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_673357fc_77f9_42d8_a219_f16ad3a59feb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_67491e51_0161_4e68_a6c0_c45076496d36()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_67491e51_0161_4e68_a6c0_c45076496d36");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6762ff1d_6f6e_4e7c_b136_6e2bcc70c151()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6762ff1d_6f6e_4e7c_b136_6e2bcc70c151");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6772256e_bc2b_4b7b_9796_42f524d8fab2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6772256e_bc2b_4b7b_9796_42f524d8fab2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_67928881_155d_40f6_b940_baec367e6251()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_67928881_155d_40f6_b940_baec367e6251");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_67cb9922_b452_42aa_b577_eb0ec8ede625()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_67cb9922_b452_42aa_b577_eb0ec8ede625");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_67d619b7_4b50_49d2_af5f_7bd7b72b815c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_67d619b7_4b50_49d2_af5f_7bd7b72b815c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_67e3ebe0_9f06_482e_87b7_126ad8ba6988()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_67e3ebe0_9f06_482e_87b7_126ad8ba6988");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_68012691_0237_4f99_ac4a_d30eeaa5e151()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_68012691_0237_4f99_ac4a_d30eeaa5e151");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6880a61f_1a56_41c2_acca_440271dbf0a4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6880a61f_1a56_41c2_acca_440271dbf0a4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_68a20cae_42e9_4d8f_82f7_4f9d06fc9de0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_68a20cae_42e9_4d8f_82f7_4f9d06fc9de0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_68cc5cd2_a450_4847_a219_0c0fce6a9a27()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_68cc5cd2_a450_4847_a219_0c0fce6a9a27");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_68d20086_119f_4378_924a_ac71c55f489b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_68d20086_119f_4378_924a_ac71c55f489b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_68f930ac_56c0_4443_a96c_3ddfec445e77()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_68f930ac_56c0_4443_a96c_3ddfec445e77");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6923c5d5_fef4_4e2b_84de_d7c3b242d467()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6923c5d5_fef4_4e2b_84de_d7c3b242d467");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6936cd66_7c3a_4dcd_8e8a_d7d106245635()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6936cd66_7c3a_4dcd_8e8a_d7d106245635");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6954c209_acec_48de_9bc8_79133144a1f1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6954c209_acec_48de_9bc8_79133144a1f1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_696b95be_8c5f_4658_ab8f_ab63e21b30f9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_696b95be_8c5f_4658_ab8f_ab63e21b30f9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_697be858_2c6e_464c_a5f3_1c216eb8a665()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_697be858_2c6e_464c_a5f3_1c216eb8a665");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_698f59e6_f219_4dda_8d24_d02dfc7dfa59()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_698f59e6_f219_4dda_8d24_d02dfc7dfa59");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6995b27d_3a91_4f59_8836_9aa7e96c2424()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6995b27d_3a91_4f59_8836_9aa7e96c2424");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_69f45a43_83c5_4375_b5c8_a2392a59a3e2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_69f45a43_83c5_4375_b5c8_a2392a59a3e2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6a11c2ef_a406_40a9_b6c6_e854945077c2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6a11c2ef_a406_40a9_b6c6_e854945077c2");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_6a33a50a_9abf_4e32_894c_9c82b8d0cb47()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_6a33a50a_9abf_4e32_894c_9c82b8d0cb47");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6a3afc84_54d8_4792_aed8_b2195714c18f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6a3afc84_54d8_4792_aed8_b2195714c18f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6a8410b9_6e8a_4c3b_94cb_3f2bbdd6fd75()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6a8410b9_6e8a_4c3b_94cb_3f2bbdd6fd75");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6af7a74a_9c12_4928_be3d_bee16769e81f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6af7a74a_9c12_4928_be3d_bee16769e81f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6af8aa5c_11ec_4c6c_b9e5_ca8f3823c277()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6af8aa5c_11ec_4c6c_b9e5_ca8f3823c277");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6b387cde_e6bb_4f38_8d85_2a1086b47abc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6b387cde_e6bb_4f38_8d85_2a1086b47abc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6b45aa7f_6e2c_4587_8b46_a21788297029()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6b45aa7f_6e2c_4587_8b46_a21788297029");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6b83d081_828a_4c48_aa16_899502e6ed86()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6b83d081_828a_4c48_aa16_899502e6ed86");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6bb15a32_ce60_4581_9257_b122ed9f5b50()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6bb15a32_ce60_4581_9257_b122ed9f5b50");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_6bb53dcc_c355_4305_8a29_6a78ecd6a08d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_6bb53dcc_c355_4305_8a29_6a78ecd6a08d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6bdfcdad_d2b7_405e_8d11_117c47b9da64()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6bdfcdad_d2b7_405e_8d11_117c47b9da64");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6be668a4_ab59_4735_bcee_7c640e3b26e3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6be668a4_ab59_4735_bcee_7c640e3b26e3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6c1932f3_6a6e_46ef_89d5_916886a0509a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6c1932f3_6a6e_46ef_89d5_916886a0509a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6c2c152b_27a7_4ca5_8352_e3589bc3c472()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6c2c152b_27a7_4ca5_8352_e3589bc3c472");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6c3178cd_2fc5_4234_a1df_12bd901fe8b3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6c3178cd_2fc5_4234_a1df_12bd901fe8b3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6c4b1beb_cab8_40b4_bfd7_5bea6d5d34cf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6c4b1beb_cab8_40b4_bfd7_5bea6d5d34cf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6c57de66_5621_4fe7_990b_cd4074ed716b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6c57de66_5621_4fe7_990b_cd4074ed716b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6c6ea96d_fd63_4ec7_b123_93a86ae28109()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6c6ea96d_fd63_4ec7_b123_93a86ae28109");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6c7120c2_6307_4070_aae5_93ee37e97af2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6c7120c2_6307_4070_aae5_93ee37e97af2");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_6cb3588a_3640_4b98_adfc_7a4daabd1da0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_6cb3588a_3640_4b98_adfc_7a4daabd1da0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6cb5c9fa_b0cb_4e9f_b736_f59bf9a37971()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6cb5c9fa_b0cb_4e9f_b736_f59bf9a37971");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_6cb84c5a_1032_48c7_9ba4_32ccf0c7f310()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_6cb84c5a_1032_48c7_9ba4_32ccf0c7f310");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6cbf19eb_11aa_4705_9996_2b3baa6ac092()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6cbf19eb_11aa_4705_9996_2b3baa6ac092");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6cdaa8c5_1dd8_467b_936a_25dc2d46c449()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6cdaa8c5_1dd8_467b_936a_25dc2d46c449");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6d72914f_35c2_4de3_9f37_c2d25bbb8d7f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6d72914f_35c2_4de3_9f37_c2d25bbb8d7f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6d82efc6_6b7e_42d2_a7f5_f398cda96c25()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6d82efc6_6b7e_42d2_a7f5_f398cda96c25");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6da3c9ab_77f7_4a7c_bb52_c817fdd4159d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6da3c9ab_77f7_4a7c_bb52_c817fdd4159d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6ddc1612_f5b9_4189_a2c1_b11907f53318()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6ddc1612_f5b9_4189_a2c1_b11907f53318");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6e04ec9b_6c00_4443_99be_6fd34071f6bd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6e04ec9b_6c00_4443_99be_6fd34071f6bd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6e054ed1_8163_4e0b_b830_ff1823b77502()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6e054ed1_8163_4e0b_b830_ff1823b77502");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6e288f03_71ed_4ab5_bc4a_28afeb3f7bfe()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6e288f03_71ed_4ab5_bc4a_28afeb3f7bfe");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6e37b4b6_c12f_4141_a240_dcca6faba6f8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6e37b4b6_c12f_4141_a240_dcca6faba6f8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6e3cd7f5_1f4c_4180_9eb8_ba83aee20dca()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6e3cd7f5_1f4c_4180_9eb8_ba83aee20dca");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6e677197_cb25_4f39_9315_49160c4af1e3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6e677197_cb25_4f39_9315_49160c4af1e3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6e82739d_6754_4789_95f3_01ba98b4df60()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6e82739d_6754_4789_95f3_01ba98b4df60");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6e8cd446_5b8c_4053_ae4b_fbece2fb2b94()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6e8cd446_5b8c_4053_ae4b_fbece2fb2b94");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_6e9f14b1_a745_481e_a5e7_22804926618b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_6e9f14b1_a745_481e_a5e7_22804926618b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6ea6c739_8c66_49ed_8037_b445c89a0105()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6ea6c739_8c66_49ed_8037_b445c89a0105");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6ebfa2e3_4371_47ed_8858_d0be90a469e3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6ebfa2e3_4371_47ed_8858_d0be90a469e3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6ec51677_357b_4bae_aba0_77319bc7832c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6ec51677_357b_4bae_aba0_77319bc7832c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6ef6453d_86aa_482c_86ed_fa36286479fc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6ef6453d_86aa_482c_86ed_fa36286479fc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6f0ca467_36e4_4060_9bbe_5291720f103b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6f0ca467_36e4_4060_9bbe_5291720f103b");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_6f2ad89c_75de_445e_be37_92a4a540243f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_6f2ad89c_75de_445e_be37_92a4a540243f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6f34e329_c939_4426_8048_cf9fd17fc12f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6f34e329_c939_4426_8048_cf9fd17fc12f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6f36d794_aa15_4b26_aed2_b76c78dcd9e4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6f36d794_aa15_4b26_aed2_b76c78dcd9e4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6f63417b_aaae_46a2_8216_4cf1ae141ddb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6f63417b_aaae_46a2_8216_4cf1ae141ddb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_6fb1a7ce_cd2f_4ad1_810a_8c2868b5c8da()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_6fb1a7ce_cd2f_4ad1_810a_8c2868b5c8da");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_701e8e20_3b3e_4d48_80cb_48a8dbdf8412()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_701e8e20_3b3e_4d48_80cb_48a8dbdf8412");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_708272cb_c16e_4461_83a7_38ec7318e69a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_708272cb_c16e_4461_83a7_38ec7318e69a");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_7087e041_9a1e_4de0_8d1d_cb299e4ff829()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_7087e041_9a1e_4de0_8d1d_cb299e4ff829");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_70b1d780_ac9a_4c1f_94e0_be0fab4b209f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_70b1d780_ac9a_4c1f_94e0_be0fab4b209f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_70d05c1a_e571_410a_96f9_c9fc4e33fce9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_70d05c1a_e571_410a_96f9_c9fc4e33fce9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_70e67cf8_a992_478d_8cd0_94c63a3fc4af()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_70e67cf8_a992_478d_8cd0_94c63a3fc4af");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_70e90739_e178_413b_9726_7a55679938d6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_70e90739_e178_413b_9726_7a55679938d6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_70efc32d_04a8_4db0_9d91_d2545e88a86e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_70efc32d_04a8_4db0_9d91_d2545e88a86e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_71086163_14bf_40f2_a598_2df6a7780f8d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_71086163_14bf_40f2_a598_2df6a7780f8d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_711b669a_cae9_4215_b576_891d2f26f145()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_711b669a_cae9_4215_b576_891d2f26f145");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_712ae11c_6b54_4e26_be7f_ee8f0d283c3a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_712ae11c_6b54_4e26_be7f_ee8f0d283c3a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_71381754_3be0_41aa_b859_b8e0e5ff3d08()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_71381754_3be0_41aa_b859_b8e0e5ff3d08");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7144cc95_9f72_4343_9102_623be1e18bcf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7144cc95_9f72_4343_9102_623be1e18bcf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7156a068_59ab_4223_9a43_285fba23e573()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7156a068_59ab_4223_9a43_285fba23e573");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_71ce9f96_dbb1_455a_ba45_96d5a42e7132()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_71ce9f96_dbb1_455a_ba45_96d5a42e7132");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_71d51a0e_7ecd_4991_99e0_83f633f5e8c4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_71d51a0e_7ecd_4991_99e0_83f633f5e8c4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_71d65002_fde6_44fb_8c5a_52929fefe025()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_71d65002_fde6_44fb_8c5a_52929fefe025");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_71d81287_2ab9_4485_b023_f999f308993d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_71d81287_2ab9_4485_b023_f999f308993d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_720269e0_c94d_4d8f_bf74_3892ff112e6f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_720269e0_c94d_4d8f_bf74_3892ff112e6f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_72126c09_5f97_40d9_9d76_df368a564d0d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_72126c09_5f97_40d9_9d76_df368a564d0d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_721f38db_0184_4346_a36f_6758479fc139()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_721f38db_0184_4346_a36f_6758479fc139");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_728b27b2_6dd0_45e4_abca_f6a2f0594bdf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_728b27b2_6dd0_45e4_abca_f6a2f0594bdf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7297897e_5359_4ba2_a812_47fe5c020d72()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7297897e_5359_4ba2_a812_47fe5c020d72");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_72a21763_034d_4df4_a04a_61c7e098edf4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_72a21763_034d_4df4_a04a_61c7e098edf4");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_72a4c6ea_780a_47fb_92b5_090647f4fa0e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_72a4c6ea_780a_47fb_92b5_090647f4fa0e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_72e73a48_f5e3_471a_9c31_c5e8a9afbd5c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_72e73a48_f5e3_471a_9c31_c5e8a9afbd5c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_72ea3e34_fdbf_453f_96dc_f095dad5aacf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_72ea3e34_fdbf_453f_96dc_f095dad5aacf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_72eb8c62_f5be_4eba_94a0_7d66a6c3970a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_72eb8c62_f5be_4eba_94a0_7d66a6c3970a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_72fe7514_1e05_40d5_94c0_f0a6374a22c7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_72fe7514_1e05_40d5_94c0_f0a6374a22c7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_73765e9b_4f27_4633_8ea7_c4cd1850b9ce()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_73765e9b_4f27_4633_8ea7_c4cd1850b9ce");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_739507f3_a9f4_4297_b006_c535582a02e2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_739507f3_a9f4_4297_b006_c535582a02e2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_73b8cd17_68f7_4f6c_82cd_c0201859caa7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_73b8cd17_68f7_4f6c_82cd_c0201859caa7");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_73c07063_9505_45e1_a1e6_4e4c82e18990()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_73c07063_9505_45e1_a1e6_4e4c82e18990");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_73d80a68_a1e8_4172_97e4_b72029a90bc1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_73d80a68_a1e8_4172_97e4_b72029a90bc1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_73df22b5_acfa_4877_ab6d_65db5e925b9c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_73df22b5_acfa_4877_ab6d_65db5e925b9c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_742233a2_6629_4ea7_913f_7790f9992177()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_742233a2_6629_4ea7_913f_7790f9992177");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7444cd44_c3d0_4467_8b1e_ecc28a854b53()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7444cd44_c3d0_4467_8b1e_ecc28a854b53");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_745af120_91bc_46ee_b5fd_ac2895d5e508()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_745af120_91bc_46ee_b5fd_ac2895d5e508");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_74b6d594_d0d7_4d5d_9fe7_ed0ee4871676()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_74b6d594_d0d7_4d5d_9fe7_ed0ee4871676");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_74c63ef9_2e21_4437_80ab_ae8138c1fce1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_74c63ef9_2e21_4437_80ab_ae8138c1fce1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_74d776d2_b072_4fac_a8fd_aa0f3190d8cf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_74d776d2_b072_4fac_a8fd_aa0f3190d8cf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_74d7e565_159f_4fe6_98fd_7d36987dbad0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_74d7e565_159f_4fe6_98fd_7d36987dbad0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_74eb1f22_4714_4806_8ace_3243ed685f5a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_74eb1f22_4714_4806_8ace_3243ed685f5a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7504249f_66bc_4fed_9a5d_f258eda02650()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7504249f_66bc_4fed_9a5d_f258eda02650");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_751351d8_5a5c_4c2d_9fb7_e73bf2bc0ab1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_751351d8_5a5c_4c2d_9fb7_e73bf2bc0ab1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_75acfcf9_02ba_45a0_98db_829f1b6ab576()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_75acfcf9_02ba_45a0_98db_829f1b6ab576");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_75bc4943_7b4e_4810_9816_f3114e7b01e2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_75bc4943_7b4e_4810_9816_f3114e7b01e2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_75c55c33_71ee_40b9_ab52_6577b2e4a2ad()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_75c55c33_71ee_40b9_ab52_6577b2e4a2ad");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_75dbdb06_0c5a_4ce6_a5a9_751ea6f4dcc8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_75dbdb06_0c5a_4ce6_a5a9_751ea6f4dcc8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_75ded692_792e_445c_a308_026d834d10ef()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_75ded692_792e_445c_a308_026d834d10ef");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_75f7a36a_2882_4347_a63e_4fe9abcce642()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_75f7a36a_2882_4347_a63e_4fe9abcce642");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7604ebb6_fcb9_4870_868f_491ac92a5378()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7604ebb6_fcb9_4870_868f_491ac92a5378");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_76196d31_84f8_4e79_af9d_5cdc94733723()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_76196d31_84f8_4e79_af9d_5cdc94733723");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_762939a0_324a_48d9_b89f_292752ce6dca()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_762939a0_324a_48d9_b89f_292752ce6dca");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7645f93e_38bd_4164_b3ec_734d5846422b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7645f93e_38bd_4164_b3ec_734d5846422b");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_765eb001_e8c2_40ea_977a_defca5d48fc6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_765eb001_e8c2_40ea_977a_defca5d48fc6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_769c2cd7_d56a_444e_b67b_879e4b504060()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_769c2cd7_d56a_444e_b67b_879e4b504060");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_76a10d5f_ec88_43ae_b0b9_dd3ca00ca7db()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_76a10d5f_ec88_43ae_b0b9_dd3ca00ca7db");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_76a3a470_7b7f_41cf_885e_60427103cfc9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_76a3a470_7b7f_41cf_885e_60427103cfc9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_76b6713b_29c6_4a28_86c6_f783c7f6d1b9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_76b6713b_29c6_4a28_86c6_f783c7f6d1b9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_76b86718_8e92_4857_b5ef_1a273b9ae891()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_76b86718_8e92_4857_b5ef_1a273b9ae891");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_76d1c177_1a75_43d1_92fd_402858da0682()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_76d1c177_1a75_43d1_92fd_402858da0682");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7713f08c_2d99_4911_98db_05ce8ef9868c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7713f08c_2d99_4911_98db_05ce8ef9868c");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_772bdc71_b49e_45ff_9c7d_0f1b664e07c0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_772bdc71_b49e_45ff_9c7d_0f1b664e07c0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_773eb89e_772f_49a2_979a_d104ae71e67f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_773eb89e_772f_49a2_979a_d104ae71e67f");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_7779515a_84bb_49c5_8163_b17d3db01d6f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_7779515a_84bb_49c5_8163_b17d3db01d6f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_77afd86e_322a_4174_9be9_179eb5cc940c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_77afd86e_322a_4174_9be9_179eb5cc940c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_77f60b3e_3127_4a89_8276_fbdc3ef2691b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_77f60b3e_3127_4a89_8276_fbdc3ef2691b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7803adfb_1ea2_4109_8248_291277682b4b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7803adfb_1ea2_4109_8248_291277682b4b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_78099d74_883e_4d6e_a6f3_c7e2e91ea0d2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_78099d74_883e_4d6e_a6f3_c7e2e91ea0d2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7861c02d_0913_4efd_9836_403562eda445()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7861c02d_0913_4efd_9836_403562eda445");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_787013ea_d61b_4525_ad49_657c8e770412()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_787013ea_d61b_4525_ad49_657c8e770412");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_78726e98_8bd2_49a1_a846_79d3d7c9e896()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_78726e98_8bd2_49a1_a846_79d3d7c9e896");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_788c1724_22b6_437d_a6c4_535defd79edc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_788c1724_22b6_437d_a6c4_535defd79edc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_788dfa80_787d_4863_b051_8c0907407c62()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_788dfa80_787d_4863_b051_8c0907407c62");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_78a5bc6f_c9ea_4c12_8121_ed9d0f47d75b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_78a5bc6f_c9ea_4c12_8121_ed9d0f47d75b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_78b47b33_5a08_4567_a2f1_786712802323()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_78b47b33_5a08_4567_a2f1_786712802323");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_78f78ca3_093b_4be9_9e02_bcad52952e28()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_78f78ca3_093b_4be9_9e02_bcad52952e28");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_78fc3b4a_14f5_4b50_a716_710a6cc59da1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_78fc3b4a_14f5_4b50_a716_710a6cc59da1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_79017777_45d8_47ce_b1ab_2f01824fbc80()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_79017777_45d8_47ce_b1ab_2f01824fbc80");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_794f382f_d40f_4262_ac46_54e3f222c64d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_794f382f_d40f_4262_ac46_54e3f222c64d");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_7952073b_3b2e_4c4e_bd64_8c4cdfd1fb93()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_7952073b_3b2e_4c4e_bd64_8c4cdfd1fb93");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_795a9d7b_a9e0_4085_95e5_30cb0faf2d6d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_795a9d7b_a9e0_4085_95e5_30cb0faf2d6d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7965689f_1976_4343_962b_0a21392f23c1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7965689f_1976_4343_962b_0a21392f23c1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_79a612c9_15da_4a6a_8e07_03836a402c6d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_79a612c9_15da_4a6a_8e07_03836a402c6d");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_7a0f154c_5e8d_4539_b78e_bf5b38bd547c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_7a0f154c_5e8d_4539_b78e_bf5b38bd547c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7a135154_2cd5_4bae_9509_dedbf0fefa72()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7a135154_2cd5_4bae_9509_dedbf0fefa72");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7a19ffa0_9342_483f_b38e_a1667645a256()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7a19ffa0_9342_483f_b38e_a1667645a256");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7a1bdd01_172d_438d_b34f_87fdb4b5cc79()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7a1bdd01_172d_438d_b34f_87fdb4b5cc79");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7a26a079_3534_4466_9bab_a4249049ecc2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7a26a079_3534_4466_9bab_a4249049ecc2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7a2c1ff3_fdd1_44ab_b691_7370b70bb114()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7a2c1ff3_fdd1_44ab_b691_7370b70bb114");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7a30d147_5e6f_47ee_92e6_75604532a369()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7a30d147_5e6f_47ee_92e6_75604532a369");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_7a6174d2_a304_4f60_8a62_8d920869fadb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_7a6174d2_a304_4f60_8a62_8d920869fadb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7a676300_9fa8_410c_80ed_066928c64933()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7a676300_9fa8_410c_80ed_066928c64933");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7a7da55d_3aeb_40ce_bd13_b6d92f94de47()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7a7da55d_3aeb_40ce_bd13_b6d92f94de47");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7a91daca_2b6a_47f6_be53_66166c455e14()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7a91daca_2b6a_47f6_be53_66166c455e14");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_7acf42f2_d5ff_41e3_a86a_c87b478caea7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_7acf42f2_d5ff_41e3_a86a_c87b478caea7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7ad405f2_2388_4227_a129_7e5d165f87fd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7ad405f2_2388_4227_a129_7e5d165f87fd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7b1bcb77_caf0_4226_8a4a_0845b42a9a36()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7b1bcb77_caf0_4226_8a4a_0845b42a9a36");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7b8c7d09_b1a7_45e2_83a1_aab499ced2f3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7b8c7d09_b1a7_45e2_83a1_aab499ced2f3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7bb31149_4d6c_46b3_a1cf_fea23c96a600()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7bb31149_4d6c_46b3_a1cf_fea23c96a600");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7bb84409_47c5_4757_8df9_ed3a390eddfb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7bb84409_47c5_4757_8df9_ed3a390eddfb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7bcec8c7_5504_4e88_89e7_666a8fe40b84()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7bcec8c7_5504_4e88_89e7_666a8fe40b84");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7c0ef7b8_55bc_4e7b_aabf_2ab5b394718e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7c0ef7b8_55bc_4e7b_aabf_2ab5b394718e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7c15efee_5eb8_41d4_b056_3afce956b0be()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7c15efee_5eb8_41d4_b056_3afce956b0be");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_7c27afcf_5dbc_4022_b339_cd40d96d0709()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_7c27afcf_5dbc_4022_b339_cd40d96d0709");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7c4dfbee_8547_4c3e_97a5_56abd4866747()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7c4dfbee_8547_4c3e_97a5_56abd4866747");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7ca22de8_b347_43c6_abd5_03fc2e96cda7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7ca22de8_b347_43c6_abd5_03fc2e96cda7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7ce51b44_c978_4249_895d_7b923eb56f4b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7ce51b44_c978_4249_895d_7b923eb56f4b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7cede187_8958_4261_9693_b9e22c32eba3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7cede187_8958_4261_9693_b9e22c32eba3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7d1c4f9b_5a21_479e_aad2_2b3dca6b7a3f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7d1c4f9b_5a21_479e_aad2_2b3dca6b7a3f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7d249828_e80c_4ed3_99b9_e9f025392f0e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7d249828_e80c_4ed3_99b9_e9f025392f0e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7d3ce476_45bd_4701_a476_a3a49a9caf27()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7d3ce476_45bd_4701_a476_a3a49a9caf27");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_7d8dd350_1aca_4c2a_92fb_19479733093d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_7d8dd350_1aca_4c2a_92fb_19479733093d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7dbd077c_eb2e_46a5_a310_8e15af2f5eb8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7dbd077c_eb2e_46a5_a310_8e15af2f5eb8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7e1034db_126c_49b7_8d2e_fe983abe757a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7e1034db_126c_49b7_8d2e_fe983abe757a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7e23647e_1249_4148_be81_f32c3562e9b2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7e23647e_1249_4148_be81_f32c3562e9b2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7e3cbce0_a99d_4a20_a864_f0bf508a94ff()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7e3cbce0_a99d_4a20_a864_f0bf508a94ff");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7e4db665_d3e6_4985_8352_5c304032b58e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7e4db665_d3e6_4985_8352_5c304032b58e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7e7c999b_93e0_4e9c_b2ab_c6e5ef94026c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7e7c999b_93e0_4e9c_b2ab_c6e5ef94026c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7e90268d_f98d_4be3_8344_c58fc6a61607()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7e90268d_f98d_4be3_8344_c58fc6a61607");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7ea48c8a_016a_4dcd_82ec_ae224e58186b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7ea48c8a_016a_4dcd_82ec_ae224e58186b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7ea69ed3_bcaf_4ebd_92d3_634996d198d8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7ea69ed3_bcaf_4ebd_92d3_634996d198d8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7edea8d3_dc3c_462f_8b9c_c2e36b625e22()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7edea8d3_dc3c_462f_8b9c_c2e36b625e22");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7ef50b7e_f2db_439c_b1af_9e190c1674d8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7ef50b7e_f2db_439c_b1af_9e190c1674d8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7f0f0e4b_b926_4446_85c1_b1b11c1256b3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7f0f0e4b_b926_4446_85c1_b1b11c1256b3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7f3e9093_67b1_4306_b233_9bd971c87b48()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7f3e9093_67b1_4306_b233_9bd971c87b48");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7f49476a_28a7_49cb_9691_4a44b899f493()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7f49476a_28a7_49cb_9691_4a44b899f493");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7f650233_3c78_4467_8d7e_53e038a7f683()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7f650233_3c78_4467_8d7e_53e038a7f683");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7f86e5e3_ea1b_44d0_a858_393a84b44d21()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7f86e5e3_ea1b_44d0_a858_393a84b44d21");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7fc07175_0e0f_4ca6_b56f_6b5af83c6c69()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7fc07175_0e0f_4ca6_b56f_6b5af83c6c69");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_7fe05e9f_1e84_4afb_a02c_43ad17b7e4d8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_7fe05e9f_1e84_4afb_a02c_43ad17b7e4d8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8009f873_d7ba_4bb7_8945_36b5b2b3b737()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8009f873_d7ba_4bb7_8945_36b5b2b3b737");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8021a5e8_182a_4ca6_963a_566e1988d1f2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8021a5e8_182a_4ca6_963a_566e1988d1f2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8022f878_f3a7_4eed_9b21_427a3253531c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8022f878_f3a7_4eed_9b21_427a3253531c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_80362eba_c910_4290_bf0d_167faa2a2fab()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_80362eba_c910_4290_bf0d_167faa2a2fab");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_805112a9_fe18_4ced_9ea6_3a02f4ec2158()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_805112a9_fe18_4ced_9ea6_3a02f4ec2158");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_805ce0ee_cc92_4ab0_875e_7223af5c7d4a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_805ce0ee_cc92_4ab0_875e_7223af5c7d4a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8094ce1c_1ac2_4af4_b27a_e404e4db54ca()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8094ce1c_1ac2_4af4_b27a_e404e4db54ca");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_80a1615e_ed8f_4d1f_a00f_3221824575d8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_80a1615e_ed8f_4d1f_a00f_3221824575d8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_80ad99ff_0652_44d2_9c9f_8a1dab5e157b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_80ad99ff_0652_44d2_9c9f_8a1dab5e157b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_80b36ae9_a016_4d76_b137_d8e1dd60cbf9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_80b36ae9_a016_4d76_b137_d8e1dd60cbf9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_80e251d7_7004_4a43_88ac_2b84f185427f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_80e251d7_7004_4a43_88ac_2b84f185427f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_80e9c67b_a761_48e3_ba74_a93e2cc8e655()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_80e9c67b_a761_48e3_ba74_a93e2cc8e655");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_80eea85b_a7a1_4e5a_8ce9_28c67de2e3cc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_80eea85b_a7a1_4e5a_8ce9_28c67de2e3cc");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_811797d5_9dc1_4283_b884_c12fe697f712()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_811797d5_9dc1_4283_b884_c12fe697f712");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8152d569_7956_47ca_a985_2dbf75a767af()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8152d569_7956_47ca_a985_2dbf75a767af");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_81597e4e_c86b_4d4d_82eb_6f6d30afaae3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_81597e4e_c86b_4d4d_82eb_6f6d30afaae3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_815a4297_5b52_4cfb_80d9_cf47ca0e0b4c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_815a4297_5b52_4cfb_80d9_cf47ca0e0b4c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_816031ac_1989_46cc_9541_f6c133a22ade()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_816031ac_1989_46cc_9541_f6c133a22ade");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_818d49f6_1505_4a35_835d_9f15339c2945()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_818d49f6_1505_4a35_835d_9f15339c2945");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_81d6bc8f_4954_4e86_90da_3b5689037ee1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_81d6bc8f_4954_4e86_90da_3b5689037ee1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_81e30619_b3c1_4f91_9401_65bf3e0232c2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_81e30619_b3c1_4f91_9401_65bf3e0232c2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_824d11f9_f41e_4b8a_a9af_734e972bd929()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_824d11f9_f41e_4b8a_a9af_734e972bd929");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_827c14da_7a90_46da_acc8_4d68cafd04a2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_827c14da_7a90_46da_acc8_4d68cafd04a2");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_82a26de5_7c76_42ad_bb0f_f4528f405f02()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_82a26de5_7c76_42ad_bb0f_f4528f405f02");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_82d8bd4c_89d2_4b87_98be_9528318fce5f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_82d8bd4c_89d2_4b87_98be_9528318fce5f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_82e0df4d_0d95_4671_9662_d248550270f9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_82e0df4d_0d95_4671_9662_d248550270f9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_83398599_e120_4a8b_a677_945e62e71291()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_83398599_e120_4a8b_a677_945e62e71291");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8348ff9e_936d_4771_a4e7_70b85ad5ab32()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8348ff9e_936d_4771_a4e7_70b85ad5ab32");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_83a64794_ae3b_4c28_b147_947e05cdf4d7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_83a64794_ae3b_4c28_b147_947e05cdf4d7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_83de9765_8dcb_485d_b010_1c2eaae846d4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_83de9765_8dcb_485d_b010_1c2eaae846d4");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_83eb4447_467e_4f70_88d4_0b8a08950449()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_83eb4447_467e_4f70_88d4_0b8a08950449");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_83ed9de1_c739_4305_9799_5080461d0f03()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_83ed9de1_c739_4305_9799_5080461d0f03");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_83fe9ee9_38c0_4041_b455_7a51784b2f4c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_83fe9ee9_38c0_4041_b455_7a51784b2f4c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_840fb8c8_f3af_4e65_8468_31dc656ec9e9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_840fb8c8_f3af_4e65_8468_31dc656ec9e9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8434ea76_ed88_4c78_afdd_9cc38e51acb8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8434ea76_ed88_4c78_afdd_9cc38e51acb8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8449dadd_7f94_4d5a_8e00_2eb38a0d3018()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8449dadd_7f94_4d5a_8e00_2eb38a0d3018");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_84607fe9_c095_4600_90f5_3a84eba2aed5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_84607fe9_c095_4600_90f5_3a84eba2aed5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_847b6355_5c94_4726_bd97_b537f860920e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_847b6355_5c94_4726_bd97_b537f860920e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_849c4119_d7d9_4d6d_83b7_6a9d54028488()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_849c4119_d7d9_4d6d_83b7_6a9d54028488");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_84ae716e_7fa3_4d2b_ba31_05f67feaad6c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_84ae716e_7fa3_4d2b_ba31_05f67feaad6c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_84b8a9ee_3e5d_4623_a22b_1c9756e0bae5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_84b8a9ee_3e5d_4623_a22b_1c9756e0bae5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_84e2f6e7_a069_4046_8b85_b6ee6d039dd1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_84e2f6e7_a069_4046_8b85_b6ee6d039dd1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_84ea3965_05d9_4cb7_bf6d_625c022844e8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_84ea3965_05d9_4cb7_bf6d_625c022844e8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8512e4c4_c216_4bf5_bc7a_3a6749e6ec7f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8512e4c4_c216_4bf5_bc7a_3a6749e6ec7f");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_8546d092_0d9e_4ce1_a7f4_c996d8de7d2b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_8546d092_0d9e_4ce1_a7f4_c996d8de7d2b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8546d1fb_6b8b_437b_97a5_459c34811775()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8546d1fb_6b8b_437b_97a5_459c34811775");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_856dcec0_ffcc_4553_857c_25f8f020b942()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_856dcec0_ffcc_4553_857c_25f8f020b942");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_85a9ed32_1a56_40a7_bc02_9c4117928ced()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_85a9ed32_1a56_40a7_bc02_9c4117928ced");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_85aed152_ec8c_4da2_af06_3a82fe9ab7ce()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_85aed152_ec8c_4da2_af06_3a82fe9ab7ce");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_85b152c4_4d6a_4770_be6f_4872ab8e9573()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_85b152c4_4d6a_4770_be6f_4872ab8e9573");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_85d592ba_3906_4da5_a6c2_6112a3a98463()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_85d592ba_3906_4da5_a6c2_6112a3a98463");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_85f6a869_26d5_482f_ad2a_e1590150759a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_85f6a869_26d5_482f_ad2a_e1590150759a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_85f6abbb_d379_46d1_968a_6abdc91a4ea8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_85f6abbb_d379_46d1_968a_6abdc91a4ea8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_85fd5ce9_b435_4f2e_a669_62cc98b00895()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_85fd5ce9_b435_4f2e_a669_62cc98b00895");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_86451d4b_08dd_44fd_a56e_89a265044ded()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_86451d4b_08dd_44fd_a56e_89a265044ded");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8652af0e_6035_4e9e_a9ee_22c518f8e888()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8652af0e_6035_4e9e_a9ee_22c518f8e888");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_866ca765_4816_4e85_8010_dc7b0de91f17()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_866ca765_4816_4e85_8010_dc7b0de91f17");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8670fe65_eb30_471c_933c_f5fa4bc3d283()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8670fe65_eb30_471c_933c_f5fa4bc3d283");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8671140b_702d_429a_b5c6_c2bf8d7a61a1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8671140b_702d_429a_b5c6_c2bf8d7a61a1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_86afa54e_4207_4c3e_9358_72552ed0c3c6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_86afa54e_4207_4c3e_9358_72552ed0c3c6");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_86d708b6_546d_40b2_a36f_322d9da35cf4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_86d708b6_546d_40b2_a36f_322d9da35cf4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_86d7eb7a_1890_461a_884f_6d5313dff4b0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_86d7eb7a_1890_461a_884f_6d5313dff4b0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_86ddf21a_622b_4d3d_8529_84677ba45df0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_86ddf21a_622b_4d3d_8529_84677ba45df0");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_86ee2655_3bad_43b7_a256_20d39aa6335f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_86ee2655_3bad_43b7_a256_20d39aa6335f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_86facbcd_c926_474c_a539_ccbd8be8764e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_86facbcd_c926_474c_a539_ccbd8be8764e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_871d85b6_e01a_4ce3_b3d0_f9139220dd4d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_871d85b6_e01a_4ce3_b3d0_f9139220dd4d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_87331a66_d789_492f_9e9c_765286e29599()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_87331a66_d789_492f_9e9c_765286e29599");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_875d792b_7da1_4649_b5f7_229f611dd288()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_875d792b_7da1_4649_b5f7_229f611dd288");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_87b3777e_9e7a_4c23_aa7b_f1b6ea464061()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_87b3777e_9e7a_4c23_aa7b_f1b6ea464061");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_87b91183_00a4_4999_a8f0_4bf651e71c9f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_87b91183_00a4_4999_a8f0_4bf651e71c9f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_87cb9d5a_2311_4f86_be51_5086f1bd9af3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_87cb9d5a_2311_4f86_be51_5086f1bd9af3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_87e44ade_b16b_4cf4_bc72_c6120363a1ca()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_87e44ade_b16b_4cf4_bc72_c6120363a1ca");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_87ffadda_37ad_4dd5_b284_e71b4e79fffb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_87ffadda_37ad_4dd5_b284_e71b4e79fffb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_882dbb15_a146_4340_a3b4_ff945ee71437()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_882dbb15_a146_4340_a3b4_ff945ee71437");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_8834e94d_e467_4614_8476_2561810bef26()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_8834e94d_e467_4614_8476_2561810bef26");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_883ab0d0_c1d1_416c_a4eb_3fc158628e11()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_883ab0d0_c1d1_416c_a4eb_3fc158628e11");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_88454a48_cdb6_4a50_8370_f2913d7a7a56()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_88454a48_cdb6_4a50_8370_f2913d7a7a56");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_884c29fa_7dbe_43e4_a6e4_144d4159cb00()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_884c29fa_7dbe_43e4_a6e4_144d4159cb00");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8873947d_4ab8_4377_b5e8_530050722e68()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8873947d_4ab8_4377_b5e8_530050722e68");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8897c803_fac4_4501_aac0_da4236980996()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8897c803_fac4_4501_aac0_da4236980996");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_88bc83d3_2e04_453c_b3e5_fb7bcc00fa11()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_88bc83d3_2e04_453c_b3e5_fb7bcc00fa11");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_88d901ef_a49f_4476_b30c_24f7fafb3893()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_88d901ef_a49f_4476_b30c_24f7fafb3893");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8917f7a7_c853_4551_b619_6af7df91535d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8917f7a7_c853_4551_b619_6af7df91535d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_89219bd0_e5a3_4a7d_846e_68754b41d3ac()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_89219bd0_e5a3_4a7d_846e_68754b41d3ac");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_892b7553_5f1e_49df_85ba_d4df035b597e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_892b7553_5f1e_49df_85ba_d4df035b597e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_893c23dd_105b_4330_a058_bbcc59ef4ae7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_893c23dd_105b_4330_a058_bbcc59ef4ae7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_893d0379_b248_41ed_9b4d_a8054e30da09()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_893d0379_b248_41ed_9b4d_a8054e30da09");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_89512f1e_18cb_4208_b719_711624ed461f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_89512f1e_18cb_4208_b719_711624ed461f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8975b986_3bdb_4e4b_8be5_adb49d11f7f9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8975b986_3bdb_4e4b_8be5_adb49d11f7f9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8990469c_c9d0_4587_93f7_61a63a4390b9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8990469c_c9d0_4587_93f7_61a63a4390b9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_899df088_05f1_459c_8b0d_e9a983c12e47()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_899df088_05f1_459c_8b0d_e9a983c12e47");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_89b327f2_2b5a_4771_81fb_78c270679f09()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_89b327f2_2b5a_4771_81fb_78c270679f09");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_89b9da4f_83db_4bae_9c18_0b32141cb35b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_89b9da4f_83db_4bae_9c18_0b32141cb35b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_89e7e919_b9f4_4169_8d05_20f370e5f776()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_89e7e919_b9f4_4169_8d05_20f370e5f776");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8a1f5b21_701c_4758_802f_cc0e89816e20()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8a1f5b21_701c_4758_802f_cc0e89816e20");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8a3741cd_c691_46d1_b278_dbd6ab499071()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8a3741cd_c691_46d1_b278_dbd6ab499071");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8a4522ce_251d_4d04_800d_1c7de8c8576a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8a4522ce_251d_4d04_800d_1c7de8c8576a");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_8a64ac2e_0b7b_408e_a45f_bb4c30b40cc3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_8a64ac2e_0b7b_408e_a45f_bb4c30b40cc3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8a8b8865_d108_46c0_9ddd_a735f30991d0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8a8b8865_d108_46c0_9ddd_a735f30991d0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8ab40b37_6918_4fdf_9540_69d1b4dbd942()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8ab40b37_6918_4fdf_9540_69d1b4dbd942");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8ae11bcc_bf39_4316_9c4e_b1694b6a7f30()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8ae11bcc_bf39_4316_9c4e_b1694b6a7f30");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8b03ed35_ae35_421a_8b6c_c7ac1bcc0ca6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8b03ed35_ae35_421a_8b6c_c7ac1bcc0ca6");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_8b11fae8_726b_4aba_91be_a0b29c502c88()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_8b11fae8_726b_4aba_91be_a0b29c502c88");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8b21f330_411c_4c0a_a1be_989b2cc87527()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8b21f330_411c_4c0a_a1be_989b2cc87527");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8b2ec6bb_1fdd_4712_bf4b_1bb3f381a339()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8b2ec6bb_1fdd_4712_bf4b_1bb3f381a339");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8bc59736_6d34_4ded_b260_41ff4dc4a009()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8bc59736_6d34_4ded_b260_41ff4dc4a009");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8be39a0c_a3f8_4304_9cf9_81a7af9a6cde()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8be39a0c_a3f8_4304_9cf9_81a7af9a6cde");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8bee8789_68e6_4f94_bddf_184bbe97e4d1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8bee8789_68e6_4f94_bddf_184bbe97e4d1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8bef0ffa_0f0d_4b8c_ad37_47f135904b7a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8bef0ffa_0f0d_4b8c_ad37_47f135904b7a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8c12b187_a3b0_48d0_8cf1_5415336011d2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8c12b187_a3b0_48d0_8cf1_5415336011d2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8c1cd515_055e_4990_bdb6_cbab52221e4d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8c1cd515_055e_4990_bdb6_cbab52221e4d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8c57fbb0_bd92_49c1_8e6b_a8805a9570aa()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8c57fbb0_bd92_49c1_8e6b_a8805a9570aa");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8c69dfcf_260b_40f0_b8a6_d463afc54bfa()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8c69dfcf_260b_40f0_b8a6_d463afc54bfa");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8c7b3d21_da7d_4c45_8c3d_92ba8cf38881()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8c7b3d21_da7d_4c45_8c3d_92ba8cf38881");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8c964f2d_06b6_41fb_bb8a_118cc4ecf872()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8c964f2d_06b6_41fb_bb8a_118cc4ecf872");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8ca2d1fe_f6ac_463b_9356_fa7549addc5b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8ca2d1fe_f6ac_463b_9356_fa7549addc5b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8ca8f4b0_4437_490a_a8c7_c706103d7de9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8ca8f4b0_4437_490a_a8c7_c706103d7de9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8ce3ace8_6d5f_4493_87cb_d1a42f44f23f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8ce3ace8_6d5f_4493_87cb_d1a42f44f23f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8cf4282b_444c_4d1d_969e_510b8e0cc5bc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8cf4282b_444c_4d1d_969e_510b8e0cc5bc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8d1b7381_5f1d_43f3_8555_23cae4009744()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8d1b7381_5f1d_43f3_8555_23cae4009744");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8d1fb560_e6f4_4589_8bbf_b02417190d44()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8d1fb560_e6f4_4589_8bbf_b02417190d44");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8d4a29bc_0c07_4782_8116_9286fc625f0c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8d4a29bc_0c07_4782_8116_9286fc625f0c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8dcf5bc1_2e1f_4b1e_be57_707bc9f89c69()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8dcf5bc1_2e1f_4b1e_be57_707bc9f89c69");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8e2e3838_ce47_4473_9cec_d0db4b4b4e8c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8e2e3838_ce47_4473_9cec_d0db4b4b4e8c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8e2f2d55_e8ce_4776_8cad_482681acb965()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8e2f2d55_e8ce_4776_8cad_482681acb965");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8e3636fc_2a98_4156_a224_aa259d87dbe7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8e3636fc_2a98_4156_a224_aa259d87dbe7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8e4637bf_db62_43c7_9fe9_ad279e0c49f4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8e4637bf_db62_43c7_9fe9_ad279e0c49f4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8e7e53d1_b327_4398_bd32_7bd33154a7a3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8e7e53d1_b327_4398_bd32_7bd33154a7a3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8e8835ba_6879_41f2_9e2d_237791f714fe()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8e8835ba_6879_41f2_9e2d_237791f714fe");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8ea0486b_3181_4e07_b25e_da62c77c8da0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8ea0486b_3181_4e07_b25e_da62c77c8da0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8ea9ce2c_6c03_405f_907a_a40945de5716()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8ea9ce2c_6c03_405f_907a_a40945de5716");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8ec4eadb_5ce6_4ca7_bb6f_0ce81b1e6cea()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8ec4eadb_5ce6_4ca7_bb6f_0ce81b1e6cea");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8eeb7480_66a9_44d2_a995_fcd1d332467b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8eeb7480_66a9_44d2_a995_fcd1d332467b");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_8f02685f_d3af_430d_976c_b068179c18c4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_8f02685f_d3af_430d_976c_b068179c18c4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8f039d5b_03df_4c1f_9e6c_2a61890095c2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8f039d5b_03df_4c1f_9e6c_2a61890095c2");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_8f4e1abc_5a1c_4706_81e3_1be400719424()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_8f4e1abc_5a1c_4706_81e3_1be400719424");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8f5c6938_2289_4a66_90ed_290ff6d24b20()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8f5c6938_2289_4a66_90ed_290ff6d24b20");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_8f718443_f6e8_460f_be47_34ae855bf201()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_8f718443_f6e8_460f_be47_34ae855bf201");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8f8f2413_92c2_4fc9_ba74_52700eb389d7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8f8f2413_92c2_4fc9_ba74_52700eb389d7");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_8f936f66_a9a4_4bf9_9793_57dab77a9b73()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_8f936f66_a9a4_4bf9_9793_57dab77a9b73");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8f93d765_7247_45a1_95ed_6ee1d6284970()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8f93d765_7247_45a1_95ed_6ee1d6284970");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8f98a303_2cbc_4039_a202_9f89c8980b89()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8f98a303_2cbc_4039_a202_9f89c8980b89");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8fa2f685_f762_4c91_9450_efc16bf892d0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8fa2f685_f762_4c91_9450_efc16bf892d0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8fbc8eea_0c5e_4b6c_ab5b_522678150ada()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8fbc8eea_0c5e_4b6c_ab5b_522678150ada");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8fbd30f0_62df_41a7_a118_78877ec0c918()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8fbd30f0_62df_41a7_a118_78877ec0c918");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8fc71c37_0925_443e_bb17_588900324851()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8fc71c37_0925_443e_bb17_588900324851");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8ff12a04_680a_448e_b7a5_8e4508c979f9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8ff12a04_680a_448e_b7a5_8e4508c979f9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8ffcacb0_e346_4ea2_90df_62b70aa1540c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8ffcacb0_e346_4ea2_90df_62b70aa1540c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_8ffdd4c6_27e2_4957_9a83_b080a62e2a82()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_8ffdd4c6_27e2_4957_9a83_b080a62e2a82");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_90233e20_3628_427c_ab07_41464e43beaf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_90233e20_3628_427c_ab07_41464e43beaf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9028ee9e_9ffd_4d8b_a6c9_59404bfc4dac()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9028ee9e_9ffd_4d8b_a6c9_59404bfc4dac");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9030d319_9f59_4df6_806e_a65035ba2d07()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9030d319_9f59_4df6_806e_a65035ba2d07");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_903325f7_811c_4e50_90bd_3d088205ceb6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_903325f7_811c_4e50_90bd_3d088205ceb6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_90448b76_d6b6_49dc_88a6_b7f44ef0c8e5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_90448b76_d6b6_49dc_88a6_b7f44ef0c8e5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_904b9e91_b606_4b53_ab76_792b000c87da()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_904b9e91_b606_4b53_ab76_792b000c87da");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_90588dc8_bedf_44b4_b55d_8830cbf541be()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_90588dc8_bedf_44b4_b55d_8830cbf541be");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_90659af7_27d4_4c53_ac7f_08695f367438()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_90659af7_27d4_4c53_ac7f_08695f367438");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_906edcaa_0b5f_4d76_8511_b4fa5073a100()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_906edcaa_0b5f_4d76_8511_b4fa5073a100");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_90ae0fc9_a97b_4456_bbfc_bd1c72a12220()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_90ae0fc9_a97b_4456_bbfc_bd1c72a12220");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_90f0e393_0902_4caf_94e1_2c0d14d22f48()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_90f0e393_0902_4caf_94e1_2c0d14d22f48");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_90f140b2_0612_4ad6_ad95_468bd07743ea()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_90f140b2_0612_4ad6_ad95_468bd07743ea");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_910e3bf9_fcbb_4caa_bbef_ac1f3b8c16b8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_910e3bf9_fcbb_4caa_bbef_ac1f3b8c16b8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_91260349_0900_4f0b_89fe_7759b0449373()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_91260349_0900_4f0b_89fe_7759b0449373");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_9133c806_393b_43bf_941c_4f6e214800fd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_9133c806_393b_43bf_941c_4f6e214800fd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9138f2ef_2efc_45c3_934f_95b002113b3c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9138f2ef_2efc_45c3_934f_95b002113b3c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9142dbcd_5e51_41df_9357_ff7b9a18b082()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9142dbcd_5e51_41df_9357_ff7b9a18b082");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9155967b_2c93_4847_8557_0edb50024039()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9155967b_2c93_4847_8557_0edb50024039");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_918539b0_f55d_4303_b01c_d038b3d5f239()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_918539b0_f55d_4303_b01c_d038b3d5f239");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9189c181_dec0_4cfa_b1fe_080e11369fce()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9189c181_dec0_4cfa_b1fe_080e11369fce");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_91b2ef00_ee7e_49c8_be67_ae4c04c2c8dc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_91b2ef00_ee7e_49c8_be67_ae4c04c2c8dc");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_91c18bd2_e737_49d0_973e_a00ef9bd9647()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_91c18bd2_e737_49d0_973e_a00ef9bd9647");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_91c9cd5e_7ef4_4d9c_932d_0190172d0382()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_91c9cd5e_7ef4_4d9c_932d_0190172d0382");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_91d4c091_df52_45e1_bbcf_93308b4a1019()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_91d4c091_df52_45e1_bbcf_93308b4a1019");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_91e38121_7230_44a3_afad_8e2fcc490dde()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_91e38121_7230_44a3_afad_8e2fcc490dde");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9201f405_d090_48b8_84a9_8a3a5b13514f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9201f405_d090_48b8_84a9_8a3a5b13514f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_920d1730_859f_41aa_b232_d665df268307()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_920d1730_859f_41aa_b232_d665df268307");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9243ae05_cbb0_4247_af12_e4a528bca6a3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9243ae05_cbb0_4247_af12_e4a528bca6a3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_925982a7_6416_43f8_ab4e_f5d09c96b187()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_925982a7_6416_43f8_ab4e_f5d09c96b187");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_925f2ea3_bcac_4bd7_b6a7_c942e426a0bb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_925f2ea3_bcac_4bd7_b6a7_c942e426a0bb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9265b33f_5854_463a_9a9c_cab329bd2f2e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9265b33f_5854_463a_9a9c_cab329bd2f2e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_92a6686f_1b07_43fb_a302_61c0c6058c48()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_92a6686f_1b07_43fb_a302_61c0c6058c48");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_92c40287_2938_4845_b72c_5a6ef107029c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_92c40287_2938_4845_b72c_5a6ef107029c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_930a00d0_7e31_4993_9a09_313da785618d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_930a00d0_7e31_4993_9a09_313da785618d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_931832a5_ea1a_44a5_aabe_9d26f811ceff()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_931832a5_ea1a_44a5_aabe_9d26f811ceff");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_939e19a4_e881_4457_afe9_774beeccae94()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_939e19a4_e881_4457_afe9_774beeccae94");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_93c3c9e0_da37_41aa_8274_bd40c1355a90()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_93c3c9e0_da37_41aa_8274_bd40c1355a90");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_93d3ec53_c8db_46b1_9de1_dbbc7011c1e8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_93d3ec53_c8db_46b1_9de1_dbbc7011c1e8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_93e0f5ac_6dd0_49a0_901a_2b7d08c2e683()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_93e0f5ac_6dd0_49a0_901a_2b7d08c2e683");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_93efe055_7859_41cb_a97b_75d910645ccb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_93efe055_7859_41cb_a97b_75d910645ccb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_93f71a5a_e100_4f01_9756_4393e96cb8e9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_93f71a5a_e100_4f01_9756_4393e96cb8e9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9422700a_6b5b_470d_8838_9763aa85ea45()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9422700a_6b5b_470d_8838_9763aa85ea45");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_942610b5_ed5c_4cd1_8eb4_c4a06474c748()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_942610b5_ed5c_4cd1_8eb4_c4a06474c748");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_942f77fd_94c3_41dc_931d_f912a32dc640()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_942f77fd_94c3_41dc_931d_f912a32dc640");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_94680cd3_8709_40ea_ab25_69c5518ab63e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_94680cd3_8709_40ea_ab25_69c5518ab63e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9499e593_72d0_4459_8395_fe4ca0c68784()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9499e593_72d0_4459_8395_fe4ca0c68784");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_94a2447a_7e9a_446f_bc52_74705c8fda9a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_94a2447a_7e9a_446f_bc52_74705c8fda9a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_94cc9ddf_75a9_49d1_b382_e3eebb7cfec7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_94cc9ddf_75a9_49d1_b382_e3eebb7cfec7");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_94d1ee3c_99c5_4799_bbb6_3392a64d24c2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_94d1ee3c_99c5_4799_bbb6_3392a64d24c2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9506c72e_e546_4e48_8b26_30a5a6e6d870()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9506c72e_e546_4e48_8b26_30a5a6e6d870");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_950f20d0_1784_4a2e_897e_33a755711874()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_950f20d0_1784_4a2e_897e_33a755711874");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9518019c_950a_4331_98ad_3aa2ab4b36f8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9518019c_950a_4331_98ad_3aa2ab4b36f8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_95218719_b137_4e9a_8984_e7171d8bf606()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_95218719_b137_4e9a_8984_e7171d8bf606");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_95453a7d_0c7d_4c26_a870_239d5db0dcb5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_95453a7d_0c7d_4c26_a870_239d5db0dcb5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9558ee25_fcce_4428_84af_0e7213dca294()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9558ee25_fcce_4428_84af_0e7213dca294");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_95a69204_ac23_4173_b1a1_34e3d3768829()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_95a69204_ac23_4173_b1a1_34e3d3768829");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_95b29c42_7be0_4975_8866_82136878da62()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_95b29c42_7be0_4975_8866_82136878da62");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_95d6b798_7c53_4fb9_976b_8832650f3379()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_95d6b798_7c53_4fb9_976b_8832650f3379");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_95f44d48_4ee4_42ac_b824_467e667a0d0f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_95f44d48_4ee4_42ac_b824_467e667a0d0f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_95f49eb1_06c8_499f_a83c_e15e5527a70b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_95f49eb1_06c8_499f_a83c_e15e5527a70b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_95febdd6_9955_46b1_8aae_f8503769cda1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_95febdd6_9955_46b1_8aae_f8503769cda1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_961419eb_658b_41d3_9b00_2d884d48bc58()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_961419eb_658b_41d3_9b00_2d884d48bc58");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_961c57c5_2eb7_4896_bc6b_0b033812ae07()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_961c57c5_2eb7_4896_bc6b_0b033812ae07");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_962b2218_a199_4a9f_a26d_9b40d14c6271()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_962b2218_a199_4a9f_a26d_9b40d14c6271");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_96455f3f_ec88_4eeb_bd27_5449904a81f0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_96455f3f_ec88_4eeb_bd27_5449904a81f0");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_967b3c73_bc5b_4294_9dd0_6c97a430c28b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_967b3c73_bc5b_4294_9dd0_6c97a430c28b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_96931a99_cfcb_481e_8497_53851e799b11()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_96931a99_cfcb_481e_8497_53851e799b11");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_96a537b4_02ac_484f_87c6_0d087cdbfaaa()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_96a537b4_02ac_484f_87c6_0d087cdbfaaa");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_96ba7e60_b5f8_46bc_a031_accc6114bfd1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_96ba7e60_b5f8_46bc_a031_accc6114bfd1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_96db6220_997f_4441_b2cd_c4cd1bd7f636()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_96db6220_997f_4441_b2cd_c4cd1bd7f636");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_96e136c3_66f2_4fdc_90bf_4294b4eb2fd7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_96e136c3_66f2_4fdc_90bf_4294b4eb2fd7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_96e8dc4e_2e0e_41eb_9acf_2d0698cbe241()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_96e8dc4e_2e0e_41eb_9acf_2d0698cbe241");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_96ee1506_a366_4780_916a_19635826c121()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_96ee1506_a366_4780_916a_19635826c121");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_971e7d7c_438b_46de_9683_2ae5c2d3b4d4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_971e7d7c_438b_46de_9683_2ae5c2d3b4d4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9728ea49_ebd5_4e55_925b_f4ad132bcba3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9728ea49_ebd5_4e55_925b_f4ad132bcba3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_97363315_b651_4b87_a3bc_48a40570a032()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_97363315_b651_4b87_a3bc_48a40570a032");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_974f470e_edf9_4e7f_ab40_3f18f4afd88e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_974f470e_edf9_4e7f_ab40_3f18f4afd88e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_97c0bbd5_da43_4620_93c6_629abc0ac21f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_97c0bbd5_da43_4620_93c6_629abc0ac21f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_97f0c763_a5b2_4db2_8e22_ad59fa70013d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_97f0c763_a5b2_4db2_8e22_ad59fa70013d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_97feee3e_b5f2_4418_81a6_aae685eb43c7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_97feee3e_b5f2_4418_81a6_aae685eb43c7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9804e6ee_8f2c_44cb_afa7_2339abe788fc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9804e6ee_8f2c_44cb_afa7_2339abe788fc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_981fa613_49b7_490f_820e_37276639282d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_981fa613_49b7_490f_820e_37276639282d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9825f89b_bde8_4d90_b901_d02a2d33599f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9825f89b_bde8_4d90_b901_d02a2d33599f");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_982ab3cd_c5dc_4bc6_b8ef_2664b8d1f124()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_982ab3cd_c5dc_4bc6_b8ef_2664b8d1f124");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_98314472_f2c0_48fd_8506_ca1a05d2db13()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_98314472_f2c0_48fd_8506_ca1a05d2db13");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_98571181_dae1_4cc7_9980_6a655c357c0a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_98571181_dae1_4cc7_9980_6a655c357c0a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_985ba713_70a1_4a05_a2cf_ccca169ae320()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_985ba713_70a1_4a05_a2cf_ccca169ae320");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_98655572_49e5_4e8d_a86d_0c61276a55be()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_98655572_49e5_4e8d_a86d_0c61276a55be");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_98c52ec8_e5d9_49e0_a638_b207b408fbb7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_98c52ec8_e5d9_49e0_a638_b207b408fbb7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_98cd4be9_ee81_4646_8b31_82e6710e3a8d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_98cd4be9_ee81_4646_8b31_82e6710e3a8d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_98ceb437_832b_4273_a3dc_d82924f3fc8c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_98ceb437_832b_4273_a3dc_d82924f3fc8c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_98dd8fa3_2e7b_49f1_b2d2_81d7b9c58c6a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_98dd8fa3_2e7b_49f1_b2d2_81d7b9c58c6a");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_98f3789b_b42f_41a7_a63b_f14458612a9e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_98f3789b_b42f_41a7_a63b_f14458612a9e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9919d2ac_9d04_4e29_8f70_9901bccc55f9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9919d2ac_9d04_4e29_8f70_9901bccc55f9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_994ae01d_fb20_4573_988b_6d2519b2bc8f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_994ae01d_fb20_4573_988b_6d2519b2bc8f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_994f1495_8f52_465f_aca1_f4a88eadeded()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_994f1495_8f52_465f_aca1_f4a88eadeded");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_999f1799_8987_4b55_9abc_c458bfd3abfb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_999f1799_8987_4b55_9abc_c458bfd3abfb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_99bdd93e_d77d_4018_8af1_62d7a0cd0b27()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_99bdd93e_d77d_4018_8af1_62d7a0cd0b27");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_99d5d2cf_5750_41ac_bc2e_8a13b5753da1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_99d5d2cf_5750_41ac_bc2e_8a13b5753da1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_99e1fe5a_152f_42c5_812b_f52af7b772bf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_99e1fe5a_152f_42c5_812b_f52af7b772bf");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_9a023df7_f5e2_476c_afa9_d93fe655c76a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_9a023df7_f5e2_476c_afa9_d93fe655c76a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9a1782fa_f85d_499f_86a3_c069277aaf7a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9a1782fa_f85d_499f_86a3_c069277aaf7a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9a1b1002_57d1_461e_a825_0d314e974088()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9a1b1002_57d1_461e_a825_0d314e974088");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_9a451324_6d32_4540_b523_5593ba2f3818()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_9a451324_6d32_4540_b523_5593ba2f3818");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9a48ebed_32df_4853_9614_b7bbb3029222()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9a48ebed_32df_4853_9614_b7bbb3029222");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9a4cafcb_e040_4e86_8271_20cb7454eb87()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9a4cafcb_e040_4e86_8271_20cb7454eb87");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9a819faa_48b9_4246_8a46_8628f9f6e779()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9a819faa_48b9_4246_8a46_8628f9f6e779");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9a839f7a_9337_41df_9f8b_042e89cb6f75()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9a839f7a_9337_41df_9f8b_042e89cb6f75");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9a9f5384_b09c_4118_b9ee_bd4ab63d6227()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9a9f5384_b09c_4118_b9ee_bd4ab63d6227");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_9aabec37_3a0b_482d_8a01_1cffaef49314()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_9aabec37_3a0b_482d_8a01_1cffaef49314");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9ab17663_ec0c_4df2_89af_6a505033636c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9ab17663_ec0c_4df2_89af_6a505033636c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9ae745da_3584_4b60_a27f_01bb8a43d5d9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9ae745da_3584_4b60_a27f_01bb8a43d5d9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9b22b00e_e237_4a9b_add5_5effa57913cf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9b22b00e_e237_4a9b_add5_5effa57913cf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9b3e7037_7e20_41f0_b093_6d4b58cb2cdc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9b3e7037_7e20_41f0_b093_6d4b58cb2cdc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9b54e1dd_eac0_4c44_b23c_51dbe1643791()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9b54e1dd_eac0_4c44_b23c_51dbe1643791");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9b62d55c_a88f_414c_86e2_ce200d6782d9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9b62d55c_a88f_414c_86e2_ce200d6782d9");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_9b751023_02c6_4898_a4ce_913a052a552e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_9b751023_02c6_4898_a4ce_913a052a552e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9b7cb0cd_a3e1_43ca_b2bf_cd6b7f1b9682()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9b7cb0cd_a3e1_43ca_b2bf_cd6b7f1b9682");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9ba978be_59b9_4933_b1ee_f97c2c59f131()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9ba978be_59b9_4933_b1ee_f97c2c59f131");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_9bb25fda_30a1_461d_9dfd_0e1de30ded67()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_9bb25fda_30a1_461d_9dfd_0e1de30ded67");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9bdec70e_699a_4c4f_bf71_57e5c413dc5f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9bdec70e_699a_4c4f_bf71_57e5c413dc5f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9c0ff0b6_9c77_41a5_8c9a_b4cdf0ef2337()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9c0ff0b6_9c77_41a5_8c9a_b4cdf0ef2337");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9c356197_8676_44a8_b7aa_ba70d26ae58e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9c356197_8676_44a8_b7aa_ba70d26ae58e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9c393dfa_2fca_4662_8ed6_48862157b537()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9c393dfa_2fca_4662_8ed6_48862157b537");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9c506b3e_0995_45ec_bbc7_7794518ce03d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9c506b3e_0995_45ec_bbc7_7794518ce03d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9c56b3ff_7ea1_4734_861a_3ba4e44e7a88()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9c56b3ff_7ea1_4734_861a_3ba4e44e7a88");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9c6b3ceb_b7ed_4060_b95b_b51a22bbe9e2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9c6b3ceb_b7ed_4060_b95b_b51a22bbe9e2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9c866300_a905_4fc6_95f7_701751e52e29()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9c866300_a905_4fc6_95f7_701751e52e29");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9c86bc4f_9c64_477d_9fa8_6d8c613e88d4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9c86bc4f_9c64_477d_9fa8_6d8c613e88d4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9cbdafc6_dfd7_4871_91c8_7e2c548bcc0d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9cbdafc6_dfd7_4871_91c8_7e2c548bcc0d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9cf77378_c716_4041_a257_9b5c67fc2922()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9cf77378_c716_4041_a257_9b5c67fc2922");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9cfe6aaa_8dd0_4f09_9404_d549c4c38d6f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9cfe6aaa_8dd0_4f09_9404_d549c4c38d6f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9d02496e_23e4_4546_b565_8f86a950244c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9d02496e_23e4_4546_b565_8f86a950244c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9d22af76_1ef0_4012_bc46_dc11db21037f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9d22af76_1ef0_4012_bc46_dc11db21037f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9d31e7ed_b6cc_43cd_b112_95f6d4e3b1cc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9d31e7ed_b6cc_43cd_b112_95f6d4e3b1cc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9d65e6e0_7ab3_4c12_8458_267144833155()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9d65e6e0_7ab3_4c12_8458_267144833155");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9d7df301_35ca_43d7_8efb_de54a8922549()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9d7df301_35ca_43d7_8efb_de54a8922549");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9dafbfa2_3d61_479d_aae3_f950b746e5a1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9dafbfa2_3d61_479d_aae3_f950b746e5a1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9dbf1b25_76c8_4fb6_a523_a00e8aee26a3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9dbf1b25_76c8_4fb6_a523_a00e8aee26a3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9dd4a0c8_4817_412f_b39e_36954b3f2ad5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9dd4a0c8_4817_412f_b39e_36954b3f2ad5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9df4e050_df83_475d_a67c_da485dccac64()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9df4e050_df83_475d_a67c_da485dccac64");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9e1b60e0_8c12_4a47_873f_9476a5bdfd31()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9e1b60e0_8c12_4a47_873f_9476a5bdfd31");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9e1f2e2f_db5e_4ecc_a324_24d534337ef9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9e1f2e2f_db5e_4ecc_a324_24d534337ef9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9e35cca8_db9a_4cc2_b9fc_adab57e30efd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9e35cca8_db9a_4cc2_b9fc_adab57e30efd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9e7ede35_7f37_46a4_8793_9cd53e1b1bf8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9e7ede35_7f37_46a4_8793_9cd53e1b1bf8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9ea41903_c6b7_4d4f_b076_f15ca9e71bb6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9ea41903_c6b7_4d4f_b076_f15ca9e71bb6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9ea59cb6_9f12_4c4e_81be_08e60d233e4d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9ea59cb6_9f12_4c4e_81be_08e60d233e4d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9eae1d2e_75c1_490c_af2d_b2cd7f488017()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9eae1d2e_75c1_490c_af2d_b2cd7f488017");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9f119c79_3c64_458d_bb46_fcdfdf55ce68()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9f119c79_3c64_458d_bb46_fcdfdf55ce68");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9f16d1b4_10d0_4843_92ea_feb0e8fadf07()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9f16d1b4_10d0_4843_92ea_feb0e8fadf07");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9f1866e0_e8f4_4e8c_95fb_fdb8fe0b6ad3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9f1866e0_e8f4_4e8c_95fb_fdb8fe0b6ad3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9f442ec7_c025_4e8a_8d18_b439eec45ec4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9f442ec7_c025_4e8a_8d18_b439eec45ec4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9f61afb5_634a_441f_a820_99465031f61b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9f61afb5_634a_441f_a820_99465031f61b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9fc9cd6f_1c9d_4341_a8c2_88c1505db780()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9fc9cd6f_1c9d_4341_a8c2_88c1505db780");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_9fff577a_e16a_46e6_bc8e_4f542160bce3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_9fff577a_e16a_46e6_bc8e_4f542160bce3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a001f5f4_3039_426c_95c6_510be76e25ae()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a001f5f4_3039_426c_95c6_510be76e25ae");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a00a937e_84f9_4995_89a1_7d8a5f22c04d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a00a937e_84f9_4995_89a1_7d8a5f22c04d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a04dd978_0732_4db4_8bc6_5434cc4c3d84()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a04dd978_0732_4db4_8bc6_5434cc4c3d84");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a05723fb_d45f_4f32_8249_51b3021051ed()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a05723fb_d45f_4f32_8249_51b3021051ed");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_a058c2b7_e8d0_4a89_8140_321ae486262c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_a058c2b7_e8d0_4a89_8140_321ae486262c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a07fcac0_3916_4ae0_b411_3a3ea8fad190()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a07fcac0_3916_4ae0_b411_3a3ea8fad190");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a090699e_bb87_4d6b_8cda_4d3860d02ef6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a090699e_bb87_4d6b_8cda_4d3860d02ef6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a09e2562_e0cf_4e82_9155_b75f29f2f636()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a09e2562_e0cf_4e82_9155_b75f29f2f636");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a0afcdbf_12b2_4d94_a1d6_c2ae213ceb1a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a0afcdbf_12b2_4d94_a1d6_c2ae213ceb1a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a0caa25f_501c_409f_8a18_97dca7ebac46()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a0caa25f_501c_409f_8a18_97dca7ebac46");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a0d5ab69_f0d4_42f6_a75d_0100ae501212()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a0d5ab69_f0d4_42f6_a75d_0100ae501212");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a0d8bc26_eb6b_41e4_ab23_b7ff120f9283()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a0d8bc26_eb6b_41e4_ab23_b7ff120f9283");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a0daa456_9e0e_4073_a5fe_0f4267d73da5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a0daa456_9e0e_4073_a5fe_0f4267d73da5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a0f5e92b_7232_4a44_b735_7ca2cf8af874()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a0f5e92b_7232_4a44_b735_7ca2cf8af874");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a0f7f920_c78b_4a06_8490_eb20ba3106bc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a0f7f920_c78b_4a06_8490_eb20ba3106bc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a10e0fc7_f8dd_40ce_a2c1_3100892438fb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a10e0fc7_f8dd_40ce_a2c1_3100892438fb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a153bf94_62b4_4326_8aab_df2f4cd3957d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a153bf94_62b4_4326_8aab_df2f4cd3957d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a15ce348_e9c2_4e23_8d2f_b168133e6a80()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a15ce348_e9c2_4e23_8d2f_b168133e6a80");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a160f8c4_63ea_49b4_89bb_90b829adcb18()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a160f8c4_63ea_49b4_89bb_90b829adcb18");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a17864bb_0a5d_474f_9890_90ab82dcd7bf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a17864bb_0a5d_474f_9890_90ab82dcd7bf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a1818070_9046_4065_a2f8_fc5697eddd98()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a1818070_9046_4065_a2f8_fc5697eddd98");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a1899846_4d31_44b2_b18a_a256ed23443d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a1899846_4d31_44b2_b18a_a256ed23443d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a1bc663c_d114_4bc9_98b4_98a00cf1f242()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a1bc663c_d114_4bc9_98b4_98a00cf1f242");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a1c1c8d3_71b7_4196_bdd7_8549c758bfa2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a1c1c8d3_71b7_4196_bdd7_8549c758bfa2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a1dceb12_8e16_47e9_831e_ee93439f559a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a1dceb12_8e16_47e9_831e_ee93439f559a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a1df00a5_f628_4d21_b66c_7ca078a27464()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a1df00a5_f628_4d21_b66c_7ca078a27464");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a1e94826_7ffd_412d_a6b3_f712575c4784()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a1e94826_7ffd_412d_a6b3_f712575c4784");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a1f64f19_b981_433d_bdd6_1b42f5a0e2a7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a1f64f19_b981_433d_bdd6_1b42f5a0e2a7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a22d1490_f5cb_445d_845a_889e3b51f7bc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a22d1490_f5cb_445d_845a_889e3b51f7bc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a23ab14f_0074_4d39_844e_7d4120bb0588()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a23ab14f_0074_4d39_844e_7d4120bb0588");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a24ae1d0_ce05_429f_ab7b_6835750ef77f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a24ae1d0_ce05_429f_ab7b_6835750ef77f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a27906a9_e904_47cf_bdef_2e1fe536a165()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a27906a9_e904_47cf_bdef_2e1fe536a165");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a280ed41_1def_4e06_89bc_54de6b4961c6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a280ed41_1def_4e06_89bc_54de6b4961c6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a28b1bc0_904a_4c53_9b67_1422de573be0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a28b1bc0_904a_4c53_9b67_1422de573be0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a2c1cd4a_426a_447c_b2f5_2b748c1c5b5c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a2c1cd4a_426a_447c_b2f5_2b748c1c5b5c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a2c28e73_2b0c_463d_917d_3e8a4eea081b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a2c28e73_2b0c_463d_917d_3e8a4eea081b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a2c2f89d_f1f0_458b_a2d5_739c7e212caa()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a2c2f89d_f1f0_458b_a2d5_739c7e212caa");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a2de0da8_9dd1_436d_83b4_181036ced1c8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a2de0da8_9dd1_436d_83b4_181036ced1c8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a30ce299_b78b_4907_befe_ddd4f0e605d9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a30ce299_b78b_4907_befe_ddd4f0e605d9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a34304a7_c9b6_4e34_aaca_d087921cf63c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a34304a7_c9b6_4e34_aaca_d087921cf63c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a34e173b_c8f6_4441_a14d_5b1e79c29aef()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a34e173b_c8f6_4441_a14d_5b1e79c29aef");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a360de41_7593_4197_9238_ef186db38c63()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a360de41_7593_4197_9238_ef186db38c63");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a37478e8_0c6c_475d_b004_90ea2249d1b2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a37478e8_0c6c_475d_b004_90ea2249d1b2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a3815f37_291e_4355_a89e_fd8a793f3d29()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a3815f37_291e_4355_a89e_fd8a793f3d29");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a382cf25_c272_40a4_ba72_476c95749f10()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a382cf25_c272_40a4_ba72_476c95749f10");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a3836d38_d1fc_44fd_a6b2_b79302d6774d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a3836d38_d1fc_44fd_a6b2_b79302d6774d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a3e48f4b_9cb1_4d48_85cc_d1d450d23ede()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a3e48f4b_9cb1_4d48_85cc_d1d450d23ede");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a3e85a43_80dc_4079_9bcf_c0acdb5c2b1c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a3e85a43_80dc_4079_9bcf_c0acdb5c2b1c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a3ec6cb9_8a05_4bf2_8943_03b27f18bb68()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a3ec6cb9_8a05_4bf2_8943_03b27f18bb68");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a3fdeacb_f2b1_4854_813c_9a472e845b97()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a3fdeacb_f2b1_4854_813c_9a472e845b97");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a3ffc711_8580_490c_92b2_e0ff2653a769()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a3ffc711_8580_490c_92b2_e0ff2653a769");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a40f47bb_941a_4b3f_8df4_070ff427ce42()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a40f47bb_941a_4b3f_8df4_070ff427ce42");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a483bbcf_6ce2_4dfe_a496_d3b385504438()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a483bbcf_6ce2_4dfe_a496_d3b385504438");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a4a3c95b_2a24_460f_910f_229c82bf1061()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a4a3c95b_2a24_460f_910f_229c82bf1061");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a4e7d41e_a9bf_4616_9d06_c18f70b743ec()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a4e7d41e_a9bf_4616_9d06_c18f70b743ec");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a5106a5f_0ff0_4cf1_ba74_508a3ac23159()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a5106a5f_0ff0_4cf1_ba74_508a3ac23159");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a52ebfbb_4680_46ac_a964_a92f59d2453b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a52ebfbb_4680_46ac_a964_a92f59d2453b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a53a5cb9_5011_41a7_ace3_7a3158edfb37()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a53a5cb9_5011_41a7_ace3_7a3158edfb37");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a56bd8f1_dacb_4262_8bcf_58264fd31a33()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a56bd8f1_dacb_4262_8bcf_58264fd31a33");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a580cc25_12a9_403b_9b56_01856ddc5aad()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a580cc25_12a9_403b_9b56_01856ddc5aad");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a587964b_ff36_4257_8d30_6926b4fb74a5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a587964b_ff36_4257_8d30_6926b4fb74a5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a58aa60e_de9f_48ed_a3f6_99c65b53f9d8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a58aa60e_de9f_48ed_a3f6_99c65b53f9d8");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_a58e6ca0_2986_49c6_b40e_92b5caf7b072()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_a58e6ca0_2986_49c6_b40e_92b5caf7b072");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a5930543_6974_454e_9c60_5f8da9ac5903()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a5930543_6974_454e_9c60_5f8da9ac5903");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a5f73b4d_ad46_45a3_9be6_a91889fc50e3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a5f73b4d_ad46_45a3_9be6_a91889fc50e3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a5fc7acb_9c58_4e98_b642_08923d98c162()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a5fc7acb_9c58_4e98_b642_08923d98c162");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a62ea9fc_9edd_4cb3_a195_9e322dff020b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a62ea9fc_9edd_4cb3_a195_9e322dff020b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a6399c66_0a77_48c3_853d_2400b8f6f2e8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a6399c66_0a77_48c3_853d_2400b8f6f2e8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a66fe20f_1883_490f_9cd9_19bd7253e969()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a66fe20f_1883_490f_9cd9_19bd7253e969");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a6aa961d_727b_408e_ac9e_493a97579974()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a6aa961d_727b_408e_ac9e_493a97579974");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a6bfaeb3_ee01_4392_819d_1d81c7f59435()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a6bfaeb3_ee01_4392_819d_1d81c7f59435");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a6c1c24d_519f_4249_aa9a_4d77bad54eea()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a6c1c24d_519f_4249_aa9a_4d77bad54eea");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a6dd6c0d_a093_4a54_a193_d18c7881dadf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a6dd6c0d_a093_4a54_a193_d18c7881dadf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a6e08b11_0d99_4c5c_9b8a_b2e1d250cb17()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a6e08b11_0d99_4c5c_9b8a_b2e1d250cb17");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a6e1e7f2_8948_4c49_9a38_867f29bed25b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a6e1e7f2_8948_4c49_9a38_867f29bed25b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a6ec0c45_5642_44c3_b1d2_0f942c0206eb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a6ec0c45_5642_44c3_b1d2_0f942c0206eb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a70090d5_420a_49e9_9c95_dcd48ddba836()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a70090d5_420a_49e9_9c95_dcd48ddba836");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a705dfed_dc5d_4289_bb98_43d74c98526e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a705dfed_dc5d_4289_bb98_43d74c98526e");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_a714b598_5d70_4340_bb5e_01b154003a1c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_a714b598_5d70_4340_bb5e_01b154003a1c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a727a4e1_2f40_45e1_80c9_9ca99a30433d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a727a4e1_2f40_45e1_80c9_9ca99a30433d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a7493ea5_8570_40d1_95c8_a35e51c815d3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a7493ea5_8570_40d1_95c8_a35e51c815d3");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_a751df4c_e015_4ade_8b97_bbced1b839b0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_a751df4c_e015_4ade_8b97_bbced1b839b0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a7529639_23ef_4af5_9c20_10c23b8e88c4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a7529639_23ef_4af5_9c20_10c23b8e88c4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a759b18b_ae2d_4946_b1cc_e95671839c8c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a759b18b_ae2d_4946_b1cc_e95671839c8c");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_a77c9e86_c566_41a2_945c_43af2d7b4ac3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_a77c9e86_c566_41a2_945c_43af2d7b4ac3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a79e7f46_4969_4260_a387_0836f4956c46()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a79e7f46_4969_4260_a387_0836f4956c46");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a7fa7792_e3c6_4345_8f28_d58d45350a52()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a7fa7792_e3c6_4345_8f28_d58d45350a52");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a831bd6a_470f_4321_bdc4_654ec4cbb0ce()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a831bd6a_470f_4321_bdc4_654ec4cbb0ce");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a834e9ed_0a98_4754_98cf_94a6be7c08c1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a834e9ed_0a98_4754_98cf_94a6be7c08c1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a86201e9_7103_4556_b44f_8aca3c670086()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a86201e9_7103_4556_b44f_8aca3c670086");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a8680498_abde_4fd3_b853_d008e25ac2a6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a8680498_abde_4fd3_b853_d008e25ac2a6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a87c3959_79a5_4d5f_bc43_b854e6eb77e5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a87c3959_79a5_4d5f_bc43_b854e6eb77e5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a8ab0a40_cc04_43eb_b249_c61f9c3246f3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a8ab0a40_cc04_43eb_b249_c61f9c3246f3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a8afb92b_8bd9_4823_9e52_6e51dd125e44()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a8afb92b_8bd9_4823_9e52_6e51dd125e44");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_a8c01b3d_6a54_4da9_afd2_1d7a17fba48c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_a8c01b3d_6a54_4da9_afd2_1d7a17fba48c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a8cf7fd9_b302_493a_80f9_b8c7ad4d7756()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a8cf7fd9_b302_493a_80f9_b8c7ad4d7756");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a8d600a0_62a9_46b0_9d6a_31b3be48bbba()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a8d600a0_62a9_46b0_9d6a_31b3be48bbba");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_a902ef0c_0825_4ba8_89ee_4ca666e783e1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_a902ef0c_0825_4ba8_89ee_4ca666e783e1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a91800cc_a6cb_42bf_944e_51cb468008f3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a91800cc_a6cb_42bf_944e_51cb468008f3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a92198f7_3e26_454d_b5a2_15f22468fdf7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a92198f7_3e26_454d_b5a2_15f22468fdf7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a92e7436_12f5_4911_984a_ca6d12755c98()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a92e7436_12f5_4911_984a_ca6d12755c98");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a92f415e_3624_455e_b10b_d0612c376dfc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a92f415e_3624_455e_b10b_d0612c376dfc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a95c76f0_08ac_4173_9eb7_2291ff335a60()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a95c76f0_08ac_4173_9eb7_2291ff335a60");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_a9627704_f7ed_4c1b_8cee_9a77c056afe0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_a9627704_f7ed_4c1b_8cee_9a77c056afe0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a96c7ec2_ec48_4590_bd87_66380c0760db()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a96c7ec2_ec48_4590_bd87_66380c0760db");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a99eafcd_46a1_4fa3_83ed_7395edae11c6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a99eafcd_46a1_4fa3_83ed_7395edae11c6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a9b4da79_0b24_4fee_9755_bb5177f6e968()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a9b4da79_0b24_4fee_9755_bb5177f6e968");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a9d647b1_e991_4130_91da_8fe536ca901f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a9d647b1_e991_4130_91da_8fe536ca901f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a9da2157_99ad_481b_b724_1fb43e718e13()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a9da2157_99ad_481b_b724_1fb43e718e13");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_a9ff581c_50bd_49b8_9487_977a80c88d2e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_a9ff581c_50bd_49b8_9487_977a80c88d2e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_aa5a291b_2d7a_4e72_bef8_ad148ea64acf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_aa5a291b_2d7a_4e72_bef8_ad148ea64acf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_aa5f6a34_aad5_476c_a1a6_0d621444e4d1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_aa5f6a34_aad5_476c_a1a6_0d621444e4d1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_aa7285f6_b53a_4809_a4b4_b872ecdafd89()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_aa7285f6_b53a_4809_a4b4_b872ecdafd89");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_aa7b9533_9063_4e72_93e8_d9aadb439a7f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_aa7b9533_9063_4e72_93e8_d9aadb439a7f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_aab9719a_b2bc_40d9_82ed_ebb7e1af1353()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_aab9719a_b2bc_40d9_82ed_ebb7e1af1353");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_aabea924_8d54_46f3_9126_a503d9574282()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_aabea924_8d54_46f3_9126_a503d9574282");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_aac0b2d3_acc7_4b83_89a3_001d5854c0f7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_aac0b2d3_acc7_4b83_89a3_001d5854c0f7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_aad86121_fbf3_4ff5_848d_bd19415456a9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_aad86121_fbf3_4ff5_848d_bd19415456a9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_aae0b17e_4a2b_4ec0_b4fa_f9ad69d8cb4d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_aae0b17e_4a2b_4ec0_b4fa_f9ad69d8cb4d");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_ab14be9c_4386_4b8c_b8d9_4b591ccd1d77()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_ab14be9c_4386_4b8c_b8d9_4b591ccd1d77");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_abe11331_e57b_40fe_9192_9e1a6fbc1633()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_abe11331_e57b_40fe_9192_9e1a6fbc1633");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ac0efc4a_7c86_49fe_8b35_0d9204eed8f1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ac0efc4a_7c86_49fe_8b35_0d9204eed8f1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ac244196_53fa_46cc_8bd7_400eb9a73f39()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ac244196_53fa_46cc_8bd7_400eb9a73f39");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ac8696ba_8381_453e_89fd_c46f0666b972()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ac8696ba_8381_453e_89fd_c46f0666b972");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ace0d058_a7b1_4c19_84f2_c248be91ef40()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ace0d058_a7b1_4c19_84f2_c248be91ef40");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_acf99a82_f434_4fe8_8c73_631835f3deec()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_acf99a82_f434_4fe8_8c73_631835f3deec");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ad27a8ba_02a1_4ee6_8b5a_4a6eb59670a7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ad27a8ba_02a1_4ee6_8b5a_4a6eb59670a7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ad2eac3d_bc95_4fa4_b320_33cc6bcdb48f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ad2eac3d_bc95_4fa4_b320_33cc6bcdb48f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ad41f236_4888_444c_9a36_76bdc57fd8ab()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ad41f236_4888_444c_9a36_76bdc57fd8ab");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ad429334_4646_4bc3_871c_58c53d361443()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ad429334_4646_4bc3_871c_58c53d361443");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ad86b0a9_f600_4f12_8769_39a5caebf30a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ad86b0a9_f600_4f12_8769_39a5caebf30a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_adf2f3de_bd14_49c0_9688_1ca0d011119b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_adf2f3de_bd14_49c0_9688_1ca0d011119b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_adfd5932_c8a7_4b74_ac03_cd1b2f7305cb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_adfd5932_c8a7_4b74_ac03_cd1b2f7305cb");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_adfd5f67_c436_4e55_8af1_93b8f766d329()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_adfd5f67_c436_4e55_8af1_93b8f766d329");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ae3307a7_8ace_4a77_877a_d7d3b58d3f4b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ae3307a7_8ace_4a77_877a_d7d3b58d3f4b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ae5a25ee_0589_4d9c_91c2_34de83f57bf0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ae5a25ee_0589_4d9c_91c2_34de83f57bf0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ae5cbc2f_9971_4a49_a0ba_6220eaa109e7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ae5cbc2f_9971_4a49_a0ba_6220eaa109e7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ae83ecdc_2532_4121_9547_0d59570248b0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ae83ecdc_2532_4121_9547_0d59570248b0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ae88790e_0751_4907_9c45_d8633dcf193d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ae88790e_0751_4907_9c45_d8633dcf193d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ae888412_9c28_45d0_9a91_a571cc3806e8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ae888412_9c28_45d0_9a91_a571cc3806e8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_aea03fc3_ebe5_4d96_af5b_2d99f27a3905()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_aea03fc3_ebe5_4d96_af5b_2d99f27a3905");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_aea2667f_18a8_4609_8a8a_aabdb3195bee()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_aea2667f_18a8_4609_8a8a_aabdb3195bee");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_aedf77b0_905f_4eb2_b620_84e36ab609c1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_aedf77b0_905f_4eb2_b620_84e36ab609c1");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_aee2d552_1b64_4b3e_99b0_b2246fa66f5d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_aee2d552_1b64_4b3e_99b0_b2246fa66f5d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_aee40cfc_f049_4d92_95b7_942b8cecfa73()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_aee40cfc_f049_4d92_95b7_942b8cecfa73");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_aef48da5_2a32_49af_a22d_a06c38feaa23()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_aef48da5_2a32_49af_a22d_a06c38feaa23");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_aef7d081_1983_4eee_b50b_1443c379b269()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_aef7d081_1983_4eee_b50b_1443c379b269");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_af4569db_6917_4ede_81b1_f13007e054e7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_af4569db_6917_4ede_81b1_f13007e054e7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_af59bff1_68af_413e_83cb_2ebda002bf0d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_af59bff1_68af_413e_83cb_2ebda002bf0d");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_af7d76b4_0c4a_4911_a69b_c1342faef71a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_af7d76b4_0c4a_4911_a69b_c1342faef71a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_afe7a975_2ee1_4c6c_9e35_d21e5adbb613()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_afe7a975_2ee1_4c6c_9e35_d21e5adbb613");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_affaabf3_1392_4a64_8743_ae2dda545c72()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_affaabf3_1392_4a64_8743_ae2dda545c72");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b03452ab_63b2_455c_8ebf_23df075ca94d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b03452ab_63b2_455c_8ebf_23df075ca94d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b03a5110_770a_490a_a8ff_d7e37cdb5ec3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b03a5110_770a_490a_a8ff_d7e37cdb5ec3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b06bc15b_dd1d_4cd2_999e_837f27b290e0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b06bc15b_dd1d_4cd2_999e_837f27b290e0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b07e7479_ae8f_4724_a29e_bdc2c41dd63c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b07e7479_ae8f_4724_a29e_bdc2c41dd63c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b1220322_36ff_48c6_b535_0305bd24ba7e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b1220322_36ff_48c6_b535_0305bd24ba7e");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_b128f357_5d51_4734_8857_3725ca18fb53()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_b128f357_5d51_4734_8857_3725ca18fb53");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b15a643d_ee74_4a98_a01f_61275e060f63()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b15a643d_ee74_4a98_a01f_61275e060f63");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b168da96_2083_47f9_8f98_1030675ac3df()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b168da96_2083_47f9_8f98_1030675ac3df");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_b16e674d_5956_49b8_847e_ed4b28759270()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_b16e674d_5956_49b8_847e_ed4b28759270");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b1d03841_a379_4567_be02_784c7fd0d602()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b1d03841_a379_4567_be02_784c7fd0d602");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b1f6d3ba_1a69_4779_a54f_ac46eeeb1d3e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b1f6d3ba_1a69_4779_a54f_ac46eeeb1d3e");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_b2015350_a337_424a_8e66_c71f61458d8d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_b2015350_a337_424a_8e66_c71f61458d8d");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_b211862c_d7fe_43e6_8245_252176bf36eb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_b211862c_d7fe_43e6_8245_252176bf36eb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b2393573_22dc_4282_a8ae_72e69e4387ed()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b2393573_22dc_4282_a8ae_72e69e4387ed");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b25c6338_33f2_404a_9c06_e8c53dfbd095()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b25c6338_33f2_404a_9c06_e8c53dfbd095");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b2677711_2877_4fd8_a4a3_d1ecdc48b677()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b2677711_2877_4fd8_a4a3_d1ecdc48b677");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b285b664_9458_48db_89b0_74b578ca4268()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b285b664_9458_48db_89b0_74b578ca4268");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b2c5edcc_41e3_41b1_926a_bd802dfbbcba()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b2c5edcc_41e3_41b1_926a_bd802dfbbcba");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b2e92b68_4181_477b_b081_ab517deb6cad()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b2e92b68_4181_477b_b081_ab517deb6cad");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b2ede6ed_e51b_41c0_8a61_1538fde513e8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b2ede6ed_e51b_41c0_8a61_1538fde513e8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b2f0335e_ff7a_4b67_8dd2_519f2195e776()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b2f0335e_ff7a_4b67_8dd2_519f2195e776");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b2f19982_3012_4426_8574_ebded0f5cfe1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b2f19982_3012_4426_8574_ebded0f5cfe1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b300f982_6425_40fb_843d_c07ccbb020d0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b300f982_6425_40fb_843d_c07ccbb020d0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b34e138a_b75d_4052_80d0_0a07e5c4f78d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b34e138a_b75d_4052_80d0_0a07e5c4f78d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b3863ca5_9b56_4f57_b80f_6959d1c819e5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b3863ca5_9b56_4f57_b80f_6959d1c819e5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b3bd160d_c8bc_43ed_8c64_c56b354eda40()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b3bd160d_c8bc_43ed_8c64_c56b354eda40");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b3dd573d_8954_4219_8f5c_52be3d783f86()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b3dd573d_8954_4219_8f5c_52be3d783f86");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b3e571a5_afdc_441b_a135_9d487b752efc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b3e571a5_afdc_441b_a135_9d487b752efc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b3f1b956_e3bb_42db_853c_cd994d148790()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b3f1b956_e3bb_42db_853c_cd994d148790");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b411681f_32e7_4b07_b196_f55de7faf281()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b411681f_32e7_4b07_b196_f55de7faf281");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b41d63f2_c1c6_4e14_9d46_a620ac4dda75()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b41d63f2_c1c6_4e14_9d46_a620ac4dda75");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b424fdfc_f39c_4bc4_931a_af0064316eaa()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b424fdfc_f39c_4bc4_931a_af0064316eaa");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b4403401_1bd6_4cd3_acf0_ea663bcb6043()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b4403401_1bd6_4cd3_acf0_ea663bcb6043");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b445ba82_1a2e_48ef_a562_19b936fa940e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b445ba82_1a2e_48ef_a562_19b936fa940e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b4a10811_6d43_431b_923e_57b5728afaa6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b4a10811_6d43_431b_923e_57b5728afaa6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b4a6861f_2094_4f34_8d3d_2201805d5375()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b4a6861f_2094_4f34_8d3d_2201805d5375");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b4a8b811_4068_462a_81ec_4bce82321b39()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b4a8b811_4068_462a_81ec_4bce82321b39");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b4bc7522_a312_444c_8f8f_e091e5dd8abb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b4bc7522_a312_444c_8f8f_e091e5dd8abb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b4ff3b5d_b921_4c8f_91fb_a2f72ae05fec()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b4ff3b5d_b921_4c8f_91fb_a2f72ae05fec");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b5200382_39a9_45be_9a5e_99ce725d248a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b5200382_39a9_45be_9a5e_99ce725d248a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b5354d6f_6f5a_4e51_8616_e46565198411()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b5354d6f_6f5a_4e51_8616_e46565198411");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b5743435_3821_461b_b5e9_0aac21df191e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b5743435_3821_461b_b5e9_0aac21df191e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b598a17f_dd29_4d63_9610_0d13170e8b60()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b598a17f_dd29_4d63_9610_0d13170e8b60");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b5a962ec_dff9_4eac_b107_2ff5dc581fc1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b5a962ec_dff9_4eac_b107_2ff5dc581fc1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b5bf7189_14cc_476d_81d2_917faa385fb8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b5bf7189_14cc_476d_81d2_917faa385fb8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b5ef37ef_8884_4ba4_a4e4_e011adc9665d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b5ef37ef_8884_4ba4_a4e4_e011adc9665d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b628eca7_95e0_4011_a6dd_c76c4391244e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b628eca7_95e0_4011_a6dd_c76c4391244e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b650b1ce_d988_476a_a9b0_e47e7a2c3c03()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b650b1ce_d988_476a_a9b0_e47e7a2c3c03");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b679c057_aece_4fdf_80c3_ef8f6f64ddf5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b679c057_aece_4fdf_80c3_ef8f6f64ddf5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b6a51fcf_9f07_4629_b49f_0193650fbd83()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b6a51fcf_9f07_4629_b49f_0193650fbd83");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b6dc08e4_8b78_4ff9_baf6_03bc2912088b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b6dc08e4_8b78_4ff9_baf6_03bc2912088b");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_b6eba11c_ac57_43ce_8366_39dfe5fe3b13()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_b6eba11c_ac57_43ce_8366_39dfe5fe3b13");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b70af755_01c4_4b03_aa8f_9c252481d530()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b70af755_01c4_4b03_aa8f_9c252481d530");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_b72c7acb_3c15_494b_8bbb_2c932faedd71()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_b72c7acb_3c15_494b_8bbb_2c932faedd71");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b733eee2_1f9d_44b6_813a_c02f23a2103e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b733eee2_1f9d_44b6_813a_c02f23a2103e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b7635f8f_8522_4a61_a7d7_c977ee8d48e6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b7635f8f_8522_4a61_a7d7_c977ee8d48e6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b7668192_8444_4ed7_8634_bdf409f02921()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b7668192_8444_4ed7_8634_bdf409f02921");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b79cbb0d_d0d1_4e95_a7c0_6e134f6c98e0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b79cbb0d_d0d1_4e95_a7c0_6e134f6c98e0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b7b90ea8_99e4_42e1_a910_87e57e6fb617()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b7b90ea8_99e4_42e1_a910_87e57e6fb617");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b7d57f64_cf74_4364_aacd_ee2af9c4e005()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b7d57f64_cf74_4364_aacd_ee2af9c4e005");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_b7f509e0_b3b8_4c6c_be37_727339ec1b4a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_b7f509e0_b3b8_4c6c_be37_727339ec1b4a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b8018f74_7ffa_4f28_9ab5_dbf8d9ae1ee2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b8018f74_7ffa_4f28_9ab5_dbf8d9ae1ee2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b8099308_a7bd_499f_8379_b0c720d94430()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b8099308_a7bd_499f_8379_b0c720d94430");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_b83994a0_68d5_49d9_be43_e807fc899eb2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_b83994a0_68d5_49d9_be43_e807fc899eb2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b8477f0b_e43d_43fa_b87c_ac0b8f445179()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b8477f0b_e43d_43fa_b87c_ac0b8f445179");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b84865a9_f981_4b82_b40f_f6ad8015dc06()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b84865a9_f981_4b82_b40f_f6ad8015dc06");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b84b7ca3_a1a9_4290_8721_cdf01280085c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b84b7ca3_a1a9_4290_8721_cdf01280085c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b8810e3f_e31e_4c7b_ae70_fbdfc71ab183()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b8810e3f_e31e_4c7b_ae70_fbdfc71ab183");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b88a6d58_5152_4acc_8778_40688cb47eb7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b88a6d58_5152_4acc_8778_40688cb47eb7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b8a4e92f_81dc_48b1_a19b_7d1929fb8055()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b8a4e92f_81dc_48b1_a19b_7d1929fb8055");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_b8a8a4da_dc30_49a0_b164_4faab6053d16()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_b8a8a4da_dc30_49a0_b164_4faab6053d16");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b8b95f57_9ef2_4286_a50b_8f586b2402e2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b8b95f57_9ef2_4286_a50b_8f586b2402e2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b8e1ebcb_df24_4077_8ae2_73a6f7d23f5b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b8e1ebcb_df24_4077_8ae2_73a6f7d23f5b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b95c5178_95a5_4e3a_ac71_7486ae6a31b8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b95c5178_95a5_4e3a_ac71_7486ae6a31b8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b9a042c4_3de3_4ccd_8e96_0f456c7d6e56()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b9a042c4_3de3_4ccd_8e96_0f456c7d6e56");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b9a70b09_95af_4e24_b021_a1cb5a824de4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b9a70b09_95af_4e24_b021_a1cb5a824de4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b9b97fe9_2d9c_490e_ac63_b43487ba2cbe()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b9b97fe9_2d9c_490e_ac63_b43487ba2cbe");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b9bf432e_7a86_4611_985b_46ea9c77ba36()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b9bf432e_7a86_4611_985b_46ea9c77ba36");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b9c18b5f_a094_4626_af7b_103144d5c2e9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b9c18b5f_a094_4626_af7b_103144d5c2e9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b9c6dc72_fb36_43c7_9451_fd1a2426425b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b9c6dc72_fb36_43c7_9451_fd1a2426425b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b9f0003f_9e36_40d0_b0a6_0c134b23fffe()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b9f0003f_9e36_40d0_b0a6_0c134b23fffe");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_b9f879de_1b4a_4aba_9759_afeb606e7ba3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_b9f879de_1b4a_4aba_9759_afeb606e7ba3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ba09c39d_ac5b_48a4_86aa_67ca917fbbf0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ba09c39d_ac5b_48a4_86aa_67ca917fbbf0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ba164d1d_d8e0_4ff4_8a0d_c29da88fe5ff()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ba164d1d_d8e0_4ff4_8a0d_c29da88fe5ff");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ba1c6eda_0a6c_4fe2_9e54_0188cf020e14()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ba1c6eda_0a6c_4fe2_9e54_0188cf020e14");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ba223411_20e0_46ca_bc38_1ee18492896d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ba223411_20e0_46ca_bc38_1ee18492896d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ba65b20b_08ff_4cd5_8f1f_d1ce093ac469()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ba65b20b_08ff_4cd5_8f1f_d1ce093ac469");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ba66ba06_ce65_4878_81ed_3d9b05cd199c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ba66ba06_ce65_4878_81ed_3d9b05cd199c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ba7ba860_8233_4f00_827c_69dd943535d7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ba7ba860_8233_4f00_827c_69dd943535d7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ba9109df_8abe_4a13_bbc2_36a1f8168bb3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ba9109df_8abe_4a13_bbc2_36a1f8168bb3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ba934866_60b2_42a2_b0a3_9164b9fd9f40()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ba934866_60b2_42a2_b0a3_9164b9fd9f40");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_babd5b32_0294_4f8a_b65a_2c780aef9bf9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_babd5b32_0294_4f8a_b65a_2c780aef9bf9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bacd7363_64a1_465f_9e2d_320e8bab0c2d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bacd7363_64a1_465f_9e2d_320e8bab0c2d");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_baf56425_0f62_41bc_99b2_0b43948644f7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_baf56425_0f62_41bc_99b2_0b43948644f7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bafd3319_729c_4e03_a70e_d314d3f507d3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bafd3319_729c_4e03_a70e_d314d3f507d3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bb01142d_cffd_490d_83bb_8aca03e7439b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bb01142d_cffd_490d_83bb_8aca03e7439b");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_bb187930_6511_4711_8d49_3de8265b3d6a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_bb187930_6511_4711_8d49_3de8265b3d6a");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_bb199407_4330_4ca4_bc4a_9ceb0c8e7452()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_bb199407_4330_4ca4_bc4a_9ceb0c8e7452");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bb1cda49_51d6_4f10_83be_4d139c167e76()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bb1cda49_51d6_4f10_83be_4d139c167e76");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bb38586e_41f5_4b7e_a1d8_44393665a056()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bb38586e_41f5_4b7e_a1d8_44393665a056");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bb539ecb_9b0b_45e7_b057_9340e4f5bfcf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bb539ecb_9b0b_45e7_b057_9340e4f5bfcf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bb53dc7c_00b3_402b_bb8f_3befd17572eb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bb53dc7c_00b3_402b_bb8f_3befd17572eb");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_bb6ec20f_dca0_459a_b54d_9ad3bd3a5581()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_bb6ec20f_dca0_459a_b54d_9ad3bd3a5581");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bb954526_6820_43f8_839e_790e1438c3b7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bb954526_6820_43f8_839e_790e1438c3b7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bbf5237d_1e49_4214_a893_20c1095cf6e3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bbf5237d_1e49_4214_a893_20c1095cf6e3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bc2d1903_3f26_4c0a_9546_a23611197995()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bc2d1903_3f26_4c0a_9546_a23611197995");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bcb3f335_3715_4722_a951_e55566b456dd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bcb3f335_3715_4722_a951_e55566b456dd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bcbd0658_2cf8_4bab_a785_7ca9a488b38d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bcbd0658_2cf8_4bab_a785_7ca9a488b38d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bce00a48_7078_4251_a6a5_e4e8be9def65()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bce00a48_7078_4251_a6a5_e4e8be9def65");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bceb4207_a97e_4551_a41a_9de5eb814efd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bceb4207_a97e_4551_a41a_9de5eb814efd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bd038b8b_79eb_4a92_8e22_849e4ecb60e9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bd038b8b_79eb_4a92_8e22_849e4ecb60e9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bd19f6bc_d097_4daf_87b3_109c1b750fe8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bd19f6bc_d097_4daf_87b3_109c1b750fe8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bd3eadf1_fd5d_4fe1_a71d_45b893c05c5c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bd3eadf1_fd5d_4fe1_a71d_45b893c05c5c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bd4af68e_74b2_4371_b740_b621bd641a58()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bd4af68e_74b2_4371_b740_b621bd641a58");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bd546497_5190_4d54_a4e3_38b1c9ff0b1c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bd546497_5190_4d54_a4e3_38b1c9ff0b1c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bd688bc5_273f_4871_a84f_ff9103fdb792()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bd688bc5_273f_4871_a84f_ff9103fdb792");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bd69c304_eb85_4144_860d_10e42d3d3c51()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bd69c304_eb85_4144_860d_10e42d3d3c51");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bd96ee25_2caf_4d89_b44b_db11730e983f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bd96ee25_2caf_4d89_b44b_db11730e983f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bd9e6380_b71c_49cd_983a_fdbf0b63fbb0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bd9e6380_b71c_49cd_983a_fdbf0b63fbb0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bdcf7574_c0a9_4a08_a993_00dcec492b8d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bdcf7574_c0a9_4a08_a993_00dcec492b8d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bdd5fec2_8913_483d_acab_7adb76761e05()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bdd5fec2_8913_483d_acab_7adb76761e05");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_be2e264e_f598_4bc1_a750_73702a573664()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_be2e264e_f598_4bc1_a750_73702a573664");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_be683dd8_249a_433d_9bb7_d61331ffd4e4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_be683dd8_249a_433d_9bb7_d61331ffd4e4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_be720664_8c7e_4f29_9f45_d115048bbab9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_be720664_8c7e_4f29_9f45_d115048bbab9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_be91ec7f_8f22_4334_89aa_b37497213f54()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_be91ec7f_8f22_4334_89aa_b37497213f54");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_be93ab12_3437_4f75_87b7_242624776808()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_be93ab12_3437_4f75_87b7_242624776808");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_be976a77_9ebe_49f9_9a48_037b6137dd9d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_be976a77_9ebe_49f9_9a48_037b6137dd9d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_beb850c9_a52f_4df1_95b8_ce35d9586cc0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_beb850c9_a52f_4df1_95b8_ce35d9586cc0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bed7836e_3576_43ea_a9ef_273da8dea562()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bed7836e_3576_43ea_a9ef_273da8dea562");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_beeb4e38_06eb_4dc4_a6f1_a5d75531693c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_beeb4e38_06eb_4dc4_a6f1_a5d75531693c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bef56b51_61a5_45dd_99e4_c03c86e5eb4b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bef56b51_61a5_45dd_99e4_c03c86e5eb4b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_befe79f5_a8e8_48fe_8d1f_0df3f41efbc8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_befe79f5_a8e8_48fe_8d1f_0df3f41efbc8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bf254c24_a874_4ffe_b242_62bd97cea54a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bf254c24_a874_4ffe_b242_62bd97cea54a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bf40165e_06a4_4eef_b7cb_c6961394d07f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bf40165e_06a4_4eef_b7cb_c6961394d07f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bf439a73_74e9_4f51_a0cf_fadede016093()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bf439a73_74e9_4f51_a0cf_fadede016093");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bf816bd1_0b37_48a2_9804_d63dafa54f55()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bf816bd1_0b37_48a2_9804_d63dafa54f55");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bf8f6d32_13dc_453b_91d8_23ee7c1ddaf4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bf8f6d32_13dc_453b_91d8_23ee7c1ddaf4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bfb0b925_6f7e_4843_a3a4_9e7d9b8cb762()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bfb0b925_6f7e_4843_a3a4_9e7d9b8cb762");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_bfc3ffed_d121_4ad8_9beb_8d27032ad7dd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_bfc3ffed_d121_4ad8_9beb_8d27032ad7dd");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_bff3a5e5_1fe6_4bc9_8639_b78a1babe285()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_bff3a5e5_1fe6_4bc9_8639_b78a1babe285");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c033982f_0982_4cc2_9d6f_7791cc73d218()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c033982f_0982_4cc2_9d6f_7791cc73d218");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c06370be_3331_43bc_b1d6_384e253b4110()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c06370be_3331_43bc_b1d6_384e253b4110");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c0799fb6_4e33_4ea6_8f7a_fa7a5e56a322()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c0799fb6_4e33_4ea6_8f7a_fa7a5e56a322");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c083afdc_f820_43b6_ab88_a63b9f38867e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c083afdc_f820_43b6_ab88_a63b9f38867e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c0b00d1d_f7ba_4039_a2d9_56c8932f19d4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c0b00d1d_f7ba_4039_a2d9_56c8932f19d4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c0b6dae6_074b_4df0_b902_677dbd3de9de()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c0b6dae6_074b_4df0_b902_677dbd3de9de");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c0e2feb4_6af3_4fca_a9bd_dedacb15c131()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c0e2feb4_6af3_4fca_a9bd_dedacb15c131");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c0f48f92_b211_459d_85f5_121de47b0758()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c0f48f92_b211_459d_85f5_121de47b0758");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c0f885ff_fee0_43bb_9808_a4e117be6df7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c0f885ff_fee0_43bb_9808_a4e117be6df7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c1048117_e97a_4b8d_8203_272090a323b6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c1048117_e97a_4b8d_8203_272090a323b6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c11058b0_78ce_4efd_98b5_dc6157ae419f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c11058b0_78ce_4efd_98b5_dc6157ae419f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c12e1708_3562_488f_82a6_67289b2dc47b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c12e1708_3562_488f_82a6_67289b2dc47b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c164e059_4a71_46d7_aac3_8e3cc9e67fd6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c164e059_4a71_46d7_aac3_8e3cc9e67fd6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c1716845_a03f_4bf5_828d_d582c9086516()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c1716845_a03f_4bf5_828d_d582c9086516");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c1b91ed3_4289_468a_94f3_d2a51a6af68c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c1b91ed3_4289_468a_94f3_d2a51a6af68c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c1bd9a35_618f_4702_849a_4562b6dec134()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c1bd9a35_618f_4702_849a_4562b6dec134");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c1c0b470_438f_4fa0_b156_fae9d8127b3b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c1c0b470_438f_4fa0_b156_fae9d8127b3b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c1e2e420_247d_4139_97d2_83ef70e4dbd0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c1e2e420_247d_4139_97d2_83ef70e4dbd0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c21b0086_0cc6_440f_b238_49826a0eb9ad()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c21b0086_0cc6_440f_b238_49826a0eb9ad");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c22f8073_84b7_4d50_9fa4_17146a6643a6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c22f8073_84b7_4d50_9fa4_17146a6643a6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c2417009_35e8_4e7a_a8da_54c9d7e442ac()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c2417009_35e8_4e7a_a8da_54c9d7e442ac");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c2571516_f828_436b_b76a_fdbc53f83565()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c2571516_f828_436b_b76a_fdbc53f83565");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c2674882_db5a_49da_81d0_da43ca71c679()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c2674882_db5a_49da_81d0_da43ca71c679");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c2695db8_82a8_4f9a_a8aa_82daa953214a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c2695db8_82a8_4f9a_a8aa_82daa953214a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c26d467c_d935_4d35_907e_a250e2aa9db1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c26d467c_d935_4d35_907e_a250e2aa9db1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c2722792_a760_48e7_ae0a_eef0bc1ce066()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c2722792_a760_48e7_ae0a_eef0bc1ce066");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c2bd5497_80d0_493f_971c_37d9baac2449()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c2bd5497_80d0_493f_971c_37d9baac2449");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_c2ec511a_3b5d_45f7_9c42_e2898c02484f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_c2ec511a_3b5d_45f7_9c42_e2898c02484f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c2efc4eb_51d3_4178_a7c9_1bf84b489c9a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c2efc4eb_51d3_4178_a7c9_1bf84b489c9a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c2f8b05e_7b5c_462d_8d97_17d8e7d70519()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c2f8b05e_7b5c_462d_8d97_17d8e7d70519");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_c2fa4b22_6ed1_49b4_a31b_e56e4e634111()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_c2fa4b22_6ed1_49b4_a31b_e56e4e634111");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c2fcc07a_5de9_41be_b8d1_7e1755dc7293()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c2fcc07a_5de9_41be_b8d1_7e1755dc7293");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c316cee8_01e1_4cf5_a365_9e9fbb68c446()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c316cee8_01e1_4cf5_a365_9e9fbb68c446");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c32c9ade_fa4b_4ed0_91d2_8add13f074e1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c32c9ade_fa4b_4ed0_91d2_8add13f074e1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c34cdcb9_4a07_4919_91f5_d8acd4d49d8e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c34cdcb9_4a07_4919_91f5_d8acd4d49d8e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c3587527_fff4_4eae_a3ff_ba7ca8b8a627()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c3587527_fff4_4eae_a3ff_ba7ca8b8a627");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c365d684_8b76_410f_8286_2e614ed5aedf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c365d684_8b76_410f_8286_2e614ed5aedf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c37193d1_0622_41d1_9fba_e663e550f378()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c37193d1_0622_41d1_9fba_e663e550f378");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c3785920_c3e2_4e9f_9df4_4557c7d43813()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c3785920_c3e2_4e9f_9df4_4557c7d43813");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c38951c9_4591_49cd_890a_da01dfd1b8c2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c38951c9_4591_49cd_890a_da01dfd1b8c2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c3a2d48e_94ea_44ce_ac53_2d60333d2c89()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c3a2d48e_94ea_44ce_ac53_2d60333d2c89");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_c3ee5032_d430_48e1_ba05_313cdb6f8586()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_c3ee5032_d430_48e1_ba05_313cdb6f8586");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c423dd70_d9f2_4b3b_9980_cbcbe84fb924()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c423dd70_d9f2_4b3b_9980_cbcbe84fb924");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c48b6d7a_1564_497b_b283_2f07a95177d2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c48b6d7a_1564_497b_b283_2f07a95177d2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c4a1b994_e89b_4160_8bec_dd9d26e76a86()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c4a1b994_e89b_4160_8bec_dd9d26e76a86");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c4bbb175_5177_4596_827d_3146f9b82fd2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c4bbb175_5177_4596_827d_3146f9b82fd2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c4ca7587_c99c_4b6a_83c4_861814a98240()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c4ca7587_c99c_4b6a_83c4_861814a98240");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_c4ccf075_d182_4375_8908_f78072445e0c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_c4ccf075_d182_4375_8908_f78072445e0c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c4efd2bd_e8df_4c72_9440_588ef805c81c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c4efd2bd_e8df_4c72_9440_588ef805c81c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c4f360e6_d6a2_448f_9857_193d528a0b26()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c4f360e6_d6a2_448f_9857_193d528a0b26");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c5440bc7_fab8_48ed_b8d8_23fefc286fe5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c5440bc7_fab8_48ed_b8d8_23fefc286fe5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c578678b_9577_417b_ae01_9fbfb7274941()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c578678b_9577_417b_ae01_9fbfb7274941");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_c588628f_a53a_4f13_8be5_20bf7d8692ce()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_c588628f_a53a_4f13_8be5_20bf7d8692ce");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c58ce961_c0e3_47fd_8515_4463dd14df71()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c58ce961_c0e3_47fd_8515_4463dd14df71");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c5b9b0ea_369f_4121_87ef_c7201832b7b1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c5b9b0ea_369f_4121_87ef_c7201832b7b1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c5ba7004_03f1_48f2_932b_d8b2fe694f73()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c5ba7004_03f1_48f2_932b_d8b2fe694f73");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c5fce7cb_1c62_4d89_9fe2_060738a4656d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c5fce7cb_1c62_4d89_9fe2_060738a4656d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c606d5ac_47a5_4edb_98d5_c5036c6c853f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c606d5ac_47a5_4edb_98d5_c5036c6c853f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c60b7917_8490_4765_97d3_2d4b377b177a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c60b7917_8490_4765_97d3_2d4b377b177a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c60cc280_e581_455f_b313_3ed94ed1fcff()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c60cc280_e581_455f_b313_3ed94ed1fcff");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c61daf45_222b_4980_afcb_2a93ee4ef55b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c61daf45_222b_4980_afcb_2a93ee4ef55b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c62f1c87_d49a_47d6_971a_0a976d7f8291()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c62f1c87_d49a_47d6_971a_0a976d7f8291");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_c64de3a1_9ea5_4b14_93b5_36d520782dc8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_c64de3a1_9ea5_4b14_93b5_36d520782dc8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c64f42ed_4c1a_4f7e_b842_2755514d9973()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c64f42ed_4c1a_4f7e_b842_2755514d9973");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c66e7f45_b9e8_44b3_9b4d_77a9039e41a8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c66e7f45_b9e8_44b3_9b4d_77a9039e41a8");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_c6b49725_5ea1_4ce9_a6cd_692f427e70d8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_c6b49725_5ea1_4ce9_a6cd_692f427e70d8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c6d8a69a_3c02_4e81_b8d6_61c9448b917b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c6d8a69a_3c02_4e81_b8d6_61c9448b917b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c6de4f1f_e8f3_4244_8cdc_03ba27256aa7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c6de4f1f_e8f3_4244_8cdc_03ba27256aa7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c6f4eaca_7bc4_42dd_810e_0b02ce4a962e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c6f4eaca_7bc4_42dd_810e_0b02ce4a962e");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_c6f917b1_93bb_4d29_bd9b_1f22261e5456()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_c6f917b1_93bb_4d29_bd9b_1f22261e5456");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c6fdbb2d_be5b_489d_8d13_ec449281eca9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c6fdbb2d_be5b_489d_8d13_ec449281eca9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c706e124_3a3f_44f4_b05c_a66842b325d7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c706e124_3a3f_44f4_b05c_a66842b325d7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c70c2753_e045_4866_9f66_ecc4dbd7cdd1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c70c2753_e045_4866_9f66_ecc4dbd7cdd1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c70c5ad5_8857_471b_abc7_379aa8342ae3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c70c5ad5_8857_471b_abc7_379aa8342ae3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c71251b2_1ce5_472e_ba85_7bc9ded7386d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c71251b2_1ce5_472e_ba85_7bc9ded7386d");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_c717ab73_4be9_4df6_95a1_3c78dc8b93b0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_c717ab73_4be9_4df6_95a1_3c78dc8b93b0");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_c7185c76_67b6_4356_a510_6fab174f77bf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_c7185c76_67b6_4356_a510_6fab174f77bf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c7635362_2824_4c33_b9e1_3b3fa911c5b4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c7635362_2824_4c33_b9e1_3b3fa911c5b4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c7643e63_eeef_4cd3_8f7b_8ca78cdc407b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c7643e63_eeef_4cd3_8f7b_8ca78cdc407b");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_c76fd6b1_f416_4b5d_99ba_bdb64f96a5a0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_c76fd6b1_f416_4b5d_99ba_bdb64f96a5a0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c77a56a8_765c_47b0_83b2_2b63027420b2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c77a56a8_765c_47b0_83b2_2b63027420b2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c7845558_6899_482b_9143_f823329dc62a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c7845558_6899_482b_9143_f823329dc62a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c7b43666_eb1f_4d94_a605_c2bf732b7f3e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c7b43666_eb1f_4d94_a605_c2bf732b7f3e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c7d0fe0b_2a54_485b_a206_29bf4dbea8ea()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c7d0fe0b_2a54_485b_a206_29bf4dbea8ea");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c8209aae_21e0_4380_ab92_65bc94ec2b3f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c8209aae_21e0_4380_ab92_65bc94ec2b3f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c84d03a5_59e5_4241_8a03_8720828da7d8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c84d03a5_59e5_4241_8a03_8720828da7d8");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_c8592054_1c35_4471_93e6_6e018d52ce0e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_c8592054_1c35_4471_93e6_6e018d52ce0e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c85d4145_af08_4510_a81d_62e817806cfb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c85d4145_af08_4510_a81d_62e817806cfb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c867cb9e_4a89_4783_bec6_6b879851d302()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c867cb9e_4a89_4783_bec6_6b879851d302");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c8924251_69f4_4146_82d8_f05fd31540ff()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c8924251_69f4_4146_82d8_f05fd31540ff");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c892b425_8474_4d44_a46f_7ace5b0822ab()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c892b425_8474_4d44_a46f_7ace5b0822ab");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c8b5d824_7338_4950_995a_3f3112dd286f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c8b5d824_7338_4950_995a_3f3112dd286f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c9093e69_74ec_4459_88e0_aa1704a8188b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c9093e69_74ec_4459_88e0_aa1704a8188b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c9203cec_50be_4eff_857e_12be7123d8eb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c9203cec_50be_4eff_857e_12be7123d8eb");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_c92b2228_7479_436b_b467_5aa0668e1700()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_c92b2228_7479_436b_b467_5aa0668e1700");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c92f6bbe_6dea_40c1_85af_8d2cd3293889()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c92f6bbe_6dea_40c1_85af_8d2cd3293889");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c9388920_310e_4f1d_bb14_2025946c1a9a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c9388920_310e_4f1d_bb14_2025946c1a9a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c93bddee_dce2_4e0e_8b6f_9faf41377800()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c93bddee_dce2_4e0e_8b6f_9faf41377800");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_c941064c_cc8e_4a82_a72f_2742c6d42dfb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_c941064c_cc8e_4a82_a72f_2742c6d42dfb");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_c953967e_6885_4dfd_a904_b707ba318828()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_c953967e_6885_4dfd_a904_b707ba318828");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c98c7449_0cad_421b_beb1_51876ab8b28f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c98c7449_0cad_421b_beb1_51876ab8b28f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c9b8be94_0c54_492f_bff8_2bf42492ca49()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c9b8be94_0c54_492f_bff8_2bf42492ca49");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c9bef200_83d6_463e_ae31_a6b91fa0f60b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c9bef200_83d6_463e_ae31_a6b91fa0f60b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_c9c60350_45eb_43a5_af11_11cdfff9dd74()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_c9c60350_45eb_43a5_af11_11cdfff9dd74");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_c9d1fd06_0ae4_463a_9ae4_85ed21121e7c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_c9d1fd06_0ae4_463a_9ae4_85ed21121e7c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ca0119ad_b8f4_4e03_9a00_6e5ffb944a0b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ca0119ad_b8f4_4e03_9a00_6e5ffb944a0b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ca237e70_e2ac_40d2_9c19_8eace50090dd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ca237e70_e2ac_40d2_9c19_8eace50090dd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ca38ace7_1483_4466_ae3a_fe9846481d43()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ca38ace7_1483_4466_ae3a_fe9846481d43");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ca792bdd_4388_4a08_a07a_148d249a7323()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ca792bdd_4388_4a08_a07a_148d249a7323");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_ca7f9b97_749b_4040_a014_1b4905d760bf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_ca7f9b97_749b_4040_a014_1b4905d760bf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_caea1e07_0e9a_45f9_a42a_fea546a666be()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_caea1e07_0e9a_45f9_a42a_fea546a666be");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cb103b48_62d6_4c3e_99c9_e90eabcfdb62()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cb103b48_62d6_4c3e_99c9_e90eabcfdb62");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cb1fd2f1_13d9_4975_9849_784a022df2ba()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cb1fd2f1_13d9_4975_9849_784a022df2ba");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cb3aaf22_0115_4b5e_b1de_1e54a931511c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cb3aaf22_0115_4b5e_b1de_1e54a931511c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cb451cb5_6047_4e5e_bf3b_de3b18799ea7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cb451cb5_6047_4e5e_bf3b_de3b18799ea7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cb7982b6_cc4c_480a_8a44_b90fb5267f7a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cb7982b6_cc4c_480a_8a44_b90fb5267f7a");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_cbac9701_8827_492f_bf51_7b2945e98ec5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_cbac9701_8827_492f_bf51_7b2945e98ec5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cbbeb62c_91b1_4686_9a95_6162295634c1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cbbeb62c_91b1_4686_9a95_6162295634c1");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_cc3d4334_07f5_42e0_b574_93e392d60844()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_cc3d4334_07f5_42e0_b574_93e392d60844");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cc4a6cf6_6f27_4617_9b4c_615e63ec0403()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cc4a6cf6_6f27_4617_9b4c_615e63ec0403");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cc7cc909_0c35_4b26_b5fd_d2a30bc56f7e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cc7cc909_0c35_4b26_b5fd_d2a30bc56f7e");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_ccae23b2_12d1_4593_bfd7_1384e6f3fd4b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_ccae23b2_12d1_4593_bfd7_1384e6f3fd4b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ccee3048_9961_46f4_8169_7e8d7b0b81e3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ccee3048_9961_46f4_8169_7e8d7b0b81e3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ccf488d6_b7fd_4b3a_831f_d7ca1d9c5a89()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ccf488d6_b7fd_4b3a_831f_d7ca1d9c5a89");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cd06e3ea_c86f_40c0_a5e6_b7c3acb8f35f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cd06e3ea_c86f_40c0_a5e6_b7c3acb8f35f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cd0b8c56_f226_4859_b5bc_5a31ca5b1ad8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cd0b8c56_f226_4859_b5bc_5a31ca5b1ad8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cd1de35e_7c08_49c2_9d8d_83307444cc6d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cd1de35e_7c08_49c2_9d8d_83307444cc6d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cd31cc4f_467d_42ad_9fef_a426a0947628()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cd31cc4f_467d_42ad_9fef_a426a0947628");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cd3731f1_f861_472f_bc83_0a40461c10af()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cd3731f1_f861_472f_bc83_0a40461c10af");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cd530f9a_aa16_4f1f_9f97_8434cc9f6e7d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cd530f9a_aa16_4f1f_9f97_8434cc9f6e7d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cd65ddba_12be_4b7c_adb7_eab1e06408e3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cd65ddba_12be_4b7c_adb7_eab1e06408e3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cd72f277_7eab_4d77_ad6b_9274ac478488()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cd72f277_7eab_4d77_ad6b_9274ac478488");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cd74e994_d91e_4a72_b02b_b6b6bd6580ac()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cd74e994_d91e_4a72_b02b_b6b6bd6580ac");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cd81729e_ac5b_4959_9175_d5b19e2c4d5e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cd81729e_ac5b_4959_9175_d5b19e2c4d5e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cd862fe6_0369_4067_aa8c_8b9775ff85c0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cd862fe6_0369_4067_aa8c_8b9775ff85c0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cd9d4f09_0012_4a88_8ada_7e9acff3c1b6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cd9d4f09_0012_4a88_8ada_7e9acff3c1b6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cdb2e5e2_65eb_4a34_b6ac_be3f616757d0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cdb2e5e2_65eb_4a34_b6ac_be3f616757d0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cdb8859d_f539_48b5_8a32_2935fd4d2569()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cdb8859d_f539_48b5_8a32_2935fd4d2569");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cdc99744_1301_4e0e_83e0_062fab403ee4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cdc99744_1301_4e0e_83e0_062fab403ee4");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_cdda778e_0722_49b8_9c98_e46de830c9f5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_cdda778e_0722_49b8_9c98_e46de830c9f5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cddbd5cf_fde6_40cf_b737_4ecd2249142c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cddbd5cf_fde6_40cf_b737_4ecd2249142c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cdffddcd_4f90_4225_9c20_f479927e2c7e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cdffddcd_4f90_4225_9c20_f479927e2c7e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ce012263_0411_4ae3_9d7b_a77c81d5bf10()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ce012263_0411_4ae3_9d7b_a77c81d5bf10");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ce61a885_69e5_4b09_8071_a155f92fb95c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ce61a885_69e5_4b09_8071_a155f92fb95c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ce65362e_0909_49f5_8076_e88215e7495e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ce65362e_0909_49f5_8076_e88215e7495e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ce742982_7fad_4b3d_b1e8_232b95bb57c1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ce742982_7fad_4b3d_b1e8_232b95bb57c1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ce8e5260_659e_4232_bb58_9e786d668f92()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ce8e5260_659e_4232_bb58_9e786d668f92");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ced10ad3_2791_4ec7_83f2_c97cd3b17781()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ced10ad3_2791_4ec7_83f2_c97cd3b17781");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ced48705_2f62_4e4a_8daf_dddc385f27a6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ced48705_2f62_4e4a_8daf_dddc385f27a6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cf2578ba_08e3_4a9d_bfc3_87929d6c1390()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cf2578ba_08e3_4a9d_bfc3_87929d6c1390");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cf2f4408_e0fb_4758_8111_28cc17b8c0a8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cf2f4408_e0fb_4758_8111_28cc17b8c0a8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cf4c7410_2814_4c91_a905_79483e0a48af()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cf4c7410_2814_4c91_a905_79483e0a48af");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cf7bf10b_b2e6_48a5_9b9a_218234da9a63()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cf7bf10b_b2e6_48a5_9b9a_218234da9a63");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cf7e1cbf_98b1_44ea_8913_28297bb7516b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cf7e1cbf_98b1_44ea_8913_28297bb7516b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cf8ba1ac_ffb1_44e2_b579_292185d960a0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cf8ba1ac_ffb1_44e2_b579_292185d960a0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cfa935fd_bb9e_446b_8714_3403dc701f65()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cfa935fd_bb9e_446b_8714_3403dc701f65");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cfb74166_1785_4d27_8c96_e05331c4b2dd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cfb74166_1785_4d27_8c96_e05331c4b2dd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cfc0b5e8_cb34_4169_970e_d3cddb8f9003()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cfc0b5e8_cb34_4169_970e_d3cddb8f9003");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cfdd2abb_0ddf_413a_8460_5595285818e2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cfdd2abb_0ddf_413a_8460_5595285818e2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_cff35001_d10d_410c_b458_7e1419f1c269()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_cff35001_d10d_410c_b458_7e1419f1c269");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_d0027a19_7401_4481_a623_40278f6b96d8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_d0027a19_7401_4481_a623_40278f6b96d8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d02593e7_2d6d_400b_bcb0_da6c2609dd5c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d02593e7_2d6d_400b_bcb0_da6c2609dd5c");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_d030bece_ddc0_4d37_90e2_89781ced5273()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_d030bece_ddc0_4d37_90e2_89781ced5273");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d0544dce_3811_4b71_b0ed_5092a253ffdc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d0544dce_3811_4b71_b0ed_5092a253ffdc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d057ea93_515f_4e1a_91b8_fee70024ae15()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d057ea93_515f_4e1a_91b8_fee70024ae15");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d08c309d_5512_4925_ad88_a81c32fbe014()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d08c309d_5512_4925_ad88_a81c32fbe014");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d0a56828_bcc2_419b_81c4_dbd7941efeb6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d0a56828_bcc2_419b_81c4_dbd7941efeb6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d0bd18c9_5bfb_4c7c_ace3_798324326616()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d0bd18c9_5bfb_4c7c_ace3_798324326616");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d0c4cf5d_a9b0_4dc4_8ba6_c36d876b8557()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d0c4cf5d_a9b0_4dc4_8ba6_c36d876b8557");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_d0d901ba_fe4f_4f12_b2c7_4fb3c26836aa()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_d0d901ba_fe4f_4f12_b2c7_4fb3c26836aa");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d1006e1d_206b_477e_821e_b0e35cf7bca3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d1006e1d_206b_477e_821e_b0e35cf7bca3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d10ccf99_d1bc_4bca_bf2c_ff0f8b1abe2e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d10ccf99_d1bc_4bca_bf2c_ff0f8b1abe2e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d115f6b4_f64b_4a30_aeb9_dd7b0ca92f62()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d115f6b4_f64b_4a30_aeb9_dd7b0ca92f62");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d15c46f4_b58f_4ffc_a598_d2a1bc3149c1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d15c46f4_b58f_4ffc_a598_d2a1bc3149c1");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_d176ba22_fcff_446f_bb3f_88e8fa8ba75e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_d176ba22_fcff_446f_bb3f_88e8fa8ba75e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d1797ce3_18e0_40c4_9c0a_d722bc0b80f7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d1797ce3_18e0_40c4_9c0a_d722bc0b80f7");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_d18f555f_3534_4074_a0e5_a2b1b206531f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_d18f555f_3534_4074_a0e5_a2b1b206531f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d1adcb58_2bb4_41b4_ab4a_bea912f0518e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d1adcb58_2bb4_41b4_ab4a_bea912f0518e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d1f5cbb7_c637_4203_b0dc_e1c4f6742f96()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d1f5cbb7_c637_4203_b0dc_e1c4f6742f96");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d1f620b3_d4c6_4908_9b41_19800aca226b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d1f620b3_d4c6_4908_9b41_19800aca226b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d1fd47b8_ed4e_40a2_b998_f2845c19060b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d1fd47b8_ed4e_40a2_b998_f2845c19060b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d20f3278_5930_4349_bd44_62c63d852bec()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d20f3278_5930_4349_bd44_62c63d852bec");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d22af24e_97d3_4e22_945c_155f21fdb73d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d22af24e_97d3_4e22_945c_155f21fdb73d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d22e02b5_f264_4574_ae18_c9757cab760f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d22e02b5_f264_4574_ae18_c9757cab760f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d252fe3a_5cf3_4edf_9de3_11d35213de31()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d252fe3a_5cf3_4edf_9de3_11d35213de31");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d257da71_2ec1_4c64_8283_630526cb86b4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d257da71_2ec1_4c64_8283_630526cb86b4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d266d634_5ddb_42ca_bb05_9723673aafcd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d266d634_5ddb_42ca_bb05_9723673aafcd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d270b923_bc3e_4966_944f_8160098622c2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d270b923_bc3e_4966_944f_8160098622c2");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_d2a96f79_aee1_4025_89f0_ac52c6c33d6f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_d2a96f79_aee1_4025_89f0_ac52c6c33d6f");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_d2e08aca_7799_40d7_b545_21dacd8721bb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_d2e08aca_7799_40d7_b545_21dacd8721bb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d2fec1c2_1668_4af3_928e_708e4cf20322()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d2fec1c2_1668_4af3_928e_708e4cf20322");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d3280125_66dd_46fc_9a60_76f7e24513df()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d3280125_66dd_46fc_9a60_76f7e24513df");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d357b288_83ec_4ed7_9daf_d69d87bbaaa0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d357b288_83ec_4ed7_9daf_d69d87bbaaa0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d35fda40_d4f4_4070_9493_602f4a460e10()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d35fda40_d4f4_4070_9493_602f4a460e10");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d38a9058_eabb_45bc_9109_81594af3c923()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d38a9058_eabb_45bc_9109_81594af3c923");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d3920060_3a1c_450d_8ae3_20d2d2d58d36()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d3920060_3a1c_450d_8ae3_20d2d2d58d36");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d3b9e1ae_112a_4763_94df_f861db468cac()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d3b9e1ae_112a_4763_94df_f861db468cac");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d3bdccca_6f5a_4963_bfac_a0a8c15edad6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d3bdccca_6f5a_4963_bfac_a0a8c15edad6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d3c84078_33bc_4517_b315_d51907dfccf5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d3c84078_33bc_4517_b315_d51907dfccf5");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_d3fb2829_a96c_487e_ab1b_bef41cf96f70()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_d3fb2829_a96c_487e_ab1b_bef41cf96f70");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d444e079_bd28_43cc_8af8_ec8b6f435e95()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d444e079_bd28_43cc_8af8_ec8b6f435e95");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_d4530097_9c3e_4217_bcd4_cbbb97ccf43a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_d4530097_9c3e_4217_bcd4_cbbb97ccf43a");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_d46e342d_d04a_4d92_8157_a66ec4584ad6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_d46e342d_d04a_4d92_8157_a66ec4584ad6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d484fb09_c284_4ca7_919b_2cd5d47e54fb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d484fb09_c284_4ca7_919b_2cd5d47e54fb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d49f9d79_8837_409e_8b4e_828942f04caf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d49f9d79_8837_409e_8b4e_828942f04caf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d4a074a9_220f_4072_a550_991aa4f369ce()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d4a074a9_220f_4072_a550_991aa4f369ce");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d4a2ae5e_c40b_4489_a51d_2a7290249a23()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d4a2ae5e_c40b_4489_a51d_2a7290249a23");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d4be0857_c319_4d01_a819_eccbcbbcaf92()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d4be0857_c319_4d01_a819_eccbcbbcaf92");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d4d50b79_8d12_4433_9f80_96f949d434e9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d4d50b79_8d12_4433_9f80_96f949d434e9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d4eba90b_676c_457b_8e56_b050ca9a1b8c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d4eba90b_676c_457b_8e56_b050ca9a1b8c");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_d4fbc4bd_8f75_4337_b745_16dc5cb17e42()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_d4fbc4bd_8f75_4337_b745_16dc5cb17e42");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d5106d1b_d2f2_4bf2_bede_55d75b3426b1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d5106d1b_d2f2_4bf2_bede_55d75b3426b1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d5176c10_fe49_48f8_b734_def2285d41b0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d5176c10_fe49_48f8_b734_def2285d41b0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d5961249_9319_4a06_aa84_129899c64452()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d5961249_9319_4a06_aa84_129899c64452");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d5ab651b_dbed_48ef_90c9_fc97b0c298d3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d5ab651b_dbed_48ef_90c9_fc97b0c298d3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d5eff5a6_c689_4df8_8172_e891ce5bbaf4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d5eff5a6_c689_4df8_8172_e891ce5bbaf4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d5ff3171_7a57_40ab_ace8_d86ea6276b84()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d5ff3171_7a57_40ab_ace8_d86ea6276b84");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_d601a093_2f15_4138_8d6f_d04380175c2f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_d601a093_2f15_4138_8d6f_d04380175c2f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d6465af3_b506_4bfd_85bd_a70dba775d3b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d6465af3_b506_4bfd_85bd_a70dba775d3b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d64fb40c_5bca_4020_8df3_22782ddc7068()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d64fb40c_5bca_4020_8df3_22782ddc7068");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d659054b_e2d0_47f3_a2b0_e09e859bfcfb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d659054b_e2d0_47f3_a2b0_e09e859bfcfb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d6659a2b_962b_4a2d_b695_e066adaeb060()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d6659a2b_962b_4a2d_b695_e066adaeb060");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d6747395_4d38_48e4_9aef_9c9ad1ba7670()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d6747395_4d38_48e4_9aef_9c9ad1ba7670");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d6b037c2_0034_4e80_9364_f0760f2dea5a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d6b037c2_0034_4e80_9364_f0760f2dea5a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d6c0c57c_d29f_494a_a4dd_de4e27f27dd8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d6c0c57c_d29f_494a_a4dd_de4e27f27dd8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d6e39475_4eaf_4ef6_beb4_c7a01c15f35e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d6e39475_4eaf_4ef6_beb4_c7a01c15f35e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d6e466b1_6ebb_49e2_8bad_7df0a72edd32()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d6e466b1_6ebb_49e2_8bad_7df0a72edd32");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d7150ce6_dbaa_49d6_986f_3f22f74b1f08()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d7150ce6_dbaa_49d6_986f_3f22f74b1f08");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_d736baee_f412_4215_bf23_dcc5e109294b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_d736baee_f412_4215_bf23_dcc5e109294b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d755ac1c_8ee2_4e0b_b699_7513e8723a7e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d755ac1c_8ee2_4e0b_b699_7513e8723a7e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d790a929_8623_47f1_8451_f970a98705d3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d790a929_8623_47f1_8451_f970a98705d3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d7b0c223_3d89_4938_ba72_da6c92d20455()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d7b0c223_3d89_4938_ba72_da6c92d20455");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_d7b38650_168d_4d5a_9332_277e1bb8defd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_d7b38650_168d_4d5a_9332_277e1bb8defd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d7bfb5f5_11fe_45cd_a83e_daa1b8afbfc0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d7bfb5f5_11fe_45cd_a83e_daa1b8afbfc0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d7ea351c_71e8_4483_8555_e7ce01eb7244()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d7ea351c_71e8_4483_8555_e7ce01eb7244");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_d80984ff_6772_476b_99d5_5d7fd27e0617()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_d80984ff_6772_476b_99d5_5d7fd27e0617");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d8099509_c326_4465_9bbd_4676b6ca94f4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d8099509_c326_4465_9bbd_4676b6ca94f4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d81f0211_a52c_40bd_b930_d383208ed993()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d81f0211_a52c_40bd_b930_d383208ed993");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d834ba49_cb7a_4b28_be30_83b7f090fba3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d834ba49_cb7a_4b28_be30_83b7f090fba3");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_d843940e_3b96_4091_93c1_d2bd9d1e03a8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_d843940e_3b96_4091_93c1_d2bd9d1e03a8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d8464395_2805_4f75_be15_a6de931fbb7e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d8464395_2805_4f75_be15_a6de931fbb7e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d85cc21f_0e24_48e2_8cb5_ef737641832d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d85cc21f_0e24_48e2_8cb5_ef737641832d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d85f4a68_3edd_4e85_93e7_7b2fe8487796()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d85f4a68_3edd_4e85_93e7_7b2fe8487796");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d8678688_7d02_4f3d_ad91_94f665f54819()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d8678688_7d02_4f3d_ad91_94f665f54819");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d8764525_3448_4f7a_b473_95a4ed32f211()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d8764525_3448_4f7a_b473_95a4ed32f211");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d87da50c_fa18_4acf_a0ce_eb0027e1a1fe()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d87da50c_fa18_4acf_a0ce_eb0027e1a1fe");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d8c6e5bb_23fa_44b0_9ec3_b71f26798651()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d8c6e5bb_23fa_44b0_9ec3_b71f26798651");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d93396e2_a535_4852_af4f_d1e01f3f0361()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d93396e2_a535_4852_af4f_d1e01f3f0361");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d93ce3bf_b7cf_4922_9afb_a664e354d829()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d93ce3bf_b7cf_4922_9afb_a664e354d829");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d970f743_29fb_4034_a3ee_da707fb6cad5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d970f743_29fb_4034_a3ee_da707fb6cad5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d993bde4_f584_4d2d_a6e1_f6e7670f80bc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d993bde4_f584_4d2d_a6e1_f6e7670f80bc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d994e7e3_54e9_459f_b2c5_cdaed527604d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d994e7e3_54e9_459f_b2c5_cdaed527604d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d9964008_c5b1_475e_84e6_3eb46a60140d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d9964008_c5b1_475e_84e6_3eb46a60140d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d9a3bf27_7dd9_415a_b426_eea72696d146()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d9a3bf27_7dd9_415a_b426_eea72696d146");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d9cb8819_99a7_4c94_95ad_a2215e6a22e4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d9cb8819_99a7_4c94_95ad_a2215e6a22e4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d9ddd93b_5590_49d0_8b8b_7e627eb16782()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d9ddd93b_5590_49d0_8b8b_7e627eb16782");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d9dfec12_6b53_4026_8eef_1069ff3ce2fd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d9dfec12_6b53_4026_8eef_1069ff3ce2fd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_d9fa64bb_bb1a_4a47_9328_1c546ccba204()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_d9fa64bb_bb1a_4a47_9328_1c546ccba204");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_da25fec7_e222_4eb0_91e7_e5515fc5d9ae()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_da25fec7_e222_4eb0_91e7_e5515fc5d9ae");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_da8cb01b_912f_46dc_bfa1_946f2cdad710()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_da8cb01b_912f_46dc_bfa1_946f2cdad710");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_daac855c_c715_4918_973f_751da9694f64()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_daac855c_c715_4918_973f_751da9694f64");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dabde50a_5064_4e02_ba00_4d163e43042f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dabde50a_5064_4e02_ba00_4d163e43042f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dac2b2f6_683a_4eaf_bf6a_203e888476b7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dac2b2f6_683a_4eaf_bf6a_203e888476b7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dad5147b_26c3_4f6b_80e2_9e9d4b69fb52()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dad5147b_26c3_4f6b_80e2_9e9d4b69fb52");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_daeae650_731e_4b1a_96bd_39c4bf7bd149()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_daeae650_731e_4b1a_96bd_39c4bf7bd149");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_daff8b52_8417_4179_82e7_a769e4205946()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_daff8b52_8417_4179_82e7_a769e4205946");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_dba8463c_d28a_4be5_876d_d7b87d51f3ce()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_dba8463c_d28a_4be5_876d_d7b87d51f3ce");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_dba9ebf6_95e0_4033_b78d_4e5e0f0a256f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_dba9ebf6_95e0_4033_b78d_4e5e0f0a256f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dbaa204f_414d_478d_83e9_0dec64be9481()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dbaa204f_414d_478d_83e9_0dec64be9481");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dbad1202_8b09_4296_911f_7bda854e6d06()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dbad1202_8b09_4296_911f_7bda854e6d06");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_dbad50da_dc54_44d6_b4da_353c8207146a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_dbad50da_dc54_44d6_b4da_353c8207146a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dbaf80a1_de62_44bb_86d8_ee7ee1eb1dbb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dbaf80a1_de62_44bb_86d8_ee7ee1eb1dbb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dbb4c461_1ae3_4a53_a28b_ed883e4701f2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dbb4c461_1ae3_4a53_a28b_ed883e4701f2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dbc7d2f8_daa6_4308_a96f_c2c68cb7682d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dbc7d2f8_daa6_4308_a96f_c2c68cb7682d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dc0c00bf_1671_4f03_afc5_2daa392d8e90()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dc0c00bf_1671_4f03_afc5_2daa392d8e90");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dc30698b_c6d0_4415_b6ca_59a3a2239c26()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dc30698b_c6d0_4415_b6ca_59a3a2239c26");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dc3dbc17_80fa_4ebe_bfd6_e9a4c9cef899()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dc3dbc17_80fa_4ebe_bfd6_e9a4c9cef899");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dc565b34_71b2_4679_b451_3ce4e9183aef()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dc565b34_71b2_4679_b451_3ce4e9183aef");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dc7e62f9_bf5f_4409_a1d1_04c732f8bae0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dc7e62f9_bf5f_4409_a1d1_04c732f8bae0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dcb42653_d858_483c_a295_f2ad743c87aa()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dcb42653_d858_483c_a295_f2ad743c87aa");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dcc43c60_78a4_40b3_9511_bd6e9ab47260()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dcc43c60_78a4_40b3_9511_bd6e9ab47260");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dccf03a0_56f0_4a42_a47c_5afcc6a81063()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dccf03a0_56f0_4a42_a47c_5afcc6a81063");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dcd00b42_f038_46e7_8953_f061f47268b6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dcd00b42_f038_46e7_8953_f061f47268b6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dd0bb92a_66eb_4f14_9a8d_bbf45796fc16()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dd0bb92a_66eb_4f14_9a8d_bbf45796fc16");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dd0e1ecf_c341_42ca_ad77_dde5c12fba4c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dd0e1ecf_c341_42ca_ad77_dde5c12fba4c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dd16fa2e_9945_467e_94a2_50682044ede5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dd16fa2e_9945_467e_94a2_50682044ede5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dd2f8f5b_4e86_4228_a2a8_4a108c6967cd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dd2f8f5b_4e86_4228_a2a8_4a108c6967cd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dd4a3a99_a21c_4d91_b3ca_2af6c5ac6a40()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dd4a3a99_a21c_4d91_b3ca_2af6c5ac6a40");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dd85a632_d98f_48c0_8c35_21784a4a0c17()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dd85a632_d98f_48c0_8c35_21784a4a0c17");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dd990776_b164_43f6_9966_464e48f25df8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dd990776_b164_43f6_9966_464e48f25df8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ddd2c615_2f5a_4ad3_9106_2c005e5ec1bf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ddd2c615_2f5a_4ad3_9106_2c005e5ec1bf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dde1046b_c039_4e0b_9587_a86be3fa7d28()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dde1046b_c039_4e0b_9587_a86be3fa7d28");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dde1cbc7_f12f_40ab_ac73_b52d5c8e86aa()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dde1cbc7_f12f_40ab_ac73_b52d5c8e86aa");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dde6ea7f_6ac1_413d_b4c4_1552c516a1a2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dde6ea7f_6ac1_413d_b4c4_1552c516a1a2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dded9cb9_5abf_41f0_90ab_a099bd239e0c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dded9cb9_5abf_41f0_90ab_a099bd239e0c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ddfad5a7_4b07_4255_b691_64024657adfb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ddfad5a7_4b07_4255_b691_64024657adfb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_de037d99_e28a_49f9_a4df_ef33cbcf04d2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_de037d99_e28a_49f9_a4df_ef33cbcf04d2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_de4cb5ba_0ef3_416e_9252_396fc7586cab()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_de4cb5ba_0ef3_416e_9252_396fc7586cab");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_de84e6a6_9f00_4b7e_a323_1c1fd38ae5c7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_de84e6a6_9f00_4b7e_a323_1c1fd38ae5c7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_de92b32e_3558_4d7a_9ddf_07f875dcc5df()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_de92b32e_3558_4d7a_9ddf_07f875dcc5df");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dedc698b_870f_4afb_8603_43dec2d9e375()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dedc698b_870f_4afb_8603_43dec2d9e375");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_deeafa8f_da13_483a_b69f_5ecf125c6691()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_deeafa8f_da13_483a_b69f_5ecf125c6691");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_df018141_1488_4bb1_8366_81e971f78620()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_df018141_1488_4bb1_8366_81e971f78620");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_df0d8ecd_35ba_4c57_970a_4305d304b86d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_df0d8ecd_35ba_4c57_970a_4305d304b86d");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_df29a467_9e95_4771_8ac2_5636c508dfd9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_df29a467_9e95_4771_8ac2_5636c508dfd9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_df3ed2fd_2905_4a93_8f5b_f5ccc187aabb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_df3ed2fd_2905_4a93_8f5b_f5ccc187aabb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_df4ff162_4835_40c3_b913_ec9c7a674c31()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_df4ff162_4835_40c3_b913_ec9c7a674c31");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_df548054_15b3_4a3a_8661_7712e2e0b2a3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_df548054_15b3_4a3a_8661_7712e2e0b2a3");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_df54b990_9ee0_473b_8cce_f6b7e0ed16c3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_df54b990_9ee0_473b_8cce_f6b7e0ed16c3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_df7ffea7_0e1f_4f22_a929_6715ef742c05()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_df7ffea7_0e1f_4f22_a929_6715ef742c05");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_df8d54ae_a094_4a0d_9a6f_2066ad7f147c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_df8d54ae_a094_4a0d_9a6f_2066ad7f147c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_df95ca73_aca9_45e1_8368_1f9ff1e2f2fb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_df95ca73_aca9_45e1_8368_1f9ff1e2f2fb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dfb72f12_8420_48b6_8b59_860a2e7df595()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dfb72f12_8420_48b6_8b59_860a2e7df595");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_dfbb8bdb_d139_4e08_a400_f35f0d805254()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_dfbb8bdb_d139_4e08_a400_f35f0d805254");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_dfdc353c_3658_4ea5_9951_4753a28e598b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_dfdc353c_3658_4ea5_9951_4753a28e598b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dfdedecd_a99c_4dd4_a21a_f76a66bf1368()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dfdedecd_a99c_4dd4_a21a_f76a66bf1368");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dfe653dc_e23f_46f3_bda2_a3a92584e28e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dfe653dc_e23f_46f3_bda2_a3a92584e28e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dfe6797f_15ce_4447_8ccc_d7599325c9b8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dfe6797f_15ce_4447_8ccc_d7599325c9b8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_dff9f9c6_5cc6_40bd_9267_f3297a1c98a5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_dff9f9c6_5cc6_40bd_9267_f3297a1c98a5");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_e00ed8f8_6a59_4812_bfb1_3b01519616ed()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_e00ed8f8_6a59_4812_bfb1_3b01519616ed");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e0440be9_49da_4855_8c2c_caf16114fa58()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e0440be9_49da_4855_8c2c_caf16114fa58");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e04d1ab7_c7cb_40be_9cce_c2abaee50397()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e04d1ab7_c7cb_40be_9cce_c2abaee50397");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e053920e_bf00_460c_b522_ab8f61f3af32()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e053920e_bf00_460c_b522_ab8f61f3af32");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_e0647208_6934_47d8_8d39_12a8449a8000()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_e0647208_6934_47d8_8d39_12a8449a8000");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e07445d0_121b_41f2_afc6_174d9db13fc0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e07445d0_121b_41f2_afc6_174d9db13fc0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e0944994_9401_4bb9_b1c5_3c55070af89e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e0944994_9401_4bb9_b1c5_3c55070af89e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e0ccea5a_e586_41a1_8026_d5111f04c28b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e0ccea5a_e586_41a1_8026_d5111f04c28b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e0d995e0_e9b5_46e1_83ab_d2eef02e4e4c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e0d995e0_e9b5_46e1_83ab_d2eef02e4e4c");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_e0db2031_0431_43c6_b58e_15d4619571f3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_e0db2031_0431_43c6_b58e_15d4619571f3");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_e0eacebb_f59c_4604_82cd_85d99b439114()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_e0eacebb_f59c_4604_82cd_85d99b439114");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e102c2d8_96f8_472c_9280_d910df1b3540()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e102c2d8_96f8_472c_9280_d910df1b3540");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e11f2981_31f5_4d12_acb2_e3e8bcb88697()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e11f2981_31f5_4d12_acb2_e3e8bcb88697");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e14f3f27_243c_444f_a8aa_121aaa438046()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e14f3f27_243c_444f_a8aa_121aaa438046");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e1537bd7_6cd1_4634_82a0_72dbd999c6e5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e1537bd7_6cd1_4634_82a0_72dbd999c6e5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e1623ccc_d280_4bfe_9cb5_75b601f41519()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e1623ccc_d280_4bfe_9cb5_75b601f41519");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e195bbd6_3582_4638_838e_2f9dc533528d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e195bbd6_3582_4638_838e_2f9dc533528d");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_e19aee81_84d5_4d94_ac3b_434f830f2282()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_e19aee81_84d5_4d94_ac3b_434f830f2282");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e1b4f671_7b48_4559_843e_e86244902708()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e1b4f671_7b48_4559_843e_e86244902708");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e1bc5cce_a896_49d0_966c_cbe898702019()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e1bc5cce_a896_49d0_966c_cbe898702019");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_e1c9216f_9126_49df_b494_2424ef68fc9e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_e1c9216f_9126_49df_b494_2424ef68fc9e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e1d4e8e1_4008_4cc8_9048_ad2974569616()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e1d4e8e1_4008_4cc8_9048_ad2974569616");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_e1e335bf_c0e8_49a4_b99a_08bce66e76c6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_e1e335bf_c0e8_49a4_b99a_08bce66e76c6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e1e87016_e143_4695_b9cb_4884fa0797c0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e1e87016_e143_4695_b9cb_4884fa0797c0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e2017c62_8b71_4eb8_a92c_615b0415cd56()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e2017c62_8b71_4eb8_a92c_615b0415cd56");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e212ddf1_6d60_4ea5_90d8_c3013b21e6ce()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e212ddf1_6d60_4ea5_90d8_c3013b21e6ce");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e219d75f_6516_415f_ae4e_2df18b291638()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e219d75f_6516_415f_ae4e_2df18b291638");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e2232d7c_21db_4122_84d5_404794e24e3f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e2232d7c_21db_4122_84d5_404794e24e3f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e2d294bc_cc9b_4150_8ab8_71ce21c2929f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e2d294bc_cc9b_4150_8ab8_71ce21c2929f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e2dd751b_0d5d_4d7c_82be_9ab81e43039f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e2dd751b_0d5d_4d7c_82be_9ab81e43039f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e32d9f6d_d757_4c67_b153_5c8c37880be5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e32d9f6d_d757_4c67_b153_5c8c37880be5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e34199d6_324f_4248_a51a_1782bc889dfe()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e34199d6_324f_4248_a51a_1782bc889dfe");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e34ec5c7_e138_4122_a981_d94feecc1c38()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e34ec5c7_e138_4122_a981_d94feecc1c38");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e35500b7_e46e_43f8_a7b4_feb21df0997c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e35500b7_e46e_43f8_a7b4_feb21df0997c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e35ac4c2_7b04_4c23_80b3_ba1f883d2a17()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e35ac4c2_7b04_4c23_80b3_ba1f883d2a17");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e3770028_205b_4fb8_8ae0_25d0ea2552ff()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e3770028_205b_4fb8_8ae0_25d0ea2552ff");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e3970d9d_9dd2_42ed_af7e_9244248ff58b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e3970d9d_9dd2_42ed_af7e_9244248ff58b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e3c307fd_f40e_406c_abfa_95f680930f77()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e3c307fd_f40e_406c_abfa_95f680930f77");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e3f386e8_6602_4e61_b483_9ce311af93c1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e3f386e8_6602_4e61_b483_9ce311af93c1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e4102f0e_c05e_49d4_9c72_55ceb519337a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e4102f0e_c05e_49d4_9c72_55ceb519337a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e461a6b6_e2ed_49ff_a899_f2755f6b0018()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e461a6b6_e2ed_49ff_a899_f2755f6b0018");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e46c858e_8bd0_4218_9039_18ef4f2b4543()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e46c858e_8bd0_4218_9039_18ef4f2b4543");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_e46d41a8_60b8_4982_b631_4d83e2b4193d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_e46d41a8_60b8_4982_b631_4d83e2b4193d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e4719d5c_af35_4798_99c9_1fe37f920b80()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e4719d5c_af35_4798_99c9_1fe37f920b80");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e477cb93_4b8c_4c44_af2b_f46c6dd5844d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e477cb93_4b8c_4c44_af2b_f46c6dd5844d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e4aa7242_b0f9_4204_ad91_a5bbb51094fc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e4aa7242_b0f9_4204_ad91_a5bbb51094fc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e4ac5e52_1969_448f_b8bf_2e3336455d0b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e4ac5e52_1969_448f_b8bf_2e3336455d0b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e4d25d2e_3934_488f_8418_aaf9fb242f66()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e4d25d2e_3934_488f_8418_aaf9fb242f66");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e4f17fa1_4ae2_4ebb_9de2_cf3c6f05c7ff()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e4f17fa1_4ae2_4ebb_9de2_cf3c6f05c7ff");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e4f5a878_103c_4931_a697_01b6bede5886()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e4f5a878_103c_4931_a697_01b6bede5886");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e509cf48_1aad_4bc3_a214_dfd1e87ead55()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e509cf48_1aad_4bc3_a214_dfd1e87ead55");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e519c0ef_0b17_4877_862b_4c13f6cf83c8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e519c0ef_0b17_4877_862b_4c13f6cf83c8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e5486fe2_caa9_4c13_9744_db7d56d00eca()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e5486fe2_caa9_4c13_9744_db7d56d00eca");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e56999ae_01c8_4601_9383_e262d5341f24()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e56999ae_01c8_4601_9383_e262d5341f24");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e58e5d48_6d3d_45a4_9245_f4f7a91a048b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e58e5d48_6d3d_45a4_9245_f4f7a91a048b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e59c4c89_5497_499d_a3f9_73a5ef786974()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e59c4c89_5497_499d_a3f9_73a5ef786974");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e5ad33a9_2c7a_4224_9d80_75e981b75b11()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e5ad33a9_2c7a_4224_9d80_75e981b75b11");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e5c0e4d3_cc4d_4bb2_aea1_0b7a967d7a3b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e5c0e4d3_cc4d_4bb2_aea1_0b7a967d7a3b");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_e5c95312_fe3d_4db0_9964_82f320904ae2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_e5c95312_fe3d_4db0_9964_82f320904ae2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e6108924_9ea1_4f7f_bcb9_f750c76b8dc5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e6108924_9ea1_4f7f_bcb9_f750c76b8dc5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e61a8051_f180_4d29_8acb_c1c9dc785f2a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e61a8051_f180_4d29_8acb_c1c9dc785f2a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e63828bf_730f_46d0_b7d8_df62263f188a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e63828bf_730f_46d0_b7d8_df62263f188a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e64377ad_b52e_49cf_8b8a_6068736e0428()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e64377ad_b52e_49cf_8b8a_6068736e0428");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e64397f0_7620_453d_92fa_01e2724ea837()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e64397f0_7620_453d_92fa_01e2724ea837");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e699034c_3378_46cb_b922_6e070880edb9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e699034c_3378_46cb_b922_6e070880edb9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e6af76c8_16be_4d5d_927a_72b3d711407d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e6af76c8_16be_4d5d_927a_72b3d711407d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e6d5ecbd_a6df_40bc_a8ac_ecf502295391()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e6d5ecbd_a6df_40bc_a8ac_ecf502295391");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e6dffc3d_79d5_48bc_a5c6_cdb7dc98eb5b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e6dffc3d_79d5_48bc_a5c6_cdb7dc98eb5b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e6f8459d_16ad_4436_8b1a_12040ce04d19()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e6f8459d_16ad_4436_8b1a_12040ce04d19");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e7181a5d_3dad_416d_b974_ea8acddd333e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e7181a5d_3dad_416d_b974_ea8acddd333e");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_e74c80a0_9ce3_49fa_b2e4_e3f3651d6ef6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_e74c80a0_9ce3_49fa_b2e4_e3f3651d6ef6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e74db08f_d82a_4dd0_bb9f_2d438dba9660()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e74db08f_d82a_4dd0_bb9f_2d438dba9660");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e750bce8_4b9a_47a1_a204_dbf1457c525a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e750bce8_4b9a_47a1_a204_dbf1457c525a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e769046a_4827_4168_a500_eb2413ac1a54()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e769046a_4827_4168_a500_eb2413ac1a54");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e7697ca0_cf77_43e3_9d4d_4fc4bb00b5a8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e7697ca0_cf77_43e3_9d4d_4fc4bb00b5a8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e7880fc5_c25f_4b81_b762_6cea6a54c04f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e7880fc5_c25f_4b81_b762_6cea6a54c04f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e7b878b9_b83e_4b0c_acbf_e28389bb9748()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e7b878b9_b83e_4b0c_acbf_e28389bb9748");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e7c7b0b0_f2a1_4a70_920e_e31ce585c944()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e7c7b0b0_f2a1_4a70_920e_e31ce585c944");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e7fdd338_9719_4759_9764_e979259fe7fd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e7fdd338_9719_4759_9764_e979259fe7fd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e81bbf5a_79fd_4a98_a43e_01a6cbd693ed()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e81bbf5a_79fd_4a98_a43e_01a6cbd693ed");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e82001f8_42f6_48fb_8503_1eb858677c68()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e82001f8_42f6_48fb_8503_1eb858677c68");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e82b743f_2e26_4ee8_a5c8_8450899ac30f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e82b743f_2e26_4ee8_a5c8_8450899ac30f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e832a546_37d6_4009_b53f_c0a5108114ce()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e832a546_37d6_4009_b53f_c0a5108114ce");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e85c693f_619d_4f2f_bac3_de00adfa2b53()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e85c693f_619d_4f2f_bac3_de00adfa2b53");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_e88ab1f9_4086_4147_8ccd_4f3edf324707()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_e88ab1f9_4086_4147_8ccd_4f3edf324707");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e8a2a07a_f9c8_41d4_bc4e_51c4b2947acf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e8a2a07a_f9c8_41d4_bc4e_51c4b2947acf");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e8b515dc_1515_4c9b_84bc_103d29754c7c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e8b515dc_1515_4c9b_84bc_103d29754c7c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e8c4a9a9_7c12_4f24_a9b8_4cf8ea76ad26()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e8c4a9a9_7c12_4f24_a9b8_4cf8ea76ad26");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e8d64bbd_863d_4e45_acae_1f7b7624f816()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e8d64bbd_863d_4e45_acae_1f7b7624f816");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_e8e3bf81_7666_4f9c_bdc9_667a3f70dd3b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_e8e3bf81_7666_4f9c_bdc9_667a3f70dd3b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e8f3eb1f_f23e_4fd2_bc09_f0a857794385()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e8f3eb1f_f23e_4fd2_bc09_f0a857794385");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_e8f6d6eb_aaea_4a75_9162_61ad37f3eecc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_e8f6d6eb_aaea_4a75_9162_61ad37f3eecc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e964c38c_74ec_4360_b838_90b7de611225()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e964c38c_74ec_4360_b838_90b7de611225");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e9973e32_627d_4db5_8acc_05381bbf978d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e9973e32_627d_4db5_8acc_05381bbf978d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e9b431e7_928d_4fbc_93a1_7de755c90296()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e9b431e7_928d_4fbc_93a1_7de755c90296");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e9ceb00e_e166_4214_ab52_2f7ba263719e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e9ceb00e_e166_4214_ab52_2f7ba263719e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e9d4af43_c02c_4673_ac7a_36188f43e509()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e9d4af43_c02c_4673_ac7a_36188f43e509");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_e9ea9540_2969_4791_b036_e2c8c1754638()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_e9ea9540_2969_4791_b036_e2c8c1754638");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ea306102_e7a7_4352_a663_16fb0b478233()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ea306102_e7a7_4352_a663_16fb0b478233");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ea3a800c_494b_4bea_8837_e5272d9111b3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ea3a800c_494b_4bea_8837_e5272d9111b3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ea4a80b4_a024_479a_96e4_af5bc7d7d14e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ea4a80b4_a024_479a_96e4_af5bc7d7d14e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ea57ebdc_a0ac_425f_8ecb_3f2510aa59ab()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ea57ebdc_a0ac_425f_8ecb_3f2510aa59ab");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ea59d058_11d0_4489_81de_abf7716f9f1b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ea59d058_11d0_4489_81de_abf7716f9f1b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ea7a0c7f_3646_4109_9412_228c51811514()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ea7a0c7f_3646_4109_9412_228c51811514");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ea80b767_50a8_45c9_9547_881043561e23()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ea80b767_50a8_45c9_9547_881043561e23");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ea925480_ed7e_4b43_832c_83308e1468b6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ea925480_ed7e_4b43_832c_83308e1468b6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_eaa99970_31ba_4c28_afac_8d415267581d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_eaa99970_31ba_4c28_afac_8d415267581d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_eaaf5a11_b3a4_44cb_9ab8_cfae5c61a293()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_eaaf5a11_b3a4_44cb_9ab8_cfae5c61a293");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_eabca942_8a2e_49d4_b328_86714169a39c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_eabca942_8a2e_49d4_b328_86714169a39c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ead19fa2_a607_4f2f_a72b_d0d581aa7db6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ead19fa2_a607_4f2f_a72b_d0d581aa7db6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_eae17aca_4d4f_48c4_9db7_3258097a320e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_eae17aca_4d4f_48c4_9db7_3258097a320e");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_eb23b4f3_ff7a_4da4_bfb6_bc4952a4742a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_eb23b4f3_ff7a_4da4_bfb6_bc4952a4742a");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_eb56ada7_aec9_49d4_adb5_de744acea8d4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_eb56ada7_aec9_49d4_adb5_de744acea8d4");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_eb5dce76_b5ef_4cd8_be94_53cd6758245b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_eb5dce76_b5ef_4cd8_be94_53cd6758245b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_eb766d45_658f_4375_b7e2_ed29bb58c24a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_eb766d45_658f_4375_b7e2_ed29bb58c24a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ebd3590b_1e46_415b_a8b4_7ef80596b92a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ebd3590b_1e46_415b_a8b4_7ef80596b92a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ebd5d994_ebe7_4a55_8ae2_8e174ea9f0e3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ebd5d994_ebe7_4a55_8ae2_8e174ea9f0e3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ebd78405_abde_4337_a9d6_dcf883108faa()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ebd78405_abde_4337_a9d6_dcf883108faa");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ebdb5c59_cd75_4db6_804a_c7809d070e3a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ebdb5c59_cd75_4db6_804a_c7809d070e3a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ebde1af9_603a_4600_b9f3_16397e53115a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ebde1af9_603a_4600_b9f3_16397e53115a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ebebaabd_db47_4cf1_aec4_96c1f79673b3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ebebaabd_db47_4cf1_aec4_96c1f79673b3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ebfbdcf9_cea6_482e_a79d_fcf37d1dc1de()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ebfbdcf9_cea6_482e_a79d_fcf37d1dc1de");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ec1e39a7_7503_4aa0_b8bb_0bcbc5479b72()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ec1e39a7_7503_4aa0_b8bb_0bcbc5479b72");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ec267584_4ff1_4d1d_9533_84c186fd471c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ec267584_4ff1_4d1d_9533_84c186fd471c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ec446fbb_469b_467b_ad5d_e9475fe19da6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ec446fbb_469b_467b_ad5d_e9475fe19da6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ec5a0aa6_f5f8_4ac9_adc1_d81afc0270d6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ec5a0aa6_f5f8_4ac9_adc1_d81afc0270d6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ec6fc3d0_360a_4b09_8e0a_230dbe36a16d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ec6fc3d0_360a_4b09_8e0a_230dbe36a16d");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_ec7b7863_6f0c_4732_b9d6_d527c6ddc709()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_ec7b7863_6f0c_4732_b9d6_d527c6ddc709");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ec9127e0_0adb_4489_addd_b0ac5a25772b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ec9127e0_0adb_4489_addd_b0ac5a25772b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ec9426cc_f10a_4005_b0cb_9983f51cb150()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ec9426cc_f10a_4005_b0cb_9983f51cb150");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ed27891e_2a65_44f1_b307_9d94d1bc8f40()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ed27891e_2a65_44f1_b307_9d94d1bc8f40");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ed2af292_6694_447f_9b93_b8b6555cb575()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ed2af292_6694_447f_9b93_b8b6555cb575");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ed5b9f2d_ea99_4a15_907d_9fa91d648bd1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ed5b9f2d_ea99_4a15_907d_9fa91d648bd1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ed8eb9bc_082e_4978_90e8_75dacf45b75d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ed8eb9bc_082e_4978_90e8_75dacf45b75d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ed988c38_1f74_4609_a9cd_5c6811afd6fb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ed988c38_1f74_4609_a9cd_5c6811afd6fb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_edb73c05_0d49_442e_9c31_ccb73cc6424c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_edb73c05_0d49_442e_9c31_ccb73cc6424c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_edeb7b0b_0b84_4963_b3f4_151ee6558d7d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_edeb7b0b_0b84_4963_b3f4_151ee6558d7d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ee0b589c_01bb_48c9_b48d_f73da15e8895()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ee0b589c_01bb_48c9_b48d_f73da15e8895");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_ee173eb3_06f1_4966_bd09_f559dd2d1022()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_ee173eb3_06f1_4966_bd09_f559dd2d1022");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ee30e57f_3f4e_45a9_9520_68e4cd405db8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ee30e57f_3f4e_45a9_9520_68e4cd405db8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ee34ca06_b530_4f27_9533_ea3bb9b93ea7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ee34ca06_b530_4f27_9533_ea3bb9b93ea7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ee71870f_85dd_4648_98ec_4b247bf1aef3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ee71870f_85dd_4648_98ec_4b247bf1aef3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ee83665a_0172_4bc0_a92a_bbda30b2e0ca()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ee83665a_0172_4bc0_a92a_bbda30b2e0ca");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_eebdac72_a21d_4d11_b085_a8c86e750de8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_eebdac72_a21d_4d11_b085_a8c86e750de8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ef082ea9_c208_42cc_8d10_0ba8a6d98bf2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ef082ea9_c208_42cc_8d10_0ba8a6d98bf2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ef33dd94_2cfd_4c6c_b898_09eeb6c05522()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ef33dd94_2cfd_4c6c_b898_09eeb6c05522");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ef478286_c08c_4d35_a219_ad4c4bfd06b4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ef478286_c08c_4d35_a219_ad4c4bfd06b4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ef4b2967_46b8_4975_a049_5dfdfbafb741()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ef4b2967_46b8_4975_a049_5dfdfbafb741");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ef5ac1cb_ada7_4e4a_9062_bc165676e7d5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ef5ac1cb_ada7_4e4a_9062_bc165676e7d5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ef62a3df_7108_44a3_9e1c_13e711d2f23e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ef62a3df_7108_44a3_9e1c_13e711d2f23e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ef924587_e83b_4985_b3f3_ac080003e3d0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ef924587_e83b_4985_b3f3_ac080003e3d0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ef9c3e90_56c9_473d_8bf2_adb946f7afcc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ef9c3e90_56c9_473d_8bf2_adb946f7afcc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_efaa98e4_ba7c_4f22_8208_c39df6dd9808()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_efaa98e4_ba7c_4f22_8208_c39df6dd9808");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_efc5bb72_d928_4470_878a_7fa8d40670a2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_efc5bb72_d928_4470_878a_7fa8d40670a2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_effc66b0_fcf6_41b8_87a9_685e860b9678()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_effc66b0_fcf6_41b8_87a9_685e860b9678");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_effe4082_ae02_437f_9edd_578670ac40b9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_effe4082_ae02_437f_9edd_578670ac40b9");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_f0094c29_689b_4fd9_8bff_5f462d640ac2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_f0094c29_689b_4fd9_8bff_5f462d640ac2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f0209e02_3961_40bd_a1eb_f11888ec7d7a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f0209e02_3961_40bd_a1eb_f11888ec7d7a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f027bba7_cf87_428a_8daa_6a42f8fc77ab()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f027bba7_cf87_428a_8daa_6a42f8fc77ab");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f03f4030_97e2_48d2_a115_75866b203a4d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f03f4030_97e2_48d2_a115_75866b203a4d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f0444e1d_919e_4b2b_b273_e0a310be7699()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f0444e1d_919e_4b2b_b273_e0a310be7699");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f0549c00_5359_4ae3_bb69_151de6aa0842()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f0549c00_5359_4ae3_bb69_151de6aa0842");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f05eb7aa_029a_4e09_9749_f21f07a93541()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f05eb7aa_029a_4e09_9749_f21f07a93541");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f0746331_09c3_430a_991d_c6b396802fe0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f0746331_09c3_430a_991d_c6b396802fe0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f086d977_7924_4db1_bde0_d40b7b55e3cb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f086d977_7924_4db1_bde0_d40b7b55e3cb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f0874c73_1671_482d_8671_44eb61bc344e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f0874c73_1671_482d_8671_44eb61bc344e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f0b1072d_8858_48bc_9452_33b72899490f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f0b1072d_8858_48bc_9452_33b72899490f");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_f1032443_42f2_4386_84aa_26edc83358cd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_f1032443_42f2_4386_84aa_26edc83358cd");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f12382a0_8ce9_4281_9e28_ca139646443c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f12382a0_8ce9_4281_9e28_ca139646443c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f13ac534_a47f_4004_a3da_20505341a490()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f13ac534_a47f_4004_a3da_20505341a490");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f13bb49b_1957_4960_b074_dc9b8e274da9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f13bb49b_1957_4960_b074_dc9b8e274da9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f14003bc_d879_4e53_ace0_902d7c45300c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f14003bc_d879_4e53_ace0_902d7c45300c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f157098d_e0af_44a8_bd02_b15ed832250a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f157098d_e0af_44a8_bd02_b15ed832250a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f16e15f9_7e51_4670_af4d_3ee26f66e055()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f16e15f9_7e51_4670_af4d_3ee26f66e055");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f180c58d_341b_4726_8e16_a31a8282937f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f180c58d_341b_4726_8e16_a31a8282937f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f1966289_110e_4a1c_aa52_c044fd5c4763()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f1966289_110e_4a1c_aa52_c044fd5c4763");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f1be29b3_b513_4883_98ec_1770bb4efeff()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f1be29b3_b513_4883_98ec_1770bb4efeff");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f1c350b2_a75c_4d54_8f4c_e907f6cdd595()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f1c350b2_a75c_4d54_8f4c_e907f6cdd595");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f1d3ce1c_2853_46f7_91b3_0aa0630c9e99()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f1d3ce1c_2853_46f7_91b3_0aa0630c9e99");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f20c00f1_5811_4f64_ac81_bf04487e4923()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f20c00f1_5811_4f64_ac81_bf04487e4923");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f2566134_757b_414e_b780_7c2138399a45()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f2566134_757b_414e_b780_7c2138399a45");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_f2682620_4d4d_4d79_9051_06ebc75d7f31()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_f2682620_4d4d_4d79_9051_06ebc75d7f31");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f2b38d4f_825e_47c7_9547_587bf9913135()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f2b38d4f_825e_47c7_9547_587bf9913135");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f2bba706_740b_4d34_b3b9_d1a46b662292()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f2bba706_740b_4d34_b3b9_d1a46b662292");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_f2f0f782_1432_4c4b_8c62_9435f132d67f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_f2f0f782_1432_4c4b_8c62_9435f132d67f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f3150c8e_a26d_4581_8b26_60e4e1734560()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f3150c8e_a26d_4581_8b26_60e4e1734560");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f320ad72_5511_43c0_b8bd_70949376db2f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f320ad72_5511_43c0_b8bd_70949376db2f");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_f35dc44d_8931_447c_b8d8_d956c49c83b3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_f35dc44d_8931_447c_b8d8_d956c49c83b3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f3755b80_9c73_4831_93e0_9af9c27d6e70()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f3755b80_9c73_4831_93e0_9af9c27d6e70");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f38b1f21_9fc0_456a_b4c2_6005de3e23ed()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f38b1f21_9fc0_456a_b4c2_6005de3e23ed");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_f3a94f68_12a4_43c0_9f10_c0caa37eae0e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_f3a94f68_12a4_43c0_9f10_c0caa37eae0e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f3b257d3_c677_494e_83c5_06de292cf53f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f3b257d3_c677_494e_83c5_06de292cf53f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f3b2a2ce_da59_461e_a313_0175d786f789()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f3b2a2ce_da59_461e_a313_0175d786f789");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_f3ddb9c0_70e0_4aeb_b9bd_8ee2a56da95d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_f3ddb9c0_70e0_4aeb_b9bd_8ee2a56da95d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f40fa986_ed63_4789_8758_a8910c2d8646()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f40fa986_ed63_4789_8758_a8910c2d8646");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f41d1ce1_4123_4f15_9e9d_f06a3c76e1b2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f41d1ce1_4123_4f15_9e9d_f06a3c76e1b2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f42594a4_0ca0_4d69_8269_6e88194f9a48()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f42594a4_0ca0_4d69_8269_6e88194f9a48");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f441192d_b5bb_4fc9_a1d5_bb0131bad556()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f441192d_b5bb_4fc9_a1d5_bb0131bad556");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_f44f123f_f0e8_4192_9445_6a6646f71051()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_f44f123f_f0e8_4192_9445_6a6646f71051");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f453d719_ba1b_4ba9_814a_15c40db6a045()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f453d719_ba1b_4ba9_814a_15c40db6a045");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f4549415_59fc_44ec_aa5d_6f60bbd012ff()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f4549415_59fc_44ec_aa5d_6f60bbd012ff");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f47588c6_9fcc_4fae_b6e0_607993f9cd82()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f47588c6_9fcc_4fae_b6e0_607993f9cd82");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f4876472_85b5_4f09_b369_3b456efa4792()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f4876472_85b5_4f09_b369_3b456efa4792");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f497b1fc_1d78_4d0a_9f03_7b5cc49f2d55()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f497b1fc_1d78_4d0a_9f03_7b5cc49f2d55");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f49e1760_78c0_4fe8_a418_2acaea92c31c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f49e1760_78c0_4fe8_a418_2acaea92c31c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f4a136d5_4e78_4e02_b2ba_a9acea7009a8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f4a136d5_4e78_4e02_b2ba_a9acea7009a8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f501b346_9a2a_464c_a134_fc9c48a8f176()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f501b346_9a2a_464c_a134_fc9c48a8f176");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f5189459_289a_42f4_bb84_d5cd490957ce()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f5189459_289a_42f4_bb84_d5cd490957ce");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f518f44e_2ff8_47e0_aab7_4413417e2b85()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f518f44e_2ff8_47e0_aab7_4413417e2b85");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f52a86da_fa84_49bb_821d_6a66ffcdbfe4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f52a86da_fa84_49bb_821d_6a66ffcdbfe4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f52b5c43_658b_4361_a9e9_01089e5b3ccf()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f52b5c43_658b_4361_a9e9_01089e5b3ccf");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_f52ff429_3d95_480e_9a58_537d5f4f7493()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_f52ff429_3d95_480e_9a58_537d5f4f7493");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f53ff356_b904_4c69_af3f_1e492b3fad91()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f53ff356_b904_4c69_af3f_1e492b3fad91");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f559f057_10be_4f7e_bc83_28b9eba88200()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f559f057_10be_4f7e_bc83_28b9eba88200");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f578e625_49f3_4df2_ba5a_59811fccb413()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f578e625_49f3_4df2_ba5a_59811fccb413");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f587ba04_72ce_4f94_a341_c5d01153fdf8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f587ba04_72ce_4f94_a341_c5d01153fdf8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f597f874_7473_4def_84e2_d39ad09d0972()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f597f874_7473_4def_84e2_d39ad09d0972");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f5aae5da_c178_4dff_826e_4ec7047939ec()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f5aae5da_c178_4dff_826e_4ec7047939ec");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f5b040c6_3a84_46e6_b671_379e876a0f3b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f5b040c6_3a84_46e6_b671_379e876a0f3b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f5b80bd7_cc8c_4fd1_b888_5c0d7395405c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f5b80bd7_cc8c_4fd1_b888_5c0d7395405c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f5cc92c1_844e_401b_aa4c_9278231300e5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f5cc92c1_844e_401b_aa4c_9278231300e5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f5fb271f_4cd5_4104_8fef_17dd5af262e8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f5fb271f_4cd5_4104_8fef_17dd5af262e8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f6265366_5f28_4cfe_a31c_5187f35f64de()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f6265366_5f28_4cfe_a31c_5187f35f64de");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f6297600_85b8_437b_a221_33bf1fa696b8()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f6297600_85b8_437b_a221_33bf1fa696b8");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f63bc8e8_c7be_46aa_a21b_c200f72c398d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f63bc8e8_c7be_46aa_a21b_c200f72c398d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f63f2ba2_da0a_445c_b957_f6140c282f53()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f63f2ba2_da0a_445c_b957_f6140c282f53");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f64c0096_a1ca_4f16_b364_e159d881a607()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f64c0096_a1ca_4f16_b364_e159d881a607");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f6755ee1_b4f3_425b_9e63_1cfc092c85ce()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f6755ee1_b4f3_425b_9e63_1cfc092c85ce");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f6789f99_4704_4313_8fe6_88a4fe8534b5()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f6789f99_4704_4313_8fe6_88a4fe8534b5");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f679500f_b976_4e23_b5f2_408b78a48d29()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f679500f_b976_4e23_b5f2_408b78a48d29");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f67c0947_ed37_4ddb_9681_847b0b83d673()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f67c0947_ed37_4ddb_9681_847b0b83d673");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f687deb8_3d92_4b81_a052_0a3f65156dae()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f687deb8_3d92_4b81_a052_0a3f65156dae");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f6944949_2a97_4bb5_8d80_14063b659af7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f6944949_2a97_4bb5_8d80_14063b659af7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f69d0093_ae6a_4209_ba92_b052c711dbeb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f69d0093_ae6a_4209_ba92_b052c711dbeb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f69e05a1_7951_4a5c_8f05_313e283d5874()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f69e05a1_7951_4a5c_8f05_313e283d5874");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f6a214d8_6fb9_44a7_a114_11035311301f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f6a214d8_6fb9_44a7_a114_11035311301f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f6d07bdd_71bb_4824_8ed3_fe68764114a4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f6d07bdd_71bb_4824_8ed3_fe68764114a4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f6d608f6_88db_4ba2_9a85_b255f0ce2ea6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f6d608f6_88db_4ba2_9a85_b255f0ce2ea6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f6e67ebf_5215_4920_b5e0_871c1bcaae09()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f6e67ebf_5215_4920_b5e0_871c1bcaae09");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f6efe5d0_da16_4450_87a0_dbc8ff28ae4d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f6efe5d0_da16_4450_87a0_dbc8ff28ae4d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f6fdcc97_c5fc_4314_a761_1f005c486c64()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f6fdcc97_c5fc_4314_a761_1f005c486c64");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f72164f9_4917_4026_b64e_2c9c536d49c4()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f72164f9_4917_4026_b64e_2c9c536d49c4");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f74055e0_299d_4de7_b697_25b4ad9fe3a2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f74055e0_299d_4de7_b697_25b4ad9fe3a2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f74bf3f2_89a9_4e81_983f_a6d767b28d6e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f74bf3f2_89a9_4e81_983f_a6d767b28d6e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f769f6fd_518a_4d25_8a1d_719699c968bc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f769f6fd_518a_4d25_8a1d_719699c968bc");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_f76fd93a_07f6_4535_8e4a_0b3d7ffff8c3()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_f76fd93a_07f6_4535_8e4a_0b3d7ffff8c3");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f787842d_b897_44cb_8c59_de53637db281()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f787842d_b897_44cb_8c59_de53637db281");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f7bc8f22_5ff1_415d_8c5d_3c791c9d2ef9()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f7bc8f22_5ff1_415d_8c5d_3c791c9d2ef9");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f7e53103_f85c_41af_bdeb_1a5ecd4f4763()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f7e53103_f85c_41af_bdeb_1a5ecd4f4763");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f7fc59dd_edf3_4e16_9806_21eb571dc656()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f7fc59dd_edf3_4e16_9806_21eb571dc656");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f8468ca5_5763_4e1a_ab98_2a003d2d5f05()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f8468ca5_5763_4e1a_ab98_2a003d2d5f05");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f84de14f_726d_4e04_adca_cb8ceebcc4ba()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f84de14f_726d_4e04_adca_cb8ceebcc4ba");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f85205eb_9b76_496b_a35f_0edae4e2cb3b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f85205eb_9b76_496b_a35f_0edae4e2cb3b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f861b04e_2fec_4726_8626_c5c75aeb5d67()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f861b04e_2fec_4726_8626_c5c75aeb5d67");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f8776b82_5c42_4aa7_af3c_be169937fc1a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f8776b82_5c42_4aa7_af3c_be169937fc1a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f8bcff3c_1ad2_4371_921b_4c72fe6a6b57()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f8bcff3c_1ad2_4371_921b_4c72fe6a6b57");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f8dba84f_f91d_4f6f_8a9e_97d98141193c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f8dba84f_f91d_4f6f_8a9e_97d98141193c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f8ea4670_1ef2_4a0d_bd8f_7ddbfb5fa687()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f8ea4670_1ef2_4a0d_bd8f_7ddbfb5fa687");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_f913f88d_7e77_4d6d_b700_175d7fd61e6b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_f913f88d_7e77_4d6d_b700_175d7fd61e6b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f95b2128_b7ef_4f0a_a87f_fb0c35c19039()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f95b2128_b7ef_4f0a_a87f_fb0c35c19039");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_f96d1c42_9a82_4d15_ab1c_90403e493906()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_f96d1c42_9a82_4d15_ab1c_90403e493906");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f9708801_fba9_4601_863d_d7d68442077b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f9708801_fba9_4601_863d_d7d68442077b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f9a74ec5_d4fe_4069_ba85_f608ba260e59()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f9a74ec5_d4fe_4069_ba85_f608ba260e59");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f9d44e70_6966_4379_97bf_70301402331d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f9d44e70_6966_4379_97bf_70301402331d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f9f0e434_ef6f_4bcd_b909_c2c452ba7b79()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f9f0e434_ef6f_4bcd_b909_c2c452ba7b79");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_f9f72f78_7dbd_4c9d_b7c2_79a08218604c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_f9f72f78_7dbd_4c9d_b7c2_79a08218604c");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fa50927f_f430_4b10_8c1b_460153d2c798()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fa50927f_f430_4b10_8c1b_460153d2c798");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fa9c4335_623b_4a47_8d54_3fbe7a86c68b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fa9c4335_623b_4a47_8d54_3fbe7a86c68b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fadb3c2c_33ff_4f76_a607_2c9b12671507()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fadb3c2c_33ff_4f76_a607_2c9b12671507");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fb11bc6a_7532_4421_997c_92c87e6dc17d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fb11bc6a_7532_4421_997c_92c87e6dc17d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fb15b831_dec0_4b83_ba21_1e4ade693008()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fb15b831_dec0_4b83_ba21_1e4ade693008");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fb41b1da_a489_4e90_a727_edd81b56e83e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fb41b1da_a489_4e90_a727_edd81b56e83e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fb4c3615_3f17_476d_9ffe_85e51768b535()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fb4c3615_3f17_476d_9ffe_85e51768b535");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_fb728420_245f_4d97_9138_4b05794af62b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_fb728420_245f_4d97_9138_4b05794af62b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fb899de6_8597_438f_bf75_203328c87174()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fb899de6_8597_438f_bf75_203328c87174");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fb8b9a01_3c2f_4756_8217_91a6aa06a54f()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fb8b9a01_3c2f_4756_8217_91a6aa06a54f");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fb8d81c2_a37f_4a01_8dfb_3ee91184ef11()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fb8d81c2_a37f_4a01_8dfb_3ee91184ef11");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fba329d5_f511_475a_8c2e_5bc586d0e95e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fba329d5_f511_475a_8c2e_5bc586d0e95e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fbaec87b_9e2c_440c_9a83_7d0c6cbb26e0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fbaec87b_9e2c_440c_9a83_7d0c6cbb26e0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fbdedef7_f5b1_4e4f_a128_92d3d46446bc()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fbdedef7_f5b1_4e4f_a128_92d3d46446bc");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fc015da2_8a45_4b43_802b_4508c32c9cae()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fc015da2_8a45_4b43_802b_4508c32c9cae");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fc15f014_0038_4bd6_b06d_1db25ce31332()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fc15f014_0038_4bd6_b06d_1db25ce31332");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fc167a49_acd1_4754_9432_c0be12a2449d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fc167a49_acd1_4754_9432_c0be12a2449d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fc2895ac_0edd_4efb_88f4_8d2f069b6466()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fc2895ac_0edd_4efb_88f4_8d2f069b6466");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fc3abb45_f71c_4832_822f_2d6e94904509()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fc3abb45_f71c_4832_822f_2d6e94904509");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fc7317d4_44ad_491d_893f_1e3c008c10c7()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fc7317d4_44ad_491d_893f_1e3c008c10c7");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fd2d7e3d_4d32_4c0a_867c_cff7d8df0f8d()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fd2d7e3d_4d32_4c0a_867c_cff7d8df0f8d");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fd4625ee_afbb_4a01_bbef_f093118b488a()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fd4625ee_afbb_4a01_bbef_f093118b488a");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fd52d5b6_ba90_4577_b993_c38707449002()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fd52d5b6_ba90_4577_b993_c38707449002");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fd7934ba_909b_42b0_8de5_5d6221fffb5b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fd7934ba_909b_42b0_8de5_5d6221fffb5b");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fd7d7a15_1802_45fc_9421_54e3421e6f76()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fd7d7a15_1802_45fc_9421_54e3421e6f76");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fd852347_6126_46f5_838d_ad3eea581fe2()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fd852347_6126_46f5_838d_ad3eea581fe2");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fd954fdb_775d_42d2_ba71_8e7124cf85ff()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fd954fdb_775d_42d2_ba71_8e7124cf85ff");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fdc44e48_46a1_44db_81a8_a4de6d83e95c()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fdc44e48_46a1_44db_81a8_a4de6d83e95c");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_fe07ff13_38f2_4526_aa8b_31d4db1e9ebb()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_fe07ff13_38f2_4526_aa8b_31d4db1e9ebb");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fe3acf47_f13d_475f_9882_97139d11a126()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fe3acf47_f13d_475f_9882_97139d11a126");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fe532869_c636_45b4_8353_4ed34e8d3167()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fe532869_c636_45b4_8353_4ed34e8d3167");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fe5baff2_7993_4f52_a4b4_d98b25f20b34()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fe5baff2_7993_4f52_a4b4_d98b25f20b34");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_fe5ec6ca_6b61_42f5_bbe5_86db81afc8ea()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_fe5ec6ca_6b61_42f5_bbe5_86db81afc8ea");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fea64a5e_ae7a_4604_a53a_aeaa9ac08f17()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fea64a5e_ae7a_4604_a53a_aeaa9ac08f17");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_fef6341b_275f_4a0f_acb6_09edd98088ad()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_fef6341b_275f_4a0f_acb6_09edd98088ad");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ff061195_9511_4cd7_b21d_06aa81662429()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ff061195_9511_4cd7_b21d_06aa81662429");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ff54d492_87ec_4df4_a161_2bfc8077cf96()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ff54d492_87ec_4df4_a161_2bfc8077cf96");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ff662b23_ab51_45b2_b6fc_8c63c95f40e1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ff662b23_ab51_45b2_b6fc_8c63c95f40e1");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ff6692b6_9afc_4041_b748_f4f0889bfa3b()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ff6692b6_9afc_4041_b748_f4f0889bfa3b");
+        }
+    
+        public virtual ObjectResult<Nullable<System.Guid>> SqlQueryNotificationStoredProcedure_ff67f99a_e77c_4846_8f76_9b315e3275f0()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<System.Guid>>("SqlQueryNotificationStoredProcedure_ff67f99a_e77c_4846_8f76_9b315e3275f0");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ff6a7321_93be_4406_86a5_4938ac016c67()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ff6a7321_93be_4406_86a5_4938ac016c67");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ff92d43d_79dc_457d_beb8_4a0f9d1536be()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ff92d43d_79dc_457d_beb8_4a0f9d1536be");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ff934c8a_c9de_47d8_b82b_244b1920df5e()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ff934c8a_c9de_47d8_b82b_244b1920df5e");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ffb82709_39ba_4f75_b784_b443df849a09()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ffb82709_39ba_4f75_b784_b443df849a09");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ffc74a1f_6c39_469d_be70_ffc6129b06d6()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ffc74a1f_6c39_469d_be70_ffc6129b06d6");
+        }
+    
+        public virtual int SqlQueryNotificationStoredProcedure_ffda5322_d3aa_4f8c_b0df_46d6e101cabd()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SqlQueryNotificationStoredProcedure_ffda5322_d3aa_4f8c_b0df_46d6e101cabd");
+        }
+    
+        [DbFunction("workorderEMSEntities", "TableTotalValue2")]
+        public virtual IQueryable<TableTotalValue2_Result> TableTotalValue2(Nullable<int> amount)
+        {
+            var amountParameter = amount.HasValue ?
+                new ObjectParameter("amount", amount) :
+                new ObjectParameter("amount", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<TableTotalValue2_Result>("[workorderEMSEntities].[TableTotalValue2](@amount)", amountParameter);
+        }
+    
+        public virtual int spSetDebitMemo(Nullable<long> dBM_ID, string dBM_Action, Nullable<long> dBM_LocationId, Nullable<long> dBM_CMP_Id, Nullable<long> dBM_PurchaseOrder, Nullable<long> dBM_DebitAmount, string dBM_Note, Nullable<int> dBM_Status, string dBM_DocumentName, Nullable<System.DateTime> dBM_CreatedDate, Nullable<System.DateTime> dBM_ModifiedDate, string dBM_ModifiedBy, Nullable<bool> dBM_IsDeleted, string dBM_DeletedBy, Nullable<System.DateTime> dBM_DeletedDate)
+        {
+            var dBM_IDParameter = dBM_ID.HasValue ?
+                new ObjectParameter("DBM_ID", dBM_ID) :
+                new ObjectParameter("DBM_ID", typeof(long));
+    
+            var dBM_ActionParameter = dBM_Action != null ?
+                new ObjectParameter("DBM_Action", dBM_Action) :
+                new ObjectParameter("DBM_Action", typeof(string));
+    
+            var dBM_LocationIdParameter = dBM_LocationId.HasValue ?
+                new ObjectParameter("DBM_LocationId", dBM_LocationId) :
+                new ObjectParameter("DBM_LocationId", typeof(long));
+    
+            var dBM_CMP_IdParameter = dBM_CMP_Id.HasValue ?
+                new ObjectParameter("DBM_CMP_Id", dBM_CMP_Id) :
+                new ObjectParameter("DBM_CMP_Id", typeof(long));
+    
+            var dBM_PurchaseOrderParameter = dBM_PurchaseOrder.HasValue ?
+                new ObjectParameter("DBM_PurchaseOrder", dBM_PurchaseOrder) :
+                new ObjectParameter("DBM_PurchaseOrder", typeof(long));
+    
+            var dBM_DebitAmountParameter = dBM_DebitAmount.HasValue ?
+                new ObjectParameter("DBM_DebitAmount", dBM_DebitAmount) :
+                new ObjectParameter("DBM_DebitAmount", typeof(long));
+    
+            var dBM_NoteParameter = dBM_Note != null ?
+                new ObjectParameter("DBM_Note", dBM_Note) :
+                new ObjectParameter("DBM_Note", typeof(string));
+    
+            var dBM_StatusParameter = dBM_Status.HasValue ?
+                new ObjectParameter("DBM_Status", dBM_Status) :
+                new ObjectParameter("DBM_Status", typeof(int));
+    
+            var dBM_DocumentNameParameter = dBM_DocumentName != null ?
+                new ObjectParameter("DBM_DocumentName", dBM_DocumentName) :
+                new ObjectParameter("DBM_DocumentName", typeof(string));
+    
+            var dBM_CreatedDateParameter = dBM_CreatedDate.HasValue ?
+                new ObjectParameter("DBM_CreatedDate", dBM_CreatedDate) :
+                new ObjectParameter("DBM_CreatedDate", typeof(System.DateTime));
+    
+            var dBM_ModifiedDateParameter = dBM_ModifiedDate.HasValue ?
+                new ObjectParameter("DBM_ModifiedDate", dBM_ModifiedDate) :
+                new ObjectParameter("DBM_ModifiedDate", typeof(System.DateTime));
+    
+            var dBM_ModifiedByParameter = dBM_ModifiedBy != null ?
+                new ObjectParameter("DBM_ModifiedBy", dBM_ModifiedBy) :
+                new ObjectParameter("DBM_ModifiedBy", typeof(string));
+    
+            var dBM_IsDeletedParameter = dBM_IsDeleted.HasValue ?
+                new ObjectParameter("DBM_IsDeleted", dBM_IsDeleted) :
+                new ObjectParameter("DBM_IsDeleted", typeof(bool));
+    
+            var dBM_DeletedByParameter = dBM_DeletedBy != null ?
+                new ObjectParameter("DBM_DeletedBy", dBM_DeletedBy) :
+                new ObjectParameter("DBM_DeletedBy", typeof(string));
+    
+            var dBM_DeletedDateParameter = dBM_DeletedDate.HasValue ?
+                new ObjectParameter("DBM_DeletedDate", dBM_DeletedDate) :
+                new ObjectParameter("DBM_DeletedDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetDebitMemo", dBM_IDParameter, dBM_ActionParameter, dBM_LocationIdParameter, dBM_CMP_IdParameter, dBM_PurchaseOrderParameter, dBM_DebitAmountParameter, dBM_NoteParameter, dBM_StatusParameter, dBM_DocumentNameParameter, dBM_CreatedDateParameter, dBM_ModifiedDateParameter, dBM_ModifiedByParameter, dBM_IsDeletedParameter, dBM_DeletedByParameter, dBM_DeletedDateParameter);
+        }
+    
+        public virtual ObjectResult<spGetDebitMemoList_Result> spGetDebitMemoList(Nullable<long> locationId, Nullable<int> status)
+        {
+            var locationIdParameter = locationId.HasValue ?
+                new ObjectParameter("LocationId", locationId) :
+                new ObjectParameter("LocationId", typeof(long));
+    
+            var statusParameter = status.HasValue ?
+                new ObjectParameter("Status", status) :
+                new ObjectParameter("Status", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetDebitMemoList_Result>("spGetDebitMemoList", locationIdParameter, statusParameter);
         }
     }
 }
