@@ -140,9 +140,14 @@ namespace WorkOrderEMS.Controllers.eCounting
                 if (model.DebitId > 0 && model.editNewDocument != null)
                 {
                     string AttachmentName = model.DebitId + "_" + DateTime.Now.Ticks.ToString() + "_" + model.editNewDocument.FileName.ToString();
-                    CommonHelper.StaticDeleteFIle(null, Server.MapPath(ConfigurationManager.AppSettings["DebitMemoDocuments"]), model.UploadedEditDocumentName);//to delete file if exists
+                    CommonHelper.StaticDeleteFIle(null, Server.MapPath(ConfigurationManager.AppSettings["DebitMemoDocuments"]), model.UploadedEditDocumentName);//to delete file old document name
                     CommonHelper.StaticUploadImage(model.editNewDocument, Server.MapPath(ConfigurationManager.AppSettings["DebitMemoDocuments"]), AttachmentName);
                     model.UploadedDocumentName = AttachmentName;
+                    model.DebitMemoStatus = model.DebitMemoStatusEdit;
+                }
+                //during edit if old document exists and no new file is provided
+                if (model.editNewDocument == null && model.UploadedEditDocumentName != null) {
+                    model.UploadedDocumentName = model.UploadedEditDocumentName;
                     model.DebitMemoStatus = model.DebitMemoStatusEdit;
                 }
 

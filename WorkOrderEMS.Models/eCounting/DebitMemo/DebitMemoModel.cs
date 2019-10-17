@@ -26,7 +26,7 @@ namespace WorkOrderEMS.Models.eCounting.DebitMemo
         public DebitMemoStatus DebitMemoStatusEdit { get; set; }
         public HttpPostedFileBase DebitMemoFile { get; set; }
         public string UploadedDocumentName { get; set; }
-        public string UploadedEditDocumentName { get; set; }
+        public string UploadedEditDocumentName { get; set; }//old document name
         public string DisplayDebitMemoStatus { get; set; }
         public string ActionModeI { get; set; }
         public string ActionModeU { get; set; }

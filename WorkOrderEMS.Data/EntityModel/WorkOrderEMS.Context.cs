@@ -37,6 +37,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<BudgetCostCodeMapping> BudgetCostCodeMappings { get; set; }
         public virtual DbSet<BudgetLocationMapping> BudgetLocationMappings { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
+        public virtual DbSet<CompanyAccountDetail> CompanyAccountDetails { get; set; }
         public virtual DbSet<CompanyAccountTransaction> CompanyAccountTransactions { get; set; }
         public virtual DbSet<CompanyDetail> CompanyDetails { get; set; }
         public virtual DbSet<CompanyFacilityMapping> CompanyFacilityMappings { get; set; }
@@ -51,6 +52,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<CostCodeMaster> CostCodeMasters { get; set; }
         public virtual DbSet<DARDetail> DARDetails { get; set; }
         public virtual DbSet<DashboardWidgetSetting> DashboardWidgetSettings { get; set; }
+        public virtual DbSet<DebitMemo> DebitMemoes { get; set; }
         public virtual DbSet<DefectReportDetail> DefectReportDetails { get; set; }
         public virtual DbSet<eFleetDriver> eFleetDrivers { get; set; }
         public virtual DbSet<eFleetFueling> eFleetFuelings { get; set; }
@@ -81,6 +83,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<LocationService> LocationServices { get; set; }
         public virtual DbSet<LogBill> LogBills { get; set; }
         public virtual DbSet<LogCompany> LogCompanies { get; set; }
+        public virtual DbSet<LogCompanyAccountDetail> LogCompanyAccountDetails { get; set; }
         public virtual DbSet<LogCompanyDetail> LogCompanyDetails { get; set; }
         public virtual DbSet<LogCompanyFacilityMapping> LogCompanyFacilityMappings { get; set; }
         public virtual DbSet<LogContract> LogContracts { get; set; }
@@ -130,17 +133,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<WorkRequestAssignment> WorkRequestAssignments { get; set; }
         public virtual DbSet<IdleEmployee> IdleEmployees { get; set; }
         public virtual DbSet<QRCMaster1> QRCMaster1 { get; set; }
-        public virtual DbSet<CompanyAccountDetail> CompanyAccountDetails { get; set; }
-        public virtual DbSet<LogCompanyAccountDetail> LogCompanyAccountDetails { get; set; }
-        public virtual DbSet<ApplicantInfo> ApplicantInfoes { get; set; }
-        public virtual DbSet<Citizenship> Citizenships { get; set; }
-        public virtual DbSet<Department> Departments { get; set; }
-        public virtual DbSet<Employee> Employees { get; set; }
-        public virtual DbSet<EmployeeAddress> EmployeeAddresses { get; set; }
-        public virtual DbSet<JobPosting> JobPostings { get; set; }
-        public virtual DbSet<JobTitle> JobTitles { get; set; }
-        public virtual DbSet<VehicleSeating> VehicleSeatings { get; set; }
-        public virtual DbSet<VehicleSeating_DepartmentMapping> VehicleSeating_DepartmentMapping { get; set; }
     
         public virtual ObjectResult<CommonQeriesByVijay_Result> CommonQeriesByVijay()
         {
@@ -5266,6 +5258,132 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("CTZ_Citizenship", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSetEmployee_Result>("spSetEmployee", eMPActionParameter, eMP_IdParameter, eMP_EmployeeIDParameter, eMP_API_ApplicantIdParameter, eMP_FirstNameParameter, eMP_MiddleNameParameter, eMP_LastNameParameter, eMP_EmailParameter, eMP_PhoneParameter, eMP_DrivingLicenseNumberParameter, eMP_DateOfBirthParameter, eMP_SSNParameter, eMP_PhotoParameter, eMP_MilitaryServiceParameter, eMP_GenderParameter, eMP_JobTitleIdParameter, eMP_ManagerIdParameter, eMP_DateOfJoiningParameter, eMP_LocationIdParameter, eMP_IsCreatedByParameter, eMP_IsCreatedOnParameter, eMP_IsActiveParameter, userTypeParameter, eMA_AddressParameter, eMA_CityParameter, eMA_StateParameter, eMA_ZipParameter, cTZ_CitizenshipParameter);
+        }
+    
+        public virtual ObjectResult<spGetDebitMemoList_Result> spGetDebitMemoList(Nullable<long> locationId, Nullable<int> status)
+        {
+            var locationIdParameter = locationId.HasValue ?
+                new ObjectParameter("LocationId", locationId) :
+                new ObjectParameter("LocationId", typeof(long));
+    
+            var statusParameter = status.HasValue ?
+                new ObjectParameter("Status", status) :
+                new ObjectParameter("Status", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetDebitMemoList_Result>("spGetDebitMemoList", locationIdParameter, statusParameter);
+        }
+    
+        public virtual int spSetDebitMemo(Nullable<long> dBM_ID, string dBM_Action, Nullable<long> dBM_LocationId, Nullable<long> dBM_CMP_Id, Nullable<long> dBM_PurchaseOrder, Nullable<long> dBM_DebitAmount, string dBM_Note, Nullable<int> dBM_Status, string dBM_DocumentName, Nullable<System.DateTime> dBM_CreatedDate, Nullable<System.DateTime> dBM_ModifiedDate, string dBM_ModifiedBy, Nullable<bool> dBM_IsDeleted, string dBM_DeletedBy, Nullable<System.DateTime> dBM_DeletedDate)
+        {
+            var dBM_IDParameter = dBM_ID.HasValue ?
+                new ObjectParameter("DBM_ID", dBM_ID) :
+                new ObjectParameter("DBM_ID", typeof(long));
+    
+            var dBM_ActionParameter = dBM_Action != null ?
+                new ObjectParameter("DBM_Action", dBM_Action) :
+                new ObjectParameter("DBM_Action", typeof(string));
+    
+            var dBM_LocationIdParameter = dBM_LocationId.HasValue ?
+                new ObjectParameter("DBM_LocationId", dBM_LocationId) :
+                new ObjectParameter("DBM_LocationId", typeof(long));
+    
+            var dBM_CMP_IdParameter = dBM_CMP_Id.HasValue ?
+                new ObjectParameter("DBM_CMP_Id", dBM_CMP_Id) :
+                new ObjectParameter("DBM_CMP_Id", typeof(long));
+    
+            var dBM_PurchaseOrderParameter = dBM_PurchaseOrder.HasValue ?
+                new ObjectParameter("DBM_PurchaseOrder", dBM_PurchaseOrder) :
+                new ObjectParameter("DBM_PurchaseOrder", typeof(long));
+    
+            var dBM_DebitAmountParameter = dBM_DebitAmount.HasValue ?
+                new ObjectParameter("DBM_DebitAmount", dBM_DebitAmount) :
+                new ObjectParameter("DBM_DebitAmount", typeof(long));
+    
+            var dBM_NoteParameter = dBM_Note != null ?
+                new ObjectParameter("DBM_Note", dBM_Note) :
+                new ObjectParameter("DBM_Note", typeof(string));
+    
+            var dBM_StatusParameter = dBM_Status.HasValue ?
+                new ObjectParameter("DBM_Status", dBM_Status) :
+                new ObjectParameter("DBM_Status", typeof(int));
+    
+            var dBM_DocumentNameParameter = dBM_DocumentName != null ?
+                new ObjectParameter("DBM_DocumentName", dBM_DocumentName) :
+                new ObjectParameter("DBM_DocumentName", typeof(string));
+    
+            var dBM_CreatedDateParameter = dBM_CreatedDate.HasValue ?
+                new ObjectParameter("DBM_CreatedDate", dBM_CreatedDate) :
+                new ObjectParameter("DBM_CreatedDate", typeof(System.DateTime));
+    
+            var dBM_ModifiedDateParameter = dBM_ModifiedDate.HasValue ?
+                new ObjectParameter("DBM_ModifiedDate", dBM_ModifiedDate) :
+                new ObjectParameter("DBM_ModifiedDate", typeof(System.DateTime));
+    
+            var dBM_ModifiedByParameter = dBM_ModifiedBy != null ?
+                new ObjectParameter("DBM_ModifiedBy", dBM_ModifiedBy) :
+                new ObjectParameter("DBM_ModifiedBy", typeof(string));
+    
+            var dBM_IsDeletedParameter = dBM_IsDeleted.HasValue ?
+                new ObjectParameter("DBM_IsDeleted", dBM_IsDeleted) :
+                new ObjectParameter("DBM_IsDeleted", typeof(bool));
+    
+            var dBM_DeletedByParameter = dBM_DeletedBy != null ?
+                new ObjectParameter("DBM_DeletedBy", dBM_DeletedBy) :
+                new ObjectParameter("DBM_DeletedBy", typeof(string));
+    
+            var dBM_DeletedDateParameter = dBM_DeletedDate.HasValue ?
+                new ObjectParameter("DBM_DeletedDate", dBM_DeletedDate) :
+                new ObjectParameter("DBM_DeletedDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetDebitMemo", dBM_IDParameter, dBM_ActionParameter, dBM_LocationIdParameter, dBM_CMP_IdParameter, dBM_PurchaseOrderParameter, dBM_DebitAmountParameter, dBM_NoteParameter, dBM_StatusParameter, dBM_DocumentNameParameter, dBM_CreatedDateParameter, dBM_ModifiedDateParameter, dBM_ModifiedByParameter, dBM_IsDeletedParameter, dBM_DeletedByParameter, dBM_DeletedDateParameter);
+        }
+    
+        public virtual int spGetCompanyAllocationLocationCountForGraph1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetCompanyAllocationLocationCountForGraph1");
+        }
+    
+        public virtual int spGetCompanyCountForGraph1()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetCompanyCountForGraph1");
+        }
+    
+        public virtual ObjectResult<spGetVendorAllDetailForEditApproval1_Result> spGetVendorAllDetailForEditApproval1(Nullable<long> cMP_Id)
+        {
+            var cMP_IdParameter = cMP_Id.HasValue ?
+                new ObjectParameter("CMP_Id", cMP_Id) :
+                new ObjectParameter("CMP_Id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVendorAllDetailForEditApproval1_Result>("spGetVendorAllDetailForEditApproval1", cMP_IdParameter);
+        }
+    
+        public virtual int spSetVenderLocationAllocation(string cLAAction, Nullable<long> cLA_Id, Nullable<long> cLA_CNT_Id, Nullable<long> cLA_LocationId, Nullable<decimal> cLA_Allocation, string cLA_IsActive)
+        {
+            var cLAActionParameter = cLAAction != null ?
+                new ObjectParameter("CLAAction", cLAAction) :
+                new ObjectParameter("CLAAction", typeof(string));
+    
+            var cLA_IdParameter = cLA_Id.HasValue ?
+                new ObjectParameter("CLA_Id", cLA_Id) :
+                new ObjectParameter("CLA_Id", typeof(long));
+    
+            var cLA_CNT_IdParameter = cLA_CNT_Id.HasValue ?
+                new ObjectParameter("CLA_CNT_Id", cLA_CNT_Id) :
+                new ObjectParameter("CLA_CNT_Id", typeof(long));
+    
+            var cLA_LocationIdParameter = cLA_LocationId.HasValue ?
+                new ObjectParameter("CLA_LocationId", cLA_LocationId) :
+                new ObjectParameter("CLA_LocationId", typeof(long));
+    
+            var cLA_AllocationParameter = cLA_Allocation.HasValue ?
+                new ObjectParameter("CLA_Allocation", cLA_Allocation) :
+                new ObjectParameter("CLA_Allocation", typeof(decimal));
+    
+            var cLA_IsActiveParameter = cLA_IsActive != null ?
+                new ObjectParameter("CLA_IsActive", cLA_IsActive) :
+                new ObjectParameter("CLA_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetVenderLocationAllocation", cLAActionParameter, cLA_IdParameter, cLA_CNT_IdParameter, cLA_LocationIdParameter, cLA_AllocationParameter, cLA_IsActiveParameter);
         }
     }
 }
