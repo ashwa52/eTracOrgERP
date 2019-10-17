@@ -24,5 +24,10 @@ namespace WorkOrderEMS.Models.NewAdminModel
         public string QuestionType{ get; set; }
         public string Question{ get; set; }
 
+        public bool Answer { get; set; }
+
+        public string EmployeeId { get; set;}
+        public long SelfAssessmentId { get; set;}
+
     }
 }

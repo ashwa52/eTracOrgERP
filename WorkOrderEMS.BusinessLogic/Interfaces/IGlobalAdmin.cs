@@ -266,6 +266,7 @@ namespace WorkOrderEMS.BusinessLogic
         List<listForEmployeeDevice> GetAllManagerList(long LocationId, long UserId);
        // BudgetDetails GetListBudgetDetails(long? LocationId, long? UserId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
         List<PerformanceModel> GetListOf306090ForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords);
-        List<GWCQUestionModel> GetGWCQuestions(string AssessmetType);
+        List<GWCQUestionModel> GetGWCQuestions(string Id,string AssessmetType);
+        bool saveSelfAssessment(List<GWCQUestionModel> data,string action);
     }
 }

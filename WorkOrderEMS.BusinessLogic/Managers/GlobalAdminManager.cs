@@ -3808,19 +3808,32 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 
         }
         ///
-        public List<GWCQUestionModel> GetGWCQuestions(string AssessmetType)
+        public List<GWCQUestionModel> GetGWCQuestions(string Id,string AssessmetType)
         {
             ObjUserRepository = new UserRepository();
             try
             {
 
-                return ObjUserRepository.GetGWCQuestions(AssessmetType);
+                return ObjUserRepository.GetGWCQuestions(Id,AssessmetType);
             }
             catch (Exception)
             {
                 throw;
             }
 
+        }
+        public bool saveSelfAssessment(List<GWCQUestionModel> data, string action) {
+
+            ObjUserRepository = new UserRepository();
+            try
+            {
+
+                return ObjUserRepository.saveSelfAssessment(data, action);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
     }

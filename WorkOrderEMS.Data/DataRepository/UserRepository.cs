@@ -715,24 +715,45 @@ namespace WorkOrderEMS.Data
             { throw; }
         }
 
-        public List<GWCQUestionModel> GetGWCQuestions(string AssessmentType)
+        public List<GWCQUestionModel> GetGWCQuestions(string Id, string AssessmentType)
         {
             List<GWCQUestionModel> QuestionList = new List<GWCQUestionModel>();
             try
             {
                 //lstVerifiedMnagaer = _workorderEMSEntities.spGetAssessmentList306090(userId, pageIndex, sortColumnName, sortOrderBy, numberOfRows, textSearch, locationId, useType, totalRecord).Select(t =>
-                QuestionList = _workorderEMSEntities.spGetAssessmentQuestion(AssessmentType).Select(t =>
+                QuestionList = _workorderEMSEntities.spGetAssessmentQuestion(Id, AssessmentType).Select(t =>
 
-                new GWCQUestionModel()
-                {
-                     AssessmentType=t.ASQ_AssessmentType,
-                      Question=t.ASQ_Question,
-                       QuestionId=t.ASQ_Id,
-                         QuestionType=t.ASQ_QuestionType
-                    
+                 new GWCQUestionModel()
+                 {
+                     AssessmentType = t.ASQ_AssessmentType,
+                     Question = t.ASQ_Question,
+                     QuestionId = t.ASQ_Id,
+                     QuestionType = t.ASQ_QuestionType,
+                     EmployeeId = Id,
+                     SelfAssessmentId = t.SAM_Id ?? 0,
+                     Answer = t.SAM_Answer == "Y" ? true : false
 
-                }).ToList();
+                 }).ToList();
                 return QuestionList;
+            }
+            catch (Exception)
+            { throw; }
+        }
+
+        public bool saveSelfAssessment(List<GWCQUestionModel> data, string action)
+        {
+            try
+            {
+                if (data.Count() > 0)
+                {
+                    foreach (var i in data)
+                    {
+                        _workorderEMSEntities.spSetSelfAssessment306090(action, i.EmployeeId, i.QuestionId, i.SelfAssessmentId, i.Answer == true ? "Y" : "N");
+                    }
+                }
+
+                return true;
+
             }
             catch (Exception)
             { throw; }
