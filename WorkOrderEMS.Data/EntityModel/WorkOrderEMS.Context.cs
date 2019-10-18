@@ -4700,7 +4700,20 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentList306090_Result>("spGetAssessmentList306090", employeeIdParameter);
         }
     
-        public virtual int spSetSelfAssessment306090(string action, string employeeID, Nullable<long> aSQ_Id, Nullable<long> sAM_Id, string sAM_Answer)
+        public virtual int spGetAssessmentQuestion(string employeeID, string assessmentType)
+        {
+            var employeeIDParameter = employeeID != null ?
+                new ObjectParameter("EmployeeID", employeeID) :
+                new ObjectParameter("EmployeeID", typeof(string));
+    
+            var assessmentTypeParameter = assessmentType != null ?
+                new ObjectParameter("AssessmentType", assessmentType) :
+                new ObjectParameter("AssessmentType", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetAssessmentQuestion", employeeIDParameter, assessmentTypeParameter);
+        }
+    
+        public virtual int spSetSelfAssessment306090(string action, string employeeID, Nullable<long> aSQ_Id, Nullable<long> sAM_Id, string sAM_Answer, string sAM_IsActive)
         {
             var actionParameter = action != null ?
                 new ObjectParameter("Action", action) :
@@ -4722,10 +4735,14 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("SAM_Answer", sAM_Answer) :
                 new ObjectParameter("SAM_Answer", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetSelfAssessment306090", actionParameter, employeeIDParameter, aSQ_IdParameter, sAM_IdParameter, sAM_AnswerParameter);
+            var sAM_IsActiveParameter = sAM_IsActive != null ?
+                new ObjectParameter("SAM_IsActive", sAM_IsActive) :
+                new ObjectParameter("SAM_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetSelfAssessment306090", actionParameter, employeeIDParameter, aSQ_IdParameter, sAM_IdParameter, sAM_AnswerParameter, sAM_IsActiveParameter);
         }
     
-        public virtual ObjectResult<spGetAssessmentQuestion_Result> spGetAssessmentQuestion(string employeeID, string assessmentType)
+        public virtual ObjectResult<spGetAssessmentQuestion1_Result> spGetAssessmentQuestion1(string employeeID, string assessmentType)
         {
             var employeeIDParameter = employeeID != null ?
                 new ObjectParameter("EmployeeID", employeeID) :
@@ -4735,7 +4752,7 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("AssessmentType", assessmentType) :
                 new ObjectParameter("AssessmentType", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentQuestion_Result>("spGetAssessmentQuestion", employeeIDParameter, assessmentTypeParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentQuestion1_Result>("spGetAssessmentQuestion1", employeeIDParameter, assessmentTypeParameter);
         }
     }
 }

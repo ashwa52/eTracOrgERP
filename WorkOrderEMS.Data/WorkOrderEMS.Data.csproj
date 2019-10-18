@@ -475,7 +475,7 @@
     <Compile Include="EntityModel\spGetAssessmentList306090_Result.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="EntityModel\spGetAssessmentQuestion_Result.cs">
+    <Compile Include="EntityModel\spGetAssessmentQuestion1_Result.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\spGetBillFacilityItemForApproval_Result.cs">

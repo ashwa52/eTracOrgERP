@@ -61,50 +61,89 @@
 
                     </td>
 
-                    <td class="ans" data-value="@item.QuestionId" data-user="@item.EmployeeId">
+                    <td class="ans" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive">
 
-                        <input type="radio" value="true" name="Opt_@item.QuestionId" /> Yes
+                        @if (item.Answer == "Y" && @item.SelfAssessmentId>0)
+                        {
+                            <input type="radio" value="true" name="Opt_@item.QuestionId" checked  />
+                        }
+                        else
+                        {
+                            <input type="radio" value="true" name="Opt_@item.QuestionId" />
+                        }Yes
 
-                        <input type="radio" value="false" name="Opt_@item.QuestionId" /> No
+                        @if (item.Answer == "N" && @item.SelfAssessmentId>0)
+                        {
+                            <input type="radio" value="false" name="Opt_@item.QuestionId" checked />
+                        }
+                        else
+                        {
+                            <input type="radio" value="false" name="Opt_@item.QuestionId" />
+                        }No
                     </td>
-                </tr>
-            }
 
-            <tr align="center">
+                        </tr>
+                    }
+
+<tr align="center">
                 <td>
 
-                    <button id="draft" class="btn btn-secondary">Draft</button>
+                    <button id="draft" class="btn btn-secondary" onclick="saveAssessment306090('Draft')">Draft</button>
 
-                    <button id="submit" class="btn btn-success" onclick="saveAssessment306090(this)">Submit</button>
+                    <button id="submit" class="btn btn-success" onclick="saveAssessment306090('Submit')">Submit</button>
                 </td>
             </tr>
     </tbody>
 </table>
 </div>
 <script>
+    $("document").ready(function () {
+
+        enableDisableBtn();
+                $("td.ans input[type='radio']").on("click", function () {
+                     $('#submit').attr("disabled", false);
+        })
+
+    });
+    function enableDisableBtn() {
+            if ($("td.ans input[type='radio']checked").length > 1) {
+
+            $('#submit').attr("disabled", false);
+        }
+        else {
+            $('#submit').attr("disabled", true);
+        }}
+
+    
+
     $("#back").on('click', function () {
         $("#gridArea").show();
         $('#profileArea').hide();
         $("#List306090").jsGrid("loadData");
 
     });
-    function saveAssessment306090() {
+    function saveAssessment306090(action) {
         var obj = [];
         var tab = $("td.ans");
         $.each(tab, function (i, elem) {
             QuestionId = elem.getAttribute("data-value");
             EmployeeId = elem.getAttribute("data-user");
+            SAM_IsActive = elem.getAttribute("data-isAct");
 
+            
+            debugger;
             Answer = $("input[type='radio'][name='Opt_" + QuestionId + "']:checked").val();
-            obj.push({ "QuestionId":QuestionId, "Answer":Answer ,"EmployeeId":EmployeeId});
+            SelfAssessmentId=elem.getAttribute("data-sam");
+            obj.push({ "QuestionId":QuestionId, "Answer":Answer ,"EmployeeId":EmployeeId,"SelfAssessmentId":SelfAssessmentId,"SAM_IsActive":SAM_IsActive});
             
         });
         obj = JSON.stringify({ 'data': obj });
         debugger;
+        var url=(action=="Draft") ? '../NewAdmin/draftSelfAssessment/':'../NewAdmin/saveSelfAssessment/'
         $.ajax({
             type: "POST",
             data: obj,
-            url: '../NewAdmin/saveSelfAssessment/',
+            url: url,
             contentType: "application/json; charset=utf-8",
         dataType: 'json',
             error: function (xhr, status, error) {

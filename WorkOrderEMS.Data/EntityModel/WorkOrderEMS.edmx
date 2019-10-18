@@ -5150,6 +5150,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="ASQ_Id" Type="bigint" Mode="In" />
           <Parameter Name="SAM_Id" Type="bigint" Mode="In" />
           <Parameter Name="SAM_Answer" Type="char" Mode="In" />
+          <Parameter Name="SAM_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetTaxDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TXDAction" Type="char" Mode="In" />
@@ -8261,14 +8262,19 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           </AssociationSet>
           <EntitySet Name="AssessmentQuestions" EntityType="workorderEMSModel.AssessmentQuestion" />
           <EntitySet Name="SelfAssessment306090" EntityType="workorderEMSModel.SelfAssessment306090" />
+          <FunctionImport Name="spGetAssessmentQuestion">
+            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="AssessmentType" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="spSetSelfAssessment306090">
             <Parameter Name="Action" Mode="In" Type="String" />
             <Parameter Name="EmployeeID" Mode="In" Type="String" />
             <Parameter Name="ASQ_Id" Mode="In" Type="Int64" />
             <Parameter Name="SAM_Id" Mode="In" Type="Int64" />
             <Parameter Name="SAM_Answer" Mode="In" Type="String" />
+            <Parameter Name="SAM_IsActive" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spGetAssessmentQuestion" ReturnType="Collection(workorderEMSModel.spGetAssessmentQuestion_Result)">
+          <FunctionImport Name="spGetAssessmentQuestion1" ReturnType="Collection(workorderEMSModel.spGetAssessmentQuestion1_Result)">
             <Parameter Name="EmployeeID" Mode="In" Type="String" />
             <Parameter Name="AssessmentType" Mode="In" Type="String" />
           </FunctionImport>
@@ -15792,13 +15798,14 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="SAM_Date" Type="DateTime" Precision="3" />
           <Property Name="SAM_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
-        <ComplexType Name="spGetAssessmentQuestion_Result">
+        <ComplexType Name="spGetAssessmentQuestion1_Result">
           <Property Type="Int64" Name="ASQ_Id" Nullable="false" />
           <Property Type="String" Name="ASQ_AssessmentType" Nullable="true" MaxLength="20" />
           <Property Type="String" Name="ASQ_QuestionType" Nullable="true" MaxLength="20" />
           <Property Type="String" Name="ASQ_Question" Nullable="true" />
           <Property Type="Int64" Name="SAM_Id" Nullable="true" />
           <Property Type="String" Name="SAM_Answer" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="SAM_IsActive" Nullable="true" MaxLength="1" />
         </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
@@ -20197,15 +20204,16 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spSetSelfAssessment306090" FunctionName="workorderEMSModel.Store.spSetSelfAssessment306090" />
-          <FunctionImportMapping FunctionImportName="spGetAssessmentQuestion" FunctionName="workorderEMSModel.Store.spGetAssessmentQuestion">
+          <FunctionImportMapping FunctionImportName="spGetAssessmentQuestion1" FunctionName="workorderEMSModel.Store.spGetAssessmentQuestion">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="workorderEMSModel.spGetAssessmentQuestion_Result">
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetAssessmentQuestion1_Result">
                 <ScalarProperty Name="ASQ_Id" ColumnName="ASQ_Id" />
                 <ScalarProperty Name="ASQ_AssessmentType" ColumnName="ASQ_AssessmentType" />
                 <ScalarProperty Name="ASQ_QuestionType" ColumnName="ASQ_QuestionType" />
                 <ScalarProperty Name="ASQ_Question" ColumnName="ASQ_Question" />
                 <ScalarProperty Name="SAM_Id" ColumnName="SAM_Id" />
                 <ScalarProperty Name="SAM_Answer" ColumnName="SAM_Answer" />
+                <ScalarProperty Name="SAM_IsActive" ColumnName="SAM_IsActive" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

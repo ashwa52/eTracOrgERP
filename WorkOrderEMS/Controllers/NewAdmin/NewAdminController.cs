@@ -504,7 +504,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
             return PartialView("_PerformanceManagement");
         }
-        [HttpGet]
+        [HttpPost]
         public ActionResult userAssessmentView(string Id,string Assesment)
         {
             eTracLoginModel ObjLoginModel = null;
@@ -584,7 +584,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
 
         [HttpPost]
-        public JsonResult saveSelfAssessment(List<GWCQUestionModel> data)
+        public JsonResult draftSelfAssessment(List<GWCQUestionModel> data)
         {
             eTracLoginModel ObjLoginModel = null;
             bool result = false;
@@ -593,12 +593,31 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
             }
             try {
-                result=_GlobalAdminManager.saveSelfAssessment(data,"I");
+                result=_GlobalAdminManager.saveSelfAssessment(data,"D");
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
 
             return Json(result,JsonRequestBehavior.AllowGet);
+
+        }
+        [HttpPost]
+        public JsonResult saveSelfAssessment(List<GWCQUestionModel> data)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            bool result = false;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                result = _GlobalAdminManager.saveSelfAssessment(data, "S");
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
 
         }
     }

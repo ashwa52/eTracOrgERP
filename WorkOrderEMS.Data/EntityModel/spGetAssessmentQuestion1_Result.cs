@@ -11,7 +11,7 @@ namespace WorkOrderEMS.Data.EntityModel
 {
     using System;
     
-    public partial class spGetAssessmentQuestion_Result
+    public partial class spGetAssessmentQuestion1_Result
     {
         public long ASQ_Id { get; set; }
         public string ASQ_AssessmentType { get; set; }
@@ -19,5 +19,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public string ASQ_Question { get; set; }
         public Nullable<long> SAM_Id { get; set; }
         public string SAM_Answer { get; set; }
+        public string SAM_IsActive { get; set; }
     }
 }

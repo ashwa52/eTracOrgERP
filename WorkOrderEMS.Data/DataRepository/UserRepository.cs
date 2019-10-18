@@ -721,7 +721,7 @@ namespace WorkOrderEMS.Data
             try
             {
                 //lstVerifiedMnagaer = _workorderEMSEntities.spGetAssessmentList306090(userId, pageIndex, sortColumnName, sortOrderBy, numberOfRows, textSearch, locationId, useType, totalRecord).Select(t =>
-                QuestionList = _workorderEMSEntities.spGetAssessmentQuestion(Id, AssessmentType).Select(t =>
+                QuestionList = _workorderEMSEntities.spGetAssessmentQuestion1(Id, AssessmentType).Select(t =>
 
                  new GWCQUestionModel()
                  {
@@ -731,7 +731,8 @@ namespace WorkOrderEMS.Data
                      QuestionType = t.ASQ_QuestionType,
                      EmployeeId = Id,
                      SelfAssessmentId = t.SAM_Id ?? 0,
-                     Answer = t.SAM_Answer == "Y" ? true : false
+                     Answer = t.SAM_Answer,
+                     SAM_IsActive=t.SAM_IsActive
 
                  }).ToList();
                 return QuestionList;
@@ -748,7 +749,7 @@ namespace WorkOrderEMS.Data
                 {
                     foreach (var i in data)
                     {
-                        _workorderEMSEntities.spSetSelfAssessment306090(action, i.EmployeeId, i.QuestionId, i.SelfAssessmentId, i.Answer == true ? "Y" : "N");
+                        _workorderEMSEntities.spSetSelfAssessment306090((i.SAM_IsActive == null||i.SAM_IsActive==""||i.SAM_IsActive!="Y")?"I":"U", i.EmployeeId, i.QuestionId, i.SelfAssessmentId, i.Answer=="true"?"Y":"N",action=="S"?"S":"Y");
                     }
                 }
 

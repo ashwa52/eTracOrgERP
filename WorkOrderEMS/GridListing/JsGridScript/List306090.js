@@ -66,10 +66,9 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                   .attr({ id: "btn-profile-" + item.id }).click(function (e) {
                                       debugger;
                                       $.ajax({
-                                          type: "GET",
+                                          type: "POST",
                                           data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment},
                                           url: '../NewAdmin/userAssessmentView/',
-                                          contentType: "application/json; charset=utf-8",
                                           error: function (xhr, status, error) {
                                           },
                                           success: function (result) {
