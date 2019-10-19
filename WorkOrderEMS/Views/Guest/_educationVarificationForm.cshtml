@@ -1,119 +1,69 @@
-﻿
-<div class="modal-content">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal">&times;</button>
-		<h4 class="modal-title">Education Verification Form</h4>
-	</div>
-	<div class="modal-body">
-		<div class="card">
-			<div class="card-header">Personal Information</div>
-			<div class="card-body">
-				<div class="form-row">
-					<div class="col-md-6 mx-auto">
-						<div class="form-group">
-							<input type="text" id="name" class="form-control" required>
-							<label class="form-control-placeholder" for="name">Employee Id</label>
-						</div>
-					</div>
-					<div class="col-md-6 mx-auto">
-						<div class="form-group">
-							<input type="text" id="name" class="form-control" required>
-							<label class="form-control-placeholder" for="name">First Name</label>
-						</div>
-					</div>
-					<div class="col-md-6 mx-auto">
-						<div class="form-group">
-							<input type="text" id="name" class="form-control" required>
-							<label class="form-control-placeholder" for="name">Last Name</label>
-						</div>
-					</div>
-					<div class="col-md-6 mx-auto">
-						<div class="form-group">
-							<input type="text" id="name" class="form-control" required>
-							<label class="form-control-placeholder" for="name">Nickname</label>
-						</div>
-					</div>
-					<div class="col-md-6 mx-auto">
-						<div class="form-group">
-							<select class="form-control">
-								<option>Gender</option>
-								<option>Male</option>
-								<option>Female</option>
-							</select>
-						</div>
-					</div>
-					<div class="col-md-6 mx-auto">
-						<div class="form-group">
-							<input type="text" id="name" class="form-control" required>
-							<label class="form-control-placeholder" for="name">Home Address</label>
-						</div>
-					</div>
-					<div class="col-md-6 mx-auto">
-						<div class="form-group">
-							<input type="text" id="name" class="form-control" required>
-							<label class="form-control-placeholder" for="name">Mobile Phone</label>
-						</div>
-					</div>
-					<div class="col-md-6 mx-auto">
-						<div class="form-group">
-							<input type="text" id="name" class="form-control" required>
-							<label class="form-control-placeholder" for="name">Home Email</label>
-						</div>
-					</div>
-					<div class="col-md-6 mx-auto">
-						<div class="form-group">
-							<input type="text" id="name" class="form-control" required>
-							<label class="form-control-placeholder" for="name">Birthday</label>
-						</div>
-					</div>
-					<div class="col-md-6 mx-auto">
-						<div class="form-group">
-							<input type="text" id="name" class="form-control" required>
-							<label class="form-control-placeholder" for="name">Government ID or SSN</label>
-						</div>
-					</div>
-					<div class="col-md-6">
-						<div class="form-group">
-							<input type="text" id="name" class="form-control" required>
-							<label class="form-control-placeholder" for="name">Driver’s License/State ID #</label>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+﻿<style>
+	.p1 {
+		font-size: 20px;
+		font-family: Times New Roman;
+		margin: 73px 149px 0px 80px;
+		text-align: justify;
+	}
 
-		<div class="card">
-			<div class="card-header">Emergency Contact Information</div>
-			<div class="card-body">
-				<div class="form-row">
-					<div class="col-md-6 mx-auto">
-						<div class="form-group">
-							<input type="text" id="name" class="form-control" required>
-							<label class="form-control-placeholder" for="name">Emergency Contact’s Name</label>
-						</div>
-					</div>
-					<div class="col-md-6 mx-auto">
-						<div class="form-group">
-							<input type="text" id="name" class="form-control" required>
-							<label class="form-control-placeholder" for="name">Relationship</label>
-						</div>
-					</div>
-					<div class="col-md-6 mx-auto">
-						<div class="form-group">
-							<input type="text" id="name" class="form-control" required>
-							<label class="form-control-placeholder" for="name">Address</label>
-						</div>
-					</div>
-					<div class="col-md-6 mx-auto">
-						<div class="form-group">
-							<input type="text" id="name" class="form-control" required>
-							<label class="form-control-placeholder" for="name">Phone Number(s)</label>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="modal-footer">
-			<button type="button" class="btn btn-default btnsubmit" data-dismiss="modal">Submit</button>
-		</div>
+	h3 {
+		margin: 100px 0px 0px 83px;
+	}
+
+	.text-line {
+		background-color: transparent;
+		outline: none;
+		outline-style: none;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+		border-bottom: solid #000 1px;
+	}
+
+	p {
+		margin-left: 106px;
+	}
+
+	.center {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.row {
+		display: flex;
+	}
+</style>
+<div class="p1">
+	<div class="row">
+		<img src="~/Images/FormImages/image-form.jpg" alt="background image" />
+		<h3><u>Education Verification Form</u></h3>
 	</div>
+	<p>Name of Applicant <input type="text" style="width:590px;" class="text-line" /></p>
+	<p>Date of Birth <input type="text" style="width:639px;" class="text-line" /></p>
+	<p>Social Security Number <input type="text" style="width:556px;" class="text-line" /></p>
+	<p>Name of High School <input type="text" style="width:571px;" class="text-line" /></p>
+	<p>City <input type="text" style="width:231px;" class="text-line" />  State <input type="text" style="width:345px;" class="text-line" /></p>
+	<p>
+		Attended from <input type="text" style="width: 50px;" class="text-line" />/<input type="text" style="width: 50px;" class="text-line" />/<input type="text" style="width: 50px;" class="text-line" />  Attended to <input type="text" style="width: 50px;" class="text-line" />/<input type="text" style="width: 50px;" class="text-line" />/<input type="text" style="width: 50px;" class="text-line" />
+		<br />(Please provide month and year)
+	</p>
+	<p>Name of Higher Education School <input type="text" style="width:477px;" class="text-line" /></p>
+	<p>City <input type="text" style="width:231px;" class="text-line" />  State <input type="text" style="width:345px;" class="text-line" />Attended</p>
+	<p>
+		Attended from <input type="text" style="width: 50px;" class="text-line" />/<input type="text" style="width: 50px;" class="text-line" />/<input type="text" style="width: 50px;" class="text-line" />  Attended to <input type="text" style="width: 50px;" class="text-line" />/<input type="text" style="width: 50px;" class="text-line" />/<input type="text" style="width: 50px;" class="text-line" />
+		<br />(Please provide month and year)
+	</p>
+	<p>
+		Type of Diploma/Certificate <input type="text" style="width:529px;" class="text-line" />
+		<br />(Highest Degree Obtained)
+	</p>
+	<p>
+		I authorize AllStar Backgrounds to conduct an investigation of my education history and further release the companies, schools, or persons from liability or damages for providing information.<br />
+		I hereby state that the information on this form is true and complete. In the event of employment, I understand that false, misleading or omitted information given in application
+		documents or employment interviews may result in dismissal. I agree that the above information is true.
+	</p>
+	<p><input type="text" style="width:634px;" class="text-line" /><br />Signature</p>
+	<p><input type="text" style="width:290px;" class="text-line" /><br />Date</p>
+	<p><b><center>AllStar Backgrounds – <a href="mailto: info@allstarbackgrounds.com">info@allstarbackgrounds.com</a> – Ph 800-570-0546 Fax 888-502-1299</center></b></p>
+</div>

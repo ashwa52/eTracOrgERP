@@ -5138,6 +5138,8 @@
     <Content Include="Images\eTrac450-light.png" />
     <Content Include="Images\eTrac450.png" />
     <Content Include="Images\etracblur450.png" />
+    <Content Include="Images\FormImages\I-9-stop.jpg" />
+    <Content Include="Images\FormImages\I-9.jpg" />
     <Content Include="Images\headerbg_wht.png" />
     <Content Include="Images\HighChartsImageForExport\00335944-7762-464c-8ad4-de8ee11a049e.png" />
     <Content Include="Images\HighChartsImageForExport\0262c4a5-a7ee-47f1-92b9-b8c35e1bfe6c.png" />
@@ -5147,7 +5149,7 @@
     <Content Include="Images\icon3.png" />
     <Content Include="Images\icon4.png" />
     <Content Include="Images\icons.png" />
-    <Content Include="Images\image-form.jpg" />
+    <Content Include="Images\FormImages\image-form.jpg" />
     <Content Include="Images\LoaderCar_2.gif" />
     <Content Include="Images\LoadingCar.gif" />
     <Content Include="Images\LoadingSpinner.GIF" />
@@ -6384,7 +6386,7 @@
     <Content Include="Views\Guest\Index.cshtml" />
     <Content Include="Views\Shared\_GuestLayout.cshtml" />
     <Content Include="Views\Guest\PersonalFile.cshtml" />
-    <Content Include="Views\Guest\_educationVarificationForm.cshtml" />
+    <Content Include="Views\Guest\_educationVarificationFormold.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\_interviewers.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\_questionsview.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\_questions.cshtml" />
@@ -6392,6 +6394,13 @@
     <Content Include="Views\Guest\_directDepositeForm.cshtml" />
     <Content Include="Views\Guest\_employeeHandbook.cshtml" />
     <Content Include="Views\Guest\ThankYou.cshtml" />
+    <Content Include="Views\Guest\_I9Form.cshtml" />
+    <Content Include="Views\Guest\_W4Form.cshtml" />
+    <Content Include="Views\Guest\_PhotoReleaseForm.cshtml" />
+    <Content Include="Views\Guest\_EducationVarificationForm.cshtml" />
+    <Content Include="Views\Guest\_ConfidentialityAgreementForm.cshtml" />
+    <Content Include="Views\Guest\_PreviousEmployeement.cshtml" />
+    <Content Include="Views\Guest\_CreditCardAuthorizationForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

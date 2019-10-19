@@ -107,5 +107,40 @@ namespace WorkOrderEMS.Controllers.Guest
 			ViewBag.NotSaved = true;
 			return PartialView("_employeeHandbook", model);
 		}
+		[HttpGet]
+		public PartialViewResult _I9Form()
+		{
+			return PartialView("_I9Form");
+		}
+		[HttpGet]
+		public PartialViewResult _W4Form()
+		{
+			return PartialView("_W4Form");
+		}
+		[HttpGet]
+		public PartialViewResult _PhotoReleaseForm()
+		{
+			return PartialView("_PhotoReleaseForm");
+		}
+		[HttpGet]
+		public PartialViewResult _EducationVarificationForm()
+		{
+			return PartialView("_EducationVarificationForm");
+		}
+		[HttpGet]
+		public PartialViewResult _ConfidentialityAgreementForm()
+		{
+			return PartialView("_ConfidentialityAgreementForm");
+		}
+		[HttpGet]
+		public PartialViewResult _CreditCardAuthorizationForm()
+		{
+			return PartialView("_CreditCardAuthorizationForm");
+		}
+		[HttpGet]
+		public PartialViewResult _PreviousEmployeement()
+		{
+			return PartialView("_PreviousEmployeement");
+		}
 	}
 }
