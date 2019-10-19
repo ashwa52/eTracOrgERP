@@ -749,7 +749,7 @@ namespace WorkOrderEMS.Data
                 {
                     foreach (var i in data)
                     {
-                        _workorderEMSEntities.spSetSelfAssessment306090((i.SAM_IsActive == null||i.SAM_IsActive==""||i.SAM_IsActive!="Y")?"I":"U", i.EmployeeId, i.QuestionId, i.SelfAssessmentId, i.Answer=="true"?"Y":"N",action=="S"?"S":"Y");
+                        _workorderEMSEntities.spSetSelfAssessment306090((i.SAM_IsActive == null||i.SAM_IsActive==""||i.SAM_IsActive!="Y")?"I":"U", i.EmployeeId, i.QuestionId, i.SelfAssessmentId, i.Answer=="true"?"Y": i.Answer == "false"?"N":null, action=="S"?"S":"Y");
                     }
                 }
 

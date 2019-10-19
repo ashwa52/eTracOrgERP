@@ -4,10 +4,21 @@
     //Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
     Layout = null;
     int count = 0;
+    var isSubmitted = Model.FirstOrDefault().SAM_IsActive!=null?Model.FirstOrDefault().SAM_IsActive:"Y";
+    @Html.Hidden(isSubmitted, new { id = "isSubmitted" })
 }
 
-<button id="back" class="btn btn-info pull-right">Back</button>
 
+<button id="back" class="btn btn-info pull-right" style="
+    margin-right: 20px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    width: 64px;
+    float: right!important;
+    align-self: flex-end;
+">
+    Back
+</button>
 <table class="table" id="selfAssessmentTable">
     <tbody>
         <div class="col-sm-12 col-xs-12 col-md-12 glowbuttonActiveDeactive"> Self Assessment</div>
@@ -60,37 +71,73 @@
                         @Html.DisplayFor(modelItem => item.Question)
 
                     </td>
+                    @if (item.SAM_IsActive == "S")
+                    {
+                        <td class="ans" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive">
 
-                    <td class="ans" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive">
 
-                        @if (item.Answer == "Y" && @item.SelfAssessmentId>0)
-                        {
-                            <input type="radio" value="true" name="Opt_@item.QuestionId" checked  />
-                        }
-                        else
-                        {
-                            <input type="radio" value="true" name="Opt_@item.QuestionId" />
-                        }Yes
+                            @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
+                            {
 
-                        @if (item.Answer == "N" && @item.SelfAssessmentId>0)
-                        {
-                            <input type="radio" value="false" name="Opt_@item.QuestionId" checked />
-                        }
-                        else
-                        {
-                            <input type="radio" value="false" name="Opt_@item.QuestionId" />
-                        }No
-                    </td>
+                                <input type="radio" value="true" name="Opt_@item.QuestionId" checked disabled />
+                            }
+                            else
+                            {
+                                <input type="radio" value="true" name="Opt_@item.QuestionId" disabled/>
+                            }Yes
 
-                        </tr>
+                            @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
+                            {
+                                <input type="radio" value="false" name="Opt_@item.QuestionId" checked disabled/>
+                            }
+                            else
+                            {
+                                <input type="radio" value="false" name="Opt_@item.QuestionId" disabled/>
+                            }No
+                        </td>
+ }
+                    else
+                    {
+                        <td class="ans" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive">
+
+
+                            @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
+                            {
+
+                                <input type="radio" value="true" name="Opt_@item.QuestionId" checked />
+                            }
+                            else
+                            {
+                                <input type="radio" value="true" name="Opt_@item.QuestionId" />
+                            }Yes
+
+                            @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
+                            {
+                                <input type="radio" value="false" name="Opt_@item.QuestionId" checked />
+                            }
+                            else
+                            {
+                                <input type="radio" value="false" name="Opt_@item.QuestionId" />
+                            }No
+                        </td>
                     }
+                </tr>
+            }
 
-<tr align="center">
+            <tr align="center">
                 <td>
+                    @if (isSubmitted == "S")
+                    {
+                        <button id="draft" class="btn btn-secondary" disabled onclick="saveAssessment306090('Draft')">Draft</button>
 
-                    <button id="draft" class="btn btn-secondary" onclick="saveAssessment306090('Draft')">Draft</button>
+                        <button id="submit" class="btn btn-success" disabled onclick="saveAssessment306090('Submit')">Submit</button>
+                    }
+                    else
+                    {
+                        <button id="draft" class="btn btn-secondary" onclick="saveAssessment306090('Draft')">Draft</button>
 
-                    <button id="submit" class="btn btn-success" onclick="saveAssessment306090('Submit')">Submit</button>
+                        <button id="submit" class="btn btn-success" onclick="saveAssessment306090('Submit')">Submit</button>
+                    }
                 </td>
             </tr>
     </tbody>
@@ -100,21 +147,22 @@
     $("document").ready(function () {
 
         enableDisableBtn();
-                $("td.ans input[type='radio']").on("click", function () {
-                     $('#submit').attr("disabled", false);
+        $("td.ans input[type='radio']").on("click", function () {
+            $('#submit').attr("disabled", false);
         })
 
     });
     function enableDisableBtn() {
-            if ($("td.ans input[type='radio']checked").length > 1) {
+        if ($("td.ans input[type='radio']checked").length > 1) {
 
             $('#submit').attr("disabled", false);
         }
         else {
             $('#submit').attr("disabled", true);
-        }}
+        }
+    }
 
-    
+
 
     $("#back").on('click', function () {
         $("#gridArea").show();
@@ -129,27 +177,22 @@
             QuestionId = elem.getAttribute("data-value");
             EmployeeId = elem.getAttribute("data-user");
             SAM_IsActive = elem.getAttribute("data-isAct");
-
-            
-            debugger;
             Answer = $("input[type='radio'][name='Opt_" + QuestionId + "']:checked").val();
-            SelfAssessmentId=elem.getAttribute("data-sam");
-            obj.push({ "QuestionId":QuestionId, "Answer":Answer ,"EmployeeId":EmployeeId,"SelfAssessmentId":SelfAssessmentId,"SAM_IsActive":SAM_IsActive});
-            
+            SelfAssessmentId = elem.getAttribute("data-sam");
+            obj.push({ "QuestionId": QuestionId, "Answer": Answer, "EmployeeId": EmployeeId, "SelfAssessmentId": SelfAssessmentId, "SAM_IsActive": SAM_IsActive });
+
         });
         obj = JSON.stringify({ 'data': obj });
-        debugger;
-        var url=(action=="Draft") ? '../NewAdmin/draftSelfAssessment/':'../NewAdmin/saveSelfAssessment/'
+        var url = (action == "Draft") ? '../NewAdmin/draftSelfAssessment/' : '../NewAdmin/saveSelfAssessment/'
         $.ajax({
             type: "POST",
             data: obj,
             url: url,
             contentType: "application/json; charset=utf-8",
-        dataType: 'json',
+            dataType: 'json',
             error: function (xhr, status, error) {
             },
             success: function (result) {
-                debugger
                 if (result != null) {
 
                 }
