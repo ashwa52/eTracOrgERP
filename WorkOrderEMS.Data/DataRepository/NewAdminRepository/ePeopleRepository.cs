@@ -25,7 +25,7 @@ namespace WorkOrderEMS.Data
                                                                           x.IsEmailVerify == true).ToList();
                 return data;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw;
             }
@@ -94,11 +94,51 @@ namespace WorkOrderEMS.Data
         /// </summary>
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
-        public List<spGetOrgnizationUserView_Result> UserTreeViewDetails(string EmployeeId)
+        public List<spGetOrgnizationUserView_Result1> UserTreeViewDetails(string EmployeeId)
         {
             try
             {
                 var data = objworkorderEMSEntities.spGetOrgnizationUserView(EmployeeId).ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        /// <summary>
+        /// Creted By : Ashwajit Bansod
+        /// Created Date : 04-Oct-2019
+        /// Created For : To Get User Details by their manager Id 
+        /// </summary>
+        /// <param name="EmployeeId"></param>
+        /// <returns></returns>
+        /// 
+        public List<spGetVehicleSeating_Result2> GetVSCDetails(long VSCId)
+        {
+            try
+            {
+                var data = objworkorderEMSEntities.spGetVehicleSeating().Where(x => x.VST_Id == VSCId).ToList();
+                return data;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        /// <summary>
+        /// Created By  :Ashwajit bansod
+        /// Created Date : 17-Oct-2019
+        /// Created For : To get employee management list by login employee id
+        /// </summary>
+        /// <param name="LocationId"></param>
+        /// <param name="EmployeeId"></param>
+        /// <returns></returns>
+        public List<spGetEmployeeManagementList_Result1> GetEmployeeManagementListData(long LocationId, string EmployeeId)
+        {
+            try
+            {
+                var data = objworkorderEMSEntities.spGetEmployeeManagementList(EmployeeId).ToList();
                 return data;
             }
             catch (Exception ex)

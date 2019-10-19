@@ -14,5 +14,10 @@ namespace WorkOrderEMS.BusinessLogic
         List<UserListViewEmployeeManagementModel> GetUserListByUserId(long? LocationId, long? UserId);
         UserListViewEmployeeManagementModel GetVCSPositionByUserId(long? UserId);
         List<UserListViewEmployeeManagementModel> GetUserTreeViewList(long UserId);
+        List<UserListViewEmployeeManagementModel> GetUserTreeViewListTesting(long UserId);
+        List<AddChartModel> GetVSCList();
+        List<AddChartModel> GetVSCDetailsById(long VSCId);
+        List<UserModelList> GetEmployeeMgmList(long LocationId, long UserId);
+        DemotionModel GetEMployeeData(long UserId);
     }
 }

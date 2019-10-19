@@ -136,7 +136,7 @@
             </div>
             @Html.Label("Location Image", new { @class = "col-sm-2 col-form-label" })
             <div class="col-sm-4">
-                 @if(Model.LocationPicturePath != null)
+                @if (Model.LocationPicturePath != null)
                 {
                     Image = Model.LocationPicturePath;
                 }
@@ -148,7 +148,7 @@
         <div class="form-group row">
             @Html.Label("Asset Image", new { @class = "col-sm-2 col-form-label" })
             <div class="col-sm-4">
-                @if(Model.AssetPicturePath != null)
+                @if (Model.AssetPicturePath != null)
                 {
                     Image = Model.AssetPicturePath;
                 }
@@ -175,7 +175,7 @@
 
     </script>
 }
-    <script>
+<script>
         debugger
         var $_update = '@ViewBag.UpdateMode'
         var $_MotorType= '@Model.MotorType'
@@ -185,7 +185,7 @@
                 $(".showMotorVehicleType").show();
             }
         }
-        
+
     //To Upload Location Image
     function LocationImageURL(input) {
         var FType = ["jpg", "JPG", "PNG", "png", "JPEG", "jpeg", "gif", "GIF"]
@@ -340,7 +340,7 @@
              }
          });
     });
-    </script>
+</script>
 <script src="~/Scripts/QRCode/jquery.qrcode-0.9.5.js"></script>
 <script src="~/Scripts/QRCode/generateQRC.js"></script>
 <script>
@@ -436,8 +436,8 @@
             //        $('#lblMotorType').text(MotorType.trim());
             //    }
             //    else { errormessage = "Motor Type can not be blank."; isanyfieldempty = true; }
-            
-        
+
+
         if (!isanyfieldempty && $('#QRCName').val() != undefined && $('#QRCName').val() != '') {
             var QRCName = $('#QRCName').val();
             $('#lblQRC').text(QRCName.trim());

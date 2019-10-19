@@ -1,0 +1,89 @@
+﻿<style>
+	.btnyes {
+		background: #0CCC14;
+		width: 150px;
+		color: #fff;
+		font-size: 20px;
+	}
+
+	.btnNo {
+		background: #F44336;
+		width: 150px;
+		color: #fff;
+		font-size: 20px;
+	}
+
+	.question {
+		color: white;
+		padding: 18px 11px 12px 27px;
+		font-size: 27px;
+	}
+
+	.qusOpt {
+		padding: 18px 11px 12px 27px;
+	}
+
+	.btnnext {
+		background: #0CCC14;
+		width: 18%;
+		height: 64px;
+	}
+
+	.btnnextarrow {
+		color: #fff;
+		font-size: 50px;
+	}
+
+	.inputComment {
+		width: 80%;
+		display: inline-block;
+		height: 70px;
+	}
+
+	.btmcomment {
+		bottom: 0;
+		position: absolute;
+		margin: 12px;
+	}
+
+	.btnfinish {
+		background: #0CCC14;
+		width: 170px;
+		color: #fff;
+		height: 75px;
+		font-size: 17px;
+	}
+
+	.cardscore {
+		width: 40%;
+		margin: auto;
+		height: 150px;
+		margin-top: 8%;
+	}
+
+		.cardscore label {
+			font-size: 44px;
+			
+		}
+</style>
+
+
+<div class="">
+	<div class="row" id="startInterview">
+		<div id="questionArea">
+
+		</div>
+
+		<div class="col-md-12 btmcomment" id="qus_view_btn">
+			<span class="help-inline" style="color: red;padding-left: 12px;display:none" id="lblmsg">Please input a comment..</span>
+			<input type="text" class="form-control input-rounded inputComment" placeholder="Comment" id="commentbox" />
+			<button class="btn btn-default btnnext" onclick="SaveAndNext();"><i class="fa fa-arrow-circle-o-right fa-lg btnnextarrow"></i></button>
+		</div>
+		<div class="col-md-12 btmcomment" id="finishbtn" style="display:none">
+			<span class="help-inline" style="color: red;padding-left: 12px;display:none" id="lblmsglast">Please input a comment..</span>
+			<input type="text" class="form-control input-rounded inputComment" placeholder="Comment" id="commentboxlast" />
+			<button class="btn btn-default btnfinish" onclick="FinishInterview();">Finish Interview</button>
+		</div>
+	</div>
+
+</div>

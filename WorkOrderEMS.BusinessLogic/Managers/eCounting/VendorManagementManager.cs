@@ -290,7 +290,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                                                           Obj.VendorAccountDetailsModel.BankName, Obj.VendorAccountDetailsModel.BankLocation,
                                                                           Obj.VendorAccountDetailsModel.AccountNumber, Obj.VendorAccountDetailsModel.CardNumber,
                                                                           Obj.VendorAccountDetailsModel.IFSCCode, Obj.VendorAccountDetailsModel.SwiftOICCode,
-                                                                          Obj.VendorAccountDetailsModel.AccountDocuments, Obj.UserId, null, "Y", Obj.VendorAccountDetailsModel.BalanceAmount, Obj.VendorAccountDetailsModel.QuickbookAcountId, Obj.VendorAccountDetailsModel.CardHolderName, Obj.VendorAccountDetailsModel.ExpirationDate, "Y");
+                                                                          Obj.VendorAccountDetailsModel.AccountDocuments, Obj.UserId, null, "Y", Obj.VendorAccountDetailsModel.BalanceAmount, Obj.VendorAccountDetailsModel.QuickbookAcountId, Obj.VendorAccountDetailsModel.CardHolderName, Obj.VendorAccountDetailsModel.ExpirationDate,"Y");
                         }
                         if (Obj.VendorFacilityListModel != null)
                         {
@@ -1001,7 +1001,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                                                       Obj.VendorAccountDetailsModel.BankName, Obj.VendorAccountDetailsModel.BankLocation,
                                                                       Obj.VendorAccountDetailsModel.AccountNumber, Obj.VendorAccountDetailsModel.CardNumber,
                                                                       Obj.VendorAccountDetailsModel.IFSCCode, Obj.VendorAccountDetailsModel.SwiftOICCode,
-                                                                      Obj.VendorAccountDetailsModel.AccountDocuments, Obj.UserId, null, "Y", Obj.VendorAccountDetailsModel.BalanceAmount, Obj.VendorAccountDetailsModel.QuickbookAcountId, Obj.VendorAccountDetailsModel.CardHolderName, Obj.VendorAccountDetailsModel.ExpirationDate, "N");
+                                                                      Obj.VendorAccountDetailsModel.AccountDocuments, Obj.UserId, null, "Y", Obj.VendorAccountDetailsModel.BalanceAmount, Obj.VendorAccountDetailsModel.QuickbookAcountId, Obj.VendorAccountDetailsModel.CardHolderName, Obj.VendorAccountDetailsModel.ExpirationDate,"N");
                         objVendorManagement.Result = Result.Completed;
                     }
                     var userData = _workorderems.UserRegistrations.Where(x => x.UserId == Obj.UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
@@ -1414,7 +1414,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         .FirstOrDefault();
                     var Update = _workorderems.spSetCompanyAccountDetail(action, AccountsId, getDetails.LCAD_CMP_Id, getDetails.LCAD_PMD_Id,
                                                                       getDetails.LCAD_CardOrBankName, getDetails.LCAD_BankLocation, getDetails.LCAD_AccountNumber,
-                                                                      getDetails.LCAD_CreditCardNumber, getDetails.LCAD_IFSCcode, getDetails.LCAD_SwiftBICcode, getDetails.LCAD_AccountDocument, UserId, getDetails.LCAD_ApprovedBy, IsActive, getDetails.LCAD_Balance, null, getDetails.LCAD_CardHolderName, getDetails.LCAD_CardExpirationDate, " ");
+                                                                      getDetails.LCAD_CreditCardNumber, getDetails.LCAD_IFSCcode, getDetails.LCAD_SwiftBICcode, getDetails.LCAD_AccountDocument, UserId, getDetails.LCAD_ApprovedBy, IsActive, getDetails.LCAD_Balance, null, getDetails.LCAD_CardHolderName,getDetails.LCAD_CardExpirationDate," ");
                     result = true;
                 }
                 else

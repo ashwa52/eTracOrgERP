@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Models;
 
 namespace WorkOrderEMS.BusinessLogic
@@ -12,5 +13,7 @@ namespace WorkOrderEMS.BusinessLogic
         List<UnAssignedWorkOrderModel> TaskListForEmployee(EmployeeManagerModel objEmpManagerAppModel);
 
         List<UnAssignedWorkOrderModel> FacilityTaskListForEmployee(EmployeeManagerModel objEmpManagerAppModel);
-    }
+		
+
+	}
 }

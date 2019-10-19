@@ -14,6 +14,7 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class PODetailEmergency
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PODetailEmergency()
         {
             this.LogPODetailEmergencies = new HashSet<LogPODetailEmergency>();
@@ -31,6 +32,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string POE_IsActive { get; set; }
     
         public virtual LocationMaster LocationMaster { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LogPODetailEmergency> LogPODetailEmergencies { get; set; }
         public virtual PONumber PONumber { get; set; }
         public virtual POType POType { get; set; }

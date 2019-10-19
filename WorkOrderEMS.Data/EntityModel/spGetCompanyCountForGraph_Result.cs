@@ -13,9 +13,9 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class spGetCompanyCountForGraph_Result
     {
-        public Nullable<long> TotalVendorCount { get; set; }
-        public Nullable<long> ApprovedVendorCount { get; set; }
-        public Nullable<long> WaitingVendorCount { get; set; }
-        public Nullable<long> RejectedVendorCount { get; set; }
+        public long TotalVendorCount { get; set; }
+        public long ApprovedVendorCount { get; set; }
+        public long WaitingVendorCount { get; set; }
+        public long RejectedVendorCount { get; set; }
     }
 }
