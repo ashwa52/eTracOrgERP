@@ -706,6 +706,7 @@ namespace WorkOrderEMS.Data
                     LocationName = t.LocationName,
                     EMP_DateOfJoining = t.EMP_DateOfJoining,
                     Assesment = t.Assesment
+                    
 
                 }).ToList();
                 totalRecords = Convert.ToInt32(totalRecord.Value);

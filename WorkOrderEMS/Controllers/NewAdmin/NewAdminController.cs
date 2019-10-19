@@ -620,6 +620,19 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
+
+        [HttpPost]
+        public ActionResult userEvaluationView(string Id, string Assesment)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
+            var details = new LocationDetailsModel();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            return PartialView("userEvaluationView");
+        }
     }
 
 }

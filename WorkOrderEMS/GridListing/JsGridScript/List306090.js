@@ -51,18 +51,18 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
             },
 
             {
-                name: 'Assesment', width: 60, title: "30-60-90", itemTemplate: function (value, item) {
-                    return $("<div>").append("30</div>");
-                }
-            },
+                name: 'Assesment', width: 60, title: "30-60-90"
+            }
+            ,
 
                     {
                         name: "UserTask", title: "User Task", width: 60,  itemTemplate: function (value, item) {
                             var $iconUserView = $("<span>").append('<i class= "fa fa-user fa-2x" style="color:black;margin-left: 6px;margin-top: 4px;" ></i>');//attr({ class: "fa fa-user fa-2x" }).attr({ style: "color:white;background-color:#36CA7E;margin-left:20px;border-radius:35px;width:35px;height:35px" });
                             var $iconText = $("<span>").append('<i class= "fa fa-file-text fa-2x" style="color:white;margin-left: 6px;margin-top: 4px;" ></i>');//.attr({ class: "fa fa-file-text fa-2x" }).attr({ style: "color:white;background-color:#32ACDA;margin-left:20px;border-radius:35px;width:35px;height:35px" });
+                            var $evaluationText = $("<span>").append('<i class= "fa fa-calendar-check-o fa-2x" style="color:white;margin-left: 6px;margin-top: 4px;" ></i>');//.attr({ class: "fa fa-file-text fa-2x" }).attr({ style: "color:white;background-color:#32ACDA;margin-left:20px;border-radius:35px;width:35px;height:35px" });
 
                             var $customUserViewButton = $("<span style='background: #36CA7E; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
-                                  .attr({ title: jsGrid.fields.control.prototype.profileButtonTooltip })
+                                  .attr({ title: "Assessment" })
                                   .attr({ id: "btn-profile-" + item.id }).click(function (e) {
                                       debugger;
                                       $.ajax({
@@ -86,12 +86,31 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                   }).append($iconUserView);
 
                             var $customTextButton = $("<span style='background: #32ACDA; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
-                                 .attr({ title: jsGrid.fields.control.prototype.statusButtonTooltip })
+                                 .attr({ title: "Notification" })
                                  .attr({ id: "btn-status-" + item.id }).click(function (e) {
-
-                                     
                                  }).append($iconText);
-                            return $("<div>").attr({ class: "btn-toolbar" }).append($customUserViewButton).append($customTextButton).append($customTextButton);
+
+                            var $evaluationTextButton = $("<span style='background: #32ACDA; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
+                                .attr({ title:"Evaluation" })
+                                .attr({ id: "btn-status-" + item.id }).click(function (e) {
+                                    debugger;
+                                    $.ajax({
+                                        type: "POST",
+                                        data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment },
+                                        url: '../NewAdmin/userEvaluationView/',
+                                        error: function (xhr, status, error) {
+                                        },
+                                        success: function (result) {
+                                            debugger
+                                            if (result != null) {
+                                                $("#gridArea").hide();
+                                                $('#profileArea').show();
+                                                $('#profileArea').html(result);
+                                            }
+                                        }
+                                    });
+                                }).append($evaluationText);
+                            return $("<div>").attr({ class: "btn-toolbar" }).append($customUserViewButton).append($customTextButton).append($customTextButton).append($evaluationTextButton);
                         }
                     },
                        
