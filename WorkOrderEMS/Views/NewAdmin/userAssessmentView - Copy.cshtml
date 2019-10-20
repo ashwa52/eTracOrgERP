@@ -78,71 +78,53 @@
                     </td>
                     @if (item.SAM_IsActive == "S")
                     {
-                <td class="ans" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive">
+                        <td class="ans" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive">
 
 
-                    @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
-                    {
+                            @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
+                            {
 
-                        <input type="radio" value="Y" name="Opt_@item.QuestionId" checked disabled />
-                    }
-                    else
-                    {
-                        <input type="radio" value="Y" name="Opt_@item.QuestionId" disabled />
-                    }Yes
+                                <input type="radio" value="true" name="Opt_@item.QuestionId" checked disabled />
+                            }
+                            else
+                            {
+                                <input type="radio" value="true" name="Opt_@item.QuestionId" disabled/>
+                            }Yes
 
-                    @if (item.Answer == "S" && @item.SelfAssessmentId > 0)
-                    {
-
-                        <input type="radio" value="S" name="Opt_@item.QuestionId" checked disabled />
-                    }
-                    else
-                    {
-                        <input type="radio" value="S" name="Opt_@item.QuestionId" disabled />
-                    }Some what
-
-                    @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
-                    {
-                        <input type="radio" value="N" name="Opt_@item.QuestionId" checked disabled />
-                    }
-                    else
-                    {
-                        <input type="radio" value="N" name="Opt_@item.QuestionId" disabled />
-                    }No
-                </td>
+                            @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
+                            {
+                                <input type="radio" value="false" name="Opt_@item.QuestionId" checked disabled/>
+                            }
+                            else
+                            {
+                                <input type="radio" value="false" name="Opt_@item.QuestionId" disabled/>
+                            }No
+                        </td>
  }
                     else
                     {
-                <td class="ans" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive">
+                        <td class="ans" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive">
 
 
-                    @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
-                    {
+                            @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
+                            {
 
-                        <input type="radio" value="Y" name="Opt_@item.QuestionId" checked />
-                    }
-                    else
-                    {
-                        <input type="radio" value="Y" name="Opt_@item.QuestionId" />
-                    }Yes
-                    @if (item.Answer == "S" && @item.SelfAssessmentId > 0)
-                    {
+                                <input type="radio" value="true" name="Opt_@item.QuestionId" checked />
+                            }
+                            else
+                            {
+                                <input type="radio" value="true" name="Opt_@item.QuestionId" />
+                            }Yes
 
-                        <input type="radio" value="S" name="Opt_@item.QuestionId" checked />
-                    }
-                    else
-                    {
-                        <input type="radio" value="S" name="Opt_@item.QuestionId" />
-                    }Some what
-                    @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
-                    {
-                        <input type="radio" value="N" name="Opt_@item.QuestionId" checked />
-                    }
-                    else
-                    {
-                        <input type="radio" value="N" name="Opt_@item.QuestionId" />
-                    }No
-                </td>
+                            @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
+                            {
+                                <input type="radio" value="false" name="Opt_@item.QuestionId" checked />
+                            }
+                            else
+                            {
+                                <input type="radio" value="false" name="Opt_@item.QuestionId" />
+                            }No
+                        </td>
                     }
                 </tr>
             }
@@ -184,6 +166,8 @@
             $('#submit').attr("disabled", true);
         }
     }
+
+
 
     $("#back").on('click', function () {
         $("#gridArea").show();

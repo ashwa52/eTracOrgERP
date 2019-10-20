@@ -694,7 +694,7 @@ namespace WorkOrderEMS.Data
             try
             {
                 //lstVerifiedMnagaer = _workorderEMSEntities.spGetAssessmentList306090(userId, pageIndex, sortColumnName, sortOrderBy, numberOfRows, textSearch, locationId, useType, totalRecord).Select(t =>
-                ListOf306090Records = _workorderEMSEntities.spGetAssessmentList306090(userId).Select(t =>
+                ListOf306090Records = _workorderEMSEntities.spGetAssessmentList3060901(userId).Select(t =>
 
                 new PerformanceModel()
                 {
@@ -750,7 +750,26 @@ namespace WorkOrderEMS.Data
                 {
                     foreach (var i in data)
                     {
-                        _workorderEMSEntities.spSetSelfAssessment306090((i.SAM_IsActive == null||i.SAM_IsActive==""||i.SAM_IsActive!="Y")?"I":"U", i.EmployeeId, i.QuestionId, i.SelfAssessmentId, i.Answer=="true"?"Y": i.Answer == "false"?"N":null, action=="S"?"S":"Y");
+                        _workorderEMSEntities.spSetSelfAssessment306090((i.SAM_IsActive == null||i.SAM_IsActive==""||i.SAM_IsActive!="Y")?"I":"U", i.EmployeeId, i.QuestionId, i.SelfAssessmentId, i.Answer=="Y"?"Y": i.Answer == "N"?"N":i.Answer=="S"?"S":null, action=="S"?"S":"Y");
+                    }
+                }
+
+                return true;
+
+            }
+            catch (Exception)
+            { throw; }
+        }
+
+        public bool saveEvaluation(List<GWCQUestionModel> data, string action)
+        {
+            try
+            {
+                if (data.Count() > 0)
+                {
+                    foreach (var i in data)
+                    {
+                        _workorderEMSEntities.spSetReview306090((i.SAM_IsActive == null || i.SAM_IsActive == "" || i.SAM_IsActive != "Y") ? "I" : "U", i.EmployeeId, i.QuestionId, i.SelfAssessmentId, i.Answer == "Y" ? "Y" : i.Answer == "N" ? "N" : i.Answer == "S" ? "S" : null,i.Comment, action == "S" ? "S" : "Y");
                     }
                 }
 

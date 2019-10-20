@@ -1,10 +1,25 @@
-﻿<style>
-    .row.tableEval td {
-    height: 60px;
-}
-</style>  
+﻿@model IEnumerable<WorkOrderEMS.Models.NewAdminModel.GWCQUestionModel>
 
-  <i id="back" class="fa fa-arrow-circle-o-left x4" style="
+@{
+    //Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    Layout = null;
+    int count = 0;
+    var employeeInfo = ViewData["employeeInfo"] as WorkOrderEMS.Models.NewAdminModel.GWCQUestionModel;
+    var isSubmitted = "Y";
+    if (Model.Count() > 0)
+    {
+        isSubmitted = Model.First().SAM_IsActive != null ? Model.FirstOrDefault().SAM_IsActive : "Y";
+    }
+
+    @Html.Hidden(isSubmitted, new { id = "isSubmitted" })
+}
+<style>
+    .row.tableEval td {
+        height: 60px;
+    }
+</style>
+
+<i id="back" class="fa fa-arrow-circle-o-left x4" style="
     font-size: 36px;
     cursor:pointer;
     margin-left: 10px;
@@ -13,43 +28,44 @@
     float: none;
     /* align-self: flex-end; */
     " title="back"></i>
+@{
     <div class="row">
         <div class="col-sm-2" style="margin: 0px 0px 10px 20px;">
             <div style="display: inline-block;">
-                <img src="http://localhost:57572/Content/Images/ProfilePic/7_636530235980373604.png" alt="" class="rounded-circle" style="width:50px;height:50px;">
+                <img src="@employeeInfo.Image" alt="" class="rounded-circle" style="width:50px;height:50px;">
             </div>
             <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
-                <span style="font-size: 20px;    font-weight: 600;">Mayur Sahu</span>
-                <span style="display: list-item;">Accountant</span>
-            </div>
-        </div>
-        <div class="col-sm-1" style="margin: 0px 0px 10px 20px;">
-            <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
-                <span style="font-size: 20px;    font-weight: 600;">Finance</span>
-            </div>
-        </div>
-        <div class="col-sm-2" style="margin: 0px 0px 10px 20px;">
-            <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
-                <span style="font-size: 20px;    font-weight: 600;">Lane stadium</span>
+                <span style="font-size: 16px;    font-weight: 600;">@employeeInfo.EmployeeName</span>
+                <span style="display: list-item;">@employeeInfo.JobTitle</span>
             </div>
         </div>
         <div class="col-sm-1" style="margin: 0px 0px 10px 20px;">
             <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
-                <span style="font-size: 20px;    font-weight: 600;">30</span>
+                <span style="font-size: 16px;    font-weight: 600;">Finance</span>
             </div>
         </div>
         <div class="col-sm-2" style="margin: 0px 0px 10px 20px;">
             <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
-                <span style="font-size: 20px;font-weight: 600;color: blue;">Review Draft</span>
+                <span style="font-size: 16px;    font-weight: 600;">Lane stadium</span>
+            </div>
+        </div>
+        <div class="col-sm-1" style="margin: 0px 0px 10px 20px;">
+            <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
+                <span style="font-size: 16px;    font-weight: 600;">@employeeInfo.AssessmentType</span>
             </div>
         </div>
         <div class="col-sm-2" style="margin: 0px 0px 10px 20px;">
             <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
-                <span style="font-size: 20px;    font-weight: 600;">Notification</span>
+                <span style="font-size: 16px;font-weight: 600;color: blue;">Review Draft</span>
+            </div>
+        </div>
+        <div class="col-sm-2" style="margin: 0px 0px 10px 20px;">
+            <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
+                <span style="font-size: 16px;    font-weight: 600;">Notification</span>
             </div>
         </div>
     </div>
-
+}
 <hr />
 <div class="row tableEval">
     <div class="col-sm-2" style="margin: 0px 0px 0px 10px;">
@@ -81,76 +97,200 @@
     <div class="col-sm-10" style="margin: 0px 0px 0px -10px;">
         <table class="table">
             <tbody>
-                <tr class="table-success">
-                    <td  style="text-align:center;width: 70%"></td>
-                    <td  style="">Manager Eval</td>
-                    <td  style="">Comments</td>
-
-
+                <tr class="table-primary">
+                    <td style="text-align:center;width: 70%"></td>
+                    <td style="">Manager Eval</td>
+                    <td style="">Comments</td>
                 </tr>
-                <tr class="table-danger">
-                    <td  style="width: 70%">When doing the job do they display characteristics that show they GET what’s necessary in order to do their job? do they understand the role and what’s truly required of them? </td>
-                    <td> Yes  <input type="radio" value="true" name="Opt_" />No <input type="radio" value="true" name="Opt_" /> </td>
-                    <td></td>
-                </tr>
-                <tr class="table-info">
-                    <td style="width: 70%">Do you and other team members feel (Insert Employee Name) actually wants to do well in their job, based on conversations, work ethic, timeliness, attitude, and overall effort?</td>
-                    <td> Yes <input type="radio" value="true" name="Opt_" />No <input type="radio" value="true" name="Opt_" /> </td>
+                @*<tr class="table-danger">
+                        <td style="width: 70%">When doing the job do they display characteristics that show they GET what’s necessary in order to do their job? do they understand the role and what’s truly required of them? </td>
+                        <td> Yes  <input type="radio" value="true" name="Opt_" />No <input type="radio" value="true" name="Opt_" /> </td>
+                    </tr>
+                    <tr class="table-info">
+                        <td style="width: 70%">Do you and other team members feel (Insert Employee Name) actually wants to do well in their job, based on conversations, work ethic, timeliness, attitude, and overall effort?</td>
+                        <td> Yes <input type="radio" value="true" name="Opt_" />No <input type="radio" value="true" name="Opt_" /> </td>
+                    </tr>
+                    <tr class="table-warning">
+                        <td style="width: 70%">Based on (insert employee name here) their ability to focus, their displayed behavior when doing the job, & manage the stresses of the job, Do they have the mental & emotional CAPACITY to do the job?”</td>
+                        <td> Yes <input type="radio" value="true" name="Opt_" /> No<input type="radio" value="true" name="Opt_" /> </td>
+                    </tr>*@
+                @foreach (var item in Model)
+                {
+                    if ((item.QuestionType == "G30M" || item.QuestionType == "W30M" || item.QuestionType == "C30M" || item.QuestionType == "G60M" || item.QuestionType == "W60M" || item.QuestionType == "C60M" || item.QuestionType == "G90M" || item.QuestionType == "W90M" || item.QuestionType == "C90M"))
+                    {
+                        <tr class="table-light">
+                            <td style="width: 70%">@item.Question </td>
 
-                    <td></td>
-                </tr>
-                <tr class="table-warning">
-                    <td style="width: 70%">Based on (insert employee name here) their ability to focus, their displayed behavior when doing the job, & manage the stresses of the job, Do they have the mental & emotional CAPACITY to do the job?”</td>
-                    <td> Yes <input type="radio" value="true" name="Opt_" /> No<input type="radio" value="true" name="Opt_" /> </td>
-
-                    <td></td>
-                </tr>
+                            @if (item.SAM_IsActive == "S")
+                            {
+                                <td class="ans" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive">
 
 
+                                    @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
+                                    {
+
+                                        <input type="radio" value="true" name="Opt_@item.QuestionId" checked disabled />
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" value="true" name="Opt_@item.QuestionId" disabled />
+                                    }Yes
+
+                                    @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
+                                    {
+                                        <input type="radio" value="false" name="Opt_@item.QuestionId" checked disabled />
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" value="false" name="Opt_@item.QuestionId" disabled />
+                                    }No
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="ans" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive">
+
+
+                                    @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
+                                    {
+
+                                        <input type="radio" value="true" name="Opt_@item.QuestionId" checked />
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" value="true" name="Opt_@item.QuestionId" />
+                                    }Yes
+
+                                    @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
+                                    {
+                                        <input type="radio" value="false" name="Opt_@item.QuestionId" checked />
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" value="false" name="Opt_@item.QuestionId" />
+                                    }No
+                                </td>
+                            }
+                            <td></td>
+                        </tr>
+                    }
+                }
             </tbody>
         </table>
     </div>
 </div>
 <div class="row tableEval">
     <div class="col-sm-2"></div>
-    <div class="col-sm-8" style="margin: 0px 0px 0px -10px;">
+    <div class="col-sm-8" style="margin: 0px 0px 0px -20px;">
         <table class="table">
             <tbody>
-                <tr class="table-success">
-                    Core Values
+                <tr class="table-primary">
+                    <td colspan="2">Core Values</td>
                 </tr>
-                <tr class="table-danger">
-                    <td style="width:30%">Persevere: </td>
-                    <td>
-                        Always  <input type="radio" value="true" name="Opt_" />
-                        Sometimes <input type="radio" value="true" name="Opt_" />
-                        Never <input type="radio" value="true" name="Opt_" />
-                    </td>
-                </tr>
-                <tr class="table-info">
-                    <td style="width:30%">Accountability</td>
-                    <td>
-                        Always  <input type="radio" value="true" name="Opt_" />
-                        Sometimes <input type="radio" value="true" name="Opt_" />
-                        Never <input type="radio" value="true" name="Opt_" />
-                    </td>
-                </tr>
-                <tr class="table-warning">
-                    <td style="width:30%">Revolutionized</td>
-                    <td>
-                        Always  <input type="radio" value="true" name="Opt_" />
-                        Sometimes <input type="radio" value="true" name="Opt_" />
-                        Never <input type="radio" value="true" name="Opt_" />
-                    </td>
-                </tr>
-                <tr class="table-warning">
-                    <td style="width:30%">Keep Growing</td>
-                    <td>
-                        Always  <input type="radio" value="true" name="Opt_" />
-                        Sometimes <input type="radio" value="true" name="Opt_" />
-                        Never <input type="radio" value="true" name="Opt_" />
-                    </td>
-                </tr>
+                @*<tr class="table-info">
+                        <td style="width:30%">Accountability</td>
+                        <td>
+                            Always  <input type="radio" value="true" name="Opt_" />
+                            Sometimes <input type="radio" value="true" name="Opt_" />
+                            Never <input type="radio" value="true" name="Opt_" />
+                        </td>
+                    </tr>
+                    <tr class="table-warning">
+                        <td style="width:30%">Revolutionized</td>
+                        <td>
+                            Always  <input type="radio" value="true" name="Opt_" />
+                            Sometimes <input type="radio" value="true" name="Opt_" />
+                            Never <input type="radio" value="true" name="Opt_" />
+                        </td>
+                    </tr>
+                    <tr class="table-warning">
+                        <td style="width:30%">Keep Growing</td>
+                        <td>
+                            Always  <input type="radio" value="true" name="Opt_" />
+                            Sometimes <input type="radio" value="true" name="Opt_" />
+                            Never <input type="radio" value="true" name="Opt_" />
+                        </td>
+                    </tr>*@
+                @foreach (var item in Model)
+                {
+                    if ((item.QuestionType == "P" || item.QuestionType == "A" || item.QuestionType == "R" || item.QuestionType == "K"))
+                    {
+                        <tr class="table-light">
+                            <td style="width: 40%">@item.Question </td>
+
+                            @if (item.SAM_IsActive == "S")
+                            {
+                                <td class="ans" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive">
+
+
+                                    @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
+                                    {
+
+                                        <input type="radio" value="true" name="Opt_@item.QuestionId" checked disabled />
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" value="true" name="Opt_@item.QuestionId" disabled />
+                                    }Always
+                                    @if (item.Answer == "S" && @item.SelfAssessmentId > 0)
+                                    {
+
+                                        <input type="radio" value="true" name="Opt_@item.QuestionId" checked disabled />
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" value="true" name="Opt_@item.QuestionId" disabled />
+                                    }Sometimes
+
+
+                                    @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
+                                    {
+                                        <input type="radio" value="false" name="Opt_@item.QuestionId" checked disabled />
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" value="false" name="Opt_@item.QuestionId" disabled />
+                                    }Never
+                                </td>
+                            }
+                            else
+                            {
+                                <td class="ans" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive">
+
+
+                                    @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
+                                    {
+
+                                        <input type="radio" value="true" name="Opt_@item.QuestionId" checked />
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" value="true" name="Opt_@item.QuestionId" />
+                                    }Always
+
+                                    @if (item.Answer == "S" && @item.SelfAssessmentId > 0)
+                                    {
+
+                                        <input type="radio" value="true" name="Opt_@item.QuestionId" checked />
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" value="true" name="Opt_@item.QuestionId" />
+                                    }Sometimes
+                                    @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
+                                    {
+                                        <input type="radio" value="false" name="Opt_@item.QuestionId" checked />
+                                    }
+                                    else
+                                    {
+                                        <input type="radio" value="false" name="Opt_@item.QuestionId" />
+                                    }Never
+                                </td>
+                            }
+                            <td></td>
+                        </tr>
+                    }
+                }
 
             </tbody>
         </table>
@@ -159,24 +299,83 @@
 <div class="row">
     <div class="col-sm-2"></div>
     <div class="col-sm-8">
-        <input type="text" class="form-control" style="height:200px" placeholder="Comments" multiple/>
+        <input type="text" class="form-control" style="height:100px" placeholder="Comments" multiple />
     </div>
 </div>
-<div class="row">
+<div class="row" style="margin-top:50px">
     <div class="col-sm-2"></div>
 
     <div class="col-sm-8" style="align-content:center">
-        <button class="btn btn-primary">Draft</button>
-        <button class="btn btn-success">Save</button>
+        <td>
+            @if (isSubmitted == "S")
+            {
+                <button id="draft" class="btn btn-secondary" disabled onclick="saveEvaluation306090('Draft')">Draft</button>
 
+                <button id="submit" class="btn btn-success" disabled onclick="saveEvaluation306090('Submit')">Submit</button>
+            }
+            else
+            {
+                <button id="draft" class="btn btn-secondary" onclick="saveEvaluation306090('Draft')">Draft</button>
+
+                <button id="submit" class="btn btn-success" onclick="saveEvaluation306090('Submit')">Submit</button>
+            }
+        </td>
     </div>
 
 </div>
 <script>
+    $("document").ready(function () {
+
+        enableDisableBtn();
+        $("td.ans input[type='radio']").on("click", function () {
+            $('#submit').attr("disabled", false);
+        })
+
+    });
+    function enableDisableBtn() {
+        if ($("td.ans input[type='radio']checked").length > 1) {
+
+            $('#submit').attr("disabled", false);
+        }
+        else {
+            $('#submit').attr("disabled", true);
+        }
+    }
+
     $("#back").on('click', function () {
         $("#gridArea").show();
         $('#profileArea').hide();
         $("#List306090").jsGrid("loadData");
 
     });
+    function saveEvaluation306090(action) {
+        var obj = [];
+        var tab = $("td.ans");
+        $.each(tab, function (i, elem) {
+            QuestionId = elem.getAttribute("data-value");
+            EmployeeId = elem.getAttribute("data-user");
+            SAM_IsActive = elem.getAttribute("data-isAct");
+            Answer = $("input[type='radio'][name='Opt_" + QuestionId + "']:checked").val();
+            SelfAssessmentId = elem.getAttribute("data-sam");
+            obj.push({ "QuestionId": QuestionId, "Answer": Answer, "EmployeeId": EmployeeId, "SelfAssessmentId": SelfAssessmentId, "SAM_IsActive": SAM_IsActive });
+
+        });
+        obj = JSON.stringify({ 'data': obj });
+        var url = (action == "Draft") ? '../NewAdmin/draftEvaluation/' : '../NewAdmin/saveEvaluation/'
+        $.ajax({
+            type: "POST",
+            data: obj,
+            url: url,
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            error: function (xhr, status, error) {
+            },
+            success: function (result) {
+                if (result != null) {
+
+                }
+            }
+        });
+
+    }
 </script>

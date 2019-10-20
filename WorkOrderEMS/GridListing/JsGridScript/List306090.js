@@ -96,7 +96,9 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                     debugger;
                                     $.ajax({
                                         type: "POST",
-                                        data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment },
+                                        //data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment },
+                                        data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle },
+
                                         url: '../NewAdmin/userEvaluationView/',
                                         error: function (xhr, status, error) {
                                         },

@@ -11,15 +11,17 @@ namespace WorkOrderEMS.Data.EntityModel
 {
     using System;
     
-    public partial class spGetAssessmentList306090_Result
+    public partial class spGetAssessmentList3060901_Result
     {
         public string EMP_EmployeeID { get; set; }
         public string EMP_Photo { get; set; }
         public string EmployeeName { get; set; }
+        public string VST_Level { get; set; }
         public string DepartmentName { get; set; }
         public string JBT_JobTitle { get; set; }
         public string LocationName { get; set; }
         public Nullable<System.DateTime> EMP_DateOfJoining { get; set; }
         public Nullable<int> Assesment { get; set; }
+        public string SAM_IsActive { get; set; }
     }
 }

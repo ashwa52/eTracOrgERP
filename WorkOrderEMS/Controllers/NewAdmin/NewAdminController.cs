@@ -573,7 +573,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 List<PerformanceModel> ITAdministratorList = _GlobalAdminManager.GetListOf306090ForJSGrid(ObjLoginModel.UserName, Convert.ToInt64(locationId), page, rows, sidx, sord, txtSearch, UserType, out paramTotalRecords);
                 foreach (var ITAdmin in ITAdministratorList)
                 {
-                    ITAdmin.EMP_Photo = (ITAdmin.EMP_Photo == "" || ITAdmin.EMP_Photo == null) ? "" : HostingPrefix + ProfilePicPath.Replace("~/", "") + ITAdmin.EMP_Photo;
+                    ITAdmin.EMP_Photo = (ITAdmin.EMP_Photo == "" || ITAdmin.EMP_Photo == "null") ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~/", "") + ITAdmin.EMP_Photo;
                     ITAdmin.EMP_EmployeeID = Cryptography.GetEncryptedData(ITAdmin.EMP_EmployeeID.ToString(), true);
                     detailsList.Add(ITAdmin);
                 }
@@ -622,7 +622,8 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
 
         [HttpPost]
-        public ActionResult userEvaluationView(string Id, string Assesment)
+        //data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle },
+        public ActionResult userEvaluationView(string Id, string Assesment,string Name,string Image,string JobTitle)
         {
             eTracLoginModel ObjLoginModel = null;
             GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
@@ -631,7 +632,49 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
             }
-            return PartialView("userEvaluationView");
+            List<GWCQUestionModel> ListQuestions = new List<GWCQUestionModel>();
+            ListQuestions = _GlobalAdminManager.GetGWCQuestions(Cryptography.GetDecryptedData(Id, true), Assesment=="30"?"31":Assesment=="60"?"61":"91");
+            ViewData["employeeInfo"] = new GWCQUestionModel(){ EmployeeName=Name,AssessmentType=Assesment,Image=Image, JobTitle=JobTitle }; 
+            return PartialView("userEvaluationView", ListQuestions);
+        }
+
+        [HttpPost]
+        public JsonResult draftEvaluation(List<GWCQUestionModel> data)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            bool result = false;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                result = _GlobalAdminManager.saveSelfAssessment(data, "D");
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
+        [HttpPost]
+        public JsonResult saveEvaluation(List<GWCQUestionModel> data)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            bool result = false;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                result = _GlobalAdminManager.saveSelfAssessment(data, "S");
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+
         }
     }
 

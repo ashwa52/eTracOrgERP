@@ -448,6 +448,9 @@
     <Compile Include="EntityModel\SelfAssessment306090.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityModel\SelfAssessmentReview306090.cs">
+      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\ServiceMaster.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
@@ -472,7 +475,7 @@
     <Compile Include="EntityModel\spGetApprovedPOList_Result.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="EntityModel\spGetAssessmentList306090_Result.cs">
+    <Compile Include="EntityModel\spGetAssessmentList3060901_Result.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\spGetAssessmentQuestion1_Result.cs">

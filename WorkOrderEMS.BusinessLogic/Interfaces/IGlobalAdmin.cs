@@ -268,5 +268,7 @@ namespace WorkOrderEMS.BusinessLogic
         List<PerformanceModel> GetListOf306090ForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords);
         List<GWCQUestionModel> GetGWCQuestions(string Id,string AssessmetType);
         bool saveSelfAssessment(List<GWCQUestionModel> data,string action);
+        bool saveEvaluation(List<GWCQUestionModel> data, string action);
+
     }
 }

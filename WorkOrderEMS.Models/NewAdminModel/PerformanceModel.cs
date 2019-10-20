@@ -31,5 +31,13 @@ namespace WorkOrderEMS.Models.NewAdminModel
 
         public string SAM_IsActive { get; set; }
 
+        public string EmployeeName { get; set; }
+        public string  Image { get; set; }
+        public string JobTitle { get; set; }
+
+        public string Comment { get; set; }
+
+
+
     }
 }
