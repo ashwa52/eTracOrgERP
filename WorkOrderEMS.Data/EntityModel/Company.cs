@@ -18,11 +18,9 @@ namespace WorkOrderEMS.Data.EntityModel
         public Company()
         {
             this.Bills = new HashSet<Bill>();
-            this.CompanyAccountDetails = new HashSet<CompanyAccountDetail>();
             this.CompanyAccountTransactions = new HashSet<CompanyAccountTransaction>();
             this.CompanyAccountTransactions1 = new HashSet<CompanyAccountTransaction>();
             this.CompanyDetails = new HashSet<CompanyDetail>();
-            this.CompanyFacilityMappings = new HashSet<CompanyFacilityMapping>();
             this.CompanyQBKs = new HashSet<CompanyQBK>();
             this.Contracts = new HashSet<Contract>();
             this.Contracts1 = new HashSet<Contract>();
@@ -31,7 +29,6 @@ namespace WorkOrderEMS.Data.EntityModel
             this.LocationCompanyMappings = new HashSet<LocationCompanyMapping>();
             this.LogBills = new HashSet<LogBill>();
             this.LogCompanies = new HashSet<LogCompany>();
-            this.LogCompanyAccountDetails = new HashSet<LogCompanyAccountDetail>();
             this.LogCompanyDetails = new HashSet<LogCompanyDetail>();
             this.LogCompanyFacilityMappings = new HashSet<LogCompanyFacilityMapping>();
             this.LogContracts = new HashSet<LogContract>();
@@ -43,6 +40,9 @@ namespace WorkOrderEMS.Data.EntityModel
             this.LogPreBills = new HashSet<LogPreBill>();
             this.Miscellaneous = new HashSet<Miscellaneou>();
             this.PreBills = new HashSet<PreBill>();
+            this.LogCompanyAccountDetails = new HashSet<LogCompanyAccountDetail>();
+            this.CompanyAccountDetails = new HashSet<CompanyAccountDetail>();
+            this.CompanyFacilityMappings = new HashSet<CompanyFacilityMapping>();
         }
     
         public long CMP_Id { get; set; }
@@ -59,15 +59,11 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual CompanyType CompanyType { get; set; }
         public virtual VendorType VendorType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CompanyAccountDetail> CompanyAccountDetails { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompanyAccountTransaction> CompanyAccountTransactions { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompanyAccountTransaction> CompanyAccountTransactions1 { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompanyDetail> CompanyDetails { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CompanyFacilityMapping> CompanyFacilityMappings { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompanyQBK> CompanyQBKs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -84,8 +80,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ICollection<LogBill> LogBills { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LogCompany> LogCompanies { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LogCompanyAccountDetail> LogCompanyAccountDetails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LogCompanyDetail> LogCompanyDetails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -108,5 +102,11 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ICollection<Miscellaneou> Miscellaneous { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<PreBill> PreBills { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LogCompanyAccountDetail> LogCompanyAccountDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CompanyAccountDetail> CompanyAccountDetails { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CompanyFacilityMapping> CompanyFacilityMappings { get; set; }
     }
 }

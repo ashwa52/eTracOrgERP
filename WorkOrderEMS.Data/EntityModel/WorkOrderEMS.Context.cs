@@ -38,10 +38,8 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<BudgetLocationMapping> BudgetLocationMappings { get; set; }
         public virtual DbSet<Citizenship> Citizenships { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
-        public virtual DbSet<CompanyAccountDetail> CompanyAccountDetails { get; set; }
         public virtual DbSet<CompanyAccountTransaction> CompanyAccountTransactions { get; set; }
         public virtual DbSet<CompanyDetail> CompanyDetails { get; set; }
-        public virtual DbSet<CompanyFacilityMapping> CompanyFacilityMappings { get; set; }
         public virtual DbSet<CompanyLocationCostCodeMapping> CompanyLocationCostCodeMappings { get; set; }
         public virtual DbSet<CompanyQBK> CompanyQBKs { get; set; }
         public virtual DbSet<CompanyType> CompanyTypes { get; set; }
@@ -86,7 +84,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<LocationService> LocationServices { get; set; }
         public virtual DbSet<LogBill> LogBills { get; set; }
         public virtual DbSet<LogCompany> LogCompanies { get; set; }
-        public virtual DbSet<LogCompanyAccountDetail> LogCompanyAccountDetails { get; set; }
         public virtual DbSet<LogCompanyDetail> LogCompanyDetails { get; set; }
         public virtual DbSet<LogCompanyFacilityMapping> LogCompanyFacilityMappings { get; set; }
         public virtual DbSet<LogContract> LogContracts { get; set; }
@@ -150,6 +147,9 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<InterviewSchedule> InterviewSchedules { get; set; }
         public virtual DbSet<ApplicantInfo> ApplicantInfoes { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<LogCompanyAccountDetail> LogCompanyAccountDetails { get; set; }
+        public virtual DbSet<CompanyAccountDetail> CompanyAccountDetails { get; set; }
+        public virtual DbSet<CompanyFacilityMapping> CompanyFacilityMappings { get; set; }
     
         [DbFunction("workorderEMSEntities", "fn_Split")]
         public virtual IQueryable<fn_Split_Result> fn_Split(string sText, string sDelim)
@@ -4915,7 +4915,7 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GetAllNotAssignedUsers_Result>("SP_GetAllNotAssignedUsers", requestedByParameter, pageIndexParameter, sortColumnNameParameter, sortOrderByParameter, numberOfRowsParameter, textSearchParameter, userTypeParameter, totalRecords);
         }
     
-        public virtual int spSetVehicleSeating(string vSTAction, Nullable<long> vST_Id, string vST_Title, string vST_JobDescription, string vST_RolesAndResponsiblities, string vST_Level, Nullable<long> vST_ParentId, Nullable<long> vST_DPT_Id, string vST_IsActive, string vST_EmploymentStatus, string vST_EmploymentClassification, Nullable<decimal> vST_RateOfPay)
+        public virtual int spSetVehicleSeating(string vSTAction, Nullable<long> vST_Id, string vST_Title, string vST_JobDescription, string vST_RolesAndResponsiblities, string vST_Level, Nullable<long> vST_ParentId, Nullable<long> vST_DPT_Id, string vST_EmploymentStatus, string vST_IsExempt, Nullable<decimal> vST_RateOfPay, string vST_IsActive)
         {
             var vSTActionParameter = vSTAction != null ?
                 new ObjectParameter("VSTAction", vSTAction) :
@@ -4949,23 +4949,23 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("VST_DPT_Id", vST_DPT_Id) :
                 new ObjectParameter("VST_DPT_Id", typeof(long));
     
-            var vST_IsActiveParameter = vST_IsActive != null ?
-                new ObjectParameter("VST_IsActive", vST_IsActive) :
-                new ObjectParameter("VST_IsActive", typeof(string));
-    
             var vST_EmploymentStatusParameter = vST_EmploymentStatus != null ?
                 new ObjectParameter("VST_EmploymentStatus", vST_EmploymentStatus) :
                 new ObjectParameter("VST_EmploymentStatus", typeof(string));
     
-            var vST_EmploymentClassificationParameter = vST_EmploymentClassification != null ?
-                new ObjectParameter("VST_EmploymentClassification", vST_EmploymentClassification) :
-                new ObjectParameter("VST_EmploymentClassification", typeof(string));
+            var vST_IsExemptParameter = vST_IsExempt != null ?
+                new ObjectParameter("VST_IsExempt", vST_IsExempt) :
+                new ObjectParameter("VST_IsExempt", typeof(string));
     
             var vST_RateOfPayParameter = vST_RateOfPay.HasValue ?
                 new ObjectParameter("VST_RateOfPay", vST_RateOfPay) :
                 new ObjectParameter("VST_RateOfPay", typeof(decimal));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetVehicleSeating", vSTActionParameter, vST_IdParameter, vST_TitleParameter, vST_JobDescriptionParameter, vST_RolesAndResponsiblitiesParameter, vST_LevelParameter, vST_ParentIdParameter, vST_DPT_IdParameter, vST_IsActiveParameter, vST_EmploymentStatusParameter, vST_EmploymentClassificationParameter, vST_RateOfPayParameter);
+            var vST_IsActiveParameter = vST_IsActive != null ?
+                new ObjectParameter("VST_IsActive", vST_IsActive) :
+                new ObjectParameter("VST_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetVehicleSeating", vSTActionParameter, vST_IdParameter, vST_TitleParameter, vST_JobDescriptionParameter, vST_RolesAndResponsiblitiesParameter, vST_LevelParameter, vST_ParentIdParameter, vST_DPT_IdParameter, vST_EmploymentStatusParameter, vST_IsExemptParameter, vST_RateOfPayParameter, vST_IsActiveParameter);
         }
     
         public virtual int spGetInterviewCanStart(Nullable<long> applicantId, ObjectParameter isStart)
@@ -5210,7 +5210,7 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetInterviewScore", applicantIdParameter);
         }
     
-        public virtual ObjectResult<spSetEmployee_Result2> spSetEmployee(string eMPAction, Nullable<long> eMP_Id, string eMP_EmployeeID, Nullable<long> eMP_API_ApplicantId, string eMP_FirstName, string eMP_MiddleName, string eMP_LastName, string eMP_Email, Nullable<long> eMP_Phone, string eMP_DrivingLicenseNumber, Nullable<System.DateTime> eMP_DateOfBirth, string eMP_SSN, string eMP_Photo, string eMP_MilitaryService, Nullable<long> eMP_Gender, Nullable<long> eMP_JobTitleId, Nullable<long> eMP_ManagerId, Nullable<System.DateTime> eMP_DateOfJoining, Nullable<long> eMP_LocationId, Nullable<long> eMP_IsCreatedBy, Nullable<System.DateTime> eMP_IsCreatedOn, string eMP_IsActive, Nullable<long> userType, string eMA_Address, string eMA_City, string eMA_State, Nullable<int> eMA_Zip, string cTZ_Citizenship)
+        public virtual ObjectResult<spSetEmployee_Result2> spSetEmployee(string eMPAction, Nullable<long> eMP_Id, string eMP_EmployeeID, Nullable<long> eMP_API_ApplicantId, string eMP_FirstName, string eMP_MiddleName, string eMP_LastName, string eMP_Email, Nullable<long> eMP_Phone, string eMP_DrivingLicenseNumber, Nullable<System.DateTime> eMP_DateOfBirth, string eMP_SSN, string eMP_Photo, string eMP_MilitaryService, string eMP_Gender, Nullable<long> eMP_JobTitleId, Nullable<long> eMP_ManagerId, Nullable<System.DateTime> eMP_DateOfJoining, Nullable<long> eMP_LocationId, Nullable<long> eMP_IsCreatedBy, Nullable<System.DateTime> eMP_IsCreatedOn, string eMP_IsActive, Nullable<long> userType, string eMA_Address, string eMA_City, string eMA_State, Nullable<int> eMA_Zip, string cTZ_Citizenship)
         {
             var eMPActionParameter = eMPAction != null ?
                 new ObjectParameter("EMPAction", eMPAction) :
@@ -5268,9 +5268,9 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("EMP_MilitaryService", eMP_MilitaryService) :
                 new ObjectParameter("EMP_MilitaryService", typeof(string));
     
-            var eMP_GenderParameter = eMP_Gender.HasValue ?
+            var eMP_GenderParameter = eMP_Gender != null ?
                 new ObjectParameter("EMP_Gender", eMP_Gender) :
-                new ObjectParameter("EMP_Gender", typeof(long));
+                new ObjectParameter("EMP_Gender", typeof(string));
     
             var eMP_JobTitleIdParameter = eMP_JobTitleId.HasValue ?
                 new ObjectParameter("EMP_JobTitleId", eMP_JobTitleId) :

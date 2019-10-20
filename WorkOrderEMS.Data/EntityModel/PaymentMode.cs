@@ -17,10 +17,10 @@ namespace WorkOrderEMS.Data.EntityModel
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PaymentMode()
         {
-            this.CompanyAccountDetails = new HashSet<CompanyAccountDetail>();
             this.Contracts = new HashSet<Contract>();
-            this.LogCompanyAccountDetails = new HashSet<LogCompanyAccountDetail>();
             this.LogContracts = new HashSet<LogContract>();
+            this.LogCompanyAccountDetails = new HashSet<LogCompanyAccountDetail>();
+            this.CompanyAccountDetails = new HashSet<CompanyAccountDetail>();
         }
     
         public long PMD_Id { get; set; }
@@ -28,12 +28,12 @@ namespace WorkOrderEMS.Data.EntityModel
         public string PMD_IsActive { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CompanyAccountDetail> CompanyAccountDetails { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Contract> Contracts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LogContract> LogContracts { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LogCompanyAccountDetail> LogCompanyAccountDetails { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<LogContract> LogContracts { get; set; }
+        public virtual ICollection<CompanyAccountDetail> CompanyAccountDetails { get; set; }
     }
 }

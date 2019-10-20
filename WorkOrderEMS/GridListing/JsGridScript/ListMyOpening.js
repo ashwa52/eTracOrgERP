@@ -72,11 +72,11 @@ function myOpenings() {
 			{ title: "Status", width: 60, name: "Status" },
 			{
 				title: '', width: 60, itemTemplate: function (value, item) {
-					return $("<div>").append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-exclamation-triangle white"))
+					return $("<div>").addClass("actionDiv").append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-exclamation-triangle whiteT"))
 						.append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-gg-circle white"))
-						.append($("<div>").addClass("action1 inline actionbox").append($("<a>").attr({ "onclick": "TakeInterview(" + JSON.stringify(item) + ")", "href": "#" }).append("<i>").addClass("fa fa-diamond white")))
-						.append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-check-circle white"))
-						.append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-check white"));
+						.append($("<div>").addClass("action1 inline actionbox").append($("<a>").attr({ "onclick": "TakeInterview(" + JSON.stringify(item) + ")", "href": "#" }).append("<i>").addClass("fa fa-diamond whiteD")))
+						.append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-check-circle whiteY"))
+						.append($("<div>").addClass("action1 inline actionboxR").append("<i>").addClass("fa fa-check white"));
 				}
 			}
 		]
@@ -196,7 +196,7 @@ function MyOpeningSummery() {
 			{
 				name: " ", width: 100, align: "center", Title: "",
 				itemTemplate: function (value) {
-					return $("<div>").append($("<div>").append("<i>").addClass("fa fa-pie-chart fa-lg actionBtn"))
+					return $("<div>").append($("<div>").addClass("inlineDivdonut").append("<img src='Images/donut.png' class='donutC'>"))
 						.append($("<div>").append("<i>").addClass("fa fa-envelope-o fa-lg actionBtn"))
 						.append($("<div>").append("<i>").addClass("fa fa-trash fa-lg actionBtn"));
 				}
@@ -221,7 +221,7 @@ function TakeInterview(item) {
 		method: 'POST',
 		data: item,
 		success: function (response) {
-			$('#epeople').hide();
+			$('#infofactsheet').empty();
 			$("#infofactsheet").html(response);
 		}
 	});

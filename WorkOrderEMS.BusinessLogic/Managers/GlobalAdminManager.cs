@@ -3930,7 +3930,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 						INS_IsAvailable = x.INS_IsAvailable,
 						INS_IsHiringManager = x.INS_IsHiringManager,
 						InterviwerName = x.InterviwerName,
-						ProfileImage = x.EMP_Photo
+						ProfileImage = x.ProfileImage
 					}).ToList();
 					interviewersList.Interviewers = interviewers;
 					interviewersList.currentEmployeeId = hiringManagerId;

@@ -41,8 +41,8 @@ namespace WorkOrderEMS.Data.DataRepository
             bool isSave = false;
             try
             {
-                var save = objworkorderEMSEntities.spSetVehicleSeating(Obj.Action, Obj.Id,Obj.SeatingName,Obj.JobDesc,Obj.RolesAndResponsibility,
-                                                                       Obj.Superior.ToString(), Obj.Superior, Obj.Department,Obj.IsActive, Obj.EmploymentStatus, Obj.EmploymentClassification, Obj.RateOfPay);
+                var save = objworkorderEMSEntities.spSetVehicleSeating(Obj.Action, Obj.Id, Obj.SeatingName, Obj.JobDesc, Obj.RolesAndResponsibility,
+																	   Obj.Superior.ToString(), Obj.Superior, Obj.Department, Obj.EmploymentStatus, Obj.EmploymentClassification, Obj.RateOfPay, Obj.IsActive);
                 isSave = true;
             }
             catch (Exception ex)

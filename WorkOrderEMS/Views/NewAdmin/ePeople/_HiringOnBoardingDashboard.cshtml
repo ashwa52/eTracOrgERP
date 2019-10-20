@@ -1,59 +1,93 @@
 ﻿
 
 @{
-    Layout = null;
-    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
-    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
-    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
-    long loginUserType = 0;
-    long locationId = 0;
-    long UserId = 0;
-    if (ObjLogin != null)
-    {
-        loginUserName = ObjLogin.FName + "'s";
-        loginUserEmail = ObjLogin.Email;
-        loginUserProfile = ObjLogin.UserProfile;
-        loginUserType = ObjLogin.UserRoleId;
-        //loginUserContactNo = ObjLogin.ContactNo;
-        locationId = ObjLogin.LocationID;
-        UserId = ObjLogin.UserId;
-    }
+	Layout = null;
+	string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+	WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+	string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+	long loginUserType = 0;
+	long locationId = 0;
+	long UserId = 0;
+	if (ObjLogin != null)
+	{
+		loginUserName = ObjLogin.FName + "'s";
+		loginUserEmail = ObjLogin.Email;
+		loginUserProfile = ObjLogin.UserProfile;
+		loginUserType = ObjLogin.UserRoleId;
+		//loginUserContactNo = ObjLogin.ContactNo;
+		locationId = ObjLogin.LocationID;
+		UserId = ObjLogin.UserId;
+	}
 }
 <style>
-    .client-photo {
-        border-radius: 50%;
-        height: auto;
-        width: 50px;
-    }
+	.client-photo {
+		border-radius: 50%;
+		height: auto;
+		width: 50px;
+	}
 
-    .actionbox {
-        background-color: #118434;
-        text-align: center;
-        border-radius: 2px;
-        padding: 2px;
-        min-width: 20px;
-        min-height: 20px;
-        color: #000;
-    }
+	.actionbox {
+		/*background-color: #118434;*/
+		text-align: center;
+		border-radius: 2px;
+		padding: 2px;
+		min-width: 20px;
+		min-height: 20px;
+		color: #000 !important;
+	}
+	.actionboxR {
+		/*background-color: #118434;*/
+		text-align: center;
+		border-radius: 2px;
+		padding: 2px;
+		min-width: 20px;
+		min-height: 20px;
+		color: green !important;
+	}
+	.actionDiv{
+	
+		width: 175px;
+	}
+	.whiteT {
+		color: #585820 !important;
+		font-size: 25px;
+	}
 
-    .inline {
-        display: inline-block;
-        position: relative;
-    }
+	.inline {
+		display: inline-block;
+		position: relative;
+	}
 
-    .white {
-        color: white;
-        font-size: 25px;
-    }
+	.white {
+		color: white;
+		font-size: 25px;
+	}
+	.whiteD {
+		color: #000;
+		font-size: 25px;
+	}
+	.whiteY {
+		color: #9cbf33 !important;
+		font-size: 25px;
+	}
 
-    .action1 {
-        margin: 2px;
-    }
+	.action1 {
+		margin: 2px;
+	}
 
-    .actionBtn {
-        margin: 4px;
-        color: #000000;
-    }
+	.actionBtn {
+		margin: 4px;
+		color: #000000;
+	}
+	.inlineDivdonut
+	{
+		display:inline-block;
+	}
+	.donutC
+	{
+		width:27px;
+		height:auto;
+	}
 </style>
 <script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
 <script src="https://www.amcharts.com/lib/4/core.js"></script>
@@ -69,148 +103,152 @@
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />
 <style>
-    .addWhite {
-        color: white;
-    }
+	.addWhite {
+		color: white;
+	}
 
-    .widthHeader {
-        height: 40px;
-    }
-    .WidthForTab {
-        width: 14%;
-    }
-    .CenterText{
-        text-align:center;
-    }
+	.widthHeader {
+		height: 40px;
+	}
+
+	.WidthForTab {
+		width: 14%;
+	}
+
+	.CenterText {
+		text-align: center;
+	}
 </style>
 <div class="content-body">
-    <!-- row -->
-    <div class="container-fluid">
-        <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3" data-aos="fade-up">
-            <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
-                <div class="welcome-text">
-                    <h4>Hi, welcome back! @loginUserName</h4>
-                    <p class="mb-0">ePeople Dashboard</p>
-                </div>
-            </div>
-           
-        </div>
-        <br />
-        <div class="row">
-            <div class="col-lg-6">
-                <div class="card" data-aos="fade-up">
-                    <div class="card-header widthHeader ">
-                        <h4 class="card-title addWhite" style="color: white;">Employee</h4>
-                    </div>
-                    <div class="card-body">
-                        <div id="QRCCount"></div>
-                        @*<div id="EmployeeCount"></div>*@
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <div class="card" data-aos="fade-up">
-                    <div class="card-header widthHeader ">
-                        <h4 class="card-title addWhite" style="color: white;">eTime</h4>
-                    </div>
-                    <div class="card-body">
-                        <div id="eTimediv"></div>
-                        @*<div id="c3-combination"></div>*@
-                    </div>
-                </div>
-            </div>
-        </div>
+	<!-- row -->
+	<div class="container-fluid">
+		<div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3" data-aos="fade-up">
+			<div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
+				<div class="welcome-text">
+					<h4>Hi, welcome back! @loginUserName</h4>
+					<p class="mb-0">ePeople Dashboard</p>
+				</div>
+			</div>
 
-        <div class="row">
-            <div class="col-lg-12" id="hiringOnBordingDiv">
-                <div class="card" data-aos="fade-up">
-                    <div class="card-header" style="height: 45px;">
-                        <h4 class="card-title addWhite"><b>Hiring & On-Boarding</b></h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="custom-tab-1">
-                            <ul class="nav nav-tabs">
-                                <li class="nav-item WidthForTab">
-                                    <a class="nav-link active CenterText" data-toggle="tab" href="#home1">On-Boarding</a>
-                                </li>
-                                <li class="nav-item WidthForTab">
-                                    <a class="nav-link CenterText" data-toggle="tab" onclick="MyOpeningSummery();" href="#profile1">My Opening</a>
-                                </li>
-                                <li class="nav-item WidthForTab">
-                                    <a class="nav-link CenterText" data-toggle="tab" href="#contact1">Company Opening</a>
-                                </li>
-                                <li class="nav-item WidthForTab">
-                                    <a class="nav-link CenterText" data-toggle="tab" href="#myinterview" onclick="MyInterviews()">My Interview</a>
-                                </li>
+		</div>
+		<br />
+		<div id="infofactsheet">
+			<div class="row">
+				<div class="col-lg-6">
+					<div class="card" data-aos="fade-up">
+						<div class="card-header widthHeader ">
+							<h4 class="card-title addWhite" style="color: white;">Employee</h4>
+						</div>
+						<div class="card-body">
+							<div id="QRCCount"></div>
+							@*<div id="EmployeeCount"></div>*@
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-6">
+					<div class="card" data-aos="fade-up">
+						<div class="card-header widthHeader ">
+							<h4 class="card-title addWhite" style="color: white;">eTime</h4>
+						</div>
+						<div class="card-body">
+							<div id="eTimediv"></div>
+							@*<div id="c3-combination"></div>*@
+						</div>
+					</div>
+				</div>
+			</div>
 
-                            </ul>
-                            <div class="nav-item" style="float:right;display:inline-block">
-                                <a onclick="JobPosting();">
-                                    <i class="fa fa-chevron-circle-left" id="btnBack" aria-hidden="true" style="font-size: 32px;color: black;padding: 11px 5px 6px 5px;display:none"></i>
-                                </a>
-                            </div>
-                            <div class="tab-content">
-                                <div class="tab-pane fade show active" id="home1" role="tabpanel">
-                                    <div class="pt-4">
-                                        <div id="ListOnBoarding"></div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="profile1">
-                                    <div class="pt-4">
-                                        <div id="ListMyOpening"></div>
-                                        <div id="MyOpeningSummery"></div>
-                                        <div class="row mx-md-n5">
+			<div class="row">
+				<div class="col-lg-12" id="hiringOnBordingDiv">
+					<div class="card" data-aos="fade-up">
+						<div class="card-header" style="height: 45px;">
+							<h4 class="card-title addWhite"><b>Hiring & On-Boarding</b></h4>
+						</div>
+						<div class="card-body">
+							<div class="custom-tab-1">
+								<ul class="nav nav-tabs">
+									<li class="nav-item WidthForTab">
+										<a class="nav-link active CenterText" data-toggle="tab" href="#home1">On-Boarding</a>
+									</li>
+									<li class="nav-item WidthForTab">
+										<a class="nav-link CenterText" data-toggle="tab" onclick="MyOpeningSummery();" href="#profile1">My Opening</a>
+									</li>
+									<li class="nav-item WidthForTab">
+										<a class="nav-link CenterText" data-toggle="tab" href="#contact1">Company Opening</a>
+									</li>
+									<li class="nav-item WidthForTab">
+										<a class="nav-link CenterText" data-toggle="tab" href="#myinterview" onclick="MyInterviews()">My Interview</a>
+									</li>
 
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="contact1">
-                                    <div class="pt-4">
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="myinterview">
-                                    <div class="pt-4">
-                                        <div id="myinterviews"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+								</ul>
+								<div class="nav-item" style="float:right;display:inline-block">
+									<a onclick="JobPosting();">
+										<i class="fa fa-chevron-circle-left" id="btnBack" aria-hidden="true" style="font-size: 32px;color: black;padding: 11px 5px 6px 5px;display:none"></i>
+									</a>
+								</div>
+								<div class="tab-content">
+									<div class="tab-pane fade show active" id="home1" role="tabpanel">
+										<div class="pt-4">
+											<div id="ListOnBoarding"></div>
+										</div>
+									</div>
+									<div class="tab-pane fade" id="profile1">
+										<div class="pt-4">
+											<div id="ListMyOpening"></div>
+											<div id="MyOpeningSummery"></div>
+											<div class="row mx-md-n5">
 
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div id="infofactsheet">
+											</div>
+										</div>
+									</div>
+									<div class="tab-pane fade" id="contact1">
+										<div class="pt-4">
+										</div>
+									</div>
+									<div class="tab-pane fade" id="myinterview">
+										<div class="pt-4">
+											<div id="myinterviews"></div>
+										</div>
+									</div>
+								</div>
+							</div>
 
-    </div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	@*<div id="infofactsheet">
+
+	</div>*@
 </div>
 </div>
 @Html.Partial("~/Views/NewAdmin/ePeople/_HiringOnBoarding.cshtml")
 
 <div class="modal fade  bd-example-modal-lg" @*data-backdrop="false"*@ id="ModalProfilePreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog  modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">View Profile</h5>
-                <button type="button" class="close" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="viewProfileData">
+	<div class="modal-dialog  modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">View Profile</h5>
+				<button type="button" class="close" data-dismiss="modal">
+					<span>&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div id="viewProfileData">
 
-                </div>
-            </div>
-            <div class="modal-footer" style="background: white;">
+				</div>
+			</div>
+			<div class="modal-footer" style="background: white;">
 
-                <button type="button" class="btn btn-secondary" id="close" style="border-radius:100px;" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
+				<button type="button" class="btn btn-secondary" id="close" style="border-radius:100px;" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
 </div>
 <!--**********************************
-    Content body end
+	Content body end
 ***********************************-->
 <script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
 <script src="~/GridListing/JsGridScript/ListOnBoarding.js"></script>
