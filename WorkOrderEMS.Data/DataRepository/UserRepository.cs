@@ -694,7 +694,7 @@ namespace WorkOrderEMS.Data
             try
             {
                 //lstVerifiedMnagaer = _workorderEMSEntities.spGetAssessmentList306090(userId, pageIndex, sortColumnName, sortOrderBy, numberOfRows, textSearch, locationId, useType, totalRecord).Select(t =>
-                ListOf306090Records = _workorderEMSEntities.spGetAssessmentList3060901(userId).Select(t =>
+                ListOf306090Records = _workorderEMSEntities.spGetAssessmentList306090(userId).Select(t =>
 
                 new PerformanceModel()
                 {
@@ -706,7 +706,7 @@ namespace WorkOrderEMS.Data
                     LocationName = t.LocationName,
                     EMP_DateOfJoining = t.EMP_DateOfJoining,
                     Assesment = t.Assesment
-                    
+
 
                 }).ToList();
                 totalRecords = Convert.ToInt32(totalRecord.Value);
@@ -718,25 +718,49 @@ namespace WorkOrderEMS.Data
 
         public List<GWCQUestionModel> GetGWCQuestions(string Id, string AssessmentType)
         {
-            List<GWCQUestionModel> QuestionList = new List<GWCQUestionModel>();
             try
             {
+                List<GWCQUestionModel> QuestionList = new List<GWCQUestionModel>();
                 //lstVerifiedMnagaer = _workorderEMSEntities.spGetAssessmentList306090(userId, pageIndex, sortColumnName, sortOrderBy, numberOfRows, textSearch, locationId, useType, totalRecord).Select(t =>
-                QuestionList = _workorderEMSEntities.spGetAssessmentQuestion1(Id, AssessmentType).Select(t =>
+                if (AssessmentType == "30" || AssessmentType == "60" || AssessmentType == "90")
+                {
+                    QuestionList = _workorderEMSEntities.spGetAssessmentQuestion(Id, AssessmentType).Select(t =>
 
-                 new GWCQUestionModel()
-                 {
-                     AssessmentType = t.ASQ_AssessmentType,
-                     Question = t.ASQ_Question,
-                     QuestionId = t.ASQ_Id,
-                     QuestionType = t.ASQ_QuestionType,
-                     EmployeeId = Id,
-                     SelfAssessmentId = t.SAM_Id ?? 0,
-                     Answer = t.SAM_Answer,
-                     SAM_IsActive=t.SAM_IsActive
+                     new GWCQUestionModel()
+                     {
+                         AssessmentType = t.ASQ_AssessmentType,
+                         Question = t.ASQ_Question,
+                         QuestionId = t.ASQ_Id,
+                         QuestionType = t.ASQ_QuestionType,
+                         EmployeeId = Id,
+                         SelfAssessmentId = t.SAM_Id ?? 0,
+                         Answer = t.SAM_Answer,
+                         SAM_IsActive = t.SAM_IsActive
 
-                 }).ToList();
+                     }).ToList();
+                }
+                else
+                {
+
+                    QuestionList = _workorderEMSEntities.spGetAssessmentQuestion316191(Id, AssessmentType).Select(t =>
+
+        new GWCQUestionModel()
+        {
+
+                 SAR_Id=t.SAR_Id,
+                SAR_EMP_EmployeeId=t.SAR_EMP_EmployeeId,
+                SAR_EMP_EmployeeIdManager=t.SAR_EMP_EmployeeIdManager,
+                  SAR_QuestionType=t.SAR_QuestionType,
+                  ASQ_Id=t.ASQ_Id,
+                  ASQ_Question=t.ASQ_Question,
+                  SAR_AnswerSelf=t.SAR_AnswerSelf,
+                  SAR_AnswerManager=t.SAR_AnswerManager,
+                  SAR_Comments=t.SAR_Comments
+                     }).ToList();
+                }
                 return QuestionList;
+
+
             }
             catch (Exception)
             { throw; }
@@ -746,12 +770,24 @@ namespace WorkOrderEMS.Data
         {
             try
             {
+                string EmployeeId = string.Empty;
+                string AssessmentType = string.Empty;
+
                 if (data.Count() > 0)
                 {
                     foreach (var i in data)
                     {
-                        _workorderEMSEntities.spSetSelfAssessment306090((i.SAM_IsActive == null||i.SAM_IsActive==""||i.SAM_IsActive!="Y")?"I":"U", i.EmployeeId, i.QuestionId, i.SelfAssessmentId, i.Answer=="Y"?"Y": i.Answer == "N"?"N":i.Answer=="S"?"S":null, action=="S"?"S":"Y");
+                        EmployeeId = i.EmployeeId;
+                        AssessmentType = i.AssessmentType;
+                        _workorderEMSEntities.spSetSelfAssessment3060901((i.SAM_IsActive == null || i.SAM_IsActive == "" || i.SAM_IsActive != "Y") ? "I" : "U", i.EmployeeId, i.QuestionId, i.SelfAssessmentId, i.Answer == "Y" ? "Y" : i.Answer == "N" ? "N" : i.Answer == "S" ? "S" : null, action == "S" ? "S" : "Y");
                     }
+
+                    if (action == "S")
+                    {
+                        _workorderEMSEntities.spSetSelfAssessment306090Submmit(EmployeeId, AssessmentType);
+
+                    }
+
                 }
 
                 return true;
@@ -769,7 +805,7 @@ namespace WorkOrderEMS.Data
                 {
                     foreach (var i in data)
                     {
-                        _workorderEMSEntities.spSetReview306090((i.SAM_IsActive == null || i.SAM_IsActive == "" || i.SAM_IsActive != "Y") ? "I" : "U", i.EmployeeId, i.QuestionId, i.SelfAssessmentId, i.Answer == "Y" ? "Y" : i.Answer == "N" ? "N" : i.Answer == "S" ? "S" : null,i.Comment, action == "S" ? "S" : "Y");
+                        _workorderEMSEntities.spSetReview306090((i.SAM_IsActive == null || i.SAM_IsActive == "" || i.SAM_IsActive != "Y") ? "I" : "U", i.EmployeeId, i.QuestionId, i.SelfAssessmentId, i.Answer == "Y" ? "Y" : i.Answer == "N" ? "N" : i.Answer == "S" ? "S" : null, i.Comment, action == "S" ? "S" : "Y");
                     }
                 }
 

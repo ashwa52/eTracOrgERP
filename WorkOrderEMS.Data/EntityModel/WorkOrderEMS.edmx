@@ -790,6 +790,26 @@
           <Property Name="createdDate" Type="datetime" Nullable="false" />
           <Property Name="Parameters" Type="varchar(max)" />
         </EntityType>
+        <EntityType Name="ExpectationEvaluation">
+          <Key>
+            <PropertyRef Name="EEL_Id" />
+          </Key>
+          <Property Name="EEL_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EEL_EMP_EmployeeId" Type="varchar" MaxLength="20" />
+          <Property Name="EEL_EMP_EmployeeIdManager" Type="varchar" MaxLength="20" />
+          <Property Name="EEL_ASQ_Id" Type="bigint" />
+          <Property Name="EEL_QuestionType" Type="varchar" MaxLength="30" />
+          <Property Name="EEL_FinencialYear" Type="varchar" MaxLength="10" />
+          <Property Name="EEL_FinQuarter" Type="varchar" MaxLength="10" />
+          <Property Name="EEL_AnswerSelf" Type="char" MaxLength="1" />
+          <Property Name="EEL_ScoreSelf" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="EEL_AnswerManager" Type="char" MaxLength="1" />
+          <Property Name="EEL_ScoreManager" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="EEL_Comments" Type="varchar(max)" />
+          <Property Name="EEL_DateEval" Type="datetime" />
+          <Property Name="EEL_Date" Type="datetime" />
+          <Property Name="EEL_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
         <EntityType Name="FormMaster">
           <Key>
             <PropertyRef Name="FRM_Id" />
@@ -1754,7 +1774,9 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="SAR_ASQ_Id" Type="bigint" />
           <Property Name="SAR_QuestionType" Type="varchar" MaxLength="30" />
           <Property Name="SAR_AnswerSelf" Type="char" MaxLength="1" />
+          <Property Name="SAR_ScoreSelf" Type="numeric" Precision="18" Scale="2" />
           <Property Name="SAR_AnswerManager" Type="char" MaxLength="1" />
+          <Property Name="SAR_ScoreManager" Type="numeric" Precision="18" Scale="2" />
           <Property Name="SAR_Comments" Type="varchar(max)" />
           <Property Name="SAR_DateReview" Type="datetime" />
           <Property Name="SAR_Date" Type="datetime" />
@@ -4505,6 +4527,14 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
           <Parameter Name="AssessmentType" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="spGetAssessmentQuestion316191" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
+          <Parameter Name="AssessmentType" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spGetAssessmentQuestionQCQM" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
+          <Parameter Name="AssessmentType" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spGetBillFacilityItemForApproval" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="PBL_Id" Type="bigint" Mode="In" />
         </Function>
@@ -5177,6 +5207,10 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="SAM_Answer" Type="char" Mode="In" />
           <Parameter Name="SAM_IsActive" Type="char" Mode="In" />
         </Function>
+        <Function Name="spSetSelfAssessment306090Submmit" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
+          <Parameter Name="AssessmentType" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spSetTaxDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TXDAction" Type="char" Mode="In" />
           <Parameter Name="TXD_Id" Type="bigint" Mode="In" />
@@ -5371,6 +5405,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="EMaintenanceSurvey" EntityType="Self.EMaintenanceSurvey" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeLocationMapping" EntityType="Self.EmployeeLocationMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ExceptionLog" EntityType="Self.ExceptionLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ExpectationEvaluation" EntityType="Self.ExpectationEvaluation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FormMaster" EntityType="Self.FormMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GlobalCodes" EntityType="Self.GlobalCodes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HoursOfServices" EntityType="Self.HoursOfServices" Schema="dbo" store:Type="Tables" />
@@ -8274,9 +8309,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <FunctionImport Name="spGetVendorAllDetailForEditApproval" ReturnType="Collection(workorderEMSModel.spGetVendorAllDetailForEditApproval_Result)">
           <Parameter Name="CMP_Id" Mode="In" Type="Int64" />
           </FunctionImport>
-          <FunctionImport Name="spGetAssessmentList306090">
-          <Parameter Name="EmployeeId" Mode="In" Type="String" />
-          </FunctionImport>
           <EntitySet Name="CompanyFacilityMappings" EntityType="workorderEMSModel.CompanyFacilityMapping" />
           <AssociationSet Name="FK_BillFacilityItem_CompanyFacilityMapping" Association="workorderEMSModel.FK_BillFacilityItem_CompanyFacilityMapping">
             <End Role="CompanyFacilityMapping" EntitySet="CompanyFacilityMappings" />
@@ -8288,10 +8320,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           </AssociationSet>
           <EntitySet Name="AssessmentQuestions" EntityType="workorderEMSModel.AssessmentQuestion" />
           <EntitySet Name="SelfAssessment306090" EntityType="workorderEMSModel.SelfAssessment306090" />
-          <FunctionImport Name="spGetAssessmentQuestion">
-            <Parameter Name="EmployeeID" Mode="In" Type="String" />
-            <Parameter Name="AssessmentType" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="spSetSelfAssessment306090">
             <Parameter Name="Action" Mode="In" Type="String" />
             <Parameter Name="EmployeeID" Mode="In" Type="String" />
@@ -8299,14 +8327,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="SAM_Id" Mode="In" Type="Int64" />
             <Parameter Name="SAM_Answer" Mode="In" Type="String" />
             <Parameter Name="SAM_IsActive" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="spGetAssessmentQuestion1" ReturnType="Collection(workorderEMSModel.spGetAssessmentQuestion1_Result)">
-            <Parameter Name="EmployeeID" Mode="In" Type="String" />
-            <Parameter Name="AssessmentType" Mode="In" Type="String" />
-          </FunctionImport>
-          <EntitySet Name="SelfAssessmentReview306090" EntityType="workorderEMSModel.SelfAssessmentReview306090" />
-          <FunctionImport Name="spGetAssessmentList3060901" ReturnType="Collection(workorderEMSModel.spGetAssessmentList3060901_Result)">
-            <Parameter Name="EmployeeId" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spSetReview306090">
             <Parameter Name="Action" Mode="In" Type="String" />
@@ -8316,6 +8336,44 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="SAR_AnswerManager" Mode="In" Type="String" />
             <Parameter Name="SAR_Comments" Mode="In" Type="String" />
             <Parameter Name="SAR_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="ExpectationEvaluations" EntityType="workorderEMSModel.ExpectationEvaluation" />
+          <EntitySet Name="SelfAssessmentReview306090" EntityType="workorderEMSModel.SelfAssessmentReview306090" />
+          <FunctionImport Name="spSetReview3060901">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="SAR_ASQ_Id" Mode="In" Type="Int64" />
+            <Parameter Name="SAR_Id" Mode="In" Type="Int64" />
+            <Parameter Name="SAR_AnswerManager" Mode="In" Type="String" />
+            <Parameter Name="SAR_Comments" Mode="In" Type="String" />
+            <Parameter Name="SAR_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetSelfAssessment3060901">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="ASQ_Id" Mode="In" Type="Int64" />
+            <Parameter Name="SAM_Id" Mode="In" Type="Int64" />
+            <Parameter Name="SAM_Answer" Mode="In" Type="String" />
+            <Parameter Name="SAM_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetSelfAssessment306090Submmit">
+            <Parameter Name="EmployeeId" Mode="In" Type="String" />
+            <Parameter Name="AssessmentType" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetAssessmentList306090" ReturnType="Collection(workorderEMSModel.spGetAssessmentList306090_Result)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetAssessmentQuestion" ReturnType="Collection(workorderEMSModel.spGetAssessmentQuestion_Result)">
+            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="AssessmentType" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetAssessmentQuestion316191" ReturnType="Collection(workorderEMSModel.spGetAssessmentQuestion316191_Result)">
+            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="AssessmentType" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetAssessmentQuestionQCQM" ReturnType="Collection(workorderEMSModel.spGetAssessmentQuestionQCQM_Result)">
+            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="AssessmentType" Mode="In" Type="String" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="CommonQeriesByVijay_Result">
@@ -15827,15 +15885,26 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="SAM_Date" Type="DateTime" Precision="3" />
           <Property Name="SAM_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
-        <ComplexType Name="spGetAssessmentQuestion1_Result">
-          <Property Type="Int64" Name="ASQ_Id" Nullable="false" />
-          <Property Type="String" Name="ASQ_AssessmentType" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="ASQ_QuestionType" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="ASQ_Question" Nullable="true" />
-          <Property Type="Int64" Name="SAM_Id" Nullable="true" />
-          <Property Type="String" Name="SAM_Answer" Nullable="true" MaxLength="1" />
-          <Property Type="String" Name="SAM_IsActive" Nullable="true" MaxLength="1" />
-        </ComplexType>
+        <EntityType Name="ExpectationEvaluation">
+          <Key>
+            <PropertyRef Name="EEL_Id" />
+          </Key>
+          <Property Name="EEL_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EEL_EMP_EmployeeId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EEL_EMP_EmployeeIdManager" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EEL_ASQ_Id" Type="Int64" />
+          <Property Name="EEL_QuestionType" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EEL_FinencialYear" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="EEL_FinQuarter" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="EEL_AnswerSelf" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="EEL_ScoreSelf" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="EEL_AnswerManager" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="EEL_ScoreManager" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="EEL_Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="EEL_DateEval" Type="DateTime" Precision="3" />
+          <Property Name="EEL_Date" Type="DateTime" Precision="3" />
+          <Property Name="EEL_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
         <EntityType Name="SelfAssessmentReview306090">
           <Key>
             <PropertyRef Name="SAR_Id" />
@@ -15846,13 +15915,15 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="SAR_ASQ_Id" Type="Int64" />
           <Property Name="SAR_QuestionType" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <Property Name="SAR_AnswerSelf" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="SAR_ScoreSelf" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="SAR_AnswerManager" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="SAR_ScoreManager" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="SAR_Comments" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="SAR_DateReview" Type="DateTime" Precision="3" />
           <Property Name="SAR_Date" Type="DateTime" Precision="3" />
           <Property Name="SAR_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
-        <ComplexType Name="spGetAssessmentList3060901_Result">
+        <ComplexType Name="spGetAssessmentList306090_Result">
           <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
           <Property Type="String" Name="EMP_Photo" Nullable="true" />
           <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
@@ -15863,6 +15934,41 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="DateTime" Name="EMP_DateOfJoining" Nullable="true" />
           <Property Type="Int32" Name="Assesment" Nullable="true" />
           <Property Type="String" Name="SAM_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetAssessmentQuestion_Result">
+          <Property Type="Int64" Name="ASQ_Id" Nullable="false" />
+          <Property Type="String" Name="ASQ_AssessmentType" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ASQ_QuestionType" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ASQ_Question" Nullable="true" />
+          <Property Type="String" Name="SAM_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="Int64" Name="SAM_Id" Nullable="true" />
+          <Property Type="String" Name="SAM_Answer" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetAssessmentQuestion316191_Result">
+          <Property Type="Int64" Name="SAR_Id" Nullable="true" />
+          <Property Type="String" Name="SAR_EMP_EmployeeId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="SAR_EMP_EmployeeIdManager" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="SAR_QuestionType" Nullable="true" MaxLength="30" />
+          <Property Type="Int64" Name="ASQ_Id" Nullable="false" />
+          <Property Type="String" Name="ASQ_Question" Nullable="true" />
+          <Property Type="String" Name="SAR_AnswerSelf" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="SAR_AnswerManager" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="SAR_Comments" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetAssessmentQuestionQCQM_Result">
+          <Property Type="Int64" Name="EEL_Id" Nullable="true" />
+          <Property Type="String" Name="EEL_EMP_EmployeeId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EEL_EMP_EmployeeIdManager" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EEL_QuestionType" Nullable="true" MaxLength="30" />
+          <Property Type="Int64" Name="ASQ_Id" Nullable="false" />
+          <Property Type="String" Name="ASQ_Question" Nullable="true" />
+          <Property Type="String" Name="EEL_FinencialYear" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="EEL_FinQuarter" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="EEL_AnswerSelf" Nullable="true" MaxLength="1" />
+          <Property Type="Decimal" Name="EEL_ScoreSelf" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="EEL_AnswerManager" Nullable="true" MaxLength="1" />
+          <Property Type="Decimal" Name="EEL_ScoreManager" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="EEL_Comments" Nullable="true" />
         </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
@@ -20246,20 +20352,27 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spSetSelfAssessment306090" FunctionName="workorderEMSModel.Store.spSetSelfAssessment306090" />
-          <FunctionImportMapping FunctionImportName="spGetAssessmentQuestion1" FunctionName="workorderEMSModel.Store.spGetAssessmentQuestion">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="workorderEMSModel.spGetAssessmentQuestion1_Result">
-                <ScalarProperty Name="ASQ_Id" ColumnName="ASQ_Id" />
-                <ScalarProperty Name="ASQ_AssessmentType" ColumnName="ASQ_AssessmentType" />
-                <ScalarProperty Name="ASQ_QuestionType" ColumnName="ASQ_QuestionType" />
-                <ScalarProperty Name="ASQ_Question" ColumnName="ASQ_Question" />
-                <ScalarProperty Name="SAM_Id" ColumnName="SAM_Id" />
-                <ScalarProperty Name="SAM_Answer" ColumnName="SAM_Answer" />
-                <ScalarProperty Name="SAM_IsActive" ColumnName="SAM_IsActive" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+          <EntitySetMapping Name="ExpectationEvaluations">
+            <EntityTypeMapping TypeName="workorderEMSModel.ExpectationEvaluation">
+              <MappingFragment StoreEntitySet="ExpectationEvaluation">
+                <ScalarProperty Name="EEL_IsActive" ColumnName="EEL_IsActive" />
+                <ScalarProperty Name="EEL_Date" ColumnName="EEL_Date" />
+                <ScalarProperty Name="EEL_DateEval" ColumnName="EEL_DateEval" />
+                <ScalarProperty Name="EEL_Comments" ColumnName="EEL_Comments" />
+                <ScalarProperty Name="EEL_ScoreManager" ColumnName="EEL_ScoreManager" />
+                <ScalarProperty Name="EEL_AnswerManager" ColumnName="EEL_AnswerManager" />
+                <ScalarProperty Name="EEL_ScoreSelf" ColumnName="EEL_ScoreSelf" />
+                <ScalarProperty Name="EEL_AnswerSelf" ColumnName="EEL_AnswerSelf" />
+                <ScalarProperty Name="EEL_FinQuarter" ColumnName="EEL_FinQuarter" />
+                <ScalarProperty Name="EEL_FinencialYear" ColumnName="EEL_FinencialYear" />
+                <ScalarProperty Name="EEL_QuestionType" ColumnName="EEL_QuestionType" />
+                <ScalarProperty Name="EEL_ASQ_Id" ColumnName="EEL_ASQ_Id" />
+                <ScalarProperty Name="EEL_EMP_EmployeeIdManager" ColumnName="EEL_EMP_EmployeeIdManager" />
+                <ScalarProperty Name="EEL_EMP_EmployeeId" ColumnName="EEL_EMP_EmployeeId" />
+                <ScalarProperty Name="EEL_Id" ColumnName="EEL_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="SelfAssessmentReview306090">
             <EntityTypeMapping TypeName="workorderEMSModel.SelfAssessmentReview306090">
               <MappingFragment StoreEntitySet="SelfAssessmentReview306090">
@@ -20267,7 +20380,9 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
                 <ScalarProperty Name="SAR_Date" ColumnName="SAR_Date" />
                 <ScalarProperty Name="SAR_DateReview" ColumnName="SAR_DateReview" />
                 <ScalarProperty Name="SAR_Comments" ColumnName="SAR_Comments" />
+                <ScalarProperty Name="SAR_ScoreManager" ColumnName="SAR_ScoreManager" />
                 <ScalarProperty Name="SAR_AnswerManager" ColumnName="SAR_AnswerManager" />
+                <ScalarProperty Name="SAR_ScoreSelf" ColumnName="SAR_ScoreSelf" />
                 <ScalarProperty Name="SAR_AnswerSelf" ColumnName="SAR_AnswerSelf" />
                 <ScalarProperty Name="SAR_QuestionType" ColumnName="SAR_QuestionType" />
                 <ScalarProperty Name="SAR_ASQ_Id" ColumnName="SAR_ASQ_Id" />
@@ -20277,9 +20392,12 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spGetAssessmentList3060901" FunctionName="workorderEMSModel.Store.spGetAssessmentList306090">
+          <FunctionImportMapping FunctionImportName="spSetReview3060901" FunctionName="workorderEMSModel.Store.spSetReview306090" />
+          <FunctionImportMapping FunctionImportName="spSetSelfAssessment3060901" FunctionName="workorderEMSModel.Store.spSetSelfAssessment306090" />
+          <FunctionImportMapping FunctionImportName="spSetSelfAssessment306090Submmit" FunctionName="workorderEMSModel.Store.spSetSelfAssessment306090Submmit" />
+          <FunctionImportMapping FunctionImportName="spGetAssessmentList306090" FunctionName="workorderEMSModel.Store.spGetAssessmentList306090">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="workorderEMSModel.spGetAssessmentList3060901_Result">
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetAssessmentList306090_Result">
                 <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
                 <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
                 <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
@@ -20293,7 +20411,53 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spSetReview306090" FunctionName="workorderEMSModel.Store.spSetReview306090" />
+          <FunctionImportMapping FunctionImportName="spGetAssessmentQuestion" FunctionName="workorderEMSModel.Store.spGetAssessmentQuestion">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetAssessmentQuestion_Result">
+                <ScalarProperty Name="ASQ_Id" ColumnName="ASQ_Id" />
+                <ScalarProperty Name="ASQ_AssessmentType" ColumnName="ASQ_AssessmentType" />
+                <ScalarProperty Name="ASQ_QuestionType" ColumnName="ASQ_QuestionType" />
+                <ScalarProperty Name="ASQ_Question" ColumnName="ASQ_Question" />
+                <ScalarProperty Name="SAM_IsActive" ColumnName="SAM_IsActive" />
+                <ScalarProperty Name="SAM_Id" ColumnName="SAM_Id" />
+                <ScalarProperty Name="SAM_Answer" ColumnName="SAM_Answer" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetAssessmentQuestion316191" FunctionName="workorderEMSModel.Store.spGetAssessmentQuestion316191">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetAssessmentQuestion316191_Result">
+                <ScalarProperty Name="SAR_Id" ColumnName="SAR_Id" />
+                <ScalarProperty Name="SAR_EMP_EmployeeId" ColumnName="SAR_EMP_EmployeeId" />
+                <ScalarProperty Name="SAR_EMP_EmployeeIdManager" ColumnName="SAR_EMP_EmployeeIdManager" />
+                <ScalarProperty Name="SAR_QuestionType" ColumnName="SAR_QuestionType" />
+                <ScalarProperty Name="ASQ_Id" ColumnName="ASQ_Id" />
+                <ScalarProperty Name="ASQ_Question" ColumnName="ASQ_Question" />
+                <ScalarProperty Name="SAR_AnswerSelf" ColumnName="SAR_AnswerSelf" />
+                <ScalarProperty Name="SAR_AnswerManager" ColumnName="SAR_AnswerManager" />
+                <ScalarProperty Name="SAR_Comments" ColumnName="SAR_Comments" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetAssessmentQuestionQCQM" FunctionName="workorderEMSModel.Store.spGetAssessmentQuestionQCQM">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetAssessmentQuestionQCQM_Result">
+                <ScalarProperty Name="EEL_Id" ColumnName="EEL_Id" />
+                <ScalarProperty Name="EEL_EMP_EmployeeId" ColumnName="EEL_EMP_EmployeeId" />
+                <ScalarProperty Name="EEL_EMP_EmployeeIdManager" ColumnName="EEL_EMP_EmployeeIdManager" />
+                <ScalarProperty Name="EEL_QuestionType" ColumnName="EEL_QuestionType" />
+                <ScalarProperty Name="ASQ_Id" ColumnName="ASQ_Id" />
+                <ScalarProperty Name="ASQ_Question" ColumnName="ASQ_Question" />
+                <ScalarProperty Name="EEL_FinencialYear" ColumnName="EEL_FinencialYear" />
+                <ScalarProperty Name="EEL_FinQuarter" ColumnName="EEL_FinQuarter" />
+                <ScalarProperty Name="EEL_AnswerSelf" ColumnName="EEL_AnswerSelf" />
+                <ScalarProperty Name="EEL_ScoreSelf" ColumnName="EEL_ScoreSelf" />
+                <ScalarProperty Name="EEL_AnswerManager" ColumnName="EEL_AnswerManager" />
+                <ScalarProperty Name="EEL_ScoreManager" ColumnName="EEL_ScoreManager" />
+                <ScalarProperty Name="EEL_Comments" ColumnName="EEL_Comments" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

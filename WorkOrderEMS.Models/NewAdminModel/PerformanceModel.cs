@@ -37,7 +37,19 @@ namespace WorkOrderEMS.Models.NewAdminModel
 
         public string Comment { get; set; }
 
+        public Nullable<long> SAR_Id { get; set; }
+        public string SAR_EMP_EmployeeId { get; set; }
+        public string SAR_EMP_EmployeeIdManager { get; set; }
+        public string SAR_QuestionType { get; set; }
+        public long ASQ_Id { get; set; }
+        public string ASQ_Question { get; set; }
+        public string SAR_AnswerSelf { get; set; }
+        public string SAR_AnswerManager { get; set; }
+        public string SAR_Comments { get; set; }
+        public string SAR_IsActive { get; set; }
+
 
 
     }
+
 }

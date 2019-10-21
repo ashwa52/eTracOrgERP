@@ -11,7 +11,7 @@ namespace WorkOrderEMS.Data.EntityModel
 {
     using System;
     
-    public partial class spGetAssessmentList3060901_Result
+    public partial class spGetAssessmentList306090_Result
     {
         public string EMP_EmployeeID { get; set; }
         public string EMP_Photo { get; set; }

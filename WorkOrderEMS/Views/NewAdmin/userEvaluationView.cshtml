@@ -30,9 +30,9 @@
     " title="back"></i>
 @{
     <div class="row">
-        <div class="col-sm-2" style="margin: 0px 0px 10px 20px;">
+        <div class="col-sm-3" style="margin: 0px 0px 10px 50px;">
             <div style="display: inline-block;">
-                <img src="@employeeInfo.Image" alt="" class="rounded-circle" style="width:50px;height:50px;">
+                <img src="@employeeInfo.Image" alt="" class="rounded-circle" style="width:75px;height:75px;">
             </div>
             <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
                 <span style="font-size: 16px;    font-weight: 600;">@employeeInfo.EmployeeName</span>
@@ -59,9 +59,9 @@
                 <span style="font-size: 16px;font-weight: 600;color: blue;">Review Draft</span>
             </div>
         </div>
-        <div class="col-sm-2" style="margin: 0px 0px 10px 20px;">
+        <div class="col-sm-1" style="margin: 0px 0px 10px 20px;">
             <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
-                <span style="font-size: 16px;    font-weight: 600;">Notification</span>
+                <span style="font-size: 16px;    font-weight: 600;"><i class="fa fa-bell fa-2x" aria-hidden="true"></i></span>
             </div>
         </div>
     </div>
@@ -74,27 +74,49 @@
                 <tr class="table-success">
                     <td colspan="2" style="text-align:center">Self</td>
                 </tr>
-                <tr class="table-danger">
-                    <td>G</td>
-                    <td>Y</td>
+                @foreach (var item in Model)
+                {
+                    if ((item.SAR_QuestionType == "G30M" || item.SAR_QuestionType == "G60M" || item.SAR_QuestionType == "G90M"))
+                    {
+                        <tr class="table-danger">
+                            <td>G</td>
+                            <td>@item.SAR_AnswerSelf</td>
 
-                </tr>
-                <tr class="table-info">
-                    <td>W</td>
-                    <td>N</td>
+                        </tr>
+                    }
+                    else if (item.SAR_QuestionType == "W30M" || item.SAR_QuestionType == "W60M" || item.SAR_QuestionType == "W90M")
+                    {
+                        <tr class="table-danger">
+                            <td>W</td>
+                            <td>@item.SAR_AnswerSelf</td>
 
-                </tr>
-                <tr class="table-warning">
-                    <td>C</td>
-                    <td>Y</td>
+                        </tr>
+                    }
+                    else if (item.SAR_QuestionType == "C30M" || item.SAR_QuestionType == "C60M" || item.SAR_QuestionType == "C90M")
+                    {
+                        <tr class="table-danger">
+                            <td>C</td>
+                            <td>@item.SAR_AnswerSelf</td>
 
-                </tr>
+                        </tr>
+                    }
+                    @*<tr class="table-info">
+                <td>W</td>
+                <td>N</td>
+
+            </tr>
+            <tr class="table-warning">
+                <td>C</td>
+                <td>Y</td>
+
+            </tr>*@
 
 
+                }
             </tbody>
         </table>
     </div>
-    <div class="col-sm-10" style="margin: 0px 0px 0px -10px;">
+    <div class="col-sm-10" style="margin: 0px 0px 0px -28px;">
         <table class="table">
             <tbody>
                 <tr class="table-primary">
@@ -116,63 +138,89 @@
                     </tr>*@
                 @foreach (var item in Model)
                 {
-                    if ((item.QuestionType == "G30M" || item.QuestionType == "W30M" || item.QuestionType == "C30M" || item.QuestionType == "G60M" || item.QuestionType == "W60M" || item.QuestionType == "C60M" || item.QuestionType == "G90M" || item.QuestionType == "W90M" || item.QuestionType == "C90M"))
+                    if ((item.SAR_QuestionType == "G30M" || item.SAR_QuestionType == "W30M" || item.SAR_QuestionType == "C30M" || item.SAR_QuestionType == "G60M" || item.SAR_QuestionType == "W60M" || item.SAR_QuestionType == "C60M" || item.SAR_QuestionType == "G90M" || item.SAR_QuestionType == "W90M" || item.SAR_QuestionType == "C90M"))
                     {
-                        <tr class="table-light">
-                            <td style="width: 70%">@item.Question </td>
+            <tr class="table-light">
+                <td style="width: 70%">@item.ASQ_Question </td>
 
-                            @if (item.SAM_IsActive == "S")
-                            {
-                                <td class="ans" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive">
-
-
-                                    @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
-                                    {
-
-                                        <input type="radio" value="true" name="Opt_@item.QuestionId" checked disabled />
-                                    }
-                                    else
-                                    {
-                                        <input type="radio" value="true" name="Opt_@item.QuestionId" disabled />
-                                    }Yes
-
-                                    @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
-                                    {
-                                        <input type="radio" value="false" name="Opt_@item.QuestionId" checked disabled />
-                                    }
-                                    else
-                                    {
-                                        <input type="radio" value="false" name="Opt_@item.QuestionId" disabled />
-                                    }No
-                                </td>
-                            }
-                            else
-                            {
-                                <td class="ans" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive">
+                @if (item.SAR_IsActive == "S")
+                {
+                    <td style="width: 10%" class="ans" data-value="@item.ASQ_Id" data-user="@item.SAR_EMP_EmployeeId" data-sam="@item.SAR_Id" data-isAct="@item.SAR_IsActive">
 
 
-                                    @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
-                                    {
+                        @if (item.SAR_AnswerManager == "Y" && @item.SAR_Id > 0)
+                        {
 
-                                        <input type="radio" value="true" name="Opt_@item.QuestionId" checked />
-                                    }
-                                    else
-                                    {
-                                        <input type="radio" value="true" name="Opt_@item.QuestionId" />
-                                    }Yes
+                            <input type="radio" value="true" name="Opt_@item.ASQ_Id" checked disabled />
+                        }
+                        else
+                        {
+                            <input type="radio" value="true" name="Opt_@item.ASQ_Id" disabled />
+                        }Yes |
 
-                                    @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
-                                    {
-                                        <input type="radio" value="false" name="Opt_@item.QuestionId" checked />
-                                    }
-                                    else
-                                    {
-                                        <input type="radio" value="false" name="Opt_@item.QuestionId" />
-                                    }No
-                                </td>
-                            }
-                            <td></td>
-                        </tr>
+                        @if (item.SAR_AnswerManager == "N" && @item.SAR_Id > 0)
+                        {
+                            <input type="radio" value="false" name="Opt_@item.ASQ_Id" checked disabled />
+                        }
+                        else
+                        {
+                            <input type="radio" value="false" name="Opt_@item.ASQ_Id" disabled />
+                        }No
+                    </td>
+                    <td  class="ans" data-value="@item.ASQ_Id" data-user="@item.EmployeeId" data-sam="@item.SAR_Id" data-isAct="@item.SAM_IsActive">
+
+
+                        @if (item.SAR_AnswerManager == "Y" && @item.SAR_Id > 0)
+                        {
+
+                            <input type="text"  name="input_@item.ASQ_Id"  class="form-control" disabled/>
+                        }
+                        else
+                        {
+                            <input type="text"  name="input_@item.ASQ_Id" class="form-control"/>
+                        }
+                    </td>
+                }
+                else
+                {
+                    <td style="width: 10%" class="ans" data-value="@item.ASQ_Id" data-user="@item.EmployeeId" data-sam="@item.SAR_Id" data-isAct="@item.SAM_IsActive">
+
+
+                        @if (item.SAR_AnswerManager == "Y" && @item.SAR_Id > 0)
+                        {
+
+                            <input type="radio" value="true" name="Opt_@item.ASQ_Id" checked />
+                        }
+                        else
+                        {
+                            <input type="radio" value="true" name="Opt_@item.ASQ_Id" />
+                        }Yes |
+
+                        @if (item.SAR_AnswerManager == "N" && @item.SAR_Id > 0)
+                        {
+                            <input type="radio" value="false" name="Opt_@item.ASQ_Id" checked />
+                        }
+                        else
+                        {
+                            <input type="radio" value="false" name="Opt_@item.ASQ_Id" />
+                        }No
+                    </td>
+                    <td class="ans" data-value="@item.ASQ_Id" data-user="@item.EmployeeId" data-sam="@item.SAR_Id" data-isAct="@item.SAM_IsActive">
+
+
+                        @if (item.SAR_AnswerManager == "Y" && @item.SAR_Id > 0)
+                        {
+
+                            <input type="text" value="" name="input_@item.ASQ_Id" class="form-control" disabled />
+                        }
+                        else
+                        {
+                            <input type="text" value="" name="input_@item.ASQ_Id" class="form-control"/>
+                        }
+                    </td>
+                }
+
+            </tr>
                     }
                 }
             </tbody>
@@ -180,12 +228,12 @@
     </div>
 </div>
 <div class="row tableEval">
-    <div class="col-sm-2"></div>
-    <div class="col-sm-8" style="margin: 0px 0px 0px -20px;">
+    <div class="col-sm-2" style="margin: 0px 0px 0px 10px;"></div>
+    <div class="col-sm-10" style="margin: 0px 0px 0px -28px;">
         <table class="table">
             <tbody>
                 <tr class="table-primary">
-                    <td colspan="2">Core Values</td>
+                    <td colspan="3">Core Values</td>
                 </tr>
                 @*<tr class="table-info">
                         <td style="width:30%">Accountability</td>
@@ -213,81 +261,83 @@
                     </tr>*@
                 @foreach (var item in Model)
                 {
-                    if ((item.QuestionType == "P" || item.QuestionType == "A" || item.QuestionType == "R" || item.QuestionType == "K"))
+                    if ((item.SAR_QuestionType == "P" || item.SAR_QuestionType == "A" || item.SAR_QuestionType == "R" || item.SAR_QuestionType == "K"))
                     {
                         <tr class="table-light">
-                            <td style="width: 40%">@item.Question </td>
+                            <td style="width: 40%">@item.ASQ_Question </td>
 
-                            @if (item.SAM_IsActive == "S")
+                            @if (item.SAR_IsActive == "S")
                             {
-                                <td class="ans" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive">
+                                <td class="ans" data-value="@item.ASQ_Id" data-user="@item.SAR_EMP_EmployeeId" data-sam="@item.SAR_Id" data-isAct="@item.SAR_IsActive">
 
 
-                                    @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
+                                    @if (item.SAR_AnswerManager == "Y" && @item.SAR_Id > 0)
                                     {
 
-                                        <input type="radio" value="true" name="Opt_@item.QuestionId" checked disabled />
+                                        <input type="radio" value="true" name="Opt_@item.ASQ_Id" checked disabled />
                                     }
                                     else
                                     {
-                                        <input type="radio" value="true" name="Opt_@item.QuestionId" disabled />
-                                    }Always
-                                    @if (item.Answer == "S" && @item.SelfAssessmentId > 0)
+                                        <input type="radio" value="true" name="Opt_@item.ASQ_Id" disabled />
+                                    }Always |
+                                    @if (item.SAR_AnswerManager == "S" && @item.SAR_Id > 0)
                                     {
 
-                                        <input type="radio" value="true" name="Opt_@item.QuestionId" checked disabled />
+                                        <input type="radio" value="true" name="Opt_@item.ASQ_Id" checked disabled />
                                     }
                                     else
                                     {
-                                        <input type="radio" value="true" name="Opt_@item.QuestionId" disabled />
-                                    }Sometimes
+                                        <input type="radio" value="true" name="Opt_@item.ASQ_Id" disabled />
+                                    }Sometimes |
 
 
-                                    @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
+                                    @if (item.SAR_AnswerManager == "N" && @item.SAR_Id > 0)
                                     {
-                                        <input type="radio" value="false" name="Opt_@item.QuestionId" checked disabled />
+                                        <input type="radio" value="false" name="Opt_@item.ASQ_Id" checked disabled />
                                     }
                                     else
                                     {
-                                        <input type="radio" value="false" name="Opt_@item.QuestionId" disabled />
+                                        <input type="radio" value="false" name="Opt_@item.ASQ_Id" disabled />
                                     }Never
                                 </td>
                             }
                             else
                             {
-                                <td class="ans" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive">
+                                <td class="ans" data-value="@item.ASQ_Id" data-user="@item.SAR_EMP_EmployeeId" data-sam="@item.SAR_Id" data-isAct="@item.SAR_IsActive">
 
 
-                                    @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
+                                    @if (item.SAR_AnswerManager == "Y" && @item.SAR_Id > 0)
                                     {
 
-                                        <input type="radio" value="true" name="Opt_@item.QuestionId" checked />
+                                        <input type="radio" value="true" name="Opt_@item.ASQ_Id" checked />
                                     }
                                     else
                                     {
-                                        <input type="radio" value="true" name="Opt_@item.QuestionId" />
-                                    }Always
+                                        <input type="radio" value="true" name="Opt_@item.ASQ_Id" />
+                                    }Always |
 
-                                    @if (item.Answer == "S" && @item.SelfAssessmentId > 0)
+                                    @if (item.SAR_AnswerManager == "S" && @item.SAR_Id > 0)
                                     {
 
-                                        <input type="radio" value="true" name="Opt_@item.QuestionId" checked />
+                                        <input type="radio" value="true" name="Opt_@item.ASQ_Id" checked />
                                     }
                                     else
                                     {
-                                        <input type="radio" value="true" name="Opt_@item.QuestionId" />
-                                    }Sometimes
-                                    @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
+                                        <input type="radio" value="true" name="Opt_@item.ASQ_Id" />
+                                    }Sometimes|
+                                    @if (item.SAR_AnswerManager == "N" && @item.SAR_Id > 0)
                                     {
-                                        <input type="radio" value="false" name="Opt_@item.QuestionId" checked />
+                                        <input type="radio" value="false" name="Opt_@item.ASQ_Id" checked />
                                     }
                                     else
                                     {
-                                        <input type="radio" value="false" name="Opt_@item.QuestionId" />
+                                        <input type="radio" value="false" name="Opt_@item.ASQ_Id" />
                                     }Never
                                 </td>
                             }
-                            <td></td>
+                            <td>
+
+                            </td>
                         </tr>
                     }
                 }
@@ -298,8 +348,8 @@
 </div>
 <div class="row">
     <div class="col-sm-2"></div>
-    <div class="col-sm-8">
-        <input type="text" class="form-control" style="height:100px" placeholder="Comments" multiple />
+    <div class="col-sm-10">
+        <input type="text" class="form-control"  style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;"placeholder="Comments" multiple />
     </div>
 </div>
 <div class="row" style="margin-top:50px">
@@ -349,33 +399,33 @@
 
     });
     function saveEvaluation306090(action) {
-        var obj = [];
-        var tab = $("td.ans");
-        $.each(tab, function (i, elem) {
-            QuestionId = elem.getAttribute("data-value");
-            EmployeeId = elem.getAttribute("data-user");
-            SAM_IsActive = elem.getAttribute("data-isAct");
-            Answer = $("input[type='radio'][name='Opt_" + QuestionId + "']:checked").val();
-            SelfAssessmentId = elem.getAttribute("data-sam");
-            obj.push({ "QuestionId": QuestionId, "Answer": Answer, "EmployeeId": EmployeeId, "SelfAssessmentId": SelfAssessmentId, "SAM_IsActive": SAM_IsActive });
+        //var obj = [];
+        //var tab = $("td.ans");
+        //$.each(tab, function (i, elem) {
+        //    QuestionId = elem.getAttribute("data-value");
+        //    EmployeeId = elem.getAttribute("data-user");
+        //    SAM_IsActive = elem.getAttribute("data-isAct");
+        //    Answer = $("input[type='radio'][name='Opt_" + QuestionId + "']:checked").val();
+        //    SelfAssessmentId = elem.getAttribute("data-sam");
+        //    obj.push({ "QuestionId": QuestionId, "Answer": Answer, "EmployeeId": EmployeeId, "SelfAssessmentId": SelfAssessmentId, "SAM_IsActive": SAM_IsActive });
 
-        });
-        obj = JSON.stringify({ 'data': obj });
-        var url = (action == "Draft") ? '../NewAdmin/draftEvaluation/' : '../NewAdmin/saveEvaluation/'
-        $.ajax({
-            type: "POST",
-            data: obj,
-            url: url,
-            contentType: "application/json; charset=utf-8",
-            dataType: 'json',
-            error: function (xhr, status, error) {
-            },
-            success: function (result) {
-                if (result != null) {
+        //});
+        //obj = JSON.stringify({ 'data': obj });
+        //var url = (action == "Draft") ? '../NewAdmin/draftEvaluation/' : '../NewAdmin/saveEvaluation/'
+        //$.ajax({
+        //    type: "POST",
+        //    data: obj,
+        //    url: url,
+        //    contentType: "application/json; charset=utf-8",
+        //    dataType: 'json',
+        //    error: function (xhr, status, error) {
+        //    },
+        //    success: function (result) {
+        //        if (result != null) {
 
-                }
-            }
-        });
+        //        }
+        //    }
+        //});
 
     }
 </script>

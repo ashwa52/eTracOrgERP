@@ -13,17 +13,14 @@
     @Html.Hidden(isSubmitted, new { id = "isSubmitted" })
 }
 
-
-<button id="back" class="btn btn-info pull-right" style="
-    margin-right: 20px;
-    margin-top: 2px;
-    margin-bottom: 2px;
+    <i id="back" class="fa fa-arrow-circle-o-left x4" style="
+    font-size: 36px;
+    cursor:pointer;
+    margin-left: 10px;
+    margin-top: 5px;
     width: 64px;
-    float: right!important;
-    align-self: flex-end;
-">
-    Back
-</button>
+    float: none;
+    " title="back"></i>
 <table class="table" id="selfAssessmentTable">
     <tbody>
         <div class="col-sm-12 col-xs-12 col-md-12 glowbuttonActiveDeactive"> Self Assessment</div>
@@ -89,7 +86,7 @@
                     else
                     {
                         <input type="radio" value="Y" name="Opt_@item.QuestionId" disabled />
-                    }Yes
+                    }Yes |
 
                     @if (item.Answer == "S" && @item.SelfAssessmentId > 0)
                     {
@@ -99,7 +96,7 @@
                     else
                     {
                         <input type="radio" value="S" name="Opt_@item.QuestionId" disabled />
-                    }Some what
+                    }Some what |
 
                     @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
                     {
@@ -124,7 +121,7 @@
                     else
                     {
                         <input type="radio" value="Y" name="Opt_@item.QuestionId" />
-                    }Yes
+                    }Yes |
                     @if (item.Answer == "S" && @item.SelfAssessmentId > 0)
                     {
 
@@ -133,7 +130,7 @@
                     else
                     {
                         <input type="radio" value="S" name="Opt_@item.QuestionId" />
-                    }Some what
+                    }Some what |
                     @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
                     {
                         <input type="radio" value="N" name="Opt_@item.QuestionId" checked />

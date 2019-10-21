@@ -10,22 +10,17 @@
 namespace WorkOrderEMS.Data.EntityModel
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class SelfAssessmentReview306090
+    public partial class spGetAssessmentQuestion316191_Result
     {
-        public long SAR_Id { get; set; }
+        public Nullable<long> SAR_Id { get; set; }
         public string SAR_EMP_EmployeeId { get; set; }
         public string SAR_EMP_EmployeeIdManager { get; set; }
-        public Nullable<long> SAR_ASQ_Id { get; set; }
         public string SAR_QuestionType { get; set; }
+        public long ASQ_Id { get; set; }
+        public string ASQ_Question { get; set; }
         public string SAR_AnswerSelf { get; set; }
-        public Nullable<decimal> SAR_ScoreSelf { get; set; }
         public string SAR_AnswerManager { get; set; }
-        public Nullable<decimal> SAR_ScoreManager { get; set; }
         public string SAR_Comments { get; set; }
-        public Nullable<System.DateTime> SAR_DateReview { get; set; }
-        public Nullable<System.DateTime> SAR_Date { get; set; }
-        public string SAR_IsActive { get; set; }
     }
 }
