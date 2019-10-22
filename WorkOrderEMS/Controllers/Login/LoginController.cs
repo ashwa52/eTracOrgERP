@@ -212,6 +212,8 @@ namespace WorkOrderEMS.Controllers.Login
                 string loginMessage = "";
                 if (ModelState.IsValid)
                 {
+                     
+
                     eTracLoginModel result = _ILogin.AuthenticateUser(eTracLogin);
                     //result.RememberMe = eTracLogin.RememberMe;
                     if (result.UserId > 0)
@@ -323,7 +325,13 @@ namespace WorkOrderEMS.Controllers.Login
 								//QuickBookIndex();
 								return RedirectToAction("LandingPage", "Guest");
 								break;
-						}
+                            case ((Int64)(UserType.HR)):
+                                Session["eTrac_UserLocations"] = _ILogin.GetUserAssignedLocations(result.UserRoleId, result.UserId);
+                                Session["eTrac_UserRoles"] = Session["eTrac_LocationServices"];
+                                //QuickBookIndex();
+                                return RedirectToAction("Index", "NewAdmin");
+                                break;
+                        }
 
                     }//else { ModelState.AddModelError("", "User not found. Please check UserName or Password"); }
                     else { loginMessage = "User not found. Please check Username or Password"; }

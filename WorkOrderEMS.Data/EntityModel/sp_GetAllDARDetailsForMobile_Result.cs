@@ -18,6 +18,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public string Employee_Name { get; set; }
         public string Activity_Details { get; set; }
         public string TaskTypeDetails { get; set; }
-        public string CreatedOn { get; set; }
+        public string CreatedDate { get; set; }
     }
 }

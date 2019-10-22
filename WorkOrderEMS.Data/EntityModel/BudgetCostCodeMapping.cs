@@ -16,16 +16,16 @@ namespace WorkOrderEMS.Data.EntityModel
     {
         public long BCM_Id { get; set; }
         public long BCM_CLM_Id { get; set; }
+        public Nullable<long> BCM_CLM_TransferId { get; set; }
+        public string BCM_TransactionType { get; set; }
         public Nullable<decimal> BCM_BudgetPercent { get; set; }
         public Nullable<decimal> BCM_BudgetAmount { get; set; }
         public Nullable<decimal> BCM_BalanceAmount { get; set; }
         public int BCM_BudgetYear { get; set; }
         public System.DateTime BCM_Date { get; set; }
+        public string BCM_BudgetSource { get; set; }
         public string BCM_BudgetStatus { get; set; }
         public string BCM_IsActive { get; set; }
-        public Nullable<long> BCM_CLM_TransferId { get; set; }
-        public string BCM_TransactionType { get; set; }
-        public string BCM_BudgetSource { get; set; }
     
         public virtual CostCodeLocationMapping CostCodeLocationMapping { get; set; }
         public virtual CostCodeLocationMapping CostCodeLocationMapping1 { get; set; }

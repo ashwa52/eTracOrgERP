@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WorkOrderEMS.BusinessLogic.Interfaces;
 using WorkOrderEMS.Data.DataRepository;
+using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Models;
 
 namespace WorkOrderEMS.BusinessLogic
@@ -103,9 +104,9 @@ namespace WorkOrderEMS.BusinessLogic
                    parentId = x.VST_ParentId,
                    JobDescription = x.VST_JobDescription,
                    RolesAndResponsibility = x.VST_RolesAndResponsiblities,
-                   IsActive = x.VST_IsActive,
+                   IsActive = x.VST_IsExempt,
                    SeatingName  = x.VST_Title,
-                   Image = HostingPrefix + ProfileImagePath.Replace("~", "") + "no-profile-pic.jpg"
+                   //Image = HostingPrefix + ProfileImagePath.Replace("~", "") + "no-profile-pic.jpg"
                }).ToList();
                 if(data.Count() > 0)
                 {
@@ -276,40 +277,85 @@ namespace WorkOrderEMS.BusinessLogic
         {
             var _VSCRepository = new VehicleSeatingChartRepository();
             var records = new List<AccessPermisionTreeViewModel>();
+            workorderEMSEntities objworkorderEMSEntities = new workorderEMSEntities();
             try
             {
+                var getModuleList = objworkorderEMSEntities.Modules.Where(x => x.MDL_IsActive == "Y").
+                    Select(x => new AccessPermisionTreeViewModel() {
+                        ModuleId = x.MDL_Id,
+                        ModuleName = x.MDL_ModuleName,
+                        @checked = false
+                    }).ToList();
+                
                 var Results = _VSCRepository.GetAccessPermissionList(VST_Id)
                     .Select(l => new AccessPermisionTreeViewModel//_workorderems.spGetCostCode(action, null).Select(l => new TreeViewModel
                     {
-                        id = l.SMD_Id,
+                        id = l.SMD_MDL_Id,
                         name = l.MDL_ModuleName,
+                        SubModuleId = l.SMD_Id,
+                        SubModuleName = l.SMD_SubModuleName,
                         @checked = false
                     }).ToList();
-                records = Results
+                records = getModuleList
                    .Select(l => new AccessPermisionTreeViewModel
                    {
-                       id = l.id,
-                       name = l.name,
+                       id = l.ModuleId,
+                       name = l.ModuleName,
                        @checked = false,
-                       item = GetChildrenModule(Results, l.id)
+                       item = GetChildrenModule(Results, l.ModuleId)
                    }).ToList();
+                //records = Results
+                //   .Select(l => new AccessPermisionTreeViewModel
+                //   {
+                //       id = l.id,
+                //       name = l.name,
+                //       @checked = false,
+                //       item = GetChildrenModule(Results, l.id)
+                //   }).ToList();
             }
             catch (Exception ex)
             {
-                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "List<TreeViewModel> ListTreeViewCostCode()", "Exception While Listing UnAssigned Work Order.", null);
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<AccessPermisionTreeViewModel> ListTreeViewAccessPermission(long VST_Id)", "Exception While Listing Module and sub module tree.", null);
                 throw;
             }
             return records;
         }
         private List<AccessPermisionTreeViewModel> GetChildrenModule(List<AccessPermisionTreeViewModel> ChildDataList, long? ModuleId)
         {
-            return ChildDataList = ChildDataList.Where(x => x.ModuleId == ModuleId). //_workorderems.spGetCostCode(action, MasteCostCodeId).Select(l => new TreeViewModel
+            return ChildDataList = ChildDataList.Where(x => x.id == ModuleId). //_workorderems.spGetCostCode(action, MasteCostCodeId).Select(l => new TreeViewModel
             Select(l => new AccessPermisionTreeViewModel
             {
                 id = l.SubModuleId,
                 name = l.SubModuleName,
                 @checked = false
             }).ToList();           
+        }
+
+        public bool SaceAccessPermission(AccessPermisionTreeViewModel obj)
+        {
+            var _VSCRepository = new VehicleSeatingChartRepository();
+            bool isSaved = false;
+            try
+            {
+                if(obj != null)
+                {
+                    if(obj.id > 0)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SaceAccessPermission(AccessPermisionTreeViewModel obj)", "Exception While saving access permission", obj);
+                throw;
+            }
+            return isSaved;
         }
     }
 }

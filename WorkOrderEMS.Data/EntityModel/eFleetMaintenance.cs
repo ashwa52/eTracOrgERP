@@ -41,9 +41,9 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<System.DateTime> DeletedDate { get; set; }
     
         public virtual eFleetPreventativeMaintenance eFleetPreventativeMaintenance { get; set; }
-        public virtual GlobalCode GlobalCode { get; set; }
-        public virtual eFleetVehicle eFleetVehicle { get; set; }
-        public virtual UserRegistration UserRegistration { get; set; }
         public virtual LocationMaster LocationMaster { get; set; }
+        public virtual UserRegistration UserRegistration { get; set; }
+        public virtual eFleetVehicle eFleetVehicle { get; set; }
+        public virtual GlobalCode GlobalCode { get; set; }
     }
 }

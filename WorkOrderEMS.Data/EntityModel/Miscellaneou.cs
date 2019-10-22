@@ -25,8 +25,8 @@ namespace WorkOrderEMS.Data.EntityModel
         public string MIS_InvoiceDocument { get; set; }
         public string MIS_IsActive { get; set; }
     
-        public virtual CostCode CostCode { get; set; }
         public virtual Company Company { get; set; }
         public virtual LocationMaster LocationMaster { get; set; }
+        public virtual MisNumber MisNumber { get; set; }
     }
 }

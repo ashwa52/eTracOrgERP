@@ -14,10 +14,12 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class CostCodeLocationMapping
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CostCodeLocationMapping()
         {
             this.BudgetCostCodeMappings = new HashSet<BudgetCostCodeMapping>();
             this.BudgetCostCodeMappings1 = new HashSet<BudgetCostCodeMapping>();
+            this.CompanyLocationCostCodeMappings = new HashSet<CompanyLocationCostCodeMapping>();
         }
     
         public long CLM_Id { get; set; }
@@ -26,10 +28,12 @@ namespace WorkOrderEMS.Data.EntityModel
         public long CLM_CCD_CostCode { get; set; }
         public string CLM_IsActive { get; set; }
     
-        public virtual CostCode CostCode { get; set; }
-        public virtual CostCodeMaster CostCodeMaster { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BudgetCostCodeMapping> BudgetCostCodeMappings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BudgetCostCodeMapping> BudgetCostCodeMappings1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CompanyLocationCostCodeMapping> CompanyLocationCostCodeMappings { get; set; }
         public virtual LocationMaster LocationMaster { get; set; }
     }
 }

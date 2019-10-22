@@ -14,6 +14,7 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class QRCMaster
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public QRCMaster()
         {
             this.QRCMasterLogs = new HashSet<QRCMasterLog>();
@@ -72,9 +73,12 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual GlobalCode GlobalCode3 { get; set; }
         public virtual GlobalCode GlobalCode4 { get; set; }
         public virtual GlobalCode GlobalCode5 { get; set; }
-        public virtual ICollection<QRCMasterLog> QRCMasterLogs { get; set; }
-        public virtual ICollection<QRCScanLog> QRCScanLogs { get; set; }
-        public virtual ICollection<UserRegistration> UserRegistrations { get; set; }
         public virtual LocationMaster LocationMaster { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QRCMasterLog> QRCMasterLogs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QRCScanLog> QRCScanLogs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserRegistration> UserRegistrations { get; set; }
     }
 }

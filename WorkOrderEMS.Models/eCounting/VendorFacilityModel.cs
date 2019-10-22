@@ -24,8 +24,9 @@ namespace WorkOrderEMS.Models
         [Required(ErrorMessage = "Select product/service is required")]
         public string ProductServiceType { get; set; }
 
-        
+
         //[RegularExpression("^[0-9 ,]+$", ErrorMessage = "Special characters or letters are not allowed.")]
+        [Required(ErrorMessage = "UnitCost is required")]
         public decimal? UnitCost { get; set; }
 
         [Required(ErrorMessage = "Unit cost is required")]
@@ -47,6 +48,7 @@ namespace WorkOrderEMS.Models
         public long FacilityId { get; set; }
         public long? LocationId { get; set; }
         public long UserId { get; set; }
+        public string VenderProductImageName { get; set; }
     }
 
     public class VendorTypeData
@@ -60,4 +62,12 @@ namespace WorkOrderEMS.Models
         public string CostCodeName { get; set; }
         public decimal Amount { get; set; }
     }
+    //public class ContractLocationAllocation
+    //{
+    //    public int CntId { get; set; }
+    //    public int LocationId { get; set; }
+    //    public int AllocationId { get; set; }
+    //    public string IsActive { get; set; }
+
+    //}
 }

@@ -15,7 +15,7 @@ namespace WorkOrderEMS.Data.EntityModel
     {
         public long JPS_JobPostingId { get; set; }
         public Nullable<long> JBT_Id { get; set; }
-        public string JPS_HiringManagerID { get; set; }
+        public long JPS_HiringManagerID { get; set; }
         public string JobTitle { get; set; }
         public Nullable<int> PositionCount { get; set; }
         public Nullable<int> ApplicantCount { get; set; }

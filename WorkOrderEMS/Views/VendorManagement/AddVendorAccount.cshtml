@@ -4,7 +4,8 @@
     //    bool validEmail = Regex.IsMatch(Email, @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" + @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$", RegexOptions.IgnoreCase);
 
     ViewBag.Title = "Add Account";
-    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+    //Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
     long locationId = 0;
     long userType = 0;
     string StateID = string.Empty, LocationTypeID = string.Empty;
@@ -27,7 +28,7 @@
     </script>
 }
 <link href="~/Content/eCounting/VendorWizard.css" rel="stylesheet" />
-<link href="~/Content/eFleetVehicle/eFleetstyle.css" rel="stylesheet" />
+@*<link href="~/Content/eFleetVehicle/eFleetstyle.css" rel="stylesheet" />*@
 @*<link href="~/Content/eFleetVehicle/VendorRegistrationCSS.css" rel="stylesheet" />*@
 
 <script type="text/javascript" src="~/Scripts/BindDropDown/DropDownList.js"></script>
@@ -38,170 +39,149 @@
     .input-disabled {
         background-color: #EBEBE4;
     }
+
+    .form-control {
+        border: 1px solid #a0b3b0 !important;
+    }
+
+    label .req {
+        margin: 2px;
+        color: #ed2f35;
+    }
 </style>
 @Html.AntiForgeryToken()
+<br />
+<div class="content-body">
+    <div class="container-fluid">
+        <!-- row -->
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card aos-init aos-animate" data-aos="fade-up">
+                    <div class="card-header headerSize">
+                        <h4 class="card-title" style="color:white;"><strong>SetUp Vendor</strong></h4>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm("AddAccountDetails", "VendorManagement", FormMethod.Post, new { enctype = "multipart/form-data", id = "msform" }))
+                        {
+                            @Html.HiddenFor(model => model.VendorId)
+                            <div class="panel panel-primary setup-content">
 
-<div class="col-lg-12 col-md-12  col-sm-12  col-xs-12">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            Set Up Vendor
-        </div>
-        @using (Html.BeginForm("AddAccountDetails", "VendorManagement", FormMethod.Post, new { enctype = "multipart/form-data", id = "msform" }))
-        {
-            @Html.HiddenFor(model => model.VendorId)
-                <div class="row">
-                    <div class="panel-body">
-                        <div class="form-horizontal">
-                            <div class="form">
-                                <div class="top-row">
-                                    <div class="field-wrap">
-                                        <label id="lblAccountPaymentMode">
-                                            Pay Mode<span class="req">*</span>
-                                        </label>
-                                        @if (ViewBag.PaymentModeList != null)
-                                        {
-                                          {@Html.DropDownListFor(model => model.VendorAccountDetailsModel.PaymentMode, new SelectList(ViewBag.PaymentModeList, "PaymentModeId", "PaymentModeName"), "--Select Payment Mode--", new { @id = "PaymentMode" })}
+                                <div class="basic-form">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label" for="LocationName">Pay Mode</label>
+                                        <div class="col-sm-4">
+                                            @if (ViewBag.PaymentModeList != null)
+                                            {
+                                                {@Html.DropDownListFor(model => model.VendorAccountDetailsModel.PaymentMode, new SelectList(ViewBag.PaymentModeList, "PaymentModeId", "PaymentModeName"), "--Select Payment Mode--", new { @id = "PaymentMode", @class = "form-control input-rounded" })}
                                         }
                                         else
-                                        {<select id="PaymentMode"><option value="-1">@ViewBag.PaymentModeList</option></select>}
-                                    </div>
-                                </div>
-                                <br />
-                                <div class="top-row wiredSelectHideShow" style="display:none;">
-                                    <div class="field-wrap">
-                                        <label>
-                                            Bank Name<span class="req">*</span>
-                                        </label>
-                                        @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankName, null, new { @id = "BankName" })
-                                        @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankName)
-                                    </div>
-                                    <div class="field-wrap">
-                                        <label>
-                                            Bank Location<span class="req">*</span>
-                                        </label>
-                                        @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankLocation, null, new { @id = "BankLocation" })
-                                        @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankLocation)
-                                    </div>
-                                </div>
+                                        {<select id="PaymentMode" class="form-control input-rounded"><option value="-1">@ViewBag.PaymentModeList</option></select>}
 
-                                <div class="top-row wiredSelectHideShow" style="display:none;">
-                                    <div class="field-wrap">
-                                        <label>
-                                            Account Number<span class="req">*</span>
-                                        </label>
-                                        @Html.TextBoxFor(model => model.VendorAccountDetailsModel.AccountNumber, null, new { @id = "AccountNumber" })
-                                        @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.AccountNumber)
-                                    </div>
-                                    <div class="field-wrap">
-                                        <label>
-                                            IFSC Code<span class="req">*</span>
-                                        </label>
-                                        @Html.TextBoxFor(model => model.VendorAccountDetailsModel.IFSCCode, null, new { @id = "IFSCCode" })
-                                        @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.IFSCCode)
-                                    </div>
-
-                                </div>
-                                <div class="top-row wiredSelectHideShow" style="display:none;">
-                                    <div class="field-wrap">
-                                        <label>
-                                            Swift OIC Code<span class="req">*</span>
-                                        </label>
-                                        @Html.TextBoxFor(model => model.VendorAccountDetailsModel.SwiftOICCode, null, new { @id = "SwiftOICCode" })
-                                        @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.SwiftOICCode)
-                                    </div>
-                                    <div class="field-wrap">
-                                        <label>
-                                            Account Document<span class="req">*</span>
-                                        </label>
-                                        <div id="dvAccountPreview">
                                         </div>
-                                        <input id="fileuploadAccount" type="file" style="margin-left:50%;" name="VendorAccountDetailsModel.AccountDocumentsFile" />
-                                        @*<ul class="attachment">
-                                            @if (Model.VendorAccountDetailsModel.AccountDocuments != null && Model.VendorAccountDetailsModel.AccountDocuments != "")
-                                            {
-                                               <li style="margin-left :25%;margin-top:20px;">
-                                                   <a class="title" href="@Url.Content(CompanyDocPath + Model.VendorAccountDetailsModel.AccountDocuments)"> @Model.VendorAccountDetailsModel.AccountDocuments</a>
-                                               </li>
-                                            }
-                                        </ul>*@
+
                                     </div>
-                                </div>
-                                <br />
-                                <div class="top-row CardSelectHideShow" style="display:none;" >
-                                    <div class="field-wrap">
-                                        <label>
-                                            Card Number<span class="req">*</span>
-                                        </label>
-                                        @Html.TextBoxFor(model => model.VendorAccountDetailsModel.CardNumber, null, new { @id = "CardNumber" })
-                                        @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.CardNumber)
+
+                                    <div class="form-group row wiredSelectHideShow" style="display:none;">
+                                        <label class="col-sm-2 col-form-label" for="LocationName"> Bank Name<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankName, null, new { @id = "BankName", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankName)
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="VendorName">Bank Location<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankLocation, null, new { @id = "BankLocation", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankLocation)
+
+                                        </div>
                                     </div>
-                                    <div class="field-wrap">
-                                        <label>
-                                            Bank Name <span class="req">*</span>
-                                        </label>
-                                        @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankName, null, new { @id = "PolicyNumber" })
-                                        @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankName)
+                                    <div class="form-group row wiredSelectHideShow" style="display:none;">
+                                        <label class="col-sm-2 col-form-label" for="LocationName"> Account Number<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.AccountNumber, null, new { @id = "AccountNumber", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.AccountNumber)
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="VendorName">  IFSC Code<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.IFSCCode, null, new { @id = "IFSCCode", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.IFSCCode)
+
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="top-row CardSelectHideShow" style="display:none;">
-                                    <div class="field-wrap">
-                                        <label>
-                                            Card Holder Name<span class="req">*</span>
-                                        </label>
-                                        @Html.TextBoxFor(model => model.VendorAccountDetailsModel.CardHolderName, null, new { @id = "CardHolderName" })
-                                        @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.CardHolderName)
+                                    <div class="form-group row wiredSelectHideShow" style="display:none;">
+                                        <label class="col-sm-2 col-form-label" for="LocationName">  Swift OIC Code<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.SwiftOICCode, null, new { @id = "SwiftOICCode", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.SwiftOICCode)
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="VendorName">  Account Document<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            <div id="dvAccountPreview">
+                                            </div>
+                                            <input id="fileuploadAccount" type="file" style="margin-left:50%;" name="VendorAccountDetailsModel.AccountDocumentsFile" />
+
+                                        </div>
                                     </div>
-                                    <div class="field-wrap">
-                                        <label>
-                                            Expiration Date <span class="req">*</span>
-                                        </label>
-                                        @Html.TextBoxFor(model => model.VendorAccountDetailsModel.ExpirationDate, null, new { @id = "ExpirationDate", @onkeydown = "return false;" })
-                                        @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.ExpirationDate)
+                                    <div class="form-group row CardSelectHideShow" style="display:none;">
+                                        <label class="col-sm-2 col-form-label" for="LocationName">  Card Number<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.CardNumber, null, new { @id = "CardNumber", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.CardNumber)
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="VendorName"> Bank Name <span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankName, null, new { @id = "PolicyNumber", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankName)
+                                        </div>
                                     </div>
+                                    <div class="form-group row CardSelectHideShow" style="display:none;">
+                                        <label class="col-sm-2 col-form-label" for="LocationName"> Card Holder Name<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.CardHolderName, null, new { @id = "CardHolderName", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.CardHolderName)
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="VendorName"> Expiration Date <span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.ExpirationDate, null, new { @id = "ExpirationDate", @onkeydown = "return false;", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.ExpirationDate)
+                                        </div>
+                                    </div>
+                                    @*<input type="button" name="previous" class="btn btn-default bluebutton previous prv-last-btn pull-right marginright10 marginbottom10 LRmar" value="Previous" style="border-radius:25px;width:90px;" />*@
+                                    <button type="submit" onclick="return validateCustomFields(this);" class="btn btn-success pull-right marginright10 marginbottom10 Lmar10" style="border-radius:25px;width:150px;">Save &amp; Update </button>
+                                    <input type="button" onclick="location.href='@Url.Action("ListAccountOfVendor", "VendorManagement",new {VendorId = ViewBag.VendorIdForCancel})'" class="btn btn-default bluebutton pull-right marginright10 marginbottom10 Lmar10" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
+
                                 </div>
                             </div>
-                        </div>
-                         <input type="button" name="previous" class="btn btn-default bluebutton previous prv-last-btn pull-right marginright10 marginbottom10 LRmar" value="Previous" style="border-radius:25px;width:90px;" />
-                    <button type="submit" onclick="return validateCustomFields(this);" class="btn btn-success pull-right marginright10 marginbottom10 Lmar10" style="border-radius:25px;width:150px;">Save &amp; Update </button>
-                    <input type="button" onclick="location.href='@Url.Action("ListAccountOfVendor", "VendorManagement",new {VendorId = ViewBag.VendorIdForCancel})'" class="btn btn-default bluebutton pull-right marginright10 marginbottom10 Lmar10" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
-                 
+                        }
+
+
                     </div>
-                    <div class="clearfix"></div>
-                </div> 
-                  
-        }
+                </div>
+            </div>
+        </div>
     </div>
-
-</div>
-
-
-<div class="clearfix"></div>
+</div> <div class="clearfix"></div>
 <script>
     $(document).ready(function () {
-        $(function () {
-            $("#fileuploadAccount").change(function () {
-                $("#dvAccountPreview").html("");
-                var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.pdf|.doc|.txt)$/;
-                if (regex.test($(this).val().toLowerCase())) {
-                    if ($.browser.msie && parseFloat(jQuery.browser.version) <= 9.0) {
-                        $("#dvAccountPreview").show();
-                        $("#dvAccountPreview")[0].filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = $(this).val();
-                    }
-                    else {
-                        if (typeof (FileReader) != "undefined") {
-                            $("#dvAccountPreview").show();
-                            // $("#dvContractPreview").append("<img />");
-                            var reader = new FileReader();
-                            reader.onload = function (e) {
-                                $("#dvAccountPreview").attr("src", e.target.result);
-                            }
-                            reader.readAsDataURL($(this)[0].files[0]);
-                        } else {
-                            alert("This browser does not support FileReader.");
-                        }
-                    }
-                }
-            })
+
+        $("#drp_MasterLocation1").hide();
+
+        $('input[name="VendorAccountDetailsModel.BankName"]').change(function () {
+            $('input[name="VendorAccountDetailsModel.BankName"]').val($(this).val());
+        });
+        $("#fileuploadAccount").change(function () {
+            $("#dvAccountPreview").html("");
+            var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
+            var size = this.files[0].size;
+            if (!allowedExtensions.exec($(this).val().toLowerCase())) {
+                alert("Invalid file type");
+                $(this).val("");
+                return false;
+            } 
+            else if (size >= 4194304) {
+                alert("Max file size 4 mb.");
+                $(this).val("");
+                return false;
+            }
         })
         $('#ExpirationDate').datepicker({
             format: "yyyy/mm/dd",
@@ -209,16 +189,15 @@
         });
         $('#lblAccountPaymentMode').hide();
         $("#PaymentMode").change(function () {
+            $('input[name="VendorAccountDetailsModel.BankName"]').val('');
             $('#lblAccountPaymentMode').show();
             $('#lblAccountPaymentMode').addClass('active highlight');
             var paymentModeVal = $('#PaymentMode').find('option:selected').val();
-            if (paymentModeVal == 1)
-            {
+            if (paymentModeVal == 1) {
                 $(".wiredSelectHideShow").hide();
                 $(".CardSelectHideShow").show();
             }
-            else if(paymentModeVal == 2)
-            {
+            else if (paymentModeVal == 2) {
                 $(".wiredSelectHideShow").show();
                 $(".CardSelectHideShow").hide();
             }

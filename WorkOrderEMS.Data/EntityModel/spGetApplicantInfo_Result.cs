@@ -20,11 +20,15 @@ namespace WorkOrderEMS.Data.EntityModel
         public string API_HomeAddress { get; set; }
         public string API_City { get; set; }
         public string API_State { get; set; }
+        public Nullable<int> API_Zip { get; set; }
+        public string API_Resume { get; set; }
+        public string API_CoverLetter { get; set; }
         public long API_PhoneNumber { get; set; }
         public string API_Email { get; set; }
         public string API_DLNumber { get; set; }
         public string API_Photo { get; set; }
         public string API_Citizenship { get; set; }
+        public string API_MilitaryService { get; set; }
         public string API_Gender { get; set; }
         public string API_HighestEducation { get; set; }
         public string API_AnyRefOrEmployeeInELITE { get; set; }
@@ -42,10 +46,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public string VST_Title { get; set; }
         public string JBT_JobTitle { get; set; }
         public string HiringManager { get; set; }
-        public Nullable<int> API_Zip { get; set; }
-        public string API_Resume { get; set; }
-        public string API_CoverLetter { get; set; }
-        public string API_MilitaryService { get; set; }
         public string API_HiringManagerId { get; set; }
         public string INS_EMP_InterviewerEmployeeId { get; set; }
         public string INS_IsHiringManager { get; set; }

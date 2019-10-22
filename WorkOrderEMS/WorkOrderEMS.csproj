@@ -14,7 +14,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WorkOrderEMS</RootNamespace>
     <AssemblyName>WorkOrderEMS</AssemblyName>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -372,6 +372,7 @@
     <Compile Include="Controllers\Common\Schedular.cs" />
     <Compile Include="Controllers\DAR\DARController.cs" />
     <Compile Include="Controllers\eCounting\BillController.cs" />
+    <Compile Include="Controllers\eCounting\DebitMemoController.cs" />
     <Compile Include="Controllers\eCounting\eCountingReportController.cs" />
     <Compile Include="Controllers\eCounting\MiscellaneousController.cs" />
     <Compile Include="Controllers\eCounting\PaymentController.cs" />
@@ -395,6 +396,7 @@
     <Compile Include="Controllers\Manager\ManagerController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Controllers\NewAdmin\EPeopleController.cs" />
     <Compile Include="Controllers\NewAdmin\NewAdminController.cs" />
     <Compile Include="Controllers\PDF\PDFDataController.cs" />
     <Compile Include="Controllers\QRCSetup\QRCSetupController.cs" />
@@ -1542,11 +1544,19 @@
     <Content Include="Content\KendoTreeView\kendo.material.min.css" />
     <Content Include="Content\KendoTreeView\kendo.material.mobile.min.css" />
     <Content Include="Content\nanoscroller.css" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\CSS\custom.css" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\CSS\JqueryScripttop.css" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\CSS\micro-clearfix.css" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\CSS\reset-html5.css" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\CSS\stiff-chart.css" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\JS\stiffChart.js" />
     <Content Include="Content\NewAdminContent\CSS\clockPicker.css" />
+    <Content Include="Content\NewAdminContent\CSS\Common.css" />
     <Content Include="Content\NewAdminContent\CSS\MultstepWizardNew.css" />
     <Content Include="Content\NewAdminContent\CSS\perfect-scrollbar.css" />
     <Content Include="Content\NewAdminContent\CSS\RadioButtonCSS.css" />
     <Content Include="Content\NewAdminContent\CSS\style.css" />
+    <Content Include="Content\NewAdminContent\CSS\UserTreeView.css" />
     <Content Include="Content\NewAdminContent\ICON\font-awesome-old\css\font-awesome.min.css" />
     <Content Include="Content\NewAdminContent\ICON\font-awesome-old\fonts\fontawesome-webfont3e6e.svg" />
     <Content Include="Content\NewAdminContent\ICON\line-awesome\css\line-awesome.min.css" />
@@ -1658,7 +1668,16 @@
     <Content Include="Content\NewAdminContent\IMAGES\user\7.jpg" />
     <Content Include="Content\NewAdminContent\IMAGES\user\8.png" />
     <Content Include="Content\NewAdminContent\IMAGES\user\form-user.png" />
+    <Content Include="Content\NewAdminContent\JQUERY\Charts\amchart3.js" />
+    <Content Include="Content\NewAdminContent\JQUERY\Charts\amcharts.js" />
+    <Content Include="Content\NewAdminContent\JQUERY\Charts\animated.js" />
+    <Content Include="Content\NewAdminContent\JQUERY\Charts\charts.js" />
+    <Content Include="Content\NewAdminContent\JQUERY\Charts\core.js" />
+    <Content Include="Content\NewAdminContent\JQUERY\Charts\material.js" />
+    <Content Include="Content\NewAdminContent\JQUERY\Charts\serial.js" />
+    <Content Include="Content\NewAdminContent\JQUERY\Charts\serial3.js" />
     <Content Include="Content\NewAdminContent\JQUERY\clockPicker.js" />
+    <Content Include="Content\NewAdminContent\JQUERY\MaskLoaderNew.js" />
     <Content Include="Content\NewAdminContent\JQUERY\tinymce.min.js" />
     <Content Include="Content\NewAdminContent\VENDOR\amcharts\amcharts.js" />
     <Content Include="Content\NewAdminContent\VENDOR\amcharts\ammap.js" />
@@ -5119,9 +5138,13 @@
     <Content Include="GridListing\JqGridScript\WorkOrderWeekHistory.js" />
     <Content Include="GridListing\JqGridScript\WorkRequestAssignment.js" />
     <Content Include="GridListing\JqGridScript\WorkRequestList.js" />
+    <Content Include="GridListing\JsGridScript\ListDAR.js" />
+    <Content Include="GridListing\JsGridScript\List306090.js" />
+    <Content Include="GridListing\JsGridScript\ListEmployeeManagement.js" />
     <Content Include="GridListing\JsGridScript\ListMyOpening.js" />
     <Content Include="GridListing\JsGridScript\ListOnBoarding.js" />
     <Content Include="GridListing\JsGridScript\ListQRCList.js" />
+    <Content Include="GridListing\JsGridScript\ListRequisitionData.js" />
     <Content Include="GridListing\JsGridScript\ListWorkOrderAssignment.js" />
     <Content Include="Images\back2.jpg" />
     <Content Include="Images\back4.jpg" />
@@ -5132,14 +5155,13 @@
     <Content Include="Images\Credit_Card.png" />
     <Content Include="Images\delete.png" />
     <Content Include="Images\DIRECT-DEPOSIT.jpg" />
+    <Content Include="Images\donut.png" />
     <Content Include="Images\etrac-logo-inner.jpg" />
     <Content Include="Images\eTrac380-light.png" />
     <Content Include="Images\eTrac380-light1.png" />
     <Content Include="Images\eTrac450-light.png" />
     <Content Include="Images\eTrac450.png" />
     <Content Include="Images\etracblur450.png" />
-    <Content Include="Images\FormImages\I-9-stop.jpg" />
-    <Content Include="Images\FormImages\I-9.jpg" />
     <Content Include="Images\headerbg_wht.png" />
     <Content Include="Images\HighChartsImageForExport\00335944-7762-464c-8ad4-de8ee11a049e.png" />
     <Content Include="Images\HighChartsImageForExport\0262c4a5-a7ee-47f1-92b9-b8c35e1bfe6c.png" />
@@ -5149,7 +5171,7 @@
     <Content Include="Images\icon3.png" />
     <Content Include="Images\icon4.png" />
     <Content Include="Images\icons.png" />
-    <Content Include="Images\FormImages\image-form.jpg" />
+    <Content Include="Images\image-form.jpg" />
     <Content Include="Images\LoaderCar_2.gif" />
     <Content Include="Images\LoadingCar.gif" />
     <Content Include="Images\LoadingSpinner.GIF" />
@@ -5867,6 +5889,16 @@
     <Content Include="Areas\AdminSection\Views\Department\Index.cshtml" />
     <Content Include="Areas\AdminSection\Views\OrgChart\_ViewChart.cshtml" />
     <Content Include="App_Data\resume.pdf" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\CSS\maps\custom.css.map" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\CSS\maps\micro-clearfix.css.map" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\CSS\maps\reset-html5.css.map" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\CSS\maps\stiff-chart.css.map" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\SCSS\custom.scss" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\SCSS\micro-clearfix.scss" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\SCSS\reset-html5.scss" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\SCSS\stiff-chart.scss" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\SCSS\_horizontal.scss" />
+    <Content Include="Content\NewAdminContent\AnimatedChart\SCSS\_vertical.scss" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\eTrac - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\eTrac - Web Deploy.pubxml" />
@@ -6036,6 +6068,7 @@
     <Content Include="Scripts\Morris\morris.min.js" />
     <Content Include="Scripts\Morris\raphael.min.js" />
     <Content Include="Scripts\NewAdminJS\custom.min.js" />
+    <Content Include="Scripts\NewAdminJS\CustomizeJSForVSC.js" />
     <Content Include="Scripts\NewAdminJS\dashboard\dashboard-1.js" />
     <Content Include="Scripts\NewAdminJS\dashboard\dashboard-2.js" />
     <Content Include="Scripts\NewAdminJS\plugins-init\amchart-init.js" />
@@ -6108,6 +6141,7 @@
     <Content Include="Scripts\NewAdminJS\quixnav-init.js" />
     <Content Include="Scripts\NewAdminJS\settings.js" />
     <Content Include="Scripts\NewAdminJS\styleSwitcher.js" />
+    <Content Include="Scripts\NewAdminJS\tynamice.min.js" />
     <Content Include="Scripts\NewAdminJS\WorkOrderHideShowFunctionality.js" />
     <Content Include="Scripts\NewTimePicker\jquery.timesetter.js" />
     <Content Include="Scripts\NewTimePicker\jquery.timesetter.min.css" />
@@ -6381,12 +6415,27 @@
     <Content Include="Views\NewAdmin\_ePeopleDashboard.cshtml" />
     <Content Include="Views\NewAdmin\QRCView\_QRCForm.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\_HiringOnBoarding.cshtml" />
+    <Content Include="Views\NewAdmin\WorkOrderView\_AssignToEmployee.cshtml" />
+    <Content Include="Views\NewAdmin\WorkOrderView\_WorkOrderDashboard.cshtml" />
+    <Content Include="Views\NewAdmin\QRCView\_eScanDashboard.cshtml" />
+    <Content Include="Views\NewAdmin\DAR\_DARDashboard.cshtml" />
+    <Content Include="Views\NewAdmin\_Reports.cshtml" />
+    <Content Include="Views\VendorManagement\VenderDocument.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_ListUserEMP.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_StatusChangeEMP.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_TreeUserViewEMP.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_VSCPointingChart.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_FilesEmployeeManagement.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_EditEmployeeInfo.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_EmployeeManagement.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_TreeViewUser1.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_AddVSCForRequisition.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\_OnBoarding.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\_infoFactSheet.cshtml" />
     <Content Include="Views\Guest\Index.cshtml" />
     <Content Include="Views\Shared\_GuestLayout.cshtml" />
     <Content Include="Views\Guest\PersonalFile.cshtml" />
-    <Content Include="Views\Guest\_educationVarificationFormold.cshtml" />
+    <Content Include="Views\Guest\_educationVarificationForm.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\_interviewers.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\_questionsview.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\_questions.cshtml" />
@@ -6394,13 +6443,16 @@
     <Content Include="Views\Guest\_directDepositeForm.cshtml" />
     <Content Include="Views\Guest\_employeeHandbook.cshtml" />
     <Content Include="Views\Guest\ThankYou.cshtml" />
-    <Content Include="Views\Guest\_I9Form.cshtml" />
-    <Content Include="Views\Guest\_W4Form.cshtml" />
-    <Content Include="Views\Guest\_PhotoReleaseForm.cshtml" />
-    <Content Include="Views\Guest\_EducationVarificationForm.cshtml" />
-    <Content Include="Views\Guest\_ConfidentialityAgreementForm.cshtml" />
-    <Content Include="Views\Guest\_PreviousEmployeement.cshtml" />
-    <Content Include="Views\Guest\_CreditCardAuthorizationForm.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_HiringOnBoardingDashboard.cshtml" />
+    <Content Include="Views\NewAdmin\_PerformanceManagement.cshtml" />
+    <Content Include="Views\GlobalAdmin\_Notifications.cshtml" />
+    <Content Include="Views\NewAdmin\_userAssessmentView.cshtml" />
+    <Content Include="Views\NewAdmin\_306090Grid.cshtml" />
+    <Content Include="Views\NewAdmin\userAssessmentView.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_ViewVSCDetails.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\StatusChaneForm\_DemotionEmployeeForm.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\StatusChaneForm\_EmploymentStatusChangeForm.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_VSCPointingChartDemo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6436,12 +6488,14 @@
     <Folder Include="Content\Images\RulesViolation\" />
     <Folder Include="Content\Images\UserSignature\" />
     <Folder Include="Content\Images\VendorDocs\" />
+    <Folder Include="Content\ImportFile\" />
     <Folder Include="Content\NewAdminContent\VENDOR\tinymce\skins\lightgray\img\plugins\" />
     <Folder Include="Content\PDFForms\PDFFormAfterFilling\" />
     <Folder Include="Content\ProjectDocs\VendorAckForm\" />
     <Folder Include="Content\ProjectDocs\VendorW9Form\" />
     <Folder Include="obj\" />
     <Folder Include="ReportPDF\FullPageReport\eFleet\" />
+    <Folder Include="Views\DebitMemo\" />
     <Folder Include="Views\NewClient\" />
   </ItemGroup>
   <ItemGroup>

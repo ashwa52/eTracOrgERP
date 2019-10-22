@@ -22,6 +22,7 @@ namespace WorkOrderEMS.Models
 
         [Required(ErrorMessage = "Vendor is required")]
         public long? Vendor { get; set; }
+        public long? SelectedVendor { get; set; }
         public long PointOfContactId { get; set; }
         public string PointOfContactName { get; set; }
         public string PointOfContactNameHidden { get; set; }
@@ -81,7 +82,7 @@ namespace WorkOrderEMS.Models
         public decimal? Total { get; set; }
         public long QBK_Id { get; set; }
 
-        public POTypeDetails NewPOTypeDetails { get; set; }
+        public List<POTypeDataModel> NewPOTypeDetails { get; set; }
     }
     public class POTypeDetails
     {

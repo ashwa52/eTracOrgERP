@@ -27,7 +27,7 @@ function ajaxProgressHide() {
 
 $(document).ready(function () {
 
-    $("input[type='reset']").live("click", function () {
+    $("input[type='reset']").on("click", function () {
         $(".NotValid").removeAttr("errtitle");
         $(".NotValid").removeClass("NotValid");
     });
@@ -55,7 +55,7 @@ $(document).ready(function () {
         $('.ajaxProgress').css("top", $(document).scrollTop() + "px");
     });
 
-    $("#ZipCode").live("keypress", function (e) {
+    $("#ZipCode").on("keypress", function (e) {
         $(this).val($(this).val().replace(/[^0-9]+/g, ''));
     }); //End
     //$(".validdate").mask("99/99/9999");
@@ -65,7 +65,7 @@ $(document).ready(function () {
     //    $(".AlphaNumericAndCharOnly").alphanumeric({ allow: ".,-, ,'," });
 
     //This function is used to show progress bar       
-    $('.ajaxCall').live("click", function (e) {
+    $('.ajaxCall').on("click", function (e) {
         ajaxProgressShow();
     });
 
@@ -107,7 +107,7 @@ $(document).ready(function () {
 
 
     //This functionality is used show confirmation while deleting element
-    $('.toggleStatus').live("click", function () {
+    $('.toggleStatus').on("click", function () {
         var control = $(this);
         ajaxProgressShow();
 
@@ -134,13 +134,13 @@ $(document).ready(function () {
 
     /****************************************Stope Cut Copy Paste*****************************************************************/
 
-    $('.cutcopypaste').live("cut copy paste", function (e) {
+    $('.cutcopypaste').on("cut copy paste", function (e) {
         e.preventDefault();
     }); //End
 
     /*****************************Nemeric Only**********************************************************/
 
-    $('.integerOnly').live("cut copy paste", function (e) {
+    $('.integerOnly').on("cut copy paste", function (e) {
         e.preventDefault();
     });
 
@@ -160,15 +160,15 @@ $(document).ready(function () {
     }
 
     /******************************decimal********************************************************************/
-    $(".decimal").live('keyup', function (event) {
+    $(".decimal").on('keyup', function (event) {
         validDecimal($(this));
     });
 
-    $(".decimal").live('blur', function (event) {
+    $(".decimal").on('blur', function (event) {
         validDecimal($(this));
     });
 
-    $(".decimal").live('keydown', function (event) {
+    $(".decimal").on('keydown', function (event) {
         // Backspace, tab, enter, end, home, left, right,decimal(.)in number part, decimal(.) in alphabet 
         // We don't support the del key in Opera because del == . == 46. 
         var controlKeys = [8, 9, 13, 35, 36, 37, 39, 110, 190];
@@ -188,7 +188,7 @@ $(document).ready(function () {
         }
 
     });
-    $('.decimal').live("cut copy paste", function (e) {
+    $('.decimal').on("cut copy paste", function (e) {
         e.preventDefault();
     });
 
@@ -196,7 +196,7 @@ $(document).ready(function () {
 
 
     //--------- This is the jquery code that would be used to set all the textboxes with class Alphabeticonly as to accept Alphabets only -------------//
-    //$(".AlphabeticOnly").live("keypress", function (e) {
+    //$(".AlphabeticOnly").on("keypress", function (e) {
     //    var key;
     //    key = e.which ? e.which : e.keyCode;
     //    if ((key >= 65 && key <= 91) || (key >= 97 && key < 123) || key == 8 || key == 9 || (key >= 37 && key <= 40) || key == 46 || /*key == 35 || key == 36 ||*/key == 116) {
@@ -209,7 +209,7 @@ $(document).ready(function () {
     //    }
     //}); //End
 
-    $(".AlphabaticWithSpace").live("keypress", function (e) {
+    $(".AlphabaticWithSpace").on("keypress", function (e) {
         var key;
         key = e.which ? e.which : e.keyCode;
         if ((key >= 65 && key <= 91) || (key >= 97 && key < 123) || key == 8 || key == 9 || key == 32 || (key >= 37 && key <= 40) || key == 46 || /*key == 35 || key == 36 ||*/key == 116) {
@@ -221,7 +221,7 @@ $(document).ready(function () {
     }); //End
 
     //--------- This is the jquery code that would be used to set all the textboxes with class AlphaNumericOnly as to accept Alpha-numerics only -------------//
-    $(".AlphaNumericOnly").live("keypress", function (e) {
+    $(".AlphaNumericOnly").on("keypress", function (e) {
         var key;
         key = e.which ? e.which : e.keyCode;
         if ((key >= 65 && key <= 90) || (key == 32) || (key >= 97 && key <= 122) || key == 8 || key == 9 || key == 32 || (key >= 37 && key <= 40) || key == 46 || /* key == 35 || key == 36 ||*/key == 116 || (key >= 48 && key <= 57)) {
@@ -235,7 +235,7 @@ $(document).ready(function () {
 
 
     //--------- This is the jquery code that would be used to set all the textboxes with class NumericsOnly as to accept Numerics only -------------//
-    $(".NumericOnly1").live("keypress", function (e) {
+    $(".NumericOnly1").on("keypress", function (e) {
         var key;
         key = e.which ? e.which : e.keyCode;
 
@@ -265,7 +265,7 @@ $(document).ready(function () {
         }, 100);
     });
 
-    $(".NumericWithoutDecimal").live("keypress", function (e) {
+    $(".NumericWithoutDecimal").on("keypress", function (e) {
         var key;
         key = e.which ? e.which : e.keyCode;
 
@@ -297,7 +297,7 @@ $(document).ready(function () {
     });
 
     //--------- This is the jquery code to check validation in form default button -------------//
-    $(".default").live('click', function (e) {
+    $(".default").on('click', function (e) {
         var i = 0;
         $('.DateValidation').each(function () {
             var control = $(this);
@@ -325,7 +325,7 @@ $(document).ready(function () {
     /*******************************************************************************************************************/
     /*******************************************************************************************************************/
 
-    //$("input").live("keydown", function () {
+    //$("input").on("keydown", function () {
     //    tooltip.hide();
     //});
 
@@ -333,12 +333,12 @@ $(document).ready(function () {
     //    tooltip.hide();
     //});
 
-    //$("select").live("change", function () {
+    //$("select").on("change", function () {
     //    tooltip.hide();
     //});
 
 
-    $(".requiredselect").live("change", function () {
+    $(".requiredselect").on("change", function () {
 
         try {
             showValidation($(this), "");
@@ -353,7 +353,7 @@ $(document).ready(function () {
     });
 
 
-    $(".NotValid").live("mouseover", function () {
+    $(".NotValid").on("mouseover", function () {
 
         if ($(this).hasClass("blockToolTip")) {
             return;
@@ -363,16 +363,16 @@ $(document).ready(function () {
     });
 
 
-    $(".NotValid").live("mouseout", function () {
+    $(".NotValid").on("mouseout", function () {
 
         // tooltip.hide();
     });
 
-    $(".NotValid").live("click", function () {
+    $(".NotValid").on("click", function () {
         // tooltip.hide();
     });
 
-    $(document).live("click", function () {
+    $(document).on("click", function () {
         // tooltip.hide();
     });
 
@@ -394,7 +394,7 @@ $(document).ready(function () {
     });
 
 
-    $(".CheckListBox").find("p").live("click", function (event) {
+    $(".CheckListBox").find("p").on("click", function (event) {
         var objTarget = $(event.target);
         var targetId = $.trim($(this).parent().first().attr("target_Id"));
         if (objTarget.is("input")) {
@@ -427,7 +427,7 @@ $(document).ready(function () {
     /*******************************************************************************************************************/
     /*******************************************************************************************************************/
 
-    $("input[type='text']:not(.NoValidation), input[type='password']:not(.NoValidation)").live("keyup", function () {
+    $("input[type='text']:not(.NoValidation), input[type='password']:not(.NoValidation)").on("keyup", function () {
 
         var ReturnMessage = '';
         var cls = "";
@@ -504,7 +504,7 @@ $(document).ready(function () {
 
 
 
-    $("select:not(.NoValidation)").live("change", function () {
+    $("select:not(.NoValidation)").on("change", function () {
         if ($(this).parents("div.form").find("div.invalid").html() != null) {
             //$(this).parents("div.form").find(".default").attr("disabled", "disabled");
         }
@@ -518,7 +518,7 @@ $(document).ready(function () {
     });
 
 
-    $("input[type=text]:not(.NoValidation)").live("blur", function () {
+    $("input[type=text]:not(.NoValidation)").on("blur", function () {
         var ReturnMessage = '';
         var control = $(this);
         //code for unique only. 
@@ -797,7 +797,7 @@ $(function () {
     });
 
 
-    $(".borderRed").live("keyup", function () {
+    $(".borderRed").on("keyup", function () {
         $(this).nextAll("div.validationMessage").remove();
         $(this).css("border", "");
         $(this).css("box-shadow", "");
@@ -809,7 +809,7 @@ $(function () {
         $(this).removeAttr("Title");
     });
 
-    $(".borderRed").live("blur", function () {
+    $(".borderRed").on("blur", function () {
         $(this).nextAll("div.validationMessage").remove();
         $(this).css("border", "");
         $(this).css("box-shadow", "");

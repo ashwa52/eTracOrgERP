@@ -404,21 +404,7 @@
     //        //alert(JSON.stringify(data));
     //    });
     //});
-    homogeneous = new kendo.data.HierarchicalDataSource({
-        transport: {
-            read: {
-                url: "../GetTreeView/",
-                data: { locationId: locationId },
-                dataType: "json"
-            }
-        },
-        schema: {
-            model: {
-                id: "id",
-                children: "item"
-            }
-        }
-    });
+    
     $("#treeData").kendoTreeView({
             checkboxes: {
                 checkChildren: true
@@ -436,9 +422,9 @@
                            {
                                id: 5, text: "Employee Mgmt", spriteCssClass: "folder"
                            }
-                   ]
-
-                   },{
+                ]
+            },
+                   {
                        id: 2, text: "Operation ", expanded: true, spriteCssClass: "rootfolder", items: [
                           {
                               id: 6, text: "eScan", spriteCssClass: "folder"},{

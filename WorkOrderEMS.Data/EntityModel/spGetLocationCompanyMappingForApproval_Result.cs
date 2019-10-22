@@ -13,9 +13,9 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class spGetLocationCompanyMappingForApproval_Result
     {
-        public long LCM_Id { get; set; }
-        public long LCM_CMP_Id { get; set; }
-        public long LCM_LocationId { get; set; }
+        public long LLCM_Id { get; set; }
+        public long LLCM_CMP_Id { get; set; }
+        public long LLCM_LocationId { get; set; }
         public string LocationName { get; set; }
         public string CMP_NameLegal { get; set; }
     }

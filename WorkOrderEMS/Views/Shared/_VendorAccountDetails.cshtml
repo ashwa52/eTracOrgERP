@@ -7,10 +7,8 @@
     if (ObjLogin != null)
     {
         UserType = ObjLogin.UserRoleId;
-
         #region Get Active User Type Flag
-        /*Get Active User Type Flag*/
-
+        /*Get Active User Type Flag*/ 
         switch ((WorkOrderEMS.Helper.UserType)ObjLogin.UserRoleId)
         {
             case WorkOrderEMS.Helper.UserType.GlobalAdmin:
@@ -106,120 +104,107 @@
 </style>
 @Html.ValidationSummary(true)
 <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.maskedinput-1.3.min.js")"></script>
-<div class="col-lg-12 col-md-12  col-sm-12  col-xs-12" id="myVendorAccountDetails">
-    <div class="panel-body">
-        <div class="row">
-            <div class="form-horizontal">
-                <div class="form">
-                    <div class="top-row">
-                        <div class="field-wrap">
-                            <label id="lblAccountPaymentMode">
-                                Pay Mode<span class="req">*</span>
-                            </label>
-                            @if (ViewBag.PaymentModeList != null)
-                            {
-                                {@Html.DropDownListFor(model => model.VendorAccountDetailsModel.PaymentMode, new SelectList(ViewBag.PaymentModeList, "PaymentModeId", "PaymentModeName"), "--Select Payment Mode--", new { @id = "PaymentMode" })}
-                        }
-                        else
-                        {<select id="PaymentMode"><option value="-1">@ViewBag.PaymentModeList</option></select>}
-                        </div>
-                    </div>
-                    <br />
-                    <div class="top-row wiredSelectHideShow" style="display:none;">
-                        <div class="field-wrap">
-                            <label>
-                                Bank Name<span class="req">*</span>
-                            </label>
-                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankName, null, new { @id = "BankName" })
-                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankName)
-                        </div>
-                        <div class="field-wrap">
-                            <label>
-                                Bank Location<span class="req">*</span>
-                            </label>
-                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankLocation, null, new { @id = "BankLocation" })
-                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankLocation)
-                        </div>
-                    </div>
 
-                    <div class="top-row wiredSelectHideShow" style="display:none;">
-                        <div class="field-wrap">
-                            <label>
-                                Account Number<span class="req">*</span>
-                            </label>
-                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.AccountNumber, null, new { @id = "AccountNumber" })
-                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.AccountNumber)
-                        </div>
-                        <div class="field-wrap">
-                            <label>
-                                IFSC Code<span class="req">*</span>
-                            </label>
-                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.IFSCCode, null, new { @id = "IFSCCode" })
-                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.IFSCCode)
-                        </div>
+<div class="panel panel-primary setup-content" id="myVendorAccountDetails">
+    <div class="basic-form">
 
-                    </div>
-                    <div class="top-row wiredSelectHideShow" style="display:none;">
-                        <div class="field-wrap">
-                            <label>
-                                Swift OIC Code<span class="req">*</span>
-                            </label>
-                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.SwiftOICCode, null, new { @id = "SwiftOICCode" })
-                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.SwiftOICCode)
-                        </div>
-                        <div class="field-wrap">
-                            <label>
-                                Account Document
-                            </label>
-                            <div id="dvAccountPreview">
-                            </div>
-                            <input id="fileuploadAccount" type="file" style="margin-left:50%;" name="VendorAccountDetailsModel.AccountDocumentsFile" />
-                            <ul class="attachment">
-                                @if (Model.VendorAccountDetailsModel != null)
-                                {
-                                    <li style="margin-left :25%;margin-top:20px;">
-                                        <a class="title" href="@Url.Content(AccountDocPath + myModelprefix + "AccountDocuments")">@myModelprefix + "AccountDocuments"</a>
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                    </div>
-                    <br />
-                    <div class="top-row CardSelectHideShow" style="display:none;">
-                        <div class="field-wrap">
-                            <label>
-                                Card Number<span class="req">*</span>
-                            </label>
-                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.CardNumber, null, new { @id = "CardNumber" })
-                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.CardNumber)
-                        </div>
-                        <div class="field-wrap">
-                            <label>
-                                Bank Name  <span class="req">*</span>
-                            </label>
-                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankName, null, new { @id = "BankName" })
-                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankName)
-                        </div>
-                    </div>
-                    <div class="top-row CardSelectHideShow" style="display:none;">
-                        <div class="field-wrap">
-                            <label>
-                                Card Holder Name<span class="req">*</span>
-                            </label>
-                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.CardHolderName, null, new { @id = "CardHolderName" })
-                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.CardHolderName)
-                        </div>
-                        <div class="field-wrap">
-                            <label>
-                                Expiration Date <span class="req">*</span>
-                            </label>
-                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.ExpirationDate, null, new { @id = "ExpirationDate", @onkeydown = "return false;" })
-                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.ExpirationDate)
-                        </div>
-                    </div>
-                </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"> Pay Mode<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @if (ViewBag.PaymentModeList != null)
+                {
+                    {@Html.DropDownListFor(model => model.VendorAccountDetailsModel.PaymentMode, new SelectList(ViewBag.PaymentModeList, "PaymentModeId", "PaymentModeName"), "--Select Payment Mode--", new { @id = "PaymentMode", @class ="form-control input-rounded" })}
+            }
+            else
+            {
+                <select id="PaymentMode" class ="form-control input-rounded"><option value="-1">@ViewBag.PaymentModeList</option></select>
+            }
             </div>
         </div>
+
+        <div class="form-group row wiredSelectHideShow" style="display:none;">
+            <label class="col-sm-2 col-form-label">  Bank Name <span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankName, null, new { @id = "BankName", @class ="form-control input-rounded" })
+                @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankName)
+            </div>
+
+            <label class="col-sm-2 col-form-label">  Bank Location<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankLocation, null, new { @id = "BankLocation", @class ="form-control input-rounded" })
+                @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankLocation)
+            </div>
+
+        </div>
+
+        <div class="form-group row wiredSelectHideShow" style="display:none;">
+            <label class="col-sm-2 col-form-label">   Account Number<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.VendorAccountDetailsModel.AccountNumber, null, new { @id = "AccountNumber", @class ="form-control input-rounded" })
+                @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.AccountNumber)
+            </div>
+
+            <label class="col-sm-2 col-form-label"> IFSC Code<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.VendorAccountDetailsModel.IFSCCode, null, new { @id = "IFSCCode", @class ="form-control input-rounded" })
+                @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.IFSCCode)
+            </div>
+
+        </div>
+
+        <div class="form-group row wiredSelectHideShow" style="display:none;">
+            <label class="col-sm-2 col-form-label">Swift OIC Code<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.VendorAccountDetailsModel.SwiftOICCode, null, new { @id = "SwiftOICCode", @class ="form-control input-rounded" })
+                @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.SwiftOICCode)
+            </div>
+
+            <label class="col-sm-2 col-form-label">  Account Document<span class="req">*</span></label>
+            <div class="col-sm-4">
+                <div id="dvAccountPreview">
+                </div>
+                <input id="fileuploadAccount" type="file" style="margin-left:50%;" name="VendorAccountDetailsModel.AccountDocumentsFile" />
+                <ul class="attachment">
+                    @if (Model.VendorAccountDetailsModel != null)
+                    {
+                        <li style="margin-left :25%;margin-top:20px;">
+                            <a class="title" href="@Url.Content(AccountDocPath + myModelprefix + "AccountDocuments")">@myModelprefix + "AccountDocuments"</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+        </div>
+
+        <div class="form-group row CardSelectHideShow" style="display:none;">
+            <label class="col-sm-2 col-form-label">  Card Number<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.VendorAccountDetailsModel.CardNumber, null, new { @id = "CardNumber", @class ="form-control input-rounded" })
+                @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.CardNumber)
+            </div>
+
+            <label class="col-sm-2 col-form-label">  Bank Name<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankNameForCard, null, new { @id = "BankNameForCard", @class ="form-control input-rounded" })
+                @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankNameForCard)
+            </div>
+
+        </div>
+        <div class="form-group row CardSelectHideShow" style="display:none;">
+            <label class="col-sm-2 col-form-label">Card Holder Name<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.VendorAccountDetailsModel.CardHolderName, null, new { @id = "CardHolderName", @class ="form-control input-rounded" })
+                @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.CardHolderName)
+            </div>
+
+            <label class="col-sm-2 col-form-label"> Expiration Date<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.VendorAccountDetailsModel.ExpirationDate, null, new { @id = "ExpirationDate", @onkeydown = "return false;", @class ="form-control input-rounded" })
+                @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.ExpirationDate)
+            </div>
+
+        </div>
+
     </div>
 </div>
 

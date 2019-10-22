@@ -10,6 +10,218 @@ var allLocation = '';
 //if ($_userType == "1" || $_userType == "5" || $_userType == "6") {
 allLocation = '<div class="onoffswitch2" style="margin-left: 860px;"><input type="checkbox" name="onoffswitch2" class="onoffswitch2-checkbox" id="ViewAllLocation"><label for="ViewAllLocation" class="onoffswitch2-label"><span class="onoffswitch2-inner"></span><span class="onoffswitch2-switch"></span></label></div>'
 //}
+
+
+$(function () {
+    var act;
+    var _searchresult = $("#SearchText").val();
+    $("#tbl_MasterMiscellaneousList").jsGrid({
+        height: "170%",
+        width: "100%",
+        filtering: false,
+        editing: false,
+        inserting: false,
+        sorting: false,
+        paging: true,
+        autoload: true,
+        pageSize: 10,
+        pageButtonCount: 5,
+
+        controller: {
+            loadData: function (filter) {
+                return $.ajax({
+                    type: "GET",
+                    url: $_HostPrefix + MiscUrl + '?txtSearch' + _searchresult + '&LocationId=' + $_locationId,
+                    data: filter,
+                    dataType: "json"
+                });
+            }
+        },
+
+        fields: [
+            { name: "MISId", title: "Miscellaneous ID", type: "text", width: 50 },
+            { name: "LocationName", title: "Location Name", type: "text", width: 50 },
+            { name: "VendorName", title: "Vendor Name", type: "text", width: 50 },
+            { name: "UserName", title: "User Name", type: "text", width: 50 },
+            { name: "InvoiceAmount", title: "Invoice Amount", type: "text", width: 50 },
+            { name: "MISDate", title: "MIS Date", type: "text", width: 50 },
+            { name: "Status", title: "Status", type: "text", width: 50 }
+
+
+        ],
+        rowClick: function (args) {
+            var getData = args.item;
+            var keys = Object.keys(getData);
+            var text = [];
+
+            $.each(keys, function (idx, value) {
+                if (value == "MISId") {
+                    $("#MISId").val(getData[value]);
+                }
+                //text.push(value + " : " + getData[value])
+            });
+            getListMiscellaneousByMiscId();
+        }
+    });
+});
+
+
+
+function doSearch() {
+    var act;
+    var _searchresult = $("#SearchText").val();
+    $("#tbl_MasterMiscellaneousList").jsGrid({
+        height: "170%",
+        width: "100%",
+        filtering: false,
+        editing: false,
+        inserting: false,
+        sorting: false,
+        paging: true,
+        autoload: true,
+        pageSize: 10,
+        pageButtonCount: 5,
+
+        controller: {
+            loadData: function (filter) {
+                return $.ajax({
+                    type: "GET",
+                    url: $_HostPrefix + MiscUrl + '?txtSearch=' + _searchresult + '&LocationId=' + $_locationId,
+                    data: filter,
+                    dataType: "json"
+                });
+            }
+        },
+
+        fields: [
+            { name: "MISId", title: "Miscellaneous ID", type: "text", width: 50 },
+            { name: "LocationName", title: "Location Name", type: "text", width: 50 },
+            { name: "VendorName", title: "Vendor Name", type: "text", width: 50 },
+            { name: "UserName", title: "User Name", type: "text", width: 50 },
+            { name: "InvoiceAmount", title: "Invoice Amount", type: "text", width: 50 },
+            { name: "MISDate", title: "MIS Date", type: "text", width: 50 },
+            { name: "Status", title: "Status", type: "text", width: 50 }
+        ],
+
+    });
+}
+
+
+function ViewDetails(item) {
+
+    
+    VendorId = item.MISId;
+
+
+
+    $("#lblMiscId").html(item.MISId);
+    $("#lblLocationName").html(item.LocationName);
+    $("#lblVendorName").html(item.VendorName);
+    $("#lblUserName").html(item.UserName);
+    $("#lblInvoiceAmount").html(item.InvoiceAmount);
+    $("#lblUserName").html(item.UserName);
+    $("#lblMiscDate").html(item.MISDate);
+    $("#lblComment").html(item.Comment);
+    /*
+    $("#lblMiscImage").html(Image);
+    $('div #lblMiscImage img').attr('width', '100px');
+    $('div #lblMiscImage img').attr('height', '100px');
+    if (Image == '' || Image == null || Image == "") {
+        $("#labelMiscImage").hide();
+        $("#lblMiscImage").hide();
+    }*/
+    $('.modal-title').text("Miscellaneous Details");
+    $("#myModalForMiscellaneousData").modal('show');
+
+
+
+    //$("#myModalForMiscellaneousData").modal('show');
+
+  
+}
+
+
+$(document).ready(function () {
+    $("#miscDetailList").hide();
+    $("#SearchText").keyup(function () {
+        doSearch()
+    });
+
+    $('#ViewAllLocation').change(function () {
+        ViewAllRecordsMiscellaneous();
+    });
+
+});
+
+function getListMiscellaneousByMiscId() {
+    var act;
+    $("#miscDetailList").show();
+    $("#tbl_MasterMiscellaneousListdetail").jsGrid({
+        height: "170%",
+        width: "100%",
+        filtering: false,
+        editing: false,
+        inserting: false,
+        sorting: false,
+        paging: true,
+        autoload: true,
+        pageSize: 10,
+        pageButtonCount: 5,
+
+        controller: {
+            loadData: function (filter) {
+                return $.ajax({
+                    type: "GET",
+                    url: $_HostPrefix + SubMiscUrl + '?MiscId=' + $("#MISId").val(),
+                    data: filter,
+                    dataType: "json"
+                });
+            }
+        },
+
+        fields: [
+            
+            {
+                name: "MiscStatus", title: "Status", align: "center",
+                itemTemplate: function (value, item) {
+                    return $("<input>").attr("type", "checkbox")
+                        .attr("checked", value || item.Checked)
+                        .on("change", function () {
+                            item.Checked = $(this).is(":checked");
+                        });
+                }
+            },
+            
+
+            { name: "MISId", title: "MISId", type: "text", width: 30 },
+            { name: "LocationName", title: "LocationName", type: "text", width: 50 },
+            { name: "VendorName", title: "Vendor/Employee Name", type: "text", width: 70 },
+            { name: "InvoiceAmount", title: "InvoiceAmount", type: "text", width: 50 },
+            { name: "MISDate", title: "MISDate", type: "text", width: 50 },
+            { name: "Document", title: "Image", type: "text", width: 50 },
+            { name: "MISDate", title: "MISDate", type: "text", width: 50 },
+            {
+                name: "act", items: act, title: "View Details", width: 50, css: "text-center", itemTemplate: function (value, item) {                    
+                    var $iconPencil = $("<i>").attr({ class: "fa fa-list" }).attr({ style: "color:black;font-size: 22px;" });
+
+                    var $customEditButton = $("<span style='padding: 0 5px 0 0;'>")
+                        .attr({ title: "View Details" })
+                        .attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                            ViewDetails(item);                            
+                        }).append($iconPencil);
+
+
+                    return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton);
+                    
+                }
+            }
+
+        ],
+
+    });
+}
+
+/*
 $(function () {
     $("#tbl_MasterMiscellaneousList").jqGrid({
         url: $_HostPrefix + MiscUrl + '?LocationId=' + $_locationId,
@@ -223,13 +435,15 @@ $(function () {
     }
 });
 
+*/
+
 var timeoutHnd;
 var flAuto = true;
-function doSearch(ev) {
-    if (timeoutHnd)
-        clearTimeout(timeoutHnd)
-    timeoutHnd = setTimeout(gridReload, 500)
-}
+//function doSearch(ev) {
+//    if (timeoutHnd)
+//        clearTimeout(timeoutHnd)
+//    timeoutHnd = setTimeout(gridReload, 500)
+//}
 
 function gridReload() {
 
@@ -237,7 +451,7 @@ function gridReload() {
     var statusType = jQuery("#vehcileStatusType :selected").val();
     jQuery("#tbl_MasterMiscellaneousList").jqGrid('setGridParam', { url: $_HostPrefix + CostCodeUrl + "?txtSearch=" + txtSearch.trim() + "&statusType=" + statusType + "&LocationID=" + $_locationId, page: 1 }).trigger("reloadGrid");
 }
-$("#btnApprove").live("click", function (event) {
+$("#btnApprove").on("click", function (event) {
     var GridData = $('#tbl_ChildMiscellaneousDetails').getRowData();
     $.ajax({
         url: $_HostPrefix + ApproveUrl,
@@ -246,7 +460,7 @@ $("#btnApprove").live("click", function (event) {
         contentType: 'application/json',
         data: JSON.stringify({ obj: GridData, LocationId: $_locationId }),
         beforesend: function () {
-           new fn_showMaskloader('Please wait...Loading');
+            new fn_showMaskloader('Please wait...Loading');
         },
         success: function (result) {
             toastr.success("Data approve successfully.");
@@ -256,18 +470,18 @@ $("#btnApprove").live("click", function (event) {
         },
         error: function () { alert(" Something went wrong..") },
         complete: function () {
-           new fn_hideMaskloader();
+            new fn_hideMaskloader();
         }
     });
 });
 
-$(".EditRecord").live("click", function (event) {
+$(".EditRecord").on("click", function (event) {
     var id = $(this).attr("Id");
     window.location.href = $_HostPrefix + editurl + '?id=' + id;
     //$("#largeeditpopup").load('../StaffUser/EditStaffUser/' + id);
 });
 
-$("#MiscView").live("click", function (event) {
+$("#MiscView").on("click", function (event) {
     var id = $(this).attr("vid");
     var rowData = jQuery("#tbl_ChildMiscellaneousDetails").getRowData(id);
     var MISId = rowData['MISId'];
@@ -303,7 +517,7 @@ $("#MiscView").live("click", function (event) {
     $("#myModalForMiscellaneousData").modal('show');
 });
 
-$(".deleteRecord").live("click", function (event) {
+$(".deleteRecord").on("click", function (event) {
 
     var id = $(this).attr("cid");
     bootbox.dialog({
@@ -363,8 +577,7 @@ function loadpreview(result) {
 }
 //#region Image
 function imageFormat(cellvalue, options, rowObject) {
-    if (cellvalue == "")
-    { return ""; }
+    if (cellvalue == "") { return ""; }
     else {
         return '<img src="' + cellvalue + '" class="gridimage" id="driverImage" onclick="EnlargeImageView(this);"/>';
     }
@@ -372,14 +585,57 @@ function imageFormat(cellvalue, options, rowObject) {
 //#endregion
 //#region toggle location
 function ViewAllRecordsMiscellaneous() {
-    var locaId = $('#ViewAllLocation').prop('checked') == true ? 0 : $("#drp_MasterLocation :selected").val();
+    var locaId = $('#ViewAllLocation').prop('checked') == true ? 0 : $("#drp_MasterLocation1 :selected").val();
     if (locaId == 0) {
-        $("#drp_MasterLocation").hide();
+        $("#drp_MasterLocation1").hide();
     }
     else {
-        $("#drp_MasterLocation").show();
+        $("#drp_MasterLocation1").show();
     }
-    jQuery("#tbl_MasterMiscellaneousList").jqGrid('setGridParam', { url: $_HostPrefix + MiscUrl + '?locationId=' + locaId, page: 1 }).trigger("reloadGrid");
+
+    ///jQuery("#tbl_MasterMiscellaneousList").jqGrid('setGridParam', { url: $_HostPrefix + MiscUrl + '?locationId=' + locaId, page: 1 }).trigger("reloadGrid");
+    ViewAllLocation()
 }
 //#end region toggle location 
+
+
+function ViewAllLocation() {
+    var act;
+    var locaId = $('#ViewAllLocation').prop('checked') == true ? 0 : $("#drp_MasterLocation1 :selected").val();
+    $("#tbl_MasterMiscellaneousList").jsGrid({
+        height: "170%",
+        width: "100%",
+        filtering: false,
+        editing: false,
+        inserting: false,
+        sorting: false,
+        paging: true,
+        autoload: true,
+        pageSize: 10,
+        pageButtonCount: 5,
+
+        controller: {
+            loadData: function (filter) {
+                return $.ajax({
+                    type: "GET",
+                    url: $_HostPrefix + MiscUrl + '?LocationId=' + locaId,
+                    data: filter,
+                    dataType: "json"
+                });
+            }
+        },
+
+        fields: [
+            { name: "MISId", title: "Miscellaneous ID", type: "text", width: 50 },
+            { name: "LocationName", title: "Location Name", type: "text", width: 50 },
+            { name: "VendorName", title: "Vendor Name", type: "text", width: 50 },
+            { name: "UserName", title: "User Name", type: "text", width: 50 },
+            { name: "InvoiceAmount", title: "Invoice Amount", type: "text", width: 50 },
+            { name: "MISDate", title: "MIS Date", type: "text", width: 50 },
+            { name: "Status", title: "Status", type: "text", width: 50 }
+
+
+        ]
+    });
+}
 

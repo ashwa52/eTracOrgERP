@@ -278,6 +278,9 @@ namespace WorkOrderEMS.BusinessLogic
 		bool IsInterviewerOnline(long ApplicantId, long UserId, string IsAvailable, string Comment);
 		int GetScore(long ApplicantId);
 		bool CheckIfAllRespondedForQuestion(long ApplicantId);
-		// BudgetDetails GetListBudgetDetails(long? LocationId, long? UserId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
-	}
+        List<PerformanceModel> GetListOf306090ForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords);
+        List<GWCQUestionModel> GetGWCQuestions(string Id,string AssessmetType);
+        bool saveSelfAssessment(List<GWCQUestionModel> data, string action);
+        // BudgetDetails GetListBudgetDetails(long? LocationId, long? UserId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
+    }
 }

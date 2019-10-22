@@ -1,12 +1,13 @@
 ﻿@model WorkOrderEMS.Models.Employee.InterviewersViewModel
 <style>
 	.offlineCard {
-		padding: 13px 12px 39px 39px;
+		padding: 13px 12px 15px 39px;
 		margin: 6px 45px 5px 70px;
 		background: #fff;
 		border-radius: 4px;
 		display: inherit;
 		opacity: 0.9;
+		height:75px;
 	}
 
 	.toggle {
@@ -133,6 +134,13 @@
 		margin: 32px;
 		color: #fff;
 	}
+	.nameD {
+		position: relative;
+		display: block;
+		font-weight: bold;
+		font-size: 15px;
+		color: #000000;
+	}
 </style>
 
 @{
@@ -164,7 +172,7 @@
 				<img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar">
 			</div>
 			<div class="profile_detail inline spccing">
-				<span class="name">
+				<span class="nameD">
 					@item.InterviwerName
 				</span>
 				<span class="profile">
@@ -191,7 +199,7 @@
 				<img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar">
 			</div>
 			<div class="profile_detail inline spccing">
-				<span class="name">
+				<span class="nameD">
 					@item.InterviwerName
 				</span>
 				<span class="profile">

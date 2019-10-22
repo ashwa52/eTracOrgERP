@@ -34,122 +34,98 @@
     .error {
         color: red;
     }
+
+    .hide {
+        display: none;
+    }
+
+    .ui-datepicker-calendar {
+        display: none;
+    }
+
+    .ui-datepicker-month {
+        display: none;
+    }
+
+    .ui-datepicker-prev {
+        display: none;
+    }
+
+    .ui-datepicker-next {
+        display: none;
+    }
 </style>
 @Scripts.Render("~/bundles/modernizr")
 <link href="~/Content/NewAdminContent/VENDOR/bootstrap-multiselect/css/bootstrap-multiselect.css" rel="stylesheet" />
 @*<link href="~/Content/NewAdminContent/VENDOR/jquery-steps/css/jquery.steps.css" rel="stylesheet" />*@
 <link href="@Url.Content("~/Content/NewAdminContent/CSS/RadioButtonCSS.css")" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/CSS/clockPicker.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/toastr/css/toastr.min.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/CSS/style.css" rel="stylesheet" />
 <br />
 @Html.AntiForgeryToken()
 @Html.ValidationSummary(true)
 
-<br />
-<form action="@Url.Action("WorkRequestAssignment", "GlobalAdmin")" *@ method="post" id="WorkorderSave" class="step-form-horizontal" role="form" style="margin-left:80px;">
+<form action="@Url.Action("WorkRequestAssignment", "GlobalAdmin")" *@ method="post" id="WorkorderSave" class="step-form-horizontal" role="form" style="margin-left:20px;">
     @Html.ValidationSummary(true)
     @Html.HiddenFor(model => model.WorkOrderCode)
     @Html.HiddenFor(model => model.WorkRequestAssignmentID)
     @Html.HiddenFor(model => model.WorkOrderCodeID)
     @Html.HiddenFor(model => model.WorkRequestImage)
     <div class="basic-form">
-        <div class="form-group row">
-            <div class="col-sm-6">
-                @Html.DropDownListFor(model => model.WorkRequestProjectType, new SelectList(ViewBag.WorkRequestProjectTypeID, "GlobalCodeId", "CodeName"), new { @id = "ddlWorkRequestProjectType", @class = "form-control input-rounded required requiredselect" })
-                @Html.ValidationMessageFor(model => model.WorkRequestProjectType)
+        @if (ViewBag.UpdateMode != null && ViewBag.UpdateMode == true)
+        {
+            <div class="form-group row">
+                @Html.Label("Work Order Code Id", new { @class = "col-sm-3 col-form-label" })
+                <div class="col-sm-3">
+                    @Model.WorkOrderCode
+                    @Model.WorkOrderCodeID
+                </div>
             </div>
-            <div class="col-sm-6">
-                @Html.DropDownListFor(model => model.WorkRequestType, new SelectList(ViewBag.WorkRequestType, "GlobalCodeId", "CodeName"), "--Select--", new { @id = "ddlWorkRequestType", @class = "form-control input-rounded required requiredselect" })
-                @Html.ValidationMessageFor(model => model.WorkRequestType)
-            </div>
-        </div>
+        }
         <div class="form-group row">
-            <div class="col-sm-6">
-                @Html.DropDownListFor(model => model.PriorityLevel, new SelectList(ViewBag.PriorityLevel, "GlobalCodeId", "CodeName"), "--Select--", new
+            @if (Model != null)
+            {
+                if (Model.WorkRequestAssignmentID != 0)
                 {
-                    @id = "ddlPriorityLevel",
-                    @class = "form-control input-rounded required requiredselect"@*@onchange = "showHideAssignEmployeePrioritywise()"*@})
-                @Html.ValidationMessageFor(model => model.PriorityLevel)
-            </div>
-            <div class="col-sm-2">
-                <label>
-                    Registered Asset
-                </label>
-            </div>
-            <div class="col-sm-2">
-                <input type="radio" name="RegisteredAssest" id="rdRegisteredAssestY" value="1" class="nodisable" checked="checked" /><label for="rdRegisteredAssestY" class="radio">Yes</label>
-            </div>
-            <div class="col-sm-2">
-                &nbsp;&nbsp;&nbsp;<input type="radio" name="RegisteredAssest" id="rdRegisteredAssestN" value="0" class="nodisable" /><label for="rdRegisteredAssestN" class="radio">No</label>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-sm-6">
-                @if (ViewBag.GetAssetListWO != null)
-                {
-                    <select name="@Html.NameFor(model => model.AssetID)"
-                            id="ddlAsset" class="form-control input-rounded required requiredselect">
-                        <option>--Select--</option>
-                        @foreach (var En in ViewBag.GetAssetListWO)
-                        {
-                            <option value="@En.Value" data-imagepath="@En.ProfileImage"
-                                    @*@if (En.Value == Model.AssetID) { @: selected="selected"
-                                                                                       }*@>
-                                @En.Text
-                            </option>
-                        }
-                    </select>
+                    <div class="col-sm-6">
+                        @Html.DropDownListFor(model => model.WorkRequestProjectType, new SelectList(ViewBag.WorkRequestProjectTypeID, "GlobalCodeId", "CodeName"), new { @id = "ddlWorkRequestProjectType", @class = "form-control input-rounded required requiredselect" })
+                        @Html.ValidationMessageFor(model => model.WorkRequestProjectType)
+                    </div>
                 }
                 else
-                {<select id="ddlAsset"><option value="-1">@Model.AssetID</option></select>}
-                @Html.ValidationMessageFor(model => model.AssetID)
+                {
+                    <div class="col-sm-6">
+                        @Html.DropDownListFor(model => model.WorkRequestProjectType, new SelectList(ViewBag.WorkRequestProjectTypeID, "GlobalCodeId", "CodeName"), new { @id = "ddlWorkRequestProjectType", @class = "form-control input-rounded required requiredselect" })
+                        @Html.ValidationMessageFor(model => model.WorkRequestProjectType)
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-sm-6">
+                    @Html.DropDownListFor(model => model.WorkRequestProjectType, new SelectList(ViewBag.WorkRequestProjectTypeID, "GlobalCodeId", "CodeName"), new { @id = "ddlWorkRequestProjectType", @class = "form-control input-rounded required requiredselect" })
+                    @Html.ValidationMessageFor(model => model.WorkRequestProjectType)
+                </div>
+            }
+
+            <div class="col-sm-6 WorkRequestDIV">
+                @Html.DropDownListFor(model => model.WorkRequestType, new SelectList(ViewBag.WorkRequestType, "GlobalCodeId", "CodeName"), "--Select Work Request Type--", new { @id = "ddlWorkRequestType", @class = "form-control input-rounded required requiredselect" })
+                @Html.ValidationMessageFor(model => model.WorkRequestType)
             </div>
-            <div class="col-sm-2">
-                <label>
-                    Safety Hazard
-                </label>
-            </div>
-            <div class="col-sm-2">
-                @Html.RadioButtonFor(model => model.SafetyHazard, true, new { @class = "yes", @id = "SafetyHazardY" })<label for="SafetyHazardY" class="radio">Yes</label>
-            </div>
-            <div class="col-sm-2">
-                @Html.RadioButtonFor(model => model.SafetyHazard, false, new { @class = "no", @id = "SafetyHazardN", @checked = true })<label for="SafetyHazardN" class="radio">No</label>
-            </div>
-        </div>
-        <div class="form-group row">
-            <div class="col-sm-6">
-                @Html.TextAreaFor(model => model.ProblemDesc, new { @Placeholder = "Problem Description", @class = "form-control input-rounded required " })
-                @Html.ValidationMessageFor(model => model.ProblemDesc)
-            </div>
-            <div class="col-sm-6">
-                @Html.TextBoxFor(model => model.AssignedTimeInterval, new { @class = "form-control input-rounded required clockpicker", @onkeypress = "return isNumberKey(event)", @id = "txtAssignedTime", @placeholder = "Choose Time" })
-                <span class="pull-left text-info" style="color:gray;"><i>(HH:MM i.e 00:30)</i></span>
-                @Html.ValidationMessageFor(model => model.AssignedTimeInterval)
-            </div>
-        </div>
-        <div class="form-group row displayEmployee" style="display:none;">
-            <div class="col-sm-2">
-                <label>
-                    Assign Employee
-                </label>
-            </div>
-            <div class="col-sm-2">
-                <input type="radio" name="1AssignToUserId" id="rdAssignToUserIdY" value="1" class="nodisable" checked="checked" /><label for="rdAssignToUserIdY" class="radio">Yes</label>
-            </div>
-            <div class="col-sm-2">
-                <input type="radio" name="1AssignToUserId" id="rdAssignToUserIdN" value="0" class="nodisable" /><label for="rdAssignToUserIdN" class="radio">No</label>
-            </div>
-            <div class="col-sm-6 AssignToUser">
+            <div class="col-sm-6 AssignToUserForSPecial" style="display:none;">
                 @if (ViewBag.AssignToUserWO != null)
                 {
                     <select name="@Html.NameFor(model => model.AssignToUserId)"
-                            id="ddlAssignToUser" class="form-control input-rounded required requiredselect">
+                            id="ddlAssignToUserForSpecialWO" class="form-control input-rounded required requiredselect ddlAssignToUser">
                         <option value="0">--Select Employee--</option>
                         @foreach (var En in ViewBag.AssignToUserWO)
                         {
                             <option value="@En.UserId" data-imagepath="@En.ProfileImageFile"
-                                    @*@if (En.UserId == Model.AssignToUserId) { @: selected="selected"
-                                         }*@>
+                                    @if (En.UserId == Model.AssignToUserId) { @: selected="selected"
+                                    }>
                                 @En.FirstName
                             </option>
                         }
@@ -158,54 +134,583 @@
                 else
                 {<select id="ddlAssignToEmployee"><option value="-1">@Model.AssignToUserId</option></select>}
             </div>
+            @if (Model != null)
+            {
+                if (Model.WorkRequestAssignmentID != 0)
+                {
+                    <div class="col-sm-6 FacilityRequestDIV" style="display:none;">
+                        @Html.DropDownListFor(model => model.FacilityRequestId, new SelectList(ViewBag.FacilityRequest, "GlobalCodeId", "CodeName"), "--Select facility--", new { @id = "ddlFacilityRequestType", @class = "form-control input-rounded required requiredselect" })
+                        @Html.ValidationMessageFor(model => model.FacilityRequestId)
+                    </div>
+                }
+                else
+                {
+                    <div class="col-sm-6 FacilityRequestDIV" style="display:none;">
+                        @Html.DropDownListFor(model => model.FacilityRequestId, new SelectList(ViewBag.FacilityRequest, "GlobalCodeId", "CodeName"), "--Select facility--", new { @id = "ddlFacilityRequestType", @class = "form-control input-rounded required requiredselect" })
+                        @Html.ValidationMessageFor(model => model.FacilityRequestId)
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-sm-6 FacilityRequestDIV" style="display:none;">
+                    @Html.DropDownListFor(model => model.FacilityRequestId, new SelectList(ViewBag.FacilityRequest, "GlobalCodeId", "CodeName"), "--Select facility--", new { @id = "ddlFacilityRequestType", @class = "form-control input-rounded required requiredselect" })
+                    @Html.ValidationMessageFor(model => model.FacilityRequestId)
+                </div>
+            }
         </div>
-        <div class="form-group row">
-            @Html.LabelFor(model => model.WorkOrderImage, new { @class = "col-sm-2 col-form-label" })
-            <div class="col-sm-4">
-                @*@if (Model.AssignedWorkOrderImage != null && Model.AssignedWorkOrderImage != "")
+        <div class="NormalWODIV">
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    @Html.DropDownListFor(model => model.PriorityLevel, new SelectList(ViewBag.PriorityLevel, "GlobalCodeId", "CodeName"), "--Select Priority Level--", new
+                    {
+                        @id = "ddlPriorityLevel",
+                        @class = "form-control input-rounded required requiredselect"@*@onchange = "showHideAssignEmployeePrioritywise()"*@})
+                    @Html.ValidationMessageFor(model => model.PriorityLevel)
+                </div>
+                <div class="col-sm-2">
+                    <label>
+                        Registered Asset
+                    </label>
+                </div>
+                <div class="col-sm-2">
+                    <input type="radio" name="RegisteredAssest" id="rdRegisteredAssestY" value="1" class="nodisable" checked="checked" /><label for="rdRegisteredAssestY" class="radio">Yes</label>
+                </div>
+                <div class="col-sm-2">
+                    &nbsp;&nbsp;&nbsp;<input type="radio" name="RegisteredAssest" id="rdRegisteredAssestN" value="0" class="nodisable" /><label for="rdRegisteredAssestN" class="radio">No</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6 assetDropdown">
+                    @if (ViewBag.GetAssetListWO != null)
+                    {
+                        <select name="@Html.NameFor(model => model.AssetID)"
+                                id="ddlAsset" class="form-control input-rounded required requiredselect">
+                            <option>--Select Assets--</option>
+                            @foreach (var En in ViewBag.GetAssetListWO)
+                            {
+                                <option value="@En.Value" data-imagepath="@En.ProfileImage"
+                                        @if (En.Value == Model.AssetID) { @: selected="selected"
+                                        }>
+                                    @En.Text
+                                </option>
+                            }
+                        </select>
+                    }
+                    else
+                    {<select id="ddlAsset"><option value="-1">@Model.AssetID</option></select>}
+                    @Html.ValidationMessageFor(model => model.AssetID)
+                </div>
+                <div class="col-sm-2">
+                    <label>
+                        Safety Hazard
+                    </label>
+                </div>
+                <div class="col-sm-2">
+                    @Html.RadioButtonFor(model => model.SafetyHazard, true, new { @class = "yes safetyHazardClass", @id = "SafetyHazardY" })<label for="SafetyHazardY" class="radio">Yes</label>
+                </div>
+                <div class="col-sm-2">
+                    @Html.RadioButtonFor(model => model.SafetyHazard, false, new { @class = "no safetyHazardClass", @id = "SafetyHazardN", @checked = true })<label for="SafetyHazardN" class="radio">No</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    @Html.TextAreaFor(model => model.ProblemDesc, new { @Placeholder = "Problem Description", @class = "form-control input-rounded required " })
+                    @Html.ValidationMessageFor(model => model.ProblemDesc)
+                </div>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.AssignedTimeInterval, new { @class = "form-control input-rounded required clockpicker", @onkeypress = "return isNumberKey(event)", @id = "txtAssignedTime", @placeholder = "Choose Time" })
+                    <span class="pull-left text-info" style="color:gray;"><i>(HH:MM i.e 00:30)</i></span>
+                    @Html.ValidationMessageFor(model => model.AssignedTimeInterval)
+                </div>
+            </div>
+            @if (Model != null)
+            {
+                if (Model.AssignToUserId != null)
+                {
+                    <div class="form-group row displayEmployee hideshowEmployeeClass">
+                        <div class="col-sm-2">
+                            <label>
+                                Assign Employee
+                            </label>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="radio" name="1AssignToUserId" id="rdAssignToUserIdY" value="1" class="EmployeeAssingClass hideshowEmployee" checked="checked" /><label for="rdAssignToUserIdY" class="radio">Yes</label>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="radio" name="1AssignToUserId" id="rdAssignToUserIdN" value="0" class="EmployeeAssingClass hideshowEmployee" /><label for="rdAssignToUserIdN" class="radio">No</label>
+                        </div>
+                        <div class="col-sm-6 AssignToUser">
+                            @if (ViewBag.AssignToUserWO != null)
+                            {
+                                <select name="@Html.NameFor(model => model.AssignToUserId)"
+                                        id="ddlAssignToUser" class="form-control input-rounded required requiredselect ddlAssignToUser">
+                                    <option value="0">--Select Employee--</option>
+                                    @foreach (var En in ViewBag.AssignToUserWO)
+                                    {
+                                        <option value="@En.UserId" data-imagepath="@En.ProfileImageFile"
+                                                @if (En.UserId == Model.AssignToUserId) { @: selected="selected"
+                                                }>
+                                            @En.FirstName
+                                        </option>
+                                    }
+                                </select>
+                            }
+                            else
+                            {<select id="ddlAssignToEmployee"><option value="-1">@Model.AssignToUserId</option></select>}
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group row displayEmployee hideshowEmployeeClass" style="display:none;">
+                        <div class="col-sm-2">
+                            <label>
+                                Assign Employee
+                            </label>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="radio" name="1AssignToUserId" id="rdAssignToUserIdY" value="1" class="EmployeeAssingClass" checked="checked" /><label for="rdAssignToUserIdY" class="radio">Yes</label>
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="radio" name="1AssignToUserId" id="rdAssignToUserIdN" value="0" class="EmployeeAssingClass" /><label for="rdAssignToUserIdN" class="radio">No</label>
+                        </div>
+                        <div class="col-sm-6 AssignToUser">
+                            @if (ViewBag.AssignToUserWO != null)
+                            {
+                                <select name="@Html.NameFor(model => model.AssignToUserId)"
+                                        id="ddlAssignToUser" class="form-control input-rounded required requiredselect ddlAssignToUser">
+                                    <option value="0">--Select Employee--</option>
+                                    @foreach (var En in ViewBag.AssignToUserWO)
+                                    {
+                                        <option value="@En.UserId" data-imagepath="@En.ProfileImageFile"
+                                                @if (En.UserId == Model.AssignToUserId) { @: selected="selected"
+                                                }>
+                                            @En.FirstName
+                                        </option>
+                                    }
+                                </select>
+                            }
+                            else
+                            {<select id="ddlAssignToEmployee"><option value="-1">@Model.AssignToUserId</option></select>}
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="form-group row displayEmployee hideshowEmployeeClass" style="display:none;">
+                    <div class="col-sm-2">
+                        <label>
+                            Assign Employee
+                        </label>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="radio" name="1AssignToUserId" id="rdAssignToUserIdY" value="1" class="EmployeeAssingClass" checked="checked" /><label for="rdAssignToUserIdY" class="radio">Yes</label>
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="radio" name="1AssignToUserId" id="rdAssignToUserIdN" value="0" class="EmployeeAssingClass" /><label for="rdAssignToUserIdN" class="radio">No</label>
+                    </div>
+                    <div class="col-sm-6 AssignToUser">
+                        @if (ViewBag.AssignToUserWO != null)
+                        {
+                            <select name="@Html.NameFor(model => model.AssignToUserId)"
+                                    id="ddlAssignToUser" class="form-control input-rounded required requiredselect ddlAssignToUser">
+                                <option value="0">--Select Employee--</option>
+                                @foreach (var En in ViewBag.AssignToUserWO)
+                                {
+                                    <option value="@En.UserId" data-imagepath="@En.ProfileImageFile"
+                                            @if (En.UserId == Model.AssignToUserId) { @: selected="selected"
+                                            }>
+                                        @En.FirstName
+                                    </option>
+                                }
+                            </select>
+                        }
+                        else
+                        {<select id="ddlAssignToEmployee"><option value="-1">@Model.AssignToUserId</option></select>}
+                    </div>
+                </div>
+            }
+            <div class="form-group row">
+                @Html.LabelFor(model => model.WorkOrderImage, new { @class = "col-sm-2 col-form-label" })
+                <div class="col-sm-4">
+                    @if (Model.AssignedWorkOrderImage != null && Model.AssignedWorkOrderImage != "")
                     {
                         Image = Model.AssignedWorkOrderImage;
-                    }*@
-                <img id='imgWorkOrderImage' name='imgWorkOrderImage' src="@Url.Content(Image)"
-                     class="img-rounded" alt="No Image " style="width:110px; height:110px;border-radius:50%;">
-                <input type="file" id='WorkOrderImage' name='WorkOrderImage' onchange="WorkOrderImagereadURL(this);" value="Upload WorkOrder Image">
+                    }
+                    <img id='imgWorkOrderImage' name='imgWorkOrderImage' src="@Url.Content(Image)"
+                         class="img-rounded" alt="No Image " style="width:110px; height:110px;border-radius:50%;">
+                    <input type="file" id='WorkOrderImage' name='WorkOrderImage' onchange="WorkOrderImagereadURL(this);" value="Upload WorkOrder Image">
+                </div>
+                @if (Model != null)
+                {
+                    if (Model.AssignToUserId != null)
+                    {
+                        @Html.Label("Employee Image", new { @class = "col-sm-2 col-form-label displayEmployee AssignToUser" })
+                        <div class="col-sm-4 displayEmployee AssignToUser">
+                            <img id="EmployeeImage" class="img-rounded" src='@Url.Content("../Content/Images/ProjectLogo/no-profile-pic.jpg")' style="width:110px; height:110px;border-radius:50%;" />
+                            <input type="hidden" id="hddnEmployeeimagepath" value="@imgaeserverpath">
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.Label("Employee Image", new { @class = "col-sm-2 col-form-label displayEmployee AssignToUser", @style = "display:none;" })
+                        <div class="col-sm-4 displayEmployee AssignToUser" style="display:none;">
+                            <img id="EmployeeImage" class="img-rounded" src='@Url.Content("../Content/Images/ProjectLogo/no-profile-pic.jpg")' style="width:110px; height:110px;border-radius:50%;" />
+                            <input type="hidden" id="hddnEmployeeimagepath" value="@imgaeserverpath">
+                        </div>
+                    }
+                }
+                else
+                {
+                    @Html.Label("Employee Image", new { @class = "col-sm-2 col-form-label displayEmployee AssignToUser", @style = "display:none;" })
+                    <div class="col-sm-4 displayEmployee AssignToUser" style="display:none;">
+                        <img id="EmployeeImage" class="img-rounded" src='@Url.Content("../Content/Images/ProjectLogo/no-profile-pic.jpg")' style="width:110px; height:110px;border-radius:50%;" />
+                        <input type="hidden" id="hddnEmployeeimagepath" value="@imgaeserverpath">
+                    </div>
+                }
+
             </div>
-
-            @Html.Label("Employee Image", new { @class = "col-sm-2 col-form-label displayEmployee AssignToUser", @style = "display:none;" })
-            <div class="col-sm-4 displayEmployee AssignToUser" style="display:none;">
-                <img id="EmployeeImage" class="img-rounded" src='@Url.Content("../Content/Images/ProjectLogo/no-profile-pic.jpg")' style="width:110px; height:110px;border-radius:50%;" />
-                <input type="hidden" id="hddnEmployeeimagepath" value="@imgaeserverpath">
+            <div class="form-group row AssetImage Asset" style="display:none;">
+                @Html.Label("Asset Image", new { @class = "col-sm-2 col-form-label" })
+                <div class="col-sm-4">
+                    <img id="imgWorkRequest" class="img-rounded" src='@Url.Content("../Content/Images/ProjectLogo/no-profile-pic.jpg")' style="width:110px; height:110px;border-radius:50%;" />
+                    <input type="hidden" id="hddnAssetimagepath" value="@imgaeserverpath">
+                </div>
             </div>
-
-
         </div>
-        <div class="form-group row AssetImage Asset" style="display:none;">
-            @Html.Label("Asset Image", new { @class = "col-sm-2 col-form-label" })
-            <div class="col-sm-4">
-                <img id="imgWorkRequest" class="img-rounded" src='@Url.Content("../Content/Images/ProjectLogo/no-profile-pic.jpg")' style="width:110px; height:110px;border-radius:50%;" />
-                <input type="hidden" id="hddnAssetimagepath" value="@imgaeserverpath">
+        <div class="SpecialWODIV" style="display:none;">
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    @Html.TextAreaFor(model => model.ProblemDesc, new { @Placeholder = "Problem Description", @id = "ProblemDescSP", @class = "form-control input-rounded required " })
+                    @Html.ValidationMessageFor(model => model.ProblemDesc)
+                </div>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.AssignedTimeInterval, new { @class = "form-control input-rounded required clockpicker", @onkeypress = "return isNumberKey(event)", @id = "txtAssignedTimeForSepcial", @placeholder = "Choose Time" })
+                    <span class="pull-left text-info" style="color:gray;"><i>(HH:MM i.e 00:30)</i></span>
+                    @Html.ValidationMessageFor(model => model.AssignedTimeInterval)
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(model => model.WorkOrderImage, new { @class = "col-sm-2 col-form-label" })
+                <div class="col-sm-4">
+                    @if (Model.AssignedWorkOrderImage != null && Model.AssignedWorkOrderImage != "")
+                    {
+                        Image = Model.AssignedWorkOrderImage;
+                    }
+                    <img id='imgSPWorkOrderImage' name='imgWorkOrderImage' src="@Url.Content(Image)"
+                         class="img-rounded" alt="No Image " style="width:110px; height:110px;border-radius:50%;">
+                    <input type="file" id='WorkOrderImageSP' name='WorkOrderImage' onchange="WorkOrderImagereadURL(this);" value="Upload WorkOrder Image">
+                </div>
+                @if (Model != null)
+                {
+                    if (Model.AssignToUserId != null)
+                    {
+                        @Html.Label("Employee Image", new { @class = "col-sm-2 col-form-label displayEmployee AssignToUserForSpecialWO" })
+                        <div class="col-sm-4 displayEmployee AssignToUserForSpecialWO">
+                            <img id="EmployeeImage" class="img-rounded" src='@Url.Content("../Content/Images/ProjectLogo/no-profile-pic.jpg")' style="width:110px; height:110px;border-radius:50%;" />
+                            <input type="hidden" id="hddnEmployeeimagepath" value="@imgaeserverpath">
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.Label("Employee Image", new { @class = "col-sm-2 col-form-label displayEmployee AssignToUserForSpecialWO", @style = "display:none;" })
+                        <div class="col-sm-4 displayEmployee AssignToUserForSpecialWO" style="display:none;">
+                            <img id="EmployeeImage" class="img-rounded" src='@Url.Content("../Content/Images/ProjectLogo/no-profile-pic.jpg")' style="width:110px; height:110px;border-radius:50%;" />
+                            <input type="hidden" id="hddnEmployeeimagepath" value="@imgaeserverpath">
+                        </div>
+                    }
+                }
+                else
+                {
+                    @Html.Label("Employee Image", new { @class = "col-sm-2 col-form-label displayEmployee AssignToUserForSpecialWO", @style = "display:none;" })
+                    <div class="col-sm-4 displayEmployee AssignToUserForSpecialWO" style="display:none;">
+                        <img id="EmployeeImage" class="img-rounded" src='@Url.Content("../Content/Images/ProjectLogo/no-profile-pic.jpg")' style="width:110px; height:110px;border-radius:50%;" />
+                        <input type="hidden" id="hddnEmployeeimagepath" value="@imgaeserverpath">
+                    </div>
+                }
             </div>
         </div>
-    </div>
-    <button type="button" id="SaveWO" class="btn btn-primary pull-right" style="border-radius: 35px;width: 100px;background-color:#0aa0cd;">Save</button>
+        <div class="FacilityRequestDIV" id="FacilityDIVData" style="display:none;">
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.CustomerName, new { @Placeholder = "Customer Name*", @class = "form-control input-rounded required redStar" })
+                    @Html.ValidationMessageFor(model => model.CustomerName)
+                </div>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.CustomerContact, new { @class = "form-control input-rounded required redStar", @onkeypress = "return isNumberKey(event)", @id = "CustomerContact", @placeholder = "Customer Number*" })
+                    @Html.ValidationMessageFor(model => model.AssignedTimeInterval)
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.VehicleColor, new { @Placeholder = "Vehicle Color", @class = "form-control input-rounded required " })
+                    @Html.ValidationMessageFor(model => model.VehicleColor)
+                </div>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.VehicleMake, new { @class = "form-control input-rounded required redStar", @id = "VehicleMake", @placeholder = "Vehicle Make*" })
+                    @Html.ValidationMessageFor(model => model.AssignedTimeInterval)
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.VehicleModel, new { @Placeholder = "Vehicle Model*", @class = "form-control input-rounded required redStar " })
+                    @Html.ValidationMessageFor(model => model.VehicleModel)
+                </div>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.DriverLicenseNo, new { @class = "form-control input-rounded required redStar", @id = "DriverLicenseNo", @placeholder = "Driver License No*" })
+                    @Html.ValidationMessageFor(model => model.DriverLicenseNo)
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.VehicleYear, new { @Placeholder = "Vehicle Year", @id = "YearFR", @class = "form-control input-rounded required " })
+                    @Html.ValidationMessageFor(model => model.VehicleYear)
+                </div>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.CurrentLocation, new { @class = "form-control input-rounded required", @id = "CurrentLocation", @placeholder = "Current Location" })
+                    @Html.ValidationMessageFor(model => model.CurrentLocation)
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.Address, new { @Placeholder = "Address", @class = "form-control input-rounded required " })
+                    @Html.ValidationMessageFor(model => model.Address)
+                </div>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.City, new { @class = "form-control input-rounded required redStar", @id = "City", @placeholder = "City*" })
+                    @Html.ValidationMessageFor(model => model.City)
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.StateId, new { @Placeholder = "Address", @class = "form-control input-rounded required " })
+                    @Html.ValidationMessageFor(model => model.StateId)
+                </div>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.ZipCode, new { @class = "form-control input-rounded required redStar", @minLength = "5", @maxLength = "5", @pattern = "[0-9]", @id = "ZipCode", @placeholder = "Zip Code*" })
+                    @Html.ValidationMessageFor(model => model.ZipCode)
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.LicensePlateNo, new { @Placeholder = "License Plate No", @class = "form-control input-rounded required " })
+                    @Html.ValidationMessageFor(model => model.StateId)
+                </div>
+            </div>
+        </div>
+        <div class="ContinuesWODIV" style="display:none;">
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    @Html.TextAreaFor(model => model.ProblemDesc, new { @Placeholder = "Problem Description", id = "ProblemDescCont", @class = "form-control input-rounded required " })
+                    @Html.ValidationMessageFor(model => model.ProblemDesc)
+                </div>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.AssignedTimeInterval, new { @class = "form-control input-rounded required clockpicker", @onkeypress = "return isNumberKey(event)", @id = "txtAssignedTimeCont", @placeholder = "Choose Time" })
+                    <span class="pull-left text-info" style="color:gray;"><i>(HH:MM i.e 00:30)</i></span>
+                    @Html.ValidationMessageFor(model => model.AssignedTimeInterval)
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.StartDate, new { @Placeholder = "Start Date", @class = "form-control input-rounded required ", @id = "StartDate" })
+                    @Html.ValidationMessageFor(model => model.StartDate)
+                </div>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control input-rounded required", @onkeypress = "return isNumberKey(event)", @id = "EndDate", @placeholder = "End Date" })
+                    @Html.ValidationMessageFor(model => model.EndDate)
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.ConStartTime, new { @class = "form-control input-rounded required clockpicker", @onkeypress = "return isNumberKey(event)", @id = "ConStartTime", @placeholder = "Start Time" })
+                    <span class="pull-left text-info" style="color:gray;"><i>(HH:MM i.e 00:30)</i></span>
+                    @Html.ValidationMessageFor(model => model.ConStartTime)
+                </div>
+                @Html.Label("Employee Image", new { @class = "col-sm-2 col-form-label displayEmployee AssignToUserForSpecialWO", @style = "display:none;" })
+                <div class="col-sm-4 displayEmployee AssignToUserForSpecialWO" style="display:none;">
+                    <img id="EmployeeImage" class="img-rounded" src='@Url.Content("../Content/Images/ProjectLogo/no-profile-pic.jpg")' style="width:110px; height:110px;border-radius:50%;" />
+                    <input type="hidden" id="hddnEmployeeimagepath" value="@imgaeserverpath">
+                </div>
+            </div>
+            <div class="form-group row ContiuesWOData">
+                @Html.Label("Week Days", new { @class = "col-sm-1 col-form-label ContiuesWOData" })
+                <div id="chkboxdivCR" style="overflow:auto;">
+                    @foreach (var per in Model.WeekDaysList)
+                    {
+                        if (Model.AssignedWeekDaysList != null && Model.AssignedWeekDaysList.Count > 0)
+                        {
+                            if (Model.AssignedWeekDaysList.Exists(x => x == per.Name))
+                            {
+                                <span class="checkbox squaredTwo weekday @per.Name " style="margin-left:15px;">
+                                    <input type="checkbox" class="large" id='@per.ID' checked="checked" name='@per.Name' />&nbsp;<span style="margin-left:20px;">@per.Name</span>
+                                    <label for="squaredTwo"></label>
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="checkbox squaredTwo weekday @per.Name " style="margin-left:15px;">
+                                    <input type="checkbox" class="large" id='@per.ID' name='@per.Name' />&nbsp;<span style="margin-left:20px;">@per.Name</span>
+                                    <label for="squaredTwo"></label>
+                                </span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="checkbox squaredTwo weekday @per.Name " style="margin-left:15px;">
+                                <input type="checkbox" class="large" id='@per.ID' checked="checked" name='@per.Name' />&nbsp;<span style="margin-left:20px;">@per.Name</span>
+                                <label for="squaredTwo"></label>
+                            </span>
+                        }
+                    }
+
+                    @Html.HiddenFor(model => model.WeekDayLst)
+                    @*@Html.ValidationMessageFor(model => model.WeekDayLst, "Please select weekdays.")*@
+                </div>
+            </div>
+            <div class="form-group row">
+                @Html.LabelFor(model => model.WorkOrderImage, new { @class = "col-sm-2 col-form-label" })
+                <div class="col-sm-4">
+                    <img id='imgWorkOrderContinuesImage' name='imgWorkOrderImage' src="@Url.Content(Image)"
+                         class="img-rounded" alt="No Image " style="width:110px; height:110px;border-radius:50%;">
+                    <input type="file" id='WorkOrderContImage' name='WorkOrderImage' onchange="WorkOrderImagereadURL(this);" value="Upload WorkOrder Image">
+                </div>
+            </div>
+        </div>
+        <input type="submit" id="SaveWO" class="btn btn-primary pull-right" style="border-radius: 35px;width: 100px;background-color:#0aa0cd;" value="Save" />
 </form>
-
 <!--**********************************
     Content body end
 ***********************************-->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-hidden="true" id="myModalForAssignEmployee">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Assign Employee</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="divDetailPreview" class="">
+                    <form id="formDepartment" method="post">
+                        <div class="row">
+
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer" style="background: white;">
+                <button type="button" class="btn btn-secondary" id="closeVSC" style="border-radius:100px;" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="SaveDeptData" style="border-radius:100px;">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 @*<script src="~/Content/NewAdminContent/VENDOR/jquery-steps/build/jquery.steps.min.js"></script>*@
 <!--Validation-->
 @*<script src="~/Scripts/bootstrap.min.js"></script>*@
 <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
-
 <script src="~/Content/NewAdminContent/VENDOR/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
 <script src="~/Scripts/NewAdminJS/plugins-init/bootstrap-multiselect-init.js"></script>
 <script type="text/javascript" src="~/Scripts/BindDropDown/DropDownList.js"></script>
 <script src="~/Scripts/NewAdminJS/WorkOrderHideShowFunctionality.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/MaskLoaderNew.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+@*<script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>*@
 <script src="~/Content/NewAdminContent/JQUERY/clockPicker.js"></script>
+<script src="~/Content/NewAdminContent/VENDOR/toastr/js/toastr.min.js"></script>
+<script src="~/Scripts/NewAdminJS/plugins-init/toastr-init.js"></script>
+@*<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.11.0/jquery.validate.min.js"></script>*@
 <script>
+    $("#ZipCode").keypress(function (e) {
+        if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
+            return false;
+        }
+    });
+    $('#StartDate,#EndDate').datepicker({
+        format: "yyyy/mm/dd",
+    });
+    $('#YearFR').datepicker({
+        minViewMode: 2,
+        format: 'yyyy'
+    });
+    var updateMode = "@ViewBag.UpdateMode";
+    var ProjectType = "@Model.WorkRequestProjectType";
+    var WorkRequestType = '@Model.WorkRequestType';
+    var priorityLevelData = '@Model.PriorityLevel';
+    var AssignToUserIdData = '@Model.AssignToUserId';
+    var AssetsIdData = '@Model.AssetID';
+
+    //This is for Update Hide and show fields as per Work request project type
+    if(updateMode != ""){
+        if (updateMode != null && updateMode == "True")
+        {
+            if(ProjectType != ""){
+                if (ProjectType == 256) {
+                    $(".WorkRequestDIV, .AssignToUserForSPecial").hide();
+                    $(".FacilityRequestDIV, #OperationCreateListDiv , .createWOForm").show();
+                    $(".NormalWODIV").attr({style:"display:none;"})
+                    $("#WOList, .dispayListWOName , .NormalWODIV, .SpecialWODIV, .ContinuesWODIV").hide();
+                }
+                else if (ProjectType == 129) {
+                    $(".WorkRequestDIV").hide();
+                    $(".SpecialWODIV, #OperationCreateListDiv , .createWOForm, .AssignToUserForSPecial").show();
+                    $(".NormalWODIV").attr({ style: "display:none;" })
+                    $("#WOList, .dispayListWOName , .NormalWODIV, .ContinuesWODIV").hide();
+
+                }
+                else if (ProjectType == 128) {
+                    $("#ddlWorkRequestType").val(WorkRequestType);
+                    $("#ddlPriorityLevel").val(priorityLevelData);
+                    $("#WOList, .dispayListWOName, .dispayListQRCName, #OperationDARListDiv, .QRCList, #OperationCreateQRCListDiv, .dispayCreateQRCName, .createQRCForm, .FacilityRequestDIV").hide();
+                    $(".createWOForm, .dispayCreateWOName, #OperationCreateListDiv").show();
+                }
+                else {
+                    $("#ddlWorkRequestType").val(WorkRequestType);
+                    $("#ddlPriorityLevel").val(priorityLevelData);
+                    $(".WorkRequestDIV").hide();
+                    $(".ContinuesWODIV, #OperationCreateListDiv , .createWOForm, .AssignToUserForSPecial, .dispayCreateWOName").show();
+                    $(".NormalWODIV").attr({ style: "display:none;" })
+                    $("#WOList, .dispayListWOName , .NormalWODIV").hide();
+                    $(".dispayCreateWOName").html("Update Work Order");
+                }
+            }
+            if(priorityLevelData != "")
+            {
+                if (priorityLevelData == 11) {
+                    $(".displayEmployee").hide();
+                    $("#SafetyHazardY").prop("checked", true);
+                }
+                else {
+                    $("#SafetyHazardN").prop("checked", true);
+                }
+            }
+            if(AssignToUserIdData != ""){
+                if(AssignToUserIdData != "0"){
+                    $(".displayEmployee").show();
+                    $("#rdAssignToUserIdY").prop("checked", true);
+                }
+                else {
+                    $(".displayEmployee").hide();
+                    $("#rdAssignToUserIdN").prop("checked", true);
+                }
+            }
+            if (AssetsIdData != "") {
+                $(".AssetImage, .assetDropdown").show();
+                $("#rdRegisteredAssestY").prop("checked", true);
+            }
+            else {
+                $(".AssetImage, .assetDropdown").hide();
+                $("#rdRegisteredAssestN").prop("checked", true);
+            }
+
+        }
+    }
     $('.clockpicker').clockpicker();
+    //$('.').clockpicker();
     function WorkOrderImagereadURL(input) {
         var FType = ["jpg", "JPG", "PNG", "png", "JPEG", "jpeg", "gif", "GIF"]
         if (input.files && input.files[0]) {
@@ -219,12 +724,13 @@
             if (LoadImage == true) {
                 var reader = new FileReader();
                 reader.onload = function (e) {
-                    $('#imgWorkOrderImage')
+                    $('#imgWorkOrderImage , #imgSPWorkOrderImage, #imgWorkOrderContinuesImage')//WorkOrderImage
                        .attr('src', e.target.result)
-                       .width(150)
-                       .height(150);
+                       .width(110)
+                       .height(110);
 
                 };
+
                 reader.readAsDataURL(input.files[0]);
             } else {
                 $(input).val("");
@@ -235,79 +741,153 @@
     }
 
     $("#SaveWO").click(function () {
-        var dataObject;
-    $("#SaveWO").attr("disabled", true);
-    var ImageName;        
-        var img = $("#WorkOrderImage").val();
-        if (img == "" || img == undefined || img == null) {
-            ImageName = "";
-             dataObject = $("#WorkorderSave").serialize();
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("WorkRequestAssignment", "GlobalAdmin")',
-                data: dataObject,//{ objWorkRequestAssignmentModel: dataObject, fileData: file },
-                success: function (Data) {
-                    $("#SaveWO").attr("disabled", false);
-                    $("#WOList, .dispayListWOName").show();
-                    $(".createWOForm, .dispayCreateWOName").hide();
-                    $("#ListWorkOrderAsssignment").jsGrid("loadData");
-                    $("#ListWorkOrderAsssignment").jsGrid("refresh");
-                },
-                error: function (err) {
+        debugger
+        if ($("#WorkorderSave").valid())
+        {
+            var dataObject;
+            var img = "";
+            var ImageName = "";
+            form_data = new FormData();
+            var file_data = "";
+            var CodeData = $("#ddlWorkRequestProjectType :selected").text().substr(0, 3);
+            var projectTypeData = $("#ddlWorkRequestProjectType :selected").val();
+            if (projectTypeData == 256) {
+
+            }
+            else if (projectTypeData == 129) {
+                $("#ProblemDesc").val($("#ProblemDescSP").val());
+                $("#txtAssignedTime").val($("#txtAssignedTimeForSepcial").val())
+                img = $("#WorkOrderImageSP").val();
+                if (img == "" || img == undefined || img == null) {
                 }
-            });
-        }
-        else {
-            var ImageFile;
-            file_data = $("#WorkOrderImage").prop("files")[0]; // Getting the properties of file from file field
-            form_data = new FormData(); // Creating object of FormData class
-            form_data.append("file", file_data) // Appending parameter named file with properties of file_field to form_data
-            form_data.append("CallID", 11) // Adding extra parameters to form_data
-            if (file_data != undefined) {
+                else {
+                    file_data = $("#WorkOrderImageSP").prop("files")[0]; // Getting the properties of file from file field
+                    form_data.append("file", file_data) // Appending parameter named file with properties of file_field to form_data
+                    form_data.append("CallID", 11)
+                }
+            }
+            else if (projectTypeData == 128) {
+                img = $("#WorkOrderImage").val();
+                file_data = $("#WorkOrderImage").prop("files")[0]; // Getting the properties of file from file field // Creating object of FormData class
+                form_data.append("file", file_data) // Appending parameter named file with properties of file_field to form_data
+                form_data.append("CallID", 11)
+                $("#ddlAssignToUserForSpecialWO").val($("#ddlAssignToUser").val());
+            }
+            else if (projectTypeData == 279) {
+                $("#ProblemDesc").val($("#ProblemDescCont").val());
+                $("#txtAssignedTime").val($("#txtAssignedTimeCont").val());
+                img = $("#WorkOrderContImage").val();
+                if (img == "" || img == undefined || img == null) {
+                }
+                else {
+                    file_data = $("#WorkOrderContImage").prop("files")[0]; // Getting the properties of file from file field
+                    form_data.append("file", file_data) // Appending parameter named file with properties of file_field to form_data
+                    form_data.append("CallID", 11)
+                }
+                var id = "";
+                $('#chkboxdivCR input:checkbox').each(function () {
+                    debugger
+                    if (this.checked) {
+                        var ChkBoxId = this.name;
+                        if (id == "") {
+                            id += ChkBoxId
+                        }
+                        else {
+                            id += "," + ChkBoxId
+                        }
+                    }
+                });
+                if (id == "") {
+                    $('#WeekDayLst').val(null);
+                    $("#WeekDayLst").siblings('span').removeClass();
+                    $("#WeekDayLst").siblings('span').addClass('field-validation-error');
+                    $("#WeekDayLst").siblings('span').show()
+                    return true;
+                }
+                $('#WeekDayLst').val(id);
+            }
+            $("#WorkOrderCode").val(CodeData);
+            $("#SaveWO").attr("disabled", true);
+            if (img == "" || img == undefined || img == null) {
+                ImageName = "";
+                var ProblemDescSP
+                dataObject = $("#WorkorderSave").serialize();
                 $.ajax({
-                    url: '@Url.Action("UploadedWorkOrderImage", "GlobalAdmin")',
-                    dataType: 'script',
-                    cache: false,
-                    contentType: false,
-                    processData: false,
-                    data: form_data, // Setting the data attribute of ajax with file_data
-                    type: 'post',
-                    success: function (dataLink) {
-                        ImageName = dataLink;
-                        var result = ImageName.substring(1, ImageName.length - 1);
-                        $("#WorkRequestImage").val(result);
-                        //dataObject.WorkRequestImage = ImageName;
-                        dataObject = $("#WorkorderSave").serialize();
-                        
-                        $.ajax({
-                            type: "POST",
-                            url: '@Url.Action("WorkRequestAssignment", "GlobalAdmin")',
-                            data: dataObject,//{ objWorkRequestAssignmentModel: dataObject, fileData: file },
-                            success: function (Data) {
-                                $("#SaveWO").attr("disabled", false);
-                                $("#WOList, .dispayListWOName").show();
-                                $(".createWOForm, .dispayCreateWOName").hide();
-                                $("#ListWorkOrderAsssignment").jsGrid("loadData");
-                                $("#ListWorkOrderAsssignment").jsGrid("refresh");
-                            },
-                            error: function (err) {
-                            }
-                        });
-                        
+                    type: "POST",
+                    url: '@Url.Action("WorkRequestAssignment", "GlobalAdmin")',
+                    data: dataObject,//{ objWorkRequestAssignmentModel: dataObject, fileData: file },
+                    beforeSend: function () {
+                        new fn_showMaskloader('Please wait...');
                     },
-                    error: function (e) { alert("error:" + e); },
+                    success: function (Data) {
+                        debugger
+                        var url = '@Url.Action("EMaintananceDashboard", "NewAdmin")';
+                        $('#RenderPageId').load(url);
+                        //$('#RenderPageId').load("@Url.Action("EMaintananceDashboard", "NewAdmin")");
+                        @*$("#WOFormDetails").load('@Url.Action("WorkRequestAssignment", "GlobalAdmin")')
+                        $("#SaveWO").attr("disabled", false);
+                        $("#WOList, .dispayListWOName").show();
+                        $(".createWOForm, .dispayCreateWOName").hide();
+                        $("#ListWorkOrderAsssignment").jsGrid("loadData");*@
+                        toastr.success(Data.Message);
+                    },
+                    error: function (err) {
+                    },
+                    complete: function () {
+                        fn_hideMaskloader();
+                    }
                 });
             }
-        }
-        //var dataDetails = new FormData();
-        //var files = $("#WorkOrderImage").get(0).files;
-        //if (files.length > 0) {
-        //    dataDetails.append("WorkRequestImg", files[0]);
-        //}
+            else {
+                if (file_data != undefined) {
+                    $.ajax({
+                        url: '@Url.Action("UploadedWorkOrderImage", "GlobalAdmin")',
+                        dataType: 'script',
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        data: form_data, // Setting the data attribute of ajax with file_data
+                        type: 'post',
+                        success: function (dataLink) {
+                            ImageName = dataLink;
+                            var result = ImageName.substring(1, ImageName.length - 1);
+                            $("#WorkRequestImage").val(result);
+                            //dataObject.WorkRequestImage = ImageName;
+                            dataObject = $("#WorkorderSave").serialize();
 
-        //var file = document.getElementById("WorkOrderImage").files[0];
-        ////formdata.append(filename, file.files[0]);
-        
+                            $.ajax({
+                                type: "POST",
+                                url: '@Url.Action("WorkRequestAssignment", "GlobalAdmin")',
+                                beforeSend: function () {
+                                    new fn_showMaskloader('Please wait...');
+                                },
+                                data: dataObject,//{ objWorkRequestAssignmentModel: dataObject, fileData: file },
+                                success: function (Data) {
+                                    $("#WOFormDetails").load('@Url.Action("WorkRequestAssignment", "GlobalAdmin")')
+                                    $("#SaveWO").attr("disabled", false);
+                                    $("#WOList, .dispayListWOName").show();
+                                    $(".createWOForm, .dispayCreateWOName").hide();
+                                    $("#ListWorkOrderAsssignment").jsGrid("loadData");
+                                    $("#ListWorkOrderAsssignment").jsGrid("refresh");
+                                    toastr.success(Data.Message);
+                                },
+                                error: function (err) {
+                                },
+                                complete: function () {
+                                    fn_hideMaskloader();
+                                }
+                            });
+
+                        },
+                        error: function (e) { alert("error:" + e); }
+
+                    });
+                }
+            }
+        }
+        else {
+            return false;
+        }
     });
 </script>
 

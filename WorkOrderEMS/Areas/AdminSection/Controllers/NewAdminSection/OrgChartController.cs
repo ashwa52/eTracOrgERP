@@ -27,7 +27,7 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
         /// </summary>
         /// <param name="locationId"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpGet]
         public JsonResult GetAccessDataList(long VST_Id)
         {
             var objeTracLoginModel = new eTracLoginModel();
@@ -56,9 +56,34 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
             return this.Json(lstOfTree, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult SaveAccessPermission()
+        [HttpPost]
+        public JsonResult SaveAccessPermission(AccessPermisionTreeViewModel obj)
         {
-            return null;
+            var objeTracLoginModel = new eTracLoginModel();
+            bool isSaved = false;
+            try
+            {
+                if (Session != null)
+                {
+                    if (Session["eTrac"] != null)
+                    {
+                        objeTracLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                        if (Convert.ToInt64(Session["eTrac_SelectedDasboardLocationID"]) == 0)
+                        {
+                            (Session["eTrac_SelectedDasboardLocationID"]) = objeTracLoginModel.LocationID;
+                        }
+                    }
+                }
+                if (obj != null)
+                {
+                    isSaved = _IAdminDashboard.SaceAccessPermission(obj);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+            return this.Json(isSaved, JsonRequestBehavior.AllowGet);
         }
     }
 }

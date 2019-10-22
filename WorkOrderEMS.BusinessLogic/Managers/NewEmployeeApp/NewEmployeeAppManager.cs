@@ -174,7 +174,7 @@ namespace WorkOrderEMS.BusinessLogic
 		/// 
 		/// </summary>
 		/// <returns></returns>
-		public List<spGetMyOpening_Result> GetMyOpenings()
+		public List<spGetMyOpening_Result1> GetMyOpenings()
 		{
 			return _workorderEMSEntities.spGetMyOpening().ToList();
 		}

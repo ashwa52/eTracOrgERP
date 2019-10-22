@@ -106,18 +106,19 @@ namespace WorkOrderEMS.Controllers.QuickBookData
                         Session["eTrac_UserLocations"] = _ILogin.GetUserAssignedLocations(UserRoleId, UserId);
                         Session["eTrac_UserRoles"] = Session["eTrac_LocationServices"]; // this line has been added by vijay bcz if usetype is GAdmin or ITAdmin then this type of users will be able too see all services which is assigned to this current location.
                                                                                         // QuickBookIndex();
-                        return RedirectToAction("Index", "GlobalAdmin");
+                        return RedirectToAction("Index", "NewAdmin");
                         break;
                     case ((Int64)(UserType.ITAdministrator)):
                         Session["eTrac_UserLocations"] = _ILogin.GetUserAssignedLocations(UserRoleId, UserId);
                         Session["eTrac_UserRoles"] = Session["eTrac_LocationServices"];
                         //QuickBookIndex();
-                        return RedirectToAction("Index", "ITAdministrator");
+                       // return RedirectToAction("Index", "ITAdministrator");
+                     return RedirectToAction("Index", "NewAdmin");
                         break;
                     case ((Int64)(UserType.Administrator)):
                         Session["eTrac_UserLocations"] = _ILogin.GetAdminAssignedLocation(UserId);
                         // QuickBookIndex();
-                        return RedirectToAction("Index", "Administrator");
+                        return RedirectToAction("Index", "NewAdmin");
                             break;
                     case ((Int64)(UserType.Manager)):
                         Session["eTrac_UserLocations"] = _ILogin.GetManagerAssignedLocation(UserId);

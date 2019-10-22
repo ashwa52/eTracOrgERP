@@ -14,6 +14,7 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class eFleetPassengerTrackingRoute
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public eFleetPassengerTrackingRoute()
         {
             this.eFleetPassengerTrackingCounts = new HashSet<eFleetPassengerTrackingCount>();
@@ -35,8 +36,9 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<long> DeletedBy { get; set; }
         public Nullable<System.DateTime> DeletedDate { get; set; }
     
-        public virtual GlobalCode GlobalCode { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<eFleetPassengerTrackingCount> eFleetPassengerTrackingCounts { get; set; }
+        public virtual GlobalCode GlobalCode { get; set; }
         public virtual UserRegistration UserRegistration { get; set; }
     }
 }

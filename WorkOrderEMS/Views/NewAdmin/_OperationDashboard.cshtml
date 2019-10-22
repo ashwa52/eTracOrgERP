@@ -19,13 +19,13 @@
         UserId = ObjLogin.UserId;
     }
 }
-@*@section scripts{
+@section scripts{
     <script type="text/javascript">
-    var $_hostingPrefix = '@hostingPrefix';
-    var $_LocationId = '@locationId';
-    var $_UserID = '@UserId';
+        @*var $_hostingPrefix = '@hostingPrefix';
+        var $_LocationId = '@locationId';
+        var $_UserID = '@UserId';*@
     </script>
-}*@
+}
 
 <!--**********************************
            Content body start
@@ -38,6 +38,9 @@
 <script src="https://www.amcharts.com/lib/3/serial.js"></script>
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+@*<link href="~/Content/NewAdminContent/CSS/clockPicker.css" rel="stylesheet" />*@
+<link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
 
 <style>
     .addWhite {
@@ -46,6 +49,10 @@
 
     .widthHeader {
         height: 40px;
+    }
+
+    .setLableDiv {
+        margin-top: 7px;
     }
 </style>
 <div class="content-body">
@@ -59,11 +66,14 @@
                     <p class="mb-0">Operation Dashboard</p>
                 </div>
             </div>
-            <div class="col-sm-7">
-                <button type="button" id="CreateWO" class="btn btn-primary pull-right" style="border-radius: 35px;">Create WO</button>
+            <div class="col-sm-6">
+                <button type="button" id="CreateWO" class="btn btn-primary pull-right glowbuttonActiveDeactive butttonActive " style="border-radius: 35px;">Create WO</button>
             </div>
             <div>
-                <button type="button" id="CreateQRC" class="btn btn-primary pull-right" style="border-radius: 35px;">Create QRC</button>
+                <button type="button" id="CreateQRC" class="btn btn-primary pull-right glowbuttonActiveDeactive" style="border-radius: 35px;">Create QRC</button>
+            </div>&nbsp;&nbsp;&nbsp;&nbsp;
+            <div>
+                <button type="button" id="ListDARData" class="btn btn-primary pull-right glowbuttonActiveDeactive" style="border-radius: 35px;">ListDAR</button>
             </div>
         </div>
         <div class="row justify-content-center">
@@ -90,19 +100,21 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="card" data-aos="fade-up">
+                    <div class="card-header widthHeader ">
+                        <h4 class="card-title addWhite" style="color: white;"><b>QRC Count</b></h4>
+                    </div>
                     <div class="card-body">
-                        <h4 class="card-title">QRC Count</h4>
                         <div id="QRCCount"></div>
-                        @*<div id="EmployeeCount"></div>*@
                     </div>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="card" data-aos="fade-up">
+                    <div class="card-header widthHeader ">
+                        <h4 class="card-title addWhite" style="color: white;"><b>DAR</b></h4>
+                    </div>
                     <div class="card-body">
-                        <h4 class="card-title">DAR</h4>
                         <div id="DARdiv"></div>
-                        @*<div id="c3-combination"></div>*@
                     </div>
                 </div>
             </div>
@@ -210,18 +222,21 @@
                     <div class="card-header" style="height: 45px;">
                         <h4 class="card-title addWhite dispayListWOName" style="color: white;"><b>Work Order List</b></h4>
                         <h4 class="card-title addWhite dispayCreateWOName" style="display:none;color: white;"><b>Create Work Order</b></h4>
-                        <div id="cover">
-                            <input type="checkbox" class="checkboxToggle" id="toggleWO">
-                            <div id="bar" title="Create WO" style="transition: all ease-in-out 0.2s;">
-                            </div>
-                            <div id="knob" title="Create WO"></div>
-                        </div>
+                        <div class="onoffswitch2" style="margin-left: 997px;margin-top: 6px;"><input type="checkbox" name="onoffswitch2" class="onoffswitch2-checkbox" id="toggleWOTesting"><label for="toggleWOTesting" class="onoffswitch2-label"><span class="onoffswitch2-inner"></span><span class="onoffswitch2-switch"></span></label></div>
+
+
+                        @*<div id="cover">
+                                <input type="checkbox" class="checkboxToggle" id="toggleWO">
+                                <div id="bar" title="Create WO" style="transition: all ease-in-out 0.2s;">
+                                </div>
+                                <div id="knob" title="Create WO"></div>
+                            </div>*@
                     </div>
                     <div class="card-body" id="WOList">
                         <div id="ListWorkOrderAsssignment"></div>
                     </div>
-                    <div class="card-body createWOForm" style="display:none;">
-                        @Html.Partial("~/Views/NewAdmin/WorkOrderView/_CreateWorkOrder.cshtml")
+                    <div class="card-body createWOForm" style="display:none;" id="WOFormDetails">
+                        @*@Html.Partial("~/Views/NewAdmin/WorkOrderView/_CreateWorkOrder.cshtml")*@
                     </div>
                 </div>
             </div>
@@ -231,39 +246,564 @@
                     <div class="card-header" style="height: 45px;">
                         <h4 class="card-title addWhite dispayListQRCName" style="color: white;"><b>QRC List</b></h4>
                         <h4 class="card-title addWhite dispayCreateQRCName" style="display:none;color: white;"><b>Create QRC</b></h4>
-
-                        <div id="cover">
-                            <input type="checkbox" class="checkboxToggle" id="ToggleQRC">
-                            <div id="bar" title="Add Chart" style="transition: all ease-in-out 0.2s;">
-                            </div>
-                            <div id="knob" title="Add Chart"></div>
-                        </div>
+                        <div class="onoffswitch2" style="margin-left: 997px;margin-top: 6px;"><input type="checkbox" name="onoffswitch2" class="onoffswitch2-checkbox" id="toggleQRCTesting"><label for="toggleQRCTesting" class="onoffswitch2-label"><span class="onoffswitch2-inner"></span><span class="onoffswitch2-switch"></span></label></div>
+                        @*<div id="cover">
+                                <input type="checkbox" class="checkboxToggle" id="ToggleQRC">
+                                <div id="bar" title="Add Chart" style="transition: all ease-in-out 0.2s;">
+                                </div>
+                                <div id="knob" title="Add Chart"></div>
+                            </div>*@
                         @*<div class="button-switch">
-                            <input type="checkbox" id="switch-orange" class="switch" />
-                            <label for="switch-orange" class="lbl-off">Off</label>
-                            <label for="switch-orange" class="lbl-on">On</label>
-                        </div>*@
+                                <input type="checkbox" id="switch-orange" class="switch" />
+                                <label for="switch-orange" class="lbl-off">Off</label>
+                                <label for="switch-orange" class="lbl-on">On</label>
+                            </div>*@
                     </div>
                     <div class="card-body dispayListQRCName" id="QRCList" style="display:none;">
                         <div id="ListQRC"></div>
                     </div>
-                    <div class="card-body createQRCForm" style="display:none;" id="QRCForm">                        
+                    <div class="card-body createQRCForm" style="display:none;" id="QRCForm">
                         @*@Html.Partial("~/Views/NewAdmin/QRCView/_QRCForm.cshtml")*@
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12" id="OperationDARListDiv" style="display:none;">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header" style="height: 45px;">
+                        <div class="basic-form">
+                            <div class="form-group">
+                                <input type="text" style="margin-top: 15px;width: 120px;" id="FromDate" class="form-control input-rounded" placeholder="From Date">
+                            </div>
+                        </div>
+                        <div class="basic-form" style="margin-left: -350px;">
+                            <div class="form-group">
+                                <input type="text" style="margin-top: 15px;width: 120px;" id="FromTime" class="form-control input-rounded clockpicker" placeholder="From Time">
+                            </div>
+                        </div>
+                        <div class="basic-form" style="margin-left: -370px;">
+                            <div class="form-group">
+                                <input type="text" style="margin-top: 15px;width: 120px;" id="ToDate" class="form-control input-rounded" placeholder="To Date">
+                            </div>
+                        </div>
+                        <div class="basic-form" style=" margin-left: -290px;">
+                            <div class="form-group">
+                                <input type="text" style="margin-top: 15px;width: 120px;" id="ToTime" class="form-control input-rounded clockpicker" placeholder="To Time">
+                            </div>
+                        </div>
+                        <div class="basic-form" style="margin-left: -320px;">
+                            <div class="form-group">
+                                <input type="text" style="margin-top: 15px;width: 120px;" class="form-control input-rounded" placeholder="All Work Request Type">
+                            </div>
+                        </div>
+                        <div class="basic-form" style="margin-left: -340px;">
+                            <div class="form-group">
+                                <input type="text" style="margin-top: 15px;width: 120px;" class="form-control input-rounded" placeholder="All Employee">
+                            </div>
+                        </div>
+                        <div class="basic-form">
+                            <div class="form-group">
+                                <input type="button" style="margin-top: 15px;width: 120px;background: green;border-radius: 35px;" id="ShowDAR" class="btn btn-primary" value="Show DAR" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body dispayListDAR" id="DARList">
+                        <div id="ListDAR"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="loadSpinner" style="display:none;">
-    <img src="~/Images/LoaderCar_2.gif" />
+<!--WO Modals-->
+<div class="modal fade" id="myModalForDeleteWO">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Delete Work Order</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="divDetailPreview" class="">
+                    <div class="row">
+                        <label>Are you sure want to delete Work Order?</label>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background: white;">
+                <button type="button" class="btn btn-secondary" id="NotDelete" style="border-radius:100px;" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-primary" id="DeleteWO" style="border-radius:100px;">Conform</button>
+            </div>
+        </div>
+    </div>
 </div>
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="ModalDetailWOPreview">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Work Order Details</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="divDetailPreview" class="">
+                    <div class="row">
+                        <div class="" id="DivWorkDetailsIndex">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label"><strong>Work Order ID :</strong></label>
+                                <div class="col-sm-4">
+                                    <div id="lblCodeNo" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" id="labelWorkRequestType"><strong>Work Request Type :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblWorkRequestType" class="form-control-static"></div>
+                                </div>
+                                <label class="col-sm-3 col-form-label"><strong>Priority Level :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblPriorityLevel" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label"><strong>Project Type :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblProjectType" class="form-control-static"></div>
+                                </div>
+                                <div id="divWoimg">
+                                    <label class="col-sm-2 col-form-label" id="labellAssignedWorkImage">Work Order Image :</label>
+                                    <div class="col-sm-4 custom-size" id="lblAssignedWorkImage">
+                                        <img style="width: 200px!important; height: 200px!important;" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label id="labellWorkRequestStatus" class="col-sm-3 col-form-label"><strong>Work Request Status :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblWorkRequestStatus" class="form-control-static"></div>
+                                </div>
+                                <label class="col-sm-3 col-form-label"><strong>Submitted On :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblSubmittedOn" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label id="labellProblemDescription" class="col-sm-3 col-form-label"><strong>Problem Description :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblProblemDescription" class="form-control-static"></div>
+                                </div>
+                                <label class="col-sm-3 col-form-label" id="labelQRCType"><strong>QRC Type :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblQRCType" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div id="divEmpAssigned">
+                                    <label id="lblAssignToUser" class="col-sm-3 col-form-label"><strong>Employee Assigned</strong></label>
+                                    <div class="col-sm-3 custom-size" id="lblProfile">
+                                        <img style="width: 200px!important; height: 200px!important;" />
+                                    </div>
+                                </div>
+                                <label class="col-sm-3 col-form-label"><strong>Location :</strong></label>
+                                <div class="col-sm-2">
+                                    <div id="lblLocationName" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label id="labellStartDate" class="col-sm-3 col-form-label"><strong>Start Date :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblStartDate" class="form-control-static"></div>
+                                </div>
+                                <label class="col-sm-3 col-form-label" id="labellEndDate"><strong>End Date :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblEndDate" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label id="labellTimeAssigned" class="col-sm-4 col-form-label"><strong>Time Assigned :</strong></label>
+                                <div class="col-sm-2">
+                                    <div id="lblTimeAssigned" class="form-control-static"></div>
+                                </div>
+                                <label class="col-sm-3 col-form-label" id="labellVehicleMake"><strong>Vehicle Make :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblVehicleMake" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label id="labellVehicleModel" class="col-sm-3 col-form-label"><strong>Vehicle Model :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblVehicleModel" class="form-control-static"></div>
+                                </div>
+                                <label class="col-sm-3 col-form-label" id="labellVehicleYear"><strong>Vehicle Year :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblVehicleYear" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label id="labellVehicleColor" class="col-sm-3 col-form-label"><strong>Vehicle Color :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblVehicleColor" class="form-control-static"></div>
+                                </div>
+                                <label class="col-sm-3 col-form-label" id="labellStartTime"><strong>Start Time :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblStartTime" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label id="labellWeekdays" class="col-sm-3 col-form-label"><strong>Weekdays :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblWeekdays" class="form-control-static"></div>
+                                </div>
+                                <label class="col-sm-3 col-form-label" id="labellCustomerName"><strong>Customer Name :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblCustomerName" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label id="labellCustomerContact" class="col-sm-3 col-form-label"><strong>Customer Contact :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblCustomerContact" class="form-control-static"></div>
+                                </div>
+                                <label class="col-sm-3 col-form-label" id="labellDriverLicenseNo"><strong>Driver License No :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblDriverLicenseNo" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label id="labelTotalTimeTaken" class="col-sm-3 col-form-label"><strong>Total Time Taken :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblTotalTimeTaken" class="form-control-static"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="PrintDetails" onclick="return PrintDivForWorkDetails('DivWorkDetailsIndex');" style="border-radius:100px;" data-dismiss="modal">Print Details</button>
+                <button type="button" class="btn btn-primary" id="CloseWO" style="border-radius:100px;">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade " tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-hidden="true" id="myModalForAssignEmployeeData">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Assign Employee</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="divDetailPreviewAssignData" class="">
+
+                </div>
+            </div>
+            <div class="modal-footer" style="background: white;">
+                <button type="button" class="btn btn-secondary" id="closeVSC" style="border-radius:100px;" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="SaveAssignedData" style="border-radius:100px;">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--End WO Modals-->
+<!--Display Data Modal-->
+<div class="modal fade " id="myModalFORQR">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">QRC Item Details</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="panel-body" style="margin-left: 40px;">
+                <div id="tblToPrint" class="">
+                    <div class="row">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">QRC Type :</label>
+                            <div class="col-sm-3">
+                                <div id="txtQrcType" class="setLableDiv"></div>
+                            </div>
+                            <label id="labelSpecialNotes" class="col-sm-3 col-form-label">QRC Name :</label>
+                            <div class="col-sm-3">
+                                <div id="qrcNameTxt" class="setLableDiv"></div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">QRC ID :</label>
+                            <div class="col-sm-3">
+                                <div id="lblQRCId" class="setLableDiv"></div>
+                            </div>
+                            <label id="labelSpecialNotes" class="col-sm-3 col-form-label">Special Notes :</label>
+                            <div class="col-sm-4">
+                                <div id="txtSpecialNotes" class="setLableDiv"></div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label id="VehicleType" class="col-sm-2 col-form-label">Vehicle Type :</label>
+                            <div class="col-sm-4">
+                                <div id="lblVehicleType" class="setLableDiv"></div>
+                            </div>
+                            <label id="MotorType" class="col-sm-2 col-form-label">Motor Type :</label>
+                            <div class="col-sm-4">
+                                <div id="lblMotorType" class="setLableDiv"></div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label id="Location" class="col-sm-2 col-form-label">Location :</label>
+                            <div class="col-sm-4">
+                                <div id="divLocation" class="setLableDiv"></div>
+                            </div>
+                            <label for="lblCreatedBy" class="col-sm-2 col-form-label">Created By :</label>
+                            <div class="col-sm-4">
+                                <div id="divCreatedBy" class="setLableDiv"></div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="lblCreatedOn" class="col-sm-2 col-form-label">Created On :</label>
+                            <div class="col-sm-4">
+                                <div id="divCreatedOn" class="setLableDiv"></div>
+                            </div>
+                            <label id="lblMake" for="lblMake" class="col-sm-2 col-form-label">Make :</label>
+                            <div class="col-sm-4">
+                                <div id="divMake" class="setLableDiv"></div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label id="lblMake" for="lblMake" class="col-sm-2 col-form-label">Make :</label>
+                            <div class="col-sm-4">
+                                <div id="divMake" class="setLableDiv"></div>
+                            </div>
+                            <label id="Model" class="col-sm-2 col-form-label">Model :</label>
+                            <div class="col-sm-4">
+                                <div id="txtModel" class="setLableDiv"></div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label">QRC Code :</label>
+                            <div class="col-sm-4">
+                                <div id="container2">
+                                    <canvas class="img-thumbnail"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear clearfix"></div>
+                    <div class="modal-footer" style="background: white;">
+                        <button type="button" class="btn btn-primary text-right" style="border-radius:35px;" onclick="return PrintDivIndexForLicence('tblToPrint');" data-dismiss="modal">Print QRC Details</button>
+                        <button id="printQRC_btn" type="button" onclick="PrintQRCButton();" style="border-radius:35px;" class=" btn btn-primary" formnovalidate="formnovalidate">Print QRC</button>
+                        <button id="btnCancelqwe" class="btn btn-default bluebutton" style="border-radius:35px;" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade  bd-example-modal-lg" @*data-backdrop="false"*@ id="ModalConfirumationQRCPreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirmation Preview QR-Code</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @*<span id="diverrormessage" class="text-danger"></span>*@
+                <div id="divConfirumationPreview" class="">
+                    @{
+                        WorkOrderEMS.Models.PrintQRCModel MyPrintModel = null;
+                        if (ViewBag.EncryptQRC != null)
+                        {
+                            MyPrintModel = ViewBag.QRCModel;
+                        }
+                    }
+                    <div class="form-group row">
+                        <div class="col-sm-8">
+                            @if (MyPrintModel == null)
+                            {
+                                <div id="lblSizeCaption"></div>}
+                            else
+                            {
+                                <div id="lblSizeCaption">@MyPrintModel.SizeCaption</div>
+                            }
+                        </div>
+                    </div>
+                    <div id="DivQRCIndex">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" id="labelWorkRequestType">QRC Type :</label>
+                            @if (MyPrintModel == null)
+                            {
+                                <div class="col-sm-3">
+                                    <div id="lblQRCTYPE" class="form-control-static"></div>
+                                </div>
+                            }
+                            else
+                            { <div class="col-sm-3">
+                                    <div id="lblQRCTYPE" class="form-control-static">@MyPrintModel.QRCTYPE</div>
+                                </div>
+                            }
+                            <label class="col-sm-3 col-form-label">QRC Name :</label>
+                            @if (MyPrintModel == null)
+                            {
+                                <div class="col-sm-3">
+                                    <div id="lblQRC" class="form-control-static"></div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-sm-3">
+                                    <div id="lblQRC" class="form-control-static">@MyPrintModel.QRCName</div>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label" id="labelWorkRequestType">QRC ID :</label>
+                            @if (MyPrintModel == null)
+                            {
+                                <div class="col-sm-3">
+                                    <div id="lblQRCId" class="form-control-static"></div>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="form-group row VehicleTypeDisplay">
+                            <label class="col-sm-3 col-form-label" id="labelMotorType">Motor Type :</label>
+                            @if (MyPrintModel == null)
+                            {
+                                <div class="col-sm-3">
+                                    <div id="lblMotorType" class="form-control-static"></div>
+                                </div>
+                            }
+                            else
+                            { <div class="col-sm-3">
+                                    <div id="lblMotorType" class="form-control-static">@MyPrintModel.MotorType</div>
+                                </div>
+                            }
+                            @if (MyPrintModel != null && MyPrintModel.VehicleType != null)
+                            {
+                                <div id="vehicleType">
+                                    <label class="col-sm-3 col-form-label">Vehicle Type :</label>
+                                    <div class="col-sm-3">
+                                        <div id="lblVehicleType" class="form-control-static">@MyPrintModel.VehicleType</div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="form-group row" id="specialnotes">
+                            <label class="col-sm-3 col-form-label" id="lblspecialnotes">Special Notes :</label>
+                            @if (MyPrintModel == null)
+                            {
+                                <div class="col-sm-3">
+                                    <div id="lblSpecialNotes" class="form-control-static"></div>
+                                </div>
+                            }
+                            else
+                            { <div class="col-sm-3">
+                                    <div id="lblSpecialNotes" class="form-control-static">@MyPrintModel.SpecialNotes</div>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Location :</label>
+                            @if (MyPrintModel == null)
+                            {
+                                <div class="col-sm-3">
+                                    <div id="lblLocationName" class="form-control-static"></div>
+                                </div>
+                            }
+                            else
+                            {
+                                if (@Model.UpdateMode != null && @Model.UpdateMode == true)
+                                {<div class="col-sm-3">
+                                        <div id="lblLocationName" class="form-control-static">@Model.LocationName</div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-sm-3">
+                                        <div id="lblLocationName" class="form-control-static">@MyPrintModel.Location</div>
+                                    </div>
+                                }
+                            }
+                            <div id="Vmake">
+                                <label class="col-sm-3 col-form-label">Make :</label>
+                                @if (MyPrintModel == null)
+                                {
+                                    <div class="col-sm-3">
+                                        <div id="lblVmake" class="form-control-static"></div>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="col-sm-3">
+                                        <div id="lblVmake" class="form-control-static">@MyPrintModel.Make</div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+                            <div id="Vmodel">
+                                <label class="col-sm-3 col-form-label">Model :</label>
+                                @if (MyPrintModel == null)
+                                {
+                                    <div class="col-sm-3">
+                                        <div id="lblVmodel" class="form-control-static"></div>
+                                    </div>
+                                }
+                                else
+                                { <div class="col-sm-3">
+                                        <div id="lblVmodel" class="form-control-static">@MyPrintModel.Model</div>
+                                    </div>
+                                }
+                            </div>
+                            <label class="col-sm-3 col-form-label">QRC Code :</label>
+
+                            <div class="col-sm-3">
+                                <div id="container4">
+                                    <canvas style="width: 200px; height: 200px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background: white;">
+                @if (ViewBag.UpdateMode != null && ViewBag.UpdateMode == true)
+                {<button class="btn btn-primary" style="border-radius:35px;" type="submit">Update</button>}
+                else
+                {
+                    <button type="button" class="btn btn-primary" id="SaveQRCData" style="border-radius:100px;border-radius:35px;">Finalize</button>
+                }
+                <button id="printQRCIndex" type="button" onclick="PrintDivIndex('printtable');" class="btn btn-primary" style="border-radius:35px;" formnovalidate="formnovalidate">Print QRC with details</button>
+                <button id="printQRC_btn" type="button" onclick="PrintQRCButton();" class=" btn btn-primary bluebutton" style="border-radius:35px;" formnovalidate="formnovalidate">Print QRC</button>
+                <button type="button" class="btn btn-secondary" id="close" style="border-radius:100px;" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!--**********************************
     Content body end
 ***********************************-->
 <script src="~/GridListing/JsGridScript/ListQRCList.js"></script>
 <script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
 <script src="~/GridListing/JsGridScript/ListWorkOrderAssignment.js"></script>
+<script src="~/GridListing/JsGridScript/ListDAR.js"></script>
+@*<script src="~/Content/NewAdminContent/JQUERY/clockPicker.js"></script>*@
+<script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+<script src="~/Scripts/QRCode/jquery.qrcode-0.9.5.js"></script>
 
 <script>
 am4core.ready(function() {
@@ -378,7 +918,15 @@ chart.legend.position = "right";
 
 <script>
     $(document).ready(function () {
+
+        $('#FromDate,#ToDate').datepicker({
+            format: "yyyy/mm/dd",
+        });
+        $('#Year').datepicker({
+            format: "yyyy"
+        });
         $(".createQRCForm").load('@Url.Action("Index", "QRCSetup")')
+        $("#WOFormDetails").load('@Url.Action("WorkRequestAssignment", "GlobalAdmin")')
         $.ajax({
             type: "GET",
             url: "@Url.Action("GetDashboardHeadCount", "GlobalAdmin")",
@@ -426,50 +974,97 @@ chart.legend.position = "right";
         }
     }
         });
+
         $("#CreateWO").click(function () {
+            $("#toggleWOTesting").prop("checked", true);
+            $(".glowbuttonActiveDeactive").removeClass("butttonActive");
+            $(this).addClass('butttonActive');
+            $("#WOList, .dispayListWOName, .dispayListQRCName, #OperationDARListDiv, .QRCList, #OperationCreateQRCListDiv, .dispayCreateQRCName, .createQRCForm").hide();
+            $(".createWOForm, .dispayCreateWOName, #OperationCreateListDiv").show();
+            $("#WOFormDetails").load('@Url.Action("WorkRequestAssignment", "GlobalAdmin")')
             $('html,body').animate({
                 scrollTop: $("#OperationCreateListDiv").offset().top
             }, 'slow');
-            $("#WOList, .dispayListWOName, .dispayListQRCName, .QRCList, #OperationCreateQRCListDiv, .dispayCreateQRCName, .createQRCForm").hide();
-            $(".createWOForm, .dispayCreateWOName, #OperationCreateListDiv").show();
         });
         $("#CreateQRC").click(function () {
-            debugger
+            $("#toggleQRCTesting").prop("checked", true);
+            $(".glowbuttonActiveDeactive").removeClass("butttonActive");
+            $(this).addClass('butttonActive');
             $("#OperationCreateQRCListDiv").show();
             $('html,body').animate({
                 scrollTop: $("#OperationCreateQRCListDiv").offset().top
             }, 'slow');
             $("#OperationCreateListDiv, #WOList, .dispayListWOName, .createWOForm, .dispayCreateWOName").hide();
-            $(".dispayListQRCName, #QRCList").hide();
+            $(".dispayListQRCName, #QRCList, #OperationDARListDiv").hide();
             $(".dispayCreateQRCName, .createQRCForm").show();
         });
-        
-        $("#toggleWO").change(function () {
-        
-            var value = this.checked;
-            if (value == true)
-            {
+        $("#ListDARData").click(function () {
+            $(".glowbuttonActiveDeactive").removeClass("butttonActive");
+            $(this).addClass('butttonActive');
+            $('html,body').animate({
+                scrollTop: $("#OperationDARListDiv").offset().top
+            }, 'slow');
+            $("#WOList, .dispayListWOName, .dispayListQRCName, .QRCList, #OperationCreateQRCListDiv, .dispayCreateQRCName, .createQRCForm,.createWOForm, .dispayCreateWOName, #OperationCreateListDiv").hide();
+            $("#OperationDARListDiv").show();
+        });
+        $('#toggleWOTesting').change(function () {
+            debugger
+            var WOTesting = $('#toggleWOTesting').prop('checked') == true ? true : false;
+            if (WOTesting == true) {
                 $("#WOList, .dispayListWOName").hide();
                 $(".createWOForm, .dispayCreateWOName").show();
             }
             else {
                 $(".createWOForm, .dispayCreateWOName").hide();
                 $("#WOList, .dispayListWOName").show();
-            }           
-        });
-        $("#ToggleQRC").change(function () {
-            debugger
+            }
+
+        })
+        //$("#toggleWO").change(function () {
+        //    var value  =  $('#toggleWO').prop('checked') == true ? true : false;
+        //    //var value = this.checked;
+        //    if (value == true)
+        //    {
+        //        $("#WOList, .dispayListWOName").hide();
+        //        $(".createWOForm, .dispayCreateWOName").show();
+        //    }
+        //    else {
+        //        $(".createWOForm, .dispayCreateWOName").hide();
+        //        $("#WOList, .dispayListWOName").show();
+        //    }
+        //});
+
+        $("#toggleQRCTesting").change(function () {
+            var value = $('#toggleQRCTesting').prop('checked') == true ? true : false;
             $(".createWOForm").hide();
             $("#OperationCreateListDiv").hide();
-            var value = this.checked;
+            //var value = this.checked;
             if (value == true) {
                 $(".dispayListQRCName").hide();
                 $("#QRCForm").show();
+                $("#ListQRC").jsGrid("loadData");
             }
             else {
                 $("#QRCForm").hide();
                 $(".dispayListQRCName").show();
+                $("#ListQRC").jsGrid("loadData");
             }
         });
+        //$("#ToggleQRC").change(function () {
+        //    var value = $('#ToggleQRC').prop('checked') == true ? true : false;
+        //    $(".createWOForm").hide();
+        //    $("#OperationCreateListDiv").hide();
+        //    //var value = this.checked;
+        //    if (value == true) {
+        //        $(".dispayListQRCName").hide();
+        //        $("#QRCForm").show();
+        //        $("#ListQRC").jsGrid("loadData");
+        //    }
+        //    else {
+        //        $("#QRCForm").hide();
+        //        $(".dispayListQRCName").show();
+        //        $("#ListQRC").jsGrid("loadData");
+        //    }
+        //});
     });
 </script>

@@ -1051,6 +1051,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
         public JsonResult GetListITAdministrator(string _search, long? UserId, long? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
         {
             eTracLoginModel ObjLoginModel = null;
+            var detailsList = new List<UserModelList>();
             if (Session["eTrac"] != null)
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
@@ -1064,7 +1065,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
             JQGridResults result = new JQGridResults();
             List<JQGridRow> rowss = new List<JQGridRow>();
             sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
-            sidx = string.IsNullOrEmpty(sidx) ? "UserEmail" : sidx;
+            sidx = string.IsNullOrEmpty(sidx) ? "Name" : sidx;
             txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);
 
             long TotalRows = 0;
@@ -1074,6 +1075,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 //ObjectParameter paramTotalRecords = new ObjectParameter("TotalRecords", typeof(int));
                 long paramTotalRecords = 0;
                 List<UserModelList> ITAdministratorList = _IGlobalAdmin.GetAllITAdministratorList(UserId, Convert.ToInt64(locationId), page, rows, sidx, sord, txtSearch, UserType, out paramTotalRecords);
+
                 foreach (var ITAdmin in ITAdministratorList)
                 {
                     JQGridRow row = new JQGridRow();
@@ -1088,10 +1090,6 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                     row.cell[6] = ITAdmin.EmployeeProfile;
                     rowss.Add(row);
                 }
-                // result.rows = rowss.ToArray();
-                //result.page = (page.HasValue) ? page.Value : 1;
-                //result.total = Convert.ToInt32(rows / (rows.HasValue ? rows.Value : 20));
-                //result.records = Convert.ToInt32(TotalRows);
                 result.rows = rowss.ToArray();
                 result.page = Convert.ToInt32(page);
                 result.total = (int)Math.Ceiling((decimal)(Convert.ToInt32(paramTotalRecords) / rows));
@@ -1100,9 +1098,63 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
             //{ViewBag.Message = ex.Message;ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger;}
+            //return Json(result, JsonRequestBehavior.AllowGet);
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 23-Sept-2019
+        /// Created For : To Get all verified user List
+        /// </summary>
+        /// <param name="_search"></param>
+        /// <param name="UserId"></param>
+        /// <param name="locationId"></param>
+        /// <param name="rows"></param>
+        /// <param name="page"></param>
+        /// <param name="TotalRecords"></param>
+        /// <param name="sord"></param>
+        /// <param name="txtSearch"></param>
+        /// <param name="sidx"></param>
+        /// <param name="UserType"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult GetListITAdministratorForJSGrid(string _search, long? UserId, long? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            var detailsList = new List<UserModelList>();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                if (locationId == null)
+                {
+                    locationId = ObjLoginModel.LocationID;
+                }
+                UserId = ObjLoginModel.UserId;
+            }
+            if(UserType == null)
+            {
+                UserType = "All Users";
+            }
+            sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
+            sidx = string.IsNullOrEmpty(sidx) ? "Name" : sidx;
+            txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; 
+            long TotalRows = 0;
+            try
+            {              
+                long paramTotalRecords = 0;
+                List<UserModelList> ITAdministratorList = _IGlobalAdmin.GetAllITAdministratorList(UserId, Convert.ToInt64(locationId), page, rows, sidx, sord, txtSearch, UserType, out paramTotalRecords);
+                foreach (var ITAdmin in ITAdministratorList)
+                {
+                    ITAdmin.ProfileImage = (ITAdmin.ProfileImage == "" || ITAdmin.ProfileImage == null) ? "" : HostingPrefix + ProfileImagePath.Replace("~/", "") + ITAdmin.ProfileImage;
+                    ITAdmin.id = Cryptography.GetEncryptedData(ITAdmin.UserId.ToString(), true);
+                    detailsList.Add(ITAdmin);
+                }
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+            return Json(detailsList, JsonRequestBehavior.AllowGet);
+        }
         #region LocationSetup
 
         /// <summary>EditLocationSetup
@@ -2213,7 +2265,8 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 ViewBag.FacilityRequest = _ICommonMethod.GetGlobalCodeData("FACILITYREQUESTTYPE");
                 ViewBag.StateId = _ICommonMethod.GetStateByCountryId(1);//Added By bhushan HardCoded value bcoz only one country id
 
-                return View(new WorkRequestAssignmentModel());
+                //return View(new WorkRequestAssignmentModel());
+                return PartialView("~/Views/NewAdmin/WorkOrderView/_CreateWOrkOrder.cshtml", new WorkRequestAssignmentModel());
             }
             catch (Exception)
             {
@@ -2308,6 +2361,10 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                         if (objWorkRequestAssignmentModel.WorkRequestProjectType == 129)
                         {
                             objWorkRequestAssignmentModel.PriorityLevel = 12;
+                        }
+                        if (objWorkRequestAssignmentModel.WorkRequestProjectType == 128 && objWorkRequestAssignmentModel.SafetyHazard == true)
+                        {
+                            objWorkRequestAssignmentModel.PriorityLevel = 11;
                         }
                         else if (objWorkRequestAssignmentModel.WorkRequestProjectType == 256)
                         {
@@ -2558,6 +2615,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
             }
             finally
             {
+                ViewBag.UpdateMode = false;
                 ViewBag.AssignToUserWO = _IGlobalAdmin.GetLocationEmployeeWO(objeTracLoginModel.LocationID);
                 ViewBag.GetAssetListWO = _ICommonMethod.GetAssetListWO(objeTracLoginModel.LocationID);
                 UserType _UserType = (WorkOrderEMS.Helper.UserType)objeTracLoginModel.UserRoleId;
@@ -2610,7 +2668,6 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
             {
                 long workrequestid = 0;
                 WorkRequestAssignmentModel objWorkRequestAssignmentModel = new WorkRequestAssignmentModel();
-
                 if (!string.IsNullOrEmpty(Id))
                 {
                     Id = Cryptography.GetDecryptedData(Id, true);
@@ -2650,9 +2707,8 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                     obt = objWorkRequestAssignmentModel.WeekDayLst.Split(',').ToList();
                     objWorkRequestAssignmentModel.AssignedWeekDaysList = obt;
                 }
-
-
-                return View("WorkRequestAssignment", objWorkRequestAssignmentModel);
+                return PartialView("~/Views/NewAdmin/WorkOrderView/_CreateWOrkOrder.cshtml", objWorkRequestAssignmentModel);
+                //return View("WorkRequestAssignment", objWorkRequestAssignmentModel);
                 // return View("WorkAssignmentList"); commented by bhushan dod on 18/06/2015 bcoz according to vijay testing list after update navigate to list
 
             }
@@ -2740,7 +2796,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 //ViewBag.AssignedToUser = _ICommonMethod.GetEmployeeProject(locationId);
                 ViewBag.PriorityLevel = _ICommonMethod.GetGlobalCodeData("WORKPRIORITY");
                 //objWorkRequestAssignmentModel.WorkRequestProjectType = WorkRequestProjectType;
-                return PartialView("_AssignWorkAssignmentRequest", objWorkRequestAssignmentModel);
+                return PartialView("~/Views/NewAdmin/WorkOrderView/_AssignToEmployee.cshtml", objWorkRequestAssignmentModel);
             }
             catch (Exception ex)
             {
@@ -4162,5 +4218,21 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
         //    return Json(Result, JsonRequestBehavior.AllowGet);
         //}
         #endregion Budget
+
+        ///Get Unseen Notification
+        ///
+        [HttpGet]
+        public ActionResult GetUnseenNotifications()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            long UserId = 0;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                UserId = ObjLoginModel.UserId;
+            }
+            return PartialView("_Notifications",_ICommonMethod.GetUnseenNotifications(UserId));
+        }
+
     }
 }

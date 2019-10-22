@@ -303,18 +303,19 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 						objDAR.ActivityDetails = DarMessage.DeleteSuccessLocationDar(objLocationMasterModel.LocationName);
 						objDAR.TaskType = (long)TaskTypeCategory.DeleteLocation;
 
-						loc obj = new loc();
-						obj.LocationId = Convert.ToString(locationId);
-						var aa = ser.Serialize(obj);
-						sp_DeleteLocation_Result objRes = new sp_DeleteLocation_Result();
-						using (workorderEMSEntities Context = new workorderEMSEntities())
-						{
-							objRes = Context.sp_DeleteLocation(aa).FirstOrDefault();
-						}
+                        loc obj = new loc();
+                        obj.LocationId = Convert.ToString(locationId);
+                        var aa = ser.Serialize(obj);
+                        // sp_DeleteLocation_Result objRes = new sp_DeleteLocation_Result();
+                        var objRes = "";
+                        using (workorderEMSEntities Context = new workorderEMSEntities())
+                        {
+                            objRes = Context.sp_DeleteLocation(aa).FirstOrDefault();
+                        }
 
 
-						if (objRes.Result == "success")
-						{
+                        if (objRes == "success")
+                        {
 
 							#region Save DAR
 							result = _ICommonMethod.SaveDAR(objDAR);
@@ -2564,25 +2565,23 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 			{
 				Exception_B.Exception_B.exceptionHandel_Runtime(ex, "List<WorkRequestAssignmentModelList> GetAllWorkRequestAssignment(long? workRequestAssignmentId, long? requestedBy, string operationName, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string textSearch, long LocationID, long UserID, DateTime StartDate, DateTime EndDate, string filter, ObjectParameter totalRecords)", "fromC#", operationName);
 
-				throw;
-			}
-		}
-		//Added by Ashwajit Bansod For only fetching list to display in web
-		public List<WorkRequestAssignmentModelList> GetAllWorkRequestAssignmentList(long? workRequestAssignmentId, long? requestedBy, string operationName, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string textSearch, long LocationID, long UserID, DateTime StartDate, DateTime EndDate, string filter, string filterqrc, string filterwrtype, ObjectParameter totalRecords)
-		{
-			WorkRequestAssignmentRepository _WorkRequestAssignmentRepository = new WorkRequestAssignmentRepository();
-			try
-			{
-
-				return _WorkRequestAssignmentRepository.GetAllWorkRequestAssignmentList(workRequestAssignmentId, requestedBy, operationName, pageIndex, numberOfRows, sortColumnName, sortOrderBy, textSearch, LocationID, UserID, StartDate, EndDate, filter, filterqrc, filterwrtype, totalRecords);
-			}
-			catch (Exception ex)
-			{
-				Exception_B.Exception_B.exceptionHandel_Runtime(ex, "List<WorkRequestAssignmentModelList> GetAllWorkRequestAssignment(long? workRequestAssignmentId, long? requestedBy, string operationName, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string textSearch, long LocationID, long UserID, DateTime StartDate, DateTime EndDate, string filter, ObjectParameter totalRecords)", "fromC#", operationName);
-
-				throw;
-			}
-		}
+                throw;
+            }
+        }
+        //Added by Ashwajit Bansod For only fetching list to display in web
+        public List<WorkRequestAssignmentModelList> GetAllWorkRequestAssignmentList(long? workRequestAssignmentId, long? requestedBy, string operationName, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string textSearch, long LocationID, long UserID, DateTime StartDate, DateTime EndDate, string filter, string filterqrc,string filterwrtype, ObjectParameter totalRecords)
+        {
+            WorkRequestAssignmentRepository _WorkRequestAssignmentRepository = new WorkRequestAssignmentRepository();
+            try
+            {
+                return _WorkRequestAssignmentRepository.GetAllWorkRequestAssignmentList(workRequestAssignmentId, requestedBy, operationName, pageIndex, numberOfRows, sortColumnName, sortOrderBy, textSearch, LocationID, UserID, StartDate, EndDate, filter, filterqrc, filterwrtype, totalRecords);
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "List<WorkRequestAssignmentModelList> GetAllWorkRequestAssignment(long? workRequestAssignmentId, long? requestedBy, string operationName, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string textSearch, long LocationID, long UserID, DateTime StartDate, DateTime EndDate, string filter, ObjectParameter totalRecords)", "fromC#", operationName);
+                throw;
+            }
+        }
 
 		public Result AssignedToWorkRequestAssignment(WorkRequestAssignmentModel workRequestAssignmentModel)
 		{
@@ -3843,22 +3842,24 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 		}
 		public List<JobPosting> GetJobPostong(long userId)
 		{
+            var lst = new List<JobPosting>();
 			using (workorderEMSEntities context = new workorderEMSEntities())
 			{
 				var hiringManagerId = context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
-				return context.spGetJobPosting(hiringManagerId).Select(x => new JobPosting
-				{
-					Applicant = x.ApplicantCount,
-					DatePosted = x.JobPostingDate,
-					Duration = x.Duration,
-					Employee = x.PositionCount,
-					JobTitle = x.JobTitle,
-					Status = x.Status,
-					JobPostingId = x.JPS_JobPostingId,
+                return context.spGetJobPosting(hiringManagerId).Select(x => new JobPosting
+                {
+                    Applicant = x.ApplicantCount,
+                    DatePosted = x.JobPostingDate,
+                    Duration = x.Duration,
+                    Employee = x.PositionCount,
+                    JobTitle = x.JobTitle,
+                    Status = x.Status,
+                    JobPostingId = x.JPS_JobPostingId,
 
-				}).ToList();
-			}
-		}
+                }).ToList();
+            }
+            //return lst;
+        }
 		public List<spGetApplicantInfo_Result> GetApplicantInfo(long userId)
 		{
 			ObjnewAdminRepository = new NewAdminRepository();
@@ -3878,7 +3879,6 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 
 			try
 			{
-
 				using (workorderEMSEntities Context = new workorderEMSEntities())
 				{
 					var isEmployeeExists = Context.Employees.Where(x => x.EMP_Email == onboardingDetailRequestModel.EmailId).Any();
@@ -3999,20 +3999,22 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 		{
 			try
 			{
-				using (workorderEMSEntities context = new workorderEMSEntities())
-				{
-					var res = context.spGetInterviewScore(ApplicantId).FirstOrDefault();
-					if (res.HasValue)
-						return res.Value;
-					else
-						return 0;
-				}
-			}
+                using (workorderEMSEntities context = new workorderEMSEntities())
+                {
+                    var res = context.spGetInterviewScore(ApplicantId).FirstOrDefault();
+                    if (res.HasValue)
+                        return res.Value;
+                    else
+                        return 0;
+                }
+            }
 			catch (Exception ex)
 			{
 				throw ex;
 			}
-		}
+            return 1;
+
+        }
 		public bool CheckIfAllRespondedForQuestion(long ApplicantId)
 		{
 			try
@@ -4032,9 +4034,66 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 				throw ex;
 			}
 		}
-	}
 
-	public class loc
+        /// <summary>GetListOf306090ForJSGrid
+        /// <Modified By>mayur sahu</Modified> 
+        /// <CreatedFor>To Get Performance 306090 list</CreatedFor>
+        /// <CreatedOn>13-Oct-2019</CreatedOn>
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <param name="PageIndex"></param>
+        /// <param name="NumberOfRows"></param>
+        /// <param name="SortColumnName"></param>
+        /// <param name="SortOrderBy"></param>
+        /// <param name="SearchText"></param>
+        /// <returns></returns>
+        public List<PerformanceModel> GetListOf306090ForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords)
+        {
+            ObjUserRepository = new UserRepository();
+            try
+            {
+
+                return ObjUserRepository.GetListOf306090ForJSGrid(userId, locationId, myUserType, pageIndex, numberOfRows, sortColumnName, sortOrderBy, searchText, out totalRecords);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        public List<GWCQUestionModel> GetGWCQuestions(string Id,string AssessmetType)
+        {
+            ObjUserRepository = new UserRepository();
+            try
+            {
+
+                return ObjUserRepository.GetGWCQuestions(Id,AssessmetType);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+        public bool saveSelfAssessment(List<GWCQUestionModel> data, string action) {
+
+            ObjUserRepository = new UserRepository();
+            try
+            {
+
+                return ObjUserRepository.saveSelfAssessment(data, action);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+    }
+
+
+    public class loc
 	{
 		public string LocationId { get; set; }
 	}

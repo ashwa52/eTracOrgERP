@@ -385,7 +385,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             objPermissionDetailsRepository = new PermissionDetailsRepository();
             try
             {
-                string mypassword = Cryptography.GetEncryptedData(loginViewModel.Password, true);
+                string mypassword = Cryptography.GetEncryptedData(loginViewModel.Password, true); 
+
                 var authuser = ObjUserRepository.GetAll(x => x.AlternateEmail == loginViewModel.UserName && x.Password == mypassword && x.IsDeleted == false && x.IsLoginActive == true && x.IsEmailVerify == true).FirstOrDefault();
 
                 if (authuser != null && authuser.UserId > 0)

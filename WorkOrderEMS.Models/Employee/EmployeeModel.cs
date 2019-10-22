@@ -43,6 +43,7 @@ namespace WorkOrderEMS.Models.Employee
 		public string DlNumber { get; set; }
 		[Required]
 		public bool IsEditEnable { get; set; }
-	}
+        public string LicenseNumber { get; set; }
+    }
 
 }

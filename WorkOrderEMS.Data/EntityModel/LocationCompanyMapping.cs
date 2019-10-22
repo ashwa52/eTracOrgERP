@@ -14,6 +14,12 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class LocationCompanyMapping
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public LocationCompanyMapping()
+        {
+            this.LogLocationCompanyMappings = new HashSet<LogLocationCompanyMapping>();
+        }
+    
         public long LCM_Id { get; set; }
         public long LCM_CMP_Id { get; set; }
         public long LCM_LocationId { get; set; }
@@ -21,5 +27,7 @@ namespace WorkOrderEMS.Data.EntityModel
     
         public virtual Company Company { get; set; }
         public virtual LocationMaster LocationMaster { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LogLocationCompanyMapping> LogLocationCompanyMappings { get; set; }
     }
 }

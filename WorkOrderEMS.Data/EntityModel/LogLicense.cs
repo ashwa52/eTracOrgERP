@@ -30,7 +30,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string LLNC_IsApprove { get; set; }
         public string LLNC_IsActive { get; set; }
     
-        public virtual License License { get; set; }
         public virtual Company Company { get; set; }
+        public virtual License License { get; set; }
     }
 }

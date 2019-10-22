@@ -132,34 +132,35 @@ namespace WorkOrderEMS.Controllers.eCounting
             try
             {
                 var companyFacilityList = _IPOTypeDetails.GetPOTypeDetailsOfCompanyFacilityList(UserId, Location, VendorId, rows, TotalRecords, sidx, sord);
-                foreach (var compFacility in companyFacilityList.rows)
-                {
-                    JQGridRow row = new JQGridRow();
-                    row.id = Cryptography.GetEncryptedData(Convert.ToString(compFacility.COM_FacilityId), true);
-                    row.cell = new string[12];
-                    row.cell[0] = compFacility.COM_Facility_Desc;
-                    row.cell[1] = compFacility.Quantity == 0?"": compFacility.Quantity.ToString();
-                    row.cell[2] = compFacility.UnitPrice.ToString();
-                    row.cell[3] = compFacility.TotalPrice.ToString();
-                    row.cell[4] = compFacility.Tax.ToString();
-                   // row.cell[5] = compFacility.Resourse.ToList().ToString();
-                    row.cell[5] = compFacility.Status;
-                    row.cell[6] = compFacility.CostCode.ToString();
-                    row.cell[7] = compFacility.CFM_CMP_Id.ToString();
-                    row.cell[8] = compFacility.COM_FacilityId.ToString();
-                    row.cell[9] = compFacility.RemainingAmt.ToString();
-                    row.cell[10] = compFacility.LastRemainingAmount.ToString();
-                    row.cell[11] = compFacility.StatusCalculation.ToString();
-                    rowss.Add(row);
-                }
-                result.rows = rowss.ToArray();
-                result.page = Convert.ToInt32(page);
-                result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
-                result.records = Convert.ToInt32(TotalRecords.Value);
+                return Json(companyFacilityList, JsonRequestBehavior.AllowGet);
+                //foreach (var compFacility in companyFacilityList.rows)
+                //{
+                //    JQGridRow row = new JQGridRow();
+                //    row.id = Cryptography.GetEncryptedData(Convert.ToString(compFacility.COM_FacilityId), true);
+                //    row.cell = new string[12];
+                //    row.cell[0] = compFacility.COM_Facility_Desc;
+                //    row.cell[1] = compFacility.Quantity == 0?"": compFacility.Quantity.ToString();
+                //    row.cell[2] = compFacility.UnitPrice.ToString();
+                //    row.cell[3] = compFacility.TotalPrice.ToString();
+                //    row.cell[4] = compFacility.Tax.ToString();
+                //   // row.cell[5] = compFacility.Resourse.ToList().ToString();
+                //    row.cell[5] = compFacility.Status;
+                //    row.cell[6] = compFacility.CostCode.ToString();
+                //    row.cell[7] = compFacility.CFM_CMP_Id.ToString();
+                //    row.cell[8] = compFacility.COM_FacilityId.ToString();
+                //    row.cell[9] = compFacility.RemainingAmt.ToString();
+                //    row.cell[10] = compFacility.LastRemainingAmount.ToString();
+                //    row.cell[11] = compFacility.StatusCalculation.ToString();
+                //    rowss.Add(row);
+                //}
+                //result.rows = rowss.ToArray();
+                //result.page = Convert.ToInt32(page);
+                //result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
+                //result.records = Convert.ToInt32(TotalRecords.Value);
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
-            return Json(result, JsonRequestBehavior.AllowGet);
+            
         }
 
         /// <summary>
@@ -317,11 +318,13 @@ namespace WorkOrderEMS.Controllers.eCounting
                                     long CostCodeId = Convert.ToInt64(item.CostCode);
                                     var costCodeName = _IBillDataManager.GetCostCodeData(CostCodeId);
                                     var dataget = listAccount.Where(x => x.Name == costCodeName.Description).FirstOrDefault();
+                                if (dataget !=null) {
                                     accountRef.AccountRef = new ReferenceType()
                                     {
                                         name = dataget.Name,
                                         Value = dataget.Id
                                     };
+                                }
                                     line.AnyIntuitObject = accountRef;
                                     line.DetailTypeSpecified = true;
                                     line.Amount = Convert.ToDecimal(item.Quantity) * Convert.ToDecimal(item.UnitPrice);
@@ -464,53 +467,65 @@ namespace WorkOrderEMS.Controllers.eCounting
         /// <returns></returns>
         [HttpGet]
         public JsonResult GetAllPOList(string _search, long? UserId,  long? LocationId,string status, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
-        {
+       {
             eTracLoginModel ObjLoginModel = null;
             long UserTypeId = 0;
             if (Session != null && Session["eTrac"] != null)
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-                if (LocationId == null)
+                if (ObjLoginModel != null)
                 {
                     LocationId = ObjLoginModel.LocationID;
                 }
                 UserId = ObjLoginModel.UserId;
                 UserTypeId = ObjLoginModel.UserType;
             }
-            JQGridResults result = new JQGridResults();
-            List<JQGridRow> rowss = new List<JQGridRow>();
+            //long _lpoid;
+            //long.TryParse(txtSearch, out _lpoid);
+            //JQGridResults result = new JQGridResults();
+            //List<JQGridRow> rowss = new List<JQGridRow>();
             sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
             sidx = string.IsNullOrEmpty(sidx) ? "UserEmail" : sidx;
-            txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
+             
+            //txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
             try
             {
-                var AllPOList = _IPOTypeDetails.GetAllPOList(UserId, LocationId, status, UserTypeId, rows, TotalRecords, sidx, sord);
-                foreach (var poList in AllPOList.rows)
+                if (txtSearch !=null && txtSearch != "")
                 {
-                    JQGridRow row = new JQGridRow();
-                    row.id = Cryptography.GetEncryptedData(Convert.ToString(poList.LogPOId), true);
-                    row.cell = new string[11];
-                    row.cell[0] = "PO" + poList.LogPOId.ToString();
-                    row.cell[1] = poList.POType.ToString();
-                    row.cell[2] = (poList.CompanyName == null) ? "N/A" : poList.CompanyName.ToString();
-                    row.cell[3] = poList.LocationName.ToString();
-                    row.cell[4] = poList.PODate.ToString("MM/dd/yyyy");
-                    row.cell[5] = (poList.DeliveryDate == null)?"N/A": poList.DeliveryDate.ToString("MM/dd/yyyy");
-                    row.cell[6] = (poList.POStatus == null)?"Not Approved": poList.POStatus.ToString();
-                    row.cell[7] = (poList.POStatusToDisplay == "W") ? "Waiting" : (poList.POStatusToDisplay == "Y")? "Approved" : "Reject";
-                    row.cell[8] = poList.LogId.ToString();
-                    row.cell[9] = (poList.Total == null)?"N/A": poList.Total.ToString(); 
-                    row.cell[10] = poList.CreatedBy.ToString();
-                    rowss.Add(row);
+                    var AllPOList1 = _IPOTypeDetails.GetAllPOList(UserId, LocationId, status, UserTypeId, rows, TotalRecords, sidx, sord).Where(n => n.DisplayLogPOId == txtSearch).ToList(); 
+                    return Json(AllPOList1, JsonRequestBehavior.AllowGet);
                 }
-                result.rows = rowss.ToArray();
-                result.page = Convert.ToInt32(page);
-                result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
-                result.records = Convert.ToInt32(TotalRecords.Value);
+                else
+                {
+                    var AllPOList = _IPOTypeDetails.GetAllPOList(UserId, LocationId, status, UserTypeId, rows, TotalRecords, sidx, sord);
+                    return Json(AllPOList, JsonRequestBehavior.AllowGet);
+                }
+                //foreach (var poList in AllPOList.rows)
+                //{
+                //    JQGridRow row = new JQGridRow();
+                //    row.id = Cryptography.GetEncryptedData(Convert.ToString(poList.LogPOId), true);
+                //    row.cell = new string[11];
+                //    row.cell[0] = "PO" + poList.LogPOId.ToString();
+                //    row.cell[1] = poList.POType.ToString();
+                //    row.cell[2] = (poList.CompanyName == null) ? "N/A" : poList.CompanyName.ToString();
+                //    row.cell[3] = poList.LocationName.ToString();
+                //    row.cell[4] = poList.PODate.ToString("MM/dd/yyyy");
+                //    row.cell[5] = (poList.DeliveryDate == null)?"N/A": poList.DeliveryDate.ToString("MM/dd/yyyy");
+                //    row.cell[6] = (poList.POStatus == null)?"Not Approved": poList.POStatus.ToString();
+                //    row.cell[7] = (poList.POStatusToDisplay == "W") ? "Waiting" : (poList.POStatusToDisplay == "Y")? "Approved" : "Reject";
+                //    row.cell[8] = poList.LogId.ToString();
+                //    row.cell[9] = (poList.Total == null)?"N/A": poList.Total.ToString(); 
+                //    row.cell[10] = poList.CreatedBy.ToString();
+                //    rowss.Add(row);
+                //}
+                //result.rows = rowss.ToArray();
+                //result.page = Convert.ToInt32(page);
+                //result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
+                //result.records = Convert.ToInt32(TotalRecords.Value);
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
-            return Json(result, JsonRequestBehavior.AllowGet);
+            
         }
 
         /// <summary>
@@ -568,8 +583,11 @@ namespace WorkOrderEMS.Controllers.eCounting
                                 if (getResponseForQB != null)
                                 {
                                     var dataget = listPO.Where(x => x.Id == getResponseForQB.POD_QBKId.ToString()).FirstOrDefault();
-                                    dataget.POStatus = PurchaseOrderStatusEnum.Closed;
-                                    var update = commonServiceQBO.Update(dataget) as PurchaseOrder;
+                                    if (dataget != null)
+                                    {
+                                        dataget.POStatus = PurchaseOrderStatusEnum.Closed;
+                                        var update = commonServiceQBO.Update(dataget) as PurchaseOrder;
+                                    }
                                 }
                                 else
                                 {
@@ -641,26 +659,26 @@ namespace WorkOrderEMS.Controllers.eCounting
             try
             {
                 var AllPOFacilityList = _IPOTypeDetails.GetAllPOFacilityByPOIdList(UserId, Id, rows, TotalRecords, sidx, sord);
-                foreach (var poFacilityList in AllPOFacilityList.rows)
-                {
-                    grandTotal += poFacilityList.UnitPrice * poFacilityList.Quantity;
-                    poFacilityList.TotalPrice = grandTotal;
-                    poFacilityList.TotalPrice = poFacilityList.UnitPrice * poFacilityList.Quantity;
-                    JQGridRow row = new JQGridRow();
-                    row.id = Cryptography.GetEncryptedData(Convert.ToString(poFacilityList.COM_FacilityId), true);
-                    row.cell = new string[10];
-                    row.cell[0] = poFacilityList.COM_FacilityId.ToString();
-                    row.cell[1] = poFacilityList.CostCode.ToString();
-                    row.cell[2] = poFacilityList.FacilityType.ToString();
-                    row.cell[3] = poFacilityList.COM_Facility_Desc.ToString();
-                    row.cell[4] = poFacilityList.UnitPrice.ToString();
-                    row.cell[5] = poFacilityList.Tax.ToString();
-                    row.cell[6] = poFacilityList.Quantity.ToString();
-                    row.cell[7] = poFacilityList.Total.ToString();
-                    row.cell[8] = poFacilityList.TotalPrice.ToString(); 
-                    row.cell[9] = poFacilityList.CostCodeName.ToString();
-                    rowss.Add(row);
-                }
+                //foreach (var poFacilityList in AllPOFacilityList.rows)
+                //{
+                //    grandTotal += poFacilityList.UnitPrice * poFacilityList.Quantity;
+                //    poFacilityList.TotalPrice = grandTotal;
+                //    poFacilityList.TotalPrice = poFacilityList.UnitPrice * poFacilityList.Quantity;
+                //    JQGridRow row = new JQGridRow();
+                //    row.id = Cryptography.GetEncryptedData(Convert.ToString(poFacilityList.COM_FacilityId), true);
+                //    row.cell = new string[10];
+                //    row.cell[0] = poFacilityList.COM_FacilityId.ToString();
+                //    row.cell[1] = poFacilityList.CostCode.ToString();
+                //    row.cell[2] = poFacilityList.FacilityType.ToString();
+                //    row.cell[3] = poFacilityList.COM_Facility_Desc.ToString();
+                //    row.cell[4] = poFacilityList.UnitPrice.ToString();
+                //    row.cell[5] = poFacilityList.Tax.ToString();
+                //    row.cell[6] = poFacilityList.Quantity.ToString();
+                //    row.cell[7] = poFacilityList.Total.ToString();
+                //    row.cell[8] = poFacilityList.TotalPrice.ToString(); 
+                //    row.cell[9] = poFacilityList.CostCodeName.ToString();
+                //    rowss.Add(row);
+                //}
                 result.rows = rowss.ToArray();
                 result.page = Convert.ToInt32(page);
                 result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
@@ -763,40 +781,42 @@ namespace WorkOrderEMS.Controllers.eCounting
             List<JQGridRow> rowss = new List<JQGridRow>();
             sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
             sidx = string.IsNullOrEmpty(sidx) ? "UserEmail" : sidx;
-            txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
+            txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);  
+             
             try
             {
                 var companyFacilityList = _IPOTypeDetails.GetPOFacilityListForEditByPOId(UserId, Id, rows, TotalRecords, sidx, sord);
-                foreach (var compFacility in companyFacilityList.rows)
-                {
-                    JQGridRow row = new JQGridRow();
-                    row.id = Cryptography.GetEncryptedData(Convert.ToString(compFacility.COM_FacilityId), true);
-                    FacId = Cryptography.GetEncryptedData(Convert.ToString(compFacility.COM_FacilityId), true);
-                    row.cell = new string[13];
-                    row.cell[0] = compFacility.COM_Facility_Desc;
-                    row.cell[1] = compFacility.Quantity.ToString();
-                    row.cell[2] = compFacility.UnitPrice.ToString();
-                    row.cell[3] = compFacility.TotalPrice.ToString();
-                    row.cell[4] = compFacility.Tax.ToString();
-                    // row.cell[5] = compFacility.Resourse.ToList().ToString();
-                    row.cell[5] = compFacility.Status;
-                    row.cell[6] = compFacility.CostCode.ToString();
-                    row.cell[7] = compFacility.CFM_CMP_Id.ToString();
-                    row.cell[8] = compFacility.COM_FacilityId.ToString();
-                    row.cell[9] = compFacility.RemainingAmt.ToString();
-                    row.cell[10] = compFacility.LastRemainingAmount.ToString();
-                    row.cell[11] = compFacility.StatusCalculation.ToString();
-                    row.cell[12] = compFacility.POId.ToString();
-                    rowss.Add(row);
-                }
-                result.rows = rowss.ToArray();
-                result.page = Convert.ToInt32(page);
-                result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
-                result.records = Convert.ToInt32(TotalRecords.Value);
+                return Json(companyFacilityList, JsonRequestBehavior.AllowGet);
+                //foreach (var compFacility in companyFacilityList.rows)
+                //{
+                //    JQGridRow row = new JQGridRow();
+                //    row.id = Cryptography.GetEncryptedData(Convert.ToString(compFacility.COM_FacilityId), true);
+                //    FacId = Cryptography.GetEncryptedData(Convert.ToString(compFacility.COM_FacilityId), true);
+                //    row.cell = new string[13];
+                //    row.cell[0] = compFacility.COM_Facility_Desc;
+                //    row.cell[1] = compFacility.Quantity.ToString();
+                //    row.cell[2] = compFacility.UnitPrice.ToString();
+                //    row.cell[3] = compFacility.TotalPrice.ToString();
+                //    row.cell[4] = compFacility.Tax.ToString();
+                //    // row.cell[5] = compFacility.Resourse.ToList().ToString();
+                //    row.cell[5] = compFacility.Status;
+                //    row.cell[6] = compFacility.CostCode.ToString();
+                //    row.cell[7] = compFacility.CFM_CMP_Id.ToString();
+                //    row.cell[8] = compFacility.COM_FacilityId.ToString();
+                //    row.cell[9] = compFacility.RemainingAmt.ToString();
+                //    row.cell[10] = compFacility.LastRemainingAmount.ToString();
+                //    row.cell[11] = compFacility.StatusCalculation.ToString();
+                //    row.cell[12] = compFacility.POId.ToString();
+                //    rowss.Add(row);
+                //}
+                //result.rows = rowss.ToArray();
+                //result.page = Convert.ToInt32(page);
+                //result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
+                //result.records = Convert.ToInt32(TotalRecords.Value);
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
-            return Json(result, JsonRequestBehavior.AllowGet);
+           
         }
 
         /// <summary>
@@ -878,35 +898,46 @@ namespace WorkOrderEMS.Controllers.eCounting
             sidx = string.IsNullOrEmpty(sidx) ? "UserEmail" : sidx;
             txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
             try
-            {
-                var AllPOList = _IPOTypeDetails.GetAllSelfPOList(UserId, LocationId, status, UserTypeId, rows, TotalRecords, sidx, sord);
-                foreach (var poList in AllPOList.rows)
-                {
-                    JQGridRow row = new JQGridRow();
-                    row.id = Cryptography.GetEncryptedData(Convert.ToString(poList.LogPOId), true);
-                    row.cell = new string[11];
-                    row.cell[0] = "PO" + poList.LogPOId.ToString();
-                    row.cell[1] = poList.POType;
-                    row.cell[2] = (poList.CompanyName == null) ? "N/A" : poList.CompanyName.ToString();
-                    row.cell[3] = poList.LocationName;
-                    row.cell[4] = poList.UserName == null?"N/A": poList.UserName;
-                    row.cell[5] = poList.PODate.ToString("MM/dd/yyyy");
-                    row.cell[6] = (poList.DeliveryDate == null) ? "N/A" : poList.DeliveryDate.ToString("MM/dd/yyyy");
-                    row.cell[7] = (poList.POStatus == null) ? "Not Approved" : poList.POStatus.ToString();
-                    row.cell[8] = (poList.POStatusToDisplay == "W") ? "Waiting" : (poList.POStatusToDisplay == "Y") ? "Approved" : "Reject";
-                    row.cell[9] = poList.LogId.ToString();
-                    row.cell[10] = (poList.Total == null) ? "N/A" : poList.Total.ToString();
+            { 
+                    if (txtSearch!=null && txtSearch !="")
+                    {
+                    var AllPOList = _IPOTypeDetails.GetAllSelfPOList(UserId, LocationId, status, UserTypeId, rows, TotalRecords, sidx, sord).Where(x => x.DisplayLogPOId == txtSearch);
+                    return Json(AllPOList, JsonRequestBehavior.AllowGet);
+                         
+                    }
+                    else
+                    {
+                    var AllPOList1 = _IPOTypeDetails.GetAllSelfPOList(UserId, LocationId, status, UserTypeId, rows, TotalRecords, sidx, sord);
+                        return Json(AllPOList1, JsonRequestBehavior.AllowGet);
+                    }
+                    
+                //foreach (var poList in AllPOList.rows)
+                //{
+                //    JQGridRow row = new JQGridRow();
+                //    row.id = Cryptography.GetEncryptedData(Convert.ToString(poList.LogPOId), true);
+                //    row.cell = new string[11];
+                //    row.cell[0] = "PO" + poList.LogPOId.ToString();
+                //    row.cell[1] = poList.POType;
+                //    row.cell[2] = (poList.CompanyName == null) ? "N/A" : poList.CompanyName.ToString();
+                //    row.cell[3] = poList.LocationName;
+                //    row.cell[4] = poList.UserName == null?"N/A": poList.UserName;
+                //    row.cell[5] = poList.PODate.ToString("MM/dd/yyyy");
+                //    row.cell[6] = (poList.DeliveryDate == null) ? "N/A" : poList.DeliveryDate.ToString("MM/dd/yyyy");
+                //    row.cell[7] = (poList.POStatus == null) ? "Not Approved" : poList.POStatus.ToString();
+                //    row.cell[8] = (poList.POStatusToDisplay == "W") ? "Waiting" : (poList.POStatusToDisplay == "Y") ? "Approved" : "Reject";
+                //    row.cell[9] = poList.LogId.ToString();
+                //    row.cell[10] = (poList.Total == null) ? "N/A" : poList.Total.ToString();
 
-                    rowss.Add(row);
-                }
-                result.rows = rowss.ToArray();
-                result.page = Convert.ToInt32(page);
-                result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
-                result.records = Convert.ToInt32(TotalRecords.Value);
+                //    rowss.Add(row);
+                //}
+                //result.rows = rowss.ToArray();
+                //result.page = Convert.ToInt32(page);
+                //result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
+                //result.records = Convert.ToInt32(TotalRecords.Value);
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
-            return Json(result, JsonRequestBehavior.AllowGet);
+          
         }
 
     }

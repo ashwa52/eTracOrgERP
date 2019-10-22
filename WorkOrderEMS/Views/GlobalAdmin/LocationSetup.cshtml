@@ -32,16 +32,11 @@
 </style>
 
 @Html.AntiForgeryToken()
-</div>
-</section>
 <div class="col-lg-12 col-md-12  col-sm-12  col-xs-12">
-
     <div class="panel panel-default">
-
         <div class="panel-heading">
             Set Up Location
         </div>
-
         @using (Html.BeginForm("LocationSetup", "GlobalAdmin", FormMethod.Post, new { enctype = "multipart/form-data", id = "msform" }))
         {
             <!-- progressbar -->
@@ -88,9 +83,13 @@
                                 <div class="col-sm-8">
                                     @*@if (Model != null && ViewBag.Country != null && Model.CountryId != null && Model.CountryId > 0)*@
                                     @if (ViewBag.Country != null)
-                                    {@Html.DropDownListFor(model => model.CountryId, new SelectList(ViewBag.Country, "CountryID", "CountryName"), WorkOrderEMS.Helper.Constants.ConfigCountryValue, new { @class = "form-control requiredselect", @id = "Country", @onchange = "BindState()" })}
-                                else
-                                {<select id="Country" class="form-control requiredselect"><option value="-1">--Select--</option></select>}
+                                    {
+                                        @Html.DropDownListFor(model => model.CountryId, new SelectList(ViewBag.Country, "CountryID", "CountryName"), WorkOrderEMS.Helper.Constants.ConfigCountryValue, new { @class = "form-control requiredselect", @id = "Country", @onchange = "BindState()" })
+                                    }
+                                    else
+                                    {
+                                        <select id="Country" class="form-control requiredselect"><option value="-1">--Select--</option></select>
+                                    }
                                     @Html.ValidationMessageFor(model => model.CountryId)
                                 </div>
                             </div>

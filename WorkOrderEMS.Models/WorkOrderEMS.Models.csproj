@@ -120,8 +120,8 @@
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
@@ -181,6 +181,7 @@
     <Compile Include="eCounting\BillNumber.cs" />
     <Compile Include="eCounting\Bill\BillFacilityModel.cs" />
     <Compile Include="eCounting\CompanyFacility\CompanyFacilityModel.cs" />
+    <Compile Include="eCounting\DebitMemo\DebitMemoModel.cs" />
     <Compile Include="eCounting\eCountingReport\eCountingCountDetailReportModel.cs" />
     <Compile Include="eCounting\eCountingReport\eCountingPaymentDetailsReport.cs" />
     <Compile Include="eCounting\eCountingReport\PaymentSummaryReportModel.cs" />
@@ -223,7 +224,6 @@
     <Compile Include="Employee\EmployeeModel.cs" />
     <Compile Include="Employee\InterviewAnswerModel.cs" />
     <Compile Include="Employee\InterviewersModel.cs" />
-    <Compile Include="Employee\PhotoRelease.cs" />
     <Compile Include="Emp_ManApp\EmployeeManagerModel.cs" />
     <Compile Include="LoginModel\eTracLoginModel.cs" />
     <Compile Include="LoginModel\IdleEmployeeResult.cs" />
@@ -241,12 +241,15 @@
     <Compile Include="ManagerModels\WorkOrderModel.cs" />
     <Compile Include="ManagerModels\WorkRequestModel.cs" />
     <Compile Include="NewAdminLayoutModel\LocationDetailsModel.cs" />
+    <Compile Include="NewAdminLayoutModel\UserListViewEmployeeManagementModel.cs" />
     <Compile Include="NewAdminModel\AccessPermisionTreeViewModel.cs" />
     <Compile Include="NewAdminModel\AccessPermissionModel.cs" />
     <Compile Include="NewAdminModel\AdminChartModel.cs" />
     <Compile Include="NewAdminModel\DepartmentModel.cs" />
+    <Compile Include="NewAdminModel\EmployeeManagement\DemotionModel.cs" />
     <Compile Include="NewAdminModel\MyOpeningModel.cs" />
     <Compile Include="NewAdminModel\OnboardingDetailRequestModel.cs" />
+    <Compile Include="NewAdminModel\PerformanceModel.cs" />
     <Compile Include="PDF\CharitableContributionForm.cs" />
     <Compile Include="PDF\PDFSaveModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

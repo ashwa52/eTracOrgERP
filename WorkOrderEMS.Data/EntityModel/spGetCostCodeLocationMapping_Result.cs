@@ -13,9 +13,8 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class spGetCostCodeLocationMapping_Result
     {
-        public Nullable<long> CCD_CCM_CostCode { get; set; }
+        public long CCM_CostCode { get; set; }
         public string CCM_Description { get; set; }
-        public Nullable<long> CCD_CostCode { get; set; }
-        public string CCD_Description { get; set; }
+        public string CCM_IsActive { get; set; }
     }
 }

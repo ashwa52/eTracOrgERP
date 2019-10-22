@@ -1,6 +1,5 @@
 ﻿
 @{
-	//Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
 	Layout = null;
 	string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
 	WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
@@ -25,30 +24,33 @@
 		height: auto;
 		width: 50px;
 	}
+
 	.actionbox {
-		background-color: #118434;
 		text-align: center;
 		border-radius: 2px;
 		padding: 2px;
 		min-width: 20px;
 		min-height: 20px;
-		color:#000;
+		color: #000 !important;
 	}
+
 	.inline {
 		display: inline-block;
 		position: relative;
 	}
+
 	.white {
 		color: white;
 		font-size: 25px;
 	}
-	.action1
-	{
-		margin:2px;
+
+	.action1 {
+		margin: 2px;
 	}
+
 	.actionBtn {
 		margin: 4px;
-		color:#000000;
+		color: #000000;
 	}
 </style>
 <script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
@@ -63,7 +65,7 @@
 <script src="https://www.amcharts.com/lib/3/serial.js"></script>
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
-
+<link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />
 <style>
 	.addWhite {
 		color: white;
@@ -80,25 +82,87 @@
 			<div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
 				<div class="welcome-text">
 					<h4>Hi, welcome back! @loginUserName</h4>
-					<p class="mb-0"> Admin Dashboard</p>
+					<p class="mb-0">ePeople Dashboard</p>
+				</div>
+			</div>
+			<div class="col-sm-8">
+				<button type="button" id="EmplooyeeManagement" class="btn btn-primary pull-right" style="border-radius: 35px;">Employee Management</button>
+			</div>
+		</div>
+		<div class="row justify-content-center">
+			<div class="col-lg-3">
+				<div class="pricing_table_content mt-5" style="background-color: #3f4e62;color:white;">
+					<p style="margin-left:70px;margin-top:-20px;font-size:20px;"><b>15</b></p>
+					<div class="package" style="margin-top:-30px;"><i class="fa fa-users" style="color:#fff;font-size:30px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Hiring On Board</b></div>
+				</div>
+			</div>
+			<div class="col-lg-3">
+				<div class="pricing_table_content mt-5" style="background-color: #529F9D;color:white;">
+					<p style="margin-left:70px;margin-top:-20px;font-size:20px;"><b>9</b></p>
+					<div class="package" style="margin-top:-30px;"><i class="fa fa-users" style="color:yellow;font-size:30px;margin-left: -10px;"></i>&nbsp;&nbsp;&nbsp;<b>Employee Management</b></div>
+				</div>
+			</div>
+			<div class="col-lg-3">
+				<div class="pricing_table_content mt-5" style="background-color: #3F8ADA;color:white;">
+					<p style="margin-left:70px;margin-top:-20px;font-size:20px;"><b>5</b></p>
+					<div class="package" style="margin-top:-30px;"><i class="fa fa-clock-o" style="color:white;font-size:30px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>eTime</b></div>
+				</div>
+			</div>
+			<div class="col-lg-3">
+				<div class="pricing_table_content mt-5" style="background-color: #529F9D;color:white;">
+					<p style="margin-left:70px;margin-top:-20px;font-size:20px;"><b>4</b></p>
+					<div class="package" style="margin-top:-30px;"><i class="fa fa-users" style="color:green;font-size:30px;margin-left: -20px;"></i>&nbsp;&nbsp;&nbsp;<b>Performance Management</b></div>
 				</div>
 			</div>
 		</div>
-		<div id="epeople">
+		<br />
+		<div id="infofactsheet">
 			<div class="row">
-				<div class="col-lg-8" style="padding:6px 0px 0px 13px;">
+				<div class="col-lg-6">
 					<div class="card" data-aos="fade-up">
+						<div class="card-header widthHeader ">
+							<h4 class="card-title addWhite" style="color: white;">Employee</h4>
+						</div>
 						<div class="card-body">
-							<h4 class="card-title">Employee</h4>
-							<div id="chartdiv"></div>
+							<div id="QRCCount"></div>
+							@*<div id="EmployeeCount"></div>*@
 						</div>
 					</div>
 				</div>
-				<div class="col-lg-4" style="padding:6px 0px 0px 13px">
+				<div class="col-lg-6">
 					<div class="card" data-aos="fade-up">
+						<div class="card-header widthHeader ">
+							<h4 class="card-title addWhite" style="color: white;">eTime</h4>
+						</div>
 						<div class="card-body">
-							<h4 class="card-title">Employee</h4>
-							<div id="QRCCount"></div>
+							<div id="eTimediv"></div>
+							@*<div id="c3-combination"></div>*@
+						</div>
+					</div>
+				</div>
+			</div>
+			<br />
+			<div class="row">
+				<div class="col-xl-4 col-xxl-6 col-lg-6 col-md-6 col-sm-12">
+					<div class="card" data-aos="fade-up">
+						<div class="card-header widthHeader ">
+							<h4 class="card-title addWhite" style="color: white;"><span><b>eTrac Ticket</b></span></h4>
+						</div>
+						<div class="card-body" style="height: 339px;">
+							<form action="index.html" class="agent-req-form">
+								<div class="form-group">
+									<input type="text" placeholder="Generated By *" class="form-control bg-white text-muted">
+								</div>
+								<div class="form-group">
+									<input type="text" placeholder="Ticket Date *" class="form-control bg-white text-muted">
+								</div>
+								<div class="form-group">
+									<textarea rows="3" placeholder="Issue *" class="form-control bg-white text-muted"></textarea>
+								</div>
+								<div class="form-group text-right">
+									<button type="submit" class="btn btn-primary" style="border-radius:25px;background-color:#0aa0cd;">Submit Ticket</button>
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>
@@ -165,16 +229,42 @@
 				</div>
 			</div>
 		</div>
-		<div id="infofactsheet">
+		@*<div id="infofactsheet">
 
+		</div>*@
+	</div>
+</div>
+</div>
+@Html.Partial("~/Views/NewAdmin/ePeople/_HiringOnBoarding.cshtml")
+
+<div class="modal fade  bd-example-modal-lg" @*data-backdrop="false"*@ id="ModalProfilePreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog  modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">View Profile</h5>
+				<button type="button" class="close" data-dismiss="modal">
+					<span>&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div id="viewProfileData">
+
+				</div>
+			</div>
+			<div class="modal-footer" style="background: white;">
+
+				<button type="button" class="btn btn-secondary" id="close" style="border-radius:100px;" data-dismiss="modal">Close</button>
+			</div>
 		</div>
 	</div>
 </div>
-@Html.Partial("~/Views/NewAdmin/ePeople/_HiringOnBoarding.cshtml")
 <!--**********************************
 	Content body end
 ***********************************-->
-
+<script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
+<script src="~/GridListing/JsGridScript/ListOnBoarding.js"></script>
+<script src="~/GridListing/JsGridScript/ListMyOpening.js"></script>
+<script src="~/GridListing/JsGridScript/ListEmployeeManagement.js"></script>
 <script>
 	am4core.ready(function () {
 
@@ -323,112 +413,20 @@
         });
 
         $("#HiringOnBoard").click(function () {
+            $("#hiringOnBordingDiv").show();
+            $("#EmployeeManagementDiv").hide();
             $('html,body').animate({
                 scrollTop: $("#hiringOnBordingDiv").offset().top
             }, 'slow');
-		});
+        });
 
-
-		am4core.ready(function () {
-
-			// Themes begin
-			//am4core.useTheme(am4themes_dataviz);
-			//am4core.useTheme(am4themes_animated);
-			// Themes end
-
-			var chart = am4core.create("chartdiv", am4charts.XYChart);
-			chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
-
-			chart.data = [
-				{
-					country: "USA",
-					visits: 23725
-				},
-				{
-					country: "China",
-					visits: 1882
-				},
-				{
-					country: "Japan",
-					visits: 1809
-				},
-				{
-					country: "Germany",
-					visits: 1322
-				},
-				{
-					country: "UK",
-					visits: 1122
-				},
-				{
-					country: "France",
-					visits: 1114
-				},
-				{
-					country: "India",
-					visits: 984
-				},
-				{
-					country: "Spain",
-					visits: 711
-				},
-				{
-					country: "Netherlands",
-					visits: 665
-				},
-				{
-					country: "Russia",
-					visits: 580
-				},
-				{
-					country: "South Korea",
-					visits: 443
-				},
-				{
-					country: "Canada",
-					visits: 441
-				}
-			];
-
-			var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-			categoryAxis.renderer.grid.template.location = 0;
-			categoryAxis.dataFields.category = "country";
-			categoryAxis.renderer.minGridDistance = 40;
-			categoryAxis.fontSize = 11;
-
-			var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
-			valueAxis.min = 0;
-			valueAxis.max = 24000;
-			valueAxis.strictMinMax = true;
-			valueAxis.renderer.minGridDistance = 30;
-			// axis break
-			var axisBreak = valueAxis.axisBreaks.create();
-			axisBreak.startValue = 2100;
-			axisBreak.endValue = 22900;
-			axisBreak.breakSize = 0.005;
-
-			// make break expand on hover
-			var hoverState = axisBreak.states.create("hover");
-			hoverState.properties.breakSize = 1;
-			hoverState.properties.opacity = 0.1;
-			hoverState.transitionDuration = 1500;
-
-			axisBreak.defaultState.transitionDuration = 1000;
-
-
-			var series = chart.series.push(new am4charts.ColumnSeries());
-			series.dataFields.categoryX = "country";
-			series.dataFields.valueY = "visits";
-			series.columns.template.tooltipText = "{valueY.value}";
-			series.columns.template.tooltipY = 0;
-			series.columns.template.strokeOpacity = 0;
-
-			// as by default columns of the same series are of the same color, we add adapter which takes colors from chart.colors color set
-			series.columns.template.adapter.add("fill", function (fill, target) {
-				return chart.colors.getIndex(target.dataItem.index);
-			});
-
-		});
+        $("#EmplooyeeManagement").click(function () {
+            $("#EmployeeManagementDiv").show();
+            $("#hiringOnBordingDiv").hide();
+            $('html,body').animate({
+                scrollTop: $("#EmployeeManagementDiv").offset().top
+            }, 'slow');
+        });
  });
 </script>
 

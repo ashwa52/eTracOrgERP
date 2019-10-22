@@ -25,7 +25,5 @@ namespace WorkOrderEMS.Data.EntityModel
         public string LCCM_IsApprove { get; set; }
         public string LCCM_IsActive { get; set; }
         public string LCCM_Action { get; set; }
-    
-        public virtual CostCodeMaster CostCodeMaster { get; set; }
     }
 }

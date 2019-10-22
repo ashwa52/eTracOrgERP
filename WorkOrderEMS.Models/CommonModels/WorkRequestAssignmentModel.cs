@@ -181,6 +181,7 @@ namespace WorkOrderEMS.Models.CommonModels
 
     public class WorkRequestAssignmentModelList
     {
+        public string id { get; set; }
         public long WorkRequestAssignmentID { get; set; }
         public string WorkRequestID { get; set; }
         public Nullable<long> WorkRequestType { get; set; }

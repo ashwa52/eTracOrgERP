@@ -32,6 +32,9 @@ namespace WorkOrderEMS.Models
         public string JobTitle { get; set; }
         public string JobTitleDesc { get; set; }
         public string  JobTitleLabel { get; set; }
+        public string EmploymentStatus { get; set; }
+        public string EmploymentClassification { get; set; }
+        public decimal? RateOfPay { get; set; }
         //public string[] JDSplitedString { get; set; }
         //public long? MyProperty { get; set; }
     }

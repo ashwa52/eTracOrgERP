@@ -9,113 +9,211 @@ var allLocationBill = '';
 allLocationBill = '<div class="onoffswitch2" style="margin-left:750px;"><input type="checkbox" name="onoffswitch2" class="onoffswitch2-checkbox" id="ViewAllLocation"><label for="ViewAllLocation" class="onoffswitch2-label"><span class="onoffswitch2-inner"></span><span class="onoffswitch2-switch"></span></label></div>'
 //}
 $(function () {
-    $("#tbl_PreBillList").jqGrid({
-        url: $_HostPrefix + BillUrl + '?LocationId=' + $_locationId,
-        datatype: 'json',
-        type: 'GET',
-        height: 430,
-        width: 650,
-        autowidth: true,
-        colNames: ['Bill Id', 'Vendor Name', 'Employee Name', 'Vendor Type', 'Bill Date', 'Bill Amount', 'Status', 'Comment', 'LBLL_Id', 'VendorId', 'Bill Image', 'Action'],
-        colModel: [{ name: 'BillId', width: 30, sortable: true },
-        { name: 'VendorName', width: 40, sortable: false },
-        { name: 'EmployeeName', width: 20, sortable: true },
-        { name: 'VendorType', width: 20, sortable: true },
-        { name: 'BillDate', width: 40, sortable: false },
-        { name: 'BillAmount', width: 20, sortable: true },
-        { name: 'Status', width: 20, sortable: true, hidden: true },
-        { name: 'Comment', width: 20, sortable: true, hidden: true },
-        { name: 'BillImage', width: 20, sortable: true, formatter: imageFormat },
-        { name: 'LBLL_Id', width: 20, sortable: true, hidden: true },
-        { name: 'VendorId', width: 20, sortable: true, hidden: true },
-        { name: 'act', index: 'act', width: 30, sortable: false }],
-        rownum: 10,
-        rowList: [10, 20, 30],
-        scrollOffset: 0,
-        pager: '#divPreBillListPager',
-        sortname: 'BillId',
-        viewrecords: true,
-        gridview: true,
-        //loadonce: false,
-        multiSort: true,
-        rownumbers: true,
-        emptyrecords: "No records to display",
-        shrinkToFit: true,
-        sortorder: 'asc',
-        gridComplete: function () {
-            var ids = jQuery("#tbl_PreBillList").jqGrid('getDataIDs');
-            jQuery('#tbl_PreBillList').addClass('order-table');
-            for (var i = 0; i < ids.length; i++) {
-                var cl = ids[i];
-                vi = '<div><a href="javascript:void(0)" class="viewRecord" id="viewPreBill" title="view" vid="' + cl + '" style=" float: left;margin-right: 10px;cursor:pointer;"><span class="ui-icon ui-icon-disk"></span><span class="tooltips">Detail</span></a></div>';
-                jQuery("#tbl_PreBillList").jqGrid('setRowData', ids[i], { act: vi }); ///+ qrc 
-            }
-            if ($("#tbl_PreBillList").getGridParam("records") <= 20) {
-                $("#divPreBillListPager").hide();
-            }
-            else {
-                $("#divPreBillListPager").show();
-            }
-            if ($('#tbl_PreBillList').getGridParam('records') === 0) {
-                $('#tbl_PreBillList tbody').append("<div style='padding: 6px; font-size: 12px;'>No records found.</div>");
-            }
-        },
-        caption: '<div><label>List of Bill</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><input type="text" class="inputSearch light-table-filter" id="searchPreBilltext" placeholder="Bill No"  data-table="order-table" /></span>' + allLocationBill + '</div>'
+
+    $('#myModelRejectBill').on('hidden.bs.modal', function () {
+        $("#backgroundDiv").css("display", "none");
     });
-    $('#ViewAllLocation').change(function () {
+
+    var act;
+    var _searchresult = $("#searchPreBilltext").val();//searchPreBilltext
+    $(function () {        
+        
+        $("#tbl_PreBillList").jsGrid({
+            height: "170%",
+            width: "100%",
+            filtering: false,
+            editing: false,
+            inserting: false,
+            sorting: false,
+            paging: true,
+            autoload: true,
+            pageSize: 10,
+            pageButtonCount: 5,
+
+            controller: {
+                loadData: function (filter) {
+                    return $.ajax({
+                        type: "GET",
+                        url: $_HostPrefix + BillUrl + '?txtSearch=' + _searchresult + '&locationId=' + $_locationId,
+                        data: filter,
+                        dataType: "json"
+                    });
+                }
+            },
+
+            fields: [
+                { name: "BillId", title: "Bill Id", type: "text", width: 50 },
+                { name: "VendorName", title: "Vendor Name", type: "text", width: 50 },
+                { name: "EmployeeName", title: "Employee Name", type: "text", width: 50 },
+                { name: "VendorType", title: "Vendor Type", type: "text", width: 50 },
+                { name: "BillDate", title: "Bill Date", type: "text", width: 50 },
+                { name: "BillAmount", title: "Bill Amount", type: "text", width: 50 },
+                { name: "Status", title: "Status", type: "text", width: 50 },
+                { name: "Comment", title: "Comment", type: "text", width: 50, visible: false },
+                { name: "BillImage", title: "Bill Image", type: "text", width: 50, visible: false },
+                { name: "LBLL_Id", title: "LBLL Id", type: "text", width: 50 },
+                { name: "VendorId", title: "VendorId", type: "text", width: 50, visible: false },
+                {
+                    name: "act", items: act, title: "View Details", width: 50, css: "text-center", itemTemplate: function (value, item) {
+                        var $iconPencil = $("<i>").attr({ class: "fa fa-list" }).attr({ style: "color:black;font-size: 22px;" });
+                        var $customEditButton = $("<span style='padding: 0 5px 0 0;'>")
+                            .attr({ title: "View Details" })
+                            .attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                                ViewDetails(item);
+                            }).append($iconPencil);
+                        return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton);
+                    }
+                }
+            ]
+        });
+    });
+   
+    $('#ViewAllLocation').change(function () {        
         ViewAllRecordsBill();
     });
-    if ($("#tbl_PreBillList").getGridParam("records") > 20) {
-        jQuery("#tbl_PreBillList").jqGrid('navGrid', '#divPreBillListPager', { edit: false, add: false, del: false, search: false, edittext: "Edit" });
-    }
+
+    $("#searchPreBilltext").keyup(function () {
+        doSearch()
+    });
 });
+
+//$(document).ready(function () {
+//    debugger;
+   
+//});
+
 var timeoutHnd;
 var flAuto = true;
-function doSearch(ev) {
-    if (timeoutHnd)
-        clearTimeout(timeoutHnd)
-    timeoutHnd = setTimeout(gridReload, 500)
+function doSearch() {
+
+    var act;
+    var _searchresult = $("#searchPreBilltext").val();
+    debugger;
+    $("#tbl_PreBillList").jsGrid({
+        height: "170%",
+        width: "100%",
+        filtering: false,
+        editing: false,
+        inserting: false,
+        sorting: false,
+        paging: true,
+        autoload: true,
+        pageSize: 10,
+        pageButtonCount: 5,
+
+        controller: {
+            loadData: function (filter) {
+                return $.ajax({
+                    type: "GET",
+                    url: $_HostPrefix + BillUrl + '?txtSearch=' + _searchresult + '&locationId=' + $_locationId,
+                    data: filter,
+                    dataType: "json"
+                });
+            }
+        },
+
+        fields: [
+            { name: "BillId", title: "Bill Id", type: "text", width: 50 },
+            { name: "VendorName", title: "Vendor Name", type: "text", width: 50 },
+            { name: "EmployeeName", title: "Employee Name", type: "text", width: 50 },
+            { name: "VendorType", title: "Vendor Type", type: "text", width: 50 },
+            { name: "BillDate", title: "Bill Date", type: "text", width: 50 },
+            { name: "BillAmount", title: "Bill Amount", type: "text", width: 50 },
+            { name: "Status", title: "Status", type: "text", width: 50 },
+            { name: "Comment", title: "Comment", type: "text", width: 50, visible: false},
+            { name: "BillImage", title: "Bill Image", type: "text", width: 50, visible: false },
+            { name: "LBLL_Id", title: "LBLL Id", type: "text", width: 50 },
+            { name: "VendorId", title: "VendorId", type: "text", width: 50, visible: false },
+            {
+                name: "act", items: act, title: "View Details", width: 50, css: "text-center", itemTemplate: function (value, item) {
+                    var $iconPencil = $("<i>").attr({ class: "fa fa-list" }).attr({ style: "color:black;font-size: 22px;" });
+                    var $customEditButton = $("<span style='padding: 0 5px 0 0;'>")
+                        .attr({ title: "View Details" })
+                        .attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                            ViewDetails(item);
+                        }).append($iconPencil);
+                    return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton);
+                }
+            }
+        ]
+    });
 }
 
-function gridReload() {
+function ViewDetails(item) { 
+    $("#lblBillId").html(item.BillId);
+    $("#lblVendorName").html(item.VendorName);
+    $("#lblVendorType").html(item.VendorType);
+    $("#lblBillDate").html(item.BillDate);
+    $("#lblBillAmount").html(item.BillAmount);
+    $("#lblStatus").html(item.Status);
+    $("#lblComment").html(item.Comment);
+    $("#lblBillImage").html(item.BillImage);
+    $('div #lblBillImage img').attr('width', '100px');
+    $('div #lblBillImage img').attr('height', '100px');
 
-    jQuery("#tbl_PreBillList").jqGrid('setGridParam', { url: $_HostPrefix + GetListBill + "?LocationId=" + $_locationId, page: 1 }).trigger("reloadGrid");
+    //if (Image == '' || Image == null || Image == "") {
+    //    $("#labelMiscImage").hide();
+    //    $("#lblMiscImage").hide();
+    //}
+    
+    $('.modal-title').text("Bill Details");
+    $("#myModalForPreBillData").modal('show');///myModalForPreBillData  ///myModalForBillData
+
+    //$("#myModalForMiscellaneousData").modal('show');
+
+
 }
+var billStatus;
 function RejectBillAfterCommentBill() {
-    callAjaxbill()
+    billStatus = "Rejected";
+    
+    callAjaxbill(billStatus)
 }
 function ApproveBill() {
+    billStatus = "approved";
     $("#ApproveBill").addClass("disabled");
-    callAjaxbill()
+    callAjaxbill(billStatus)
 }
-function callAjaxbill() {      //$("#ApproveBill").live("click", function (event) {
-    var GridData = $('#tbl_PreBillList').getRowData(id);
-    GridData.Comment = $("#CommentBill").val();
+function callAjaxbill(billStatus) {      //$("#ApproveBill").live("click", function (event) {
+    var getdata = {};
+    getdata.BillId = $("#lblBillId").html();
+    getdata.VendorName = $("#lblVendorName").html();
+    getdata.VendorType = $("#lblVendorType").html();
+    getdata.BillDate = $("#lblBillDate").html();
+    getdata.BillAmount = $("#lblBillAmount").html();
+    getdata.Status = billStatus;
+    getdata.Comment = $("#CommentBill").val();
+    ////////$("#lblComment").html();
+    debugger;
     $.ajax({
         url: $_HostPrefix + ApproveUrl,
         type: 'POST',
         datatype: 'application/json',
         contentType: 'application/json',
-        data: JSON.stringify({ obj: GridData, LocationId: $_locationId, FacilityData: FacilityData }),
+        data: JSON.stringify({ obj: getdata, LocationId: $_locationId, FacilityData: FacilityData }),
         beforeSend: function () {
             new fn_showMaskloader('Please wait...');
         },
         success: function (result) {
-            toastr.success(result);
+            debugger;
+            //toastr.success(result);
+            alert(result);
             $("#ApproveBill").removeClass("disabled");
-            $("#myModalForPreBillData").modal('hide');
-            jQuery("#tbl_PreBillList").trigger("reloadGrid");
+            $("#myModalForPreBillData").modal('hide');            
         },
         error: function () { alert(" Something went wrong..") },
         complete: function () {
+            
             fn_hideMaskloader();
         }
     });
 }
 
-$("#viewPreBill").live("click", function (event) {
+$("#viewPreBill").on("click", function (event) {
     id = $(this).attr("vid");
-    var rowData = jQuery("#tbl_PreBillList").getRowData(id);
+    //var rowData = jQuery("#tbl_PreBillList").getRowData(id);
+
+    var rowData = $("#tbl_PreBillList").jsGrid("option", "data");
    
     if (rowData.Status == "Y") {
         $('#ApproveBill').hide();
@@ -211,12 +309,67 @@ function imageFormat(cellvalue, options, rowObject) {
 }
 //#endregion
 function ViewAllRecordsBill() {
-    var locaId = $('#ViewAllLocation').prop('checked') == true ? 0 : $("#drp_MasterLocation :selected").val();
+    var locaId = $('#ViewAllLocation').prop('checked') == true ? 0 : $("#drp_MasterLocation1 :selected").val();
     if (locaId == 0) {
-        $("#drp_MasterLocation").hide();
+        $("#drp_MasterLocation1").hide();
     }
     else {
-        $("#drp_MasterLocation").show();
+        $("#drp_MasterLocation1").show();
     }
-    jQuery("#tbl_PreBillList").jqGrid('setGridParam', { url: $_HostPrefix + BillUrl + '?LocationId=' + locaId, page: 1 }).trigger("reloadGrid");
+    //jQuery("#tbl_PreBillList").jqGrid('setGridParam', { url: $_HostPrefix + BillUrl + '?LocationId=' + locaId, page: 1 }).trigger("reloadGrid");
+    ViewAllLocation()
+}
+
+function ViewAllLocation() {
+   
+    var locaId = $('#ViewAllLocation').prop('checked') == true ? 0 : $("#drp_MasterLocation1 :selected").val();
+    
+    var act;
+    $("#tbl_PreBillList").jsGrid({
+        height: "170%",
+        width: "100%",
+        filtering: false,
+        editing: false,
+        inserting: false,
+        sorting: false,
+        paging: true,
+        autoload: true,
+        pageSize: 10,
+        pageButtonCount: 5,
+
+        controller: {
+            loadData: function (filter) {
+                return $.ajax({
+                    type: "GET",
+                    url: $_HostPrefix + BillUrl + '?locationId=' + locaId,
+                    data: filter,
+                    dataType: "json"
+                });
+            }
+        },
+        fields: [
+            { name: "BillId", title: "Bill Id", type: "text", width: 50 },
+            { name: "VendorName", title: "Vendor Name", type: "text", width: 50 },
+            { name: "EmployeeName", title: "Employee Name", type: "text", width: 50 },
+            { name: "VendorType", title: "Vendor Type", type: "text", width: 50 },
+            { name: "BillDate", title: "Bill Date", type: "text", width: 50 },
+            { name: "BillAmount", title: "Bill Amount", type: "text", width: 50 },
+            { name: "Status", title: "Status", type: "text", width: 50 },
+            { name: "Comment", title: "Comment", type: "text", width: 50 , visible: false },
+            { name: "BillImage", title: "Bill Image", type: "text", width: 50, visible: false },
+            { name: "LBLL_Id", title: "LBLL Id", type: "text", width: 50 },
+            { name: "VendorId", title: "VendorId", type: "text", width: 50, visible: false },
+            {
+                name: "act", items: act, title: "View Details", width: 50, css: "text-center", itemTemplate: function (value, item) {
+                    var $iconPencil = $("<i>").attr({ class: "fa fa-list" }).attr({ style: "color:black;font-size: 22px;" });
+                    var $customEditButton = $("<span style='padding: 0 5px 0 0;'>")
+                        .attr({ title: "View Details" })
+                        .attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                            ViewDetails(item);
+                        }).append($iconPencil);
+                    return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton);
+                }
+            }
+        ]
+    });
 }

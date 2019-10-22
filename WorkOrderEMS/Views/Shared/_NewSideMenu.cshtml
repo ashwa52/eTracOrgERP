@@ -87,30 +87,48 @@
             <li><a href="@Url.Action("Index", "NewAdmin")"><i class="mdi mdi-home"></i><span class="nav-text">Home</span></a></li>
             <li>
                 @if (GloblaAdminUser || ITAdminUser)
-        {
-            <a href="~/GlobalAdmin" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
-}
+                {
+                    <a href="~/GlobalAdmin" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
+                }
                 @if (OnlyAdminUser)
-        {
-            <a href="~/Administrator" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
-}
+                {
+                    <a href="~/Administrator" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
+                }
                 @if (ManagerUser)
-        {
-            <a href="~/Manager/Dashboard" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
-}
+                {
+                    <a href="~/Manager/Dashboard" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
+                }
                 @if (EmployeeUser)
-        {
-            <a href="~/Employee/Dashboard" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
-}
+                {
+                    <a href="~/Employee/Dashboard" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
+                }
                 @if (ClientUser)
-        {
-            <a href="~/Client" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
-}
+                {
+                    <a href="~/Client" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
+                }
             </li>
             <li><a href="@Url.Action("ListLocation", "GlobalAdmin")"><i class="fa fa-location-arrow"></i><span class="nav-text">Location</span></a></li>
-            <li><a href="@Url.Action("OperationDashboard", "NewAdmin")"><i class="mdi mdi-speedometer"></i><span class="nav-text">Operation</span></a></li>
-            <li><a href="@Url.Action("ePeopleDashboard", "NewAdmin")"><i class="fa fa-users"></i><span class="nav-text">ePeople</span></a></li>
             <li>
+                <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-cogs"></i><span class="nav-text">Operation</span></a>
+                <ul aria-expanded="false">
+                    <li><a href="@Url.Action("EMaintananceDashboard", "NewAdmin")" data-oldDash="No"><i class="fa fa-wrench"></i>eMaintenance</a></li>
+                    <li><a href="@Url.Action("EScanDashboard", "NewAdmin")" data-oldDash="No"><i class="fa fa-print"></i>eScanner</a></li>
+                    <li><a href="@Url.Action( "DARDashboard", "NewAdmin")" data-oldDash="No"><i class="fa fa-list"></i>DAR</a></li>
+                    <li><a href="@Url.Action( "OperationReports", "NewAdmin")" data-oldDash="No"><i class="fa fa-area-chart"></i>Report</a></li>
+                </ul>
+            </li>
+            @*<li><a href="@Url.Action("OperationDashboard", "NewAdmin")"><i class="mdi mdi-speedometer"></i><span class="nav-text">Operation</span></a></li>*@
+            <li>
+                <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-user-circle-o"></i><span class="nav-text">ePeople</span></a>
+                <ul aria-expanded="false">
+                    <li><a href="@Url.Action("ePeopleDashboard", "NewAdmin")" data-oldDash="No">Employee Management</a></li>
+                    <li><a href="@Url.Action("HiringOnBoardingDashboard", "NewAdmin")" data-oldDash="No">Hiring & Onboarding</a></li>
+                    <li><a href="@Url.Action( "PerformanceManagement", "NewAdmin" )" data-oldDash="No">Performance Management</a></li>
+                    <li><a href="@Url.Action( "ePeopleDashboard", "NewAdmin")" data-oldDash="No">eTime </a></li>
+                </ul>
+            </li>
+            @*<li><a href="@Url.Action("ePeopleDashboard", "NewAdmin")"><i class="fa fa-users"></i><span class="nav-text">ePeople</span></a></li>*@
+            @*<li>
                 <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-user-circle-o"></i><span class="nav-text">Manage User</span></a>
                 <ul aria-expanded="false">
                     <li><a href="@Url.Action("listclient", "GlobalAdmin")" data-oldDash="Yes">All User List</a></li>
@@ -118,7 +136,7 @@
                     <li><a href="@Url.Action( "NotAssignedUsers", "GlobalAdmin")" data-oldDash="Yes">UnAssigned User</a></li>
                     <li><a href="@Url.Action( "UnVerifiedUsers", "GlobalAdmin")" data-oldDash="Yes">UnVerified User</a></li>
                 </ul>
-            </li>
+            </li>*@
             <li>
                 <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-car"></i><span class="nav-text">eFleet</span></a>
                 <ul aria-expanded="false">
@@ -180,25 +198,35 @@
                 <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-usd"></i><span class="nav-text">eCounting</span></a>
                 <ul aria-expanded="false">
                     <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">Vendor Management </a>
-                        <ul aria-expanded="false">
-                            <li><a href="@Url.Action("UnApprovedVendor", "VendorManagement")" data-oldDash="Yes">Setup Vendor</a></li>
-                            <li><a href="@Url.Action("CompanyList", "VendorManagement")" data-oldDash="Yes">Vendor List</a></li>
-                        </ul>
+                        <a class="" href="@Url.Action("UnApprovedVendor", "VendorManagement")" data-oldDash="Yes"><i class="fa fa-vimeo" aria-hidden="true"></i>Vendor Management </a>
+
                     </li>
+                    <li><a href="@Url.Action("AllPOList", "POTypeData")" data-oldDash="Yes"><i class="fa fa-file-text" aria-hidden="true"></i><span class="nav-text">PO</span></a></li>
                     <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">Financial Form</a>
-                        <ul aria-expanded="false">
-                            <li><a href="@Url.Action("PDFList", "PDFData")" data-oldDash="Yes">Financial Form List</a></li>
-                        </ul>
+                        <a class="" href="@Url.Action("ListPreBillView", "Bill")" data-oldDash="Yes"><i class="fa fa-credit-card" aria-hidden="true"></i><span class="nav-text">Expenses </span> </a>
+
                     </li>
-                    <li><a href="@Url.Action("eCountingReport", "eCountingReport")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Reports</span></a></li>
-                    <li><a href="@Url.Action("AllPOList", "POTypeData")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">PO</span></a></li>
-                    <li><a href="@Url.Action("ViewMiscellaneous", "Miscellaneous")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Miscellaneous</span></a></li>
-                    <li><a href="@Url.Action("ListPreBillView", "Bill")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Bills</span></a></li>
-                    <li><a href="@Url.Action("PaymentView", "Payment")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Payment Desk</span></a></li>
+
+                    <li><a href="@Url.Action("PaymentView", "Payment")" data-oldDash="Yes"><i class="fa fa-money" aria-hidden="true"></i><span class="nav-text">Payment Desk</span></a></li>
+                    <li><a href="@Url.Action("eCountingReport", "eCountingReport")" data-oldDash="Yes"><i class="fa fa-bar-chart" aria-hidden="true"></i><span class="nav-text">Reports</span></a></li>
+                    @*<li>
+            <a class="" href="javascript:void()" aria-expanded="false">Financial Form</a>
+            <ul aria-expanded="false">
+                <li><a href="@Url.Action("PDFList", "PDFData")" data-oldDash="Yes">Financial Form List</a></li>
+            </ul>
+        </li>*@
+                    @*
+
+        <li><a href="@Url.Action("ViewMiscellaneous", "Miscellaneous")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Miscellaneous</span></a></li>
+        <li><a href="@Url.Action("ListPreBillView", "Bill")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Bills</span></a></li>
+
+        <li><a href="@Url.Action("DebitMemoView", "DebitMemo")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Debit Memo</span></a></li>*@
+
                 </ul>
+              
+
             </li>
+            
         </ul>
     </div>
 </div>

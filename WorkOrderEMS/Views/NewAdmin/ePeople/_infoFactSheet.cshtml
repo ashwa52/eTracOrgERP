@@ -71,24 +71,31 @@
 		color: white;
 	}
 
-	.btnSelected {
+	/*.btnSelected {
 		background-color: green;
 		font-weight: bold;
 		font-size: 23px;
 		padding: 15px 20px 16px 20px;
 		margin: 2px;
 		width:200px;
-	}
-
-	.btnNotSelected {
-		background-color: #5c545f;
-		font-weight: bold;
-		font-size: 23px;
-		padding: 15px 20px 16px 20px;
-		margin: 2px;
-		width: 200px;
-		color: #fff;
-	}
+	}*/
+    .btnSelected {
+        background-color: green;
+        font-weight: bold;
+        font-size: 23px;
+        padding: 7px 13px 7px 13px;
+        margin: 2px;
+        width: 150px;
+    }
+    .btnNotSelected {
+        background-color: #5c545f;
+        font-weight: bold;
+        font-size: 23px;
+        padding: 7px 13px 7px 13px;
+        margin: 2px;
+        width: 150px;
+        color: #fff;
+    }
 	.rightList {
 		float: right;
 		padding-left: 1px;
@@ -96,12 +103,12 @@
 		max-width: 14%;
 	}
 </style>
-<div class="row" style="padding:3px 0px 0px 0px">
+<div class="row" style="padding:3px 15px 0px 15px;">
 	<div class="col-lg-12">
 		<div class="card">
 			<div class="card-header">
 				<div class="profile_image inline spccing">
-					<img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar">
+					<img src="@Model.model.Image" alt="Avatar">
 				</div>
 				<div class="profile_detail inline spccing">
 					<span class="name">
@@ -136,8 +143,8 @@
 						<div class="d-sal right-pad">
 							<div>Desire Salary</div>
 							<i class="fa fa-usd" aria-hidden="true"></i>
-							@Html.EditorFor(x=>x.model.DesireSalary,new { @style= " display: inline-block; width: 84%; border-color: #018FFC; background-color: #018FFC; border: 0px; border-bottom: 1px solid #ddd;" })
-							@*<input type="text" style=" display: inline-block; width: 84%; border-color: #018FFC; background-color: #018FFC; border: 0px; border-bottom: 1px solid #ddd;">*@
+							@*@Html.EditorFor(x=>x.model.DesireSalary,new { @style= "display: inline-block; width: 84%; border-color: #018FFC; background-color: #018FFC; border: 0px; border-bottom: 1px solid #ddd;" })*@
+							<input type="text" value="@Model.model.DesireSalary" style=" display: inline-block; width: 84%; border-color: #018FFC; background-color: #018FFC; border: 0px; border-bottom: 1px solid #ddd;">
 						</div>
 						<div class="start-d right-pad">
 							<div>Available Start Date</div>
@@ -156,7 +163,7 @@
 				<button class="btn btn-default btnNotSelected">eMails</button>
 				<button class="btn btn-default btnNotSelected" onclick="GetInterviewers(this,'@Model.model.ApplicantId');">Interview</button>
 				<div class="dropdown" style="float:right;margin:2px">
-					<button type="button" class="btn btn-primary dropdown-toggle" style="padding: 20px 17px 29px 15px;" data-toggle="dropdown">
+					<button type="button" class="btn btn-primary dropdown-toggle" style="padding: 12px 14px 12px 13px;" data-toggle="dropdown">
 						Dropdown button
 					</button>
 					<div class="dropdown-menu">

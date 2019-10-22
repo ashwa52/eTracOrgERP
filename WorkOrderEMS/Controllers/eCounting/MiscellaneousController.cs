@@ -25,7 +25,7 @@ namespace WorkOrderEMS.Controllers
         private readonly IMiscellaneousManager _IMiscellaneousManager;
         private readonly IBillDataManager _IBillDataManager;
         private readonly IVendorManagement _IVendorManagement;
-        public MiscellaneousController( IMiscellaneousManager _IMiscellaneousManager, IBillDataManager _IBillDataManager, IVendorManagement _IVendorManagement)
+        public MiscellaneousController(IMiscellaneousManager _IMiscellaneousManager, IBillDataManager _IBillDataManager, IVendorManagement _IVendorManagement)
         {
             this._IMiscellaneousManager = _IMiscellaneousManager;
             this._IBillDataManager = _IBillDataManager;
@@ -57,7 +57,7 @@ namespace WorkOrderEMS.Controllers
         /// <param name="UserType"></param>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult GetListMasterMiscellaneous(string _search, long? UserId, long? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
+        public JsonResult GetListMasterMiscellaneous(string txtSearch , long? UserId, long? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string sidx = null, string UserType = null)
         {
             eTracLoginModel ObjLoginModel = null;
             if (Session["eTrac"] != null)
@@ -76,8 +76,20 @@ namespace WorkOrderEMS.Controllers
             txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
             try
             {
-                var miscList = _IMiscellaneousManager.GetListMiscellaneous(UserId,locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
-                foreach (var misc in miscList.rows)
+
+                if (txtSearch != null && txtSearch != "")
+                {
+                    var miscListSearch = _IMiscellaneousManager.GetListMiscellaneous(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
+                    var FilteredList = miscListSearch.Where(x => x.MISId.ToLower().Contains(txtSearch.ToLower().Trim())).ToList();
+                    return Json(miscListSearch.ToList(), JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+
+                    var miscList = _IMiscellaneousManager.GetListMiscellaneous(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
+                    return Json(miscList.ToList(), JsonRequestBehavior.AllowGet);
+                }
+                /*foreach (var misc in miscList.rows)
                 {
                     if (misc.MISId != null)
                     {
@@ -98,10 +110,14 @@ namespace WorkOrderEMS.Controllers
                 result.page = Convert.ToInt32(page);
                 result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
                 result.records = Convert.ToInt32(TotalRecords.Value);
+                */
+
             }
             catch (Exception ex)
-            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
-            return Json(result, JsonRequestBehavior.AllowGet);
+            {
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+            //return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -122,7 +138,7 @@ namespace WorkOrderEMS.Controllers
         /// <param name="UserType"></param>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult GetListMiscellaneousListByMiscId(string _search, long? UserId,string MiscId, long? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
+        public JsonResult GetListMiscellaneousListByMiscId(string _search, long? UserId, string MiscId, long? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
         {
             eTracLoginModel ObjLoginModel = null;
             long MISNumber = 0;
@@ -134,14 +150,20 @@ namespace WorkOrderEMS.Controllers
                     locationId = ObjLoginModel.LocationID;
                 }
                 UserId = ObjLoginModel.UserId;
+
+                
+                string id = MiscId.Split('S')[1];
+                MISNumber = Convert.ToInt64(id);
+                //long.TryParse(id, out MISNumber);
             }
+            /*
             if (!string.IsNullOrEmpty(MiscId))
             {
                 MiscId = Cryptography.GetDecryptedData(MiscId, true);
                 string id = MiscId.Split('S')[1];
-                 MISNumber = Convert.ToInt64(id);
+                MISNumber = Convert.ToInt64(id);
                 //long.TryParse(id, out MISNumber);
-            }
+            }*/
             JQGridResults result = new JQGridResults();
             List<JQGridRow> rowss = new List<JQGridRow>();
             sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
@@ -149,7 +171,10 @@ namespace WorkOrderEMS.Controllers
             txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
             try
             {
+                //var miscList = _IMiscellaneousManager.GetListMiscellaneousByMiscId(UserId, MISNumber, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
                 var miscList = _IMiscellaneousManager.GetListMiscellaneousByMiscId(UserId, MISNumber, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
+                return Json(miscList.ToList(), JsonRequestBehavior.AllowGet);
+                /*
                 foreach (var misc in miscList.rows)
                 {
                     if (misc.MISId != null)
@@ -160,11 +185,11 @@ namespace WorkOrderEMS.Controllers
                         row.cell[0] = misc.Status.ToString();
                         row.cell[1] = misc.MISId.ToString();
                         row.cell[2] = misc.LocationName;
-                        row.cell[3] = misc.VendorName == null? misc.UserName : misc.VendorName;
+                        row.cell[3] = misc.VendorName == null ? misc.UserName : misc.VendorName;
                         row.cell[4] = misc.UserName;
                         row.cell[5] = misc.InvoiceAmount.ToString();
                         row.cell[6] = misc.MISDate;
-                        row.cell[7] = (misc.Document == "" || misc.Document == null) ? "" : HostingPrefix + MiscellaneousPath.Replace("~", "") + misc.Document; 
+                        row.cell[7] = (misc.Document == "" || misc.Document == null) ? "" : HostingPrefix + MiscellaneousPath.Replace("~", "") + misc.Document;
                         row.cell[8] = misc.Comment;
                         row.cell[9] = misc.MId.ToString();
                         row.cell[10] = misc.LocationId.ToString();
@@ -172,10 +197,12 @@ namespace WorkOrderEMS.Controllers
                         rowss.Add(row);
                     }
                 }
+                
                 result.rows = rowss.ToArray();
                 result.page = Convert.ToInt32(page);
                 result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
                 result.records = Convert.ToInt32(TotalRecords.Value);
+                */
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
@@ -217,80 +244,80 @@ namespace WorkOrderEMS.Controllers
                     //if (Session["realmId"] != null)
                     //{
                     string realmId = CallbackController.RealMId.ToString();// Session["realmId"].ToString();
-                        try
+                    try
+                    {
+                        string AccessToken = CallbackController.AccessToken.ToString();// Session["access_token"].ToString();
+                        var principal = User as ClaimsPrincipal;
+                        OAuth2RequestValidator oauthValidator = new OAuth2RequestValidator(AccessToken);
+
+                        // Create a ServiceContext with Auth tokens and realmId
+                        ServiceContext serviceContext = new ServiceContext(realmId, IntuitServicesType.QBO, oauthValidator);
+                        serviceContext.IppConfiguration.MinorVersion.Qbo = "23";
+                        DataService commonServiceQBO = new DataService(serviceContext);
+                        // Create a QuickBooks QueryService using ServiceContext
+                        QueryService<Vendor> querySvc = new QueryService<Vendor>(serviceContext);
+                        List<Vendor> vendorList = querySvc.ExecuteIdsQuery("SELECT * FROM Vendor MaxResults 1000").ToList();
+
+                        QueryService<Account> querySvcAccount = new QueryService<Account>(serviceContext);
+                        List<Account> accountData = querySvcAccount.ExecuteIdsQuery("SELECT * FROM Account MaxResults 1000").ToList();
+                        /// default elite parking service vendor Id passed hardcoded it will will change in future
+                        VendorDetailsId = _IVendorManagement.GetCompanyQuickBookId(Convert.ToInt64(10019));
+                        // var vendorData = vendorList.Where(x => x.Id == "64").FirstOrDefault();
+                        var bill = new Bill();
+                        //Vendor Reference
+                        var reference = new ReferenceType();
+                        var accountRef = new AccountBasedExpenseLineDetail();
+                        if (VendorDetailsId > 0)
                         {
-                            string AccessToken = CallbackController.AccessToken.ToString();// Session["access_token"].ToString();
-                            var principal = User as ClaimsPrincipal;
-                            OAuth2RequestValidator oauthValidator = new OAuth2RequestValidator(AccessToken);
+                            var vendorData = vendorList.Where(x => x.Id == VendorDetailsId.ToString()).FirstOrDefault();
 
-                            // Create a ServiceContext with Auth tokens and realmId
-                            ServiceContext serviceContext = new ServiceContext(realmId, IntuitServicesType.QBO, oauthValidator);
-                            serviceContext.IppConfiguration.MinorVersion.Qbo = "23";
-                            DataService commonServiceQBO = new DataService(serviceContext);
-                            // Create a QuickBooks QueryService using ServiceContext
-                            QueryService<Vendor> querySvc = new QueryService<Vendor>(serviceContext);
-                            List<Vendor> vendorList = querySvc.ExecuteIdsQuery("SELECT * FROM Vendor MaxResults 1000").ToList();
-
-                            QueryService<Account> querySvcAccount = new QueryService<Account>(serviceContext);
-                            List<Account> accountData = querySvcAccount.ExecuteIdsQuery("SELECT * FROM Account MaxResults 1000").ToList();
-                            /// default elite parking service vendor Id passed hardcoded it will will change in future
-                             VendorDetailsId = _IVendorManagement.GetCompanyQuickBookId(Convert.ToInt64(10019));
-                           // var vendorData = vendorList.Where(x => x.Id == "64").FirstOrDefault();
-                            var bill = new Bill();
-                            //Vendor Reference
-                            var reference = new ReferenceType();
-                            var accountRef = new AccountBasedExpenseLineDetail();
-                            if (VendorDetailsId > 0)
-                            {
-                                var vendorData = vendorList.Where(x => x.Id == VendorDetailsId.ToString()).FirstOrDefault();
-                                
-                                //Vendor Reference    
-                                //Set it Hardcoded because need to add vendor , it is mendatory field so as per manager
-                                //operating company will pay miscellaneous expense
+                            //Vendor Reference    
+                            //Set it Hardcoded because need to add vendor , it is mendatory field so as per manager
+                            //operating company will pay miscellaneous expense
                             bill.VendorRef = new ReferenceType()
-                                {
-                                    name = vendorData.CompanyName,
-                                    Value = vendorData.Id
-                                };
-                            }
+                            {
+                                name = vendorData.CompanyName,
+                                Value = vendorData.Id
+                            };
+                        }
 
                         bill.APAccountRef = new ReferenceType()
-                            {
-                                name = "Accounts Payable (A/P)",
-                                Value = "33"
-                            };
+                        {
+                            name = "Accounts Payable (A/P)",
+                            Value = "33"
+                        };
 
-                            QueryService<Department> querySvcDept = new QueryService<Department>(serviceContext);
-                            var LocationName = _IBillDataManager.GetLocationDataByLocId(LocationId);
-                            bill.DepartmentRef = new ReferenceType()
+                        QueryService<Department> querySvcDept = new QueryService<Department>(serviceContext);
+                        var LocationName = _IBillDataManager.GetLocationDataByLocId(LocationId);
+                        bill.DepartmentRef = new ReferenceType()
+                        {
+                            name = LocationName.LocationName,
+                            Value = LocationName.QBK_Id.ToString()
+                        };
+                        Line line = new Line();
+                        List<Line> lineList = new List<Line>();
+                        Line[] line1 = { };
+                        int i = 1;
+                        var costArray = new List<long>();
+                        var costCodeArray = new List<CostCodeListData>();
+                        var costDataModel = new CostCodeListData();
+                        decimal amt = 0; decimal? Total = 0;
+                        long CostCodeIdData = 0;
+                        var date = new DateTime();
+                        long MISNumber = 0;
+                        foreach (var item in Obj)
+                        {
+                            string id = item.MISId.Split('S')[1];
+                            MISNumber = Convert.ToInt64(id);
+                            var costCodeId = _IMiscellaneousManager.MiscellaneoousDataById(MISNumber);
+                            var CostCodeData = _IBillDataManager.GetCostCodeData(Convert.ToInt64(costCodeId.CostCode));
+                            var dataget = accountData.Where(x => x.Name == CostCodeData.Description).FirstOrDefault();
+                            MISNumber = Convert.ToInt64(item.MISNumber);
+                            accountRef.AccountRef = new ReferenceType()
                             {
-                                name = LocationName.LocationName,
-                                Value = LocationName.QBK_Id.ToString()
+                                name = dataget.Name,
+                                Value = dataget.Id
                             };
-                            Line line = new Line();
-                            List<Line> lineList = new List<Line>();
-                            Line[] line1 = { };
-                            int i = 1;
-                            var costArray = new List<long>();
-                            var costCodeArray = new List<CostCodeListData>();
-                            var costDataModel = new CostCodeListData();
-                            decimal amt = 0; decimal? Total = 0;
-                            long CostCodeIdData = 0;
-                            var date = new DateTime();
-                            long MISNumber = 0;
-                            foreach (var item in Obj)
-                            {                                
-                                string id = item.MISId.Split('S')[1];
-                                MISNumber = Convert.ToInt64(id);
-                                var costCodeId = _IMiscellaneousManager.MiscellaneoousDataById(MISNumber);
-                                var CostCodeData = _IBillDataManager.GetCostCodeData(Convert.ToInt64(costCodeId.CostCode));
-                                var dataget = accountData.Where(x => x.Name == CostCodeData.Description).FirstOrDefault();
-                                MISNumber = Convert.ToInt64(item.MISNumber);
-                                accountRef.AccountRef = new ReferenceType()
-                                {
-                                    name = dataget.Name,
-                                    Value = dataget.Id
-                                };
 
 
                             //if (costCodeArray.Count() > 0)
@@ -345,19 +372,19 @@ namespace WorkOrderEMS.Controllers
                             //costDataModel.Amount = Convert.ToDecimal(item.InvoiceAmount);
                             //costCodeArray.Add(costDataModel);
                             date = Convert.ToDateTime(item.MISDate);
-                            line.LineNum = Convert.ToString(i);                            
+                            line.LineNum = Convert.ToString(i);
                             line.DetailType = LineDetailTypeEnum.AccountBasedExpenseLineDetail;
                             line.DetailTypeSpecified = true;
                             line.AnyIntuitObject = accountRef;
-                            line.AmountSpecified = true;                            
+                            line.AmountSpecified = true;
                             line.Amount = Convert.ToDecimal(item.InvoiceAmount);
                             line.Description = "Miscellaneous";
                             //line
                             lineList.Add(line);
-                            
+
                             i++;
-                        }                           
-                           
+                        }
+
                         var metaData = new ModificationMetaData();
                         metaData.CreateTime = Convert.ToDateTime(date);
                         bill.MetaData = metaData;
@@ -372,8 +399,8 @@ namespace WorkOrderEMS.Controllers
 
                     //}
                     long MiscQbkId = Convert.ToInt64(resultBill.Id);
-                    result = _IMiscellaneousManager.ApproveMiscellaneous(Obj, UserName,UserId, LocationId,MiscQbkId, VendorDetailsId);
-                    if(result == true)
+                    result = _IMiscellaneousManager.ApproveMiscellaneous(Obj, UserName, UserId, LocationId, MiscQbkId, VendorDetailsId);
+                    if (result == true)
                     {
                         data = CommonMessage.ApproveMiscellaneous();
                     }
