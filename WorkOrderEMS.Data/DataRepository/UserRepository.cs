@@ -705,7 +705,9 @@ namespace WorkOrderEMS.Data
                     JBT_JobTitle = t.JBT_JobTitle,
                     LocationName = t.LocationName,
                     EMP_DateOfJoining = t.EMP_DateOfJoining,
-                    Assesment = t.Assesment
+                    Assesment = t.Assesment,
+                    Status = t.SAM_IsActive
+
 
 
                 }).ToList();

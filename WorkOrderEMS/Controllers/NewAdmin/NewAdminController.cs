@@ -584,6 +584,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 {
                     ITAdmin.EMP_Photo = (ITAdmin.EMP_Photo == "" || ITAdmin.EMP_Photo == "null") ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~/", "") + ITAdmin.EMP_Photo;
                     ITAdmin.EMP_EmployeeID = Cryptography.GetEncryptedData(ITAdmin.EMP_EmployeeID.ToString(), true);
+                    ITAdmin.Status=ITAdmin.Status=="S"?"Review Submitted": ITAdmin.Status == "Y" ? "Review Draft":"Assessment Pending";
                     detailsList.Add(ITAdmin);
                 }
             }

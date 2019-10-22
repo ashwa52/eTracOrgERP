@@ -16,6 +16,7 @@ namespace WorkOrderEMS.Models.NewAdminModel
         public string LocationName { get; set; }
         public DateTime? EMP_DateOfJoining { get; set; }
         public int? Assesment { get; set; }
+        public string Status { get; set; }
     }
     public class GWCQUestionModel
     {

@@ -45,9 +45,8 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
             { name: 'EmployeeName', width: 80, title: "Employee Name", },
             { name: 'JBT_JobTitle', width: 60, title: "User Type" },
             {
-                name: 'Status', width: 60, title: "Status", itemTemplate: function (value, item) {
-                    return $("<div>").append("Assessment Pending</div>");
-                }
+                name: 'Status', width: 60, title: "Status"
+                
             },
 
             {
@@ -112,8 +111,12 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                         }
                                     });
                                 }).append($evaluationText);
-                            return $("<div>").attr({ class: "btn-toolbar" }).append($customUserViewButton).append($customTextButton).append($customTextButton).append($evaluationTextButton);
-                        }
+                            if (item.Status == "Review Submitted") {
+                                return $("<div>").attr({ class: "btn-toolbar" }).append($customUserViewButton).append($customTextButton).append($customTextButton).append($evaluationTextButton);
+                            }else {
+                                return $("<div>").attr({ class: "btn-toolbar" }).append($customUserViewButton).append($customTextButton).append($customTextButton)
+                            }
+                            }
                     },
                        
 
