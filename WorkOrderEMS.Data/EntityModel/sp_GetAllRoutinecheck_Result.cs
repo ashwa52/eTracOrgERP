@@ -18,6 +18,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public long QrcType { get; set; }
         public long ScanUserId { get; set; }
         public long LocationId { get; set; }
-        public System.DateTime CreatedOn { get; set; }
+        public string CreatedOn { get; set; }
     }
 }

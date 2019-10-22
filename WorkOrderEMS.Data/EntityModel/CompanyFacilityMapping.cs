@@ -14,6 +14,7 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class CompanyFacilityMapping
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CompanyFacilityMapping()
         {
             this.BillFacilityItems = new HashSet<BillFacilityItem>();
@@ -30,6 +31,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string CFM_IsActive { get; set; }
         public string CFM_ImageName { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BillFacilityItem> BillFacilityItems { get; set; }
         public virtual Company Company { get; set; }
     }

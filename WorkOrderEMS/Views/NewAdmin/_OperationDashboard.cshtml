@@ -226,11 +226,11 @@
 
 
                         @*<div id="cover">
-                            <input type="checkbox" class="checkboxToggle" id="toggleWO">
-                            <div id="bar" title="Create WO" style="transition: all ease-in-out 0.2s;">
-                            </div>
-                            <div id="knob" title="Create WO"></div>
-                        </div>*@
+                                <input type="checkbox" class="checkboxToggle" id="toggleWO">
+                                <div id="bar" title="Create WO" style="transition: all ease-in-out 0.2s;">
+                                </div>
+                                <div id="knob" title="Create WO"></div>
+                            </div>*@
                     </div>
                     <div class="card-body" id="WOList">
                         <div id="ListWorkOrderAsssignment"></div>
@@ -248,16 +248,16 @@
                         <h4 class="card-title addWhite dispayCreateQRCName" style="display:none;color: white;"><b>Create QRC</b></h4>
                         <div class="onoffswitch2" style="margin-left: 997px;margin-top: 6px;"><input type="checkbox" name="onoffswitch2" class="onoffswitch2-checkbox" id="toggleQRCTesting"><label for="toggleQRCTesting" class="onoffswitch2-label"><span class="onoffswitch2-inner"></span><span class="onoffswitch2-switch"></span></label></div>
                         @*<div id="cover">
-                            <input type="checkbox" class="checkboxToggle" id="ToggleQRC">
-                            <div id="bar" title="Add Chart" style="transition: all ease-in-out 0.2s;">
-                            </div>
-                            <div id="knob" title="Add Chart"></div>
-                        </div>*@
+                                <input type="checkbox" class="checkboxToggle" id="ToggleQRC">
+                                <div id="bar" title="Add Chart" style="transition: all ease-in-out 0.2s;">
+                                </div>
+                                <div id="knob" title="Add Chart"></div>
+                            </div>*@
                         @*<div class="button-switch">
-            <input type="checkbox" id="switch-orange" class="switch" />
-            <label for="switch-orange" class="lbl-off">Off</label>
-            <label for="switch-orange" class="lbl-on">On</label>
-        </div>*@
+                                <input type="checkbox" id="switch-orange" class="switch" />
+                                <label for="switch-orange" class="lbl-off">Off</label>
+                                <label for="switch-orange" class="lbl-on">On</label>
+                            </div>*@
                     </div>
                     <div class="card-body dispayListQRCName" id="QRCList" style="display:none;">
                         <div id="ListQRC"></div>
@@ -1033,7 +1033,7 @@ chart.legend.position = "right";
         //        $("#WOList, .dispayListWOName").show();
         //    }
         //});
-        
+
         $("#toggleQRCTesting").change(function () {
             var value = $('#toggleQRCTesting').prop('checked') == true ? true : false;
             $(".createWOForm").hide();

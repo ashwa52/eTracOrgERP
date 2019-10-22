@@ -1,1 +1,176 @@
 ﻿
+<style>
+
+    .inline {
+        display: inline-block;
+        vertical-align: middle;
+        padding: 17px 17px 0px 17px;
+        cursor: pointer;
+    }
+
+    .fa-lg-Custom-css {
+        font-size: 1.10em;
+    }
+
+    .inline label {
+        width: 130px;
+        height: 20px;
+    }
+
+    .inline:after {
+        clear: both;
+        content: " ";
+        display: block;
+        height: 0;
+        visibility: hidden;
+    }
+
+    .inline .grn-icn:not(:first-child):after,
+    .inline .bluesky:not(:first-child):after {
+        background: #000;
+        bottom: 0;
+        content: " ";
+        margin-left: -10px;
+        position: absolute;
+        top: 0;
+        width: 1px;
+        height: 30px;
+    }
+
+    hr {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        border: 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        box-shadow: 0px 1px 5px #ddd;
+    }
+
+    .grn-icn {
+        padding: 23px 23px 26px 23px;
+        margin: 20px;
+        width: 100px;
+        height: 100px;
+        background-color: #3DD643;
+        border: 1px solid #000;
+        border-radius: 4px;
+    }
+
+    .bluesky {
+        background-color: #82D5F9;
+        padding: 23px 23px 26px 23px;
+        margin: 20px;
+        width: 100px;
+        border: 1px solid #000;
+        border-radius: 4px;
+        height: 100px;
+    }
+
+    .int {
+        padding: 17px 9px 17px 9px;
+        background-color: #fff;
+        border-radius: 50%;
+        box-shadow: 0px 0px 24px 18px #BBF1BE;
+        text-align: center;
+    }
+
+    .upload-btn-wrapper input[type=file] {
+        position: absolute;
+        left: 0;
+        top: 0;
+        opacity: 0;
+    }
+
+    .btnfile {
+        color: #535353;
+        border: 1px solid #2196F3;
+        width: 300px;
+        height: 50px;
+        margin-right: 12px;
+    }
+
+        .btnfile span {
+            font-size: 16px;
+        }
+
+    .bottom-area {
+        margin-left: 47px;
+    }
+
+    .btnsubmit {
+        float: right;
+        background-color: #0CCC14;
+        color: #fff;
+        padding: 9px 12px 9px 12px;
+        width: 157px;
+        height: 58px;
+    }
+
+    .employeeImage {
+        width: 150px;
+        height: 150px;
+        border-radius: 100px;
+    }
+</style>
+<link href="~/Content/guest.css" rel="stylesheet" />
+<div class="card-body">
+    <div class="row">
+        @*<div class="col-md-3">
+                <div class="devider1">
+                    <img src="" id="EmployeeImage" class="employeeImage" />
+                    <br />
+                    <label id="EmployeeName"></label><br />
+                    <span id="EmployeeDesignation"></span>
+                </div>
+            </div>*@
+        <div class="col-md-6" style="text-align:center">
+            <div class=" inline">
+                <div class="devider">
+                    <div class="bluesky">
+                        <div class="int">
+                            <i class="fa fa-file-image-o fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <label>Location Transfer</label>
+            </div>
+        </div>
+            <div class="col-md-6" style="text-align:center">
+                <div class="inline" id="AddDemotion">
+                    <div class="devider">
+                        <div class="bluesky">
+                            <div class="int">
+                                <i class="fa fa-exclamation fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <label>Demotion</label>
+                </div>
+            </div>
+        </div>
+    <div class="row">
+        <div class="col-md-6" style="text-align:center">
+            <div class=" inline">
+                <div class="devider">
+                    <div class="bluesky">
+                        <div class="int">
+                            <i class="fa fa-file-image-o fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <label>Assets Management</label>
+            </div>
+        </div>
+        <div class="col-md-6" style="text-align:center">
+            <div class="inline" id="EmploymentStatusChange">
+                <div class="devider">
+                    <div class="bluesky">
+                        <div class="int">
+                            <i class="fa fa-exclamation fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <label>Employment Status Change</label>
+            </div>
+        </div>
+    </div>
+</div>

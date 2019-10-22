@@ -33,7 +33,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string RequestByName { get; set; }
         public Nullable<long> AssignByUserId { get; set; }
         public string AssignByUserName { get; set; }
-        public System.DateTime CreatedDate { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
         public string WorkOrderCode { get; set; }
         public long WorkOrderCodeID { get; set; }
     }

@@ -39,7 +39,6 @@ namespace WorkOrderEMS.Data.DataRepository
             catch (Exception ex)
             {                
                 throw;
-
             }
         }
 

@@ -233,6 +233,9 @@ namespace WorkOrderEMS.Helper
         public string CalculatedAmount { get; set; }
         public string CostCode { get; set; }
 
+        public string EmployeeImage { get; set; }
+        public string CreatedBy { get; set; }
+
 
         public bool SendEmailWithTemplate(string[] attachedUrl = null)
         {
@@ -1052,7 +1055,7 @@ namespace WorkOrderEMS.Helper
                         strMailBody = strMailBody.Replace("##LocationName", LocationName);
                         strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
                         break;
-
+                  
                 }
                 string body = System.Web.HttpUtility.HtmlDecode(strMailBody);
                 List<Attachment> tt = new List<Attachment>();
