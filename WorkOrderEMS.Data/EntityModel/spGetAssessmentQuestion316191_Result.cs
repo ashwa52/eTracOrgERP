@@ -22,5 +22,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public string SAR_AnswerSelf { get; set; }
         public string SAR_AnswerManager { get; set; }
         public string SAR_Comments { get; set; }
+        public string SAR_IsActive { get; set; }
     }
 }

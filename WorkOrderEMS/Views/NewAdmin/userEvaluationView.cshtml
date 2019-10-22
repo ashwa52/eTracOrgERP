@@ -8,7 +8,7 @@
     var isSubmitted = "Y";
     if (Model.Count() > 0)
     {
-        isSubmitted = Model.First().SAM_IsActive != null ? Model.FirstOrDefault().SAM_IsActive : "Y";
+        isSubmitted = Model.First().SAR_IsActive != null ? Model.FirstOrDefault().SAR_IsActive : "Y";
     }
 
     @Html.Hidden(isSubmitted, new { id = "isSubmitted" })
@@ -32,11 +32,11 @@
     <div class="row">
         <div class="col-sm-3" style="margin: 0px 0px 10px 50px;">
             <div style="display: inline-block;">
-                <img src="@employeeInfo.Image" alt="" class="rounded-circle" style="width:75px;height:75px;">
+                <img src="@employeeInfo.Image" alt="" class="rounded-circle" style="width:75px;height:75px;" id="ProfileImage">
             </div>
             <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
-                <span style="font-size: 16px;    font-weight: 600;">@employeeInfo.EmployeeName</span>
-                <span style="display: list-item;">@employeeInfo.JobTitle</span>
+                <span style="font-size: 16px;    font-weight: 600;" id="EmployeeName">@employeeInfo.EmployeeName</span>
+                <span style="display: list-item;" id="JobTitle">@employeeInfo.JobTitle</span>
             </div>
         </div>
         <div class="col-sm-1" style="margin: 0px 0px 10px 20px;">
@@ -51,7 +51,7 @@
         </div>
         <div class="col-sm-1" style="margin: 0px 0px 10px 20px;">
             <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
-                <span style="font-size: 16px;    font-weight: 600;">@employeeInfo.AssessmentType</span>
+                <span style="font-size: 16px;    font-weight: 600;" id="AssessmentType">@employeeInfo.AssessmentType</span>
             </div>
         </div>
         <div class="col-sm-2" style="margin: 0px 0px 10px 20px;">
@@ -151,71 +151,71 @@
                         @if (item.SAR_AnswerManager == "Y" && @item.SAR_Id > 0)
                         {
 
-                            <input type="radio" value="true" name="Opt_@item.ASQ_Id" checked disabled />
+                            <input type="radio" value="Y" name="Opt_@item.ASQ_Id" checked disabled />
                         }
                         else
                         {
-                            <input type="radio" value="true" name="Opt_@item.ASQ_Id" disabled />
+                            <input type="radio" value="Y" name="Opt_@item.ASQ_Id" disabled />
                         }Yes |
 
                         @if (item.SAR_AnswerManager == "N" && @item.SAR_Id > 0)
                         {
-                            <input type="radio" value="false" name="Opt_@item.ASQ_Id" checked disabled />
+                            <input type="radio" value="N" name="Opt_@item.ASQ_Id" checked disabled />
                         }
                         else
                         {
-                            <input type="radio" value="false" name="Opt_@item.ASQ_Id" disabled />
+                            <input type="radio" value="N" name="Opt_@item.ASQ_Id" disabled />
                         }No
                     </td>
-                    <td  class="ans" data-value="@item.ASQ_Id" data-user="@item.EmployeeId" data-sam="@item.SAR_Id" data-isAct="@item.SAM_IsActive">
+                    <td  class="ans" data-value="@item.ASQ_Id" data-user="@item.SAR_EMP_EmployeeId" data-sam="@item.SAR_Id" data-isAct="@item.SAM_IsActive">
 
 
                         @if (item.SAR_AnswerManager == "Y" && @item.SAR_Id > 0)
                         {
 
-                            <input type="text"  name="input_@item.ASQ_Id"  class="form-control" disabled/>
+                            <input type="text" value="@item.SAR_Comments" name="input_@item.ASQ_Id"  class="form-control" disabled/>
                         }
                         else
                         {
-                            <input type="text"  name="input_@item.ASQ_Id" class="form-control"/>
+                            <input type="text" value="@item.SAR_Comments" name="input_@item.ASQ_Id" class="form-control" disabled/>
                         }
                     </td>
                 }
                 else
                 {
-                    <td style="width: 10%" class="ans" data-value="@item.ASQ_Id" data-user="@item.EmployeeId" data-sam="@item.SAR_Id" data-isAct="@item.SAM_IsActive">
+                    <td style="width: 10%" class="ans" data-value="@item.ASQ_Id" data-user="@item.SAR_EMP_EmployeeId" data-sam="@item.SAR_Id" data-isAct="@item.SAM_IsActive">
 
 
                         @if (item.SAR_AnswerManager == "Y" && @item.SAR_Id > 0)
                         {
 
-                            <input type="radio" value="true" name="Opt_@item.ASQ_Id" checked />
+                            <input type="radio" value="Y" name="Opt_@item.ASQ_Id" checked />
                         }
                         else
                         {
-                            <input type="radio" value="true" name="Opt_@item.ASQ_Id" />
+                            <input type="radio" value="Y" name="Opt_@item.ASQ_Id" />
                         }Yes |
 
                         @if (item.SAR_AnswerManager == "N" && @item.SAR_Id > 0)
                         {
-                            <input type="radio" value="false" name="Opt_@item.ASQ_Id" checked />
+                            <input type="radio" value="N" name="Opt_@item.ASQ_Id" checked />
                         }
                         else
                         {
-                            <input type="radio" value="false" name="Opt_@item.ASQ_Id" />
+                            <input type="radio" value="N" name="Opt_@item.ASQ_Id" />
                         }No
                     </td>
-                    <td class="ans" data-value="@item.ASQ_Id" data-user="@item.EmployeeId" data-sam="@item.SAR_Id" data-isAct="@item.SAM_IsActive">
+                    <td class="ans" data-value="@item.ASQ_Id" data-user="@item.SAR_EMP_EmployeeId" data-sam="@item.SAR_Id" data-isAct="@item.SAM_IsActive">
 
 
                         @if (item.SAR_AnswerManager == "Y" && @item.SAR_Id > 0)
                         {
 
-                            <input type="text" value="" name="input_@item.ASQ_Id" class="form-control" disabled />
+                            <input type="text" value="@item.SAR_Comments" name="input_@item.ASQ_Id" class="form-control"  />
                         }
                         else
                         {
-                            <input type="text" value="" name="input_@item.ASQ_Id" class="form-control"/>
+                            <input type="text" value="@item.SAR_Comments" name="input_@item.ASQ_Id" class="form-control"/>
                         }
                     </td>
                 }
@@ -274,30 +274,30 @@
                                     @if (item.SAR_AnswerManager == "Y" && @item.SAR_Id > 0)
                                     {
 
-                                        <input type="radio" value="true" name="Opt_@item.ASQ_Id" checked disabled />
+                                        <input type="radio" value="Y" name="Opt_@item.ASQ_Id" checked disabled />
                                     }
                                     else
                                     {
-                                        <input type="radio" value="true" name="Opt_@item.ASQ_Id" disabled />
+                                        <input type="radio" value="Y" name="Opt_@item.ASQ_Id" disabled />
                                     }Always |
                                     @if (item.SAR_AnswerManager == "S" && @item.SAR_Id > 0)
                                     {
 
-                                        <input type="radio" value="true" name="Opt_@item.ASQ_Id" checked disabled />
+                                        <input type="radio" value="S" name="Opt_@item.ASQ_Id" checked disabled />
                                     }
                                     else
                                     {
-                                        <input type="radio" value="true" name="Opt_@item.ASQ_Id" disabled />
+                                        <input type="radio" value="S" name="Opt_@item.ASQ_Id" disabled />
                                     }Sometimes |
 
 
                                     @if (item.SAR_AnswerManager == "N" && @item.SAR_Id > 0)
                                     {
-                                        <input type="radio" value="false" name="Opt_@item.ASQ_Id" checked disabled />
+                                        <input type="radio" value="N" name="Opt_@item.ASQ_Id" checked disabled />
                                     }
                                     else
                                     {
-                                        <input type="radio" value="false" name="Opt_@item.ASQ_Id" disabled />
+                                        <input type="radio" value="N" name="Opt_@item.ASQ_Id" disabled />
                                     }Never
                                 </td>
                             }
@@ -309,29 +309,29 @@
                                     @if (item.SAR_AnswerManager == "Y" && @item.SAR_Id > 0)
                                     {
 
-                                        <input type="radio" value="true" name="Opt_@item.ASQ_Id" checked />
+                                        <input type="radio" value="Y" name="Opt_@item.ASQ_Id" checked />
                                     }
                                     else
                                     {
-                                        <input type="radio" value="true" name="Opt_@item.ASQ_Id" />
+                                        <input type="radio" value="Y" name="Opt_@item.ASQ_Id" />
                                     }Always |
 
                                     @if (item.SAR_AnswerManager == "S" && @item.SAR_Id > 0)
                                     {
 
-                                        <input type="radio" value="true" name="Opt_@item.ASQ_Id" checked />
+                                        <input type="radio" value="S" name="Opt_@item.ASQ_Id" checked />
                                     }
                                     else
                                     {
-                                        <input type="radio" value="true" name="Opt_@item.ASQ_Id" />
+                                        <input type="radio" value="S" name="Opt_@item.ASQ_Id" />
                                     }Sometimes|
                                     @if (item.SAR_AnswerManager == "N" && @item.SAR_Id > 0)
                                     {
-                                        <input type="radio" value="false" name="Opt_@item.ASQ_Id" checked />
+                                        <input type="radio" value="N" name="Opt_@item.ASQ_Id" checked />
                                     }
                                     else
                                     {
-                                        <input type="radio" value="false" name="Opt_@item.ASQ_Id" />
+                                        <input type="radio" value="N" name="Opt_@item.ASQ_Id" />
                                     }Never
                                 </td>
                             }
@@ -349,7 +349,15 @@
 <div class="row">
     <div class="col-sm-2"></div>
     <div class="col-sm-10">
-        <input type="text" class="form-control"  style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;"placeholder="Comments" multiple />
+        @if (isSubmitted == "S")
+        {
+            <input type="text" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;" placeholder="Comments" multiple disabled />
+        }
+        else
+        {
+            <input type="text" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;" placeholder="Comments" multiple disabled />
+
+        }
     </div>
 </div>
 <div class="row" style="margin-top:50px">
@@ -399,33 +407,50 @@
 
     });
     function saveEvaluation306090(action) {
-        //var obj = [];
-        //var tab = $("td.ans");
-        //$.each(tab, function (i, elem) {
-        //    QuestionId = elem.getAttribute("data-value");
-        //    EmployeeId = elem.getAttribute("data-user");
-        //    SAM_IsActive = elem.getAttribute("data-isAct");
-        //    Answer = $("input[type='radio'][name='Opt_" + QuestionId + "']:checked").val();
-        //    SelfAssessmentId = elem.getAttribute("data-sam");
-        //    obj.push({ "QuestionId": QuestionId, "Answer": Answer, "EmployeeId": EmployeeId, "SelfAssessmentId": SelfAssessmentId, "SAM_IsActive": SAM_IsActive });
+        var obj = [];
+        var tab = $("td.ans");
+        $.each(tab, function (i, elem) {
+            ASQ_Id = elem.getAttribute("data-value");
+            SAR_EMP_EmployeeId = elem.getAttribute("data-user");
+            SAR_IsActive = elem.getAttribute("data-isAct");
+            SAR_AnswerManager = $("input[type='radio'][name='Opt_" + ASQ_Id + "']:checked").val();
+            Comment = $("input[type='text'][name='input_" + ASQ_Id + "']").val();
 
-        //});
-        //obj = JSON.stringify({ 'data': obj });
-        //var url = (action == "Draft") ? '../NewAdmin/draftEvaluation/' : '../NewAdmin/saveEvaluation/'
-        //$.ajax({
-        //    type: "POST",
-        //    data: obj,
-        //    url: url,
-        //    contentType: "application/json; charset=utf-8",
-        //    dataType: 'json',
-        //    error: function (xhr, status, error) {
-        //    },
-        //    success: function (result) {
-        //        if (result != null) {
+            SAR_Id = elem.getAttribute("data-sam");
+            obj.push({ "ASQ_Id": ASQ_Id, "SAR_AnswerManager": SAR_AnswerManager, "SAR_EMP_EmployeeId": SAR_EMP_EmployeeId, "SAR_Id": SAR_Id, "SAR_IsActive": SAR_IsActive,"SAR_Comments":Comment });
 
-        //        }
-        //    }
-        //});
+        });
+        obj = JSON.stringify({ 'data': obj });
+        var url = (action == "Draft") ? '../NewAdmin/draftEvaluation/' : '../NewAdmin/saveEvaluation/'
+        $.ajax({
+            type: "POST",
+            data: obj,
+            url: url,
+            contentType: "application/json; charset=utf-8",
+            dataType: 'json',
+            error: function (xhr, status, error) {
+            },
+            success: function (result) {
+                if (result != null) {
+                                        $.ajax({
+                                        type: "POST",
+                                        data: { 'Id': SAR_EMP_EmployeeId, 'Assesment': $("#AssessmentType").text(), 'Name': $("#EmployeeName").text(), 'Image': $("#ProfileImage").attr('src'), 'JobTitle': $("#JobTitle").text() },
+
+                                        url: '../NewAdmin/userEvaluationView/',
+                                        error: function (xhr, status, error) {
+                                        },
+                                        success: function (result) {
+                                            debugger
+                                            if (result != null) {
+                                                $("#gridArea").hide();
+                                                $('#profileArea').show();
+                                                $('#profileArea').html(result);
+                                            }
+                                        }
+                                    });
+                }
+            }
+        });
 
     }
 </script>

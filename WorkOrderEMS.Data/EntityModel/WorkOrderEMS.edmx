@@ -8328,26 +8328,8 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="SAM_Answer" Mode="In" Type="String" />
             <Parameter Name="SAM_IsActive" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spSetReview306090">
-            <Parameter Name="Action" Mode="In" Type="String" />
-            <Parameter Name="EmployeeID" Mode="In" Type="String" />
-            <Parameter Name="SAR_ASQ_Id" Mode="In" Type="Int64" />
-            <Parameter Name="SAR_Id" Mode="In" Type="Int64" />
-            <Parameter Name="SAR_AnswerManager" Mode="In" Type="String" />
-            <Parameter Name="SAR_Comments" Mode="In" Type="String" />
-            <Parameter Name="SAR_IsActive" Mode="In" Type="String" />
-          </FunctionImport>
           <EntitySet Name="ExpectationEvaluations" EntityType="workorderEMSModel.ExpectationEvaluation" />
           <EntitySet Name="SelfAssessmentReview306090" EntityType="workorderEMSModel.SelfAssessmentReview306090" />
-          <FunctionImport Name="spSetReview3060901">
-            <Parameter Name="Action" Mode="In" Type="String" />
-            <Parameter Name="EmployeeID" Mode="In" Type="String" />
-            <Parameter Name="SAR_ASQ_Id" Mode="In" Type="Int64" />
-            <Parameter Name="SAR_Id" Mode="In" Type="Int64" />
-            <Parameter Name="SAR_AnswerManager" Mode="In" Type="String" />
-            <Parameter Name="SAR_Comments" Mode="In" Type="String" />
-            <Parameter Name="SAR_IsActive" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="spSetSelfAssessment3060901">
             <Parameter Name="Action" Mode="In" Type="String" />
             <Parameter Name="EmployeeID" Mode="In" Type="String" />
@@ -8374,6 +8356,15 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <FunctionImport Name="spGetAssessmentQuestionQCQM" ReturnType="Collection(workorderEMSModel.spGetAssessmentQuestionQCQM_Result)">
             <Parameter Name="EmployeeID" Mode="In" Type="String" />
             <Parameter Name="AssessmentType" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetReview306090">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="SAR_ASQ_Id" Mode="In" Type="Int64" />
+            <Parameter Name="SAR_Id" Mode="In" Type="Int64" />
+            <Parameter Name="SAR_AnswerManager" Mode="In" Type="String" />
+            <Parameter Name="SAR_Comments" Mode="In" Type="String" />
+            <Parameter Name="SAR_IsActive" Mode="In" Type="String" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="CommonQeriesByVijay_Result">
@@ -15954,6 +15945,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="String" Name="SAR_AnswerSelf" Nullable="true" MaxLength="1" />
           <Property Type="String" Name="SAR_AnswerManager" Nullable="true" MaxLength="1" />
           <Property Type="String" Name="SAR_Comments" Nullable="true" />
+          <Property Type="String" Name="SAR_IsActive" Nullable="true" MaxLength="1" />
         </ComplexType>
         <ComplexType Name="spGetAssessmentQuestionQCQM_Result">
           <Property Type="Int64" Name="EEL_Id" Nullable="true" />
@@ -20392,7 +20384,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spSetReview3060901" FunctionName="workorderEMSModel.Store.spSetReview306090" />
           <FunctionImportMapping FunctionImportName="spSetSelfAssessment3060901" FunctionName="workorderEMSModel.Store.spSetSelfAssessment306090" />
           <FunctionImportMapping FunctionImportName="spSetSelfAssessment306090Submmit" FunctionName="workorderEMSModel.Store.spSetSelfAssessment306090Submmit" />
           <FunctionImportMapping FunctionImportName="spGetAssessmentList306090" FunctionName="workorderEMSModel.Store.spGetAssessmentList306090">
@@ -20436,6 +20427,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
                 <ScalarProperty Name="SAR_AnswerSelf" ColumnName="SAR_AnswerSelf" />
                 <ScalarProperty Name="SAR_AnswerManager" ColumnName="SAR_AnswerManager" />
                 <ScalarProperty Name="SAR_Comments" ColumnName="SAR_Comments" />
+                <ScalarProperty Name="SAR_IsActive" ColumnName="SAR_IsActive" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -20458,6 +20450,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetReview306090" FunctionName="workorderEMSModel.Store.spSetReview306090" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

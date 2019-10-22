@@ -4722,72 +4722,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetSelfAssessment306090", actionParameter, employeeIDParameter, aSQ_IdParameter, sAM_IdParameter, sAM_AnswerParameter, sAM_IsActiveParameter);
         }
     
-        public virtual int spSetReview306090(string action, string employeeID, Nullable<long> sAR_ASQ_Id, Nullable<long> sAR_Id, string sAR_AnswerManager, string sAR_Comments, string sAR_IsActive)
-        {
-            var actionParameter = action != null ?
-                new ObjectParameter("Action", action) :
-                new ObjectParameter("Action", typeof(string));
-    
-            var employeeIDParameter = employeeID != null ?
-                new ObjectParameter("EmployeeID", employeeID) :
-                new ObjectParameter("EmployeeID", typeof(string));
-    
-            var sAR_ASQ_IdParameter = sAR_ASQ_Id.HasValue ?
-                new ObjectParameter("SAR_ASQ_Id", sAR_ASQ_Id) :
-                new ObjectParameter("SAR_ASQ_Id", typeof(long));
-    
-            var sAR_IdParameter = sAR_Id.HasValue ?
-                new ObjectParameter("SAR_Id", sAR_Id) :
-                new ObjectParameter("SAR_Id", typeof(long));
-    
-            var sAR_AnswerManagerParameter = sAR_AnswerManager != null ?
-                new ObjectParameter("SAR_AnswerManager", sAR_AnswerManager) :
-                new ObjectParameter("SAR_AnswerManager", typeof(string));
-    
-            var sAR_CommentsParameter = sAR_Comments != null ?
-                new ObjectParameter("SAR_Comments", sAR_Comments) :
-                new ObjectParameter("SAR_Comments", typeof(string));
-    
-            var sAR_IsActiveParameter = sAR_IsActive != null ?
-                new ObjectParameter("SAR_IsActive", sAR_IsActive) :
-                new ObjectParameter("SAR_IsActive", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetReview306090", actionParameter, employeeIDParameter, sAR_ASQ_IdParameter, sAR_IdParameter, sAR_AnswerManagerParameter, sAR_CommentsParameter, sAR_IsActiveParameter);
-        }
-    
-        public virtual int spSetReview3060901(string action, string employeeID, Nullable<long> sAR_ASQ_Id, Nullable<long> sAR_Id, string sAR_AnswerManager, string sAR_Comments, string sAR_IsActive)
-        {
-            var actionParameter = action != null ?
-                new ObjectParameter("Action", action) :
-                new ObjectParameter("Action", typeof(string));
-    
-            var employeeIDParameter = employeeID != null ?
-                new ObjectParameter("EmployeeID", employeeID) :
-                new ObjectParameter("EmployeeID", typeof(string));
-    
-            var sAR_ASQ_IdParameter = sAR_ASQ_Id.HasValue ?
-                new ObjectParameter("SAR_ASQ_Id", sAR_ASQ_Id) :
-                new ObjectParameter("SAR_ASQ_Id", typeof(long));
-    
-            var sAR_IdParameter = sAR_Id.HasValue ?
-                new ObjectParameter("SAR_Id", sAR_Id) :
-                new ObjectParameter("SAR_Id", typeof(long));
-    
-            var sAR_AnswerManagerParameter = sAR_AnswerManager != null ?
-                new ObjectParameter("SAR_AnswerManager", sAR_AnswerManager) :
-                new ObjectParameter("SAR_AnswerManager", typeof(string));
-    
-            var sAR_CommentsParameter = sAR_Comments != null ?
-                new ObjectParameter("SAR_Comments", sAR_Comments) :
-                new ObjectParameter("SAR_Comments", typeof(string));
-    
-            var sAR_IsActiveParameter = sAR_IsActive != null ?
-                new ObjectParameter("SAR_IsActive", sAR_IsActive) :
-                new ObjectParameter("SAR_IsActive", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetReview3060901", actionParameter, employeeIDParameter, sAR_ASQ_IdParameter, sAR_IdParameter, sAR_AnswerManagerParameter, sAR_CommentsParameter, sAR_IsActiveParameter);
-        }
-    
         public virtual int spSetSelfAssessment3060901(string action, string employeeID, Nullable<long> aSQ_Id, Nullable<long> sAM_Id, string sAM_Answer, string sAM_IsActive)
         {
             var actionParameter = action != null ?
@@ -4876,6 +4810,40 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("AssessmentType", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentQuestionQCQM_Result>("spGetAssessmentQuestionQCQM", employeeIDParameter, assessmentTypeParameter);
+        }
+    
+        public virtual int spSetReview306090(string action, string employeeID, Nullable<long> sAR_ASQ_Id, Nullable<long> sAR_Id, string sAR_AnswerManager, string sAR_Comments, string sAR_IsActive)
+        
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var employeeIDParameter = employeeID != null ?
+                new ObjectParameter("EmployeeID", employeeID) :
+                new ObjectParameter("EmployeeID", typeof(string));
+    
+            var sAR_ASQ_IdParameter = sAR_ASQ_Id.HasValue ?
+                new ObjectParameter("SAR_ASQ_Id", sAR_ASQ_Id) :
+                new ObjectParameter("SAR_ASQ_Id", typeof(long));
+    
+            var sAR_IdParameter = sAR_Id.HasValue ?
+                new ObjectParameter("SAR_Id", sAR_Id) :
+                new ObjectParameter("SAR_Id", typeof(long));
+    
+            var sAR_AnswerManagerParameter = sAR_AnswerManager != null ?
+                new ObjectParameter("SAR_AnswerManager", sAR_AnswerManager) :
+                new ObjectParameter("SAR_AnswerManager", typeof(string));
+    
+            var sAR_CommentsParameter = sAR_Comments != null ?
+                new ObjectParameter("SAR_Comments", sAR_Comments) :
+                new ObjectParameter("SAR_Comments", typeof(string));
+    
+            var sAR_IsActiveParameter = sAR_IsActive != null ?
+                new ObjectParameter("SAR_IsActive", sAR_IsActive) :
+                new ObjectParameter("SAR_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetReview306090", actionParameter, employeeIDParameter, sAR_ASQ_IdParameter, sAR_IdParameter, sAR_AnswerManagerParameter, sAR_CommentsParameter, sAR_IsActiveParameter);
         }
     }
 }

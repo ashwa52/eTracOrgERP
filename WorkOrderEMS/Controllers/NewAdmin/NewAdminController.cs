@@ -508,6 +508,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         public ActionResult userAssessmentView(string Id,string Assesment)
         {
             eTracLoginModel ObjLoginModel = null;
+            string Employee_Id = string.Empty;
             GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
             var details = new LocationDetailsModel();
             if (Session["eTrac"] != null)
@@ -515,7 +516,15 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
             }
             List<GWCQUestionModel> ListQuestions = new List<GWCQUestionModel>();
-            ListQuestions = _GlobalAdminManager.GetGWCQuestions(Cryptography.GetDecryptedData(Id, true),Assesment);
+            try {
+                Employee_Id = Cryptography.GetDecryptedData(Id, true);
+            }
+            catch(Exception e)
+            {
+                Employee_Id = Id;
+            }
+
+            ListQuestions = _GlobalAdminManager.GetGWCQuestions(Employee_Id, Assesment);
             return PartialView("userAssessmentView", ListQuestions);
         }
         public ActionResult PerformanceManagementGrid()
@@ -626,6 +635,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         public ActionResult userEvaluationView(string Id, string Assesment,string Name,string Image,string JobTitle)
         {
             eTracLoginModel ObjLoginModel = null;
+            string Employee_Id = string.Empty;
             GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
             var details = new LocationDetailsModel();
             if (Session["eTrac"] != null)
@@ -633,7 +643,15 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
             }
             List<GWCQUestionModel> ListQuestions = new List<GWCQUestionModel>();
-            ListQuestions = _GlobalAdminManager.GetGWCQuestions(Cryptography.GetDecryptedData(Id, true), Assesment=="30"?"31":Assesment=="60"?"61":"91");
+            try
+            {
+                Employee_Id = Cryptography.GetDecryptedData(Id, true);
+            }
+            catch (Exception e)
+            {
+                Employee_Id = Id;
+            }
+            ListQuestions = _GlobalAdminManager.GetGWCQuestions(Employee_Id, Assesment=="30"?"31":Assesment=="60"?"61":"91");
             ViewData["employeeInfo"] = new GWCQUestionModel(){ EmployeeName=Name,AssessmentType=Assesment,Image=Image, JobTitle=JobTitle }; 
             return PartialView("userEvaluationView", ListQuestions);
         }
@@ -649,7 +667,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
             try
             {
-                result = _GlobalAdminManager.saveSelfAssessment(data, "D");
+                result = _GlobalAdminManager.saveEvaluation(data, "D");
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
@@ -668,7 +686,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
             try
             {
-                result = _GlobalAdminManager.saveSelfAssessment(data, "S");
+                result = _GlobalAdminManager.saveEvaluation(data, "S");
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }

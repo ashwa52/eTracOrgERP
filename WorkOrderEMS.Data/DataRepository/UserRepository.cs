@@ -755,8 +755,9 @@ namespace WorkOrderEMS.Data
                   ASQ_Question=t.ASQ_Question,
                   SAR_AnswerSelf=t.SAR_AnswerSelf,
                   SAR_AnswerManager=t.SAR_AnswerManager,
-                  SAR_Comments=t.SAR_Comments
-                     }).ToList();
+                  SAR_Comments=t.SAR_Comments,
+            SAR_IsActive=t.SAR_IsActive
+        }).ToList();
                 }
                 return QuestionList;
 
@@ -805,7 +806,7 @@ namespace WorkOrderEMS.Data
                 {
                     foreach (var i in data)
                     {
-                        _workorderEMSEntities.spSetReview306090((i.SAM_IsActive == null || i.SAM_IsActive == "" || i.SAM_IsActive != "Y") ? "I" : "U", i.EmployeeId, i.QuestionId, i.SelfAssessmentId, i.Answer == "Y" ? "Y" : i.Answer == "N" ? "N" : i.Answer == "S" ? "S" : null, i.Comment, action == "S" ? "S" : "Y");
+                        _workorderEMSEntities.spSetReview306090("U", i.SAR_EMP_EmployeeId, i.ASQ_Id, i.SAR_Id, i.SAR_AnswerManager == "Y" ? "Y" : i.SAR_AnswerManager == "N" ? "N" : i.SAR_AnswerManager == "S" ? "S" : null, i.SAR_Comments, action == "S" ? "S" : "Y");
                     }
                 }
 

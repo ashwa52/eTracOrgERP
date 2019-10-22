@@ -11,6 +11,7 @@
     }
 
     @Html.Hidden(isSubmitted, new { id = "isSubmitted" })
+
 }
 
     <i id="back" class="fa fa-arrow-circle-o-left x4" style="
@@ -75,7 +76,7 @@
                     </td>
                     @if (item.SAM_IsActive == "S")
                     {
-                <td class="ans" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive">
+                <td class="ans" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive">
 
 
                     @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
@@ -110,7 +111,7 @@
  }
                     else
                     {
-                <td class="ans" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive">
+                <td class="ans" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive">
 
 
                     @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
@@ -195,9 +196,10 @@
             QuestionId = elem.getAttribute("data-value");
             EmployeeId = elem.getAttribute("data-user");
             SAM_IsActive = elem.getAttribute("data-isAct");
+            AssessmentType = elem.getAttribute("data-Type");
             Answer = $("input[type='radio'][name='Opt_" + QuestionId + "']:checked").val();
             SelfAssessmentId = elem.getAttribute("data-sam");
-            obj.push({ "QuestionId": QuestionId, "Answer": Answer, "EmployeeId": EmployeeId, "SelfAssessmentId": SelfAssessmentId, "SAM_IsActive": SAM_IsActive });
+            obj.push({ "QuestionId": QuestionId, "Answer": Answer, "EmployeeId": EmployeeId, "SelfAssessmentId": SelfAssessmentId, "SAM_IsActive": SAM_IsActive,"AssessmentType":AssessmentType });
 
         });
         obj = JSON.stringify({ 'data': obj });
@@ -212,7 +214,23 @@
             },
             success: function (result) {
                 if (result != null) {
-
+                                              $.ajax({
+                                          type: "POST",
+                                          data: { 'Id': EmployeeId, 'Assesment': AssessmentType},
+                                          url: '../NewAdmin/userAssessmentView/',
+                                          error: function (xhr, status, error) {
+                                          },
+                                          success: function (result) {
+                                              debugger
+                                              if (result != null)
+                                              {
+                                                  $("#gridArea").hide();
+                                                  $('#profileArea').show();
+                                                  $('#profileArea').html(result);
+                                              }
+                                          }
+                                      });
+                                      
                 }
             }
         });
