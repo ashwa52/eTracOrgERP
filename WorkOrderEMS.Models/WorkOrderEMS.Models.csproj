@@ -223,6 +223,7 @@
     <Compile Include="Employee\EmployeeModel.cs" />
     <Compile Include="Employee\InterviewAnswerModel.cs" />
     <Compile Include="Employee\InterviewersModel.cs" />
+    <Compile Include="Employee\PhotoRelease.cs" />
     <Compile Include="Emp_ManApp\EmployeeManagerModel.cs" />
     <Compile Include="LoginModel\eTracLoginModel.cs" />
     <Compile Include="LoginModel\IdleEmployeeResult.cs" />

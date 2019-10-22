@@ -33,6 +33,9 @@ namespace WorkOrderEMS.Data.EntityModel
         public string LCAD_IsApprove { get; set; }
         public string LCAD_IsActive { get; set; }
         public Nullable<decimal> LCAD_Balance { get; set; }
+        public string LCAD_CardHolderName { get; set; }
+        public Nullable<System.DateTime> LCAD_CardExpirationDate { get; set; }
+        public string LCAD_IsPrimary { get; set; }
     
         public virtual CompanyAccountDetail CompanyAccountDetail { get; set; }
         public virtual PaymentMode PaymentMode { get; set; }

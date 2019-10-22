@@ -2656,7 +2656,7 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApprovalForCompanyFacilityMapping", lCFM_IdParameter, lCFM_CommentParameter, lCFM_IsApproveParameter, lCFM_ApprovedByParameter);
         }
     
-        public virtual int spSetCompanyFacilityMapping(string cFMAction, Nullable<long> cFM_Id, Nullable<long> cFM_CMP_Id, Nullable<long> cFM_CCD_CostCode, string cFM_FacilityType, string cFM_Discription, Nullable<decimal> cFM_Rate, Nullable<decimal> cFM_Tax, Nullable<long> cFM_ModifiedBy, Nullable<long> cFM_ApprovedBy, string cFM_IsActive)
+        public virtual int spSetCompanyFacilityMapping(string cFMAction, Nullable<long> cFM_Id, Nullable<long> cFM_CMP_Id, Nullable<long> cFM_CCD_CostCode, string cFM_FacilityType, string cFM_Discription, Nullable<decimal> cFM_Rate, Nullable<decimal> cFM_Tax, Nullable<long> cFM_ModifiedBy, Nullable<long> cFM_ApprovedBy, string cFM_IsActive, string cFM_ImageName)
         {
             var cFMActionParameter = cFMAction != null ?
                 new ObjectParameter("CFMAction", cFMAction) :
@@ -2702,7 +2702,11 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("CFM_IsActive", cFM_IsActive) :
                 new ObjectParameter("CFM_IsActive", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetCompanyFacilityMapping", cFMActionParameter, cFM_IdParameter, cFM_CMP_IdParameter, cFM_CCD_CostCodeParameter, cFM_FacilityTypeParameter, cFM_DiscriptionParameter, cFM_RateParameter, cFM_TaxParameter, cFM_ModifiedByParameter, cFM_ApprovedByParameter, cFM_IsActiveParameter);
+            var cFM_ImageNameParameter = cFM_ImageName != null ?
+                new ObjectParameter("CFM_ImageName", cFM_ImageName) :
+                new ObjectParameter("CFM_ImageName", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetCompanyFacilityMapping", cFMActionParameter, cFM_IdParameter, cFM_CMP_IdParameter, cFM_CCD_CostCodeParameter, cFM_FacilityTypeParameter, cFM_DiscriptionParameter, cFM_RateParameter, cFM_TaxParameter, cFM_ModifiedByParameter, cFM_ApprovedByParameter, cFM_IsActiveParameter, cFM_ImageNameParameter);
         }
     
         public virtual ObjectResult<spGetVendorType_Result> spGetVendorType()
@@ -3596,7 +3600,7 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdateBalanceAmount", cLM_IdParameter, costCodeAmountParameter, bCM_BudgetYearParameter);
         }
     
-        public virtual int spSetCompanyAccountDetail(string cADAction, Nullable<long> cAD_Id, Nullable<long> cAD_CMP_Id, Nullable<long> cAD_PMD_Id, string cAD_CardOrBankName, string cAD_BankLocation, string cAD_AccountNumber, string cAD_CreditCardNumber, string cAD_IFSCcode, string cAD_SwiftBICcode, string cAD_AccountDocument, Nullable<long> cAD_ModifiedBy, Nullable<long> cAD_ApprovedBy, string cAD_IsActive, Nullable<decimal> cAD_Balance, Nullable<long> cAD_QBKId)
+        public virtual int spSetCompanyAccountDetail(string cADAction, Nullable<long> cAD_Id, Nullable<long> cAD_CMP_Id, Nullable<long> cAD_PMD_Id, string cAD_CardOrBankName, string cAD_BankLocation, string cAD_AccountNumber, string cAD_CreditCardNumber, string cAD_IFSCcode, string cAD_SwiftBICcode, string cAD_AccountDocument, Nullable<long> cAD_ModifiedBy, Nullable<long> cAD_ApprovedBy, string cAD_IsActive, Nullable<decimal> cAD_Balance, Nullable<long> cAD_QBKId, string cAD_CardHolderName, Nullable<System.DateTime> cAD_CardExpirationDate, string cAD_IsPrimary)
         {
             var cADActionParameter = cADAction != null ?
                 new ObjectParameter("CADAction", cADAction) :
@@ -3662,7 +3666,19 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("CAD_QBKId", cAD_QBKId) :
                 new ObjectParameter("CAD_QBKId", typeof(long));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetCompanyAccountDetail", cADActionParameter, cAD_IdParameter, cAD_CMP_IdParameter, cAD_PMD_IdParameter, cAD_CardOrBankNameParameter, cAD_BankLocationParameter, cAD_AccountNumberParameter, cAD_CreditCardNumberParameter, cAD_IFSCcodeParameter, cAD_SwiftBICcodeParameter, cAD_AccountDocumentParameter, cAD_ModifiedByParameter, cAD_ApprovedByParameter, cAD_IsActiveParameter, cAD_BalanceParameter, cAD_QBKIdParameter);
+            var cAD_CardHolderNameParameter = cAD_CardHolderName != null ?
+                new ObjectParameter("CAD_CardHolderName", cAD_CardHolderName) :
+                new ObjectParameter("CAD_CardHolderName", typeof(string));
+    
+            var cAD_CardExpirationDateParameter = cAD_CardExpirationDate.HasValue ?
+                new ObjectParameter("CAD_CardExpirationDate", cAD_CardExpirationDate) :
+                new ObjectParameter("CAD_CardExpirationDate", typeof(System.DateTime));
+    
+            var cAD_IsPrimaryParameter = cAD_IsPrimary != null ?
+                new ObjectParameter("CAD_IsPrimary", cAD_IsPrimary) :
+                new ObjectParameter("CAD_IsPrimary", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetCompanyAccountDetail", cADActionParameter, cAD_IdParameter, cAD_CMP_IdParameter, cAD_PMD_IdParameter, cAD_CardOrBankNameParameter, cAD_BankLocationParameter, cAD_AccountNumberParameter, cAD_CreditCardNumberParameter, cAD_IFSCcodeParameter, cAD_SwiftBICcodeParameter, cAD_AccountDocumentParameter, cAD_ModifiedByParameter, cAD_ApprovedByParameter, cAD_IsActiveParameter, cAD_BalanceParameter, cAD_QBKIdParameter, cAD_CardHolderNameParameter, cAD_CardExpirationDateParameter, cAD_IsPrimaryParameter);
         }
     
         public virtual ObjectResult<string> spGetAccountCategory(string action, string accountCategory)
@@ -4554,7 +4570,7 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetVehicleSeating_DepartmentMapping", vDMActionParameter, vDM_IdParameter, vDM_VST_IdParameter, vDM_DPT_IdParameter, vDM_IsActiveParameter);
         }
     
-        public virtual int spSetVehicleSeating(string vSTAction, Nullable<long> vST_Id, string vST_Title, string vST_JobDescription, string vST_RolesAndResponsiblities, string vST_Level, Nullable<long> vST_ParentId, Nullable<long> vST_DPT_Id, string vST_IsActive)
+        public virtual int spSetVehicleSeating(string vSTAction, Nullable<long> vST_Id, string vST_Title, string vST_JobDescription, string vST_RolesAndResponsiblities, string vST_Level, Nullable<long> vST_ParentId, Nullable<long> vST_DPT_Id, string vST_EmploymentStatus, string vST_IsExempt, Nullable<decimal> vST_RateOfPay, string vST_IsActive)
         {
             var vSTActionParameter = vSTAction != null ?
                 new ObjectParameter("VSTAction", vSTAction) :
@@ -4588,11 +4604,23 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("VST_DPT_Id", vST_DPT_Id) :
                 new ObjectParameter("VST_DPT_Id", typeof(long));
     
+            var vST_EmploymentStatusParameter = vST_EmploymentStatus != null ?
+                new ObjectParameter("VST_EmploymentStatus", vST_EmploymentStatus) :
+                new ObjectParameter("VST_EmploymentStatus", typeof(string));
+    
+            var vST_IsExemptParameter = vST_IsExempt != null ?
+                new ObjectParameter("VST_IsExempt", vST_IsExempt) :
+                new ObjectParameter("VST_IsExempt", typeof(string));
+    
+            var vST_RateOfPayParameter = vST_RateOfPay.HasValue ?
+                new ObjectParameter("VST_RateOfPay", vST_RateOfPay) :
+                new ObjectParameter("VST_RateOfPay", typeof(decimal));
+    
             var vST_IsActiveParameter = vST_IsActive != null ?
                 new ObjectParameter("VST_IsActive", vST_IsActive) :
                 new ObjectParameter("VST_IsActive", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetVehicleSeating", vSTActionParameter, vST_IdParameter, vST_TitleParameter, vST_JobDescriptionParameter, vST_RolesAndResponsiblitiesParameter, vST_LevelParameter, vST_ParentIdParameter, vST_DPT_IdParameter, vST_IsActiveParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetVehicleSeating", vSTActionParameter, vST_IdParameter, vST_TitleParameter, vST_JobDescriptionParameter, vST_RolesAndResponsiblitiesParameter, vST_LevelParameter, vST_ParentIdParameter, vST_DPT_IdParameter, vST_EmploymentStatusParameter, vST_IsExemptParameter, vST_RateOfPayParameter, vST_IsActiveParameter);
         }
     
         public virtual ObjectResult<spGetVehicleSeating_Result1> spGetVehicleSeating()
@@ -4648,13 +4676,13 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetMyOpening_Result>("spGetMyOpening");
         }
     
-        public virtual ObjectResult<spGetJobPosting_Result> spGetJobPosting(string employeeId)
+        public virtual ObjectResult<spGetJobPosting_Result> spGetJobPosting(string jPS_HiringManagerID)
         {
-            var employeeIdParameter = employeeId != null ?
-                new ObjectParameter("employeeId", employeeId) :
-                new ObjectParameter("employeeId", typeof(string));
+            var jPS_HiringManagerIDParameter = jPS_HiringManagerID != null ?
+                new ObjectParameter("JPS_HiringManagerID", jPS_HiringManagerID) :
+                new ObjectParameter("JPS_HiringManagerID", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetJobPosting_Result>("spGetJobPosting", employeeIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetJobPosting_Result>("spGetJobPosting", jPS_HiringManagerIDParameter);
         }
     
         public virtual ObjectResult<spGetApplicantInfo_Result> spGetApplicantInfo(string employeeId)
@@ -4995,6 +5023,45 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("EHB_IsActive", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetEmployeeHandbook", eHBActionParameter, eHB_IdParameter, eHB_EMP_EmployeeIDParameter, eHB_IsActiveParameter);
+        }
+    
+        public virtual ObjectResult<spGetConfidentialityAgreement_Result> spGetConfidentialityAgreement(string employeeID)
+        {
+            var employeeIDParameter = employeeID != null ?
+                new ObjectParameter("EmployeeID", employeeID) :
+                new ObjectParameter("EmployeeID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetConfidentialityAgreement_Result>("spGetConfidentialityAgreement", employeeIDParameter);
+        }
+    
+        public virtual ObjectResult<string> spGetPhotoReleaseForm(string employeeID)
+        {
+            var employeeIDParameter = employeeID != null ?
+                new ObjectParameter("EmployeeID", employeeID) :
+                new ObjectParameter("EmployeeID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("spGetPhotoReleaseForm", employeeIDParameter);
+        }
+    
+        public virtual int spSetPhotoReleaseForm(string pRFAction, Nullable<long> pRF_Id, string pRF_EMP_EmployeeID, string pRF_IsActive)
+        {
+            var pRFActionParameter = pRFAction != null ?
+                new ObjectParameter("PRFAction", pRFAction) :
+                new ObjectParameter("PRFAction", typeof(string));
+    
+            var pRF_IdParameter = pRF_Id.HasValue ?
+                new ObjectParameter("PRF_Id", pRF_Id) :
+                new ObjectParameter("PRF_Id", typeof(long));
+    
+            var pRF_EMP_EmployeeIDParameter = pRF_EMP_EmployeeID != null ?
+                new ObjectParameter("PRF_EMP_EmployeeID", pRF_EMP_EmployeeID) :
+                new ObjectParameter("PRF_EMP_EmployeeID", typeof(string));
+    
+            var pRF_IsActiveParameter = pRF_IsActive != null ?
+                new ObjectParameter("PRF_IsActive", pRF_IsActive) :
+                new ObjectParameter("PRF_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetPhotoReleaseForm", pRFActionParameter, pRF_IdParameter, pRF_EMP_EmployeeIDParameter, pRF_IsActiveParameter);
         }
     }
 }

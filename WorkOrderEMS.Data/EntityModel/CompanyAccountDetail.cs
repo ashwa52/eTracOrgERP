@@ -32,6 +32,9 @@ namespace WorkOrderEMS.Data.EntityModel
         public string CAD_IsActive { get; set; }
         public Nullable<decimal> CAD_Balance { get; set; }
         public Nullable<long> CAD_QBKId { get; set; }
+        public string CAD_CardHolderName { get; set; }
+        public Nullable<System.DateTime> CAD_CardExpirationDate { get; set; }
+        public string CAD_IsPrimary { get; set; }
     
         public virtual PaymentMode PaymentMode { get; set; }
         public virtual ICollection<LogCompanyAccountDetail> LogCompanyAccountDetails { get; set; }

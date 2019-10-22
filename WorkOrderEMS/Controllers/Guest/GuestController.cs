@@ -122,6 +122,19 @@ namespace WorkOrderEMS.Controllers.Guest
 		{
 			return PartialView("_PhotoReleaseForm");
 		}
+		[HttpPost]
+		public ActionResult _PhotoReleaseForm(PhotoRelease model)
+		{
+			if (ModelState.IsValid)
+			{
+				var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+				//_IGuestUserRepository.SetEmployeeHandbookData(model, ObjLoginModel.UserId);
+				return Json(true, JsonRequestBehavior.AllowGet);
+			}
+			ViewBag.NotSaved = true;
+			return PartialView("_PhotoReleaseForm", model);
+		}
+
 		[HttpGet]
 		public PartialViewResult _EducationVarificationForm()
 		{

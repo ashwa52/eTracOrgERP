@@ -195,6 +195,9 @@
           <Property Name="CAD_IsActive" Type="char" MaxLength="1" />
           <Property Name="CAD_Balance" Type="numeric" Precision="18" Scale="2" />
           <Property Name="CAD_QBKId" Type="bigint" />
+          <Property Name="CAD_CardHolderName" Type="varchar" MaxLength="20" />
+          <Property Name="CAD_CardExpirationDate" Type="datetime" />
+          <Property Name="CAD_IsPrimary" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="CompanyDetail">
           <Key>
@@ -232,6 +235,7 @@
           <Property Name="CFM_Tax" Type="numeric" Precision="18" Scale="2" />
           <Property Name="CFM_Date" Type="date" Nullable="false" />
           <Property Name="CFM_IsActive" Type="char" MaxLength="1" />
+          <Property Name="CFM_ImageName" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="CompanyQBK">
           <Key>
@@ -1044,6 +1048,9 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Name="LCAD_IsApprove" Type="char" MaxLength="1" />
           <Property Name="LCAD_IsActive" Type="char" MaxLength="1" />
           <Property Name="LCAD_Balance" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="LCAD_CardHolderName" Type="varchar" MaxLength="20" />
+          <Property Name="LCAD_CardExpirationDate" Type="datetime" />
+          <Property Name="LCAD_IsPrimary" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="LogCompanyDetail">
           <Key>
@@ -4005,6 +4012,9 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Parameter Name="LocationId" Type="bigint" Mode="In" />
         </Function>
         <Function Name="spGetCompanyListForAdmin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetConfidentialityAgreement" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spGetContractType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetCostCode" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Action" Type="char" Mode="In" />
@@ -4046,7 +4056,7 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Parameter Name="ApplicantId" Type="bigint" Mode="In" />
         </Function>
         <Function Name="spGetJobPosting" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="employeeId" Type="varchar" Mode="In" />
+          <Parameter Name="JPS_HiringManagerID" Type="varchar" Mode="In" />
         </Function>
         <Function Name="spGetJobTitle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="JBT_VST_Id" Type="bigint" Mode="In" />
@@ -4097,6 +4107,9 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Parameter Name="CMP_Id" Type="bigint" Mode="In" />
           <Parameter Name="FromDate" Type="date" Mode="In" />
           <Parameter Name="ToDate" Type="date" Mode="In" />
+        </Function>
+        <Function Name="spGetPhotoReleaseForm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
         </Function>
         <Function Name="spGetPODetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="POD_Id" Type="bigint" Mode="In" />
@@ -4315,6 +4328,9 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Parameter Name="CAD_IsActive" Type="char" Mode="In" />
           <Parameter Name="CAD_Balance" Type="numeric" Mode="In" />
           <Parameter Name="CAD_QBKId" Type="bigint" Mode="In" />
+          <Parameter Name="CAD_CardHolderName" Type="varchar" Mode="In" />
+          <Parameter Name="CAD_CardExpirationDate" Type="datetime" Mode="In" />
+          <Parameter Name="CAD_IsPrimary" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetCompanyAccountTransaction" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CATAction" Type="char" Mode="In" />
@@ -4366,6 +4382,7 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Parameter Name="CFM_ModifiedBy" Type="bigint" Mode="In" />
           <Parameter Name="CFM_ApprovedBy" Type="bigint" Mode="In" />
           <Parameter Name="CFM_IsActive" Type="char" Mode="In" />
+          <Parameter Name="CFM_ImageName" Type="nvarchar" Mode="In" />
         </Function>
         <Function Name="spSetCompanyLocationCostCodeMapping" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CLCAction" Type="char" Mode="In" />
@@ -4620,6 +4637,12 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Parameter Name="LBLL_IsApprove" Type="char" Mode="In" />
           <Parameter Name="LBLL_ApprovedBy" Type="bigint" Mode="In" />
         </Function>
+        <Function Name="spSetPhotoReleaseForm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PRFAction" Type="char" Mode="In" />
+          <Parameter Name="PRF_Id" Type="bigint" Mode="In" />
+          <Parameter Name="PRF_EMP_EmployeeID" Type="varchar" Mode="In" />
+          <Parameter Name="PRF_IsActive" Type="char" Mode="In" />
+        </Function>
         <Function Name="spSetPODetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="PODAction" Type="char" Mode="In" />
           <Parameter Name="POD_Id" Type="bigint" Mode="In" />
@@ -4739,6 +4762,9 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Parameter Name="VST_Level" Type="char" Mode="In" />
           <Parameter Name="VST_ParentId" Type="bigint" Mode="In" />
           <Parameter Name="VST_DPT_Id" Type="bigint" Mode="In" />
+          <Parameter Name="VST_EmploymentStatus" Type="varchar" Mode="In" />
+          <Parameter Name="VST_IsExempt" Type="char" Mode="In" />
+          <Parameter Name="VST_RateOfPay" Type="numeric" Mode="In" />
           <Parameter Name="VST_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetVehicleSeating_DepartmentMapping" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -6644,6 +6670,7 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
             <Parameter Name="CFM_ModifiedBy" Mode="In" Type="Int64" />
             <Parameter Name="CFM_ApprovedBy" Mode="In" Type="Int64" />
             <Parameter Name="CFM_IsActive" Mode="In" Type="String" />
+            <Parameter Name="CFM_ImageName" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetVendorType" ReturnType="Collection(workorderEMSModel.spGetVendorType_Result)" />
           <FunctionImport Name="spSetVendorType">
@@ -6926,6 +6953,9 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
             <Parameter Name="CAD_IsActive" Mode="In" Type="String" />
             <Parameter Name="CAD_Balance" Mode="In" Type="Decimal" />
             <Parameter Name="CAD_QBKId" Mode="In" Type="Int64" />
+            <Parameter Name="CAD_CardHolderName" Mode="In" Type="String" />
+            <Parameter Name="CAD_CardExpirationDate" Mode="In" Type="DateTime" />
+            <Parameter Name="CAD_IsPrimary" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetAccountCategory" ReturnType="Collection(String)">
             <Parameter Name="Action" Mode="In" Type="String" />
@@ -7425,6 +7455,9 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
             <Parameter Name="VST_Level" Mode="In" Type="String" />
             <Parameter Name="VST_ParentId" Mode="In" Type="Int64" />
             <Parameter Name="VST_DPT_Id" Mode="In" Type="Int64" />
+            <Parameter Name="VST_EmploymentStatus" Mode="In" Type="String" />
+            <Parameter Name="VST_IsExempt" Mode="In" Type="String" />
+            <Parameter Name="VST_RateOfPay" Mode="In" Type="Decimal" />
             <Parameter Name="VST_IsActive" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetVehicleSeating" ReturnType="Collection(workorderEMSModel.spGetVehicleSeating_Result1)" />
@@ -7560,7 +7593,7 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           </FunctionImport>
           <FunctionImport Name="spGetMyOpening" ReturnType="Collection(workorderEMSModel.spGetMyOpening_Result)" />
           <FunctionImport Name="spGetJobPosting" ReturnType="Collection(workorderEMSModel.spGetJobPosting_Result)" >
-          <Parameter Name="employeeId" Mode="In" Type="String" />
+          <Parameter Name="JPS_HiringManagerID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetApplicantInfo" ReturnType="Collection(workorderEMSModel.spGetApplicantInfo_Result)">
           <Parameter Name="EmployeeId" Mode="In" Type="String" />
@@ -7642,10 +7675,10 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <EntitySet Name="DirectDepositForms" EntityType="workorderEMSModel.DirectDepositForm" />
           <EntitySet Name="EmployeeHandbooks" EntityType="workorderEMSModel.EmployeeHandbook" />
           <FunctionImport Name="spGetDirectDepositForm" ReturnType="Collection(workorderEMSModel.spGetDirectDepositForm_Result)">
-            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+          <Parameter Name="EmployeeID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetEmployeeHandbook" ReturnType="Collection(String)">
-            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+          <Parameter Name="EmployeeID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spSetDirectDepositForm">
             <Parameter Name="DDFAction" Mode="In" Type="String" />
@@ -7667,6 +7700,18 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
             <Parameter Name="EHB_Id" Mode="In" Type="Int64" />
             <Parameter Name="EHB_EMP_EmployeeID" Mode="In" Type="String" />
             <Parameter Name="EHB_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetConfidentialityAgreement" ReturnType="Collection(workorderEMSModel.spGetConfidentialityAgreement_Result)">
+            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetPhotoReleaseForm" ReturnType="Collection(String)">
+            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetPhotoReleaseForm">
+            <Parameter Name="PRFAction" Mode="In" Type="String" />
+            <Parameter Name="PRF_Id" Mode="In" Type="Int64" />
+            <Parameter Name="PRF_EMP_EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="PRF_IsActive" Mode="In" Type="String" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="CommonQeriesByVijay_Result">
@@ -12009,6 +12054,7 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Name="CFM_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <NavigationProperty Name="CostCode" Relationship="workorderEMSModel.FK_CompanyFacilityMapping_CostCode" FromRole="CompanyFacilityMapping" ToRole="CostCode" />
           <NavigationProperty Name="Company" Relationship="workorderEMSModel.FK_CompanyFacilityMapping_Company" FromRole="CompanyFacilityMapping" ToRole="Company" />
+          <Property Name="CFM_ImageName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_CompanyFacilityMapping_CostCode">
           <End Type="workorderEMSModel.CostCode" Role="CostCode" Multiplicity="1" />
@@ -12708,6 +12754,9 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <NavigationProperty Name="PaymentMode" Relationship="workorderEMSModel.FK_CompanyAccountDetail_PaymentMode" FromRole="CompanyAccountDetail" ToRole="PaymentMode" />
           <NavigationProperty Name="LogCompanyAccountDetails" Relationship="workorderEMSModel.FK_LogCompanyAccountDetail_CompanyAccountDetail" FromRole="CompanyAccountDetail" ToRole="LogCompanyAccountDetail" />
           <NavigationProperty Name="Company" Relationship="workorderEMSModel.FK_CompanyAccountDetail_Company" FromRole="CompanyAccountDetail" ToRole="Company" />
+          <Property Name="CAD_CardHolderName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CAD_CardExpirationDate" Type="DateTime" Precision="3" />
+          <Property Name="CAD_IsPrimary" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
         <EntityType Name="LogCompanyAccountDetail">
           <Key>
@@ -12735,6 +12784,9 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <NavigationProperty Name="CompanyAccountDetail" Relationship="workorderEMSModel.FK_LogCompanyAccountDetail_CompanyAccountDetail" FromRole="LogCompanyAccountDetail" ToRole="CompanyAccountDetail" />
           <NavigationProperty Name="PaymentMode" Relationship="workorderEMSModel.FK_LogCompanyAccountDetail_PaymentMode" FromRole="LogCompanyAccountDetail" ToRole="PaymentMode" />
           <NavigationProperty Name="Company" Relationship="workorderEMSModel.FK_LogCompanyAccountDetail_Company" FromRole="LogCompanyAccountDetail" ToRole="Company" />
+          <Property Name="LCAD_CardHolderName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LCAD_CardExpirationDate" Type="DateTime" Precision="3" />
+          <Property Name="LCAD_IsPrimary" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
         <Association Name="FK_CompanyAccountDetail_PaymentMode">
           <End Type="workorderEMSModel.PaymentMode" Role="PaymentMode" Multiplicity="1" />
@@ -14884,6 +14936,12 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Type="String" Name="DDF_BankRoutingNumber_2" Nullable="true" MaxLength="20" />
           <Property Type="String" Name="DDF_VoidCkeck" Nullable="true" />
           <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+        </ComplexType>
+        <ComplexType Name="spGetConfidentialityAgreement_Result">
+          <Property Type="String" Name="CDA_EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+          <Property Type="String" Name="EmpAddress" Nullable="true" MaxLength="202" />
+          <Property Type="String" Name="EMP_Email" Nullable="true" MaxLength="50" />
         </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
@@ -17860,6 +17918,7 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <EntitySetMapping Name="CompanyFacilityMappings">
             <EntityTypeMapping TypeName="workorderEMSModel.CompanyFacilityMapping">
               <MappingFragment StoreEntitySet="CompanyFacilityMapping">
+                <ScalarProperty Name="CFM_ImageName" ColumnName="CFM_ImageName" />
                 <ScalarProperty Name="CFM_IsActive" ColumnName="CFM_IsActive" />
                 <ScalarProperty Name="CFM_Date" ColumnName="CFM_Date" />
                 <ScalarProperty Name="CFM_Tax" ColumnName="CFM_Tax" />
@@ -18242,6 +18301,9 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <EntitySetMapping Name="CompanyAccountDetails">
             <EntityTypeMapping TypeName="workorderEMSModel.CompanyAccountDetail">
               <MappingFragment StoreEntitySet="CompanyAccountDetail">
+                <ScalarProperty Name="CAD_IsPrimary" ColumnName="CAD_IsPrimary" />
+                <ScalarProperty Name="CAD_CardExpirationDate" ColumnName="CAD_CardExpirationDate" />
+                <ScalarProperty Name="CAD_CardHolderName" ColumnName="CAD_CardHolderName" />
                 <ScalarProperty Name="CAD_QBKId" ColumnName="CAD_QBKId" />
                 <ScalarProperty Name="CAD_Balance" ColumnName="CAD_Balance" />
                 <ScalarProperty Name="CAD_IsActive" ColumnName="CAD_IsActive" />
@@ -18261,6 +18323,9 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <EntitySetMapping Name="LogCompanyAccountDetails">
             <EntityTypeMapping TypeName="workorderEMSModel.LogCompanyAccountDetail">
               <MappingFragment StoreEntitySet="LogCompanyAccountDetail">
+                <ScalarProperty Name="LCAD_IsPrimary" ColumnName="LCAD_IsPrimary" />
+                <ScalarProperty Name="LCAD_CardExpirationDate" ColumnName="LCAD_CardExpirationDate" />
+                <ScalarProperty Name="LCAD_CardHolderName" ColumnName="LCAD_CardHolderName" />
                 <ScalarProperty Name="LCAD_Balance" ColumnName="LCAD_Balance" />
                 <ScalarProperty Name="LCAD_IsActive" ColumnName="LCAD_IsActive" />
                 <ScalarProperty Name="LCAD_IsApprove" ColumnName="LCAD_IsApprove" />
@@ -19289,6 +19354,18 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <FunctionImportMapping FunctionImportName="spGetEmployeeHandbook" FunctionName="workorderEMSModel.Store.spGetEmployeeHandbook" />
           <FunctionImportMapping FunctionImportName="spSetDirectDepositForm" FunctionName="workorderEMSModel.Store.spSetDirectDepositForm" />
           <FunctionImportMapping FunctionImportName="spSetEmployeeHandbook" FunctionName="workorderEMSModel.Store.spSetEmployeeHandbook" />
+          <FunctionImportMapping FunctionImportName="spGetConfidentialityAgreement" FunctionName="workorderEMSModel.Store.spGetConfidentialityAgreement">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetConfidentialityAgreement_Result">
+                <ScalarProperty Name="CDA_EMP_EmployeeID" ColumnName="CDA_EMP_EmployeeID" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="EmpAddress" ColumnName="EmpAddress" />
+                <ScalarProperty Name="EMP_Email" ColumnName="EMP_Email" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetPhotoReleaseForm" FunctionName="workorderEMSModel.Store.spGetPhotoReleaseForm" />
+          <FunctionImportMapping FunctionImportName="spSetPhotoReleaseForm" FunctionName="workorderEMSModel.Store.spSetPhotoReleaseForm" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
