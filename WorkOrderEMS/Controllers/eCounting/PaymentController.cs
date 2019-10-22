@@ -2,6 +2,7 @@
 using Intuit.Ipp.Data;
 using Intuit.Ipp.DataService;
 using Intuit.Ipp.QueryFilter;
+using Intuit.Ipp.ReportService;
 using Intuit.Ipp.Security;
 using System;
 using System.Collections.Generic;
@@ -333,9 +334,11 @@ namespace WorkOrderEMS.Controllers.eCounting
                             var getBill = _IBillDataManager.GetBillQBKId(Convert.ToInt64(ObjData.BillNo));
                             QueryService<Bill> querySvcBill = new QueryService<Bill>(serviceContext);
                             List<Bill> billData = querySvcBill.ExecuteIdsQuery("SELECT * FROM Bill MaxResults 1000").ToList();
-
+                            //ReportService fdgdg = new ReportService();
                             var bill = billData.Where(x => x.Id == getBill.ToString()).FirstOrDefault();
                             // var vendorData = vendorList.Where(x => x.Id == "64").FirstOrDefault();
+                            //QueryService<TransactionList> querySvcT = new QueryService<TransactionList>(serviceContext);
+                            //List<TransactionList> billData15 = querySvcT.ExecuteIdsQuery("SELECT * FROM Transaction").ToList();
                             var payment = new BillPayment();
                             //Vendor Reference
                             var reference = new ReferenceType();
@@ -374,7 +377,7 @@ namespace WorkOrderEMS.Controllers.eCounting
                                 }
                                 else if (ObjData.PaymentMode == "Card")
                                 {
-                                    payment.PayType = BillPaymentTypeEnum.CreditCard;
+                                    payment.PayType =BillPaymentTypeEnum.CreditCard;
                                     var CCD = new CreditCardPayment();
                                     billPaymentCredit.CCAccountRef = new ReferenceType()
                                     {

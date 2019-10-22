@@ -109,39 +109,7 @@
 
 }
 <style>
-    .roundedtext {
-        border-radius: 12px
-    }
 
-    ::-webkit-input-placeholder {
-        font-style: italic;
-    }
-
-    :-moz-placeholder {
-        font-style: italic;
-    }
-
-    ::-moz-placeholder {
-        font-style: italic;
-    }
-
-    :-ms-input-placeholder {
-        font-style: italic;
-    }
-
-    .top-row > div {
-        float: left;
-        width: 48%;
-        margin-right: 4%;
-    }
-
-    input[type="radio"] {
-        height: 20px;
-        width: 20px;
-        background-color: #4475b5;
-        color: #4475b5;
-        float: left;
-    }
 </style>
 @Html.ValidationSummary(true)
 @Html.AntiForgeryToken()
@@ -160,13 +128,10 @@
 
 <div class="panel panel-primary setup-content" id="myContractDetails">
     <div class="basic-form">
-        <div class="form-group row">
-            <label class="col-sm-6 col-form-label" for="LocationName" style="font-size:16px;">1) Is Company has certificate to Add?<span class="req">*</span></label>
+        <div class="form-row">
 
-        </div>
-        <div class="form-group row">
-
-            <div class="col-sm-4">
+            <div class="form-group col-md-12">             
+                <h6 class="col-form-label">1) Is Company has certificate to Add? <span class="req">*</span></h6>
                 <span>
                     @Html.RadioButton(myModelprefix + "IsCompanyCertificate", "YesCertificate", true)<span class="radio_span">&nbsp;Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                     @Html.RadioButton(myModelprefix + "IsCompanyCertificate", "NoCertificate", false, new { @style = "margin-left:20%;" })<span class="radio_span">
@@ -174,96 +139,96 @@
                     </span>
                     @Html.ValidationMessage(myModelprefix + "IsCompanyCertificate")
                 </span>
-
             </div>
-
-        </div>
-        <div class="form-group row HideRowIfNo">
-            <label class="col-sm-2 col-form-label" for="LicenseName"> License Name<span class="req">*</span></label>
-            <div class="col-sm-4">
+            <div class="form-group col-md-6 HideRowIfNo">
+                <label class="col-form-label" for="LicenseName"> License Name<span class="req">*</span></label>
                 @Html.TextBoxFor(model => model.VendorInsuranceModel.LicenseName, null, new { @id = "LicenseName", @required = "required", @pattern = @"^([a-zA-Z .&'-]+)$", @class = "form-control input-rounded" })
                 @Html.ValidationMessageFor(model => model.VendorInsuranceModel.LicenseName)
             </div>
-            <label class="col-sm-2 col-form-label" for="LicenseName">  License Number <span class="req">*</span></label>
-            <div class="col-sm-4">
+            <div class="form-group col-md-6 HideRowIfNo">
+                <label class="col-form-label" for="LicenseName">  License Number <span class="req">*</span></label>
                 @Html.TextBoxFor(model => model.VendorInsuranceModel.LicenseNumber, null, new { @id = "LicenseNumber", @required = "required", @pattern = @"^([a-zA-Z0-9]+)$", @class = "form-control input-rounded" })
                 @Html.ValidationMessageFor(model => model.VendorInsuranceModel.LicenseNumber)
             </div>
-        </div>
-        <div class="form-group row HideRowIfNo">
-            <label class="col-sm-2 col-form-label" for="LicenseName"> Expiration Date<span class="req">*</span></label>
-            <div class="col-sm-4">
+            <div class="form-group col-md-6 HideRowIfNo">
+                <label class="col-form-label" for="LicenseName"> Expiration Date<span class="req">*</span></label>
                 @Html.TextBoxFor(model => model.VendorInsuranceModel.LicenseExpirationDate, null, new { @id = "LicenseExpirationDate", @onkeydown = "return false;", @class = "form-control input-rounded" })
                 @Html.ValidationMessageFor(model => model.VendorInsuranceModel.LicenseExpirationDate)
             </div>
-            <label class="col-sm-2 col-form-label" for="LicenseName">    License Document</label>
-            <div class="col-sm-4">
-                <div id="dvLicensePreview">
+            <div class="form-group col-md-6 HideRowIfNo">
+                <label class="col-form-label" for="LicenseName"> License Document</label>
+                <div id="dvLicensePreview"> </div>
+
+                <div class="custom-file">
+                    <input id="fileuploadLicense" type="file" style="" class="custom-file-input" name="VendorInsuranceModel.LicenseDocumentFile" />
+
+                    <label class="custom-file-label">Choose file</label>
                 </div>
-                <input id="fileuploadLicense" type="file" style="margin-left:50%;" name="VendorInsuranceModel.LicenseDocumentFile" />
                 <ul class="attachment">
                     @if (Model.VendorInsuranceModel != null)
                     {
-                        <li style="margin-left :25%;margin-top:20px;">
+                        <li>
                             <a class="title" href="@Url.Content(VendorInsuranceDocPath + myModelprefix + "LicenseDocument")">@myModelprefix + "LicenseDocument"</a>
                         </li>
                     }
                 </ul>
             </div>
-        </div>
-        <div class="form-group row">
-            <label class="col-sm-6 col-form-label" for="LocationName" style="font-size:16px;">2) Is Insurance required?<span class="req">*</span></label>
-        </div>
-        <div class="form-group row">
 
-            <div class="col-sm-4">
+            <div class="form-group col-md-12">
+             
+                <h6 class="col-form-label">2) Is Insurance required?<span class="req">*</span></h6>
+
                 @Html.RadioButtonFor(model => model.VendorInsuranceModel.IsInsuranceRequired, "YesInsurance")<span class="radio_span">&nbsp;Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 @Html.RadioButtonFor(model => model.VendorInsuranceModel.IsInsuranceRequired, "NoInsurance", new { @style = "margin-left:20%;" })<span class="radio_span">
                     &nbsp;No
                 </span>
                 @Html.ValidationMessageFor(model => model.VendorInsuranceModel.IsInsuranceRequired)
-            </div>
 
-        </div>
-        <div class="form-group row HideRowInsurance" style="display:none;">
-            <label class="col-sm-2 col-form-label" for="LicenseName">Insurance Carries<span class="req">*</span></label>
-            <div class="col-sm-4">
+            </div>
+            <div class="form-group col-md-6 HideRowInsurance" style="display:none;">
+                <label class="col-form-label" for="LicenseName">Insurance Carries<span class="req">*</span></label>
 
                 @Html.TextBoxFor(model => model.VendorInsuranceModel.InsuranceCarries, null, new { @id = "InsuranceCarries", @class = "form-control input-rounded" })
                 @Html.ValidationMessageFor(model => model.VendorInsuranceModel.InsuranceCarries)
             </div>
-            <label class="col-sm-2 col-form-label" for="LicenseName">   Policy Number</label>
-            <div class="col-sm-4">
+
+            <div class="form-group col-md-6 HideRowInsurance" style="display:none;">
+                <label class="col-form-label" for="LicenseName">   Policy Number</label>
                 @Html.TextBoxFor(model => model.VendorInsuranceModel.PolicyNumber, null, new { @id = "PolicyNumber", @class = "form-control input-rounded" })
                 @Html.ValidationMessageFor(model => model.VendorInsuranceModel.PolicyNumber)
+
             </div>
-        </div>
-        <div class="form-group row HideRowInsurance" style="display:none;">
-            <label class="col-sm-2 col-form-label" for="LicenseName">Expiration Date<span class="req">*</span></label>
-            <div class="col-sm-4">
+            <div class="form-group col-md-6 HideRowInsurance" style="display:none;">
+                <label class="col-form-label" for="LicenseName">Expiration Date<span class="req">*</span></label>
                 @Html.TextBoxFor(model => model.VendorInsuranceModel.InsuranceExpirationDate, null, new { @id = "InsuranceExpirationDate", @onkeydown = "return false;", @class = "form-control input-rounded" })
                 @Html.ValidationMessageFor(model => model.VendorInsuranceModel.InsuranceExpirationDate)
             </div>
-            <label class="col-sm-2 col-form-label" for="LicenseName"> Insurance Document</label>
-            <div class="col-sm-4">
+            <div class="form-group col-md-6 HideRowInsurance" style="display:none;">
+                <label class="col-form-label" for="LicenseName"> Insurance Document</label>
+
                 <div id="dvInsurancePreview">
                 </div>
-                <input id="fileuploadInsurance" type="file" style="margin-left:50%;" name="VendorInsuranceModel.InsuranceDocumentFile" />
+
+                <div class="custom-file">
+                    <input id="fileuploadInsurance" type="file" class="custom-file-input" name="VendorInsuranceModel.InsuranceDocumentFile" />
+
+                    <label class="custom-file-label">Choose file</label>
+                </div>
                 <ul class="attachment">
                     @if (Model.VendorInsuranceModel != null)
                     {
-                        <li style="margin-left :25%;margin-top:20px;">
+                        <li>
                             <a class="title" href="@Url.Content(VendorInsuranceDocPath + "InsuranceDocument")">@Model.VendorInsuranceModel.InsuranceDocument + "InsuranceDocument"</a>
                         </li>
                     }
                 </ul>
+
             </div>
         </div>
 
-
-
     </div>
-</div>
+    </div>
+
 
 
 
@@ -317,7 +282,9 @@
         });
 
         $(function () {
-            $("#fileuploadLicense").change(function () {
+            $("#fileuploadLicense").change(function (e) {
+                 var fileName = e.target.files[0].name;  
+             $("#fileuploadLicense").next("label").html(fileName);
                 $("#dvLicensePreview").html("");
                 var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
 
@@ -327,24 +294,30 @@
                     //if (!regex.test($(this).val().toLowerCase())) {
                     $(this).val('');
                     alert("Invalid file type");
+                     $("#fileuploadLicense").next("label").html("Choose file");
                     return false;
                 } else if (size >= 4194304) {
                     alert("Max file size 4 mb.");
+                     $("#fileuploadLicense").next("label").html("Choose file");
                     $(this).val("");
                     return false;
                 }
             })
-            $("#fileuploadInsurance").change(function () {
+            $("#fileuploadInsurance").change(function (e) {
                 $("#dvInsurancePreview").html("");
+                 var fileName = e.target.files[0].name;  
+             $("#fileuploadInsurance").next("label").html(fileName);
                 var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
                 var size = this.files[0].size;
                 if (!allowedExtensions.exec($(this).val().toLowerCase())) {
                     $(this).val('');
+                    $("#fileuploadInsurance").next("label").html("Choose file");
                     alert("Invalid file type");
                     return false;
                 }
                 else if (size >= 4194304) {
                     alert("Max file size 4 mb.");
+                    $("#fileuploadInsurance").next("label").html("Choose file");
                     $(this).val("");
                     return false;
                 }

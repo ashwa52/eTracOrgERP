@@ -31,6 +31,9 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<System.DateTime> POD_ReoccourringBillDate { get; set; }
         public string POD_EmergencyPODocument { get; set; }
         public string POD_IsActive { get; set; }
+        public Nullable<long> POD_ReferenceId { get; set; }
+        public Nullable<System.DateTime> POD_ReccuringDate { get; set; }
+        public string POD_ReccuringStatus { get; set; }
     
         public virtual LocationMaster LocationMaster { get; set; }
         public virtual ICollection<LogPODetail> LogPODetails { get; set; }

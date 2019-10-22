@@ -141,6 +141,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<JobTitle> JobTitles { get; set; }
         public virtual DbSet<VehicleSeating> VehicleSeatings { get; set; }
         public virtual DbSet<VehicleSeating_DepartmentMapping> VehicleSeating_DepartmentMapping { get; set; }
+        public virtual DbSet<DebitMemo> DebitMemoes { get; set; }
     
         public virtual ObjectResult<CommonQeriesByVijay_Result> CommonQeriesByVijay()
         {
@@ -4116,75 +4117,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGeteFormTrack_Result1>("spGeteFormTrack", approvarIdParameter);
         }
     
-        public virtual int spSetPODetail(string pODAction, Nullable<long> pOD_Id, Nullable<long> pOD_LocationId, Nullable<long> pOD_POT_Id, Nullable<long> pOD_CMP_Id, Nullable<System.DateTime> pOD_DeliveryDate, Nullable<decimal> pOD_POAmount, Nullable<System.DateTime> pOD_ReoccourringBillDate, string pOD_EmergencyPODocument, Nullable<long> pOD_ModifiedBy, Nullable<long> pOD_ApprovedBy, string pOD_IsActive, Nullable<long> pOD_RUL_Id, string pOD_RUL_Level, string pOD_RUL_CurrentLevel, Nullable<long> pOD_QBKId)
-        {
-            var pODActionParameter = pODAction != null ?
-                new ObjectParameter("PODAction", pODAction) :
-                new ObjectParameter("PODAction", typeof(string));
-    
-            var pOD_IdParameter = pOD_Id.HasValue ?
-                new ObjectParameter("POD_Id", pOD_Id) :
-                new ObjectParameter("POD_Id", typeof(long));
-    
-            var pOD_LocationIdParameter = pOD_LocationId.HasValue ?
-                new ObjectParameter("POD_LocationId", pOD_LocationId) :
-                new ObjectParameter("POD_LocationId", typeof(long));
-    
-            var pOD_POT_IdParameter = pOD_POT_Id.HasValue ?
-                new ObjectParameter("POD_POT_Id", pOD_POT_Id) :
-                new ObjectParameter("POD_POT_Id", typeof(long));
-    
-            var pOD_CMP_IdParameter = pOD_CMP_Id.HasValue ?
-                new ObjectParameter("POD_CMP_Id", pOD_CMP_Id) :
-                new ObjectParameter("POD_CMP_Id", typeof(long));
-    
-            var pOD_DeliveryDateParameter = pOD_DeliveryDate.HasValue ?
-                new ObjectParameter("POD_DeliveryDate", pOD_DeliveryDate) :
-                new ObjectParameter("POD_DeliveryDate", typeof(System.DateTime));
-    
-            var pOD_POAmountParameter = pOD_POAmount.HasValue ?
-                new ObjectParameter("POD_POAmount", pOD_POAmount) :
-                new ObjectParameter("POD_POAmount", typeof(decimal));
-    
-            var pOD_ReoccourringBillDateParameter = pOD_ReoccourringBillDate.HasValue ?
-                new ObjectParameter("POD_ReoccourringBillDate", pOD_ReoccourringBillDate) :
-                new ObjectParameter("POD_ReoccourringBillDate", typeof(System.DateTime));
-    
-            var pOD_EmergencyPODocumentParameter = pOD_EmergencyPODocument != null ?
-                new ObjectParameter("POD_EmergencyPODocument", pOD_EmergencyPODocument) :
-                new ObjectParameter("POD_EmergencyPODocument", typeof(string));
-    
-            var pOD_ModifiedByParameter = pOD_ModifiedBy.HasValue ?
-                new ObjectParameter("POD_ModifiedBy", pOD_ModifiedBy) :
-                new ObjectParameter("POD_ModifiedBy", typeof(long));
-    
-            var pOD_ApprovedByParameter = pOD_ApprovedBy.HasValue ?
-                new ObjectParameter("POD_ApprovedBy", pOD_ApprovedBy) :
-                new ObjectParameter("POD_ApprovedBy", typeof(long));
-    
-            var pOD_IsActiveParameter = pOD_IsActive != null ?
-                new ObjectParameter("POD_IsActive", pOD_IsActive) :
-                new ObjectParameter("POD_IsActive", typeof(string));
-    
-            var pOD_RUL_IdParameter = pOD_RUL_Id.HasValue ?
-                new ObjectParameter("POD_RUL_Id", pOD_RUL_Id) :
-                new ObjectParameter("POD_RUL_Id", typeof(long));
-    
-            var pOD_RUL_LevelParameter = pOD_RUL_Level != null ?
-                new ObjectParameter("POD_RUL_Level", pOD_RUL_Level) :
-                new ObjectParameter("POD_RUL_Level", typeof(string));
-    
-            var pOD_RUL_CurrentLevelParameter = pOD_RUL_CurrentLevel != null ?
-                new ObjectParameter("POD_RUL_CurrentLevel", pOD_RUL_CurrentLevel) :
-                new ObjectParameter("POD_RUL_CurrentLevel", typeof(string));
-    
-            var pOD_QBKIdParameter = pOD_QBKId.HasValue ?
-                new ObjectParameter("POD_QBKId", pOD_QBKId) :
-                new ObjectParameter("POD_QBKId", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetPODetail", pODActionParameter, pOD_IdParameter, pOD_LocationIdParameter, pOD_POT_IdParameter, pOD_CMP_IdParameter, pOD_DeliveryDateParameter, pOD_POAmountParameter, pOD_ReoccourringBillDateParameter, pOD_EmergencyPODocumentParameter, pOD_ModifiedByParameter, pOD_ApprovedByParameter, pOD_IsActiveParameter, pOD_RUL_IdParameter, pOD_RUL_LevelParameter, pOD_RUL_CurrentLevelParameter, pOD_QBKIdParameter);
-        }
-    
         public virtual int spSetPODetailEmergency(string pOEAction, Nullable<long> pOE_Id, Nullable<long> pOE_LocationId, Nullable<long> pOE_POT_Id, string pOE_VendorName, string pOE_EmergencyComment, Nullable<decimal> pOE_POAmount, Nullable<System.DateTime> pOE_PODate, string pOE_EmergencyPODocument, Nullable<long> pOE_ModifiedBy, Nullable<long> pOE_ApprovedBy, string pOE_IsActive, Nullable<long> pOE_QBKId)
         {
             var pOEActionParameter = pOEAction != null ?
@@ -5266,6 +5198,172 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("CTZ_Citizenship", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSetEmployee_Result>("spSetEmployee", eMPActionParameter, eMP_IdParameter, eMP_EmployeeIDParameter, eMP_API_ApplicantIdParameter, eMP_FirstNameParameter, eMP_MiddleNameParameter, eMP_LastNameParameter, eMP_EmailParameter, eMP_PhoneParameter, eMP_DrivingLicenseNumberParameter, eMP_DateOfBirthParameter, eMP_SSNParameter, eMP_PhotoParameter, eMP_MilitaryServiceParameter, eMP_GenderParameter, eMP_JobTitleIdParameter, eMP_ManagerIdParameter, eMP_DateOfJoiningParameter, eMP_LocationIdParameter, eMP_IsCreatedByParameter, eMP_IsCreatedOnParameter, eMP_IsActiveParameter, userTypeParameter, eMA_AddressParameter, eMA_CityParameter, eMA_StateParameter, eMA_ZipParameter, cTZ_CitizenshipParameter);
+        }
+    
+        public virtual ObjectResult<SP_GetAllReccuringPO_Result> SP_GetAllReccuringPO()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GetAllReccuringPO_Result>("SP_GetAllReccuringPO");
+        }
+    
+        public virtual int sp_SetPOReccuring()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("sp_SetPOReccuring");
+        }
+    
+        public virtual int spGetPONumberForReccuringPO()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetPONumberForReccuringPO");
+        }
+    
+        public virtual int spSetPODetail(string pODAction, Nullable<long> pOD_Id, Nullable<long> pOD_LocationId, Nullable<long> pOD_POT_Id, Nullable<long> pOD_CMP_Id, Nullable<System.DateTime> pOD_DeliveryDate, Nullable<decimal> pOD_POAmount, Nullable<System.DateTime> pOD_ReoccourringBillDate, string pOD_EmergencyPODocument, Nullable<long> pOD_ModifiedBy, Nullable<long> pOD_ApprovedBy, string pOD_IsActive, Nullable<long> pOD_RUL_Id, string pOD_RUL_Level, string pOD_RUL_CurrentLevel, Nullable<long> pOD_QBKId, string pOD_ReccuringStatus)
+        {
+            var pODActionParameter = pODAction != null ?
+                new ObjectParameter("PODAction", pODAction) :
+                new ObjectParameter("PODAction", typeof(string));
+    
+            var pOD_IdParameter = pOD_Id.HasValue ?
+                new ObjectParameter("POD_Id", pOD_Id) :
+                new ObjectParameter("POD_Id", typeof(long));
+    
+            var pOD_LocationIdParameter = pOD_LocationId.HasValue ?
+                new ObjectParameter("POD_LocationId", pOD_LocationId) :
+                new ObjectParameter("POD_LocationId", typeof(long));
+    
+            var pOD_POT_IdParameter = pOD_POT_Id.HasValue ?
+                new ObjectParameter("POD_POT_Id", pOD_POT_Id) :
+                new ObjectParameter("POD_POT_Id", typeof(long));
+    
+            var pOD_CMP_IdParameter = pOD_CMP_Id.HasValue ?
+                new ObjectParameter("POD_CMP_Id", pOD_CMP_Id) :
+                new ObjectParameter("POD_CMP_Id", typeof(long));
+    
+            var pOD_DeliveryDateParameter = pOD_DeliveryDate.HasValue ?
+                new ObjectParameter("POD_DeliveryDate", pOD_DeliveryDate) :
+                new ObjectParameter("POD_DeliveryDate", typeof(System.DateTime));
+    
+            var pOD_POAmountParameter = pOD_POAmount.HasValue ?
+                new ObjectParameter("POD_POAmount", pOD_POAmount) :
+                new ObjectParameter("POD_POAmount", typeof(decimal));
+    
+            var pOD_ReoccourringBillDateParameter = pOD_ReoccourringBillDate.HasValue ?
+                new ObjectParameter("POD_ReoccourringBillDate", pOD_ReoccourringBillDate) :
+                new ObjectParameter("POD_ReoccourringBillDate", typeof(System.DateTime));
+    
+            var pOD_EmergencyPODocumentParameter = pOD_EmergencyPODocument != null ?
+                new ObjectParameter("POD_EmergencyPODocument", pOD_EmergencyPODocument) :
+                new ObjectParameter("POD_EmergencyPODocument", typeof(string));
+    
+            var pOD_ModifiedByParameter = pOD_ModifiedBy.HasValue ?
+                new ObjectParameter("POD_ModifiedBy", pOD_ModifiedBy) :
+                new ObjectParameter("POD_ModifiedBy", typeof(long));
+    
+            var pOD_ApprovedByParameter = pOD_ApprovedBy.HasValue ?
+                new ObjectParameter("POD_ApprovedBy", pOD_ApprovedBy) :
+                new ObjectParameter("POD_ApprovedBy", typeof(long));
+    
+            var pOD_IsActiveParameter = pOD_IsActive != null ?
+                new ObjectParameter("POD_IsActive", pOD_IsActive) :
+                new ObjectParameter("POD_IsActive", typeof(string));
+    
+            var pOD_RUL_IdParameter = pOD_RUL_Id.HasValue ?
+                new ObjectParameter("POD_RUL_Id", pOD_RUL_Id) :
+                new ObjectParameter("POD_RUL_Id", typeof(long));
+    
+            var pOD_RUL_LevelParameter = pOD_RUL_Level != null ?
+                new ObjectParameter("POD_RUL_Level", pOD_RUL_Level) :
+                new ObjectParameter("POD_RUL_Level", typeof(string));
+    
+            var pOD_RUL_CurrentLevelParameter = pOD_RUL_CurrentLevel != null ?
+                new ObjectParameter("POD_RUL_CurrentLevel", pOD_RUL_CurrentLevel) :
+                new ObjectParameter("POD_RUL_CurrentLevel", typeof(string));
+    
+            var pOD_QBKIdParameter = pOD_QBKId.HasValue ?
+                new ObjectParameter("POD_QBKId", pOD_QBKId) :
+                new ObjectParameter("POD_QBKId", typeof(long));
+    
+            var pOD_ReccuringStatusParameter = pOD_ReccuringStatus != null ?
+                new ObjectParameter("POD_ReccuringStatus", pOD_ReccuringStatus) :
+                new ObjectParameter("POD_ReccuringStatus", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetPODetail", pODActionParameter, pOD_IdParameter, pOD_LocationIdParameter, pOD_POT_IdParameter, pOD_CMP_IdParameter, pOD_DeliveryDateParameter, pOD_POAmountParameter, pOD_ReoccourringBillDateParameter, pOD_EmergencyPODocumentParameter, pOD_ModifiedByParameter, pOD_ApprovedByParameter, pOD_IsActiveParameter, pOD_RUL_IdParameter, pOD_RUL_LevelParameter, pOD_RUL_CurrentLevelParameter, pOD_QBKIdParameter, pOD_ReccuringStatusParameter);
+        }
+    
+        public virtual ObjectResult<spGetDebitMemoList_Result> spGetDebitMemoList(Nullable<long> locationId, Nullable<int> status)
+        {
+            var locationIdParameter = locationId.HasValue ?
+                new ObjectParameter("LocationId", locationId) :
+                new ObjectParameter("LocationId", typeof(long));
+    
+            var statusParameter = status.HasValue ?
+                new ObjectParameter("Status", status) :
+                new ObjectParameter("Status", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetDebitMemoList_Result>("spGetDebitMemoList", locationIdParameter, statusParameter);
+        }
+    
+        public virtual int spSetDebitMemo(Nullable<long> dBM_ID, string dBM_Action, Nullable<long> dBM_LocationId, Nullable<long> dBM_CMP_Id, Nullable<long> dBM_PurchaseOrder, Nullable<long> dBM_DebitAmount, string dBM_Note, Nullable<int> dBM_Status, string dBM_DocumentName, Nullable<System.DateTime> dBM_CreatedDate, Nullable<System.DateTime> dBM_ModifiedDate, string dBM_ModifiedBy, Nullable<bool> dBM_IsDeleted, string dBM_DeletedBy, Nullable<System.DateTime> dBM_DeletedDate)
+        {
+            var dBM_IDParameter = dBM_ID.HasValue ?
+                new ObjectParameter("DBM_ID", dBM_ID) :
+                new ObjectParameter("DBM_ID", typeof(long));
+    
+            var dBM_ActionParameter = dBM_Action != null ?
+                new ObjectParameter("DBM_Action", dBM_Action) :
+                new ObjectParameter("DBM_Action", typeof(string));
+    
+            var dBM_LocationIdParameter = dBM_LocationId.HasValue ?
+                new ObjectParameter("DBM_LocationId", dBM_LocationId) :
+                new ObjectParameter("DBM_LocationId", typeof(long));
+    
+            var dBM_CMP_IdParameter = dBM_CMP_Id.HasValue ?
+                new ObjectParameter("DBM_CMP_Id", dBM_CMP_Id) :
+                new ObjectParameter("DBM_CMP_Id", typeof(long));
+    
+            var dBM_PurchaseOrderParameter = dBM_PurchaseOrder.HasValue ?
+                new ObjectParameter("DBM_PurchaseOrder", dBM_PurchaseOrder) :
+                new ObjectParameter("DBM_PurchaseOrder", typeof(long));
+    
+            var dBM_DebitAmountParameter = dBM_DebitAmount.HasValue ?
+                new ObjectParameter("DBM_DebitAmount", dBM_DebitAmount) :
+                new ObjectParameter("DBM_DebitAmount", typeof(long));
+    
+            var dBM_NoteParameter = dBM_Note != null ?
+                new ObjectParameter("DBM_Note", dBM_Note) :
+                new ObjectParameter("DBM_Note", typeof(string));
+    
+            var dBM_StatusParameter = dBM_Status.HasValue ?
+                new ObjectParameter("DBM_Status", dBM_Status) :
+                new ObjectParameter("DBM_Status", typeof(int));
+    
+            var dBM_DocumentNameParameter = dBM_DocumentName != null ?
+                new ObjectParameter("DBM_DocumentName", dBM_DocumentName) :
+                new ObjectParameter("DBM_DocumentName", typeof(string));
+    
+            var dBM_CreatedDateParameter = dBM_CreatedDate.HasValue ?
+                new ObjectParameter("DBM_CreatedDate", dBM_CreatedDate) :
+                new ObjectParameter("DBM_CreatedDate", typeof(System.DateTime));
+    
+            var dBM_ModifiedDateParameter = dBM_ModifiedDate.HasValue ?
+                new ObjectParameter("DBM_ModifiedDate", dBM_ModifiedDate) :
+                new ObjectParameter("DBM_ModifiedDate", typeof(System.DateTime));
+    
+            var dBM_ModifiedByParameter = dBM_ModifiedBy != null ?
+                new ObjectParameter("DBM_ModifiedBy", dBM_ModifiedBy) :
+                new ObjectParameter("DBM_ModifiedBy", typeof(string));
+    
+            var dBM_IsDeletedParameter = dBM_IsDeleted.HasValue ?
+                new ObjectParameter("DBM_IsDeleted", dBM_IsDeleted) :
+                new ObjectParameter("DBM_IsDeleted", typeof(bool));
+    
+            var dBM_DeletedByParameter = dBM_DeletedBy != null ?
+                new ObjectParameter("DBM_DeletedBy", dBM_DeletedBy) :
+                new ObjectParameter("DBM_DeletedBy", typeof(string));
+    
+            var dBM_DeletedDateParameter = dBM_DeletedDate.HasValue ?
+                new ObjectParameter("DBM_DeletedDate", dBM_DeletedDate) :
+                new ObjectParameter("DBM_DeletedDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetDebitMemo", dBM_IDParameter, dBM_ActionParameter, dBM_LocationIdParameter, dBM_CMP_IdParameter, dBM_PurchaseOrderParameter, dBM_DebitAmountParameter, dBM_NoteParameter, dBM_StatusParameter, dBM_DocumentNameParameter, dBM_CreatedDateParameter, dBM_ModifiedDateParameter, dBM_ModifiedByParameter, dBM_IsDeletedParameter, dBM_DeletedByParameter, dBM_DeletedDateParameter);
         }
     }
 }

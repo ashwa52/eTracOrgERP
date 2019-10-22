@@ -370,6 +370,7 @@
     <Compile Include="Controllers\Common\DropDownController.cs" />
     <Compile Include="Controllers\Common\JobSchedular.cs" />
     <Compile Include="Controllers\Common\Schedular.cs" />
+    <Compile Include="Controllers\Common\SchedularForPO.cs" />
     <Compile Include="Controllers\DAR\DARController.cs" />
     <Compile Include="Controllers\eCounting\BillController.cs" />
     <Compile Include="Controllers\eCounting\DebitMemoController.cs" />
@@ -1427,6 +1428,7 @@
     <Content Include="Content\font-awesome\font\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\OpenSans-Semibold-webfont.svg" />
     <Content Include="Content\formwizard.css" />
+    <Content Include="Content\Images\bottom-icon.png" />
     <Content Include="Content\Images\car_damage.png" />
     <Content Include="Content\Images\clear.png" />
     <Content Include="Content\Images\constant\admin.png" />
@@ -1549,6 +1551,7 @@
     <Content Include="Content\NewAdminContent\AnimatedChart\JS\stiffChart.js" />
     <Content Include="Content\NewAdminContent\CSS\clockPicker.css" />
     <Content Include="Content\NewAdminContent\CSS\Common.css" />
+    <Content Include="Content\NewAdminContent\CSS\custom.css" />
     <Content Include="Content\NewAdminContent\CSS\MultstepWizardNew.css" />
     <Content Include="Content\NewAdminContent\CSS\perfect-scrollbar.css" />
     <Content Include="Content\NewAdminContent\CSS\RadioButtonCSS.css" />
@@ -6413,6 +6416,8 @@
     <Content Include="Views\NewAdmin\ePeople\_ListUserEMP.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\_VSCPointingChart.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\_StatusChangeEMP.cshtml" />
+    <Content Include="Views\VendorManagement\FileImport.cshtml" />
+    <Content Include="Views\VendorManagement\Reconciliationsreports.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

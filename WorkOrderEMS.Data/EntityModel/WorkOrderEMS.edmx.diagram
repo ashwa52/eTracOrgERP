@@ -295,6 +295,7 @@
         <EntityTypeShape EntityType="workorderEMSModel.VehicleSeating_DepartmentMapping" Width="1.5" PointX="6.75" PointY="15.75" />
         <AssociationConnector Association="workorderEMSModel.FK_VehicleSeating_Department" />
         <AssociationConnector Association="workorderEMSModel.FK_JobTitle_VehicleSeating" />
+        <EntityTypeShape EntityType="workorderEMSModel.DebitMemo" Width="1.5" PointX="14.375" PointY="15.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

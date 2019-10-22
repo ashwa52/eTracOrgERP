@@ -661,4 +661,12 @@ namespace WorkOrderEMS.Helper
         [StringValue("InsuranceVander")]
         VendorType = 3,
     }
+
+    public enum POReccuringStaus
+    {
+        Pending,
+        Completed,
+       
+
+    }
 }
