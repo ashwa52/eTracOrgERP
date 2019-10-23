@@ -1,0 +1,503 @@
+﻿
+@model WorkOrderEMS.Models.AddChartModel
+@{
+    ViewBag.Title = "Admin Dashboard";
+    //Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    Layout = null;
+    string eTracScriptVersion = System.Configuration.ConfigurationManager.AppSettings["eTracScriptVersion"];
+    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+    long loginUserType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    long viewallloc = (Convert.ToInt64(Session["eTrac_SelectedDasboardLocationID"]));
+    string imgPath = (Convert.ToString(Session["eTrac_ProfileImage"]));
+    long locationId = 0;
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    long i = 1;
+    if (ObjLogin != null)
+    {
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+        loginUserType = ObjLogin.UserRoleId;
+        //loginUserContactNo = ObjLogin.ContactNo;
+        locationId = ObjLogin.LocationID;
+    }
+}
+<style>
+    .addWhite {
+        color: white;
+    }
+
+    .widthHeader {
+        height: 40px;
+    }
+
+    #chart-container {
+        width: 100%;
+        height: 100%;
+    }
+
+    .orgchart {
+        background: #fff;
+    }
+
+        .orgchart td.left, .orgchart td.right, .orgchart td.top {
+            border-color: #aaa;
+        }
+
+        .orgchart td > .down {
+            background-color: #aaa;
+        }
+
+        .orgchart .middle-level .title {
+            background-color: #006699;
+        }
+
+        .orgchart .middle-level .content {
+            border-color: #006699;
+        }
+
+        .orgchart .product-dept .title {
+            background-color: #009933;
+        }
+
+        .orgchart .product-dept .content {
+            border-color: #009933;
+        }
+
+        .orgchart .rd-dept .title {
+            background-color: #993366;
+        }
+
+        .orgchart .rd-dept .content {
+            border-color: #993366;
+        }
+
+        .orgchart .pipeline1 .title {
+            background-color: #996633;
+        }
+
+        .orgchart .pipeline1 .content {
+            border-color: #996633;
+        }
+
+        .orgchart .frontend1 .title {
+            background-color: #cc0066;
+        }
+
+        .orgchart .frontend1 .content {
+            border-color: #cc0066;
+        }
+</style>
+@*<script src="~/Scripts/jquery-3.2.1.min.js"></script>*@
+
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.css" rel="stylesheet">
+<link href="~/Areas/AdminSection/Content/CSS/GetOrg.css" rel="stylesheet" />
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js"> </script>
+
+<br />
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header" style="height: 45px;">
+                        <a id="BackToAdmin" title="Back to Admin Dahsboard" style="cursor:pointer;"><i class="fa fa-long-arrow-left fa-2x"></i></a>
+                        <a id="AddChart" title="Add Chart" style="cursor:pointer;"><i class="fa fa-plus fa-2x"></i></a>
+                        <h4 class="card-title addWhite" style="margin-right: 1340px;color:white;"><b>Vehicle Seating Chart</b></h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="chart-container" class="card" data-aos="fade-up"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Start Modals-->
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForChart">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Vehicle Seating Chart </h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="divDetailPreview" class="">
+                    <div class="row">
+                        <div class="" id="DivContractDetailsIndex">
+                            <form id="SaveVCSChartForm">
+                                @Html.HiddenFor(model => model.JobDesc)
+                                @Html.HiddenFor(model => model.parentId)
+                                @Html.HiddenFor(model => model.Id, new { @id = "VCSId" })
+                                <div class="basic-form" style="margin-right: 40px;">
+                                    <div class="form-group row">
+                                        @*@Html.LabelFor(model => model.SeatingName, new { @class = "col-sm-2 col-form-label" })*@
+                                        <div class="col-sm-6">
+                                            @Html.TextBoxFor(model => model.SeatingName, new { @Placeholder = "Seating Name", @id = "SeatingName", @class = "form-control input-rounded required isValidLocationName" })
+                                        </div>
+                                        @*@Html.LabelFor(model => model.Superior, new { @class = "col-sm-2 col-form-label" })*@
+                                        <div class="col-sm-6">
+                                            <select id="Superior" name="Superior" class="form-control input-rounded requiredselect"><option value="-1">--Select Superior--</option></select>
+                                            @*@Html.DropDownListFor(model => model.Superior, new SelectList(ViewBag.SuperiourList, "ParentId", "SeatingName"), "--Select Superior--", new { @class = "form-control input-rounded required requiredselect", @id = "Superior" })*@
+                                            <span id="SeatingSpan" style="display:none"><p>This is your first Vehicle Seating Chart</p></span>
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @*@Html.LabelFor(model => model.Department, new { @class = "col-sm-2 col-form-label" })*@
+                                        <div class="col-sm-12">
+
+                                            <select id="Department" name="Department" class="form-control input-rounded requiredselect"><option value="-1">--Select Superior--</option></select>
+                                            @*@Html.DropDownListFor(model => model.Department, new SelectList(ViewBag.DepartmentList, "DeptId", "DepartmentName"), "Department", new { @class = "form-control input-rounded required requiredselect", @id = "Department" })*@
+                                            @*@Html.TextBoxFor(model => model.Department, new { @Placeholder = "Seating Name", @class = "form-control input-rounded required isValidLocationName" })*@
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+
+                                        @*@Html.LabelFor(model => model.JobDescription, new { @class = "col-sm-2 col-form-label" })*@
+                                        <div class="col-sm-11">
+                                            @Html.TextBoxFor(model => model.JobDescription, new { @Placeholder = "Job Description", @id = "JobDescription", @class = "form-control input-rounded required isValidLocationName" })
+                                        </div>
+                                        <a class="addrows col-sm-1"><i class="fa fa-plus-circle fa-2x addColorPlusMinus" style="cursor:pointer;" aria-hidden="true"></i></a>
+                                    </div>
+                                    <span id="routeDiv">
+                                    </span>
+                                    <div class="form-group row">
+                                        @*@Html.LabelFor(model => model.RolesAndResponsibility, new { @class = "col-sm-2 col-form-label" })*@
+                                        @Html.TextAreaFor(model => model.RolesAndResponsibility, new { rows = "20", style = "resize:none;width:400px;", placeholder = Html.DisplayNameFor(model => model.RolesAndResponsibility), @id = "RolesAndResponsibility", @class = "form-control input-rounded required textarea-editor" })
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div>
+                    <button type="button" class="btn btn-success pull-left" id="ViewVSC" style="border-radius:100px;">View Chart</button>
+                    <button type="button" class="btn btn-secondary pull-right" id="closeVSC" style="border-radius:100px;" data-dismiss="modal">Close</button>
+                    <input type="button" class="btn btn-primary pull-right" id="SaveVSC" style="border-radius:100px;margin-right: 10px;" value="Save" />
+                </div>
+            </div>
+        </div>
+        @*<div class="modal-footer" style="background: white;">
+                <button type="button" class="btn btn-success pull-left" id="ViewVSC" style="border-radius:100px;">View Chart</button>
+                <button type="button" class="btn btn-secondary" id="closeVSC" style="border-radius:100px;" data-dismiss="modal">Close</button>
+                <input type="button" class="btn btn-primary" id="SaveVSC" style="border-radius:100px;" value="Save" />
+            </div>*@
+    </div>
+</div>
+
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForAddingJobTitle">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Job Title </h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="divDetailPreview" class="">
+                    <div class="row">
+                        <div class="" id="DivContractDetailsIndex">
+                            <form id="SaveJobTitleForm">
+                                @Html.HiddenFor(model => model.JobTitleDesc)
+                                @Html.HiddenFor(model => model.JobTitleId, new { @id = "JobTitleId" })
+                                @Html.HiddenFor(model => model.parentId, new { @id = "parentIdForJobTitle" })
+                                <div class="basic-form" style="margin-right: 40px;">
+                                    <span id="addJobTitleLabel">
+                                    </span>
+                                    <div class="form-group row">
+                                        <div class="col-sm-10">
+                                            @Html.TextBoxFor(model => model.JobTitle, new { @Placeholder = "Job Title", @id = "JobTitle", @style = "width: 600px;", @class = "form-control input-rounded required isValidLocationName" })
+                                        </div>
+                                        <a class="addjobtitlerows col-sm-1"><i class="fa fa-plus-circle fa-2x addColorPlusMinus" style="cursor:pointer;margin-left:30px;" aria-hidden="true"></i></a>
+                                    </div>
+                                    <span id="jobTitleDiv">
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div>
+                    <button type="button" class="btn btn-secondary pull-right" id="closeJobTitle" style="border-radius:100px;" data-dismiss="modal">Close</button>
+                    <input type="button" class="btn btn-primary pull-right" id="SaveJobTitle" style="border-radius:100px;margin-right: 10px;" value="Save" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForAccessManagementTree">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Aceess Permission </h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="divDetailPreview" class="">
+                    <div class="row">
+                        <div class="demo-section k-content">
+                            <div id="treeData">
+                                
+                            </div>
+                        </div>
+                        @*<div class="" id="DivAccessTreeDetailsIndex">
+                                <div id="treeData"></div>
+                            </div>*@
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div>
+                    <button type="button" class="btn btn-secondary pull-right" id="closeJobTitle" style="border-radius:100px;" data-dismiss="modal">Close</button>
+                    <input type="button" class="btn btn-primary pull-right" id="SaveJobTitle" style="border-radius:100px;margin-right: 10px;" value="Save" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Areas/AdminSection/Content/JQUERY/GetOrg.js"></script>
+<script src="~/Areas/AdminSection/Content/JQUERY/DynamicAddJobDesc.js"></script>
+<link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.3.1026/styles/kendo.common-material.min.css" />
+<link href="~/Content/KendoTreeView/kendo.material.min.css" rel="stylesheet" />
+<link href="~/Content/KendoTreeView/kendo.material.mobile.min.css" rel="stylesheet" />
+<script src="~/Scripts/KendoTreeView/kendo.all.min.js"></script>
+
+<script type="text/javascript">
+    tinymce.init({
+        selector: 'textarea', width: 730,height:300, setup: function (editor) {
+            editor.on('change', function () {
+                tinymce.triggerSave();
+            })
+        }
+    });
+    // https://www.aspsnippets.com/Articles/Rich-Text-Editor-WYSIWYG-Editor-in-ASPNet-MVC-5.aspx
+    $(document).ready(function () {
+        $('#main-wrapper').toggleClass("menu-toggle");
+        $('.get-oc-tb').css("display","none")
+        $("#SeatingName").keyup(function () {
+            var dropdownval = $('#Superior > option').length;
+            if (dropdownval == 1) {
+                $("#ParentId").val(0);
+                $("#SeatingSpan").show();
+            }
+            else {
+                $("#SeatingSpan").hide();
+            }
+        })
+        $('#Superior').change(function (e) {
+            var valId =  $(this).find('option:selected').val();
+            $("#Superior").val(valId);
+        })
+
+        $(".deletedata").click(function () {
+            var jobId = this.attr("jobtitleid");
+            var valId = $(this).find('option:selected').val();
+            $.ajax({
+                type: "POST",
+                url: '../AdminSection/AdminDashboard/DeleteJobTitleById?JobTitleId=' + jobId, //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
+                success: function (Data) {
+                    if (Data != null) {
+                        $("#addJobTitleLabel").html("");
+                        $("#JobTitleId").val("");
+                        if (Data.JobTitleLabel != null) {
+                            $("#JobTitleId").val(Data.Id);
+                            var nameArr = Data.JobTitleLabel.split('|');
+                            for (var splited = 0; splited < nameArr.length; splited++) {
+                                if (nameArr[splited] != " " && nameArr[splited] != "") {
+                                    var divID = $('#addJobTitleLabel div.dymanicDelete').length;
+                                    $('#addJobTitleLabel').append('<div class="form-group row dymanicDelete d_' + splited + '"><div class="col-sm-10 getJobTitleData"><label class="col-sm-2 col-form-label">' + nameArr[splited] + '</label></div><div class="col-sm-1"><a class="addjobtitleDeleterows" id=d' + splited + ' jobtitleid =' + Data.Id + '><i class="fa fa-trash addColorTrash fa-2x" style="cursor:pointer;margin-left: 30px;color:#cd0a2499;" aria-hidden="true"></i></a></div></div>');
+                                }
+                            }
+                        }
+                    }
+                    $("#myModalForAddingJobTitle").modal('show');
+                    $("#parentIdForJobTitle").val(c);
+                },
+                error: function (err) {
+                }
+            });
+
+        });
+    });
+</script>
+<script type="text/javascript">
+
+    $("#BackToAdmin").click(function () {
+        debugger
+        var url = "@Url.Action("Index", "AdminDashboard", new { area = "AdminSection" })";
+        window.location.href = url;
+    });
+
+    //    $("#chart-container").show();
+        var peopleElement = document.getElementById("chart-container");
+        var addNewUrl = "@Url.Action("GetChartDisplayData", "AdminDashboard", new { area = "AdminSection" })";
+        $.ajax({
+            type: "POST",
+            url: addNewUrl,
+            success: function (listData) {
+                $("#myModalForChart").modal("hide");
+                var tabledata = [];
+
+                if (listData != null)
+                {
+                    for (var i = 0; i < listData.length; i++)
+                    {
+                        var data = {};
+                        if (i == 0)
+                        {
+                            listData[i].parentId = null;
+                        }
+                        data.id = listData[i].Id;
+                        data.parentId = listData[i].parentId;
+                        data.SeatingName = listData[i].SeatingName;
+                        data.JobDescription = listData[i].JobDescription;
+                        data.DepartmentName = listData[i].DepartmentName;
+                        tabledata.push(data);
+                    }
+                    var orgChart = new getOrgChart(peopleElement, {
+                        primaryFields: ["SeatingName", "JobDescription", "DepartmentName"],
+                        dataSource: tabledata,
+                    });
+                    $(".get-text-0").attr("y", "30"); $(".get-text-0").attr("y", "30");
+                    $(".get-text-1").attr("y", "65"); $(".get-text-2").attr("y", "90");
+                    $(".get-text-3").attr("y", "120"); $(".get-text-4").attr("y", "150");
+                    $(".get-text-4").attr("y", "180"); $(".get-text-6").attr("y", "210");
+                    $(".get-text-7").attr("y", "240"); $(".get-text-8").attr("y", "270");
+                    $(".get-text-9").attr("y", "300"); $(".get-text-10").attr("y", "330");
+                }
+            },
+            error: function (err) {
+            }
+        });
+
+    //});
+
+</script>
+<script>
+    
+    //$(function () {
+    //    $("#treeData").jstree({
+    //        "checkbox": {
+    //            "keep_selected_style": false
+    //        },
+    //        "plugins": ["checkbox"]
+    //    });
+    //    $("#treeData").bind("changed.jstree",
+    //    function (e, data) {
+    //        alert("Checked: " + data.node.id);
+    //        alert("Parent: " + data.node.parent);
+    //        //alert(JSON.stringify(data));
+    //    });
+    //});
+    
+    $("#treeData").kendoTreeView({
+            checkboxes: {
+                checkChildren: true
+            },
+
+            check: onCheck,
+
+            dataSource: [{
+                id: 1, text: "ePeople ", expanded: true, spriteCssClass: "rootfolder", items: [
+                   {
+                       id: 2, text: "eTime", spriteCssClass: "folder"},{
+                           id: 3, text: "Performance Mgmt", spriteCssClass: "folder"},{
+                               id: 4, text: "Hiring & Onboarding", spriteCssClass: "folder"
+                           },
+                           {
+                               id: 5, text: "Employee Mgmt", spriteCssClass: "folder"
+                           }
+                ]
+            },
+                   {
+                       id: 2, text: "Operation ", expanded: true, spriteCssClass: "rootfolder", items: [
+                          {
+                              id: 6, text: "eScan", spriteCssClass: "folder"},{
+                                  id: 7, text: "eMaintenance", spriteCssClass: "folder"},{
+                                      id: 8, text: "DAR", spriteCssClass: "folder"}
+                       ]
+                   },
+                   {
+                       id: 3, text: "eCounting  ", expanded: true, spriteCssClass: "rootfolder", items: [
+                          {
+                              id: 9, text: "AP", spriteCssClass: "folder"
+                          }, {
+                              id: 10, text: "AR", spriteCssClass: "folder"
+                          }, {
+                              id: 11, text: "Payroll", spriteCssClass: "folder"
+                          }
+                       ]
+                   }
+                   ]
+        });
+    $("span .rootfolder").after(function () {
+        return "<select style='margin-left: 460px;width: 130px;' class='form-control input-rounded'><option value='1'>Global Admin</option><option value='2'>Manager</option><option value='3'>Employee</option><option value='5'>IT Administrator</option><option value='6'>Administrator</option></select>";
+    });
+        // function that gathers IDs of checked nodes
+        function checkedNodeIds(nodes, checkedNodes) {
+            for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].checked) {
+                    checkedNodes.push(nodes[i].id);
+                }
+
+                if (nodes[i].hasChildren) {
+                    checkedNodeIds(nodes[i].children.view(), checkedNodes);
+                }
+            }
+        }
+
+        // show checked node IDs on datasource change
+        function onCheck() {
+            var checkedNodes = [],
+                treeView = $("#treeData").data("kendoTreeView"),
+                message;
+
+            checkedNodeIds(treeView.dataSource.view(), checkedNodes);
+
+            if (checkedNodes.length > 0) {
+                message = "IDs of checked nodes: " + checkedNodes.join(",");
+            } else {
+                message = "No nodes checked.";
+            }
+
+            $("#result").html(message);
+        }
+</script>
+
+<style>
+
+    .rootfolder {
+        background-position: 0 0;
+    }
+
+    .folder {
+        background-position: 0 -16px;
+    }
+
+    .pdf {
+        background-position: 0 -32px;
+    }
+
+    .html {
+        background-position: 0 -48px;
+    }
+
+    .image {
+        background-position: 0 -64px;
+    }
+</style>

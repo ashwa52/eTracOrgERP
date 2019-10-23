@@ -1,0 +1,238 @@
+﻿@{
+    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+    long loginUserType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string imgPath = (Convert.ToString(Session["eTrac_ProfileImage"]));
+    if (ObjLogin != null)
+    {
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+        loginUserType = ObjLogin.UserRoleId;
+        //loginUserContactNo = ObjLogin.ContactNo;
+    }
+
+    bool GloblaAdminUser, ITAdminUser, OnlyAdminUser, ManagerUser, EmployeeUser, ClientUser;
+    GloblaAdminUser = ITAdminUser = OnlyAdminUser = ManagerUser = EmployeeUser = ClientUser = false;
+    switch ((WorkOrderEMS.Helper.UserType)loginUserType)
+    {
+        case WorkOrderEMS.Helper.UserType.GlobalAdmin:
+            GloblaAdminUser = true;
+            break;
+        case WorkOrderEMS.Helper.UserType.ITAdministrator:
+            ITAdminUser = true;
+            break;
+        case WorkOrderEMS.Helper.UserType.Administrator:
+            OnlyAdminUser = true;
+            break;
+        case WorkOrderEMS.Helper.UserType.Manager:
+            ManagerUser = true;
+            break;
+        case WorkOrderEMS.Helper.UserType.Employee:
+            EmployeeUser = true;
+            break;
+        case WorkOrderEMS.Helper.UserType.Client:
+            ClientUser = true;
+            break;
+        default:
+            GloblaAdminUser = ITAdminUser = OnlyAdminUser = ManagerUser = EmployeeUser = ClientUser = false;
+            break;
+    }
+}
+
+<!--**********************************
+    Sidebar start
+***********************************-->
+<div class="quixnav">
+    <div class="quixnav-scroll">
+        <div class="nav-user">
+            <img src="@imgPath" alt="" class="rounded-circle" style="width:50px;height:50px;">
+            <h5>@loginUserName</h5>
+            <p>@loginUserProfile</p>
+
+            <div class="nav-user-option">
+                <div class="setting-option">
+                    <div data-toggle="dropdown">
+                        <i class="mdi mdi-settings"></i>
+                    </div>
+                    <div class="dropdown-menu animated flipInX">
+                        <a class="dropdown-item" href="#">Account</a>
+                        <a class="dropdown-item" href="#">Lock</a>
+                        <a class="dropdown-item" href="#">Logout</a>
+                    </div>
+                </div>
+                <div class="notification-option">
+                    <div data-toggle="dropdown">
+                        <i class="mdi mdi-bell-ring"></i>
+                    </div>
+                    <div class="dropdown-menu animated flipInX">
+                        <a class="dropdown-item" href="#">
+                            Email
+                            <span class="badge badge-primary pull-right m-t-3">05</span>
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            Feed back
+                            <span class="badge badge-danger pull-right m-t-3">02</span>
+                        </a>
+                        <a class="dropdown-item" href="#">
+                            Report
+                            <span class="badge badge-warning pull-right m-t-3">02</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ul class="metismenu" id="menu">
+            <li><a href="@Url.Action("Index", "NewAdmin")"><i class="mdi mdi-home"></i><span class="nav-text">Home</span></a></li>
+            <li>
+                @if (GloblaAdminUser || ITAdminUser)
+                {
+                    <a href="~/GlobalAdmin" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
+                }
+                @if (OnlyAdminUser)
+                {
+                    <a href="~/Administrator" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
+                }
+                @if (ManagerUser)
+                {
+                    <a href="~/Manager/Dashboard" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
+                }
+                @if (EmployeeUser)
+                {
+                    <a href="~/Employee/Dashboard" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
+                }
+                @if (ClientUser)
+                {
+                    <a href="~/Client" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
+                }
+            </li>
+            <li><a href="@Url.Action("ListLocation", "GlobalAdmin")"><i class="fa fa-location-arrow"></i><span class="nav-text">Location</span></a></li>
+            <li>
+                <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-cogs"></i><span class="nav-text">Operation</span></a>
+                <ul aria-expanded="false">
+                    <li><a href="@Url.Action("EMaintananceDashboard", "NewAdmin")" data-oldDash="No"><i class="fa fa-wrench"></i>eMaintanace</a></li>
+                    <li><a href="@Url.Action("EScanDashboard", "NewAdmin")" data-oldDash="No"><i class="fa fa-print"></i>eScanner</a></li>
+                    <li><a href="@Url.Action( "DARDashboard", "NewAdmin")" data-oldDash="No"><i class="fa fa-list"></i>DAR</a></li>
+                    <li><a href="@Url.Action( "OperationReports", "NewAdmin")" data-oldDash="No"><i class="fa fa-area-chart"></i>Report</a></li>
+                </ul>
+            </li>
+            @*<li><a href="@Url.Action("OperationDashboard", "NewAdmin")"><i class="mdi mdi-speedometer"></i><span class="nav-text">Operation</span></a></li>*@
+            <li>
+                <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-user-circle-o"></i><span class="nav-text">ePeople</span></a>
+                <ul aria-expanded="false">
+                    <li><a href="@Url.Action("ePeopleDashboard", "NewAdmin")" data-oldDash="No">Employee Management</a></li>
+                    <li><a href="@Url.Action("ePeopleDashboard", "NewAdmin")" data-oldDash="No">Hiring & Onboarding</a></li>
+                    <li><a href="@Url.Action( "ePeopleDashboard", "NewAdmin")" data-oldDash="No">Performance Management</a></li>
+                    <li><a href="@Url.Action( "ePeopleDashboard", "NewAdmin")" data-oldDash="No">eTime </a></li>
+                </ul>
+            </li>
+            @*<li><a href="@Url.Action("ePeopleDashboard", "NewAdmin")"><i class="fa fa-users"></i><span class="nav-text">ePeople</span></a></li>*@
+            @*<li>
+                <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-user-circle-o"></i><span class="nav-text">Manage User</span></a>
+                <ul aria-expanded="false">
+                    <li><a href="@Url.Action("listclient", "GlobalAdmin")" data-oldDash="Yes">All User List</a></li>
+                    <li><a href="@Url.Action("CreateUser", "Common")" data-oldDash="Yes">Register User</a></li>
+                    <li><a href="@Url.Action( "NotAssignedUsers", "GlobalAdmin")" data-oldDash="Yes">UnAssigned User</a></li>
+                    <li><a href="@Url.Action( "UnVerifiedUsers", "GlobalAdmin")" data-oldDash="Yes">UnVerified User</a></li>
+                </ul>
+            </li>*@
+            <li>
+                <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-car"></i><span class="nav-text">eFleet</span></a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-car"></i>Driver</a>
+                        <ul aria-expanded="false">
+                            <li><a href="@Url.Action("Index", "eFleetDriver")" data-oldDash="Yes">Register Driver</a></li>
+                            <li><a href="@Url.Action("ListDriver", "eFleetDriver")" data-oldDash="Yes">List Driver</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">Vehicle</a>
+                        <ul aria-expanded="false">
+                            <li><a href="@Url.Action("Index", "eFleetVehicle")" data-oldDash="Yes">Register Vehicle</a></li>
+                            <li><a href="@Url.Action("ListVehicle", "eFleetVehicle")" data-oldDash="Yes">List Vehicle</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">Maintenance</a>
+                        <ul aria-expanded="false">
+                            <li><a href="@Url.Action("Index", "eFleetMaintenance")" data-oldDash="Yes">Enter Maintenance</a></li>
+                            <li><a href="@Url.Action("ListeFleetMaintenance", "eFleetMaintenance")" data-oldDash="Yes">List Maintenace</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">Preventive Maintenance</a>
+                        <ul aria-expanded="false">
+                            <li><a href="@Url.Action("Index", "eFleetPreventativeMaintenance")" data-oldDash="Yes">Schedule PM</a></li>
+                            <li><a href="@Url.Action("ListeFleetPM", "eFleetPreventativeMaintenance")" data-oldDash="Yes">List PM</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false" data-oldDash="Yes">Vehicle Incident</a>
+                        <ul aria-expanded="false">
+                            <li><a href="@Url.Action("Index", "eFleetVehicleIncidentReporting")" data-oldDash="Yes">Report Incident</a></li>
+                            <li><a href="@Url.Action("ListeFleetVehicleIncident", "eFleetVehicleIncidentReporting")" data-oldDash="Yes">List Incident</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">Passenger Tracking</a>
+                        <ul aria-expanded="false">
+                            <li><a href="@Url.Action("create", "passenger")" data-oldDash="Yes">Create Route</a></li>
+                            <li><a href="@Url.Action("listpassengerroute", "passenger")" data-oldDash="Yes">List Passenger Route</a></li>
+                            <li><a href="@Url.Action("listpassengercount", "passenger")" data-oldDash="Yes">List Passenger Count</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">Fueling</a>
+                        <ul aria-expanded="false">
+                            <li><a href="@Url.Action("listfueling", "fueling")" data-oldDash="Yes">List Fueling</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow" href="@Url.Action("eFleetReport", "GlobalAdmin")" aria-expanded="false" data-oldDash="Yes">Reports</a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-usd"></i><span class="nav-text">eCounting</span></a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a class="" href="@Url.Action("UnApprovedVendor", "VendorManagement")" data-oldDash="Yes"><i class="fa fa-vimeo" aria-hidden="true"></i>Vendor Management </a>
+
+                    </li>
+                    <li><a href="@Url.Action("AllPOList", "POTypeData")" data-oldDash="Yes"><i class="fa fa-file-text" aria-hidden="true"></i><span class="nav-text">PO</span></a></li>
+                    <li>
+                        <a class="" href="@Url.Action("ListPreBillView", "Bill")" data-oldDash="Yes"><i class="fa fa-credit-card" aria-hidden="true"></i><span class="nav-text">Expenses </span> </a>
+
+                    </li>
+
+                    <li><a href="@Url.Action("PaymentView", "Payment")" data-oldDash="Yes"><i class="fa fa-money" aria-hidden="true"></i><span class="nav-text">Payment Desk</span></a></li>
+                    <li><a href="@Url.Action("Reconciliationsreports", "VendorManagement")" data-oldDash="Yes"><i class="fa fa-money" aria-hidden="true"></i><span class="nav-text">Bank Reconciliations</span></a></li>
+                    <li><a href="@Url.Action("Index", "DebitMemo")" data-oldDash="Yes"><i class="fa fa-envelope-open-o" aria-hidden="true"></i><span class="nav-text">Debit Memo</span></a></li>
+                   
+                    <li><a href="@Url.Action("eCountingReport", "eCountingReport")" data-oldDash="Yes"><i class="fa fa-bar-chart" aria-hidden="true"></i><span class="nav-text">Reports</span></a></li>
+                    @*<li>
+            <a class="" href="javascript:void()" aria-expanded="false">Financial Form</a>
+            <ul aria-expanded="false">
+                <li><a href="@Url.Action("PDFList", "PDFData")" data-oldDash="Yes">Financial Form List</a></li>
+            </ul>
+        </li>*@
+                    @*
+
+        <li><a href="@Url.Action("ViewMiscellaneous", "Miscellaneous")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Miscellaneous</span></a></li>
+        <li><a href="@Url.Action("ListPreBillView", "Bill")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Bills</span></a></li>
+
+        <li><a href="@Url.Action("DebitMemoView", "DebitMemo")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Debit Memo</span></a></li>*@
+
+                </ul>
+              
+
+            </li>
+            
+        </ul>
+    </div>
+</div>
+<!--**********************************
+    Sidebar end
+***********************************-->

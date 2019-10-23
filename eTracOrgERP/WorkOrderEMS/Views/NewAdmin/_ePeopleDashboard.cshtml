@@ -1,0 +1,458 @@
+﻿
+@{
+    Layout = null;
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+    long loginUserType = 0;
+    long locationId = 0;
+    long UserId = 0;
+    if (ObjLogin != null)
+    {
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+        loginUserType = ObjLogin.UserRoleId;
+        //loginUserContactNo = ObjLogin.ContactNo;
+        locationId = ObjLogin.LocationID;
+        UserId = ObjLogin.UserId;
+    }
+}
+@*@section scripts{
+        <script type="text/javascript">
+        var $_hostingPrefix = '@hostingPrefix';
+        var $_LocationId = '@locationId';
+        var $_UserID = '@UserId';
+        </script>
+    }*@
+
+<!--**********************************
+           Content body start
+       ***********************************-->
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/material.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />
+<style>
+    .addWhite {
+        color: white;
+    }
+
+    .widthHeader {
+        height: 40px;
+    }
+</style>
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3" data-aos="fade-up">
+            <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
+                <div class="welcome-text">
+                    <h4>Hi, welcome back! @loginUserName</h4>
+                    <p class="mb-0">ePeople Dashboard</p>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <button type="button" id="EmplooyeeManagement" class="btn btn-primary pull-right" style="border-radius: 35px;">Employee Management</button>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-3">
+                <div class="pricing_table_content mt-5" style="background-color: #3f4e62;color:white;">
+                    <p style="margin-left:70px;margin-top:-20px;font-size:20px;"><b>15</b></p>
+                    <div class="package" style="margin-top:-30px;"><i class="fa fa-users" style="color:#fff;font-size:30px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Hiring On Board</b></div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="pricing_table_content mt-5" style="background-color: #529F9D;color:white;">
+                    <p style="margin-left:70px;margin-top:-20px;font-size:20px;"><b>9</b></p>
+                    <div class="package" style="margin-top:-30px;"><i class="fa fa-users" style="color:yellow;font-size:30px;margin-left: -10px;"></i>&nbsp;&nbsp;&nbsp;<b>Employee Management</b></div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="pricing_table_content mt-5" style="background-color: #3F8ADA;color:white;">
+                    <p style="margin-left:70px;margin-top:-20px;font-size:20px;"><b>5</b></p>
+                    <div class="package" style="margin-top:-30px;"><i class="fa fa-clock-o" style="color:white;font-size:30px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>eTime</b></div>
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="pricing_table_content mt-5" style="background-color: #529F9D;color:white;">
+                    <p style="margin-left:70px;margin-top:-20px;font-size:20px;"><b>4</b></p>
+                    <div class="package" style="margin-top:-30px;"><i class="fa fa-users" style="color:green;font-size:30px;margin-left: -20px;"></i>&nbsp;&nbsp;&nbsp;<b>Performance Management</b></div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header widthHeader ">
+                        <h4 class="card-title addWhite" style="color: white;">Employee</h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="QRCCount"></div>
+                        @*<div id="EmployeeCount"></div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header widthHeader ">
+                        <h4 class="card-title addWhite" style="color: white;">eTime</h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="eTimediv"></div>
+                        @*<div id="c3-combination"></div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-xl-4 col-xxl-6 col-lg-6 col-md-6 col-sm-12">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header widthHeader ">
+                        <h4 class="card-title addWhite" style="color: white;"><span><b>eTrac Ticket</b></span></h4>
+                    </div>
+                    <div class="card-body" style="height: 339px;">
+                        <form action="index.html" class="agent-req-form">
+                            <div class="form-group">
+                                <input type="text" placeholder="Generated By *" class="form-control bg-white text-muted">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" placeholder="Ticket Date *" class="form-control bg-white text-muted">
+                            </div>
+                            <div class="form-group">
+                                <textarea rows="3" placeholder="Issue *" class="form-control bg-white text-muted"></textarea>
+                            </div>
+                            <div class="form-group text-right">
+                                <button type="submit" class="btn btn-primary" style="border-radius:25px;background-color:#0aa0cd;">Submit Ticket</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-4 col-xxl-6 col-lg-6 col-md-6 col-sm-12">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header widthHeader ">
+                        <h4 class="card-title addWhite" style="color: white;"><b>Active Users</b></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="widget-team">
+                            <div class="media">
+                                <img src="~/Content/NewAdminContent/IMAGES/avatar/twoPic.jpg" class="mr-3 rounded-circle">
+                                <div class="media-body">
+                                    <h5>Thomas Hardy</h5>
+                                    <p>thomas@yopmail.com</p>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <img src="~/Content/NewAdminContent/IMAGES/avatar/threePic.jpg" class="mr-3 rounded-circle">
+                                <div class="media-body">
+                                    <h5>George marley</h5>
+                                    <p>george@yopmail.com</p>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <img src="~/Content/NewAdminContent/IMAGES/avatar/jerry_grayson.jpg" class="mr-3 rounded-circle">
+                                <div class="media-body">
+                                    <h5>David Miller</h5>
+                                    <p>david@example.com</p>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <img src="~/Content/NewAdminContent/IMAGES/avatar/stefano.jpg" class="mr-3 rounded-circle">
+                                <div class="media-body">
+                                    <h5>Daniel Head</h5>
+                                    <p>daniel@yopmail.com</p>
+                                </div>
+                            </div>
+                            <div class="media">
+                                <img src="~/Content/NewAdminContent/IMAGES/avatar/oneLogo.png" class="mr-3 rounded-circle">
+                                <div class="media-body">
+                                    <h5>John Tomas</h5>
+                                    <p>john@example.com</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-12 colmd-6 col-xxl-6 col-xl-4 col-lg-6">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header widthHeader ">
+                        <h4 class="card-title addWhite" style="color:white;"><b>Work Orders</b></h4>
+                        <div class="card-action">
+                            <div class="dropdown custom-dropdown">
+                                <div data-toggle="dropdown">
+                                    <i class="ti-more-alt"></i>
+                                </div>
+                                <div class="dropdown-menu dropdown-menu-right">
+                                    <a class="dropdown-item" href="#">Option 1</a>
+                                    <a class="dropdown-item" href="#">Option 2</a>
+                                    <a class="dropdown-item" href="#">Option 3</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart py-4">
+                            <div id="EmployeePieChart" style="height: 236px;"></div>
+                            <canvas id="sold-product" style="display:none;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-12" id="hiringOnBordingDiv" style="display:none;">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header" style="height: 45px;">
+                        <h4 class="card-title addWhite"><b>Hiring & On-Boarding</b></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="custom-tab-1">
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#home1">On-Boarding</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#profile1">My Opening</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#contact1">Company Opening</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="home1" role="tabpanel">
+                                    <div class="pt-4">
+                                        <div id="ListOnBoarding"></div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="profile1">
+                                    <div class="pt-4">
+                                        <div id="ListMyOpening"></div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="contact1">
+                                    <div class="pt-4">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-12" id="EmployeeManagementDiv">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header" style="height: 45px;">
+                        <h4 class="card-title addWhite"><b>Employee Management</b></h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="ListEmployeeManagement"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Html.Partial("~/Views/NewAdmin/ePeople/_HiringOnBoarding.cshtml")
+
+<div class="modal fade  bd-example-modal-lg" @*data-backdrop="false"*@ id="ModalProfilePreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">View Profile</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">      
+                <div id="viewProfileData">
+
+                </div>
+            </div>
+            <div class="modal-footer" style="background: white;">                
+                
+                <button type="button" class="btn btn-secondary" id="close" style="border-radius:100px;" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--**********************************
+    Content body end
+***********************************-->
+<script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
+<script src="~/GridListing/JsGridScript/ListOnBoarding.js"></script>
+<script src="~/GridListing/JsGridScript/ListMyOpening.js"></script>
+<script src="~/GridListing/JsGridScript/ListEmployeeManagement.js"></script>
+<script>
+am4core.ready(function() {
+
+// Themes begin
+am4core.useTheme(am4themes_material);
+am4core.useTheme(am4themes_animated);
+// Themes end
+
+// Create chart instance
+var chart = am4core.create("EmployeePieChart", am4charts.PieChart);
+
+// Add data
+chart.data = [{
+    "User Type": "Administrator",
+    "Count": 2//dataJSON.CountPanel[0].ManagerCount
+}, {
+    "User Type": "Manager",
+    "Count": 4
+}, {
+    "User Type": "Employee",
+    "Count": 12//dataJSON.CountPanel[0].EmpCount
+}];
+
+// Add and configure Series
+var pieSeries = chart.series.push(new am4charts.PieSeries());
+pieSeries.dataFields.value = "Count";
+pieSeries.dataFields.category = "User Type";
+pieSeries.innerRadius = am4core.percent(50);
+pieSeries.ticks.template.disabled = true;
+pieSeries.labels.template.disabled = true;
+
+var rgm = new am4core.RadialGradientModifier();
+rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, - 0.5);
+pieSeries.slices.template.fillModifier = rgm;
+pieSeries.slices.template.strokeModifier = rgm;
+pieSeries.slices.template.strokeOpacity = 0.4;
+pieSeries.slices.template.strokeWidth = 0;
+
+chart.legend = new am4charts.Legend();
+chart.legend.position = "right";
+
+}); // end am4core.ready()
+</script>
+<script>
+    var chartDAR = AmCharts.makeChart("eTimediv", {
+    "theme": "none",
+    "type": "serial",
+    "startDuration": 7,
+    "dataProvider": [{
+        "Cost Code": "Travel",
+        "Budget": 4334,
+        "color": "#1740AE"
+    }, {
+        "Cost Code": "Marketing",
+        "Budget": 4000,
+        "color": "#758DCB"
+    }, {
+        "Cost Code": "Other Travel",
+        "Budget": 3466,
+        "color": "#86E2E8"
+    }],
+    "valueAxes": [{
+        "position": "left",
+        "axisAlpha":0,
+        "gridAlpha":0
+    }],
+    "graphs": [{
+        "balloonText": "[[category]]: <b>[[value]]</b>",
+        "colorField": "color",
+        "fillAlphas": 0.85,
+        "lineAlpha": 0.1,
+        "type": "column",
+        "topRadius":1,
+        "valueField": "Budget"
+    }],
+    "depth3D": 40,
+    "angle": 30,
+    "chartCursor": {
+        "categoryBalloonEnabled": false,
+        "cursorAlpha": 0,
+        "zoomable": false
+    },
+    "categoryField": "Cost Code",
+    "categoryAxis": {
+        "gridPosition": "start",
+        "axisAlpha":1,
+        "gridAlpha":0,
+        "labelRotation": 20,
+    },
+    "export": {
+    	"enabled": true
+     }
+
+}, 0);
+</script>
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetDashboardHeadCount", "GlobalAdmin")",
+            data: {},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (jsondata) {
+        //successFuncPie(response);
+        if (jsondata != null && jsondata != "" && jsondata.dataJson.trim() != "") {
+            var dataJSON = JSON.parse(jsondata.dataJson);
+            dataJSON.CountPanel[0].AdminCount;
+            am4core.ready(function () {
+                am4core.useTheme(am4themes_animated);
+                var chartQRC = am4core.create("QRCCount", am4charts.PieChart);
+                chartQRC.data = [{
+                    "UserType": "Administrator",
+                    "Count": 20
+                }, {
+                    "UserType": "Manager",
+                    "Count": 5//dataJSON.CountPanel[0].EmpCount
+                }, {
+                    "UserType": "Employee",
+                    "Count": 3//dataJSON.CountPanel[0].ManagerCount
+                }];
+
+                // Add and configure Series
+                var pieSeries = chartQRC.series.push(new am4charts.PieSeries());
+                pieSeries.dataFields.value = "Count";
+                pieSeries.dataFields.category = "UserType";
+                pieSeries.innerRadius = am4core.percent(50);
+                pieSeries.ticks.template.disabled = true;
+                pieSeries.labels.template.disabled = true;
+
+                var rgm = new am4core.RadialGradientModifier();
+                rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
+                pieSeries.slices.template.fillModifier = rgm;
+                pieSeries.slices.template.strokeModifier = rgm;
+                pieSeries.slices.template.strokeOpacity = 0.4;
+                pieSeries.slices.template.strokeWidth = 0;
+
+                chartQRC.legend = new am4charts.Legend();
+                chartQRC.legend.position = "right";
+
+            }); // end am4core.ready()
+        }
+    }
+        });
+
+        $("#HiringOnBoard").click(function () {
+            $("#hiringOnBordingDiv").show();
+            $("#EmployeeManagementDiv").hide();
+            $('html,body').animate({
+                scrollTop: $("#hiringOnBordingDiv").offset().top
+            }, 'slow');
+        });
+
+        $("#EmplooyeeManagement").click(function () {
+            $("#EmployeeManagementDiv").show();
+            $("#hiringOnBordingDiv").hide();
+            $('html,body').animate({
+                scrollTop: $("#EmployeeManagementDiv").offset().top
+            }, 'slow');
+        });
+ });
+</script>
+

@@ -1,0 +1,488 @@
+﻿@{
+
+
+    var isRefresh =ViewBag.IsPageRefresh;
+    if(isRefresh == true)
+    {
+        Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = null;
+    }
+
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+    long loginUserType = 0;
+    long locationId = 0;
+    if (ObjLogin != null)
+    {
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+        loginUserType = ObjLogin.UserRoleId;
+        //loginUserContactNo = ObjLogin.ContactNo;
+        locationId = ObjLogin.LocationID;
+    }
+}
+@*@section scripts{
+    <script type="text/javascript">
+            var $_hostingPrefix = '@hostingPrefix';
+    </script>
+    }*@
+<style>
+    #chartdiv, #EmployeeCount1 {
+        width: 100%;
+        height: 250px;
+    }
+</style>
+
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/c3/css/c3.min.css" rel="stylesheet" />
+
+<div id="preloader"></div>
+
+<div class="content-body">
+    <div class="container-fluid">
+        <br />
+        <div class="row page-titles mx-0" data-aos="fade-up">
+            <div class="col-sm-6">
+                <div class="welcome-text">
+                    <h4>Hi, welcome back! @loginUserName</h4>
+                    <p class="mb-0">Location dashboard </p>
+                </div>
+            </div>
+            @*<div class="col-sm-6 justify-content-sm-end mt-2 mt-sm-0 d-flex">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">Location</a></li>
+                        @*<li class="breadcrumb-item active"><a href="javascript:void(0)">ChartJS</a></li>
+                    </ol>
+                </div>*@
+        </div>
+        <!-- row -->
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-body">
+                        <h4 class="card-title">Employee Count</h4>
+                        <div id="EmployeeCount1"></div>
+                        @*<div id="EmployeeCount"></div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-body">
+                        <h4 class="card-title">Cost Code</h4>
+                        <div id="chartdiv"></div>
+                        @*<div id="c3-combination"></div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header headerSize" id="addNewlocation" style="height: 45px;">
+                        <a href="javascript:void(0)"><span><i class="mdi mdi-plus" style="color:white;font-size:50px;"></i></span></a>
+                        <div class="basic-form">
+                            <div class="form-group" style="    margin-left: -200px;">
+                                <input type="text" style="margin-top: 15px;" class="form-control input-rounded" placeholder="Location Name">
+                            </div>
+                        </div>
+                        <div class="basic-form" style="margin-right: 830px;">
+                            <div class="form-group">
+                                <select class="form-control input-rounded" style="margin-top: 15px;">
+                                    <option selected>Zip Code</option>
+                                    <option value="1">45355</option>
+                                    <option value="2">35235</option>
+                                    <option value="3">56463</option>
+                                    <option value="2">34567</option>
+                                    <option value="3">55445</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="jsGrid-basic"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
+<script src="~/Scripts/NewAdminJS/plugins-init/jsgrid-init.js"></script>
+<script src="~/Content/NewAdminContent/VENDOR/d3/d3.min.js"></script>
+<script src="~/Content/NewAdminContent/VENDOR/c3/js/c3.min.js"></script>
+<script src="~/Scripts/NewAdminJS/plugins-init/c3-init.js"></script>
+
+<script src="~/Content/NewAdminContent/VENDOR/morris/morris.min.js"></script>
+<script src="~/Content/NewAdminContent/VENDOR/raphael/raphael.min.js"></script>
+<script src="~/Scripts/NewAdminJS/plugins-init/morris-init.js"></script>
+<script>
+    $(document).ready(function () {
+        @*var isRefresh = '@ViewBag.IsPageRefresh';
+        if (isRefresh == "True")
+        {           
+            var addNewUrl = "../GlobalAdmin/ListLocation";
+            $('#RenderPageId').load(addNewUrl);
+        }*@
+        var hitCount = 1;
+        $(".jsgrid-mode-button").hide();
+        $(".jsgrid-insert-row").hide();
+        $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
+        $("#addNewlocation a").click(function (event) {
+            if (hitCount == 1) {
+                hitCount++;
+                $(".jsgrid-insert-row").hide();
+                event.preventDefault();
+                $("#preloader").html('<div class="loader">eTrac<span></span><span></span><span></span><span></span></div>');
+                var addNewUrl = "../GlobalAdmin/LocationSetup";
+                $('#RenderPageId').load(addNewUrl);
+                //window.location.href = "../NewAdmin/AddNewLocation";
+            }
+        });
+    });
+</script>
+@*<script type="text/javascript">
+
+        $(document).ready(function() {
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("GetDashboardHeadCount", "GlobalAdmin")",
+                data: {},
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    successFuncPie(response);
+                },
+            });
+            //Pie chart json
+            function successFuncPie(jsondata) {
+                var data = {};
+                var countryNames = [];
+                if (jsondata != null && jsondata != "" && jsondata.dataJson.trim() != "") {
+                    var dataJSON = JSON.parse(jsondata.dataJson);
+                    dataJSON.CountPanel[0].AdminCount;
+                    //countryNames.push("Administrator");
+                    //data["Administrator"] = dataJSON.CountPanel[0].AdminCount;
+                    //countryNames.push("Employee");
+                    //data["Employee"] = dataJSON.CountPanel[0].EmpCount;
+                    //countryNames.push("Manager");
+                    //data["Manager"] = dataJSON.CountPanel[0].ManagerCount;
+                    var chart = c3.generate({
+                        bindto: '#EmployeeCount',//'#c3-pie-chart',
+                        data: {
+                            columns: [
+                              ['data1', 30],
+                              ['data2', 50]
+                            ],
+                            type: 'pie',
+                            onclick: function (d, i) { console.log("onclick", d, i); },
+                            onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+                            onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+                        },
+                        pie: {
+                            label: {
+                                format: function (value, ratio, id) {
+                                    return value;
+                                }
+                            }
+                        }
+                    });
+                    setTimeout(function () {
+                        chart.load({
+                            columns: [
+                                ["Administrator", dataJSON.CountPanel[0].AdminCount],
+                                ["Manager", dataJSON.CountPanel[0].EmpCount],
+                                ["Employee", dataJSON.CountPanel[0].ManagerCount],
+                            ],
+                            colors: {
+                                Administrator: '#F44336',
+                                Manager: '#34C73B',
+                                Employee: '#00A2FF'
+                            }
+                        });
+                    }, 1500);
+
+                    setTimeout(function () {
+                        chart.unload({
+                            ids: 'data1'
+                        });
+                        chart.unload({
+                            ids: 'data2'
+                        });
+                    }, 2500);
+
+                    //var chart = c3.generate({
+                    //    bindto: '#EmployeeCount',
+                    //    data: {
+                    //        json: [data],
+                    //        keys: {
+                    //            value: countryNames,
+                    //        },
+                    //        type: 'pie'
+                    //    },
+                    //    color: {
+                    //        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+                    //    },
+                    //});
+                }
+            }
+
+            function successFuncBar(jsondata) {
+                var chart = c3.generate({
+                    data: {
+                        type: 'bar',
+                        json: [
+                            { 'indicator': 'X', 'total': 100 },
+                            { 'indicator': 'Y', 'total': 200 },
+                            { 'indicator': 'Z', 'total': 300 }
+                        ],
+                        keys: {
+                            x: 'indicator',
+                            value: ['total']
+                        }
+                    },
+                    bar: {
+                        width: {
+                            ratio: 0.5
+                        }
+                    }
+                });
+            }
+        });
+    </script>*@
+<!-- Chart code -->
+<script>
+
+var chart = AmCharts.makeChart("chartdiv", {
+    "theme": "none",
+    "type": "serial",
+    "startDuration": 7,
+    "dataProvider": [{
+        "Cost Code": "Travel",
+        "Budget": 4334,
+        "color": "#1740AE"
+    }, {
+        "Cost Code": "Marketing",
+        "Budget": 4000,
+        "color": "#758DCB"
+    }, {
+        "Cost Code": "Air Fair",
+        "Budget": 2906,
+        "color": "#75AFCB"
+    }, {
+        "Cost Code": "Business Development",
+        "Budget": 3588,
+        "color": "#86E2E8"
+    }, {
+        "Cost Code": "Advertisement",
+        "Budget": 2133,
+        "color": "#2E1BA0"
+    }, {
+        "Cost Code": "Software Development",
+        "Budget": 4567,
+        "color": "#456EDA"
+    }, {
+        "Cost Code": "Shipping and Delivery",
+        "Budget": 2345,
+        "color": "#1AA897"
+    }, {
+        "Cost Code": "Other Expenses",
+        "Budget": 4354,
+        "color": "#456EDA"
+    }, {
+        "Cost Code": "Other Travel",
+        "Budget": 3466,
+        "color": "#86E2E8"
+    }],
+    "valueAxes": [{
+        "position": "left",
+        "axisAlpha":0,
+        "gridAlpha":0
+    }],
+    "graphs": [{
+        "balloonText": "[[category]]: <b>[[value]]</b>",
+        "colorField": "color",
+        "fillAlphas": 0.85,
+        "lineAlpha": 0.1,
+        "type": "column",
+        "topRadius":1,
+        "valueField": "Budget"
+    }],
+    "depth3D": 40,
+  "angle": 30,
+    "chartCursor": {
+        "categoryBalloonEnabled": false,
+        "cursorAlpha": 0,
+        "zoomable": false
+    },
+    "categoryField": "Cost Code",
+    "categoryAxis": {
+        "gridPosition": "start",
+        "axisAlpha":1,
+        "gridAlpha":0,
+        "labelRotation": 20,
+    },
+    "export": {
+    	"enabled": true
+     }
+
+}, 0);
+    //am4core.ready(function() {
+
+    //// Themes begin
+    //am4core.useTheme(am4themes_animated);
+    //// Themes end
+
+    //// Create chart instance
+    //var chart = am4core.create("chartdiv", am4charts.XYChart3D);
+    //chart.paddingBottom = 30;
+    //chart.angle = 35;
+
+    //// Add data
+    //chart.data = [{
+    //  "Cost Code": "Travel",
+    //  "Budget": 4025
+    //}, {
+    //    "Cost Code": "Marketing",
+    //  "Budget": 3445
+    //}, {
+    //    "Cost Code": "Business Development",
+    //    "Budget": 5232
+    //}, {
+    //    "Cost Code": "Air Fair",
+    //    "Budget": 5002
+    //}, {
+    //    "Cost Code": "Software Development",
+    //    "Budget": 4001
+    //}, {
+    //    "Cost Code": "Shipping and Delivery",
+    //    "Budget": 6219
+    //}, {
+    //    "Cost Code": "Services",
+    //    "Budget": 3421
+    //},
+    //{
+    //    "Cost Code": "Advertisement",
+    //    "Budget": 4221
+    //}];
+
+    //// Create axes
+    //var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+    //categoryAxis.dataFields.category = "Cost Code";
+    //categoryAxis.renderer.grid.template.location = 0;
+    //categoryAxis.renderer.minGridDistance = 20;
+    //categoryAxis.renderer.inside = true;
+    //categoryAxis.renderer.grid.template.disabled = true;
+
+    //let labelTemplate = categoryAxis.renderer.labels.template;
+    //labelTemplate.rotation = -90;
+    //labelTemplate.horizontalCenter = "left";
+    //labelTemplate.verticalCenter = "middle";
+    //labelTemplate.dy = 10; // moves it a bit down;
+    //labelTemplate.inside = false; // this is done to avoid settings which are not suitable when label is rotated
+
+    //var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+    //valueAxis.renderer.grid.template.disabled = true;
+
+    //// Create series
+    //var series = chart.series.push(new am4charts.ConeSeries());
+    //series.dataFields.valueY = "Budget";
+    //series.dataFields.categoryX = "Cost Code";
+
+    //var columnTemplate = series.columns.template;
+    //columnTemplate.adapter.add("fill", function(fill, target) {
+    //  return chart.colors.getIndex(target.dataItem.index);
+    //})
+    //series.columns.template.events.on("hit", function (ev) {
+    //    debugger
+    //    alert("clicked on ", ev.target);
+    //}, this);
+    //columnTemplate.adapter.add("stroke", function(stroke, target) {
+    //  return chart.colors.getIndex(target.dataItem.index);
+    //})
+
+    //}); // end am4core.ready()
+</script>
+<script>
+    $(document).ready(function () {
+
+    $.ajax({
+        type: "GET",
+        url: "@Url.Action("GetDashboardHeadCount", "GlobalAdmin")",
+        data: {},
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (jsondata) {
+        //successFuncPie(response);
+        if (jsondata != null && jsondata != "" && jsondata.dataJson.trim() != "") {
+            var dataJSON = JSON.parse(jsondata.dataJson);
+            dataJSON.CountPanel[0].AdminCount;
+            am4core.ready(function () {
+
+                // Themes begin
+                am4core.useTheme(am4themes_animated);
+                // Themes end
+
+                // Create chart instance
+                var chart = am4core.create("EmployeeCount1", am4charts.PieChart);
+
+                // Add data
+                chart.data = [{
+                    "User": "Administrator",
+                    "Count": dataJSON.CountPanel[0].AdminCount
+                }, {
+                    "User": "Employee",
+                    "Count": 5//dataJSON.CountPanel[0].EmpCount
+                }, {
+                    "User": "Manager",
+                    "Count": 3//dataJSON.CountPanel[0].ManagerCount
+                }];
+
+                // Add and configure Series
+                var pieSeries = chart.series.push(new am4charts.PieSeries());
+                pieSeries.dataFields.value = "Count";
+                pieSeries.dataFields.category = "User";
+                pieSeries.innerRadius = am4core.percent(50);
+                pieSeries.ticks.template.disabled = true;
+                pieSeries.labels.template.disabled = true;
+                var rgm = new am4core.RadialGradientModifier();
+                rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
+                pieSeries.slices.template.fillModifier = rgm;
+                pieSeries.slices.template.strokeModifier = rgm;
+                pieSeries.slices.template.strokeOpacity = 0.4;
+                pieSeries.slices.template.strokeWidth = 0;
+
+                chart.legend = new am4charts.Legend();
+                chart.legend.position = "right";
+
+            }); // end am4core.ready()
+        }
+    }
+    });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#main-wrapper').removeClass("menu-toggle");
+        $(".hamburger").show();
+        $("ul li a").click(function (e) {
+            e.preventDefault(); // prevent default link button redirect behaviour
+            var url = $(this).attr("href");
+            $('#RenderPageId').load(url);
+        });
+    });
+</script>
+

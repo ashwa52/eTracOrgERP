@@ -1,0 +1,119 @@
+  
+-- =============================================  
+-- Author:  Ashwajit Bansod  
+-- Create date: 16/05/2018  
+-- Description: Get the idle Calaculated time of employee   
+-- =============================================  
+alter PROCEDURE [dbo].[sp_GetIdleCalculationTimeOfEmployee]  
+  
+  @LocationId bigint,  
+  @UserId bigint ,
+  @MinusthirtyMin datetime  ,
+  @IdleTime datetime
+AS  
+----#################  
+-- testing  
+----#################  
+  
+   -- DECLARE   
+   --         @LocationId bigint = 7,  
+   --@UserId bigint = 9  
+BEGIN  
+   DECLARE @userIds bigint,@StartTime  varchar(max),@EndTime  varchar(max),@locationIds bigint,   
+    @ResponseMessage varchar(max),@Response int,@ResponseLocationId int, @StartTimeForReport varchar(max), @WorkOrderStatus int, @AssignTime  varchar(max)  
+    ,@Minusthirty varchar(max) , @Startimereport datetime, @AfterIdleTime datetime
+	,@DiffereceTime datetime
+  SET NOCOUNT ON;  
+  BEGIN TRY  
+   BEGIN TRANSACTION;  
+                      
+     BEGIN  
+       
+     DECLARE @StatusTable TABLE  
+      (  
+      Id bigint,  
+      StartTime datetime,  
+      TableName nvarchar(15)  
+      ) 
+	  
+	   DECLARE @CalculateTable TABLE  
+      (  
+      Id bigint,  
+      StartTime datetime,  
+      TableName nvarchar(15)  ,
+	  IdleTime datetime
+      )   
+      --Insert data to Table variable @StatusTable from QRCScanLog   
+      INSERT INTO @StatusTable(Id,StartTime,TableName)  
+      SELECT  QRCID,ISNULL(ModifiedOn, CreatedOn),'QRCScanLog' FROM QRCScanLog where ScanUserId = @userIds and LocationId = @locationIds
+	  and (CreatedOn >= @MinusthirtyMin and CreatedOn <=@IdleTime)
+	  or (ModifiedOn >= @MinusthirtyMin and ModifiedOn <=@IdleTime) ORDER BY CreatedOn,ModifiedOn DESC   
+        
+      --Insert Data From Work Order Table---  
+      INSERT INTO @StatusTable(Id,StartTime,TableName)  
+      SELECT  WorkRequestAssignmentID,ISNULL(ModifiedDate, CreatedDate),'WorkRequestAssignment' FROM WorkRequestAssignment where (CreatedBy = @userIds or ModifiedBy = @userIds)  
+           and LocationID = @locationIds and 
+		   (CreatedDate >= @MinusthirtyMin and CreatedDate <=@IdleTime )
+		   or (ModifiedDate >= @MinusthirtyMin and ModifiedDate <= @MinusthirtyMin)
+           order by CreatedDate,ModifiedDate   
+        
+      --Insert Data From Work Order Table---  
+      INSERT INTO @CalculateTable(Id,StartTime,TableName)  
+      SELECT  DARId,ISNULL(ModifiedOn, CreatedOn),'DARDetails' from DARDetails where UserId = @userIds and LocationId = @locationIds
+	  and (CreatedOn <= @MinusthirtyMin and CreatedOn >=@MinusthirtyMin)
+	  or (ModifiedOn <= @MinusthirtyMin and ModifiedOn >=@MinusthirtyMin)
+	    ORDER BY CreatedOn,ModifiedOn  
+
+     -- This is for Fetch first record after idle time 
+
+		      INSERT INTO @CalculateTable(Id,StartTime,TableName)  
+      SELECT TOP 1 QRCID,ISNULL(ModifiedOn, CreatedOn),'QRCScanLog' FROM QRCScanLog where ScanUserId = @userIds and LocationId = @locationIds
+	  and (CreatedOn >= @IdleTime )
+	  or (ModifiedOn >= @IdleTime) ORDER BY CreatedOn,ModifiedOn 
+	   
+        
+      --Insert Data From Work Order Table---  
+      INSERT INTO @CalculateTable(Id,StartTime,TableName)  
+      SELECT TOP 1 WorkRequestAssignmentID,ISNULL(ModifiedDate, CreatedDate),'WorkRequestAssignment' FROM WorkRequestAssignment where (CreatedBy = @userIds or ModifiedBy = @userIds)  
+           and LocationID = @locationIds and 
+		   (CreatedDate >= @IdleTime )
+		   or (ModifiedDate >= @IdleTime)
+           order by CreatedDate,ModifiedDate    
+        
+      --Insert Data From Work Order Table---  
+      INSERT INTO @CalculateTable(Id,StartTime,TableName)  
+      SELECT TOP 1 DARId,ISNULL(ModifiedOn, CreatedOn),'DARDetails' from DARDetails where UserId = @userIds and LocationId = @locationIds
+	  and (CreatedOn >= @IdleTime)
+	  or (ModifiedOn >= @IdleTime)
+	    ORDER BY CreatedOn,ModifiedOn   
+
+
+
+      --Select data  
+      set @StartTimeForReport = (Select top 1 StartTime from @StatusTable order by StartTime desc)  
+     set @AfterIdleTime = (Select top 1 StartTime from @CalculateTable order by StartTime desc)  
+	set @DiffereceTime = @AfterIdleTime - @StartTimeForReport
+	 IF (@@ERROR <> 0)   
+      BEGIN  
+        ROLLBACK TRAN  
+         print '@@ERROR If part'  
+        RETURN  
+      END  
+     ELSE  
+      BEGIN   
+        COMMIT TRANSACTION;  
+         print '@@ERROR Else part'      
+      END 
+   END 
+	END TRY  
+     BEGIN CATCH  
+     PRINT 'CATCH'  
+     set @Response = 0;  
+     set @ResponseMessage = error_Message();  
+     set @ResponseLocationId = @LocationId  
+      --ROLLBACK TRANSACTION;  
+    END CATCH  
+      select @Startimereport as StartTimeForReport,@DiffereceTime as DiffereceTime ,@AfterIdleTime as AfterIdleTime,@Response as Response,
+	  @ResponseMessage as ResponseMessage , @ResponseLocationId as ResponseLocationId
+	  END
+	 

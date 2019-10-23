@@ -1,0 +1,211 @@
+﻿@model WorkOrderEMS.Models.VendorSetupManagementModel
+
+@{
+    //    bool validEmail = Regex.IsMatch(Email, @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" + @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$", RegexOptions.IgnoreCase);
+
+    ViewBag.Title = "Add Account";
+    //Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    long locationId = 0;
+    long userType = 0;
+    string StateID = string.Empty, LocationTypeID = string.Empty;
+    string ServiceId = string.Empty;
+    if (ViewBag.UpdateMode != null && ViewBag.UpdateMode == true)
+    {
+        ViewBag.Title = "Update Location"; ServiceId = ViewBag.ServicesID;
+    }
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    string CompanyDocPath = System.Configuration.ConfigurationManager.AppSettings["CompanyDocuments"];
+}
+@section scripts{
+    <script type="text/javascript">
+
+        var $_locationId = '@locationId';
+        var $_userTypeId = '@userType';
+        var IsUpdate = '@ViewBag.UpdateMode';
+        var e_mail = '@ViewBag.Email';
+        var $_VendorIdCancel = '@ViewBag.VendorIdForCancel';
+    </script>
+}
+<link href="~/Content/eCounting/VendorWizard.css" rel="stylesheet" />
+@*<link href="~/Content/eFleetVehicle/eFleetstyle.css" rel="stylesheet" />*@
+@*<link href="~/Content/eFleetVehicle/VendorRegistrationCSS.css" rel="stylesheet" />*@
+
+<script type="text/javascript" src="~/Scripts/BindDropDown/DropDownList.js"></script>
+<script type="text/javascript" src="~/Scripts/common/Masking.js"></script>
+<script type="text/javascript" src="~/Scripts/common/Common.js"></script>
+
+<style>
+    .input-disabled {
+        background-color: #EBEBE4;
+    }
+
+    .form-control {
+        border: 1px solid #a0b3b0 !important;
+    }
+
+    label .req {
+        margin: 2px;
+        color: #ed2f35;
+    }
+</style>
+@Html.AntiForgeryToken()
+<br />
+<div class="content-body">
+    <div class="container-fluid">
+        <!-- row -->
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card aos-init aos-animate" data-aos="fade-up">
+                    <div class="card-header headerSize">
+                        <h4 class="card-title" style="color:white;"><strong>SetUp Vendor</strong></h4>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm("AddAccountDetails", "VendorManagement", FormMethod.Post, new { enctype = "multipart/form-data", id = "msform" }))
+                        {
+                            @Html.HiddenFor(model => model.VendorId)
+                            <div class="panel panel-primary setup-content">
+
+                                <div class="basic-form">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label" for="LocationName">Pay Mode</label>
+                                        <div class="col-sm-4">
+                                            @if (ViewBag.PaymentModeList != null)
+                                            {
+                                                {@Html.DropDownListFor(model => model.VendorAccountDetailsModel.PaymentMode, new SelectList(ViewBag.PaymentModeList, "PaymentModeId", "PaymentModeName"), "--Select Payment Mode--", new { @id = "PaymentMode", @class = "form-control input-rounded" })}
+                                        }
+                                        else
+                                        {<select id="PaymentMode" class="form-control input-rounded"><option value="-1">@ViewBag.PaymentModeList</option></select>}
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group row wiredSelectHideShow" style="display:none;">
+                                        <label class="col-sm-2 col-form-label" for="LocationName"> Bank Name<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankName, null, new { @id = "BankName", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankName)
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="VendorName">Bank Location<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankLocation, null, new { @id = "BankLocation", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankLocation)
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row wiredSelectHideShow" style="display:none;">
+                                        <label class="col-sm-2 col-form-label" for="LocationName"> Account Number<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.AccountNumber, null, new { @id = "AccountNumber", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.AccountNumber)
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="VendorName">  IFSC Code<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.IFSCCode, null, new { @id = "IFSCCode", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.IFSCCode)
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row wiredSelectHideShow" style="display:none;">
+                                        <label class="col-sm-2 col-form-label" for="LocationName">  Swift OIC Code<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.SwiftOICCode, null, new { @id = "SwiftOICCode", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.SwiftOICCode)
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="VendorName">  Account Document<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            <div id="dvAccountPreview">
+                                            </div>
+                                            <input id="fileuploadAccount" type="file" style="margin-left:50%;" name="VendorAccountDetailsModel.AccountDocumentsFile" />
+
+                                        </div>
+                                    </div>
+                                    <div class="form-group row CardSelectHideShow" style="display:none;">
+                                        <label class="col-sm-2 col-form-label" for="LocationName">  Card Number<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.CardNumber, null, new { @id = "CardNumber", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.CardNumber)
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="VendorName"> Bank Name <span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankName, null, new { @id = "PolicyNumber", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankName)
+                                        </div>
+                                    </div>
+                                    <div class="form-group row CardSelectHideShow" style="display:none;">
+                                        <label class="col-sm-2 col-form-label" for="LocationName"> Card Holder Name<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.CardHolderName, null, new { @id = "CardHolderName", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.CardHolderName)
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="VendorName"> Expiration Date <span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorAccountDetailsModel.ExpirationDate, null, new { @id = "ExpirationDate", @onkeydown = "return false;", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.ExpirationDate)
+                                        </div>
+                                    </div>
+                                    @*<input type="button" name="previous" class="btn btn-default bluebutton previous prv-last-btn pull-right marginright10 marginbottom10 LRmar" value="Previous" style="border-radius:25px;width:90px;" />*@
+                                    <button type="submit" onclick="return validateCustomFields(this);" class="btn btn-success pull-right marginright10 marginbottom10 Lmar10" style="border-radius:25px;width:150px;">Save &amp; Update </button>
+                                    <input type="button" onclick="location.href='@Url.Action("ListAccountOfVendor", "VendorManagement",new {VendorId = ViewBag.VendorIdForCancel})'" class="btn btn-default bluebutton pull-right marginright10 marginbottom10 Lmar10" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
+
+                                </div>
+                            </div>
+                        }
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> <div class="clearfix"></div>
+<script>
+    $(document).ready(function () {
+
+        $("#drp_MasterLocation1").hide();
+
+        $('input[name="VendorAccountDetailsModel.BankName"]').change(function () {
+            $('input[name="VendorAccountDetailsModel.BankName"]').val($(this).val());
+        });
+        $("#fileuploadAccount").change(function () {
+            $("#dvAccountPreview").html("");
+            var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
+            var size = this.files[0].size;
+            if (!allowedExtensions.exec($(this).val().toLowerCase())) {
+                alert("Invalid file type");
+                $(this).val("");
+                return false;
+            } 
+            else if (size >= 4194304) {
+                alert("Max file size 4 mb.");
+                $(this).val("");
+                return false;
+            }
+        })
+        $('#ExpirationDate').datepicker({
+            format: "yyyy/mm/dd",
+            startDate: new Date()
+        });
+        $('#lblAccountPaymentMode').hide();
+        $("#PaymentMode").change(function () {
+            $('input[name="VendorAccountDetailsModel.BankName"]').val('');
+            $('#lblAccountPaymentMode').show();
+            $('#lblAccountPaymentMode').addClass('active highlight');
+            var paymentModeVal = $('#PaymentMode').find('option:selected').val();
+            if (paymentModeVal == 1) {
+                $(".wiredSelectHideShow").hide();
+                $(".CardSelectHideShow").show();
+            }
+            else if (paymentModeVal == 2) {
+                $(".wiredSelectHideShow").show();
+                $(".CardSelectHideShow").hide();
+            }
+            else {
+                $(".wiredSelectHideShow").hide();
+                $(".CardSelectHideShow").hide();
+            }
+        })
+    });
+</script>
+<script src="~/Scripts/eFleetVehicle/reg.js"></script>

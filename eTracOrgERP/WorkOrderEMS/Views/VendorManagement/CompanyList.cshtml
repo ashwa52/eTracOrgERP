@@ -1,0 +1,615 @@
+﻿@model WorkOrderEMS.Models.ApproveRejectVendorModel
+@{
+    ViewBag.Title = "Vendor List";
+    //    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+
+
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    long locationId = 0;
+    long userType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+    }
+}
+@section scripts{
+    <script type="text/javascript">
+            var $_locationId = '@locationId';
+            var $_userTypeId = '@userType';
+            var $_VendorStatus = "true";
+    </script>
+    <script src="https://www.amcharts.com/lib/4/core.js"></script>
+    <script src="https://www.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+    <script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+    <script src="https://www.amcharts.com/lib/3/serial.js"></script>
+    <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+    <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+    <link href="~/Content/NewAdminContent/VENDOR/c3/css/c3.min.css" rel="stylesheet" />
+    <script src="~/GridListing/JqGridScript/CompanyList/ListAllCompany.js"></script>
+    <link href="~/Content/NewAdminContent/CSS/custom.css" rel="stylesheet" />
+    @*<script type="text/javascript">
+            $(window).bind('resize', function () {
+                var width = $('#jqGrid_containerCompany').width();
+                $('#divAllCompanyDataListPager').setGridWidth(width);
+            });
+
+        </script>*@
+}
+<style>
+    #chartdiv, #EmployeeCount1 {
+        width: 100%;
+        height: 250px;
+    }
+
+    .package {
+        margin-top: 0px !important;
+        display: inline-flex;
+        justify-items: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .jsgrid-grid-body {
+        height: 100% !important;
+    }
+</style>
+<div class="content-body" style="min-height: 920px;">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="row page-titles mx-0 aos-init aos-animate" data-aos="fade-up">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Vendor List</h4>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">last Page</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)"> page</a></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card aos-init aos-animate" data-aos="fade-up">
+                    <div class="card-header card-custom-padding">
+                        <a href="@Url.Action("UnApprovedVendor", "VendorManagement")">
+                            <h4 class="card-title">Add Vendor</h4>
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">Vendor Count</h4>
+                        <div id="EmployeeCount1"></div>
+                        @*<div id="EmployeeCount"></div>*@
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="card aos-init aos-animate" data-aos="fade-up">
+                    <div class="card-header card-custom-padding">
+                        <a href="@Url.Action("CompanyList", "VendorManagement")" data-oldDash="Yes">
+                            <h4 class="card-title">Vendor List</h4>
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h4 class="card-title">Location Allocation</h4>
+                        <div id="chartdiv"></div>
+                        @*<div id="c3-combination"></div>*@
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+        <br>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card aos-init" data-aos="fade-up">
+
+                    <div class="card-header headerSize">
+
+                        <div class="basic-form">
+
+                            <input id="SearchText" type="text" class="form-control input-rounded" placeholder="Vendor Name" onkeyup="doSearch()">
+
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div id="tbl_AllCompanyDataList" class="jsgrid" style="position: relative; height: 400px; width: 100%;">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<br />
+
+<div class="modal bs-example-modal-lg fade preview" id="myModalForGetVendorDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Vendor Details</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <div id="divVendorDetailPreview" class="">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4 class="card-title modal-heading">Vendor Details</h4>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Vendor Name</label>
+                                <div id="lblVendorNameLegal" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Vendor Name DBA</label>
+                                <div id="lblVendorNameDBA" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Vendor Type</label>
+                                <div id="lblVendorType" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Point Of Contact</label>
+                                <div id="lblPointOfContact" class="form-control-static"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Address</label>
+                                <div id="lblAddress" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Phone1</label>
+                                <div id="lblPhone1" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Phone2</label>
+                                <div id="lblPhone2" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Email</label>
+                                <div id="lblEmail" class="form-control-static"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Website</label>
+                                <div id="lblWebsite" class="form-control-static"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4 class="card-title modal-heading">Vendor Insurance & License Details</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>License Name</label>
+                                <div id="lblLicenseName" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>License Number</label>
+                                <div id="lblLicenseNumber" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>License Expiration Date</label>
+                                <div id="lblLicenseExpirationDate" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Insurance Carries</label>
+                                <div id="lblInsuranceCarries" class="form-control-static"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Policy Number</label>
+                                <div id="lblPolicyNumber" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Insurance Expiration Date</label>
+                                <div id="lblInsuranceExpirationDate" class="form-control-static"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4 class="card-title modal-heading">Vendor Contract Details</h4>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>First Company</label>
+                                <div id="lblFirstCompany" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Secondary Company</label>
+                                <div id="lblSecondaryCompany" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Vendor Type</label>
+                                <div id="lblVendorTypeContract" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Contract Type</label>
+                                <div id="lblContractType" class="form-control-static"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Contract issued by</label>
+                                <div id="lblContractissuedby" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Contract executed by</label>
+                                <div id="lblContractexecutedby" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Primary Payment Mode</label>
+                                <div id="lblPrimaryPaymentMode" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Payment Term</label>
+                                <div id="lblPaymentTerm" class="form-control-static"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Grace Period</label>
+                                <div id="lblGracePeriod" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Invoicing Frequency</label>
+                                <div id="lblInvoicingFrequency" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Start Date</label>
+                                <div id="lblStartDate" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <div id="lblEndDate" class="form-control-static"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Cost During Period</label>
+                                <div id="lblCostDuringPeriod" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Annual Value Of Aggriment</label>
+                                <div id="lblAnnualValueOfAggriment" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Minimum Bill Amount</label>
+                                <div id="lblMinimumBillAmount" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Bill Due Date</label>
+                                <div id="lblBillDueDate" class="form-control-static"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label> Late Fine/Fee</label>
+                                <div id="lblLateFineFee" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Location</label>
+                                <div id="lblSelectedLocation" class="form-control-static"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4 class="card-title modal-heading">Vendor Account Details</h4>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Pay Mode</label>
+                                <div id="lblPayMode" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Bank Name</label>
+                                <div id="lblBankName" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label> Bank Location</label>
+                                <div id="lblBankLocation" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Account Number</label>
+                                <div id="lblAccountNumber" class="form-control-static"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>IFSC Code</label>
+                                <div id="lblIFSCCode" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Swift OIC Code</label>
+                                <div id="lblSwiftOICCode" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label> Card Number</label>
+                                <div id="lblCardNumber" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Policy Number</label>
+                                <div id="lblPolicyNumber" class="form-control-static"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Card Holder Name</label>
+                                <div id="lblCardHolderName" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label>Expiration Date</label>
+                                <div id="lblExpirationDate" class="form-control-static"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <table id="VendorFacility_table" class="table table-bordered table-responsive-sm"></table>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+
+                <button data-dismiss="modal" class="btn btn-secondary" style="border-radius:25px;width:90px;" id="btnCancel">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<div id="myModelApproveRejectVendor" class="modal fade bs-example-modal-md">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Reject Vendor</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form">
+                    <div class="row">
+                        <div class="form-group">
+                            @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-lg-2 star" })
+                            <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
+                                @Html.TextBoxFor(model => model.Comment, new { @class = "form-control", @id = "CommentVendor", @placeholder = "Comment", @style = "border-radios:0px;" })
+                                @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-default bluebutton" onclick="RejectVendorAfterComment();" style="border-radius:25px;width:90px;" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+    $.ajax({
+        type: "GET",
+        url: "@Url.Action("GetDashboardForVendorCount", "VendorManagement")",
+        data: {},
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (dataJSON) {
+
+            am4core.ready(function () {
+
+                // Themes begin
+                am4core.useTheme(am4themes_animated);
+                // Themes end
+
+                // Create chart instance
+                var chart = am4core.create("EmployeeCount1", am4charts.PieChart);
+
+                // Add data
+                chart.data = [{
+                    "User": "Approved",
+                    "Count": dataJSON.model.ApprovedVendorCount,
+                }, {
+                    "User": "Waiting",
+                    "Count":dataJSON.model.WaitingVendorCount,
+                }, {
+                    "User": "Rejected",
+                    "Count": dataJSON.model.RejectedVendorCount,
+                }];
+
+                // Add and configure Series
+                var pieSeries = chart.series.push(new am4charts.PieSeries());
+                pieSeries.dataFields.value = "Count";
+                pieSeries.dataFields.category = "User";
+                pieSeries.innerRadius = am4core.percent(50);
+                pieSeries.ticks.template.disabled = true;
+                pieSeries.labels.template.disabled = true;
+
+                var rgm = new am4core.RadialGradientModifier();
+                rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
+                pieSeries.slices.template.fillModifier = rgm;
+                pieSeries.slices.template.strokeModifier = rgm;
+                pieSeries.slices.template.strokeOpacity = 0.4;
+                pieSeries.slices.template.strokeWidth = 0;
+
+                chart.legend = new am4charts.Legend();
+                chart.legend.position = "right";
+
+            }); // end am4core.ready()
+
+    }
+    });
+
+        var  chartData =[];
+         $.ajax({
+        type: "GET",
+        url: "@Url.Action("GetDashboardForLocationAllocaionVendorCount", "VendorManagement")",
+        data: {},
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+             success: function (_result) {
+                 $.each(_result.data, function (index, value)
+                 {
+                     chartData.push(value);
+
+                  });
+
+          AmCharts.makeChart("chartdiv", {
+        "theme": "none",
+        "type": "serial",
+        "startDuration": 7,
+          "dataProvider":chartData,
+
+
+        "valueAxes": [{
+            "position": "left",
+            "axisAlpha": 0,
+            "gridAlpha": 0
+        }],
+        "graphs": [{
+            "balloonText": "[[category]]: <b>[[value]]</b>",
+            "colorField": "colour",
+            "fillAlphas": 0.85,
+            "lineAlpha": 0.1,
+            "type": "column",
+            "topRadius": 1,
+            "valueField": "VendorCount"
+        }],
+        "depth3D": 40,
+        "angle": 30,
+        "chartCursor": {
+            "categoryBalloonEnabled": false,
+            "cursorAlpha": 0,
+            "zoomable": false
+        },
+        "categoryField": "LocationName",
+        "categoryAxis": {
+            "gridPosition": "start",
+            "axisAlpha": 1,
+            "gridAlpha": 0,
+            "labelRotation": 20,
+        },
+        "export": {
+            "enabled": true
+        }
+
+    }, 0);
+
+
+
+
+    }
+    });
+    });
+</script>
+<script src="~/Scripts/Search/Searching.js"></script>

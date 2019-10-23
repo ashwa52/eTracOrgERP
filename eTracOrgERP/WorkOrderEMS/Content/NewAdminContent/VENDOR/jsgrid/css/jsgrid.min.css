@@ -1,0 +1,183 @@
+/*
+ * jsGrid v1.5.3 (http://js-grid.com)
+ * (c) 2016 Artem Tabalin
+ * Licensed under MIT (https://github.com/tabalinas/jsgrid/blob/master/LICENSE)
+ */
+
+.jsgrid{position:relative;overflow:hidden;font-size:1em}.jsgrid,.jsgrid *,.jsgrid :after,.jsgrid :before{box-sizing:border-box}.jsgrid input,.jsgrid select,.jsgrid textarea{font-size:1em}.jsgrid-grid-header{overflow-x:hidden;overflow-y:scroll;-webkit-user-select:none;-khtml-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none}.jsgrid-grid-body{overflow-x:auto;overflow-y:scroll;-webkit-overflow-scrolling:touch}.jsgrid-table{width:100%;table-layout:fixed;border-collapse:collapse;border-spacing:0}.jsgrid-cell{padding:.5em}.jsgrid-header-cell,.jsgrid-сell{box-sizing:border-box}.jsgrid-align-left{text-align:left}.jsgrid-align-center,.jsgrid-align-center input,.jsgrid-align-center select,.jsgrid-align-center textarea{text-align:center}.jsgrid-align-right,.jsgrid-align-right input,.jsgrid-align-right select,.jsgrid-align-right textarea{text-align:right}.jsgrid-header-cell{padding:.5em}.jsgrid-edit-row input,.jsgrid-edit-row select,.jsgrid-edit-row textarea,.jsgrid-filter-row input,.jsgrid-filter-row select,.jsgrid-filter-row textarea,.jsgrid-insert-row input,.jsgrid-insert-row select,.jsgrid-insert-row textarea{width:100%;padding:.3em .5em}.jsgrid-edit-row input[type=checkbox],.jsgrid-filter-row input[type=checkbox],.jsgrid-insert-row input[type=checkbox]{width:auto}.jsgrid-selected-row .jsgrid-cell{cursor:pointer}.jsgrid-nodata-row .jsgrid-cell{padding:.5em 0;text-align:center}.jsgrid-header-sort{cursor:pointer}.jsgrid-pager{padding:.5em 0}.jsgrid-pager-nav-button{padding:.2em .6em}.jsgrid-pager-nav-inactive-button{display:none;pointer-events:none}.jsgrid-pager-page{padding:.2em .6em}
+
+.addWhite {
+    color: white;
+}
+
+.widthHeader {
+    height: 40px;
+}
+
+
+
+
+#cover {
+    width: 88px;
+    height: 50px;
+    margin: 0 auto;
+    position: relative;
+    margin-left: 80%;
+}
+
+.checkboxToggle {
+    margin: 0px;
+    width: 100%;
+    height: 20px;
+    cursor: pointer;
+    opacity: 0;
+    position: relative;
+    z-index: 3;
+}
+
+#bar {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    background-color: #3dd897;
+    z-index: 1;
+    border-radius: 50px;
+    height: 30px;
+    margin-top: 8px;
+}
+
+#knob {
+    position: absolute;
+    top: 3px;
+    left: 8px;
+    width: 24px;
+     margin-top: 8px;
+    height: 24px;
+    background-color: #fff;
+    border-radius: 50%;
+    transition: left 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28), margin-left 0.3s ease, width 0.3s ease, border-radius 0.3s ease;
+    box-shadow: 0px 1px 1px #7d7d7d;
+    z-index: 2;
+}
+
+.checkboxToggle:active ~ #knob {
+    width: 66px;
+    border-radius: 20px;
+}
+
+.checkboxToggle:checked ~ #knob {
+    left: 60px;
+}
+
+.checkboxToggle:checked ~ #bar {
+    background-color: #00bcd4;
+}
+
+.checkboxToggle:checked:active ~ #knob {
+    margin-left: -32px;
+}
+
+/*New Switch*/
+.button-switch {
+    font-size: 1.5em;
+    height: 1.875em;
+    margin-bottom: 0.625em;
+    position: relative;
+    width: 4.5em;
+}
+
+    .button-switch .lbl-off,
+    .button-switch .lbl-on {
+        cursor: pointer;
+        display: block;
+        font-size: 0.9em;
+        font-weight: bold;
+        line-height: 1em;
+        position: absolute;
+        top: 0.5em;
+        transition: opacity 0.25s ease-out 0.1s;
+        text-transform: uppercase;
+    }
+
+    .button-switch .lbl-off {
+        right: 0.4375em;
+        top: 17px;
+    }
+
+    .button-switch .lbl-on {
+        color: #fefefe;
+        opacity: 0;
+        left: 0.4375em;
+        top: 17px;
+    }
+
+    .button-switch .switch {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        height: 0;
+        font-size: 1em;
+        left: 0;
+        line-height: 0;
+        outline: none;
+        position: absolute;
+        top: 0;
+        width: 0;
+    }
+
+        .button-switch .switch:before, .button-switch .switch:after {
+            content: 'Create';
+            font-size: 1em;
+            position: absolute;
+        }
+
+        .button-switch .switch:before {
+            border-radius: 1.25em;
+            background: #bdc3c7;
+            height: 1.875em;
+            left: -0.25em;
+            top: 8px;
+            transition: background-color 0.25s ease-out 0.1s;
+            width: 4.5em;
+        }
+
+        .button-switch .switch:after {
+            box-shadow: 0 .0625em .375em 0 #666;
+            border-radius: 50%;
+            background: #fefefe;
+            height: 1.5em ;
+            top: 14px;
+            -webkit-transform: translate(0, 0);
+            transform: translate(0, 0);
+            transition: -webkit-transform 0.25s ease-out 0.1s;
+            transition: transform 0.25s ease-out 0.1s;
+            transition: transform 0.25s ease-out 0.1s, -webkit-transform 0.25s ease-out 0.1s;
+            width: 1.5em;
+        }
+
+        .button-switch .switch:checked:after {
+            content:'List';
+            -webkit-transform: translate(2.5em, 0);
+            transform: translate(2.5em, 0);
+            height: 30px;
+            width: 30px;
+            margin-top: 9px;
+        }
+
+        .button-switch .switch:checked ~ .lbl-off {
+            opacity: 0;
+        }
+
+        .button-switch .switch:checked ~ .lbl-on {
+            opacity: 1;
+        }
+
+        .button-switch .switch#switch-orange:checked:before {
+            background: #e67e22;
+        }
+
+        .button-switch .switch#switch-blue:checked:before {
+            background: #3498db;
+        }

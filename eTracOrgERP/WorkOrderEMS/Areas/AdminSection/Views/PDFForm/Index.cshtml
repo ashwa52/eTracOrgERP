@@ -1,0 +1,128 @@
+﻿@model WorkOrderEMS.Models.PDFFormModel
+@{
+    ViewBag.Title = "PDF Form Upload";
+    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+
+    long locationId = 0;
+    long userType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+    }
+}
+@section scripts{
+    <script type="text/javascript">
+    var $_locationId = '@locationId';
+    var $_userTypeId = '@userType';
+    </script>
+    <script src="~/Areas/AdminSection/GridList/ListPDFForm.js"></script>
+}
+
+<div class="col-lg-12 col-md-12  col-sm-12  col-xs-12">
+    <div id="jqGrid_container">
+        <table id="tbl_PDFFormList" border="0" cellpadding="0" cellspacing="0"></table>
+        <div id="divPDFFormListPager"></div>
+    </div>
+</div>
+
+<div class="modal fade preview" id="myModalForPDFForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:40%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">X</span></button>
+                <h4 class="modal-title" id="myModalLabel">Company Forms</h4>
+            </div>
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @using (Html.BeginForm("SavePDFFormDetails", "PDFForm", FormMethod.Post, new { enctype = "multipart/form-data", @id = "Driver_form" }))
+            {
+                
+                <div class="modal-body">
+                    <div id="divDetailPreview" class="">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                @Html.Label("Form Name", htmlAttributes: new { @class = "control-label col-lg-4 star" })
+                                <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
+                                    @Html.TextBoxFor(model => model.FormName, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(model => model.FormName, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                @Html.Label("Select Module", htmlAttributes: new { @class = "control-label col-lg-4 star" })
+                                 
+                                <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
+                                    @Html.DropDownListFor(model => model.ModuleId, new SelectList(ViewBag.ModuleList, "ModuleId", "ModuleName"), "--Select Module--", new { @id = "Module", @class = "form-control" })
+                                    @*@Html.TextBoxFor(model => model.FormType, new { @class = "form-control" })*@
+                                    @Html.ValidationMessageFor(model => model.ModuleId, "", new { @class = "text-danger" })
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-12">
+                                @Html.Label("Add Form", htmlAttributes: new { @class = "control-label col-lg-4 star" })
+                                    <div id="dvFormPDFPreview">
+                                    </div>
+                                    <input id="FormUpload" type="file" name="FormPathFile" />
+                                    <ul class="attachment">
+                                        @if (Model.FormPath != null && Model.FormPath != "")
+                                       {
+                                           <li style="margin-left :25%;margin-top:20px;">
+                                               <a class="title" href="@Url.Content(Model.FormPath)">@ViewBag.CompanyDocEdit</a>
+                                           </li>
+                                       }
+                                    </ul>
+                                    <div class="errorspace">
+                                        @Html.ValidationMessageFor(model => model.FormPath)
+                                    </div>
+                                </div>
+                        </div>
+                        </div>
+                    </div>
+
+                <br /><br />
+                <div class="panel-footer">
+                    <div class="text-right">
+                        @*<button type="button" class="btn btn-default bluebutton text-right" onclick="return PrintDivForVehicleDetails('DivVehicleDetailsIndex');" data-dismiss="modal">Print Details</button>*@
+                        <button data-dismiss="modal" class="btn btn-default" id="btnCancelqwe" style="border-radius:25px;width:100px;">Close</button>
+                        <input type="submit" class="btn btn-primary" id="btnSaveForCostCode" style="border-radius:25px;width:100px;" value="Save" />
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        $("#FormUpload").change(function () {
+            $("#dvFormPDFPreview").html("");
+            var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.pdf|.doc|.txt)$/;
+            if (regex.test($(this).val().toLowerCase())) {
+                if ($.browser.msie && parseFloat(jQuery.browser.version) <= 9.0) {
+                    $("#dvFormPDFPreview").show();
+                    $("#dvFormPDFPreview")[0].filters.item("DXImageTransform.Microsoft.AlphaImageLoader").src = $(this).val();
+                }
+                else {
+                    if (typeof (FileReader) != "undefined") {
+                        $("#dvFormPDFPreview").show();
+                        //$("#dvCompanyPreview").append("<img />");
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            $("#dvFormPDFPreview img").attr("src", e.target.result);
+                        }
+                        reader.readAsDataURL($(this)[0].files[0]);
+                    } else {
+                        alert("This browser does not support FileReader.");
+                    }
+                }
+            }
+        })
+    });
+</script>

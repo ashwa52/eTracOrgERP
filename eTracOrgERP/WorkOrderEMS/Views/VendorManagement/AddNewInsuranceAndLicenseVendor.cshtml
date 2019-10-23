@@ -1,0 +1,261 @@
+﻿
+@model WorkOrderEMS.Models.VendorSetupManagementModel
+
+@{
+    //    bool validEmail = Regex.IsMatch(Email, @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))" + @"(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$", RegexOptions.IgnoreCase);
+
+    ViewBag.Title = "Add Insurance/License";
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    long locationId = 0;
+    long userType = 0;
+    string StateID = string.Empty, LocationTypeID = string.Empty;
+    string ServiceId = string.Empty;
+    if (ViewBag.UpdateMode != null && ViewBag.UpdateMode == true)
+    {
+        ViewBag.Title = "Update Location"; ServiceId = ViewBag.ServicesID;
+    }
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    string VendorInsuranceDocPath = System.Configuration.ConfigurationManager.AppSettings["LicenseAndInsuranceDocument"];
+}
+@section scripts{
+    <script type="text/javascript">
+
+        var $_locationId = '@locationId';
+        var $_userTypeId = '@userType';
+        var IsUpdate = '@ViewBag.UpdateMode';
+        var e_mail = '@ViewBag.Email';
+    </script>
+
+}
+@*<link href="~/Content/eCounting/VendorWizard.css" rel="stylesheet" />
+<link href="~/Content/eFleetVehicle/eFleetstyle.css" rel="stylesheet" />*@
+@*<link href="~/Content/eFleetVehicle/VendorRegistrationCSS.css" rel="stylesheet" />*@
+
+<script type="text/javascript" src="~/Scripts/BindDropDown/DropDownList.js"></script>
+<script type="text/javascript" src="~/Scripts/common/Masking.js"></script>
+<script type="text/javascript" src="~/Scripts/common/Common.js"></script>
+<style>
+      .form-control {
+        border: 1px solid #a0b3b0 !important;
+    }
+
+    label .req {
+        margin: 2px;
+        color: #ed2f35;
+    }
+
+    .headerSize {
+        height: 36px;
+    }
+</style>
+@Html.ValidationSummary(true)
+@Html.AntiForgeryToken()
+@Html.HiddenFor(model => model.VendorId)
+@*<link href="~/Content/eCounting/VendorWizard.css" rel="stylesheet" />
+<link href="~/Content/eFleetVehicle/eFleetstyle.css" rel="stylesheet" />*@
+@*<link href="~/Content/eFleetVehicle/VendorRegistrationCSS.css" rel="stylesheet" />*@
+
+<script type="text/javascript" src="~/Scripts/BindDropDown/DropDownList.js"></script>
+<script type="text/javascript" src="~/Scripts/common/Masking.js"></script>
+<script type="text/javascript" src="~/Scripts/common/Common.js"></script>
+<br /><br />
+<div class="content-body" id="myContractDetails">
+    <div class="container-fluid">
+        <!-- row -->
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card aos-init aos-animate" data-aos="fade-up">
+                    <div class="card-header headerSize">
+                        <h4 class="card-title" style="color:white;"><strong>  Add Insurance/License</strong></h4>
+                    </div>
+                    <div class="card-body">
+                        @using (Html.BeginForm("AddInsuraceAndLicenseDetails", "VendorManagement", FormMethod.Post, new { enctype = "multipart/form-data", id = "msform" }))
+                        {
+                            @Html.HiddenFor(model => model.VendorId)
+                            @Html.HiddenFor(model => model.VendorInsuranceModel.InsuranceID)
+                            @Html.HiddenFor(model => model.VendorInsuranceModel.LicenseId)
+                        <div class="panel panel-primary setup-content">
+                            @if (ViewBag.IsInsurance == false)
+                            {
+                                <div class="basic-form">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label" for="VendorName"> License Name<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorInsuranceModel.LicenseName, null, new { @id = "LicenseName", @required = "required", @pattern = @"^([a-zA-Z .&'-]+)$", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorInsuranceModel.LicenseName)
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="Type"> License Number<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorInsuranceModel.LicenseNumber, null, new { @id = "LicenseNumber", @required = "required", @pattern = @"^([a-zA-Z0-9]+)$", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorInsuranceModel.LicenseNumber)
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="basic-form">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label" for="VendorName">Expiration Date<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorInsuranceModel.LicenseExpirationDate, null, new { @id = "LicenseExpirationDate", @onkeydown = "return false;", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorInsuranceModel.LicenseExpirationDate)
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="Type"> License Document<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            <div id="dvLicensePreview">
+                                            </div>
+                                            <input id="fileuploadLicense" type="file" style="margin-left:50%;" name="VendorInsuranceModel.LicenseDocumentFile" />
+                                            <ul class="attachment">
+                                                @if (Model.VendorInsuranceModel != null)
+                                                {
+                                                    <li style="margin-left :25%;margin-top:20px;">
+                                                        <a class="title" href="@Url.Content(VendorInsuranceDocPath)">@Model.VendorInsuranceModel.LicenseDocument"</a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="basic-form">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label" for="VendorName"> Insurance Carries<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorInsuranceModel.InsuranceCarries, null, new { @id = "InsuranceCarries", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorInsuranceModel.InsuranceCarries)
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="Type"> Policy Number<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorInsuranceModel.PolicyNumber, null, new { @id = "PolicyNumber", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorInsuranceModel.PolicyNumber)
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="basic-form">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label" for="VendorName">  Expiration Date<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.VendorInsuranceModel.InsuranceExpirationDate, null, new { @id = "InsuranceExpirationDate", @onkeydown = "return false;", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.VendorInsuranceModel.InsuranceExpirationDate)
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="Type"> Insurance Document<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            <div id="dvInsurancePreview">
+                                            </div>
+                                            <input id="fileuploadInsurance" type="file" style="margin-left:50%;" name="VendorInsuranceModel.InsuranceDocumentFile" />
+                                            <ul class="attachment">
+                                                @if (Model.VendorInsuranceModel != null)
+                                                {
+                                                    <li style="margin-left :25%;margin-top:20px;">
+                                                        <a class="title" href="@Url.Content(VendorInsuranceDocPath + "InsuranceDocument")">@Model.VendorInsuranceModel.InsuranceDocument + "InsuranceDocument"</a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            }
+                            <button type="submit" class="btn btn-success pull-right marginright10 marginbottom10 Lmar10" style="border-radius:25px;width:150px;">Save </button>
+                            <input type="button" onclick="location.href='@Url.Action("ListInsuranceLicenseView", "VendorManagement",new {Vendorid = ViewBag.VendorIdForCancel,VendorStatus = true})'" class="btn btn-default bluebutton pull-right marginright10 marginbottom10 Lmar10" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
+
+                        </div>
+
+
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+    </div>
+</div> 
+<script>
+    $(document).ready(function () {
+        var contractVal;
+        $("#ContractHolder").change(function () {
+            contractVal = $("#ContractHolder option:selected").val();
+            $("#myModalForContract").modal('show');
+        })
+        //$("input[type='radio']").change(function () {
+        //    debugger
+        //    if ($(this).val() == "YesCertificate") {
+        //        $(".HideRowIfNo").show();
+        //    }
+        //    else if ($(this).val() == "NoCertificate")
+        //    {
+        //        $(".HideRowIfNo").hide();
+        //    }
+        //    if ($(this).val() == "YesInsurance") {
+        //        $(".HideRowInsurance").show();
+        //    }
+        //    else if ($(this).val() == "NoInsurance") {
+        //        $(".HideRowInsurance").hide();
+        //    }
+        //    else if ($(this).val() == "Vendor") {
+        //        $(".ContractExecutedByHideShow").show();
+        //        $('.ContractExecutedClass').prop('checked', true);
+        //    }
+        //    else if ($(this).val() == "Own") {
+        //        $(".ContractExecutedByHideShow").hide();
+        //        $('.ContractExecutedClass').prop('checked', false);
+
+        //    }
+        //    else if($(this).val() == 1)
+        //    {
+        //        $('#myModalForContract').modal('show');
+        //    }
+        //    else if($(this).val() == 2)
+        //    {
+        //        $('#myModalForContract').modal('hide');
+        //    }
+        //});
+        $('#LicenseExpirationDate,#InsuranceExpirationDate').datepicker({
+            format: "yyyy/mm/dd",
+            startDate: new Date()
+        });
+
+        $(function () {
+            $("#fileuploadLicense").change(function () {
+                $("#dvLicensePreview").html("");
+                var size = this.files[0].size;
+                var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
+                if (!allowedExtensions.exec($(this).val().toLowerCase())) {
+                    alert("Invalid file type");
+                    $(this).val("");
+                    return false;
+                }
+                else if (size >= 4194304) {
+                    alert("Max file size 4 mb.");
+                    $(this).val("");
+                    return false;
+                }
+            })
+
+
+
+            $("#fileuploadInsurance").change(function () {
+                $("#dvInsurancePreview").html("");
+                var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
+                var size = this.files[0].size; 
+                if (!allowedExtensions.exec($(this).val().toLowerCase())) {
+                    alert("Invalid file type");
+                    $(this).val("");
+                    return false;
+                }
+                else if (size >= 4194304) {
+                    alert("Max file size 4 mb.");
+                    $(this).val("");
+                    return false;
+                }
+            })
+        });
+
+    });
+</script>
+<script src="~/Scripts/eFleetVehicle/reg.js"></script>
+

@@ -1,0 +1,113 @@
+﻿@model WorkOrderEMS.Models.CommonModels.WorkRequestAssignmentModel
+@{
+
+    var priority = Model.PriorityLevel;
+}
+<link href="~/Content/NewAdminContent/CSS/clockPicker.css" rel="stylesheet" />
+<form id="formAssignmentData" method="post">
+    <div class="row">
+        <div class="form-horizontal">
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            @Html.HiddenFor(model => model.WorkRequestAssignmentID)
+            <div class="basic-form">
+                <div class="form-group row">
+                    @Html.LabelFor(model => model.PriorityLevel, new { @class = "col-sm-4 col-form-label" })
+                    <div class="col-sm-8">
+                        @Html.DropDownListFor(model => model.PriorityLevel, new SelectList(ViewBag.PriorityLevel, "GlobalCodeId", "CodeName", Model.PriorityLevel), "--Select--", new { @class = "form-control input-rounded required" })
+                        @Html.ValidationMessageFor(model => model.PriorityLevel, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                 @if (Model.WorkRequestTy == "Work Request")
+                 {
+                     if (Model.ProblemDesc != "")
+                     {
+                      <div class="form-group row">
+                          @Html.LabelFor(model => model.ProblemDesc, new { @class = "col-sm-4 col-form-label" })
+                          <div class="col-sm-8">
+                              @Html.TextBoxFor(model => model.ProblemDesc, new { @Placeholder = "Problem Desc", @readonly = "readonly", @class = "form-control input-rounded required isValidLocationName" })
+                              @Html.ValidationMessageFor(model => model.ProblemDesc, "", new { @class = "text-danger" })
+                          </div>
+                      </div>
+                     }
+                     else
+                     {
+                     <div class="form-group row">
+                          @Html.LabelFor(model => model.ProblemDesc, new { @class = "col-sm-4 col-form-label" })
+                          <div class="col-sm-8">
+                              @Html.TextBoxFor(model => model.ProblemDesc, new { @Placeholder = "Problem Desc", @class = "form-control input-rounded required isValidLocationName" })
+                              @Html.ValidationMessageFor(model => model.ProblemDesc, "", new { @class = "text-danger" })
+                          </div>
+                      </div>
+                     }
+                 }
+                 @if (Model.WorkRequestTy == "Special Project" || Model.WorkRequestTy == "Facility Request")
+                 {
+                     if (Model.ProjectDesc != "")
+                     {
+                         if (Model.FacilityRequestId != 260)
+                         {
+                          <div class="form-group row">
+                              @Html.LabelFor(model => model.ProblemDesc, new { @class = "col-sm-4 col-form-label" })
+                              <div class="col-sm-8">
+                                  @Html.TextBoxFor(model => model.ProblemDesc, new { @Placeholder = "Problem Desc", @readonly = "readonly", @class = "form-control input-rounded required isValidLocationName" })
+                                  @Html.ValidationMessageFor(model => model.ProblemDesc, "", new { @class = "text-danger" })
+                              </div>
+                          </div>
+                         }
+                     }
+                     else
+                     {
+                         if (Model.FacilityRequestId != 260)
+                         {
+                         <div class="form-group row">
+                              @Html.LabelFor(model => model.ProblemDesc, new { @class = "col-sm-4 col-form-label" })
+                              <div class="col-sm-8">
+                                  @Html.TextBoxFor(model => model.ProblemDesc, new { @Placeholder = "Problem Desc", @class = "form-control input-rounded required isValidLocationName" })
+                                  @Html.ValidationMessageFor(model => model.ProblemDesc, "", new { @class = "text-danger" })
+                              </div>
+                          </div>
+                         }
+                     }
+                 }
+                  <div class="form-group row">
+                      @Html.LabelFor(model => model.AssignToUserId, new { @class = "col-sm-4 col-form-label" })
+                      <div class="col-sm-8">
+                          @Html.DropDownListFor(model => model.AssignToUserId, new SelectList(ViewBag.AssignedToUser, "Value", "Text"), "--Select--", new { @id = "ddlAssignedUser", @class = "form-control input-rounded required isValidLocationName" })
+                          @Html.ValidationMessageFor(model => model.AssignToUserId, "", new { @class = "text-danger" })
+                      </div>
+                  </div>
+                <div class="form-group row">
+                      @Html.LabelFor(model => model.AssignedTime, new { @class = "col-sm-4 col-form-label" })
+                    <div class="col-sm-8">
+                        @Html.TextBoxFor(model => model.AssignedTime, new { @Placeholder = "Location Name", @class = "form-control input-rounded required isValidLocationName" })
+                        <span class="pull-left text-info" style="color:gray;"><i>(HH:MM i.e 00:30)</i></span>
+                        @Html.ValidationMessageFor(model => model.AssignedTimeInterval, "", new { @class = "text-danger" })
+                    </div>
+                  </div>
+            </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+</form>
+<script src="~/Content/NewAdminContent/JQUERY/clockPicker.js"></script>
+<script>
+    $("#SaveAssignedData").click(function () {
+        debugger
+        var dataObject = $("#formAssignmentData").serialize();
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("_AssignWorkAssignmentRequest", "GlobalAdmin")',
+            data: dataObject,//{ objWorkRequestAssignmentModel: dataObject, fileData: file },
+            success: function (Data) {
+                debugger
+                 $("#divDetailPreviewAssignData").html("");
+                 $("#myModalForAssignEmployeeData").modal('hide');
+                 toastr.success(Data.Message);
+                 $("#ListWorkOrderAsssignment").jsGrid("loadData");                 
+            },
+            error: function (err) {
+            }
+        });
+    });
+</script>

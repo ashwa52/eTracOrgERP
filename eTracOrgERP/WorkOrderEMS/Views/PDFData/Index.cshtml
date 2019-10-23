@@ -1,0 +1,215 @@
+﻿@model WorkOrderEMS.Models.CharitableContributionForm
+@{
+    ViewBag.Title = "Charitable Contribution Request Form ";
+    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+    long locationId = 0;
+    long userType = 0;
+    //string Image = "~/Content/Images/ProjectLogo/no-profile-pic.jpg";
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+    }
+    string Image = "~/Content/Images/ProjectLogo/no-profile-pic.jpg";
+    string imgaeserverpath = Url.Content("~/Content/eFleetDocs/DriverImage/");
+}
+
+
+<link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text'>
+@*<link href="~/Content/eFleetVehicle/eFleetstyle.css" rel="stylesheet" />*@
+@*<link href="~/Content/eFleetVehicle/style.css" rel="stylesheet" />*@
+
+@section scripts{
+    <script type="text/javascript">
+        var $_locationId = '@locationId';
+        var $_userTypeId = '@userType';
+    </script>
+}
+<style>
+    .pdfcss {
+        border: 0;
+        outline: 0;
+        border-bottom: 1px solid #0aa0cd;
+    }
+</style>
+@Html.AntiForgeryToken()
+@Html.ValidationSummary(true)
+@using (Html.BeginForm("Index", "PDFData", FormMethod.Post, new { enctype = "multipart/form-data", @id = "Driver_form" }))
+{
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Charitable Contribution Request Form
+            </div>
+            <div class=" clearfix"></div>
+            <div class="row">
+                <div class="panel-body" style="margin-left:70px;margin-right:30px;">
+                    <div class="pull-right" style="padding-bottom:60px;">
+                        <img src="~/Content/Dashboard/images/logo.png" />
+                        <br />
+                        <label>
+                            76 SOUTH LAURA ST,<br /> SUITE 202 JACKSONVILLE, FL 32202
+                        </label>
+                    </div>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <div class="form-horizontal">
+                        <div>
+                            <label style="color:#0aa0cd;">
+                                Please complete this form at least two months prior to your event and email it to the Elite Parking Services of America,
+                                Inc. accounting department: accounts@eliteparkingsoa.com. Please write or type legibly.
+                            </label>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div>
+                            @Html.Label("Name of non-profit organization:", new { @class = "col-sm-3 control-label star" })
+                            <div class="col-sm-8">
+                                @Html.TextBoxFor(model => model.NonProfitOrganization, new { @class = "form-control pdfcss required"})
+                                @Html.ValidationMessageFor(model => model.NonProfitOrganization)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div>
+                            @Html.Label("Mailing Address:", new { @class = "col-sm-3 control-label star" })
+                            <div class="col-sm-8">
+                                @Html.TextBoxFor(model => model.MailingAddress, new { @class = "form-control pdfcss required" })
+                                @Html.ValidationMessageFor(model => model.MailingAddress)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div>
+                            @Html.Label("Contact Person:", new { @class = "col-sm-3 control-label star" })
+                            <div class="col-sm-8">
+                                @Html.TextBoxFor(model => model.ContactPerson, new { @class = "form-control pdfcss required" })
+                                @Html.ValidationMessageFor(model => model.ContactPerson)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div>
+                            @Html.Label("Phone number:", new { @class = "col-sm-3 control-label star" })
+                            <div class="col-sm-8">
+                                @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control pdfcss required" })
+                                @Html.ValidationMessageFor(model => model.PhoneNumber)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div>
+                            @Html.Label("Name Of Event:", new { @class = "col-sm-3 control-label star" })
+                            <div class="col-sm-8">
+                                @Html.TextBoxFor(model => model.NameOfEvent, new { @class = "form-control pdfcss required" })
+                                @Html.ValidationMessageFor(model => model.NameOfEvent)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div>
+                            @Html.Label("Date Of Event:", new { @class = "col-sm-3 control-label star" })
+                            <div class="col-sm-8">
+                                @Html.TextBoxFor(model => model.DateOfEvent, new { @class = "form-control pdfcss required" })
+                                @Html.ValidationMessageFor(model => model.DateOfEvent)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div>
+                            @Html.Label("Federal Tax ID#:", new { @class = "col-lg-3 control-label star" })
+                            <div class="col-sm-8">
+                                @Html.TextBoxFor(model => model.FederalTaxID, new { @class = "form-control pdfcss required" })
+                                @Html.ValidationMessageFor(model => model.FederalTaxID)
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div>
+                            @Html.Label("Contribution requested (funds, food, service):", new { @class = "col-sm-8 control-label star" })
+                            <div class="col-sm-11">
+                                @Html.TextBoxFor(model => model.ContributionRequested, new { @class = "form-control pdfcss required " })
+                                @Html.ValidationMessageFor(model => model.ContributionRequested)
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div>
+                            @Html.Label("Estimated number of attendees at event or people receiving donation:", new { @class = "col-sm-8 control-label star" })
+                            <div class="col-sm-11">
+                                @Html.TextBoxFor(model => model.EstimatedNumberOfAttendees, new { @class = "form-control pdfcss required " })
+                                @Html.ValidationMessageFor(model => model.EstimatedNumberOfAttendees)
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div>
+                            @Html.Label("Describe the demographic composition of the anticipated attendees (geographic location, male/female, age, special interests – sports, education, child welfare, etc) :", new { @class = "col-sm-8 control-label star" })
+                            <div class="col-sm-11">
+                                @Html.TextBoxFor(model => model.DescribeTheDemographic, new { @class = "form-control pdfcss required " })
+                                <br />
+                                @Html.TextBoxFor(model => model.DescribeTheDemographic1, new { @class = "form-control pdfcss required " })
+                                @Html.ValidationMessageFor(model => model.DescribeTheDemographic)
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div>
+                            @Html.Label("What publicity is planned for the event? Will Elite Parking Services be included in publicity (press  releases, interviews)?  :", new { @class = "col-sm-9 control-label star" })
+                            <div class="col-sm-11">
+                                @Html.TextBoxFor(model => model.publicityIsPlanned, new { @class = "form-control pdfcss required " })
+                                <br />
+                                @Html.TextBoxFor(model => model.publicityIsPlanned1, new { @class = "form-control pdfcss required " })
+                                @Html.ValidationMessageFor(model => model.publicityIsPlanned)
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div>
+                            @Html.Label("What opportunities will be available to display the Elite Parking Services logo? :", new { @class = "col-sm-8 control-label star" })
+                            <div class="col-sm-11">
+                                @Html.TextBoxFor(model => model.opportunitiesDescription, new { @class = "form-control pdfcss required "})
+                                <br />
+                                @Html.TextBoxFor(model => model.opportunitiesDescription1, new { @class = "form-control pdfcss required " })
+                                @Html.ValidationMessageFor(model => model.opportunitiesDescription)
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <label style="color:#0aa0cd;">
+                            Please complete this form at least two months prior to your event and email it to the Elite Parking Services of America,
+                            Inc. accounting department: accounts@eliteparkingsoa.com. Please write or type legibly.
+                        </label>
+                    </div>
+                    @* ======================================================== *@
+
+                    @if (ViewBag.UpdateMode != null && ViewBag.UpdateMode == true)
+                     {
+                       <button type="submit" class="btn btn-primary" id="btnSave">Update</button>
+                     }
+                     else
+                     {
+                       <input type="submit" class="btn btn-primary pull-right" id="btnSave" style="border-radius:20px;width:13%;margin-right:100px;" />
+                     }
+                </div><!-- tab-content -->
+            </div> <!-- /form -->
+            <div class="marbottom"></div>
+        </div>
+    </div>
+}
+
+@*<script src="~/Scripts/eFleetVehicle/reg.js"></script>*@
+
+
+

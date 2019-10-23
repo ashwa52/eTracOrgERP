@@ -1,0 +1,102 @@
+﻿@model WorkOrderEMS.Models.eFleetDriverModel
+@{
+    ViewBag.Title = "Account List";
+    // Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+
+    long locationId = 0;
+    long userType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+    }
+}
+@section scripts{
+    <script type="text/javascript">
+    var $_locationId = '@locationId';
+    var $_userTypeId = '@userType';
+    var $_VendorID = '@ViewBag.VendorId';
+    </script>
+    @*<script type="text/javascript">
+    $(window).bind('resize', function () {
+        var width = $('#jqGrid_container').width();
+        $('#tbl_AccountList').setGridWidth(width);
+    });
+    </script>*@
+}
+<style>
+     .m-0{
+        margin:0px !important;
+    }
+    .jsgrid-grid-body {
+        height: 100% !important;
+    }
+</style>
+    <script src="~/GridListing/JqGridScript/CompanyList/ListAccounts.js"></script>
+<!--For Account-->
+    <div class="content-body" style="min-height: 920px;">
+        <!-- row -->
+        <div class="container-fluid">
+            <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3 aos-init aos-animate" data-aos="fade-up">
+              
+
+
+            </div>
+            <div class="row justify-content-center">
+                
+                @*<div class="col-lg-6">
+            <a href="@Url.Action("UnApprovedVendor", "VendorManagement")">
+                <div class="pricing_table_content mt-5" style="background-color: #529F9D;color:white;">
+                    <p style="margin-top:-20px;font-size:20px;"><b> </b></p>
+                    <div class="package" style="margin-top:-30px;"><i class="mdi mdi-cart" style="color:yellow;font-size:30px;margin-left: -10px;"></i>&nbsp;&nbsp;&nbsp;<b>SetUp Vendor</b></div>
+                </div>
+            </a>
+        </div>
+        <div class="col-lg-6">
+            <a href="@Url.Action("CompanyList", "VendorManagement")" data-oldDash="Yes">
+                <div class="pricing_table_content mt-5" style="background-color: #3F8ADA;color:white;">
+                    <p style="margin-top:-20px;font-size:20px;"><b> </b></p>
+                    <div class="package" style="margin-top:-30px;"><i class="mdi mdi-account-check" style="color:white;font-size:30px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Vendor List</b></div>
+                </div>
+            </a>
+        </div>*@
+            </div>
+
+            <br>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card aos-init" data-aos="fade-up"> 
+                        <div class="card-header" style="height: 45px;">
+                            <div class="card-header headerSize" style="height:45px; padding:0;">
+                                <a href="javascript:void(0)" onclick="AddAccountDetails()"><span><i id="AddCompany" class="mdi mdi-plus" style="color:white;font-size:50px;"></i></span></a>
+                                <div class="basic-form">
+                                    <div class="form-group m-0">
+                                        <p class="m-0">Add Account Details</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div id="tbl_AccountList" class="jsgrid" style="position: relative; height: 400px; width: 100%;">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+@*<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+    <div id="jqGrid_container">
+        <table id="tbl_AccountList" border="0" cellpadding="0" cellspacing="0"></table>
+        <div id="divAccountListPager"></div>
+    </div>
+</div>*@
+<!--End Account-->
+<br /><br />
+

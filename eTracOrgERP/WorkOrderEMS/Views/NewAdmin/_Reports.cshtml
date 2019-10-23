@@ -1,0 +1,317 @@
+﻿
+@{
+    Layout = null;
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+    long loginUserType = 0;
+    long locationId = 0;
+    long UserId = 0;
+    if (ObjLogin != null)
+    {
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+        loginUserType = ObjLogin.UserRoleId;
+        locationId = ObjLogin.LocationID;
+        UserId = ObjLogin.UserId;
+    }
+}
+<script src="~/Content/Report-NavBar/jquery.smooth-scroll.js"></script>
+<script src="~/Content/Report-NavBar/run_prettify.js"></script>
+<!-- stylesheets-->
+<link href="http://fonts.googleapis.com/css?family=Lustria|Lato:300,400,700,400italic" rel="stylesheet" type="text/css">
+<link href="~/Content/Report-NavBar/ohover.css" rel="stylesheet" />
+<link href="~/Content/Report-NavBar/main.css" rel="stylesheet" />
+@*<link href="~/Content/NewAdminContent/CSS/style.css" rel="stylesheet" />*@
+<style>
+    #ReportBar li a {
+        border-radius: 4px 4px 0 0 !important;
+        border-color: lightgray;
+    }
+
+    l .active a {
+        background-color: #0aa0cd !important;
+        color: white !important;
+    }
+</style>
+<br />
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header">
+                        <h4 class="card-title" style="color: white;"><b>eMaintanace Report</b></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div data-example-id="simple-nav-justified" class="bs-example">
+                                    <div class="row-2">
+                                        <div class="item-hover circle effect3 left_to_right">
+                                            <a href="@Url.Action("IssuedWorkOrder","Report")">
+                                                <div class="img"><img src="~/Content/Images/Report/WorkOrderIssued.png"></div>
+                                                <div class="info">
+                                                    <h5>Work Order Issued</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row-2">
+                                        <div class="item-hover circle effect3 left_to_right">
+                                            <a href="@Url.Action("AssignedWorkOrder", "Report")">
+                                                <div class="img"><img src="~/Content/Images/Report/Assignedworkorder.png"></div>
+                                                <div class="info">
+                                                    <h5>Work Order Assigned</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row-2">
+                                        <div class="item-hover circle effect3 left_to_right">
+                                            <a href="@Url.Action("CompletedWorkOrder", "Report")">
+                                                <div class="img"><img src="~/Content/Images/Report/workordericon.jpg"></div>
+                                                <div class="info">
+                                                    <h5>Work Order Completed</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="row-2">
+                                        <div class="item-hover circle colored effect3 left_to_right">
+                                            <a href="@Url.Action("WorkOrderFixedTime", "Report")">
+                                                <div class="img"><img src="~/Content/Images/Report/icon-savetime.png"></div>
+                                                <div class="info">
+                                                    <h5>Fixed Time</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row-2">
+                                        <div class="item-hover circle colored effect3 left_to_right">
+                                            <a href="@Url.Action("AssetsWorkOrder", "Report")">
+                                                <div class="img"><img src="~/Content/Images/Report/checklist-3.png"></div>
+                                                <div class="info">
+                                                    <h5>Assets Work Order</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row-2">
+                                        <div class="item-hover circle colored effect3 left_to_right">
+                                            <a href="@Url.Action("WorkOrderInProgress", "Report")">
+                                                <div class="img"><img src="~/Content/Images/Report/WorkOrderFixedTime.jpg" alt="img"></div>
+                                                <div class="info">
+                                                    <h5>In Progress</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row-2">
+                                        <div class="item-hover circle colored effect3 left_to_right">
+                                            <a href="@Url.Action("WorkOrderMissedTime", "Report")">
+                                                <div class="img"><img src="~/Content/Images/Report/fixedtime.png" alt="img"></div>
+                                                <div class="info">
+                                                    <h5>Timing Missed</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header">
+                        <h4 class="card-title" style="color: white;"><b>eScanner Report</b></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div data-example-id="simple-nav-justified" class="bs-example">
+                                    <div class="row-2">
+                                        <div class="item-hover circle effect3 left_to_right">
+                                            <a href="@Url.Action("QRCScan", "Report")" id="qrcScan">
+                                                <div class="img"><img src="~/Content/Images/Report/QRCScan.jpg"></div>
+                                                <div class="info">
+                                                    <h5>QRC Scan</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row-2">
+                                        <div class="item-hover circle colored effect3 left_to_right">
+                                            <a href="@Url.Action("RoutineCheck", "Report")">
+                                                <div class="img"><img src="~/Content/Images/Report/f2.jpg"></div>
+                                                <div class="info">
+                                                    <h5>Routine Check</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row-2">
+                                        <div class="item-hover circle colored effect3 left_to_right">
+                                            <a href="@Url.Action("Cleaning", "Report")">
+                                                <div class="img"><img src="~/Content/Images/Report/cleaning.png"></div>
+                                                <div class="info">
+                                                    <h5>Cleaning</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row-2">
+                                        <div class="item-hover circle colored effect3 left_to_right">
+                                            <a href="@Url.Action("TrashLevels", "Report")">
+                                                <div class="img"><img src="~/Content/Images/Report/TrashLevel.png"></div>
+                                                <div class="info">
+                                                    <h5>Trash Levels</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row-2">
+                                        <div class="item-hover circle colored effect3 left_to_right">
+                                            <a href="@Url.Action("TrashPickedUpDetails", "Report")">
+                                                <div class="img"><img src="~/Content/Images/Report/trashpickedup.jpg"></div>
+                                                <div class="info">
+                                                    <h5>Trash PickedUp Details</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row-2">
+                                        <div class="item-hover circle colored effect3 left_to_right">
+                                            <a href="@Url.Action("QrcExpiration", "Report")">
+                                                <div class="img"><img src="~/Content/Images/Report/expiration1.jpg"></div>
+                                                <div class="info">
+                                                    <h5>QRC Expiration</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row-2">
+                                        <div class="item-hover circle colored effect3 left_to_right">
+                                            <a href="@Url.Action("QrcOwnedBy", "Report")">
+                                                <div class="img"><img src="~/Content/Images/Report/ownedby5.png"></div>
+                                                <div class="info">
+                                                    <h5>QRC OwnedBy</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row-2">
+                                        <div class="item-hover circle colored effect3 left_to_right">
+                                            <a href="@Url.Action("Damage", "Report")">
+                                                <div class="img"><img src="~/Content/Images/Report/damage1.png"></div>
+                                                <div class="info">
+                                                    <h5>Damage</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row-2">
+                                        <div class="item-hover circle colored effect3 left_to_right">
+                                            <a href="@Url.Action("QrcDetails", "Report")">
+                                                <div class="img"><img src="~/Content/Images/Report/f9.png"></div>
+                                                <div class="info">
+                                                    <h5>QRC Amount</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header">
+                        <h4 class="card-title" style="color: white;"><b>DAR Report</b></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div data-example-id="simple-nav-justified" class="bs-example">
+
+                                    <div class="row-2">
+                                        <div class="item-hover circle effect3 left_to_right">
+                                            <a href="@Url.Action("CustomerAssistance","Report")">
+                                                <div class="img"><img src="~/Content/Images/Report/Customer-Assistance.png"></div>
+                                                <div class="info">
+                                                    <h5>Customer Assistance</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row-2">
+                                        <div class="item-hover circle colored effect3 left_to_right">
+                                            <a href="@Url.Action("JumpStarts","Report")">
+                                                <div class="img"><img src="~/Content/Images/Report/jumpstart.jpg" alt="img"></div>
+                                                <div class="info">
+                                                    <h5>Jump Starts</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row-2">
+                                        <div class="item-hover circle colored effect3 left_to_right">
+                                            <a href="@Url.Action("TireInflation","Report")">
+                                                <div class="img"><img src="~/Content/Images/Report/tireinflation.png" alt="img"></div>
+                                                <div class="info">
+                                                    <h5>Tire Inflation</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row-2">
+                                        <div class="item-hover circle colored effect3 left_to_right">
+                                            <a href="@Url.Action("SpaceCount","Report")">
+                                                <div class="img"><img src="~/Content/Images/Report/spacecount.png" alt="img"></div>
+                                                <div class="info">
+                                                    <h5>Space Count</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row-2">
+                                        <div class="item-hover circle colored effect3 left_to_right">
+                                            <a href="@Url.Action("DARCodes","Report")">
+                                                <div class="img"><img src="~/Content/Images/Report/DARCode.png" alt="img"></div>
+                                                <div class="info">
+                                                    <h5>DAR Codes</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="row-2">
+                                        <div class="item-hover circle effect3 left_to_right">
+                                            <a href="@Url.Action("IdleEmployee", "Report")" id="qrcScan">
+                                                <div class="img"><img src="~/Content/Images/Report/idleemployee.png"></div>
+                                                <div class="info">
+                                                    <h5>Idle Employee</h5>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
