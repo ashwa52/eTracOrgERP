@@ -286,8 +286,8 @@
         <AssociationConnector Association="workorderEMSModel.FK_CompanyFacilityMapping_Company" />
         <EntityTypeShape EntityType="workorderEMSModel.AssessmentQuestion" Width="1.5" PointX="14.375" PointY="0.75" />
         <EntityTypeShape EntityType="workorderEMSModel.SelfAssessment306090" Width="1.5" PointX="0.75" PointY="14.75" />
-        <EntityTypeShape EntityType="workorderEMSModel.ExpectationEvaluation" Width="1.5" PointX="14.375" PointY="3.75" />
         <EntityTypeShape EntityType="workorderEMSModel.SelfAssessmentReview306090" Width="1.5" PointX="14.375" PointY="8.75" />
+        <EntityTypeShape EntityType="workorderEMSModel.ExpectationEvaluation" Width="1.5" PointX="14.375" PointY="3.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

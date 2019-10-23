@@ -741,6 +741,25 @@ namespace WorkOrderEMS.Data
 
                      }).ToList();
                 }
+                else if (AssessmentType == "QC" || AssessmentType == "QM")
+                {
+                    QuestionList = _workorderEMSEntities.spGetAssessmentQuestionQCQM(Id, AssessmentType).Select(t =>
+
+                     new GWCQUestionModel()
+                     {
+                         SelfAssessmentId = t.EEL_Id,
+                         EmployeeId = t.EEL_EMP_EmployeeId,
+                         SAR_EMP_EmployeeIdManager = t.EEL_EMP_EmployeeIdManager,
+                         QuestionType = t.ASQ_QuestionType,
+                         QuestionId = t.ASQ_Id,
+                         Question = t.ASQ_Question,
+                         Answer = t.EEL_AnswerSelf,
+                         SAR_AnswerManager = t.EEL_AnswerManager,
+                         Comment = t.EEL_Comments,
+                         SAM_IsActive = t.EEL_IsActive
+
+                     }).ToList();
+                }
                 else
                 {
 
@@ -814,6 +833,54 @@ namespace WorkOrderEMS.Data
 
                 return true;
 
+            }
+            catch (Exception)
+            { throw; }
+        }
+
+        /// <summary>GetListOf306090ForJSGrid
+        /// <Modified By>mayur sahu</Modified> 
+        /// <CreatedFor>To Get Performance 306090 list</CreatedFor>
+        /// <CreatedOn>13-Oct-2019</CreatedOn>
+        /// </summary>
+        /// <param name="UserID"></param>
+        /// <param name="OperationName"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="numberOfRows"></param>
+        /// <param name="sortColumnName"></param>
+        /// <param name="sortOrderBy"></param>
+        /// <param name="textSearch"></param>
+        /// <returns></returns>
+        public List<PerformanceModel> GetListOfExpectationsForJSGrid(string userId, long locationId, string useType, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string textSearch, out long totalRecords)
+        {
+            //totalRecords = 0;
+            ObjectParameter totalRecord = new ObjectParameter("TotalRecords", typeof(int));
+
+            List<PerformanceModel> ListOf306090Records = new List<PerformanceModel>();
+            try
+            {
+                //lstVerifiedMnagaer = _workorderEMSEntities.spGetAssessmentList306090(userId, pageIndex, sortColumnName, sortOrderBy, numberOfRows, textSearch, locationId, useType, totalRecord).Select(t =>
+                ListOf306090Records = _workorderEMSEntities.spGetAssessmentList(userId).Select(t =>
+
+                new PerformanceModel()
+                {
+                    EMP_EmployeeID = t.EMP_EmployeeID,
+                    EmployeeName = t.EmployeeName,
+                    EMP_Photo = t.EMP_Photo,
+                    DepartmentName = t.DepartmentName,
+                    JBT_JobTitle = t.JBT_JobTitle,
+                    LocationName = t.LocationName,
+                    EMP_DateOfJoining = t.EMP_DateOfJoining,
+                    Expectation = t.Expectation,
+                    Status = t.EEL_IsActive,
+                    VST_Level=t.VST_Level,
+                    FinYear=t.FinYear.Value
+
+
+
+                }).ToList();
+                totalRecords = Convert.ToInt32(totalRecord.Value);
+                return ListOf306090Records;
             }
             catch (Exception)
             { throw; }

@@ -3850,6 +3850,33 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
         }
 
+        /// <summary>GetListOfExpectationsForJSGrid
+        /// <Modified By>mayur sahu</Modified> 
+        /// <CreatedFor>To Get Performance 306090 list</CreatedFor>
+        /// <CreatedOn>13-Oct-2019</CreatedOn>
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <param name="PageIndex"></param>
+        /// <param name="NumberOfRows"></param>
+        /// <param name="SortColumnName"></param>
+        /// <param name="SortOrderBy"></param>
+        /// <param name="SearchText"></param>
+        /// <returns></returns>
+        public List<PerformanceModel> GetListOfExpectationsForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords)
+        {
+            ObjUserRepository = new UserRepository();
+            try
+            {
+
+                return ObjUserRepository.GetListOfExpectationsForJSGrid(userId, locationId, myUserType, pageIndex, numberOfRows, sortColumnName, sortOrderBy, searchText, out totalRecords);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
     }
 
     public class loc

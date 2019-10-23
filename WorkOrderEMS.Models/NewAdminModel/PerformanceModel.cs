@@ -17,6 +17,13 @@ namespace WorkOrderEMS.Models.NewAdminModel
         public DateTime? EMP_DateOfJoining { get; set; }
         public int? Assesment { get; set; }
         public string Status { get; set; }
+        public string Expectation { get; set; }
+
+        public string VST_Level { get; set; }
+
+        public int FinYear { get; set; }
+        public string IsLoggedInUser { get; set; }
+
     }
     public class GWCQUestionModel
     {
@@ -28,7 +35,7 @@ namespace WorkOrderEMS.Models.NewAdminModel
         public string Answer { get; set; }
 
         public string EmployeeId { get; set;}
-        public long SelfAssessmentId { get; set;}
+        public long? SelfAssessmentId { get; set;}
 
         public string SAM_IsActive { get; set; }
 
