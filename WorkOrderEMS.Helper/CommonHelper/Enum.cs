@@ -67,6 +67,8 @@ namespace WorkOrderEMS.Helper
         //Anonymous = 7,
         [StringValue("GuestUser")]
         GuestUser = 138,
+        [StringValue("HR")]
+        HR = 493,
     }
     public enum WorkRequestStatus
     {
@@ -660,5 +662,13 @@ namespace WorkOrderEMS.Helper
     {
         [StringValue("InsuranceVander")]
         VendorType = 3,
+    }
+
+    public enum POReccuringStaus
+    {
+        Pending,
+        Completed,
+       
+
     }
 }

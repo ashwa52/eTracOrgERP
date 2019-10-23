@@ -104,9 +104,9 @@ namespace WorkOrderEMS.BusinessLogic
                    parentId = x.VST_ParentId,
                    JobDescription = x.VST_JobDescription,
                    RolesAndResponsibility = x.VST_RolesAndResponsiblities,
-                   IsActive = x.VST_IsActive,
+                   IsActive = x.VST_IsExempt,
                    SeatingName  = x.VST_Title,
-                   Image = HostingPrefix + ProfileImagePath.Replace("~", "") + "no-profile-pic.jpg"
+                   //Image = HostingPrefix + ProfileImagePath.Replace("~", "") + "no-profile-pic.jpg"
                }).ToList();
                 if(data.Count() > 0)
                 {

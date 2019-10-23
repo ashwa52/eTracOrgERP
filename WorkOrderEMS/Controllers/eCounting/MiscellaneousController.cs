@@ -79,7 +79,8 @@ namespace WorkOrderEMS.Controllers
 
                 if (txtSearch != null && txtSearch != "")
                 {
-                    var miscListSearch = _IMiscellaneousManager.GetListMiscellaneous(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType).Where(x => x.MISId.ToLower() == txtSearch.ToLower().Trim()).ToList();
+                    var miscListSearch = _IMiscellaneousManager.GetListMiscellaneous(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
+                    var FilteredList = miscListSearch.Where(x => x.MISId.ToLower().Contains(txtSearch.ToLower().Trim())).ToList();
                     return Json(miscListSearch.ToList(), JsonRequestBehavior.AllowGet);
                 }
                 else

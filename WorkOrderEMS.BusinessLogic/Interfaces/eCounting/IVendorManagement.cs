@@ -52,5 +52,16 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
         bool InsPolicyNumberIsExists(string InsPolicyNumber);
         IList<VendorSetupManagementModel> GetAllCompanyDataList1(long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
         bool SaveContractAllocation(ContractLocationAllocation obj);
+        CompanyCountForGraph GetCompanyCountForGraph();
+        List<LocationAllocationCompanyCountForGraph> GetCompanyAllocationLocationCountForGraph();
+      void  SetPrimaryAccount(long VendorId, long AccountId);
+        /// <summary>
+        /// Created By : Ajay Kumar
+        /// Created Date : 10-Oct-2019
+        /// Crated For : To check duplicate Point Of Contact  for vendor
+        /// </summary>
+        /// <param name="taxNumber"></param>
+        /// <returns></returns>
+         bool PointOfContactIsExists(string txtPointOfContact, long VendorId);
     }
 }

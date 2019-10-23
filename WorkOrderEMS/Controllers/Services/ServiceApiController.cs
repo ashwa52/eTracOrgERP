@@ -2297,6 +2297,7 @@ namespace WorkOrderEMS.Controllers.Services
                                     {
 
                                         var dataFacility = _IBillDataManager.GetFacilityDataByFacilityId(item);
+
                                         long CostCodeId = Convert.ToInt64(dataFacility.CostCode);
                                         var costCodeName = _IBillDataManager.GetCostCodeData(CostCodeId);
                                         var dataget = accountData.Where(x => x.Name == costCodeName.Description).FirstOrDefault();
@@ -3460,8 +3461,7 @@ namespace WorkOrderEMS.Controllers.Services
             }
 
             return Ok(serviceresponse);
-        }
-
+        }		
         #region Facility
 
         /// <summary>

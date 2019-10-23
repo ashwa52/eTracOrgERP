@@ -14,6 +14,7 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class Contract
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Contract()
         {
             this.ContractLocationAllocations = new HashSet<ContractLocationAllocation>();
@@ -47,7 +48,9 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ContractType ContractType { get; set; }
         public virtual PaymentMode PaymentMode { get; set; }
         public virtual PaymentTerm PaymentTerm { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ContractLocationAllocation> ContractLocationAllocations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LogContract> LogContracts { get; set; }
     }
 }

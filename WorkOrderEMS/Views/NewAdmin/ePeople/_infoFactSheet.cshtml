@@ -1,0 +1,178 @@
+﻿@model WorkOrderEMS.Models.NewAdminModel.InfoFactSheet
+<style>
+	img {
+		border-radius: 50%;
+		height: auto;
+		width: 50px;
+	}
+
+	.profile_image {
+		width: 55px;
+	}
+
+	.profile_detail {
+		width: 150px;
+	}
+
+	.name {
+		position: relative;
+		display: block;
+		font-weight: bold;
+		font-size: 20px;
+		color: #000000;
+	}
+
+	.profile {
+		position: absolute;
+		color: #000000;
+	}
+
+	.inline {
+		display: inline-block;
+		position: relative;
+	}
+
+	.yellow {
+		color: yellow;
+	}
+
+	.right-sec {
+		float: right;
+		width: 15%;
+		margin-top: -17px;
+		margin-right: -14px;
+	}
+
+	.right-pad {
+		margin: 2px;
+	}
+
+	.email-sec {
+		background-color: #018FFC;
+		padding: 34px 8px 28px 22px;
+		text-align: center;
+		box-shadow: 0px 0px 4px #888888;
+		color: white;
+	}
+
+	.d-sal {
+		background-color: #018FFC;
+		padding: 34px 8px 28px 22px;
+		text-align: center;
+		box-shadow: 0px 0px 4px #888888;
+		color: white;
+	}
+
+	.start-d {
+		background-color: #018FFC;
+		padding: 34px 8px 28px 22px;
+		text-align: center;
+		box-shadow: 0px 0px 4px #888888;
+		color: white;
+	}
+
+	/*.btnSelected {
+		background-color: green;
+		font-weight: bold;
+		font-size: 23px;
+		padding: 15px 20px 16px 20px;
+		margin: 2px;
+		width:200px;
+	}*/
+    .btnSelected {
+        background-color: green;
+        font-weight: bold;
+        font-size: 23px;
+        padding: 7px 13px 7px 13px;
+        margin: 2px;
+        width: 150px;
+    }
+    .btnNotSelected {
+        background-color: #5c545f;
+        font-weight: bold;
+        font-size: 23px;
+        padding: 7px 13px 7px 13px;
+        margin: 2px;
+        width: 150px;
+        color: #fff;
+    }
+	.rightList {
+		float: right;
+		padding-left: 1px;
+		padding-right: 1px;
+		max-width: 14%;
+	}
+</style>
+<div class="row" style="padding:3px 15px 0px 15px;">
+	<div class="col-lg-12">
+		<div class="card">
+			<div class="card-header">
+				<div class="profile_image inline spccing">
+					<img src="@Model.model.Image" alt="Avatar">
+				</div>
+				<div class="profile_detail inline spccing">
+					<span class="name">
+						@string.Format("{0} {1}", Model.model.FirstName, Model.model.LastName)
+					</span>
+					<span class="profile">
+						General Manager
+					</span>
+				</div>
+				<div class="rating inline spccing">
+					<i class="fa fa-star yellow" aria-hidden="true"></i>
+					<i class="fa fa-star yellow" aria-hidden="true"></i>
+					<i class="fa fa-star yellow" aria-hidden="true"></i>
+					<i class="fa fa-star yellow" aria-hidden="true"></i>
+					<i class="fa fa-star" aria-hidden="true"></i>
+				</div>
+				<input type="hidden" id="applicant_id" value="@Model.model.ApplicantId" />
+				<div class="mobile inline spccing"><span>@Model.model.PhoneNumber</span></div>
+				<div class="email inline spccing"><span>@Model.model.Email</span></div>
+				<div class="status inline spccing" style="width: 56px;">@Model.model.Status</div>
+			</div>
+			<div class="panel-body">
+				<div class="row">
+					<div class="col-lg-10" id="interviewArea" style="background:#A0D2FA;margin-left:16px;height:425px;overflow:auto">
+						<iframe src="@Url.Action("GetPDF")#toolbar=0" style="width:100%; height:425px;" frameborder="0"></iframe>
+					</div>
+					<div class="col-md-2 rightList" style="float:right">
+						<div class="email-sec right-pad">
+							<i class="fa fa-envelope-o" aria-hidden="true"></i>
+							<div>Email</div>
+						</div>
+						<div class="d-sal right-pad">
+							<div>Desire Salary</div>
+							<i class="fa fa-usd" aria-hidden="true"></i>
+							@*@Html.EditorFor(x=>x.model.DesireSalary,new { @style= "display: inline-block; width: 84%; border-color: #018FFC; background-color: #018FFC; border: 0px; border-bottom: 1px solid #ddd;" })*@
+							<input type="text" value="@Model.model.DesireSalary" style=" display: inline-block; width: 84%; border-color: #018FFC; background-color: #018FFC; border: 0px; border-bottom: 1px solid #ddd;">
+						</div>
+						<div class="start-d right-pad">
+							<div>Available Start Date</div>
+
+							<i class="fa fa-calendar" aria-hidden="true"></i>
+
+							<input id="datepicker" type="text" style=" display: inline-block; width: 84%; border-color: #018FFC; background-color: #018FFC; border: 0px; border-bottom: 1px solid #ddd;">
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card-footer" style="background-color: darkgray;">
+				<button class="btn btn-default btnSelected">Resume</button>
+				<button class="btn btn-default btnNotSelected">Notes</button>
+				<button class="btn btn-default btnNotSelected">eMails</button>
+				<button class="btn btn-default btnNotSelected" onclick="GetInterviewers(this,'@Model.model.ApplicantId');">Interview</button>
+				<div class="dropdown" style="float:right;margin:2px">
+					<button type="button" class="btn btn-primary dropdown-toggle" style="padding: 12px 14px 12px 13px;" data-toggle="dropdown">
+						Dropdown button
+					</button>
+					<div class="dropdown-menu">
+						<a class="dropdown-item" href="#">Link 1</a>
+						<a class="dropdown-item" href="#">Link 2</a>
+						<a class="dropdown-item" href="#">Link 3</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

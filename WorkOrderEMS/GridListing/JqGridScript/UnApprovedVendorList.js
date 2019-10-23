@@ -44,9 +44,9 @@ $(function () {
             {
                 name: "act", items: act, title: "View Details", width: 50, css: "text-center", itemTemplate: function (value, item) {
                     //TO add icon edit and delete to perform update and delete operation
-                    var $iconPencil = $("<i>").attr({ class: "fa fa-list" }).attr({ style: "color:black;font-size: 22px;" }); 
+                    var $iconPencil = $("<i>").attr({ class: "fa fa-list list-icon" }).attr({ style: "" }); 
 
-                    var $customEditButton = $("<span style='padding: 0 5px 0 0;'>")
+                    var $customEditButton = $("<span class='view-detail-icon'>")
                         .attr({ title:"View Details"})
                         .attr({ id: "btn-edit-" + item.Id }).click(function (e)
                         {
@@ -209,7 +209,7 @@ function ViewDetails(item) {
                 $('#UnVendorFacility_table').html("");
                 $('#UnVendorFacility_table tbody').empty();
                 var thHTML = '';
-                thHTML += '<tr style="background-color:#0792bc;"><th>Cost Code</th><th>Facility Type</th><th>Description</th><th>Unit Price</th><th>Tax</th></tr>';
+                thHTML += '<tr style="background-color:#0792bc; color:#fff;"><th>Cost Code</th><th>Facility Type</th><th>Description</th><th>Unit Price</th><th>Tax</th></tr>';
                 $('#UnVendorFacility_table').append(thHTML);
                 if (result.VendorFacilityModel.length > 0) {
                     for (i = 0; i < result.VendorFacilityModel.length; i++) {
@@ -237,9 +237,7 @@ var timeoutHnd;
 var flAuto = true;
 function doSearch(ev) {
     var act;
-    $("#jsGrid-basic").jsGrid({
-        height: "170%",
-        width: "100%",
+    $("#jsGrid-basic").jsGrid({       
         filtering: false,
         editing: false,
         inserting: false,
@@ -271,7 +269,7 @@ function doSearch(ev) {
             {
                 name: "act", items: act, title: "View Details", width: 50, css: "text-center", itemTemplate: function (value, item) {
                     //TO add icon edit and delete to perform update and delete operation
-                    var $iconPencil = $("<i>").attr({ class: "fa fa-list" }).attr({ style: "color:black;font-size: 22px;" });
+                    var $iconPencil = $("<i>").attr({ class: "fa fa-list list-icon" }).attr({ style: "" });
 
                     var $customEditButton = $("<span style='padding: 0 5px 0 0;'>")
                         .attr({ title: "View Details" })
@@ -298,7 +296,7 @@ function doSearch(ev) {
     });
 }
 function filter(args) {
-    debugger
+ 
    
 } 
 //function gridReload() {

@@ -13,11 +13,17 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class spGetMiscellaneousDetail_Result
     {
+        public long LMIS_Id { get; set; }
         public long LMIS_MIS_Id { get; set; }
         public string LocationName { get; set; }
         public string CMP_NameLegal { get; set; }
         public string Employee_Name { get; set; }
         public Nullable<decimal> MISAmount { get; set; }
         public string MISDate { get; set; }
+        public string LMIS_InvoiceDocument { get; set; }
+        public string LMIS_Comment { get; set; }
+        public string Status { get; set; }
+        public long LMIS_LocationId { get; set; }
+        public long LMIS_ModifiedBy { get; set; }
     }
 }

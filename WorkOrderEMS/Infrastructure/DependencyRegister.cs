@@ -15,6 +15,8 @@ using WorkOrderEMS.BusinessLogic.Interfaces.eFleet;
 using WorkOrderEMS.BusinessLogic.Managers;
 using WorkOrderEMS.BusinessLogic.Managers.Accounts;
 using WorkOrderEMS.BusinessLogic.Managers.eFleet;
+using WorkOrderEMS.Data.DataRepository;
+using WorkOrderEMS.Data.Interfaces;
 
 namespace WorkOrderEMS.Infrastructure
 {
@@ -95,6 +97,8 @@ namespace WorkOrderEMS.Infrastructure
                 For<IDepartment>().Use<DepartmentManager>();
                 For<IAdminDashboard>().Use<VehicleSeatingChartManager>();
                 For<IePeopleManager>().Use<ePeopleManager>();
+                For<IGuestUser>().Use<GuestUserRepository>();
+                For<IGuestUserRepository>().Use<GuestUserRepositoryData>();
             }
         }
     }

@@ -44,12 +44,12 @@ namespace WorkOrderEMS.Controllers.eCounting
         //    return View();
         //}
 
-            /// <summary>
-            /// Created By: Ashwajit Bansod
-            /// Created Date : 24-Dec-2018
-            /// Created For : To View Pre Bill Data.
-            /// </summary>
-            /// <returns></returns>
+        /// <summary>
+        /// Created By: Ashwajit Bansod
+        /// Created Date : 24-Dec-2018
+        /// Created For : To View Pre Bill Data.
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ListPreBillView()
         {
             eTracLoginModel ObjLoginModel = null;
@@ -148,54 +148,81 @@ namespace WorkOrderEMS.Controllers.eCounting
         public JsonResult GetListPreBill(string _search, long? UserId, long? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
         {
             eTracLoginModel ObjLoginModel = null;
-            if (Session["eTrac"] != null)
+           if (Session["eTrac"] != null)
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-                if (locationId == null)
+                if (ObjLoginModel != null)
                 {
+
                     locationId = ObjLoginModel.LocationID;
                 }
                 UserId = ObjLoginModel.UserId;
             }
-            JQGridResults result = new JQGridResults();
-            List<JQGridRow> rowss = new List<JQGridRow>();
-            sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
-            sidx = string.IsNullOrEmpty(sidx) ? "UserEmail" : sidx;
-            txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
+
             try
             {
-                var billList = _IBillDataManager.GetListPreBill(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
-                foreach (var bill in billList.rows)
+                //var billList = _IBillDataManager.GetListPreBill(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
+                //return Json(billList.ToList(), JsonRequestBehavior.AllowGet);
+
+                long ts;
+                long.TryParse(txtSearch, out ts);
+
+                if (!string.IsNullOrEmpty(txtSearch))
                 {
-                    if (bill.BillId != null)
-                    {
-                        JQGridRow row = new JQGridRow();
-                        row.id = Cryptography.GetEncryptedData(Convert.ToString(bill.BillId), true);
-                        row.cell = new string[11];
-                        row.cell[0] = bill.BillId.ToString();
-                        row.cell[1] = bill.VendorName;
-                        row.cell[2] = bill.EmployeeName;
-                        row.cell[3] = bill.VendorType;
-                        row.cell[4] = bill.BillDate.ToString();
-                        row.cell[5] = bill.BillAmount.ToString();
-                        //row.cell[5] = bill.InvoiceDate.ToString();
-                        //row.cell[6] = bill.BillType;
-                        row.cell[6] = bill.Status == "W" ?"Pending": bill.Status == "Y" ?"Approved":"Reject";
-                        row.cell[7] = bill.Comment == null?"N/A": bill.Comment;
-                        row.cell[8] = (bill.BillImage == "" || bill.BillImage == null) ? HostingPrefix + ProfileImagePath.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + BillPath.Replace("~", "") + bill.BillImage;
-                        row.cell[9] = bill.LBLL_Id.ToString();
-                        row.cell[10] = bill.VendorId.ToString();
-                        rowss.Add(row);
-                    }
+                    var billList = _IBillDataManager.GetListPreBill(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType).Where(x => x.BillId == ts).ToList();
+                    return Json(billList.ToList(), JsonRequestBehavior.AllowGet);
                 }
-                result.rows = rowss.ToArray();
-                result.page = Convert.ToInt32(page);
-                result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
-                result.records = Convert.ToInt32(TotalRecords.Value);
+                else
+                {
+                    var billList = _IBillDataManager.GetListPreBill(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
+                    return Json(billList.ToList(), JsonRequestBehavior.AllowGet);
+                }
+
             }
             catch (Exception ex)
-            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
-            return Json(result, JsonRequestBehavior.AllowGet);
+            {
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+
+            //JQGridResults result = new JQGridResults();
+            //List<JQGridRow> rowss = new List<JQGridRow>();
+            //sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
+            //sidx = string.IsNullOrEmpty(sidx) ? "UserEmail" : sidx;
+            //txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
+            //try
+            //{
+            //    var billList = _IBillDataManager.GetListPreBill(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
+            //    foreach (var bill in billList.rows)
+            //    {
+            //        if (bill.BillId != null)
+            //        {
+            //            JQGridRow row = new JQGridRow();
+            //            row.id = Cryptography.GetEncryptedData(Convert.ToString(bill.BillId), true);
+            //            row.cell = new string[11];
+            //            row.cell[0] = bill.BillId.ToString();
+            //            row.cell[1] = bill.VendorName;
+            //            row.cell[2] = bill.EmployeeName;
+            //            row.cell[3] = bill.VendorType;
+            //            row.cell[4] = bill.BillDate.ToString();
+            //            row.cell[5] = bill.BillAmount.ToString();
+            //            //row.cell[5] = bill.InvoiceDate.ToString();
+            //            //row.cell[6] = bill.BillType;
+            //            row.cell[6] = bill.Status == "W" ?"Pending": bill.Status == "Y" ?"Approved":"Reject";
+            //            row.cell[7] = bill.Comment == null?"N/A": bill.Comment;
+            //            row.cell[8] = (bill.BillImage == "" || bill.BillImage == null) ? HostingPrefix + ProfileImagePath.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + BillPath.Replace("~", "") + bill.BillImage;
+            //            row.cell[9] = bill.LBLL_Id.ToString();
+            //            row.cell[10] = bill.VendorId.ToString();
+            //            rowss.Add(row);
+            //        }
+            //    }
+            //    result.rows = rowss.ToArray();
+            //    result.page = Convert.ToInt32(page);
+            //    result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
+            //    result.records = Convert.ToInt32(TotalRecords.Value);
+            //}
+            //catch (Exception ex)
+            //{ return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+            //return Json(result, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -207,10 +234,10 @@ namespace WorkOrderEMS.Controllers.eCounting
         /// <param name="Obj"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult ApproveBillData(BillListApproveModel Obj,long LocationId, List<BillFacilityModel> FacilityData)
+        public JsonResult ApproveBillData(BillListApproveModel Obj, long LocationId, List<BillFacilityModel> FacilityData)
         {
             eTracLoginModel ObjLoginModel = null;
-            string result="";
+            string result = "";
             string UserName = "";
             string data = "";
             long UserId = 0;
@@ -234,7 +261,7 @@ namespace WorkOrderEMS.Controllers.eCounting
                         if (AccessToken == null)
                         {
                             AccessToken = Session["refresh_token"].ToString();
-                            AccessToken = CallbackController.AccessToken.ToString(); 
+                            AccessToken = CallbackController.AccessToken.ToString();
                         }
                         var principal = User as ClaimsPrincipal;
                         OAuth2RequestValidator oauthValidator = new OAuth2RequestValidator(AccessToken);
@@ -265,10 +292,10 @@ namespace WorkOrderEMS.Controllers.eCounting
                                 name = vendorData.DisplayName,
                                 Value = vendorData.Id
                             };
-                        }                        
+                        }
                         //End Vendor Reference
                         bill.TotalAmt = Convert.ToDecimal(Obj.BillAmount);
-                        
+
                         var metaData = new ModificationMetaData();
                         metaData.CreateTime = Convert.ToDateTime(Obj.InvoiceDate);
                         bill.MetaData = metaData;
@@ -297,7 +324,7 @@ namespace WorkOrderEMS.Controllers.eCounting
                             {
                                 long CostCodeId = Convert.ToInt64(item.CostCodeId);
                                 var costCodeName = _IBillDataManager.GetCostCodeData(CostCodeId);
-                            
+
                                 var dataget = BillList.Where(x => x.Name == costCodeName.Description).FirstOrDefault();
                                 accountRef.AccountRef = new ReferenceType()
                                 {
@@ -376,15 +403,15 @@ namespace WorkOrderEMS.Controllers.eCounting
 
                         // bill.ref
                         resultBill = commonServiceQBO.Add(bill) as Bill;
-                        }
-                        catch (Exception ex)
-                        {
-                            return Json(ex.Message, JsonRequestBehavior.AllowGet);
-                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        return Json(ex.Message, JsonRequestBehavior.AllowGet);
+                    }
 
                     //}
                     Obj.QuickBookBillId = Convert.ToInt64(resultBill.Id);
-                    result = _IBillDataManager.ApproveBill(Obj, UserName, UserId, LocationId);                   
+                    result = _IBillDataManager.ApproveBill(Obj, UserName, UserId, LocationId);
                 }
                 else
                 {
@@ -424,7 +451,7 @@ namespace WorkOrderEMS.Controllers.eCounting
                 }
                 if (Id > 0)
                 {
-                     AllBillFacilityList = _IBillDataManager.GetAllBillFacilityListById(Id);
+                    AllBillFacilityList = _IBillDataManager.GetAllBillFacilityListById(Id);
                     return Json(AllBillFacilityList, JsonRequestBehavior.AllowGet);
                 }
                 else
@@ -435,7 +462,7 @@ namespace WorkOrderEMS.Controllers.eCounting
             catch (Exception ex)
             {
                 return Json(ex.Message, JsonRequestBehavior.AllowGet);
-            }          
+            }
         }
     }
 }

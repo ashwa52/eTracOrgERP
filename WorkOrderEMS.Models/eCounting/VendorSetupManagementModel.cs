@@ -34,6 +34,7 @@ namespace WorkOrderEMS.Models
         [Required]
         [DisplayName("Point Of Contact")]
         [RegularExpression("^[a-zA-Z0-9, -]+$", ErrorMessage = "Special characters are not allowed.")]
+        [Remote("IsPointOfContactIsExists", "VendorManagement", AdditionalFields = "VendorId", ErrorMessage = "Point Of Contact already in used.")]
         public string PointOfContact { get; set; }
 
         [Required]
@@ -149,5 +150,19 @@ namespace WorkOrderEMS.Models
         public int pageindex { get; set; }
         public int records { get; set; }
         public List<VendorSetupManagementModel> rows { get; set; }
+    }
+    public class CompanyCountForGraph
+    {
+        public Nullable<long> TotalVendorCount { get; set; }
+        public Nullable<long> ApprovedVendorCount { get; set; }
+        public Nullable<long> WaitingVendorCount { get; set; }
+        public Nullable<long> RejectedVendorCount { get; set; }
+    }
+    public class LocationAllocationCompanyCountForGraph
+    {
+        public string LocationName { get; set; }
+        public int VendorCount { get; set; }
+        public string colour { get; set; }
+
     }
 }

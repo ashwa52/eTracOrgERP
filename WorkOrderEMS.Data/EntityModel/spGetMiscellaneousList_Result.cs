@@ -19,5 +19,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public string Employee_Name { get; set; }
         public Nullable<decimal> MISAmount { get; set; }
         public string MISDate { get; set; }
+        public string Status { get; set; }
     }
 }

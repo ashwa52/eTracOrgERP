@@ -13,12 +13,18 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class spPaymentDesk_Result
     {
+        public long LBLL_Id { get; set; }
         public Nullable<long> LBLL_BLL_Id { get; set; }
+        public Nullable<long> LocationId { get; set; }
         public string LocationName { get; set; }
-        public string CMP_NameLegal { get; set; }
+        public Nullable<long> CMP_IdRemitter { get; set; }
+        public string CMP_NameLegalRemitter { get; set; }
+        public Nullable<long> CMP_IdBeneficiary { get; set; }
+        public string CMP_NameLegalBeneficiary { get; set; }
         public string LBLL_BillType { get; set; }
-        public Nullable<decimal> LBLL_PoMisBdaAmount { get; set; }
+        public Nullable<decimal> LBLL_InvoiceAmount { get; set; }
         public Nullable<int> CNT_GracePeriod { get; set; }
+        public Nullable<long> PMD_Id { get; set; }
         public string PMD_PaymentMode { get; set; }
         public System.DateTime BillDate { get; set; }
         public string CAT_Discription { get; set; }

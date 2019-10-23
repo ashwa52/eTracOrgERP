@@ -24,6 +24,19 @@ namespace WorkOrderEMS.Controllers.Common
                     .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(0, 1))
                   )
                 .Build();
+
+            IJobDetail jobForPO = JobBuilder.Create<SchedularForPO>().Build(); 
+            ITrigger triggerForPO = TriggerBuilder.Create()
+                .WithDailyTimeIntervalSchedule
+                  (s =>
+                     s.WithIntervalInHours(24)
+                    .OnEveryDay()
+                    .StartingDailyAt(TimeOfDay.HourAndMinuteOfDay(0, 1))
+                  )
+                .Build();
+
+
+
             //ITrigger trigger = TriggerBuilder.Create()
             //.WithCronSchedule(string.Format("0 {0} {1} ? * *", 0, 13))
             //   .Build();

@@ -1,8 +1,11 @@
 ﻿var QRCurl = '../QRCSetup/GetQRCListForJsGrid';
 var clients;
 var $_LocationId = $("#drp_MasterLocation option:selected").val();
-var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_RequestedBy = 0;//= $("#drp_MasterLocation option:selected").val();
-
+var $_OperationName = "", $_QRCType = 0, $_workRequestAssignmentId = 0, $_UserId = 0, $_RequestedBy = 0;//= $("#drp_MasterLocation option:selected").val();
+$("#SearchQRCTypeData").change(function () {
+    $_QRCType = $("#SearchQRCTypeData option:selected").val();
+    $("#ListQRC").jsGrid("loadData");
+});
 (function ($) {
     'use strict'
     var data;
@@ -22,32 +25,22 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
             loadData: function (filter) {
                 return $.ajax({
                     type: "GET",
-                    url: QRCurl + '?locationId=' + $("#drp_MasterLocation1 option:selected").val() + '&SearchQRCType=' + 0,
+                    url: QRCurl + '?locationId=' + $("#drp_MasterLocation1 option:selected").val() + '&SearchQRCType=' + $_QRCType,
                     datatype: 'json',
                     contentType: "application/json",
                 });
             }
         },
-        //onDataLoading: function (args) {
-        //    return $.ajax({
-        //        type: "GET",
-        //        url: QRCurl + '?locationId=' + $_LocationId + '&SearchQRCType=' + 0,
-        //        datatype: 'json',
-        //        contentType: "application/json",
-        //    });
-        //},
-        //data: response,
         onRefreshed: function (args) {
             $(".jsgrid-insert-row").hide();
             $(".jsgrid-filter-row").hide()
             $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
-
         },
         fields: [
             { name: 'QRCodeID', width: 160, title: "QRCode ID", css: "text-center" },//visible: true
             { name: 'QRCName', width: 150, title: "QRC Item Name" },
                     { name: "QRCTYPE", width: 150, title: "QRC Type" },
-                    { name: "SpecialNotes", width: 150, title: "Special Notes" },                                      
+                    { name: "SpecialNotes", width: 150, title: "Special Notes" },
                     {
                         name: "act", title: "Action", width: 100, css: "text-center", itemTemplate: function (value, item) {
                             var $iconCheckIn = null;
@@ -58,8 +51,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                             if ((item.CheckOutStatus == 'False' || item.CheckOutStatus == '0') && (item.QRCTYPEId == "36" || item.QRCTYPEId == 36)) {
                                 $iconCheckIn = $("<i>").attr({ class: "fa fa-check-circle-o" }).attr({ style: "font-size:22px;margin-left:8px;" });
                             }
-                            if ((item.CheckOutStatus == 'False' || item.CheckOutStatus == '0') && ((item.IsDamage == 'True' || item.IsDamage == 1) && (item.IsDamageVerified == null || item.IsDamageVerified == 'YesNull' || item.IsDamageVerified == undefined)) && (item.QRCTYPEId == "36" || item.QRCTYPEId == 36))
-                            {
+                            if ((item.CheckOutStatus == 'False' || item.CheckOutStatus == '0') && ((item.IsDamage == 'True' || item.IsDamage == 1) && (item.IsDamageVerified == null || item.IsDamageVerified == 'YesNull' || item.IsDamageVerified == undefined)) && (item.QRCTYPEId == "36" || item.QRCTYPEId == 36)) {
                                 $iconDamage = $("<i>").attr({ class: "fa fa-check-circle-o" }).attr({ style: "font-size:22px;margin-left:8px;" });
                                 $iconCheckIn = $("<i><img>").attr({ src: "../Content/Images/car_damage.png" });
                             }
@@ -70,7 +62,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                     $('#QRCForm').load(addNewUrl);
                                     $("#OperationDARListDiv, .dispayListQRCName, #OperationDARListDiv, .dispayListQRCName").hide();
                                     $("#OperationCreateQRCListDiv, .dispayCreateQRCName , .createQRCForm").show();
-                                
+
                                     e.stopPropagation();
                                 }).append($iconPencil);
                             var $customDeleteButton = $("<span>")
@@ -81,29 +73,17 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                           url: "../QRCSetup/Delete?qr=" + item.id,
                                           success: function (Data) {
                                               $("#ListQRC").jsGrid("loadData");
-                                              
+
                                           },
                                           error: function (err) {
                                           }
-
                                       });
-
-                                      e.stopPropagation();
                                   }).append($iconTrash);
-
                             var $customQRCButton = $("<span>")
                               .attr({ title: jsGrid.fields.control.prototype.qrcButtonTooltip })
                               .attr({ id: "btn-qrc-" + item.id }).click(function (e) {
-                                QRCGenerate(item.id);
-                                  e.stopPropagation();
+                                  QRCGenerate(item.id);
                               }).append($iconQRC);
-
-                            //var $customQRCButton = $("<span>")
-                            //  .attr({ title: jsGrid.fields.control.prototype.qrcButtonTooltip })
-                            //  .attr({ id: "btn-qrc-" + item.id }).click(function (e) {
-                            //      debugger
-                            //      e.stopPropagation();
-                            //  }).append($iconQRC);
                             return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton).append($customDeleteButton).append($customQRCButton);
                         }
                     },
@@ -123,14 +103,90 @@ $(document).ready(function () {
         $("#ListQRC").jsGrid("loadData");
     })
 });
+function exportAllQRC(ev) {
+    debugger
+    var select = $('#printQRC :selected').val();
+    if ($.trim(select) != '' && $.trim(select) != '0') {
+        if ($.trim(select) == 'Grid') {
+            var getAllGridData = $("#ListQRC").jsGrid("option", "data");
+            //var getAllGridData = $("#tbl_QRCList").jqGrid('getRowData');
+            if (getAllGridData.length > 0) {
+                var divPrint = '<html><style type="text/css">.pagebreak{  padding: 0px;} table {  page-break-after:auto }tr{ page-break-inside:avoid; page-break-after:auto }thead { display:table-header-group }tfoot{ display:table-footer-group }table {display:inline-block;}</style><body onload="window.print();"><div style="width: 90%;" class="row">';
+                for (var i = 0; i < getAllGridData.length ; i++) {
+                    generateqrcodeByVJ(getAllGridData[i].QRCodeID, getAllGridData[i].QRCSize);
+                    divPrint = divPrint + "<table class='pagebreak' ><tr><td valign='top' style=''><div style='padding: 3px; margin: 0px auto; border: 0px solid rgb(10, 160, 205); float:left;'><strong style='font-size: 16px;'></strong> <br/>"
+                  + getAllGridData[i].QRCodeID + "<p><strong style='font-size: 16px;'></strong></p><p>" + container2.innerHTML + "</p></div></td></tr></tbody></table>";
+                }
+                divPrint = divPrint + "</div></body></html>";
 
+                var popupWin = window.open('', '_blank', 'width=800,height=600');
+                popupWin.document.open();
+                popupWin.document.write(divPrint);
+                if (popupWin.closed == false) {
+                    popupWin.document.close();
+                }
+                $("#printQRC option:eq(0)").attr('selected', 'selected');
+            }
+        }
+        else {
+            fn_showMaskloader('Please wait...Loading');
+            var sortColumnName = $("#tbl_QRCList").jqGrid('getGridParam', 'sortname');
+            var sortOrder = $("#tbl_QRCList").jqGrid('getGridParam', 'sortorder');
+            var txtSearch = jQuery("#SearchText").val();
+            var selectSearchQRCType = jQuery("#SearchQRCType").val();
+            var locaId = $('#ViewAllLocation').prop('checked') == true ? 0 : $("#drp_MasterLocation1 :selected").val();
+
+            //do export option here
+            $.ajax({
+                type: "GET",
+                url: $_HostPrefix + 'QRCSetup/GetQRCListforPrint',
+                async: false,
+                data: { "sidx": sortColumnName, "sord": sortOrder, "locationId": locaId, "SearchText": txtSearch, "SearchQRCType": selectSearchQRCType },
+                //beforeSend: function () {
+                //    new fn_showMaskloader('Please wait...Loading');
+                //},
+                complete: function () {
+                    fn_hideMaskloader();
+                },
+                success: function (html) {
+                    //fn_hideMaskloader();
+                    if (html != null && html.rows.length > 0) {
+
+
+                        var divPrint = '<html><style type="text/css">.pagebreak{  padding: 10px;} table { page-break-inside:auto}tr{ page-break-inside:avoid; page-break-after:auto }thead { display:table-header-group }tfoot{ display:table-footer-group }table {display: inline-block;}</style><body onload="window.print();"><div style="width: 90%;" class="row">';
+                        for (var i = 0; i < html.rows.length ; i++) {
+                            generateqrcodeByVJ(html.rows[i].cell[0], html.rows[i].cell[5]);
+                            divPrint = divPrint + "<table class='pagebreak'><tr><td valign='top' style=''><div style='padding: 3px; margin: 0px auto; border: 0px solid rgb(10, 160, 205); float:left;'><strong style='font-size: 16px;'></strong> <br/>"
+                          + html.rows[i].cell[0] + "<p><strong style='font-size: 16px;'></strong></p><p>" + container2.innerHTML + "</p></div></td></tr></tbody></table>";
+                        }
+                        divPrint = divPrint + "</div></body></html>";
+                        //fn_hideMaskloader();
+                        //$('body').find('.eliteMask').remove();
+
+                        var popupWin = window.open('', '_blank', 'width=800,height=600');
+                        popupWin.document.open();
+                        popupWin.document.write(divPrint);
+
+                        if (popupWin.closed == false) {
+                            fn_hideMaskloader();
+                            popupWin.document.close();
+                        }
+                        else {
+                            fn_hideMaskloader();
+                        }
+                    }
+                },
+                error: function (err) {
+                    fn_hideMaskloader();
+                }
+            });
+            fn_hideMaskloader();
+            $("#printQRC option:eq(0)").attr('selected', 'selected');
+        }
+    }
+}
 //View QRC Code
 function QRCGenerate(id) {
-    //$("#QRCGenerate").click(function (event) {
-    //var id = $(this).attr("data-value");
-
-    //showPopupRelativeMessage("Are you sure want to Generate QRC?", $(this), "QRC Generate For Vehicle!", function () {
-
     $.ajax({
         type: "GET",
         data: { qr: id },
@@ -215,7 +271,7 @@ function QRCGenerate(id) {
             //$("#lblQRCTYPE").html(result.data.QRCTYPE);
             //$("#").html(result.data.VendorID);
             $("#lblCompanyName").html(result.data.CompanyName);
-           // $("#").html(result.data.ContactName);
+            // $("#").html(result.data.ContactName);
             $("#lblBusinessNo").html(result.data.BusinessNo);
             $("#pDriverName").html("<b>Company Name:- </b>" + result.data.CompanyName);
             $("#pCompanyName").html("<b>Driver Name:- </b>" + result.data.DriverName);

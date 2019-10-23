@@ -275,15 +275,27 @@
         <AssociationConnector Association="workorderEMSModel.FK_QRCMasterLog_UserRegistrations" />
         <AssociationConnector Association="workorderEMSModel.FK_QRCScanLog_UserRegistrations" />
         <AssociationConnector Association="workorderEMSModel.FK_SubCostCode_UserRegistrations" />
-        <EntityTypeShape EntityType="workorderEMSModel.CompanyAccountDetail" Width="1.5" PointX="11.25" PointY="191.625" />
+        <EntityTypeShape EntityType="workorderEMSModel.CompanyAccountDetail" Width="1.5" PointX="11.25" PointY="191.5" />
+        <EntityTypeShape EntityType="workorderEMSModel.LogCompanyAccountDetail" Width="1.5" PointX="19.5" PointY="195.125" />
         <AssociationConnector Association="workorderEMSModel.FK_CompanyAccountDetail_Company" />
+        <AssociationConnector Association="workorderEMSModel.FK_LogCompanyAccountDetail_Company" />
         <AssociationConnector Association="workorderEMSModel.FK_CompanyAccountDetail_PaymentMode" />
         <AssociationConnector Association="workorderEMSModel.FK_CompanyAccountTransaction_CompanyAccountDetailCr" />
         <AssociationConnector Association="workorderEMSModel.FK_CompanyAccountTransaction_CompanyAccountDetailDr" />
-        <EntityTypeShape EntityType="workorderEMSModel.LogCompanyAccountDetail" Width="1.5" PointX="19.5" PointY="195.25" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogCompanyAccountDetail_Company" />
         <AssociationConnector Association="workorderEMSModel.FK_LogCompanyAccountDetail_CompanyAccountDetail" />
         <AssociationConnector Association="workorderEMSModel.FK_LogCompanyAccountDetail_PaymentMode" />
+        <EntityTypeShape EntityType="workorderEMSModel.ApplicantInfo" Width="1.5" PointX="0.75" PointY="14.75" />
+        <EntityTypeShape EntityType="workorderEMSModel.Citizenship" Width="1.5" PointX="14.75" PointY="5.75" />
+        <EntityTypeShape EntityType="workorderEMSModel.Department" Width="1.5" PointX="14.75" PointY="1.5" />
+        <EntityTypeShape EntityType="workorderEMSModel.Employee" Width="1.5" PointX="14.75" PointY="9.75" />
+        <EntityTypeShape EntityType="workorderEMSModel.EmployeeAddress" Width="1.5" PointX="2.75" PointY="15.75" />
+        <EntityTypeShape EntityType="workorderEMSModel.JobPosting" Width="1.5" PointX="4.75" PointY="15.75" />
+        <EntityTypeShape EntityType="workorderEMSModel.JobTitle" Width="1.5" PointX="19.25" PointY="1.5" />
+        <EntityTypeShape EntityType="workorderEMSModel.VehicleSeating" Width="1.5" PointX="17" PointY="1" />
+        <EntityTypeShape EntityType="workorderEMSModel.VehicleSeating_DepartmentMapping" Width="1.5" PointX="6.75" PointY="15.75" />
+        <AssociationConnector Association="workorderEMSModel.FK_VehicleSeating_Department" />
+        <AssociationConnector Association="workorderEMSModel.FK_JobTitle_VehicleSeating" />
+        <EntityTypeShape EntityType="workorderEMSModel.DebitMemo" Width="1.5" PointX="14.375" PointY="15.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

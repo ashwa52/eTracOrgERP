@@ -70,6 +70,41 @@
           <Property Name="DeletedBy" Type="bigint" />
           <Property Name="DeletedOn" Type="datetime" />
         </EntityType>
+        <EntityType Name="ApplicantInfo">
+          <Key>
+            <PropertyRef Name="API_ApplicantId" />
+          </Key>
+          <Property Name="API_ApplicantId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="API_FirstName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="API_MiddleName" Type="varchar" MaxLength="50" />
+          <Property Name="API_LastName" Type="varchar" MaxLength="50" />
+          <Property Name="API_HomeAddress" Type="varchar" MaxLength="100" />
+          <Property Name="API_City" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="API_State" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="API_Zip" Type="int" />
+          <Property Name="API_Resume" Type="nvarchar(max)" />
+          <Property Name="API_CoverLetter" Type="varchar(max)" />
+          <Property Name="API_PhoneNumber" Type="bigint" Nullable="false" />
+          <Property Name="API_Email" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="API_DLNumber" Type="varchar" MaxLength="50" />
+          <Property Name="API_Photo" Type="nvarchar(max)" />
+          <Property Name="API_Citizenship" Type="varchar" MaxLength="50" />
+          <Property Name="API_MilitaryService" Type="char" MaxLength="1" />
+          <Property Name="API_Gender" Type="varchar" MaxLength="20" />
+          <Property Name="API_HighestEducation" Type="varchar" MaxLength="30" />
+          <Property Name="API_AnyRefOrEmployeeInELITE" Type="varchar" MaxLength="100" />
+          <Property Name="API_EverELITEWorkFrom" Type="date" />
+          <Property Name="API_EverELITEWorkTo" Type="date" />
+          <Property Name="API_WorkEligibleInUS" Type="char" MaxLength="1" />
+          <Property Name="API_JobPostingId" Type="bigint" />
+          <Property Name="API_JobTitleID" Type="bigint" Nullable="false" />
+          <Property Name="API_HiringManagerID" Type="bigint" />
+          <Property Name="API_DateOfJoining" Type="date" />
+          <Property Name="API_DesireSalary" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="API_ApplicantStatus" Type="char" MaxLength="1" />
+          <Property Name="API_Date" Type="datetime" />
+          <Property Name="API_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
         <EntityType Name="Bill">
           <Key>
             <PropertyRef Name="BLL_Id" />
@@ -136,6 +171,20 @@
           <Property Name="BLM_Date" Type="date" Nullable="false" />
           <Property Name="BLM_IsActive" Type="char" MaxLength="1" />
         </EntityType>
+        <EntityType Name="Citizenship">
+          <Key>
+            <PropertyRef Name="CTZ_Id" />
+          </Key>
+          <Property Name="CTZ_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CTZ_Citizenship" Type="varchar" MaxLength="50" />
+          <Property Name="CTZ_EMP_EmployeeID" Type="varchar" MaxLength="50" />
+          <Property Name="CTZ_lawfulResident" Type="varchar" MaxLength="30" />
+          <Property Name="CTZ_AlienRegisteationNumber" Type="varchar" MaxLength="20" />
+          <Property Name="CTZ_FormI94" Type="nvarchar(max)" />
+          <Property Name="CTZ_ForeignPassport" Type="varchar" MaxLength="100" />
+          <Property Name="CTZ_Date" Type="datetime" />
+          <Property Name="CTZ_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
         <EntityType Name="Company">
           <Key>
             <PropertyRef Name="CMP_Id" />
@@ -168,6 +217,7 @@
           <Property Name="CAD_QBKId" Type="bigint" />
           <Property Name="CAD_CardHolderName" Type="varchar" MaxLength="20" />
           <Property Name="CAD_CardExpirationDate" Type="datetime" />
+          <Property Name="CAD_IsPrimary" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="CompanyAccountTransaction">
           <Key>
@@ -385,6 +435,25 @@
           <Property Name="DeletedBy" Type="bigint" />
           <Property Name="DeletedDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="DebitMemo">
+          <Key>
+            <PropertyRef Name="DBM_Id" />
+          </Key>
+          <Property Name="DBM_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DBM_LocationId" Type="bigint" Nullable="false" />
+          <Property Name="DBM_CMP_Id" Type="bigint" Nullable="false" />
+          <Property Name="DBM_PurchaseOrder" Type="bigint" />
+          <Property Name="DBM_DebitAmount" Type="bigint" Nullable="false" />
+          <Property Name="DBM_Note" Type="nvarchar(max)" />
+          <Property Name="DBM_Status" Type="int" />
+          <Property Name="DBM_DocumentName" Type="nvarchar" MaxLength="100" />
+          <Property Name="DBM_CreatedDate" Type="datetime" />
+          <Property Name="DBM_ModifiedDate" Type="datetime" />
+          <Property Name="DBM_ModifiedBy" Type="nvarchar" MaxLength="30" />
+          <Property Name="DBM_IsDeleted" Type="bit" />
+          <Property Name="DBM_DeletedBy" Type="nvarchar" MaxLength="30" />
+          <Property Name="DBM_DeletedDate" Type="datetime" />
+        </EntityType>
         <EntityType Name="DefectReportDetails">
           <Key>
             <PropertyRef Name="DefectID" />
@@ -405,6 +474,15 @@
           <Property Name="IsDeleted" Type="bit" />
           <Property Name="DeletedBy" Type="bigint" />
           <Property Name="DeletedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="DPT_Id" />
+          </Key>
+          <Property Name="DPT_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DPT_Name" Type="varchar" MaxLength="70" Nullable="false" />
+          <Property Name="DPT_Date" Type="datetime" />
+          <Property Name="DPT_IsActive" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="eFleetDriver">
           <Key>
@@ -750,6 +828,46 @@
           <Property Name="CreatedDate" Type="datetime" />
           <Property Name="WorkOrderAssignmentId" Type="bigint" />
         </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EMP_Id" />
+          </Key>
+          <Property Name="EMP_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EMP_EmployeeID" Type="varchar" MaxLength="20" />
+          <Property Name="EMP_API_ApplicantId" Type="bigint" />
+          <Property Name="EMP_FirstName" Type="varchar" MaxLength="30" />
+          <Property Name="EMP_MiddleName" Type="varchar" MaxLength="30" />
+          <Property Name="EMP_LastName" Type="varchar" MaxLength="30" />
+          <Property Name="EMP_Email" Type="varchar" MaxLength="50" />
+          <Property Name="EMP_Phone" Type="bigint" />
+          <Property Name="EMP_DrivingLicenseNumber" Type="varchar" MaxLength="50" />
+          <Property Name="EMP_DateOfBirth" Type="date" />
+          <Property Name="EMP_SSN" Type="varchar" MaxLength="50" />
+          <Property Name="EMP_Photo" Type="nvarchar(max)" />
+          <Property Name="EMP_MilitaryService" Type="char" MaxLength="1" />
+          <Property Name="EMP_Gender" Type="varchar" MaxLength="20" />
+          <Property Name="EMP_JobTitleId" Type="bigint" />
+          <Property Name="EMP_ManagerId" Type="bigint" />
+          <Property Name="EMP_DateOfJoining" Type="date" />
+          <Property Name="EMP_LocationId" Type="bigint" />
+          <Property Name="EMP_IsCreatedBy" Type="bigint" />
+          <Property Name="EMP_IsCreatedOn" Type="datetime" />
+          <Property Name="EMP_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="EmployeeAddress">
+          <Key>
+            <PropertyRef Name="EMA_Id" />
+          </Key>
+          <Property Name="EMA_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EMA_EMP_EmployeeID" Type="varchar" MaxLength="20" />
+          <Property Name="EMA_Address" Type="varchar" MaxLength="100" />
+          <Property Name="EMA_City" Type="varchar" MaxLength="50" />
+          <Property Name="EMA_State" Type="varchar" MaxLength="50" />
+          <Property Name="EMA_Zip" Type="int" />
+          <Property Name="EMA_AddressPhoneNo" Type="bigint" />
+          <Property Name="EMA_Date" Type="datetime" />
+          <Property Name="EMA_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
         <EntityType Name="EmployeeLocationMapping">
           <Key>
             <PropertyRef Name="EmployeeLocationMappingId" />
@@ -851,6 +969,29 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Name="INS_ExpirationDate" Type="datetime" Nullable="false" />
           <Property Name="INS_InsuranceDocument" Type="nvarchar(max)" />
           <Property Name="INS_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="JobPosting">
+          <Key>
+            <PropertyRef Name="JPS_JobPostingId" />
+          </Key>
+          <Property Name="JPS_JobPostingId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="JPS_JobTitleID" Type="bigint" Nullable="false" />
+          <Property Name="JPS_HiringManagerID" Type="bigint" Nullable="false" />
+          <Property Name="JPS_JobTitle" Type="varchar" MaxLength="50" />
+          <Property Name="JPS_HiringManager" Type="varchar" MaxLength="50" />
+          <Property Name="JPS_NumberOfPost" Type="int" />
+          <Property Name="JPS_Date" Type="datetime" />
+          <Property Name="JPS_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="JobTitle">
+          <Key>
+            <PropertyRef Name="JBT_Id" />
+          </Key>
+          <Property Name="JBT_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="JBT_JobTitle" Type="varchar" MaxLength="70" Nullable="false" />
+          <Property Name="JBT_VST_Id" Type="bigint" Nullable="false" />
+          <Property Name="JBT_Date" Type="datetime" />
+          <Property Name="JBT_IsActive" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="License">
           <Key>
@@ -1016,6 +1157,7 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Name="LCAD_Balance" Type="numeric" Precision="18" Scale="2" />
           <Property Name="LCAD_CardHolderName" Type="varchar" MaxLength="20" />
           <Property Name="LCAD_CardExpirationDate" Type="datetime" />
+          <Property Name="LCAD_IsPrimary" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="LogCompanyDetail">
           <Key>
@@ -1251,6 +1393,8 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Name="LPOD_RUL_Id" Type="bigint" />
           <Property Name="LPOD_RUL_Level" Type="nchar" MaxLength="1" />
           <Property Name="LPOD_RUL_CurrentLevel" Type="nchar" MaxLength="1" />
+          <Property Name="LPOD_POD_ReccuringDate" Type="date" />
+          <Property Name="LPOD_POD_ReccuringStatus" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="LogPODetailEmergency">
           <Key>
@@ -1484,6 +1628,9 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Name="POD_ReoccourringBillDate" Type="date" />
           <Property Name="POD_EmergencyPODocument" Type="nvarchar(max)" />
           <Property Name="POD_IsActive" Type="char" MaxLength="1" />
+          <Property Name="POD_ReferenceId" Type="bigint" />
+          <Property Name="POD_ReccuringDate" Type="date" />
+          <Property Name="POD_ReccuringStatus" Type="varchar" MaxLength="10" />
         </EntityType>
         <EntityType Name="PODetailEmergency">
           <Key>
@@ -1837,6 +1984,29 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="Longitude" Type="varchar" MaxLength="100" />
           <Property Name="PaymentMode" Type="bigint" />
           <Property Name="PaymentTerm" Type="bigint" />
+        </EntityType>
+        <EntityType Name="VehicleSeating">
+          <Key>
+            <PropertyRef Name="VST_Id" />
+          </Key>
+          <Property Name="VST_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VST_Title" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="VST_JobDescription" Type="varchar(max)" Nullable="false" />
+          <Property Name="VST_RolesAndResponsiblities" Type="varchar(max)" Nullable="false" />
+          <Property Name="VST_Level" Type="nchar" MaxLength="1" Nullable="false" />
+          <Property Name="VST_ParentId" Type="bigint" Nullable="false" />
+          <Property Name="VST_DPT_Id" Type="bigint" Nullable="false" />
+          <Property Name="VST_Date" Type="datetime" />
+          <Property Name="VST_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="VehicleSeating_DepartmentMapping">
+          <Key>
+            <PropertyRef Name="VDM_Id" />
+          </Key>
+          <Property Name="VDM_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VDM_VST_Id" Type="bigint" Nullable="false" />
+          <Property Name="VDM_DPT_Id" Type="bigint" Nullable="false" />
+          <Property Name="VDM_IsActive" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="VendorType">
           <Key>
@@ -2893,6 +3063,18 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_JobTitle_VehicleSeating">
+          <End Role="VehicleSeating" Type="Self.VehicleSeating" Multiplicity="1" />
+          <End Role="JobTitle" Type="Self.JobTitle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehicleSeating">
+              <PropertyRef Name="VST_Id" />
+            </Principal>
+            <Dependent Role="JobTitle">
+              <PropertyRef Name="JBT_VST_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_License_Company">
           <End Role="Company" Type="Self.Company" Multiplicity="1" />
           <End Role="License" Type="Self.License" Multiplicity="*" />
@@ -3361,18 +3543,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LogPODetail_PODetail">
-          <End Role="PODetail" Type="Self.PODetail" Multiplicity="1" />
-          <End Role="LogPODetail" Type="Self.LogPODetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PODetail">
-              <PropertyRef Name="POD_Id" />
-            </Principal>
-            <Dependent Role="LogPODetail">
-              <PropertyRef Name="LPOD_POD_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_LogPODetail_POType">
           <End Role="POType" Type="Self.POType" Multiplicity="1" />
           <End Role="LogPODetail" Type="Self.LogPODetail" Multiplicity="*" />
@@ -3610,18 +3780,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </Principal>
             <Dependent Role="PODetailEmergency">
               <PropertyRef Name="POE_POT_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_POFacilityItem_PODetail">
-          <End Role="PODetail" Type="Self.PODetail" Multiplicity="1" />
-          <End Role="POFacilityItem" Type="Self.POFacilityItem" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PODetail">
-              <PropertyRef Name="POD_Id" />
-            </Principal>
-            <Dependent Role="POFacilityItem">
-              <PropertyRef Name="POF_POD_Id" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -3949,6 +4107,18 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_VehicleSeating_Department">
+          <End Role="Department" Type="Self.Department" Multiplicity="1" />
+          <End Role="VehicleSeating" Type="Self.VehicleSeating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="DPT_Id" />
+            </Principal>
+            <Dependent Role="VehicleSeating">
+              <PropertyRef Name="VST_DPT_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_WorkRequestAssignment_eFleetVehicle">
           <End Role="eFleetVehicle" Type="Self.eFleetVehicle" Multiplicity="0..1" />
           <End Role="WorkRequestAssignment" Type="Self.WorkRequestAssignment" Multiplicity="*" />
@@ -3998,6 +4168,12 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           </ReferentialConstraint>
         </Association>
         <Function Name="CommonQeriesByVijay" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="ExcuteAutoBill" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="invoicingFrequency" Type="varchar" Mode="In" />
+          <Parameter Name="BillDueDate" Type="date" Mode="In" />
+          <Parameter Name="MinimumBillAmount" Type="numeric" Mode="In" />
+          <Parameter Name="VendorId" Type="bigint" Mode="In" />
+        </Function>
         <Function Name="fn_ConvertTimeZones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="datetime">
           <Parameter Name="CurrentDateTime" Type="datetime" Mode="In" />
           <Parameter Name="CurrentTimeZoneUTC" Type="varchar" Mode="In" />
@@ -4017,6 +4193,19 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               <RowType>
                 <Property Name="idx" Type="smallint" Nullable="false" />
                 <Property Name="value" Type="varchar(max)" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
+        </Function>
+        <Function Name="fnGetManager" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="UserId" Type="bigint" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="ManagerForUser" Type="bigint" />
+                <Property Name="FirstName" Type="varchar" MaxLength="200" Nullable="false" />
+                <Property Name="UserEmail" Type="varchar" MaxLength="100" Nullable="false" />
+                <Property Name="DeviceId" Type="varchar" MaxLength="200" />
               </RowType>
             </CollectionType>
           </ReturnType>
@@ -4043,6 +4232,17 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         <Function Name="fun_GetClientDateTime" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="datetime">
           <Parameter Name="TOCONVERTDATE" Type="datetime" Mode="In" />
           <Parameter Name="OFFSET" Type="int" Mode="In" />
+        </Function>
+        <Function Name="fun_GetClientDateTime_O" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" StoreFunctionName="fun_GetClientDateTime-O">
+          <Parameter Name="TOCONVERTDATE" Type="datetime" Mode="In" />
+          <Parameter Name="OFFSET" Type="int" Mode="In" />
+          <ReturnType>
+            <CollectionType>
+              <RowType>
+                <Property Name="clientDateTime" Type="datetime" />
+              </RowType>
+            </CollectionType>
+          </ReturnType>
         </Function>
         <Function Name="GetDstEnd" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="datetime">
           <Parameter Name="Year" Type="int" Mode="In" />
@@ -4089,6 +4289,10 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         <Function Name="Proc_GetUserLocations" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserType" Type="bigint" Mode="In" />
           <Parameter Name="UserID" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="SetAutoBill" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="signalRPushNotifyForWorkOrder" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="SignalRDate" Type="date" Mode="In" />
         </Function>
         <Function Name="sp_DeleteLocation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Parameter" Type="varchar(max)" Mode="In" />
@@ -4190,6 +4394,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="TextSearch" Type="varchar" Mode="In" />
           <Parameter Name="TotalRecords" Type="int" Mode="InOut" />
         </Function>
+        <Function Name="SP_GetAllReccuringPO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="sp_GetAllRoutinecheck" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="bigint" Mode="In" />
           <Parameter Name="LocationId" Type="bigint" Mode="In" />
@@ -4322,6 +4527,11 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="MinusthirtyMin" Type="datetime" Mode="In" />
           <Parameter Name="IdleTime" Type="datetime" Mode="In" />
         </Function>
+        <Function Name="sp_GetIdleDetailsOfEmployeeForIdleReport" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LocationId" Type="bigint" Mode="In" />
+          <Parameter Name="UserId" Type="bigint" Mode="In" />
+          <Parameter Name="IdleTime" Type="datetime" Mode="In" />
+        </Function>
         <Function Name="sp_GetIdleStatusOfEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LocationId" Type="bigint" Mode="In" />
           <Parameter Name="UserId" Type="bigint" Mode="In" />
@@ -4431,6 +4641,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="locationId" Type="bigint" Mode="In" />
           <Parameter Name="action" Type="varchar(max)" Mode="In" />
         </Function>
+        <Function Name="sp_SetPOReccuring" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spApplyRule" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="bigint" Mode="In" />
           <Parameter Name="RUL_MDL_Id" Type="bigint" Mode="In" />
@@ -4487,6 +4698,8 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         <Function Name="spGetCompanyAccountDetailForPayment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CAD_CMP_Id" Type="bigint" Mode="In" />
         </Function>
+        <Function Name="spGetCompanyAllocationLocationCountForGraph" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetCompanyCountForGraph" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetCompanyDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetCompanyDetailEdit" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CMP_ID" Type="bigint" Mode="In" />
@@ -4505,6 +4718,12 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="LocationId" Type="bigint" Mode="In" />
         </Function>
         <Function Name="spGetCompanyListForAdmin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetCompanyLocationCostCodeMapping" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CLC_LocationId" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="spGetCompanyType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetContract" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetContractLocationAllocation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetContractType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetCostCode" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Action" Type="char" Mode="In" />
@@ -4515,15 +4734,28 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="CLM_LocationId" Type="bigint" Mode="In" />
           <Parameter Name="CLM_CCM_CostCode" Type="bigint" Mode="In" />
         </Function>
+        <Function Name="spGetDebitMemoList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LocationId" Type="bigint" Mode="In" />
+          <Parameter Name="Status" Type="int" Mode="In" />
+        </Function>
         <Function Name="spGeteFormTrack" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ApprovarId" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="spGetEmployeePersonalInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
         </Function>
         <Function Name="spGetFormMaster" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetInsurance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CMP_Id" Type="bigint" Mode="In" />
         </Function>
+        <Function Name="spGetJobTitle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="JBT_VST_Id" Type="bigint" Mode="In" />
+        </Function>
         <Function Name="spGetLicense" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CMP_Id" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="spGetLocationCompanyMapping" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CMP_LocationId" Type="bigint" Mode="In" />
         </Function>
         <Function Name="spGetLocationCompanyMappingForApproval" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CMP_Id" Type="bigint" Mode="In" />
@@ -4539,6 +4771,18 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         </Function>
         <Function Name="spGetMisNumber" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetModule" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetOrgnizationCommonview" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spGetOrgnizationListview" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spGetOrgnizationPositionView" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spGetOrgnizationUserView" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spGetPaymentMode" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetPaymentSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LocationId" Type="bigint" Mode="In" />
@@ -4583,6 +4827,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="PO_Status" Type="char" Mode="In" />
         </Function>
         <Function Name="spGetPONumber" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetPONumberForReccuringPO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetPOPaymentSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LocationId" Type="bigint" Mode="In" />
           <Parameter Name="FromDate" Type="date" Mode="In" />
@@ -4593,6 +4838,9 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="POD_Id" Type="bigint" Mode="In" />
         </Function>
         <Function Name="spGetPOType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetPreBillDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PBL_Id" Type="bigint" Mode="In" />
+        </Function>
         <Function Name="spGetPreBillList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LocationId" Type="bigint" Mode="In" />
         </Function>
@@ -4614,6 +4862,15 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="CLM_CCM_CostCode" Type="bigint" Mode="In" />
         </Function>
         <Function Name="spGetTaxDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetVehicleSeating" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetVehicleSeating_DepartmentMapping" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetVehicleSeatingPermission" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="VSP_VST_Id" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="spGetVehicleSeatingPermissionType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="VPT_UserId" Type="bigint" Mode="In" />
+          <Parameter Name="VPT_SMD_Id" Type="bigint" Mode="In" />
+        </Function>
         <Function Name="spGetVendorAllDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CMP_Id" Type="bigint" Mode="In" />
         </Function>
@@ -4646,16 +4903,36 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="LBLL_IsApprove" Type="char" Mode="In" />
           <Parameter Name="LBLL_ApprovedBy" Type="bigint" Mode="In" />
         </Function>
+        <Function Name="spSetApprovalForCompany" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LCMP_Id" Type="bigint" Mode="In" />
+          <Parameter Name="LCMP_Comment" Type="varchar" Mode="In" />
+          <Parameter Name="LCMP_IsApprove" Type="char" Mode="In" />
+        </Function>
         <Function Name="spSetApprovalForCompanyAccountDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LCAD_Id" Type="bigint" Mode="In" />
           <Parameter Name="LCAD_Comment" Type="varchar" Mode="In" />
           <Parameter Name="LCAD_IsApprove" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetApprovalForCompanyDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LCOD_Id" Type="bigint" Mode="In" />
+          <Parameter Name="LCOD_Comment" Type="varchar" Mode="In" />
+          <Parameter Name="LCOD_IsApprove" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetApprovalForCompanyFacilityMapping" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LCFM_Id" Type="bigint" Mode="In" />
           <Parameter Name="LCFM_Comment" Type="varchar" Mode="In" />
           <Parameter Name="LCFM_IsApprove" Type="char" Mode="In" />
           <Parameter Name="LCFM_ApprovedBy" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="spSetApprovalForCompanyLocationCostCodeMapping" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LCLC_Id" Type="bigint" Mode="In" />
+          <Parameter Name="LCLC_Comment" Type="varchar" Mode="In" />
+          <Parameter Name="LCLC_IsApprove" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetApprovalForContract" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LCNT_Id" Type="bigint" Mode="In" />
+          <Parameter Name="LCNT_Comment" Type="varchar" Mode="In" />
+          <Parameter Name="LCNT_IsApprove" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetApprovalForCostCode" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LCCD_Id" Type="bigint" Mode="In" />
@@ -4667,6 +4944,16 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="LCCM_Id" Type="bigint" Mode="In" />
           <Parameter Name="LCCM_Comment" Type="varchar" Mode="In" />
           <Parameter Name="LCCM_IsApprove" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetApprovalForInsurance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LINS_Id" Type="bigint" Mode="In" />
+          <Parameter Name="LINS_Comment" Type="varchar" Mode="In" />
+          <Parameter Name="LINS_IsApprove" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetApprovalForLicense" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LLNC_Id" Type="bigint" Mode="In" />
+          <Parameter Name="LLNC_Comment" Type="varchar" Mode="In" />
+          <Parameter Name="LLNC_IsApprove" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetApprovalForLocationCompanyMapping" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LLCM_Id" Type="bigint" Mode="In" />
@@ -4691,6 +4978,11 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="LPBL_Comment" Type="varchar" Mode="In" />
           <Parameter Name="LPBL_IsApprove" Type="char" Mode="In" />
           <Parameter Name="LPBL_ApprovedBy" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="spSetApprovalForTaxDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LTXD_Id" Type="bigint" Mode="In" />
+          <Parameter Name="LTXD_Comment" Type="varchar" Mode="In" />
+          <Parameter Name="LTXD_IsApprove" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetApprovalForVendorAllDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CMP_Id" Type="bigint" Mode="In" />
@@ -4787,6 +5079,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="CAD_QBKId" Type="bigint" Mode="In" />
           <Parameter Name="CAD_CardHolderName" Type="varchar" Mode="In" />
           <Parameter Name="CAD_CardExpirationDate" Type="datetime" Mode="In" />
+          <Parameter Name="CAD_IsPrimary" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetCompanyAccountTransaction" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CATAction" Type="char" Mode="In" />
@@ -4937,6 +5230,29 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="LCCM_ApprovedBy" Type="bigint" Mode="In" />
           <Parameter Name="LCCM_IsActive" Type="char" Mode="In" />
         </Function>
+        <Function Name="spSetDebitMemo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="DBM_ID" Type="bigint" Mode="In" />
+          <Parameter Name="DBM_Action" Type="char" Mode="In" />
+          <Parameter Name="DBM_LocationId" Type="bigint" Mode="In" />
+          <Parameter Name="DBM_CMP_Id" Type="bigint" Mode="In" />
+          <Parameter Name="DBM_PurchaseOrder" Type="bigint" Mode="In" />
+          <Parameter Name="DBM_DebitAmount" Type="bigint" Mode="In" />
+          <Parameter Name="DBM_Note" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="DBM_Status" Type="int" Mode="In" />
+          <Parameter Name="DBM_DocumentName" Type="nvarchar" Mode="In" />
+          <Parameter Name="DBM_CreatedDate" Type="datetime" Mode="In" />
+          <Parameter Name="DBM_ModifiedDate" Type="datetime" Mode="In" />
+          <Parameter Name="DBM_ModifiedBy" Type="nvarchar" Mode="In" />
+          <Parameter Name="DBM_IsDeleted" Type="bit" Mode="In" />
+          <Parameter Name="DBM_DeletedBy" Type="nvarchar" Mode="In" />
+          <Parameter Name="DBM_DeletedDate" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="spSetDepartment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="DPTAction" Type="char" Mode="In" />
+          <Parameter Name="DPT_Id" Type="bigint" Mode="In" />
+          <Parameter Name="DPT_Name" Type="varchar" Mode="In" />
+          <Parameter Name="DPT_IsActive" Type="char" Mode="In" />
+        </Function>
         <Function Name="spSeteformTrack" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EFTAction" Type="char" Mode="In" />
           <Parameter Name="EFT_Id" Type="bigint" Mode="In" />
@@ -4948,6 +5264,36 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="EFT_eFormTrackLink" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="EFT_Comment" Type="varchar" Mode="In" />
           <Parameter Name="EFT_IsActive" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EMPAction" Type="char" Mode="In" />
+          <Parameter Name="EMP_Id" Type="bigint" Mode="In" />
+          <Parameter Name="EMP_EmployeeID" Type="varchar" Mode="In" />
+          <Parameter Name="EMP_API_ApplicantId" Type="bigint" Mode="In" />
+          <Parameter Name="EMP_FirstName" Type="varchar" Mode="In" />
+          <Parameter Name="EMP_MiddleName" Type="varchar" Mode="In" />
+          <Parameter Name="EMP_LastName" Type="varchar" Mode="In" />
+          <Parameter Name="EMP_Email" Type="varchar" Mode="In" />
+          <Parameter Name="EMP_Phone" Type="bigint" Mode="In" />
+          <Parameter Name="EMP_DrivingLicenseNumber" Type="varchar" Mode="In" />
+          <Parameter Name="EMP_DateOfBirth" Type="date" Mode="In" />
+          <Parameter Name="EMP_SSN" Type="varchar" Mode="In" />
+          <Parameter Name="EMP_Photo" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="EMP_MilitaryService" Type="char" Mode="In" />
+          <Parameter Name="EMP_Gender" Type="bigint" Mode="In" />
+          <Parameter Name="EMP_JobTitleId" Type="bigint" Mode="In" />
+          <Parameter Name="EMP_ManagerId" Type="bigint" Mode="In" />
+          <Parameter Name="EMP_DateOfJoining" Type="date" Mode="In" />
+          <Parameter Name="EMP_LocationId" Type="bigint" Mode="In" />
+          <Parameter Name="EMP_IsCreatedBy" Type="bigint" Mode="In" />
+          <Parameter Name="EMP_IsCreatedOn" Type="datetime" Mode="In" />
+          <Parameter Name="EMP_IsActive" Type="char" Mode="In" />
+          <Parameter Name="UserType" Type="bigint" Mode="In" />
+          <Parameter Name="EMA_Address" Type="varchar" Mode="In" />
+          <Parameter Name="EMA_City" Type="varchar" Mode="In" />
+          <Parameter Name="EMA_State" Type="varchar" Mode="In" />
+          <Parameter Name="EMA_Zip" Type="int" Mode="In" />
+          <Parameter Name="CTZ_Citizenship" Type="varchar" Mode="In" />
         </Function>
         <Function Name="spSetFormMaster" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FRMAction" Type="char" Mode="In" />
@@ -4968,6 +5314,13 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="INS_ModifiedBy" Type="bigint" Mode="In" />
           <Parameter Name="INS_ApprovedBy" Type="bigint" Mode="In" />
           <Parameter Name="INS_IsActive" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetJobTitle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="JBTAction" Type="char" Mode="In" />
+          <Parameter Name="JBT_Id" Type="bigint" Mode="In" />
+          <Parameter Name="JBT_JobTitle" Type="varchar" Mode="In" />
+          <Parameter Name="JBT_VST_Id" Type="bigint" Mode="In" />
+          <Parameter Name="JBT_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetLicense" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LNCAction" Type="char" Mode="In" />
@@ -5033,6 +5386,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="POD_RUL_Level" Type="nchar" Mode="In" />
           <Parameter Name="POD_RUL_CurrentLevel" Type="nchar" Mode="In" />
           <Parameter Name="POD_QBKId" Type="bigint" Mode="In" />
+          <Parameter Name="POD_ReccuringStatus" Type="varchar" Mode="In" />
         </Function>
         <Function Name="spSetPODetailEmergency" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="POEAction" Type="char" Mode="In" />
@@ -5125,6 +5479,24 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="TXD_ModifiedBy" Type="bigint" Mode="In" />
           <Parameter Name="TXD_ApprovedBy" Type="bigint" Mode="In" />
           <Parameter Name="TXD_IsActive" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetVehicleSeating" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="VSTAction" Type="char" Mode="In" />
+          <Parameter Name="VST_Id" Type="bigint" Mode="In" />
+          <Parameter Name="VST_Title" Type="varchar" Mode="In" />
+          <Parameter Name="VST_JobDescription" Type="varchar(max)" Mode="In" />
+          <Parameter Name="VST_RolesAndResponsiblities" Type="varchar(max)" Mode="In" />
+          <Parameter Name="VST_Level" Type="char" Mode="In" />
+          <Parameter Name="VST_ParentId" Type="bigint" Mode="In" />
+          <Parameter Name="VST_DPT_Id" Type="bigint" Mode="In" />
+          <Parameter Name="VST_IsActive" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetVehicleSeating_DepartmentMapping" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="VDMAction" Type="char" Mode="In" />
+          <Parameter Name="VDM_Id" Type="bigint" Mode="In" />
+          <Parameter Name="VDM_VST_Id" Type="bigint" Mode="In" />
+          <Parameter Name="VDM_DPT_Id" Type="bigint" Mode="In" />
+          <Parameter Name="VDM_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetVendorType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="VDTAction" Type="char" Mode="In" />
@@ -5269,11 +5641,13 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="AddressMaster" EntityType="Self.AddressMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AdminEmployeeMapping" EntityType="Self.AdminEmployeeMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AdminLocationMapping" EntityType="Self.AdminLocationMapping" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ApplicantInfo" EntityType="Self.ApplicantInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BillFacilityItem" EntityType="Self.BillFacilityItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BillType" EntityType="Self.BillType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BudgetCostCodeMapping" EntityType="Self.BudgetCostCodeMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BudgetLocationMapping" EntityType="Self.BudgetLocationMapping" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Citizenship" EntityType="Self.Citizenship" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompanyAccountDetail" EntityType="Self.CompanyAccountDetail" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompanyAccountTransaction" EntityType="Self.CompanyAccountTransaction" Schema="dbo" store:Type="Tables" />
@@ -5290,7 +5664,9 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="CostCodeMaster" EntityType="Self.CostCodeMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DARDetails" EntityType="Self.DARDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DashboardWidgetSetting" EntityType="Self.DashboardWidgetSetting" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DebitMemo" EntityType="Self.DebitMemo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DefectReportDetails" EntityType="Self.DefectReportDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Department" EntityType="Self.Department" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="eFleetDriver" EntityType="Self.eFleetDriver" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="eFleetFueling" EntityType="Self.eFleetFueling" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="eFleetMaintenance" EntityType="Self.eFleetMaintenance" Schema="dbo" store:Type="Tables" />
@@ -5307,12 +5683,16 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="eFormTrack" EntityType="Self.eFormTrack" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmailLog" EntityType="Self.EmailLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EMaintenanceSurvey" EntityType="Self.EMaintenanceSurvey" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeAddress" EntityType="Self.EmployeeAddress" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeLocationMapping" EntityType="Self.EmployeeLocationMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ExceptionLog" EntityType="Self.ExceptionLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FormMaster" EntityType="Self.FormMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GlobalCodes" EntityType="Self.GlobalCodes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HoursOfServices" EntityType="Self.HoursOfServices" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Insurance" EntityType="Self.Insurance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="JobPosting" EntityType="Self.JobPosting" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="JobTitle" EntityType="Self.JobTitle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="License" EntityType="Self.License" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LocationClientMapping" EntityType="Self.LocationClientMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LocationCompanyMapping" EntityType="Self.LocationCompanyMapping" Schema="dbo" store:Type="Tables" />
@@ -5366,6 +5746,8 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="TimeZones" EntityType="Self.TimeZones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TrackEmployeeStatus" EntityType="Self.TrackEmployeeStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserRegistrations" EntityType="Self.UserRegistrations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VehicleSeating" EntityType="Self.VehicleSeating" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VehicleSeating_DepartmentMapping" EntityType="Self.VehicleSeating_DepartmentMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VendorType" EntityType="Self.VendorType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WorkRequestAssignment" EntityType="Self.WorkRequestAssignment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IdleEmployee" EntityType="Self.IdleEmployee" store:Type="Tables" store:Schema="dbo">
@@ -5755,6 +6137,10 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <End Role="Company" EntitySet="Company" />
             <End Role="Insurance" EntitySet="Insurance" />
           </AssociationSet>
+          <AssociationSet Name="FK_JobTitle_VehicleSeating" Association="Self.FK_JobTitle_VehicleSeating">
+            <End Role="VehicleSeating" EntitySet="VehicleSeating" />
+            <End Role="JobTitle" EntitySet="JobTitle" />
+          </AssociationSet>
           <AssociationSet Name="FK_License_Company" Association="Self.FK_License_Company">
             <End Role="Company" EntitySet="Company" />
             <End Role="License" EntitySet="License" />
@@ -5911,10 +6297,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <End Role="LocationMaster" EntitySet="LocationMaster" />
             <End Role="LogPODetail" EntitySet="LogPODetail" />
           </AssociationSet>
-          <AssociationSet Name="FK_LogPODetail_PODetail" Association="Self.FK_LogPODetail_PODetail">
-            <End Role="PODetail" EntitySet="PODetail" />
-            <End Role="LogPODetail" EntitySet="LogPODetail" />
-          </AssociationSet>
           <AssociationSet Name="FK_LogPODetail_POType" Association="Self.FK_LogPODetail_POType">
             <End Role="POType" EntitySet="POType" />
             <End Role="LogPODetail" EntitySet="LogPODetail" />
@@ -5994,10 +6376,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <AssociationSet Name="FK_PODetailEmergency_POType" Association="Self.FK_PODetailEmergency_POType">
             <End Role="POType" EntitySet="POType" />
             <End Role="PODetailEmergency" EntitySet="PODetailEmergency" />
-          </AssociationSet>
-          <AssociationSet Name="FK_POFacilityItem_PODetail" Association="Self.FK_POFacilityItem_PODetail">
-            <End Role="PODetail" EntitySet="PODetail" />
-            <End Role="POFacilityItem" EntitySet="POFacilityItem" />
           </AssociationSet>
           <AssociationSet Name="FK_POQuestion_QuestionAnswer" Association="Self.FK_POQuestion_QuestionAnswer">
             <End Role="QuestionAnswer" EntitySet="QuestionAnswer" />
@@ -6106,6 +6484,10 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <AssociationSet Name="FK_UserRegistrations_QRCMaster" Association="Self.FK_UserRegistrations_QRCMaster">
             <End Role="QRCMaster" EntitySet="QRCMaster" />
             <End Role="UserRegistrations" EntitySet="UserRegistrations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VehicleSeating_Department" Association="Self.FK_VehicleSeating_Department">
+            <End Role="Department" EntitySet="Department" />
+            <End Role="VehicleSeating" EntitySet="VehicleSeating" />
           </AssociationSet>
           <AssociationSet Name="FK_WorkRequestAssignment_eFleetVehicle" Association="Self.FK_WorkRequestAssignment_eFleetVehicle">
             <End Role="eFleetVehicle" EntitySet="eFleetVehicle" />
@@ -7103,9 +7485,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="Action" Mode="In" Type="String" />
             <Parameter Name="AccountCategory" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spGetCompanyAccountDetail" ReturnType="Collection(workorderEMSModel.spGetCompanyAccountDetail_Result1)">
-          <Parameter Name="CMP_Id" Mode="In" Type="Int64" />
-          </FunctionImport>
           <FunctionImport Name="spSetPaymentStatusForBill">
             <Parameter Name="LBLL_Id" Mode="In" Type="Int64" />
             <Parameter Name="LBLL_Comment" Mode="In" Type="String" />
@@ -7259,24 +7638,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           </FunctionImport>
           <FunctionImport Name="spGeteFormTrack" ReturnType="Collection(workorderEMSModel.spGeteFormTrack_Result1)">
           <Parameter Name="ApprovarId" Mode="In" Type="Int64" />
-          </FunctionImport>
-          <FunctionImport Name="spSetPODetail">
-            <Parameter Name="PODAction" Mode="In" Type="String" />
-            <Parameter Name="POD_Id" Mode="In" Type="Int64" />
-            <Parameter Name="POD_LocationId" Mode="In" Type="Int64" />
-            <Parameter Name="POD_POT_Id" Mode="In" Type="Int64" />
-            <Parameter Name="POD_CMP_Id" Mode="In" Type="Int64" />
-            <Parameter Name="POD_DeliveryDate" Mode="In" Type="DateTime" />
-            <Parameter Name="POD_POAmount" Mode="In" Type="Decimal" />
-            <Parameter Name="POD_ReoccourringBillDate" Mode="In" Type="DateTime" />
-            <Parameter Name="POD_EmergencyPODocument" Mode="In" Type="String" />
-            <Parameter Name="POD_ModifiedBy" Mode="In" Type="Int64" />
-            <Parameter Name="POD_ApprovedBy" Mode="In" Type="Int64" />
-            <Parameter Name="POD_IsActive" Mode="In" Type="String" />
-            <Parameter Name="POD_RUL_Id" Mode="In" Type="Int64" />
-            <Parameter Name="POD_RUL_Level" Mode="In" Type="String" />
-            <Parameter Name="POD_RUL_CurrentLevel" Mode="In" Type="String" />
-            <Parameter Name="POD_QBKId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="spSetPODetailEmergency">
             <Parameter Name="POEAction" Mode="In" Type="String" />
@@ -8159,10 +8520,92 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <End Role="UserRegistration" EntitySet="UserRegistrations" />
             <End Role="SubCostCode" EntitySet="SubCostCodes" />
           </AssociationSet>
+          <FunctionImport Name="spSetApprovalForCompanyAccountDetail">
+            <Parameter Name="LCAD_Id" Mode="In" Type="Int64" />
+            <Parameter Name="LCAD_Comment" Mode="In" Type="String" />
+            <Parameter Name="LCAD_IsApprove" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetVendorAllDetailForApproval" ReturnType="Collection(workorderEMSModel.spGetVendorAllDetailForApproval_Result)">
+          <Parameter Name="CMP_Id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spGetVendorAllDetailForEditApproval" ReturnType="Collection(workorderEMSModel.spGetVendorAllDetailForEditApproval_Result)">
+          <Parameter Name="CMP_Id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spGetCompanyCountForGraph" ReturnType="Collection(workorderEMSModel.spGetCompanyCountForGraph_Result)" />
+          <FunctionImport Name="ExcuteAutoBill">
+            <Parameter Name="invoicingFrequency" Mode="In" Type="String" />
+            <Parameter Name="BillDueDate" Mode="In" Type="DateTime" />
+            <Parameter Name="MinimumBillAmount" Mode="In" Type="Decimal" />
+            <Parameter Name="VendorId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="fnGetManager" IsComposable="true" ReturnType="Collection(workorderEMSModel.fnGetManager_Result)">
+          <Parameter Name="UserId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="fun_GetClientDateTime_O" IsComposable="true" ReturnType="Collection(DateTime)">
+            <Parameter Name="TOCONVERTDATE" Mode="In" Type="DateTime" />
+            <Parameter Name="OFFSET" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="SetAutoBill" />
+          <FunctionImport Name="signalRPushNotifyForWorkOrder" ReturnType="Collection(workorderEMSModel.signalRPushNotifyForWorkOrder_Result)">
+          <Parameter Name="SignalRDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GetIdleDetailsOfEmployeeForIdleReport" ReturnType="Collection(workorderEMSModel.sp_GetIdleDetailsOfEmployeeForIdleReport_Result)">
+            <Parameter Name="LocationId" Mode="In" Type="Int64" />
+            <Parameter Name="UserId" Mode="In" Type="Int64" />
+            <Parameter Name="IdleTime" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="spGetCompanyLocationCostCodeMapping" ReturnType="Collection(workorderEMSModel.spGetCompanyLocationCostCodeMapping_Result)">
+          <Parameter Name="CLC_LocationId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spGetCompanyType" ReturnType="Collection(workorderEMSModel.spGetCompanyType_Result)" />
+          <FunctionImport Name="spGetContract" ReturnType="Collection(workorderEMSModel.spGetContract_Result)" />
+          <FunctionImport Name="spGetContractLocationAllocation" ReturnType="Collection(workorderEMSModel.spGetContractLocationAllocation_Result)" />
+          <FunctionImport Name="spGetLocationCompanyMapping" ReturnType="Collection(workorderEMSModel.spGetLocationCompanyMapping_Result)">
+          <Parameter Name="CMP_LocationId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spGetPreBillDetail" ReturnType="Collection(workorderEMSModel.spGetPreBillDetail_Result)">
+          <Parameter Name="PBL_Id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spSetApprovalForCompany">
+            <Parameter Name="LCMP_Id" Mode="In" Type="Int64" />
+            <Parameter Name="LCMP_Comment" Mode="In" Type="String" />
+            <Parameter Name="LCMP_IsApprove" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetApprovalForCompanyDetail">
+            <Parameter Name="LCOD_Id" Mode="In" Type="Int64" />
+            <Parameter Name="LCOD_Comment" Mode="In" Type="String" />
+            <Parameter Name="LCOD_IsApprove" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetApprovalForCompanyLocationCostCodeMapping">
+            <Parameter Name="LCLC_Id" Mode="In" Type="Int64" />
+            <Parameter Name="LCLC_Comment" Mode="In" Type="String" />
+            <Parameter Name="LCLC_IsApprove" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetApprovalForContract">
+            <Parameter Name="LCNT_Id" Mode="In" Type="Int64" />
+            <Parameter Name="LCNT_Comment" Mode="In" Type="String" />
+            <Parameter Name="LCNT_IsApprove" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetApprovalForInsurance">
+            <Parameter Name="LINS_Id" Mode="In" Type="Int64" />
+            <Parameter Name="LINS_Comment" Mode="In" Type="String" />
+            <Parameter Name="LINS_IsApprove" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetApprovalForLicense">
+            <Parameter Name="LLNC_Id" Mode="In" Type="Int64" />
+            <Parameter Name="LLNC_Comment" Mode="In" Type="String" />
+            <Parameter Name="LLNC_IsApprove" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetCompanyAllocationLocationCountForGraph" ReturnType="Collection(workorderEMSModel.spGetCompanyAllocationLocationCountForGraph_Result)" />
           <EntitySet Name="CompanyAccountDetails" EntityType="workorderEMSModel.CompanyAccountDetail" />
+          <EntitySet Name="LogCompanyAccountDetails" EntityType="workorderEMSModel.LogCompanyAccountDetail" />
           <AssociationSet Name="FK_CompanyAccountDetail_Company" Association="workorderEMSModel.FK_CompanyAccountDetail_Company">
             <End Role="Company" EntitySet="Companies" />
             <End Role="CompanyAccountDetail" EntitySet="CompanyAccountDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LogCompanyAccountDetail_Company" Association="workorderEMSModel.FK_LogCompanyAccountDetail_Company">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="LogCompanyAccountDetail" EntitySet="LogCompanyAccountDetails" />
           </AssociationSet>
           <AssociationSet Name="FK_CompanyAccountDetail_PaymentMode" Association="workorderEMSModel.FK_CompanyAccountDetail_PaymentMode">
             <End Role="PaymentMode" EntitySet="PaymentModes" />
@@ -8176,16 +8619,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <End Role="CompanyAccountDetail" EntitySet="CompanyAccountDetails" />
             <End Role="CompanyAccountTransaction" EntitySet="CompanyAccountTransactions" />
           </AssociationSet>
-          <FunctionImport Name="spSetApprovalForCompanyAccountDetail">
-            <Parameter Name="LCAD_Id" Mode="In" Type="Int64" />
-            <Parameter Name="LCAD_Comment" Mode="In" Type="String" />
-            <Parameter Name="LCAD_IsApprove" Mode="In" Type="String" />
-          </FunctionImport>
-          <EntitySet Name="LogCompanyAccountDetails" EntityType="workorderEMSModel.LogCompanyAccountDetail" />
-          <AssociationSet Name="FK_LogCompanyAccountDetail_Company" Association="workorderEMSModel.FK_LogCompanyAccountDetail_Company">
-            <End Role="Company" EntitySet="Companies" />
-            <End Role="LogCompanyAccountDetail" EntitySet="LogCompanyAccountDetails" />
-          </AssociationSet>
           <AssociationSet Name="FK_LogCompanyAccountDetail_CompanyAccountDetail" Association="workorderEMSModel.FK_LogCompanyAccountDetail_CompanyAccountDetail">
             <End Role="CompanyAccountDetail" EntitySet="CompanyAccountDetails" />
             <End Role="LogCompanyAccountDetail" EntitySet="LogCompanyAccountDetails" />
@@ -8194,9 +8627,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <End Role="PaymentMode" EntitySet="PaymentModes" />
             <End Role="LogCompanyAccountDetail" EntitySet="LogCompanyAccountDetails" />
           </AssociationSet>
-          <FunctionImport Name="spGetVendorAllDetailForApproval" ReturnType="Collection(workorderEMSModel.spGetVendorAllDetailForApproval_Result)">
-          <Parameter Name="CMP_Id" Mode="In" Type="Int64" />
-          </FunctionImport>
           <FunctionImport Name="spSetCompanyAccountDetail">
             <Parameter Name="CADAction" Mode="In" Type="String" />
             <Parameter Name="CAD_Id" Mode="In" Type="Int64" />
@@ -8216,9 +8646,164 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="CAD_QBKId" Mode="In" Type="Int64" />
             <Parameter Name="CAD_CardHolderName" Mode="In" Type="String" />
             <Parameter Name="CAD_CardExpirationDate" Mode="In" Type="DateTime" />
+            <Parameter Name="CAD_IsPrimary" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spGetVendorAllDetailForEditApproval" ReturnType="Collection(workorderEMSModel.spGetVendorAllDetailForEditApproval_Result)">
-            <Parameter Name="CMP_Id" Mode="In" Type="Int64" />
+          <FunctionImport Name="spGetCompanyAccountDetail" ReturnType="Collection(workorderEMSModel.spGetCompanyAccountDetail_Result)">
+          <Parameter Name="CMP_Id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spGetJobTitle1">
+          <Parameter Name="JBT_VST_Id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spGetVehicleSeating1" />
+          <FunctionImport Name="spGetVehicleSeating_DepartmentMapping" />
+          <FunctionImport Name="spGetVehicleSeatingPermission1">
+          <Parameter Name="VSP_VST_Id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spGetVehicleSeatingPermissionType">
+            <Parameter Name="VPT_UserId" Mode="In" Type="Int64" />
+            <Parameter Name="VPT_SMD_Id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spSetApprovalForTaxDetail">
+            <Parameter Name="LTXD_Id" Mode="In" Type="Int64" />
+            <Parameter Name="LTXD_Comment" Mode="In" Type="String" />
+            <Parameter Name="LTXD_IsApprove" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetDepartment1">
+            <Parameter Name="DPTAction" Mode="In" Type="String" />
+            <Parameter Name="DPT_Id" Mode="In" Type="Int64" />
+            <Parameter Name="DPT_Name" Mode="In" Type="String" />
+            <Parameter Name="DPT_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetJobTitle1">
+            <Parameter Name="JBTAction" Mode="In" Type="String" />
+            <Parameter Name="JBT_Id" Mode="In" Type="Int64" />
+            <Parameter Name="JBT_JobTitle" Mode="In" Type="String" />
+            <Parameter Name="JBT_VST_Id" Mode="In" Type="Int64" />
+            <Parameter Name="JBT_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetVehicleSeating1">
+            <Parameter Name="VSTAction" Mode="In" Type="String" />
+            <Parameter Name="VST_Id" Mode="In" Type="Int64" />
+            <Parameter Name="VST_Title" Mode="In" Type="String" />
+            <Parameter Name="VST_JobDescription" Mode="In" Type="String" />
+            <Parameter Name="VST_RolesAndResponsiblities" Mode="In" Type="String" />
+            <Parameter Name="VST_Level" Mode="In" Type="String" />
+            <Parameter Name="VST_ParentId" Mode="In" Type="Int64" />
+            <Parameter Name="VST_DPT_Id" Mode="In" Type="Int64" />
+            <Parameter Name="VST_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetVehicleSeating_DepartmentMapping1">
+            <Parameter Name="VDMAction" Mode="In" Type="String" />
+            <Parameter Name="VDM_Id" Mode="In" Type="Int64" />
+            <Parameter Name="VDM_VST_Id" Mode="In" Type="Int64" />
+            <Parameter Name="VDM_DPT_Id" Mode="In" Type="Int64" />
+            <Parameter Name="VDM_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="ApplicantInfoes" EntityType="workorderEMSModel.ApplicantInfo" />
+          <EntitySet Name="Citizenships" EntityType="workorderEMSModel.Citizenship" />
+          <EntitySet Name="Departments" EntityType="workorderEMSModel.Department" />
+          <EntitySet Name="Employees" EntityType="workorderEMSModel.Employee" />
+          <EntitySet Name="EmployeeAddresses" EntityType="workorderEMSModel.EmployeeAddress" />
+          <EntitySet Name="JobPostings" EntityType="workorderEMSModel.JobPosting" />
+          <EntitySet Name="JobTitles" EntityType="workorderEMSModel.JobTitle" />
+          <EntitySet Name="VehicleSeatings" EntityType="workorderEMSModel.VehicleSeating" />
+          <EntitySet Name="VehicleSeating_DepartmentMapping" EntityType="workorderEMSModel.VehicleSeating_DepartmentMapping" />
+          <AssociationSet Name="FK_VehicleSeating_Department" Association="workorderEMSModel.FK_VehicleSeating_Department">
+            <End Role="Department" EntitySet="Departments" />
+            <End Role="VehicleSeating" EntitySet="VehicleSeatings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_JobTitle_VehicleSeating" Association="workorderEMSModel.FK_JobTitle_VehicleSeating">
+            <End Role="VehicleSeating" EntitySet="VehicleSeatings" />
+            <End Role="JobTitle" EntitySet="JobTitles" />
+          </AssociationSet>
+          <FunctionImport Name="spGetEmployeePersonalInfo" ReturnType="Collection(workorderEMSModel.spGetEmployeePersonalInfo_Result)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetOrgnizationCommonview" ReturnType="Collection(workorderEMSModel.spGetOrgnizationCommonview_Result)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetOrgnizationListview" ReturnType="Collection(workorderEMSModel.spGetOrgnizationListview_Result)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetOrgnizationPositionView" ReturnType="Collection(workorderEMSModel.spGetOrgnizationPositionView_Result)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetOrgnizationUserView" ReturnType="Collection(workorderEMSModel.spGetOrgnizationUserView_Result)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetEmployee" ReturnType="Collection(workorderEMSModel.spSetEmployee_Result)">
+            <Parameter Name="EMPAction" Mode="In" Type="String" />
+            <Parameter Name="EMP_Id" Mode="In" Type="Int64" />
+            <Parameter Name="EMP_EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="EMP_API_ApplicantId" Mode="In" Type="Int64" />
+            <Parameter Name="EMP_FirstName" Mode="In" Type="String" />
+            <Parameter Name="EMP_MiddleName" Mode="In" Type="String" />
+            <Parameter Name="EMP_LastName" Mode="In" Type="String" />
+            <Parameter Name="EMP_Email" Mode="In" Type="String" />
+            <Parameter Name="EMP_Phone" Mode="In" Type="Int64" />
+            <Parameter Name="EMP_DrivingLicenseNumber" Mode="In" Type="String" />
+            <Parameter Name="EMP_DateOfBirth" Mode="In" Type="DateTime" />
+            <Parameter Name="EMP_SSN" Mode="In" Type="String" />
+            <Parameter Name="EMP_Photo" Mode="In" Type="String" />
+            <Parameter Name="EMP_MilitaryService" Mode="In" Type="String" />
+            <Parameter Name="EMP_Gender" Mode="In" Type="Int64" />
+            <Parameter Name="EMP_JobTitleId" Mode="In" Type="Int64" />
+            <Parameter Name="EMP_ManagerId" Mode="In" Type="Int64" />
+            <Parameter Name="EMP_DateOfJoining" Mode="In" Type="DateTime" />
+            <Parameter Name="EMP_LocationId" Mode="In" Type="Int64" />
+            <Parameter Name="EMP_IsCreatedBy" Mode="In" Type="Int64" />
+            <Parameter Name="EMP_IsCreatedOn" Mode="In" Type="DateTime" />
+            <Parameter Name="EMP_IsActive" Mode="In" Type="String" />
+            <Parameter Name="UserType" Mode="In" Type="Int64" />
+            <Parameter Name="EMA_Address" Mode="In" Type="String" />
+            <Parameter Name="EMA_City" Mode="In" Type="String" />
+            <Parameter Name="EMA_State" Mode="In" Type="String" />
+            <Parameter Name="EMA_Zip" Mode="In" Type="Int32" />
+            <Parameter Name="CTZ_Citizenship" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="SP_GetAllReccuringPO" ReturnType="Collection(workorderEMSModel.SP_GetAllReccuringPO_Result)" />
+          <FunctionImport Name="sp_SetPOReccuring" />
+          <FunctionImport Name="spGetPONumberForReccuringPO" />
+          <FunctionImport Name="spSetPODetail">
+            <Parameter Name="PODAction" Mode="In" Type="String" />
+            <Parameter Name="POD_Id" Mode="In" Type="Int64" />
+            <Parameter Name="POD_LocationId" Mode="In" Type="Int64" />
+            <Parameter Name="POD_POT_Id" Mode="In" Type="Int64" />
+            <Parameter Name="POD_CMP_Id" Mode="In" Type="Int64" />
+            <Parameter Name="POD_DeliveryDate" Mode="In" Type="DateTime" />
+            <Parameter Name="POD_POAmount" Mode="In" Type="Decimal" />
+            <Parameter Name="POD_ReoccourringBillDate" Mode="In" Type="DateTime" />
+            <Parameter Name="POD_EmergencyPODocument" Mode="In" Type="String" />
+            <Parameter Name="POD_ModifiedBy" Mode="In" Type="Int64" />
+            <Parameter Name="POD_ApprovedBy" Mode="In" Type="Int64" />
+            <Parameter Name="POD_IsActive" Mode="In" Type="String" />
+            <Parameter Name="POD_RUL_Id" Mode="In" Type="Int64" />
+            <Parameter Name="POD_RUL_Level" Mode="In" Type="String" />
+            <Parameter Name="POD_RUL_CurrentLevel" Mode="In" Type="String" />
+            <Parameter Name="POD_QBKId" Mode="In" Type="Int64" />
+            <Parameter Name="POD_ReccuringStatus" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="DebitMemoes" EntityType="workorderEMSModel.DebitMemo" />
+          <FunctionImport Name="spGetDebitMemoList" ReturnType="Collection(workorderEMSModel.spGetDebitMemoList_Result)">
+            <Parameter Name="LocationId" Mode="In" Type="Int64" />
+            <Parameter Name="Status" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spSetDebitMemo">
+            <Parameter Name="DBM_ID" Mode="In" Type="Int64" />
+            <Parameter Name="DBM_Action" Mode="In" Type="String" />
+            <Parameter Name="DBM_LocationId" Mode="In" Type="Int64" />
+            <Parameter Name="DBM_CMP_Id" Mode="In" Type="Int64" />
+            <Parameter Name="DBM_PurchaseOrder" Mode="In" Type="Int64" />
+            <Parameter Name="DBM_DebitAmount" Mode="In" Type="Int64" />
+            <Parameter Name="DBM_Note" Mode="In" Type="String" />
+            <Parameter Name="DBM_Status" Mode="In" Type="Int32" />
+            <Parameter Name="DBM_DocumentName" Mode="In" Type="String" />
+            <Parameter Name="DBM_CreatedDate" Mode="In" Type="DateTime" />
+            <Parameter Name="DBM_ModifiedDate" Mode="In" Type="DateTime" />
+            <Parameter Name="DBM_ModifiedBy" Mode="In" Type="String" />
+            <Parameter Name="DBM_IsDeleted" Mode="In" Type="Boolean" />
+            <Parameter Name="DBM_DeletedBy" Mode="In" Type="String" />
+            <Parameter Name="DBM_DeletedDate" Mode="In" Type="DateTime" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="CommonQeriesByVijay_Result">
@@ -10742,19 +11327,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="String" Name="LNC_LicenseDocument" Nullable="true" />
           <Property Type="String" Name="Status" Nullable="false" MaxLength="1" />
         </ComplexType>
-        <ComplexType Name="spGetCompanyAccountDetail_Result">
-          <Property Type="Int64" Name="CAD_Id" Nullable="false" />
-          <Property Type="Int64" Name="CAD_CMP_Id" Nullable="false" />
-          <Property Type="Int64" Name="CAD_PMD_Id" Nullable="false" />
-          <Property Type="String" Name="CAD_CardOrBankName" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="CAD_BankLocation" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="CAD_AccountNumber" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="CAD_CreditCardNumber" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="CAD_IFSCcode" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="CAD_SwiftBICcode" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="CAD_AccountDocument" Nullable="true" />
-          <Property Type="String" Name="CAD_IsActive" Nullable="true" MaxLength="1" />
-        </ComplexType>
         <ComplexType Name="spGetPOFacilityItemForApproval_Result4">
           <Property Type="Int64" Name="POF_Id" Nullable="true" />
           <Property Type="Int64" Name="CFM_Id" Nullable="false" />
@@ -10815,20 +11387,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="String" Name="Status" Nullable="true" MaxLength="1" />
           <Property Type="String" Name="LPBL_InvoiceDocument" Nullable="true" />
           <Property Type="String" Name="LPBL_Comment" Nullable="true" MaxLength="100" />
-        </ComplexType>
-        <ComplexType Name="spGetCompanyAccountDetail_Result1">
-          <Property Type="Int64" Name="CAD_Id" Nullable="false" />
-          <Property Type="Int64" Name="CAD_CMP_Id" Nullable="false" />
-          <Property Type="Int64" Name="CAD_PMD_Id" Nullable="false" />
-          <Property Type="Int64" Name="CAD_QBKId" Nullable="true" />
-          <Property Type="String" Name="CAD_CardOrBankName" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="CAD_BankLocation" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="CAD_AccountNumber" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="CAD_CreditCardNumber" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="CAD_IFSCcode" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="CAD_SwiftBICcode" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="CAD_AccountDocument" Nullable="true" />
-          <Property Type="String" Name="CAD_IsActive" Nullable="true" MaxLength="1" />
         </ComplexType>
         <ComplexType Name="spGetRule_Result">
           <Property Type="Int64" Name="RUL_Id" Nullable="false" />
@@ -12672,6 +13230,8 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <NavigationProperty Name="LocationMaster" Relationship="workorderEMSModel.FK_LogPODetail_LocationMaster" FromRole="LogPODetail" ToRole="LocationMaster" />
           <NavigationProperty Name="PODetail" Relationship="workorderEMSModel.FK_LogPODetail_PODetail" FromRole="LogPODetail" ToRole="PODetail" />
           <NavigationProperty Name="POType" Relationship="workorderEMSModel.FK_LogPODetail_POType" FromRole="LogPODetail" ToRole="POType" />
+          <Property Name="LPOD_POD_ReccuringDate" Type="DateTime" Precision="0" />
+          <Property Name="LPOD_POD_ReccuringStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="LogPODetailEmergency">
           <Key>
@@ -12937,6 +13497,9 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <NavigationProperty Name="PONumber" Relationship="workorderEMSModel.FK_PODetail_PONumber" FromRole="PODetail" ToRole="PONumber" />
           <NavigationProperty Name="POType" Relationship="workorderEMSModel.FK_PODetail_POType" FromRole="PODetail" ToRole="POType" />
           <NavigationProperty Name="POFacilityItems" Relationship="workorderEMSModel.FK_POFacilityItem_PODetail" FromRole="PODetail" ToRole="POFacilityItem" />
+          <Property Name="POD_ReferenceId" Type="Int64" />
+          <Property Name="POD_ReccuringDate" Type="DateTime" Precision="0" />
+          <Property Name="POD_ReccuringStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="PODetailEmergency">
           <Key>
@@ -15450,144 +16013,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="CompanyAccountDetail">
-          <Key>
-            <PropertyRef Name="CAD_Id" />
-          </Key>
-          <Property Name="CAD_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="CAD_CMP_Id" Type="Int64" Nullable="false" />
-          <Property Name="CAD_PMD_Id" Type="Int64" Nullable="false" />
-          <Property Name="CAD_CardOrBankName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="CAD_BankLocation" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="CAD_AccountNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="CAD_CreditCardNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="CAD_IFSCcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="CAD_SwiftBICcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="CAD_AccountDocument" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="CAD_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="CAD_Balance" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="CAD_QBKId" Type="Int64" />
-          <Property Name="CAD_CardHolderName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="CAD_CardExpirationDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Company" Relationship="workorderEMSModel.FK_CompanyAccountDetail_Company" FromRole="CompanyAccountDetail" ToRole="Company" />
-          <NavigationProperty Name="PaymentMode" Relationship="workorderEMSModel.FK_CompanyAccountDetail_PaymentMode" FromRole="CompanyAccountDetail" ToRole="PaymentMode" />
-          <NavigationProperty Name="CompanyAccountTransactions" Relationship="workorderEMSModel.FK_CompanyAccountTransaction_CompanyAccountDetailCr" FromRole="CompanyAccountDetail" ToRole="CompanyAccountTransaction" />
-          <NavigationProperty Name="CompanyAccountTransactions1" Relationship="workorderEMSModel.FK_CompanyAccountTransaction_CompanyAccountDetailDr" FromRole="CompanyAccountDetail" ToRole="CompanyAccountTransaction" />
-          <NavigationProperty Name="LogCompanyAccountDetails" Relationship="workorderEMSModel.FK_LogCompanyAccountDetail_CompanyAccountDetail" FromRole="CompanyAccountDetail" ToRole="LogCompanyAccountDetail" />
-        </EntityType>
-        <Association Name="FK_CompanyAccountDetail_Company">
-          <End Type="workorderEMSModel.Company" Role="Company" Multiplicity="1" />
-          <End Type="workorderEMSModel.CompanyAccountDetail" Role="CompanyAccountDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Company">
-              <PropertyRef Name="CMP_Id" />
-            </Principal>
-            <Dependent Role="CompanyAccountDetail">
-              <PropertyRef Name="CAD_CMP_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CompanyAccountDetail_PaymentMode">
-          <End Type="workorderEMSModel.PaymentMode" Role="PaymentMode" Multiplicity="1" />
-          <End Type="workorderEMSModel.CompanyAccountDetail" Role="CompanyAccountDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PaymentMode">
-              <PropertyRef Name="PMD_Id" />
-            </Principal>
-            <Dependent Role="CompanyAccountDetail">
-              <PropertyRef Name="CAD_PMD_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CompanyAccountTransaction_CompanyAccountDetailCr">
-          <End Type="workorderEMSModel.CompanyAccountDetail" Role="CompanyAccountDetail" Multiplicity="1" />
-          <End Type="workorderEMSModel.CompanyAccountTransaction" Role="CompanyAccountTransaction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CompanyAccountDetail">
-              <PropertyRef Name="CAD_Id" />
-            </Principal>
-            <Dependent Role="CompanyAccountTransaction">
-              <PropertyRef Name="CAT_CAD_IdCr" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_CompanyAccountTransaction_CompanyAccountDetailDr">
-          <End Type="workorderEMSModel.CompanyAccountDetail" Role="CompanyAccountDetail" Multiplicity="1" />
-          <End Type="workorderEMSModel.CompanyAccountTransaction" Role="CompanyAccountTransaction" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CompanyAccountDetail">
-              <PropertyRef Name="CAD_Id" />
-            </Principal>
-            <Dependent Role="CompanyAccountTransaction">
-              <PropertyRef Name="CAT_CAD_IdDr" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="LogCompanyAccountDetail">
-          <Key>
-            <PropertyRef Name="LCAD_Id" />
-          </Key>
-          <Property Name="LCAD_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LCAD_CMP_Id" Type="Int64" Nullable="false" />
-          <Property Name="LCAD_CAD_Id" Type="Int64" Nullable="false" />
-          <Property Name="LCAD_PMD_Id" Type="Int64" Nullable="false" />
-          <Property Name="LCAD_CardOrBankName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="LCAD_BankLocation" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="LCAD_AccountNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="LCAD_CreditCardNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="LCAD_IFSCcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="LCAD_SwiftBICcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="LCAD_AccountDocument" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="LCAD_ModifiedBy" Type="Int64" Nullable="false" />
-          <Property Name="LCAD_ModifiedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="LCAD_ApprovedBy" Type="Int64" />
-          <Property Name="LCAD_ApprovedOn" Type="DateTime" Precision="3" />
-          <Property Name="LCAD_Comment" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="LCAD_IsApprove" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="LCAD_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="LCAD_Balance" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="LCAD_CardHolderName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="LCAD_CardExpirationDate" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Company" Relationship="workorderEMSModel.FK_LogCompanyAccountDetail_Company" FromRole="LogCompanyAccountDetail" ToRole="Company" />
-          <NavigationProperty Name="CompanyAccountDetail" Relationship="workorderEMSModel.FK_LogCompanyAccountDetail_CompanyAccountDetail" FromRole="LogCompanyAccountDetail" ToRole="CompanyAccountDetail" />
-          <NavigationProperty Name="PaymentMode" Relationship="workorderEMSModel.FK_LogCompanyAccountDetail_PaymentMode" FromRole="LogCompanyAccountDetail" ToRole="PaymentMode" />
-        </EntityType>
-        <Association Name="FK_LogCompanyAccountDetail_Company">
-          <End Type="workorderEMSModel.Company" Role="Company" Multiplicity="1" />
-          <End Type="workorderEMSModel.LogCompanyAccountDetail" Role="LogCompanyAccountDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Company">
-              <PropertyRef Name="CMP_Id" />
-            </Principal>
-            <Dependent Role="LogCompanyAccountDetail">
-              <PropertyRef Name="LCAD_CMP_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LogCompanyAccountDetail_CompanyAccountDetail">
-          <End Type="workorderEMSModel.CompanyAccountDetail" Role="CompanyAccountDetail" Multiplicity="1" />
-          <End Type="workorderEMSModel.LogCompanyAccountDetail" Role="LogCompanyAccountDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CompanyAccountDetail">
-              <PropertyRef Name="CAD_Id" />
-            </Principal>
-            <Dependent Role="LogCompanyAccountDetail">
-              <PropertyRef Name="LCAD_CAD_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LogCompanyAccountDetail_PaymentMode">
-          <End Type="workorderEMSModel.PaymentMode" Role="PaymentMode" Multiplicity="1" />
-          <End Type="workorderEMSModel.LogCompanyAccountDetail" Role="LogCompanyAccountDetail" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="PaymentMode">
-              <PropertyRef Name="PMD_Id" />
-            </Principal>
-            <Dependent Role="LogCompanyAccountDetail">
-              <PropertyRef Name="LCAD_PMD_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <ComplexType Name="spGetVendorAllDetailForApproval_Result">
           <Property Type="Int64" Name="CMP_Id" Nullable="false" />
           <Property Type="String" Name="CMP_NameLegal" Nullable="false" MaxLength="30" />
@@ -15707,6 +16132,528 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="DateTime" Name="CNT_BillDueDate" Nullable="true" />
           <Property Type="Decimal" Name="CNT_LateFeeFine" Nullable="true" Precision="18" Scale="2" />
           <Property Type="String" Name="CNT_ContractDocument" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetCompanyCountForGraph_Result">
+          <Property Type="Int64" Name="TotalVendorCount" Nullable="true" />
+          <Property Type="Int64" Name="ApprovedVendorCount" Nullable="true" />
+          <Property Type="Int64" Name="WaitingVendorCount" Nullable="true" />
+          <Property Type="Int64" Name="RejectedVendorCount" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="fnGetManager_Result">
+          <Property Type="Int64" Name="ManagerForUser" Nullable="true" />
+          <Property Type="String" Name="FirstName" Nullable="false" MaxLength="200" />
+          <Property Type="String" Name="UserEmail" Nullable="false" MaxLength="100" />
+          <Property Type="String" Name="DeviceId" Nullable="true" MaxLength="200" />
+        </ComplexType>
+        <ComplexType Name="signalRPushNotifyForWorkOrder_Result">
+          <Property Type="Int64" Name="WorkRequestAssignmentID" Nullable="false" />
+          <Property Type="String" Name="WorkOrderCode" Nullable="true" MaxLength="200" />
+          <Property Type="Int64" Name="WorkOrderCodeID" Nullable="false" />
+          <Property Type="Int64" Name="WorkRequestProjectType" Nullable="false" />
+          <Property Type="Int64" Name="LocationID" Nullable="false" />
+          <Property Type="Boolean" Name="SafetyHazard" Nullable="true" />
+          <Property Type="Int64" Name="CreatedBy" Nullable="false" />
+          <Property Type="DateTime" Name="ModifiedDate" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="sp_GetIdleDetailsOfEmployeeForIdleReport_Result">
+          <Property Type="Int32" Name="Response" Nullable="true" />
+          <Property Type="String" Name="ResponseMessage" Nullable="true" />
+          <Property Type="Int32" Name="ResponseLocation" Nullable="true" />
+          <Property Type="DateTime" Name="ResponseTimeForNextIdleCall" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="spGetCompanyLocationCostCodeMapping_Result">
+          <Property Type="Int64" Name="CLC_Id" Nullable="false" />
+          <Property Type="Int64" Name="CLC_CMP_Id" Nullable="false" />
+          <Property Type="Int64" Name="CLC_CLM_Id" Nullable="false" />
+          <Property Type="DateTime" Name="CLC_Date" Nullable="false" />
+          <Property Type="String" Name="CLC_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetCompanyType_Result">
+          <Property Type="Int64" Name="COT_Id" Nullable="false" />
+          <Property Type="String" Name="COT_CompanyType" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="COT_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetContract_Result">
+          <Property Type="Int64" Name="CNT_Id" Nullable="false" />
+          <Property Type="Int64" Name="CNT_CMP_IdFirsParty" Nullable="false" />
+          <Property Type="Int64" Name="CNT_CMP_IdSecondParty" Nullable="false" />
+          <Property Type="Int64" Name="CNT_CTT_Id" Nullable="false" />
+          <Property Type="String" Name="CNT_ExcutedBy" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="CNT_IssuedBy" Nullable="false" MaxLength="30" />
+          <Property Type="Int64" Name="CNT_PTM_Id" Nullable="false" />
+          <Property Type="Int64" Name="CNT_PMD_Id" Nullable="false" />
+          <Property Type="Int32" Name="CNT_GracePeriod" Nullable="true" />
+          <Property Type="String" Name="CNT_invoicingFrequency" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="CNT_CostDuringPeriod" Nullable="true" />
+          <Property Type="Int32" Name="CNT_AllocationNeeded" Nullable="true" />
+          <Property Type="DateTime" Name="CNT_StartDate" Nullable="false" Precision="23" />
+          <Property Type="DateTime" Name="CNT_EndDate" Nullable="false" Precision="23" />
+          <Property Type="Decimal" Name="CNT_AnnualValueOfAggreement" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Int32" Name="CNT_MinimumBillAmount" Nullable="true" />
+          <Property Type="DateTime" Name="CNT_BillDueDate" Nullable="true" />
+          <Property Type="Decimal" Name="CNT_LateFeeFine" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="CNT_ContractDocument" Nullable="true" />
+          <Property Type="String" Name="CNT_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetContractLocationAllocation_Result">
+          <Property Type="Int64" Name="CLA_Id" Nullable="false" />
+          <Property Type="Int64" Name="CLA_CNT_Id" Nullable="false" />
+          <Property Type="Int64" Name="CLA_LocationId" Nullable="false" />
+          <Property Type="Decimal" Name="CLA_Allocation" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="CLA_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetLocationCompanyMapping_Result">
+          <Property Type="Int64" Name="LCM_Id" Nullable="false" />
+          <Property Type="Int64" Name="LCM_CMP_Id" Nullable="false" />
+          <Property Type="String" Name="CMP_NameLegal" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="LCM_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetPreBillDetail_Result">
+          <Property Type="Int64" Name="LPBL_Id" Nullable="false" />
+          <Property Type="Int64" Name="LPBL_PBL_Id" Nullable="false" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="CMP_NameLegal" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="Employee_Name" Nullable="true" MaxLength="403" />
+          <Property Type="Decimal" Name="PBLAmount" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="PBLDate" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="LPBL_InvoiceDocument" Nullable="true" />
+          <Property Type="String" Name="LPBL_Comment" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="Status" Nullable="true" MaxLength="1" />
+          <Property Type="Int64" Name="LPBL_LocationId" Nullable="false" />
+          <Property Type="Int64" Name="LPBL_ModifiedBy" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="spGetCompanyAllocationLocationCountForGraph_Result" >
+          <Property Type="String" Name="LocationName" Nullable="false" />
+          <Property Type="Int32" Name="VendorCount" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="CompanyAccountDetail">
+          <Key>
+            <PropertyRef Name="CAD_Id" />
+          </Key>
+          <Property Name="CAD_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CAD_CMP_Id" Type="Int64" Nullable="false" />
+          <Property Name="CAD_PMD_Id" Type="Int64" Nullable="false" />
+          <Property Name="CAD_CardOrBankName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CAD_BankLocation" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CAD_AccountNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CAD_CreditCardNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CAD_IFSCcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CAD_SwiftBICcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CAD_AccountDocument" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CAD_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="CAD_Balance" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CAD_QBKId" Type="Int64" />
+          <Property Name="CAD_CardHolderName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CAD_CardExpirationDate" Type="DateTime" Precision="3" />
+          <Property Name="CAD_IsPrimary" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Company" Relationship="workorderEMSModel.FK_CompanyAccountDetail_Company" FromRole="CompanyAccountDetail" ToRole="Company" />
+          <NavigationProperty Name="PaymentMode" Relationship="workorderEMSModel.FK_CompanyAccountDetail_PaymentMode" FromRole="CompanyAccountDetail" ToRole="PaymentMode" />
+          <NavigationProperty Name="CompanyAccountTransactions" Relationship="workorderEMSModel.FK_CompanyAccountTransaction_CompanyAccountDetailCr" FromRole="CompanyAccountDetail" ToRole="CompanyAccountTransaction" />
+          <NavigationProperty Name="CompanyAccountTransactions1" Relationship="workorderEMSModel.FK_CompanyAccountTransaction_CompanyAccountDetailDr" FromRole="CompanyAccountDetail" ToRole="CompanyAccountTransaction" />
+          <NavigationProperty Name="LogCompanyAccountDetails" Relationship="workorderEMSModel.FK_LogCompanyAccountDetail_CompanyAccountDetail" FromRole="CompanyAccountDetail" ToRole="LogCompanyAccountDetail" />
+        </EntityType>
+        <EntityType Name="LogCompanyAccountDetail">
+          <Key>
+            <PropertyRef Name="LCAD_Id" />
+          </Key>
+          <Property Name="LCAD_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LCAD_CMP_Id" Type="Int64" Nullable="false" />
+          <Property Name="LCAD_CAD_Id" Type="Int64" Nullable="false" />
+          <Property Name="LCAD_PMD_Id" Type="Int64" Nullable="false" />
+          <Property Name="LCAD_CardOrBankName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LCAD_BankLocation" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LCAD_AccountNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LCAD_CreditCardNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LCAD_IFSCcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LCAD_SwiftBICcode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LCAD_AccountDocument" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LCAD_ModifiedBy" Type="Int64" Nullable="false" />
+          <Property Name="LCAD_ModifiedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LCAD_ApprovedBy" Type="Int64" />
+          <Property Name="LCAD_ApprovedOn" Type="DateTime" Precision="3" />
+          <Property Name="LCAD_Comment" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="LCAD_IsApprove" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="LCAD_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="LCAD_Balance" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="LCAD_CardHolderName" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="LCAD_CardExpirationDate" Type="DateTime" Precision="3" />
+          <Property Name="LCAD_IsPrimary" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Company" Relationship="workorderEMSModel.FK_LogCompanyAccountDetail_Company" FromRole="LogCompanyAccountDetail" ToRole="Company" />
+          <NavigationProperty Name="CompanyAccountDetail" Relationship="workorderEMSModel.FK_LogCompanyAccountDetail_CompanyAccountDetail" FromRole="LogCompanyAccountDetail" ToRole="CompanyAccountDetail" />
+          <NavigationProperty Name="PaymentMode" Relationship="workorderEMSModel.FK_LogCompanyAccountDetail_PaymentMode" FromRole="LogCompanyAccountDetail" ToRole="PaymentMode" />
+        </EntityType>
+        <Association Name="FK_CompanyAccountDetail_Company">
+          <End Type="workorderEMSModel.Company" Role="Company" Multiplicity="1" />
+          <End Type="workorderEMSModel.CompanyAccountDetail" Role="CompanyAccountDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CMP_Id" />
+            </Principal>
+            <Dependent Role="CompanyAccountDetail">
+              <PropertyRef Name="CAD_CMP_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LogCompanyAccountDetail_Company">
+          <End Type="workorderEMSModel.Company" Role="Company" Multiplicity="1" />
+          <End Type="workorderEMSModel.LogCompanyAccountDetail" Role="LogCompanyAccountDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CMP_Id" />
+            </Principal>
+            <Dependent Role="LogCompanyAccountDetail">
+              <PropertyRef Name="LCAD_CMP_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyAccountDetail_PaymentMode">
+          <End Type="workorderEMSModel.PaymentMode" Role="PaymentMode" Multiplicity="1" />
+          <End Type="workorderEMSModel.CompanyAccountDetail" Role="CompanyAccountDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentMode">
+              <PropertyRef Name="PMD_Id" />
+            </Principal>
+            <Dependent Role="CompanyAccountDetail">
+              <PropertyRef Name="CAD_PMD_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyAccountTransaction_CompanyAccountDetailCr">
+          <End Type="workorderEMSModel.CompanyAccountDetail" Role="CompanyAccountDetail" Multiplicity="1" />
+          <End Type="workorderEMSModel.CompanyAccountTransaction" Role="CompanyAccountTransaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyAccountDetail">
+              <PropertyRef Name="CAD_Id" />
+            </Principal>
+            <Dependent Role="CompanyAccountTransaction">
+              <PropertyRef Name="CAT_CAD_IdCr" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompanyAccountTransaction_CompanyAccountDetailDr">
+          <End Type="workorderEMSModel.CompanyAccountDetail" Role="CompanyAccountDetail" Multiplicity="1" />
+          <End Type="workorderEMSModel.CompanyAccountTransaction" Role="CompanyAccountTransaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyAccountDetail">
+              <PropertyRef Name="CAD_Id" />
+            </Principal>
+            <Dependent Role="CompanyAccountTransaction">
+              <PropertyRef Name="CAT_CAD_IdDr" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LogCompanyAccountDetail_CompanyAccountDetail">
+          <End Type="workorderEMSModel.CompanyAccountDetail" Role="CompanyAccountDetail" Multiplicity="1" />
+          <End Type="workorderEMSModel.LogCompanyAccountDetail" Role="LogCompanyAccountDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyAccountDetail">
+              <PropertyRef Name="CAD_Id" />
+            </Principal>
+            <Dependent Role="LogCompanyAccountDetail">
+              <PropertyRef Name="LCAD_CAD_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LogCompanyAccountDetail_PaymentMode">
+          <End Type="workorderEMSModel.PaymentMode" Role="PaymentMode" Multiplicity="1" />
+          <End Type="workorderEMSModel.LogCompanyAccountDetail" Role="LogCompanyAccountDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PaymentMode">
+              <PropertyRef Name="PMD_Id" />
+            </Principal>
+            <Dependent Role="LogCompanyAccountDetail">
+              <PropertyRef Name="LCAD_PMD_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="spGetCompanyAccountDetail_Result">
+          <Property Type="Int64" Name="CAD_Id" Nullable="false" />
+          <Property Type="Int64" Name="CAD_CMP_Id" Nullable="false" />
+          <Property Type="Int64" Name="CAD_PMD_Id" Nullable="false" />
+          <Property Type="Int64" Name="CAD_QBKId" Nullable="true" />
+          <Property Type="String" Name="CAD_CardOrBankName" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="CAD_BankLocation" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="CAD_AccountNumber" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="CAD_CreditCardNumber" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="CAD_IFSCcode" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="CAD_SwiftBICcode" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="CAD_AccountDocument" Nullable="true" />
+          <Property Type="String" Name="CAD_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="CAD_IsPrimary" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <EntityType Name="ApplicantInfo">
+          <Key>
+            <PropertyRef Name="API_ApplicantId" />
+          </Key>
+          <Property Name="API_ApplicantId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="API_FirstName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_HomeAddress" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="API_City" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_State" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_Zip" Type="Int32" />
+          <Property Name="API_Resume" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="API_CoverLetter" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="API_PhoneNumber" Type="Int64" Nullable="false" />
+          <Property Name="API_Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_DLNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="API_Citizenship" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_MilitaryService" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="API_Gender" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="API_HighestEducation" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="API_AnyRefOrEmployeeInELITE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="API_EverELITEWorkFrom" Type="DateTime" Precision="0" />
+          <Property Name="API_EverELITEWorkTo" Type="DateTime" Precision="0" />
+          <Property Name="API_WorkEligibleInUS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="API_JobPostingId" Type="Int64" />
+          <Property Name="API_JobTitleID" Type="Int64" Nullable="false" />
+          <Property Name="API_HiringManagerID" Type="Int64" />
+          <Property Name="API_DateOfJoining" Type="DateTime" Precision="0" />
+          <Property Name="API_DesireSalary" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="API_ApplicantStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="API_Date" Type="DateTime" Precision="3" />
+          <Property Name="API_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Citizenship">
+          <Key>
+            <PropertyRef Name="CTZ_Id" />
+          </Key>
+          <Property Name="CTZ_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CTZ_Citizenship" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CTZ_EMP_EmployeeID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CTZ_lawfulResident" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CTZ_AlienRegisteationNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CTZ_FormI94" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CTZ_ForeignPassport" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CTZ_Date" Type="DateTime" Precision="3" />
+          <Property Name="CTZ_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="DPT_Id" />
+          </Key>
+          <Property Name="DPT_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DPT_Name" Type="String" Nullable="false" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Name="DPT_Date" Type="DateTime" Precision="3" />
+          <Property Name="DPT_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="VehicleSeatings" Relationship="workorderEMSModel.FK_VehicleSeating_Department" FromRole="Department" ToRole="VehicleSeating" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EMP_Id" />
+          </Key>
+          <Property Name="EMP_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EMP_EmployeeID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_API_ApplicantId" Type="Int64" />
+          <Property Name="EMP_FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_MiddleName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_Phone" Type="Int64" />
+          <Property Name="EMP_DrivingLicenseNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_DateOfBirth" Type="DateTime" Precision="0" />
+          <Property Name="EMP_SSN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EMP_MilitaryService" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="EMP_Gender" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_JobTitleId" Type="Int64" />
+          <Property Name="EMP_ManagerId" Type="Int64" />
+          <Property Name="EMP_DateOfJoining" Type="DateTime" Precision="0" />
+          <Property Name="EMP_LocationId" Type="Int64" />
+          <Property Name="EMP_IsCreatedBy" Type="Int64" />
+          <Property Name="EMP_IsCreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="EMP_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="EmployeeAddress">
+          <Key>
+            <PropertyRef Name="EMA_Id" />
+          </Key>
+          <Property Name="EMA_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EMA_EMP_EmployeeID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EMA_Address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="EMA_City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMA_State" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMA_Zip" Type="Int32" />
+          <Property Name="EMA_AddressPhoneNo" Type="Int64" />
+          <Property Name="EMA_Date" Type="DateTime" Precision="3" />
+          <Property Name="EMA_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="JobPosting">
+          <Key>
+            <PropertyRef Name="JPS_JobPostingId" />
+          </Key>
+          <Property Name="JPS_JobPostingId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="JPS_JobTitleID" Type="Int64" Nullable="false" />
+          <Property Name="JPS_HiringManagerID" Type="Int64" Nullable="false" />
+          <Property Name="JPS_JobTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="JPS_HiringManager" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="JPS_NumberOfPost" Type="Int32" />
+          <Property Name="JPS_Date" Type="DateTime" Precision="3" />
+          <Property Name="JPS_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="JobTitle">
+          <Key>
+            <PropertyRef Name="JBT_Id" />
+          </Key>
+          <Property Name="JBT_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="JBT_JobTitle" Type="String" Nullable="false" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Name="JBT_VST_Id" Type="Int64" Nullable="false" />
+          <Property Name="JBT_Date" Type="DateTime" Precision="3" />
+          <Property Name="JBT_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="VehicleSeating" Relationship="workorderEMSModel.FK_JobTitle_VehicleSeating" FromRole="JobTitle" ToRole="VehicleSeating" />
+        </EntityType>
+        <EntityType Name="VehicleSeating">
+          <Key>
+            <PropertyRef Name="VST_Id" />
+          </Key>
+          <Property Name="VST_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VST_Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="VST_JobDescription" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="VST_RolesAndResponsiblities" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="VST_Level" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="true" />
+          <Property Name="VST_ParentId" Type="Int64" Nullable="false" />
+          <Property Name="VST_DPT_Id" Type="Int64" Nullable="false" />
+          <Property Name="VST_Date" Type="DateTime" Precision="3" />
+          <Property Name="VST_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Department" Relationship="workorderEMSModel.FK_VehicleSeating_Department" FromRole="VehicleSeating" ToRole="Department" />
+          <NavigationProperty Name="JobTitles" Relationship="workorderEMSModel.FK_JobTitle_VehicleSeating" FromRole="VehicleSeating" ToRole="JobTitle" />
+        </EntityType>
+        <EntityType Name="VehicleSeating_DepartmentMapping">
+          <Key>
+            <PropertyRef Name="VDM_Id" />
+          </Key>
+          <Property Name="VDM_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VDM_VST_Id" Type="Int64" Nullable="false" />
+          <Property Name="VDM_DPT_Id" Type="Int64" Nullable="false" />
+          <Property Name="VDM_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_VehicleSeating_Department">
+          <End Type="workorderEMSModel.Department" Role="Department" Multiplicity="1" />
+          <End Type="workorderEMSModel.VehicleSeating" Role="VehicleSeating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Department">
+              <PropertyRef Name="DPT_Id" />
+            </Principal>
+            <Dependent Role="VehicleSeating">
+              <PropertyRef Name="VST_DPT_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_JobTitle_VehicleSeating">
+          <End Type="workorderEMSModel.VehicleSeating" Role="VehicleSeating" Multiplicity="1" />
+          <End Type="workorderEMSModel.JobTitle" Role="JobTitle" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VehicleSeating">
+              <PropertyRef Name="VST_Id" />
+            </Principal>
+            <Dependent Role="JobTitle">
+              <PropertyRef Name="JBT_VST_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="spGetEmployeePersonalInfo_Result">
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="Int64" Name="EMP_API_ApplicantId" Nullable="true" />
+          <Property Type="String" Name="EMP_FirstName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMP_MiddleName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMP_LastName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMP_Email" Nullable="true" MaxLength="50" />
+          <Property Type="Int64" Name="EMP_Phone" Nullable="true" />
+          <Property Type="String" Name="EMP_DrivingLicenseNumber" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="EMP_DateOfBirth" Nullable="true" />
+          <Property Type="String" Name="EMP_SSN" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EMP_Photo" Nullable="true" />
+          <Property Type="String" Name="EMP_Gender" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EMP_MilitaryService" Nullable="true" MaxLength="1" />
+          <Property Type="Int64" Name="EMP_JobTitleId" Nullable="true" />
+          <Property Type="Int64" Name="EMP_ManagerId" Nullable="true" />
+          <Property Type="DateTime" Name="EMP_DateOfJoining" Nullable="true" />
+          <Property Type="Int64" Name="EMP_LocationId" Nullable="true" />
+          <Property Type="String" Name="EMA_Address" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="EMA_City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EMA_State" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="EMA_Zip" Nullable="true" />
+          <Property Type="String" Name="CTZ_Citizenship" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="spGetOrgnizationCommonview_Result">
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EMP_Photo" Nullable="true" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+          <Property Type="String" Name="DepartmentName" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="VST_JobDescription" Nullable="true" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
+          <Property Type="Int64" Name="EMP_JobTitleId" Nullable="true" />
+          <Property Type="Int64" Name="EMP_LocationId" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetOrgnizationListview_Result">
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EMP_Photo" Nullable="true" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+          <Property Type="String" Name="DepartmentName" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="VST_JobDescription" Nullable="true" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
+          <Property Type="Int64" Name="EMP_JobTitleId" Nullable="true" />
+          <Property Type="Int64" Name="EMP_LocationId" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetOrgnizationPositionView_Result">
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="Int64" Name="JBT_VST_Id" Nullable="true" />
+          <Property Type="Int64" Name="EMP_JobTitleId" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetOrgnizationUserView_Result">
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EMP_Photo" Nullable="true" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="Int64" Name="EMP_JobTitleId" Nullable="true" />
+          <Property Type="Int64" Name="EMP_LocationId" Nullable="true" />
+          <Property Type="Int64" Name="EMP_ManagerId" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spSetEmployee_Result">
+          <Property Type="String" Name="EmployeeID" Nullable="true" MaxLength="50" />
+          <Property Type="Int64" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="Password" Nullable="false" MaxLength="100" />
+        </ComplexType>
+        <ComplexType Name="SP_GetAllReccuringPO_Result">
+          <Property Type="Int64" Name="POD_Id" Nullable="false" />
+          <Property Type="String" Name="CNT_invoicingFrequency" Nullable="true" MaxLength="10" />
+        </ComplexType>
+        <EntityType Name="DebitMemo">
+          <Key>
+            <PropertyRef Name="DBM_Id" />
+          </Key>
+          <Property Name="DBM_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DBM_LocationId" Type="Int64" Nullable="false" />
+          <Property Name="DBM_CMP_Id" Type="Int64" Nullable="false" />
+          <Property Name="DBM_PurchaseOrder" Type="Int64" />
+          <Property Name="DBM_DebitAmount" Type="Int64" Nullable="false" />
+          <Property Name="DBM_Note" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DBM_Status" Type="Int32" />
+          <Property Name="DBM_DocumentName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DBM_CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="DBM_ModifiedDate" Type="DateTime" Precision="3" />
+          <Property Name="DBM_ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="DBM_IsDeleted" Type="Boolean" />
+          <Property Name="DBM_DeletedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="DBM_DeletedDate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <ComplexType Name="spGetDebitMemoList_Result">
+          <Property Type="Int64" Name="DBM_Id" Nullable="false" />
+          <Property Type="Int64" Name="DBM_LocationId" Nullable="false" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
+          <Property Type="Int64" Name="LCM_CMP_Id" Nullable="true" />
+          <Property Type="Int64" Name="CMP_Id" Nullable="true" />
+          <Property Type="String" Name="CMP_NameLegal" Nullable="true" MaxLength="30" />
+          <Property Type="Int64" Name="DBM_PurchaseOrder" Nullable="true" />
+          <Property Type="Int64" Name="DBM_DebitAmount" Nullable="false" />
+          <Property Type="String" Name="DBM_Note" Nullable="true" />
+          <Property Type="Int32" Name="DBM_Status" Nullable="true" />
+          <Property Type="String" Name="DBM_DocumentName" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="DBM_CreatedDate" Nullable="true" Precision="23" />
         </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
@@ -17582,24 +18529,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <FunctionImportMapping FunctionImportName="spSetBill" FunctionName="workorderEMSModel.Store.spSetBill" />
           <FunctionImportMapping FunctionImportName="spUpdateBalanceAmount" FunctionName="workorderEMSModel.Store.spUpdateBalanceAmount" />
           <FunctionImportMapping FunctionImportName="spGetAccountCategory" FunctionName="workorderEMSModel.Store.spGetAccountCategory" />
-          <FunctionImportMapping FunctionImportName="spGetCompanyAccountDetail" FunctionName="workorderEMSModel.Store.spGetCompanyAccountDetail">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="workorderEMSModel.spGetCompanyAccountDetail_Result1">
-                <ScalarProperty Name="CAD_Id" ColumnName="CAD_Id" />
-                <ScalarProperty Name="CAD_CMP_Id" ColumnName="CAD_CMP_Id" />
-                <ScalarProperty Name="CAD_PMD_Id" ColumnName="CAD_PMD_Id" />
-                <ScalarProperty Name="CAD_QBKId" ColumnName="CAD_QBKId" />
-                <ScalarProperty Name="CAD_CardOrBankName" ColumnName="CAD_CardOrBankName" />
-                <ScalarProperty Name="CAD_BankLocation" ColumnName="CAD_BankLocation" />
-                <ScalarProperty Name="CAD_AccountNumber" ColumnName="CAD_AccountNumber" />
-                <ScalarProperty Name="CAD_CreditCardNumber" ColumnName="CAD_CreditCardNumber" />
-                <ScalarProperty Name="CAD_IFSCcode" ColumnName="CAD_IFSCcode" />
-                <ScalarProperty Name="CAD_SwiftBICcode" ColumnName="CAD_SwiftBICcode" />
-                <ScalarProperty Name="CAD_AccountDocument" ColumnName="CAD_AccountDocument" />
-                <ScalarProperty Name="CAD_IsActive" ColumnName="CAD_IsActive" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spSetPaymentStatusForBill" FunctionName="workorderEMSModel.Store.spSetPaymentStatusForBill" />
           <FunctionImportMapping FunctionImportName="spSetContract" FunctionName="workorderEMSModel.Store.spSetContract" />
           <FunctionImportMapping FunctionImportName="spSetModule" FunctionName="workorderEMSModel.Store.spSetModule" />
@@ -17825,7 +18754,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spSetPODetail" FunctionName="workorderEMSModel.Store.spSetPODetail" />
           <FunctionImportMapping FunctionImportName="spSetPODetailEmergency" FunctionName="workorderEMSModel.Store.spSetPODetailEmergency" />
           <FunctionImportMapping FunctionImportName="spGetPODetail" FunctionName="workorderEMSModel.Store.spGetPODetail">
             <ResultMapping>
@@ -19167,6 +20095,8 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySetMapping Name="LogPODetails">
             <EntityTypeMapping TypeName="workorderEMSModel.LogPODetail">
               <MappingFragment StoreEntitySet="LogPODetail">
+                <ScalarProperty Name="LPOD_POD_ReccuringStatus" ColumnName="LPOD_POD_ReccuringStatus" />
+                <ScalarProperty Name="LPOD_POD_ReccuringDate" ColumnName="LPOD_POD_ReccuringDate" />
                 <ScalarProperty Name="LPOD_RUL_CurrentLevel" ColumnName="LPOD_RUL_CurrentLevel" />
                 <ScalarProperty Name="LPOD_RUL_Level" ColumnName="LPOD_RUL_Level" />
                 <ScalarProperty Name="LPOD_RUL_Id" ColumnName="LPOD_RUL_Id" />
@@ -19425,6 +20355,9 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySetMapping Name="PODetails">
             <EntityTypeMapping TypeName="workorderEMSModel.PODetail">
               <MappingFragment StoreEntitySet="PODetail">
+                <ScalarProperty Name="POD_ReccuringStatus" ColumnName="POD_ReccuringStatus" />
+                <ScalarProperty Name="POD_ReccuringDate" ColumnName="POD_ReccuringDate" />
+                <ScalarProperty Name="POD_ReferenceId" ColumnName="POD_ReferenceId" />
                 <ScalarProperty Name="POD_IsActive" ColumnName="POD_IsActive" />
                 <ScalarProperty Name="POD_EmergencyPODocument" ColumnName="POD_EmergencyPODocument" />
                 <ScalarProperty Name="POD_ReoccourringBillDate" ColumnName="POD_ReoccourringBillDate" />
@@ -19888,55 +20821,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="CompanyAccountDetails">
-            <EntityTypeMapping TypeName="workorderEMSModel.CompanyAccountDetail">
-              <MappingFragment StoreEntitySet="CompanyAccountDetail">
-                <ScalarProperty Name="CAD_CardExpirationDate" ColumnName="CAD_CardExpirationDate" />
-                <ScalarProperty Name="CAD_CardHolderName" ColumnName="CAD_CardHolderName" />
-                <ScalarProperty Name="CAD_QBKId" ColumnName="CAD_QBKId" />
-                <ScalarProperty Name="CAD_Balance" ColumnName="CAD_Balance" />
-                <ScalarProperty Name="CAD_IsActive" ColumnName="CAD_IsActive" />
-                <ScalarProperty Name="CAD_AccountDocument" ColumnName="CAD_AccountDocument" />
-                <ScalarProperty Name="CAD_SwiftBICcode" ColumnName="CAD_SwiftBICcode" />
-                <ScalarProperty Name="CAD_IFSCcode" ColumnName="CAD_IFSCcode" />
-                <ScalarProperty Name="CAD_CreditCardNumber" ColumnName="CAD_CreditCardNumber" />
-                <ScalarProperty Name="CAD_AccountNumber" ColumnName="CAD_AccountNumber" />
-                <ScalarProperty Name="CAD_BankLocation" ColumnName="CAD_BankLocation" />
-                <ScalarProperty Name="CAD_CardOrBankName" ColumnName="CAD_CardOrBankName" />
-                <ScalarProperty Name="CAD_PMD_Id" ColumnName="CAD_PMD_Id" />
-                <ScalarProperty Name="CAD_CMP_Id" ColumnName="CAD_CMP_Id" />
-                <ScalarProperty Name="CAD_Id" ColumnName="CAD_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spSetApprovalForCompanyAccountDetail" FunctionName="workorderEMSModel.Store.spSetApprovalForCompanyAccountDetail" />
-          <EntitySetMapping Name="LogCompanyAccountDetails">
-            <EntityTypeMapping TypeName="workorderEMSModel.LogCompanyAccountDetail">
-              <MappingFragment StoreEntitySet="LogCompanyAccountDetail">
-                <ScalarProperty Name="LCAD_CardExpirationDate" ColumnName="LCAD_CardExpirationDate" />
-                <ScalarProperty Name="LCAD_CardHolderName" ColumnName="LCAD_CardHolderName" />
-                <ScalarProperty Name="LCAD_Balance" ColumnName="LCAD_Balance" />
-                <ScalarProperty Name="LCAD_IsActive" ColumnName="LCAD_IsActive" />
-                <ScalarProperty Name="LCAD_IsApprove" ColumnName="LCAD_IsApprove" />
-                <ScalarProperty Name="LCAD_Comment" ColumnName="LCAD_Comment" />
-                <ScalarProperty Name="LCAD_ApprovedOn" ColumnName="LCAD_ApprovedOn" />
-                <ScalarProperty Name="LCAD_ApprovedBy" ColumnName="LCAD_ApprovedBy" />
-                <ScalarProperty Name="LCAD_ModifiedOn" ColumnName="LCAD_ModifiedOn" />
-                <ScalarProperty Name="LCAD_ModifiedBy" ColumnName="LCAD_ModifiedBy" />
-                <ScalarProperty Name="LCAD_AccountDocument" ColumnName="LCAD_AccountDocument" />
-                <ScalarProperty Name="LCAD_SwiftBICcode" ColumnName="LCAD_SwiftBICcode" />
-                <ScalarProperty Name="LCAD_IFSCcode" ColumnName="LCAD_IFSCcode" />
-                <ScalarProperty Name="LCAD_CreditCardNumber" ColumnName="LCAD_CreditCardNumber" />
-                <ScalarProperty Name="LCAD_AccountNumber" ColumnName="LCAD_AccountNumber" />
-                <ScalarProperty Name="LCAD_BankLocation" ColumnName="LCAD_BankLocation" />
-                <ScalarProperty Name="LCAD_CardOrBankName" ColumnName="LCAD_CardOrBankName" />
-                <ScalarProperty Name="LCAD_PMD_Id" ColumnName="LCAD_PMD_Id" />
-                <ScalarProperty Name="LCAD_CAD_Id" ColumnName="LCAD_CAD_Id" />
-                <ScalarProperty Name="LCAD_CMP_Id" ColumnName="LCAD_CMP_Id" />
-                <ScalarProperty Name="LCAD_Id" ColumnName="LCAD_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spGetVendorAllDetailForApproval" FunctionName="workorderEMSModel.Store.spGetVendorAllDetailForApproval">
             <ResultMapping>
               <ComplexTypeMapping TypeName="workorderEMSModel.spGetVendorAllDetailForApproval_Result">
@@ -20001,7 +20886,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spSetCompanyAccountDetail" FunctionName="workorderEMSModel.Store.spSetCompanyAccountDetail" />
           <FunctionImportMapping FunctionImportName="spGetVendorAllDetailForEditApproval" FunctionName="workorderEMSModel.Store.spGetVendorAllDetailForEditApproval">
             <ResultMapping>
               <ComplexTypeMapping TypeName="workorderEMSModel.spGetVendorAllDetailForEditApproval_Result">
@@ -20066,6 +20950,524 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetCompanyCountForGraph" FunctionName="workorderEMSModel.Store.spGetCompanyCountForGraph" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetCompanyCountForGraph_Result">
+                <ScalarProperty Name="TotalVendorCount" ColumnName="TotalVendorCount" />
+                <ScalarProperty Name="ApprovedVendorCount" ColumnName="ApprovedVendorCount" />
+                <ScalarProperty Name="WaitingVendorCount" ColumnName="WaitingVendorCount" />
+                <ScalarProperty Name="RejectedVendorCount" ColumnName="RejectedVendorCount" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ExcuteAutoBill" FunctionName="workorderEMSModel.Store.ExcuteAutoBill" />
+          <FunctionImportMapping FunctionImportName="fnGetManager" FunctionName="workorderEMSModel.Store.fnGetManager">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.fnGetManager_Result">
+                <ScalarProperty Name="ManagerForUser" ColumnName="ManagerForUser" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
+                <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="fun_GetClientDateTime_O" FunctionName="workorderEMSModel.Store.fun_GetClientDateTime_O" />
+          <FunctionImportMapping FunctionImportName="SetAutoBill" FunctionName="workorderEMSModel.Store.SetAutoBill" />
+          <FunctionImportMapping FunctionImportName="signalRPushNotifyForWorkOrder" FunctionName="workorderEMSModel.Store.signalRPushNotifyForWorkOrder">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.signalRPushNotifyForWorkOrder_Result">
+                <ScalarProperty Name="WorkRequestAssignmentID" ColumnName="WorkRequestAssignmentID" />
+                <ScalarProperty Name="WorkOrderCode" ColumnName="WorkOrderCode" />
+                <ScalarProperty Name="WorkOrderCodeID" ColumnName="WorkOrderCodeID" />
+                <ScalarProperty Name="WorkRequestProjectType" ColumnName="WorkRequestProjectType" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="SafetyHazard" ColumnName="SafetyHazard" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="ModifiedDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetIdleDetailsOfEmployeeForIdleReport" FunctionName="workorderEMSModel.Store.sp_GetIdleDetailsOfEmployeeForIdleReport">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.sp_GetIdleDetailsOfEmployeeForIdleReport_Result">
+                <ScalarProperty Name="Response" ColumnName="Response" />
+                <ScalarProperty Name="ResponseMessage" ColumnName="ResponseMessage" />
+                <ScalarProperty Name="ResponseLocation" ColumnName="ResponseLocation" />
+                <ScalarProperty Name="ResponseTimeForNextIdleCall" ColumnName="ResponseTimeForNextIdleCall" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetCompanyLocationCostCodeMapping" FunctionName="workorderEMSModel.Store.spGetCompanyLocationCostCodeMapping">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetCompanyLocationCostCodeMapping_Result">
+                <ScalarProperty Name="CLC_Id" ColumnName="CLC_Id" />
+                <ScalarProperty Name="CLC_CMP_Id" ColumnName="CLC_CMP_Id" />
+                <ScalarProperty Name="CLC_CLM_Id" ColumnName="CLC_CLM_Id" />
+                <ScalarProperty Name="CLC_Date" ColumnName="CLC_Date" />
+                <ScalarProperty Name="CLC_IsActive" ColumnName="CLC_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetCompanyType" FunctionName="workorderEMSModel.Store.spGetCompanyType">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetCompanyType_Result">
+                <ScalarProperty Name="COT_Id" ColumnName="COT_Id" />
+                <ScalarProperty Name="COT_CompanyType" ColumnName="COT_CompanyType" />
+                <ScalarProperty Name="COT_IsActive" ColumnName="COT_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetContract" FunctionName="workorderEMSModel.Store.spGetContract">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetContract_Result">
+                <ScalarProperty Name="CNT_Id" ColumnName="CNT_Id" />
+                <ScalarProperty Name="CNT_CMP_IdFirsParty" ColumnName="CNT_CMP_IdFirsParty" />
+                <ScalarProperty Name="CNT_CMP_IdSecondParty" ColumnName="CNT_CMP_IdSecondParty" />
+                <ScalarProperty Name="CNT_CTT_Id" ColumnName="CNT_CTT_Id" />
+                <ScalarProperty Name="CNT_ExcutedBy" ColumnName="CNT_ExcutedBy" />
+                <ScalarProperty Name="CNT_IssuedBy" ColumnName="CNT_IssuedBy" />
+                <ScalarProperty Name="CNT_PTM_Id" ColumnName="CNT_PTM_Id" />
+                <ScalarProperty Name="CNT_PMD_Id" ColumnName="CNT_PMD_Id" />
+                <ScalarProperty Name="CNT_GracePeriod" ColumnName="CNT_GracePeriod" />
+                <ScalarProperty Name="CNT_invoicingFrequency" ColumnName="CNT_invoicingFrequency" />
+                <ScalarProperty Name="CNT_CostDuringPeriod" ColumnName="CNT_CostDuringPeriod" />
+                <ScalarProperty Name="CNT_AllocationNeeded" ColumnName="CNT_AllocationNeeded" />
+                <ScalarProperty Name="CNT_StartDate" ColumnName="CNT_StartDate" />
+                <ScalarProperty Name="CNT_EndDate" ColumnName="CNT_EndDate" />
+                <ScalarProperty Name="CNT_AnnualValueOfAggreement" ColumnName="CNT_AnnualValueOfAggreement" />
+                <ScalarProperty Name="CNT_MinimumBillAmount" ColumnName="CNT_MinimumBillAmount" />
+                <ScalarProperty Name="CNT_BillDueDate" ColumnName="CNT_BillDueDate" />
+                <ScalarProperty Name="CNT_LateFeeFine" ColumnName="CNT_LateFeeFine" />
+                <ScalarProperty Name="CNT_ContractDocument" ColumnName="CNT_ContractDocument" />
+                <ScalarProperty Name="CNT_IsActive" ColumnName="CNT_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetContractLocationAllocation" FunctionName="workorderEMSModel.Store.spGetContractLocationAllocation">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetContractLocationAllocation_Result">
+                <ScalarProperty Name="CLA_Id" ColumnName="CLA_Id" />
+                <ScalarProperty Name="CLA_CNT_Id" ColumnName="CLA_CNT_Id" />
+                <ScalarProperty Name="CLA_LocationId" ColumnName="CLA_LocationId" />
+                <ScalarProperty Name="CLA_Allocation" ColumnName="CLA_Allocation" />
+                <ScalarProperty Name="CLA_IsActive" ColumnName="CLA_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetLocationCompanyMapping" FunctionName="workorderEMSModel.Store.spGetLocationCompanyMapping">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetLocationCompanyMapping_Result">
+                <ScalarProperty Name="LCM_Id" ColumnName="LCM_Id" />
+                <ScalarProperty Name="LCM_CMP_Id" ColumnName="LCM_CMP_Id" />
+                <ScalarProperty Name="CMP_NameLegal" ColumnName="CMP_NameLegal" />
+                <ScalarProperty Name="LCM_IsActive" ColumnName="LCM_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetPreBillDetail" FunctionName="workorderEMSModel.Store.spGetPreBillDetail">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetPreBillDetail_Result">
+                <ScalarProperty Name="LPBL_Id" ColumnName="LPBL_Id" />
+                <ScalarProperty Name="LPBL_PBL_Id" ColumnName="LPBL_PBL_Id" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="CMP_NameLegal" ColumnName="CMP_NameLegal" />
+                <ScalarProperty Name="Employee_Name" ColumnName="Employee_Name" />
+                <ScalarProperty Name="PBLAmount" ColumnName="PBLAmount" />
+                <ScalarProperty Name="PBLDate" ColumnName="PBLDate" />
+                <ScalarProperty Name="LPBL_InvoiceDocument" ColumnName="LPBL_InvoiceDocument" />
+                <ScalarProperty Name="LPBL_Comment" ColumnName="LPBL_Comment" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="LPBL_LocationId" ColumnName="LPBL_LocationId" />
+                <ScalarProperty Name="LPBL_ModifiedBy" ColumnName="LPBL_ModifiedBy" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetApprovalForCompany" FunctionName="workorderEMSModel.Store.spSetApprovalForCompany" />
+          <FunctionImportMapping FunctionImportName="spSetApprovalForCompanyDetail" FunctionName="workorderEMSModel.Store.spSetApprovalForCompanyDetail" />
+          <FunctionImportMapping FunctionImportName="spSetApprovalForCompanyLocationCostCodeMapping" FunctionName="workorderEMSModel.Store.spSetApprovalForCompanyLocationCostCodeMapping" />
+          <FunctionImportMapping FunctionImportName="spSetApprovalForContract" FunctionName="workorderEMSModel.Store.spSetApprovalForContract" />
+          <FunctionImportMapping FunctionImportName="spSetApprovalForInsurance" FunctionName="workorderEMSModel.Store.spSetApprovalForInsurance" />
+          <FunctionImportMapping FunctionImportName="spSetApprovalForLicense" FunctionName="workorderEMSModel.Store.spSetApprovalForLicense" />
+          <FunctionImportMapping FunctionImportName="spGetCompanyAllocationLocationCountForGraph" FunctionName="workorderEMSModel.Store.spGetCompanyAllocationLocationCountForGraph" >
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetCompanyAllocationLocationCountForGraph_Result">
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="VendorCount" ColumnName="VendorCount" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="CompanyAccountDetails">
+            <EntityTypeMapping TypeName="workorderEMSModel.CompanyAccountDetail">
+              <MappingFragment StoreEntitySet="CompanyAccountDetail">
+                <ScalarProperty Name="CAD_IsPrimary" ColumnName="CAD_IsPrimary" />
+                <ScalarProperty Name="CAD_CardExpirationDate" ColumnName="CAD_CardExpirationDate" />
+                <ScalarProperty Name="CAD_CardHolderName" ColumnName="CAD_CardHolderName" />
+                <ScalarProperty Name="CAD_QBKId" ColumnName="CAD_QBKId" />
+                <ScalarProperty Name="CAD_Balance" ColumnName="CAD_Balance" />
+                <ScalarProperty Name="CAD_IsActive" ColumnName="CAD_IsActive" />
+                <ScalarProperty Name="CAD_AccountDocument" ColumnName="CAD_AccountDocument" />
+                <ScalarProperty Name="CAD_SwiftBICcode" ColumnName="CAD_SwiftBICcode" />
+                <ScalarProperty Name="CAD_IFSCcode" ColumnName="CAD_IFSCcode" />
+                <ScalarProperty Name="CAD_CreditCardNumber" ColumnName="CAD_CreditCardNumber" />
+                <ScalarProperty Name="CAD_AccountNumber" ColumnName="CAD_AccountNumber" />
+                <ScalarProperty Name="CAD_BankLocation" ColumnName="CAD_BankLocation" />
+                <ScalarProperty Name="CAD_CardOrBankName" ColumnName="CAD_CardOrBankName" />
+                <ScalarProperty Name="CAD_PMD_Id" ColumnName="CAD_PMD_Id" />
+                <ScalarProperty Name="CAD_CMP_Id" ColumnName="CAD_CMP_Id" />
+                <ScalarProperty Name="CAD_Id" ColumnName="CAD_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LogCompanyAccountDetails">
+            <EntityTypeMapping TypeName="workorderEMSModel.LogCompanyAccountDetail">
+              <MappingFragment StoreEntitySet="LogCompanyAccountDetail">
+                <ScalarProperty Name="LCAD_IsPrimary" ColumnName="LCAD_IsPrimary" />
+                <ScalarProperty Name="LCAD_CardExpirationDate" ColumnName="LCAD_CardExpirationDate" />
+                <ScalarProperty Name="LCAD_CardHolderName" ColumnName="LCAD_CardHolderName" />
+                <ScalarProperty Name="LCAD_Balance" ColumnName="LCAD_Balance" />
+                <ScalarProperty Name="LCAD_IsActive" ColumnName="LCAD_IsActive" />
+                <ScalarProperty Name="LCAD_IsApprove" ColumnName="LCAD_IsApprove" />
+                <ScalarProperty Name="LCAD_Comment" ColumnName="LCAD_Comment" />
+                <ScalarProperty Name="LCAD_ApprovedOn" ColumnName="LCAD_ApprovedOn" />
+                <ScalarProperty Name="LCAD_ApprovedBy" ColumnName="LCAD_ApprovedBy" />
+                <ScalarProperty Name="LCAD_ModifiedOn" ColumnName="LCAD_ModifiedOn" />
+                <ScalarProperty Name="LCAD_ModifiedBy" ColumnName="LCAD_ModifiedBy" />
+                <ScalarProperty Name="LCAD_AccountDocument" ColumnName="LCAD_AccountDocument" />
+                <ScalarProperty Name="LCAD_SwiftBICcode" ColumnName="LCAD_SwiftBICcode" />
+                <ScalarProperty Name="LCAD_IFSCcode" ColumnName="LCAD_IFSCcode" />
+                <ScalarProperty Name="LCAD_CreditCardNumber" ColumnName="LCAD_CreditCardNumber" />
+                <ScalarProperty Name="LCAD_AccountNumber" ColumnName="LCAD_AccountNumber" />
+                <ScalarProperty Name="LCAD_BankLocation" ColumnName="LCAD_BankLocation" />
+                <ScalarProperty Name="LCAD_CardOrBankName" ColumnName="LCAD_CardOrBankName" />
+                <ScalarProperty Name="LCAD_PMD_Id" ColumnName="LCAD_PMD_Id" />
+                <ScalarProperty Name="LCAD_CAD_Id" ColumnName="LCAD_CAD_Id" />
+                <ScalarProperty Name="LCAD_CMP_Id" ColumnName="LCAD_CMP_Id" />
+                <ScalarProperty Name="LCAD_Id" ColumnName="LCAD_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spSetCompanyAccountDetail" FunctionName="workorderEMSModel.Store.spSetCompanyAccountDetail" />
+          <FunctionImportMapping FunctionImportName="spGetCompanyAccountDetail" FunctionName="workorderEMSModel.Store.spGetCompanyAccountDetail">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetCompanyAccountDetail_Result">
+                <ScalarProperty Name="CAD_Id" ColumnName="CAD_Id" />
+                <ScalarProperty Name="CAD_CMP_Id" ColumnName="CAD_CMP_Id" />
+                <ScalarProperty Name="CAD_PMD_Id" ColumnName="CAD_PMD_Id" />
+                <ScalarProperty Name="CAD_QBKId" ColumnName="CAD_QBKId" />
+                <ScalarProperty Name="CAD_CardOrBankName" ColumnName="CAD_CardOrBankName" />
+                <ScalarProperty Name="CAD_BankLocation" ColumnName="CAD_BankLocation" />
+                <ScalarProperty Name="CAD_AccountNumber" ColumnName="CAD_AccountNumber" />
+                <ScalarProperty Name="CAD_CreditCardNumber" ColumnName="CAD_CreditCardNumber" />
+                <ScalarProperty Name="CAD_IFSCcode" ColumnName="CAD_IFSCcode" />
+                <ScalarProperty Name="CAD_SwiftBICcode" ColumnName="CAD_SwiftBICcode" />
+                <ScalarProperty Name="CAD_AccountDocument" ColumnName="CAD_AccountDocument" />
+                <ScalarProperty Name="CAD_IsActive" ColumnName="CAD_IsActive" />
+                <ScalarProperty Name="CAD_IsPrimary" ColumnName="CAD_IsPrimary" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetJobTitle1" FunctionName="workorderEMSModel.Store.spGetJobTitle" />
+          <FunctionImportMapping FunctionImportName="spGetVehicleSeating1" FunctionName="workorderEMSModel.Store.spGetVehicleSeating" />
+          <FunctionImportMapping FunctionImportName="spGetVehicleSeating_DepartmentMapping" FunctionName="workorderEMSModel.Store.spGetVehicleSeating_DepartmentMapping" />
+          <FunctionImportMapping FunctionImportName="spGetVehicleSeatingPermission1" FunctionName="workorderEMSModel.Store.spGetVehicleSeatingPermission" />
+          <FunctionImportMapping FunctionImportName="spGetVehicleSeatingPermissionType" FunctionName="workorderEMSModel.Store.spGetVehicleSeatingPermissionType" />
+          <FunctionImportMapping FunctionImportName="spSetApprovalForTaxDetail" FunctionName="workorderEMSModel.Store.spSetApprovalForTaxDetail" />
+          <FunctionImportMapping FunctionImportName="spSetDepartment1" FunctionName="workorderEMSModel.Store.spSetDepartment" />
+          <FunctionImportMapping FunctionImportName="spSetJobTitle1" FunctionName="workorderEMSModel.Store.spSetJobTitle" />
+          <FunctionImportMapping FunctionImportName="spSetVehicleSeating1" FunctionName="workorderEMSModel.Store.spSetVehicleSeating" />
+          <FunctionImportMapping FunctionImportName="spSetVehicleSeating_DepartmentMapping1" FunctionName="workorderEMSModel.Store.spSetVehicleSeating_DepartmentMapping" />
+          <EntitySetMapping Name="ApplicantInfoes">
+            <EntityTypeMapping TypeName="workorderEMSModel.ApplicantInfo">
+              <MappingFragment StoreEntitySet="ApplicantInfo">
+                <ScalarProperty Name="API_IsActive" ColumnName="API_IsActive" />
+                <ScalarProperty Name="API_Date" ColumnName="API_Date" />
+                <ScalarProperty Name="API_ApplicantStatus" ColumnName="API_ApplicantStatus" />
+                <ScalarProperty Name="API_DesireSalary" ColumnName="API_DesireSalary" />
+                <ScalarProperty Name="API_DateOfJoining" ColumnName="API_DateOfJoining" />
+                <ScalarProperty Name="API_HiringManagerID" ColumnName="API_HiringManagerID" />
+                <ScalarProperty Name="API_JobTitleID" ColumnName="API_JobTitleID" />
+                <ScalarProperty Name="API_JobPostingId" ColumnName="API_JobPostingId" />
+                <ScalarProperty Name="API_WorkEligibleInUS" ColumnName="API_WorkEligibleInUS" />
+                <ScalarProperty Name="API_EverELITEWorkTo" ColumnName="API_EverELITEWorkTo" />
+                <ScalarProperty Name="API_EverELITEWorkFrom" ColumnName="API_EverELITEWorkFrom" />
+                <ScalarProperty Name="API_AnyRefOrEmployeeInELITE" ColumnName="API_AnyRefOrEmployeeInELITE" />
+                <ScalarProperty Name="API_HighestEducation" ColumnName="API_HighestEducation" />
+                <ScalarProperty Name="API_Gender" ColumnName="API_Gender" />
+                <ScalarProperty Name="API_MilitaryService" ColumnName="API_MilitaryService" />
+                <ScalarProperty Name="API_Citizenship" ColumnName="API_Citizenship" />
+                <ScalarProperty Name="API_Photo" ColumnName="API_Photo" />
+                <ScalarProperty Name="API_DLNumber" ColumnName="API_DLNumber" />
+                <ScalarProperty Name="API_Email" ColumnName="API_Email" />
+                <ScalarProperty Name="API_PhoneNumber" ColumnName="API_PhoneNumber" />
+                <ScalarProperty Name="API_CoverLetter" ColumnName="API_CoverLetter" />
+                <ScalarProperty Name="API_Resume" ColumnName="API_Resume" />
+                <ScalarProperty Name="API_Zip" ColumnName="API_Zip" />
+                <ScalarProperty Name="API_State" ColumnName="API_State" />
+                <ScalarProperty Name="API_City" ColumnName="API_City" />
+                <ScalarProperty Name="API_HomeAddress" ColumnName="API_HomeAddress" />
+                <ScalarProperty Name="API_LastName" ColumnName="API_LastName" />
+                <ScalarProperty Name="API_MiddleName" ColumnName="API_MiddleName" />
+                <ScalarProperty Name="API_FirstName" ColumnName="API_FirstName" />
+                <ScalarProperty Name="API_ApplicantId" ColumnName="API_ApplicantId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Citizenships">
+            <EntityTypeMapping TypeName="workorderEMSModel.Citizenship">
+              <MappingFragment StoreEntitySet="Citizenship">
+                <ScalarProperty Name="CTZ_IsActive" ColumnName="CTZ_IsActive" />
+                <ScalarProperty Name="CTZ_Date" ColumnName="CTZ_Date" />
+                <ScalarProperty Name="CTZ_ForeignPassport" ColumnName="CTZ_ForeignPassport" />
+                <ScalarProperty Name="CTZ_FormI94" ColumnName="CTZ_FormI94" />
+                <ScalarProperty Name="CTZ_AlienRegisteationNumber" ColumnName="CTZ_AlienRegisteationNumber" />
+                <ScalarProperty Name="CTZ_lawfulResident" ColumnName="CTZ_lawfulResident" />
+                <ScalarProperty Name="CTZ_EMP_EmployeeID" ColumnName="CTZ_EMP_EmployeeID" />
+                <ScalarProperty Name="CTZ_Citizenship" ColumnName="CTZ_Citizenship" />
+                <ScalarProperty Name="CTZ_Id" ColumnName="CTZ_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="workorderEMSModel.Department">
+              <MappingFragment StoreEntitySet="Department">
+                <ScalarProperty Name="DPT_IsActive" ColumnName="DPT_IsActive" />
+                <ScalarProperty Name="DPT_Date" ColumnName="DPT_Date" />
+                <ScalarProperty Name="DPT_Name" ColumnName="DPT_Name" />
+                <ScalarProperty Name="DPT_Id" ColumnName="DPT_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="workorderEMSModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="EMP_IsActive" ColumnName="EMP_IsActive" />
+                <ScalarProperty Name="EMP_IsCreatedOn" ColumnName="EMP_IsCreatedOn" />
+                <ScalarProperty Name="EMP_IsCreatedBy" ColumnName="EMP_IsCreatedBy" />
+                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
+                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
+                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
+                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
+                <ScalarProperty Name="EMP_Gender" ColumnName="EMP_Gender" />
+                <ScalarProperty Name="EMP_MilitaryService" ColumnName="EMP_MilitaryService" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="EMP_SSN" ColumnName="EMP_SSN" />
+                <ScalarProperty Name="EMP_DateOfBirth" ColumnName="EMP_DateOfBirth" />
+                <ScalarProperty Name="EMP_DrivingLicenseNumber" ColumnName="EMP_DrivingLicenseNumber" />
+                <ScalarProperty Name="EMP_Phone" ColumnName="EMP_Phone" />
+                <ScalarProperty Name="EMP_Email" ColumnName="EMP_Email" />
+                <ScalarProperty Name="EMP_LastName" ColumnName="EMP_LastName" />
+                <ScalarProperty Name="EMP_MiddleName" ColumnName="EMP_MiddleName" />
+                <ScalarProperty Name="EMP_FirstName" ColumnName="EMP_FirstName" />
+                <ScalarProperty Name="EMP_API_ApplicantId" ColumnName="EMP_API_ApplicantId" />
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EMP_Id" ColumnName="EMP_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeAddresses">
+            <EntityTypeMapping TypeName="workorderEMSModel.EmployeeAddress">
+              <MappingFragment StoreEntitySet="EmployeeAddress">
+                <ScalarProperty Name="EMA_IsActive" ColumnName="EMA_IsActive" />
+                <ScalarProperty Name="EMA_Date" ColumnName="EMA_Date" />
+                <ScalarProperty Name="EMA_AddressPhoneNo" ColumnName="EMA_AddressPhoneNo" />
+                <ScalarProperty Name="EMA_Zip" ColumnName="EMA_Zip" />
+                <ScalarProperty Name="EMA_State" ColumnName="EMA_State" />
+                <ScalarProperty Name="EMA_City" ColumnName="EMA_City" />
+                <ScalarProperty Name="EMA_Address" ColumnName="EMA_Address" />
+                <ScalarProperty Name="EMA_EMP_EmployeeID" ColumnName="EMA_EMP_EmployeeID" />
+                <ScalarProperty Name="EMA_Id" ColumnName="EMA_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JobPostings">
+            <EntityTypeMapping TypeName="workorderEMSModel.JobPosting">
+              <MappingFragment StoreEntitySet="JobPosting">
+                <ScalarProperty Name="JPS_IsActive" ColumnName="JPS_IsActive" />
+                <ScalarProperty Name="JPS_Date" ColumnName="JPS_Date" />
+                <ScalarProperty Name="JPS_NumberOfPost" ColumnName="JPS_NumberOfPost" />
+                <ScalarProperty Name="JPS_HiringManager" ColumnName="JPS_HiringManager" />
+                <ScalarProperty Name="JPS_JobTitle" ColumnName="JPS_JobTitle" />
+                <ScalarProperty Name="JPS_HiringManagerID" ColumnName="JPS_HiringManagerID" />
+                <ScalarProperty Name="JPS_JobTitleID" ColumnName="JPS_JobTitleID" />
+                <ScalarProperty Name="JPS_JobPostingId" ColumnName="JPS_JobPostingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="JobTitles">
+            <EntityTypeMapping TypeName="workorderEMSModel.JobTitle">
+              <MappingFragment StoreEntitySet="JobTitle">
+                <ScalarProperty Name="JBT_IsActive" ColumnName="JBT_IsActive" />
+                <ScalarProperty Name="JBT_Date" ColumnName="JBT_Date" />
+                <ScalarProperty Name="JBT_VST_Id" ColumnName="JBT_VST_Id" />
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="JBT_Id" ColumnName="JBT_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VehicleSeatings">
+            <EntityTypeMapping TypeName="workorderEMSModel.VehicleSeating">
+              <MappingFragment StoreEntitySet="VehicleSeating">
+                <ScalarProperty Name="VST_IsActive" ColumnName="VST_IsActive" />
+                <ScalarProperty Name="VST_Date" ColumnName="VST_Date" />
+                <ScalarProperty Name="VST_DPT_Id" ColumnName="VST_DPT_Id" />
+                <ScalarProperty Name="VST_ParentId" ColumnName="VST_ParentId" />
+                <ScalarProperty Name="VST_Level" ColumnName="VST_Level" />
+                <ScalarProperty Name="VST_RolesAndResponsiblities" ColumnName="VST_RolesAndResponsiblities" />
+                <ScalarProperty Name="VST_JobDescription" ColumnName="VST_JobDescription" />
+                <ScalarProperty Name="VST_Title" ColumnName="VST_Title" />
+                <ScalarProperty Name="VST_Id" ColumnName="VST_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VehicleSeating_DepartmentMapping">
+            <EntityTypeMapping TypeName="workorderEMSModel.VehicleSeating_DepartmentMapping">
+              <MappingFragment StoreEntitySet="VehicleSeating_DepartmentMapping">
+                <ScalarProperty Name="VDM_IsActive" ColumnName="VDM_IsActive" />
+                <ScalarProperty Name="VDM_DPT_Id" ColumnName="VDM_DPT_Id" />
+                <ScalarProperty Name="VDM_VST_Id" ColumnName="VDM_VST_Id" />
+                <ScalarProperty Name="VDM_Id" ColumnName="VDM_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetEmployeePersonalInfo" FunctionName="workorderEMSModel.Store.spGetEmployeePersonalInfo">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetEmployeePersonalInfo_Result">
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EMP_API_ApplicantId" ColumnName="EMP_API_ApplicantId" />
+                <ScalarProperty Name="EMP_FirstName" ColumnName="EMP_FirstName" />
+                <ScalarProperty Name="EMP_MiddleName" ColumnName="EMP_MiddleName" />
+                <ScalarProperty Name="EMP_LastName" ColumnName="EMP_LastName" />
+                <ScalarProperty Name="EMP_Email" ColumnName="EMP_Email" />
+                <ScalarProperty Name="EMP_Phone" ColumnName="EMP_Phone" />
+                <ScalarProperty Name="EMP_DrivingLicenseNumber" ColumnName="EMP_DrivingLicenseNumber" />
+                <ScalarProperty Name="EMP_DateOfBirth" ColumnName="EMP_DateOfBirth" />
+                <ScalarProperty Name="EMP_SSN" ColumnName="EMP_SSN" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="EMP_Gender" ColumnName="EMP_Gender" />
+                <ScalarProperty Name="EMP_MilitaryService" ColumnName="EMP_MilitaryService" />
+                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
+                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
+                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
+                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
+                <ScalarProperty Name="EMA_Address" ColumnName="EMA_Address" />
+                <ScalarProperty Name="EMA_City" ColumnName="EMA_City" />
+                <ScalarProperty Name="EMA_State" ColumnName="EMA_State" />
+                <ScalarProperty Name="EMA_Zip" ColumnName="EMA_Zip" />
+                <ScalarProperty Name="CTZ_Citizenship" ColumnName="CTZ_Citizenship" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetOrgnizationCommonview" FunctionName="workorderEMSModel.Store.spGetOrgnizationCommonview">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetOrgnizationCommonview_Result">
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="VST_JobDescription" ColumnName="VST_JobDescription" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
+                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetOrgnizationListview" FunctionName="workorderEMSModel.Store.spGetOrgnizationListview">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetOrgnizationListview_Result">
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="VST_JobDescription" ColumnName="VST_JobDescription" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
+                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetOrgnizationPositionView" FunctionName="workorderEMSModel.Store.spGetOrgnizationPositionView">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetOrgnizationPositionView_Result">
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="JBT_VST_Id" ColumnName="JBT_VST_Id" />
+                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetOrgnizationUserView" FunctionName="workorderEMSModel.Store.spGetOrgnizationUserView">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetOrgnizationUserView_Result">
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
+                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
+                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetEmployee" FunctionName="workorderEMSModel.Store.spSetEmployee">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spSetEmployee_Result">
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="SP_GetAllReccuringPO" FunctionName="workorderEMSModel.Store.SP_GetAllReccuringPO">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.SP_GetAllReccuringPO_Result">
+                <ScalarProperty Name="POD_Id" ColumnName="POD_Id" />
+                <ScalarProperty Name="CNT_invoicingFrequency" ColumnName="CNT_invoicingFrequency" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_SetPOReccuring" FunctionName="workorderEMSModel.Store.sp_SetPOReccuring" />
+          <FunctionImportMapping FunctionImportName="spGetPONumberForReccuringPO" FunctionName="workorderEMSModel.Store.spGetPONumberForReccuringPO" />
+          <FunctionImportMapping FunctionImportName="spSetPODetail" FunctionName="workorderEMSModel.Store.spSetPODetail" />
+          <EntitySetMapping Name="DebitMemoes">
+            <EntityTypeMapping TypeName="workorderEMSModel.DebitMemo">
+              <MappingFragment StoreEntitySet="DebitMemo">
+                <ScalarProperty Name="DBM_DeletedDate" ColumnName="DBM_DeletedDate" />
+                <ScalarProperty Name="DBM_DeletedBy" ColumnName="DBM_DeletedBy" />
+                <ScalarProperty Name="DBM_IsDeleted" ColumnName="DBM_IsDeleted" />
+                <ScalarProperty Name="DBM_ModifiedBy" ColumnName="DBM_ModifiedBy" />
+                <ScalarProperty Name="DBM_ModifiedDate" ColumnName="DBM_ModifiedDate" />
+                <ScalarProperty Name="DBM_CreatedDate" ColumnName="DBM_CreatedDate" />
+                <ScalarProperty Name="DBM_DocumentName" ColumnName="DBM_DocumentName" />
+                <ScalarProperty Name="DBM_Status" ColumnName="DBM_Status" />
+                <ScalarProperty Name="DBM_Note" ColumnName="DBM_Note" />
+                <ScalarProperty Name="DBM_DebitAmount" ColumnName="DBM_DebitAmount" />
+                <ScalarProperty Name="DBM_PurchaseOrder" ColumnName="DBM_PurchaseOrder" />
+                <ScalarProperty Name="DBM_CMP_Id" ColumnName="DBM_CMP_Id" />
+                <ScalarProperty Name="DBM_LocationId" ColumnName="DBM_LocationId" />
+                <ScalarProperty Name="DBM_Id" ColumnName="DBM_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetDebitMemoList" FunctionName="workorderEMSModel.Store.spGetDebitMemoList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetDebitMemoList_Result">
+                <ScalarProperty Name="DBM_Id" ColumnName="DBM_Id" />
+                <ScalarProperty Name="DBM_LocationId" ColumnName="DBM_LocationId" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="LCM_CMP_Id" ColumnName="LCM_CMP_Id" />
+                <ScalarProperty Name="CMP_Id" ColumnName="CMP_Id" />
+                <ScalarProperty Name="CMP_NameLegal" ColumnName="CMP_NameLegal" />
+                <ScalarProperty Name="DBM_PurchaseOrder" ColumnName="DBM_PurchaseOrder" />
+                <ScalarProperty Name="DBM_DebitAmount" ColumnName="DBM_DebitAmount" />
+                <ScalarProperty Name="DBM_Note" ColumnName="DBM_Note" />
+                <ScalarProperty Name="DBM_Status" ColumnName="DBM_Status" />
+                <ScalarProperty Name="DBM_DocumentName" ColumnName="DBM_DocumentName" />
+                <ScalarProperty Name="DBM_CreatedDate" ColumnName="DBM_CreatedDate" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetDebitMemo" FunctionName="workorderEMSModel.Store.spSetDebitMemo" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

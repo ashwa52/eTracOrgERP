@@ -294,7 +294,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                             var saveNormalPO = _workorderems.spSetPODetail(action, PONumber, objPOTypeDataModel.Location,
                                                                          objPOTypeDataModel.POType, objPOTypeDataModel.Vendor, objPOTypeDataModel.DeliveryDate,
                                                                           objPOTypeDataModel.Total, null, null, objPOTypeDataModel.UserId, getRuleData.UserId, "Y", getRuleData.RuleId
-                                                                          , getRuleData.RuleLevel, getRuleData.CurrentLevel, objPOTypeDataModel.QBK_Id);
+                                                                          , getRuleData.RuleLevel, getRuleData.CurrentLevel, objPOTypeDataModel.QBK_Id,null);
                             if (obj != null)
                             {
                                 foreach (var item in obj)
@@ -311,7 +311,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                             var saveReoccuringPO = _workorderems.spSetPODetail(action, PONumber, objPOTypeDataModel.Location,
                                                                          objPOTypeDataModel.POType, objPOTypeDataModel.Vendor, null,
                                                                           objPOTypeDataModel.Total, objPOTypeDataModel.BillDate, null, objPOTypeDataModel.UserId, getRuleData.UserId, "Y", getRuleData.RuleId
-                                                                          , getRuleData.RuleLevel, getRuleData.CurrentLevel, objPOTypeDataModel.QBK_Id);
+                                                                          , getRuleData.RuleLevel, getRuleData.CurrentLevel, objPOTypeDataModel.QBK_Id, POReccuringStaus.Pending.ToString());
                             if (obj != null)
                             {
                                 foreach (var item in obj)
@@ -330,7 +330,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                 var saveEmeregencyPO = _workorderems.spSetPODetail(action, PONumber, objPOTypeDataModel.Location,
                                                                         objPOTypeDataModel.POType, objPOTypeDataModel.Vendor, null, objPOTypeDataModel.Total,
                                                                          null, objPOTypeDataModel.POD_EmergencyPODocument, objPOTypeDataModel.UserId, getRuleData.UserId, "Y", getRuleData.RuleId
-                                                                          , getRuleData.RuleLevel, getRuleData.CurrentLevel, objPOTypeDataModel.QBK_Id);
+                                                                          , getRuleData.RuleLevel, getRuleData.CurrentLevel, objPOTypeDataModel.QBK_Id,null);
                                 if (obj != null)
                                 {
                                     foreach (var item in obj)
@@ -828,7 +828,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                                                    Convert.ToInt64(getPODetails.LPOD_POT_Id), getPODetails.LPOD_CMP_Id, getPODetails.LPOD_DeliveryDate,
                                                                    getPODetails.LPOD_POAmount, getPODetails.LPOD_ReoccourringBillDate, getPODetails.LPOD_EmergencyPODocument, getPODetails.LPOD_ModifiedBy,
                                                                    getRuleData.UserId, Status, getRuleData.RuleId
-                                                                   , getRuleData.RuleLevel, getRuleData.CurrentLevel, objPOApproveRejectModel.QuickBookPOId);//Added getRuleData  instead of  objPOApproveRejectModel for approve by
+                                                                   , getRuleData.RuleLevel, getRuleData.CurrentLevel, objPOApproveRejectModel.QuickBookPOId,null);//Added getRuleData  instead of  objPOApproveRejectModel for approve by
                         }
                         else
                         {
@@ -1067,14 +1067,14 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
         }
 
-        public POTypeDetails GetAllPOFacilityByPOIdList(long? UserId, long? POId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
+        public List<POTypeDataModel> GetAllPOFacilityByPOIdList(long? UserId, long? POId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
         {
             try
             {
-                List<ResourceData> Resource = new List<ResourceData>();
-                var objPOTypeModelDetails = new POTypeDetails();
-                int pageindex = Convert.ToInt32(pageIndex) - 1;
-                int pageSize = Convert.ToInt32(numberOfRows);                
+                //List<ResourceData> Resource = new List<ResourceData>();
+                //var objPOTypeModelDetails = new POTypeDetails();
+                //int pageindex = Convert.ToInt32(pageIndex) - 1;
+                //int pageSize = Convert.ToInt32(numberOfRows);                
                 var Results = _workorderems.spGetPOFacilityItemForApproval(POId). // .CompanyFacilityMappings.Where(x => x.CFM_CMP_Id == VendorId)      
                     Select(a => new POTypeDataModel()
                     {
@@ -1089,13 +1089,13 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         //Total = a.CFM_Rate * a.POF_Unit,
                         //TotalPrice = GradTotal
                 }).ToList();               
-                int totRecords = Results.Count();
-                var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
-                objPOTypeModelDetails.pageindex = pageindex;
-                objPOTypeModelDetails.total = totalPages;
-                objPOTypeModelDetails.records = totRecords;
-                objPOTypeModelDetails.rows = Results.ToList();
-                return objPOTypeModelDetails;
+                //int totRecords = Results.Count();
+                //var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
+                //objPOTypeModelDetails.pageindex = pageindex;
+                //objPOTypeModelDetails.total = totalPages;
+                //objPOTypeModelDetails.records = totRecords;
+                //objPOTypeModelDetails.rows = Results.ToList();
+                return Results;
             }
             catch (Exception ex)
             {
