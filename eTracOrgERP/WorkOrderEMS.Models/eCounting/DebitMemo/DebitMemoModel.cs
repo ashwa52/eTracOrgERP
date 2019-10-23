@@ -22,7 +22,9 @@ namespace WorkOrderEMS.Models.eCounting.DebitMemo
         public string DisplayDate { get; set; }
         public string Note { get; set; }
         public int? Status { get; set; }
+        [Required(ErrorMessage = "Please select Status")]
         public DebitMemoStatus DebitMemoStatus { get; set; }
+        [Required(ErrorMessage = "Please select Status")]
         public DebitMemoStatus DebitMemoStatusEdit { get; set; }
         public HttpPostedFileBase DebitMemoFile { get; set; }
         public string UploadedDocumentName { get; set; }

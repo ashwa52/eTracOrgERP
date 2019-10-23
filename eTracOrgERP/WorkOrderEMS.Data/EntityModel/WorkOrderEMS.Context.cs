@@ -4281,23 +4281,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplyRule_Result2>("spApplyRule", userIdParameter, rUL_MDL_IdParameter, rUL_RuleNameParameter, rUL_ConditionTypeParameter, rUL_ConditionAmountParameter, rUL_ConditionDaysParameter, rUL_ConditionDateParameter);
         }
     
-        public virtual ObjectResult<spGetPOList_Result4> spGetPOList(Nullable<long> locationId, Nullable<long> userId, string pO_Status)
-        {
-            var locationIdParameter = locationId.HasValue ?
-                new ObjectParameter("LocationId", locationId) :
-                new ObjectParameter("LocationId", typeof(long));
-    
-            var userIdParameter = userId.HasValue ?
-                new ObjectParameter("UserId", userId) :
-                new ObjectParameter("UserId", typeof(long));
-    
-            var pO_StatusParameter = pO_Status != null ?
-                new ObjectParameter("PO_Status", pO_Status) :
-                new ObjectParameter("PO_Status", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPOList_Result4>("spGetPOList", locationIdParameter, userIdParameter, pO_StatusParameter);
-        }
-    
         public virtual int spSetDepartment(string dPTAction, Nullable<long> dPT_Id, string dPT_Name, string dPT_IsActive)
         {
             var dPTActionParameter = dPTAction != null ?
@@ -5368,6 +5351,23 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("DBM_DeletedDate", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetDebitMemo", dBM_IDParameter, dBM_ActionParameter, dBM_LocationIdParameter, dBM_CMP_IdParameter, dBM_PurchaseOrderParameter, dBM_DebitAmountParameter, dBM_NoteParameter, dBM_StatusParameter, dBM_DocumentNameParameter, dBM_CreatedDateParameter, dBM_ModifiedDateParameter, dBM_ModifiedByParameter, dBM_IsDeletedParameter, dBM_DeletedByParameter, dBM_DeletedDateParameter);
+        }
+    
+        public virtual ObjectResult<spGetPOList_Result> spGetPOList(Nullable<long> locationId, Nullable<long> userId, string pO_Status)
+        {
+            var locationIdParameter = locationId.HasValue ?
+                new ObjectParameter("LocationId", locationId) :
+                new ObjectParameter("LocationId", typeof(long));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(long));
+    
+            var pO_StatusParameter = pO_Status != null ?
+                new ObjectParameter("PO_Status", pO_Status) :
+                new ObjectParameter("PO_Status", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPOList_Result>("spGetPOList", locationIdParameter, userIdParameter, pO_StatusParameter);
         }
     }
 }

@@ -1,11 +1,5 @@
-﻿.card-header .card-title {
-    color: #fff;
-}
-
-.form-control {
-    border: 1px solid #dedada !important;
-    height: calc(1.5em + 1rem + 2px);
-}
+﻿.card-header .card-title { color: #fff; }
+.form-control { border: 1px solid #dedada !important; height: calc(1.5em + 1rem + 2px); }
 
 label .req {
     margin: 2px;
@@ -44,7 +38,6 @@ label .req {
 .jsgrid-grid-body {
     height: 100% !important;
 }
-
 .error {
     color: red;
 }
@@ -59,7 +52,6 @@ label .req {
     display: flex;
     position: relative;
 }
-
 .stepwizard {
     display: table;
     width: 100%;
@@ -136,7 +128,7 @@ select {
     cursor: pointer;
     font-size: 1.2em;
     padding: 0.25em 1em 0.25em 0.25em;
-    background-image: url(../../Images/bottom-icon.png) !important;
+    background-image: url(../../Images/bottom-icon.png) !important;  
     background-repeat: no-repeat !important;
     background-position: right center !important;
     background-size: 20px auto !important;
@@ -164,13 +156,11 @@ select {
 
 .sub-head {
     color: #0aa0cd;
+  
 }
 
-.custom-file-label {
-    height: calc(1.5em + 1rem + 2px);
-}
-
-.roundedtext {
+.custom-file-label { height: calc(1.5em + 1rem + 2px); }
+   .roundedtext {
     border-radius: 12px
 }
 
@@ -180,7 +170,7 @@ select {
     border-radius: 0 50px 50px 0;
 }
 
-:: -webkit-input-placeholder {
+    :: -webkit-input-placeholder {
     font-style: italic;
 }
 
@@ -216,7 +206,6 @@ input[type="radio"] {
 .jsgrid-pager {
     padding: 2em 0 0;
 }
-
 .jsgrid-grid-body {
     border-top: none;
     height: 100% !important;
@@ -227,16 +216,14 @@ input[type="radio"] {
 .card-custom-padding {
     padding: 1.5rem 1.63rem;
 }
-
 .modal-body {
     margin-left: 0px !important;
 }
-
 h4.card-title.modal-heading {
     border-bottom: 1px solid #ececec;
     padding-bottom: 11px;
     font-weight: bold;
-    margin-top: 20px;
+    margin-top:20px;
 }
 
 .package {
@@ -256,13 +243,11 @@ h4.card-title.modal-heading {
     font-size: 15px;
     padding-right: 3px;
 }
-
 .university-icon {
     color: #FDBD00;
     font-size: 15px;
-    padding-right: 3px;
+    padding-right:3px;
 }
-
 .pencil-icon {
     color: #46AB49;
     font-size: 15px;
@@ -286,7 +271,6 @@ h4.card-title.modal-heading {
     font-size: 15px;
     padding-right: 3px;
 }
-
 .close-icon {
     color: #ff5078;
     font-size: 15px;
@@ -298,13 +282,11 @@ h4.card-title.modal-heading {
     font-size: 15px;
     padding-right: 3px;
 }
-
 .file-icon {
     color: #6B84FF;
     font-size: 15px;
     padding-right: 3px;
 }
-
 .onoffswitch2 {
     -moz-user-select: none;
     float: right;
@@ -406,11 +388,9 @@ img#imgProductImage {
 .card-custom-padding a {
     width: 100%;
 }
-
 .headerSize {
-    height: auto;
+    height:auto;
 }
-
 #chartdiv, #EmployeeCount1 {
     width: 100%;
     height: 250px;
@@ -421,11 +401,23 @@ img#imgProductImage {
 }
 
 .custom-file-label {
-    border-color: #dedada !important;
-    border-radius: 40px !important;
+border-color: #dedada !important;
+border-radius: 40px !important;
 }
 
 .stepwizard-step.col p small {
     font-size: 91%;
+    font-weight: 500;
+}
+input[type="radio"] {
+    margin-right: 6px;
+}
+
+span.radio_span {
+    margin-right: 58px;
+}
+
+input#PONumber {
+    font-size: 19px;
     font-weight: 500;
 }

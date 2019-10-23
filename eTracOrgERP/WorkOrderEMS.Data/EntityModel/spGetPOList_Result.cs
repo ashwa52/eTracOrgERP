@@ -13,12 +13,15 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class spGetPOList_Result
     {
+        public long LPOD_Id { get; set; }
         public long LPOD_POD_Id { get; set; }
         public Nullable<System.DateTime> LPOD_PODate { get; set; }
+        public Nullable<decimal> LPOD_POAmount { get; set; }
         public string LocationName { get; set; }
         public string POT_POType { get; set; }
         public string CMP_NameLegal { get; set; }
         public Nullable<System.DateTime> LPOD_DeliveryDate { get; set; }
         public string PO_Status { get; set; }
+        public Nullable<long> LPOD_ApprovedBy { get; set; }
     }
 }

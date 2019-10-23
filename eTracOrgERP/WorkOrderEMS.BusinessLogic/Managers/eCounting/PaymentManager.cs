@@ -58,7 +58,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                      OperatingCompany = a.CMP_NameLegalRemitter == null?"N/A": a.CMP_NameLegalRemitter,
                      OperatingCompanyId = a.CMP_IdRemitter > 0 ? a.CMP_IdRemitter :0 ,
                      LocationId = a.LocationId,
-                     DisplayDate = a.BillDate == null ? "" : a.BillDate.ToString("dd/MM/yyyy")
+                     DisplayDate = a.BillDate == null ? "" : a.BillDate.ToString("MMM dd,yyyy")
                     }).Where(x => x.Status == "W" || x.Status == "Y").ToList();
                // Results.Where(x => x.Status == "Y").ToList();
                 //foreach (var item in Results)
@@ -139,7 +139,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         OperatingCompany = a.CMP_NameLegalRemitter == null ? "N/A" : a.CMP_NameLegalRemitter,
                         OperatingCompanyId = a.CMP_IdRemitter > 0 ? 0 : a.CMP_IdRemitter,
                         LocationId = a.LocationId,
-                        DisplayDate = a.BillDate == null ? "" : a.BillDate.ToString("dd/MM/yyyy")
+                        DisplayDate = a.BillDate == null ? "" : a.BillDate.ToString("MMM dd,yyyy")
                     }).Where(x => x.Status == "P" || x.Status == "X").ToList();
                  //Results.Where(x => x.Status == "X").ToList();
                 //int totRecords = Results.Count();

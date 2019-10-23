@@ -50,8 +50,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         Status = x.DBM_Status,
                         EditStatus = x.DBM_Status,
                         UploadedEditDocumentName = x.DBM_DocumentName,//to delete old document if new file added in edit
-                        UploadedDocumentName = x.DBM_DocumentName == null ? HostingPrefix + DebitMemoDocumentPath.Replace("~","") + "Code20-Emergency.png" : HostingPrefix + DebitMemoDocumentPath.Replace("~","") + x.DBM_DocumentName,
-                        DisplayDate = x.DBM_CreatedDate.HasValue ? x.DBM_CreatedDate.Value.ToString("dd/MM/yyyy"):"" //for nullable datetime check hasvalue and .value
+                        UploadedDocumentName = x.DBM_DocumentName == null ? "" : HostingPrefix + DebitMemoDocumentPath.Replace("~","") + x.DBM_DocumentName,
+                        DisplayDate = x.DBM_CreatedDate.HasValue ? x.DBM_CreatedDate.Value.ToString("MMM dd,yyyy"):"" //for nullable datetime check hasvalue and .value
                     }).ToList();
 
                 foreach (var item in result)

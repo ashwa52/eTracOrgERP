@@ -7685,11 +7685,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="RUL_ConditionDays" Mode="In" Type="Decimal" />
             <Parameter Name="RUL_ConditionDate" Mode="In" Type="DateTime" />
           </FunctionImport>
-          <FunctionImport Name="spGetPOList" ReturnType="Collection(workorderEMSModel.spGetPOList_Result4)">
-            <Parameter Name="LocationId" Mode="In" Type="Int64" />
-            <Parameter Name="UserId" Mode="In" Type="Int64" />
-            <Parameter Name="PO_Status" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="spSetDepartment">
             <Parameter Name="DPTAction" Mode="In" Type="String" />
             <Parameter Name="DPT_Id" Mode="In" Type="Int64" />
@@ -8806,6 +8801,11 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="DBM_IsDeleted" Mode="In" Type="Boolean" />
             <Parameter Name="DBM_DeletedBy" Mode="In" Type="String" />
             <Parameter Name="DBM_DeletedDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="spGetPOList" ReturnType="Collection(workorderEMSModel.spGetPOList_Result)">
+            <Parameter Name="LocationId" Mode="In" Type="Int64" />
+            <Parameter Name="UserId" Mode="In" Type="Int64" />
+            <Parameter Name="PO_Status" Mode="In" Type="String" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="CommonQeriesByVijay_Result">
@@ -10393,15 +10393,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="String" Name="QNA_Application" Nullable="true" MaxLength="3" />
           <Property Type="String" Name="QNA_IsActive" Nullable="true" MaxLength="1" />
         </ComplexType>
-        <ComplexType Name="spGetPOList_Result">
-          <Property Type="Int64" Name="LPOD_POD_Id" Nullable="false" />
-          <Property Type="DateTime" Name="LPOD_PODate" Nullable="true" />
-          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
-          <Property Type="String" Name="POT_POType" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="CMP_NameLegal" Nullable="true" MaxLength="30" />
-          <Property Type="DateTime" Name="LPOD_DeliveryDate" Nullable="true" />
-          <Property Type="String" Name="PO_Status" Nullable="true" MaxLength="1" />
-        </ComplexType>
         <ComplexType Name="spGetPOFacilityItemForApproval_Result">
           <Property Type="Int64" Name="CFM_Id" Nullable="false" />
           <Property Type="Int64" Name="CFM_CCD_CostCode" Nullable="false" />
@@ -10441,16 +10432,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="DateTime" Name="POD_PODate" Nullable="true" />
           <Property Type="DateTime" Name="POD_ReoccourringBillDate" Nullable="true" />
           <Property Type="String" Name="POD_IsActive" Nullable="true" MaxLength="1" />
-        </ComplexType>
-        <ComplexType Name="spGetPOList_Result1">
-          <Property Type="Int64" Name="LPOD_Id" Nullable="false" />
-          <Property Type="Int64" Name="LPOD_POD_Id" Nullable="false" />
-          <Property Type="DateTime" Name="LPOD_PODate" Nullable="true" />
-          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
-          <Property Type="String" Name="POT_POType" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="CMP_NameLegal" Nullable="true" MaxLength="30" />
-          <Property Type="DateTime" Name="LPOD_DeliveryDate" Nullable="true" />
-          <Property Type="String" Name="PO_Status" Nullable="true" MaxLength="1" />
         </ComplexType>
         <ComplexType Name="spGetPODetail_Result2">
           <Property Type="Int64" Name="POD_Id" Nullable="false" />
@@ -10537,17 +10518,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="Int64" Name="POF_CFM_Id" Nullable="false" />
           <Property Type="Int64" Name="POF_Unit" Nullable="true" />
           <Property Type="String" Name="POF_IsActive" Nullable="true" MaxLength="1" />
-        </ComplexType>
-        <ComplexType Name="spGetPOList_Result2">
-          <Property Type="Int64" Name="LPOD_Id" Nullable="false" />
-          <Property Type="Int64" Name="LPOD_POD_Id" Nullable="false" />
-          <Property Type="DateTime" Name="LPOD_PODate" Nullable="true" />
-          <Property Type="Decimal" Name="LPOD_POAmount" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
-          <Property Type="String" Name="POT_POType" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="CMP_NameLegal" Nullable="true" MaxLength="30" />
-          <Property Type="DateTime" Name="LPOD_DeliveryDate" Nullable="true" />
-          <Property Type="String" Name="PO_Status" Nullable="true" MaxLength="1" />
         </ComplexType>
         <ComplexType Name="spGetPOQuestion_Result1">
           <Property Type="Int64" Name="POQ_Id" Nullable="false" />
@@ -11532,18 +11502,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="Int64" Name="LPOD_ApprovedBy" Nullable="true" />
           <Property Type="String" Name="Employee_Name" Nullable="true" MaxLength="403" />
         </ComplexType>
-        <ComplexType Name="spGetPOList_Result3">
-          <Property Type="Int64" Name="LPOD_Id" Nullable="true" />
-          <Property Type="Int64" Name="LPOD_POD_Id" Nullable="true" />
-          <Property Type="DateTime" Name="LPOD_PODate" Nullable="true" />
-          <Property Type="Decimal" Name="LPOD_POAmount" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
-          <Property Type="String" Name="POT_POType" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="CMP_NameLegal" Nullable="true" MaxLength="30" />
-          <Property Type="DateTime" Name="LPOD_DeliveryDate" Nullable="true" />
-          <Property Type="String" Name="PO_Status" Nullable="true" MaxLength="1" />
-          <Property Type="Int64" Name="LPOD_ApprovedBy" Nullable="true" />
-        </ComplexType>
         <ComplexType Name="spGetLocationCompanyMappingForApproval_Result1">
           <Property Type="Int64" Name="LLCM_Id" Nullable="false" />
           <Property Type="Int64" Name="LLCM_CMP_Id" Nullable="false" />
@@ -11661,18 +11619,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="String" Name="FirstName" Nullable="true" MaxLength="200" />
           <Property Type="String" Name="UserEmail" Nullable="true" MaxLength="100" />
           <Property Type="String" Name="DeviceId" Nullable="true" MaxLength="200" />
-        </ComplexType>
-        <ComplexType Name="spGetPOList_Result4">
-          <Property Type="Int64" Name="LPOD_Id" Nullable="true" />
-          <Property Type="Int64" Name="LPOD_POD_Id" Nullable="true" />
-          <Property Type="DateTime" Name="LPOD_PODate" Nullable="true" />
-          <Property Type="Decimal" Name="LPOD_POAmount" Nullable="true" Precision="18" Scale="2" />
-          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
-          <Property Type="String" Name="POT_POType" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="CMP_NameLegal" Nullable="true" MaxLength="30" />
-          <Property Type="DateTime" Name="LPOD_DeliveryDate" Nullable="true" />
-          <Property Type="String" Name="PO_Status" Nullable="true" MaxLength="1" />
-          <Property Type="Int64" Name="LPOD_ApprovedBy" Nullable="true" />
         </ComplexType>
         <ComplexType Name="spGetDepartment_Result">
           <Property Type="Int64" Name="DPT_Id" Nullable="false" />
@@ -16609,6 +16555,18 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="String" Name="Bill_Status" Nullable="true" MaxLength="1" />
           <Property Type="String" Name="LBLL_Comment" Nullable="true" MaxLength="100" />
         </ComplexType>
+        <ComplexType Name="spGetPOList_Result">
+          <Property Type="Int64" Name="LPOD_Id" Nullable="false" />
+          <Property Type="Int64" Name="LPOD_POD_Id" Nullable="false" />
+          <Property Type="DateTime" Name="LPOD_PODate" Nullable="true" />
+          <Property Type="Decimal" Name="LPOD_POAmount" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="POT_POType" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="CMP_NameLegal" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="LPOD_DeliveryDate" Nullable="true" />
+          <Property Type="String" Name="PO_Status" Nullable="true" MaxLength="1" />
+          <Property Type="Int64" Name="LPOD_ApprovedBy" Nullable="true" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -18762,22 +18720,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
                 <ScalarProperty Name="FirstName" ColumnName="FirstName" />
                 <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
                 <ScalarProperty Name="DeviceId" ColumnName="DeviceId" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetPOList" FunctionName="workorderEMSModel.Store.spGetPOList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="workorderEMSModel.spGetPOList_Result4">
-                <ScalarProperty Name="LPOD_Id" ColumnName="LPOD_Id" />
-                <ScalarProperty Name="LPOD_POD_Id" ColumnName="LPOD_POD_Id" />
-                <ScalarProperty Name="LPOD_PODate" ColumnName="LPOD_PODate" />
-                <ScalarProperty Name="LPOD_POAmount" ColumnName="LPOD_POAmount" />
-                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
-                <ScalarProperty Name="POT_POType" ColumnName="POT_POType" />
-                <ScalarProperty Name="CMP_NameLegal" ColumnName="CMP_NameLegal" />
-                <ScalarProperty Name="LPOD_DeliveryDate" ColumnName="LPOD_DeliveryDate" />
-                <ScalarProperty Name="PO_Status" ColumnName="PO_Status" />
-                <ScalarProperty Name="LPOD_ApprovedBy" ColumnName="LPOD_ApprovedBy" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -21423,6 +21365,22 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spSetDebitMemo" FunctionName="workorderEMSModel.Store.spSetDebitMemo" />
+          <FunctionImportMapping FunctionImportName="spGetPOList" FunctionName="workorderEMSModel.Store.spGetPOList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetPOList_Result">
+                <ScalarProperty Name="LPOD_Id" ColumnName="LPOD_Id" />
+                <ScalarProperty Name="LPOD_POD_Id" ColumnName="LPOD_POD_Id" />
+                <ScalarProperty Name="LPOD_PODate" ColumnName="LPOD_PODate" />
+                <ScalarProperty Name="LPOD_POAmount" ColumnName="LPOD_POAmount" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="POT_POType" ColumnName="POT_POType" />
+                <ScalarProperty Name="CMP_NameLegal" ColumnName="CMP_NameLegal" />
+                <ScalarProperty Name="LPOD_DeliveryDate" ColumnName="LPOD_DeliveryDate" />
+                <ScalarProperty Name="PO_Status" ColumnName="PO_Status" />
+                <ScalarProperty Name="LPOD_ApprovedBy" ColumnName="LPOD_ApprovedBy" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
