@@ -8390,12 +8390,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="SAR_Comments" Mode="In" Type="String" />
             <Parameter Name="SAR_IsActive" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spGetAssessmentList" ReturnType="Collection(workorderEMSModel.spGetAssessmentList_Result)">
-          <Parameter Name="EmployeeId" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="spGetEvaluationList" ReturnType="Collection(workorderEMSModel.spGetEvaluationList_Result)">
-          <Parameter Name="EmployeeId" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="spSetEvaluationQuarterly">
             <Parameter Name="Action" Mode="In" Type="String" />
             <Parameter Name="EmployeeID" Mode="In" Type="String" />
@@ -8423,6 +8417,12 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <FunctionImport Name="spGetAssessmentQuestionQCQM" ReturnType="Collection(workorderEMSModel.spGetAssessmentQuestionQCQM_Result)">
             <Parameter Name="EmployeeID" Mode="In" Type="String" />
             <Parameter Name="AssessmentType" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetAssessmentList" ReturnType="Collection(workorderEMSModel.spGetAssessmentList_Result)">
+            <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetEvaluationList" ReturnType="Collection(workorderEMSModel.spGetEvaluationList_Result)">
+            <Parameter Name="EmployeeId" Mode="In" Type="String" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="CommonQeriesByVijay_Result">
@@ -15985,32 +15985,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="String" Name="SAR_Comments" Nullable="true" />
           <Property Type="String" Name="SAR_IsActive" Nullable="true" MaxLength="1" />
         </ComplexType>
-        <ComplexType Name="spGetAssessmentList_Result">
-          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="EMP_Photo" Nullable="true" />
-          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
-          <Property Type="String" Name="VST_Level" Nullable="true" MaxLength="1" />
-          <Property Type="String" Name="DepartmentName" Nullable="true" MaxLength="70" />
-          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
-          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
-          <Property Type="DateTime" Name="EMP_DateOfJoining" Nullable="true" />
-          <Property Type="String" Name="Expectation" Nullable="true" MaxLength="2" />
-          <Property Type="Int32" Name="FinYear" Nullable="true" />
-          <Property Type="String" Name="EEL_IsActive" Nullable="true" MaxLength="1" />
-        </ComplexType>
-        <ComplexType Name="spGetEvaluationList_Result">
-          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="EMP_Photo" Nullable="true" />
-          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
-          <Property Type="String" Name="VST_Level" Nullable="true" MaxLength="1" />
-          <Property Type="String" Name="DepartmentName" Nullable="true" MaxLength="70" />
-          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
-          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
-          <Property Type="DateTime" Name="EMP_DateOfJoining" Nullable="true" />
-          <Property Type="String" Name="Expectation" Nullable="true" MaxLength="2" />
-          <Property Type="Int32" Name="FinYear" Nullable="true" />
-          <Property Type="String" Name="EEL_IsActive" Nullable="true" MaxLength="1" />
-        </ComplexType>
         <EntityType Name="ExpectationEvaluation">
           <Key>
             <PropertyRef Name="EEL_Id" />
@@ -16045,6 +16019,34 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="String" Name="EEL_AnswerManager" Nullable="true" MaxLength="1" />
           <Property Type="Decimal" Name="EEL_ScoreManager" Nullable="true" Precision="18" Scale="2" />
           <Property Type="String" Name="EEL_Comments" Nullable="true" />
+          <Property Type="String" Name="EEL_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetAssessmentList_Result">
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EMP_Photo" Nullable="true" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+          <Property Type="String" Name="VST_Level" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="AssessmentType" Nullable="false" MaxLength="2" />
+          <Property Type="String" Name="DepartmentName" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
+          <Property Type="DateTime" Name="EMP_DateOfJoining" Nullable="true" />
+          <Property Type="String" Name="Expectation" Nullable="true" MaxLength="2" />
+          <Property Type="Int32" Name="FinYear" Nullable="true" />
+          <Property Type="String" Name="EEL_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetEvaluationList_Result">
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EMP_Photo" Nullable="true" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+          <Property Type="String" Name="VST_Level" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="AssessmentType" Nullable="false" MaxLength="2" />
+          <Property Type="String" Name="DepartmentName" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
+          <Property Type="DateTime" Name="EMP_DateOfJoining" Nullable="true" />
+          <Property Type="String" Name="Expectation" Nullable="true" MaxLength="2" />
+          <Property Type="Int32" Name="FinYear" Nullable="true" />
           <Property Type="String" Name="EEL_IsActive" Nullable="true" MaxLength="1" />
         </ComplexType>
         </Schema>
@@ -20496,40 +20498,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spSetReview306090" FunctionName="workorderEMSModel.Store.spSetReview306090" />
-          <FunctionImportMapping FunctionImportName="spGetAssessmentList" FunctionName="workorderEMSModel.Store.spGetAssessmentList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="workorderEMSModel.spGetAssessmentList_Result">
-                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
-                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
-                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-                <ScalarProperty Name="VST_Level" ColumnName="VST_Level" />
-                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
-                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
-                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
-                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
-                <ScalarProperty Name="Expectation" ColumnName="Expectation" />
-                <ScalarProperty Name="FinYear" ColumnName="FinYear" />
-                <ScalarProperty Name="EEL_IsActive" ColumnName="EEL_IsActive" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetEvaluationList" FunctionName="workorderEMSModel.Store.spGetEvaluationList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="workorderEMSModel.spGetEvaluationList_Result">
-                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
-                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
-                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-                <ScalarProperty Name="VST_Level" ColumnName="VST_Level" />
-                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
-                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
-                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
-                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
-                <ScalarProperty Name="Expectation" ColumnName="Expectation" />
-                <ScalarProperty Name="FinYear" ColumnName="FinYear" />
-                <ScalarProperty Name="EEL_IsActive" ColumnName="EEL_IsActive" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spSetEvaluationQuarterly" FunctionName="workorderEMSModel.Store.spSetEvaluationQuarterly" />
           <FunctionImportMapping FunctionImportName="spSetSelfAssessmentQuarterly" FunctionName="workorderEMSModel.Store.spSetSelfAssessmentQuarterly" />
           <EntitySetMapping Name="ExpectationEvaluations">
@@ -20569,6 +20537,42 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
                 <ScalarProperty Name="EEL_AnswerManager" ColumnName="EEL_AnswerManager" />
                 <ScalarProperty Name="EEL_ScoreManager" ColumnName="EEL_ScoreManager" />
                 <ScalarProperty Name="EEL_Comments" ColumnName="EEL_Comments" />
+                <ScalarProperty Name="EEL_IsActive" ColumnName="EEL_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetAssessmentList" FunctionName="workorderEMSModel.Store.spGetAssessmentList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetAssessmentList_Result">
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="VST_Level" ColumnName="VST_Level" />
+                <ScalarProperty Name="AssessmentType" ColumnName="AssessmentType" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
+                <ScalarProperty Name="Expectation" ColumnName="Expectation" />
+                <ScalarProperty Name="FinYear" ColumnName="FinYear" />
+                <ScalarProperty Name="EEL_IsActive" ColumnName="EEL_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetEvaluationList" FunctionName="workorderEMSModel.Store.spGetEvaluationList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetEvaluationList_Result">
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="VST_Level" ColumnName="VST_Level" />
+                <ScalarProperty Name="AssessmentType" ColumnName="AssessmentType" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
+                <ScalarProperty Name="Expectation" ColumnName="Expectation" />
+                <ScalarProperty Name="FinYear" ColumnName="FinYear" />
                 <ScalarProperty Name="EEL_IsActive" ColumnName="EEL_IsActive" />
               </ComplexTypeMapping>
             </ResultMapping>

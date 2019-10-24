@@ -194,7 +194,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                             debugger;
                             $.ajax({
                                 type: "POST",
-                                data: { 'Id': item.EMP_EmployeeID, 'Assesment': "QC" },
+                                data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType ,'FinYear':item.FinYear,'FinQuarter':item.Expectation},
                                 url: '../NewAdmin/userExpectationsView/',
                                 error: function (xhr, status, error) {
                                 },

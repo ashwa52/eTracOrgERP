@@ -706,7 +706,8 @@ namespace WorkOrderEMS.Data
                     LocationName = t.LocationName,
                     EMP_DateOfJoining = t.EMP_DateOfJoining,
                     Assesment = t.Assesment,
-                    Status = t.SAM_IsActive
+                    Status = t.SAM_IsActive,
+             
 
 
 
@@ -738,6 +739,7 @@ namespace WorkOrderEMS.Data
                          SelfAssessmentId = t.SAM_Id ?? 0,
                          Answer = t.SAM_Answer,
                          SAM_IsActive = t.SAM_IsActive
+                         
 
                      }).ToList();
                 }
@@ -748,7 +750,7 @@ namespace WorkOrderEMS.Data
                      new GWCQUestionModel()
                      {
                          SelfAssessmentId = t.EEL_Id,
-                         EmployeeId = t.EEL_EMP_EmployeeId,
+                         EmployeeId = Id,
                          SAR_EMP_EmployeeIdManager = t.EEL_EMP_EmployeeIdManager,
                          QuestionType = t.ASQ_QuestionType,
                          QuestionId = t.ASQ_Id,
@@ -756,7 +758,9 @@ namespace WorkOrderEMS.Data
                          Answer = t.EEL_AnswerSelf,
                          SAR_AnswerManager = t.EEL_AnswerManager,
                          Comment = t.EEL_Comments,
-                         SAM_IsActive = t.EEL_IsActive
+                         SAM_IsActive = t.EEL_IsActive,
+                         EEL_FinencialYear=t.EEL_FinencialYear,
+                         EEL_FinQuarter=t.EEL_FinQuarter,
 
                      }).ToList();
                 }
@@ -767,7 +771,6 @@ namespace WorkOrderEMS.Data
 
         new GWCQUestionModel()
         {
-
                  SAR_Id=t.SAR_Id,
                 SAR_EMP_EmployeeId=t.SAR_EMP_EmployeeId,
                 SAR_EMP_EmployeeIdManager=t.SAR_EMP_EmployeeIdManager,
@@ -874,13 +877,32 @@ namespace WorkOrderEMS.Data
                     Expectation = t.Expectation,
                     Status = t.EEL_IsActive,
                     VST_Level=t.VST_Level,
-                    FinYear=t.FinYear.Value
+                    FinYear=t.FinYear.Value,
+                    AssessmentType=t.AssessmentType
 
 
 
                 }).ToList();
                 totalRecords = Convert.ToInt32(totalRecord.Value);
                 return ListOf306090Records;
+            }
+            catch (Exception)
+            { throw; }
+        }
+        public bool saveExpectations(List<GWCQUestionModel> data, string action)
+        {
+            try
+            {
+                if (data.Count() > 0)
+                {
+                    foreach (var i in data)
+                    {
+                        _workorderEMSEntities.spSetSelfAssessmentQuarterly((i.EEL_IsActive == null || i.EEL_IsActive == "" || i.EEL_IsActive != "Y") ? "I" : "U", i.EEL_EMP_EmployeeId,i.EEL_EMP_EmployeeIdManager,i.QuestionType, i.ASQ_Id, i.EEL_Id,i.EEL_FinencialYear,i.EEL_FinQuarter, i.EEL_AnswerSelf == "Y" ? "Y" : i.EEL_AnswerManager == "N" ? "N" : i.EEL_AnswerManager == "S" ? "S" : null, action == "S" ? "S" : "Y");
+                    }
+                }
+
+                return true;
+
             }
             catch (Exception)
             { throw; }

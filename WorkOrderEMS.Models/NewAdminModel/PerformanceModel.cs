@@ -23,6 +23,7 @@ namespace WorkOrderEMS.Models.NewAdminModel
 
         public int FinYear { get; set; }
         public string IsLoggedInUser { get; set; }
+        public string AssessmentType { get; set; }
 
     }
     public class GWCQUestionModel
@@ -56,8 +57,20 @@ namespace WorkOrderEMS.Models.NewAdminModel
         public string SAR_Comments { get; set; }
         public string SAR_IsActive { get; set; }
 
+        public string EEL_AnswerSelf { get; set; }
 
+        public string EEL_AnswerManager { get; set; }
+        public string EEL_EMP_EmployeeId { get; set; }
+        public string EEL_EMP_EmployeeIdManager { get; set; }
+        public long? EEL_Id { get; set; }
+        public string EEL_IsActive { get; set; }
+        public string EEL_Comments { get; set; }
 
+        public string EEL_FinencialYear { get; set; }
+
+        public string EEL_FinQuarter { get; set; }
+
+        public string ASQ_QuestionType { get; set; }
     }
 
 }

@@ -3876,6 +3876,20 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
 
         }
+        public bool saveExpectations(List<GWCQUestionModel> data, string action)
+        {
+
+            ObjUserRepository = new UserRepository();
+            try
+            {
+
+                return ObjUserRepository.saveExpectations(data, action);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
     }
 

@@ -17,6 +17,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string EMP_Photo { get; set; }
         public string EmployeeName { get; set; }
         public string VST_Level { get; set; }
+        public string AssessmentType { get; set; }
         public string DepartmentName { get; set; }
         public string JBT_JobTitle { get; set; }
         public string LocationName { get; set; }

@@ -4832,24 +4832,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetReview306090", actionParameter, employeeIDParameter, sAR_ASQ_IdParameter, sAR_IdParameter, sAR_AnswerManagerParameter, sAR_CommentsParameter, sAR_IsActiveParameter);
         }
     
-        public virtual ObjectResult<spGetAssessmentList_Result> spGetAssessmentList(string employeeId)
-        {
-            var employeeIdParameter = employeeId != null ?
-                new ObjectParameter("EmployeeId", employeeId) :
-                new ObjectParameter("EmployeeId", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentList_Result>("spGetAssessmentList", employeeIdParameter);
-        }
-    
-        public virtual ObjectResult<spGetEvaluationList_Result> spGetEvaluationList(string employeeId)
-        {
-            var employeeIdParameter = employeeId != null ?
-                new ObjectParameter("EmployeeId", employeeId) :
-                new ObjectParameter("EmployeeId", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEvaluationList_Result>("spGetEvaluationList", employeeIdParameter);
-        }
-    
         public virtual int spSetEvaluationQuarterly(string action, string employeeID, string aSQ_QuestionType, Nullable<long> eEL_Id, string eEL_FinencialYear, string eEL_FinQuarter, string eEL_AnswerManager, string eEL_Comments, string eEL_IsActive)
         {
             var actionParameter = action != null ?
@@ -4947,6 +4929,24 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("AssessmentType", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentQuestionQCQM_Result>("spGetAssessmentQuestionQCQM", employeeIDParameter, assessmentTypeParameter);
+        }
+    
+        public virtual ObjectResult<spGetAssessmentList_Result> spGetAssessmentList(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentList_Result>("spGetAssessmentList", employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetEvaluationList_Result> spGetEvaluationList(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEvaluationList_Result>("spGetEvaluationList", employeeIdParameter);
         }
     }
 }

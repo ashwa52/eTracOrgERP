@@ -271,6 +271,7 @@ namespace WorkOrderEMS.BusinessLogic
         bool saveEvaluation(List<GWCQUestionModel> data, string action);
         List<PerformanceModel> GetListOfExpectationsForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords);
 
-
+        bool saveExpectations(List<GWCQUestionModel> data, string action);
+        
     }
 }

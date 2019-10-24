@@ -753,7 +753,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
 
         [HttpPost]
-        public ActionResult userExpectationsView(string Id, string Assesment)
+        public ActionResult userExpectationsView(string Id, string Assesment,string FinYear,string FinQuarter)
         {
             eTracLoginModel ObjLoginModel = null;
             string Employee_Id = string.Empty;
@@ -774,7 +774,51 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
 
             ListQuestions = _GlobalAdminManager.GetGWCQuestions(Employee_Id, Assesment);
+            foreach (var item in ListQuestions)
+            {
+                item.EEL_FinencialYear = FinYear;
+                item.EEL_FinQuarter = FinQuarter;
+               
+            }
             return PartialView("userExpectationsView", ListQuestions);
+        }
+
+        [HttpPost]
+        public JsonResult draftExpectations(List<GWCQUestionModel> data)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            bool result = false;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                result = _GlobalAdminManager.saveExpectations(data, "D");
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
+        [HttpPost]
+        public JsonResult saveExpectations(List<GWCQUestionModel> data)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            bool result = false;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                result = _GlobalAdminManager.saveExpectations(data, "S");
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+            return Json(result, JsonRequestBehavior.AllowGet);
+
         }
     }
 
