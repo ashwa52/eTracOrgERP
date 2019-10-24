@@ -6453,6 +6453,14 @@
     <Content Include="Views\NewAdmin\ePeople\StatusChaneForm\_DemotionEmployeeForm.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\StatusChaneForm\_EmploymentStatusChangeForm.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\_VSCPointingChartDemo.cshtml" />
+    <Content Include="Views\Guest\_ConfidentialityAgreementForm.cshtml" />
+    <Content Include="Views\Guest\_CreditCardAuthorizationForm.cshtml" />
+    <Content Include="Views\Guest\_educationVarificationFormold.cshtml" />
+    <Content Include="Views\Guest\_I9Form.cshtml" />
+    <Content Include="Views\Guest\_PhotoReleaseForm.cshtml" />
+    <Content Include="Views\Guest\_PreviousEmployeement.cshtml" />
+    <Content Include="Views\Guest\_W4Form.cshtml" />
+    <Content Include="Views\Guest\_emergencyContactForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

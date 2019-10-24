@@ -15,7 +15,7 @@
 			geturl = '/Guest/_I9Form';
 			break;
 		case 'EmergencyContectForm':
-			geturl = '/Guest/_EmergencyContectForm';
+			geturl = '/Guest/_emergencyContactForm';
 			break;
 		case 'photorelease':
 			geturl = '/Guest/_PhotoReleaseForm';
@@ -58,6 +58,22 @@ function SubmitForm(element, formName) {
 				url = '/Guest/_EmployeeHandbook';
 				data = $('#employeeHandbook').serialize();
 				break;
+			case 'photoreleaseform':
+				url = '/Guest/_photoreleaseform';
+				data = $('#photoreleaseform').serialize();
+				break;
+			case 'emergencycontactform':
+				url = '/Guest/_emergencyContactForm';
+				data = $('#emergencycontactform').serialize();
+				break;
+			case 'emergencycontactform':
+				url = '/Guest/_emergencyContactForm';
+				data = $('#emergencycontactform').serialize();
+				break;
+			case 'confidentialityagreementform':
+				url = '/Guest/_ConfidentialityAgreementForm';
+				data = $('#confidentialityagreementform').serialize();
+				break;
 		}
 		PostForm(url, data, function (successResponse) {
 			if (successResponse == true) {
@@ -66,7 +82,7 @@ function SubmitForm(element, formName) {
 			}
 			else {
 				$(element).prop('checked', false);
-				$("#formid").html(result);
+				$("#formid").html(successResponse);
 				$("#formModel").modal('show');
 			}
 		}, function (errorResponse) {
@@ -124,6 +140,21 @@ function LockItem(formId) {
 			break;
 		case 'employeeHandbook':
 			var elm = $("#employeeHandbookicn").find('.lock i').first();
+			elm.removeClass('fa-unlock');
+			elm.addClass('fa-lock');
+			break;
+		case 'photoreleaseform':
+			var elm = $("#photoreleaseicn").find('.lock i').first();
+			elm.removeClass('fa-unlock');
+			elm.addClass('fa-lock');
+			break;
+		case 'emergencycontactform':
+			var elm = $("#emergencycontactformicn").find('.lock i').first();
+			elm.removeClass('fa-unlock');
+			elm.addClass('fa-lock');
+			break;
+		case 'confidentialityagreementform':
+			var elm = $("#confidentialityagreementicn").find('.lock i').first();
 			elm.removeClass('fa-unlock');
 			elm.addClass('fa-lock');
 			break;

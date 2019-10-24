@@ -11,8 +11,8 @@ using WorkOrderEMS.Models.Employee;
 namespace WorkOrderEMS.Controllers.Guest
 {
 
-    public class GuestController : Controller
-    {
+	public class GuestController : Controller
+	{
 		private readonly ICommonMethod _ICommonMethod;
 		private readonly IGlobalAdmin _IGlobalAdmin;
 		private readonly ICompanyAdmin _ICompanyAdmin;
@@ -27,33 +27,34 @@ namespace WorkOrderEMS.Controllers.Guest
 		//
 		// GET: /Guest/
 		public ActionResult Index()
-        {
+		{
 			var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
 			EmployeeVIewModel model = new EmployeeVIewModel();
 			ViewBag.StateList = _ICommonMethod.GetStateByCountryId(1);
 			model = _IGuestUserRepository.GetEmployee(ObjLoginModel.UserId);
 			return View(model);
-        }
+		}
 		[HttpPost]
 		public ActionResult Index(EmployeeVIewModel model)
 		{
 			ViewBag.StateList = _ICommonMethod.GetStateByCountryId(1);
-			if (ModelState.IsValid) { 
-			var isSaveSuccess = _IGuestUserRepository.UpdateApplicantInfo(model);
-			if(isSaveSuccess)
-			return RedirectToAction("PersonalFile");
-			else
+			if (ModelState.IsValid)
 			{
-				ViewBag.message = "Something went wrong!!!";
-				return View(model);
-			}
+				var isSaveSuccess = _IGuestUserRepository.UpdateApplicantInfo(model);
+				if (isSaveSuccess)
+					return RedirectToAction("PersonalFile");
+				else
+				{
+					ViewBag.message = "Something went wrong!!!";
+					return View(model);
+				}
 			}
 			return View(model);
 		}
 		[HttpGet]
 		public ActionResult PersonalFile(bool? isSaved)
 		{
-			
+
 			return View();
 		}
 		[Route("welcome")]
@@ -77,15 +78,15 @@ namespace WorkOrderEMS.Controllers.Guest
 		[HttpPost]
 		public ActionResult _DirectDepositeForm(DirectDepositeFormModel model)
 		{
-			if(ModelState.IsValid)
+			if (ModelState.IsValid)
 			{
 				var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
 				_IGuestUserRepository.SetDirectDepositeFormData(model, ObjLoginModel.UserId);
-				return Json(true,JsonRequestBehavior.AllowGet);
+				return Json(true, JsonRequestBehavior.AllowGet);
 			}
 			ViewBag.NotSaved = true;
 			return PartialView("_directDepositeForm", model);
-		
+
 		}
 		[HttpGet]
 		public PartialViewResult _EmployeeHandbook()
@@ -120,19 +121,25 @@ namespace WorkOrderEMS.Controllers.Guest
 		[HttpGet]
 		public PartialViewResult _PhotoReleaseForm()
 		{
-			return PartialView("_PhotoReleaseForm");
+			PhotoRelease model = new PhotoRelease();
+			var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+			var d = _IGuestUserRepository.GetPhotoRelease(objloginmodel.UserId);
+			model.Name = d;
+			return PartialView("_PhotoReleaseForm", model);
 		}
 		[HttpPost]
-		public ActionResult _PhotoReleaseForm(PhotoRelease model)
+		public ActionResult _photoreleaseform(PhotoRelease model)
 		{
 			if (ModelState.IsValid)
 			{
-				var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-				//_IGuestUserRepository.SetEmployeeHandbookData(model, ObjLoginModel.UserId);
+				var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+
+
+				_IGuestUserRepository.SetPhotoRelease(objloginmodel.UserId, model);
 				return Json(true, JsonRequestBehavior.AllowGet);
 			}
-			ViewBag.NotSaved = true;
-			return PartialView("_PhotoReleaseForm", model);
+			ViewBag.notsaved = true;
+			return PartialView("_photoreleaseform", model);
 		}
 
 		[HttpGet]
@@ -141,9 +148,25 @@ namespace WorkOrderEMS.Controllers.Guest
 			return PartialView("_EducationVarificationForm");
 		}
 		[HttpGet]
+		public ActionResult _EducationVarificationForm(EducationVarificationModel model)
+		{
+			return PartialView("_EducationVarificationForm");
+		}
+		[HttpGet]
 		public PartialViewResult _ConfidentialityAgreementForm()
 		{
 			return PartialView("_ConfidentialityAgreementForm");
+		}
+		[HttpPost]
+		public ActionResult _ConfidentialityAgreementForm(ConfidenialityAgreementModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+				_IGuestUserRepository.SetConfidenialityAgreementForm(objloginmodel.UserId, model);
+				return Json(true, JsonRequestBehavior.AllowGet);
+			}
+			return PartialView("_ConfidentialityAgreementForm", model);
 		}
 		[HttpGet]
 		public PartialViewResult _CreditCardAuthorizationForm()
@@ -154,6 +177,25 @@ namespace WorkOrderEMS.Controllers.Guest
 		public PartialViewResult _PreviousEmployeement()
 		{
 			return PartialView("_PreviousEmployeement");
+		}
+		[HttpGet]
+		public PartialViewResult _emergencyContactForm()
+		{
+			EmergencyContectForm model = new EmergencyContectForm();
+			var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+			model = _IGuestUserRepository.GetEmergencyForm(objloginmodel.UserId);
+			return PartialView("_emergencyContactForm", model);
+		}
+		[HttpPost]
+		public ActionResult _emergencyContactForm(EmergencyContectForm model)
+		{
+			if (ModelState.IsValid)
+			{
+				var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+				_IGuestUserRepository.SetEmergencyForm(objloginmodel.UserId, model);
+				return Json(true, JsonRequestBehavior.AllowGet);
+			}
+			return PartialView("_emergencyContactForm", model);
 		}
 	}
 }

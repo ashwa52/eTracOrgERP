@@ -4882,6 +4882,9 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Parameter Name="CLC_LocationId" Type="bigint" Mode="In" />
         </Function>
         <Function Name="spGetCompanyType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetConfidentialityAgreement" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spGetContract" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetContractLocationAllocation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetContractType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
@@ -4896,6 +4899,9 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
         </Function>
         <Function Name="spGetDepartment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetDirectDepositForm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spGetEducationVerificationForm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
         </Function>
         <Function Name="spGeteFormTrack" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -4987,6 +4993,9 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Parameter Name="FromDate" Type="date" Mode="In" />
           <Parameter Name="ToDate" Type="date" Mode="In" />
         </Function>
+        <Function Name="spGetPhotoReleaseForm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spGetPODetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="POD_Id" Type="bigint" Mode="In" />
         </Function>
@@ -5064,6 +5073,9 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Parameter Name="ToDate" Type="date" Mode="In" />
         </Function>
         <Function Name="spGetVendorType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetW4Form" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spPaymentDesk" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LocationId" Type="bigint" Mode="In" />
         </Function>
@@ -5341,6 +5353,12 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Parameter Name="CMP_IsActive" Type="char" Mode="In" />
           <Parameter Name="CMP_UserId" Type="bigint" Mode="In" />
         </Function>
+        <Function Name="spSetConfidentialityAgreement" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CAFAction" Type="char" Mode="In" />
+          <Parameter Name="CAF_Id" Type="bigint" Mode="In" />
+          <Parameter Name="CAF_EMP_EmployeeID" Type="varchar" Mode="In" />
+          <Parameter Name="CAF_IsActive" Type="char" Mode="In" />
+        </Function>
         <Function Name="spSetContract" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CNTAction" Type="char" Mode="In" />
           <Parameter Name="CNT_Id" Type="bigint" Mode="In" />
@@ -5427,6 +5445,19 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Parameter Name="DDF_AccountNumber_2" Type="varchar" Mode="In" />
           <Parameter Name="DDF_BankRoutingNumber_2" Type="varchar" Mode="In" />
           <Parameter Name="DDF_VoidCkeck" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="DDF_IsActive" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetEducationVerificationForm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EVFAction" Type="char" Mode="In" />
+          <Parameter Name="EVF_Id" Type="bigint" Mode="In" />
+          <Parameter Name="EVF_EMP_EmployeeID" Type="varchar" Mode="In" />
+          <Parameter Name="EVF_SchoolDegreeDiplomaCirtificate" Type="varchar" Mode="In" />
+          <Parameter Name="EVF_OrgnizationName" Type="varchar" Mode="In" />
+          <Parameter Name="EVF_Address" Type="varchar" Mode="In" />
+          <Parameter Name="EVF_City" Type="varchar" Mode="In" />
+          <Parameter Name="EVF_State" Type="varchar" Mode="In" />
+          <Parameter Name="EVF_AttendedFrom" Type="date" Mode="In" />
+          <Parameter Name="EVF_AttendedTo" Type="date" Mode="In" />
           <Parameter Name="DDF_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSeteformTrack" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -5573,6 +5604,12 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Parameter Name="LBLL_Comment" Type="varchar" Mode="In" />
           <Parameter Name="LBLL_IsApprove" Type="char" Mode="In" />
           <Parameter Name="LBLL_ApprovedBy" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="spSetPhotoReleaseForm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="PRFAction" Type="char" Mode="In" />
+          <Parameter Name="PRF_Id" Type="bigint" Mode="In" />
+          <Parameter Name="PRF_EMP_EmployeeID" Type="varchar" Mode="In" />
+          <Parameter Name="PRF_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetPODetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="PODAction" Type="char" Mode="In" />
@@ -5725,6 +5762,21 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Parameter Name="VDT_Id" Type="bigint" Mode="In" />
           <Parameter Name="VDT_VendorType" Type="varchar" Mode="In" />
           <Parameter Name="VDT_IsActive" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetW4Form" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="W4FAction" Type="char" Mode="In" />
+          <Parameter Name="W4F_Id" Type="bigint" Mode="In" />
+          <Parameter Name="W4F_EMP_EmployeeId" Type="varchar" Mode="In" />
+          <Parameter Name="W4F_SSN" Type="varchar" Mode="In" />
+          <Parameter Name="w4F_3MaritalStatus" Type="varchar" Mode="In" />
+          <Parameter Name="w4F_4" Type="char" Mode="In" />
+          <Parameter Name="w4F_5" Type="int" Mode="In" />
+          <Parameter Name="w4F_6" Type="numeric" Mode="In" />
+          <Parameter Name="w4F_7" Type="numeric" Mode="In" />
+          <Parameter Name="w4F_8EmployersName" Type="varchar" Mode="In" />
+          <Parameter Name="w4F_9" Type="date" Mode="In" />
+          <Parameter Name="w4F_10" Type="varchar" Mode="In" />
+          <Parameter Name="w4F_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSupplyRule" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="bigint" Mode="In" />
@@ -13495,6 +13547,58 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
             <End Role="Company" EntitySet="Companies" />
             <End Role="CompanyFacilityMapping" EntitySet="CompanyFacilityMappings" />
           </AssociationSet>
+          <FunctionImport Name="spGetPhotoReleaseForm" ReturnType="Collection(String)">
+          <Parameter Name="EmployeeID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetPhotoReleaseForm">
+            <Parameter Name="PRFAction" Mode="In" Type="String" />
+            <Parameter Name="PRF_Id" Mode="In" Type="Int64" />
+            <Parameter Name="PRF_EMP_EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="PRF_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetConfidentialityAgreement" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetConfidentialityAgreement_Result)">
+          <Parameter Name="EmployeeID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetW4Form" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetW4Form_Result)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetConfidentialityAgreement">
+            <Parameter Name="CAFAction" Mode="In" Type="String" />
+            <Parameter Name="CAF_Id" Mode="In" Type="Int64" />
+            <Parameter Name="CAF_EMP_EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="CAF_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetW4Form">
+            <Parameter Name="W4FAction" Mode="In" Type="String" />
+            <Parameter Name="W4F_Id" Mode="In" Type="Int64" />
+            <Parameter Name="W4F_EMP_EmployeeId" Mode="In" Type="String" />
+            <Parameter Name="W4F_SSN" Mode="In" Type="String" />
+            <Parameter Name="w4F_3MaritalStatus" Mode="In" Type="String" />
+            <Parameter Name="w4F_4" Mode="In" Type="String" />
+            <Parameter Name="w4F_5" Mode="In" Type="Int32" />
+            <Parameter Name="w4F_6" Mode="In" Type="Decimal" />
+            <Parameter Name="w4F_7" Mode="In" Type="Decimal" />
+            <Parameter Name="w4F_8EmployersName" Mode="In" Type="String" />
+            <Parameter Name="w4F_9" Mode="In" Type="DateTime" />
+            <Parameter Name="w4F_10" Mode="In" Type="String" />
+            <Parameter Name="w4F_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetEducationVerificationForm" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetEducationVerificationForm_Result)">
+            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetEducationVerificationForm">
+            <Parameter Name="EVFAction" Mode="In" Type="String" />
+            <Parameter Name="EVF_Id" Mode="In" Type="Int64" />
+            <Parameter Name="EVF_EMP_EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="EVF_SchoolDegreeDiplomaCirtificate" Mode="In" Type="String" />
+            <Parameter Name="EVF_OrgnizationName" Mode="In" Type="String" />
+            <Parameter Name="EVF_Address" Mode="In" Type="String" />
+            <Parameter Name="EVF_City" Mode="In" Type="String" />
+            <Parameter Name="EVF_State" Mode="In" Type="String" />
+            <Parameter Name="EVF_AttendedFrom" Mode="In" Type="DateTime" />
+            <Parameter Name="EVF_AttendedTo" Mode="In" Type="DateTime" />
+            <Parameter Name="DDF_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Proc_GetAllWorkAssignedToEmployee_Result">
           <Property Type="Int64" Name="RN" Nullable="true" />
@@ -16228,6 +16332,43 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="spGetConfidentialityAgreement_Result">
+          <Property Type="String" Name="CDA_EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+          <Property Type="String" Name="EmpAddress" Nullable="true" MaxLength="202" />
+          <Property Type="String" Name="EMP_Email" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="spGetW4Form_Result">
+          <Property Type="String" Name="EMP_FirstName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMP_MiddleName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMP_LastName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMA_Address" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="EMA_City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EMA_State" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="EMA_Zip" Nullable="true" />
+          <Property Type="String" Name="W4F_EMP_EmployeeId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="W4F_SSN" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="w4F_3MaritalStatus" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="w4F_4" Nullable="true" MaxLength="1" />
+          <Property Type="Int32" Name="w4F_5" Nullable="true" />
+          <Property Type="Decimal" Name="w4F_6" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="Decimal" Name="w4F_7" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="w4F_8EmployersName" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="w4F_9" Nullable="true" />
+          <Property Type="String" Name="w4F_10" Nullable="true" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="spGetEducationVerificationForm_Result">
+          <Property Type="Int64" Name="EVF_Id" Nullable="false" />
+          <Property Type="String" Name="EVF_EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EVF_SchoolDegreeDiplomaCirtificate" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EVF_OrgnizationName" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="EVF_Address" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="EVF_City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EVF_State" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="EVF_AttendedFrom" Nullable="true" />
+          <Property Type="DateTime" Name="EVF_AttendedTo" Nullable="true" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -21319,6 +21460,60 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetPhotoReleaseForm" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetPhotoReleaseForm" />
+          <FunctionImportMapping FunctionImportName="spSetPhotoReleaseForm" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetPhotoReleaseForm" />
+          <FunctionImportMapping FunctionImportName="spGetConfidentialityAgreement" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetConfidentialityAgreement">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetConfidentialityAgreement_Result">
+                <ScalarProperty Name="CDA_EMP_EmployeeID" ColumnName="CDA_EMP_EmployeeID" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="EmpAddress" ColumnName="EmpAddress" />
+                <ScalarProperty Name="EMP_Email" ColumnName="EMP_Email" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetW4Form" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetW4Form">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetW4Form_Result">
+                <ScalarProperty Name="EMP_FirstName" ColumnName="EMP_FirstName" />
+                <ScalarProperty Name="EMP_MiddleName" ColumnName="EMP_MiddleName" />
+                <ScalarProperty Name="EMP_LastName" ColumnName="EMP_LastName" />
+                <ScalarProperty Name="EMA_Address" ColumnName="EMA_Address" />
+                <ScalarProperty Name="EMA_City" ColumnName="EMA_City" />
+                <ScalarProperty Name="EMA_State" ColumnName="EMA_State" />
+                <ScalarProperty Name="EMA_Zip" ColumnName="EMA_Zip" />
+                <ScalarProperty Name="W4F_EMP_EmployeeId" ColumnName="W4F_EMP_EmployeeId" />
+                <ScalarProperty Name="W4F_SSN" ColumnName="W4F_SSN" />
+                <ScalarProperty Name="w4F_3MaritalStatus" ColumnName="w4F_3MaritalStatus" />
+                <ScalarProperty Name="w4F_4" ColumnName="w4F_4" />
+                <ScalarProperty Name="w4F_5" ColumnName="w4F_5" />
+                <ScalarProperty Name="w4F_6" ColumnName="w4F_6" />
+                <ScalarProperty Name="w4F_7" ColumnName="w4F_7" />
+                <ScalarProperty Name="w4F_8EmployersName" ColumnName="w4F_8EmployersName" />
+                <ScalarProperty Name="w4F_9" ColumnName="w4F_9" />
+                <ScalarProperty Name="w4F_10" ColumnName="w4F_10" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetConfidentialityAgreement" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetConfidentialityAgreement" />
+          <FunctionImportMapping FunctionImportName="spSetW4Form" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetW4Form" />
+          <FunctionImportMapping FunctionImportName="spGetEducationVerificationForm" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetEducationVerificationForm">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetEducationVerificationForm_Result">
+                <ScalarProperty Name="EVF_Id" ColumnName="EVF_Id" />
+                <ScalarProperty Name="EVF_EMP_EmployeeID" ColumnName="EVF_EMP_EmployeeID" />
+                <ScalarProperty Name="EVF_SchoolDegreeDiplomaCirtificate" ColumnName="EVF_SchoolDegreeDiplomaCirtificate" />
+                <ScalarProperty Name="EVF_OrgnizationName" ColumnName="EVF_OrgnizationName" />
+                <ScalarProperty Name="EVF_Address" ColumnName="EVF_Address" />
+                <ScalarProperty Name="EVF_City" ColumnName="EVF_City" />
+                <ScalarProperty Name="EVF_State" ColumnName="EVF_State" />
+                <ScalarProperty Name="EVF_AttendedFrom" ColumnName="EVF_AttendedFrom" />
+                <ScalarProperty Name="EVF_AttendedTo" ColumnName="EVF_AttendedTo" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetEducationVerificationForm" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetEducationVerificationForm" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

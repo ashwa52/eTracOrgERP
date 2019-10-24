@@ -1,9 +1,11 @@
-﻿<style>
+﻿@model WorkOrderEMS.Models.Employee.PhotoRelease
+<style>
 	.p1 {
 		font-size: 20px;
 		font-family: Times New Roman;
 		margin: 73px 149px 0px 80px;
 		text-align: justify;
+		color:#000;
 	}
 
 	h3 {
@@ -33,15 +35,28 @@
 	p {
 		margin-left: 107px;
 	}
+	input[type="checkbox"]:after {
+		line-height: 1.5em !important;
+		content: '' !important;
+		display: block !important;
+		margin-top: -3px !important;
+		margin-left: -3px !important;
+		border: 1px solid transparent !important;
+		border-radius: 0px !important;
+		line-height: 1.3 !important;
+		background: none !important;
+	}
 </style>
 <div class="p1">
 	<div class="row">
 		<img src="~/Images/FormImages/image-form.jpg" alt="background image" />
 		<h3><u>Photo/Video Release Form</u></h3>
 	</div>
+	@using (Html.BeginForm("_photoreleaseform", "Guest", FormMethod.Post, new { id = "photoreleaseform" }))
+	{
 	<div>
 		<p>
-			I,  <input type="text" class="text-line" /> give Elite Parking Services of America, Inc. (Elite) the right to take photographic and/or video images of myself as I perform the duties assigned to
+			I,  @Html.TextBoxFor(x => x.Name, new { @class = "text-line" }) give Elite Parking Services of America, Inc. (Elite) the right to take photographic and/or video images of myself as I perform the duties assigned to
 			me as an employee of Elite.
 		</p>
 		<p>I understand these photographs/videos will be used for training and marketing purposes and do not object to the company's use.</p>
@@ -50,5 +65,7 @@
 			First Name<span style="margin-left:380px;">Last Name</span>
 		</p>
 		<p><input type="text" style="width:290px;" class="text-line" /><br />Signature</p>
+		<p> @Html.CheckBoxFor(x => x.IsSave, new { @style = "height: 18px;width: 31px;", onchange = "SubmitForm(this,photoreleaseform)" })    i hereby declare that the above information is true to the best of my knowledge </p>
 	</div>
+	}
 </div>

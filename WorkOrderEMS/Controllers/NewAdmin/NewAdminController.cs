@@ -5,6 +5,9 @@ using System.Data.Entity.Core.Objects;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using WorkOrderEMS.BusinessLogic;
@@ -321,6 +324,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
 			var myOpenings = _GlobalAdminManager.GetMyOpenings();
 			return Json(myOpenings, JsonRequestBehavior.AllowGet);
 		}
+		
 		[HttpGet]
 		public ActionResult MyInterviews()
 		{
