@@ -23,5 +23,7 @@ namespace WorkOrderEMS.BusinessLogic
 		EmergencyContectForm GetEmergencyForm(long userId);
 		ConfidenialityAgreementModel GetConfidenialityAgreementForm(long userId);
 		void SetConfidenialityAgreementForm(long userId, ConfidenialityAgreementModel model);
+		void SetEducationVerificationForm(long userId, EducationVarificationModel model);
+		EducationVarificationModel GetEducationVerificationForm(long userId);
 	}
 }

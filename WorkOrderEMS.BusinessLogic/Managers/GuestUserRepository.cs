@@ -430,7 +430,7 @@ namespace WorkOrderEMS.BusinessLogic
 						HighSchool=new HigherSchool
 						{
 							AttendFrom=x.EVF_AttendedFrom,
-							AttendTo=x.EVF_AttendedTo,
+							AttendTo= x.EVF_AttendedTo,
 							City=x.EVF_City,
 							SchoolName=x.EVF_OrgnizationName,
 							State=x.EVF_State,
@@ -446,7 +446,35 @@ namespace WorkOrderEMS.BusinessLogic
 				throw ex;
 			}
 		}
-		
+		public void SetEducationVerificationForm(long userId, EducationVarificationModel model)
+		{
+
+			try
+			{
+
+				using (workorderEMSEntities Context = new workorderEMSEntities())
+				{
+
+					var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
+					var isexist = GetEducationVerificationForm(userId);
+					if (ReferenceEquals(isexist, null))
+					{
+						Context.spSetEducationVerificationForm("I",model.EvfId,empid,model.Certificate,model.HigherSchool.SchoolName,"",model.HigherSchool.City,model.HigherSchool.State,model.HigherSchool.AttendFrom,model.HigherSchool.AttendTo,model.IsActive);
+					}
+					else
+					{
+						Context.spSetEducationVerificationForm("U",model.EvfId,empid,model.Certificate,model.HigherSchool.SchoolName,"",model.HigherSchool.City,model.HigherSchool.State,model.HigherSchool.AttendFrom,model.HigherSchool.AttendTo,model.IsActive);
+
+					}
+
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
 	}
 
 

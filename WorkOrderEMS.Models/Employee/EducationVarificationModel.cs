@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,8 @@ namespace WorkOrderEMS.Models.Employee
 		public string Date { get; set; }
 		public bool	IsSave { get; set; }
 		public string EmpId { get; set; }
+		public long? EvfId { get; set; }
+		public string IsActive { get; set; }
 
 	}
 	
@@ -26,7 +29,11 @@ namespace WorkOrderEMS.Models.Employee
 		public string SchoolName { get; set; }
 		public string City { get; set; }
 		public string State { get; set; }
+		[DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
+		[DataType(DataType.Date)]
 		public DateTime? AttendFrom { get; set; }
+		[DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
+		[DataType(DataType.Date)]
 		public DateTime? AttendTo { get; set; }
 	}
 	public class HigherSchool
@@ -34,7 +41,12 @@ namespace WorkOrderEMS.Models.Employee
 		public string SchoolName { get; set; }
 		public string City { get; set; }
 		public string State { get; set; }
+		[DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
+		[DataType(DataType.Date)]
 		public DateTime? AttendFrom { get; set; }
+		[DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
+		[DataType(DataType.Date)]
 		public DateTime? AttendTo { get; set; }
+		public string Cretificate { get; set; }
 	}
 }

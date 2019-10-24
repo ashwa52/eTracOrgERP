@@ -145,11 +145,20 @@ namespace WorkOrderEMS.Controllers.Guest
 		[HttpGet]
 		public PartialViewResult _EducationVarificationForm()
 		{
-			return PartialView("_EducationVarificationForm");
+			EducationVarificationModel model = new EducationVarificationModel();
+			var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+			model = _IGuestUserRepository.GetEducationVerificationForm(objloginmodel.UserId);
+			return PartialView("_EducationVarificationForm",model);
 		}
-		[HttpGet]
+		[HttpPost]
 		public ActionResult _EducationVarificationForm(EducationVarificationModel model)
 		{
+			if (ModelState.IsValid)
+			{
+				var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+				_IGuestUserRepository.SetEducationVerificationForm(objloginmodel.UserId, model);
+				return Json(true, JsonRequestBehavior.AllowGet);
+			}
 			return PartialView("_EducationVarificationForm");
 		}
 		[HttpGet]

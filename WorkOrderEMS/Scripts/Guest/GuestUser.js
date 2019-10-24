@@ -74,6 +74,10 @@ function SubmitForm(element, formName) {
 				url = '/Guest/_ConfidentialityAgreementForm';
 				data = $('#confidentialityagreementform').serialize();
 				break;
+			case 'educationverificationform':
+				url = '/Guest/_EducationVarificationForm';
+				data = $('#educationverificationform').serialize();
+				break;
 		}
 		PostForm(url, data, function (successResponse) {
 			if (successResponse == true) {
@@ -154,6 +158,11 @@ function LockItem(formId) {
 			elm.addClass('fa-lock');
 			break;
 		case 'confidentialityagreementform':
+			var elm = $("#confidentialityagreementicn").find('.lock i').first();
+			elm.removeClass('fa-unlock');
+			elm.addClass('fa-lock');
+			break;
+		case 'educationverificationform':
 			var elm = $("#confidentialityagreementicn").find('.lock i').first();
 			elm.removeClass('fa-unlock');
 			elm.addClass('fa-lock');
