@@ -386,7 +386,6 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             try
             {
                 string mypassword = Cryptography.GetEncryptedData(loginViewModel.Password, true); 
-                //string mypassword23 = Cryptography.GetDecryptedData("Hgh3FnTxNlViZ+s5XyXVUQ==", true); 
 
                 var authuser = ObjUserRepository.GetAll(x => x.AlternateEmail == loginViewModel.UserName && x.Password == mypassword && x.IsDeleted == false && x.IsLoginActive == true && x.IsEmailVerify == true).FirstOrDefault();
 
@@ -494,10 +493,10 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         }
                         ObjUserRepository.Update(authuser);
                     }
-
-                    #endregion Validate Login through Serivce call
-                    //loginViewModel.Location = string.IsNullOrEmpty(locationDetails.Location) ? "Not Avaialable" : locationDetails.Location;
-                    LocationMasterModel obj_LocationMasterModel = new LocationMasterModel();
+					
+					#endregion Validate Login through Serivce call
+					//loginViewModel.Location = string.IsNullOrEmpty(locationDetails.Location) ? "Not Avaialable" : locationDetails.Location;
+					LocationMasterModel obj_LocationMasterModel = new LocationMasterModel();
                     switch (authuser.UserType)
                     {
                         case (Int64)(UserType.GlobalAdmin):
@@ -736,8 +735,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     //Commented by Bhushan Dod for maintaining log of each and every login user.
                     if (((loginViewModel.DeviceId == null || loginViewModel.DeviceId.Trim().Length <= 0) && authuser.UserType == 3) || (loginViewModel.DeviceId == null || loginViewModel.DeviceId.Trim().Length <= 0)) //it will let us know that user is loged in from web or from mobile.. 
                     {
-                        //For login log maintian
-
+						//For login log maintian
+						if (loginViewModel.LocationID != 0) { 
                         objLoginLogRepository = new LoginLogRepository();
                         LoginLog Obj = new LoginLog();
 
@@ -753,9 +752,13 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         Obj.ModifiedOn = null;
                         Obj.IsActive = true;
                         objLoginLogRepository.Add(Obj);
+
                         loginViewModel.LogId = Obj.LogId;
-                        loginViewModel.IdleTime = authuser.IdleTimeLimit.ToString("HH:mm:ss");
-                        loginViewModel.LoginTime = Obj.CreatedOn.ToString();
+						}
+						loginViewModel.IdleTime = authuser.IdleTimeLimit.ToString("HH:mm:ss");
+
+						// TODO :
+                        //loginViewModel.LoginTime = Obj.CreatedOn.ToString();
                     }
                 }
                 else

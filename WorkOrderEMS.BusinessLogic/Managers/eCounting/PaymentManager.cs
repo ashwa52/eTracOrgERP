@@ -29,7 +29,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <param name="textSearch"></param>
         /// <param name="statusType"></param>
         /// <returns></returns>
-        public List<PaymentModel> GetListPaymentByLocationId(long? UserId, long? LocationID, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType,string BillTypeId)
+        public List<PaymentModel> GetListPaymentByLocationId(long? UserId, long? LocationID, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 //var obj = new PaymentModel();
                 //int pageindex = Convert.ToInt32(pageIndex) - 1;
                 //int pageSize = Convert.ToInt32(numberOfRows);
-                  resultList = _workorderems.spPaymentDesk(LocationID, BillTypeId)
+                  resultList = _workorderems.spPaymentDesk(LocationID)
                     .Select(a => new PaymentModel()
                     {
                         LLBL_ID = a.LBLL_Id,
@@ -58,7 +58,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                      OperatingCompany = a.CMP_NameLegalRemitter == null?"N/A": a.CMP_NameLegalRemitter,
                      OperatingCompanyId = a.CMP_IdRemitter > 0 ? a.CMP_IdRemitter :0 ,
                      LocationId = a.LocationId,
-                     DisplayDate = a.BillDate == null ? "" : a.BillDate.ToString("MMM dd,yyyy")
+                     DisplayDate = a.BillDate == null ? "" : a.BillDate.ToString("dd/MM/yyyy")
                     }).Where(x => x.Status == "W" || x.Status == "Y").ToList();
                // Results.Where(x => x.Status == "Y").ToList();
                 //foreach (var item in Results)
@@ -116,14 +116,14 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <param name="textSearch"></param>
         /// <param name="statusType"></param>
         /// <returns></returns>
-        public List<PaymentModel> GetListPaidtByLocationId(long? UserId, long? LocationID, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType,string BillTypeId)
+        public List<PaymentModel> GetListPaidtByLocationId(long? UserId, long? LocationID, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType)
         {
             try
             {
                 //var objPaymentDetails = new PaymentModel();
                 //int pageindex = Convert.ToInt32(pageIndex) - 1;
                 //int pageSize = Convert.ToInt32(numberOfRows);
-                var Results = _workorderems.spPaymentDesk(LocationID, BillTypeId)
+                var Results = _workorderems.spPaymentDesk(LocationID)
                     .Select(a => new PaymentModel()
                     {
                         BillNo = a.LBLL_BLL_Id,
@@ -139,7 +139,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         OperatingCompany = a.CMP_NameLegalRemitter == null ? "N/A" : a.CMP_NameLegalRemitter,
                         OperatingCompanyId = a.CMP_IdRemitter > 0 ? 0 : a.CMP_IdRemitter,
                         LocationId = a.LocationId,
-                        DisplayDate = a.BillDate == null ? "" : a.BillDate.ToString("MMM dd,yyyy")
+                        DisplayDate = a.BillDate == null ? "" : a.BillDate.ToString("dd/MM/yyyy")
                     }).Where(x => x.Status == "P" || x.Status == "X").ToList();
                  //Results.Where(x => x.Status == "X").ToList();
                 //int totRecords = Results.Count();
@@ -187,14 +187,10 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                             VendorId = x.CAD_CMP_Id,
                             CompanyAccountId = x.CAD_Id,
                             PaymentMode = x.CAD_PMD_Id.ToString(),
-                            //VendorName = _workorderems.Companies.Where(a => a.CMP_Id == VendorId).FirstOrDefault().CMP_NameLegal,
+                            VendorName = _workorderems.Companies.Where(a => a.CMP_Id == VendorId).FirstOrDefault().CMP_NameLegal,
                             OpeartorCAD_Id = OperatorCADId
-                        }).ToList();
-                    foreach (var item in result)
-                    {
-                        item.VendorName = _workorderems.Companies.Where(a => a.CMP_Id == VendorId).FirstOrDefault().CMP_NameLegal;
-                    }
-                }                
+                        }).ToList();                   
+                }
                 else
                 {
                     return null;

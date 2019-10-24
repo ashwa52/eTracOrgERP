@@ -14,9 +14,11 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class VehicleSeating
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public VehicleSeating()
         {
-            this.JobTitles = new HashSet<JobTitle>();
+            this.UserVehicleSeatingMaps = new HashSet<UserVehicleSeatingMap>();
+            this.VehicleSeatingSubModuleMappings = new HashSet<VehicleSeatingSubModuleMapping>();
         }
     
         public long VST_Id { get; set; }
@@ -28,8 +30,14 @@ namespace WorkOrderEMS.Data.EntityModel
         public long VST_DPT_Id { get; set; }
         public Nullable<System.DateTime> VST_Date { get; set; }
         public string VST_IsActive { get; set; }
+        public string VST_EmploymentStatus { get; set; }
+        public string VST_IsExempt { get; set; }
+        public Nullable<decimal> VST_RateOfPay { get; set; }
     
         public virtual Department Department { get; set; }
-        public virtual ICollection<JobTitle> JobTitles { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserVehicleSeatingMap> UserVehicleSeatingMaps { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<VehicleSeatingSubModuleMapping> VehicleSeatingSubModuleMappings { get; set; }
     }
 }

@@ -65,7 +65,6 @@
     #tbl_PaymentList td:nth-child(2) {
         cursor: pointer;
     }
-   
 </style>
 
 <div class="content-body" style="min-height: 920px;">
@@ -80,11 +79,11 @@
                                     @Html.DropDownList("BillTypeDll", new List<SelectListItem>
 
                        {
-                          new SelectListItem{ Text="Select Bill Type", Value = "0" },
-                          new SelectListItem{ Text="Manual Bill", Value = "Manual Bill" },
+                          new SelectListItem{ Text="Bill Type", Value = "0" },
+                          new SelectListItem{ Text="ManualBill", Value = "ManualBill" },
                           new SelectListItem{ Text="PO", Value = "PO" },
-                          new SelectListItem{ Text="MISC", Value = "MIS" }
-                       }, new { @class = "form-control input-rounded",@style="margin-top:15px;width:200px" ,onchange="onChangeBill(this.value)" })
+                          new SelectListItem{ Text="MISC", Value = "MISC" }
+                       }, new { @class = "form-control input-rounded",@style="margin-top:15px;width:200px" })
                                 </div>
                             </div>
 
@@ -197,7 +196,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Cancel Bill</h4>
+                <h4 class="modal-title" id="myModalLabel">Bill</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 
             </div>
@@ -221,11 +220,11 @@
     </div>
 </div>
 
-<div id="myModelPayBill" class="modal fade bs-example-modal-lg">
+<div id="myModelPayBill" class="modal fade bs-example-modal-md">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Make Payments</h4>
+                <h4 class="modal-title" id="myModalLabel">Make Payment</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 
             </div>
@@ -233,78 +232,80 @@
                 <form class="form">
                     <div class="row mb-3">
                         <div class="col-sm-6">
-                            <label style="text-align: center;width: 100%;padding: 3px 0;background-color: #ececec;">From: </label>
+                            <label style="text-align: center;width: 100%;padding: 3px 0;background-color: #ececec;">From</label>
                             <div class="form-group">
                                 <label>Operating Company Name</label>
                                 <div id="lblVendorNameFrom" class="form-control-static"></div>
                             </div>
                         </div>
                         <div class="col-sm-6 vl">
-                            <label style="text-align: center;width: 100%;padding: 3px 0;background-color: #ececec;">To: </label>
+                            <label style="text-align: center;width: 100%;padding: 3px 0;background-color: #ececec;">To</label>
                             <div class="form-group">
                                 <label>Vendor Name</label>
                                 <div id="lblVendorNameTo" class="form-control-static"></div>
                             </div>
                             <div class="form-group">
                                 <label>Payment Mode</label>
-                                @Html.DropDownListFor(model => model.PaymentMode, new SelectList(ViewBag.PaymentModeList, "PaymentModeId", "PaymentModeName"), "--Select Payment Mode--", new { @id = "lblPaymentModeForChange", @class = "form-control input-rounded", onchange = "paymentmodechange()" })
-                                @Html.ValidationMessageFor(model => model.PaymentMode, "", new { @class = "text-danger" })
-                                @*<div id="lblPaymentModeTo" class="form-control-static"></div>*@
+                                <div id="lblPaymentModeTo" class="form-control-static"></div>
                             </div>
                         </div>
                     </div>
                     @Html.HiddenFor(model => model.CompanyAccountId, new { @id = "CompanyAccountId" })
-                    @Html.HiddenFor(model => model.BillAmount, new { @id = "PaymentToBePaid" })
-                    <hr />
                     <div class="whenCheque">
                         <div class="form-group">
-                            @Html.Label("Add Cheque Number -", htmlAttributes: new { @class = "control-label  star" })
-
-                            @Html.TextBoxFor(model => model.ChequeNo, new { @class = "form-control", @id = "ChequeNo", @placeholder = "Cheque Number", @style = "border-radios:0px;" })
-                            @Html.ValidationMessageFor(model => model.ChequeNo, "", new { @class = "text-danger" })
+                            @Html.Label("Checque No", htmlAttributes: new { @class = "control-label  star" })
+                          
+                                @Html.TextBoxFor(model => model.ChequeNo, new { @class = "form-control", @id = "ChequeNo", @placeholder = "Comment", @style = "border-radios:0px;" })
+                                @Html.ValidationMessageFor(model => model.ChequeNo, "", new { @class = "text-danger" })
+                           
                         </div>
                     </div>
+                    <hr id="hr1" style="display:none;" />
                     <div class="WhenCard">
                         <div class="form-group">
                             @Html.Label("CARD Number:", htmlAttributes: new { @class = "control-label star" })
 
                             <div id="dvOptions"></div>
+                            <input type="radio" name="Card" value="1st"> 4444-444-4343-4444<br>
+                            <input type="radio" name="Card" value="2nd"> 3333-2222-4343-1111<br>
+                            <input type="radio" name="Card" value="3rd"> 8888-6666-4343-3333
                             @*@foreach(var item in Model.CardNumber)
-                {
-                    @Html.RadioButtonFor(m=> m.CARDNo,item.CardNo)
-                    @Html.Label(item.CardNo)
-                }*@
+        {
+            @Html.RadioButtonFor(m=> m.CARDNo,item.CardNo)
+            @Html.Label(item.CardNo)
+        }*@
                             @Html.ValidationMessageFor(model => model.CardNumber, "", new { @class = "text-danger" })
 
                         </div>
                     </div>
-
+                    <hr id="hr2" style="display:none;" />
                     <div class="WhenWired">
                         <div class="form-group">
                             @Html.Label("Account Number:", htmlAttributes: new { @class = "control-label star" })
 
                             <div id="dvOptionsWired"></div>
+                            <input type="radio" name="Account" value="Ac1st"> Smp00813004000<br>
+                            <input type="radio" name="Account" value="Ac2nd"> Gpdsamp3636511<br>
+                            <input type="radio" name="Account" value="Ac3rd"> icigp009238494
                             @*@foreach(var item in Model.AccountNumber)
-                {
-                    @Html.RadioButtonFor(m=> m.AccountNo,item.AccountNumber)
-                    @Html.Label(item.AccountNumber)
-                }*@
+        {
+            @Html.RadioButtonFor(m=> m.AccountNo,item.AccountNumber)
+            @Html.Label(item.AccountNumber)
+        }*@
                             @Html.ValidationMessageFor(model => model.CARDNo, "", new { @class = "text-danger" })
 
                         </div>
                     </div>
-
+                    <hr id="hr3" style="display:none;" />
                     <div class="WhenMisc">
                         <div class="form-group">
-                            @Html.Label("Payable Cash Amount", htmlAttributes: new { @class = "control-label star" })
-
-                            @*@Html.TextBoxFor(model => model.AccNo, new { @class = "form-control", @id = "AccNo", @placeholder = "Employee Account No", @style = "border-radios:0px;" })*@
-                            @Html.LabelFor(model => model.PaymentByCash, new { @class = "form-control", @id = "PaymentByCash", @placeholder = "Payment Cash", @style = "border-radios:0px;" })
-                            @*@Html.ValidationMessageFor(model => model.AccountNo, "", new { @class = "text-danger" })*@
-
+                            @Html.Label("Employee Account No", htmlAttributes: new { @class = "control-label star" })
+                           
+                                @Html.TextBoxFor(model => model.AccNo, new { @class = "form-control", @id = "AccNo", @placeholder = "Employee Account No", @style = "border-radios:0px;" })
+                                @Html.ValidationMessageFor(model => model.AccountNo, "", new { @class = "text-danger" })
+                           
                         </div>
                     </div>
-                    @Html.TextAreaFor(model => model.PaymentNote, new { @class = "form-control", @id = "PaymentNote", @placeholder = "Add  Note", @style = "border-radios:0px;" })
                 </form>
             </div>
             <div class="modal-footer">
@@ -319,7 +320,7 @@
     <div class="modal-dialog modal-lg ">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">Purchase order Details</h5>
+                <h5 class="modal-title" id="myModalLabel">PO Details</h5>
                 <button type="button" class="close pull-right" data-dismiss="modal">
                     <span>×</span>
                 </button>
@@ -384,51 +385,12 @@
         </div>
     </div>
 </div>
-
-<div class="modal bs-example-modal-md fade preview" id="myModalForPOStatus" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-md ">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="myModalLabel">PO Details</h5>
-                <button type="button" class="close pull-right" data-dismiss="modal">
-                    <span>×</span>
-                </button>
-            </div>
-            <div class="modal-body m-0">
-                <div id="divDetailPreview" class="">
-
-                    <div class="" id="DivPODetailsIndex">
-                        <div class="row">
-                            <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                <label>Amount Paid</label>
-                                <div id="lblViewAmountPaid" class="form-control-static"></div>
-                            </div>
-                            <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                <label>Payment Mode</label>
-                                <div id="lblViewPaymentMode" class="form-control-static"></div>
-                            </div>
-                            <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                <label>Notes</label>
-                                <div id="lblViewNotes" class="form-control-static"></div>
-                            </div>                           
-                        </div>
-                    </div>                    
-                </div>
-            </div><br /><br />
-            <div class="panel-footer p-3">
-                <div class="text-right">
-                    <button data-dismiss="modal" class="btn btn-primary" id="btnCancel">Cancel</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <script>
     $(document).ready(function () {
         $(".drpLocation").hide();
     })
     $("#RejectBill").on("click", function (event) {
         $("#myModelRejectBill").modal('show');
-    });     
+    });
 </script>
 <script src="~/Scripts/Search/Searching.js"></script>

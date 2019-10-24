@@ -9,9 +9,6 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces.eCounting
 {
     public interface IDebitMemo
     {
-        List<DebitMemoModel> GetDebitListByVendorId();
-        List<DebitMemoModel> GetDebitListByLocationId(long? LocationId);
-        bool SaveNewDebitMemo(DebitMemoModel model);
-        //GetDebitListByLocationId
+        List<DebitMemoModel> GetDebitList();
     }
 }

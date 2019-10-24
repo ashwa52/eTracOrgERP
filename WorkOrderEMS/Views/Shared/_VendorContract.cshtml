@@ -123,10 +123,9 @@
 
 <div class="panel panel-primary setup-content" id="myVendorContractDetails">
     <div class="basic-form">
-        <div class="form-row">
-            <div class="form-group col-md-6">
-                <label class="col-form-label" id="lblFirstCompany" for=" FirstCompany">  First Company<span class="req">*</span></label>
-
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" id="lblFirstCompany" for=" FirstCompany">  First Company<span class="req">*</span></label>
+            <div class="col-sm-4">
                 @if (ViewBag.OperatingHolder != null)
                 {
                     @Html.DropDownList(myModelprefix + "FirstCompany", new SelectList(ViewBag.OperatingHolder, "CompanyId", "CompanyName"), "--Select First Company--", new { @id = "FirstCompany", @class = "form-control input-rounded" })}
@@ -135,260 +134,222 @@
                     <select class="form-control form-control input-rounded" name="ContractDetailsModel.OperatingHolder" id="ddlContractHolder"><option value="">--Select--</option></select>
                 }
                 @Html.ValidationMessageFor(model => model.VendorContractModel.FirstCompany)
-                </div>
-                <div class="form-group col-md-6">
-                    <label class="col-form-label" id="lblSecondaryCompany" for="LicenseName">  Secondary Company<span class="req">*</span></label>
+            </div>
 
-                    @Html.TextBoxFor(model => model.VendorContractModel.SecondaryCompany, null, new { @id = "SecondaryCompany", @class = "form-control input-rounded" })
-                    @Html.ValidationMessageFor(model => model.VendorContractModel.SecondaryCompany)
+            <label class="col-sm-2 col-form-label" id="lblSecondaryCompany" for="LicenseName">  Secondary Company<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.VendorContractModel.SecondaryCompany, null, new { @id = "SecondaryCompany", @class = "form-control input-rounded" })
+                @Html.ValidationMessageFor(model => model.VendorContractModel.SecondaryCompany)
+            </div>
+        </div>
 
-                </div>
-
-                <div class="form-group col-md-6">
-                    <label class="col-form-label"> Vendor Type<span class="req">*</span></label>
-
-                    @if (ViewBag.VendorType != null)
-                    {
-                        {@Html.DropDownList(myModelprefix + "VendorType", new SelectList(ViewBag.VendorType, "VendorTypeId", "VendorTypeName"), "--Select Vendor Type--", new { @id = "VendorTypeContract", @class = "form-control input-rounded" })}
-                }
-                else
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"> Vendor Type<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @if (ViewBag.VendorType != null)
                 {
-                    <select id="VendorType" class="form-control input-rounded"><option value="-1">@ViewBag.VendorType</option></select>
-                }
-                    <div class="errorspace">
-                        @Html.ValidationMessage(myModelprefix + "VendorType")
-                    </div>
+                    {@Html.DropDownList(myModelprefix + "VendorType", new SelectList(ViewBag.VendorType, "VendorTypeId", "VendorTypeName"), "--Select Vendor Type--", new { @id = "VendorTypeContract", @class = "form-control input-rounded" })}
+            }
+            else
+            {
+                <select id="VendorType" class="form-control input-rounded"><option value="-1">@ViewBag.VendorType</option></select>
+            }
+                <div class="errorspace">
+                    @Html.ValidationMessage(myModelprefix + "VendorType")
                 </div>
+            </div>
 
-                <div class="form-group col-md-6">
-                    <label class="col-form-label" id="lblContractType"> Contract Type<span class="req">*</span></label>
-                   
-                        @if (ViewBag.ContractType != null)
-                        {
-                            {@Html.DropDownListFor(model => model.VendorContractModel.ContractType, new SelectList(ViewBag.ContractType, "ContractTypeId", "ContractType"), "--Select Contract Type--", new { @id = "ContractType", @class = "form-control input-rounded" })}
-                    }
-                    else
-                    {
-                        <select id="ContractType" class="form-control input-rounded"><option value="-1">@ViewBag.ContractType</option></select>
-                    }
-                        <div class="errorspace">
-                            @Html.ValidationMessageFor(model => model.VendorContractModel.ContractType)
-                        </div>
-                 
-                </div>
-
-                <div class="form-group col-md-6">
-
-                    <h6 class="col-form-label">Contract issued by<span class="req">*</span></h6>
-
-                    <label class="radio-inline mr-4">
-                        @Html.RadioButtonFor(model => model.VendorContractModel.ContractIssuedBy, "Own", new { @class = "radio rbtn mr-1" })<span class="radio_span">
-                            Own
-                        </span>
-                    </label>
-
-                    <label class="radio-inline">
-                        @Html.RadioButtonFor(model => model.VendorContractModel.ContractIssuedBy, "Vendor", new { @style = "", @class = "radio rbtn  mr-1" })<span class="radio_span">
-                            Vendor
-                        </span>
-                    </label>
-         
-                    @Html.ValidationMessageFor(model => model.VendorContractModel.ContractIssuedBy)
-                </div>
-                <div class="form-group col-md-6">
-                    <h6 class="col-form-label">Select Location<span class="req">*</span></h6>
-                 
-
-
-                    @if (ViewBag.LocationListData != null)
-                    {
-                        {@Html.DropDownListFor(model => model.VendorContractModel.SectVendorToLocation, new SelectList(ViewBag.LocationListData, "LocationId", "LocationName"), new { @id = "SelectVendorToLocation", @style = "width:50%;", @multiple = "multiple", @class = "form-control" })}
-                    <span id="vendorAllocationRequiredError" class="field-validation-error" data-valmsg-replace="true">
-
-                    </span>
-                }
-                @*@if (ViewBag.LocationListData != null)
-    {
-        {@Html.DropDownList(myModelprefix + "SelectVendorToLocation", new SelectList(ViewBag.LocationListData, "LocationId", "LocationName"), new { @id = "SelectVendorToLocation", @multiple = "multiple", @class = "form-control" })}
-     }*@
-                else
+            <label class="col-sm-2 col-form-label" id="lblContractType"> Contract Type<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @if (ViewBag.ContractType != null)
                 {
-                    <select id="VendorContractModel.SectVendorToLocation" class="form-control"><option value="-1">@ViewBag.LocationListData</option></select>
-                }
-                    @*@Html.DropDownList("SectVendorToLocation", new SelectList((List<WorkOrderEMS.Models.UserLocations>)Session["eTrac_UserLocations"], "LocationId", "LocationName"), new { @id = "SectVendorToLocation", @multiple = "multiple", @class = "form-control" })*@
-                    @Html.ValidationMessageFor(model => model.VendorContractModel.SectVendorToLocation)
-                    @Html.Hidden("SelectedLcation")
+                    {@Html.DropDownListFor(model => model.VendorContractModel.ContractType, new SelectList(ViewBag.ContractType, "ContractTypeId", "ContractType"), "--Select Contract Type--", new { @id = "ContractType", @class = "form-control input-rounded" })}
+            }
+            else
+            {
+                <select id="ContractType" class="form-control input-rounded"><option value="-1">@ViewBag.ContractType</option></select>
+            }
+                <div class="errorspace">
+                    @Html.ValidationMessageFor(model => model.VendorContractModel.ContractType)
                 </div>
+            </div>
+        </div>
 
-                <div class="form-group col-md-12 ContractExecutedByHideShow1" style="display:none;">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">  Contract issued by<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.RadioButtonFor(model => model.VendorContractModel.ContractIssuedBy, "Own",new { @class="rbtn" })<span class="radio_span">
+    &nbsp;Own &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    @Html.RadioButtonFor(model => model.VendorContractModel.ContractIssuedBy, "Vendor", new { @style = "margin-left:20%;", @class = "radio rbtn" })<span class="radio_span">
+    &nbsp;Vendor</span>
+    @Html.ValidationMessageFor(model => model.VendorContractModel.ContractIssuedBy)
+</div>
 
-                    <h6 class="col-form-label">Contract issued by<span class="req">*</span></h6>
+            <label class="col-sm-2 col-form-label">  Select Location<span class="req">*</span></label>
+            <div class="col-sm-4">
 
-                    <label class="radio-inline mr-4">
-                        @Html.RadioButtonFor(model => model.VendorContractModel.ContractExecutedBy, "Own", false)<span class="radio_span">
-                            Own
-                        </span>
-                    </label>
-
-
-                    <label class="radio-inline">
-                        @Html.RadioButtonFor(model => model.VendorContractModel.ContractExecutedBy, "Vendor", new { @class = "ContractExecutedClass mr-1", @style = "" })<span class="radio_span">
-                            Vendor
-                        </span>
-                    </label>
-
-                    @Html.ValidationMessageFor(model => model.VendorContractModel.ContractExecutedBy)
-
-                </div>
-
-                <div class="form-group col-md-6">
-                    <label class="col-form-label">  Primary Payment Mode<span class="req">*</span></label>
-
-                    @if (ViewBag.PaymentModeList != null)
-                    {
-                        {@Html.DropDownListFor(model => model.VendorContractModel.PrimaryPaymentMode, new SelectList(ViewBag.PaymentModeList, "PaymentModeId", "PaymentModeName"), "--Select Payment Mode--", new { @id = "PrimaryPaymentMode", @class = "form-control input-rounded" })}
-                }
-                else
+                @if (ViewBag.LocationListData != null)
                 {
-                    <select id="VendorType" , class="form-control input-rounded"><option value="-1">@ViewBag.PaymentModeList</option></select>
-                }
-                    @Html.ValidationMessageFor(model => model.VendorContractModel.PrimaryPaymentMode)
-                </div>
+                    {@Html.DropDownListFor(model => model.VendorContractModel.SectVendorToLocation, new SelectList(ViewBag.LocationListData, "LocationId", "LocationName"), new { @id = "SelectVendorToLocation", @style = "width:50%;", @multiple = "multiple", @class = "form-control" })}
+                <span id="vendorAllocationRequiredError" class="field-validation-error"  data-valmsg-replace="true">
 
-                <div class="form-group col-md-6">
-                    <label class="col-form-label">  Payment Term<span class="req">*</span></label>
-
-                    @if (ViewBag.PaymentTermList != null)
-                    {
-                        {@Html.DropDownListFor(model => model.VendorContractModel.PaymentTerm, new SelectList(ViewBag.PaymentTermList, "PaymentTermId", "PaymentTermName"), "--Select Payment Term--", new { @id = "PaymentTerm", @class = "form-control input-rounded" })}
-                }
-                else
+                </span>
+            }
+            @*@if (ViewBag.LocationListData != null)
                 {
-                    <select id="VendorType" class="form-control input-rounded"><option value="-1">@ViewBag.PaymentTermList</option></select>
-                }
-                    @Html.ValidationMessageFor(model => model.VendorContractModel.PaymentTerm)
-
-                </div>
-
-                <div class="form-group col-md-6">
-                    <label class="col-form-label">  Grace Period<span class="req">*</span></label>
-
-                    @Html.TextBoxFor(model => model.VendorContractModel.GracePeriod, null, new { @id = "GracePeriod", @class = "form-control input-rounded" })
-                    @Html.ValidationMessageFor(model => model.VendorContractModel.GracePeriod)
-                </div>
-                <div class="form-group col-md-6">
-                    <label class="col-form-label">Invoicing Frequency<span class="req">*</span></label>
-
-                    @Html.DropDownListFor(model => model.VendorContractModel.InvoicingFrequecy, new List<SelectListItem>
-                                                                {
-                                                                   new SelectListItem() {Text = "--Select Invoicing Frequency--", Value="0"},
-                                                                   new SelectListItem() {Text = "Weekly", Value="Weekly"},
-                                                                   new SelectListItem() {Text = "Monthly", Value="Monthly"},
-                                                                   new SelectListItem() {Text = "Quarterly", Value="Quarterly"},
-                                                                   new SelectListItem() {Text = "Yearly", Value="Yearly"},
-                                                                 }, new { @id = "InvoicingFrequecy", @class = "form-control input-rounded" })
-                    @Html.ValidationMessageFor(model => model.VendorContractModel.InvoicingFrequecy)
-
-                </div>
-
-                <div class="form-group col-md-6">
-                    <h6 class="col-form-label">Is Reccurence for PO.?<span class="req">*</span></h6>
-                 
-
-                    @Html.RadioButtonFor(model => model.VendorContractModel.ReccurenceForPO, "Y")<span class="radio_span">
-                        &nbsp;Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    </span>
-                    @Html.RadioButtonFor(model => model.VendorContractModel.ReccurenceForPO, "N", new { @style = "margin-left:20%;" })<span class="radio_span">
-                        &nbsp;No
-                    </span>
-                    @Html.ValidationMessageFor(model => model.VendorContractModel.ReccurenceForPO)
-                </div>
-                <div class="form-group col-md-6">
-                    <h6 class="col-form-label AllocationNeededClass" style="display:none;">Allocation Needed :<span class="req">*</span></h6>
-
-                    <div class="AllocationNeededClass" style="display:none;">
-                        @Html.RadioButtonFor(model => model.VendorContractModel.AllocationNeeded, 1, false)<span class="radio_span">
-                            &nbsp;Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        </span>
-                        @Html.RadioButtonFor(model => model.VendorContractModel.AllocationNeeded, 2, new { @style = "margin-left:20%;" })<span class="radio_span">
-                            &nbsp;No
-                        </span>
-                        @Html.ValidationMessageFor(model => model.VendorContractModel.AllocationNeeded)
-                    </div>
-
-                </div>
-
-                <div class="form-group col-md-6">
-                    <label class="col-form-label"> Start Date<span class="req">*</span></label>
-
-                    @Html.TextBoxFor(model => model.VendorContractModel.StartDate, null, new { @id = "StartDate", @onkeydown = "return false;", @class = "form-control input-rounded" })
-                    @Html.ValidationMessageFor(model => model.VendorContractModel.StartDate)
-                </div>
-                <div class="form-group col-md-6">
-                    <label class="col-form-label">   End Date<span class="req">*</span></label>
-
-                    @Html.TextBoxFor(model => model.VendorContractModel.EndDate, null, new { @id = "EndDate", @onkeydown = "return false;", @class = "form-control input-rounded" })
-                    @Html.ValidationMessageFor(model => model.VendorContractModel.EndDate)
-
-                </div>
-
-                <div class="form-group col-md-6">
-                    <label class="col-form-label">$ Cost During Period<span class="req">*</span></label>
-
-                    @Html.TextBoxFor(model => model.VendorContractModel.CostDuringPeriodForView, null, new { @id = "CostDuringPeriod", @class = "form-control input-rounded" })
-                    @Html.ValidationMessageFor(model => model.VendorContractModel.CostDuringPeriodForView)
-                </div>
-                <div class="form-group col-md-6">
-                    <label class="col-form-label"> $ Annual Value Of Agreement<span class="req">*</span></label>
-
-                    @Html.TextBoxFor(model => model.VendorContractModel.AnnualValueOfAggrimentForView, null, new { @id = "AnnualValueOfAggriment", @class = "form-control input-rounded" })
-                    @Html.ValidationMessageFor(model => model.VendorContractModel.AnnualValueOfAggrimentForView)
-
-                </div>
-
-                <div class="form-group col-md-6">
-                    <label class="col-form-label"> $ Minimum Bill Amount<span class="req">*</span></label>
-
-                    @Html.TextBoxFor(model => model.VendorContractModel.MinimumBillAmountForView, null, new { @id = "MinimumBillAmount", @class = "form-control input-rounded" })
-                    @Html.ValidationMessageFor(model => model.VendorContractModel.MinimumBillAmountForView)
-                </div>
-                <div class="form-group col-md-6">
-                    <label class="col-form-label"> Bill Due Date<span class="req">*</span></label>
-
-                    @Html.TextBoxFor(model => model.VendorContractModel.BillDueDate, null, new { @id = "BillDueDate", @onkeydown = "return false;", @class = "form-control input-rounded" })
-                    @Html.ValidationMessageFor(model => model.VendorContractModel.BillDueDate)
-
-                </div>
-
-                <div class="form-group col-md-6">
-                    <label class="col-form-label">  Late Fine/Fee<span class="req">*</span></label>
-
-                    @Html.TextBoxFor(model => model.VendorContractModel.LateFineForView, null, new { @id = "LateFine", @class = "form-control input-rounded" })
-                    @Html.ValidationMessageFor(model => model.VendorContractModel.LateFineForView)
-                </div>
-                <div class="form-group col-md-6">
-                    <label class="col-form-label"> Contract Document<span class="req">*</span></label>
-
-                    <div id="dvContractPreview">
-                    </div>
-                   
-                    <div class="custom-file">
-                        <input id="fileuploadContract" type="file" style="" class="custom-file-input" name="VendorContractModel.ContractDocumentsFile" />
-                     
-                        <label class="custom-file-label">Choose file</label>
-                    </div>
-                    <ul class="attachment">
-                        @if (Model.VendorContractModel != null)
-                        {
-                            <li>
-                                <a class="title" href="@Url.Content(ContractDocPath + myModelprefix + "ContractDocuments")">@myModelprefix + "ContractDocuments"</a>
-                            </li>
-                        }
-                    </ul>
-
-                </div>
+                    {@Html.DropDownList(myModelprefix + "SelectVendorToLocation", new SelectList(ViewBag.LocationListData, "LocationId", "LocationName"), new { @id = "SelectVendorToLocation", @multiple = "multiple", @class = "form-control" })}
+                 }*@
+            else
+            {
+                <select id="VendorContractModel.SectVendorToLocation" class="form-control"><option value="-1">@ViewBag.LocationListData</option></select>
+            }
+                @*@Html.DropDownList("SectVendorToLocation", new SelectList((List<WorkOrderEMS.Models.UserLocations>)Session["eTrac_UserLocations"], "LocationId", "LocationName"), new { @id = "SectVendorToLocation", @multiple = "multiple", @class = "form-control" })*@
+                @Html.ValidationMessageFor(model => model.VendorContractModel.SectVendorToLocation)
+                @Html.Hidden("SelectedLcation")
 
             </div>
+        </div>
+
+        <div class="form-group row ContractExecutedByHideShow1" style="display:none;">
+            <label class="col-sm-2 col-form-label"> Contract executed by <span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.RadioButtonFor(model => model.VendorContractModel.ContractExecutedBy, "Own", false)<span class="radio_span">
+    &nbsp;Own &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    @Html.RadioButtonFor(model => model.VendorContractModel.ContractExecutedBy, "Vendor", new { @class = "ContractExecutedClass", @style = "margin-left:20%;" })<span class="radio_span">
+    &nbsp;Vendor</span>
+    @Html.ValidationMessageFor(model => model.VendorContractModel.ContractExecutedBy)
+</div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">  Primary Payment Mode<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @if (ViewBag.PaymentModeList != null)
+                {
+                    {@Html.DropDownListFor(model => model.VendorContractModel.PrimaryPaymentMode, new SelectList(ViewBag.PaymentModeList, "PaymentModeId", "PaymentModeName"), "--Select Payment Mode--", new { @id = "PrimaryPaymentMode", @class = "form-control input-rounded" })}
+            }
+            else
+            {
+                <select id="VendorType" , class="form-control input-rounded"><option value="-1">@ViewBag.PaymentModeList</option></select>
+            }
+                @Html.ValidationMessageFor(model => model.VendorContractModel.PrimaryPaymentMode)
+            </div>
+
+            <label class="col-sm-2 col-form-label">  Payment Term<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @if (ViewBag.PaymentTermList != null)
+                {
+                    {@Html.DropDownListFor(model => model.VendorContractModel.PaymentTerm, new SelectList(ViewBag.PaymentTermList, "PaymentTermId", "PaymentTermName"), "--Select Payment Term--", new { @id = "PaymentTerm", @class = "form-control input-rounded" })}
+            }
+            else
+            {
+                <select id="VendorType" class="form-control input-rounded"><option value="-1">@ViewBag.PaymentTermList</option></select>
+            }
+                @Html.ValidationMessageFor(model => model.VendorContractModel.PaymentTerm)
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">  Grace Period<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.VendorContractModel.GracePeriod, null, new { @id = "GracePeriod", @class = "form-control input-rounded" })
+                @Html.ValidationMessageFor(model => model.VendorContractModel.GracePeriod)
+            </div>
+            <label class="col-sm-2 col-form-label">Invoicing Frequency<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.VendorContractModel.InvoicingFrequecy, new List<SelectListItem>
+                                                            {
+                                                               new SelectListItem() {Text = "--Select Invoicing Frequency--", Value="0"},
+                                                               new SelectListItem() {Text = "Weekly", Value="Weekly"},
+                                                               new SelectListItem() {Text = "Monthly", Value="Monthly"},
+                                                               new SelectListItem() {Text = "Quarterly", Value="Quarterly"},
+                                                               new SelectListItem() {Text = "Yearly", Value="Yearly"},
+                                                             }, new { @id = "InvoicingFrequecy", @class = "form-control input-rounded" })
+                @Html.ValidationMessageFor(model => model.VendorContractModel.InvoicingFrequecy)
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Is Reccurence for PO.?<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.RadioButtonFor(model => model.VendorContractModel.ReccurenceForPO, "Y")<span class="radio_span">
+    &nbsp;Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    @Html.RadioButtonFor(model => model.VendorContractModel.ReccurenceForPO, "N", new { @style = "margin-left:20%;" })<span class="radio_span">
+    &nbsp;No</span>
+    @Html.ValidationMessageFor(model => model.VendorContractModel.ReccurenceForPO)
+</div>
+
+            <label class="col-sm-2 col-form-label AllocationNeededClass" style="display:none;"> Allocation Needed :<span class="req">*</span></label>
+            <div class="col-sm-4 AllocationNeededClass" style="display:none;">
+                @Html.RadioButtonFor(model => model.VendorContractModel.AllocationNeeded, 1, false)<span class="radio_span">
+    &nbsp;Yes &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+    @Html.RadioButtonFor(model => model.VendorContractModel.AllocationNeeded, 2, new { @style = "margin-left:20%;" })<span class="radio_span">
+    &nbsp;No</span>
+    @Html.ValidationMessageFor(model => model.VendorContractModel.AllocationNeeded)
+</div>
+
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"> Start Date<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.VendorContractModel.StartDate, null, new { @id = "StartDate", @onkeydown = "return false;", @class = "form-control input-rounded" })
+                @Html.ValidationMessageFor(model => model.VendorContractModel.StartDate)
+            </div>
+            <label class="col-sm-2 col-form-label">   End Date<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.VendorContractModel.EndDate, null, new { @id = "EndDate", @onkeydown = "return false;", @class = "form-control input-rounded" })
+                @Html.ValidationMessageFor(model => model.VendorContractModel.EndDate)
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">$ Cost During Period<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.VendorContractModel.CostDuringPeriodForView, null, new { @id = "CostDuringPeriod", @class = "form-control input-rounded" })
+                @Html.ValidationMessageFor(model => model.VendorContractModel.CostDuringPeriodForView)
+            </div>
+            <label class="col-sm-2 col-form-label"> $ Annual Value Of Agreement<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.VendorContractModel.AnnualValueOfAggrimentForView, null, new { @id = "AnnualValueOfAggriment", @class = "form-control input-rounded" })
+                @Html.ValidationMessageFor(model => model.VendorContractModel.AnnualValueOfAggrimentForView)
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"> $ Minimum Bill Amount<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.VendorContractModel.MinimumBillAmountForView, null, new { @id = "MinimumBillAmount", @class = "form-control input-rounded" })
+                @Html.ValidationMessageFor(model => model.VendorContractModel.MinimumBillAmountForView)
+            </div>
+            <label class="col-sm-2 col-form-label"> Bill Due Date<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.VendorContractModel.BillDueDate, null, new { @id = "BillDueDate", @onkeydown = "return false;", @class = "form-control input-rounded" })
+                @Html.ValidationMessageFor(model => model.VendorContractModel.BillDueDate)
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">  Late Fine/Fee<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.VendorContractModel.LateFineForView, null, new { @id = "LateFine", @class = "form-control input-rounded" })
+                @Html.ValidationMessageFor(model => model.VendorContractModel.LateFineForView)
+            </div>
+            <label class="col-sm-2 col-form-label"> Contract Document<span class="req">*</span></label>
+            <div class="col-sm-4">
+                <div id="dvContractPreview">
+                </div>
+                <input id="fileuploadContract" type="file" style="margin-left:50%;" name="VendorContractModel.ContractDocumentsFile" />
+                <ul class="attachment">
+                    @if (Model.VendorContractModel != null)
+                    {
+                        <li style="margin-left :25%;margin-top:20px;">
+                            <a class="title" href="@Url.Content(ContractDocPath + myModelprefix + "ContractDocuments")">@myModelprefix + "ContractDocuments"</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 <!--Modal-->
@@ -415,9 +376,9 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-success pull-right get-blue" id="SaveLocationAllocation">Save</button>
+                <button type="button" data-dismiss="modal" class="btn btn-secondary" id="btnCancelForSameCompany">cancel</button>
 
-                <button type="button" data-dismiss="modal" class="btn btn-rounded btn-secondary" id="btnCancelForSameCompany">cancel</button>
-                <button type="button" class="btn btn-rounded btn-success" id="SaveLocationAllocation">Save</button>
 
             </div>
         </div>
@@ -556,10 +517,8 @@
             $('.ContractExecutedClass').prop('checked', true);
         });
         $(function () {
-            $("#fileuploadContract").change(function (e) {
+            $("#fileuploadContract").change(function () {
                 $("#dvContractPreview").html("");
-                 var fileName = e.target.files[0].name;  
-             $("#fileuploadContract").next("label").html(fileName);
                 var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.pdf|.doc|.txt)$/;
                 if (regex.test($(this).val().toLowerCase())) {
                     if ($.browser.msie && parseFloat(jQuery.browser.version) <= 9.0) {

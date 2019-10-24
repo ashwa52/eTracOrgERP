@@ -227,3 +227,74 @@
 .onoffswitch2-checkbox:checked + .onoffswitch2-label .onoffswitch2-switch {
     right: 0px;
 }
+/*Performance Management*/
+div#UrgentWorkOrdersList p {
+    margin: 0;
+}
+
+div#UrgentWorkOrdersList .notice {
+    position: relative;
+    margin: 1em;
+    background: #F9F9F9;
+    padding: 1em 1em 1em 2em;
+    border-left: 5px solid #DDD;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
+}
+
+    div#UrgentWorkOrdersList .notice:before {
+        position: absolute;
+        top: 50%;
+        margin-top: -17px;
+        left: -17px;
+        background-color: #DDD;
+        color: #FFF;
+        width: 30px;
+        height: 30px;
+        border-radius: 100%;
+        text-align: center;
+        line-height: 30px;
+        font-weight: bold;
+        font-family: Georgia;
+        text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
+    }
+
+div#UrgentWorkOrdersList .info {
+    border-color: #0074D9;
+}
+
+    div#UrgentWorkOrdersList .info:before {
+        content: "n";
+        background-color: #0074D9;
+    }
+div#UrgentWorkOrdersList .btn-success, div#profileArea .btn-success {
+    color: #fff;
+    background-color: #1DC9B7;
+    border-color: #1DC9B7;
+}
+.row.page-titles.mx-0.mb-0.mb-md-3.mb-sm-3.aos-init.aos-animate {
+    padding: 0;
+    margin-bottom: 0 !important;
+}
+.col-sm-12.col-xs-12.col-md-12.glowbuttonActiveDeactive {
+    height: 33px;
+    text-align: center;
+    font-size: 24px;
+    display: block;
+    color: black;
+    background-color: #FFFF01;
+    border-color: #5D78FF;
+}
+.performanceDashboard .card.aos-init.aos-animate {
+    margin-bottom: 0;
+}
+.performanceDashboard a.nav-link {
+    text-align: center;
+    width: 200px;
+}
+#profileArea table {
+    color: black;
+}
+button#draft,button#submit {
+    width: 200px;
+}
+    

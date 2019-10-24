@@ -78,6 +78,7 @@ namespace WorkOrderEMS.Data
                    UserId = s.z.y.UserId,
                    FirstName = s.z.y.FirstName,
                    LastName = s.z.y.LastName,
+                   ProfileImageFile = s.z.y.ProfileImage
 
                }).ToList<UserModel>();
             return objlist;

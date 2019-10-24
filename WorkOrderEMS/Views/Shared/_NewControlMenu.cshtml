@@ -1,45 +1,46 @@
 ﻿@{
-    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
-    long loginUserType = 0, UserId = 0;
-    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
-    string imgPath = (Convert.ToString(Session["eTrac_ProfileImage"]));
-    long locationId = 0;
-    if (ObjLogin != null)
-    {
-        loginUserName = ObjLogin.FName + "'s";
-        loginUserEmail = ObjLogin.Email;
-        loginUserProfile = ObjLogin.UserProfile;
-        loginUserType = ObjLogin.UserRoleId;
-        UserId = ObjLogin.UserId;
-        locationId = ObjLogin.LocationID;
-        //loginUserContactNo = ObjLogin.ContactNo;
-    }
-    bool GloblaAdminUser, ITAdminUser, OnlyAdminUser, ManagerUser, EmployeeUser, ClientUser;
-    GloblaAdminUser = ITAdminUser = OnlyAdminUser = ManagerUser = EmployeeUser = ClientUser = false;
-    switch ((WorkOrderEMS.Helper.UserType)loginUserType)
-    {
-        case WorkOrderEMS.Helper.UserType.GlobalAdmin:
-            GloblaAdminUser = true;
-            break;
-        case WorkOrderEMS.Helper.UserType.ITAdministrator:
-            ITAdminUser = true;
-            break;
-        case WorkOrderEMS.Helper.UserType.Administrator:
-            OnlyAdminUser = true;
-            break;
-        case WorkOrderEMS.Helper.UserType.Manager:
-            ManagerUser = true;
-            break;
-        case WorkOrderEMS.Helper.UserType.Employee:
-            EmployeeUser = true;
-            break;
-        case WorkOrderEMS.Helper.UserType.Client:
-            ClientUser = true;
-            break;
-        default:
-            GloblaAdminUser = ITAdminUser = OnlyAdminUser = ManagerUser = EmployeeUser = ClientUser = false;
-            break;
-    }
+	string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+	long loginUserType = 0, UserId = 0;
+	WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+	string imgPath = (Convert.ToString(Session["eTrac_ProfileImage"]));
+	long locationId = 0;
+	if (ObjLogin != null)
+	{
+		loginUserName = ObjLogin.FName + "'s";
+		loginUserEmail = ObjLogin.Email;
+		loginUserProfile = ObjLogin.UserProfile;
+		loginUserType = ObjLogin.UserRoleId;
+		UserId = ObjLogin.UserId;
+		locationId = ObjLogin.LocationID;
+		//loginUserContactNo = ObjLogin.ContactNo;
+	}
+
+	bool GloblaAdminUser, ITAdminUser, OnlyAdminUser, ManagerUser, EmployeeUser, ClientUser;
+	GloblaAdminUser = ITAdminUser = OnlyAdminUser = ManagerUser = EmployeeUser = ClientUser = false;
+	switch ((WorkOrderEMS.Helper.UserType)loginUserType)
+	{
+		case WorkOrderEMS.Helper.UserType.GlobalAdmin:
+			GloblaAdminUser = true;
+			break;
+		case WorkOrderEMS.Helper.UserType.ITAdministrator:
+			ITAdminUser = true;
+			break;
+		case WorkOrderEMS.Helper.UserType.Administrator:
+			OnlyAdminUser = true;
+			break;
+		case WorkOrderEMS.Helper.UserType.Manager:
+			ManagerUser = true;
+			break;
+		case WorkOrderEMS.Helper.UserType.Employee:
+			EmployeeUser = true;
+			break;
+		case WorkOrderEMS.Helper.UserType.Client:
+			ClientUser = true;
+			break;
+		default:
+			GloblaAdminUser = ITAdminUser = OnlyAdminUser = ManagerUser = EmployeeUser = ClientUser = false;
+			break;
+	}
 }
 @section Script{
 <script>
@@ -51,23 +52,25 @@
 }
 
 <!--**********************************
-          Header start
-      ***********************************-->
+		  Header start
+	  ***********************************-->
 <div class="header">
-    <div class="header-content">
-        <nav class="navbar navbar-expand">
-            <div class="collapse navbar-collapse justify-content-between">
-                <div class="header-left">
-                    <div class="search_bar dropdown">
-                        <span class="search_icon p-3 c-pointer" data-toggle="dropdown">
-                            <i class="mdi mdi-magnify"></i>
-                        </span>
-                        <div class="dropdown-menu p-0 m-0 animated fadeInUp">
-                            <form>
-                                <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                            </form>
-                        </div>
-                    </div>
+	<div class="header-content">
+		<nav class="navbar navbar-expand">
+			<div class="collapse navbar-collapse justify-content-between">
+				<div class="header-left">
+					@if ((WorkOrderEMS.Helper.UserType)loginUserType != WorkOrderEMS.Helper.UserType.GuestUser)
+                    {
+						<div class="search_bar dropdown">
+							<span class="search_icon p-3 c-pointer" data-toggle="dropdown">
+								<i class="mdi mdi-magnify"></i>
+							</span>
+							<div class="dropdown-menu p-0 m-0 animated fadeInUp">
+								<form>
+									<input class="form-control" type="search" placeholder="Search" aria-label="Search">
+								</form>
+							</div>
+						</div>
 
                     @*<div class="dropdown create-option-btn">
                         <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
@@ -88,64 +91,68 @@
                             </a>
                         </div>
                     </div>*@
-                </div>
-
-                <ul class="navbar-nav header-right">
-                    @if (@ViewBag.AccountSection == true)
-                    { }
-                    else
-                    {
-                        <li class="nav-item"><a href="@Url.Action("Index", "AdminDashboard", new { area = "AdminSection" })"><i class="fa fa-user-circle" style="font-size:30px;color:ghostwhite;" title="Admin"></i></a></li>
+                   
                     }
-                    <li class="nav-item dropdown">
-                        <div class="drpLocation pl-3 pr-3">
-                            @if (Session != null)
-                            {
-                                if (Session["eTrac_UserLocations"] != null)
-                                {                           
-                                    @Html.DropDownList("drp_MasterLocation", new SelectList((List<WorkOrderEMS.Models.UserLocations>)Session["eTrac_UserLocations"], "LocationId", "LocationName"), null, new { @class = "form-control input-rounded", @id = "drp_MasterLocation1" })
-                                }
-                            }
-                        </div>
-                    </li>
-                    @*<li class="nav-item">
-                            <a class="btn btn-secondary btn-rounded pl-3 pr-3 nav-link" href="https://docs.google.com/forms/d/e/1FAIpQLSdye2tgr3FPHpvN8wrwvzgIagvMwm8vpxOBoIijEVxEF3ZiaA/viewform" target="_blank">Hire Us</a>
-                        </li>*@
-                    <li class="nav-item dropdown">
-                        <a class="nav-link" href="#" role="button" data-toggle="dropdown">
-                            <i class="mdi mdi-wrench"></i>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right animated fadeInUp header-quick-link">
-                            <div class="text-center">
-                                <div class="row no-gutters">
-                                    <div class="col-6">
-                                        <a href="#!">
-                                            <i class="mdi mdi-settings"></i>
-                                            <p class="mb-0">Settings</p>
-                                        </a>
-                                    </div>
-                                    <div class="col-6">
-                                        <a href="#!">
-                                            <i class="mdi mdi-calendar-check"></i>
-                                            <p class="mb-0">Event</p>
-                                        </a>
-                                    </div>
-                                    <div class="col-6">
-                                        <a href="#!">
-                                            <i class="mdi mdi-cash-multiple"></i>
-                                            <p class="mb-0">Balance</p>
-                                        </a>
-                                    </div>
-                                    <div class="col-6">
-                                        <a href="#!">
-                                            <i class="mdi mdi-login"></i>
-                                            <p class="mb-0">Login</p>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
+                </div>
+				<ul class="navbar-nav header-right">
+					@if (@ViewBag.AccountSection == true)
+					{ }
+					else if ((WorkOrderEMS.Helper.UserType)loginUserType != WorkOrderEMS.Helper.UserType.GuestUser)
+					{
+						<li class="nav-item"><a href="@Url.Action("Index", "AdminDashboard", new { area = "AdminSection" })"><i class="fa fa-user-circle" style="font-size:30px;color:ghostwhite;" title="Admin"></i></a></li>
+					}
+					@if ((WorkOrderEMS.Helper.UserType)loginUserType != WorkOrderEMS.Helper.UserType.GuestUser)
+					{
+						<li class="nav-item dropdown">
+							<div class="drpLocation pl-3 pr-3">
+								@if (Session != null)
+								{
+									if (Session["eTrac_UserLocations"] != null)
+									{
+										@Html.DropDownList("drp_MasterLocation", new SelectList((List<WorkOrderEMS.Models.UserLocations>)Session["eTrac_UserLocations"], "LocationId", "LocationName"), null, new { @class = "form-control input-rounded", @id = "drp_MasterLocation1" })
+									}
+								}
+							</div>
+						</li>
+					}
+					@*<li class="nav-item">
+							<a class="btn btn-secondary btn-rounded pl-3 pr-3 nav-link" href="https://docs.google.com/forms/d/e/1FAIpQLSdye2tgr3FPHpvN8wrwvzgIagvMwm8vpxOBoIijEVxEF3ZiaA/viewform" target="_blank">Hire Us</a>
+						</li>*@
+					<li class="nav-item dropdown">
+						<a class="nav-link" href="#" role="button" data-toggle="dropdown">
+							<i class="mdi mdi-wrench"></i>
+						</a>
+						<div class="dropdown-menu dropdown-menu-right animated fadeInUp header-quick-link">
+							<div class="text-center">
+								<div class="row no-gutters">
+									<div class="col-6">
+										<a href="#!">
+											<i class="mdi mdi-settings"></i>
+											<p class="mb-0">Settings</p>
+										</a>
+									</div>
+									<div class="col-6">
+										<a href="#!">
+											<i class="mdi mdi-calendar-check"></i>
+											<p class="mb-0">Event</p>
+										</a>
+									</div>
+									<div class="col-6">
+										<a href="#!">
+											<i class="mdi mdi-cash-multiple"></i>
+											<p class="mb-0">Balance</p>
+										</a>
+									</div>
+									<div class="col-6">
+										<a href="#!">
+											<i class="mdi mdi-login"></i>
+											<p class="mb-0">Login</p>
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</li>
 
                     <li class="nav-item dropdown notification_dropdown">
                         <a class="nav-link" href="#" role="button" data-toggle="dropdown">
@@ -244,7 +251,7 @@
     </div>
 </div>
 <!--**********************************
-    Header end ti-comment-alt
+	Header end ti-comment-alt
 ***********************************-->
 <script>
     @{long Location = ((WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"]).LocationID;}

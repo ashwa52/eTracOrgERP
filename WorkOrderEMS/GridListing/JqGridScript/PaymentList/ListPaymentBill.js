@@ -13,78 +13,7 @@ var BillTypeDll = '<select id="BillTypeDll">'
         + '<option value="0" >Bill Type</option>'
         + '<option value="ManualBill" >ManualBill</option>'
         + '<option value="PO" >PO</option>'
-    + '<option value="MISC">MISC</option></select>';
-
-function onChangeBill(item) {    
-    var act;
-    $("#tbl_PaymentList").jsGrid({
-        height: "170%",
-        width: "100%",
-        filtering: false,
-        editing: false,
-        inserting: false,
-        sorting: false,
-        paging: true,
-        autoload: true,
-        pageSize: 10,
-        pageButtonCount: 5,
-
-        controller: {
-            loadData: function (filter) {
-                return $.ajax({
-                    type: "GET",
-                    url: $_HostPrefix + PaymentUrl + '?LocationId=' + $_locationId + '&BillTypeId=' + item,
-                    data: filter,
-                    dataType: "json"
-                });
-            }
-        },
-        fields: [
-            { name: "BillNo", title: "Bill No", type: "text", width: 20 },
-            { name: "LocationName", title: "Location Name", type: "text", width: 30 },
-            { name: "VendorName", title: "Vendor Name/Employee name", type: "text", width: 35 },
-            { name: "OperatingCompany", title: "Operating Company", type: "text", width: 30 },
-            {
-                name: "BillType", title: "Bill Type", type: "text", width: 20, itemTemplate: function (value, item) {
-                    var $text = $("<a>").text(item.BillType);
-                    return $("<div>").append($text).click(function () {
-                        RowClickbillType(value, item)
-                    });
-                }
-            },
-            { name: "BillAmount", title: "Bill Amount", type: "text", width: 20 },
-            { name: "DisplayDate", title: "Bill Date", type: "text", width: 30 },
-            { name: "BillDate", title: "Bill Date", type: "text", width: 30, visible: false },
-            { name: "GracePeriod", title: "Grace Period", type: "text", width: 10 },
-            { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20 },//, visible: false 
-            { name: "Status", title: "Status", type: "text", width: 20, visible: false },
-            { name: "VendorId", title: "VendorId", type: "text", width: 20, visible: false },
-            { name: "OperatingCompanyId", title: "Operating Company Id", type: "text", width: 20, visible: false },
-            { name: "LocationId", title: "Location Id", type: "text", width: 20, visible: false },
-            { name: "LLBL_ID", title: "LLBL ID", type: "text", width: 50, visible: false },
-            {
-                name: "act", items: act, title: "Action", width: 15, css: "text-center", itemTemplate: function (value, item) {
-                    var $iconCheck = $("<i>").attr({ class: "fa fa-credit-card" }).attr({ style: "color:green;font-size: 22px;" });
-                    var $iconClose = $("<i>").attr({ class: "fa fa-close" }).attr({ style: "color:red;font-size: 22px;" });
-
-                    var $customCheck = $("<span style='padding: 0 5px 0 0;'>")
-                        .attr({ title: "Pay Bill" })
-                        .attr({ id: "PayBill" + item.BillNo }).click(function (e) {
-                            PayBillSave(item);
-                        }).append($iconCheck);
-
-                    var $customCancel = $("<span style='padding: 0 5px 0 0;'>")
-                        .attr({ title: "Cancel Bill" })
-                        .attr({ id: "CancelBill" + item.BillNo }).click(function (e) {
-                            CancelBill(item);
-                        }).append($iconClose);
-                    return $("<div>").attr({ class: "btn-toolbar" }).append($customCheck).append($customCancel);
-                }
-            }
-        ]
-    });
-}
-
+        + '<option value="MISC">MISC</option></select>';
 $(function () {
 
     $("#SearchText").keyup(function () {
@@ -120,7 +49,8 @@ $(function () {
             { name: "VendorName", title: "Vendor Name/Employee name", type: "text", width: 35 },
             { name: "OperatingCompany", title: "Operating Company", type: "text", width: 30 },
             {
-                name: "BillType", title: "Bill Type", type: "text", width: 20, itemTemplate: function (value, item) {                    
+                name: "BillType", title: "Bill Type", type: "text", width: 20, itemTemplate: function (value, item) {
+                    debugger;
                     var $text = $("<a>").text(item.BillType);
                     return $("<div>").append($text).click(function () {
                         RowClickbillType(value,item)
@@ -138,7 +68,7 @@ $(function () {
             { name: "LocationId", title: "Location Id", type: "text", width: 20, visible: false },
             { name: "LLBL_ID", title: "LLBL ID", type: "text", width: 50, visible: false },
             {
-                name: "act", items: act, title: "Action", width: 15, css: "text-center", itemTemplate: function (value, item) {
+                name: "act", items: act, title: "Action", width: 50, css: "text-center", itemTemplate: function (value, item) {
                     var $iconCheck = $("<i>").attr({ class: "fa fa-credit-card" }).attr({ style: "color:green;font-size: 22px;" });
                     var $iconClose = $("<i>").attr({ class: "fa fa-close" }).attr({ style: "color:red;font-size: 22px;" });
 
@@ -380,7 +310,7 @@ function RowClickbillType(id, rowData) {
                             $("#myModalForPODetails").modal('show');
                         }
                         else {
-                           // toastr.success(result)
+                            toastr.success(result)
                         }
                     }
                 });
@@ -479,7 +409,7 @@ function doPaymentSearch() {
             { name: "LocationId", title: "Location Id", type: "text", width: 20, visible: false },
             { name: "LLBL_ID", title: "LLBL ID", type: "text", width: 50, visible: false },
             {
-                name: "act", items: act, title: "Action", width: 15, css: "text-center", itemTemplate: function (value, item) {
+                name: "act", items: act, title: "Action", width: 50, css: "text-center", itemTemplate: function (value, item) {
                     var $iconCheck = $("<i>").attr({ class: "fa fa-check" }).attr({ style: "color:green;font-size: 22px;" });
                     var $iconClose = $("<i>").attr({ class: "fa fa-close" }).attr({ style: "color:red;font-size: 22px;" });
 
@@ -513,56 +443,34 @@ function doPaymentSearch() {
 //}
 
 function PayBillSave(item) {
-
-    $('.WhenMisc').hide();
-    $('.WhenWired').hide();
-    $('.WhenCard').hide();
-    $('.whenCheque').hide();
-
+    debugger;//
+    //id = $(this).attr("PayBill");
     GridValue = item;
-    callAccountDetailsVendor(item);    
+    callAccountDetailsVendor(item);
+    IsCancel = false;
     $("#myModelPayBill").modal('show');
 }
 
 function CancelBill(item) {
-    //debugger;//
+    debugger;//
     //id = $(this).attr("CancelBill");
-    $("#CommentPay").val("");
-    GridValue = item;    
+    GridValue = item;
+    IsCancel = true;
     callAccountDetailsVendor(item);
     $('#myModelCancelBill').modal('show');
 }
 
 function callAccountDetailsVendor(data)
 {
-    $("#PaymentToBePaid").html(data.BillAmount);  
-    $("#PaymentByCash").html(data.BillAmount);
+    //alert(data);
+    //var data = jQuery("#tbl_PaymentList").getRowData(id); 
     if (data.PaymentMode == "MISC") {
         $('.WhenMisc').show();
         $('.WhenWired').hide();
         $('.WhenCard').hide();
-        $('.whenCheque').hide();
+        $('.whenCheque').hide()
     }
-    if (data.PaymentMode == "Wired") {
-        $('.WhenMisc').hide();
-        $('.WhenWired').show();
-        $('.WhenCard').hide();
-        $('.whenCheque').hide();
-    }
-    if (data.PaymentMode == "Card") {
-        $('.WhenMisc').hide();
-        $('.WhenWired').hide();
-        $('.WhenCard').show();
-        $('.whenCheque').hide();
-    }
-    if (data.PaymentMode == "Cheque") {
-        $('.WhenMisc').hide();
-        $('.WhenWired').hide();
-        $('.WhenCard').hide();
-        $('.whenCheque').show();
-    }
-    //alert(data.PaymentMode);
-    if (data.PaymentMode == "Wired" || data.PaymentMode == "Card" || data.PaymentMode == "Cheque" || data.PaymentMode == "Cash") {
+    if (data.PaymentMode == "Wired" || data.PaymentMode == "Card" || data.PaymentMode == "Cheque") {
         $.ajax({
             url: $_HostPrefix + GetAccountDataUrl,
             type: 'POST',
@@ -572,128 +480,77 @@ function callAccountDetailsVendor(data)
             success: function (result) {
 
                 if (data.PaymentMode == "Wired") {
-                    //$('.WhenMisc').hide();
-                    //$('.WhenWired').show();
-                    //$('.WhenCard').hide();
-                    //$('.whenCheque').hide();
+                    $('.WhenMisc').hide();
+                    $('.WhenWired').show();
+                    $('.WhenCard').hide();
+                    $('.whenCheque').hide();
                     $('#dvOptionsWired').html("");
                     for (var i = 0; i < result.length; i++) {
                         if (result[i].PaymentMode == 2)
                         {
-                           
+                            $('#hr2').show();
                             $('#dvOptionsWired').append($('<input type="radio" name="CARDNo" nametype ="Card" OperatorCADId ="' + result[i].OpeartorCAD_Id + '" AccountAccountId ="' + result[i].CompanyAccountId + '" id="AccountNo_' + result[i].CompanyAccountId + '" value="' + result[i].AccountNo + '" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + result[i].AccountNo + '</input><br /><br />'));
                         }
                         if (result[i].PaymentMode == 1) {
-                            //$('.WhenCard').show(); 
-                            
+                            $('.WhenCard').show(); 
+                            $('#hr1').show()
                             $('#dvOptions').html("");
                             $('#dvOptions').append($('<input type="radio" name="CARDNo" nametype ="Account" OperatorCADId ="' + result[i].OpeartorCAD_Id + '"  CardId="' + result[i].CompanyAccountId + '" id = "CARDNo_' + result[i].CARDNo + '" value="' + result[i].CARDNo + '" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + result[i].CARDNo + '</input><br /><br />'));
                         }
                         if (result[i].PaymentMode == 4)
                         {
-                            //$('#CompanyAccountId').val(result[0].CompanyAccountId);
-                        }
-                        if (result[i].PaymentMode == 3) {
-                            //$('#CompanyAccountId').val(result[0].CompanyAccountId);
-                            
+                            $('#CompanyAccountId').val(result[0].CompanyAccountId);
+                            $('.whenCheque').show();
                         }
                     }
                 }
                 else if (data.PaymentMode == "Card") {
-                    //$('.WhenMisc').hide();
-                    //$('.WhenWired').hide();
-                    //$('.WhenCard').show();
-                    //$('.whenCheque').hide();
+                    $('.WhenMisc').hide();
+                    $('.WhenWired').hide();
+                    $('.WhenCard').show();
+                    $('.whenCheque').hide();
                     $('#dvOptions').html("");
                     for (var i = 0; i < result.length; i++) {
                         if (result[i].PaymentMode == 1) {
-                           
+                            $('#hr1').show();
                             $('#dvOptions').append($('<input type="radio" name="CARDNo" nametype ="Card" OperatorCADId ="' + result[i].OpeartorCAD_Id + '" CardId ="' + result[i].CompanyAccountId + '" id = "CARDNo_' + result[i].CARDNo + '" value="' + result[i].CARDNo + '" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + result[i].CARDNo + '</input><br /><br />'));
 
                         } if (result[i].PaymentMode == 2) {
-                            //$('.WhenWired').show();
-                            
+                            $('.WhenWired').show();
+                            $('#hr2').show();
                             $('#dvOptionsWired').html("");
                             $('#dvOptionsWired').append($('<input type="radio" nametype ="Account" OperatorCADId ="' + result[i].OpeartorCAD_Id + '" name="CARDNo" AccountAccountId="' + result[i].CompanyAccountId + '" id="AccountNo_' + result[i].CompanyAccountId + '" value="' + result[i].AccountNo + '" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + result[i].AccountNo + '</input><br /><br />'));
 
                         }
                         if(result[i].PaymentMode == 4)
                         {
-                            //$('#CompanyAccountId').val(result[0].CompanyAccountId);
-                            //$('.whenCheque').show();
-                        }
-                        if (result[i].PaymentMode == 3) {
-                            //$('#CompanyAccountId').val(result[0].CompanyAccountId);
-
+                            $('#CompanyAccountId').val(result[0].CompanyAccountId);
+                            $('.whenCheque').show();
                         }
                     }
                 }
                 else if (data.PaymentMode == "Cheque") {
-                    //$('#CompanyAccountId').val(result[0].CompanyAccountId);                    
-                }
-                else if (data.PaymentMode == "Cash") {
-                    //$('#CompanyAccountId').val(result[0].CompanyAccountId);
-
-                }
+                    $('#CompanyAccountId').val(result[0].CompanyAccountId);
+                    $('.WhenMisc').hide();
+                    $('.WhenWired').hide();
+                    $('.WhenCard').hide();
+                    $('.whenCheque').show();
+                }                
             },
             error: function () { alert(" Something went wrong..") },
         });
     }
-    $("#lblVendorNameFrom").html(data.OperatingCompany);    
+    $("#lblVendorNameFrom").html(data.OperatingCompany);
+    $("#lblPaymentModeFrom").html(data.PaymentMode);
     $("#lblVendorNameTo").html(data.VendorName);
-   // $("#lblPaymentModeFrom").html(data.PaymentMode);
-    //$("#lblPaymentModeTo").html(data.PaymentMode);
+    $("#lblPaymentModeTo").html(data.PaymentMode);
 }
 
 function PayAction()
 {
     if ($('.form').valid()) {
-        IsCancel = false;
-        var valid = false;
-        var text = $("#lblPaymentModeForChange option:selected").text();
-        debugger;
-        if (text == "Cash") { //MISC  
-            var cash = $("#PaymentByCash").val();
-            valid = true;
-        }
-        else if (text == "Wired") {
-            var Acc = $('input[nametype=Account]:checked').attr("AccountAccountId");
-            var OperatorCad = $('input[nametype=Account]:checked').attr("OperatorCADId");
-            if (Acc == undefined) {
-                valid = false;
-                alert("No Account number selected")
-            } else {
-                valid == true;
-            }
-        }
-        else if (text == "Card") {
-            var Card = $('input[nametype=Card]:checked').attr("CardId");
-            var OperatorCad = $('input[nametype=Card]:checked').attr("OperatorCADId");
-            if (Card == undefined) {
-                valid = false;
-                alert("No card details selected");
-            } else {
-                valid = true;
-            }
-        }
-        else if (text == "Cheque") {
-            var cheque = $("#ChequeNo").val();
-            if (cheque == "") {
-                valid = false;
-                alert("Please enter check number");
-            } else {
-                valid = true;
-            }
-        }
-        else if (text == "--Select Payment Mode--") {
-            alert("Please select payment mode")
-        }
-
-        if (valid) {
-            callAjaxPayment();
-            $("#myModelPayBill").modal('hide');
-        }        
-        
+        callAjaxPayment();
+        $("#myModelPayBill").modal('hide');
     }
     else {
         return false;
@@ -703,7 +560,6 @@ function PayAction()
 function CancelAction()
 {
     if ($('.form').valid()) {
-        IsCancel = true;
         callAjaxPayment();
         $('#myModelCancelBill').modal('hide');
     }
@@ -711,24 +567,17 @@ function CancelAction()
         return false;
     }
 }
-
 function callAjaxPayment() {      //$("#ApproveBill").live("click", function (event) {
-    
+    debugger;
     //var GridData = $('#tbl_PaymentList').getRowData(id);
     var GridData = GridValue;
     var obj = new Object();
-    
+    obj.Comment = $("#CommentPay").val();
     obj.ChequeNo = $("#ChequeNo").val();
-    //obj.PaymentNote = $("#PaymentNote").val();
     obj.AccNo = $("#AccNo").val();         
     var Account = $("#dvOptionsWired input[type='radio']").attr("id");
     obj.AccountNo = $('input[nametype=Account]:checked').val();
     obj.CARDNo = $('input[nametype=Card]:checked').val();
-    if (IsCancel) {
-        obj.Comment = $("#CommentPay").val();//for cancel event
-    } else {
-        obj.Comment = $("#PaymentNote").val();// for paid event
-    }
     //obj.AccountNo = $('#' + Account).val();
     if (obj.CARDNo != null)
     {
@@ -760,7 +609,7 @@ function callAjaxPayment() {      //$("#ApproveBill").live("click", function (ev
             new fn_showMaskloader('Please wait...');
         },
         success: function (result) {
-            //toastr.success(result);
+            toastr.success(result);
             //jQuery("#tbl_PaymentList").trigger("reloadGrid");
             //jQuery("#tbl_PaymentPaidList").trigger("reloadGrid");
         },
@@ -813,41 +662,6 @@ $("#viewBill").on("click", function (event) {
     $("#myModalForBillData").modal('show');
 });
 
-
-function paymentmodechange() {
-    var text = $("#lblPaymentModeForChange option:selected").text();
-    
-    if (text == "Cash") { //MISC
-        $('.WhenMisc').show();
-        $('.WhenWired').hide();
-        $('.WhenCard').hide();
-        $('.whenCheque').hide();
-    }
-    else if (text == "Wired") {
-        $('.WhenMisc').hide();
-        $('.WhenWired').show();
-        $('.WhenCard').hide();
-        $('.whenCheque').hide();
-    }
-    else if (text == "Card") {
-        $('.WhenMisc').hide();
-        $('.WhenWired').hide();
-        $('.WhenCard').show();
-        $('.whenCheque').hide();
-    }
-    else if (text == "Cheque") {
-        $('.WhenMisc').hide();
-        $('.WhenWired').hide();
-        $('.WhenCard').hide();
-        $('.whenCheque').show();
-    }
-    else {
-        $('.WhenMisc').hide();
-        $('.WhenWired').hide();
-        $('.WhenCard').hide();
-        $('.whenCheque').hide();
-    }
-}
 
 //#region Image
 function imageFormat(cellvalue, options, rowObject) {

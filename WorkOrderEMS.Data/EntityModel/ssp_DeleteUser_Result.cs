@@ -14,8 +14,8 @@ namespace WorkOrderEMS.Data.EntityModel
     public partial class ssp_DeleteUser_Result
     {
         public string Result { get; set; }
-        public Nullable<long> LocationId { get; set; }
-        public Nullable<long> ManagerUserId { get; set; }
+        public long LocationId { get; set; }
+        public long ManagerUserId { get; set; }
         public string LocationName { get; set; }
     }
 }

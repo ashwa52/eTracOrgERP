@@ -55,11 +55,11 @@
         </div>
         <div class="row">
             <div class="col-lg-12" id="OperationDARListDiv">
-                <div class="card" data-aos="fade-up">         
+                <div class="card" data-aos="fade-up">
                     <div style="height: 45px;background:#0aa0cd;">
                         <div class="form-group row" style="margin-top:6px;margin-left:10px;">
                             <div class="col-sm-1">
-                                <input type="text"  id="FromDate" class="form-control input-rounded" style="width: 120px;" placeholder="From Date">
+                                <input type="text" id="FromDate" class="form-control input-rounded" style="width: 120px;" placeholder="From Date">
                             </div>
                             <div class="col-sm-1">
                                 <input type="text" style="width: 120px;margin-left: 16px;" id="FromTime" class="form-control input-rounded clockpicker" placeholder="From Time">
@@ -70,13 +70,14 @@
                             <div class="col-sm-1">
                                 <input type="text" style="width: 120px;margin-left: 48px;" id="ToTime" class="form-control input-rounded clockpicker" placeholder="To Time">
                             </div>
-                            <div class="col-sm-1">
-                                <select class="form-control input-rounded" id="workRequestTypeDAR" style="width: 125px;margin-left: 64px;">
+                            <div class="col-sm-1"></div>
+                            <div class="col-sm-2">
+                                <select class="form-control input-rounded" id="workRequestTypeDAR">
                                     <option value="0">All Request Type</option>
                                 </select>
                             </div>
-                            <div class="col-sm-1">
-                                <select class="form-control input-rounded" style="width: 122px;margin-left: 87px;" id="allEmployee">
+                            <div class="col-sm-2">
+                                <select class="form-control input-rounded"  id="allEmployee">
                                     <option value="0">All Employee</option>
                                 </select>
                             </div>
@@ -84,8 +85,8 @@
                                 <input type="button" style="width: 120px;background: green;border-radius: 35px;margin-left: 137px;" id="ShowDAR" class="btn btn-primary" value="Show DAR" />
                             </div>
                         </div>
-                     </div>
-                  <div class="card-body dispayListDAR" id="DARList">
+                    </div>
+                    <div class="card-body dispayListDAR" id="DARList">
                         <div id="ListDAR"></div>
                     </div>
                 </div>

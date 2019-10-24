@@ -13,6 +13,30 @@ $("#ddlAsset").change(function () {
         }
     }
 });
+
+$(".ddlAssignToUser").change(function () {
+    debugger
+    if ($("#ddlAssignToUser :selected").val() > 0) {
+        var ProfileImage = $('#ddlAssignToUser').find('option:selected').attr('data-imagepath');
+        if (ProfileImage != null && ProfileImage != "") {
+            $('#EmployeeImage').prop('src', ProfileImage);
+            //$(".AssetImage").show();
+        }
+        else {
+            $('#EmployeeImage').prop('src', "../Content/Images/ProjectLogo/no-profile-pic.jpg");
+        }
+    }
+    if ($("#ddlAssignToUserForSpecialWO :selected").val() > 0) {
+        var ProfileImage = $('#ddlAssignToUserForSpecialWO').find('option:selected').attr('data-imagepath');
+        if (ProfileImage != null && ProfileImage != "") {
+            $('#EmployeeImage').prop('src', ProfileImage);
+            //$(".AssetImage").show();
+        }
+        else {
+            $('#EmployeeImage').prop('src', "../Content/Images/ProjectLogo/no-profile-pic.jpg");
+        }
+    }
+});
 //This is use to change employee fields as per priority level
 
 $("#ddlPriorityLevel").change(function () {

@@ -17,7 +17,7 @@ namespace WorkOrderEMS.Data.DataRepository
         /// Created For : TO get Superior Data 
         /// </summary>
         /// <returns></returns>
-        public List<spGetVehicleSeating_Result1> GetSuperiorList()
+        public List<spGetVehicleSeating_Result2> GetSuperiorList()
         {
             try
             {
@@ -42,7 +42,7 @@ namespace WorkOrderEMS.Data.DataRepository
             try
             {
                 var save = objworkorderEMSEntities.spSetVehicleSeating(Obj.Action, Obj.Id,Obj.SeatingName,Obj.JobDesc,Obj.RolesAndResponsibility,
-                                                                       Obj.Superior.ToString(), Obj.Superior, Obj.Department,Obj.IsActive);
+                                                                       Obj.Superior.ToString(), Obj.Superior, Obj.Department, Obj.EmploymentStatus, Obj.EmploymentClassification, Obj.RateOfPay,Obj.IsActive);
                 isSave = true;
             }
             catch (Exception ex)
@@ -54,7 +54,7 @@ namespace WorkOrderEMS.Data.DataRepository
             return isSave;
         }
 
-        public List<spGetVehicleSeating_Result1> GetVSCList(long? LocationId)
+        public List<spGetVehicleSeating_Result2> GetVSCList(long? LocationId)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace WorkOrderEMS.Data.DataRepository
             bool isSave = false;
             try
             {
-                var save = objworkorderEMSEntities.spSetJobTitle(Obj.Action, Obj.Id, Obj.JobTitleDesc, Obj.parentId, Obj.IsActive);
+                var save = objworkorderEMSEntities.spSetJobTitle(Obj.Action, Obj.Id, Obj.JobTitleDesc,null,null, Obj.parentId, Obj.IsActive);
                 isSave = true;
             }
             catch (Exception ex)
@@ -99,7 +99,7 @@ namespace WorkOrderEMS.Data.DataRepository
         /// </summary>
         /// <param name="CSVChartId"></param>
         /// <returns></returns>
-        public List<spGetJobTitle_Result> GetJobTitleList(long CSVChartId)
+        public List<spGetJobTitle_Result1> GetJobTitleList(long CSVChartId)
         {
             try
             {
@@ -112,7 +112,7 @@ namespace WorkOrderEMS.Data.DataRepository
 
             }
         }
-        public List<spGetVehicleSeating_Result1> GetChartDetails()
+        public List<spGetVehicleSeating_Result2> GetChartDetails()
         {
             try
             {

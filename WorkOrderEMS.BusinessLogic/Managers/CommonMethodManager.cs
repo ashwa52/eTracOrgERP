@@ -31,7 +31,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 
         GlobalAdminManager ObjGlobalAdminManager = new GlobalAdminManager();
         ServiceMasterRepository objServiceMasterRepository = new ServiceMasterRepository();
-        QRCMasterRepository ObjQRCMasterRepository;        
+        QRCMasterRepository ObjQRCMasterRepository;
         UserRepository ObjUserRepository;
         GlobalCodesRepository ObjGlobalCodesRepository;
         //AssetMasterRepository objAssetMasterRepository = new AssetMasterRepository();
@@ -452,7 +452,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     _UserModel.UserModel.Password = "";
                     _UserModel.UserModel.myProfileImage =
                     (_UserModel.UserModel.myProfileImage == "" || _UserModel.UserModel.myProfileImage == null) ? "no-profile-pic.jpg" : HostingPrefix + ProfileImagePath.Replace("~", "") + _UserModel.UserModel.myProfileImage;
-                    _UserModel.UserModel.SignatureImageBase=(_UserModel.UserModel.SignatureImageBase == null ) ? "" : HostingPrefix + ImagePathSignature.Replace("~", "") + _UserModel.UserModel.SignatureImageBase;
+                    _UserModel.UserModel.SignatureImageBase = (_UserModel.UserModel.SignatureImageBase == null) ? "" : HostingPrefix + ImagePathSignature.Replace("~", "") + _UserModel.UserModel.SignatureImageBase;
 
                 }
                 //ObjectParameter paramTotalRecords = new ObjectParameter("TotalRecords", typeof(int));
@@ -606,7 +606,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 string AssetImage = string.Empty;
                 List<AssetDropDown> lstAsset = objQRCMasterRepository.GetAll(r => r.IsDeleted == false && r.LocationId == LocationID && r.ClientTypeID == null).Select(e => new AssetDropDown()
                 {
-                    
+
                     Value = e.QRCID,
                     Text = e.QRCName,
                 }).ToList();
@@ -1701,8 +1701,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 if (objPermissionDetailsModel.UserType == Convert.ToInt64(UserType.GlobalAdmin, CultureInfo.InvariantCulture)
                                     || objPermissionDetailsModel.UserType == Convert.ToInt64(UserType.ITAdministrator, CultureInfo.InvariantCulture)
                                     || objPermissionDetailsModel.UserType == Convert.ToInt64(UserType.Administrator, CultureInfo.InvariantCulture)
-                    //Commented by Bhushan on 30/05/2016 for no need to check manager bcoz objBB.AssignRoleAndPermission code is doing same 
-                    // || objUserModel.UserType == Convert.ToInt64(UserType.Manager, CultureInfo.InvariantCulture)
+                                    //Commented by Bhushan on 30/05/2016 for no need to check manager bcoz objBB.AssignRoleAndPermission code is doing same 
+                                    // || objUserModel.UserType == Convert.ToInt64(UserType.Manager, CultureInfo.InvariantCulture)
                                     )
                 {
                     objCommonMethod.AssignLocationToAdminUser(objPermissionDetailsModel.LocationId, objPermissionDetailsModel.UserId);
@@ -1768,24 +1768,24 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         {
             var lstManagerList = new List<ManagerModel>();
             workorderEMSEntities _workorderems = new workorderEMSEntities();
-                try
+            try
+            {
+                //lstManagerList = _workorderems.UserRegistrations.Join(_workorderems.ManagerLocationMappings, u => u.UserId, l => l.ManagerUserId, (u, l) => new { u, l }).
+                //    Where(x => x.l.LocationId == locationId && x.l.IsDeleted == false).Select(a => new ManagerModel(){
+                //    UserName = a.u.FirstName+""+a.u.LastName,
+                //    UserID = a.u.UserId
+                //    }).ToList();
+                lstManagerList = _workorderems.UserRegistrations.Where(x => x.IsDeleted == false && x.IsEmailVerify == true).Select(a => new ManagerModel()
                 {
-                    //lstManagerList = _workorderems.UserRegistrations.Join(_workorderems.ManagerLocationMappings, u => u.UserId, l => l.ManagerUserId, (u, l) => new { u, l }).
-                    //    Where(x => x.l.LocationId == locationId && x.l.IsDeleted == false).Select(a => new ManagerModel(){
-                    //    UserName = a.u.FirstName+""+a.u.LastName,
-                    //    UserID = a.u.UserId
-                    //    }).ToList();
-                    lstManagerList = _workorderems.UserRegistrations.Where(x => x.IsDeleted == false && x.IsEmailVerify == true).Select(a => new ManagerModel()
-                    {
-                        UserName = a.FirstName + " " + a.LastName,
-                        UserID = a.UserId
-                    }).ToList();
-                }
-                catch(Exception ex)
-                {
-                    Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<ManagerModel> GetManagerList(long locationId)", "Exception while getting list of manager list", lstManagerList);
-                    throw;
-                }
+                    UserName = a.FirstName + " " + a.LastName,
+                    UserID = a.UserId
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<ManagerModel> GetManagerList(long locationId)", "Exception while getting list of manager list", lstManagerList);
+                throw;
+            }
             return lstManagerList;
         }
 
@@ -1816,7 +1816,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     {
                         objMapper.WorkOrderID = obj.WorkOrderID;
                     }
-                    if(obj.POID != null)
+                    if (obj.POID != null)
                     {
                         objMapper.POID = obj.POID;
                     }
@@ -1828,7 +1828,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     {
                         objMapper.MiscellaneousID = obj.MiscellaneousID;
                     }
-                    if(obj.eScanQRCID > 0)
+                    if (obj.eScanQRCID > 0)
                     {
                         objMapper.eScanId = obj.eScanQRCID;
                     }
@@ -1866,27 +1866,27 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             {
                 if (obj != null)
                 {
-                    if (obj != null && obj.WorkOrderID != null){
+                    if (obj != null && obj.WorkOrderID != null) {
                         objData = repository.GetSingleOrDefault(x => x.WorkOrderID == obj.WorkOrderID && x.IsDeleted == false);
                         objData.IsRead = true;
                     }
-                    else if(obj != null && obj.eFleetID != null){
+                    else if (obj != null && obj.eFleetID != null) {
                         objData = repository.GetSingleOrDefault(x => x.eFleetID == obj.eFleetID && x.IsDeleted == false);
                         objData.IsRead = true;
                     }
-                    else if (obj != null && obj.MiscellaneousID != null){
+                    else if (obj != null && obj.MiscellaneousID != null) {
                         objData = repository.GetSingleOrDefault(x => x.MiscellaneousID == obj.MiscellaneousID && x.IsDeleted == false);
                         objData.IsRead = true;
                     }
                     else if (obj != null && obj.POID != null) {
                         objData = repository.GetSingleOrDefault(x => x.POID == obj.POID && x.IsDeleted == false);
-                        if(obj.AssignTo > 0)
+                        if (obj.AssignTo > 0)
                         {
                             objData.AssignUserId = obj.AssignTo;
                         }
-                        objData.IsRead = obj.ApproveStatus ; 
+                        objData.IsRead = obj.ApproveStatus;
                     }
-                    else if(obj != null && obj.BillID != null)
+                    else if (obj != null && obj.BillID != null)
                     {
                         objData = repository.GetSingleOrDefault(x => x.BillID == obj.BillID && x.IsDeleted == false);
                         objData.IsRead = true;
@@ -1894,11 +1894,11 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     else if (obj != null && obj.eScanQRCID > 0)
                     {
                         objData = repository.GetSingleOrDefault(x => x.eScanId == obj.eScanQRCID &&
-                                                                x.AssignUserId == obj.UserId &&  x.IsDeleted == false);
+                                                                x.AssignUserId == obj.UserId && x.IsDeleted == false);
                         objData.IsRead = true;
                     }
                     if (objData != null)
-                    {                       
+                    {
                         objData.ReadDate = DateTime.UtcNow;
                         repository.Update(objData);
                         _db.SaveChanges();
@@ -1927,7 +1927,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             var obj = new EmailHelper();
             try
             {
-                notification = _db.NotificationDetails.Where(x => x.IsRead == false && x.IsDeleted == false && x.AssignUserId== objDetails.UserId || x.AssignUserId == 0).Select(a => new NotificationDetailModel()
+                notification = _db.NotificationDetails.Where(x => x.IsRead == false && x.IsDeleted == false && x.AssignUserId == objDetails.UserId || x.AssignUserId == 0).Select(a => new NotificationDetailModel()
                 {
                     WorkOrderID = a.WorkOrderID,
                     AssignTo = a.AssignUserId,
@@ -1948,7 +1948,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                             obj = _db.WorkRequestAssignments.Join(_db.NotificationDetails, q => q.WorkRequestAssignmentID, u => u.WorkOrderID, (q, u) => new { q, u }).
                                       Where(x => (x.q.WorkRequestAssignmentID == item.WorkOrderID) && (x.u.IsDeleted == false)
                                       && (x.u.IsRead == false && x.q.IsDeleted == false && (x.q.AssignToUserId == objDetails.UserId || x.q.AssignToUserId == 0))).Select
-                                      (a => new EmailHelper() {
+                                      (a => new EmailHelper()
+                                      {
                                           MailType = a.q.WorkRequestProjectType == 128 ? "WORKORDERREQUESTTOEMPLOYEE" : a.q.WorkRequestProjectType == 129 ? "SPECIALWORKORDERTOEMPLOYEE" : a.q.WorkRequestProjectType == 279 ? "CONTINIOUSREQUEST" : "EMAINTENANCE",
                                           WorkRequestAssignmentID = a.q.WorkRequestAssignmentID,
                                           WorkOrderCodeId = a.q.WorkOrderCode + a.q.WorkOrderCodeID.ToString(),
@@ -1961,13 +1962,13 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                           WorkRequestProjectType = a.q.WorkRequestProjectType,
                                           PriorityLevel = a.q.PriorityLevel,
                                           WeekDays = a.q.WeekDays,
-                                          StartTime  =  a.q.StartTime.ToString(),
-                                          EndTime= a.q.EndTime.ToString(),
+                                          StartTime = a.q.StartTime.ToString(),
+                                          EndTime = a.q.EndTime.ToString(),
                                           ModifiedDate = a.q.ModifiedDate,
                                           StartDate = a.q.StartDate.ToString(),
                                           EndDate = a.q.EndDate.ToString(),
                                           IsWorkable = true,
-                                         
+
                                           CustomerName = a.q.CustomerName,
                                           VehicleModel1 = a.q.VehicleModel,
                                           VehicleMake1 = a.q.VehicleMake.ToString(),
@@ -1979,24 +1980,24 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                           FacilityRequest = a.q.FacilityRequestId,
                                           AddressFacilityReq = a.q.Address,
                                           LicensePlateNo = a.q.LicensePlateNo
-                                      }).FirstOrDefault();                            
+                                      }).FirstOrDefault();
                             if (obj != null)
                             {
                                 obj.WorkOrderImage = obj.WorkOrderImage == null ? HostingPrefix + "/Content/Images/WorkRequest/no-asset-pic.png" : HostingPrefix + (ConfigurationManager.AppSettings["WorkRequestImage"]).Replace("~", "") + obj.WorkOrderImage;
                                 //obj.AssignedTime = obj.AssignedTime.ToString("HH:mm");
                                 ///This is to check if it is manager then the notification make it non workable
                                 ///make sure that WO should be Urgent or facility
-                                if(userDetails != null)
+                                if (userDetails != null)
                                 {
-                                    if(userDetails.UserType == Convert.ToInt64(UserType.Manager) && 
+                                    if (userDetails.UserType == Convert.ToInt64(UserType.Manager) &&
                                       (obj.WorkRequestProjectType == Convert.ToInt64(WorkRequestProjectType.FacilityRequest)
                                       || obj.PriorityLevel == Convert.ToInt64(WorkRequestPriority.Level1Urgent)))
                                     {
-                                        if (( obj.StartTime == null || obj.StartTime == "") && (obj.EndTime == null|| obj.EndTime == ""))
+                                        if ((obj.StartTime == null || obj.StartTime == "") && (obj.EndTime == null || obj.EndTime == ""))
                                         {
                                             obj.ProjectDesc = CommonMessage.WOStatusMessageForManager(obj.WorkOrderCodeId);
                                             obj.IsWorkable = false;
-                                            obj.Message = "No one accepted faciliy request "+ obj.WorkOrderCodeId + " of type"+ obj.FacilityRequest+" at location"+ obj.LocationName;
+                                            obj.Message = "No one accepted faciliy request " + obj.WorkOrderCodeId + " of type" + obj.FacilityRequest + " at location" + obj.LocationName;
                                         }
                                         else
                                         {
@@ -2009,13 +2010,13 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                 {
                                     var dateList = obj.WeekDays.Split(',').ToList();
                                     var todaysDate = DateTime.Now.ToShortDateString();
-                                    obj.Message = "Continous request " + obj.WorkOrderCodeId + " has not been started after arrived time"+ obj.StartTime;
+                                    obj.Message = "Continous request " + obj.WorkOrderCodeId + " has not been started after arrived time" + obj.StartTime;
                                     foreach (var date in dateList)
                                     {
                                         if (date == todaysDate)
                                         {
                                             //obj.IsWorkable = false;
-                                            listTask.Add(obj);                                           
+                                            listTask.Add(obj);
                                         }
                                     }
                                 }
@@ -2034,40 +2035,40 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                             var POData = new EmailHelper();
                             if (item.IsRead == false)
                             {
-                                 POData = _db.LogPODetails.Where(x => x.LPOD_POD_Id == item.POID && x.LPOD_IsActive == "Y")
-                                    .Select(a => new EmailHelper()
-                                    {
-                                        MailType = item.POID != null ? "POAPPROVEDREJECT" : null,
-                                        ManagerName = userDetails.FirstName + " " + userDetails.LastName,
-                                        LocationName = a.LocationMaster.LocationName,
-                                        PONumber = a.LPOD_POD_Id.ToString(),
-                                        SentBy = userDetails.UserId,
-                                        LocationID = a.LPOD_LocationId,
-                                        LogPOId = a.LPOD_Id.ToString(),
-                                        Total = a.LPOD_POAmount.ToString(),
-                                        CMPId = a.LPOD_CMP_Id, 
-                                        ApproveRemoveStatus = a.LPOD_IsApprove == "W"? POStatus.W : a.LPOD_IsApprove == "Y"? POStatus.Y : POStatus.N,                           
-                                        IsWorkable = true,
-                                        Comment = a.LPOD_Comment
-                                    }).OrderByDescending(x => x.LogPOId).FirstOrDefault();
+                                POData = _db.LogPODetails.Where(x => x.LPOD_POD_Id == item.POID && x.LPOD_IsActive == "Y")
+                                   .Select(a => new EmailHelper()
+                                   {
+                                       MailType = item.POID != null ? "POAPPROVEDREJECT" : null,
+                                       ManagerName = userDetails.FirstName + " " + userDetails.LastName,
+                                       LocationName = a.LocationMaster.LocationName,
+                                       PONumber = a.LPOD_POD_Id.ToString(),
+                                       SentBy = userDetails.UserId,
+                                       LocationID = a.LPOD_LocationId,
+                                       LogPOId = a.LPOD_Id.ToString(),
+                                       Total = a.LPOD_POAmount.ToString(),
+                                       CMPId = a.LPOD_CMP_Id,
+                                       ApproveRemoveStatus = a.LPOD_IsApprove == "W" ? POStatus.W : a.LPOD_IsApprove == "Y" ? POStatus.Y : POStatus.N,
+                                       IsWorkable = true,
+                                       Comment = a.LPOD_Comment
+                                   }).OrderByDescending(x => x.LogPOId).FirstOrDefault();
                             }
                             //var data = POData.
-                                //_db.LogPODetails.Join(_db.NotificationDetails, q => q.LPOD_POD_Id, u => u.POID, (q, u) => new { q, u }).
-                                //    Where(x => (x.q.LPOD_POD_Id == item.POID) //&& (x.u.IsDeleted == false)
-                                //  /*&& (x.u.IsRead == false)*/).Select
-                                //(a => new EmailHelper()
-                                //{
-                                //  MailType = item.POID != null ? "POAPPROVEDREJECT" : null,
-                                //ManagerName = userDetails.FirstName + " " + userDetails.LastName,
-                                //LocationName = a.q.LocationMaster.LocationName,
-                                //PONumber = a.q.LPOD_POD_Id.ToString(),
-                                //SentBy = userDetails.UserId == 0 ? 0: userDetails.UserId,
-                                //LocationID = a.q.LPOD_LocationId == 0 ? 0:a.q.LPOD_LocationId,
-                                //LogPOId = a.q.LPOD_Id == 0 ? null : a.q.LPOD_Id.ToString(),
-                                //Total = a.q.LPOD_POAmount == null ? null :a.q.LPOD_POAmount.ToString(),
-                                //CMPId = a.q.LPOD_CMP_Id == null ? null : a.q.LPOD_CMP_Id,
-                                //        IsWorkable = true
-                                //      }).FirstOrDefault();
+                            //_db.LogPODetails.Join(_db.NotificationDetails, q => q.LPOD_POD_Id, u => u.POID, (q, u) => new { q, u }).
+                            //    Where(x => (x.q.LPOD_POD_Id == item.POID) //&& (x.u.IsDeleted == false)
+                            //  /*&& (x.u.IsRead == false)*/).Select
+                            //(a => new EmailHelper()
+                            //{
+                            //  MailType = item.POID != null ? "POAPPROVEDREJECT" : null,
+                            //ManagerName = userDetails.FirstName + " " + userDetails.LastName,
+                            //LocationName = a.q.LocationMaster.LocationName,
+                            //PONumber = a.q.LPOD_POD_Id.ToString(),
+                            //SentBy = userDetails.UserId == 0 ? 0: userDetails.UserId,
+                            //LocationID = a.q.LPOD_LocationId == 0 ? 0:a.q.LPOD_LocationId,
+                            //LogPOId = a.q.LPOD_Id == 0 ? null : a.q.LPOD_Id.ToString(),
+                            //Total = a.q.LPOD_POAmount == null ? null :a.q.LPOD_POAmount.ToString(),
+                            //CMPId = a.q.LPOD_CMP_Id == null ? null : a.q.LPOD_CMP_Id,
+                            //        IsWorkable = true
+                            //      }).FirstOrDefault();
                             if (POData != null)
                             {
                                 if (POData.ApproveRemoveStatus == POStatus.W)
@@ -2076,9 +2077,9 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                 }
                                 else if (POData.ApproveRemoveStatus == POStatus.Y)
                                 {
-                                    POData.Message = "PO "+ POData.PONumber + " received final approval";
+                                    POData.Message = "PO " + POData.PONumber + " received final approval";
                                 }
-                                else if(POData.Comment != null)
+                                else if (POData.Comment != null)
                                 {
                                     POData.Message = "PO " + POData.PONumber + " has been rejected due to" + POData.Comment + " , Please contact your manager";
                                 }
@@ -2086,10 +2087,10 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                 if (POData != null && POData.CMPId > 0)
                                 {
                                     var companyData = _db.Companies.Where(x => x.CMP_Id == POData.CMPId && x.CMP_IsActive == "Y").FirstOrDefault();
-                                    if(companyData != null)
+                                    if (companyData != null)
                                     {
                                         POData.CompanyName = companyData.CMP_NameLegal;
-                                        POData.WorkOrderImage =  HostingPrefix + "/Content/Images/WorkRequest/no-asset-pic.png";
+                                        POData.WorkOrderImage = HostingPrefix + "/Content/Images/WorkRequest/no-asset-pic.png";
                                     }
                                 }
                                 listTask.Add(POData);
@@ -2128,7 +2129,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                     if (companyData != null)
                                     {
                                         BillData.CompanyName = companyData.CMP_NameLegal;
-                                        
+
                                     }
                                 }
                                 listTask.Add(BillData);
@@ -2205,14 +2206,14 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                        LocationName = a.LocationMaster.LocationName,
                                        QrCodeId = a.QRCodeID.ToString(),
                                        SentBy = userDetails.UserId,
-                                       LocationID = a.LocationId,  
+                                       LocationID = a.LocationId,
                                        IsWorkable = false,
                                        CheckoutUserName = a.UserName
                                    }).FirstOrDefault();
                             }
                             if (eScanData != null)
                             {
-                                eScanData.Message = "Someone want to checkout QRC "+ eScanData.QrCodeId + " which is already checked out by"+ eScanData.CheckoutUserName ;
+                                eScanData.Message = "Someone want to checkout QRC " + eScanData.QrCodeId + " which is already checked out by" + eScanData.CheckoutUserName;
                                 eScanData.WorkOrderImage = HostingPrefix + "/Content/Images/WorkRequest/no-asset-pic.png";
                                 ///To approve PO need company name so added this code just for approval process.                        
                                 listTask.Add(eScanData);
@@ -2237,15 +2238,15 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 //        }
                 //    }
                 //}
-                return listTask.OrderByDescending(x => x.WorkRequestAssignmentID).OrderByDescending(x=> x.PONumber).ToList();
+                return listTask.OrderByDescending(x => x.WorkRequestAssignmentID).OrderByDescending(x => x.PONumber).ToList();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<EmailHelper> GetUnseenList(NotificationDetailModel objDetails)", "Exception while getting the list for notification details", obj);
                 throw;
             }
             //return listTask;
-            
+
         }
 
         /// <summary>
@@ -2273,7 +2274,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                             WaitingForName = x.Employee_Name,
                             Date = x.LPOD_PODate.Value.ToString("MM/dd/yyyy"),
                             LocationName = x.LocationName,
-                            PONumber = "PO"+x.LPOD_POD_Id,
+                            PONumber = "PO" + x.LPOD_POD_Id,
                             Amount = x.LPOD_POAmount
                         }).ToList();
 
@@ -2294,5 +2295,157 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
             return lst;
         }
+        /// <summary>
+        /// Method to check the duplicate employeeid( chech with alternativeEmail field in sql table) 
+        /// </summary>
+        /// <param name="employeeId"></param>
+        /// <returns></returns>
+        public bool CheckEmployeeIdExist(string employeeId)
+        {
+            try
+            {
+                using (workorderEMSEntities Context = new workorderEMSEntities())
+                {
+                    var Availability = new ObjectParameter("Availability", "");
+                    var isEmpExixt = Context.spCheckEmployeeIDAvailability(employeeId, Availability);
+                    if (Availability.Value.ToString() == "False")
+                        return true;
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public List<EmailHelper> GetUnseenNotifications(long UserId)
+        {
+            var _db = new workorderEMSEntities();
+            var listTask = new List<EmailHelper>();
+            var objEmailHelper = new EmailHelper();
+            var notification = new List<NotificationDetailModel>();
+            var obj = new EmailHelper();
+            try
+            {
+                notification = _db.NotificationDetails.Where(x => x.IsRead == false && x.IsDeleted == false && x.AssignUserId == UserId).Select(a => new NotificationDetailModel()
+                {
+                    WorkOrderID = a.WorkOrderID,
+                    AssignTo = a.AssignUserId,
+                    POID = a.POID,
+                    BillID = a.BillID,
+                    MiscellaneousID = a.MiscellaneousID,
+                    eScanQRCID = a.eScanId,
+                    IsRead = a.IsRead,
+                    CreatedBy = a.CreatedBy
+                }).ToList();
+                var userDetails = _db.UserRegistrations.Where(x => x.UserId == UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
+                if (notification.Count() > 0)
+                {
+                    foreach (var item in notification)
+                    {
+                        var assignedBy = _db.UserRegistrations.Where(x => x.UserId == item.CreatedBy && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
+
+                        #region Wo
+                        if (item.WorkOrderID != null && item.WorkOrderID > 0)
+                        {
+                            obj = _db.WorkRequestAssignments.Join(_db.NotificationDetails, q => q.WorkRequestAssignmentID, u => u.WorkOrderID, (q, u) => new { q, u }).
+                                      Where(x => (x.q.WorkRequestAssignmentID == item.WorkOrderID) && (x.u.IsDeleted == false)
+                                      && (x.u.IsRead == false && x.q.IsDeleted == false && (x.q.AssignToUserId == UserId || x.q.AssignToUserId == 0))).Select
+                                      (a => new EmailHelper()
+                                      {
+                                          MailType = a.q.WorkRequestProjectType == 128 ? "WORKORDERREQUESTTOEMPLOYEE" : a.q.WorkRequestProjectType == 129 ? "SPECIALWORKORDERTOEMPLOYEE" : a.q.WorkRequestProjectType == 279 ? "CONTINIOUSREQUEST" : "EMAINTENANCE",
+                                          WorkRequestAssignmentID = a.q.WorkRequestAssignmentID,
+                                          WorkOrderCodeId = a.q.WorkOrderCode + a.q.WorkOrderCodeID.ToString(),
+                                          AssignedTime = a.q.AssignedTime.ToString(),
+                                          ProjectDesc = a.q.ProblemDesc,
+                                          UserName = a.u.AssignUserId.ToString(),
+                                          LocationName = a.q.LocationMaster.LocationName,
+                                          WorkOrderImage = a.q.WorkRequestImage,// == null ? HostingPrefix + "/Content/Images/ProjectLogo/no-profile-pic.jpg" : HostingPrefix + (ConfigurationManager.AppSettings["WorkRequestImage"]).Replace("~", "") + a.q.WorkRequestImage,
+                                          WorkRequestType = a.q.WorkRequestType,
+                                          WorkRequestProjectType = a.q.WorkRequestProjectType,
+                                          PriorityLevel = a.q.PriorityLevel,
+                                          WeekDays = a.q.WeekDays,
+                                          StartTime = a.q.StartTime.ToString(),
+                                          EndTime = a.q.EndTime.ToString(),
+                                          ModifiedDate = a.q.ModifiedDate,
+                                          StartDate = a.q.StartDate.ToString(),
+                                          EndDate = a.q.EndDate.ToString(),
+                                          IsWorkable = true,
+
+                                          CustomerName = a.q.CustomerName,
+                                          VehicleModel1 = a.q.VehicleModel,
+                                          VehicleMake1 = a.q.VehicleMake.ToString(),
+                                          VehicleYear = a.q.VehicleYear.ToString(),
+                                          FrCurrentLocation = a.q.CurrentLocation,
+                                          VehicleColor = a.q.VehicleColor,
+                                          DriverLicenseNo = a.q.DriverLicenseNo,
+                                          CustomerContact = a.q.CustomerContact,
+                                          FacilityRequest = a.q.FacilityRequestId,
+                                          AddressFacilityReq = a.q.Address,
+                                          LicensePlateNo = a.q.LicensePlateNo,
+                                          CreatedBy = assignedBy.FirstName + " " + assignedBy.LastName,
+                                          EmployeeImage = assignedBy.ProfileImage// == null ? HostingPrefix + "/Content/Images/ProjectLogo/no-profile-pic.jpg" : HostingPrefix + (ConfigurationManager.AppSettings["WorkRequestImage"]).Replace("~", "") + assignedBy.ProfileImage
+
+
+                                      }).FirstOrDefault();
+                            if (obj != null)
+                            {
+                                obj.EmployeeImage = assignedBy.ProfileImage == null ? HostingPrefix + "/Content/Images/ProfilePic/no-profile-pic.jpg" : HostingPrefix + (ConfigurationManager.AppSettings["ProfilePicPath"]).Replace("~", "") + assignedBy.ProfileImage;
+
+                                obj.WorkOrderImage = obj.WorkOrderImage == null ? HostingPrefix + "/Content/Images/WorkRequest/no-asset-pic.png" : HostingPrefix + (ConfigurationManager.AppSettings["WorkRequestImage"]).Replace("~", "") + obj.WorkOrderImage;
+                                //obj.AssignedTime = obj.AssignedTime.ToString("HH:mm");
+                                ///This is to check if it is manager then the notification make it non workable
+                                ///make sure that WO should be Urgent or facility
+                                if (userDetails != null)
+                                {
+                                    if (userDetails.UserType == Convert.ToInt64(UserType.Manager) &&
+                                      (obj.WorkRequestProjectType == Convert.ToInt64(WorkRequestProjectType.FacilityRequest)
+                                      || obj.PriorityLevel == Convert.ToInt64(WorkRequestPriority.Level1Urgent)))
+                                    {
+                                        if ((obj.StartTime == null || obj.StartTime == "") && (obj.EndTime == null || obj.EndTime == ""))
+                                        {
+                                            obj.ProjectDesc = CommonMessage.WOStatusMessageForManager(obj.WorkOrderCodeId);
+                                            obj.IsWorkable = false;
+                                            obj.Message = "No one accepted faciliy request " + obj.WorkOrderCodeId + " of type" + obj.FacilityRequest + " at location" + obj.LocationName;
+                                        }
+                                        else
+                                        {
+                                            obj.ProjectDesc = null;
+                                        }
+                                    }
+                                }
+                                ///This is for Continues WO to send notification as per days 
+                                if (obj.WorkRequestProjectType == Convert.ToInt64(WorkRequestProjectType.ContinuousRequest))
+                                {
+                                    var dateList = obj.WeekDays.Split(',').ToList();
+                                    var todaysDate = DateTime.Now.ToShortDateString();
+                                    obj.Message = "Continous request " + obj.WorkOrderCodeId + " has not been started after arrived time" + obj.StartTime;
+                                    foreach (var date in dateList)
+                                    {
+                                        if (date == todaysDate)
+                                        {
+                                            //obj.IsWorkable = false;
+                                            listTask.Add(obj);
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    listTask.Add(obj);
+                                }
+                            }
+                        }
+                        #endregion WO
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<EmailHelper> GetUnseenList(NotificationDetailModel objDetails)", "Exception while getting the list for notification details", obj);
+                throw;
+            }
+            return listTask.OrderByDescending(x => x.WorkRequestAssignmentID).OrderByDescending(x => x.PONumber).ToList();
+            }
+        }
     }
-}

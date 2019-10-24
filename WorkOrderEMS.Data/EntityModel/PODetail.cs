@@ -14,6 +14,7 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class PODetail
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PODetail()
         {
             this.LogPODetails = new HashSet<LogPODetail>();
@@ -31,14 +32,13 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<System.DateTime> POD_ReoccourringBillDate { get; set; }
         public string POD_EmergencyPODocument { get; set; }
         public string POD_IsActive { get; set; }
-        public Nullable<long> POD_ReferenceId { get; set; }
-        public Nullable<System.DateTime> POD_ReccuringDate { get; set; }
-        public string POD_ReccuringStatus { get; set; }
     
         public virtual LocationMaster LocationMaster { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LogPODetail> LogPODetails { get; set; }
         public virtual PONumber PONumber { get; set; }
         public virtual POType POType { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<POFacilityItem> POFacilityItems { get; set; }
     }
 }

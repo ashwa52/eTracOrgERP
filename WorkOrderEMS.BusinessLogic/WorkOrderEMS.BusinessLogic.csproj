@@ -194,6 +194,7 @@
     <Compile Include="Interfaces\eFleet\IHoursOfServices.cs" />
     <Compile Include="Interfaces\eFleet\IMaintenanceManager.cs" />
     <Compile Include="Interfaces\eFleet\IPassengerTracking.cs" />
+    <Compile Include="Interfaces\ePeople\IFillableFormManager.cs" />
     <Compile Include="Interfaces\IAddressManager.cs" />
     <Compile Include="Interfaces\IBudgetLocationManager.cs" />
     <Compile Include="Interfaces\IClientManager.cs" />
@@ -204,6 +205,7 @@
     <Compile Include="Interfaces\eFleet\IEfleetVehicle.cs" />
     <Compile Include="Interfaces\IEmailDetail.cs" />
     <Compile Include="Interfaces\IEmployeeManager.cs" />
+    <Compile Include="Interfaces\IGuestUserRepository.cs" />
     <Compile Include="Interfaces\ILogin.cs" />
     <Compile Include="Interfaces\IManageManager.cs" />
     <Compile Include="Interfaces\IManagerAppeMaintenance.cs" />
@@ -257,6 +259,7 @@
     <Compile Include="Managers\GlobalAdminManager.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Managers\GuestUserRepository.cs" />
     <Compile Include="Managers\HubManager.cs" />
     <Compile Include="Managers\LoginManager.cs" />
     <Compile Include="Managers\ManageManager.cs">
@@ -264,6 +267,7 @@
     </Compile>
     <Compile Include="Managers\ManagerAppManager\ManagerAppeMaintenanceManager.cs" />
     <Compile Include="Managers\NewAdminManager\ePeopleManager.cs" />
+    <Compile Include="Managers\NewAdminManager\FillableFormManager.cs" />
     <Compile Include="Managers\NewAdminManager\VehicleSeatingChartManager.cs" />
     <Compile Include="Managers\NewAdminManager\DepartmentManager.cs" />
     <Compile Include="Managers\NewEmployeeApp\NewEmployeeAppManager.cs" />

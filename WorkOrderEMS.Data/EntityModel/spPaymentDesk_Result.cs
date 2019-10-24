@@ -29,6 +29,5 @@ namespace WorkOrderEMS.Data.EntityModel
         public System.DateTime BillDate { get; set; }
         public string CAT_Discription { get; set; }
         public string Bill_Status { get; set; }
-        public string LBLL_Comment { get; set; }
     }
 }

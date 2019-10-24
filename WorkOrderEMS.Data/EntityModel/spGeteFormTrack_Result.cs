@@ -18,12 +18,16 @@ namespace WorkOrderEMS.Data.EntityModel
         public long EFT_EFM_Id { get; set; }
         public long EFT_LocationId { get; set; }
         public long EFT_ModifiedBy { get; set; }
-        public System.DateTime EFT_ModifiedOn { get; set; }
         public Nullable<long> EFT_ApprovedBy { get; set; }
-        public Nullable<System.DateTime> EFT_ApprovedOn { get; set; }
-        public string EFT_Comment { get; set; }
         public string EFT_eFormTrackLink { get; set; }
-        public Nullable<System.DateTime> EFT_Date { get; set; }
+        public string EFT_Comment { get; set; }
+        public Nullable<System.DateTime> EFT_ApprovedOn { get; set; }
+        public Nullable<System.DateTime> EFT_ApprovedOn1 { get; set; }
         public string EFT_IsActive { get; set; }
+        public string MDL_ModuleName { get; set; }
+        public string EFM_eFormName { get; set; }
+        public string LocationName { get; set; }
+        public string NameModifiedBy { get; set; }
+        public string NameApprovedBy { get; set; }
     }
 }

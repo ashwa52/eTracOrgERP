@@ -15,9 +15,6 @@ namespace WorkOrderEMS.Data.EntityModel
     {
         public long CMP_Id { get; set; }
         public string CMP_NameLegal { get; set; }
-        public string CMP_NameDBA { get; set; }
-        public long CMP_COT_Id { get; set; }
-        public string CMP_CompanyDocument { get; set; }
-        public string CMP_IsActive { get; set; }
+        public Nullable<long> CMP_VDT_Id { get; set; }
     }
 }

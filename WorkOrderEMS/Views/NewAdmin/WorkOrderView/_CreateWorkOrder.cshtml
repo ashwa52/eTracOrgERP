@@ -119,7 +119,7 @@
                 @if (ViewBag.AssignToUserWO != null)
                 {
                     <select name="@Html.NameFor(model => model.AssignToUserId)"
-                            id="ddlAssignToUserForSpecialWO" class="form-control input-rounded required requiredselect">
+                            id="ddlAssignToUserForSpecialWO" class="form-control input-rounded required requiredselect ddlAssignToUser">
                         <option value="0">--Select Employee--</option>
                         @foreach (var En in ViewBag.AssignToUserWO)
                         {
@@ -244,7 +244,7 @@
                             @if (ViewBag.AssignToUserWO != null)
                             {
                                 <select name="@Html.NameFor(model => model.AssignToUserId)"
-                                        id="ddlAssignToUser" class="form-control input-rounded required requiredselect">
+                                        id="ddlAssignToUser" class="form-control input-rounded required requiredselect ddlAssignToUser">
                                     <option value="0">--Select Employee--</option>
                                     @foreach (var En in ViewBag.AssignToUserWO)
                                     {
@@ -279,7 +279,7 @@
                             @if (ViewBag.AssignToUserWO != null)
                             {
                                 <select name="@Html.NameFor(model => model.AssignToUserId)"
-                                        id="ddlAssignToUser" class="form-control input-rounded required requiredselect">
+                                        id="ddlAssignToUser" class="form-control input-rounded required requiredselect ddlAssignToUser">
                                     <option value="0">--Select Employee--</option>
                                     @foreach (var En in ViewBag.AssignToUserWO)
                                     {
@@ -315,7 +315,7 @@
                         @if (ViewBag.AssignToUserWO != null)
                         {
                             <select name="@Html.NameFor(model => model.AssignToUserId)"
-                                    id="ddlAssignToUser" class="form-control input-rounded required requiredselect">
+                                    id="ddlAssignToUser" class="form-control input-rounded required requiredselect ddlAssignToUser">
                                 <option value="0">--Select Employee--</option>
                                 @foreach (var En in ViewBag.AssignToUserWO)
                                 {

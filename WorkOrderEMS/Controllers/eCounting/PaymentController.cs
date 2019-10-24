@@ -47,7 +47,6 @@ namespace WorkOrderEMS.Controllers.eCounting
                     LocationId = ObjLoginModel.LocationID;
                 }
             }
-            ViewBag.PaymentModeList = _IVendorManagement.PaymentModeList();
             return View();
         }
 
@@ -68,7 +67,7 @@ namespace WorkOrderEMS.Controllers.eCounting
         /// <param name="UserType"></param>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult GetPaymentListByLocation(string _search, long? UserId, long? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null, string BillTypeId = null)
+        public JsonResult GetPaymentListByLocation(string _search, long? UserId, long? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
         {
             eTracLoginModel ObjLoginModel = null;
             long MISNumber = 0;
@@ -81,21 +80,19 @@ namespace WorkOrderEMS.Controllers.eCounting
                 }
                 UserId = ObjLoginModel.UserId;
             }
-            ViewBag.PaymentModeList = _IVendorManagement.PaymentModeList();
+
             try
             {                
                 locationId = 0;//Need to fetch all data // it was previously done need to be discussed
-                if (BillTypeId == "0") {// Logic :to show all data 
-                    BillTypeId = null;
-                }
+                
                 if (!string.IsNullOrEmpty(txtSearch))
                 {
-                    var paymentList = _IPaymentManager.GetListPaymentByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType, BillTypeId).Where(x => !String.IsNullOrEmpty(x.VendorName));
+                    var paymentList = _IPaymentManager.GetListPaymentByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType).Where(x => !String.IsNullOrEmpty(x.VendorName));
                     var FilterList = paymentList.Where(X => X.VendorName.ToLower().Contains(txtSearch.ToLower())).ToList();
                     return Json(FilterList.ToList(), JsonRequestBehavior.AllowGet);
                 }
                 else {
-                    var paymentList = _IPaymentManager.GetListPaymentByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType, BillTypeId);
+                    var paymentList = _IPaymentManager.GetListPaymentByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
                     return Json(paymentList.ToList(), JsonRequestBehavior.AllowGet);
                 }
             }
@@ -164,7 +161,7 @@ namespace WorkOrderEMS.Controllers.eCounting
         /// <param name="UserType"></param>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult GetPaidListByBillID(string _search, long? UserId, long? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null, string BillTypeId = null)
+        public JsonResult GetPaidListByBillID(string _search, long? UserId, long? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
         {
             eTracLoginModel ObjLoginModel = null;
             long MISNumber = 0;
@@ -183,12 +180,12 @@ namespace WorkOrderEMS.Controllers.eCounting
                 locationId = 0;//Need to fetch all data // was done previously need to be discussed
                 if (!string.IsNullOrEmpty(txtSearch))
                 {
-                    var paymentList = _IPaymentManager.GetListPaidtByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType, BillTypeId).Where(x => !String.IsNullOrEmpty(x.VendorName));
+                    var paymentList = _IPaymentManager.GetListPaidtByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType).Where(x => !String.IsNullOrEmpty(x.VendorName));
                     var returnFilteredList = paymentList.Where(item => item.VendorName.ToLower().Contains(txtSearch.ToLower()));
                     return Json(returnFilteredList.ToList(), JsonRequestBehavior.AllowGet);
                 }
                 else {
-                    var paymentList = _IPaymentManager.GetListPaidtByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType, BillTypeId);
+                    var paymentList = _IPaymentManager.GetListPaidtByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
                     return Json(paymentList.ToList(), JsonRequestBehavior.AllowGet);
                 }                
             }

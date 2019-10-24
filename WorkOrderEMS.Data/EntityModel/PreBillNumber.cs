@@ -14,6 +14,7 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class PreBillNumber
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PreBillNumber()
         {
             this.BillFacilityItems = new HashSet<BillFacilityItem>();
@@ -23,7 +24,9 @@ namespace WorkOrderEMS.Data.EntityModel
         public long PBN_Id { get; set; }
         public string PBN_IsActive { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<BillFacilityItem> BillFacilityItems { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LogPreBill> LogPreBills { get; set; }
         public virtual PreBill PreBill { get; set; }
     }
