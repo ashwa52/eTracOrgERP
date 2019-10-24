@@ -14,9 +14,16 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class Department
     {
+        public Department()
+        {
+            this.VehicleSeatings = new HashSet<VehicleSeating>();
+        }
+    
         public long DPT_Id { get; set; }
         public string DPT_Name { get; set; }
         public Nullable<System.DateTime> DPT_Date { get; set; }
         public string DPT_IsActive { get; set; }
+    
+        public virtual ICollection<VehicleSeating> VehicleSeatings { get; set; }
     }
 }

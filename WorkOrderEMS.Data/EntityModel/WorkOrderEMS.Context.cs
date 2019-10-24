@@ -2870,15 +2870,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetCompanyAccountTransaction", cATActionParameter, cAT_CMP_IdDrParameter, cAT_CMP_IdCrParameter, cAT_CAD_IdDrParameter, cAT_CAD_IdCrParameter, cAT_BLL_IdParameter, cAT_AmountParameter, cAT_ChequeNoParameter, cAT_DiscriptionParameter, cAT_PayByParameter, bLL_LocationIdParameter, cAT_BillTypeParameter, cAT_IsActiveParameter);
         }
     
-        public virtual ObjectResult<spPaymentDesk_Result4> spPaymentDesk(Nullable<long> locationId)
-        {
-            var locationIdParameter = locationId.HasValue ?
-                new ObjectParameter("LocationId", locationId) :
-                new ObjectParameter("LocationId", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spPaymentDesk_Result4>("spPaymentDesk", locationIdParameter);
-        }
-    
         public virtual ObjectResult<spGetVendorShowcase_Result1> spGetVendorShowcase(Nullable<long> cMP_Id, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
         {
             var cMP_IdParameter = cMP_Id.HasValue ?
@@ -4290,23 +4281,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spApplyRule_Result2>("spApplyRule", userIdParameter, rUL_MDL_IdParameter, rUL_RuleNameParameter, rUL_ConditionTypeParameter, rUL_ConditionAmountParameter, rUL_ConditionDaysParameter, rUL_ConditionDateParameter);
         }
     
-        public virtual ObjectResult<spGetPOList_Result4> spGetPOList(Nullable<long> locationId, Nullable<long> userId, string pO_Status)
-        {
-            var locationIdParameter = locationId.HasValue ?
-                new ObjectParameter("LocationId", locationId) :
-                new ObjectParameter("LocationId", typeof(long));
-    
-            var userIdParameter = userId.HasValue ?
-                new ObjectParameter("UserId", userId) :
-                new ObjectParameter("UserId", typeof(long));
-    
-            var pO_StatusParameter = pO_Status != null ?
-                new ObjectParameter("PO_Status", pO_Status) :
-                new ObjectParameter("PO_Status", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPOList_Result4>("spGetPOList", locationIdParameter, userIdParameter, pO_StatusParameter);
-        }
-    
         public virtual int spSetDepartment(string dPTAction, Nullable<long> dPT_Id, string dPT_Name, string dPT_IsActive)
         {
             var dPTActionParameter = dPTAction != null ?
@@ -5288,7 +5262,7 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetPODetail", pODActionParameter, pOD_IdParameter, pOD_LocationIdParameter, pOD_POT_IdParameter, pOD_CMP_IdParameter, pOD_DeliveryDateParameter, pOD_POAmountParameter, pOD_ReoccourringBillDateParameter, pOD_EmergencyPODocumentParameter, pOD_ModifiedByParameter, pOD_ApprovedByParameter, pOD_IsActiveParameter, pOD_RUL_IdParameter, pOD_RUL_LevelParameter, pOD_RUL_CurrentLevelParameter, pOD_QBKIdParameter, pOD_ReccuringStatusParameter);
         }
     
-        public virtual ObjectResult<spGetDebitMemoList_Result> spGetDebitMemoList(Nullable<long> locationId, Nullable<int> status)
+        public virtual ObjectResult<spGetDebitMemoList_Result1> spGetDebitMemoList(Nullable<long> locationId, Nullable<int> status)
         {
             var locationIdParameter = locationId.HasValue ?
                 new ObjectParameter("LocationId", locationId) :
@@ -5298,7 +5272,20 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("Status", status) :
                 new ObjectParameter("Status", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetDebitMemoList_Result>("spGetDebitMemoList", locationIdParameter, statusParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetDebitMemoList_Result1>("spGetDebitMemoList", locationIdParameter, statusParameter);
+        }
+    
+        public virtual ObjectResult<spPaymentDesk_Result> spPaymentDesk(Nullable<long> locationId, string billId)
+        {
+            var locationIdParameter = locationId.HasValue ?
+                new ObjectParameter("LocationId", locationId) :
+                new ObjectParameter("LocationId", typeof(long));
+    
+            var billIdParameter = billId != null ?
+                new ObjectParameter("BillId", billId) :
+                new ObjectParameter("BillId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spPaymentDesk_Result>("spPaymentDesk", locationIdParameter, billIdParameter);
         }
     
         public virtual int spSetDebitMemo(Nullable<long> dBM_ID, string dBM_Action, Nullable<long> dBM_LocationId, Nullable<long> dBM_CMP_Id, Nullable<long> dBM_PurchaseOrder, Nullable<long> dBM_DebitAmount, string dBM_Note, Nullable<int> dBM_Status, string dBM_DocumentName, Nullable<System.DateTime> dBM_CreatedDate, Nullable<System.DateTime> dBM_ModifiedDate, string dBM_ModifiedBy, Nullable<bool> dBM_IsDeleted, string dBM_DeletedBy, Nullable<System.DateTime> dBM_DeletedDate)
@@ -5364,6 +5351,48 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("DBM_DeletedDate", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetDebitMemo", dBM_IDParameter, dBM_ActionParameter, dBM_LocationIdParameter, dBM_CMP_IdParameter, dBM_PurchaseOrderParameter, dBM_DebitAmountParameter, dBM_NoteParameter, dBM_StatusParameter, dBM_DocumentNameParameter, dBM_CreatedDateParameter, dBM_ModifiedDateParameter, dBM_ModifiedByParameter, dBM_IsDeletedParameter, dBM_DeletedByParameter, dBM_DeletedDateParameter);
+        }
+    
+        public virtual ObjectResult<spGetPOList_Result> spGetPOList(Nullable<long> locationId, Nullable<long> userId, string pO_Status)
+        {
+            var locationIdParameter = locationId.HasValue ?
+                new ObjectParameter("LocationId", locationId) :
+                new ObjectParameter("LocationId", typeof(long));
+    
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(long));
+    
+            var pO_StatusParameter = pO_Status != null ?
+                new ObjectParameter("PO_Status", pO_Status) :
+                new ObjectParameter("PO_Status", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPOList_Result>("spGetPOList", locationIdParameter, userIdParameter, pO_StatusParameter);
+        }
+    
+        public virtual int spUpdatePODetail(Nullable<long> lPOD_Id, Nullable<long> pOD_RUL_Id, string pOD_RUL_Level, string pOD_RUL_CurrentLevel, string lPOD_IsApprove)
+        {
+            var lPOD_IdParameter = lPOD_Id.HasValue ?
+                new ObjectParameter("LPOD_Id", lPOD_Id) :
+                new ObjectParameter("LPOD_Id", typeof(long));
+    
+            var pOD_RUL_IdParameter = pOD_RUL_Id.HasValue ?
+                new ObjectParameter("POD_RUL_Id", pOD_RUL_Id) :
+                new ObjectParameter("POD_RUL_Id", typeof(long));
+    
+            var pOD_RUL_LevelParameter = pOD_RUL_Level != null ?
+                new ObjectParameter("POD_RUL_Level", pOD_RUL_Level) :
+                new ObjectParameter("POD_RUL_Level", typeof(string));
+    
+            var pOD_RUL_CurrentLevelParameter = pOD_RUL_CurrentLevel != null ?
+                new ObjectParameter("POD_RUL_CurrentLevel", pOD_RUL_CurrentLevel) :
+                new ObjectParameter("POD_RUL_CurrentLevel", typeof(string));
+    
+            var lPOD_IsApproveParameter = lPOD_IsApprove != null ?
+                new ObjectParameter("LPOD_IsApprove", lPOD_IsApprove) :
+                new ObjectParameter("LPOD_IsApprove", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdatePODetail", lPOD_IdParameter, pOD_RUL_IdParameter, pOD_RUL_LevelParameter, pOD_RUL_CurrentLevelParameter, lPOD_IsApproveParameter);
         }
     }
 }

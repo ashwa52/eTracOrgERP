@@ -13,13 +13,7 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class spGetCompanyDetailEdit_Result
     {
-        public Nullable<long> CMP_Id { get; set; }
-        public string CMP_NameLegal { get; set; }
-        public string CMP_NameDBA { get; set; }
-        public Nullable<long> CMP_VDT_Id { get; set; }
-        public Nullable<long> CMP_COT_Id { get; set; }
-        public string CMP_CompanyDocument { get; set; }
-        public string COD_Id { get; set; }
+        public long COD_Id { get; set; }
         public Nullable<long> COD_CMP_Id { get; set; }
         public string COD_PointOfContact { get; set; }
         public string COD_JobTitle { get; set; }
@@ -36,6 +30,5 @@ namespace WorkOrderEMS.Data.EntityModel
         public string COD_Phone2 { get; set; }
         public string COD_Email { get; set; }
         public string COD_Website { get; set; }
-        public string TXD_TaxIdNumber { get; set; }
     }
 }

@@ -19,7 +19,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public string INS_PolicyNumber { get; set; }
         public System.DateTime INS_ExpirationDate { get; set; }
         public string INS_InsuranceDocument { get; set; }
-        public string INS_IsActive { get; set; }
         public string Status { get; set; }
     }
 }

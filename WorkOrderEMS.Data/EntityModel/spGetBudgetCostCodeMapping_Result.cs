@@ -13,15 +13,10 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class spGetBudgetCostCodeMapping_Result
     {
-        public Nullable<long> BCM_Id { get; set; }
-        public long CLM_Id { get; set; }
         public long CLM_CCD_CostCode { get; set; }
         public string CCD_Description { get; set; }
         public Nullable<decimal> BCM_BudgetPercent { get; set; }
         public Nullable<decimal> BCM_BudgetAmount { get; set; }
         public Nullable<decimal> BCM_BalanceAmount { get; set; }
-        public Nullable<decimal> BLM_BudgetAmount { get; set; }
-        public Nullable<int> BCM_BudgetYear { get; set; }
-        public string BCM_BudgetSource { get; set; }
     }
 }

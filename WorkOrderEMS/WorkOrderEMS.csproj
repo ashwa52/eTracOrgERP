@@ -5138,6 +5138,7 @@
     <Content Include="GridListing\JqGridScript\WorkRequestAssignment.js" />
     <Content Include="GridListing\JqGridScript\WorkRequestList.js" />
     <Content Include="GridListing\JsGridScript\ListDAR.js" />
+    <Content Include="GridListing\JsGridScript\ListDebitMemo.js" />
     <Content Include="GridListing\JsGridScript\ListEmployeeManagement.js" />
     <Content Include="GridListing\JsGridScript\ListMyOpening.js" />
     <Content Include="GridListing\JsGridScript\ListOnBoarding.js" />
@@ -6418,6 +6419,7 @@
     <Content Include="Views\NewAdmin\ePeople\_StatusChangeEMP.cshtml" />
     <Content Include="Views\VendorManagement\FileImport.cshtml" />
     <Content Include="Views\VendorManagement\Reconciliationsreports.cshtml" />
+    <Content Include="Views\DebitMemo\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6461,7 +6463,6 @@
     <Folder Include="Content\ProjectDocs\VendorW9Form\" />
     <Folder Include="obj\" />
     <Folder Include="ReportPDF\FullPageReport\eFleet\" />
-    <Folder Include="Views\DebitMemo\" />
     <Folder Include="Views\NewClient\" />
   </ItemGroup>
   <ItemGroup>

@@ -119,6 +119,7 @@ input[type="checkbox"]:after {
 }
 
 
+
 select {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -127,11 +128,13 @@ select {
     cursor: pointer;
     font-size: 1.2em;
     padding: 0.25em 1em 0.25em 0.25em;
-    background-image: url(../../Images/bottom-icon.png) !important;
+    background-image: url(../../Images/bottom-icon.png) !important;  
     background-repeat: no-repeat !important;
     background-position: right center !important;
     background-size: 20px auto !important;
 }
+
+
 .select-wrapper {
     display: inline-block;
     position: relative;
@@ -236,10 +239,54 @@ h4.card-title.modal-heading {
 }
 
 .list-icon {
-    color: #000;
+    color: #3F4E62;
+    font-size: 15px;
+    padding-right: 3px;
+}
+.university-icon {
+    color: #FDBD00;
+    font-size: 15px;
+    padding-right:3px;
+}
+.pencil-icon {
+    color: #46AB49;
+    font-size: 15px;
+    padding-right: 3px;
 }
 
+.eye-icon {
+    color: #30A3F3;
+    font-size: 15px;
+    padding-right: 3px;
+}
 
+.check-icon {
+    color: #008000;
+    font-size: 15px;
+    padding-right: 3px;
+}
+
+.download-icon {
+    color: #3F8ADA;
+    font-size: 15px;
+    padding-right: 3px;
+}
+.close-icon {
+    color: #ff5078;
+    font-size: 15px;
+    padding-right: 3px;
+}
+
+.medkit-icon {
+    color: #1FADA5;
+    font-size: 15px;
+    padding-right: 3px;
+}
+.file-icon {
+    color: #6B84FF;
+    font-size: 15px;
+    padding-right: 3px;
+}
 .onoffswitch2 {
     -moz-user-select: none;
     float: right;
@@ -337,17 +384,40 @@ img#imgProductImage {
     border-radius: 50%;
     margin-top: 10px;
 }
-.headerSize {
-    height: auto !important;
+
+.card-custom-padding a {
+    width: 100%;
 }
+.headerSize {
+    height:auto;
+}
+#chartdiv, #EmployeeCount1 {
+    width: 100%;
+    height: 250px;
+}
+
+.input-disabled {
+    background-color: #EBEBE4;
+}
+
 .custom-file-label {
-    /* background: #fff; */
-    border-color: #dedada !important;
-    border-radius: 40px!important;
+border-color: #dedada !important;
+border-radius: 40px !important;
 }
 
 .stepwizard-step.col p small {
     font-size: 91%;
     font-weight: 500;
 }
+input[type="radio"] {
+    margin-right: 6px;
+}
 
+span.radio_span {
+    margin-right: 58px;
+}
+
+input#PONumber {
+    font-size: 19px;
+    font-weight: 500;
+}

@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.Entity.Core.Objects;
-using System.Globalization;
 using System.Linq;
 using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Data.Interfaces;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
-using WorkOrderEMS.Models.NewAdminModel;
 using WorkOrderEMS.Models.UserModels;
 
 
@@ -18,9 +15,6 @@ namespace WorkOrderEMS.Data
     {
         workorderEMSEntities _workorderEMSEntities = new workorderEMSEntities();
 
-        private readonly string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
-        private readonly string ProfilePicPath = System.Configuration.ConfigurationManager.AppSettings["ProfilePicPath"];
-        private readonly string ConstantImages = ConfigurationManager.AppSettings["ConstantImages"];
 
         public UserModel GetUserById(long userId, string operationName, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string textSearch, ObjectParameter paramTotalRecords)
         {
@@ -305,7 +299,7 @@ namespace WorkOrderEMS.Data
 
                                 where UR.UserType == userTy
                                 && UR.UserId != ((from ad in objContext.AdminLocationMappings where ad.LocationId == LocationId && ad.IsDeleted == false select ad.AdminUserId).FirstOrDefault())
-                                //&& ADL.LocationId != LocationId
+                                    //&& ADL.LocationId != LocationId
                                 && UR.IsLoginActive == true
                                 && UR.IsEmailVerify == true
                                 && UR.IsDeleted == false
@@ -342,7 +336,7 @@ namespace WorkOrderEMS.Data
 
                                 where UR.UserType == userTy
                                 && UR.UserId != ((from m in objContext.ManagerLocationMappings where m.LocationId == LocationId && m.IsDeleted == false select m.ManagerUserId).FirstOrDefault())
-                                //&& ADL.LocationId != LocationId
+                                    //&& ADL.LocationId != LocationId
                                 && UR.IsLoginActive == true
                                     && UR.IsEmailVerify == true
                                 && UR.IsDeleted == false
@@ -361,7 +355,7 @@ namespace WorkOrderEMS.Data
 
                                 where UR.UserType == userTy
                                 && UR.UserId != ((from m in objContext.EmployeeLocationMappings where m.LocationId == LocationId && m.IsDeleted == false select m.EmployeeUserId).FirstOrDefault())
-                                //&& ADL.LocationId != LocationId
+                                    //&& ADL.LocationId != LocationId
                                 && UR.IsLoginActive == true
                                 && UR.IsEmailVerify == true
                                 && UR.IsDeleted == false
@@ -643,7 +637,7 @@ namespace WorkOrderEMS.Data
         {
             UserModel objUserModel = new UserModel();
             var data = _workorderEMSEntities.SP_GetUnverifiedUser(userId, operationName, pageIndex, sortColumnName, sortOrderBy, numberOfRows, textSearch, paramTotalRecords);
-            if (data != null)
+            if(data != null)
             {
                 foreach (var item in data)
                 {
@@ -673,95 +667,8 @@ namespace WorkOrderEMS.Data
                     objUserModel.JobTitleOther = item.JobTitleOther;
                 }
             }
-
+            
             return objUserModel;
-        }
-
-        /// <summary>GetListOf306090ForJSGrid
-        /// <Modified By>mayur sahu</Modified> 
-        /// <CreatedFor>To Get Performance 306090 list</CreatedFor>
-        /// <CreatedOn>13-Oct-2019</CreatedOn>
-        /// </summary>
-        /// <param name="UserID"></param>
-        /// <param name="OperationName"></param>
-        /// <param name="pageIndex"></param>
-        /// <param name="numberOfRows"></param>
-        /// <param name="sortColumnName"></param>
-        /// <param name="sortOrderBy"></param>
-        /// <param name="textSearch"></param>
-        /// <returns></returns>
-        public List<PerformanceModel> GetListOf306090ForJSGrid(string userId, long locationId, string useType, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string textSearch, out long totalRecords)
-        {
-            //totalRecords = 0;
-            ObjectParameter totalRecord = new ObjectParameter("TotalRecords", typeof(int));
-
-            List<PerformanceModel> ListOf306090Records = new List<PerformanceModel>();
-            try
-            {
-                //lstVerifiedMnagaer = _workorderEMSEntities.spGetAssessmentList306090(userId, pageIndex, sortColumnName, sortOrderBy, numberOfRows, textSearch, locationId, useType, totalRecord).Select(t =>
-                ListOf306090Records = _workorderEMSEntities.spGetAssessmentList306090(userId).Select(t =>
-
-                new PerformanceModel()
-                {
-                    EMP_EmployeeID = t.EMP_EmployeeID,
-                    EmployeeName = t.EmployeeName,
-                    EMP_Photo = t.EMP_Photo == null ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + t.EMP_Photo,
-                    DepartmentName = t.DepartmentName,
-                    JBT_JobTitle = t.JBT_JobTitle,
-                    LocationName = t.LocationName,
-                    EMP_DateOfJoining = t.EMP_DateOfJoining,
-                    Assesment = t.Assesment
-
-                }).ToList();
-                totalRecords = Convert.ToInt32(totalRecord.Value);
-                return ListOf306090Records;
-            }
-            catch (Exception)
-            { throw; }
-        }
-
-        public List<GWCQUestionModel> GetGWCQuestions(string Id, string AssessmentType)
-        {
-            List<GWCQUestionModel> QuestionList = new List<GWCQUestionModel>();
-            try
-            {
-                //lstVerifiedMnagaer = _workorderEMSEntities.spGetAssessmentList306090(userId, pageIndex, sortColumnName, sortOrderBy, numberOfRows, textSearch, locationId, useType, totalRecord).Select(t =>
-                QuestionList = _workorderEMSEntities.spGetAssessmentQuestion(Id, AssessmentType).Select(t =>
-
-                 new GWCQUestionModel()
-                 {
-                     AssessmentType = t.ASQ_AssessmentType,
-                     Question = t.ASQ_Question,
-                     QuestionId = t.ASQ_Id,
-                     QuestionType = t.ASQ_QuestionType,
-                     EmployeeId = Id,
-                     SelfAssessmentId = t.SAM_Id == null ? 0: t.SAM_Id,
-                     Answer = t.SAM_Answer == "Y" ? true : false
-
-                 }).ToList();
-                return QuestionList;
-            }
-            catch (Exception)
-            { throw; }
-        }
-
-        public bool saveSelfAssessment(List<GWCQUestionModel> data, string action)
-        {
-            try
-            {
-                if (data.Count() > 0)
-                {
-                    foreach (var i in data)
-                    {
-                        _workorderEMSEntities.spSetSelfAssessment306090(action, i.EmployeeId, i.QuestionId, i.SelfAssessmentId, i.Answer == true ? "Y" : "N","S");
-                    }
-                }
-
-                return true;
-
-            }
-            catch (Exception)
-            { throw; }
         }
     }
 }

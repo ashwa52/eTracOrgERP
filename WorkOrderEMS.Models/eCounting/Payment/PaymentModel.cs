@@ -17,6 +17,7 @@ namespace WorkOrderEMS.Models
         public decimal? BillAmount { get; set; }
         public Nullable<DateTime> BillDate { get; set; }
         public int? GracePeriod { get; set; }
+        [Required(ErrorMessage = "Please select Payment Mode")]
         public string PaymentMode { get; set; }
         public string Description { get; set; }
         public string Status { get; set; }
@@ -33,6 +34,8 @@ namespace WorkOrderEMS.Models
         [Required(ErrorMessage = "Please add Account Number")]
         public string AccNo { get; set; }
 
+        public string PaymentByCash { get; set; }
+
         [Required(ErrorMessage = "Comment is required")]
         public string Comment { get; set; }
         public List<Card> CardNumber { get; set; }
@@ -46,6 +49,7 @@ namespace WorkOrderEMS.Models
         public bool IsCancel { get; set; }
         public long OpeartorCAD_Id { get; set; }
         public string DisplayDate { get; set; }
+        public string PaymentNote { get; set; }
     }
     public class Card
     {

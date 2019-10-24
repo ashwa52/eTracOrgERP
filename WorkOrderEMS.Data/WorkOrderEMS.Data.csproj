@@ -685,6 +685,9 @@
     <Compile Include="EntityModel\spGetDebitMemoList_Result.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityModel\spGetDebitMemoList_Result1.cs">
+      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\spGetDepartment_Result.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
@@ -862,18 +865,6 @@
     <Compile Include="EntityModel\spGetPOList_Result.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="EntityModel\spGetPOList_Result1.cs">
-      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EntityModel\spGetPOList_Result2.cs">
-      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EntityModel\spGetPOList_Result3.cs">
-      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EntityModel\spGetPOList_Result4.cs">
-      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
-    </Compile>
     <Compile Include="EntityModel\spGetPOPaymentSummary_Result.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
@@ -962,18 +953,6 @@
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\spPaymentDesk_Result.cs">
-      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EntityModel\spPaymentDesk_Result1.cs">
-      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EntityModel\spPaymentDesk_Result2.cs">
-      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EntityModel\spPaymentDesk_Result3.cs">
-      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EntityModel\spPaymentDesk_Result4.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\spSetEmployee_Result.cs">

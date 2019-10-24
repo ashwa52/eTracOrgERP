@@ -164,6 +164,21 @@ namespace WorkOrderEMS.Helper
             }
             return false;
         }
+
+        public static bool StaticDeleteFIle(HttpPostedFileBase myFile, string path, string fileName)
+        {
+            //message = string.Empty;
+            //if (myFile != null && myFile.ContentLength != 0)
+            //{
+                if (File.Exists(Path.Combine(path, fileName)))
+                {
+                    // If file found, delete it    
+                    File.Delete(Path.Combine(path, fileName));                    
+                }
+
+            //}
+            return false;
+        }
         private bool CreateFolderIfNeeded(string path)
         {
             bool result = true;

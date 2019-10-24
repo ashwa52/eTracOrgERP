@@ -14,7 +14,6 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class DARDetail
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public DARDetail()
         {
             this.eFleetFuelings = new HashSet<eFleetFueling>();
@@ -57,7 +56,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public string CustomerSignatureImage { get; set; }
         public string DisclaimerFormFile { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<eFleetFueling> eFleetFuelings { get; set; }
     }
 }

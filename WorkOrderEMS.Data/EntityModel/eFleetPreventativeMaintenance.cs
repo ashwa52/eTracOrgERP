@@ -14,7 +14,6 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class eFleetPreventativeMaintenance
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public eFleetPreventativeMaintenance()
         {
             this.eFleetMaintenances = new HashSet<eFleetMaintenance>();
@@ -44,7 +43,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<long> DeletedBy { get; set; }
         public Nullable<System.DateTime> DeletedDate { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<eFleetMaintenance> eFleetMaintenances { get; set; }
         public virtual GlobalCode GlobalCode { get; set; }
         public virtual GlobalCode GlobalCode1 { get; set; }

@@ -18,7 +18,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string QRCName { get; set; }
         public long QRCTYPE { get; set; }
         public string ModuleName { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public System.DateTime CreatedDate { get; set; }
         public string QRCodeID { get; set; }
         public string Created_By { get; set; }
         public string LocationName { get; set; }

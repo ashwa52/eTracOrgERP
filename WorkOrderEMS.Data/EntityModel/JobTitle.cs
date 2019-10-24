@@ -19,5 +19,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public long JBT_VST_Id { get; set; }
         public Nullable<System.DateTime> JBT_Date { get; set; }
         public string JBT_IsActive { get; set; }
+    
+        public virtual VehicleSeating VehicleSeating { get; set; }
     }
 }

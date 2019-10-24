@@ -68,6 +68,5 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<long> PauseStatus { get; set; }
         public string TotalTimeTaken { get; set; }
         public Nullable<System.DateTime> ConStartTime { get; set; }
-        public Nullable<long> eFleetVehicleID { get; set; }
     }
 }

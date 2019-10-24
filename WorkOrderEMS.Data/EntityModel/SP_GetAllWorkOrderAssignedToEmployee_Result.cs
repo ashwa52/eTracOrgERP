@@ -14,14 +14,9 @@ namespace WorkOrderEMS.Data.EntityModel
     public partial class SP_GetAllWorkOrderAssignedToEmployee_Result
     {
         public long WorkRequestAssignmentID { get; set; }
-        public long WorkRequestProjectType { get; set; }
         public Nullable<long> WorkRequestType { get; set; }
-        public Nullable<long> FacilityRequestId { get; set; }
-        public long WorkOrderCodeID { get; set; }
         public Nullable<long> AssetID { get; set; }
-        public Nullable<long> eFleetVehicleID { get; set; }
         public long LocationID { get; set; }
-        public string WorkOrderCode { get; set; }
         public string ProblemDesc { get; set; }
         public Nullable<long> PriorityLevel { get; set; }
         public string WorkRequestImage { get; set; }
@@ -39,38 +34,14 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<bool> IsDeleted { get; set; }
         public Nullable<long> DeletedBy { get; set; }
         public Nullable<System.DateTime> DeletedDate { get; set; }
+        public long WorkRequestProjectType { get; set; }
         public string AssignedWorkOrderImage { get; set; }
         public Nullable<System.DateTime> StartTime { get; set; }
         public Nullable<System.DateTime> EndTime { get; set; }
         public Nullable<System.DateTime> AssignedTime { get; set; }
         public string WorkStatusDesc { get; set; }
-        public string CustomerName { get; set; }
-        public string Address { get; set; }
-        public string VehicleMake { get; set; }
-        public string VehicleModel { get; set; }
-        public Nullable<int> VehicleYear { get; set; }
-        public string VehicleColor { get; set; }
-        public string CurrentLocation { get; set; }
-        public string CustomerContact { get; set; }
-        public string DriverLicenseNo { get; set; }
-        public string SignatureImage { get; set; }
-        public string DisclaimerForm { get; set; }
-        public string SurveyForm { get; set; }
-        public string City { get; set; }
-        public Nullable<int> StateId { get; set; }
-        public string ZipCode { get; set; }
-        public Nullable<System.DateTime> StartDate { get; set; }
-        public Nullable<System.DateTime> EndDate { get; set; }
-        public string WeekDays { get; set; }
-        public string WeekDaysName { get; set; }
-        public string FREmployeeImage { get; set; }
-        public string LicensePlateNo { get; set; }
-        public Nullable<bool> FrDisclaimerStatus { get; set; }
-        public Nullable<System.DateTime> TotalPauseTime { get; set; }
-        public Nullable<long> PauseStatus { get; set; }
-        public Nullable<System.DateTime> PauseTime { get; set; }
-        public Nullable<System.DateTime> ConStartTime { get; set; }
-        public string SurveyEmailID { get; set; }
+        public string WorkOrderCode { get; set; }
+        public long WorkOrderCodeID { get; set; }
         public string WorkRequestType1 { get; set; }
         public string LocationName { get; set; }
         public string PriorityLevel1 { get; set; }
