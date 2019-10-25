@@ -29,7 +29,8 @@ namespace WorkOrderEMS.Controllers.NewAdmin
 		private readonly IDepartment _IDepartment;
 		private readonly IGlobalAdmin _GlobalAdminManager;
 		private readonly ICommonMethod _ICommonMethod;
-		private readonly IQRCSetup _IQRCSetup;
+        private readonly IePeopleManager _IePeopleManager;
+        private readonly IQRCSetup _IQRCSetup;
 		private readonly string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
 		private readonly string WorkRequestImagepath = ConfigurationManager.AppSettings["WorkRequestImage"];
 		private readonly string ProfilePicPath = ConfigurationManager.AppSettings["ProfilePicPath"];
