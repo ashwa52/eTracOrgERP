@@ -20,6 +20,10 @@ namespace WorkOrderEMS.Controllers.eCounting
         public ActionResult Index()
         {
 
+
+
+
+
             return View();
         }
     }
