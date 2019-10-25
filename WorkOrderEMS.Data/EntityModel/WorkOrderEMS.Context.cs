@@ -151,6 +151,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<VehicleSeating> VehicleSeatings { get; set; }
         public virtual DbSet<JobTitle> JobTitles { get; set; }
+        public virtual DbSet<FileType> FileTypes { get; set; }
     
         [DbFunction("workorderEMSEntities", "fn_Split")]
         public virtual IQueryable<fn_Split_Result> fn_Split(string sText, string sDelim)
@@ -5512,6 +5513,52 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("EmployeeId", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetW4Form_Result>("spGetW4Form", employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetFileUpload_Result1> spGetFileUpload(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetFileUpload_Result1>("spGetFileUpload", employeeIdParameter);
+        }
+    
+        public virtual int spSetFileUpload(string fLUAction, Nullable<long> fLU_FileId, string fLU_EMP_EmployeeID, Nullable<long> fLU_FLT_Id, string fLU_FileName, string fLU_FileAttached, string fLU_FileUploadedBy, string fLU_IsActive)
+        {
+            var fLUActionParameter = fLUAction != null ?
+                new ObjectParameter("FLUAction", fLUAction) :
+                new ObjectParameter("FLUAction", typeof(string));
+    
+            var fLU_FileIdParameter = fLU_FileId.HasValue ?
+                new ObjectParameter("FLU_FileId", fLU_FileId) :
+                new ObjectParameter("FLU_FileId", typeof(long));
+    
+            var fLU_EMP_EmployeeIDParameter = fLU_EMP_EmployeeID != null ?
+                new ObjectParameter("FLU_EMP_EmployeeID", fLU_EMP_EmployeeID) :
+                new ObjectParameter("FLU_EMP_EmployeeID", typeof(string));
+    
+            var fLU_FLT_IdParameter = fLU_FLT_Id.HasValue ?
+                new ObjectParameter("FLU_FLT_Id", fLU_FLT_Id) :
+                new ObjectParameter("FLU_FLT_Id", typeof(long));
+    
+            var fLU_FileNameParameter = fLU_FileName != null ?
+                new ObjectParameter("FLU_FileName", fLU_FileName) :
+                new ObjectParameter("FLU_FileName", typeof(string));
+    
+            var fLU_FileAttachedParameter = fLU_FileAttached != null ?
+                new ObjectParameter("FLU_FileAttached", fLU_FileAttached) :
+                new ObjectParameter("FLU_FileAttached", typeof(string));
+    
+            var fLU_FileUploadedByParameter = fLU_FileUploadedBy != null ?
+                new ObjectParameter("FLU_FileUploadedBy", fLU_FileUploadedBy) :
+                new ObjectParameter("FLU_FileUploadedBy", typeof(string));
+    
+            var fLU_IsActiveParameter = fLU_IsActive != null ?
+                new ObjectParameter("FLU_IsActive", fLU_IsActive) :
+                new ObjectParameter("FLU_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetFileUpload", fLUActionParameter, fLU_FileIdParameter, fLU_EMP_EmployeeIDParameter, fLU_FLT_IdParameter, fLU_FileNameParameter, fLU_FileAttachedParameter, fLU_FileUploadedByParameter, fLU_IsActiveParameter);
         }
     }
 }

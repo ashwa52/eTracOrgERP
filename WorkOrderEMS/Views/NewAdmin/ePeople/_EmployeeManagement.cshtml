@@ -272,12 +272,13 @@
             <div class="modal-body">
                 <div class="card-body">
                     @*@Html.Partial("_FilesEmployeeManagement.cshtml")*@
-                    @Html.Partial("~/Views/NewAdmin/ePeople/_FilesEmployeeManagement.cshtml")
+                    @*@Html.Partial("~/Views/NewAdmin/ePeople/_FilesEmployeeManagement.cshtml")*@
                     <div id="ContaierAddFile"></div>
                 </div>
             </div>
         </div>
         <div class="modal-footer" style="background: white;">
+            @*<button type="button" class="btn btn-secondary" id="SaveFiles" style="border-radius:100px;width:9%;" data-dismiss="modal">Save</button>*@
             <button type="button" class="btn btn-secondary" id="closeStatus" style="border-radius:100px;width:9%;" data-dismiss="modal">Close</button>
         </div>
     </div>
@@ -473,6 +474,16 @@
                 <button type="button" class="btn btn-success" id="PlusMinusJobTitle" style="border-radius:100px;">Save</button>
                 <button type="button" class="btn btn-primary"  style="border-radius:100px;" data-dismiss="modal">Close</button>
             </div>
+        </div>
+    </div>
+</div>
+@* TO Open Files *@
+<div class="modal fade" id="formModelEdit" role="dialog" style="background:#fff" data-backdrop="true">
+    <div style="float:right;cursor:pointer;" data-dismiss="modal">
+        <i class="fa fa-times fa-lg" aria-hidden="true"></i>
+    </div>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="formidEditInfo">
         </div>
     </div>
 </div>

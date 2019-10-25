@@ -46,5 +46,40 @@ namespace WorkOrderEMS.Data.DataRepository
                 throw;
             }
         }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 24-Oct-2019
+        /// Created Fro : To get Emergency Contact Info
+        /// </summary>
+        /// <param name="EmployeeId"></param>
+        /// <returns></returns>
+        public spGetEmergencyContactForm_Result1 GetEmergencyContactForm(string EmployeeId)
+        {
+            try
+            {
+                return _workorderems.spGetEmergencyContactForm(EmployeeId).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 24-Oct-2019
+        /// Created For : To get File type list 
+        /// </summary>
+        /// <returns></returns>
+        public List<FileType> GetFileList()
+        {
+            try
+            {
+                return _workorderems.FileTypes.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }

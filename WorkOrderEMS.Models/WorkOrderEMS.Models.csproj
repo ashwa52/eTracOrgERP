@@ -251,6 +251,8 @@
     <Compile Include="NewAdminModel\FormsModel\CommonFormModel.cs" />
     <Compile Include="NewAdminModel\FormsModel\DirectDepositFormModel.cs" />
     <Compile Include="NewAdminModel\FormsModel\EducationFormModel.cs" />
+    <Compile Include="NewAdminModel\FormsModel\EmergencyContactFormModel.cs" />
+    <Compile Include="NewAdminModel\FormsModel\FormTypeListModel.cs" />
     <Compile Include="NewAdminModel\MyOpeningModel.cs" />
     <Compile Include="NewAdminModel\OnboardingDetailRequestModel.cs" />
     <Compile Include="NewAdminModel\PerformanceModel.cs" />

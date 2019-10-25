@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkOrderEMS.Models;
+using WorkOrderEMS.Models.Employee;
 
 namespace WorkOrderEMS.BusinessLogic
 {
@@ -26,5 +27,7 @@ namespace WorkOrderEMS.BusinessLogic
         List<AddChartModel> GetJobTitleCountForRequistion(long VSCId);
         JobTitleModel GetJobTitleCount(long JobId);
         bool SendJobTitleForApproval(JobTitleModel model);
+        bool SaveDirectDepositeForm(DirectDepositeFormModel model);
+        List<UploadedFiles> GetUploadedFilesOfUser(string EmployeeId);
     }
 }

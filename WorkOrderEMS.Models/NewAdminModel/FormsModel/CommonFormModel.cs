@@ -14,5 +14,6 @@ namespace WorkOrderEMS.Models
         public string ServiceAuthKey { get; set; }
         public EducationFormModel EducationFormModel { get; set; }
         public DirectDepositFormModel DirectDepositFormModel { get; set; }
+        public EmergencyContactFormModel EmergencyContactFormModel { get; set; }
     }
 }

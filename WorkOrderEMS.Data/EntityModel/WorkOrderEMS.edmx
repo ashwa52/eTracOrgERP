@@ -918,6 +918,16 @@
           <Property Name="createdDate" Type="datetime" Nullable="false" />
           <Property Name="Parameters" Type="varchar(max)" />
         </EntityType>
+        <EntityType Name="FileType">
+          <Key>
+            <PropertyRef Name="FLT_Id" />
+          </Key>
+          <Property Name="FLT_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FLT_FileType" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="FLT_FileSubType" Type="varchar" MaxLength="100" />
+          <Property Name="FLT_Date" Type="datetime" />
+          <Property Name="FLT_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
         <EntityType Name="FormMaster">
           <Key>
             <PropertyRef Name="FRM_Id" />
@@ -4980,6 +4990,9 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
         <Function Name="spGetEmployeePersonalInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="spGetFileUpload" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spGetFormMaster" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetInsurance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CMP_Id" Type="bigint" Mode="In" />
@@ -5576,6 +5589,16 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Parameter Name="EHB_EMP_EmployeeID" Type="varchar" Mode="In" />
           <Parameter Name="EHB_IsActive" Type="char" Mode="In" />
         </Function>
+        <Function Name="spSetFileUpload" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FLUAction" Type="char" Mode="In" />
+          <Parameter Name="FLU_FileId" Type="bigint" Mode="In" />
+          <Parameter Name="FLU_EMP_EmployeeID" Type="varchar" Mode="In" />
+          <Parameter Name="FLU_FLT_Id" Type="bigint" Mode="In" />
+          <Parameter Name="FLU_FileName" Type="varchar" Mode="In" />
+          <Parameter Name="FLU_FileAttached" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="FLU_FileUploadedBy" Type="varchar" Mode="In" />
+          <Parameter Name="FLU_IsActive" Type="char" Mode="In" />
+        </Function>
         <Function Name="spSetFormMaster" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="FRMAction" Type="char" Mode="In" />
           <Parameter Name="FRM_Id" Type="bigint" Mode="In" />
@@ -6026,6 +6049,7 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <EntitySet Name="EmployeeHandbook" EntityType="Self.EmployeeHandbook" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeLocationMapping" EntityType="Self.EmployeeLocationMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ExceptionLog" EntityType="Self.ExceptionLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FileType" EntityType="Self.FileType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FormMaster" EntityType="Self.FormMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="GlobalCodes" EntityType="Self.GlobalCodes" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HoursOfServices" EntityType="Self.HoursOfServices" Schema="dbo" store:Type="Tables" />
@@ -13827,13 +13851,27 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Parameter Name="EmployeeID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetDirectDepositForm" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetDirectDepositForm_Result1)">
-            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+          <Parameter Name="EmployeeID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetEmergencyContactForm" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetEmergencyContactForm_Result1)">
-            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+          <Parameter Name="EmployeeID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetW4Form" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetW4Form_Result)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="FileTypes" EntityType="WorkOrderEMS.Data.EntityModel.FileType" />
+          <FunctionImport Name="spGetFileUpload" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetFileUpload_Result1)">
             <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetFileUpload">
+            <Parameter Name="FLUAction" Mode="In" Type="String" />
+            <Parameter Name="FLU_FileId" Mode="In" Type="Int64" />
+            <Parameter Name="FLU_EMP_EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="FLU_FLT_Id" Mode="In" Type="Int64" />
+            <Parameter Name="FLU_FileName" Mode="In" Type="String" />
+            <Parameter Name="FLU_FileAttached" Mode="In" Type="String" />
+            <Parameter Name="FLU_FileUploadedBy" Mode="In" Type="String" />
+            <Parameter Name="FLU_IsActive" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Proc_GetAllWorkAssignedToEmployee_Result">
@@ -16635,6 +16673,38 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Property Type="String" Name="w4F_8EmployersName" Nullable="true" MaxLength="100" />
           <Property Type="DateTime" Name="w4F_9" Nullable="true" />
           <Property Type="String" Name="w4F_10" Nullable="true" MaxLength="30" />
+        </ComplexType>
+        <EntityType Name="FileType">
+          <Key>
+            <PropertyRef Name="FLT_Id" />
+          </Key>
+          <Property Name="FLT_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FLT_FileType" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="FLT_FileSubType" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="FLT_Date" Type="DateTime" Precision="3" />
+          <Property Name="FLT_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="spGetFileUpload_Result">
+          <Property Type="Int64" Name="FLU_FileId" Nullable="false" />
+          <Property Type="Int64" Name="FLU_FLT_Id" Nullable="false" />
+          <Property Type="String" Name="FLT_FileType" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="FLU_EMP_EmployeeId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="FLU_FileName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="FLU_FileAttached" Nullable="true" />
+          <Property Type="String" Name="FLU_FileUploadedBy" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="FLU_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="FLU_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetFileUpload_Result1">
+          <Property Type="Int64" Name="FLU_FileId" Nullable="false" />
+          <Property Type="Int64" Name="FLU_FLT_Id" Nullable="false" />
+          <Property Type="String" Name="FLT_FileType" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="FLU_EMP_EmployeeId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="FLU_FileName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="FLU_FileAttached" Nullable="true" />
+          <Property Type="String" Name="FLU_FileUploadedBy" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="FLU_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="FLU_IsActive" Nullable="true" MaxLength="1" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -21988,6 +22058,33 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="FileTypes">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.FileType">
+              <MappingFragment StoreEntitySet="FileType">
+                <ScalarProperty Name="FLT_IsActive" ColumnName="FLT_IsActive" />
+                <ScalarProperty Name="FLT_Date" ColumnName="FLT_Date" />
+                <ScalarProperty Name="FLT_FileSubType" ColumnName="FLT_FileSubType" />
+                <ScalarProperty Name="FLT_FileType" ColumnName="FLT_FileType" />
+                <ScalarProperty Name="FLT_Id" ColumnName="FLT_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetFileUpload" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetFileUpload">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetFileUpload_Result1">
+                <ScalarProperty Name="FLU_FileId" ColumnName="FLU_FileId" />
+                <ScalarProperty Name="FLU_FLT_Id" ColumnName="FLU_FLT_Id" />
+                <ScalarProperty Name="FLT_FileType" ColumnName="FLT_FileType" />
+                <ScalarProperty Name="FLU_EMP_EmployeeId" ColumnName="FLU_EMP_EmployeeId" />
+                <ScalarProperty Name="FLU_FileName" ColumnName="FLU_FileName" />
+                <ScalarProperty Name="FLU_FileAttached" ColumnName="FLU_FileAttached" />
+                <ScalarProperty Name="FLU_FileUploadedBy" ColumnName="FLU_FileUploadedBy" />
+                <ScalarProperty Name="FLU_Date" ColumnName="FLU_Date" />
+                <ScalarProperty Name="FLU_IsActive" ColumnName="FLU_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetFileUpload" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetFileUpload" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -59,10 +59,30 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                             var $customEditButton = $("<span style='background: green; width: 35px; height: 35px;border-radius: 35px;'>")
                                 .attr({ title: jsGrid.fields.control.prototype.filesButtonTooltip })
                                 .attr({ id: "btn-file-" + item.id }).click(function (e) {
-                                    $("#myModalForAddFileData").modal("show");
-                                    $("#EmployeeName").html(item.Name);
-                                    $("#EmployeeDesignation").html(item.UserType);
-                                    $("#EmployeeImage").attr("src", item.ProfileImage)
+                                    debugger
+                                    $.ajax({
+                                        type: "GET",
+                                        // data: { 'Id': item.id},
+                                        url: '../EPeople/GetFileView?Id=' + item.id,
+                                        beforeSend: function () {
+                                            new fn_showMaskloader('Please wait...');
+                                        },
+                                        contentType: "application/json; charset=utf-8",
+                                        error: function (xhr, status, error) {
+                                        },
+                                        success: function (result) {
+                                            debugger
+                                            $("#ContaierAddFile").html(result);
+                                            $("#myModalForAddFileData").modal('show');
+                                        },
+                                        complete: function () {
+                                            fn_hideMaskloader();
+                                        }
+                                    });
+                                    //$("#myModalForAddFileData").modal("show");
+                                    //$("#EmployeeName").html(item.Name);
+                                    //$("#EmployeeDesignation").html(item.UserType);
+                                    //$("#EmployeeImage").attr("src", item.ProfileImage)
                                     e.stopPropagation();
                                 }).append($iconFolder);
                             var $customUserViewButton = $("<span style='background: #36CA7E; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")

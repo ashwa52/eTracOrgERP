@@ -99,6 +99,7 @@ namespace WorkOrderEMS.Infrastructure
                 For<IePeopleManager>().Use<ePeopleManager>();
                 For<IGuestUser>().Use<GuestUserRepository>();
                 For<IGuestUserRepository>().Use<GuestUserRepositoryData>();
+                For<IFillableFormManager>().Use<FillableFormManager>();
             }
         }
     }

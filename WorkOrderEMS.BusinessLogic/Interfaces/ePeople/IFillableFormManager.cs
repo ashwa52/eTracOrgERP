@@ -10,5 +10,6 @@ namespace WorkOrderEMS.BusinessLogic
     public interface IFillableFormManager
     {
        CommonFormModel GetFormDetails(CommonFormModel Obj);
+        List<FormTypeListModel> GetFileList(eTracLoginModel obj);
     }
 }

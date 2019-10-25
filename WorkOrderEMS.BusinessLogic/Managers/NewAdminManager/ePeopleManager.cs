@@ -8,6 +8,7 @@ using WorkOrderEMS.Data;
 using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
+using WorkOrderEMS.Models.Employee;
 
 namespace WorkOrderEMS.BusinessLogic
 {
@@ -635,5 +636,61 @@ namespace WorkOrderEMS.BusinessLogic
             }
             return isSaved;
         }
+
+        #region Files
+        /// <summary>
+        /// Created By
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public bool SaveDirectDepositeForm(DirectDepositeFormModel model)
+        {
+            try
+            {
+                using (workorderEMSEntities Context = new workorderEMSEntities())
+                {
+                    var tt = new GuestUserRepository();
+                    var data = tt.GetDirectDepositeDataByEmployeeId(model.EmployeeId);
+                    if (data != null)
+                        return Context.spSetDirectDepositForm("U", model.EmployeeId, model.Account1.EmployeeBankName, model.Account1.AccountType,
+                            model.Account1.Account, model.Account1.BankRouting, model.Account1.DepositeAmount, model.Account2.EmployeeBankName, model.Account2.AccountType, model.Account2.Account
+                            , model.Account2.BankRouting, model.VoidCheck, "Y") > 0 ? true : false;
+
+                    return Context.spSetDirectDepositForm("I", model.EmployeeId, model.Account1.EmployeeBankName, model.Account1.AccountType,
+                            model.Account1.Account, model.Account1.BankRouting, model.Account1.DepositeAmount.HasValue ? model.Account1.DepositeAmount.Value : 0, model.Account2.EmployeeBankName, model.Account2.AccountType, model.Account2.Account
+                            , model.Account2.BankRouting, model.VoidCheck, "Y") > 0 ? true : false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 25-Oct-2019
+        /// Created For : To get uploaded files data
+        /// </summary>
+        /// <param name="EmployeeId"></param>
+        /// <returns></returns>
+        public List<UploadedFiles> GetUploadedFilesOfUser(string EmployeeId)
+        {
+            var lst = new List<UploadedFiles>();
+            try
+            {
+                var ePeopleRepository = new ePeopleRepository();
+                lst = ePeopleRepository.GetUploadFilesList(EmployeeId).Select(x => new UploadedFiles()
+                {
+
+                }).ToList();
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public UploadedFiles GetUploadedFilesOfUser(string EmployeeId)", "Exception While getting list of files by user id.", EmployeeId);
+                throw;
+            }
+        }
+        #endregion Files
     }
 }

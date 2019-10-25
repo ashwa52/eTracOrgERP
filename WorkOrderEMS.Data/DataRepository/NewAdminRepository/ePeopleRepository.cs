@@ -242,5 +242,23 @@ namespace WorkOrderEMS.Data
                 throw;
             }
         }
+        /// <summary>
+        /// Created By : Ashwajit bansod
+        /// Creaed Date : 25-oct-2019
+        /// Created For : To get Uploaded files list
+        /// </summary>
+        /// <param name="EmployeeId"></param>
+        /// <returns></returns>
+        public List<spGetFileUpload_Result1> GetUploadFilesList(string EmployeeId)
+        {
+            try
+            {
+                return objworkorderEMSEntities.spGetFileUpload(EmployeeId).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }

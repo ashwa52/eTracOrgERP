@@ -1554,6 +1554,7 @@
     <Content Include="Content\NewAdminContent\AnimatedChart\JS\stiffChart.js" />
     <Content Include="Content\NewAdminContent\CSS\clockPicker.css" />
     <Content Include="Content\NewAdminContent\CSS\Common.css" />
+    <Content Include="Content\NewAdminContent\CSS\FilesUICss.css" />
     <Content Include="Content\NewAdminContent\CSS\MultstepWizardNew.css" />
     <Content Include="Content\NewAdminContent\CSS\perfect-scrollbar.css" />
     <Content Include="Content\NewAdminContent\CSS\RadioButtonCSS.css" />
@@ -6141,6 +6142,7 @@
     <Content Include="Scripts\NewAdminJS\plugins-init\widgets-script-init.js" />
     <Content Include="Scripts\NewAdminJS\QRCHideShowFunctionality.js" />
     <Content Include="Scripts\NewAdminJS\quixnav-init.js" />
+    <Content Include="Scripts\NewAdminJS\SaveEditForm.js" />
     <Content Include="Scripts\NewAdminJS\settings.js" />
     <Content Include="Scripts\NewAdminJS\styleSwitcher.js" />
     <Content Include="Scripts\NewAdminJS\tynamice.min.js" />
@@ -6456,6 +6458,8 @@
     <Content Include="Views\NewAdmin\ePeople\StatusChaneForm\_EmploymentStatusChangeForm.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\_VSCPointingChartDemo.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\Requisition\_AddRemoveJobTitleCount.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_DirectDepositeEditForm.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_EmployeeFilesOriginal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
