@@ -3364,10 +3364,6 @@ getOrgChart.prototype._aY = function(d, b) {
     var c = d.getAttribute("data-btn-id");
     var a = d.getAttribute("data-btn-action");
     if (a == "del") {
-        debugger
-        JobPosting(c);
-        
-        
         //this.removeNode(c)
     } else {
         if (a == "add") {
@@ -3382,13 +3378,10 @@ getOrgChart.prototype._aY = function(d, b) {
                         $("#JobTitleId").val("");
                         for (var ii = 0 ; ii < Data.length; ii++) {
                             //$("#JobTitleId").val(Data[ii].parentId);
+                            
                             var divID = $('#addJobTitleLabel div.dymanicDelete').length;
                             $('#addJobTitleLabel').append('<div class="form-group row dymanicDelete d_' + ii + '"><div class="col-sm-10 getJobTitleData"><label class="col-sm-5 col-form-label">' + Data[ii].JobTitleLabel + '</label></div><a class="addjobtitleDeleterows col-sm-1"  id=d' + ii + ' jobtitleid =' + Data[ii].Id + '><i class="fa fa-trash addColorTrash fa-2x" style="cursor:pointer;margin-left: 30px;color:#cd0a2499;" aria-hidden="true"></i></a></div>');
                         }
-                    }
-                    else {
-                        $("#addJobTitleLabel").html("");
-                        $("#JobTitleId").val("");
                     }
                     $("#myModalForAddingJobTitle").modal('show');
                     $("#parentIdForJobTitle").val(c);

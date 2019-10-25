@@ -106,12 +106,10 @@
             <div class="col-lg-6">
                 <div class="card" data-aos="fade-up">
                     <div class="card-header widthHeader ">
-                        <h4 class="card-title addWhite" style="color: white;"><b>Notifications </b></h4>
+                        <h4 class="card-title addWhite" style="color: white;"><b>Urgent Work Order</b></h4>
                     </div>
-                    <div class="">
-                        <div id="UrgentWorkOrdersList" style="overflow-x: hidden;height: 288px;overflow-y: scroll;">
-
-                        </div>
+                    <div class="card-body">
+                        <div id="SafetyHazardChart" style="height: 236px;"></div>
                     </div>
                 </div>
             </div>
@@ -124,11 +122,10 @@
                             <h4 class="addWhite dispayCreateWOName " style="color: white;margin-top: 6px;margin-left: 20px;display:none;"><b>Create Work Order</b></h4>
                             @*<h4 class=" addWhite dispayListWOName" style="color: white;margin-top: 12px;margin-left: 20px;"><b>Work Order List</b></h4>*@
                             <div class="col-sm-2">
-                                <input type="text" id="SearchbyAssignUser" class="form-control input-rounded dispayListWOName" placeholder="Search by Assign User">
+                                <input type="text" id="SearchbyAssignUser" class="form-control input-rounded dispayListWOName"  placeholder="Search by Assign User">
                             </div>
-                            <div class="col-sm-2">
-                                <select class="form-control input-rounded dispayListWOName" id="QRCTypeList">
-                                    <option value="0">Select QRC Type</option>
+                            <div class="col-sm-2" >
+                                <select class="form-control input-rounded dispayListWOName" id="QRCTypeList" >
                                     <option value="">All Select</option>                                '
                                     <option value="36">Vehicle</option>
                                     <option value="37">Trash Can</option>
@@ -146,9 +143,8 @@
                                     <option value="102">Non Asset Type</option>
                                 </select>
                             </div>
-                            <div class="col-sm-2">
-                                <select class="form-control input-rounded dispayListWOName" id="SelectStatusOfWO">
-                                    <option value="0">Select Status</option>
+                            <div class="col-sm-2" >
+                                <select class="form-control input-rounded dispayListWOName" id="SelectStatusOfWO" >
                                     <option value="">Select All</option>
                                     <option value="14">Pending</option>
                                     <option value="15">In Progress</option>
@@ -158,7 +154,6 @@
                             </div>
                             <div class="col-sm-2">
                                 <select class="form-control input-rounded dispayListWOName" id="SelectWOType">
-                                    <option value="0">Select WO Type</option>
                                     <option value="">Select All</option>
                                     <option value="128">Work Request</option>
                                     <option value="129">Special Project</option>
@@ -169,19 +164,19 @@
 
                             <div class="onoffswitch2" style="margin-left: 997px;margin-top: -34px;"><input type="checkbox" name="onoffswitch2" class="onoffswitch2-checkbox" id="toggleWOTesting"><label for="toggleWOTesting" class="onoffswitch2-label"><span class="onoffswitch2-inner"></span><span class="onoffswitch2-switch"></span></label></div>
                         </div>
-                        @*<div class="card-header" style="height: 45px;">
-                            <h4 class="card-title addWhite dispayListWOName" style="color: white;"><b>Work Order List</b></h4>
-                            <h4 class="card-title addWhite dispayCreateWOName" style="display:none;color: white;"><b>Create Work Order</b></h4>
-                            <div class="onoffswitch2" style="margin-left: 997px;margin-top: 6px;"><input type="checkbox" name="onoffswitch2" class="onoffswitch2-checkbox" id="toggleWOTesting"><label for="toggleWOTesting" class="onoffswitch2-label"><span class="onoffswitch2-inner"></span><span class="onoffswitch2-switch"></span></label></div>
-                            </div>*@
-                    </div>
-                    <div class="card-body" id="WOList">
-                        <div id="ListWorkOrderAsssignment"></div>
-                    </div>
-                    <div class="card-body createWOForm" style="display:none;" id="WOFormDetails">
+                           @*<div class="card-header" style="height: 45px;">
+                           <h4 class="card-title addWhite dispayListWOName" style="color: white;"><b>Work Order List</b></h4>
+                           <h4 class="card-title addWhite dispayCreateWOName" style="display:none;color: white;"><b>Create Work Order</b></h4>
+                           <div class="onoffswitch2" style="margin-left: 997px;margin-top: 6px;"><input type="checkbox" name="onoffswitch2" class="onoffswitch2-checkbox" id="toggleWOTesting"><label for="toggleWOTesting" class="onoffswitch2-label"><span class="onoffswitch2-inner"></span><span class="onoffswitch2-switch"></span></label></div>
+                           </div>*@
+                     </div>
+                        <div class="card-body" id="WOList">
+                            <div id="ListWorkOrderAsssignment"></div>
+                        </div>
+                        <div class="card-body createWOForm" style="display:none;" id="WOFormDetails">
+                        </div>
                     </div>
                 </div>
-            </div>
         </div>
     </div>
 </div>
@@ -210,7 +205,7 @@
     </div>
 </div>
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="ModalDetailWOPreview">
-    <div class="modal-dialog modal-lg" style="width:515px;">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Work Order Details</h5>
@@ -220,186 +215,136 @@
             </div>
             <div class="modal-body">
                 <div id="divDetailPreview" class="">
-
+                    <div class="row">
                         <div class="" id="DivWorkDetailsIndex">
                             <div class="form-group row">
-                                <label class="col-sm-6 col-form-label"><strong>Work Order ID :</strong></label>
-                                <div class="col-sm-6">
+                                <label class="col-sm-3 col-form-label"><strong>Work Order ID :</strong></label>
+                                <div class="col-sm-4">
                                     <div id="lblCodeNo" class="form-control-static"></div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label id="labelWorkRequestType">Work Request Type </label>
-                                        <div id="lblWorkRequestType" class="form-control-static"></div>
-                                    </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label" id="labelWorkRequestType"><strong>Work Request Type :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblWorkRequestType" class="form-control-static"></div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label id="labelSpecialNotes">Priority Level </label>
-                                        <div id="lblPriorityLevel" class="form-control-static"></div>
+                                <label class="col-sm-3 col-form-label"><strong>Priority Level :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblPriorityLevel" class="form-control-static"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label"><strong>Project Type :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblProjectType" class="form-control-static"></div>
+                                </div>
+                                <div id="divWoimg">
+                                    <label class="col-sm-2 col-form-label" id="labellAssignedWorkImage">Work Order Image :</label>
+                                    <div class="col-sm-4 custom-size" id="lblAssignedWorkImage">
+                                        <img style="width: 200px!important; height: 200px!important;" />
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label>Project Type </label>
-                                        <div id="lblProjectType" class="form-control-static"></div>
-                                    </div>
+                            <div class="form-group row">
+                                <label id="labellWorkRequestStatus" class="col-sm-3 col-form-label"><strong>Work Request Status :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblWorkRequestStatus" class="form-control-static"></div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div id="divWoimg">
-                                        <div class="form-group">
-                                            <label id="labellAssignedWorkImage">Work Order Image </label>
-                                            <div class="col-sm-4 custom-size" id="lblAssignedWorkImage">
-                                                <img style="width: 200px!important; height: 200px!important;" />
-                                            </div>
-                                        </div>
-                                    </div>
+                                <label class="col-sm-3 col-form-label"><strong>Submitted On :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblSubmittedOn" class="form-control-static"></div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label id="labellWorkRequestStatus">Work Request Status </label>
-                                        <div id="lblWorkRequestStatus" class="form-control-static"></div>
-                                    </div>
+                            <div class="form-group row">
+                                <label id="labellProblemDescription" class="col-sm-3 col-form-label"><strong>Problem Description :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblProblemDescription" class="form-control-static"></div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label id="labellAssignedWorkImage">Submitted On </label>
-                                        <div id="lblSubmittedOn" class="form-control-static"></div>
-                                    </div>
+                                <label class="col-sm-3 col-form-label" id="labelQRCType"><strong>QRC Type :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblQRCType" class="form-control-static"></div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label id="labellProblemDescription">Problem Description</label>
-                                        <div id="lblProblemDescription" class="form-control-static"></div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label id="labelQRCType">QRC Type </label>
-                                        <div id="lblQRCType" class="form-control-static"></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
+                            <div class="form-group row">
                                 <div id="divEmpAssigned">
-                                    <div class="col-lg-6">
-                                        <div class="form-group">
-                                            <label id="lblAssignToUser">Employee Assigned</label>
-                                            <div class="custom-size" id="lblProfile">
-                                                <img style="width: 200px!important; height: 200px!important;" />
-                                            </div>
-                                        </div>
+                                    <label id="lblAssignToUser" class="col-sm-3 col-form-label"><strong>Employee Assigned</strong></label>
+                                    <div class="col-sm-3 custom-size" id="lblProfile">
+                                        <img style="width: 200px!important; height: 200px!important;" />
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label id="labelQRCType">Location </label>
-                                        <div id="lblLocationName" class="form-control-static"></div>
-                                    </div>
+                                <label class="col-sm-3 col-form-label"><strong>Location :</strong></label>
+                                <div class="col-sm-2">
+                                    <div id="lblLocationName" class="form-control-static"></div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label id="labellStartDate">Start Date</label>
-                                        <div id="lblStartDate" class="form-control-static"></div>
-                                    </div>
+                            <div class="form-group row">
+                                <label id="labellStartDate" class="col-sm-3 col-form-label"><strong>Start Date :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblStartDate" class="form-control-static"></div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label id="labellEndDate">End Date </label>
-                                        <div id="lblEndDate" class="form-control-static"></div>
-                                    </div>
+                                <label class="col-sm-3 col-form-label" id="labellEndDate"><strong>End Date :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblEndDate" class="form-control-static"></div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label id="labellTimeAssigned">Time Assigned</label>
-                                        <div id="lblTimeAssigned" class="form-control-static"></div>
-                                    </div>
+                            <div class="form-group row">
+                                <label id="labellTimeAssigned" class="col-sm-4 col-form-label"><strong>Time Assigned :</strong></label>
+                                <div class="col-sm-2">
+                                    <div id="lblTimeAssigned" class="form-control-static"></div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label id="labellVehicleMake">Vehicle Make</label>
-                                        <div id="lblVehicleMake" class="form-control-static"></div>
-                                    </div>
+                                <label class="col-sm-3 col-form-label" id="labellVehicleMake"><strong>Vehicle Make :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblVehicleMake" class="form-control-static"></div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label id="labellVehicleModel">Vehicle Model</label>
-                                        <div id="lblVehicleModel" class="form-control-static"></div>
-                                    </div>
+                            <div class="form-group row">
+                                <label id="labellVehicleModel" class="col-sm-3 col-form-label"><strong>Vehicle Model :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblVehicleModel" class="form-control-static"></div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label id="labellVehicleYear">Vehicle Year</label>
-                                        <div id="lblVehicleYear" class="form-control-static"></div>
-                                    </div>
+                                <label class="col-sm-3 col-form-label" id="labellVehicleYear"><strong>Vehicle Year :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblVehicleYear" class="form-control-static"></div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label id="labellVehicleColor">Vehicle Color</label>
-                                        <div id="lblVehicleModel" class="form-control-static"></div>
-                                    </div>
+                            <div class="form-group row">
+                                <label id="labellVehicleColor" class="col-sm-3 col-form-label"><strong>Vehicle Color :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblVehicleColor" class="form-control-static"></div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label id="labellStartTime">Start Time</label>
-                                        <div id="lblStartTime" class="form-control-static"></div>
-                                    </div>
+                                <label class="col-sm-3 col-form-label" id="labellStartTime"><strong>Start Time :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblStartTime" class="form-control-static"></div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label id="labellWeekdays">Weekdays</label>
-                                        <div id="lblWeekdays" class="form-control-static"></div>
-                                    </div>
+                            <div class="form-group row">
+                                <label id="labellWeekdays" class="col-sm-3 col-form-label"><strong>Weekdays :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblWeekdays" class="form-control-static"></div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label id="labellCustomerName">Customer Name</label>
-                                        <div id="lblCustomerName" class="form-control-static"></div>
-                                    </div>
+                                <label class="col-sm-3 col-form-label" id="labellCustomerName"><strong>Customer Name :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblCustomerName" class="form-control-static"></div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label id="labellCustomerContact">Customer Contact</label>
-                                        <div id="lblCustomerContact" class="form-control-static"></div>
-                                    </div>
+                            <div class="form-group row">
+                                <label id="labellCustomerContact" class="col-sm-3 col-form-label"><strong>Customer Contact :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblCustomerContact" class="form-control-static"></div>
                                 </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label id="labellDriverLicenseNo">Driver License No</label>
-                                        <div id="lblDriverLicenseNo" class="form-control-static"></div>
-                                    </div>
+                                <label class="col-sm-3 col-form-label" id="labellDriverLicenseNo"><strong>Driver License No :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblDriverLicenseNo" class="form-control-static"></div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-lg-6">
-                                    <div class="form-group">
-                                        <label id="labelTotalTimeTaken">Total Time Taken</label>
-                                        <div id="lblTotalTimeTaken" class="form-control-static"></div>
-                                    </div>
+                            <div class="form-group row">
+                                <label id="labelTotalTimeTaken" class="col-sm-3 col-form-label"><strong>Total Time Taken :</strong></label>
+                                <div class="col-sm-3">
+                                    <div id="lblTotalTimeTaken" class="form-control-static"></div>
                                 </div>
-                            </div>                           
+                            </div>
                         </div>
-                   
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">

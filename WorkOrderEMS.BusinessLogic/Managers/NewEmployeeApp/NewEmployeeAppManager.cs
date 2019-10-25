@@ -170,13 +170,5 @@ namespace WorkOrderEMS.BusinessLogic
             }
             return listTaskForEmployee;
         }
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <returns></returns>
-		public List<spGetMyOpening_Result1> GetMyOpenings()
-		{
-			return _workorderEMSEntities.spGetMyOpening().ToList();
-		}
     }
 }

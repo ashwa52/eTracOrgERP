@@ -294,7 +294,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                             var saveNormalPO = _workorderems.spSetPODetail(action, PONumber, objPOTypeDataModel.Location,
                                                                          objPOTypeDataModel.POType, objPOTypeDataModel.Vendor, objPOTypeDataModel.DeliveryDate,
                                                                           objPOTypeDataModel.Total, null, null, objPOTypeDataModel.UserId, getRuleData.UserId, "Y", getRuleData.RuleId
-                                                                          , getRuleData.RuleLevel, getRuleData.CurrentLevel, objPOTypeDataModel.QBK_Id);
+                                                                          , getRuleData.RuleLevel, getRuleData.CurrentLevel, objPOTypeDataModel.QBK_Id,null);
                             if (obj != null)
                             {
                                 foreach (var item in obj)
@@ -311,7 +311,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                             var saveReoccuringPO = _workorderems.spSetPODetail(action, PONumber, objPOTypeDataModel.Location,
                                                                          objPOTypeDataModel.POType, objPOTypeDataModel.Vendor, null,
                                                                           objPOTypeDataModel.Total, objPOTypeDataModel.BillDate, null, objPOTypeDataModel.UserId, getRuleData.UserId, "Y", getRuleData.RuleId
-                                                                          , getRuleData.RuleLevel, getRuleData.CurrentLevel, objPOTypeDataModel.QBK_Id);
+                                                                          , getRuleData.RuleLevel, getRuleData.CurrentLevel, objPOTypeDataModel.QBK_Id, POReccuringStaus.Pending.ToString());
                             if (obj != null)
                             {
                                 foreach (var item in obj)
@@ -330,7 +330,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                 var saveEmeregencyPO = _workorderems.spSetPODetail(action, PONumber, objPOTypeDataModel.Location,
                                                                         objPOTypeDataModel.POType, objPOTypeDataModel.Vendor, null, objPOTypeDataModel.Total,
                                                                          null, objPOTypeDataModel.POD_EmergencyPODocument, objPOTypeDataModel.UserId, getRuleData.UserId, "Y", getRuleData.RuleId
-                                                                          , getRuleData.RuleLevel, getRuleData.CurrentLevel, objPOTypeDataModel.QBK_Id);
+                                                                          , getRuleData.RuleLevel, getRuleData.CurrentLevel, objPOTypeDataModel.QBK_Id,null);
                                 if (obj != null)
                                 {
                                     foreach (var item in obj)
@@ -758,8 +758,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     var getCompanyDataByName = _workorderems.Companies.Where(x => x.CMP_NameLegal == objListData.CompanyName
                                                               && x.CMP_IsActive == "Y").FirstOrDefault();
 
-                    getPODetails = _workorderems.LogPODetails.Where(x => x.LPOD_Id == objPOApproveRejectModel.POId).OrderByDescending(x => x.LPOD_Id).FirstOrDefault();
-
+                    //getPODetails = _workorderems.LogPODetails.Where(x => x.LPOD_Id == objPOApproveRejectModel.POId).OrderByDescending(x => x.LPOD_Id).FirstOrDefault();
+                    getPODetails = _workorderems.LogPODetails.Where(x => x.LPOD_Id == objPOApproveRejectModel.POId).FirstOrDefault();
                     if (userData != null)
                     {
                         if (objPOApproveRejectModel.Comment == null)
@@ -815,6 +815,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         {
                             // var Id = Convert.ToGlobalAdmin.UserId;
                             long Calculation = 0;
+                         
                             if (getRuleData.UserId == 3 && getRuleData.ManagerName == "Dane") // Checking for Dane gray GLobal Admin
                             {
                                 Calculation = Convert.ToInt64(getPODetails.LPOD_RUL_Level);
@@ -824,11 +825,12 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                 Calculation = Convert.ToInt64(getPODetails.LPOD_RUL_CurrentLevel) + 1;
                             }
                             getRuleData.CurrentLevel = Calculation.ToString();
-                            var updatePO = _workorderems.spSetPODetail(Action, objPOApproveRejectModel.POModifiedId, getPODetails.LPOD_LocationId,
-                                                                   Convert.ToInt64(getPODetails.LPOD_POT_Id), getPODetails.LPOD_CMP_Id, getPODetails.LPOD_DeliveryDate,
-                                                                   getPODetails.LPOD_POAmount, getPODetails.LPOD_ReoccourringBillDate, getPODetails.LPOD_EmergencyPODocument, getPODetails.LPOD_ModifiedBy,
-                                                                   getRuleData.UserId, Status, getRuleData.RuleId
-                                                                   , getRuleData.RuleLevel, getRuleData.CurrentLevel, objPOApproveRejectModel.QuickBookPOId);//Added getRuleData  instead of  objPOApproveRejectModel for approve by
+                             var updatePO = _workorderems.spUpdatePODetail(objPOApproveRejectModel.POId, getRuleData.RuleId, getRuleData.RuleLevel, getRuleData.CurrentLevel,"W");
+                            //var updatePO = _workorderems.spSetPODetail(Action, objPOApproveRejectModel.POModifiedId, getPODetails.LPOD_LocationId,
+                            //                                       Convert.ToInt64(getPODetails.LPOD_POT_Id), getPODetails.LPOD_CMP_Id, getPODetails.LPOD_DeliveryDate,
+                            //                                       getPODetails.LPOD_POAmount, getPODetails.LPOD_ReoccourringBillDate, getPODetails.LPOD_EmergencyPODocument, getPODetails.LPOD_ModifiedBy,
+                            //                                       getRuleData.UserId, Status, getRuleData.RuleId
+                            //                                       , getRuleData.RuleLevel, getRuleData.CurrentLevel, objPOApproveRejectModel.QuickBookPOId,null);//Added getRuleData  instead of  objPOApproveRejectModel for approve by
                         }
                         else
                         {

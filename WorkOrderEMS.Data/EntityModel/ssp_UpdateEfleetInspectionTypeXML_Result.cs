@@ -29,8 +29,8 @@ namespace WorkOrderEMS.Data.EntityModel
         public string InteriorMileageDriverDetails { get; set; }
         public string EngineExteriorDetails { get; set; }
         public string EmergencyAccessoriesDetails { get; set; }
+        public string LocationName { get; set; }
         public string Make { get; set; }
         public string Model { get; set; }
-        public string LocationName { get; set; }
     }
 }

@@ -38,7 +38,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string API_WorkEligibleInUS { get; set; }
         public Nullable<long> API_JobPostingId { get; set; }
         public long API_JobTitleID { get; set; }
-        public string API_HiringManagerID { get; set; }
+        public Nullable<long> API_HiringManagerID { get; set; }
         public Nullable<System.DateTime> API_DateOfJoining { get; set; }
         public Nullable<decimal> API_DesireSalary { get; set; }
         public string API_ApplicantStatus { get; set; }

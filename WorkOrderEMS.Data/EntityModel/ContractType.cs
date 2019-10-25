@@ -14,7 +14,6 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class ContractType
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ContractType()
         {
             this.Contracts = new HashSet<Contract>();
@@ -26,9 +25,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string CTT_Discription { get; set; }
         public string CTT_IsActive { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Contract> Contracts { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LogContract> LogContracts { get; set; }
     }
 }

@@ -14,7 +14,6 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class eFleetVehicle
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public eFleetVehicle()
         {
             this.DefectReportDetails = new HashSet<DefectReportDetail>();
@@ -66,24 +65,15 @@ namespace WorkOrderEMS.Data.EntityModel
         public string EngineExteriorDetails { get; set; }
         public string EmergencyAccessoriesDetails { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DefectReportDetail> DefectReportDetails { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<eFleetFueling> eFleetFuelings { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<eFleetMaintenance> eFleetMaintenances { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<eFleetPassengerTrackingCount> eFleetPassengerTrackingCounts { get; set; }
         public virtual GlobalCode GlobalCode { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<eFleetVehicleIncident> eFleetVehicleIncidents { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<eFleetVehicleInspectionLog> eFleetVehicleInspectionLogs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<eFleetVehicleMasterLog> eFleetVehicleMasterLogs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<eFleetVehicleScanLog> eFleetVehicleScanLogs { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<WorkRequestAssignment> WorkRequestAssignments { get; set; }
     }
 }

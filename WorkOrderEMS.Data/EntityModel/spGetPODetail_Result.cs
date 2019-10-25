@@ -13,26 +13,13 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class spGetPODetail_Result
     {
-        public Nullable<long> POD_Id { get; set; }
-        public Nullable<long> POD_LocationId { get; set; }
-        public Nullable<long> POD_POT_Id { get; set; }
+        public long POD_Id { get; set; }
+        public long POD_LocationId { get; set; }
+        public long POD_POT_Id { get; set; }
         public Nullable<long> POD_CMP_Id { get; set; }
         public Nullable<System.DateTime> POD_DeliveryDate { get; set; }
         public string POD_EmergencyPODocument { get; set; }
         public Nullable<System.DateTime> POD_PODate { get; set; }
-        public Nullable<System.DateTime> POD_ReoccourringBillDate { get; set; }
         public string POD_IsActive { get; set; }
-        public string CNT_invoicingFrequency { get; set; }
-        public Nullable<int> CNT_CostDuringPeriod { get; set; }
-        public Nullable<decimal> CNT_AnnualValueOfAggreement { get; set; }
-        public string POE_VendorName { get; set; }
-        public string POE_EmergencyComment { get; set; }
-        public Nullable<decimal> POE_POAmount { get; set; }
-        public string COD_PointOfContact { get; set; }
-        public string COD_Address { get; set; }
-        public Nullable<decimal> POD_POAmount { get; set; }
-        public string LocationName { get; set; }
-        public string CMP_NameLegal { get; set; }
-        public string POT_POType { get; set; }
     }
 }

@@ -52,31 +52,31 @@
                                     <div class="form-group row">
                                         @*@Html.LabelFor(model => model.SeatingName, new { @class = "col-sm-2 col-form-label" })*@
                                         <div class="col-sm-6">
-                                            @Html.TextBoxFor(model => model.SeatingName, new { @Placeholder = "Seating Name", @id = "SeatingName", @class = "form-control input-rounded required isValidLocationName" })
+                                            @Html.TextBoxFor(model => model.SeatingName, new { @Placeholder = "Seating Name", @id="SeatingName", @class = "form-control input-rounded required isValidLocationName" })
                                         </div>
                                         @*@Html.LabelFor(model => model.Superior, new { @class = "col-sm-2 col-form-label" })*@
-                                        <div class="col-sm-6">
-                                            <select id="Superior" name="Superior" class="form-control input-rounded requiredselect"><option value="-1">--Select Superiour--</option></select>
-                                            @*@Html.DropDownListFor(model => model.Superior, new SelectList(ViewBag.SuperiourList, "ParentId", "SeatingName"), "--Select Superior--", new { @class = "form-control input-rounded required requiredselect", @id = "Superior" })*@
-                                            <span id="SeatingSpan" style="display:none"><p>This is your first Vehicle Seating Chart</p></span>
-
+                                        <div class="col-sm-6">                
+                                                <select id="Superior" name="Superior" class="form-control input-rounded requiredselect"><option value="-1">--Select Superiour--</option></select>
+                                                @*@Html.DropDownListFor(model => model.Superior, new SelectList(ViewBag.SuperiourList, "ParentId", "SeatingName"), "--Select Superior--", new { @class = "form-control input-rounded required requiredselect", @id = "Superior" })*@
+                                               <span id="SeatingSpan" style="display:none"><p>This is your first Vehicle Seating Chart</p></span>
+                                           
                                         </div>
                                     </div>
                                     <div class="form-group row">
                                         @*@Html.LabelFor(model => model.Department, new { @class = "col-sm-2 col-form-label" })*@
                                         <div class="col-sm-12">
-
-                                            <select id="Department" name="Department" class="form-control input-rounded requiredselect"><option value="-1">--Select Superiour--</option></select>
+                                          
+                                             <select id="Department" name="Department" class="form-control input-rounded requiredselect"><option value="-1">--Select Superiour--</option></select>
                                             @*@Html.DropDownListFor(model => model.Department, new SelectList(ViewBag.DepartmentList, "DeptId", "DepartmentName"), "Department", new { @class = "form-control input-rounded required requiredselect", @id = "Department" })*@
                                             @*@Html.TextBoxFor(model => model.Department, new { @Placeholder = "Seating Name", @class = "form-control input-rounded required isValidLocationName" })*@
-
+                                            
                                         </div>
                                     </div>
                                     <div class="form-group row">
 
                                         @*@Html.LabelFor(model => model.JobDescription, new { @class = "col-sm-2 col-form-label" })*@
                                         <div class="col-sm-11">
-                                            @Html.TextBoxFor(model => model.JobDescription, new { @Placeholder = "Job Description", @id = "JobDescription", @class = "form-control input-rounded required isValidLocationName" })
+                                            @Html.TextBoxFor(model => model.JobDescription, new { @Placeholder = "Job Description",@id= "JobDescription", @class = "form-control input-rounded required isValidLocationName" })
                                         </div>
                                         <a class="addrows col-sm-1"><i class="fa fa-plus-circle fa-2x addColorPlusMinus" style="cursor:pointer;" aria-hidden="true"></i></a>
                                     </div>
@@ -84,7 +84,7 @@
                                     </span>
                                     <div class="form-group row">
                                         @*@Html.LabelFor(model => model.RolesAndResponsibility, new { @class = "col-sm-2 col-form-label" })*@
-                                        @Html.TextAreaFor(model => model.RolesAndResponsibility, new { rows = "20", style = "resize:none;width:400px;", placeholder = Html.DisplayNameFor(model => model.RolesAndResponsibility), @id = "RolesAndResponsibility", @class = "form-control input-rounded required textarea-editor" })
+                                        @Html.TextAreaFor(model => model.RolesAndResponsibility, new { rows = "20", style = "resize:none;width:400px;", placeholder = Html.DisplayNameFor(model => model.RolesAndResponsibility),@id= "RolesAndResponsibility", @class = "form-control input-rounded required textarea-editor" })
                                     </div>
                                 </div>
                             </form>
@@ -101,10 +101,10 @@
             </div>
         </div>
         @*<div class="modal-footer" style="background: white;">
-                <button type="button" class="btn btn-success pull-left" id="ViewVSC" style="border-radius:100px;">View Chart</button>
-                <button type="button" class="btn btn-secondary" id="closeVSC" style="border-radius:100px;" data-dismiss="modal">Close</button>
-                <input type="button" class="btn btn-primary" id="SaveVSC" style="border-radius:100px;" value="Save" />
-            </div>*@
+            <button type="button" class="btn btn-success pull-left" id="ViewVSC" style="border-radius:100px;">View Chart</button>
+            <button type="button" class="btn btn-secondary" id="closeVSC" style="border-radius:100px;" data-dismiss="modal">Close</button>
+            <input type="button" class="btn btn-primary" id="SaveVSC" style="border-radius:100px;" value="Save" />
+        </div>*@
     </div>
 </div>
 
@@ -124,7 +124,7 @@
                         <div class="" id="DivContractDetailsIndex">
                             <form id="SaveJobTitleForm">
                                 @Html.HiddenFor(model => model.JobTitleDesc)
-                                @Html.HiddenFor(model => model.JobTitleId, new { @id = "JobTitleId" })
+                                @Html.HiddenFor(model => model.JobTitleId, new {@id= "JobTitleId" })
                                 @Html.HiddenFor(model => model.parentId, new { @id = "parentIdForJobTitle" })
                                 <div class="basic-form" style="margin-right: 40px;">
                                     <span id="addJobTitleLabel">
@@ -144,7 +144,7 @@
                 </div>
                 <br />
                 <br />
-                <div>
+                <div>                   
                     <button type="button" class="btn btn-secondary pull-right" id="closeJobTitle" style="border-radius:100px;" data-dismiss="modal">Close</button>
                     <input type="button" class="btn btn-primary pull-right" id="SaveJobTitle" style="border-radius:100px;margin-right: 10px;" value="Save" />
                 </div>
@@ -152,10 +152,6 @@
         </div>
     </div>
 </div>
-
-
-
-
 <!--End of Modals-->
 <!--Use Text tool for Roles and responsibility-->
 @*<script src="~/Content/NewAdminContent/JQUERY/tinymce.min.js"></script>*@
@@ -185,7 +181,7 @@
             var valId =  $(this).find('option:selected').val();
             $("#Superior").val(valId);
         })
-
+          
         $(".deletedata").click(function () {
             var jobId = this.attr("jobtitleid");
             var valId = $(this).find('option:selected').val();

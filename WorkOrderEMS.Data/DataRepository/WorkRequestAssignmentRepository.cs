@@ -229,9 +229,9 @@ namespace WorkOrderEMS.Data.DataRepository
             }
         }
 
-        public List<ssp_GetContinuousTaskListByEmpID_Result> GetContinuousTaskListByEmpID(string ServiceAuthKey, long UserId, long LocationId)
+        public List<ssp_GetContinuousTaskListByEmpID_Result1> GetContinuousTaskListByEmpID(string ServiceAuthKey, long UserId, long LocationId)
         {
-            List<ssp_GetContinuousTaskListByEmpID_Result> lstWorkAssigned = new List<ssp_GetContinuousTaskListByEmpID_Result>();
+            List<ssp_GetContinuousTaskListByEmpID_Result1> lstWorkAssigned = new List<ssp_GetContinuousTaskListByEmpID_Result1>();
             try
             {
                 lstWorkAssigned = _workorderEMSEntities.ssp_GetContinuousTaskListByEmpID(ServiceAuthKey, UserId, LocationId).ToList();
@@ -243,14 +243,14 @@ namespace WorkOrderEMS.Data.DataRepository
             }
         }
 
-        public ServiceResponseModel<ssp_UpdateWorkRequestStatus_Result> UpdateWorkRequestStatus(string ServiceAuthKey, long UserId, long WorkRequestAssignmentID, int WorkRequestStatus, int LocationID, int WorkRequestType, string message, string StartTime = null, string EndTime = null, string WorkStatusDesc = null, string EndDate = null)
+        public ServiceResponseModel<ssp_UpdateWorkRequestStatus_Result1> UpdateWorkRequestStatus(string ServiceAuthKey, long UserId, long WorkRequestAssignmentID, int WorkRequestStatus, int LocationID, int WorkRequestType, string message, string StartTime = null, string EndTime = null, string WorkStatusDesc = null, string EndDate = null)
         {
-            ServiceResponseModel<ssp_UpdateWorkRequestStatus_Result> ObjServiceResponseModel = new ServiceResponseModel<ssp_UpdateWorkRequestStatus_Result>();
+            ServiceResponseModel<ssp_UpdateWorkRequestStatus_Result1> ObjServiceResponseModel = new ServiceResponseModel<ssp_UpdateWorkRequestStatus_Result1>();
             try
             {
                 //long? test=UserId;
                 ObjServiceResponseModel.Data = _workorderEMSEntities.ssp_UpdateWorkRequestStatus(ServiceAuthKey, UserId, WorkRequestAssignmentID, WorkRequestStatus, WorkRequestType, LocationID, message, StartTime, EndTime, WorkStatusDesc, EndDate)
-                                                .Select(t => new ssp_UpdateWorkRequestStatus_Result()
+                                                .Select(t => new ssp_UpdateWorkRequestStatus_Result1()
                 {
                     Response = t.Response,
                     ResponseMessage = t.ResponseMessage

@@ -14,7 +14,6 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class TaxDetail
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public TaxDetail()
         {
             this.LogTaxDetails = new HashSet<LogTaxDetail>();
@@ -26,7 +25,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public string TXD_TaxDocument { get; set; }
         public string TXD_IsActive { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LogTaxDetail> LogTaxDetails { get; set; }
     }
 }

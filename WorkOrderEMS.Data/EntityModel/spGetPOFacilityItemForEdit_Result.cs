@@ -21,8 +21,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<decimal> CFM_Rate { get; set; }
         public Nullable<decimal> CFM_Tax { get; set; }
         public string CFM_Discription { get; set; }
-        public Nullable<long> POF_Unit { get; set; }
-        public string CFM_IsActive { get; set; }
         public Nullable<decimal> BCM_BalanceAmount { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace WorkOrderEMS.Data.EntityModel
     public partial class spGetPOType_Result
     {
         public long POT_Id { get; set; }
-        public string POT_POType { get; set; }
+        public string POT_POName { get; set; }
         public string POT_IsActive { get; set; }
     }
 }

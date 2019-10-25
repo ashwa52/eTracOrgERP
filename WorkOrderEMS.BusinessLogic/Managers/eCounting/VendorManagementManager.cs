@@ -1922,6 +1922,30 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 
         /// <summary>
         /// Created By : Ajay Kumar
+        /// Created Date : 10-Oct-2019
+        /// Crated For : To check duplicate Point Of Contact  for vendor
+        /// </summary>
+        /// <param name="taxNumber"></param>
+        /// <returns></returns>
+        public bool PointOfContactIsExists(string txtPointOfContact, long VendorId)
+        {
+            bool result = false;
+            if (VendorId > 0)
+            {
+                var status = _workorderems.CompanyDetails.Any(u => u.COD_PointOfContact.ToLower() == txtPointOfContact.Trim().ToLower() && u.COD_CMP_Id != VendorId);
+                result = status == true ? result = true : result = false;
+            }
+            else
+            {
+                var status = _workorderems.CompanyDetails.Any(u => u.COD_PointOfContact.ToLower() == txtPointOfContact.Trim().ToLower());
+                result = status == true ? result = false : result = true;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Created By : Ajay Kumar
         /// Created Date : 19-Sep-2019
         /// Crated For : To check duplicate INS_PolicyNumber  for vendor
         /// </summary>

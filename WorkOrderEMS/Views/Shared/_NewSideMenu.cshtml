@@ -111,7 +111,7 @@
             <li>
                 <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-cogs"></i><span class="nav-text">Operation</span></a>
                 <ul aria-expanded="false">
-                    <li><a href="@Url.Action("EMaintananceDashboard", "NewAdmin")" data-oldDash="No"><i class="fa fa-wrench"></i>eMaintenance</a></li>
+                    <li><a href="@Url.Action("EMaintananceDashboard", "NewAdmin")" data-oldDash="No"><i class="fa fa-wrench"></i>eMaintanace</a></li>
                     <li><a href="@Url.Action("EScanDashboard", "NewAdmin")" data-oldDash="No"><i class="fa fa-print"></i>eScanner</a></li>
                     <li><a href="@Url.Action( "DARDashboard", "NewAdmin")" data-oldDash="No"><i class="fa fa-list"></i>DAR</a></li>
                     <li><a href="@Url.Action( "OperationReports", "NewAdmin")" data-oldDash="No"><i class="fa fa-area-chart"></i>Report</a></li>
@@ -122,8 +122,8 @@
                 <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-user-circle-o"></i><span class="nav-text">ePeople</span></a>
                 <ul aria-expanded="false">
                     <li><a href="@Url.Action("ePeopleDashboard", "NewAdmin")" data-oldDash="No">Employee Management</a></li>
-                    <li><a href="@Url.Action("HiringOnBoardingDashboard", "NewAdmin")" data-oldDash="No">Hiring & Onboarding</a></li>
-                    <li><a href="@Url.Action( "PerformanceManagement", "NewAdmin" )" data-oldDash="No">Performance Management</a></li>
+                    <li><a href="@Url.Action("ePeopleDashboard", "NewAdmin")" data-oldDash="No">Hiring & Onboarding</a></li>
+                    <li><a href="@Url.Action( "ePeopleDashboard", "NewAdmin")" data-oldDash="No">Performance Management</a></li>
                     <li><a href="@Url.Action( "ePeopleDashboard", "NewAdmin")" data-oldDash="No">eTime </a></li>
                 </ul>
             </li>
@@ -208,6 +208,9 @@
                     </li>
 
                     <li><a href="@Url.Action("PaymentView", "Payment")" data-oldDash="Yes"><i class="fa fa-money" aria-hidden="true"></i><span class="nav-text">Payment Desk</span></a></li>
+                    <li><a href="@Url.Action("Reconciliationsreports", "VendorManagement")" data-oldDash="Yes"><i class="fa fa-money" aria-hidden="true"></i><span class="nav-text">Bank Reconciliations</span></a></li>
+                    <li><a href="@Url.Action("Index", "DebitMemo")" data-oldDash="Yes"><i class="fa fa-envelope-open-o" aria-hidden="true"></i><span class="nav-text">Debit Memo</span></a></li>
+                   
                     <li><a href="@Url.Action("eCountingReport", "eCountingReport")" data-oldDash="Yes"><i class="fa fa-bar-chart" aria-hidden="true"></i><span class="nav-text">Reports</span></a></li>
                     @*<li>
             <a class="" href="javascript:void()" aria-expanded="false">Financial Form</a>

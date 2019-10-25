@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
 using System.Web.Mvc;
-using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
 using WorkOrderEMS.Models.CommonModels;
-using WorkOrderEMS.Models.Employee;
-using WorkOrderEMS.Models.NewAdminModel;
 using WorkOrderEMS.Models.SuperAdminModels;
 using WorkOrderEMS.Models.UserModels;
 
@@ -266,21 +263,6 @@ namespace WorkOrderEMS.BusinessLogic
         List<ContractDropdownDetailsModel> ListClientInvoicingTerm();
         List<listForEmployeeDevice> send30SecFRNotificaitonToAllManager(long LocationId, long UserId);
         List<listForEmployeeDevice> GetAllManagerList(long LocationId, long UserId);
-		List<MyOpeningModel> GetMyOpenings();
-		List<JobPosting> GetJobPostong(long userId);
-		List<spGetApplicantInfo_Result1> GetApplicantInfo(long userId);
-		bool SaveApplicantInfo(OnboardingDetailRequestModel onboardingDetailRequestModel);
-		bool SaveGuestEmployeeBasicInfo(GuestEmployeeBasicInfoRequestModel guestEmployeeBasicInfoRequestModel);
-		InterviewersViewModel GetInterviewersList(long applicantId, long userId);
-		IEnumerable<spGetInterviewQuestion_Result> GetInterviewQuestions();
-		bool SaveInterviewAnswers(InterviewAnswerModel model, long UserId);
-		List<MyOpeningModel> GetMyInterviews(long userId);
-		bool IsInterviewerOnline(long ApplicantId, long UserId, string IsAvailable, string Comment);
-		int GetScore(long ApplicantId);
-		bool CheckIfAllRespondedForQuestion(long ApplicantId);
-        List<PerformanceModel> GetListOf306090ForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords);
-        List<GWCQUestionModel> GetGWCQuestions(string Id,string AssessmetType);
-        bool saveSelfAssessment(List<GWCQUestionModel> data, string action);
-        // BudgetDetails GetListBudgetDetails(long? LocationId, long? UserId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
+       // BudgetDetails GetListBudgetDetails(long? LocationId, long? UserId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
     }
 }

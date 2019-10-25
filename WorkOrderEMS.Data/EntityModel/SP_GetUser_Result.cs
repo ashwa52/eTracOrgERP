@@ -14,9 +14,6 @@ namespace WorkOrderEMS.Data.EntityModel
     public partial class SP_GetUser_Result
     {
         public long UserId { get; set; }
-        public string UserSignature { get; set; }
-        public Nullable<long> PaymentMode { get; set; }
-        public Nullable<long> PaymentTerm { get; set; }
         public string Password { get; set; }
         public string UserEmail { get; set; }
         public string AlternateEmail { get; set; }

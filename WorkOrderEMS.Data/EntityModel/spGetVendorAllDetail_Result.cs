@@ -68,5 +68,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<System.DateTime> CNT_BillDueDate { get; set; }
         public Nullable<decimal> CNT_LateFeeFine { get; set; }
         public string CNT_ContractDocument { get; set; }
+        public string CNT_IsActive { get; set; }
     }
 }

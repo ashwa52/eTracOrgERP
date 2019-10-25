@@ -10,8 +10,7 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
     public interface IAdminDashboard
     {
         List<AddChartModel> ListSuperiour();
-        AddChartModel SaveVSC(AddChartModel Obj);
-        //bool SaveVSC(AddChartModel Obj);
+        bool SaveVSC(AddChartModel Obj);
         List<AddChartModel> ListVehicleSeatingChart(long? LocationId);
         bool SaveJobTitleVSC(AddChartModel Obj);
         List<AddChartModel> GetJobTitleData(long CSVChartId);

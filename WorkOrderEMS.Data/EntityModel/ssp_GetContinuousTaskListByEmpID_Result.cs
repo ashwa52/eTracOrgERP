@@ -36,6 +36,5 @@ namespace WorkOrderEMS.Data.EntityModel
         public string WorkRequestTypeCodeName { get; set; }
         public long WorkRequestProjectType { get; set; }
         public string WorkRequestProjectTypeName { get; set; }
-        public Nullable<System.DateTime> ConStartTime { get; set; }
     }
 }

@@ -40,7 +40,7 @@ $("#SearchQRCTypeData").change(function () {
             { name: 'QRCodeID', width: 160, title: "QRCode ID", css: "text-center" },//visible: true
             { name: 'QRCName', width: 150, title: "QRC Item Name" },
                     { name: "QRCTYPE", width: 150, title: "QRC Type" },
-                    { name: "SpecialNotes", width: 150, title: "Special Notes" },
+                    { name: "SpecialNotes", width: 150, title: "Special Notes" },                                      
                     {
                         name: "act", title: "Action", width: 100, css: "text-center", itemTemplate: function (value, item) {
                             var $iconCheckIn = null;
@@ -51,7 +51,8 @@ $("#SearchQRCTypeData").change(function () {
                             if ((item.CheckOutStatus == 'False' || item.CheckOutStatus == '0') && (item.QRCTYPEId == "36" || item.QRCTYPEId == 36)) {
                                 $iconCheckIn = $("<i>").attr({ class: "fa fa-check-circle-o" }).attr({ style: "font-size:22px;margin-left:8px;" });
                             }
-                            if ((item.CheckOutStatus == 'False' || item.CheckOutStatus == '0') && ((item.IsDamage == 'True' || item.IsDamage == 1) && (item.IsDamageVerified == null || item.IsDamageVerified == 'YesNull' || item.IsDamageVerified == undefined)) && (item.QRCTYPEId == "36" || item.QRCTYPEId == 36)) {
+                            if ((item.CheckOutStatus == 'False' || item.CheckOutStatus == '0') && ((item.IsDamage == 'True' || item.IsDamage == 1) && (item.IsDamageVerified == null || item.IsDamageVerified == 'YesNull' || item.IsDamageVerified == undefined)) && (item.QRCTYPEId == "36" || item.QRCTYPEId == 36))
+                            {
                                 $iconDamage = $("<i>").attr({ class: "fa fa-check-circle-o" }).attr({ style: "font-size:22px;margin-left:8px;" });
                                 $iconCheckIn = $("<i><img>").attr({ src: "../Content/Images/car_damage.png" });
                             }
@@ -62,7 +63,7 @@ $("#SearchQRCTypeData").change(function () {
                                     $('#QRCForm').load(addNewUrl);
                                     $("#OperationDARListDiv, .dispayListQRCName, #OperationDARListDiv, .dispayListQRCName").hide();
                                     $("#OperationCreateQRCListDiv, .dispayCreateQRCName , .createQRCForm").show();
-
+                                
                                     e.stopPropagation();
                                 }).append($iconPencil);
                             var $customDeleteButton = $("<span>")
@@ -73,7 +74,7 @@ $("#SearchQRCTypeData").change(function () {
                                           url: "../QRCSetup/Delete?qr=" + item.id,
                                           success: function (Data) {
                                               $("#ListQRC").jsGrid("loadData");
-
+                                              
                                           },
                                           error: function (err) {
                                           }
@@ -82,7 +83,7 @@ $("#SearchQRCTypeData").change(function () {
                             var $customQRCButton = $("<span>")
                               .attr({ title: jsGrid.fields.control.prototype.qrcButtonTooltip })
                               .attr({ id: "btn-qrc-" + item.id }).click(function (e) {
-                                  QRCGenerate(item.id);
+                                QRCGenerate(item.id);
                               }).append($iconQRC);
                             return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton).append($customDeleteButton).append($customQRCButton);
                         }
@@ -271,7 +272,7 @@ function QRCGenerate(id) {
             //$("#lblQRCTYPE").html(result.data.QRCTYPE);
             //$("#").html(result.data.VendorID);
             $("#lblCompanyName").html(result.data.CompanyName);
-            // $("#").html(result.data.ContactName);
+           // $("#").html(result.data.ContactName);
             $("#lblBusinessNo").html(result.data.BusinessNo);
             $("#pDriverName").html("<b>Company Name:- </b>" + result.data.CompanyName);
             $("#pCompanyName").html("<b>Driver Name:- </b>" + result.data.DriverName);

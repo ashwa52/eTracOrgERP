@@ -560,17 +560,5 @@ namespace WorkOrderEMS.Helper
         {
             return FirstName + " "+ LastName + "want to checkout QRC" + QRCID + " " + " which is already checked out by" + " " + UserName;
         }
-        public static string ApprovedRequisition()
-        {
-            return "The requisition has been approved successfully.";
-        }
-        public static string RejectRequisition()
-        {
-            return "The requisition has been rejected successfully.";
-        }
-        public static string JobCountSendApproval()
-        {
-            return "The Job count has been send for approval.";
-        }
     }
 }

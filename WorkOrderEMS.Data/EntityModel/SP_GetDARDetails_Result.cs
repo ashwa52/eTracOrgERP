@@ -14,6 +14,6 @@ namespace WorkOrderEMS.Data.EntityModel
     public partial class SP_GetDARDetails_Result
     {
         public string Task_Details { get; set; }
-        public string SubmittedOn { get; set; }
+        public string C_SubmittedOn { get; set; }
     }
 }

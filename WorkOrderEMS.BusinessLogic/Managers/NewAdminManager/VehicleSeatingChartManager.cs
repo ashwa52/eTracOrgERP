@@ -49,9 +49,8 @@ namespace WorkOrderEMS.BusinessLogic
         /// </summary>
         /// <param name="Obj"></param>
         /// <returns></returns>
-        public AddChartModel SaveVSC(AddChartModel Obj)
+        public bool SaveVSC(AddChartModel Obj)
         {
-            var _workorderEMS = new workorderEMSEntities();
             bool isSaved = false;
             try
             {
@@ -60,20 +59,21 @@ namespace WorkOrderEMS.BusinessLogic
                 if (Obj != null && Obj.SeatingName != null)
                 {
                     if (Obj.Id == null)
-                    {                     
+                    {
+                        Obj.Action = "I";
+                        Obj.IsActive = "N";
                         isSaved = _VSCRepository.SaveVSCRepository(Obj);
-                        Obj.Id = _workorderEMS.VehicleSeatings.OrderByDescending(x => x.VST_Id).FirstOrDefault().VST_Id;
                     }
                     else
                     {
                         Obj.Action = "U";
                         Obj.IsActive = "Y";
                         isSaved = _VSCRepository.SaveVSCRepository(Obj); 
-                    }                    
+                    }
                 }
                 else
                 {
-                    Obj = null;
+                    isSaved = false;
                 }
             }
             catch (Exception ex)
@@ -81,7 +81,7 @@ namespace WorkOrderEMS.BusinessLogic
                 Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SaveVSC(AddChartModel Obj)", "Exception While Saving Vehicle seating chart.", Obj);
                 throw;
             }
-            return Obj;
+            return isSaved;
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace WorkOrderEMS.BusinessLogic
                    parentId = x.VST_ParentId,
                    JobDescription = x.VST_JobDescription,
                    RolesAndResponsibility = x.VST_RolesAndResponsiblities,
-                   IsActive = x.VST_IsExempt,
+                   IsActive = x.VST_IsActive,
                    SeatingName  = x.VST_Title,
                    //Image = HostingPrefix + ProfileImagePath.Replace("~", "") + "no-profile-pic.jpg"
                }).ToList();

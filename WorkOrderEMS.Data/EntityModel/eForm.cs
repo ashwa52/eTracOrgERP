@@ -14,7 +14,6 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class eForm
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public eForm()
         {
             this.eFormTracks = new HashSet<eFormTrack>();
@@ -28,7 +27,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public string EFM_IsActive { get; set; }
     
         public virtual Module Module { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<eFormTrack> eFormTracks { get; set; }
     }
 }
