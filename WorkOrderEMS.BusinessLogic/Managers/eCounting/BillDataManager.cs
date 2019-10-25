@@ -610,7 +610,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             {
                 if (FacilityId != null)
                 {
-                    long Fac_Id = 150097; //Convert.ToInt64(FacilityId);
+                    long Fac_Id = Convert.ToInt64(FacilityId);
                     listPOFacility = _workorderems.CompanyFacilityMappings.Join(_workorderems.POFacilityItems, q => q.CFM_Id, u => u.POF_CFM_Id, (q, u) => new { q, u }).
                             Where(x => x.q.CFM_Id == Fac_Id).Select(a => new FacilityListData
                             //listPOFacility = _workorderems.CompanyFacilityMappings.Where(x => x.CFM_Id == Fac_Id).Select(a => new FacilityListData
