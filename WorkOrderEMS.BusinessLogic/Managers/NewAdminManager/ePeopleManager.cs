@@ -8,6 +8,7 @@ using WorkOrderEMS.Data;
 using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
+using WorkOrderEMS.Models.Employee;
 
 namespace WorkOrderEMS.BusinessLogic
 {
@@ -140,7 +141,7 @@ namespace WorkOrderEMS.BusinessLogic
                             LocationId = x.EMP_LocationId,
                             JobTitleId = x.EMP_JobTitleId,
                             ProfilePhoto = x.EMP_Photo == null ? HostingPrefix + ProfilePicPath.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + x.EMP_Photo
-                        }).ToList();                      
+                        }).ToList();
                     }
                 }
             }
@@ -303,7 +304,7 @@ namespace WorkOrderEMS.BusinessLogic
         /// </summary>
         /// <param name="VSCId"></param>
         /// <returns></returns>
-        public List<AddChartModel> GetVSCDetailsById(long VSCId)
+        public AddChartModel GetVSCDetailsById(long VSCId)
         {
             var _ePeopleRepository = new ePeopleRepository();
             try
@@ -311,14 +312,14 @@ namespace WorkOrderEMS.BusinessLogic
                 var lst = _ePeopleRepository.GetVSCDetails(VSCId).Select(x => new AddChartModel()
                 {
                     DepartmentName = x.DPT_Name,
-                    EmploymentClassification=x.VST_IsExempt,
+                    EmploymentClassification = x.VST_IsExempt,
                     EmploymentStatus = x.VST_EmploymentStatus,
                     JobDescription = x.VST_JobDescription,
                     SeatingName = x.VST_Title,
                     RateOfPay = x.VST_RateOfPay,
                     RolesAndResponsibility = x.VST_RolesAndResponsiblities,
-                   // x.
-                }).ToList();
+                    // x.
+                }).FirstOrDefault();
 
                 return lst;
             }
@@ -344,7 +345,7 @@ namespace WorkOrderEMS.BusinessLogic
             {
                 if (UserId > 0)
                 {
-                    var userDetails =  objworkorderEMSEntities.UserRegistrations.Where(x => x.UserId == UserId && x.IsEmailVerify == true && x.IsDeleted == false).FirstOrDefault();
+                    var userDetails = objworkorderEMSEntities.UserRegistrations.Where(x => x.UserId == UserId && x.IsEmailVerify == true && x.IsDeleted == false).FirstOrDefault();
                     if (userDetails != null)
                     {
                         lst = _ePeopleRepository.GetEmployeeManagementListData(LocationId, userDetails.EmployeeID).Select(x => new UserModelList()
@@ -407,5 +408,289 @@ namespace WorkOrderEMS.BusinessLogic
             }
             return UserModel;
         }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 20-Oct-2019
+        /// Created For : To save for approval requisition
+        /// </summary>
+        /// <param name="Obj"></param>
+        /// <returns></returns>
+        public bool ApprovalRequisition(AddChartModel Obj)
+        {
+            var _workorderEMS = new workorderEMSEntities();
+            bool isSaved = false;
+            try
+            {
+                var ePeopleRepository = new ePeopleRepository();
+                string Action = string.Empty;
+                
+                var getEmpDetails = _workorderEMS.UserRegistrations.Where(x => x.UserId == Obj.UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
+                if (getEmpDetails != null)
+                {
+                    Obj.EmployeeId = getEmpDetails.EmployeeID;
+                    if (Obj.IsDeleted == false)
+                    {
+                        if (Obj != null && Obj.SeatingName != null)
+                        {                        
+                            if (Obj.RequisitionId == 0)
+                            {
+                                Obj.Action = "I";
+                                Obj.ActionStatus = "Y";
+                                Obj.IsActive = "Y";
+                                Obj.RequisitionType = "Add Seat";
+                                isSaved = ePeopleRepository.SendForApproval(Obj);
+                            }
+                            else
+                            {
+                                Obj.Action = "U";
+                                Obj.IsActive = "Y";
+                                isSaved = ePeopleRepository.SendForApproval(Obj);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Obj.ActionStatus = "X";
+                        Obj.RequisitionType = "Remove Seat";
+                        isSaved = ePeopleRepository.SendForApproval(Obj);
+                    }                    
+                    isSaved = true;
+                }
+                else
+                {
+                    isSaved = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool ApprovalRequisition(AddChartModel Obj)", "Exception While Saving Vehicle seating chart.", Obj);
+                throw;
+            }
+            return isSaved;
+        }
+        /// <summary>
+        /// Created by : Ashwajit Bansod
+        /// Created Date : 20-Oct-2019
+        /// Created For : To get Requsition list
+        /// </summary>
+        /// <returns></returns>
+        public List<AddChartModel> GetRequisitionlist()
+        {
+            try
+            {
+                var ePeopleRepository = new ePeopleRepository();
+                var lst = ePeopleRepository.GetRequisitionlist().Select(x => new AddChartModel()
+                {
+                    RequisitionId = x.RQS_Id,
+                    Id = x.RQS_ActivityId,
+                    RequisitionType = x.RQS_RequizationType,
+                    ActionStatus = x.RQS_ApprovalStatus == "W"?"Waiting": x.RQS_ApprovalStatus == "A"?"Approved":"Reject",
+                    SeatingName = x.Activity
+                }).ToList();
+                return lst;
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<AddChartModel> GetRequisitionlist()", "Exception While getting lis of Requisition.", null);
+                throw;
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit bansod
+        /// Created Date : 21-Oct-2019
+        /// Created For : TO approve/ reject requisition
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Status"></param>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
+        public bool ApproveRejectAction(long Id, string Status, long UserId)
+        {
+            var _workorderEMS = new workorderEMSEntities();
+            bool IsApproveReject = false;
+            try
+            {
+                var ePeopleRepository = new ePeopleRepository();
+                if (UserId > 0)
+                {
+                    var getEmpDetails = _workorderEMS.UserRegistrations.Where(x => x.UserId == UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
+                    if (getEmpDetails != null)
+                    {
+                        if (Id > 0 && Status != null)
+                        {
+                            var Statusdata = ePeopleRepository.ApproveRejectRequisition(Id, Status, getEmpDetails.EmployeeID);
+                            IsApproveReject = true;
+                        }
+                        else
+                        {
+                            IsApproveReject = false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool ApprovalRequisition(AddChartModel Obj)", "Exception While Saving Vehicle seating chart.", Id);
+                throw;
+            }
+            return IsApproveReject;
+        }
+
+        /// <summary>
+        /// Created By : Ashwajit bansod
+        /// Created Date : 21-oct-2019
+        /// Created For : To get job title cout list
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public List<AddChartModel> GetJobTitleCountForRequistion(long VSCId)
+        {
+            try
+            {
+                var ePeopleRepository = new ePeopleRepository();
+                var lst = ePeopleRepository.GetJobTitleCount(VSCId).Select(x => new AddChartModel()
+                {
+                    JobTitleCount = x.JBT_JobCount,
+                    Id = x.JBT_Id,
+                    JobTitle = x.JBT_JobTitle
+                }).ToList();
+                return lst;
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<AddChartModel> GetJobTitleCountForRequistion(long VSCId)", "Exception While getting lis of job tilte.", null);
+                throw;
+            }
+        }
+        /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created Date : 22-oct-2019
+        /// Created For : To get job details by job Id
+        /// </summary>
+        /// <param name="JobId"></param>
+        /// <returns></returns>
+        public JobTitleModel GetJobTitleCount(long JobId)
+        {
+            var details = new JobTitleModel();
+            try
+            {
+                var ePeopleRepository = new ePeopleRepository();
+                var data = ePeopleRepository.GetJobCount(JobId);
+                if (data != null) {
+
+                    details.JobTitleCount = data.JBT_JobCount;
+                    details.JobTitleId = data.JBT_Id;
+                    details.JobTitle = data.JBT_JobTitle;
+                    details.JobTitleLastCount = data.JBT_JobCount;
+                }
+                return details;
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public JobTitleModel GetJobTitleCount(long JobId)", "Exception While getting details of job tilte.", JobId);
+                throw;
+            }
+        }
+
+        /// <summary>
+        /// Created By  :Ashwajit bansod
+        /// Created Date : 22-Oct-2019
+        /// Created For : To send job title for approval
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public bool SendJobTitleForApproval(JobTitleModel model)
+        {
+            bool isSaved = false;
+            var Obj = new AddChartModel();
+            try
+            {
+                var ePeopleRepository = new ePeopleRepository();
+                if (model != null)
+                {
+                    Obj.JobTitleCount = model.JobTitleCount;
+                    Obj.Id = model.JobTitleId;
+                    if (model.JobTitleCount > model.JobTitleLastCount)
+                    {
+                        Obj.ActionStatus = "Y";
+                        Obj.IsActive = "Y";
+                        Obj.RequisitionType = "Add Head Count";
+                    }
+                    else
+                    {
+                        Obj.ActionStatus = "Y";
+                        Obj.IsActive = "Y";
+                        Obj.RequisitionType = "Remove Head Count";
+
+                    }
+                    isSaved = ePeopleRepository.SendForApproval(Obj);
+                    isSaved = true;
+                }
+                else
+                    isSaved = false;
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, " public bool SendJobTitleForApproval(JobTitleModel model)", "Exception While getting send job title for approval.", model);
+                throw;
+            }
+            return isSaved;
+        }
+
+        #region Files
+        /// <summary>
+        /// Created By
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public bool SaveDirectDepositeForm(DirectDepositeFormModel model)
+        {
+            try
+            {
+                using (workorderEMSEntities Context = new workorderEMSEntities())
+                {
+                    var tt = new GuestUserRepository();
+                    var data = tt.GetDirectDepositeDataByEmployeeId(model.EmployeeId);
+                    if (data != null)
+                        return Context.spSetDirectDepositForm("U", model.EmployeeId, model.Account1.EmployeeBankName, model.Account1.AccountType,
+                            model.Account1.Account, model.Account1.BankRouting, model.Account1.DepositeAmount, model.Account2.EmployeeBankName, model.Account2.AccountType, model.Account2.Account
+                            , model.Account2.BankRouting, model.VoidCheck, "Y") > 0 ? true : false;
+
+                    return Context.spSetDirectDepositForm("I", model.EmployeeId, model.Account1.EmployeeBankName, model.Account1.AccountType,
+                            model.Account1.Account, model.Account1.BankRouting, model.Account1.DepositeAmount.HasValue ? model.Account1.DepositeAmount.Value : 0, model.Account2.EmployeeBankName, model.Account2.AccountType, model.Account2.Account
+                            , model.Account2.BankRouting, model.VoidCheck, "Y") > 0 ? true : false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 25-Oct-2019
+        /// Created For : To get uploaded files data
+        /// </summary>
+        /// <param name="EmployeeId"></param>
+        /// <returns></returns>
+        public List<UploadedFiles> GetUploadedFilesOfUser(string EmployeeId)
+        {
+            var lst = new List<UploadedFiles>();
+            try
+            {
+                var ePeopleRepository = new ePeopleRepository();
+                lst = ePeopleRepository.GetUploadFilesList(EmployeeId).Select(x => new UploadedFiles()
+                {
+
+                }).ToList();
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public UploadedFiles GetUploadedFilesOfUser(string EmployeeId)", "Exception While getting list of files by user id.", EmployeeId);
+                throw;
+            }
+        }
+        #endregion Files
     }
 }

@@ -13,7 +13,7 @@ namespace WorkOrderEMS.Data.DataRepository
 	{
 		workorderEMSEntities _workorderEMSEntities = new workorderEMSEntities();
 
-		public List<spGetApplicantInfo_Result> GetApplicantInfo(string employeeId)
+		public List<spGetApplicantInfo_Result1> GetApplicantInfo(string employeeId)
 		{
 			return _workorderEMSEntities.spGetApplicantInfo(employeeId).ToList();
 		}

@@ -27,7 +27,7 @@ namespace WorkOrderEMS.Models.Employee
 		public string VoidCheck { get; set; }
 		public string IsActive { get; set; }
 		public bool IsSave { get; set; }
-	}
+    }
 	public class AccountModel
 	{
 		[Required]

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity.Core.Objects;
@@ -3786,7 +3787,14 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 		{
 			try
 			{
-				using (workorderEMSEntities Context = new workorderEMSEntities())
+                var model = new RecruiteeAPI();                
+                string Url = "https://api.recruitee.com/c/40359/candidates/";
+                var getList = model.Index(Url).Result;
+                if (getList != "false")
+                {
+                    var aa = JsonConvert.DeserializeObject<CandidateGetModel.CandidateGet>(getList);
+                }            
+                using (workorderEMSEntities Context = new workorderEMSEntities())
 				{
 					var myOpenings = (from x in Context.spGetMyOpening()
 									  select new MyOpeningModel
@@ -3860,7 +3868,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
             //return lst;
         }
-		public List<spGetApplicantInfo_Result> GetApplicantInfo(long userId)
+		public List<spGetApplicantInfo_Result1> GetApplicantInfo(long userId)
 		{
 			ObjnewAdminRepository = new NewAdminRepository();
 			try
@@ -3930,7 +3938,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 						INS_IsAvailable = x.INS_IsAvailable,
 						INS_IsHiringManager = x.INS_IsHiringManager,
 						InterviwerName = x.InterviwerName,
-						ProfileImage = x.ProfileImage
+						ProfileImage = x.EMP_Photo
 					}).ToList();
 					interviewersList.Interviewers = interviewers;
 					interviewersList.currentEmployeeId = hiringManagerId;

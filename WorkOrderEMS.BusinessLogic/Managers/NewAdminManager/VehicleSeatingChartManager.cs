@@ -49,8 +49,9 @@ namespace WorkOrderEMS.BusinessLogic
         /// </summary>
         /// <param name="Obj"></param>
         /// <returns></returns>
-        public bool SaveVSC(AddChartModel Obj)
+        public AddChartModel SaveVSC(AddChartModel Obj)
         {
+            var _workorderEMS = new workorderEMSEntities();
             bool isSaved = false;
             try
             {
@@ -59,21 +60,20 @@ namespace WorkOrderEMS.BusinessLogic
                 if (Obj != null && Obj.SeatingName != null)
                 {
                     if (Obj.Id == null)
-                    {
-                        Obj.Action = "I";
-                        Obj.IsActive = "N";
+                    {                     
                         isSaved = _VSCRepository.SaveVSCRepository(Obj);
+                        Obj.Id = _workorderEMS.VehicleSeatings.OrderByDescending(x => x.VST_Id).FirstOrDefault().VST_Id;
                     }
                     else
                     {
                         Obj.Action = "U";
                         Obj.IsActive = "Y";
                         isSaved = _VSCRepository.SaveVSCRepository(Obj); 
-                    }
+                    }                    
                 }
                 else
                 {
-                    isSaved = false;
+                    Obj = null;
                 }
             }
             catch (Exception ex)
@@ -81,7 +81,7 @@ namespace WorkOrderEMS.BusinessLogic
                 Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SaveVSC(AddChartModel Obj)", "Exception While Saving Vehicle seating chart.", Obj);
                 throw;
             }
-            return isSaved;
+            return Obj;
         }
 
         /// <summary>

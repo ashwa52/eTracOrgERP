@@ -97,7 +97,8 @@
                 $(".get-text-7").attr("y", "240"); $(".get-text-8").attr("y", "270");
                 $(".get-text-9").attr("y", "300"); $(".get-text-10").attr("y", "330");
             }
-            $(".get-level-" + PointingId + " ").children().css('fill', 'green');
+            $('[data-node-id="'+PointingId+'"]').children().first().css("fill", "green");
+            //$(".get-level-" + PointingId + " ").children().css('fill', 'green');
         },
         error: function (err) {
         }

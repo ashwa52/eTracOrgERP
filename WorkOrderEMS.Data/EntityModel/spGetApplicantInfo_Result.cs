@@ -39,6 +39,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<System.DateTime> JobPostingDate { get; set; }
         public Nullable<long> VST_Id { get; set; }
         public long API_JobTitleID { get; set; }
+        public Nullable<long> API_HiringManagerID { get; set; }
         public Nullable<System.DateTime> API_DateOfJoining { get; set; }
         public Nullable<decimal> API_DesireSalary { get; set; }
         public string API_ApplicantStatus { get; set; }
@@ -46,9 +47,5 @@ namespace WorkOrderEMS.Data.EntityModel
         public string VST_Title { get; set; }
         public string JBT_JobTitle { get; set; }
         public string HiringManager { get; set; }
-        public string API_HiringManagerId { get; set; }
-        public string INS_EMP_InterviewerEmployeeId { get; set; }
-        public string INS_IsHiringManager { get; set; }
-        public Nullable<System.DateTime> INS_InterviewDateTime { get; set; }
     }
 }

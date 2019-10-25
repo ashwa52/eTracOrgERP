@@ -268,7 +268,7 @@ namespace WorkOrderEMS.BusinessLogic
         List<listForEmployeeDevice> GetAllManagerList(long LocationId, long UserId);
 		List<MyOpeningModel> GetMyOpenings();
 		List<JobPosting> GetJobPostong(long userId);
-		List<spGetApplicantInfo_Result> GetApplicantInfo(long userId);
+		List<spGetApplicantInfo_Result1> GetApplicantInfo(long userId);
 		bool SaveApplicantInfo(OnboardingDetailRequestModel onboardingDetailRequestModel);
 		bool SaveGuestEmployeeBasicInfo(GuestEmployeeBasicInfoRequestModel guestEmployeeBasicInfoRequestModel);
 		InterviewersViewModel GetInterviewersList(long applicantId, long userId);

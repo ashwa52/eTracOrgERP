@@ -108,7 +108,7 @@
 		<div class="card">
 			<div class="card-header">
 				<div class="profile_image inline spccing">
-					<img src="@Model.model.Image" alt="Avatar">
+					<img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar">
 				</div>
 				<div class="profile_detail inline spccing">
 					<span class="name">
@@ -143,8 +143,8 @@
 						<div class="d-sal right-pad">
 							<div>Desire Salary</div>
 							<i class="fa fa-usd" aria-hidden="true"></i>
-							@*@Html.EditorFor(x=>x.model.DesireSalary,new { @style= "display: inline-block; width: 84%; border-color: #018FFC; background-color: #018FFC; border: 0px; border-bottom: 1px solid #ddd;" })*@
-							<input type="text" value="@Model.model.DesireSalary" style=" display: inline-block; width: 84%; border-color: #018FFC; background-color: #018FFC; border: 0px; border-bottom: 1px solid #ddd;">
+							@Html.EditorFor(x=>x.model.DesireSalary,new { @style= " display: inline-block; width: 84%; border-color: #018FFC; background-color: #018FFC; border: 0px; border-bottom: 1px solid #ddd;" })
+							@*<input type="text" style=" display: inline-block; width: 84%; border-color: #018FFC; background-color: #018FFC; border: 0px; border-bottom: 1px solid #ddd;">*@
 						</div>
 						<div class="start-d right-pad">
 							<div>Available Start Date</div>

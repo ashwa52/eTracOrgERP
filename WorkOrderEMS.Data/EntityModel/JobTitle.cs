@@ -17,6 +17,8 @@ namespace WorkOrderEMS.Data.EntityModel
         public long JBT_Id { get; set; }
         public string JBT_JobTitle { get; set; }
         public long JBT_VST_Id { get; set; }
+        public Nullable<int> JBT_JobCount { get; set; }
+        public Nullable<int> JBT_FillJobCount { get; set; }
         public Nullable<System.DateTime> JBT_Date { get; set; }
         public string JBT_IsActive { get; set; }
     }

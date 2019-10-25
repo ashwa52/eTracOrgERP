@@ -21,5 +21,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public string UVM_IsActive { get; set; }
     
         public virtual UserRegistration UserRegistration { get; set; }
+        public virtual VehicleSeating VehicleSeating { get; set; }
     }
 }

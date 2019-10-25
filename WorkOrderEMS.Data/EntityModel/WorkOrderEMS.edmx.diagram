@@ -16,8 +16,10 @@
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.BudgetLocationMapping" Width="1.5" PointX="5.25" PointY="159.875" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.Citizenship" Width="1.5" PointX="2.75" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.Company" Width="1.5" PointX="15" PointY="175.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.CompanyAccountDetail" Width="1.5" PointX="17.25" PointY="184.5" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.CompanyAccountTransaction" Width="1.5" PointX="19.5" PointY="180.625" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.CompanyDetail" Width="1.5" PointX="17.25" PointY="174.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.CompanyFacilityMapping" Width="1.5" PointX="17.25" PointY="180.5" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.CompanyLocationCostCodeMapping" Width="1.5" PointX="7.5" PointY="170.625" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.CompanyQBK" Width="1.5" PointX="17.25" PointY="190.5" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.CompanyType" Width="1.5" PointX="12.75" PointY="177.5" IsExpanded="true" />
@@ -54,7 +56,6 @@
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.GlobalCode" Width="1.5" PointX="0.75" PointY="116.375" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.HoursOfService" Width="1.5" PointX="18.75" PointY="131" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.Insurance" Width="1.5" PointX="17.25" PointY="193.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.JobTitle" Width="1.5" PointX="11.75" PointY="8.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.License" Width="1.5" PointX="17.25" PointY="197" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LocationClientMapping" Width="1.5" PointX="11.25" PointY="160.25" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LocationCompanyMapping" Width="1.5" PointX="11.25" PointY="157" IsExpanded="true" />
@@ -62,6 +63,7 @@
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LocationService" Width="1.5" PointX="13.25" PointY="165.5" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogBill" Width="1.5" PointX="16.5" PointY="149.5" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogCompany" Width="1.5" PointX="22.25" PointY="174.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogCompanyAccountDetail" Width="1.5" PointX="22.5" PointY="184.125" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogCompanyDetail" Width="1.5" PointX="19.5" PointY="173.125" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogCompanyFacilityMapping" Width="1.5" PointX="17.25" PointY="201.25" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogContract" Width="1.5" PointX="20.25" PointY="187.75" IsExpanded="true" />
@@ -125,15 +127,18 @@
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Bill_Company" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Bill_LocationMaster" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogBill_Bill" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_BillFacilityItem_CompanyFacilityMapping" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_BillFacilityItem_PreBillNumber" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_BudgetCostCodeMapping_CostCodeLocationMapping" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_BudgetCostCodeMapping_CostCodeLocationMappingTransfer" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_BudgetLocationMapping_LocationMaster" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Company_CompanyType" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Company_VendorType" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyAccountDetail_Company" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyAccountTransaction_CompanyCr" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyAccountTransaction_CompanyDr" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyDetail_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyFacilityMapping_Company" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyQBK_Company" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Contract_CompanyIdFirstParty" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Contract_CompanyIdSecontParty" ManuallyRouted="false" />
@@ -142,6 +147,7 @@
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LocationCompanyMapping_Company" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogBill_Company" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCompany_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCompanyAccountDetail_Company" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCompanyDetail_Company" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCompanyFacilityMapping_Company" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogContract_CompanyIdFirstParty" ManuallyRouted="false" />
@@ -153,6 +159,10 @@
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogPreBill_Company" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Miscellaneous_Company" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_PreBill_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyAccountDetail_PaymentMode" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyAccountTransaction_CompanyAccountDetailCr" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyAccountTransaction_CompanyAccountDetailDr" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCompanyAccountDetail_CompanyAccountDetail" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCompanyDetail_CompanyDetail" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyLocationCostCodeMapping_CostCodeLocationMapping" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCompany_CompanyType" ManuallyRouted="false" />
@@ -255,6 +265,7 @@
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_QRCScanLog_LocationMaster" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_TrackEmployeeStatus_LocationMaster" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LocationServices_ServiceMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCompanyAccountDetail_PaymentMode" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogContract_PaymentMode" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogContract_PaymentTerm" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LoginLog_UserRegistrations" ManuallyRouted="false" />
@@ -296,18 +307,12 @@
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.InterviewSchedule" Width="1.5" PointX="7.375" PointY="17.75" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.ApplicantInfo" Width="1.5" PointX="9.375" PointY="17.75" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.Employee" Width="1.5" PointX="8.375" PointY="4.75" />
-        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogCompanyAccountDetail" Width="1.5" PointX="22.5" PointY="184.125" />
-        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCompanyAccountDetail_Company" />
-        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCompanyAccountDetail_PaymentMode" />
-        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.CompanyAccountDetail" Width="1.5" PointX="28.875" PointY="188.375" />
-        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyAccountDetail_Company" />
-        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyAccountDetail_PaymentMode" />
-        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyAccountTransaction_CompanyAccountDetailCr" />
-        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyAccountTransaction_CompanyAccountDetailDr" />
-        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCompanyAccountDetail_CompanyAccountDetail" />
-        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.CompanyFacilityMapping" Width="1.5" PointX="17.25" PointY="181" />
-        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_BillFacilityItem_CompanyFacilityMapping" />
-        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyFacilityMapping_Company" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.VehicleSeating" Width="1.5" PointX="19.5" PointY="115.125" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_VehicleSeating_Department" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserVehicleSeatingMap_Module" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_VehicleSeatingSubModuleMapping_Module" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.JobTitle" Width="1.5" PointX="10.375" PointY="4.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.FileType" Width="1.5" PointX="18.375" PointY="3.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

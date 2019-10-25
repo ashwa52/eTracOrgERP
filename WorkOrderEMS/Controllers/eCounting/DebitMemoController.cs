@@ -19,7 +19,6 @@ namespace WorkOrderEMS.Controllers.eCounting
         /// </summary>
         public ActionResult Index()
         {
-
             return View();
         }
     }

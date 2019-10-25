@@ -413,6 +413,7 @@
     <Compile Include="Controllers\Report\ReportController.cs" />
     <Compile Include="Controllers\Roles And Permissions\RolesAndPermissionsController.cs" />
     <Compile Include="Controllers\Search\SearchController.cs" />
+    <Compile Include="Controllers\Services\RecruiteeAPIController.cs" />
     <Compile Include="Controllers\Services\ServiceApiController.cs" />
     <Compile Include="Controllers\Staff\EmployeeController.cs" />
     <Compile Include="Controllers\WorkOrderAssignment\WorkOrderController.cs" />
@@ -493,6 +494,7 @@
     <Content Include="Areas\AdminSection\Content\JQUERY\DynamicAddJobDesc.js" />
     <Content Include="Areas\AdminSection\Content\JQUERY\GetOrg.js" />
     <Content Include="Areas\AdminSection\Content\JQUERY\html2canvas.min.js" />
+    <Content Include="Areas\AdminSection\Content\JQUERY\JobPostingJs.js" />
     <Content Include="Areas\AdminSection\Content\JQUERY\Jquery_3.js" />
     <Content Include="Areas\AdminSection\Content\JQUERY\MockJax.js" />
     <Content Include="Areas\AdminSection\Content\JQUERY\OrganizationalChart.js" />
@@ -1552,6 +1554,7 @@
     <Content Include="Content\NewAdminContent\AnimatedChart\JS\stiffChart.js" />
     <Content Include="Content\NewAdminContent\CSS\clockPicker.css" />
     <Content Include="Content\NewAdminContent\CSS\Common.css" />
+    <Content Include="Content\NewAdminContent\CSS\FilesUICss.css" />
     <Content Include="Content\NewAdminContent\CSS\MultstepWizardNew.css" />
     <Content Include="Content\NewAdminContent\CSS\perfect-scrollbar.css" />
     <Content Include="Content\NewAdminContent\CSS\RadioButtonCSS.css" />
@@ -5155,7 +5158,6 @@
     <Content Include="Images\Credit_Card.png" />
     <Content Include="Images\delete.png" />
     <Content Include="Images\DIRECT-DEPOSIT.jpg" />
-    <Content Include="Images\donut.png" />
     <Content Include="Images\etrac-logo-inner.jpg" />
     <Content Include="Images\eTrac380-light.png" />
     <Content Include="Images\eTrac380-light1.png" />
@@ -5899,6 +5901,7 @@
     <Content Include="Content\NewAdminContent\AnimatedChart\SCSS\stiff-chart.scss" />
     <Content Include="Content\NewAdminContent\AnimatedChart\SCSS\_horizontal.scss" />
     <Content Include="Content\NewAdminContent\AnimatedChart\SCSS\_vertical.scss" />
+    <Content Include="Areas\AdminSection\Views\OrgChart\_AddJobPosting.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\eTrac - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\eTrac - Web Deploy.pubxml" />
@@ -6139,6 +6142,7 @@
     <Content Include="Scripts\NewAdminJS\plugins-init\widgets-script-init.js" />
     <Content Include="Scripts\NewAdminJS\QRCHideShowFunctionality.js" />
     <Content Include="Scripts\NewAdminJS\quixnav-init.js" />
+    <Content Include="Scripts\NewAdminJS\SaveEditForm.js" />
     <Content Include="Scripts\NewAdminJS\settings.js" />
     <Content Include="Scripts\NewAdminJS\styleSwitcher.js" />
     <Content Include="Scripts\NewAdminJS\tynamice.min.js" />
@@ -6461,6 +6465,9 @@
     <Content Include="Views\Guest\_PreviousEmployeement.cshtml" />
     <Content Include="Views\Guest\_W4Form.cshtml" />
     <Content Include="Views\Guest\_emergencyContactForm.cshtml" />
+	<Content Include="Views\NewAdmin\ePeople\Requisition\_AddRemoveJobTitleCount.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_DirectDepositeEditForm.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_EmployeeFilesOriginal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
