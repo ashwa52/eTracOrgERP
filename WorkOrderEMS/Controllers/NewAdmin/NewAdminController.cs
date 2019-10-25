@@ -778,7 +778,9 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             {
                 item.EEL_FinencialYear = FinYear;
                 item.EEL_FinQuarter = FinQuarter;
-               
+                item.AssessmentType = Assesment;
+
+
             }
             return PartialView("userExpectationsView", ListQuestions);
         }

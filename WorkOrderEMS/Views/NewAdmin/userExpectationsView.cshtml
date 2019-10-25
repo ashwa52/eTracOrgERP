@@ -208,9 +208,9 @@
             EEL_FinQuarter= elem.getAttribute("data-fq");
             EEL_Id = elem.getAttribute("data-sam");
             QuestionType = elem.getAttribute("data-qType");
+            AssessmentType = elem.getAttribute("data-Type");
 
             obj.push({ "ASQ_Id": ASQ_Id, "EEL_AnswerSelf": EEL_AnswerSelf, "EEL_EMP_EmployeeId": EEL_EMP_EmployeeId, "EEL_Id": EEL_Id, "EEL_IsActive": EEL_IsActive,"EEL_Comments":EEL_Comments ,"EEL_FinencialYear":EEL_FinencialYear,"EEL_FinQuarter":EEL_FinQuarter,"QuestionType":QuestionType});
-
 
         });
         obj = JSON.stringify({ 'data': obj });
@@ -227,7 +227,7 @@
                 if (result != null) {
                                           $.ajax({
                                           type: "POST",
-                                          data: { 'Id': EEL_EMP_EmployeeId, 'Assesment': AssessmentType},
+                                          data: { 'Id': EEL_EMP_EmployeeId, 'Assesment': AssessmentType,"FinYear":EEL_FinencialYear,"FinQuarter":EEL_FinQuarter},
                                           url: '../NewAdmin/userExpectationsView/',
                                           error: function (xhr, status, error) {
                                           },
