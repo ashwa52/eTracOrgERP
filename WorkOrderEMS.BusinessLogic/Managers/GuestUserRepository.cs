@@ -101,7 +101,7 @@ namespace WorkOrderEMS.BusinessLogic
 
 
 					}).FirstOrDefault();
-					result =result==null? new DirectDepositeFormModel():result;
+					result = result == null ? new DirectDepositeFormModel() : result;
 					result.EmployeeId = EmployeeId;
 					return result;
 				}
@@ -167,7 +167,7 @@ namespace WorkOrderEMS.BusinessLogic
 							, model.Account2.BankRouting, model.VoidCheck, "Y") > 0 ? true : false;
 
 					return Context.spSetDirectDepositForm("I", EmployeeId, model.Account1.EmployeeBankName, model.Account1.AccountType,
-							model.Account1.Account, model.Account1.BankRouting, model.Account1.DepositeAmount.HasValue? model.Account1.DepositeAmount.Value:0, model.Account2.EmployeeBankName, model.Account2.AccountType, model.Account2.Account
+							model.Account1.Account, model.Account1.BankRouting, model.Account1.DepositeAmount.HasValue ? model.Account1.DepositeAmount.Value : 0, model.Account2.EmployeeBankName, model.Account2.AccountType, model.Account2.Account
 							, model.Account2.BankRouting, model.VoidCheck, "Y") > 0 ? true : false;
 				}
 			}
@@ -262,6 +262,219 @@ namespace WorkOrderEMS.BusinessLogic
 				throw ex;
 			}
 		}
+		public string GetPhotoRelease(long userId)
+		{
+
+			try
+			{
+
+				using (workorderEMSEntities Context = new workorderEMSEntities())
+				{
+
+					var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
+					string name = Context.spGetPhotoReleaseForm(empid).FirstOrDefault();
+					return name;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+		public void SetPhotoRelease(long userId, PhotoRelease model)
+		{
+
+			try
+			{
+
+				using (workorderEMSEntities Context = new workorderEMSEntities())
+				{
+
+					var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
+					var isexist = GetPhotoRelease(userId);
+					if (string.IsNullOrEmpty(isexist))
+					{
+						Context.spSetPhotoReleaseForm("I", model.PRFId, empid, model.IsActive);
+					}
+					else
+					{
+						Context.spSetPhotoReleaseForm("U", model.PRFId, empid, model.IsActive);
+					}
+
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+		public EmergencyContectForm GetEmergencyForm(long userId)
+		{
+
+			try
+			{
+
+				using (workorderEMSEntities Context = new workorderEMSEntities())
+				{
+
+					var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
+					var name = Context.spGetEmergencyContactForm(empid).Select(x => new EmergencyContectForm
+					{
+						NickName=x.ECF_NickName,
+						HomeEmail=x.ECF_HomeEmail,
+						HomePhone=x.ECF_HomePhone,
+						EmpId=x.ECF_EMP_EmployeeID,
+						EcfId=x.ECF_Id
+					}).FirstOrDefault();
+					return name;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+		public void SetEmergencyForm(long userId, EmergencyContectForm model)
+		{
+
+			try
+			{
+
+				using (workorderEMSEntities Context = new workorderEMSEntities())
+				{
+
+					var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
+					var isexist = GetEmergencyForm(userId);
+					if (ReferenceEquals(isexist, null))
+					{
+						Context.spSetEmergencyContactForm("I", model.EcfId, empid, model.NickName, model.HomePhone, model.HomeEmail, model.EcfDate, model.IsActive);
+					}
+					else
+					{
+						Context.spSetEmergencyContactForm("U", model.EcfId, empid, model.NickName, model.HomePhone, model.HomeEmail, model.EcfDate, model.IsActive);
+					}
+
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+		public ConfidenialityAgreementModel GetConfidenialityAgreementForm(long userId)
+		{
+
+			try
+			{
+
+				using (workorderEMSEntities Context = new workorderEMSEntities())
+				{
+
+					var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
+					var name = Context.spGetConfidentialityAgreement(empid).Select(x => new ConfidenialityAgreementModel
+					{
+						Email=x.EMP_Email,
+						EmpAddress=x.EmpAddress,
+						EmpId=x.CDA_EMP_EmployeeID,
+						EmployeeName=x.EmployeeName
+					}).FirstOrDefault();
+					return name;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+		public void SetConfidenialityAgreementForm(long userId, ConfidenialityAgreementModel model)
+		{
+
+			try
+			{
+
+				using (workorderEMSEntities Context = new workorderEMSEntities())
+				{
+
+					var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
+					var isexist = GetConfidenialityAgreementForm(userId);
+					if (ReferenceEquals(isexist, null))
+					{
+						Context.spSetConfidentialityAgreement("I", model.CafId, empid,  model.IsActive);
+					}
+					else
+					{
+						Context.spSetConfidentialityAgreement("U", model.CafId, empid, model.IsActive);
+					}
+
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+		public EducationVarificationModel GetEducationVerificationForm(long userId)
+		{
+
+			try
+			{
+
+				using (workorderEMSEntities Context = new workorderEMSEntities())
+				{
+
+					var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
+					var name = Context.spGetEducationVerificationForm(empid).Select(x => new EducationVarificationModel
+					{
+						Certificate=x.EVF_SchoolDegreeDiplomaCirtificate,
+						EmpId=empid,
+						HighSchool=new HigherSchool
+						{
+							AttendFrom=x.EVF_AttendedFrom,
+							AttendTo= x.EVF_AttendedTo,
+							City=x.EVF_City,
+							SchoolName=x.EVF_OrgnizationName,
+							State=x.EVF_State,
+						},
+						Name=x.EmployeeName,
+						
+					}).FirstOrDefault();
+					return name;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+		public void SetEducationVerificationForm(long userId, EducationVarificationModel model)
+		{
+
+			try
+			{
+
+				using (workorderEMSEntities Context = new workorderEMSEntities())
+				{
+
+					var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
+					var isexist = GetEducationVerificationForm(userId);
+					if (ReferenceEquals(isexist, null))
+					{
+						Context.spSetEducationVerificationForm("I",model.EvfId,empid,model.Certificate,model.HigherSchool.SchoolName,"",model.HigherSchool.City,model.HigherSchool.State,model.HigherSchool.AttendFrom,model.HigherSchool.AttendTo,model.IsActive);
+					}
+					else
+					{
+						Context.spSetEducationVerificationForm("U",model.EvfId,empid,model.Certificate,model.HigherSchool.SchoolName,"",model.HigherSchool.City,model.HigherSchool.State,model.HigherSchool.AttendFrom,model.HigherSchool.AttendTo,model.IsActive);
+
+					}
+
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
 	}
 
 

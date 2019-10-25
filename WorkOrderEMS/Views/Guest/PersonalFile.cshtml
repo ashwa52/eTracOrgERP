@@ -124,7 +124,7 @@
 	<div class="card-body">
 		<div class="row">
 			<div class="col-md-12" style="text-align:center">
-				<div class=" inline">
+				<div class=" inline" onclick="OpenForm('W4Form');">
 					<div class="devider">
 						<div class="grn-icn">
 							<div class="int">
@@ -137,7 +137,7 @@
 					</div>
 					<label>W-4 Form</label>
 				</div>
-				<div class="inline">
+				<div class="inline" onclick="OpenForm('I9Form')">
 					<div class="devider">
 						<div class="grn-icn">
 							<div class="int">
@@ -150,11 +150,14 @@
 					</div>
 					<label>I-9 Form</label>
 				</div>
-				<div class="inline">
+				<div class="inline" onclick="OpenForm('EmergencyContectForm')" id="emergencycontactformicn">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
 								<i class="fa fa-phone fa-lg" aria-hidden="true"></i>
+							</div>
+							<div class="lock">
+								<i class="fa fa-unlock" style="color:#FFDFB0" aria-hidden="true"></i>
 							</div>
 						</div>
 					</div>
@@ -189,22 +192,28 @@
 				</div>
 			</div>
 			<div class="col-md-12" style="text-align:center">
-				<div class=" inline">
+				<div class=" inline" onclick="OpenForm('photorelease')" id="photoreleaseicn">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
 								<i class="fa fa-file-image-o fa-lg" aria-hidden="true"></i>
+							</div>
+							<div class="lock">
+								<i class="fa fa-unlock" style="color:#FFDFB0" aria-hidden="true"></i>
 							</div>
 						</div>
 					</div>
 					<label>Photo Release Form</label>
 				</div>
 
-				<div class="inline">
+				<div class="inline" onclick="OpenForm('confidentiality')" id="confidentialityagreementicn">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
 								<i class="fa fa-exclamation fa-lg" aria-hidden="true"></i>
+							</div>
+							<div class="lock">
+								<i class="fa fa-unlock" style="color:#FFDFB0" aria-hidden="true"></i>
 							</div>
 						</div>
 					</div>
@@ -216,24 +225,33 @@
 							<div class="int">
 								<i class="fa fa-graduation-cap fa-lg" aria-hidden="true"></i>
 							</div>
+							<div class="lock">
+								<i class="fa fa-unlock" style="color:#FFDFB0" aria-hidden="true"></i>
+							</div>
 						</div>
 					</div>
 					<label>Education Verification Form</label>
 				</div>
-				<div class="inline">
+				<div class="inline" onclick="OpenForm('creditCardAuthorizationForm')">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
 								<i class="fa fa-credit-card fa-lg" aria-hidden="true"></i>
 							</div>
+							<div class="lock">
+								<i class="fa fa-unlock" style="color:#FFDFB0" aria-hidden="true"></i>
+							</div>
 						</div>
 					</div>
 					<label>Creditcard Authorization Form</label>
 				</div>
-				<div class="inline">
+				<div class="inline" onclick="OpenForm('previousEmployeement')">
 					<div class="bluesky">
 						<div class="int">
 							<i class="fa fa-users fa-lg" aria-hidden="true"></i>
+						</div>
+						<div class="lock">
+							<i class="fa fa-unlock" style="color:#FFDFB0" aria-hidden="true"></i>
 						</div>
 					</div>
 

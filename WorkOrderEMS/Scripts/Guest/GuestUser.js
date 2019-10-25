@@ -1,28 +1,50 @@
 ﻿function OpenForm(formname) {
-	if (formname === 'directdeposite') {
-		$.ajax({
-			url: '/Guest/_DirectDepositeForm',
-			method: 'GET',
-			success: function (response) {
-				$("#formid").html(response);
-			}
-		});
+	var geturl = '';
+
+	switch (formname) {
+		case 'directdeposite':
+			geturl = '/Guest/_DirectDepositeForm';
+			break;
+		case 'employeehandbook':
+			geturl = '/Guest/_EmployeeHandbook';
+			break;
+		case 'W4Form':
+			geturl = '/Guest/_W4Form';
+			break;
+		case 'I9Form':
+			geturl = '/Guest/_I9Form';
+			break;
+		case 'EmergencyContectForm':
+			geturl = '/Guest/_emergencyContactForm';
+			break;
+		case 'photorelease':
+			geturl = '/Guest/_PhotoReleaseForm';
+			break;
+		case 'confidentiality':
+			geturl = '/Guest/_ConfidentialityAgreementForm';
+			break;
+		case 'educationVerificationForm':
+			geturl = '/Guest/_EducationVarificationForm';
+			break;
+		case 'creditCardAuthorizationForm':
+			geturl = '/Guest/_CreditCardAuthorizationForm';
+			break;
+		case 'previousEmployeement':
+			geturl = '/Guest/_PreviousEmployeement';
+			break;
 	}
-	if (formname === 'employeehandbook') {
-		$.ajax({
-			url: '/Guest/_EmployeeHandbook',
-			method: 'GET',
-			success: function (response) {
-				$("#formid").html(response);
-			}
-		});
-	}
+	GetForm(geturl, function (successRes) {
+		$("#formid").html(successRes);
+	}, function (errorRes) {
+		alert('Something went wrong!!!');
+	});
+	
 	$("#formModel").modal('show');
 }
 function closeModel() {
 	$("#formModel").modal('hide');
 }
-function SubmitForm(element,formName) {
+function SubmitForm(element, formName) {
 	var url = '';
 	var data = '';
 	var isSubmit = confirm('Are you sure you want to submit');
@@ -36,15 +58,35 @@ function SubmitForm(element,formName) {
 				url = '/Guest/_EmployeeHandbook';
 				data = $('#employeeHandbook').serialize();
 				break;
+			case 'photoreleaseform':
+				url = '/Guest/_photoreleaseform';
+				data = $('#photoreleaseform').serialize();
+				break;
+			case 'emergencycontactform':
+				url = '/Guest/_emergencyContactForm';
+				data = $('#emergencycontactform').serialize();
+				break;
+			case 'emergencycontactform':
+				url = '/Guest/_emergencyContactForm';
+				data = $('#emergencycontactform').serialize();
+				break;
+			case 'confidentialityagreementform':
+				url = '/Guest/_ConfidentialityAgreementForm';
+				data = $('#confidentialityagreementform').serialize();
+				break;
+			case 'educationverificationform':
+				url = '/Guest/_EducationVarificationForm';
+				data = $('#educationverificationform').serialize();
+				break;
 		}
 		PostForm(url, data, function (successResponse) {
-			if (successResponse == true) { 
+			if (successResponse == true) {
 				LockItem(formName.id);
 				$("#formModel").modal('hide');
 			}
 			else {
-				$(element).prop('checked', false); 
-				$("#formid").html(result);
+				$(element).prop('checked', false);
+				$("#formid").html(successResponse);
 				$("#formModel").modal('show');
 			}
 		}, function (errorResponse) {
@@ -81,6 +123,14 @@ function PostForm(url, data, successCallback, errorCallback) {
 		error: errorCallback
 	});
 }
+function GetForm(url, successCallback, errorCallback) {
+	$.ajax({
+		type: "GET",
+		url: url,
+		success: successCallback,
+		error: errorCallback
+	});
+}
 
 function ThankYou() {
 	location.href = '/Guest/ThankYou';
@@ -94,6 +144,26 @@ function LockItem(formId) {
 			break;
 		case 'employeeHandbook':
 			var elm = $("#employeeHandbookicn").find('.lock i').first();
+			elm.removeClass('fa-unlock');
+			elm.addClass('fa-lock');
+			break;
+		case 'photoreleaseform':
+			var elm = $("#photoreleaseicn").find('.lock i').first();
+			elm.removeClass('fa-unlock');
+			elm.addClass('fa-lock');
+			break;
+		case 'emergencycontactform':
+			var elm = $("#emergencycontactformicn").find('.lock i').first();
+			elm.removeClass('fa-unlock');
+			elm.addClass('fa-lock');
+			break;
+		case 'confidentialityagreementform':
+			var elm = $("#confidentialityagreementicn").find('.lock i').first();
+			elm.removeClass('fa-unlock');
+			elm.addClass('fa-lock');
+			break;
+		case 'educationverificationform':
+			var elm = $("#confidentialityagreementicn").find('.lock i').first();
 			elm.removeClass('fa-unlock');
 			elm.addClass('fa-lock');
 			break;

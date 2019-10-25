@@ -1,0 +1,81 @@
+﻿@model WorkOrderEMS.Models.Employee.EmergencyContectForm
+<style>
+	.p1 {
+		font-size: 20px;
+		font-family: Times New Roman;
+		margin: 73px 149px 0px 80px;
+		text-align: justify;
+		color:#000;
+	}
+
+	h3 {
+		margin: 100px 0px 0px 83px;
+	}
+
+	.text-line {
+		background-color: transparent;
+		outline: none;
+		outline-style: none;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+		border-bottom: solid #000 1px;
+	}
+
+	p {
+		margin-left: 106px;
+	}
+
+	.center {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.row {
+		display: flex;
+	}
+	input[type="checkbox"]:after {
+		line-height: 1.5em !important;
+		content: '' !important;
+		display: block !important;
+		margin-top: -3px !important;
+		margin-left: -3px !important;
+		border: 1px solid transparent !important;
+		border-radius: 0px !important;
+		line-height: 1.3 !important;
+		background: none !important;
+	}
+</style>
+<div class="p1">
+	<div class="row">
+		<img src="~/Images/FormImages/image-form.jpg" alt="background image" />
+		<h3><u>Emergency Contact Form</u></h3>
+	</div>
+	@using (Html.BeginForm("_emergencyContactForm", "Guest", FormMethod.Post, new { id = "emergencycontactform" }))
+	{
+		<p>Employee ID @Html.TextBoxFor(x => x.EmpId, new { @class = "text-line", @style = "width:590px;" }) </p>
+		<p>First Name @Html.TextBoxFor(x => x.FirstName, new { @class = "text-line", @style = "width:590px;" }) </p>
+		<p>Middle Name @Html.TextBoxFor(x => x.MiddleName, new { @class = "text-line", @style = "width:590px;" }) </p>
+		<p>Last Name @Html.TextBoxFor(x => x.LastName, new { @class = "text-line", @style = "width:590px;" })</p>
+		<p>Nick Name @Html.TextBoxFor(x => x.NickName, new { @class = "text-line", @style = "width:590px;" })</p>
+		<p>Gender @Html.TextBoxFor(x => x.Gender, new { @class = "text-line", @style = "width:590px;" })</p>
+		<p>Citizenship @Html.TextBoxFor(x => x.Citizenship, new { @class = "text-line", @style = "width:590px;" })</p>
+		<p>Home Address  @Html.TextBoxFor(x => x.HomeAddress, new { @class = "text-line", @style = "width:590px;" })</p>
+		<p>Home Phone  @Html.TextBoxFor(x => x.HomePhone, new { @class = "text-line", @style = "width:590px;" })</p>
+		<p>Mobile Phone  @Html.TextBoxFor(x => x.Mobile, new { @class = "text-line", @style = "width:590px;" })</p>
+		<p>Home E-mail Address @Html.TextBoxFor(x => x.HomeEmail, new { @class = "text-line", @style = "width:590px;" })</p>
+		<p>Birthday(MM/DD/YYYY)@Html.TextBoxFor(x => x.DOB, new { @class = "text-line", @style = "width:590px;" })</p>
+		<p>Government ID or SSN @Html.TextBoxFor(x => x.SSN, new { @class = "text-line", @style = "width:590px;" })</p>
+		<p>Driver's License/State ID#@Html.TextBoxFor(x => x.License, new { @class = "text-line", @style = "width:590px;" })</p>
+
+		<h3><u>Emergency Contact Information </u></h3>
+		<p>Emergency Contact's Name @Html.TextBoxFor(x => x.EmergencyContactName, new { @class = "text-line", @style = "width:590px;" })</p>
+		<p>Relationship @Html.TextBoxFor(x => x.RelationShip, new { @class = "text-line", @style = "width:590px;" })</p>
+
+		<p>Address @Html.TextBoxFor(x => x.Address, new { @class = "text-line", @style = "width:590px;" })</p>
+
+		<p>Phone Number(s) @Html.TextBoxFor(x => x.ConactInfo, new { @class = "text-line", @style = "width:590px;" })</p>
+		<p> @Html.CheckBoxFor(x => x.IsSave, new { @style = "height: 18px;width: 31px;", onchange = "SubmitForm(this,emergencycontactform)" })    i hereby declare that the above information is true to the best of my knowledge </p>
+	}
+</div>

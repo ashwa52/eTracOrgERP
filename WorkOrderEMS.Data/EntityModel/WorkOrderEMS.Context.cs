@@ -5560,5 +5560,171 @@ namespace WorkOrderEMS.Data.EntityModel
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetFileUpload", fLUActionParameter, fLU_FileIdParameter, fLU_EMP_EmployeeIDParameter, fLU_FLT_IdParameter, fLU_FileNameParameter, fLU_FileAttachedParameter, fLU_FileUploadedByParameter, fLU_IsActiveParameter);
         }
+    
+        public virtual ObjectResult<spGetConfidentialityAgreement_Result> spGetConfidentialityAgreement(string employeeID)
+        {
+            var employeeIDParameter = employeeID != null ?
+                new ObjectParameter("EmployeeID", employeeID) :
+                new ObjectParameter("EmployeeID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetConfidentialityAgreement_Result>("spGetConfidentialityAgreement", employeeIDParameter);
+        }
+    
+        public virtual ObjectResult<string> spGetPhotoReleaseForm(string employeeID)
+        {
+            var employeeIDParameter = employeeID != null ?
+                new ObjectParameter("EmployeeID", employeeID) :
+                new ObjectParameter("EmployeeID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("spGetPhotoReleaseForm", employeeIDParameter);
+        }
+    
+        public virtual int spSetConfidentialityAgreement(string cDAAction, Nullable<long> cDA_Id, string cDA_EMP_EmployeeID, string cDA_IsActive)
+        {
+            var cDAActionParameter = cDAAction != null ?
+                new ObjectParameter("CDAAction", cDAAction) :
+                new ObjectParameter("CDAAction", typeof(string));
+    
+            var cDA_IdParameter = cDA_Id.HasValue ?
+                new ObjectParameter("CDA_Id", cDA_Id) :
+                new ObjectParameter("CDA_Id", typeof(long));
+    
+            var cDA_EMP_EmployeeIDParameter = cDA_EMP_EmployeeID != null ?
+                new ObjectParameter("CDA_EMP_EmployeeID", cDA_EMP_EmployeeID) :
+                new ObjectParameter("CDA_EMP_EmployeeID", typeof(string));
+    
+            var cDA_IsActiveParameter = cDA_IsActive != null ?
+                new ObjectParameter("CDA_IsActive", cDA_IsActive) :
+                new ObjectParameter("CDA_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetConfidentialityAgreement", cDAActionParameter, cDA_IdParameter, cDA_EMP_EmployeeIDParameter, cDA_IsActiveParameter);
+        }
+    
+        public virtual int spSetEducationVerificationForm(string eVFAction, Nullable<long> eVF_Id, string eVF_EMP_EmployeeID, string eVF_SchoolDegreeDiplomaCirtificate, string eVF_OrgnizationName, string eVF_Address, string eVF_City, string eVF_State, Nullable<System.DateTime> eVF_AttendedFrom, Nullable<System.DateTime> eVF_AttendedTo, string dDF_IsActive)
+        {
+            var eVFActionParameter = eVFAction != null ?
+                new ObjectParameter("EVFAction", eVFAction) :
+                new ObjectParameter("EVFAction", typeof(string));
+    
+            var eVF_IdParameter = eVF_Id.HasValue ?
+                new ObjectParameter("EVF_Id", eVF_Id) :
+                new ObjectParameter("EVF_Id", typeof(long));
+    
+            var eVF_EMP_EmployeeIDParameter = eVF_EMP_EmployeeID != null ?
+                new ObjectParameter("EVF_EMP_EmployeeID", eVF_EMP_EmployeeID) :
+                new ObjectParameter("EVF_EMP_EmployeeID", typeof(string));
+    
+            var eVF_SchoolDegreeDiplomaCirtificateParameter = eVF_SchoolDegreeDiplomaCirtificate != null ?
+                new ObjectParameter("EVF_SchoolDegreeDiplomaCirtificate", eVF_SchoolDegreeDiplomaCirtificate) :
+                new ObjectParameter("EVF_SchoolDegreeDiplomaCirtificate", typeof(string));
+    
+            var eVF_OrgnizationNameParameter = eVF_OrgnizationName != null ?
+                new ObjectParameter("EVF_OrgnizationName", eVF_OrgnizationName) :
+                new ObjectParameter("EVF_OrgnizationName", typeof(string));
+    
+            var eVF_AddressParameter = eVF_Address != null ?
+                new ObjectParameter("EVF_Address", eVF_Address) :
+                new ObjectParameter("EVF_Address", typeof(string));
+    
+            var eVF_CityParameter = eVF_City != null ?
+                new ObjectParameter("EVF_City", eVF_City) :
+                new ObjectParameter("EVF_City", typeof(string));
+    
+            var eVF_StateParameter = eVF_State != null ?
+                new ObjectParameter("EVF_State", eVF_State) :
+                new ObjectParameter("EVF_State", typeof(string));
+    
+            var eVF_AttendedFromParameter = eVF_AttendedFrom.HasValue ?
+                new ObjectParameter("EVF_AttendedFrom", eVF_AttendedFrom) :
+                new ObjectParameter("EVF_AttendedFrom", typeof(System.DateTime));
+    
+            var eVF_AttendedToParameter = eVF_AttendedTo.HasValue ?
+                new ObjectParameter("EVF_AttendedTo", eVF_AttendedTo) :
+                new ObjectParameter("EVF_AttendedTo", typeof(System.DateTime));
+    
+            var dDF_IsActiveParameter = dDF_IsActive != null ?
+                new ObjectParameter("DDF_IsActive", dDF_IsActive) :
+                new ObjectParameter("DDF_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetEducationVerificationForm", eVFActionParameter, eVF_IdParameter, eVF_EMP_EmployeeIDParameter, eVF_SchoolDegreeDiplomaCirtificateParameter, eVF_OrgnizationNameParameter, eVF_AddressParameter, eVF_CityParameter, eVF_StateParameter, eVF_AttendedFromParameter, eVF_AttendedToParameter, dDF_IsActiveParameter);
+        }
+    
+        public virtual int spSetPhotoReleaseForm(string pRFAction, Nullable<long> pRF_Id, string pRF_EMP_EmployeeID, string pRF_IsActive)
+        {
+            var pRFActionParameter = pRFAction != null ?
+                new ObjectParameter("PRFAction", pRFAction) :
+                new ObjectParameter("PRFAction", typeof(string));
+    
+            var pRF_IdParameter = pRF_Id.HasValue ?
+                new ObjectParameter("PRF_Id", pRF_Id) :
+                new ObjectParameter("PRF_Id", typeof(long));
+    
+            var pRF_EMP_EmployeeIDParameter = pRF_EMP_EmployeeID != null ?
+                new ObjectParameter("PRF_EMP_EmployeeID", pRF_EMP_EmployeeID) :
+                new ObjectParameter("PRF_EMP_EmployeeID", typeof(string));
+    
+            var pRF_IsActiveParameter = pRF_IsActive != null ?
+                new ObjectParameter("PRF_IsActive", pRF_IsActive) :
+                new ObjectParameter("PRF_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetPhotoReleaseForm", pRFActionParameter, pRF_IdParameter, pRF_EMP_EmployeeIDParameter, pRF_IsActiveParameter);
+        }
+    
+        public virtual int spSetW4Form(string w4FAction, Nullable<long> w4F_Id, string w4F_EMP_EmployeeId, string w4F_SSN, string w4F_3MaritalStatus, string w4F_4, Nullable<int> w4F_5, Nullable<decimal> w4F_6, Nullable<decimal> w4F_7, string w4F_8EmployersName, Nullable<System.DateTime> w4F_9, string w4F_10, string w4F_IsActive)
+        {
+            var w4FActionParameter = w4FAction != null ?
+                new ObjectParameter("W4FAction", w4FAction) :
+                new ObjectParameter("W4FAction", typeof(string));
+    
+            var w4F_IdParameter = w4F_Id.HasValue ?
+                new ObjectParameter("W4F_Id", w4F_Id) :
+                new ObjectParameter("W4F_Id", typeof(long));
+    
+            var w4F_EMP_EmployeeIdParameter = w4F_EMP_EmployeeId != null ?
+                new ObjectParameter("W4F_EMP_EmployeeId", w4F_EMP_EmployeeId) :
+                new ObjectParameter("W4F_EMP_EmployeeId", typeof(string));
+    
+            var w4F_SSNParameter = w4F_SSN != null ?
+                new ObjectParameter("W4F_SSN", w4F_SSN) :
+                new ObjectParameter("W4F_SSN", typeof(string));
+    
+            var w4F_3MaritalStatusParameter = w4F_3MaritalStatus != null ?
+                new ObjectParameter("w4F_3MaritalStatus", w4F_3MaritalStatus) :
+                new ObjectParameter("w4F_3MaritalStatus", typeof(string));
+    
+            var w4F_4Parameter = w4F_4 != null ?
+                new ObjectParameter("w4F_4", w4F_4) :
+                new ObjectParameter("w4F_4", typeof(string));
+    
+            var w4F_5Parameter = w4F_5.HasValue ?
+                new ObjectParameter("w4F_5", w4F_5) :
+                new ObjectParameter("w4F_5", typeof(int));
+    
+            var w4F_6Parameter = w4F_6.HasValue ?
+                new ObjectParameter("w4F_6", w4F_6) :
+                new ObjectParameter("w4F_6", typeof(decimal));
+    
+            var w4F_7Parameter = w4F_7.HasValue ?
+                new ObjectParameter("w4F_7", w4F_7) :
+                new ObjectParameter("w4F_7", typeof(decimal));
+    
+            var w4F_8EmployersNameParameter = w4F_8EmployersName != null ?
+                new ObjectParameter("w4F_8EmployersName", w4F_8EmployersName) :
+                new ObjectParameter("w4F_8EmployersName", typeof(string));
+    
+            var w4F_9Parameter = w4F_9.HasValue ?
+                new ObjectParameter("w4F_9", w4F_9) :
+                new ObjectParameter("w4F_9", typeof(System.DateTime));
+    
+            var w4F_10Parameter = w4F_10 != null ?
+                new ObjectParameter("w4F_10", w4F_10) :
+                new ObjectParameter("w4F_10", typeof(string));
+    
+            var w4F_IsActiveParameter = w4F_IsActive != null ?
+                new ObjectParameter("w4F_IsActive", w4F_IsActive) :
+                new ObjectParameter("w4F_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetW4Form", w4FActionParameter, w4F_IdParameter, w4F_EMP_EmployeeIdParameter, w4F_SSNParameter, w4F_3MaritalStatusParameter, w4F_4Parameter, w4F_5Parameter, w4F_6Parameter, w4F_7Parameter, w4F_8EmployersNameParameter, w4F_9Parameter, w4F_10Parameter, w4F_IsActiveParameter);
+        }
     }
 }
