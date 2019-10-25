@@ -29,8 +29,9 @@
     <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
     <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
     <link href="~/Content/NewAdminContent/VENDOR/c3/css/c3.min.css" rel="stylesheet" />
-    <script src="~/GridListing/JqGridScript/CompanyList/ListAllCompany.js"></script>
     <link href="~/Content/NewAdminContent/CSS/custom.css" rel="stylesheet" />
+    <script src="~/GridListing/JqGridScript/CompanyList/ListAllCompany.js"></script>
+
     @*<script type="text/javascript">
             $(window).bind('resize', function () {
                 var width = $('#jqGrid_containerCompany').width();
@@ -39,24 +40,7 @@
 
         </script>*@
 }
-<style>
-    #chartdiv, #EmployeeCount1 {
-        width: 100%;
-        height: 250px;
-    }
 
-    .package {
-        margin-top: 0px !important;
-        display: inline-flex;
-        justify-items: center;
-        align-items: center;
-        text-align: center;
-    }
-
-    .jsgrid-grid-body {
-        height: 100% !important;
-    }
-</style>
 <div class="content-body" style="min-height: 920px;">
     <!-- row -->
     <div class="container-fluid">
@@ -71,6 +55,9 @@
                 </div>
             </div>
         </div>
+
+
+
         <div class="row">
             <div class="col-lg-6">
                 <div class="card aos-init aos-animate" data-aos="fade-up">
@@ -107,20 +94,20 @@
 
         </div>
 
-        <br>
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="card aos-init" data-aos="fade-up">
+                   
+                        <div class="card-header headerSize">
 
-                    <div class="card-header headerSize">
-
-                        <div class="basic-form">
-
-                            <input id="SearchText" type="text" class="form-control input-rounded" placeholder="Vendor Name" onkeyup="doSearch()">
-
+                            <div class="basic-form">
+                                
+                                    <input id="SearchText" type="text" class="form-control input-rounded" placeholder="Vendor Name" onkeyup="doSearch()">
+                               
+                            </div>
                         </div>
-                    </div>
-
+                   
                     <div class="card-body">
                         <div id="tbl_AllCompanyDataList" class="jsgrid" style="position: relative; height: 400px; width: 100%;">
 
@@ -133,7 +120,6 @@
     </div>
 </div>
 <br />
-
 <div class="modal bs-example-modal-lg fade preview" id="myModalForGetVendorDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg ">
         <div class="modal-content">
@@ -286,7 +272,7 @@
                                 <div id="lblContractType" class="form-control-static"></div>
                             </div>
                         </div>
-
+                   
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Contract issued by</label>
@@ -311,7 +297,7 @@
                                 <div id="lblPaymentTerm" class="form-control-static"></div>
                             </div>
                         </div>
-
+                    
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Grace Period</label>
@@ -336,7 +322,7 @@
                                 <div id="lblEndDate" class="form-control-static"></div>
                             </div>
                         </div>
-
+                   
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Cost During Period</label>
@@ -361,7 +347,7 @@
                                 <div id="lblBillDueDate" class="form-control-static"></div>
                             </div>
                         </div>
-
+                  
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label> Late Fine/Fee</label>
@@ -382,7 +368,7 @@
                         </div>
 
                     </div>
-
+                  
                     <div class="row">
                         <div class="col-sm-4">
                             <div class="form-group">
@@ -451,7 +437,7 @@
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <table id="VendorFacility_table" class="table table-bordered table-responsive-sm"></table>
-
+                            
                         </div>
                     </div>
                 </div>

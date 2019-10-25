@@ -29,28 +29,23 @@
             });
         </script>*@
     <script src="~/GridListing/JqGridScript/CompanyList/ListCompanyProduct.js"></script>
+    <link href="~/Content/NewAdminContent/CSS/custom.css" rel="stylesheet" />
 }
 
 <style>
-        .m-0{
-        margin:0px !important;
-    }
-    .jsgrid-grid-body {
-        height: 100% !important;
+    .m-0 {
+        margin: 0px !important;
     }
 
-    .form-control {
-        border: 1px solid #a0b3b0 !important;
-    }
+ 
+ 
 
     label .req {
         margin: 2px;
         color: #ed2f35;
     }
 
-    .headerSize {
-        height: 36px;
-    }
+  
 </style>
 @*<link href="~/Content/eFleetVehicle/eFleetstyle.css" rel="stylesheet" />*@
 @Html.AntiForgeryToken()
@@ -62,9 +57,9 @@
             <div class="col-xl-12 col-xxl-12">
                 <div class="card aos-init aos-animate" data-aos="fade-up">
                     <div class="card-header headerSize">
-                        <h4 class="card-title m-0" style="color:white;"><strong> Add Products/Services</strong></h4>
+                        <h4 class="card-title">Add Products/Services</h4>
                     </div>
-                    <div class="card-body"> 
+                    <div class="card-body">
                         @using (Html.BeginForm("SaveVendorFacility", "VendorManagement", FormMethod.Post, new { enctype = "multipart/form-data", id = "msform" }))
                         {
                             @Html.HiddenFor(model => model.VendorId)
@@ -72,98 +67,107 @@
                             @Html.ValidationSummary(true)
 
 
-                            <div class="panel panel-primary setup-content">
-                                <div class="basic-form">
+                            
+                        <div class="basic-form">
 
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label" for="VendorName">Vendor Name<span class="req">*</span></label>
-                                        <div class="col-sm-4">
-                                            @Html.TextBoxFor(model => model.VendorName, new { @id = "VendorName", @readonly = "readonly", @class = "form-control input-rounded", @style = "background-color:#EBEBE4" })
-                                            <div class="errorspace">
-                                                @Html.ValidationMessageFor(model => model.VendorType)
-                                            </div>
-                                        </div>
-                                        <label class="col-sm-2 col-form-label" for="Type">Type<span class="req">*</span></label>
-                                        <div class="col-sm-4">
-                                            @Html.DropDownListFor(model => model.ProductServiceType, new List<SelectListItem>
-                                      {
-                                          new SelectListItem() {Text = "--Select Type--", Value="0"},
-                                         new SelectListItem() {Text = "Product", Value="1"},
-                                       new SelectListItem() {Text = "Service", Value="2"},
-                                        }, new { @id = "ProductServiceType", @class = "form-control input-rounded" })
-                                            @Html.ValidationMessageFor(model => model.ProductServiceType)
+                            <div class="row">
+                                <div class="form-group  col-md-6">
+                                    <label class="col-form-label" for="VendorName">Vendor Name<span class="req">*</span></label>
 
-                                        </div>
+                                    @Html.TextBoxFor(model => model.VendorName, new { @id = "VendorName", @readonly = "readonly", @class = "form-control input-rounded", @style = "background-color:#EBEBE4" })
+                                    <div class="errorspace">
+                                        @Html.ValidationMessageFor(model => model.VendorType)
                                     </div>
+                                </div>
+
+                                <div class="form-group  col-md-6">
+                                    <label class="col-form-label" for="Type">Type<span class="req">*</span></label>
+
+                                    @Html.DropDownListFor(model => model.ProductServiceType, new List<SelectListItem>
+                              {
+                                  new SelectListItem() {Text = "--Select Type--", Value="0"},
+                                 new SelectListItem() {Text = "Product", Value="1"},
+                               new SelectListItem() {Text = "Service", Value="2"},
+                                }, new { @id = "ProductServiceType", @class = "form-control input-rounded" })
+                                    @Html.ValidationMessageFor(model => model.ProductServiceType)
 
                                 </div>
 
-                                <div class="basic-form">
 
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label" for="VendorName"> Product/Service Name<span class="req">*</span></label>
-                                        <div class="col-sm-4">
-                                            @Html.TextBoxFor(model => model.ProductServiceName, null, new { @id = "ProductServiceName", @class = "form-control input-rounded" })
-                                            @Html.ValidationMessageFor(model => model.ProductServiceName)
-                                        </div>
-                                        <label class="col-sm-2 col-form-label" for="Type">$ Unit Cost<span class="req">*</span></label>
-                                        <div class="col-sm-4">
-                                            @Html.TextBoxFor(model => model.UnitCost, null, new { @id = "UnitCost", @class = "form-control input-rounded" })
-                                            @Html.ValidationMessageFor(model => model.UnitCost)
-                                        </div>
-                                    </div>
+                                <div class="form-group  col-md-6">
+                                    <label class="col-form-label" for="VendorName"> Product/Service Name<span class="req">*</span></label>
+
+                                    @Html.TextBoxFor(model => model.ProductServiceName, null, new { @id = "ProductServiceName", @class = "form-control input-rounded" })
+                                    @Html.ValidationMessageFor(model => model.ProductServiceName)
 
                                 </div>
-                                <div class="basic-form">
+                                <div class="form-group  col-md-6">
+                                    <label class="col-form-label" for="Type">$ Unit Cost<span class="req">*</span></label>
 
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label" for="VendorName"> % Tax<span class="req">*</span></label>
-                                        <div class="col-sm-4">
-                                            @Html.TextBoxFor(model => model.Tax, null, new { @id = "Tax", @class = "form-control input-rounded" })
-                                            @Html.ValidationMessageFor(model => model.Tax)
-                                        </div>
-                                        <label class="col-sm-2 col-form-label" for="Type">Costcode<span class="req">*</span></label>
-                                        <div class="col-sm-4">
-                                            @if (ViewBag.CostCodeList != null)
-                                            {
-                                                {@Html.DropDownListFor(model => model.Costcode, new SelectList(ViewBag.CostCodeList, "CostCodeId", "CostCodeName"), "--Select Cost Code--", new { @id = "CostCode", @class = "form-control input-rounded" })}
-                                        }
-                                        else
-                                        {
-                                            <select id="CostCodeData" class="form-control input-rounded"><option value="-1">@ViewBag.CostCodeList</option></select>
-                                        }
-                                            @Html.ValidationMessageFor(model => model.Costcode)
-                                        </div>
-                                    </div>
+                                    @Html.TextBoxFor(model => model.UnitCost, null, new { @id = "UnitCost", @class = "form-control input-rounded" })
+                                    @Html.ValidationMessageFor(model => model.UnitCost)
 
                                 </div>
 
-                                <div class="basic-form">
+                                <div class="form-group  col-md-6">
+                                    <label class="col-form-label" for="VendorName"> % Tax<span class="req">*</span></label>
 
-                                    <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label" for="VendorName">Product Image<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.Tax, null, new { @id = "Tax", @class = "form-control input-rounded" })
+                                    @Html.ValidationMessageFor(model => model.Tax)
+                                </div>
 
-                                            @if (Model.ProductImage != null)
-                                            {
-                                                Image = Model.ProductImage + "ProductImage";
-                                            }
-                                            @Html.TextBoxFor(m => m.ProductImageFile, new { id = "fileuploadAdddProduct", type = "file", @style = "margin-left:auto;" })
-                                            <img id='imgFacilityProductImage' name='imgVehicleImage' src="@Url.Content(Image)"
-                                                 class="img-rounded" alt="No Image " style="width:110px; height:110px; margin-left:55%;">
-                                            <br />
-                                            @Html.ValidationMessageFor(model => model.ProductImageFile)
+                                <div class="form-group  col-md-6">
+                                    <label class="col-form-label" for="Type">Costcode<span class="req">*</span></label>
 
-                                        </div>
-
-                                    </div>
+                                    @if (ViewBag.CostCodeList != null)
+                                    {
+                                        {@Html.DropDownListFor(model => model.Costcode, new SelectList(ViewBag.CostCodeList, "CostCodeId", "CostCodeName"), "--Select Cost Code--", new { @id = "CostCode", @class = "form-control input-rounded" })}
+                                }
+                                else
+                                {
+                                    <select id="CostCodeData" class="form-control input-rounded"><option value="-1">@ViewBag.CostCodeList</option></select>
+                                }
+                                    @Html.ValidationMessageFor(model => model.Costcode)
 
                                 </div>
-                                <div class="clearfix"></div>
-                                <input type="Submit" name="Save" class="btn btn-success pull-right" id="SaveFacilityProduct" style="border-radius:25px;width:110px;" value="Save Product" />
-                                <input type="button" onclick="location.href='@Url.Action("CompanyList", "VendorManagement")'" class="btn btn-secondary bluebutton pull-right marginright10 marginbottom10 Lmar10" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
+                            </div>
+
+
+
+                            <div class="form-group col-md-6 AdressShowHide">
+                                <label class="col-form-label" for="VendorName">Product Image<span class="req">*</span></label>
+
+                                <div id="dvDocPreview">
+                                </div>
+
+                                <div class="custom-file">
+                                    <input id="fileuploadEmergency" type="file" style="" class="custom-file-input" name="POD_EmergencyPODocumentFile" />
+                                    <label class="custom-file-label">Choose file</label>
+                                </div>
+
+                                <ul class="attachment">
+                                    @if (Model.ProductImage != null)
+                                    {
+                                        Image = Model.ProductImage + "ProductImage";
+                                    }
+                                    @Html.TextBoxFor(m => m.ProductImageFile, new { id = "fileuploadAdddProduct", type = "file", @style = "margin-left:auto;" })
+                                    <img id='imgFacilityProductImage' name='imgVehicleImage' src="@Url.Content(Image)"
+                                         class="img-rounded" alt="No Image " style="width:110px; height:110px; margin-left:55%;">
+                                </ul>
+                                <div class="errorspace">
+                                    @Html.ValidationMessageFor(model => model.ProductImageFile)
+                                </div>
 
                             </div>
+
+
+                        </div>
+
+                                <div class="clearfix"></div>
+                                <input type="Submit" name="Save" class="btn btn-success pull-right btn-rounded m-l-10-btn" id="SaveFacilityProduct" value="Save Product" />
+                                <input type="button" onclick="location.href='@Url.Action("CompanyList", "VendorManagement")'" class="btn btn-secondary btn-rounded pull-right mr-10" formnovalidate="formnovalidate" value="Cancel"/>
+
+                           
 
 
                         }
@@ -175,18 +179,18 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card aos-init" data-aos="fade-up">
-                    <div class="card-header" style="height: 45px;">
-                        <div class="card-header headerSize" style="height:45px;">
+                  
+                        <div class="card-header headerSize">
 
                             <div class="basic-form">
                                 <div class="form-group m-0">
-                                    <p class="m-0">List of Products/Services</p>
+                                    <h4 class="card-title">List of Products/Services</h4>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    
                     <div class="card-body">
-                        <div id="tbl_AllFacilityDetailsList" class="jsgrid" style="position: relative; height: 400px; width: 100%;">
+                        <div id="tbl_AllFacilityDetailsList" class="jsgrid">
 
                         </div>
                     </div>
@@ -195,20 +199,20 @@
         </div>
     </div>
 </div>
- 
+
 <script src="~/Scripts/eFleetVehicle/reg.js"></script>
 <script>
     $(document).ready(function () {
-        $('#msform').submit(function () { 
-             fn_showMaskloader('Please wait...'); 
+        $('#msform').submit(function () {
+             fn_showMaskloader('Please wait...');
             if (!$('#msform').valid()) {
                 fn_hideMaskloader();
               return false;
             }
             fn_hideMaskloader();
-                
-              
-            
+
+
+
         });
         $('#VendorName').val($_VendorName);
         $('#lblVendorName').addClass('active highlight');

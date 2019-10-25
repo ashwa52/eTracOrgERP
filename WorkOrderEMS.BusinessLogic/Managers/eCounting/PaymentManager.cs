@@ -42,7 +42,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                   resultList = _workorderems.spPaymentDesk(LocationID, BillTypeId)
                     .Select(a => new PaymentModel()
                     {
-                        LLBL_ID = a.LBLL_Id,
+                     LLBL_ID = a.LBLL_Id,
                      BillNo = a.LBLL_BLL_Id,
                      BillAmount = a.LBLL_InvoiceAmount,
                      BillDate = a.BillDate,
@@ -58,7 +58,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                      OperatingCompany = a.CMP_NameLegalRemitter == null?"N/A": a.CMP_NameLegalRemitter,
                      OperatingCompanyId = a.CMP_IdRemitter > 0 ? a.CMP_IdRemitter :0 ,
                      LocationId = a.LocationId,
-                     DisplayDate = a.BillDate == null ? "" : a.BillDate.ToString("MMM dd,yyyy")
+                     DisplayDate = a.BillDate == null ? "" : a.BillDate.ToString("MMM dd,yyyy"),
+                     PaymentNote = a.LBLL_Comment
                     }).Where(x => x.Status == "W" || x.Status == "Y").ToList();
                // Results.Where(x => x.Status == "Y").ToList();
                 //foreach (var item in Results)
@@ -139,7 +140,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         OperatingCompany = a.CMP_NameLegalRemitter == null ? "N/A" : a.CMP_NameLegalRemitter,
                         OperatingCompanyId = a.CMP_IdRemitter > 0 ? 0 : a.CMP_IdRemitter,
                         LocationId = a.LocationId,
-                        DisplayDate = a.BillDate == null ? "" : a.BillDate.ToString("MMM dd,yyyy")
+                        DisplayDate = a.BillDate == null ? "" : a.BillDate.ToString("MMM dd,yyyy"),
+                        PaymentNote = a.LBLL_Comment
                     }).Where(x => x.Status == "P" || x.Status == "X").ToList();
                  //Results.Where(x => x.Status == "X").ToList();
                 //int totRecords = Results.Count();
@@ -182,8 +184,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                      result = _workorderems.spGetCompanyAccountDetailForPayment(OperatingCompanyId).
                         Select(x => new PaymentModel()
                         {
-                            AccountNo = x.CAD_AccountNumber,
-                            CARDNo = x.CAD_CreditCardNumber,
+                            AccountNo = x.CAD_AccountNumber ?? "",
+                            CARDNo = x.CAD_CreditCardNumber ?? "",
                             VendorId = x.CAD_CMP_Id,
                             CompanyAccountId = x.CAD_Id,
                             PaymentMode = x.CAD_PMD_Id.ToString(),

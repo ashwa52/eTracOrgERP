@@ -330,7 +330,7 @@ namespace WorkOrderEMS.Controllers.eCounting
                             QueryService<Account> querySvcAccount = new QueryService<Account>(serviceContext);
                             List<Account> accountData = querySvcAccount.ExecuteIdsQuery("SELECT * FROM Account MaxResults 1000").ToList();
 
-                            var VendorDetails = _IVendorManagement.GetCompanyQuickBookId(Convert.ToInt64(ObjData.VendorId));
+                            var VendorDetails = _IVendorManagement.GetCompanyQuickBookId(Convert.ToInt64(ObjData.VendorId));//to whom we are sending (ObjData.VendorId)
                             //var getAccountDetails = _IVendorManagement.GetAccountDetailsByVendorId(Convert.ToInt64(objPaymentModel.OpeartorCAD_Id)); // (Convert.ToInt64(ObjData.VendorId));
                             var getAccountDetails = _IVendorManagement.GetAccountDetailsByVendorId(Convert.ToInt64(objPaymentModel.CompanyAccountId)); // (Convert.ToInt64(ObjData.VendorId));
                             var getBill = _IBillDataManager.GetBillQBKId(Convert.ToInt64(ObjData.BillNo));

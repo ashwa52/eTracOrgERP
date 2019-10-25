@@ -167,7 +167,8 @@ function doPaymentSearchresult()
             { name: "OperatingCompany", title: "Operating Company", type: "text", width: 30 },
             { name: "BillType", title: "Bill Type", type: "text", width: 20 },
             { name: "BillAmount", title: "Bill Amount", type: "text", width: 20 },
-            { name: "BillDate", title: "Bill Date", type: "text", width: 30 },
+            { name: "BillDate", title: "Bill Date", type: "text", width: 30, visible: false},
+            { name: "DisplayDate", title: "Bill Date", type: "text", width: 30 },
             { name: "GracePeriod", title: "Grace Period", type: "text", width: 10 },
             { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20 },//, visible: false 
             { name: "Description", title: "Description", type: "text", width: 20 },
@@ -204,7 +205,7 @@ function imageFormat(cellvalue, options, rowObject) {
 function PaymentStatus(item) {
     $("#lblViewAmountPaid").html(item.BillAmount);
     $("#lblViewPaymentMode").html(item.PaymentMode);
-    $("#lblViewNotes").html(item);
+    $("#lblViewNotes").html(item.PaymentNote);
     $('#myModalForPOStatus').modal('show');
 }
 //#endregion

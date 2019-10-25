@@ -21,10 +21,10 @@ namespace WorkOrderEMS.Models
         public string PaymentMode { get; set; }
         public string Description { get; set; }
         public string Status { get; set; }
-        [Required(ErrorMessage = "Please checked Card Number")]
+        [Required(ErrorMessage = "Please check Card Number")]
         public string CARDNo { get; set; }
 
-        [Required(ErrorMessage = "Please checked Account Number")]
+        [Required(ErrorMessage = "Please check Account Number")]
         public string AccountNo { get; set; }
 
         [Required(ErrorMessage = "Please add cheque Number")]

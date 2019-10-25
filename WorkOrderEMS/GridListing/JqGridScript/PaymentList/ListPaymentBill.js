@@ -1,5 +1,5 @@
 ﻿var PaymentUrl = 'Payment/GetPaymentListByLocation';
-var GetAccountDataUrl = 'Payment/GetCompanyAccountDetails/'; 
+var GetAccountDataUrl = 'Payment/GetCompanyAccountDetails/';
 var MakePaymentUrl = 'Payment/MakePaymentData/';
 var POFacility = 'Payment/GetAllPOFacilityByPOId/';
 var PODetail = 'Payment/GetAllPODetailByPOId/';
@@ -10,12 +10,12 @@ var vehcileApprovalStatus = '';
 var IsCancel = false;
 var GridValue = {};
 var BillTypeDll = '<select id="BillTypeDll">'
-        + '<option value="0" >Bill Type</option>'
-        + '<option value="ManualBill" >ManualBill</option>'
-        + '<option value="PO" >PO</option>'
+    + '<option value="0" >Bill Type</option>'
+    + '<option value="ManualBill" >ManualBill</option>'
+    + '<option value="PO" >PO</option>'
     + '<option value="MISC">MISC</option></select>';
 
-function onChangeBill(item) {    
+function onChangeBill(item) {
     var act;
     $("#tbl_PaymentList").jsGrid({
         height: "170%",
@@ -120,21 +120,21 @@ $(function () {
             { name: "VendorName", title: "Vendor Name/Employee name", type: "text", width: 35 },
             { name: "OperatingCompany", title: "Operating Company", type: "text", width: 30 },
             {
-                name: "BillType", title: "Bill Type", type: "text", width: 20, itemTemplate: function (value, item) {                    
+                name: "BillType", title: "Bill Type", type: "text", width: 20, itemTemplate: function (value, item) {
                     var $text = $("<a>").text(item.BillType);
                     return $("<div>").append($text).click(function () {
-                        RowClickbillType(value,item)
+                        RowClickbillType(value, item)
                     });
                 }
             },
             { name: "BillAmount", title: "Bill Amount", type: "text", width: 20 },
             { name: "DisplayDate", title: "Bill Date", type: "text", width: 30 },
-            { name: "BillDate", title: "Bill Date", type: "text", width: 30, visible: false  },
+            { name: "BillDate", title: "Bill Date", type: "text", width: 30, visible: false },
             { name: "GracePeriod", title: "Grace Period", type: "text", width: 10 },
             { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20 },//, visible: false 
             { name: "Status", title: "Status", type: "text", width: 20, visible: false },
             { name: "VendorId", title: "VendorId", type: "text", width: 20, visible: false },
-            { name: "OperatingCompanyId", title: "Operating Company Id", type: "text", width: 20, visible: false  },
+            { name: "OperatingCompanyId", title: "Operating Company Id", type: "text", width: 20, visible: false },
             { name: "LocationId", title: "Location Id", type: "text", width: 20, visible: false },
             { name: "LLBL_ID", title: "LLBL ID", type: "text", width: 50, visible: false },
             {
@@ -155,7 +155,7 @@ $(function () {
                         }).append($iconClose);
                     return $("<div>").attr({ class: "btn-toolbar" }).append($customCheck).append($customCancel);
                 }
-            }         
+            }
         ]
     });
 
@@ -319,95 +319,93 @@ $(function () {
 function RowClickbillType(id, rowData) {
     debugger;
     if (id == "PO") { //You clicked on admin block
-                //var row = jQuery('#tbl_PaymentList').jqGrid("getRowData", rowid);
-                $.ajax({
-                    type: "post",
-                    url: $_HostPrefix + PODetail + '?POId=' + rowData.BillNo,
-                    datatype: 'json',
-                    type: 'GET',
-                    success: function (result) {
-                        debugger;
-                        if (result.PONumber != null && result.PONumber != "" && result.PONumber != undefined) {
-                            if (result.POType == 1) {
-                                result.POType = "Normal PO";
-                            }
-                            else if (result.POType == 2) {
-                                result.POType = "Reccuring PO";
-                            }
-                            else if (result.POType == 2) {
-                                result.POType = "Emeregency PO";
-                            }
-                            else {
-                                result.POType = "Manual PO";
-                            }
-                            $("#lblPOId").html(result.PONumber);
-                            $("#lblPOType").html(result.POType);
-                            $("#lblCompanyName").html(rowData.VendorName);
-                            $("#lblLocationName").html(rowData.LocationName);
-                            $("#lblPODate").html(result.IssueDateDisplay);
-                            $("#lblDeliveryDate").html(result.DeliveryDateDisplay);
-                            $('#POrecords_table').html('');
-                            var arrData = [];
-                            var thHTML = '';
-                            var GrandTotal = 0;
-                            var totalsum;
-                            thHTML += '<tr style="background-color:#0792bc;color:#fff;text-weight:light;"><th>Cost Code</th><th>Description</th><th>Unit Price</th><th>Quantity</th><th>Total</th><th>Tax</th></tr>';
-                            $('#POrecords_table').append(thHTML); 
-                            if (result.NewPOTypeDetails.length > 0) {
-                                
-                                for (i = 0; i < result.NewPOTypeDetails.length; i++) {
+        //var row = jQuery('#tbl_PaymentList').jqGrid("getRowData", rowid);
+        $.ajax({
+            type: "post",
+            url: $_HostPrefix + PODetail + '?POId=' + rowData.BillNo,
+            datatype: 'json',
+            type: 'GET',
+            success: function (result) {
+                debugger;
+                if (result.PONumber != null && result.PONumber != "" && result.PONumber != undefined) {
+                    if (result.POType == 1) {
+                        result.POType = "Normal PO";
+                    }
+                    else if (result.POType == 2) {
+                        result.POType = "Reccuring PO";
+                    }
+                    else if (result.POType == 2) {
+                        result.POType = "Emeregency PO";
+                    }
+                    else {
+                        result.POType = "Manual PO";
+                    }
+                    $("#lblPOId").html(result.PONumber);
+                    $("#lblPOType").html(result.POType);
+                    $("#lblCompanyName").html(rowData.VendorName);
+                    $("#lblLocationName").html(rowData.LocationName);
+                    $("#lblPODate").html(result.IssueDateDisplay);
+                    $("#lblDeliveryDate").html(result.DeliveryDateDisplay);
+                    $('#POrecords_table').html('');
+                    var arrData = [];
+                    var thHTML = '';
+                    var GrandTotal = 0;
+                    var totalsum;
+                    thHTML += '<tr style="background-color:#0792bc;color:#fff;text-weight:light;"><th>Cost Code</th><th>Description</th><th>Unit Price</th><th>Quantity</th><th>Total</th><th>Tax</th></tr>';
+                    $('#POrecords_table').append(thHTML);
+                    if (result.NewPOTypeDetails.length > 0) {
 
-                                    GrandTotal = parseInt(GrandTotal) + parseInt(result.NewPOTypeDetails[i].UnitPrice * result.NewPOTypeDetails[i].Quantity);
-                                    totalsum = result.NewPOTypeDetails[i].UnitPrice * result.NewPOTypeDetails[i].Quantity;
-                                    DataLists = result.NewPOTypeDetails;
-                                    //GrandTotal = result.NewPOTypeDetails[i].TotalPrice // pre- result.NewPOTypeDetails[i].Total
-                                    var trHTML = '';
-                                    trHTML +=
-                                       '<tr><td>' + result.NewPOTypeDetails[i].CostCodeName +
-                                       '</td><td>' + result.NewPOTypeDetails[i].COM_Facility_Desc +
-                                       '</td><td>' + result.NewPOTypeDetails[i].UnitPrice +
-                                       '</td><td>' + result.NewPOTypeDetails[i].Quantity +
-                                       '</td><td>' + totalsum +
-                                       '</td><td>' + result.NewPOTypeDetails[i].Tax +
-                                       '</td></tr>';
-                                    $('#POrecords_table').append(trHTML);
-                                }
-                            }
-                            $('#lblTotal').html(GrandTotal);
+                        for (i = 0; i < result.NewPOTypeDetails.length; i++) {
 
-                            $("#lblPOStatus").html(result.POStatus);
-                            $('.modal-title').text("PO Details");
-                            $("#myModalForPODetails").modal('show');
-                        }
-                        else {
-                           // toastr.success(result)
+                            GrandTotal = parseInt(GrandTotal) + parseInt(result.NewPOTypeDetails[i].UnitPrice * result.NewPOTypeDetails[i].Quantity);
+                            totalsum = result.NewPOTypeDetails[i].UnitPrice * result.NewPOTypeDetails[i].Quantity;
+                            DataLists = result.NewPOTypeDetails;
+                            //GrandTotal = result.NewPOTypeDetails[i].TotalPrice // pre- result.NewPOTypeDetails[i].Total
+                            var trHTML = '';
+                            trHTML +=
+                                '<tr><td>' + result.NewPOTypeDetails[i].CostCodeName +
+                                '</td><td>' + result.NewPOTypeDetails[i].COM_Facility_Desc +
+                                '</td><td>' + result.NewPOTypeDetails[i].UnitPrice +
+                                '</td><td>' + result.NewPOTypeDetails[i].Quantity +
+                                '</td><td>' + totalsum +
+                                '</td><td>' + result.NewPOTypeDetails[i].Tax +
+                                '</td></tr>';
+                            $('#POrecords_table').append(trHTML);
                         }
                     }
-                });
+                    $('#lblTotal').html(GrandTotal);
+
+                    $("#lblPOStatus").html(result.POStatus);
+                    $('.modal-title').text("PO Details");
+                    $("#myModalForPODetails").modal('show');
+                }
+                else {
+                    // toastr.success(result)
+                }
             }
-            else if (id == "MIS")
-            {
-                debugger
-                var getMiscData;
-                $.ajax({
-                    url: $_HostPrefix + MiscNumberDetail + '?MiscId=' + rowData.BillNo,
-                    datatype: 'json',
-                    type: 'GET',
-                    success: function (result) {
-                        if(result != null)
-                        {
-                            getMiscData = result;
-                        }
-                    }
-                })
-                $.ajax({
-                    url: $_HostPrefix + miscDetails + '?MiscId=' + getMiscData,
-                    datatype: 'json',
-                    type: 'GET',
-                    success: function (result) {
-                    }
-                })
+        });
+    }
+    else if (id == "MIS") {
+        debugger
+        var getMiscData;
+        $.ajax({
+            url: $_HostPrefix + MiscNumberDetail + '?MiscId=' + rowData.BillNo,
+            datatype: 'json',
+            type: 'GET',
+            success: function (result) {
+                if (result != null) {
+                    getMiscData = result;
+                }
             }
+        })
+        $.ajax({
+            url: $_HostPrefix + miscDetails + '?MiscId=' + getMiscData,
+            datatype: 'json',
+            type: 'GET',
+            success: function (result) {
+            }
+        })
+    }
 }
 
 function formatDate(date) { //not used 
@@ -501,18 +499,10 @@ function doPaymentSearch() {
     });
 }
 
-//function gridReload() {
-
-//    jQuery("#tbl_PaymentList").jqGrid('setGridParam', { url: $_HostPrefix + GetListBill + "?LocationId=" + $_locationId, page: 1 }).trigger("reloadGrid");
-//}
-//function RejectBillAfterCommentBill() {
-//    callAjaxbill()
-//}
-//function ApproveBill() {
-//    callAjaxbill()
-//}
-
 function PayBillSave(item) {
+
+    //$("#lblPaymentModeForChange option:selected").val();
+    $("#lblPaymentModeForChange").val($("#lblPaymentModeForChange option:first").val());
 
     $('.WhenMisc').hide();
     $('.WhenWired').hide();
@@ -520,47 +510,23 @@ function PayBillSave(item) {
     $('.whenCheque').hide();
 
     GridValue = item;
-    callAccountDetailsVendor(item);    
+    callAccountDetailsVendor(item);
     $("#myModelPayBill").modal('show');
 }
 
 function CancelBill(item) {
-    //debugger;//
+    //debugger;
     //id = $(this).attr("CancelBill");
     $("#CommentPay").val("");
-    GridValue = item;    
+    GridValue = item;
     callAccountDetailsVendor(item);
     $('#myModelCancelBill').modal('show');
 }
 
-function callAccountDetailsVendor(data)
-{
-    $("#PaymentToBePaid").html(data.BillAmount);  
+function callAccountDetailsVendor(data) {
+    $("#PaymentToBePaid").html(data.BillAmount);
     $("#PaymentByCash").html(data.BillAmount);
-    if (data.PaymentMode == "MISC") {
-        $('.WhenMisc').show();
-        $('.WhenWired').hide();
-        $('.WhenCard').hide();
-        $('.whenCheque').hide();
-    }
-    if (data.PaymentMode == "Wired") {
-        $('.WhenMisc').hide();
-        $('.WhenWired').show();
-        $('.WhenCard').hide();
-        $('.whenCheque').hide();
-    }
-    if (data.PaymentMode == "Card") {
-        $('.WhenMisc').hide();
-        $('.WhenWired').hide();
-        $('.WhenCard').show();
-        $('.whenCheque').hide();
-    }
-    if (data.PaymentMode == "Cheque") {
-        $('.WhenMisc').hide();
-        $('.WhenWired').hide();
-        $('.WhenCard').hide();
-        $('.whenCheque').show();
-    }
+
     //alert(data.PaymentMode);
     if (data.PaymentMode == "Wired" || data.PaymentMode == "Card" || data.PaymentMode == "Cheque" || data.PaymentMode == "Cash") {
         $.ajax({
@@ -571,82 +537,29 @@ function callAccountDetailsVendor(data)
             data: JSON.stringify({ VendorId: data.VendorId, OperatingCompanyId: data.OperatingCompanyId }),
             success: function (result) {
 
-                if (data.PaymentMode == "Wired") {
-                    //$('.WhenMisc').hide();
-                    //$('.WhenWired').show();
-                    //$('.WhenCard').hide();
-                    //$('.whenCheque').hide();
-                    $('#dvOptionsWired').html("");
-                    for (var i = 0; i < result.length; i++) {
-                        if (result[i].PaymentMode == 2)
-                        {
-                           
-                            $('#dvOptionsWired').append($('<input type="radio" name="CARDNo" nametype ="Card" OperatorCADId ="' + result[i].OpeartorCAD_Id + '" AccountAccountId ="' + result[i].CompanyAccountId + '" id="AccountNo_' + result[i].CompanyAccountId + '" value="' + result[i].AccountNo + '" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + result[i].AccountNo + '</input><br /><br />'));
-                        }
-                        if (result[i].PaymentMode == 1) {
-                            //$('.WhenCard').show(); 
-                            
-                            $('#dvOptions').html("");
-                            $('#dvOptions').append($('<input type="radio" name="CARDNo" nametype ="Account" OperatorCADId ="' + result[i].OpeartorCAD_Id + '"  CardId="' + result[i].CompanyAccountId + '" id = "CARDNo_' + result[i].CARDNo + '" value="' + result[i].CARDNo + '" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + result[i].CARDNo + '</input><br /><br />'));
-                        }
-                        if (result[i].PaymentMode == 4)
-                        {
-                            //$('#CompanyAccountId').val(result[0].CompanyAccountId);
-                        }
-                        if (result[i].PaymentMode == 3) {
-                            //$('#CompanyAccountId').val(result[0].CompanyAccountId);
-                            
-                        }
+                $('#dvOptionsWired').html("");
+                $('#dvOptions').html("");
+                for (var i = 0; i < result.length; i++) {
+                    //for account
+                    if (result[i].AccountNo != "") {
+                        $('#dvOptionsWired').append($('<input type="radio" name="AccountNo" nametype ="Account" OperatorCADId ="' + result[i].OpeartorCAD_Id + '"AccountAccountId="' + result[i].CompanyAccountId + '" id="AccountNo_' + result[i].CompanyAccountId + '" value="' + result[i].AccountNo + '" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + result[i].AccountNo + '</input><br /><br />'));
                     }
-                }
-                else if (data.PaymentMode == "Card") {
-                    //$('.WhenMisc').hide();
-                    //$('.WhenWired').hide();
-                    //$('.WhenCard').show();
-                    //$('.whenCheque').hide();
-                    $('#dvOptions').html("");
-                    for (var i = 0; i < result.length; i++) {
-                        if (result[i].PaymentMode == 1) {
-                           
-                            $('#dvOptions').append($('<input type="radio" name="CARDNo" nametype ="Card" OperatorCADId ="' + result[i].OpeartorCAD_Id + '" CardId ="' + result[i].CompanyAccountId + '" id = "CARDNo_' + result[i].CARDNo + '" value="' + result[i].CARDNo + '" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + result[i].CARDNo + '</input><br /><br />'));
-
-                        } if (result[i].PaymentMode == 2) {
-                            //$('.WhenWired').show();
-                            
-                            $('#dvOptionsWired').html("");
-                            $('#dvOptionsWired').append($('<input type="radio" nametype ="Account" OperatorCADId ="' + result[i].OpeartorCAD_Id + '" name="CARDNo" AccountAccountId="' + result[i].CompanyAccountId + '" id="AccountNo_' + result[i].CompanyAccountId + '" value="' + result[i].AccountNo + '" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + result[i].AccountNo + '</input><br /><br />'));
-
-                        }
-                        if(result[i].PaymentMode == 4)
-                        {
-                            //$('#CompanyAccountId').val(result[0].CompanyAccountId);
-                            //$('.whenCheque').show();
-                        }
-                        if (result[i].PaymentMode == 3) {
-                            //$('#CompanyAccountId').val(result[0].CompanyAccountId);
-
-                        }
+                    //for card
+                    if (result[i].CARDNo != "") {
+                        $('#dvOptions').append($('<input type="radio" name="CardNo" nametype ="Card" OperatorCADId ="' + result[i].OpeartorCAD_Id + '" CardId ="' + result[i].CompanyAccountId + '" id = "CARDNo_' + result[i].CARDNo + '" value="' + result[i].CARDNo + '" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + result[i].CARDNo + '</input><br /><br />'));
                     }
-                }
-                else if (data.PaymentMode == "Cheque") {
-                    //$('#CompanyAccountId').val(result[0].CompanyAccountId);                    
-                }
-                else if (data.PaymentMode == "Cash") {
-                    //$('#CompanyAccountId').val(result[0].CompanyAccountId);
-
                 }
             },
             error: function () { alert(" Something went wrong..") },
         });
     }
-    $("#lblVendorNameFrom").html(data.OperatingCompany);    
+    $("#lblVendorNameFrom").html(data.OperatingCompany);
     $("#lblVendorNameTo").html(data.VendorName);
-   // $("#lblPaymentModeFrom").html(data.PaymentMode);
+    // $("#lblPaymentModeFrom").html(data.PaymentMode);
     //$("#lblPaymentModeTo").html(data.PaymentMode);
 }
 
-function PayAction()
-{
+function PayAction() {
     if ($('.form').valid()) {
         IsCancel = false;
         var valid = false;
@@ -661,9 +574,9 @@ function PayAction()
             var OperatorCad = $('input[nametype=Account]:checked').attr("OperatorCADId");
             if (Acc == undefined) {
                 valid = false;
-                alert("No Account number selected")
+                alert("No account number found or selected");
             } else {
-                valid == true;
+                valid = true;
             }
         }
         else if (text == "Card") {
@@ -671,7 +584,7 @@ function PayAction()
             var OperatorCad = $('input[nametype=Card]:checked').attr("OperatorCADId");
             if (Card == undefined) {
                 valid = false;
-                alert("No card details selected");
+                alert("No card details found or selected");
             } else {
                 valid = true;
             }
@@ -686,26 +599,27 @@ function PayAction()
             }
         }
         else if (text == "--Select Payment Mode--") {
-            alert("Please select payment mode")
+            alert("Please select payment mode");
         }
 
         if (valid) {
             callAjaxPayment();
             $("#myModelPayBill").modal('hide');
-        }        
-        
+        }
     }
     else {
         return false;
-
     }
 }
-function CancelAction()
-{
+function CancelAction() {
     if ($('.form').valid()) {
-        IsCancel = true;
-        callAjaxPayment();
-        $('#myModelCancelBill').modal('hide');
+        if ($("#CommentPay").val() == "") {
+            alert("Please enter comment");
+        } else {
+            IsCancel = true;
+            callAjaxPayment();
+            $('#myModelCancelBill').modal('hide');
+        }
     }
     else {
         return false;
@@ -713,14 +627,17 @@ function CancelAction()
 }
 
 function callAjaxPayment() {      //$("#ApproveBill").live("click", function (event) {
-    
+    debugger;
     //var GridData = $('#tbl_PaymentList').getRowData(id);
     var GridData = GridValue;
     var obj = new Object();
-    
+    var _paymentMode = $("#lblPaymentModeForChange option:selected").text();
+
     obj.ChequeNo = $("#ChequeNo").val();
+    obj.PaymentByCash = $("#PaymentByCash").val();
     //obj.PaymentNote = $("#PaymentNote").val();
-    obj.AccNo = $("#AccNo").val();         
+    //obj.AccNo = $("#AccNo").val();  
+    
     var Account = $("#dvOptionsWired input[type='radio']").attr("id");
     obj.AccountNo = $('input[nametype=Account]:checked').val();
     obj.CARDNo = $('input[nametype=Card]:checked').val();
@@ -729,26 +646,34 @@ function callAjaxPayment() {      //$("#ApproveBill").live("click", function (ev
     } else {
         obj.Comment = $("#PaymentNote").val();// for paid event
     }
+    obj.PaymentMode = _paymentMode;
+    
     //obj.AccountNo = $('#' + Account).val();
-    if (obj.CARDNo != null)
-    {
+    if (obj.CARDNo != null) {
         var Card = $('input[nametype=Card]:checked').attr("CardId");
         var OperatorCad = $('input[nametype=Card]:checked').attr("OperatorCADId");
-        obj.OpeartorCAD_Id = OperatorCad;
         obj.CompanyAccountId = Card;
+        obj.OpeartorCAD_Id = OperatorCad;        
     }
-    else if (obj.AccountNo != null)
-    {
+    else if (obj.AccountNo != null) {
         var Acc = $('input[nametype=Account]:checked').attr("AccountAccountId");
         var OperatorCad = $('input[nametype=Account]:checked').attr("OperatorCADId");
         obj.CompanyAccountId = Acc;
         obj.OpeartorCAD_Id = OperatorCad;
     }
-    else
-    { obj.CompanyAccountId = $('#CompanyAccountId').val(); }
-    var Card = $("#dvOptions input[type='radio']").attr("id");
+    else if (_paymentMode=="Cash") {
+        obj.CompanyAccountId = $('#CompanyAccountId').val();
+        obj.OpeartorCAD_Id = "Cash";
+    }
+    else if (_paymentMode == "Cheque") {
+        obj.CompanyAccountId = $('#CompanyAccountId').val();
+        obj.OpeartorCAD_Id = "Cheque";
+    }
+    else { obj.CompanyAccountId = $('#CompanyAccountId').val(); }
+
+    //var Card = $("#dvOptions input[type='radio']").attr("id");
     //obj.CARDNo = $('#' + Card).val();
-   
+
     obj.IsCancel = IsCancel;
     $.ajax({
         url: $_HostPrefix + MakePaymentUrl,
@@ -760,9 +685,7 @@ function callAjaxPayment() {      //$("#ApproveBill").live("click", function (ev
             new fn_showMaskloader('Please wait...');
         },
         success: function (result) {
-            //toastr.success(result);
-            //jQuery("#tbl_PaymentList").trigger("reloadGrid");
-            //jQuery("#tbl_PaymentPaidList").trigger("reloadGrid");
+            doPaymentSearchresult();
         },
         error: function () { alert(" Something went wrong..") },
         complete: function () {
@@ -816,7 +739,7 @@ $("#viewBill").on("click", function (event) {
 
 function paymentmodechange() {
     var text = $("#lblPaymentModeForChange option:selected").text();
-    
+
     if (text == "Cash") { //MISC
         $('.WhenMisc').show();
         $('.WhenWired').hide();
@@ -851,8 +774,7 @@ function paymentmodechange() {
 
 //#region Image
 function imageFormat(cellvalue, options, rowObject) {
-    if (cellvalue == "")
-    { return ""; }
+    if (cellvalue == "") { return ""; }
     else {
         return '<img src="' + cellvalue + '" class="gridimage" id="driverImage" onclick="EnlargeImageView(this);"/>';
     }

@@ -28,6 +28,7 @@
     </script>
 }
 <link href="~/Content/eCounting/VendorWizard.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/CSS/custom.css" rel="stylesheet" />
 @*<link href="~/Content/eFleetVehicle/eFleetstyle.css" rel="stylesheet" />*@
 @*<link href="~/Content/eFleetVehicle/VendorRegistrationCSS.css" rel="stylesheet" />*@
 
@@ -40,9 +41,7 @@
         background-color: #EBEBE4;
     }
 
-    .form-control {
-        border: 1px solid #a0b3b0 !important;
-    }
+  
 
     label .req {
         margin: 2px;
@@ -58,7 +57,7 @@
             <div class="col-xl-12 col-xxl-12">
                 <div class="card aos-init aos-animate" data-aos="fade-up">
                     <div class="card-header headerSize">
-                        <h4 class="card-title" style="color:white;"><strong>SetUp Vendor</strong></h4>
+                        <h4 class="card-title">Add Account Details</h4>
                     </div>
                     <div class="card-body">
                         @using (Html.BeginForm("AddAccountDetails", "VendorManagement", FormMethod.Post, new { enctype = "multipart/form-data", id = "msform" }))
@@ -68,8 +67,9 @@
 
                                 <div class="basic-form">
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label" for="LocationName">Pay Mode</label>
-                                        <div class="col-sm-4">
+                                        <div class="col-md-4">
+                                            <label class="col-form-label" for="LocationName">Pay Mode</label>
+
                                             @if (ViewBag.PaymentModeList != null)
                                             {
                                                 {@Html.DropDownListFor(model => model.VendorAccountDetailsModel.PaymentMode, new SelectList(ViewBag.PaymentModeList, "PaymentModeId", "PaymentModeName"), "--Select Payment Mode--", new { @id = "PaymentMode", @class = "form-control input-rounded" })}
@@ -77,79 +77,101 @@
                                         else
                                         {<select id="PaymentMode" class="form-control input-rounded"><option value="-1">@ViewBag.PaymentModeList</option></select>}
 
-                                        </div>
 
+                                        </div>
                                     </div>
 
                                     <div class="form-group row wiredSelectHideShow" style="display:none;">
-                                        <label class="col-sm-2 col-form-label" for="LocationName"> Bank Name<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+                                        <div class="col-md-6">
+                                            <label class="col-form-label" for="LocationName"> Bank Name<span class="req">*</span></label>
+
                                             @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankName, null, new { @id = "BankName", @class = "form-control input-rounded" })
                                             @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankName)
                                         </div>
-                                        <label class="col-sm-2 col-form-label" for="VendorName">Bank Location<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+
+                                        <div class="col-md-6">
+                                            <label class="col-form-label" for="VendorName">Bank Location<span class="req">*</span></label>
+
                                             @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankLocation, null, new { @id = "BankLocation", @class = "form-control input-rounded" })
                                             @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankLocation)
-
                                         </div>
-                                    </div>
-                                    <div class="form-group row wiredSelectHideShow" style="display:none;">
-                                        <label class="col-sm-2 col-form-label" for="LocationName"> Account Number<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+
+                                        <div class="col-md-6">
+                                            <label class="col-form-label" for="LocationName"> Account Number<span class="req">*</span></label>
+
                                             @Html.TextBoxFor(model => model.VendorAccountDetailsModel.AccountNumber, null, new { @id = "AccountNumber", @class = "form-control input-rounded" })
                                             @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.AccountNumber)
                                         </div>
-                                        <label class="col-sm-2 col-form-label" for="VendorName">  IFSC Code<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+
+                                        <div class="col-md-6">
+                                            <label class="col-form-label" for="VendorName">  IFSC Code<span class="req">*</span></label>
+
                                             @Html.TextBoxFor(model => model.VendorAccountDetailsModel.IFSCCode, null, new { @id = "IFSCCode", @class = "form-control input-rounded" })
                                             @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.IFSCCode)
-
                                         </div>
-                                    </div>
-                                    <div class="form-group row wiredSelectHideShow" style="display:none;">
-                                        <label class="col-sm-2 col-form-label" for="LocationName">  Swift OIC Code<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+
+                                        <div class="col-md-6">
+                                            <label class="col-form-label" for="LocationName">  Swift OIC Code<span class="req">*</span></label>
+
                                             @Html.TextBoxFor(model => model.VendorAccountDetailsModel.SwiftOICCode, null, new { @id = "SwiftOICCode", @class = "form-control input-rounded" })
                                             @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.SwiftOICCode)
                                         </div>
-                                        <label class="col-sm-2 col-form-label" for="VendorName">  Account Document<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+
+
+                                        <div class="form-group col-md-6">
+                                            <label class="col-form-label" for="VendorName"> Account Document <span class="req">*</span></label>
+
                                             <div id="dvAccountPreview">
                                             </div>
-                                            <input id="fileuploadAccount" type="file" style="margin-left:50%;" name="VendorAccountDetailsModel.AccountDocumentsFile" />
+
+                                            <div class="custom-file">
+                                                <input id="fileuploadAccount" type="file" style="" class="custom-file-input" name="VendorAccountDetailsModel.AccountDocumentsFile" />
+                                                <label class="custom-file-label">Choose file</label>
+                                            </div>
 
                                         </div>
+
+
+
                                     </div>
+
                                     <div class="form-group row CardSelectHideShow" style="display:none;">
-                                        <label class="col-sm-2 col-form-label" for="LocationName">  Card Number<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+                                        <div class="col-md-6">
+                                            <label class="col-form-label" for="LocationName">  Card Number<span class="req">*</span></label>
+
                                             @Html.TextBoxFor(model => model.VendorAccountDetailsModel.CardNumber, null, new { @id = "CardNumber", @class = "form-control input-rounded" })
                                             @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.CardNumber)
                                         </div>
-                                        <label class="col-sm-2 col-form-label" for="VendorName"> Bank Name <span class="req">*</span></label>
-                                        <div class="col-sm-4">
+
+                                        <div class="col-md-6">
+                                            <label class="col-form-label" for="VendorName"> Bank Name <span class="req">*</span></label>
+
                                             @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankName, null, new { @id = "PolicyNumber", @class = "form-control input-rounded" })
                                             @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankName)
                                         </div>
-                                    </div>
-                                    <div class="form-group row CardSelectHideShow" style="display:none;">
-                                        <label class="col-sm-2 col-form-label" for="LocationName"> Card Holder Name<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+
+
+                                        <div class="col-md-6">
+                                            <label class="col-form-label" for="LocationName"> Card Holder Name<span class="req">*</span></label>
+
                                             @Html.TextBoxFor(model => model.VendorAccountDetailsModel.CardHolderName, null, new { @id = "CardHolderName", @class = "form-control input-rounded" })
                                             @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.CardHolderName)
                                         </div>
-                                        <label class="col-sm-2 col-form-label" for="VendorName"> Expiration Date <span class="req">*</span></label>
-                                        <div class="col-sm-4">
+
+                                        <div class="col-md-6">
+                                            <label class="col-form-label" for="VendorName"> Expiration Date <span class="req">*</span></label>
+
                                             @Html.TextBoxFor(model => model.VendorAccountDetailsModel.ExpirationDate, null, new { @id = "ExpirationDate", @onkeydown = "return false;", @class = "form-control input-rounded" })
                                             @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.ExpirationDate)
                                         </div>
-                                    </div>
-                                    @*<input type="button" name="previous" class="btn btn-default bluebutton previous prv-last-btn pull-right marginright10 marginbottom10 LRmar" value="Previous" style="border-radius:25px;width:90px;" />*@
-                                    <button type="submit" onclick="return validateCustomFields(this);" class="btn btn-success pull-right marginright10 marginbottom10 Lmar10" style="border-radius:25px;width:150px;">Save &amp; Update </button>
-                                    <input type="button" onclick="location.href='@Url.Action("ListAccountOfVendor", "VendorManagement",new {VendorId = ViewBag.VendorIdForCancel})'" class="btn btn-default bluebutton pull-right marginright10 marginbottom10 Lmar10" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
 
-                                </div>
+                                        </div>
+                                        @*<input type="button" name="previous" class="btn btn-default bluebutton previous prv-last-btn pull-right marginright10 marginbottom10 LRmar" value="Previous" style="border-radius:25px;width:90px;" />*@
+                                        <button type="submit" onclick="return validateCustomFields(this);" class="btn btn-success btn-rounded pull-right m-l-10-btn">Save &amp; Update </button>
+
+                                        <input type="button" onclick="location.href='@Url.Action("ListAccountOfVendor", "VendorManagement",new {VendorId = ViewBag.VendorIdForCancel})'" class="btn btn-secondary btn-rounded pull-right" formnovalidate="formnovalidate" value="Cancel" />
+
+                                    </div>
                             </div>
                         }
 
