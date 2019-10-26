@@ -14,6 +14,7 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class PaymentTerm
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public PaymentTerm()
         {
             this.Contracts = new HashSet<Contract>();
@@ -25,7 +26,9 @@ namespace WorkOrderEMS.Data.EntityModel
         public int PTM_GracePeriod { get; set; }
         public string PTM_IsActive { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Contract> Contracts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LogContract> LogContracts { get; set; }
     }
 }

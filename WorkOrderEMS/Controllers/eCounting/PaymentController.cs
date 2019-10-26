@@ -87,8 +87,9 @@ namespace WorkOrderEMS.Controllers.eCounting
                 
                 if (!string.IsNullOrEmpty(txtSearch))
                 {
-                    var paymentList = _IPaymentManager.GetListPaymentByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType).Where(x => x.VendorName == txtSearch).ToList();
-                    return Json(paymentList.ToList(), JsonRequestBehavior.AllowGet);
+                    var paymentList = _IPaymentManager.GetListPaymentByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType).Where(x => !String.IsNullOrEmpty(x.VendorName));
+                    var FilterList = paymentList.Where(X => X.VendorName.ToLower().Contains(txtSearch.ToLower())).ToList();
+                    return Json(FilterList.ToList(), JsonRequestBehavior.AllowGet);
                 }
                 else {
                     var paymentList = _IPaymentManager.GetListPaymentByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
@@ -179,8 +180,9 @@ namespace WorkOrderEMS.Controllers.eCounting
                 locationId = 0;//Need to fetch all data // was done previously need to be discussed
                 if (!string.IsNullOrEmpty(txtSearch))
                 {
-                    var paymentList = _IPaymentManager.GetListPaidtByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType).Where(x => x.VendorName == txtSearch); 
-                    return Json(paymentList.ToList(), JsonRequestBehavior.AllowGet);
+                    var paymentList = _IPaymentManager.GetListPaidtByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType).Where(x => !String.IsNullOrEmpty(x.VendorName));
+                    var returnFilteredList = paymentList.Where(item => item.VendorName.ToLower().Contains(txtSearch.ToLower()));
+                    return Json(returnFilteredList.ToList(), JsonRequestBehavior.AllowGet);
                 }
                 else {
                     var paymentList = _IPaymentManager.GetListPaidtByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);

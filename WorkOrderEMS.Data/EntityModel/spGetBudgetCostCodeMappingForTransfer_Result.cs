@@ -15,8 +15,10 @@ namespace WorkOrderEMS.Data.EntityModel
     {
         public Nullable<long> BCM_Id { get; set; }
         public long CLM_Id { get; set; }
+        public Nullable<int> BCM_BudgetYear { get; set; }
         public long CLM_CCD_CostCode { get; set; }
         public string CCD_Description { get; set; }
+        public string BCM_BudgetSource { get; set; }
         public Nullable<decimal> BCM_BalanceAmount { get; set; }
     }
 }

@@ -1,0 +1,319 @@
+﻿@model IEnumerable<WorkOrderEMS.Models.UploadedFiles>
+<style>
+    .top {
+        border: 1px solid #bbbbdb;
+        padding: 9px 18px 8px 21px;
+        background-image: linear-gradient(to right, #3588CD, #fff);
+    }
+</style>
+<link href="~/Content/NewAdminContent/CSS/FilesUICss.css" rel="stylesheet" />
+<div>
+    <div class="col-md-12">
+        <div class="devider top">
+            <img src="" id="EmployeeImage" class="employeeImage" />
+            <label class="marignClass">Name : </label><span class="marignClass" id="EmployeeName">@ViewBag.EmployeeID</span>
+            <label class="marignClass">Designation : </label><span class="marignClass" id="EmployeeDesignation">@ViewBag.EmployeeName</span>
+        </div>
+        <hr class="hrHeight" />
+        <div class="row">
+            <div class="col-md-8"><i class="fa fa-folder-open greenFileOpen" onclick="myFunctionGreenFiles()" title="Green Files" aria-hidden="true"></i></div>
+            <div class="col-md-4">
+                @if (ViewBag.GreenList != null)
+                {
+                    @Html.DropDownList("GreenFileDDL", new SelectList(ViewBag.GreenList, "FLT_Id", "FLT_FileSubType"), "--Select File--", new { @id = "GreenFileDDL", @class = "form-control input-rounded", @onchange = "GetFileId(this)" })}
+            </div>
+        </div>
+
+        <div class="col-md-12" id="openGreenFile" style="text-align:center;display:none;">
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    if (item.FileTypeName == "Green")
+                    {
+                        <div class=" inline">
+                            <div class="devider">
+                                <div class="grn-icn">
+                                    <div class="int">
+                                        <i class="fa fa-list fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                                    </div>
+                                    <div class="lock">
+                                        <i class="fa fa-lock" style="color:#FFDFB0" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="faemail">
+                                        <i class="fa fa-envelope" title="E-mail" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <label>@item.FileName</label>
+                        </div>
+                    }
+
+                }
+            }
+            else
+            {
+                <span>No File available</span>
+            }
+        </div>
+
+        <hr />
+        <div class="row">
+            <div class="col-md-8"><i class="fa fa-folder-open yellowFileOpen" onclick="myFunctionYellowFiles()" title="Yellow Files" aria-hidden="true"></i></div>
+            <div class="col-md-4">
+                @if (ViewBag.Yellow != null)
+                {
+                    @Html.DropDownList("YellowFileDDL", new SelectList(ViewBag.Yellow, "FLT_Id", "FLT_FileSubType"), "--Select File--", new { @id = "GreenFileDDL", @class = "form-control input-rounded", @onchange = "GetFileId(this)" })}
+            </div>
+        </div>
+        <div class="col-md-12" id="openYellowFile" style="text-align:center;display:none;">
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    if (item.FileTypeName == "Yellow")
+                    {
+                        <div class=" inline">
+                            <div class="devider">
+                                <div class="yellowsky">
+                                    <div class="int">
+                                        <i class="fa fa-file-image-o fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                                    </div>
+                                    <div class="lock">
+                                        <i class="fa fa-lock" style="color:#FFDFB0" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="faemail">
+                                        <i class="fa fa-envelope" title="E-mail" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <label>@item.FileName</label>
+                        </div>
+                    }
+                }
+            }
+            else
+            {
+                <span>No File available</span>
+            }
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-8"><i class="fa fa-folder-open redFileOpen" onclick="myFunctionRedFiles()" title="Red Files" aria-hidden="true"></i></div>
+            <div class="col-md-4">
+                @if (ViewBag.Red != null)
+                {
+                    @Html.DropDownList("RedFileDDL", new SelectList(ViewBag.Red, "FLT_Id", "FLT_FileSubType"), "--Select File--", new { @id = "GreenFileDDL", @class = "form-control input-rounded", @onchange="GetFileId(this)" })}
+            </div>
+        </div>
+        <div class="col-md-12" id="openRedFile" style="text-align:center;display:none;">
+            @if (Model != null)
+            {
+                foreach (var item in Model)
+                {
+                    if (item.FileTypeName == "Green")
+                    {
+                        <div class=" inline">
+                            <div class="devider">
+                                <div class="redsky">
+                                    <div class="int">
+                                        <i class="fa fa-file-image-o fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <label>@item.FileName</label>
+                        </div>
+                    }
+                }
+            }
+            else
+            {
+                <span>No file available</span>
+            }
+        </div>
+        <hr />
+        <div class="col-md-12"><i class="fa fa-folder-open blueFileOpen" onclick="myFunctionBlueFiles()" title="Blue Files" aria-hidden="true"></i></div>
+        <div class="col-md-12" id="openBlueFile" style="text-align:center;display:none;">
+            <div class=" inline">
+                <div class="devider">
+                    <div class="bluesky">
+                        <div class="int">
+                            <i class="fa fa-file-image-o fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <label>Photo Release Form</label>
+            </div>
+            <div class="inline">
+                <div class="devider">
+                    <div class="bluesky">
+                        <div class="int">
+                            <i class="fa fa-exclamation fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <label>Confidentiality Agreement</label>
+            </div>
+            <div class="inline" onclick="OpenForm('educationVerificationForm')">
+                <div class="devider">
+                    <div class="bluesky">
+                        <div class="int">
+                            <i class="fa fa-graduation-cap fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <label>Education Verification Form</label>
+            </div>
+            <div class="inline">
+                <div class="devider">
+                    <div class="bluesky">
+                        <div class="int">
+                            <i class="fa fa-credit-card fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <label>Creditcard Authorization Form</label>
+            </div>
+            <div class="inline">
+                <div class="bluesky">
+                    <div class="int">
+                        <i class="fa fa-users fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                    </div>
+                </div>
+                <label>Previous Employment</label>
+            </div>
+        </div>
+    </div>
+   
+        @*<div class="col-md-12 bottom-area" style="margin-bottom: 12px;">
+            <div class="upload-btn-wrapper">
+                <button class="btn btn-default btnfile"> Driver's License</button>
+                <span>No File Choosen</span>
+                <input type="file" name="myfile" />
+            </div>
+        </div>
+        <div class="col-md-12 bottom-area" style="margin-bottom: 12px;">
+            <div class="upload-btn-wrapper">
+                <button class="btn btn-default btnfile">Void Check</button>
+                <span> No File Choosen</span>
+                <input type="file" name="myfile" />
+            </div>
+        </div>*@
+    </div>
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="myModalToAddInputAndFileName">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Details</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-8" style="margin-bottom: 12px;">
+                        <input id="myfileUpload" type="file" style="margin-left:50%;" />
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control input-rounded" />
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background: white;">               
+                <button type="button" class="btn btn-secondary" id="UploadDoc"  style="border-radius:100px;width:25%;">Upload</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var id;
+    function GetFileId($_this) {
+        debugger
+        id = $_this.value;
+        $("#myModalToAddInputAndFileName").modal('show');
+        //$("#myModalForAddFileData").modal('hide');
+        
+    }
+    $(document).ready(function () {
+        $("#myfileUpload").change(function () {
+            debugger
+            //$("#dvAccountPreview").html("");
+            var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
+            var size = this.files[0].size;
+            if (!allowedExtensions.exec($(this).val().toLowerCase())) {
+                alert("Invalid file type");
+                $(this).val("");
+               
+                return false;
+            }
+            else if (size >= 4194304) {
+                alert("Max file size 4 mb.");
+                $(this).val("");
+                return false;
+            }
+        })
+    })
+
+    function saveFile(Id) {
+        debugger
+        var fileUpload = $("#myfileUpload").get(0);
+        var files = fileUpload.files;  
+              
+        // Create FormData object  
+        var fileData = new FormData();  
+  
+        // Looping over all files and add it to FormData object  
+        for (var i = 0; i < files.length; i++) {  
+            fileData.append(files[i].name, files[i]);  
+        }  
+        $.ajax({  
+            url: '../EPeople/UploadFiles?EMPId=' + '@ViewBag.EmployeeID' + '&FileId=' + Id,
+            type: "POST",  
+            contentType: false, // Not to set any content header  
+            processData: false, // Not to process data  
+            data: fileData,  
+            success: function (result) {  
+                alert(result);  
+            },  
+            error: function (err) {  
+                alert(err.statusText);  
+            }  
+        });  
+    }
+    function myFunctionGreenFiles() {
+        debugger
+      var x = document.getElementById("openGreenFile");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+     } else {
+    x.style.display = "none";
+   }
+    }
+    function myFunctionYellowFiles() {
+        debugger
+        var x = document.getElementById("openYellowFile");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+    function myFunctionRedFiles() {
+        debugger
+        var x = document.getElementById("openRedFile");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+    function myFunctionBlueFiles() {
+        debugger
+        var x = document.getElementById("openBlueFile");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>

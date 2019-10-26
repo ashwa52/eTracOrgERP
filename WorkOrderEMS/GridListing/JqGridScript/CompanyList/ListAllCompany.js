@@ -84,7 +84,7 @@ $(function () {
                     var $customButtonForInsurance = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "Insurance Details" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
                         window.location.href = $_HostPrefix + GridListLicense + '?Vendorid=' + item.id + "&VendorStatus=" + $_VendorStatus;;
                     }).append($iconPencilForInsurance);
-                    if (item.VendorTypeData =="AssetLander") {
+                    if (item.VendorTypeData =="AssetLender") {
                         var $customButtonFileImport = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "File Import" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
                             window.location.href = $_HostPrefix + addFileImport + '?id=' + item.id;
                         }).append($iconPencilForImport);
@@ -165,7 +165,7 @@ function doSearch() {
                     }).append($iconPencilForInsurance);
 
                   
-                    if (item.VendorTypeData == "AssetLander") {
+                    if (item.VendorTypeData == "AssetLender") {
                         var $customButtonFileImport = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "File Import" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
                             window.location.href = $_HostPrefix + addFileImport + '?id=' + item.id;
                         }).append($iconPencilForImport);

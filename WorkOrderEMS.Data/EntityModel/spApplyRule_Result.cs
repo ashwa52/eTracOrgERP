@@ -18,5 +18,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<long> ApprovedBy { get; set; }
         public string FirstName { get; set; }
         public string UserEmail { get; set; }
+        public string DeviceId { get; set; }
     }
 }

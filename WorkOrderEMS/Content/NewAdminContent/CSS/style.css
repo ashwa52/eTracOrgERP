@@ -233,8 +233,14 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 html {
     font-family: sans-serif;
     line-height: 1.15;
-    -webkit-text-size-adjust: 100%;
+    /*-webkit-text-size-adjust: 100%;*/
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+
+/*Added By Ashwajit*/
+    /*zoom: 0.8; 
+    -moz-transform: scale(1.0);
+    -webkit-transform: scale(1.0);
+    transform: scale(1.0);*/
 }
 
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
@@ -4443,7 +4449,8 @@ input[type="button"].btn-block {
             border-color: #e9ecef #e9ecef #dee2e6;
             background-color: #0aa0cd;
             color: #fff;
-            border-radius: 20px;
+            border-radius: 20px 20px 0px 0px;
+            /*border-radius: 20px;*/
         }
 
         .nav-tabs .nav-link.disabled {
@@ -4457,7 +4464,7 @@ input[type="button"].btn-block {
             color: #fff;
             background-color: #0aa0cd;
             border-color: #dee2e6 #dee2e6 #f2f3f8;
-            border-radius: 20px;
+            border-radius: 20px 20px 0px 0px;
         }
 
     .nav-tabs .dropdown-menu {
@@ -19977,7 +19984,7 @@ svg text {
 
 .form-control {
     background: #fff;
-    border: 1px solid #f5f5f5;
+    border: 1px solid #b8b0b0;
     color: #454545;
 }
 

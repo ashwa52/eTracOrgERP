@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity.Core.Objects;
+using System.Globalization;
 using System.Linq;
 using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Data.Interfaces;
@@ -16,6 +18,9 @@ namespace WorkOrderEMS.Data
     {
         workorderEMSEntities _workorderEMSEntities = new workorderEMSEntities();
 
+        private readonly string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
+        private readonly string ProfilePicPath = System.Configuration.ConfigurationManager.AppSettings["ProfilePicPath"];
+        private readonly string ConstantImages = ConfigurationManager.AppSettings["ConstantImages"];
 
         public UserModel GetUserById(long userId, string operationName, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string textSearch, ObjectParameter paramTotalRecords)
         {

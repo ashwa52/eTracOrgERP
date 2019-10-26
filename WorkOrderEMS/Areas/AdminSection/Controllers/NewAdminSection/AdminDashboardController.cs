@@ -99,9 +99,13 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
                         System.Text.RegularExpressions.Regex rx = new System.Text.RegularExpressions.Regex("<[^>]*>");
                         Obj.RolesAndResponsibility = removeSpace;//rx.Replace(Obj.RolesAndResponsibility, "");
                     }
-
-                    var isSaved = _IAdminDashboard.SaveVSC(Obj);
-                    if (isSaved == true)
+                    if(Obj.Id == null)
+                    {
+                        Obj.Action = "I";
+                        Obj.IsActive = "Y";
+                    }
+                    var SavedData = _IAdminDashboard.SaveVSC(Obj);
+                    if (SavedData.Id > 0)
                     {
                         ViewBag.Message = CommonMessage.SaveSuccessMessage();
                     }

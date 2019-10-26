@@ -1,0 +1,101 @@
+﻿@model WorkOrderEMS.Models.Employee.EducationVarificationModel
+<style>
+	.p1 {
+		font-size: 20px;
+		font-family: Times New Roman;
+		margin: 73px 149px 0px 80px;
+		text-align: justify;
+		color:#000;
+	}
+
+	h3 {
+		margin: 100px 0px 0px 83px;
+	}
+
+	.text-line {
+		background-color: transparent;
+		outline: none;
+		outline-style: none;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+		border-bottom: solid #000 1px;
+	}
+
+	p {
+		margin-left: 106px;
+	}
+
+	.center {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.row {
+		display: flex;
+	}
+	input[type="checkbox"]:after {
+		line-height: 1.5em !important;
+		content: '' !important;
+		display: block !important;
+		margin-top: -3px !important;
+		margin-left: -3px !important;
+		border: 1px solid transparent !important;
+		border-radius: 0px !important;
+		line-height: 1.3 !important;
+		background: none !important;
+	}
+	.date {
+		border: none;
+		border-bottom: 1px solid;
+		font-weight: bold;
+	}
+	input[type="date"], input[type="time"], input[type="datetime-local"], input[type="month"] {
+		/* -webkit-appearance: listbox; */
+		border: none;
+		border-bottom: 1px solid;
+		font-weight: bold;
+	}
+</style>
+@using (Html.BeginForm("_EducationVarificationForm", "Guest", FormMethod.Post, new { id = "educationverificationform" }))
+{
+<div class="p1">
+	<div class="row">
+		<img src="~/Images/FormImages/image-form.jpg" alt="background image" />
+		<h3><u>Education Verification Form</u></h3>
+	</div>
+	<p>Name of Applicant @Html.TextBoxFor(x => x.Name, new { @class = "text-line", @style = "width:590px;" }) </p>
+	<p>Date of Birth @Html.TextBoxFor(x => x.DOB, new { @class = "text-line", @style = "width:639px;" })</p>
+	<p>Social Security Number @Html.TextBoxFor(x => x.SSN, new { @class = "text-line", @style = "width:556px;" })</p>
+	<p>Name of High School @Html.TextBoxFor(x => x.HigherSchool.SchoolName, new { @class = "text-line", @style = "width:571px;" }) </p>
+	<p>
+		City @Html.TextBoxFor(x => x.HigherSchool.City, new { @class = "text-line", @style = "width:231px;" })
+		State @Html.TextBoxFor(x => x.HigherSchool.State, new { @class = "text-line", @style = "width:345px;" })
+	</p>
+	<p>
+		Attended from @Html.EditorFor(x => x.HigherSchool.AttendFrom, new { @class = "text-line date", @style = "width:150px;" }) Attended to @Html.EditorFor(x => x.HigherSchool.AttendTo, new { @class = "text-line", @style = "width:150px;" })
+		<br />(Please provide month and year)
+	</p>
+	<p>Name of Higher Education School @Html.TextBoxFor(x => x.HigherSchool.SchoolName, new { @class = "text-line", @style = "width:447px;" })</p>
+	<p>City @Html.TextBoxFor(x => x.HigherSchool.City, new { @class = "text-line", @style = "width:231px;" })  State @Html.TextBoxFor(x => x.HigherSchool.State, new { @class = "text-line", @style = "width:345px;" })Attended</p>
+	<p>
+		Attended from @Html.EditorFor(x => x.HigherSchool.AttendFrom, new { @class = "text-line date", @style = "width:150px;border: none;border - bottom: 1px solid;font - weight: bold; " })  Attended to @Html.EditorFor(x => x.HigherSchool.AttendTo, new { @class = "text-line", @style = "width:150px;" })
+		<br />(Please provide month and year)
+	</p>
+	<p>
+		Type of Diploma/Certificate @Html.TextBoxFor(x => x.HigherSchool.Cretificate, new { @class = "text-line", @style = "width:529px;" })
+		<br />(Highest Degree Obtained)
+	</p>
+	<p>
+		I authorize AllStar Backgrounds to conduct an investigation of my education history and further release the companies, schools, or persons from liability or damages for providing information.<br />
+		I hereby state that the information on this form is true and complete. In the event of employment, I understand that false, misleading or omitted information given in application
+		documents or employment interviews may result in dismissal. I agree that the above information is true.
+	</p>
+	<p><input type="text" style="width:634px;" class="text-line" /><br />Signature</p>
+	<p><input type="text" style="width:290px;" class="text-line" /><br />Date</p>
+	<p><b><center>AllStar Backgrounds – <a href="mailto: info@allstarbackgrounds.com">info@allstarbackgrounds.com</a> – Ph 800-570-0546 Fax 888-502-1299</center></b></p>
+	<p> @Html.CheckBoxFor(x => x.IsSave, new { @style = "height: 18px;width: 31px;", onchange = "SubmitForm(this,educationverificationform)" })    i hereby declare that the above information is true to the best of my knowledge </p>
+
+</div>
+}

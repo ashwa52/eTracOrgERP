@@ -16,6 +16,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public long CAD_Id { get; set; }
         public long CAD_CMP_Id { get; set; }
         public long CAD_PMD_Id { get; set; }
+        public Nullable<long> CAD_QBKId { get; set; }
         public string CAD_CardOrBankName { get; set; }
         public string CAD_BankLocation { get; set; }
         public string CAD_AccountNumber { get; set; }
@@ -24,5 +25,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public string CAD_SwiftBICcode { get; set; }
         public string CAD_AccountDocument { get; set; }
         public string CAD_IsActive { get; set; }
+        public string CAD_IsPrimary { get; set; }
     }
 }

@@ -53,6 +53,7 @@ namespace WorkOrderEMS.Models
         public decimal BalanceAmount { get; set; }
         public long? QuickbookAcountId { get; set; }
         public string Id { get; set; }
+        public string IsPrimary { get; set; }
     }
 
     public class VendorAccountDetails

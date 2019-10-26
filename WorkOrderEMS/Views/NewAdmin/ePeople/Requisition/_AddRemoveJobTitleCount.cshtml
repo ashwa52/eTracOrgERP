@@ -1,0 +1,137 @@
+﻿@model WorkOrderEMS.Models.JobTitleModel
+<style>
+    .main {
+        margin-left: 5px;
+    }
+
+    .counter {
+        width: 45px;
+        border-radius: 0px !important;
+        text-align: center;
+    }
+
+    .up_count {
+        margin-bottom: 10px;
+        margin-left: -4px;
+        border-top-left-radius: 0px;
+        border-bottom-left-radius: 0px;
+    }
+
+    .down_count {
+        margin-bottom: 10px;
+        margin-right: -4px;
+        border-top-right-radius: 0px;
+        border-bottom-right-radius: 0px;
+    }
+</style>
+@*<style>
+    span {
+        cursor: pointer;
+    }
+
+    .number {
+        margin: 100px;
+    }
+
+    .minus, .plus {
+        width: 20px;
+        height: 20px;
+        background: #f2f2f2;
+        border-radius: 4px;
+        padding: 8px 5px 8px 5px;
+        border: 1px solid #ddd;
+        display: inline-block;
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    input {
+        height: 34px;
+        width: 100px;
+        text-align: center;
+        font-size: 26px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        display: inline-block;
+        vertical-align: middle;
+			
+</style>*@
+
+<form id="getallInputDetails">
+    @Html.HiddenFor(model => model.JobTitleLastCount, new { @id = "JobTitleLastCount" })
+    @Html.HiddenFor(model => model.JobTitleId, new { @id = "JobTitleId" })
+    <div class="row">
+        <div class="col-sm-6">
+            <label>@Model.JobTitle</label>
+            @*@Html.TextBoxFor(model => item.JobTitle, new { @Placeholder = "Job Title", @style = "width: 600px;", @class = "form-control input-rounded required isValidLocationName" })*@
+        </div>
+        <div class="col-sm-6">
+            @*<span class="minus">-</span>
+                <input type="text" value="1" />
+                <span class="plus">+</span>*@
+            <span class='mainClassTOMap'>
+                @*<input type="hidden" class="getallOriginalValue" data-id="JobId_@item.Id" value="JobCoount_@item.JobTitleCount" />*@
+                <span class='down_count btn btn-info countMinus' title='Down' style="height:31px;"><i class="fa fa-minus-circle" aria-hidden="true"></i></span>
+                <input class='counter_@Model.JobTitleId' name="JobTitleCount" id="NewCount" data-id-copy="@Model.JobTitleId" counterInput' style="height: 31px;margin-top:-10px; width: 44px;text-align: center;" type="text" value='@Model.JobTitleCount' />
+                <span class='up_count btn btn-info countPlus' title='Up'><i class="fa fa-plus-circle" aria-hidden="true"></i></span>
+            </span>
+        </div>
+    </div>
+</form>
+
+<script>
+    //$(document).ready(function () {
+    //    $('.countPlusMinus').click(function (e) {
+    //        debugger
+    //        var button_classes, value = +$('.counter').val();
+    //        button_classes = $(e.currentTarget).prop('class');
+    //        if (button_classes.indexOf('up_count') !== -1) {
+    //            value = (value) + 1;
+    //        } else {
+    //            value = (value) - 1;
+    //        }
+
+    //        value = value < 0 ? 0 : value;
+    //        $('.counter').val(value);
+    //    });
+    //    $('.counter').click(function () {
+    //        debugger
+    //        $(this).focus().select();
+    //    });
+    //});
+
+$(document).ready(function() {
+    $('.countMinus').click(function () {
+        debugger
+				var $input = $(this).parent().find('input');
+				var count = parseInt($input.val()) - 1;
+				count = count < 1 ? 1 : count;
+				$input.val(count);
+				$input.change();
+				return false;
+			});
+    $('.countPlus').click(function () {
+        debugger
+				var $input = $(this).parent().find('input');
+				$input.val(parseInt($input.val()) + 1);
+				$input.change();
+				return false;
+			});
+});
+//$(document).ready(function () {
+//    $('.minus').click(function () {
+//        var $input = $(this).parent().find('input');
+//        var count = parseInt($input.val()) - 1;
+//        count = count < 1 ? 1 : count;
+//        $input.val(count);
+//        $input.change();
+//        return false;
+//    });
+//    $('.plus').click(function () {
+//        var $input = $(this).parent().find('input');
+//        $input.val(parseInt($input.val()) + 1);
+//        $input.change();
+//        return false;
+//    });
+//});
+    </script>

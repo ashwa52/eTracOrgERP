@@ -1,0 +1,56 @@
+﻿@model WorkOrderEMS.Models.AddChartModel
+    
+<div class="panel-body" style="margin-left: 40px;">
+    @Html.HiddenFor(model => model.Id, new { @id = "VSTIdToDelete" })
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label>Seating Name</label>
+                <div id="txtSeatingName" class="form-control-static">@Model.SeatingName</div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label>Job Description</label>
+                <div id="txtJobDescription" class="form-control-static">@Model.JobDescription</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label>Department Name</label>
+                <div id="txtDepartmentName" class="form-control-static">@Model.DepartmentName</div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label>Rate Of Pay</label>
+                <div id="txtRateOfPay" class="form-control-static">@Model.RateOfPay</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label>Employment Classification</label>
+                <div id="txtEmploymentClassification" class="form-control-static">@Model.EmploymentClassification</div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="form-group">
+                <label>Employment Status</label>
+                <div id="txtEmploymentStatus" class="form-control-static">@Model.EmploymentStatus</div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="form-group">
+                <label>Roles And  Responsibility </label>
+                <div id="txtRolesAndResponsibility" class="form-control-static">@Model.RolesAndResponsibility</div>
+            </div>
+        </div>
+    </div>
+    <div class="clear clearfix"></div>
+</div>

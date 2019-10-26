@@ -4,12 +4,15 @@ var ids; var arrData = [];
 
 var act = '';
 var CalculateRemainingAmt; var remainingAmtAfteCal; var getColumnIndexByName;
-$(function(event) {
+$(function (event) {
+    var  VendorId = $('#SelectedVendor').find('option:selected').val();
+  
+   var Location = $("#Location option:selected").val();
     $("#tbl_CompanyFacilityDataEditList").jsGrid({
         height: "100%!important",
         width: "100%",
         filtering: false,
-        editing: false,
+        editing: true,
         inserting: false,
         sorting: false,
         paging: true,
@@ -18,26 +21,195 @@ $(function(event) {
         pageButtonCount: 5,
 
         controller: {
-            loadData: function(filter) {
+            loadData: function (filter) {
                 return $.ajax({
                     type: "GET",
                     data: filter,
-                    url: $_HostPrefix + POurl + '?POId=' + POId,
+                    url: $_HostPrefix + POFacilityUrl + '?VendorId=' + VendorId + '&Location=' + Location,
                     dataType: "json"
                 });
             }
         },
+        onItemUpdating: function (e) {
 
+            var grid = $("#tbl_CompanyFacilityDataEditList").data("JSGrid");
+            var _qval = grid.data[e.itemIndex];
+            Lastquantity = _qval.Quantity;
+            //$("table#tbl_CompanyFacilityDataList .jsgrid-grid-body table .jsgrid-update-button").hide();
+
+        },
+        onItemUpdated: function (e) {
+
+            var _rowdata = e.grid.data[e.itemIndex];
+            var tr = $($('table#tbl_CompanyFacilityDataEditList .jsgrid-grid-body table tr')[e.itemIndex]);
+            //jsgrid-grid-body 
+
+            var _val = parseInt($(tr.find('td .jsgrid-cell')[1]).find('input').val());
+
+            if (CheckStatus != "chk") {
+                checkValOfQuantityForEdit(_rowdata, e.itemIndex);
+            }
+        },
         fields: [
-            { name: "COM_Facility_Desc", title: "Description", type: "text", width: 50 },
-            { name: "Quantity", title: "Quantity", type: "text", width: 50 },
-            { name: "UnitPrice", title: "Unit Price", type: "text", width: 50 },
-            { name: "TotalPrice", title: "Total", type: "text", width: 50 },
-            { name: "Tax", title: "Tax", type: "text", width: 50 },
-            { name: 'RemainingAmt', width: 50, title: "RemainingAmt", type: "text", },
+            { name: "COM_Facility_Desc", title: "Description", type: "text", width: 50, editing: false },
+            {
+                name: "Quantity", title: "Quantity", type: "text", width: 50, editButton: true
+
+            },
+            { name: "UnitPrice", title: "Unit Price", type: "text", width: 50, editing: false },
+            { name: "TotalPrice", title: "Total", type: "text", width: 50, editing: false },
+
+            { name: "Tax", title: "Tax", type: "text", width: 50, editing: false },
+            {
+                name: "Status", title: "Status", width: 50, itemTemplate: function (value1, item) {
+                    return $("<input>").attr("type", "checkbox")
+                        .attr("checked", value1 === 'S')
+                        .on("change", function () {
+
+                            var GridData = $("#tbl_CompanyFacilityDataEditList").data("JSGrid");
+                            if ($(this).is(":checked")) {
+                                if (item.Quantity > 0) {
+                                    CalculateRemainingAmt = parseInt(CalculateRemainingAmt) - parseInt(item.TotalPrice);
+                                    for (var i = 0; i < GridData.data.length; i++) {
+                                        rowIdData = ids[i];
+                                        if (GridData[i].CostCode == item.CostCode) {
+                                            item.RemainingAmt = CalculateRemainingAmt;
+                                            item.Status = 'S';
+                                            CheckStatus = "chk";
+                                            $("#tbl_CompanyFacilityDataEditList").jsGrid("updateItem", item).done(function () {
+
+                                            });
+
+
+                                        }
+                                    }
+                                }
+                                else {
+                                    bootbox.dialog({
+                                        message: "Please add Quantity.",
+                                        buttons: {
+                                            cancel: {
+                                                label: "Cancel",
+                                                className: "btn-default pull-right",
+                                                callback: function () {
+                                                    item.Status = 'S';
+                                                    CheckStatus = "chk";
+                                                    $("#tbl_CompanyFacilityDataEditList").jsGrid("updateItem", item).done(function () {
+
+                                                    });
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                            else {
+                                if (item.Quantity > 0) {
+                                    CalculateRemainingAmt = parseInt(CalculateRemainingAmt) + parseInt(item.TotalPrice);
+                                    for (var i = 0; i < GridData.data.length; i++) {
+                                        if (GridData.data[i].CostCode == item.CostCode) {
+                                            item.Quantity = 0;
+                                            item.RemainingAmt = CalculateRemainingAmt;
+                                            item.TotalPrice = 0;
+                                            item.Status = 'X';
+                                            CheckStatus = "chk";
+                                            $("#tbl_CompanyFacilityDataEditList").jsGrid("updateItem", item).done(function () {
+
+                                            });
+
+                                        }
+                                    }
+                                }
+                                else {
+
+                                    bootbox.dialog({
+                                        message: "Please add Quantity.",
+                                        buttons: {
+                                            cancel: {
+                                                label: "Cancel",
+                                                className: "btn-default pull-right",
+                                                callback: function () {
+                                                    item.Status = 'X';
+                                                    CheckStatus = "chk";
+                                                    $("#tbl_CompanyFacilityDataEditList").jsGrid("updateItem", item).done(function () {
+
+                                                    });
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                     
+
+                }
+            },
+            {
+                name: "act", type: "control", items: act, title: "Action", width: 50, css: "text-center", itemTemplate: function (value, item) {
+
+                    var $iconPencilFordelete = $("<i>").attr({ class: "fa fa-trash" }).attr({ style: "color:green;font-size: 22px;" });
+
+                    $customButtonForDelete = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "delete" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+
+                    }).append($iconPencilFordelete);
+
+
+
+                    return $("<div>").attr({ class: "btn-toolbar" }).append($customButtonForDelete);
+
+                }
+            }
         ]
     });
+
+
+    //$("#tbl_CompanyFacilityDataEditList").jsGrid({
+    //    height: "100%!important",
+    //    width: "100%",
+    //    filtering: false,
+    //    editing: false,
+    //    inserting: false,
+    //    sorting: false,
+    //    paging: true,
+    //    autoload: true,
+    //    pageSize: 10,
+    //    pageButtonCount: 5,
+
+    //    controller: {
+    //        loadData: function(filter) {
+    //            return $.ajax({
+    //                type: "GET",
+    //                data: filter,
+    //                url: $_HostPrefix + POurl + '?POId=' + POId,
+    //                dataType: "json"
+    //            });
+    //        }
+    //    },
+
+    //    fields: [
+    //        { name: "COM_Facility_Desc", title: "Description", type: "text", width: 50 },
+    //        { name: "Quantity", title: "Quantity", type: "text", width: 50 },
+    //        { name: "UnitPrice", title: "Unit Price", type: "text", width: 50 },
+    //        { name: "TotalPrice", title: "Total", type: "text", width: 50 },
+    //        { name: "Tax", title: "Tax", type: "text", width: 50 },
+    //        { name: 'RemainingAmt', width: 50, title: "RemainingAmt", type: "text", },
+    //    ]
+    //});
 });
+
+$("#tbl_CompanyFacilityDataEditList").on("focusout", "table tbody tr.jsgrid-edit-row input", function (data) {
+    CheckStatus = " ";
+    var tr = $(this).closest('tr.jsgrid-edit-row');
+    var val = $(this).val();
+    //var quentity = $(tr.find('td')[2]).html();
+    //debugger
+    //$(tr.find('td')[3]).html(parseInt(val) * parseInt(quentity)) 
+    tr.find('input.jsgrid-update-button[type="button"]').click();
+
+
+});
+
 //$("#tbl_CompanyFacilityDataEditList").jqGrid({
 //    datatype: "json",
 //    //data:arrData,
@@ -188,69 +360,144 @@ $(function(event) {
 //    caption: '<div class="header_search"><input type="text" class="form-control"></div>'
 //});
 
+function checkValOfQuantityForEdit(data, _itemIndexVal) {
+    var grid = $("#tbl_CompanyFacilityDataEditList").data("JSGrid");
+    var tr = $($('table#tbl_CompanyFacilityDataEditList .jsgrid-grid-body table tr')[_itemIndexVal]);
+    var _row = grid.data;
+    var rowData = data; //$('#tbl_CompanyFacilityDataList').jqGrid('getRowData', rowId);
 
 
-function ChangeValOfQuantity(data) {
-    var rowId = $(data).closest('tr').attr('id');
-    var amt;
-    var rowData = $('#tbl_CompanyFacilityDataEditList').jqGrid('getRowData', rowId);
-    var Quantity = data.value;
-    $("#tbl_CompanyFacilityDataEditList").jqGrid("setCell", rowId, "LastRemainingAmount", Quantity);
+    data.LastRemainingAmount = Lastquantity;
+    //$("#tbl_CompanyFacilityDataList").jsGrid("setCell", rowId, "LastRemainingAmount", Quantity);
+
     var UnitPrice = rowData.UnitPrice;
-    var TotalPrice; var Calculation;
+    var TotalPrice;
+    var Calculation;
     if (rowData.LastRemainingAmount == 0) {
-        TotalPrice = (Quantity * UnitPrice);
+        TotalPrice = (rowData.Quantity * UnitPrice);
         CalculateRemainingAmt = rowData.RemainingAmt - TotalPrice;
     }
-    else if (rowData.LastRemainingAmount < data.value) {
-        TotalPrice = (Quantity * UnitPrice);
+    else if (rowData.LastRemainingAmount < rowData.Quantity) {
+        TotalPrice = (rowData.Quantity * UnitPrice);
         Calculation = parseInt(TotalPrice) - parseInt(rowData.TotalPrice);
         remainingAmtAfteCal = parseInt(rowData.RemainingAmt) - parseInt(Calculation);
         CalculateRemainingAmt = remainingAmtAfteCal;
     }
-    else if (rowData.LastRemainingAmount > data.value) {
-        TotalPrice = (Quantity * UnitPrice);
+    else if (rowData.LastRemainingAmount > rowData.Quantity) {
+        TotalPrice = (rowData.Quantity * UnitPrice);
         Calculation = parseInt(rowData.TotalPrice) - parseInt(TotalPrice);
         remainingAmtAfteCal = parseInt(rowData.RemainingAmt) + parseInt(Calculation);
         CalculateRemainingAmt = remainingAmtAfteCal;
     }
-    //var lastremainingAmt = rowData.LastRemainingAmount;
-    //$("#tbl_CompanyFacilityDataList").jqGrid("setCell", rowId, "LastRemainingAmount", CalculateRemainingAmt);
 
-    var PositiveAmt = Math.abs(CalculateRemainingAmt); //CalculateRemainingAmt.replace("-", "")
-    var AllGridData = $('#tbl_CompanyFacilityDataEditList').getRowData();
+    LocationData = $("#Location option:selected").val();
+    Vendordata = $("#Vendor option:selected").val();
+    CostCodeData = rowData.CostCode;
+    var PositiveAmt = Math.abs(CalculateRemainingAmt);
+    var AllGridData = $("#tbl_CompanyFacilityDataEditList").data("JSGrid");
     if (CalculateRemainingAmt < TotalPrice) {
         bootbox.dialog({
-            message: "You cannot add amount for this cost code, please add amount less than" + PositiveAmt,
+            message: "You cannot add amount for this cost code, please add amount less than" + " " + PositiveAmt,
             buttons: {
-                cancel: {
+                cancel:
+                {
                     label: "Cancel",
-                    className: "btn-default pull-right"
+                    className: "btn-default pull-right",
+                    callback: function () {
+                        $("#tbl_CompanyFacilityDataEditList").jsGrid("loadData");
+                    }
                 },
                 confirm: {
                     label: "Need More Budget",
-                    className: "btn btn-Primary pull-right"
+                    className: "btn btn-primary pull-left", 
                 }
             },
             danger: {
                 label: "cancel",
                 classname: "btn btn-primary",
                 callback: function () {
+                    $("#tbl_CompanyFacilityDataEditList").jsGrid("loadData");
                 }
             }
         });
     }
     else {
-        if (rowData.RemainingAmt > 0) {
-            for (var i = 0; i < AllGridData.length; i++) {
-                var rowIdData = ids[i];
-                if (AllGridData[i].CostCode == rowData.CostCode) {
-                    $("#tbl_CompanyFacilityDataEditList").jqGrid("setCell", rowIdData, "RemainingAmt", CalculateRemainingAmt);
-                }
+        for (var i = 0; i < AllGridData.length; i++) {
+            var rowIdData = ids[i];
+            if (AllGridData[i].CostCode == rowData.CostCode) {
+                rowData.RemainingAmt = CalculateRemainingAmt;
             }
         }
-    }
-    var GridData = $('#tbl_CompanyFacilityDataEditList').getRowData();
-    var dataGrid = $('#tbl_CompanyFacilityDataEditList').jqGrid('getGridParam', 'data');
-    $("#tbl_CompanyFacilityDataEditList").jqGrid("setCell", rowId, "TotalPrice", TotalPrice);
+    } 
+    $(tr.find('td')[3]).html(TotalPrice); 
+    var checkedStatus = rowData.Status;
+    //$(tr.find('td')[5]).html(true); 
+    //if()
+   /// checkedStatus = true;
+    // $("#tbl_CompanyFacilityDataList").jqGrid("setCell", rowId, "Status", checkedStatus);
 }
+
+//function ChangeValOfQuantity(data) {
+//    var rowId = $(data).closest('tr').attr('id');
+//    var amt;
+//    var rowData = $('#tbl_CompanyFacilityDataEditList').jqGrid('getRowData', rowId);
+//    var Quantity = data.value;
+//    $("#tbl_CompanyFacilityDataEditList").jqGrid("setCell", rowId, "LastRemainingAmount", Quantity);
+//    var UnitPrice = rowData.UnitPrice;
+//    var TotalPrice; var Calculation;
+//    if (rowData.LastRemainingAmount == 0) {
+//        TotalPrice = (Quantity * UnitPrice);
+//        CalculateRemainingAmt = rowData.RemainingAmt - TotalPrice;
+//    }
+//    else if (rowData.LastRemainingAmount < data.value) {
+//        TotalPrice = (Quantity * UnitPrice);
+//        Calculation = parseInt(TotalPrice) - parseInt(rowData.TotalPrice);
+//        remainingAmtAfteCal = parseInt(rowData.RemainingAmt) - parseInt(Calculation);
+//        CalculateRemainingAmt = remainingAmtAfteCal;
+//    }
+//    else if (rowData.LastRemainingAmount > data.value) {
+//        TotalPrice = (Quantity * UnitPrice);
+//        Calculation = parseInt(rowData.TotalPrice) - parseInt(TotalPrice);
+//        remainingAmtAfteCal = parseInt(rowData.RemainingAmt) + parseInt(Calculation);
+//        CalculateRemainingAmt = remainingAmtAfteCal;
+//    }
+//    //var lastremainingAmt = rowData.LastRemainingAmount;
+//    //$("#tbl_CompanyFacilityDataList").jqGrid("setCell", rowId, "LastRemainingAmount", CalculateRemainingAmt);
+
+//    var PositiveAmt = Math.abs(CalculateRemainingAmt); //CalculateRemainingAmt.replace("-", "")
+//    var AllGridData = $('#tbl_CompanyFacilityDataEditList').getRowData();
+//    if (CalculateRemainingAmt < TotalPrice) {
+//        bootbox.dialog({
+//            message: "You cannot add amount for this cost code, please add amount less than" + PositiveAmt,
+//            buttons: {
+//                cancel: {
+//                    label: "Cancel",
+//                    className: "btn-default pull-right"
+//                },
+//                confirm: {
+//                    label: "Need More Budget",
+//                    className: "btn btn-Primary pull-right"
+//                }
+//            },
+//            danger: {
+//                label: "cancel",
+//                classname: "btn btn-primary",
+//                callback: function () {
+//                }
+//            }
+//        });
+//    }
+//    else {
+//        if (rowData.RemainingAmt > 0) {
+//            for (var i = 0; i < AllGridData.length; i++) {
+//                var rowIdData = ids[i];
+//                if (AllGridData[i].CostCode == rowData.CostCode) {
+//                    $("#tbl_CompanyFacilityDataEditList").jqGrid("setCell", rowIdData, "RemainingAmt", CalculateRemainingAmt);
+//                }
+//            }
+//        }
+//    }
+//    var GridData = $('#tbl_CompanyFacilityDataEditList').getRowData();
+//    var dataGrid = $('#tbl_CompanyFacilityDataEditList').jqGrid('getGridParam', 'data');
+//    $("#tbl_CompanyFacilityDataEditList").jqGrid("setCell", rowId, "TotalPrice", TotalPrice);
+//}

@@ -4,7 +4,7 @@
     //Layout = "~/Views/Shared/_ManagerLayout.cshtml";
     Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
     long locationId = 0;
-    long userType = 0;
+    long userType = 0;  
     WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
 
     if (ObjLogin != null)
@@ -146,6 +146,35 @@
 
 <div class="content-body" style="min-height: 920px;">
     <div class="container-fluid">
+        <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3 aos-init aos-animate" data-aos="fade-up">
+            <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
+                <div class="welcome-text">
+                    <br /> <br />
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row justify-content-center">
+
+            <div class="col-lg-6">
+                <a href="@Url.Action("ListPreBillView", "Bill")">
+                    <div class="pricing_table_content mt-5" style="background-color: #529F9D;color:white;">
+                        <p style="margin-top:-20px;font-size:20px;"><b> </b></p>
+                        <div class="package" style="margin-top:-30px;"><i class="mdi mdi-cart" style="color:yellow;font-size:30px;margin-left: -10px;"></i>&nbsp;&nbsp;&nbsp;<b>Bills</b></div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-6">
+                <a href="@Url.Action("ViewMiscellaneous", "Miscellaneous")" data-oldDash="Yes">
+                    <div class="pricing_table_content mt-5" style="background-color: #3F8ADA;color:white;">
+                        <p style="margin-top:-20px;font-size:20px;"><b> </b></p>
+                        <div class="package" style="margin-top:-30px;"><i class="mdi mdi-account-check" style="color:white;font-size:30px;"></i>&nbsp;&nbsp;&nbsp;<b>Miscellaneous Expenses</b></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <br />
         <div class="row">
             <div class="col-lg-12">
                 <div class="card aos-init" data-aos="fade-up">

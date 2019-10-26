@@ -19,5 +19,9 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<long> FacilityRequestCount { get; set; }
         public Nullable<long> FacilityRequestCountLocation { get; set; }
         public Nullable<long> ContinuesRequestCount { get; set; }
+        public Nullable<long> ProgressContinuesWO { get; set; }
+        public Nullable<long> CompletedContinuesWO { get; set; }
+        public Nullable<long> MissedContinuesWO { get; set; }
+        public Nullable<long> LocationId { get; set; }
     }
 }

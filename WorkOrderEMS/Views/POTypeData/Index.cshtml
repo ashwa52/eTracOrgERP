@@ -171,11 +171,12 @@
                                             @if (@ViewBag.UpdateMode == true)
                                             {
                                                 if (ViewBag.VendorList != null)
-                                                {@Html.DropDownListFor(model => model.Vendor, new SelectList(ViewBag.VendorList, "CompanyId", "CompanyNameLegal"), "--Select Company--", new { @id = "Vendor", @class = "VendorClass form-control input-rounded" })}
+                                                {
+                                                    @Html.DropDownListFor(model => model.SelectedVendor, new SelectList(ViewBag.VendorList, "CompanyId", "CompanyNameLegal"), "--Select Company--", new { @id = "SelectedVendor", @class = "VendorClass form-control input-rounded" })}
                                             else
                                             {
                                                 <select id="State" class="form-control input-rounded"><option value="-1">@ViewBag.POType</option></select>}
-                                        }
+                                           }
                                         else // This is temorary need to use Razor
                                         {
                                             <select class="form-control input-rounded" name="@Html.NameFor(model => model.Vendor)"
@@ -470,13 +471,14 @@
         $('.drpLocation').hide();
         if(update == 'True')
         {
-             
-            $("#Vendor").val('@ViewBag.Vendor');
+           
+            $("#SelectedVendor").val('@ViewBag.Vendor');
+             $("#Vendor").val('@ViewBag.Vendor');
             $("#POType").val(@ViewBag.POTypeDate);
             $('input[type="text]"').attr('readonly','readonly');; // mark it as read only
-            $("#Location,#POType,#Vendor").attr("disabled", true);
+            $("#Location,#POType,#SelectedVendor").attr("disabled", true);
             $('input[type="text"]').css('background-color', '#DEDEDE')
-            $("#Location,#POType, #Vendor, #PointOfContactAddress").css('background-color', '#DEDEDE')
+            $("#Location,#POType, #SelectedVendor, #PointOfContactAddress").css('background-color', '#DEDEDE')
             $('#Vendor').find('option[value="@ViewBag.Vendor"]').attr('selected','selected')
             $("#Vendor").val(@ViewBag.Vendor);
             $("#lblVendor").addClass('active highlight');
@@ -529,7 +531,7 @@
                 IsRecuring = false;
                 getVendorList(IsRecuring);
             }
-            $("#Vendor").val(@ViewBag.Vendor);
+            @*$("#SelectedVendor").val(@ViewBag.Vendor);*@
         }
         $('#DeliveryDate, #BillDate').datepicker({
             format: "mm/dd/yyyy",
@@ -704,12 +706,19 @@
             formData.append("FileUpload", file);
 
         if ($("#po_form").valid())
-        {
+        { 
             var obj = new Object();
             var QuestionAnswer = [];
             obj.PONumber = $("#PONumber").val(); obj.Location = $("#Location option:selected").val();
-            obj.POType = $("#POType").val() ; obj.IsVendorRegister = $("input[type='radio'][name='IsVendorRegister']:checked").val();
-            obj.Vendor = $("#Vendor option:selected").val(); obj.PointOfContactName = $("#PointOfContactName").val();
+            obj.POType = $("#POType").val(); obj.IsVendorRegister = $("input[type='radio'][name='IsVendorRegister']:checked").val();
+            if (update == 'True')
+            {
+                obj.Vendor = $('#SelectedVendor').find('option:selected').val();
+            }
+            else {
+                obj.Vendor = $("#Vendor option:selected").val();
+            }
+                obj.PointOfContactName = $("#PointOfContactName").val();
             obj.IssueDate = $("#IssueDate").val(); obj.DeliveryDate = $("#DeliveryDate").val();
             obj.InvoicingFrequency = $("#InvoicingFrequency").val(); obj.CostDuringPeriod = $("#CostDuringPeriod").val();
             obj.BillDate = $("#BillDate").val(); obj.PointOfContactAddress = $("#PointOfContactAddress").val();
@@ -732,12 +741,22 @@
             QuestionAnswer.push({ 'QuestionId': 4, 'Answer': obj.IsVendorRequest });
             QuestionAnswer.push({ 'QuestionId': 5, 'Answer': obj.IsVendorwillingToBill });
             var Total; var GridData;
-            if (update == 'True') {
-                 GridData = $('#tbl_CompanyFacilityDataEditList').getRowData();
+            if (update == 'True')
+            {
+                  var grid = $("#tbl_CompanyFacilityDataEditList").data("JSGrid");
                 obj.POId = $('#POId').val();
-                 obj.Total = $("#tbl_CompanyFacilityDataEditList").jqGrid('getCol', 'TotalPrice', false, 'sum');
+                // obj.Total = $("#tbl_CompanyFacilityDataEditList").jqGrid('getCol', 'TotalPrice', false, 'sum');
+                var _total = 0;
+                GridData = grid.data;
+                var Allsum = grid.data.map(function (v) {
+
+                    return _total += v.Total===null?0: v.Total;
+                   
+                });
+                obj.Total = Allsum;
             }
-            else {
+            else
+            {
                 var grid = $("#tbl_CompanyFacilityDataList").data("JSGrid");
                 var _total = 0;
                 GridData = grid.data;
@@ -804,9 +823,11 @@
             beforeSend: function () {
               new fn_showMaskloader('Please wait...');
             },
-            success: function (result) {
+                success: function (result) {
+                 
                 var listUrl = 'POTypeData/AllPOList';
-                if (result == "This PO is self approved by you successfully.") {
+                if (result == "This PO is self approved by you successfully.")
+                {
                     bootbox.dialog({
                         message: result,
                         buttons: {
@@ -823,7 +844,8 @@
                         }
                     });
                 }
-                else {
+                else
+                {
                     toastr.success("PO data saved successfully.");
                 }
 
