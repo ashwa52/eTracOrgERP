@@ -1,84 +1,84 @@
 ﻿@model WorkOrderEMS.Models.NewAdminModel.InfoFactSheet
 <style>
-	img {
-		border-radius: 50%;
-		height: auto;
-		width: 50px;
-	}
+    img {
+        border-radius: 50%;
+        height: auto;
+        width: 50px;
+    }
 
-	.profile_image {
-		width: 55px;
-	}
+    .profile_image {
+        width: 55px;
+    }
 
-	.profile_detail {
-		width: 150px;
-	}
+    .profile_detail {
+        width: 150px;
+    }
 
-	.name {
-		position: relative;
-		display: block;
-		font-weight: bold;
-		font-size: 20px;
-		color: #000000;
-	}
+    .name {
+        position: relative;
+        display: block;
+        font-weight: bold;
+        font-size: 20px;
+        color: #000000;
+    }
 
-	.profile {
-		position: absolute;
-		color: #000000;
-	}
+    .profile {
+        position: absolute;
+        color: #000000;
+    }
 
-	.inline {
-		display: inline-block;
-		position: relative;
-	}
+    .inline {
+        display: inline-block;
+        position: relative;
+    }
 
-	.yellow {
-		color: yellow;
-	}
+    .yellow {
+        color: yellow;
+    }
 
-	.right-sec {
-		float: right;
-		width: 15%;
-		margin-top: -17px;
-		margin-right: -14px;
-	}
+    .right-sec {
+        float: right;
+        width: 15%;
+        margin-top: -17px;
+        margin-right: -14px;
+    }
 
-	.right-pad {
-		margin: 2px;
-	}
+    .right-pad {
+        margin: 2px;
+    }
 
-	.email-sec {
-		background-color: #018FFC;
-		padding: 34px 8px 28px 22px;
-		text-align: center;
-		box-shadow: 0px 0px 4px #888888;
-		color: white;
-	}
+    .email-sec {
+        background-color: #018FFC;
+        padding: 34px 8px 28px 22px;
+        text-align: center;
+        box-shadow: 0px 0px 4px #888888;
+        color: white;
+    }
 
-	.d-sal {
-		background-color: #018FFC;
-		padding: 34px 8px 28px 22px;
-		text-align: center;
-		box-shadow: 0px 0px 4px #888888;
-		color: white;
-	}
+    .d-sal {
+        background-color: #018FFC;
+        padding: 34px 8px 28px 22px;
+        text-align: center;
+        box-shadow: 0px 0px 4px #888888;
+        color: white;
+    }
 
-	.start-d {
-		background-color: #018FFC;
-		padding: 34px 8px 28px 22px;
-		text-align: center;
-		box-shadow: 0px 0px 4px #888888;
-		color: white;
-	}
+    .start-d {
+        background-color: #018FFC;
+        padding: 34px 8px 28px 22px;
+        text-align: center;
+        box-shadow: 0px 0px 4px #888888;
+        color: white;
+    }
 
-	/*.btnSelected {
-		background-color: green;
-		font-weight: bold;
-		font-size: 23px;
-		padding: 15px 20px 16px 20px;
-		margin: 2px;
-		width:200px;
-	}*/
+    /*.btnSelected {
+        background-color: green;
+        font-weight: bold;
+        font-size: 23px;
+        padding: 15px 20px 16px 20px;
+        margin: 2px;
+        width:200px;
+    }*/
     .btnSelected {
         background-color: green;
         font-weight: bold;
@@ -87,6 +87,7 @@
         margin: 2px;
         width: 150px;
     }
+
     .btnNotSelected {
         background-color: #5c545f;
         font-weight: bold;
@@ -96,12 +97,13 @@
         width: 150px;
         color: #fff;
     }
-	.rightList {
-		float: right;
-		padding-left: 1px;
-		padding-right: 1px;
-		max-width: 14%;
-	}
+
+    .rightList {
+        float: right;
+        padding-left: 1px;
+        padding-right: 1px;
+        max-width: 14%;
+    }
 </style>
 <div class="row" style="padding:3px 15px 0px 15px;">
 	<div class="col-lg-12">
@@ -140,12 +142,13 @@
 							<i class="fa fa-envelope-o" aria-hidden="true"></i>
 							<div>Email</div>
 						</div>
-						<div class="d-sal right-pad">
-							<div>Desire Salary</div>
-							<i class="fa fa-usd" aria-hidden="true"></i>
-							@Html.EditorFor(x=>x.model.DesireSalary,new { @style= " display: inline-block; width: 84%; border-color: #018FFC; background-color: #018FFC; border: 0px; border-bottom: 1px solid #ddd;" })
-							@*<input type="text" style=" display: inline-block; width: 84%; border-color: #018FFC; background-color: #018FFC; border: 0px; border-bottom: 1px solid #ddd;">*@
-						</div>
+                        <div class="d-sal right-pad">
+                            <div>Desire Salary</div>
+                            <i class="fa fa-usd" aria-hidden="true"></i>
+                            <input type="text" value="@Model.model.DesireSalary" style=" display: inline-block; width: 84%; border-color: #018FFC; background-color: #018FFC; border: 0px; border-bottom: 1px solid #ddd;">
+
+                            @*<input type="text" style=" display: inline-block; width: 84%; border-color: #018FFC; background-color: #018FFC; border: 0px; border-bottom: 1px solid #ddd;">*@
+                        </div>
 						<div class="start-d right-pad">
 							<div>Available Start Date</div>
 
