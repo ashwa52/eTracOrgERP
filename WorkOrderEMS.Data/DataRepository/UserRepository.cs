@@ -833,15 +833,13 @@ namespace WorkOrderEMS.Data
                         _workorderEMSEntities.spSetReview306090("U", i.SAR_EMP_EmployeeId, i.ASQ_Id, i.SAR_Id, i.SAR_AnswerManager == "Y" ? "Y" : i.SAR_AnswerManager == "N" ? "N" : i.SAR_AnswerManager == "S" ? "S" : null, i.SAR_Comments, action == "S" ? "S" : "Y");
                     }
                 }
-
                 return true;
-
             }
             catch (Exception)
             { throw; }
         }
 
-        /// <summary>GetListOf306090ForJSGrid
+        /// <summary>GetListOfExpectationsForJSGrid
         /// <Modified By>mayur sahu</Modified> 
         /// <CreatedFor>To Get Performance 306090 list</CreatedFor>
         /// <CreatedOn>13-Oct-2019</CreatedOn>
@@ -858,7 +856,6 @@ namespace WorkOrderEMS.Data
         {
             //totalRecords = 0;
             ObjectParameter totalRecord = new ObjectParameter("TotalRecords", typeof(int));
-
             List<PerformanceModel> ListOf306090Records = new List<PerformanceModel>();
             try
             {
@@ -907,5 +904,72 @@ namespace WorkOrderEMS.Data
             catch (Exception)
             { throw; }
         }
+
+        /// <summary>GetListOfQEvaluationsForJSGrid
+        /// <Modified By>mayur sahu</Modified> 
+        /// <CreatedFor>To Get Performance 306090 list</CreatedFor>
+        /// <CreatedOn>13-Oct-2019</CreatedOn>
+        /// </summary>
+        /// <param name="UserID"></param>
+        /// <param name="OperationName"></param>
+        /// <param name="pageIndex"></param>
+        /// <param name="numberOfRows"></param>
+        /// <param name="sortColumnName"></param>
+        /// <param name="sortOrderBy"></param>
+        /// <param name="textSearch"></param>
+        /// <returns></returns>
+        public List<PerformanceModel> GetListOfQEvaluationsForJSGrid(string userId, long locationId, string useType, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string textSearch, out long totalRecords)
+        {
+            //totalRecords = 0;
+            ObjectParameter totalRecord = new ObjectParameter("TotalRecords", typeof(int));
+            List<PerformanceModel> ListOf306090Records = new List<PerformanceModel>();
+            try
+            {
+                //lstVerifiedMnagaer = _workorderEMSEntities.spGetAssessmentList306090(userId, pageIndex, sortColumnName, sortOrderBy, numberOfRows, textSearch, locationId, useType, totalRecord).Select(t =>
+                ListOf306090Records = _workorderEMSEntities.spGetEvaluationList(userId).Select(t =>
+
+                new PerformanceModel()
+                {
+                    EMP_EmployeeID = t.EMP_EmployeeID,
+                    EmployeeName = t.EmployeeName,
+                    EMP_Photo = t.EMP_Photo,
+                    DepartmentName = t.DepartmentName,
+                    JBT_JobTitle = t.JBT_JobTitle,
+                    LocationName = t.LocationName,
+                    EMP_DateOfJoining = t.EMP_DateOfJoining,
+                    Expectation = t.Expectation,
+                    Status = t.EEL_IsActive,
+                    VST_Level = t.VST_Level,
+                    FinYear = t.FinYear.Value,
+                    AssessmentType = t.AssessmentType
+
+                }).ToList();
+                totalRecords = Convert.ToInt32(totalRecord.Value);
+                return ListOf306090Records;
+            }
+            catch (Exception)
+            { throw; }
+        }
+
+        public bool saveQEvaluations(List<GWCQUestionModel> data, string action)
+        {
+            try
+            {
+                if (data.Count() > 0)
+                {
+                    foreach (var i in data)
+                    {
+                        _workorderEMSEntities.spSetEvaluationQuarterly((i.EEL_IsActive == null || i.EEL_IsActive == "" || i.EEL_IsActive != "Y") ? "I" : "U", i.EEL_EMP_EmployeeId, i.QuestionType, i.EEL_Id, i.EEL_FinencialYear, i.EEL_FinQuarter, i.EEL_AnswerSelf == "Y" ? "Y" : i.EEL_AnswerSelf == "N" ? "N" : i.EEL_AnswerSelf == "S" ? "S" : null,i.EEL_Comments, action == "S" ? "S" : "Y");
+                    }
+                }
+
+                return true;
+
+            }
+            catch (Exception)
+            { throw; }
+        }
+
+
     }
 }

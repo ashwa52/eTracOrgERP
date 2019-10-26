@@ -6399,6 +6399,7 @@
     <Content Include="Views\NewAdmin\userAssessmentView.cshtml" />
     <Content Include="Views\NewAdmin\userEvaluationView.cshtml" />
     <Content Include="Views\NewAdmin\userExpectationsView.cshtml" />
+    <Content Include="Views\NewAdmin\QEvaluationView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
