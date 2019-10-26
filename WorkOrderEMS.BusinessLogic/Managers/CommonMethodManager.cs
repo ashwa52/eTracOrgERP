@@ -1917,7 +1917,29 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 throw;
             }
         }
-
+        /// <summary>
+        /// Method to check the duplicate employeeid( chech with alternativeEmail field in sql table) 
+        /// </summary>
+        /// <param name="employeeId"></param>
+        /// <returns></returns>
+        public bool CheckEmployeeIdExist(string employeeId)
+        {
+            try
+            {
+                using (workorderEMSEntities Context = new workorderEMSEntities())
+                {
+                    var Availability = new ObjectParameter("Availability", "");
+                    var isEmpExixt = Context.spCheckEmployeeIDAvailability(employeeId, Availability);
+                    if (Availability.Value.ToString() == "False")
+                        return true;
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public List<EmailHelper> GetUnseenList(NotificationDetailModel objDetails)
         {
             var _db = new workorderEMSEntities();
@@ -2295,29 +2317,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
             return lst;
         }
-        /// <summary>
-        /// Method to check the duplicate employeeid( chech with alternativeEmail field in sql table) 
-        /// </summary>
-        /// <param name="employeeId"></param>
-        /// <returns></returns>
-        public bool CheckEmployeeIdExist(string employeeId)
-        {
-            try
-            {
-                using (workorderEMSEntities Context = new workorderEMSEntities())
-                {
-                    var Availability = new ObjectParameter("Availability", "");
-                    var isEmpExixt = Context.spCheckEmployeeIDAvailability(employeeId, Availability);
-                    if (Availability.Value.ToString() == "False")
-                        return true;
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
+
         public List<EmailHelper> GetUnseenNotifications(long UserId)
         {
             var _db = new workorderEMSEntities();
@@ -2336,7 +2336,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     MiscellaneousID = a.MiscellaneousID,
                     eScanQRCID = a.eScanId,
                     IsRead = a.IsRead,
-                    CreatedBy = a.CreatedBy
+                    CreatedBy=a.CreatedBy
                 }).ToList();
                 var userDetails = _db.UserRegistrations.Where(x => x.UserId == UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
                 if (notification.Count() > 0)
@@ -2383,7 +2383,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                           FacilityRequest = a.q.FacilityRequestId,
                                           AddressFacilityReq = a.q.Address,
                                           LicensePlateNo = a.q.LicensePlateNo,
-                                          CreatedBy = assignedBy.FirstName + " " + assignedBy.LastName,
+                                          CreatedBy=assignedBy.FirstName+" "+assignedBy.LastName,
                                           EmployeeImage = assignedBy.ProfileImage// == null ? HostingPrefix + "/Content/Images/ProjectLogo/no-profile-pic.jpg" : HostingPrefix + (ConfigurationManager.AppSettings["WorkRequestImage"]).Replace("~", "") + assignedBy.ProfileImage
 
 
@@ -2436,16 +2436,195 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                             }
                         }
                         #endregion WO
-                    }
 
+                        //#region PO
+                        /////This is for PO
+                        //else if (item.POID != null && item.POID > 0 && userDetails.UserType != Convert.ToInt64(UserType.Employee))
+                        //{
+                        //    var POData = new EmailHelper();
+                        //    if (item.IsRead == false)
+                        //    {
+                        //        POData = _db.LogPODetails.Where(x => x.LPOD_POD_Id == item.POID && x.LPOD_IsActive == "Y")
+                        //           .Select(a => new EmailHelper()
+                        //           {
+                        //               MailType = item.POID != null ? "POAPPROVEDREJECT" : null,
+                        //               ManagerName = userDetails.FirstName + " " + userDetails.LastName,
+                        //               LocationName = a.LocationMaster.LocationName,
+                        //               PONumber = a.LPOD_POD_Id.ToString(),
+                        //               SentBy = userDetails.UserId,
+                        //               LocationID = a.LPOD_LocationId,
+                        //               LogPOId = a.LPOD_Id.ToString(),
+                        //               Total = a.LPOD_POAmount.ToString(),
+                        //               CMPId = a.LPOD_CMP_Id,
+                        //               ApproveRemoveStatus = a.LPOD_IsApprove == "W" ? POStatus.W : a.LPOD_IsApprove == "Y" ? POStatus.Y : POStatus.N,
+                        //               IsWorkable = true,
+                        //               Comment = a.LPOD_Comment
+                        //           }).OrderByDescending(x => x.LogPOId).FirstOrDefault();
+                        //    }
+
+                        //    if (POData != null)
+                        //    {
+                        //        if (POData.ApproveRemoveStatus == POStatus.W)
+                        //        {
+                        //            POData.Message = "PO " + POData.PONumber + " has been approved by your manager, Current status is " + POData.ApproveRemoveStatus;
+                        //        }
+                        //        else if (POData.ApproveRemoveStatus == POStatus.Y)
+                        //        {
+                        //            POData.Message = "PO " + POData.PONumber + " received final approval";
+                        //        }
+                        //        else if (POData.Comment != null)
+                        //        {
+                        //            POData.Message = "PO " + POData.PONumber + " has been rejected due to" + POData.Comment + " , Please contact your manager";
+                        //        }
+                        //        ///To approve PO need company name so added this code just for approval process.
+                        //        if (POData != null && POData.CMPId > 0)
+                        //        {
+                        //            var companyData = _db.Companies.Where(x => x.CMP_Id == POData.CMPId && x.CMP_IsActive == "Y").FirstOrDefault();
+                        //            if (companyData != null)
+                        //            {
+                        //                POData.CompanyName = companyData.CMP_NameLegal;
+                        //                POData.WorkOrderImage = HostingPrefix + "/Content/Images/WorkRequest/no-asset-pic.png";
+                        //            }
+                        //        }
+                        //        listTask.Add(POData);
+                        //    }
+                        //}
+                        //#endregion PO
+
+                        //#region Bill
+                        //else if (item.BillID != null && item.BillID > 0 && userDetails.UserType != Convert.ToInt64(UserType.Employee))
+                        //{
+                        //    var BillData = new EmailHelper();
+                        //    if (item.IsRead == false)
+                        //    {
+                        //        BillData = _db.LogPreBills.Where(x => x.LPBL_PBL_Id == item.BillID && x.LPBL_IsActive == "Y")
+                        //           .Select(a => new EmailHelper()
+                        //           {
+                        //               MailType = item.BillID != null ? "BILLAPPROVE" : null,
+                        //               ManagerName = userDetails.FirstName + " " + userDetails.LastName,
+                        //               LocationName = a.LocationMaster.LocationName,
+                        //               BillId = a.LPBL_PBL_Id.ToString(),
+                        //               SentBy = userDetails.UserId,
+                        //               LocationID = a.LPBL_LocationId,
+                        //               LogBillId = a.LPBL_Id,
+                        //               Total = a.LPBL_InvoiceAmount.ToString(),
+                        //               CMPId = a.LPBL_CMP_Id,
+                        //               IsWorkable = true
+                        //           }).FirstOrDefault();
+                        //    }
+                        //    if (BillData != null)
+                        //    {
+                        //        BillData.WorkOrderImage = HostingPrefix + "/Content/Images/WorkRequest/no-asset-pic.png";
+                        //        ///To approve PO need company name so added this code just for approval process.
+                        //        if (BillData != null && BillData.CMPId > 0)
+                        //        {
+                        //            var companyData = _db.Companies.Where(x => x.CMP_Id == BillData.CMPId && x.CMP_IsActive == "Y").FirstOrDefault();
+                        //            if (companyData != null)
+                        //            {
+                        //                BillData.CompanyName = companyData.CMP_NameLegal;
+
+                        //            }
+                        //        }
+                        //        listTask.Add(BillData);
+                        //    }
+                        //    else
+                        //    {
+                        //        BillData = _db.LogBills.Where(x => x.LBLL_POD_Id == item.BillID && x.LBLL_IsApprove == "Y" && x.LBLL_IsActive == "Y")
+                        //           .Select(a => new EmailHelper()
+                        //           {
+                        //               MailType = item.BillID != null ? "BILLAPPROVE" : null,
+                        //               ManagerName = userDetails.FirstName + " " + userDetails.LastName,
+                        //               LocationName = a.LocationMaster.LocationName,
+                        //               BillId = a.LBLL_BLL_Id.ToString(),
+                        //               SentBy = userDetails.UserId,
+                        //               LocationID = a.LBLL_LocationId,
+                        //               LogBillId = a.LBLL_Id,
+                        //               Total = a.LBLL_InvoiceAmount.ToString(),
+                        //               CMPId = a.LBLL_CMP_Id,
+                        //               IsWorkable = true
+                        //           }).FirstOrDefault();
+                        //    }
+                        //}
+                        //#endregion Bill
+
+                        //#region Miscellaneous
+                        //else if (item.MiscellaneousID != null && item.MiscellaneousID > 0 && userDetails.UserType != Convert.ToInt64(UserType.Employee))
+                        //{
+                        //    var MiscData = new EmailHelper();
+                        //    if (item.IsRead == false)
+                        //    {
+                        //        MiscData = _db.LogMiscellaneous.Where(x => x.LMIS_MIS_Id == item.MiscellaneousID && x.LMIS_IsActive == "Y")
+                        //           .Select(a => new EmailHelper()
+                        //           {
+                        //               MailType = item.MiscellaneousID != null ? "APPROVEMISCELLANEOUS" : null,
+                        //               ManagerName = userDetails.FirstName + " " + userDetails.LastName,
+                        //               LocationName = a.LocationMaster.LocationName,
+                        //               MISId = a.LMIS_MIS_Id.ToString(),
+                        //               SentBy = userDetails.UserId,
+                        //               LocationID = a.LMIS_LocationId,
+                        //               LogMiscId = a.LMIS_Id.ToString(),
+                        //               Total = a.LMIS_InvoiceAmount.ToString(),
+                        //               CMPId = a.LMIS_CMP_Id,
+                        //               IsWorkable = true
+                        //           }).FirstOrDefault();
+                        //    }
+                        //    if (MiscData != null)
+                        //    {
+                        //        MiscData.WorkOrderImage = HostingPrefix + "/Content/Images/WorkRequest/no-asset-pic.png";
+                        //        ///To approve PO need company name so added this code just for approval process.
+                        //        if (MiscData != null && MiscData.CMPId > 0)
+                        //        {
+                        //            var companyData = _db.Companies.Where(x => x.CMP_Id == MiscData.CMPId && x.CMP_IsActive == "Y").FirstOrDefault();
+                        //            if (companyData != null)
+                        //            {
+                        //                MiscData.CompanyName = companyData.CMP_NameLegal;
+                        //            }
+                        //        }
+                        //        listTask.Add(MiscData);
+                        //    }
+                        //}
+                        //#endregion Miscellaneous
+
+                        //#region eScan
+                        //else if (item.eScanQRCID != null && item.eScanQRCID > 0 && userDetails.UserType != Convert.ToInt64(UserType.Employee))
+                        //{
+                        //    var eScanData = new EmailHelper();
+                        //    if (item.IsRead == false)
+                        //    {
+                        //        eScanData = _db.QRCMasters.Where(x => x.QRCID == item.eScanQRCID && x.IsDeleted == false)
+                        //           .Select(a => new EmailHelper()
+                        //           {
+                        //               MailType = a.IsDamage == true ? "QRCVEHICLEDAMAGE" : a.CheckOutStatus == true ? "CHECKINCHECKOUT" : null,
+                        //               ManagerName = userDetails.FirstName + " " + userDetails.LastName,
+                        //               LocationName = a.LocationMaster.LocationName,
+                        //               QrCodeId = a.QRCodeID.ToString(),
+                        //               SentBy = userDetails.UserId,
+                        //               LocationID = a.LocationId,
+                        //               IsWorkable = false,
+                        //               CheckoutUserName = a.UserName
+                        //           }).FirstOrDefault();
+                        //    }
+                        //    if (eScanData != null)
+                        //    {
+                        //        eScanData.Message = "Someone want to checkout QRC " + eScanData.QrCodeId + " which is already checked out by" + eScanData.CheckoutUserName;
+                        //        eScanData.WorkOrderImage = HostingPrefix + "/Content/Images/WorkRequest/no-asset-pic.png";
+                        //        ///To approve PO need company name so added this code just for approval process.                        
+                        //        listTask.Add(eScanData);
+                        //    }
+                        //}
+                        //#endregion eScan
+                    }
                 }
+                return listTask.OrderByDescending(x => x.WorkRequestAssignmentID).OrderByDescending(x => x.PONumber).ToList();
+
             }
             catch (Exception ex)
             {
                 Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<EmailHelper> GetUnseenList(NotificationDetailModel objDetails)", "Exception while getting the list for notification details", obj);
                 throw;
             }
-            return listTask.OrderByDescending(x => x.WorkRequestAssignmentID).OrderByDescending(x => x.PONumber).ToList();
-            }
+
+
         }
     }
+}

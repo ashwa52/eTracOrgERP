@@ -495,6 +495,336 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
         }
+
+        public ActionResult PerformanceManagement()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
+            var details = new LocationDetailsModel();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            return PartialView("_PerformanceManagement");
+        }
+        [HttpPost]
+        public ActionResult userAssessmentView(string Id,string Assesment)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            string Employee_Id = string.Empty;
+            GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
+            var details = new LocationDetailsModel();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            List<GWCQUestionModel> ListQuestions = new List<GWCQUestionModel>();
+            try {
+                Employee_Id = Cryptography.GetDecryptedData(Id, true);
+            }
+            catch(Exception e)
+            {
+                Employee_Id = Id;
+            }
+
+            ListQuestions = _GlobalAdminManager.GetGWCQuestions(Employee_Id, Assesment);
+            return PartialView("userAssessmentView", ListQuestions);
+        }
+        public ActionResult PerformanceManagementGrid()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
+            var details = new LocationDetailsModel();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            return PartialView("_306090Grid");
+        }
+        /// <summary>
+        /// Created By : Mayur Sahu
+        /// Created Date : 13-Oct-2019
+        /// Created For : To Get Performance 306090 list
+        /// </summary>
+        /// <param name="_search"></param>
+        /// <param name="UserId"></param>
+        /// <param name="locationId"></param>
+        /// <param name="rows"></param>
+        /// <param name="page"></param>
+        /// <param name="TotalRecords"></param>
+        /// <param name="sord"></param>
+        /// <param name="txtSearch"></param>
+        /// <param name="sidx"></param>
+        /// <param name="UserType"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult GetListOf306090ForJSGrid(string _search, long? UserId, long? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            var detailsList = new List<PerformanceModel>();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                if (locationId == null)
+                {
+                    locationId = ObjLoginModel.LocationID;
+                }
+                
+            }
+            if (UserType == null)
+            {
+                UserType = "All Users";
+            }
+            sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
+            sidx = string.IsNullOrEmpty(sidx) ? "Name" : sidx;
+            txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch;
+            long TotalRows = 0;
+            try
+            {
+                long paramTotalRecords = 0;
+                List<PerformanceModel> ITAdministratorList = _GlobalAdminManager.GetListOf306090ForJSGrid(ObjLoginModel.UserName, Convert.ToInt64(locationId), page, rows, sidx, sord, txtSearch, UserType, out paramTotalRecords);
+                foreach (var ITAdmin in ITAdministratorList)
+                {
+                    ITAdmin.EMP_Photo = (ITAdmin.EMP_Photo == "" || ITAdmin.EMP_Photo == "null") ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~/", "") + ITAdmin.EMP_Photo;
+                    ITAdmin.EMP_EmployeeID = Cryptography.GetEncryptedData(ITAdmin.EMP_EmployeeID.ToString(), true);
+                    ITAdmin.Status=ITAdmin.Status=="S"?"Review Submitted": ITAdmin.Status == "Y" ? "Review Draft":"Assessment Pending";
+                    detailsList.Add(ITAdmin);
+                }
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+            return Json(detailsList, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public JsonResult draftSelfAssessment(List<GWCQUestionModel> data)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            bool result = false;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try {
+                result=_GlobalAdminManager.saveSelfAssessment(data,"D");
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+
+            return Json(result,JsonRequestBehavior.AllowGet);
+
+        }
+        [HttpPost]
+        public JsonResult saveSelfAssessment(List<GWCQUestionModel> data)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            bool result = false;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                result = _GlobalAdminManager.saveSelfAssessment(data, "S");
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
+
+        [HttpPost]
+        //data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle },
+        public ActionResult userEvaluationView(string Id, string Assesment,string Name,string Image,string JobTitle)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            string Employee_Id = string.Empty;
+            GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
+            var details = new LocationDetailsModel();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            List<GWCQUestionModel> ListQuestions = new List<GWCQUestionModel>();
+            try
+            {
+                Employee_Id = Cryptography.GetDecryptedData(Id, true);
+            }
+            catch (Exception e)
+            {
+                Employee_Id = Id;
+            }
+            ListQuestions = _GlobalAdminManager.GetGWCQuestions(Employee_Id, Assesment=="30"?"31":Assesment=="60"?"61":"91");
+            ViewData["employeeInfo"] = new GWCQUestionModel(){ EmployeeName=Name,AssessmentType=Assesment,Image=Image, JobTitle=JobTitle }; 
+            return PartialView("userEvaluationView", ListQuestions);
+        }
+
+        [HttpPost]
+        public JsonResult draftEvaluation(List<GWCQUestionModel> data)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            bool result = false;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                result = _GlobalAdminManager.saveEvaluation(data, "D");
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
+        [HttpPost]
+        public JsonResult saveEvaluation(List<GWCQUestionModel> data)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            bool result = false;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                result = _GlobalAdminManager.saveEvaluation(data, "S");
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
+
+        /// <summary>
+        /// Created By : Mayur Sahu
+        /// Created Date : 13-Oct-2019
+        /// Created For : To Get Performance 306090 list
+        /// </summary>
+        /// <param name="_search"></param>
+        /// <param name="UserId"></param>
+        /// <param name="locationId"></param>
+        /// <param name="rows"></param>
+        /// <param name="page"></param>
+        /// <param name="TotalRecords"></param>
+        /// <param name="sord"></param>
+        /// <param name="txtSearch"></param>
+        /// <param name="sidx"></param>
+        /// <param name="UserType"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult GetListOfQExpectationsForJSGrid(string _search, long? UserId, long? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            var detailsList = new List<PerformanceModel>();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                if (locationId == null)
+                {
+                    locationId = ObjLoginModel.LocationID;
+                }
+
+            }
+            if (UserType == null)
+            {
+                UserType = "All Users";
+            }
+            sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
+            sidx = string.IsNullOrEmpty(sidx) ? "Name" : sidx;
+            txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch;
+            long TotalRows = 0;
+            try
+            {
+                long paramTotalRecords = 0;
+                List<PerformanceModel> ITAdministratorList = _GlobalAdminManager.GetListOfExpectationsForJSGrid(ObjLoginModel.UserName, Convert.ToInt64(locationId), page, rows, sidx, sord, txtSearch, UserType, out paramTotalRecords);
+                foreach (var ITAdmin in ITAdministratorList)
+                {
+                    ITAdmin.EMP_Photo = (ITAdmin.EMP_Photo == "" || ITAdmin.EMP_Photo == "null") ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~/", "") + ITAdmin.EMP_Photo;
+
+                    ITAdmin.EMP_EmployeeID = Cryptography.GetEncryptedData(ITAdmin.EMP_EmployeeID.ToString(), true);
+                    ITAdmin.Status = ITAdmin.Status == "S" ? "Review Submitted" : ITAdmin.Status == "Y" ? "Review Draft" : "Assessment Pending";
+                    detailsList.Add(ITAdmin);
+                }
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+            return Json(detailsList, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult userExpectationsView(string Id, string Assesment,string FinYear,string FinQuarter)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            string Employee_Id = string.Empty;
+            GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
+            var details = new LocationDetailsModel();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            List<GWCQUestionModel> ListQuestions = new List<GWCQUestionModel>();
+            try
+            {
+                Employee_Id = Cryptography.GetDecryptedData(Id, true);
+            }
+            catch (Exception e)
+            {
+                Employee_Id = Id;
+            }
+
+            ListQuestions = _GlobalAdminManager.GetGWCQuestions(Employee_Id, Assesment);
+            foreach (var item in ListQuestions)
+            {
+                item.EEL_FinencialYear = FinYear;
+                item.EEL_FinQuarter = FinQuarter;
+                item.AssessmentType = Assesment;
+
+
+            }
+            return PartialView("userExpectationsView", ListQuestions);
+        }
+
+        [HttpPost]
+        public JsonResult draftExpectations(List<GWCQUestionModel> data)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            bool result = false;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                result = _GlobalAdminManager.saveExpectations(data, "D");
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
+        [HttpPost]
+        public JsonResult saveExpectations(List<GWCQUestionModel> data)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            bool result = false;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                result = _GlobalAdminManager.saveExpectations(data, "S");
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
         public ActionResult HiringOnBoardingDashboard()
         {
             eTracLoginModel ObjLoginModel = null;
@@ -568,104 +898,105 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                         Session["eTrac_questions_number"] = num;
                         var currentQus = questions.Skip(num).Take(1).FirstOrDefault();
 
-						return PartialView("ePeople/_questions", currentQus);
-					}
-					return PartialView("ePeople/_questions", new spGetInterviewQuestion_Result
-					{
-						INQ_QuestionType="LastQuestion",
-						INQ_Exempt="Y",
-						INQ_Id=9999,
-						INQ_Question="Did applicant have any question?",
-						INQ_IsActive="Y"
-					});
-				}
-				else
-				{
-					var currentQus = questions.Skip(0).Take(1).FirstOrDefault();
-					Session["eTrac_questions_number"] = 0;
-					return PartialView("ePeople/_questions", currentQus);
-				}
-			}
-			return PartialView("ePeople/_questions", null);
-		}
-		[HttpPost]
-		public JsonResult SaveAnswers(InterviewAnswerModel model)
-		{
-			var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-			var isAnsSaveSuccess = _GlobalAdminManager.SaveInterviewAnswers(model, ObjLoginModel.UserId);
-			return Json(true ? true : false, JsonRequestBehavior.AllowGet);
-		}
-		public FileStreamResult GetPDF()
-		{
-			FileStream fs = new FileStream(Server.MapPath("~/App_Data/resume.pdf"), FileMode.Open, FileAccess.Read);
-			return File(fs, "application/pdf");
-		}
-		#region Hiring On Boarding
-		[HttpGet]
-		public JsonResult GetApplicantInfo()
-		{
-			var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-			var data = _GlobalAdminManager.GetApplicantInfo(ObjLoginModel.UserId);
-			return Json(data, JsonRequestBehavior.AllowGet);
-		}
+                        return PartialView("ePeople/_questions", currentQus);
+                    }
+                    return PartialView("ePeople/_questions", new spGetInterviewQuestion_Result
+                    {
+                        INQ_QuestionType = "LastQuestion",
+                        INQ_Exempt = "Y",
+                        INQ_Id = 9999,
+                        INQ_Question = "Did applicant have any question?",
+                        INQ_IsActive = "Y"
+                    });
+                }
+                else
+                {
+                    var currentQus = questions.Skip(0).Take(1).FirstOrDefault();
+                    Session["eTrac_questions_number"] = 0;
+                    return PartialView("ePeople/_questions", currentQus);
+                }
+            }
+            return PartialView("ePeople/_questions", null);
+        }
+        [HttpPost]
+        public JsonResult SaveAnswers(InterviewAnswerModel model)
+        {
+            var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            var isAnsSaveSuccess = _GlobalAdminManager.SaveInterviewAnswers(model, ObjLoginModel.UserId);
+            return Json(true ? true : false, JsonRequestBehavior.AllowGet);
+        }
+        public FileStreamResult GetPDF()
+        {
+            FileStream fs = new FileStream(Server.MapPath("~/App_Data/resume.pdf"), FileMode.Open, FileAccess.Read);
+            return File(fs, "application/pdf");
+        }
+        #region Hiring On Boarding
+        [HttpGet]
+        public JsonResult GetApplicantInfo()
+        {
+            var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            var data = _GlobalAdminManager.GetApplicantInfo(ObjLoginModel.UserId);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
 
-		[HttpPost]
-		public ActionResult SaveApplicantInfo(OnboardingDetailRequestModel onboardingDetailRequestModel)
-		{
-			var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-			onboardingDetailRequestModel.CreatedBy = ObjLoginModel.UserId;
-			var data = _GlobalAdminManager.SaveApplicantInfo(onboardingDetailRequestModel);
-			return Json(data, JsonRequestBehavior.AllowGet);
-		}
+        [HttpPost]
+        public ActionResult SaveApplicantInfo(OnboardingDetailRequestModel onboardingDetailRequestModel)
+        {
+            var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            onboardingDetailRequestModel.CreatedBy = ObjLoginModel.UserId;
+            var data = _GlobalAdminManager.SaveApplicantInfo(onboardingDetailRequestModel);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
 
-		[HttpPost]
-		public ActionResult SaveGuestEmployeeBasicInfo(GuestEmployeeBasicInfoRequestModel guestEmployeeBasicInfoRequestModel)
-		{
+        [HttpPost]
+        public ActionResult SaveGuestEmployeeBasicInfo(GuestEmployeeBasicInfoRequestModel guestEmployeeBasicInfoRequestModel)
+        {
 
-			var data = _GlobalAdminManager.SaveGuestEmployeeBasicInfo(guestEmployeeBasicInfoRequestModel);
-			return Json(data, JsonRequestBehavior.AllowGet);
-		}
-		public JsonResult GetStateList()
-		{
-			return Json(_ICommonMethod.GetStateByCountryId(1), JsonRequestBehavior.AllowGet);
-		}
-		[HttpPost]
-		public JsonResult CanInterviewerIsOnline(long ApplicantId, string IsAvailable, string Comment)
-		{
-			var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-			var res = _GlobalAdminManager.IsInterviewerOnline(ApplicantId, ObjLoginModel.UserId, IsAvailable, Comment);
-			return Json(res, JsonRequestBehavior.AllowGet);
+            var data = _GlobalAdminManager.SaveGuestEmployeeBasicInfo(guestEmployeeBasicInfoRequestModel);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult GetStateList()
+        {
+            return Json(_ICommonMethod.GetStateByCountryId(1), JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult CanInterviewerIsOnline(long ApplicantId, string IsAvailable, string Comment)
+        {
+            var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            var res = _GlobalAdminManager.IsInterviewerOnline(ApplicantId, ObjLoginModel.UserId, IsAvailable, Comment);
+            return Json(res, JsonRequestBehavior.AllowGet);
 
-		}
-		[HttpGet]
-		public JsonResult GetScore(long ApplicantId)
-		{
-			var res = _GlobalAdminManager.GetScore(ApplicantId);
-			return Json(res, JsonRequestBehavior.AllowGet);
-		}
-		[HttpGet]
-		public JsonResult CheckNextQuestion(long ApplicantId)
-		{
-			var res = _GlobalAdminManager.CheckIfAllRespondedForQuestion(ApplicantId);
-			return Json(res, JsonRequestBehavior.AllowGet);
-		}
+        }
+        [HttpGet]
+        public JsonResult GetScore(long ApplicantId)
+        {
+            var res = _GlobalAdminManager.GetScore(ApplicantId);
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult CheckNextQuestion(long ApplicantId)
+        {
+            var res = _GlobalAdminManager.CheckIfAllRespondedForQuestion(ApplicantId);
+            return Json(res, JsonRequestBehavior.AllowGet);
+        }
 
-		/// <summary>
-		/// Method to  validate the duplicate employee id ie alternativeemail in db col.
-		/// </summary>
-		/// <param name="empId"></param>
-		/// <returns></returns>
-		[HttpGet]
-		public ActionResult ValidateEmployeeID(string empId)
-		{
-			var response = _ICommonMethod.CheckEmployeeIdExist(empId);
-			return Json(response, JsonRequestBehavior.AllowGet);
-		}
+        /// <summary>
+        /// Method to  validate the duplicate employee id ie alternativeemail in db col.
+        /// </summary>
+        /// <param name="empId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult ValidateEmployeeID(string empId)
+        {
+            var response = _ICommonMethod.CheckEmployeeIdExist(empId);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
 
-		public ActionResult GuestEmployee()
-		{
-			return View("~/Views/NewAdmin/GuestEmployee/GuestEmployee.cshtml");
-		}
-		#endregion
-	}
+        public ActionResult GuestEmployee()
+        {
+            return View("~/Views/NewAdmin/GuestEmployee/GuestEmployee.cshtml");
+        }
+        #endregion
+    }
+
 }

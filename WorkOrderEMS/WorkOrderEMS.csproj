@@ -6452,6 +6452,7 @@
     <Content Include="Views\GlobalAdmin\_Notifications.cshtml" />
     <Content Include="Views\NewAdmin\_userAssessmentView.cshtml" />
     <Content Include="Views\NewAdmin\_306090Grid.cshtml" />
+	<Content Include="Views\GlobalAdmin\_Notifications.cshtml" />
     <Content Include="Views\NewAdmin\userAssessmentView.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\_ViewVSCDetails.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\StatusChaneForm\_DemotionEmployeeForm.cshtml" />
@@ -6468,6 +6469,9 @@
 	<Content Include="Views\NewAdmin\ePeople\Requisition\_AddRemoveJobTitleCount.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\_DirectDepositeEditForm.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\_EmployeeFilesOriginal.cshtml" />
+	<Content Include="Views\NewAdmin\userAssessmentView.cshtml" />
+    <Content Include="Views\NewAdmin\userEvaluationView.cshtml" />
+    <Content Include="Views\NewAdmin\userExpectationsView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
