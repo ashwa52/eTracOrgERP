@@ -1917,7 +1917,29 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 throw;
             }
         }
-
+        /// <summary>
+        /// Method to check the duplicate employeeid( chech with alternativeEmail field in sql table) 
+        /// </summary>
+        /// <param name="employeeId"></param>
+        /// <returns></returns>
+        public bool CheckEmployeeIdExist(string employeeId)
+        {
+            try
+            {
+                using (workorderEMSEntities Context = new workorderEMSEntities())
+                {
+                    var Availability = new ObjectParameter("Availability", "");
+                    var isEmpExixt = Context.spCheckEmployeeIDAvailability(employeeId, Availability);
+                    if (Availability.Value.ToString() == "False")
+                        return true;
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public List<EmailHelper> GetUnseenList(NotificationDetailModel objDetails)
         {
             var _db = new workorderEMSEntities();

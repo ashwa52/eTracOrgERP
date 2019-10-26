@@ -10,15 +10,18 @@
 namespace WorkOrderEMS.Data.EntityModel
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class SelfAssessment306090
+    public partial class spGetAssessmentList306090_Result1
     {
-        public long SAM_Id { get; set; }
-        public string SAM_EMP_EmployeeId { get; set; }
-        public Nullable<long> SAM_ASQ_Id { get; set; }
-        public string SAM_Answer { get; set; }
-        public Nullable<System.DateTime> SAM_Date { get; set; }
+        public string EMP_EmployeeID { get; set; }
+        public string EMP_Photo { get; set; }
+        public string EmployeeName { get; set; }
+        public string VST_Level { get; set; }
+        public string DepartmentName { get; set; }
+        public string JBT_JobTitle { get; set; }
+        public string LocationName { get; set; }
+        public Nullable<System.DateTime> EMP_DateOfJoining { get; set; }
+        public Nullable<int> Assesment { get; set; }
         public string SAM_IsActive { get; set; }
     }
 }

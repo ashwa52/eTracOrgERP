@@ -809,7 +809,7 @@ namespace WorkOrderEMS.Data
                     {
                         EmployeeId = i.EmployeeId;
                         AssessmentType = i.AssessmentType;
-                        _workorderEMSEntities.spSetSelfAssessment3060901((i.SAM_IsActive == null || i.SAM_IsActive == "" || i.SAM_IsActive != "Y") ? "I" : "U", i.EmployeeId, i.QuestionId, i.SelfAssessmentId, i.Answer == "Y" ? "Y" : i.Answer == "N" ? "N" : i.Answer == "S" ? "S" : null, action == "S" ? "S" : "Y");
+                        _workorderEMSEntities.spSetSelfAssessment306090((i.SAM_IsActive == null || i.SAM_IsActive == "" || i.SAM_IsActive != "Y") ? "I" : "U", i.EmployeeId, i.QuestionId, i.SelfAssessmentId, i.Answer == "Y" ? "Y" : i.Answer == "N" ? "N" : i.Answer == "S" ? "S" : null, action == "S" ? "S" : "Y");
                     }
 
                     if (action == "S")

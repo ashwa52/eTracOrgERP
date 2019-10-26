@@ -4043,52 +4043,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 			}
 		}
 
-        /// <summary>
-        /// Created By : Ashwajit Bansod
-        /// Created Date : 11-June-2019
-        /// Created For : To get all manager lsit to send notification.
-        /// </summary>
-        /// <param name="LocationId"></param>
-        /// <param name="UserId"></param>
-        /// <returns></returns>
-        public List<listForEmployeeDevice> GetAllManagerList(long LocationId, long UserId)
-        {
-            using (workorderEMSEntities Context = new workorderEMSEntities())
-            {
-                try
-                {
-                    //var tt= Context.UserRegistrations.Join(Context.ManagerLocationMappings, q => q.UserId, u => u.ManagerUserId, (q, u) => new { q, u }).
-                    //                   Where(x => (x.u.IsDeleted == false)
-                    //                   && (x.u.LocationId == LocationId)).
-                    //                     Select(x =>  new listForEmployeeDevice
-                    //                     {
-                    //                         DeviceId = x.q.DeviceId,
-                    //                         UserId = x.q.UserId,
-                    //                         LocationName = x.u.LocationMaster.LocationName
-                    //                     }).Distinct().ToList();
-                    List<listForEmployeeDevice> a = (from ur in Context.UserRegistrations
-                                                     join elm in Context.ManagerLocationMappings
-                                                            on ur.UserId equals elm.ManagerUserId
-                                                     join lm in Context.LocationMasters
-                                                            on elm.LocationId equals lm.LocationId
-                                                     where ur.UserType == 2 // employee type
-                                                     && ur.IsDeleted == false
-                                                     && elm.LocationId == LocationId
-                                                     select new listForEmployeeDevice
-                                                     {
-                                                         DeviceId = ur.DeviceId,
-                                                         UserId = ur.UserId,
-                                                         LocationName = lm.LocationName
-                                                     }).Distinct().ToList();
-                    return a;
-                }
-                catch (Exception)
-                {
-                    return null;
-                }
-            }
-        }
-
+ 
         /// <summary>GetListOf306090ForJSGrid
         /// <Modified By>mayur sahu</Modified> 
         /// <CreatedFor>To Get Performance 306090 list</CreatedFor>
@@ -4137,6 +4092,20 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             {
 
                 return ObjUserRepository.saveSelfAssessment(data, action);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public bool saveEvaluation(List<GWCQUestionModel> data, string action)
+        {
+
+            ObjUserRepository = new UserRepository();
+            try
+            {
+
+                return ObjUserRepository.saveEvaluation(data, action);
             }
             catch (Exception)
             {
