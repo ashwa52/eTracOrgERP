@@ -320,11 +320,11 @@ namespace WorkOrderEMS.BusinessLogic
 					var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
 					var name = Context.spGetEmergencyContactForm(empid).Select(x => new EmergencyContectForm
 					{
-						NickName=x.ECF_NickName,
-						HomeEmail=x.ECF_HomeEmail,
-						HomePhone=x.ECF_HomePhone,
-						EmpId=x.ECF_EMP_EmployeeID,
-						EcfId=x.ECF_Id
+						NickName = x.ECF_NickName,
+						HomeEmail = x.ECF_HomeEmail,
+						HomePhone = x.ECF_HomePhone,
+						EmpId = x.ECF_EMP_EmployeeID,
+						EcfId = x.ECF_Id
 					}).FirstOrDefault();
 					return name;
 				}
@@ -373,10 +373,10 @@ namespace WorkOrderEMS.BusinessLogic
 					var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
 					var name = Context.spGetConfidentialityAgreement(empid).Select(x => new ConfidenialityAgreementModel
 					{
-						Email=x.EMP_Email,
-						EmpAddress=x.EmpAddress,
-						EmpId=x.CDA_EMP_EmployeeID,
-						EmployeeName=x.EmployeeName
+						Email = x.EMP_Email,
+						EmpAddress = x.EmpAddress,
+						EmpId = x.CDA_EMP_EmployeeID,
+						EmployeeName = x.EmployeeName
 					}).FirstOrDefault();
 					return name;
 				}
@@ -399,7 +399,7 @@ namespace WorkOrderEMS.BusinessLogic
 					var isexist = GetConfidenialityAgreementForm(userId);
 					if (ReferenceEquals(isexist, null))
 					{
-						Context.spSetConfidentialityAgreement("I", model.CafId, empid,  model.IsActive);
+						Context.spSetConfidentialityAgreement("I", model.CafId, empid, model.IsActive);
 					}
 					else
 					{
@@ -425,18 +425,19 @@ namespace WorkOrderEMS.BusinessLogic
 					var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
 					var name = Context.spGetEducationVerificationForm(empid).Select(x => new EducationVarificationModel
 					{
-						Certificate=x.EVF_SchoolDegreeDiplomaCirtificate,
-						EmpId=empid,
-						HighSchool=new HigherSchool
+
+						EmpId = empid,
+						HighSchool = new Education
 						{
-							AttendFrom=x.EVF_AttendedFrom,
-							AttendTo= x.EVF_AttendedTo,
-							City=x.EVF_City,
-							SchoolName=x.EVF_OrgnizationName,
-							State=x.EVF_State,
+							AttendFrom = x.EVF_AttendedFrom,
+							AttendTo = x.EVF_AttendedTo,
+							City = x.EVF_City,
+							SchoolName = x.EVF_OrgnizationName,
+							State = x.EVF_State,
+							Cretificate = x.EVF_SchoolDegreeDiplomaCirtificate,
 						},
-						Name=x.EmployeeName,
-						
+						Name = x.EmployeeName,
+						EvfId = x.EVF_Id
 					}).FirstOrDefault();
 					return name;
 				}
@@ -459,11 +460,90 @@ namespace WorkOrderEMS.BusinessLogic
 					var isexist = GetEducationVerificationForm(userId);
 					if (ReferenceEquals(isexist, null))
 					{
-						Context.spSetEducationVerificationForm("I",model.EvfId,empid,model.Certificate,model.HigherSchool.SchoolName,"",model.HigherSchool.City,model.HigherSchool.State,model.HigherSchool.AttendFrom,model.HigherSchool.AttendTo,model.IsActive);
+						Context.spSetEducationVerificationForm("I", model.EvfId, empid, model.Certificate, model.HighSchool.SchoolName, "", model.HighSchool.City, model.HighSchool.State, model.HighSchool.AttendFrom, model.HighSchool.AttendTo, model.IsActive);
 					}
 					else
 					{
-						Context.spSetEducationVerificationForm("U",model.EvfId,empid,model.Certificate,model.HigherSchool.SchoolName,"",model.HigherSchool.City,model.HigherSchool.State,model.HigherSchool.AttendFrom,model.HigherSchool.AttendTo,model.IsActive);
+						Context.spSetEducationVerificationForm("U", isexist.EvfId, empid, model.Certificate, model.HighSchool.SchoolName, "", model.HighSchool.City, model.HighSchool.State, model.HighSchool.AttendFrom, model.HighSchool.AttendTo, model.IsActive);
+
+					}
+
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+		public W4FormModel GetW4Form(long userId)
+		{
+			try
+			{
+
+				using (workorderEMSEntities Context = new workorderEMSEntities())
+				{
+
+					var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
+					var name = Context.spGetW4Form(empid).Select(x => new W4FormModel
+					{
+						FirstName = x.EMP_FirstName,
+						MiddleName = x.EMP_MiddleName,
+						LastName = x.EMP_LastName,
+						EmpId = empid,
+						EIN = x.w4F_10,
+						SSN = x.W4F_SSN,
+						EmployeerNameAndAddress = x.w4F_8EmployersName,
+						MeritalStatus = GetMaritalStatus(x.w4F_3MaritalStatus),
+						FirstEmployeementDate = x.w4F_9,
+						AdditionalAmount = x.w4F_6,
+						NameDiffer = x.w4F_4=="Y"?true:false,
+						ClaimExemption = x.w4F_7,
+						TotalAllowence = x.w4F_5,
+						W4FId = x.W4F_Id
+					}).FirstOrDefault();
+					return name;
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+		}
+
+		private MeritalStatus GetMaritalStatus(string w4F_3MaritalStatus)
+		{
+			if (string.IsNullOrEmpty(w4F_3MaritalStatus))
+			{
+				return new MeritalStatus();
+			}
+			if (w4F_3MaritalStatus == "Single")
+				return new MeritalStatus { Single = true };
+			if (w4F_3MaritalStatus == "Single")
+				return new MeritalStatus { Single = true };
+			if (w4F_3MaritalStatus == "Married")
+				return new MeritalStatus { Married = true };
+			return new MeritalStatus { PartiallyMarried = true };
+		}
+
+
+		public void SetW4Form(long userId, W4FormModel model)
+		{
+
+			try
+			{
+
+				using (workorderEMSEntities Context = new workorderEMSEntities())
+				{
+
+					var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
+					var isexist = GetW4Form(userId);
+					if (ReferenceEquals(isexist, null))
+					{
+						Context.spSetW4Form("I", model.W4FId, empid, model.SSN,GetMaritalStatusAsString(model.MeritalStatus), model.NameDiffer==true?"Y":"N", model.TotalAllowence, model.AdditionalAmount, model.ClaimExemption, model.EmployeerNameAndAddress, model.FirstEmployeementDate, model.EIN, model.IsActive);
+					}
+					else
+					{
+						Context.spSetW4Form("U", isexist.W4FId, empid, model.SSN, GetMaritalStatusAsString(model.MeritalStatus), model.NameDiffer == true ? "Y" : "N", model.TotalAllowence, model.AdditionalAmount, model.ClaimExemption, model.EmployeerNameAndAddress, model.FirstEmployeementDate, model.EIN, model.IsActive);
 
 					}
 
@@ -475,6 +555,14 @@ namespace WorkOrderEMS.BusinessLogic
 			}
 		}
 
+		private string GetMaritalStatusAsString(MeritalStatus meritalStatus)
+		{
+			if (meritalStatus.Married)
+				return "Married";
+			if (meritalStatus.Single)
+				return "Single";
+			return "PartiallyMarried";
+		}
 	}
 
 

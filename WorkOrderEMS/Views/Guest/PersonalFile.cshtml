@@ -118,28 +118,29 @@
 		padding: 0px 35px 0px 0px;
 	}
 </style>
+
 <link href="~/Content/guest.css" rel="stylesheet" />
 <div class="card" style="width: 80%;margin: auto;">
 	<div class="card-header">On-Boarding/Personal File</div>
 	<div class="card-body">
 		<div class="row">
 			<div class="col-md-12" style="text-align:center">
-				<div class=" inline" onclick="OpenForm('W4Form');">
+				<div class=" inline blink" onclick="OpenForm('W4Form',this);" id="w4formicn">
 					<div class="devider">
-						<div class="grn-icn">
+						<div class="bluesky">
 							<div class="int">
 								<i class="fa fa-list fa-lg" aria-hidden="true"></i>
 							</div>
 							<div class="lock">
-								<i class="fa fa-lock fa-lg" style="color:#FFDFB0" aria-hidden="true"></i>
+								<i class="fa fa-unlock fa-lg" style="color:#FFDFB0" aria-hidden="true"></i>
 							</div>
 						</div>
 					</div>
 					<label>W-4 Form</label>
 				</div>
-				<div class="inline" onclick="OpenForm('I9Form')">
+				<div class="inline" onclick="OpenForm('I9Form',this)" id="i9form">
 					<div class="devider">
-						<div class="grn-icn">
+						<div class="bluesky">
 							<div class="int">
 								<i class="fa fa-table fa-lg" aria-hidden="true"></i>
 							</div>
@@ -150,7 +151,7 @@
 					</div>
 					<label>I-9 Form</label>
 				</div>
-				<div class="inline" onclick="OpenForm('EmergencyContectForm')" id="emergencycontactformicn">
+				<div class="inline" onclick="OpenForm('EmergencyContectForm',this)" id="emergencycontactformicn">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
@@ -164,7 +165,7 @@
 					<label>Emergency Contact Form</label>
 
 				</div>
-				<div class="inline" onclick="OpenForm('employeehandbook')" id="employeeHandbookicn">
+				<div class="inline" onclick="OpenForm('employeehandbook',this)" id="employeeHandbookicn">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
@@ -177,7 +178,7 @@
 					</div>
 					<label>Employee Handbook</label>
 				</div>
-				<div class="inline" onclick="OpenForm('directdeposite')" id="directdepositeicn">
+				<div class="inline" onclick="OpenForm('directdeposite',this)" id="directdepositeicn">
 
 					<div class="bluesky">
 						<div class="int">
@@ -192,7 +193,7 @@
 				</div>
 			</div>
 			<div class="col-md-12" style="text-align:center">
-				<div class=" inline" onclick="OpenForm('photorelease')" id="photoreleaseicn">
+				<div class=" inline" onclick="OpenForm('photorelease',this)" id="photoreleaseicn">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
@@ -206,7 +207,7 @@
 					<label>Photo Release Form</label>
 				</div>
 
-				<div class="inline" onclick="OpenForm('confidentiality')" id="confidentialityagreementicn">
+				<div class="inline" onclick="OpenForm('confidentiality',this)" id="confidentialityagreementicn">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
@@ -219,7 +220,7 @@
 					</div>
 					<label>Confidentiality Agreement</label>
 				</div>
-				<div class="inline" onclick="OpenForm('educationVerificationForm')">
+				<div class="inline" onclick="OpenForm('educationVerificationForm',this)" id="educationverificationformicn">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
@@ -232,7 +233,7 @@
 					</div>
 					<label>Education Verification Form</label>
 				</div>
-				<div class="inline" onclick="OpenForm('creditCardAuthorizationForm')">
+				<div class="inline" onclick="OpenForm('creditCardAuthorizationForm',this)">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
@@ -245,7 +246,7 @@
 					</div>
 					<label>Creditcard Authorization Form</label>
 				</div>
-				<div class="inline" onclick="OpenForm('previousEmployeement')">
+				<div class="inline" onclick="OpenForm('previousEmployeement',this)">
 					<div class="bluesky">
 						<div class="int">
 							<i class="fa fa-users fa-lg" aria-hidden="true"></i>
@@ -298,7 +299,7 @@
 		<i class="fa fa-times fa-lg" aria-hidden="true"></i>
 	</div>
 	<div class="modal-dialog modal-lg" >
-		<div class="modal-content" id="formid">
+		<div class="modal-content" id="formid" style="color:#000">
 			
 		</div>
 	</div>

@@ -30,5 +30,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public string w4F_8EmployersName { get; set; }
         public Nullable<System.DateTime> w4F_9 { get; set; }
         public string w4F_10 { get; set; }
+        public long W4F_Id { get; set; }
     }
 }

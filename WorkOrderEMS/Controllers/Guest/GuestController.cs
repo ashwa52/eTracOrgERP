@@ -116,7 +116,25 @@ namespace WorkOrderEMS.Controllers.Guest
 		[HttpGet]
 		public PartialViewResult _W4Form()
 		{
-			return PartialView("_W4Form");
+			W4FormModel model = new W4FormModel();
+			var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+			model= _IGuestUserRepository.GetW4Form(objloginmodel.UserId);
+		
+			return PartialView("_W4Form",model);
+		}
+		[HttpPost]
+		public ActionResult _W4Form(W4FormModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+
+
+				_IGuestUserRepository.SetW4Form(objloginmodel.UserId, model);
+				return Json(true, JsonRequestBehavior.AllowGet);
+			}
+			
+			return PartialView("_W4Form", model);
 		}
 		[HttpGet]
 		public PartialViewResult _PhotoReleaseForm()
@@ -159,7 +177,8 @@ namespace WorkOrderEMS.Controllers.Guest
 				_IGuestUserRepository.SetEducationVerificationForm(objloginmodel.UserId, model);
 				return Json(true, JsonRequestBehavior.AllowGet);
 			}
-			return PartialView("_EducationVarificationForm");
+			model.IsSave = false;
+			return PartialView("_EducationVarificationForm",model);
 		}
 		[HttpGet]
 		public PartialViewResult _ConfidentialityAgreementForm()
