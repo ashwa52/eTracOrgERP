@@ -16356,6 +16356,7 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Property Type="String" Name="w4F_8EmployersName" Nullable="true" MaxLength="100" />
           <Property Type="DateTime" Name="w4F_9" Nullable="true" />
           <Property Type="String" Name="w4F_10" Nullable="true" MaxLength="30" />
+          <Property Type="Int64" Name="W4F_Id" Nullable="false" />
         </ComplexType>
         <ComplexType Name="spGetEducationVerificationForm_Result">
           <Property Type="Int64" Name="EVF_Id" Nullable="false" />
@@ -21492,6 +21493,7 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
                 <ScalarProperty Name="w4F_8EmployersName" ColumnName="w4F_8EmployersName" />
                 <ScalarProperty Name="w4F_9" ColumnName="w4F_9" />
                 <ScalarProperty Name="w4F_10" ColumnName="w4F_10" />
+                <ScalarProperty Name="W4F_Id" ColumnName="W4F_Id" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

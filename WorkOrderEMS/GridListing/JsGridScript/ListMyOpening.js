@@ -72,8 +72,8 @@ function myOpenings() {
 			{ title: "Status", width: 60, name: "Status" },
 			{
 				title: '', width: 60, itemTemplate: function (value, item) {
-					return $("<div>").addClass("actionDiv").append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-exclamation-triangle whiteT"))
-						.append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-gg-circle white"))
+					return $("<div>").addClass("actionDiv").append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-exclamation-triangle whiteR"))
+						.append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-gg-circle whiteB"))
 						.append($("<div>").addClass("action1 inline actionbox").append($("<a>").attr({ "onclick": "TakeInterview(" + JSON.stringify(item) + ")", "href": "#" }).append("<i>").addClass("fa fa-diamond whiteD")))
 						.append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-check-circle whiteY"))
 						.append($("<div>").addClass("action1 inline actionboxR").append("<i>").addClass("fa fa-check white"));

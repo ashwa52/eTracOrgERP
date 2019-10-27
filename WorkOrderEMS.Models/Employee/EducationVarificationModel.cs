@@ -9,11 +9,16 @@ namespace WorkOrderEMS.Models.Employee
 {
 	public class EducationVarificationModel
 	{
+		[Required(ErrorMessage ="*")]
 		public string Name { get; set; }
-		public string DOB { get; set; }
+		[Required(ErrorMessage = "*")]
+		[DataType(DataType.Date)]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+		public DateTime DOB { get; set; }
+		[Required]
 		public string SSN { get; set; }
-		public HigherSchool HighSchool { get; set; }
-		public HigherSchool HigherSchool { get; set; }
+		public Education HighSchool { get; set; }
+		public Education HigherSchool { get; set; }
 		public string Certificate { get; set; }
 		public string Signature { get; set; }
 		public string Date { get; set; }
@@ -24,29 +29,23 @@ namespace WorkOrderEMS.Models.Employee
 
 	}
 	
-	public class HighSchool
+	public class Education
 	{
+		[Required(ErrorMessage = "*")]
 		public string SchoolName { get; set; }
+		[Required(ErrorMessage = "*")]
 		public string City { get; set; }
+		[Required(ErrorMessage = "*")]
 		public string State { get; set; }
-		[DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
+		[Required(ErrorMessage = "*")]
 		[DataType(DataType.Date)]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
 		public DateTime? AttendFrom { get; set; }
-		[DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
+		[Required(ErrorMessage = "*")]
 		[DataType(DataType.Date)]
-		public DateTime? AttendTo { get; set; }
-	}
-	public class HigherSchool
-	{
-		public string SchoolName { get; set; }
-		public string City { get; set; }
-		public string State { get; set; }
-		[DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
-		[DataType(DataType.Date)]
-		public DateTime? AttendFrom { get; set; }
-		[DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
-		[DataType(DataType.Date)]
+		[DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
 		public DateTime? AttendTo { get; set; }
 		public string Cretificate { get; set; }
 	}
+	
 }

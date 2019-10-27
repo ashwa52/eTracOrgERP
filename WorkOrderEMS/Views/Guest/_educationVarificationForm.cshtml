@@ -65,26 +65,26 @@
 		<img src="~/Images/FormImages/image-form.jpg" alt="background image" />
 		<h3><u>Education Verification Form</u></h3>
 	</div>
-	<p>Name of Applicant @Html.TextBoxFor(x => x.Name, new { @class = "text-line", @style = "width:590px;" }) </p>
-	<p>Date of Birth @Html.TextBoxFor(x => x.DOB, new { @class = "text-line", @style = "width:639px;" })</p>
-	<p>Social Security Number @Html.TextBoxFor(x => x.SSN, new { @class = "text-line", @style = "width:556px;" })</p>
-	<p>Name of High School @Html.TextBoxFor(x => x.HigherSchool.SchoolName, new { @class = "text-line", @style = "width:571px;" }) </p>
+	<p>Name of Applicant @Html.TextBoxFor(x => x.Name, new { @class = "text-line", @style = "width:590px;" }) @Html.ValidationMessageFor(x => x.Name,"", new { @style = "color:red;" })</p>
+	<p>Date of Birth @Html.EditorFor(x => x.DOB, new { @class = "text-line", @style = "width:639px;" }) @Html.ValidationMessageFor(x => x.Name, "", new { @style = "color:red;" })</p>
+	<p>Social Security Number @Html.TextBoxFor(x => x.SSN, new { @class = "text-line", @style = "width:556px;" }) @Html.ValidationMessageFor(x => x.Name, "", new { @style = "color:red;" })</p>
+	<p>Name of High School @Html.TextBoxFor(x => x.HighSchool.SchoolName, new { @class = "text-line", @style = "width:571px;" }) @Html.ValidationMessageFor(x => x.Name, "", new { @style = "color:red;" })</p>
 	<p>
-		City @Html.TextBoxFor(x => x.HigherSchool.City, new { @class = "text-line", @style = "width:231px;" })
-		State @Html.TextBoxFor(x => x.HigherSchool.State, new { @class = "text-line", @style = "width:345px;" })
+		City @Html.TextBoxFor(x => x.HighSchool.City, new { @class = "text-line", @style = "width:231px;" }) @Html.ValidationMessageFor(x => x.HighSchool.City, "", new { @style = "color:red;" })
+		State @Html.TextBoxFor(x => x.HighSchool.State, new { @class = "text-line", @style = "width:345px;" }) @Html.ValidationMessageFor(x => x.HighSchool.State, "", new { @style = "color:red;" })
 	</p>
 	<p>
-		Attended from @Html.EditorFor(x => x.HigherSchool.AttendFrom, new { @class = "text-line date", @style = "width:150px;" }) Attended to @Html.EditorFor(x => x.HigherSchool.AttendTo, new { @class = "text-line", @style = "width:150px;" })
+		Attended from @Html.EditorFor(x => x.HighSchool.AttendFrom, "{0:yyyy-MM-dd}", new { @class = "text-line date", @style = "width:150px;" }) @Html.ValidationMessageFor(x => x.HighSchool.AttendFrom, "", new { @style = "color:red;" }) Attended to @Html.EditorFor(x => x.HighSchool.AttendTo, new { @class = "text-line", @style = "width:150px;" }) @Html.ValidationMessageFor(x => x.HighSchool.AttendTo, "", new { @style = "color:red;" })
 		<br />(Please provide month and year)
 	</p>
-	<p>Name of Higher Education School @Html.TextBoxFor(x => x.HigherSchool.SchoolName, new { @class = "text-line", @style = "width:447px;" })</p>
-	<p>City @Html.TextBoxFor(x => x.HigherSchool.City, new { @class = "text-line", @style = "width:231px;" })  State @Html.TextBoxFor(x => x.HigherSchool.State, new { @class = "text-line", @style = "width:345px;" })Attended</p>
+	<p>Name of Higher Education School @Html.TextBoxFor(x => x.HigherSchool.SchoolName, new { @class = "text-line", @style = "width:447px;" }) @Html.ValidationMessageFor(x => x.HigherSchool.SchoolName, "", new { @style = "color:red;" })</p>
+	<p>City @Html.TextBoxFor(x => x.HigherSchool.City, new { @class = "text-line", @style = "width:231px;" }) @Html.ValidationMessageFor(x => x.HigherSchool.AttendFrom, "", new { @style = "color:red;" }) State @Html.TextBoxFor(x => x.HigherSchool.State, new { @class = "text-line", @style = "width:345px;" }) @Html.ValidationMessageFor(x => x.HigherSchool.AttendFrom, "", new { @style = "color:red;" })Attended</p>
 	<p>
-		Attended from @Html.EditorFor(x => x.HigherSchool.AttendFrom, new { @class = "text-line date", @style = "width:150px;border: none;border - bottom: 1px solid;font - weight: bold; " })  Attended to @Html.EditorFor(x => x.HigherSchool.AttendTo, new { @class = "text-line", @style = "width:150px;" })
+		Attended from @Html.EditorFor(x => x.HigherSchool.AttendFrom, new { @class = "text-line date", @style = "width:150px;border: none;border - bottom: 1px solid;font - weight: bold; " }) @Html.ValidationMessageFor(x => x.HigherSchool.AttendFrom, "", new { @style = "color:red;" })  Attended to @Html.EditorFor(x => x.HigherSchool.AttendTo, new { @class = "text-line", @style = "width:150px;" }) @Html.ValidationMessageFor(x => x.HigherSchool.AttendFrom, "", new { @style = "color:red;" })
 		<br />(Please provide month and year)
 	</p>
 	<p>
-		Type of Diploma/Certificate @Html.TextBoxFor(x => x.HigherSchool.Cretificate, new { @class = "text-line", @style = "width:529px;" })
+		Type of Diploma/Certificate @Html.TextBoxFor(x => x.HigherSchool.Cretificate, new { @class = "text-line", @style = "width:529px;" }) @Html.ValidationMessageFor(x => x.HigherSchool.AttendFrom, "", new { @style = "color:red;" })
 		<br />(Highest Degree Obtained)
 	</p>
 	<p>
