@@ -4449,7 +4449,8 @@ input[type="button"].btn-block {
             border-color: #e9ecef #e9ecef #dee2e6;
             background-color: #0aa0cd;
             color: #fff;
-            border-radius: 20px;
+            border-radius: 20px 20px 0px 0px;
+            /*border-radius: 20px;*/
         }
 
         .nav-tabs .nav-link.disabled {
@@ -4463,7 +4464,7 @@ input[type="button"].btn-block {
             color: #fff;
             background-color: #0aa0cd;
             border-color: #dee2e6 #dee2e6 #f2f3f8;
-            border-radius: 20px;
+            border-radius: 20px 20px 0px 0px;
         }
 
     .nav-tabs .dropdown-menu {

@@ -1,232 +1,233 @@
 ﻿@model WorkOrderEMS.Models.Employee.InterviewersViewModel
 <style>
-	.offlineCard {
-		padding: 13px 12px 15px 39px;
-		margin: 6px 45px 5px 70px;
-		background: #fff;
-		border-radius: 4px;
-		display: inherit;
-		opacity: 0.9;
-		height:75px;
-	}
+    .offlineCard {
+        padding: 13px 12px 15px 39px;
+        margin: 6px 45px 5px 70px;
+        background: #fff;
+        border-radius: 4px;
+        display: inherit;
+        opacity: 0.9;
+        height: 75px;
+    }
 
-	.toggle {
-		-webkit-box-sizing: border-box;
-		-moz-box-sizing: border-box;
-		box-sizing: border-box;
-		display: block;
-		height: auto;
-		width: 7.5rem;
-		margin: auto;
-		cursor: pointer;
-	}
+    .toggle {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        display: block;
+        height: auto;
+        width: 7.5rem;
+        margin: auto;
+        cursor: pointer;
+    }
 
-	.toggle-input {
-		display: none;
-		margin: 0;
-	}
+    .toggle-input {
+        display: none;
+        margin: 0;
+    }
 
-	.toggle-off,
-	.toggle-on {
-		height: 1.8125rem;
-		width: 1.8125rem;
-		color: rgba(46, 45, 44, 0.1);
-		vertical-align: top;
-		text-align: center;
-		line-height: 1.8125rem !important;
-	}
+    .toggle-off,
+    .toggle-on {
+        height: 1.8125rem;
+        width: 1.8125rem;
+        color: rgba(46, 45, 44, 0.1);
+        vertical-align: top;
+        text-align: center;
+        line-height: 1.8125rem !important;
+    }
 
-	.toggle-input:checked + .toggle-controller.default-success {
-		border: 0.125rem solid rgba(108, 211, 61, 0.75);
-		background: rgba(108, 211, 61, 0.375);
-	}
+    .toggle-input:checked + .toggle-controller.default-success {
+        border: 0.125rem solid rgba(108, 211, 61, 0.75);
+        background: rgba(108, 211, 61, 0.375);
+    }
 
-		.toggle-input:checked + .toggle-controller.default-success:after {
-			left: 1.5625rem;
-		}
+        .toggle-input:checked + .toggle-controller.default-success:after {
+            left: 1.5625rem;
+        }
 
-	.toggle-controller.default-success {
-		position: relative;
-		display: inline-block;
-		height: 1.5625rem;
-		width: 3.125rem;
-		border: 0.125rem solid rgba(46, 45, 44, 0.05);
-		-webkit-border-radius: 1.5625rem;
-		-moz-border-radius: 1.5625rem;
-		border-radius: 1.5625rem;
-		-webkit-box-shadow: inset 0 0 0.1875rem rgba(46, 45, 44, 0.25);
-		-moz-box-shadow: inset 0 0 0.1875rem rgba(46, 45, 44, 0.25);
-		box-shadow: inset 0 0 0.1875rem rgba(46, 45, 44, 0.25);
-		background: rgba(46, 45, 44, 0.025);
-		-webkit-transition: all 0.25s ease;
-		-moz-transition: all 0.25s ease;
-		-o-transition: all 0.25s ease;
-		transition: all 0.25s ease;
-	}
+    .toggle-controller.default-success {
+        position: relative;
+        display: inline-block;
+        height: 1.5625rem;
+        width: 3.125rem;
+        border: 0.125rem solid rgba(46, 45, 44, 0.05);
+        -webkit-border-radius: 1.5625rem;
+        -moz-border-radius: 1.5625rem;
+        border-radius: 1.5625rem;
+        -webkit-box-shadow: inset 0 0 0.1875rem rgba(46, 45, 44, 0.25);
+        -moz-box-shadow: inset 0 0 0.1875rem rgba(46, 45, 44, 0.25);
+        box-shadow: inset 0 0 0.1875rem rgba(46, 45, 44, 0.25);
+        background: rgba(46, 45, 44, 0.025);
+        -webkit-transition: all 0.25s ease;
+        -moz-transition: all 0.25s ease;
+        -o-transition: all 0.25s ease;
+        transition: all 0.25s ease;
+    }
 
-		.toggle-controller.default-success:after {
-			position: absolute;
-			top: 0;
-			left: 0;
-			content: '';
-			display: block;
-			height: 1.5625rem;
-			width: 1.5625rem;
-			-webkit-border-radius: 1.5625rem;
-			-moz-border-radius: 1.5625rem;
-			border-radius: 1.5625rem;
-			-webkit-box-shadow: 0 0.0625rem 0.125rem rgba(46, 45, 44, 0.2);
-			-moz-box-shadow: 0 0.0625rem 0.125rem rgba(46, 45, 44, 0.2);
-			box-shadow: 0 0.0625rem 0.125rem rgba(46, 45, 44, 0.2);
-			background: white;
-			-webkit-transition: all 0.25s ease;
-			-moz-transition: all 0.25s ease;
-			-o-transition: all 0.25s ease;
-			transition: all 0.25s ease;
-		}
+        .toggle-controller.default-success:after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            content: '';
+            display: block;
+            height: 1.5625rem;
+            width: 1.5625rem;
+            -webkit-border-radius: 1.5625rem;
+            -moz-border-radius: 1.5625rem;
+            border-radius: 1.5625rem;
+            -webkit-box-shadow: 0 0.0625rem 0.125rem rgba(46, 45, 44, 0.2);
+            -moz-box-shadow: 0 0.0625rem 0.125rem rgba(46, 45, 44, 0.2);
+            box-shadow: 0 0.0625rem 0.125rem rgba(46, 45, 44, 0.2);
+            background: white;
+            -webkit-transition: all 0.25s ease;
+            -moz-transition: all 0.25s ease;
+            -o-transition: all 0.25s ease;
+            transition: all 0.25s ease;
+        }
 
-	.toggle-off.active {
-		color: red;
-	}
+    .toggle-off.active {
+        color: red;
+    }
 
-	.toggle-on.active {
-		color: green;
-	}
+    .toggle-on.active {
+        color: green;
+    }
 
-	.btnAbsent {
-		background: #EE4E43;
-		color: white;
-		font-size: 19px;
-		font-weight: bold;
-		width: 133px;
-	}
+    .btnAbsent {
+        background: #EE4E43;
+        color: white;
+        font-size: 19px;
+        font-weight: bold;
+        width: 133px;
+    }
 
-	.comment {
-		float: left;
-		width: 302px;
-		border: 1px solid;
-		vertical-align: middle;
-		margin: 4px;
-	}
+    .comment {
+        float: left;
+        width: 302px;
+        border: 1px solid;
+        vertical-align: middle;
+        margin: 4px;
+    }
 
-	.btnstart {
-		background: #0CCC14;
-		width: 150px;
-		color: #fff;
-		font-size: 20px;
-	}
+    .btnstart {
+        background: #0CCC14;
+        width: 150px;
+        color: #fff;
+        font-size: 20px;
+    }
 
-	.btncancel {
-		background: #F44336;
-		width: 150px;
-		color: #fff;
-		color: #fff;
-		font-size: 20px;
-	}
+    .btncancel {
+        background: #F44336;
+        width: 150px;
+        color: #fff;
+        color: #fff;
+        font-size: 20px;
+    }
 
-	button:disabled,
-	button[disabled] {
-		color: #fff;
-	}
+    button:disabled,
+    button[disabled] {
+        color: #fff;
+    }
 
-	.interviewAction {
-		float: right;
-		margin: 32px;
-		color: #fff;
-	}
-	.nameD {
-		position: relative;
-		display: block;
-		font-weight: bold;
-		font-size: 15px;
-		color: #000000;
-	}
+    .interviewAction {
+        float: right;
+        margin: 32px;
+        color: #fff;
+    }
+
+    .nameD {
+        position: relative;
+        display: block;
+        font-weight: bold;
+        font-size: 15px;
+        color: #000000;
+    }
 </style>
 
 @{
-	//Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
-	Layout = null;
-	string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
-	WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
-	string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
-	long loginUserType = 0;
-	long locationId = 0;
-	long UserId = 0;
-	if (ObjLogin != null)
-	{
-		loginUserName = ObjLogin.FName + "'s";
-		loginUserEmail = ObjLogin.Email;
-		loginUserProfile = ObjLogin.UserProfile;
-		loginUserType = ObjLogin.UserRoleId;
-		//loginUserContactNo = ObjLogin.ContactNo;
-		locationId = ObjLogin.LocationID;
-		UserId = ObjLogin.UserId;
-	}
+    //Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    Layout = null;
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+    long loginUserType = 0;
+    long locationId = 0;
+    long UserId = 0;
+    if (ObjLogin != null)
+    {
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+        loginUserType = ObjLogin.UserRoleId;
+        //loginUserContactNo = ObjLogin.ContactNo;
+        locationId = ObjLogin.LocationID;
+        UserId = ObjLogin.UserId;
+    }
 }
 @foreach (var item in Model.Interviewers)
 {
-	if (item.INS_EMP_InterviewerEmployeeId == Model.currentEmployeeId)
-	{
-		<div class="card-header offlineCard" id="@Model.currentEmployeeId" style="background:@(item.INS_IsAvailable=="Y"?"#43D84A":"#fff")">
-			<div class="profile_image inline spccing">
-				<img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar">
-			</div>
-			<div class="profile_detail inline spccing">
-				<span class="nameD">
-					@item.InterviwerName
-				</span>
-				<span class="profile">
-					General Manager
-				</span>
-			</div>
-			@if (item.INS_IsAvailable != "Y" && Model.InterviewStartDateTime >= DateTime.Now && Model.InterviewStartDateTime.Subtract(DateTime.Now).Minutes <= 10)
-			{
-				<div style="float:right" id="icnOnline">
-					<label class="toggle">
-						<i class="fa toggle-off active"></i>
-						<input type="checkbox" class="toggle-input" onchange="GoOnline(this,'@Model.currentEmployeeId')">
-						<div class="toggle-controller default-success"></div>
-						<i class="fa  toggle-on"></i>
-					</label>
-				</div>
-			}
-		</div>
-	}
-	else
-	{
-		<div class="card-header offlineCard" id="@item.INS_EMP_InterviewerEmployeeId" style="background:@(item.INS_IsAvailable=="Y"?"#43D84A":"#fff")">
-			<div class="profile_image inline spccing">
-				<img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar">
-			</div>
-			<div class="profile_detail inline spccing">
-				<span class="nameD">
-					@item.InterviwerName
-				</span>
-				<span class="profile">
-					General Manager
-				</span>
-			</div>
-			@if (Model.Interviewers.Where(x => x.INS_IsAvailable == "Y" && x.INS_EMP_InterviewerEmployeeId == Model.currentEmployeeId && x.INS_IsHiringManager == "Y").Any() && Model.InterviewStartDateTime >= DateTime.Now && Model.InterviewStartDateTime.Subtract(DateTime.Now).Minutes <= 10 && (item.INS_IsAvailable == "N" || string.IsNullOrEmpty(item.INS_IsAvailable)))
-			{
-				<div style="float:right">
-					<input type="text" class="form-control inline comment btn-rounded" id="absentComment" style="float:left" />
-					<button class="btn btn-default btnAbsent" onclick="MarkAbsent(@Html.Raw(Json.Encode(item)))">Absent</button>
-				</div>
-			}
-		</div>
-	}
+    if (item.INS_EMP_InterviewerEmployeeId == Model.currentEmployeeId)
+    {
+        <div class="card-header offlineCard" id="@Model.currentEmployeeId" style="background:@(item.INS_IsAvailable=="Y"?"#43D84A":"#fff")">
+            <div class="profile_image inline spccing">
+                <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar">
+            </div>
+            <div class="profile_detail inline spccing">
+                <span class="nameD">
+                    @item.InterviwerName
+                </span>
+                <span class="profile">
+                    General Manager
+                </span>
+            </div>
+            @if (item.INS_IsAvailable != "Y" && Model.InterviewStartDateTime >= DateTime.Now && Model.InterviewStartDateTime.Subtract(DateTime.Now).Minutes <= 10)
+            {
+                <div style="float:right" id="icnOnline">
+                    <label class="toggle">
+                        <i class="fa toggle-off active"></i>
+                        <input type="checkbox" class="toggle-input" onchange="GoOnline(this,'@Model.currentEmployeeId')">
+                        <div class="toggle-controller default-success"></div>
+                        <i class="fa  toggle-on"></i>
+                    </label>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="card-header offlineCard" id="@item.INS_EMP_InterviewerEmployeeId" style="background:@(item.INS_IsAvailable=="Y"?"#43D84A":"#fff")">
+            <div class="profile_image inline spccing">
+                <img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar">
+            </div>
+            <div class="profile_detail inline spccing">
+                <span class="nameD">
+                    @item.InterviwerName
+                </span>
+                <span class="profile">
+                    General Manager
+                </span>
+            </div>
+            @if (Model.Interviewers.Where(x => x.INS_IsAvailable == "Y" && x.INS_EMP_InterviewerEmployeeId == Model.currentEmployeeId && x.INS_IsHiringManager == "Y").Any() && Model.InterviewStartDateTime >= DateTime.Now && Model.InterviewStartDateTime.Subtract(DateTime.Now).Minutes <= 10 && (item.INS_IsAvailable == "N" || string.IsNullOrEmpty(item.INS_IsAvailable)))
+            {
+                <div style="float:right">
+                    <input type="text" class="form-control inline comment btn-rounded" id="absentComment" style="float:left" />
+                    <button class="btn btn-default btnAbsent" onclick="MarkAbsent(@Html.Raw(Json.Encode(item)))">Absent</button>
+                </div>
+            }
+        </div>
+    }
 }
 <div class="row interviewAction">
-	<div class="col-md-12">
-		<button class="btn btn-default btncancel">Cancel</button>
-		@if (Model.CanInterviewStart && Model.Interviewers.Where(x=>x.INS_IsAvailable=="Y" && x.INS_IsHiringManager=="Y").Any())
-		{
-			<button class="btn btn-default btnstart" onclick="GetInterviewQuestions();">Start</button>
-		}
-		else
-		{
-			<button class="btn btn-default btnstart" disabled="disabled" title="All Interviewers Are Not Available">Start</button>
-		}
+    <div class="col-md-12">
+        <button class="btn btn-default btncancel">Cancel</button>
+        @if (Model.CanInterviewStart && Model.Interviewers.Where(x => x.INS_IsAvailable == "Y" && x.INS_IsHiringManager == "Y").Any())
+        {
+            <button class="btn btn-default btnstart" onclick="GetInterviewQuestions();">Start</button>
+        }
+        else
+        {
+            <button class="btn btn-default btnstart" disabled="disabled" title="All Interviewers Are Not Available">Start</button>
+        }
 
-	</div>
+    </div>
 </div>

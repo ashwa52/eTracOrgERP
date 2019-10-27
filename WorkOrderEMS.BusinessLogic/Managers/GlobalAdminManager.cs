@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity.Core.Objects;
@@ -3786,7 +3787,14 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 		{
 			try
 			{
-				using (workorderEMSEntities Context = new workorderEMSEntities())
+                var model = new RecruiteeAPI();                
+                string Url = "https://api.recruitee.com/c/40359/candidates/";
+                var getList = model.Index(Url).Result;
+                if (getList != "false")
+                {
+                    var aa = JsonConvert.DeserializeObject<CandidateGetModel.CandidateGet>(getList);
+                }            
+                using (workorderEMSEntities Context = new workorderEMSEntities())
 				{
 					var myOpenings = (from x in Context.spGetMyOpening()
 									  select new MyOpeningModel
@@ -3860,7 +3868,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
             //return lst;
         }
-		public List<spGetApplicantInfo_Result> GetApplicantInfo(long userId)
+		public List<spGetApplicantInfo_Result1> GetApplicantInfo(long userId)
 		{
 			ObjnewAdminRepository = new NewAdminRepository();
 			try
@@ -3930,7 +3938,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 						INS_IsAvailable = x.INS_IsAvailable,
 						INS_IsHiringManager = x.INS_IsHiringManager,
 						InterviwerName = x.InterviwerName,
-						ProfileImage = x.ProfileImage
+						ProfileImage = x.EMP_Photo
 					}).ToList();
 					interviewersList.Interviewers = interviewers;
 					interviewersList.currentEmployeeId = hiringManagerId;
@@ -4035,6 +4043,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 			}
 		}
 
+ 
         /// <summary>GetListOf306090ForJSGrid
         /// <Modified By>mayur sahu</Modified> 
         /// <CreatedFor>To Get Performance 306090 list</CreatedFor>
@@ -4083,6 +4092,60 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             {
 
                 return ObjUserRepository.saveSelfAssessment(data, action);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public bool saveEvaluation(List<GWCQUestionModel> data, string action)
+        {
+
+            ObjUserRepository = new UserRepository();
+            try
+            {
+
+                return ObjUserRepository.saveEvaluation(data, action);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        /// <summary>GetListOfExpectationsForJSGrid
+        /// <Modified By>mayur sahu</Modified> 
+        /// <CreatedFor>To Get Performance 306090 list</CreatedFor>
+        /// <CreatedOn>13-Oct-2019</CreatedOn>
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <param name="PageIndex"></param>
+        /// <param name="NumberOfRows"></param>
+        /// <param name="SortColumnName"></param>
+        /// <param name="SortOrderBy"></param>
+        /// <param name="SearchText"></param>
+        /// <returns></returns>
+        public List<PerformanceModel> GetListOfExpectationsForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords)
+        {
+            ObjUserRepository = new UserRepository();
+            try
+            {
+
+                return ObjUserRepository.GetListOfExpectationsForJSGrid(userId, locationId, myUserType, pageIndex, numberOfRows, sortColumnName, sortOrderBy, searchText, out totalRecords);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+        public bool saveExpectations(List<GWCQUestionModel> data, string action)
+        {
+
+            ObjUserRepository = new UserRepository();
+            try
+            {
+
+                return ObjUserRepository.saveExpectations(data, action);
             }
             catch (Exception)
             {

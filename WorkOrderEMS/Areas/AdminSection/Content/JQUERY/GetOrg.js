@@ -3364,6 +3364,10 @@ getOrgChart.prototype._aY = function(d, b) {
     var c = d.getAttribute("data-btn-id");
     var a = d.getAttribute("data-btn-action");
     if (a == "del") {
+        debugger
+        JobPosting(c);
+        
+        
         //this.removeNode(c)
     } else {
         if (a == "add") {

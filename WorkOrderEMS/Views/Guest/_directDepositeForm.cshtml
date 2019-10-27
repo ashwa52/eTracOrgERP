@@ -66,7 +66,6 @@
 			<p>Account @Html.TextBoxFor(x => x.Account1.Account, new { @style = "width:290px;", @class = "text-line" })</p>
 			<p>Bank Routing (ABA) @Html.TextBoxFor(x => x.Account1.BankRouting, new { @style = "width:290px;", @class = "text-line" })</p>
 			<p>Percentage Or Dollar Amount To Be Deposited To This Account @Html.TextBoxFor(x => x.Account1.DepositeAmount, new { @style = "width:290px;", @class = "text-line" })</p>
-
 			<p><span style="font-weight:bold;">Account No2</span> (remainder to be deposited to this account)</p>
 			<p><span>Account Type (Checking or Savings)</span> @Html.TextBoxFor(x => x.Account2.AccountType, new { @style = "width:290px;", @class = "text-line" })</p>
 			<p>Employee Bank Name @Html.TextBoxFor(x => x.Account2.EmployeeBankName, new { @style = "width:290px;", @class = "text-line" })</p>
@@ -79,7 +78,7 @@
 			<p>@Html.TextBoxFor(x => x.Date, new { @style = "width:290px;", @class = "text-line" })<br />Date</p>
 			<p style="font-weight:bold;">Important: Attach Voided Check (Not Deposit Slip) Below <U>Or Acquire An Official Direct Deposit Form From You Financial Institution.</U></p>
 			<img class="center" src="~/Images/DIRECT-DEPOSIT.jpg" alt="background image" />
-			<p> @Html.CheckBoxFor(x => x.IsSave, new { @style = "height: 18px;width: 31px;", onchange = "SubmitForm(this,depositeForm)" })    i hereby declare that the above information is true to the best of my knowledge </p>
+			<p> @Html.CheckBoxFor(x => x.IsSave, new { @style = "height: 18px;width: 31px;display: block", onchange = "SubmitForm(this,depositeForm)" })    i hereby declare that the above information is true to the best of my knowledge </p>
 		}
 	</div>
 </div>

@@ -12,6 +12,7 @@ $(document).ready(function () {
             url: "../EPeople/GetListRequisition",
             success: function (data) {
                 if (data != null) {
+                    debugger
 
                     $('#DepartmentRequisition').html('');
                     $('#SuperiorRequisition').html('');
@@ -50,10 +51,11 @@ $(document).ready(function () {
     ///To save Form Data 
     $('#SendVSCForApproval').click(function (e) {
         debugger
-        createAddJobDescArray();
+        // 
         var content = $("#tinymce").innerHTML;
-        //var content = tinymce.activeEditor.getContent({ format: 'raw' });
+        var content = window.parent.tinymce.get('RolesAndResponsibilityRequisition').getContent();
         $('#RolesAndResponsibilityRequisition').val(content);
+        createAddJobDescArray();
         var dataObject = $("#SaveVCSChartFormForRequisition").serialize();
 
         $.ajax({
@@ -69,13 +71,16 @@ $(document).ready(function () {
                 $("#DepartmentRequisition").val("");
                 $("#SeatingNameRequisition").val("");
                 $("#JobDescriptionData").val("");
-                $("#VCSIdRequisition").val("");               
+                $("#VCSIdRequisition").val("");
                 $("#SuperiorRequisition").val("");
                 $("#RateOfPay").val("");
                 $("#JobDescriptionRequistion").val("");
                 $("#routeDivRequisition").html("");
+                //var addNewUrl = "@Url.Action("ePeopleDashboard", "NewAdmin")";
+                $('#RenderPageId').load('../NewAdmin/ePeopleDashboard');
                 tinymce.activeEditor.setContent("");
                 $("#myModalForRequisitionVSCChart").modal("hide");
+                $("#ListRquisitionData").jsGrid("loadData");
                 //var addNewUrl = '../AdminSection/OrgChart/Index';// "@Url.Action("Index", "OrgChart", new { area = "AdminSection" })";
                 //$('#RenderPageId').load(addNewUrl);
                 toastr.success(Data.Message);
@@ -87,13 +92,52 @@ $(document).ready(function () {
             }
         });
     })
+    //$('#SendVSCForApproval').click(function (e) {
+    //    debugger
+    //    createAddJobDescArray();
+    //    var content = $("#tinymce").innerHTML;
+    //    var content = window.parent.tinymce.get('RolesAndResponsibilityRequisition').getContent();
+    //    $('#RolesAndResponsibilityRequisition').val(content);
+    //    var dataObject = $("#SaveVCSChartFormForRequisition").serialize();
+
+    //    $.ajax({
+    //        type: "POST",
+    //        url: '../EPeople/SendVCSForApproval', //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
+    //        data: dataObject,
+    //        beforeSend: function () {
+    //            new fn_showMaskloader('Please wait...');
+    //        },
+    //        success: function (Data) {
+    //            debugger
+    //            GetDropdownForChar();
+    //            $("#DepartmentRequisition").val("");
+    //            $("#SeatingNameRequisition").val("");
+    //            $("#JobDescriptionData").val("");
+    //            $("#VCSIdRequisition").val("");               
+    //            $("#SuperiorRequisition").val("");
+    //            $("#RateOfPay").val("");
+    //            $("#JobDescriptionRequistion").val("");
+    //            $("#routeDivRequisition").html("");
+    //            //var addNewUrl = "@Url.Action("ePeopleDashboard", "NewAdmin")";
+    //            $('#RenderPageId').load('../NewAdmin/ePeopleDashboard');
+    //            tinymce.activeEditor.setContent("");
+    //            $("#myModalForRequisitionVSCChart").modal("hide");
+    //            //var addNewUrl = '../AdminSection/OrgChart/Index';// "@Url.Action("Index", "OrgChart", new { area = "AdminSection" })";
+    //            //$('#RenderPageId').load(addNewUrl);
+    //            toastr.success(Data.Message);
+    //        },
+    //        error: function (err) {
+    //        },
+    //        complete: function () {
+    //            fn_hideMaskloader();
+    //        }
+    //    });
+    //})
 
     ///This is use to add job description seperated by line
     function createAddJobDescArray() {
-        debugger
         JobDescFormat = $('#JobDescriptionRequistion').val() + '|';
         $("#routeDivRequisition div.dymanicAdd .getJobDesc").each(function () {
-            debugger
             var myObjJson = {};
             $this = $(this)
             var job = $this.find("input").val();

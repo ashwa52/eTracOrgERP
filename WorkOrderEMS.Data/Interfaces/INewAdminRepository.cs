@@ -10,7 +10,7 @@ namespace WorkOrderEMS.Data.Interfaces
 {
 	public interface INewAdminRepository
 	{
-		List<spGetApplicantInfo_Result> GetApplicantInfo(string employeeId);
+		List<spGetApplicantInfo_Result1> GetApplicantInfo(string employeeId);
 		bool SaveApplicantInfo(OnboardingDetailRequestModel onboardingDetailRequestModel);
 		bool SaveGuestEmployeeBasicInfo(GuestEmployeeBasicInfoRequestModel guestEmployeeBasicInfoRequestModel);
 	}

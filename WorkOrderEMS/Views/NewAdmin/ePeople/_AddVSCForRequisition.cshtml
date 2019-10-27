@@ -18,18 +18,18 @@
                 <div class="form-group row">
                     <div class="col-sm-6">
                         @Html.DropDownListFor(x => x.EmploymentStatus, new List<SelectListItem>
-                                                                        {
-                                                                             new SelectListItem() {Text = "FT", Value="FT"},
-                                                                             new SelectListItem() {Text = "PT", Value="PT"},
-                                                                             new SelectListItem() {Text = "TEMP", Value="TEMP"}
-                                                                        }, new { @class = "form-control input-rounded requiredselect", @id = "EmploymentStatus" })
+                                                                                    {
+                                                                                         new SelectListItem() {Text = "FT", Value="FT"},
+                                                                                         new SelectListItem() {Text = "PT", Value="PT"},
+                                                                                         new SelectListItem() {Text = "TEMP", Value="TEMP"}
+                                                                                    }, new { @class = "form-control input-rounded requiredselect", @id = "EmploymentStatus" })
                     </div>
                     <div class="col-sm-6">
                         @Html.DropDownListFor(x => x.EmploymentClassification, new List<SelectListItem>
-                                                                        {
-                                                                             new SelectListItem() {Text = "EXEMPT", Value="EX"},
-                                                                             new SelectListItem() {Text = "NON-EXEMPT", Value="NEX"}
-                                                                        }, new { @class = "form-control input-rounded requiredselect", @id = "EmploymentClassification" })
+                                                                                    {
+                                                                                         new SelectListItem() {Text = "EXEMPT", Value="Y"},
+                                                                                         new SelectListItem() {Text = "NON-EXEMPT", Value="N"}
+                                                                                    }, new { @class = "form-control input-rounded requiredselect", @id = "EmploymentClassification" })
                     </div>
                 </div>
                 <div class="form-group row">
@@ -55,20 +55,16 @@
         </form>
     </div>
 </div>
-<script src="~/Scripts/NewAdminJS/CustomizeJSForVSC.js"></script>
-<script type="text/javascript" src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
-@*<script src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/tinymce.min.js"></script>
 
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/tinymce/4.5.6/jquery.tinymce.min.js"></script>*@
+<script src="~/Scripts/NewAdminJS/CustomizeJSForVSC.js"></script>
+@*<script type="text/javascript" src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>*@
 <script>
-    $(document).ready(function () {
-        debugger
-        tinymce.init({
-            selector: '#RolesAndResponsibilityRequisition', width: 730, height: 300, setup: function (editor) {
-                editor.on('change', function () {
-                    tinymce.triggerSave();
-                })
-            }
-        });
+    tinymce.init({
+        selector: '#RolesAndResponsibilityRequisition', width: 730, height: 300, setup: function (editor) {
+            editor.on('change', function () {
+                tinymce.triggerSave();
+            })
+        }
     });
+   
 </script>

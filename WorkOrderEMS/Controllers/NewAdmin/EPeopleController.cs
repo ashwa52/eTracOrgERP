@@ -7,6 +7,8 @@ using System.Web;
 using System.Web.Mvc;
 using WorkOrderEMS.BusinessLogic;
 using WorkOrderEMS.BusinessLogic.Interfaces;
+using WorkOrderEMS.Data.DataRepository;
+using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Data.Interfaces;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
@@ -21,16 +23,20 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         private readonly IGuestUserRepository _IGuestUserRepository;
         private readonly ICommonMethod _ICommonMethod;
         private readonly IAdminDashboard _IAdminDashboard;
+        private readonly IGuestUser _IGuestUser;
         private readonly IDepartment _IDepartment;
+        private readonly IFillableFormManager _IFillableFormManager;
         private readonly string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private readonly string ProfilePicPath = System.Configuration.ConfigurationManager.AppSettings["ProfilePicPath"];
         private readonly string ConstantImages = ConfigurationManager.AppSettings["ConstantImages"];
-        public EPeopleController(IePeopleManager _IePeopleManager, IAdminDashboard _IAdminDashboard, IGuestUserRepository _IGuestUserRepository, ICommonMethod _ICommonMethod, IDepartment _IDepartment)
+        public EPeopleController(IePeopleManager _IePeopleManager, IAdminDashboard _IAdminDashboard, IGuestUserRepository _IGuestUserRepository, ICommonMethod _ICommonMethod, IDepartment _IDepartment, IGuestUser _IGuestUser, IFillableFormManager _IFillableFormManager)
         {
             this._IePeopleManager = _IePeopleManager;
             this._IGuestUserRepository = _IGuestUserRepository;
             this._ICommonMethod = _ICommonMethod;
             this._IDepartment = _IDepartment;
+            this._IGuestUser = _IGuestUser;
+            this._IFillableFormManager = _IFillableFormManager;
         }
         public ActionResult Index()
         {
@@ -413,11 +419,13 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         public ActionResult SendVCSForApproval(AddChartModel Obj)
         {
             eTracLoginModel ObjLoginModel = null;
+            Obj.IsDeleted = false;
             if (Session != null)
             {
                 if (Session["eTrac"] != null)
                 {
                     ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                    Obj.UserId = ObjLoginModel.UserId;
                 }
             }
             try
@@ -426,17 +434,24 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 {
                     if (Obj.RolesAndResponsibility != null)
                     {
-                        var ex = System.Text.RegularExpressions.Regex.Replace(Obj.RolesAndResponsibility, @"<[^>]+>|&nbsp;", "").Trim();
-                        var removepTag = Obj.RolesAndResponsibility.Replace("<p>", "");
+                        var ex = System.Text.RegularExpressions.Regex.Replace(Obj.RolesAndResponsibility, @"<[^>]+>|&nbsp;", "").Trim();                       
+                        var removeNR = Obj.RolesAndResponsibility.Replace("\r\n", "");
+                        var removepTag = removeNR.Replace("<p>", "");
                         var removeendTag = removepTag.Replace("</p>", ",");
                         var removeSpace = removeendTag.Replace("&nbsp;", " ");
                         System.Text.RegularExpressions.Regex rx = new System.Text.RegularExpressions.Regex("<[^>]*>");
                         Obj.RolesAndResponsibility = removeSpace;//rx.Replace(Obj.RolesAndResponsibility, "");
                     }
                     var _manager = new VehicleSeatingChartManager();
-                    var isSaved = _manager.SaveVSC(Obj);
-                    if (isSaved == true)
+                    if (Obj.Id == null)
                     {
+                        Obj.Action = "I";
+                        Obj.IsActive = "N";
+                    }
+                    var SavedData = _manager.SaveVSC(Obj);
+                    if (SavedData.Id > 0)
+                    {
+                        var data = _IePeopleManager.ApprovalRequisition(SavedData);
                         ViewBag.Message = CommonMessage.SaveSuccessMessage();
                     }
                     else
@@ -490,8 +505,8 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         /// </summary>
         /// <param name="VSTID"></param>
         /// <returns></returns>
-        [HttpGet]
-        public JsonResult GetVCSDetailsById(long VSTID)
+        [HttpPost]
+        public ActionResult GetVCSDetailsById(long VSCId)
         {
             eTracLoginModel ObjLoginModel = null;
             if (Session != null)
@@ -503,13 +518,234 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
             try
             {
-                var getVSCList = _IePeopleManager.GetVSCDetailsById(VSTID);
-                return Json(getVSCList, JsonRequestBehavior.AllowGet);
+                var getVSCList = _IePeopleManager.GetVSCDetailsById(VSCId);
+                getVSCList.Id = VSCId;
+                return PartialView("~/Views/NewAdmin/ePeople/_ViewVSCDetails.cshtml", getVSCList);
+                //return Json(getVSCList, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
-                return Json(null, JsonRequestBehavior.AllowGet);
+                return PartialView("~/Views/NewAdmin/ePeople/_ViewVSCDetails.cshtml", new AddChartModel());
+               // return Json(null, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        [HttpGet]
+        public JsonResult RequisitionList()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            var details = new List<UserModelList>();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            var data = _IePeopleManager.GetRequisitionlist();
+            if (data.Count() > 0)
+            {
+                //foreach (var item in data)
+                //{
+                //    item.ProfileImage = item.ProfileImage == null ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + item.ProfileImage;
+                //    details.Add(item);
+                //}
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+        }
+        /// <summary>
+        /// Created by  :Ashwajit Bansod
+        /// Created Date : 20-Oct-2019
+        /// Created For : To approve reject requisition
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Status"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult ApproveRejectRequisition(long Id, string Status)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            long UserId = 0;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                UserId = ObjLoginModel.UserId;
+            }
+            if(Id > 0 && Status != null)
+            {
+                var data = _IePeopleManager.ApproveRejectAction(Id, Status, UserId);
+                if (data == true)
+                {
+                    if (Status == "A")
+                    {
+                        ViewBag.Message = CommonMessage.ApprovedRequisition();
+                        return Json(new { Message = ViewBag.Message}, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        ViewBag.Message = CommonMessage.RejectRequisition();
+                        return Json(new { Message = ViewBag.Message }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    ViewBag.Message = CommonMessage.FailureMessage();
+                    return Json(new { Message = ViewBag.Message }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            else
+            {
+                ViewBag.Message = CommonMessage.FailureMessage();
+                return Json(new { Message = ViewBag.Message }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 22-oct-2019
+        /// Created For : to send VSC for approval reject
+        /// </summary>
+        /// <param name="VSCId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult SendVCSForDeleteApproval(long VSCId)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            var Obj = new AddChartModel();
+            Obj.IsDeleted = true;
+            if (Session != null)
+            {
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                    Obj.UserId = ObjLoginModel.UserId;
+                }
+            }
+            try
+            {
+                if (VSCId > 0)
+                {
+                    Obj.Id = VSCId;
+                    var data = _IePeopleManager.ApprovalRequisition(Obj);
+                    ViewBag.Message = CommonMessage.SaveSuccessMessage();
+                }
+                else
+                {
+                    ViewBag.Message = CommonMessage.FailureMessage();
+                }               
+            }
+            catch (Exception ex)
+            {
+                //ViewBag.Message = ex.Message; ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger;
+            }
+            var newModel = new AddChartModel();
+            ///return PartialView("_AddChart", newModel);
+            return Json(new { Message = ViewBag.Message, AlertMessageClass = ViewBag.AlertMessageClass }, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// Created By : Ashwajit bansod
+        /// Created Date : 21-Oct-2019
+        /// Created For : To get Job title Count list
+        /// </summary>
+        /// <param name="VSCId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult GetJobTitleCount(long VSCId)
+        {
+            var lst = new List<AddChartModel>();
+            try
+            {
+                if (VSCId > 0)
+                {
+                    lst = _IePeopleManager.GetJobTitleCountForRequistion(VSCId);
+                    return Json(lst, JsonRequestBehavior.AllowGet);
+                    //return PartialView("~/Views/NewAdmin/ePeople/Requisition/_AddRemoveJobTitleCount.cshtml", lst);
+                }
+                else
+                {
+                    return Json(lst, JsonRequestBehavior.AllowGet);
+                    //return PartialView("~/Views/NewAdmin/ePeople/Requisition/_AddRemoveJobTitleCount.cshtml", new List<AddChartModel>());
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message;
+            }
+            return Json(lst, JsonRequestBehavior.AllowGet);
+            //return PartialView("~/Views/NewAdmin/ePeople/Requisition/_AddRemoveJobTitleCount.cshtml", lst);
+        }
+        /// <summary>
+        /// Created By  : Ashwajit bansod
+        /// Created Date : 22-Oct-2019
+        /// Created For : To get Job Details by Job Id
+        /// </summary>
+        /// <param name="JobId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GetJobTitleCountById(long JobId)
+        {
+            var lst = new JobTitleModel();
+            try
+            {
+                if (JobId > 0)
+                {
+                    lst = _IePeopleManager.GetJobTitleCount(JobId);
+                   return PartialView("~/Views/NewAdmin/ePeople/Requisition/_AddRemoveJobTitleCount.cshtml", lst);
+                }
+                else
+                {
+                    return PartialView("~/Views/NewAdmin/ePeople/Requisition/_AddRemoveJobTitleCount.cshtml", new List<AddChartModel>());
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message;
+            }
+            return PartialView("~/Views/NewAdmin/ePeople/Requisition/_AddRemoveJobTitleCount.cshtml", lst);
+        }
+        /// <summary>
+        /// Created By  :Ashwajit bansod
+        /// Created Date  :22-oct-2019
+        /// Created For : To send job title for approval
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult SendJobCountForApproval(int JobTitleLastCount,int JobTitleId, int JobTitleCount)
+        {
+            bool IsSaved = false;
+            var model = new JobTitleModel();
+            try
+            {
+                if (JobTitleLastCount > 0 && JobTitleId > 0 && JobTitleCount > 0)
+                {
+                    model.JobTitleLastCount = JobTitleLastCount;
+                    model.JobTitleId = JobTitleId;
+                    model.JobTitleCount = JobTitleCount;
+                    IsSaved = _IePeopleManager.SendJobTitleForApproval(model);
+                    if (IsSaved == true)
+                    {
+                        ViewBag.Message = CommonMessage.JobCountSendApproval();
+                        return Json(new { Message = ViewBag.Message, AlertMessageClass = ViewBag.AlertMessageClass }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        ViewBag.Message = CommonMessage.FailureMessage();
+                        return Json(new { Message = ViewBag.Message, AlertMessageClass = ViewBag.AlertMessageClass }, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                else
+                {
+                    ViewBag.Message = CommonMessage.FailureMessage();
+                    return Json(new { Message = ViewBag.Message, AlertMessageClass = ViewBag.AlertMessageClass }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message;
+            }
+            return Json(new { Message = ViewBag.Message, AlertMessageClass = ViewBag.AlertMessageClass }, JsonRequestBehavior.AllowGet);
         }
         #endregion Requisition
 
@@ -569,5 +805,118 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
         }
         #endregion Status Change
+
+        #region edit Forms
+        [HttpGet]
+        public PartialViewResult _DirectDepositeForm(string Id)
+        {
+            var model = new DirectDepositeFormModel();
+            model = _IGuestUser.GetDirectDepositeDataByEmployeeId(Id);
+            return PartialView("~/Views/NewAdmin/ePeople/_DirectDepositeEditForm.cshtml", model);
+        }
+        /// <summary>
+        /// Created By : Ashwajit bansod
+        /// Created Date : 25-Oct-2019
+        /// Created For : To save direct deposite form 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult _DirectDepositeForm(DirectDepositeFormModel model)
+        {
+            if (model != null)
+            {
+                _IePeopleManager.SaveDirectDepositeForm(model);
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            ViewBag.NotSaved = true;
+             return Json(false, JsonRequestBehavior.AllowGet);;
+
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 25-Oct-2019
+        /// Created For  :To get uploaded files list
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult GetFileView(string Id)
+        {
+            var _workorderems = new workorderEMSEntities();
+            var model = new List<UploadedFiles>();
+            try
+            {
+                var id = Cryptography.GetDecryptedData(Id, true);
+                long _UserId = 0;
+                long.TryParse(id, out _UserId);
+                var _FillableFormRepository = new FillableFormRepository();
+                model = _IePeopleManager.GetUploadedFilesOfUser(Id);
+                var getUser = _workorderems.UserRegistrations.Where(x => x.UserId == _UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
+                if (getUser != null)
+                {
+                    var details = _IGuestUserRepository.GetEmployee(_UserId);
+                    ViewBag.ImageUser = details.Image == null ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + details.Image;
+                    ViewBag.EmployeeID = details.EmpId;
+                    ViewBag.EmployeeName = details.FirstName + " " + details.LastName;
+                    var getDetails = _FillableFormRepository.GetFileList();
+                    ViewBag.GreenList = getDetails.Where(x => x.FLT_FileType == "Green").ToList();
+                    ViewBag.Red = getDetails.Where(x => x.FLT_FileType == "Red").ToList();
+                    ViewBag.Yellow = getDetails.Where(x => x.FLT_FileType == "Yellow").ToList();
+                }
+                return PartialView("~/Views/NewAdmin/ePeople/_FilesEmployeeManagement.cshtml", model);
+            }
+            catch (Exception ex)
+            {
+                return PartialView("~/Views/NewAdmin/ePeople/_FilesEmployeeManagement.cshtml", model);
+            }
+        }
+        [HttpPost]
+        public ActionResult UploadFiles(string EMPId, long FileId)
+        {
+            if (Request.Files.Count > 0)
+            {
+                try
+                {
+                    //  Get all files from Request object  
+                    HttpFileCollectionBase files = Request.Files;
+                    for (int i = 0; i < files.Count; i++)
+                    {
+                        //string path = AppDomain.CurrentDomain.BaseDirectory + "Uploads/";  
+                        //string filename = Path.GetFileName(Request.Files[i].FileName);  
+
+                        HttpPostedFileBase file = files[i];
+                        string fname;
+
+                        // Checking for Internet Explorer  
+                        if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                        {
+                            string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                            fname = testfiles[testfiles.Length - 1];
+                        }
+                        else
+                        {
+                            fname = file.FileName;
+                        }
+
+                        // Get the complete folder path and store the file inside it.  
+                        //fname = Path.Combine(Server.MapPath("~/Uploads/"), fname);
+                        file.SaveAs(fname);
+                    }
+                    // Returns message that successfully uploaded  
+                    return Json("File Uploaded Successfully!");
+                }
+                catch (Exception ex)
+                {
+                    return Json("Error occurred. Error details: " + ex.Message);
+                }
+            }
+            else
+            {
+                return Json("No files selected.");
+            }
+        }
+        #endregion edit Forms
+
     }
 }

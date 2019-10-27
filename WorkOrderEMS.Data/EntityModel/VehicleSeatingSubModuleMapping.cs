@@ -22,5 +22,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public string VSM_IsActive { get; set; }
     
         public virtual SubModule SubModule { get; set; }
+        public virtual VehicleSeating VehicleSeating { get; set; }
     }
 }

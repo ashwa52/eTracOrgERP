@@ -59,10 +59,30 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                             var $customEditButton = $("<span style='background: green; width: 35px; height: 35px;border-radius: 35px;'>")
                                 .attr({ title: jsGrid.fields.control.prototype.filesButtonTooltip })
                                 .attr({ id: "btn-file-" + item.id }).click(function (e) {
-                                    $("#myModalForAddFileData").modal("show");
-                                    $("#EmployeeName").html(item.Name);
-                                    $("#EmployeeDesignation").html(item.UserType);
-                                    $("#EmployeeImage").attr("src", item.ProfileImage)
+                                    debugger
+                                    $.ajax({
+                                        type: "GET",
+                                        // data: { 'Id': item.id},
+                                        url: '../EPeople/GetFileView?Id=' + item.id,
+                                        beforeSend: function () {
+                                            new fn_showMaskloader('Please wait...');
+                                        },
+                                        contentType: "application/json; charset=utf-8",
+                                        error: function (xhr, status, error) {
+                                        },
+                                        success: function (result) {
+                                            debugger
+                                            $("#ContaierAddFile").html(result);
+                                            $("#myModalForAddFileData").modal('show');
+                                        },
+                                        complete: function () {
+                                            fn_hideMaskloader();
+                                        }
+                                    });
+                                    //$("#myModalForAddFileData").modal("show");
+                                    //$("#EmployeeName").html(item.Name);
+                                    //$("#EmployeeDesignation").html(item.UserType);
+                                    //$("#EmployeeImage").attr("src", item.ProfileImage)
                                     e.stopPropagation();
                                 }).append($iconFolder);
                             var $customUserViewButton = $("<span style='background: #36CA7E; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
@@ -249,7 +269,9 @@ $(document).ready(function () {
         $("#myModalForRequisitionAction").modal("show");
     })
 
-    $(".ActionRequisition").change(function () {
+    //$(".ActionRequisition").change(function () {
+        $(".ActionRequisition").click(function () {
+       debugger
        var value =  $(this).attr("value");
        if (value == 1) {
            $.ajax({
@@ -279,7 +301,7 @@ $(document).ready(function () {
                contentType: "application/json",
                success: function (result) {
 
-                   var VSCDDL = '<select id="GetDetailsRequisition" class="form-control input-rounded"><option value="0">-Select Requisition for delete-</option>'
+                   var VSCDDL = '<select id="GetDetailsRequisition" onchange="myFunction()" class="form-control input-rounded"><option value="0">-Select Requisition for delete-</option>'
                    for (var i = 1; i < result.length;i++) {
                        VSCDDL = VSCDDL + '<option value="' + result[i].Id + '">' + result[i].SeatingName + '</option>';
                    }
@@ -293,31 +315,27 @@ $(document).ready(function () {
            });
        }
        else {
+           $.ajax({
+               url: '../EPeople/GetListOfVSCChart',
+               type: 'POST',
+               contentType: "application/json",
+               success: function (result) {
 
+                   var VSCDDL = '<select style="    width: 559px;height: 58px;margin-top: 110px;" id="GetJobTitleDetails" onchange="GetJobTitleCount()" class="form-control input-rounded"><option value="0">-Select Requisition to add remove head count-</option>'
+                   for (var i = 1; i < result.length; i++) {
+                       VSCDDL = VSCDDL + '<option value="' + result[i].Id + '">' + result[i].SeatingName + '</option>';
+                   }
+                   VSCDDL = VSCDDL + '</select>';
+                   $("#divForVSCDropDown").html("");
+                   $("#divForVSCDropDown").html(VSCDDL);
+                   $("#myModalForRequisitionAction").modal("hide");
+                   $("#myModalForVSCDropDown").modal('show');
+               },
+               error: function (er) {
+               }
+           });
+           
        }
-    })
-    $("#GetDetailsRequisition").change(function () {
-        var value = $("#GetDetailsRequisition option:selected").val();
-        $.ajax({
-            url: '../EPeople/GetVCSDetailsById?VSCId=' + value,
-            type: 'POST',
-            contentType: "application/json",
-            success: function (result) {
-                $("#divOpenRquisitionActionDelete").html(result);
-                $("#myModalForRequisitionAction").modal("hide");
-                $("#txtSeatingName").html(result.SeatingName);
-                $("#txtJobDescription").html(result.JobDescription);
-                $("#txtDepartmentName").html(result.DepartmentName);
-                $("#txtRateOfPay").html(result.RateOfPay);
-                $("#txtEmploymentClassification").html(result.EmploymentClassification);
-                $("#txtEmploymentStatus").html(result.EmploymentStatus);
-                $("#txtRolesAndResponsibility").html(result.RolesAndResponsibility);
-                $("#myModalForGetDetailsToDeleteRequisition").modal('show');
-            },
-            error: function (er) {
-            }
-        });
-
     })
 
     $("#AddDemotion").click(function () {
@@ -360,5 +378,155 @@ $(document).ready(function () {
         });
     });
 
-    
+    $("#PlusMinusJobTitle").click(function () {
+        debugger
+
+        //var model = $("#getallInputDetails").serialize();
+        var object = new Object();
+        object.JobTitleLastCount = $('#JobTitleLastCount').val();
+        object.JobTitleId = $('#JobTitleId').val();
+        object.JobTitleCount = $('#NewCount').val();
+        var JobTitleIdOriginal, JobTitleValueOriginal, JobTitleIdNew, JobTitleValuenew;
+        //$(".mainClassTOMap").each(function () {
+        //    debugger
+        //    var myObjJson = {};
+        //    $this = $(this);
+        //    //var job = $this.find(".getallOriginalValue").val();
+        //    //var JobId = $this.find(".getallOriginalValue").attr("data-id");
+        //    var newJobId = $this.find(".counterInput").attr("data-id-copy");
+        //    var newJobVal = $this.find(".getallOriginalValue").val();
+        //    //JobTitleIdOriginal = JobTitleIdOriginal + job + ',';
+        //    //JobTitleValueOriginal = JobTitleValueOriginal + JobId + ',';
+        //    JobTitleIdNew = JobTitleIdNew + newJobId + ',';
+        //    JobTitleValuenew = JobTitleValuenew + newJobVal + ',';
+        //})
+        $.ajax({
+            type: 'POST',
+            url: '../EPeople/SendJobCountForApproval?JobTitleLastCount=' + object.JobTitleLastCount + "&JobTitleId=" + object.JobTitleId + "&JobTitleCount=" + object.JobTitleCount,
+            //data: { model: object },
+            contentType: "application/json",
+            beforeSend: function () {
+                new fn_showMaskloader('Please wait...');
+            },
+            success: function (result) {
+                debugger
+                $("#divAddRemoveJobTitle").html("");
+                $("#myModalToAddRemoveJobCount").modal("hide");
+                toastr.success(result.Message)
+            },
+            error: function (er) {
+            },
+            complete: function () {
+                fn_hideMaskloader();
+            }
+        });
+    });
 })
+
+function myFunction() {
+    debugger
+    var value = $("#GetDetailsRequisition option:selected").val();
+        $.ajax({
+            url: '../EPeople/GetVCSDetailsById?VSCId=' + value,
+            //data:{VSCID : value},
+            type: 'POST',
+            contentType: "application/json",
+            beforeSend: function () {
+                new fn_showMaskloader('Please wait...');
+            },
+            success: function (result) {
+                debugger
+                $("#divOpenRquisitionActionDelete").html("");
+                $("#divOpenRquisitionActionDelete").html(result);                
+                $("#myModalForGetDetailsToDeleteRequisition").modal('show');
+            },
+            error: function (er) {
+            },
+            complete: function () {
+                fn_hideMaskloader();
+            }
+        });
+}
+
+function DeleteRequisition() {
+    debugger
+    var value = $("#VSTIdToDelete").val();
+    //var value = $("#GetDetailsRequisition option:selected").val();
+    $.ajax({
+        url: '../EPeople/SendVCSForDeleteApproval?VSCId=' + value,
+        type: 'POST',
+        contentType: "application/json",
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
+        success: function (result) {
+            debugger
+            $("#divOpenRquisitionActionDelete").html("");
+            $("#myModalForGetDetailsToDeleteRequisition").modal('hide');
+            toastr.success(result.Message)
+            $("#ListRquisitionData").jsGrid("loadData");
+        },
+        error: function (er) {
+        },
+        complete: function () {
+            fn_hideMaskloader();
+        }
+    });
+}
+
+function GetJobTitleCount() {
+    debugger
+    var value = $("#GetJobTitleDetails option:selected").val();   
+    $.ajax({
+        url: '../EPeople/GetJobTitleCount?VSCId=' + value,
+        type: 'POST',
+        contentType: "application/json",
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
+        success: function (result) {
+            debugger
+            if (result.length > 0) {
+            var VSCDDL = '<select style="    width: 559px;height: 58px;margin-top: 110px;" id="GetJobTitle" onchange="BindJobTitleDetailsForPlusMinus()" class="form-control input-rounded"><option value="0">-Select Job Title to add remove head count-</option>'
+                for (var i = 0; i < result.length; i++) {
+                    VSCDDL = VSCDDL + '<option value="' + result[i].Id + '">' + result[i].JobTitle + '</option>';
+                }
+            }
+            VSCDDL = VSCDDL + '</select>';
+            $("#divForVSCDropDown").html("");
+            $("#divForVSCDropDown").html(VSCDDL);
+            $("#myModalForRequisitionAction").modal("hide");
+            $("#myModalForVSCDropDown").modal('show');
+                    
+        },
+        error: function (er) {
+        },
+        complete: function () {
+            fn_hideMaskloader();
+        }
+    });
+}
+
+function BindJobTitleDetailsForPlusMinus() {
+    var value = $("#GetJobTitle option:selected").val();
+    $.ajax({
+        url: '../EPeople/GetJobTitleCountById?JobId=' + value ,
+        type: 'POST',
+        contentType: "application/json",
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
+        success: function (result) {
+            debugger
+            $("#myModalToAddRemoveJobCount").modal("show");
+            $("#divAddRemoveJobTitle").html(result);
+            $("#myModalForVSCDropDown").modal("hide"); 
+        },
+        error: function (er) {
+        },
+        complete: function () {
+            fn_hideMaskloader();
+        }
+    });
+       
+}
