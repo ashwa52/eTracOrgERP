@@ -45,7 +45,7 @@ namespace WorkOrderEMS.Models
         public long? UserId { get; set; }
         public bool IsCancel { get; set; }
         public long OpeartorCAD_Id { get; set; }
-
+        public string DisplayDate { get; set; }
     }
     public class Card
     {

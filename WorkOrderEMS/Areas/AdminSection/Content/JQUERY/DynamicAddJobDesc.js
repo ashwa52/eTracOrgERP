@@ -11,7 +11,6 @@ $(document).ready(function () {
             type: "GET",
             url: "../AdminSection/AdminDashboard/GetList",
             success: function (data) {
-                debugger
                 if (data != null) {
 
                     $('#Department').html('');
@@ -21,11 +20,9 @@ $(document).ready(function () {
                     optionsSuperior += '<option value="0">-Select Superior--</option>';
                     optionsDepartment += '<option value="0">-Select Department--</option>';
                     for (var i = 0; i < data.listSuperiour.length; i++) {
-                        debugger
                         optionsSuperior += '<option value="' + data.listSuperiour[i].parentId + '">' + data.listSuperiour[i].SeatingName + '</option>';
                     }
                     for (var i = 0; i < data.listDepartment.length; i++) {
-                        debugger
                         optionsDepartment += '<option value="' + data.listDepartment[i].DeptId + '">' + data.listDepartment[i].DepartmentName + '</option>';
                     }
                     $('#Superior').append(optionsSuperior);
@@ -37,7 +34,7 @@ $(document).ready(function () {
     //Add and remove text box of JD for VSC
     $('.addrows').click(function (e) {
         var divID = $('#routeDiv div.dymanicAdd').length;
-        $('#routeDiv').append('<div class="form-group row dymanicAdd d' + divID + '"><label class="col-sm-2 col-form-label">Job Description</label><div class="col-sm-9 getJobDesc"><input type="text" class="form-control input-rounded required" placeholder="Job Description" value="" /></div><div class="col-sm-1"><a class="addrows minusSign" id=d' + divID + '><i class="fa fa-minus-circle addColorPlusMinus fa-2x" style="cursor:pointer;" aria-hidden="true"></i></a></div></div>');
+        $('#routeDiv').append('<div class="form-group row dymanicAdd d' + divID + '"><div class="col-sm-11 getJobDesc"><input type="text" class="form-control input-rounded required" placeholder="Job Description" value="" /></div><div class="col-sm-1"><a class="addrows minusSign" id=d' + divID + '><i class="fa fa-minus-circle addColorPlusMinus fa-2x" style="cursor:pointer;" aria-hidden="true"></i></a></div></div>');
         $('#routeDiv').append('<script>jQuery("a.minusSign#d' + divID + '").click(function (){$("div.d' + divID + '").remove();  });</script>');
     });
     $('.addjobtitlerows').click(function (e) {
@@ -46,10 +43,18 @@ $(document).ready(function () {
         $('#jobTitleDiv').append('<div class="form-group row dymanicAdd d' + divID + '"><div class="col-sm-10 getJobTitleDesc"><input type="text" class="form-control input-rounded required" placeholder="Job Title" value="" style="width: 600px;" /></div><div class="col-sm-1"><a class="addjobtitlerows minusSign" id=d' + divID + '><i class="fa fa-minus-circle addColorPlusMinus fa-2x" style="cursor:pointer;margin-left: 30px;" aria-hidden="true"></i></a></div></div>');
         $('#jobTitleDiv').append('<script>jQuery("a.minusSign#d' + divID + '").click(function (){$("div.d' + divID + '").remove();  });</script>');
     });
-   
+    $("#AddChart").click(function () {
+        $("#routeDiv").html("");
+        $("#SeatingName").val("");
+        $("#JobDescription").val("");
+        $("#VCSId").val("");
+        tinymce.activeEditor.setContent("");
+        tinymce.editors.RolesAndResponsibility.setContent("");
+        GetDropdownForChar();
+        $("#myModalForChart").modal("show");
+    });
     ///To save Form Data 
     $('#SaveVSC').click(function (e) {
-        debugger
         createAddJobDescArray();
         var content = tinymce.activeEditor.getContent({ format: 'raw' });
         $('#RolesAndResponsibility').val(content);
@@ -61,13 +66,15 @@ $(document).ready(function () {
             data: dataObject,
 
             success: function (Data) {
-                debugger
                 GetDropdownForChar();
                 $("#routeDiv").html("");
                 $("#SeatingName").val("");
                 $("#JobDescription").val("");
+                $("#VCSId").val("");
                 $("#myModalForChart").modal("hide");
                 tinymce.activeEditor.setContent("");
+                var addNewUrl ='../AdminSection/OrgChart/Index';// "@Url.Action("Index", "OrgChart", new { area = "AdminSection" })";
+                $('#RenderPageId').load(addNewUrl);
             },
             error: function (err) {
             }

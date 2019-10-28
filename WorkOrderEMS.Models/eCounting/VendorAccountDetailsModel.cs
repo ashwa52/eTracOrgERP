@@ -18,6 +18,10 @@ namespace WorkOrderEMS.Models
         [RegularExpression("^[a-zA-Z .&',-]+$", ErrorMessage = "Special characters or number are not allowed.")]
         public string BankName { get; set; }
 
+        [Required(ErrorMessage = "Bank Name is required")]
+        [RegularExpression("^[a-zA-Z .&',-]+$", ErrorMessage = "Special characters or number are not allowed.")]
+        public string BankNameForCard { get; set; }
+
         [Required(ErrorMessage = "Account Number is required")]
         [RegularExpression("^[0-9]+$", ErrorMessage = "Special characters or letters are not allowed.")]
         public string AccountNumber { get; set; }
@@ -48,6 +52,8 @@ namespace WorkOrderEMS.Models
         public string BankLocation { get; set; }
         public decimal BalanceAmount { get; set; }
         public long? QuickbookAcountId { get; set; }
+        public string Id { get; set; }
+        public string IsPrimary { get; set; }
     }
 
     public class VendorAccountDetails

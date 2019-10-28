@@ -32,5 +32,6 @@ namespace WorkOrderEMS.Data.EntityModel
     
         public virtual Company Company { get; set; }
         public virtual LocationMaster LocationMaster { get; set; }
+        public virtual PreBillNumber PreBillNumber { get; set; }
     }
 }

@@ -31,8 +31,8 @@ namespace WorkOrderEMS.Data.EntityModel
         public string LMIS_IsApprove { get; set; }
         public string LMIS_IsActive { get; set; }
     
-        public virtual CostCode CostCode { get; set; }
         public virtual Company Company { get; set; }
         public virtual LocationMaster LocationMaster { get; set; }
+        public virtual MisNumber MisNumber { get; set; }
     }
 }

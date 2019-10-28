@@ -136,7 +136,7 @@ namespace WorkOrderEMS.Data
         {
             this.ObjectSet.Attach(entity);
             this._repositoryContext.ObjectContext.ObjectStateManager.ChangeObjectState(entity, EntityState.Modified);
-            SaveChanges();
+            //SaveChanges();
         }
 
         public void Dispose()

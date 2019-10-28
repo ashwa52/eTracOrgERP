@@ -13,7 +13,7 @@ namespace WorkOrderEMS.BusinessLogic
         workorderEMSEntities _workorderems = new workorderEMSEntities();
         public Approval GetApprovalRuleData(ApprovalInput data)
         {
-            var getRuleData = new spGetRule_Result2();
+            var getRuleData = new spGetRule_Result();
             var returnRuleData = new Approval();
             try
             {

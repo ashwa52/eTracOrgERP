@@ -1,10 +1,10 @@
 ﻿@model WorkOrderEMS.Models.BillListApproveModel
 @{
     ViewBag.Title = "Pre Bill List";
-    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
-
+    //Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
     long locationId = 0;
-    long userType = 0;
+    long userType = 0;  
     WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
 
     if (ObjLogin != null)
@@ -20,107 +20,291 @@
     </script>
     @*<script src="~/GridListing/JqGridScript/BillList/BillList.js"></script>*@
     <script src="~/GridListing/JqGridScript/BillList/PreBillList.js"></script>
-    <script type="text/javascript">
-    $(window).bind('resize', function () {
-        var width = $('#jqGrid_containerPreBill').width();
-        $('#tbl_PreBillList').setGridWidth(width);
-    });
-    </script>
+    @*<script type="text/javascript">
+            $(window).bind('resize', function () {
+                var width = $('#jqGrid_containerPreBill').width();
+                $('#tbl_PreBillList').setGridWidth(width);
+            });
+        </script>*@
 }
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div id="jqGrid_containerPreBill">
-        <table id="tbl_PreBillList" border="0" cellpadding="0" cellspacing="0"></table>
-        <div id="divPreBillListPager"></div>
-    </div>
-</div>
 
-<div class="modal bs-example-modal-lg fade preview" id="myModalForPreBillData" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog ">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">X</span></button>
-                <h4 class="modal-title" id="myModalLabel">Bill Details</h4>
-            </div>
-            <div class="modal-body">
-                <div id="divDetailPreview" class="">
-                    <div class="row">
-                        <div class="" id="DivBillDetailsIndex">
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                <div class="form-group">
-                                    <label>Bill Id</label>
-                                    <div id="lblBillId" class="form-control-static"></div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Vendor Name</label>
-                                    <div id="lblVendorName" class="form-control-static"></div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Vendor Type</label>
-                                    <div id="lblVendorType" class="form-control-static"></div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Bill Date</label>
-                                    <div id="lblBillDate" class="form-control-static"></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                <div class="form-group">
-                                    <label>Bill Amount</label>
-                                    <div id="lblBillAmount" class="form-control-static"></div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Status</label>
-                                    <div id="lblStatus" class="form-control-static"></div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Comment</label>
-                                    <div id="lblComment" class="form-control-static"></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                <div class="form-group" id="divWoimg">
-                                    <label id="labelBillImage">Bill Image</label>
-                                    <div id="lblBillImage">
-                                        <canvas></canvas>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+<style>
 
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <table id="Billrecords_table" class="table" cellpadding="1" cellspacing="1" border="1">
-                                <tr style="background-color:#0792bc;">
-                                    <th style="width:100px">Bill Facility Id</th>
-                                    <th style="width:150px">Cost Code</th>
-                                    <th style="width:150px">Facility Type</th>
-                                    <th style="width:40px">Description</th>
-                                    <th style="width:150px">Unit Price</th>
-                                    <th style="width:40px">Tax</th>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
+    .jsgrid-grid-body {
+        height: 100% !important;
+    }
+
+    /*For custom background black div*/
+    .disabledLayout {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        width: 100vw;
+        height: 100vh;
+        background-color: #000;
+        opacity: 0.3;
+    }
+
+    .modal-z-index {
+        z-index: 99999;
+    }
+
+    .onoffswitch2 {
+        -moz-user-select: none;
+        float: right;
+        margin-right: 30px;
+        position: relative;
+        width: 200px;
+    }
+
+    .onoffswitch2-checkbox {
+        display: none;
+    }
+
+    .onoffswitch2-label {
+        border: 1px solid #0aaebd;
+        border-radius: 3px;
+        cursor: pointer;
+        display: block;
+        overflow: hidden;
+    }
+
+    .onoffswitch2-inner {
+        display: block;
+        width: 200%;
+        margin-left: -100%;
+        -moz-transition: margin 0.3s ease-in 0s;
+        -webkit-transition: margin 0.3s ease-in 0s;
+        -o-transition: margin 0.3s ease-in 0s;
+        transition: margin 0.3s ease-in 0s;
+    }
+
+        .onoffswitch2-inner:before, .onoffswitch2-inner:after {
+            display: block;
+            float: left;
+            width: 50%;
+            height: 30px;
+            padding: 0;
+            line-height: 30px;
+            font-size: 14px;
+            color: white;
+            font-family: Trebuchet, Arial, sans-serif;
+            font-weight: normal;
+            -moz-box-sizing: border-box;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .onoffswitch2-inner:before {
+            content: "View All Location Enabled";
+            padding-left: 10px;
+            background-color: #0aa4dd;
+            color: #FFFFFF;
+        }
+
+        .onoffswitch2-inner:after {
+            content: "View All Location Disabled";
+            padding-right: 10px;
+            background-color: #84CFE6;
+            color: #000;
+            text-align: right;
+            border: 1px solid #dddddd;
+            border-radius: 3px;
+        }
+
+    .onoffswitch2-switch {
+        display: block;
+        width: 14px;
+        height: 31px;
+        margin: 0px;
+        background: #fff;
+        border: 1px solid #f4f4f4;
+        border-radius: 3px;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 185px;
+        -moz-transition: all 0.3s ease-in 0s;
+        -webkit-transition: all 0.3s ease-in 0s;
+        -o-transition: all 0.3s ease-in 0s;
+        transition: all 0.3s ease-in 0s;
+        /*  background-image: -moz-linear-gradient(center top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%);
+    background-image: -webkit-linear-gradient(center top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%);
+    background-image: -o-linear-gradient(center top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%);
+    background-image: linear-gradient(center top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%);*/
+    }
+
+    .onoffswitch2-checkbox:checked + .onoffswitch2-label .onoffswitch2-inner {
+        margin-left: 0;
+    }
+
+    .onoffswitch2-checkbox:checked + .onoffswitch2-label .onoffswitch2-switch {
+        right: 0px;
+    }
+</style>
+
+<div class="content-body" style="min-height: 920px;">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3 aos-init aos-animate" data-aos="fade-up">
+            <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
+                <div class="welcome-text">
+                    <br /> <br />
                 </div>
-            </div><br /><br />
-            <div class="panel-footer">
-                <div class="text-right">
-                    <button type="button" class="btn btn-success text-right" style="border-radius:25px;width:90px;" id="ApproveBill" onclick="ApproveBill();">Approve</button>
-                    <button type="button" class="btn btn-danger text-right" style="border-radius:25px;width:90px;" id="RejectBill">Reject</button>
-                    <button data-dismiss="modal" class="btn btn-default bluebutton" style="border-radius:25px;width:90px;" id="btnCancelqwe">Close</button>
+            </div>
+
+
+        </div>
+        <div class="row justify-content-center">
+
+            <div class="col-lg-6">
+                <a href="@Url.Action("ListPreBillView", "Bill")">
+                    <div class="pricing_table_content mt-5" style="background-color: #529F9D;color:white;">
+                        <p style="margin-top:-20px;font-size:20px;"><b> </b></p>
+                        <div class="package" style="margin-top:-30px;"><i class="mdi mdi-cart" style="color:yellow;font-size:30px;margin-left: -10px;"></i>&nbsp;&nbsp;&nbsp;<b>Bills</b></div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-6">
+                <a href="@Url.Action("ViewMiscellaneous", "Miscellaneous")" data-oldDash="Yes">
+                    <div class="pricing_table_content mt-5" style="background-color: #3F8ADA;color:white;">
+                        <p style="margin-top:-20px;font-size:20px;"><b> </b></p>
+                        <div class="package" style="margin-top:-30px;"><i class="mdi mdi-account-check" style="color:white;font-size:30px;"></i>&nbsp;&nbsp;&nbsp;<b>Miscellaneous Expenses</b></div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card aos-init" data-aos="fade-up">
+                    <div class="card-header" style="height: 45px;">
+                        <div class="card-header headerSize" style="height:45px;">
+                            <div class="basic-form">
+                                <div class="form-group">
+                                    <input id="searchPreBilltext" name="SearchText" type="text" style="margin-top:18px;" class="form-control input-rounded" placeholder="Bill No">
+                                </div>
+                            </div>
+                            <div class="form-group" style="clear:both; width:990px;margin-top:25px;">
+                                <div class="onoffswitch2" style="float:right;">
+                                    <input type="checkbox" name="onoffswitch2" class="onoffswitch2-checkbox" id="ViewAllLocation"><label for="ViewAllLocation" class="onoffswitch2-label"><span class="onoffswitch2-inner"></span><span class="onoffswitch2-switch"></span></label>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="tbl_PreBillList" class="jsgrid" style="position: relative; height: 400px; width: 100%;">
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<div id="myModelRejectBill" class="modal fade bs-example-modal-md">
+<div class="modal bs-example-modal-lg fade preview" id="myModalForPreBillData" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Bill Details</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="divDetailPreview">
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Bill Id</label>
+                                <div id="lblBillId" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Vendor Name</label>
+                                <div id="lblVendorName" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Vendor Type</label>
+                                <div id="lblVendorType" class="form-control-static"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Bill Date</label>
+                                <div id="lblBillDate" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Bill Amount</label>
+                                <div id="lblBillAmount" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Status</label>
+                                <div id="lblStatus" class="form-control-static"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Comment</label>
+                                <div id="lblComment" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group" id="divWoimg">
+                                <label id="labelBillImage">Bill Image</label>
+                                <div id="lblBillImage">
+                                    <canvas></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <table id="Billrecords_table" class="table" cellpadding="1" cellspacing="1" border="1">
+                            <tr style="background-color:#0792bc;">
+                                <th style="width:100px">Bill Facility Id</th>
+                                <th style="width:150px">Cost Code</th>
+                                <th style="width:150px">Facility Type</th>
+                                <th style="width:40px">Description</th>
+                                <th style="width:150px">Unit Price</th>
+                                <th style="width:40px">Tax</th>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" style="border-radius:25px;width:90px;" id="ApproveBill" onclick="ApproveBill();">Approve</button>
+                <button type="button" class="btn btn-danger" style="border-radius:25px;width:90px;" id="RejectBill">Reject</button>
+                <button data-dismiss="modal" class="btn btn-warning bluebutton" style="border-radius:25px;width:90px;" id="btnCancelqwe">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="myModelRejectBill" class="modal fade bs-example-modal-lg modal-z-index ">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Reject Bill</h4>
+                <h5 class="modal-title" id="myModalLabel">Reject Bill</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div class="form">
@@ -136,14 +320,19 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-default bluebutton" style="border-radius:25px;width:90px;" onclick="RejectBillAfterCommentBill();" data-dismiss="modal">Ok</button>
+                <button type="submit" class="btn btn-warning bluebutton" style="border-radius:25px;width:90px;" onclick="RejectBillAfterCommentBill();" data-dismiss="modal">Ok</button>
             </div>
         </div>
     </div>
 </div>
+<div class="disabledLayout" id="backgroundDiv" style="display:none"></div>@*For making background black for various 2nd or 3rd popups*@
 <script>
-    $("#RejectBill").live("click", function (event) {
+    $("#RejectBill").on("click", function (event) {
+        //$("#myModalForPreBillData").addClass("disabledLayout");
+        //$("#myModalForPreBillData").removeClass("disabled");
         $("#myModelRejectBill").modal('show');
+        $("#backgroundDiv").css("display", "block");
+        //$("#backgroundDiv").show();
     });
 </script>
 <script src="~/Scripts/Search/Searching.js"></script>

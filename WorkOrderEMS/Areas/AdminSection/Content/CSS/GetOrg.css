@@ -598,7 +598,8 @@
 }
 
 .get-blue.get-org-chart {
-    background-color: #E5F4FF
+    /*background-color: #E5F4FF*/
+    background-color: white;
 }
 
     .get-blue.get-org-chart .get-oc-tb {

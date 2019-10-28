@@ -1,0 +1,569 @@
+﻿
+@model WorkOrderEMS.Models.QRCModel
+@{
+    ViewBag.Title = "QRC Setup";
+    //ViewBag.Title = "Register Vehicle";
+    //Layout = "~/Views/Shared/_EmployeeLayout.cshtml";
+    Layout = null;// "~/Views/Shared/_QRCLayout.cshtml";
+
+
+    long UserType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string Image = "~/Content/Images/ProjectLogo/no-profile-pic.jpg";
+    if (ObjLogin != null)
+    { UserType = ObjLogin.UserRoleId; }
+    else
+    {
+        WorkOrderEMS.Helper.AlertMessageClass ObjAlertMessageClass = new WorkOrderEMS.Helper.AlertMessageClass();
+        ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger; ViewBag.Message = WorkOrderEMS.Helper.CommonMessage.SessionExpired();
+        throw new Exception(WorkOrderEMS.Helper.CommonMessage.SessionExpired());
+    }
+
+
+    if (ViewBag.UpdateMode != null && ViewBag.UpdateMode == true)
+    { ViewBag.Title = "Update QRC"; }
+    string imgaeserverpath = Url.Content("~/Content/Images/constant/");
+
+    string _GetLocationByAdminURL;// = Url.Action("GetLocationByAdminID", "DropDown");
+                                  //string _GetLocationByManagerIDUrl = @Url.Action("GetLocationByManagerID", "DropDown");
+
+}
+<!--Multistep wizard CSS-->
+<style>
+    .error {
+        color: red;
+    }
+</style>
+@Scripts.Render("~/bundles/modernizr")
+<link href="@Url.Content("~/Content/NewAdminContent/CSS/RadioButtonCSS.css")" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/CSS/style.css" rel="stylesheet" />
+<br />
+@Html.AntiForgeryToken()
+@Html.ValidationSummary(true)
+
+
+<form id="QRCSave" class="step-form-horizontal" role="form" style="margin-left:80px;">
+    @Html.ValidationSummary(true)
+    @Html.HiddenFor(model => model.QRCId)
+    @Html.HiddenFor(model => model.MotorTypeVehicle, new { id = "hddnMotorTypeVehicle" })
+    @Html.HiddenFor(model => model.UpdateMode)
+
+    @Html.HiddenFor(model => model.VehicleTypeCaption, new { id = "VehicleTypeCaption" })
+    @Html.HiddenFor(model => model.QRCTYPE, new { id = "hiddnQRCTYPE" })
+    @Html.HiddenFor(model => model.QRCTYPECaption, new { id = "QRCTYPECaption" })
+    @Html.HiddenFor(model => model.MotorTypeCaption, new { id = "MotorTypeCaption" })
+    @Html.HiddenFor(model => model.SizeCaption, new { id = "SizeCaption" })
+    @Html.HiddenFor(model => model.QRCodeID, new { id = "QRCodeID" })
+    @Html.HiddenFor(model => model.QRCImageBase64)
+    @Html.HiddenFor(model => model.AssetPicture)
+    @Html.HiddenFor(model => model.AssetPictureName)
+    @Html.HiddenFor(model => model.LocationPicture)
+    @Html.HiddenFor(model => model.LocationPictureName)
+    <input type="hidden" id="EncryptLastQRC" value='@Model.EncryptLastQRC' />
+    <input type="hidden" id="@Model.UpdateMode" value="@ViewBag.UpdateMode" />
+
+    <div class="basic-form">
+        @if (Model.UpdateMode != null && Model.UpdateMode == true)
+        {<div class="form-group row">
+                @Html.Label("QRC ID :", new { @class = "col-sm-2 control-label" })
+                <div class="col-sm-4" id="QRCIdDiv">
+                    @Model.QRCodeID
+                </div>
+            </div>
+        }
+        <div class="form-group row">
+            <div class="col-sm-6">
+                @Html.TextBoxFor(model => model.QRCName, new { @Placeholder = "QRC Name", @class = "form-control input-rounded required" })
+                @Html.ValidationMessageFor(model => model.QRCName)
+            </div>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(model => model.SerialNo, new { @Placeholder = "Serial No", @class = "form-control input-rounded required" })
+                @Html.ValidationMessageFor(model => model.SerialNo)
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-6">
+                @if (Model != null && Model.QRCTypeList != null && Model.QRCTypeList.Count > 0)
+                {@Html.DropDownListFor(model => model.QRCTYPE, new SelectList(Model.QRCTypeList, "GlobalCodeId", "CodeName"), "--Select--", new { @id = "QRCType", @class = "form-control input-rounded required requiredselect", @onchange = "tooglevehicletype();" })}
+            else
+            {<select id="QRCType" class="form-control"><option>--Select--</option></select>}
+                <span class="QRCType" style="color: indianred"></span>
+                @Html.ValidationMessageFor(model => model.QRCTYPE)
+            </div>
+            <div class="col-sm-6">
+                @if (Model != null && Model.QRCSize != null && Model.QRCSize.Count > 0)
+                {@Html.DropDownListFor(model => model.QRCDefaultSize, new SelectList(Model.QRCSize, "GlobalCodeId", "CodeName"), "--Select--", new { @id = "DefaultSize", @class = "form-control input-rounded required requiredselect", @onchange = "qrcSizeload();" })}
+            else
+            {<select id="DefaultSize" class="form-control"><option>--Select--</option></select>}
+                <span class="DefaultSize" style="color: indianred"></span>
+            </div>
+        </div>
+        <div class="form-group row showMotorVehicleType" style="display:none;">
+            @*<div class="col-sm-6" style="display:none;">
+                   @if (Model != null && Model.VehicleTypeList != null && Model.VehicleTypeList.Count > 0)
+                    {@Html.DropDownListFor(model => model.VehicleType, new SelectList(Model.VehicleTypeList, "GlobalCodeId", "CodeName"), "--Select--", new { @id = "VehicleType", @class = "form-control input-rounded required requiredselect", @onchange = "loadmotortype();" });
+                    }
+                    else
+                    { <select id="VehicleType" class="form-control"><option>--Select--</option></select>}
+                            @Html.ValidationMessageFor(model => model.VehicleType)
+                </div>*@
+            <div class="col-sm-6">
+                @if (Model != null && Model.MotorTypeList != null && Model.MotorTypeList.Count > 0)
+                {
+                    <img id="imgvehicletype" src="" class="img-rounded" alt="" style="position: absolute; padding-left: 0px; left: 160px; "> @*"width: 64px;*@
+                    @Html.DropDownListFor(model => model.MotorType, new SelectList(Model.MotorTypeList, "GlobalCodeId", "CodeName"), "--Select--", new { @id = "MotorType", @style = "width: 131px;", @class = "form-control input-rounded required requiredselect", @onchange = "showvehicletypeimage(this);" })
+                    <input type="hidden" id="hddnimgaeserverpath" value="@imgaeserverpath">
+                }
+                else
+                {<select id="MotorType" class="form-control"><option>--Select--</option></select>}
+                @Html.ValidationMessageFor(model => model.MotorType)
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-6">
+                @Html.TextBoxFor(model => model.Make, new { @Placeholder = "Make", @class = "form-control input-rounded required" })
+                @Html.ValidationMessageFor(model => model.Make)
+            </div>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(model => model.Model, new { @Placeholder = "Model", @class = "form-control input-rounded required" })
+                @Html.ValidationMessageFor(model => model.Model)
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-6">
+                @Html.TextAreaFor(model => model.SpecialNotes, new { @Placeholder = "QRC Special Notes", @class = "form-control input-rounded required" })
+                @Html.ValidationMessageFor(model => model.SpecialNotes)
+            </div>
+            @Html.Label("Location Image", new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-4">
+                @if (Model.LocationPicturePath != null)
+                {
+                    Image = Model.LocationPicturePath;
+                }
+                <img id='LocationImage' name='LocationImage' src="@Url.Content(Image)"
+                     class="img-rounded" style="width:100px; height:100px;border-radius:50%;">
+                <input type="file" id="Location" name="LOCPicture" onchange="LocationImageURL(this);" value=" upload image" accept="image/*">
+            </div>
+        </div>
+        <div class="form-group row">
+            @Html.Label("Asset Image", new { @class = "col-sm-2 col-form-label" })
+            <div class="col-sm-4">
+                @if (Model.AssetPicturePath != null)
+                {
+                    Image = Model.AssetPicturePath;
+                }
+                <img id='AssetImage' name='AssetImage' src="@Url.Content(Image)"
+                     class="img-rounded" style="width:100px; height:100px;border-radius:50%;">
+                <input type="file" id="Asset" name="AssetPictureUrl" onchange="QRCImagereadURL(this);" value=" upload image" accept="image/*">
+            </div>
+        </div>
+    </div>
+</form>
+<input type="button" id="PreviewQRCData" class="btn btn-primary pull-right" style="border-radius: 35px;width: 100px;background-color:#0aa0cd;" value="Save" />
+<!--**********************************
+    Content body end
+***********************************-->
+@*<script src="~/Content/NewAdminContent/VENDOR/jquery-steps/build/jquery.steps.min.js"></script>*@
+<!--Validation-->
+@*<script src="~/Scripts/bootstrap.min.js"></script>*@
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
+<script src="~/Scripts/NewAdminJS/QRCHideShowFunctionality.js"></script>
+
+@section Scripts{
+    <script type="text/javascript">
+
+    </script>
+}
+<script>
+        debugger
+        var $_update = '@ViewBag.UpdateMode'
+        var $_MotorType= '@Model.MotorType'
+        if ($_update != '' && $_update == "True")
+        {
+            if ($_MotorType != '' && $_MotorType > 0) {
+                $(".showMotorVehicleType").show();
+            }
+        }
+
+    //To Upload Location Image
+    function LocationImageURL(input) {
+        var FType = ["jpg", "JPG", "PNG", "png", "JPEG", "jpeg", "gif", "GIF"]
+        if (input.files && input.files[0]) {
+            var LoadImage = false;
+            var FileExtension = input.value.split(".")[1];
+            for (var v = 0; v < FType.length; v++) {
+                if (FType[v] == FileExtension) {
+                    LoadImage = true;
+                }
+            }
+            if (LoadImage == true) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#LocationImage')
+                       .attr('src', e.target.result)
+                       .width(100)
+                       .height(100);
+                };
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                $(input).val("");
+                alert("Please select image to upload!")
+                return false;
+            }
+        }
+    }
+
+    //To Upload QRC Image
+    function QRCImagereadURL(input) {
+        var FType = ["jpg", "JPG", "PNG", "png", "JPEG", "jpeg", "gif", "GIF"]
+        if (input.files && input.files[0]) {
+            var LoadImage = false;
+            var FileExtension = input.value.split(".")[1];
+            for (var v = 0; v < FType.length; v++) {
+                if (FType[v] == FileExtension) {
+                    LoadImage = true;
+                }
+            }
+            if (LoadImage == true) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#AssetImage')
+                       .attr('src', e.target.result)
+                       .width(100)
+                       .height(100);
+                };
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                $(input).val("");
+                alert("Please select image to upload!")
+                return false;
+            }
+        }
+    }
+    $("#PreviewQRCData").click(function () {
+        checkvalidation();
+    });
+    $("#SaveQRCData").click(function () {
+        debugger
+        var printDiv = document.getElementById('container4');
+        var base64 = $(printDiv).find('img').attr('src');
+        $('#QRCImageBase64').val(base64);
+         var base64AssetImage = $("#AssetImage").attr('src');
+         if (base64AssetImage != null && base64AssetImage != undefined)
+         {
+             debugger
+             $('#AssetPicture').val(base64AssetImage);
+             var imgAssets = $("#Asset").val();
+             if (imgAssets != null && imgAssets != "") {
+                 $("#AssetPictureName").val(imgAssets);
+             }
+         }
+         var base64LocationImage = $("#LocationImage").attr('src');
+         if (base64LocationImage != null && base64LocationImage != undefined) {
+             $('#LocationPicture').val(base64LocationImage);
+             var imgLocation = $("#Location").val();
+             if (imgLocation != null && imgLocation != "") {
+                 $("#LocationPictureName").val(imgLocation);
+             }
+         }
+        //var printDiv = document.getElementById('container4');
+        //var base64 = $(printDiv).find('img').attr('src');
+        //$('#QRCImageBase64').val(base64);
+        var dataObject;
+        var file_data = "";
+        var form_data;
+        $("#SaveQRC").attr("disabled", true);
+        var LocationImageName;
+        var AssetsImageName = "";
+
+
+        @*if (imgAssets != null || imgAssets != undefined || imgAssets != "")
+        {
+            file_data = $("#Asset").prop("files")[0]; // Getting the properties of file from file field
+            form_data = new FormData(); // Creating object of FormData class
+            form_data.append("file", file_data) // Appending parameter named file with properties of file_field to form_data
+            form_data.append("CallID", 11)
+            if (file_data != undefined) {
+                $.ajax({
+                    url: '@Url.Action("UploadedAssetsImage", "QRCSetup")',
+                    dataType: 'script',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: form_data, // Setting the data attribute of ajax with file_data
+                    type: 'POST',
+                    success: function (dataLink) {
+                        AssetsImageName = dataLink;
+                        var result = AssetsImageName.substring(1, AssetsImageName.length - 1);
+                        $("#Asset").val(result);
+                    }
+                });
+            }
+        }*@
+        @*if (imgLocation != null || imgLocation != undefined || imgLocation != "") {
+            file_data = $("#Location").prop("files")[0]; // Getting the properties of file from file field
+            form_data = new FormData(); // Creating object of FormData class
+            form_data.append("file", file_data) // Appending parameter named file with properties of file_field to form_data
+            form_data.append("CallID", 11)
+            if (file_data != undefined) {
+                $.ajax({
+                    url: '@Url.Action("UploadedLocationImage", "QRCSetup")',
+                    dataType: 'script',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: form_data, // Setting the data attribute of ajax with file_data
+                    type: 'POST',
+                    success: function (dataLink) {
+                        LocationImageName = dataLink;
+                        var result = LocationImageName.substring(1, LocationImageName.length - 1);
+                        $("#Location").val(result);
+                    }
+                });
+            }
+        }*@
+         dataObject = $("#QRCSave").serialize();
+         $.ajax({
+             type: "POST",
+             url: '@Url.Action("Index", "QRCSetup")',
+             data: dataObject,//{ objWorkRequestAssignmentModel: dataObject, fileData: file },
+             success: function (Data) {
+                 $("#SaveQRC").attr("disabled", false);
+                 $("#ListQRC").jsGrid("loadData");
+                 $("#ModalConfirumationQRCPreview").modal('hide');
+                 $(".dispayListQRCName, #OperationCreateQRCListDiv").show();
+                 $(" #OperationDARListDiv, .dispayCreateQRCName , #QRCForm, .createQRCForm").hide();
+                 $("#QRCForm").load('@Url.Action("Index", "QRCSetup")')
+             },
+             error: function (err) {
+             }
+         });
+    });
+</script>
+<script src="~/Scripts/QRCode/jquery.qrcode-0.9.5.js"></script>
+<script src="~/Scripts/QRCode/generateQRC.js"></script>
+<script>
+
+    function checkvalidation() {
+        debugger
+        var strcheck;
+        if ($('#QRCName').val() == null || $('#QRCName').val() == undefined || $('#QRCName').val() == "") {
+            $('.QRCName').text('Please enter QRC name.')
+            $('#QRCName').keyup(function () {
+                if ($('#QRCName').val() != null || $('#QRCName').val() != undefined) {
+                    $('.QRCName').text('')
+                }
+            })
+            strcheck = false;
+        }
+        else if ($('#QRCType option:selected').text() == "--Select--" || $('#QRCType option:selected').val() == null) {
+            $('.QRCType').text('Please select QRC type.')
+            $($('#QRCType')).change(function () {
+                if ($('#QRCType option:selected').text() != "--Select--" || $('#QRCType option:selected').val() != null) {
+                    $('.QRCType').text('')
+                }
+            })
+            strcheck = false;
+        }
+        else if ($('#DefaultSize option:selected').text() == "--Select--" || $('#DefaultSize option:selected').val() == null) {
+            $('.DefaultSize').text('Please select qrc default size.')
+            $($('#DefaultSize')).change(function () {
+                if ($('#DefaultSize option:selected').text() != "--Select--" || $('#DefaultSize option:selected').val() != null) {
+                    $('.DefaultSize').text('')
+                }
+            })
+            strcheck = false;
+        }
+        else {
+            strcheck = true;
+            loadpreview();
+        }
+        return strcheck;
+    }
+    function loadpreview() {
+        debugger
+        var _hddnUpdateMode = '@Model.UpdateMode';
+        var QRCID = '@ViewBag.EncryptLastQRC';
+        var ItemAbberivationList = '@ViewBag.ItemAbberivationList';
+        var $_hddnMotorTypeVehicle = '@Model.MotorTypeVehicle';
+        var _hddnUpdateMode = '@Model.UpdateMode';
+        var QRCodeID = '@Model.QRCodeID';
+        var isanyfieldempty = false;
+        var QRCType;
+        var errorMessage;
+        var updateLocationName = '@Model.LocationName';
+
+        if (!isanyfieldempty && $('#QRCType').val() != undefined && $('#QRCType').val() != '') {
+            var QRCType = $('#QRCType option:selected').text();
+            var locationName = $('#drp_MasterLocation option:selected').text();
+            $('#hiddnQRCTYPE').val($('#QRCType').val());
+            $('#QRCTYPECaption').val(QRCType.trim());
+            $('#lblQRCTYPE').text(QRCType.trim());
+            if (updateLocationName == '') {
+                $("#lblLocationName").text(locationName.trim());
+            }
+            else {
+                $("#lblLocationName").text(updateLocationName.trim());
+            }
+            $("#lblSpecialNotes").text($("#SpecialNotes").val());
+        }
+        else { errormessage = "QRC Type can not be blank."; isanyfieldempty = true; }
+        if (!isanyfieldempty && $('#DefaultSize').val() != undefined && $('#DefaultSize').val() != '' && parseInt($('#DefaultSize').val(), 10) > 0) {
+            var QRCDefaultSize = $('#DefaultSize option:selected').text();
+            $('#SizeCaption').val(QRCDefaultSize.trim());
+            $('#lblQRCDefaultSize').text(QRCDefaultSize.trim());
+        }
+        else { errormessage = "QRC Default Size can not be blank."; isanyfieldempty = true; }
+        if ($("#QRCType").val() == "36") {
+            //if (!isanyfieldempty && $('#VehicleType').val() != undefined && $('#VehicleType').val() != '' && parseInt($('#VehicleType').val(), 10) > 0) {
+                //var VehicleType = $('#VehicleType option:selected').text();
+                //$('#VehicleTypeCaption').val(VehicleType.trim());
+                //$('#lblVehicleType').text(VehicleType.trim());
+                if (!isanyfieldempty && $('#MotorType').val() != undefined && $('#MotorType').val() != '' && parseInt($('#MotorType').val(), 10) > 0) {
+                    var MotorType = $('#MotorType option:selected').text();
+                    $('#MotorTypeCaption').val(MotorType.trim());
+                    $('#lblMotorType').text(MotorType.trim());
+                }
+                else { errormessage = "Motor Type can not be blank."; isanyfieldempty = true; }
+            }
+            //else { errormessage = "Vehicle Type can not be blank."; isanyfieldempty = true; }
+
+            //if ($("#VehicleType").val() != "54") {
+            //    if (!isanyfieldempty && $('#MotorType').val() != undefined && $('#MotorType').val() != '' && parseInt($('#MotorType').val(), 10) > 0) {
+            //        var MotorType = $('#MotorType option:selected').text();
+            //        $('#MotorTypeCaption').val(MotorType.trim());
+            //        $('#lblMotorType').text(MotorType.trim());
+            //    }
+            //    else { errormessage = "Motor Type can not be blank."; isanyfieldempty = true; }
+
+
+        if (!isanyfieldempty && $('#QRCName').val() != undefined && $('#QRCName').val() != '') {
+            var QRCName = $('#QRCName').val();
+            $('#lblQRC').text(QRCName.trim());
+        }
+        else { errormessage = "QRC Name can not be blank."; isanyfieldempty = true; }
+        if (isanyfieldempty) {
+            errormessage = "Please enter the mandatory details required to generate QRC."
+            //bootbox.alert(errormessage);
+            alert(errormessage);
+        }
+        else {
+            if (_hddnUpdateMode != 'True') {
+                var x = new Array();
+                x = QRCID.split(",");
+                var list = new Array();
+                list = ItemAbberivationList.split(",");
+                var dropDownValue = $('#QRCType option:selected').text();
+                if (dropDownValue == "Parking Facility") {
+                    QRCType = list[0];
+                }
+                else if (dropDownValue == "Vehicle") {
+                    QRCType = list[1];
+                }
+                else if (dropDownValue == "Trash Can") {
+                    QRCType = list[2];
+                }
+                else if (dropDownValue == "Elevator") {
+                    QRCType = list[3];
+                }
+                else if (dropDownValue == "Gate Arm") {
+                    QRCType = list[4];
+                }
+                else if (dropDownValue == "Ticket Spitter") {
+                    QRCType = list[5];
+                }
+                else if (dropDownValue == "Bus Station") {
+                    QRCType = list[6];
+                }
+                else if (dropDownValue == "Emergency Phone Systems") {
+                    QRCType = list[7];
+                }
+                else if (dropDownValue == "Moving Walkway") {
+                    QRCType = list[8];
+                }
+                else if (dropDownValue == "Escalators") {
+                    QRCType = list[9];
+                }
+                else if (dropDownValue == "Bathroom") {
+                    QRCType = list[10];
+                }
+                else if (dropDownValue == "Equipment") {
+                    QRCType = list[11];
+                }
+                else if (dropDownValue == "Cellular Phone") {
+                    QRCType = list[12];
+                }
+                else if (dropDownValue == "GT Tracker") {
+                    QRCType = list[13];
+                }
+                else if (dropDownValue == "Shuttle Bus") {
+                    QRCType = list[14];
+                }
+
+                //alert(value);
+                $_QRCIDNumber = x[1] + QRCType + x[0];
+                //Commented by Bhushan  on 12Dec2016 for no need to append QRCType in QR Code as mobile scanner wants only code and export as well as same.
+                $_QRCIDNumber = $_QRCIDNumber;//+ "," + $('#QRCType option:selected').val();
+                // var tt = QRCID;
+                //commented by bhushan dod 04/25/2017 for no need to show qrcid in preview modal
+                $("#QRCodeID").val(x[1] + "," + QRCType + "," + x[0]);
+            }
+            else {
+                $_QRCIDNumber = QRCodeID + "," + $('#QRCType option:selected').val();
+            }
+            generateqrcode();
+
+            if ($("#QRCType").val() != "36") {
+                $('.VehicleTypeDisplay').hide();
+                $(".VehicleTypeDisplay").css('display', 'none');
+
+            }
+            else {
+                $('.VehicleTypeDisplay').show();
+                $(".VehicleTypeDisplay").css('display', ' ');
+                // $('#VehicleType').prop('disabled', true);
+            }
+
+            if ($('#SpecialNotes').val() == null || $('#SpecialNotes').val() == "") {
+                $("#lblspecialnotes").hide()
+                $("#specialnotes").css('display', 'none');
+            }
+            else {
+                $("#lblspecialnotes").show()
+                $("#specialnotes").css('display', '');
+            }
+            if ($("#QRCType").val() == "36" && $('#MotorType').val() != null && $('#MotorType').val() !== "") {
+                $("#specialnotes").css('display', '');
+                $('.VehicleTypeDisplay').show();
+                $('.VehicleTypeDisplay  #labelMotorType').show();
+            }
+            else {
+                $(".VehicleTypeDisplay").css('display', 'none');
+                $('.VehicleTypeDisplay  #labelMotorType').hide()
+            }
+            $("#lblQRCId").html(QRCID);
+            $("#lblLocationName").html(locationName);
+            if ($('#Make').val() == null || $('#Make').val() == "") {
+                $("#Vmake").css('display', 'none');
+            }
+            else {
+                $('#lblVmake').html($('#Make').val())
+                $('#lblVmake').show()
+                $("#Vmake").css('display', '');
+            }
+            if ($('#Model').val() == null || $('#Model').val() == "") {
+                $("#Vmodel").css('display', 'none');
+            }
+            else {
+                $('#lblVmodel').html($('#Model').val())
+                $('#lblVmodel').show()
+                $("#Vmodel").css('display', '');
+            }
+
+            $("#ModalConfirumationQRCPreview").modal('show');
+        }
+        return !isanyfieldempty;
+    }
+
+</script>

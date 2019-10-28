@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WorkOrderEMS.BusinessLogic.Interfaces;
 using WorkOrderEMS.Data.DataRepository;
+using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Models;
 
 namespace WorkOrderEMS.BusinessLogic
@@ -48,8 +49,9 @@ namespace WorkOrderEMS.BusinessLogic
         /// </summary>
         /// <param name="Obj"></param>
         /// <returns></returns>
-        public bool SaveVSC(AddChartModel Obj)
+        public AddChartModel SaveVSC(AddChartModel Obj)
         {
+            var _workorderEMS = new workorderEMSEntities();
             bool isSaved = false;
             try
             {
@@ -58,21 +60,20 @@ namespace WorkOrderEMS.BusinessLogic
                 if (Obj != null && Obj.SeatingName != null)
                 {
                     if (Obj.Id == null)
-                    {
-                        Obj.Action = "I";
-                        Obj.IsActive = "N";
+                    {                     
                         isSaved = _VSCRepository.SaveVSCRepository(Obj);
+                        Obj.Id = _workorderEMS.VehicleSeatings.OrderByDescending(x => x.VST_Id).FirstOrDefault().VST_Id;
                     }
                     else
                     {
                         Obj.Action = "U";
                         Obj.IsActive = "Y";
                         isSaved = _VSCRepository.SaveVSCRepository(Obj); 
-                    }
+                    }                    
                 }
                 else
                 {
-                    isSaved = false;
+                    Obj = null;
                 }
             }
             catch (Exception ex)
@@ -80,7 +81,7 @@ namespace WorkOrderEMS.BusinessLogic
                 Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SaveVSC(AddChartModel Obj)", "Exception While Saving Vehicle seating chart.", Obj);
                 throw;
             }
-            return isSaved;
+            return Obj;
         }
 
         /// <summary>
@@ -97,15 +98,15 @@ namespace WorkOrderEMS.BusinessLogic
             try
             {
                var data  = _VSCRepository.GetVSCList(LocationId).Select(x => new AddChartModel() {
-                   DepartmentName = "Operation",
+                   DepartmentName = x.DPT_Name,
                    Id = x.VST_Id,
                    Department = 0,
                    parentId = x.VST_ParentId,
                    JobDescription = x.VST_JobDescription,
                    RolesAndResponsibility = x.VST_RolesAndResponsiblities,
-                   IsActive = x.VST_IsActive,
+                   IsActive = x.VST_IsExempt,
                    SeatingName  = x.VST_Title,
-                   Image = HostingPrefix + ProfileImagePath.Replace("~", "") + "no-profile-pic.jpg"
+                   //Image = HostingPrefix + ProfileImagePath.Replace("~", "") + "no-profile-pic.jpg"
                }).ToList();
                 if(data.Count() > 0)
                 {
@@ -227,6 +228,134 @@ namespace WorkOrderEMS.BusinessLogic
                 throw;
             }
             return data;
+        }
+
+        /// <summary>
+        /// Created y  :Ashwajit Bansod
+        /// Created Date : 11-Sept-2019
+        /// Created For : To get chart details by Id
+        /// </summary>
+        /// <param name="CSVChartId"></param>
+        /// <returns></returns>
+        public AddChartModel GetChartData(long CSVChartId)
+        {
+            var data = new AddChartModel();
+            try
+            {
+                var _VSCRepository = new VehicleSeatingChartRepository();
+                string Action = string.Empty;
+                if (CSVChartId > 0)
+                {
+                    data = _VSCRepository.GetChartDetails().Where(x => x.VST_Id == CSVChartId).
+                        Select(x => new AddChartModel()
+                        {
+                            Id = x.VST_Id,
+                            parentId = x.VST_ParentId,
+                            JobDescription = x.VST_JobDescription,
+                            RolesAndResponsibility = x.VST_RolesAndResponsiblities,
+                            SeatingName = x.VST_Title,
+                            Department = x.DPT_Id
+                        }).FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public AddChartModel GetChartData(long CSVChartId)", "Exception While getting data of Vehicle Chart.", CSVChartId);
+                throw;
+            }
+            return data;
+        }
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 13-Sept-2019
+        /// Created For : To get Access Permission list
+        /// </summary>
+        /// <param name="VST_Id"></param>
+        /// <returns></returns>
+        public List<AccessPermisionTreeViewModel> ListTreeViewAccessPermission(long VST_Id)
+        {
+            var _VSCRepository = new VehicleSeatingChartRepository();
+            var records = new List<AccessPermisionTreeViewModel>();
+            workorderEMSEntities objworkorderEMSEntities = new workorderEMSEntities();
+            try
+            {
+                var getModuleList = objworkorderEMSEntities.Modules.Where(x => x.MDL_IsActive == "Y").
+                    Select(x => new AccessPermisionTreeViewModel() {
+                        ModuleId = x.MDL_Id,
+                        ModuleName = x.MDL_ModuleName,
+                        @checked = false
+                    }).ToList();
+                
+                var Results = _VSCRepository.GetAccessPermissionList(VST_Id)
+                    .Select(l => new AccessPermisionTreeViewModel//_workorderems.spGetCostCode(action, null).Select(l => new TreeViewModel
+                    {
+                        id = l.SMD_MDL_Id,
+                        name = l.MDL_ModuleName,
+                        SubModuleId = l.SMD_Id,
+                        SubModuleName = l.SMD_SubModuleName,
+                        @checked = false
+                    }).ToList();
+                records = getModuleList
+                   .Select(l => new AccessPermisionTreeViewModel
+                   {
+                       id = l.ModuleId,
+                       name = l.ModuleName,
+                       @checked = false,
+                       item = GetChildrenModule(Results, l.ModuleId)
+                   }).ToList();
+                //records = Results
+                //   .Select(l => new AccessPermisionTreeViewModel
+                //   {
+                //       id = l.id,
+                //       name = l.name,
+                //       @checked = false,
+                //       item = GetChildrenModule(Results, l.id)
+                //   }).ToList();
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<AccessPermisionTreeViewModel> ListTreeViewAccessPermission(long VST_Id)", "Exception While Listing Module and sub module tree.", null);
+                throw;
+            }
+            return records;
+        }
+        private List<AccessPermisionTreeViewModel> GetChildrenModule(List<AccessPermisionTreeViewModel> ChildDataList, long? ModuleId)
+        {
+            return ChildDataList = ChildDataList.Where(x => x.id == ModuleId). //_workorderems.spGetCostCode(action, MasteCostCodeId).Select(l => new TreeViewModel
+            Select(l => new AccessPermisionTreeViewModel
+            {
+                id = l.SubModuleId,
+                name = l.SubModuleName,
+                @checked = false
+            }).ToList();           
+        }
+
+        public bool SaceAccessPermission(AccessPermisionTreeViewModel obj)
+        {
+            var _VSCRepository = new VehicleSeatingChartRepository();
+            bool isSaved = false;
+            try
+            {
+                if(obj != null)
+                {
+                    if(obj.id > 0)
+                    {
+
+                    }
+                    else
+                    {
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SaceAccessPermission(AccessPermisionTreeViewModel obj)", "Exception While saving access permission", obj);
+                throw;
+            }
+            return isSaved;
         }
     }
 }

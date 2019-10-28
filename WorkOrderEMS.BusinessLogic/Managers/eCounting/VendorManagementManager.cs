@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
+using System.Web.Script.Serialization;
 using WorkOrderEMS.BusinessLogic.Interfaces;
 using WorkOrderEMS.Data.DataRepository;
 using WorkOrderEMS.Data.EntityModel;
@@ -19,6 +21,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         workorderEMSEntities _workorderems = new workorderEMSEntities();
         private string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private string Path = ConfigurationManager.AppSettings["CompanyDocument"];
+        private string DocFacilityPath = ConfigurationManager.AppSettings["VendorImageFacility"];
 
         /// <summary>
         /// Created By : Ashwajit Bansod
@@ -153,7 +156,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             StringBuilder sb = new StringBuilder();
             try
             {
-              var   data = _workorderems.spGetLocationCompanyMappingForApproval(VendorId);
+                var data = _workorderems.spGetLocationCompanyMappingForApproval(VendorId);
                 foreach (var item in data)
                 {
                     //lstLocation = item.LCM_CMP_Id.ToString();
@@ -183,7 +186,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             var objDAR = new DARModel();
             var CommonManager = new CommonMethodManager();
             string LocName = "";
-            string annualValue = string.Empty;string costPeriod = string.Empty;
+            string annualValue = string.Empty; string costPeriod = string.Empty;
             string latefine = string.Empty; string minimumBill = string.Empty;
             long COT_ID = 0;
             long Primarymode = 0;
@@ -219,29 +222,31 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                                                     Obj.VendorEmail, Obj.Website, Obj.UserId, null, "N");
 
                         var SaveTax = _workorderems.spSetTaxDetail(Action, null, VendorId, Obj.TaxNo, null, Obj.UserId, null, "N");
-                       
+
+
+
                         if (Obj.VendorContractModel != null)
                         {
                             if (Obj.VendorContractModel.ContractExecutedBy == null)
                             {
                                 Obj.VendorContractModel.ContractExecutedBy = Obj.VendorContractModel.ContractIssuedBy;
                             }
-                            if(Obj.VendorContractModel.AnnualValueOfAggrimentForView !=null)
+                            if (Obj.VendorContractModel.AnnualValueOfAggrimentForView != null)
                             {
-                                annualValue= Obj.VendorContractModel.AnnualValueOfAggrimentForView.Replace(",", "");
+                                annualValue = Obj.VendorContractModel.AnnualValueOfAggrimentForView.Replace(",", "");
                                 Obj.VendorContractModel.AnnualValueOfAggriment = Convert.ToInt64(annualValue);
                             }
-                            if(Obj.VendorContractModel.CostDuringPeriodForView !=null)
+                            if (Obj.VendorContractModel.CostDuringPeriodForView != null)
                             {
                                 costPeriod = Obj.VendorContractModel.CostDuringPeriodForView.Replace(",", "");
                                 Obj.VendorContractModel.CostDuringPeriod = Convert.ToInt32(costPeriod);
                             }
-                            if(Obj.VendorContractModel.LateFineForView != null)
+                            if (Obj.VendorContractModel.LateFineForView != null)
                             {
                                 latefine = Obj.VendorContractModel.LateFineForView.Replace(",", "");
                                 Obj.VendorContractModel.LateFine = Convert.ToDecimal(latefine);
                             }
-                            if(Obj.VendorContractModel.MinimumBillAmountForView != null)
+                            if (Obj.VendorContractModel.MinimumBillAmountForView != null)
                             {
                                 minimumBill = Obj.VendorContractModel.MinimumBillAmountForView.Replace(",", "");
                                 Obj.VendorContractModel.MinimumBillAmount = Convert.ToDecimal(minimumBill);
@@ -280,11 +285,12 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         }
                         if (Obj.VendorAccountDetailsModel != null)
                         {
+                            Obj.VendorAccountDetailsModel.BankName = Obj.VendorAccountDetailsModel.BankName == null ? Obj.VendorAccountDetailsModel.BankName = Obj.VendorAccountDetailsModel.BankNameForCard : Obj.VendorAccountDetailsModel.BankName;
                             var saveAccountDetails = _workorderems.spSetCompanyAccountDetail(Action, null, VendorId, Primarymode,
                                                                           Obj.VendorAccountDetailsModel.BankName, Obj.VendorAccountDetailsModel.BankLocation,
                                                                           Obj.VendorAccountDetailsModel.AccountNumber, Obj.VendorAccountDetailsModel.CardNumber,
                                                                           Obj.VendorAccountDetailsModel.IFSCCode, Obj.VendorAccountDetailsModel.SwiftOICCode,
-                                                                          Obj.VendorAccountDetailsModel.AccountDocuments, Obj.UserId, null, "Y", Obj.VendorAccountDetailsModel.BalanceAmount, Obj.VendorAccountDetailsModel.QuickbookAcountId);
+                                                                          Obj.VendorAccountDetailsModel.AccountDocuments, Obj.UserId, null, "Y", Obj.VendorAccountDetailsModel.BalanceAmount, Obj.VendorAccountDetailsModel.QuickbookAcountId, Obj.VendorAccountDetailsModel.CardHolderName, Obj.VendorAccountDetailsModel.ExpirationDate,"Y");
                         }
                         if (Obj.VendorFacilityListModel != null)
                         {
@@ -294,14 +300,17 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                 item.UnitCost = Convert.ToDecimal(unitcost);
                                 var saveVendorFacility = _workorderems.spSetCompanyFacilityMapping(Action, null, VendorId, item.Costcode,
                                                                           item.ProductServiceType, item.ProductServiceName, item.UnitCost, item.Tax, Obj.UserId,
-                                                                          null, "Y");
+                                                                          null, "Y", item.VenderProductImageName);
+                                //var saveVendorFacility = _workorderems.spSetCompanyFacilityMapping(Action, null, VendorId, item.Costcode,
+                                //                                          item.ProductServiceType, item.ProductServiceName, item.UnitCost, item.Tax, Obj.UserId,
+                                //                                          null, "Y");
 
                                 Obj.Result = Result.Completed;
                             }
                         }
 
-                        
-                        
+
+
                         string LocIds = "";
                         if (Obj.SelectedLcation != null)
                         {
@@ -370,7 +379,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     }
                     #region Save DAR
                     objDAR.ActivityDetails = DarMessage.CreateVendor(LocName);
-                    objDAR.TaskType = (long)TaskTypeCategory.CreateVendor;                    
+                    objDAR.TaskType = (long)TaskTypeCategory.CreateVendor;
                     #endregion Save DAR
                 }
                 else
@@ -379,29 +388,39 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     Action = "U";
                     var Vendor = context.spSetCompany(Action, Obj.VendorId, Obj.CompanyNameLegal, Obj.CompanyNameDBA,
                                                          Obj.VendorType, COT_ID, Obj.CompanyDocuments, Obj.UserId,
-                                                         null, "N");
-                 
-                        var SaveCompanyDetails = context.spSetCompanyDetail(Action, Obj.CompanyId, Obj.VendorId, Obj.PointOfContact,
-                                                                   Obj.JobTile, null, Obj.Address1, Obj.Address1City,
-                                                                   Obj.Address1State, 1, Obj.Address2, Obj.Address2City,
-                                                                   Obj.StateAfterIsSame, 1, Obj.Phone1, Obj.Phone2,
-                                                                   Obj.VendorEmail, Obj.Website, Obj.UserId, null, "N");
-                        ///var SaveTax = _workorderems.spSetTaxDetail(Action, null, Obj.VendorId, Obj.TaxNo, null, Obj.UserId, null, "N");
+                                                         null, "Y").FirstOrDefault();
+                    var companyDetais = context.CompanyDetails.Where(x => x.COD_CMP_Id == Obj.CompanyId && x.COD_IsActive == "Y").FirstOrDefault();
+                    if(companyDetais != null)
+                    { 
+                    var SaveCompanyDetails = context.spSetCompanyDetail(Action, companyDetais.COD_Id, Obj.CompanyId, Obj.PointOfContact,
+                                                               Obj.JobTile, null, Obj.Address1, Obj.Address1City,
+                                                               Obj.Address1State, 1, Obj.Address2, Obj.Address2City,
+                                                               Obj.StateAfterIsSame, 1, Obj.Phone1, Obj.Phone2,
+                                                               Obj.VendorEmail, Obj.Website, Obj.UserId, null, "Y");
+                    ///var SaveTax = _workorderems.spSetTaxDetail(Action, null, Obj.VendorId, Obj.TaxNo, null, Obj.UserId, null, "N");
+                    }
+                    var _companyLogDetails = _workorderems.LogCompanies.Where(n => n.LCMP_CMP_Id == Obj.VendorId && n.LCMP_IsApprove == "W").OrderByDescending(x=>x.LCMP_Id).FirstOrDefault();
+                    if (_companyLogDetails !=null) {
+                        _companyLogDetails.LCMP_IsApprove = "Y";
+                        _workorderems.SaveChanges();
 
-                        string LocIds = "";
-                        if (Obj.SelectedLcation != null)
-                        {
-                            string[] LoctionIds = Obj.SelectedLcation.Split(',');
-                            for (int i = 0; i < LoctionIds.Length; i++)
-                            {
-                                if (LoctionIds[i] != null && !string.IsNullOrEmpty(LoctionIds[i]) && Convert.ToInt64(LoctionIds[i], CultureInfo.InvariantCulture) > 0)
-                                {
-                                    long LocId = Convert.ToInt64(LoctionIds[i]);
-                                    var saveLocationAllocation = _workorderems.spSetLocationCompanyMapping(Action, null, LocId, VendorId, Obj.UserId, null, "Y");
-                                }
-                            }
-                        }
-                    
+                    }
+
+                    //string LocIds = "";
+                    //if (Obj.SelectedLcation != null)
+                    //{
+                    //    string[] LoctionIds = Obj.SelectedLcation.Split(',');
+                    //    for (int i = 0; i < LoctionIds.Length; i++)
+                    //    {
+                    //        if (LoctionIds[i] != null && !string.IsNullOrEmpty(LoctionIds[i]) && Convert.ToInt64(LoctionIds[i], CultureInfo.InvariantCulture) > 0)
+                    //        {
+                    //            long LocId = Convert.ToInt64(LoctionIds[i]);
+                    //            var lmcId = _workorderems.LocationCompanyMappings.Where(x => x.LCM_LocationId == LocId && x.LCM_CMP_Id == Obj.CompanyId).Select(x=>x.LCM_Id).FirstOrDefault();
+                    //            var saveLocationAllocation = _workorderems.spSetLocationCompanyMapping(Action, lmcId, LocId, Obj.VendorId, Obj.UserId, null, "Y");
+                    //        }
+                    //    }
+                    //}
+
                     Obj.Result = Result.UpdatedSuccessfully;
                     #region Save DAR
                     objDAR.ActivityDetails = DarMessage.UpdateVendor();
@@ -444,20 +463,20 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 int pageSize = Convert.ToInt32(numberOfRows);
                 if (LocationId > 0)
                 {
-                     Results = _workorderems.spGetCompanyList(LocationId)  // .CompanyFacilityMappings.Where(x => x.CFM_CMP_Id == VendorId)
-                    .Select(a => new VendorSetupManagementModel()
-                    {
-                        VendorId = a.CMP_Id,
-                        CompanyNameLegal = a.CMP_NameLegal,
-                        Address1 = a.Address1,
-                        Phone1 = a.COD_Phone1,
-                        PointOfContact = a.COD_PointOfContact,
-                        VendorTypeData = a.VDT_VendorType,
-                        Status = a.Status,
-                        AccountStatus = a.AccountStatus,
-                        InsuranceStatus = a.InsuranceStatus,
-                        LicenseStatus = a.LicenseStatus
-                    }).OrderByDescending(x => x.VendorId).ToList();
+                    Results = _workorderems.spGetCompanyList(LocationId)  // .CompanyFacilityMappings.Where(x => x.CFM_CMP_Id == VendorId)
+                   .Select(a => new VendorSetupManagementModel()
+                   {
+                       VendorId = a.CMP_Id,
+                       CompanyNameLegal = a.CMP_NameLegal,
+                       Address1 = a.Address1,
+                       Phone1 = a.COD_Phone1,
+                       PointOfContact = a.COD_PointOfContact,
+                       VendorTypeData = a.VDT_VendorType,
+                       Status = a.Status,
+                       AccountStatus = a.AccountStatus,
+                       InsuranceStatus = a.InsuranceStatus,
+                       LicenseStatus = a.LicenseStatus
+                   }).OrderByDescending(x => x.VendorId).ToList();
                 }
                 else
                 {
@@ -490,7 +509,67 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 throw;
             }
         }
+        public IList<VendorSetupManagementModel> GetAllCompanyDataList1(long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
+        {
+            var Results = new List<VendorSetupManagementModel>();
+            try
+            {
+                var objCompanyListDetails = new CompanyListDetails();
 
+                int pageindex = Convert.ToInt32(pageIndex) - 1;
+                int pageSize = Convert.ToInt32(numberOfRows);
+                if (LocationId > 0)
+                {
+                    Results = _workorderems.spGetCompanyList(LocationId)  // .CompanyFacilityMappings.Where(x => x.CFM_CMP_Id == VendorId)
+                   .Select(a => new VendorSetupManagementModel()
+                   {
+                       id = Cryptography.GetEncryptedData(Convert.ToString(a.CMP_Id), true),
+                       VendorId = a.CMP_Id,
+                       CompanyNameLegal = a.CMP_NameLegal,
+                       Address1 = a.Address1,
+                       Phone1 = a.COD_Phone1,
+                       PointOfContact = a.COD_PointOfContact,
+                       VendorTypeData = a.VDT_VendorType,
+                       Status = a.Status,
+                       AccountStatus = a.AccountStatus,
+                       InsuranceStatus = a.InsuranceStatus,
+                       LicenseStatus = a.InsuranceStatus,
+
+                   }).Where(x => x.Status == "Y").OrderByDescending(x => x.VendorId).ToList();
+                }
+                else
+                {
+                    Results = _workorderems.spGetCompanyList(LocationId)  // .CompanyFacilityMappings.Where(x => x.CFM_CMP_Id == VendorId)
+                    .Select(a => new VendorSetupManagementModel()
+                    {
+                        VendorId = a.CMP_Id,
+                        id = Cryptography.GetEncryptedData(Convert.ToString(a.CMP_Id), true),
+                        CompanyNameLegal = a.CMP_NameLegal,
+                        Address1 = a.Address1,
+                        Phone1 = a.COD_Phone1,
+                        PointOfContact = a.COD_PointOfContact,
+                        VendorTypeData = a.VDT_VendorType,
+                        Status = a.Status == "W" ? "Waiting" : a.Status == "N" ? "Rejected" : "Y",
+                        // = a.Status == "W" ? "Waiting" : "Rejected",
+                        AccountStatus = a.AccountStatus,
+                        InsuranceStatus = a.InsuranceStatus,
+                        LicenseStatus = a.InsuranceStatus,
+                    }).Where(x => x.Status != "Y").OrderByDescending(x => x.VendorId).ToList();
+                }
+                //int totRecords = Results.Count();
+                //var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
+                //objCompanyListDetails.pageindex = pageindex;
+                //objCompanyListDetails.total = totalPages;
+                //objCompanyListDetails.records = totRecords;
+                //objCompanyListDetails.rows = Results.ToList();
+                return Results.ToList();
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public CompanyListDetails GetAllCompanyDataList(long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)", "Exception While Getting List of all company.", null);
+                throw;
+            }
+        }
         /// <summary>
         /// Created By : Ashwajit Bansod
         /// Created Date : 15-OCT-2018
@@ -498,68 +577,125 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// </summary>
         /// <param name="VendorId"></param>
         /// <returns></returns>
-        public VendorAllViewDataModel GetAllVendorData(long VendorId)
+        public VendorAllViewDataModel GetAllVendorData(long VendorId,string Status)
         {
             var vendorData = new VendorAllViewDataModel();
             try
             {
+                //spGetVendorAllDetailForEditApproval
+                if (Status == "U") {
+                    vendorData = _workorderems.spGetVendorAllDetailForEditApproval(VendorId).Select
+                       (x => new VendorAllViewDataModel()
+                       {
+                           CompanyNameLegal = x.CMP_NameLegal,
+                           CompanyNameDBA = x.CMP_NameDBA,
+                           Address1 = x.COD_Address1 + "-" + x.COD_Addr1City,
+                           Address2 = x.COD_Address2 + "-" + x.COD_Addr2City,
+                           Email = x.COD_Email == null ? "N/A" : x.COD_Email,
+                           Website = x.COD_Website == null ? "N/A" : x.COD_Website,
+                           Phone1 = x.COD_Phone1,
+                           Phone2 = x.COD_Phone2 == null ? "N/A" : x.COD_Phone2,
+                           PointOfContact = x.COD_PointOfContact,
+                           JobTile = x.COD_JobTitle,
+                           VendorTypeData = x.VDT_VendorType,
 
-                vendorData = _workorderems.spGetVendorAllDetailForApproval(VendorId).Select
-                (x => new VendorAllViewDataModel()
+                        //this is for Insurance and License
+                        LicenseNumber = x.LNC_LicenseNumber == null ? "N/A" : x.LNC_LicenseNumber,
+                           LicenseExpirationDate = x.LNC_ExpirationDate == null ? "N/A" : x.LNC_ExpirationDate.ToString("yyyy/MM/dd"),
+                           InsuranceCarries = x.INS_IncuranceCarrier == null ? "N/A" : x.INS_IncuranceCarrier,
+                           InsuranceExpirationDate = x.INS_ExpirationDate == null ? "N/A" : x.INS_ExpirationDate.ToString("yyyy/MM/dd"),
+                           PolicyNumber = x.INS_PolicyNumber == null ? "N/A" : x.INS_PolicyNumber,
+                           LicenseName = x.LNC_LicenseName,
+                        //This is for Contract
+                        SecondaryCompany = x.CNT_CMP_IdSecondParty.ToString(),
+                           ContractType = x.CTT_ContractType,
+                           ContractIssuedBy = x.CNT_IssuedBy,
+                           ContractExecutedBy = x.CNT_ExcutedBy,
+                           PrimaryPaymentMode = x.PMD_PaymentMode,
+                           PaymentTerm = x.PTM_Term,
+                           GracePeriod = x.CNT_GracePeriod,
+                           InvoicingFrequecy = x.CNT_invoicingFrequency,
+                           StartDate = x.CNT_StartDate.ToString("yyyy/MM/dd"),
+                           EndDate = x.CNT_EndDate.ToString("yyyy/MM/dd"),
+                           CostDuringPeriod = x.CNT_CostDuringPeriod == 0 ? 0 : x.CNT_CostDuringPeriod,
+                           AnnualValueOfAggriment = x.CNT_AnnualValueOfAggreement == 0 ? 0 : x.CNT_AnnualValueOfAggreement,
+                           MinimumBillAmount = x.CNT_MinimumBillAmount == null ? 0 : x.CNT_MinimumBillAmount,
+                           BillDueDate = x.CNT_BillDueDate == null ? "N/A" : x.CNT_BillDueDate.ToString("yyyy/MM/dd"),
+                           LateFine = x.CNT_LateFeeFine == null ? 0 : x.CNT_LateFeeFine,
+                        //This is for account Details
+                        AccountNumber = x.CAD_AccountNumber == null ? "N/A" : x.CAD_AccountNumber,
+                           BankName = x.CAD_CardOrBankName == null ? "N/A" : x.CAD_CardOrBankName,
+                           BankLocation = x.CAD_BankLocation == null ? "N/A" : x.CAD_BankLocation,
+                           IFSCCode = x.CAD_IFSCcode == null ? "N/A" : x.CAD_IFSCcode,
+                           SwiftOICCode = x.CAD_SwiftBICcode == null ? "N/A" : x.CAD_SwiftBICcode,
+                           CardNumber = x.CAD_CreditCardNumber == null ? "N/A" : x.CAD_CreditCardNumber,
+                           PolicyNumberAccount = x.INS_PolicyNumber == null ? "N/A" : x.INS_PolicyNumber,
+                           CardHolderName = x.CAD_CardHolderName == null ? "N/A" : x.CAD_CardHolderName,
+                           FirstCompany = (long)x.CNT_CMP_IdFirsParty,
+                           ExpirationDate = x.CAD_CardExpirationDate.ToString("yyyy/MM/dd"),
+                       }).FirstOrDefault();
+                }
+                else
                 {
-                    CompanyNameLegal = x.CMP_NameLegal,
-                    CompanyNameDBA = x.CMP_NameDBA,
-                    Address1 = x.COD_Address1 + "-" + x.COD_Addr1City,
-                    Address2 = x.COD_Address2 + "-" + x.COD_Addr2City,
-                    Email = x.COD_Email == null ?"N/A": x.COD_Email,
-                    Website = x.COD_Website == null ? "N/A" : x.COD_Website,
-                    Phone1 = x.COD_Phone1,
-                    Phone2 = x.COD_Phone2 == null ? "N/A" : x.COD_Phone2,
-                    PointOfContact = x.COD_PointOfContact,
-                    JobTile = x.COD_JobTitle,
-                    VendorTypeData = x.VDT_VendorType,
+                    vendorData = _workorderems.spGetVendorAllDetailForApproval(VendorId).Select
+                    (x => new VendorAllViewDataModel()
+                    {
+                        CompanyNameLegal = x.CMP_NameLegal,
+                        CompanyNameDBA = x.CMP_NameDBA,
+                        Address1 = x.COD_Address1 + "-" + x.COD_Addr1City,
+                        Address2 = x.COD_Address2 + "-" + x.COD_Addr2City,
+                        Email = x.COD_Email == null ? "N/A" : x.COD_Email,
+                        Website = x.COD_Website == null ? "N/A" : x.COD_Website,
+                        Phone1 = x.COD_Phone1,
+                        Phone2 = x.COD_Phone2 == null ? "N/A" : x.COD_Phone2,
+                        PointOfContact = x.COD_PointOfContact,
+                        JobTile = x.COD_JobTitle,
+                        VendorTypeData = x.VDT_VendorType,
 
                     //this is for Insurance and License
                     LicenseNumber = x.LNC_LicenseNumber == null ? "N/A" : x.LNC_LicenseNumber,
-                    LicenseExpirationDate = x.LNC_ExpirationDate == null ? "N/A" : x.LNC_ExpirationDate.ToString("yyyy/MM/dd"),
-                    InsuranceCarries = x.INS_IncuranceCarrier == null ? "N/A" : x.INS_IncuranceCarrier,
-                    InsuranceExpirationDate = x.INS_ExpirationDate == null ? "N/A" : x.INS_ExpirationDate.ToString("yyyy/MM/dd"),
-                    PolicyNumber = x.INS_PolicyNumber == null ? "N/A" : x.INS_PolicyNumber,
-
+                        LicenseExpirationDate = x.LNC_ExpirationDate == null ? "N/A" : x.LNC_ExpirationDate.ToString("yyyy/MM/dd"),
+                        InsuranceCarries = x.INS_IncuranceCarrier == null ? "N/A" : x.INS_IncuranceCarrier,
+                        InsuranceExpirationDate = x.INS_ExpirationDate == null ? "N/A" : x.INS_ExpirationDate.ToString("yyyy/MM/dd"),
+                        PolicyNumber = x.INS_PolicyNumber == null ? "N/A" : x.INS_PolicyNumber,
+                        LicenseName = x.LNC_LicenseName,
                     //This is for Contract
                     SecondaryCompany = x.CNT_CMP_IdSecondParty.ToString(),
-                    ContractType = x.CTT_ContractType,
-                    ContractIssuedBy = x.CNT_IssuedBy,
-                    ContractExecutedBy = x.CNT_ExcutedBy,
-                    PrimaryPaymentMode = x.PMD_PaymentMode,
-                    PaymentTerm = x.PTM_Term,
-                    GracePeriod = x.CNT_GracePeriod,
-                    InvoicingFrequecy = x.CNT_invoicingFrequency,
-                    StartDate = x.CNT_StartDate.ToString("yyyy/MM/dd"),
-                    EndDate = x.CNT_EndDate.ToString("yyyy/MM/dd"),
-                    CostDuringPeriod = x.CNT_CostDuringPeriod == 0 ? 0 : x.CNT_CostDuringPeriod,
-                    AnnualValueOfAggriment = x.CNT_AnnualValueOfAggreement == 0 ? 0 : x.CNT_AnnualValueOfAggreement,
-                    MinimumBillAmount = x.CNT_MinimumBillAmount == null ? 0 : x.CNT_MinimumBillAmount,
-                    BillDueDate = x.CNT_BillDueDate == null ? "N/A" : x.CNT_BillDueDate.ToString("yyyy/MM/dd"),
-                    LateFine = x.CNT_LateFeeFine == null ? 0 : x.CNT_LateFeeFine,
+                        ContractType = x.CTT_ContractType,
+                        ContractIssuedBy = x.CNT_IssuedBy,
+                        ContractExecutedBy = x.CNT_ExcutedBy,
+                        PrimaryPaymentMode = x.PMD_PaymentMode,
+                        PaymentTerm = x.PTM_Term,
+                        GracePeriod = x.CNT_GracePeriod,
+                        InvoicingFrequecy = x.CNT_invoicingFrequency,
+                        StartDate = x.CNT_StartDate.ToString("yyyy/MM/dd"),
+                        EndDate = x.CNT_EndDate.ToString("yyyy/MM/dd"),
+                        CostDuringPeriod = x.CNT_CostDuringPeriod == 0 ? 0 : x.CNT_CostDuringPeriod,
+                        AnnualValueOfAggriment = x.CNT_AnnualValueOfAggreement == 0 ? 0 : x.CNT_AnnualValueOfAggreement,
+                        MinimumBillAmount = x.CNT_MinimumBillAmount == null ? 0 : x.CNT_MinimumBillAmount,
+                        BillDueDate = x.CNT_BillDueDate == null ? "N/A" : x.CNT_BillDueDate.ToString("yyyy/MM/dd"),
+                        LateFine = x.CNT_LateFeeFine == null ? 0 : x.CNT_LateFeeFine,
                     //This is for account Details
                     AccountNumber = x.CAD_AccountNumber == null ? "N/A" : x.CAD_AccountNumber,
-                    BankName = x.CAD_CardOrBankName == null ? "N/A" : x.CAD_CardOrBankName,
-                    BankLocation = x.CAD_BankLocation == null ? "N/A" : x.CAD_BankLocation,
-                    IFSCCode = x.CAD_IFSCcode == null ? "N/A" : x.CAD_IFSCcode,
-                    SwiftOICCode = x.CAD_SwiftBICcode == null ? "N/A" : x.CAD_SwiftBICcode,
-                    CardNumber = x.CAD_CreditCardNumber == null ? "N/A" : x.CAD_CreditCardNumber,
-                    PolicyNumberAccount = x.INS_PolicyNumber == null ? "N/A" : x.INS_PolicyNumber,
-                    CardHolderName = x.CAD_CardOrBankName == null ? "N/A" : x.CAD_CardOrBankName,
-                    //ExpirationDate = x.
-                }).FirstOrDefault();
+                        BankName = x.CAD_CardOrBankName == null ? "N/A" : x.CAD_CardOrBankName,
+                        BankLocation = x.CAD_BankLocation == null ? "N/A" : x.CAD_BankLocation,
+                        IFSCCode = x.CAD_IFSCcode == null ? "N/A" : x.CAD_IFSCcode,
+                        SwiftOICCode = x.CAD_SwiftBICcode == null ? "N/A" : x.CAD_SwiftBICcode,
+                        CardNumber = x.CAD_CreditCardNumber == null ? "N/A" : x.CAD_CreditCardNumber,
+                        PolicyNumberAccount = x.INS_PolicyNumber == null ? "N/A" : x.INS_PolicyNumber,
+                        CardHolderName = x.CAD_CardHolderName == null ? "N/A" : x.CAD_CardHolderName,
+                        FirstCompany = (long)x.CNT_CMP_IdFirsParty,
+                        ExpirationDate = x.CAD_CardExpirationDate.ToString("yyyy/MM/dd"),
+                    }).FirstOrDefault();
+
+                }
                 vendorData.VendorFacilityModel = _workorderems.spGetCompanyFacilityMappingForApproval(VendorId).Select
                 (x => new VendorFacilityModel()
                 {
                     Costcode = x.CFM_CCD_CostCode,
                     //FacilityId= x.,
                     ProductServiceName = x.CFM_Discription,
-                    ProductServiceType = x.CFM_FacilityType,
+                    ProductServiceType = x.CFM_FacilityType=="1" ? "Product":"Service",
                     Tax = x.CFM_Tax,
                     UnitCost = x.CFM_Rate,
                 }).ToList();
@@ -570,7 +706,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     LocationId = x.LLCM_LocationId,
                     LLCM_Id = x.LLCM_Id
                 }).ToList();
-
+                vendorData.DisplayFirstCompany = GetFirstCompanyByVendorId(Convert.ToInt32(vendorData.FirstCompany));
             }
             catch (Exception ex)
             {
@@ -615,25 +751,45 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                             ApproveRemoveSatus = "Removed";
                             Status = "N";
                         }
+
+
+
                         var IsApprove = _workorderems.spSetApprovalForVendorAllDetail(ObjApproveRejectVendorModel.Vendor,
                                                                              ObjApproveRejectVendorModel.Comment, Status, ObjApproveRejectVendorModel.UserId);
-                        if(ObjApproveRejectVendorModel.LLCM_Id != null)
+                        #region "TEQ"
+                        var _locationList = _workorderems.LocationCompanyMappings.Where(n => n.LCM_CMP_Id == ObjApproveRejectVendorModel.Vendor).ToList();
+                        if (_locationList != null)
                         {
-                            string[] LLCM_Id = ObjApproveRejectVendorModel.LLCM_Id.Split(',');
-                            for (int i = 0; i < LLCM_Id.Length; i++)
+                            foreach (var item in _locationList)
                             {
-                                if (LLCM_Id[i] != null && !string.IsNullOrEmpty(LLCM_Id[i]) && Convert.ToInt64(LLCM_Id[i], CultureInfo.InvariantCulture) > 0)
+                                long LocId = Convert.ToInt64(item.LCM_Id);
+                                var result = _workorderems.LocationCompanyMappings.Where(n => n.LCM_Id == LocId).FirstOrDefault();
+                                if (result != null)
                                 {
-                                    long LocId = Convert.ToInt64(LLCM_Id[i]);
-                                    var locationApprove = _workorderems.spSetApprovalForLocationCompanyMapping(LocId,
-                                                                                                   ObjApproveRejectVendorModel.Comment,
-                                                                                                   Status, ObjApproveRejectVendorModel.UserId);
-
+                                    result.LCM_IsActive = Status;
+                                    _workorderems.SaveChanges();
                                 }
+
                             }
                         }
-                        
-                        
+                        #endregion
+                        //if (ObjApproveRejectVendorModel.LLCM_Id != null)
+                        //{
+                        //    string[] LLCM_Id = ObjApproveRejectVendorModel.LLCM_Id.Split(',');
+                        //    for (int i = 0; i < LLCM_Id.Length; i++)
+                        //    {
+                        //        if (LLCM_Id[i] != null && !string.IsNullOrEmpty(LLCM_Id[i]) && Convert.ToInt64(LLCM_Id[i], CultureInfo.InvariantCulture) > 0)
+                        //        {
+                        //            long LocId = Convert.ToInt64(LLCM_Id[i]);
+                        //            var locationApprove = _workorderems.spSetApprovalForLocationCompanyMapping(LocId,
+                        //                                                                           ObjApproveRejectVendorModel.Comment,
+                        //                                                                           Status, ObjApproveRejectVendorModel.UserId);
+
+                        //        }
+                        //    }
+                        //}
+
+
                         var facilityApprove = _workorderems.spSetApprovalForCompanyFacilityMapping(ObjApproveRejectVendorModel.Vendor,
                                                                                                    ObjApproveRejectVendorModel.Comment,
                                                                                                    Status, ObjApproveRejectVendorModel.UserId);
@@ -724,7 +880,6 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
             return returnvalue;
         }
-
         /// <summary>
         /// Created By: Ashwajit Bansod
         /// Created Date : 26-OCT-2018
@@ -771,6 +926,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     vendorDetails.Address1State = data.COD_Addr1StateId;
                     vendorDetails.Address2State = data.COD_Addr2StateId;
                     vendorDetails.CompanyNameLegal = data.CMP_NameLegal;
+                    vendorDetails.VendorEmail = data.COD_Email;
                     vendorDetails.CompanyNameDBA = data.CMP_NameDBA;
                     vendorDetails.Phone1 = data.COD_Phone1;
                     vendorDetails.Phone2 = data.COD_Phone2;
@@ -783,7 +939,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     vendorDetails.CompanyId = data.CMP_Id;
                     vendorDetails.TaxNo = data.TXD_TaxIdNumber;
                     vendorDetails.CompanyDocuments = data.CMP_CompanyDocument == null ? "" : HostingPrefix + Path.Replace("~", "") + data.CMP_CompanyDocument;
-
+                    //vendorDetails.COD_ID =Convert.ToInt64( data.COD_Id);
 
                     if (vendorDetails.Address1City == vendorDetails.Address2City
                         && vendorDetails.Address1 == vendorDetails.Address2 &&
@@ -845,7 +1001,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                                                       Obj.VendorAccountDetailsModel.BankName, Obj.VendorAccountDetailsModel.BankLocation,
                                                                       Obj.VendorAccountDetailsModel.AccountNumber, Obj.VendorAccountDetailsModel.CardNumber,
                                                                       Obj.VendorAccountDetailsModel.IFSCCode, Obj.VendorAccountDetailsModel.SwiftOICCode,
-                                                                      Obj.VendorAccountDetailsModel.AccountDocuments, Obj.UserId, null, "Y",Obj.VendorAccountDetailsModel.BalanceAmount,Obj.VendorAccountDetailsModel.QuickbookAcountId);
+                                                                      Obj.VendorAccountDetailsModel.AccountDocuments, Obj.UserId, null, "Y", Obj.VendorAccountDetailsModel.BalanceAmount, Obj.VendorAccountDetailsModel.QuickbookAcountId, Obj.VendorAccountDetailsModel.CardHolderName, Obj.VendorAccountDetailsModel.ExpirationDate,"N");
                         objVendorManagement.Result = Result.Completed;
                     }
                     var userData = _workorderems.UserRegistrations.Where(x => x.UserId == Obj.UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
@@ -933,7 +1089,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                             #endregion DAR
                         }
                     }
-                    else if(Obj.VendorInsuranceModel.LicenseId > 0 || Obj.VendorInsuranceModel.InsuranceID > 0)
+                    else if (Obj.VendorInsuranceModel.LicenseId > 0 || Obj.VendorInsuranceModel.InsuranceID > 0)
                     {
                         Action = "U";
                         if (Obj.VendorInsuranceModel.InsuranceID > 0)
@@ -947,8 +1103,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                                                          Obj.UserId, Data.LINS_ApprovedBy, "Y");
                             }
                         }
-                        if(Obj.VendorInsuranceModel.LicenseId > 0)
-                        { 
+                        if (Obj.VendorInsuranceModel.LicenseId > 0)
+                        {
                             if (Obj.VendorInsuranceModel != null && Obj.VendorInsuranceModel.LicenseName != null)
                             {
                                 var data = _workorderems.LogLicenses.Where(x => x.LLNC_LNC_Id == Obj.VendorInsuranceModel.LicenseId).FirstOrDefault();
@@ -985,11 +1141,11 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <param name="sortColumnName"></param>
         /// <param name="sortOrderBy"></param>
         /// <returns></returns>
-        public InsuranceLicenseListDetails GetAllInsuranceDataList(long? VendorId, long? LocationId,bool VendorStatus, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
+        public List<VendorInsuranceModel> GetAllInsuranceDataList(long? VendorId, long? LocationId, bool VendorStatus, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
         {
             try
             {
-                var objDetails = new InsuranceLicenseListDetails();
+                //var objDetails = new List<VendorInsuranceModel>();
                 int pageindex = Convert.ToInt32(pageIndex) - 1;
                 int pageSize = Convert.ToInt32(numberOfRows);
                 var Results = new List<VendorInsuranceModel>();
@@ -999,9 +1155,11 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     .Select(a => new VendorInsuranceModel()
                     {
                         InsuranceID = a.INS_Id,
+                        Id = Cryptography.GetEncryptedData(Convert.ToString(a.INS_Id), true),
                         VendorListId = a.INS_CMP_Id,
                         InsuranceCarries = a.INS_IncuranceCarrier,
                         InsuranceExpirationDate = a.INS_ExpirationDate,
+                        DisplayLicenseExpirationDate = a.INS_ExpirationDate.ToString("MM/dd/yyyy"),
                         PolicyNumber = a.INS_PolicyNumber,
                         InsuranceDocument = a.INS_InsuranceDocument,
                         Status = a.INS_IsActive == "E" ? "Expired" : a.INS_IsActive == "N" ? "Deactivated" : "Activated"
@@ -1013,21 +1171,18 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     .Select(a => new VendorInsuranceModel()
                     {
                         InsuranceID = a.INS_Id,
+                        Id = Cryptography.GetEncryptedData(Convert.ToString(a.INS_Id), true),
                         VendorListId = a.INS_CMP_Id,
                         InsuranceCarries = a.INS_IncuranceCarrier,
                         InsuranceExpirationDate = a.INS_ExpirationDate,
+                        DisplayLicenseExpirationDate = a.INS_ExpirationDate.ToString("MM/dd/yyyy"),
                         PolicyNumber = a.INS_PolicyNumber,
                         InsuranceDocument = a.INS_InsuranceDocument,
                         Status = a.INS_IsActive == "E" ? "Expired" : a.INS_IsActive == "N" ? "Deactivated" : "Activated"
                     }).ToList();
                 }
-                int totRecords = Results.Count();
-                var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
-                objDetails.pageindex = pageindex;
-                objDetails.total = totalPages;
-                objDetails.records = totRecords;
-                objDetails.rows = Results.ToList();
-                return objDetails;
+
+                return Results.ToList();
             }
             catch (Exception ex)
             {
@@ -1050,11 +1205,12 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 var ObjInsuranceModel = new VendorInsuranceModel();
                 if (Id > 0)
                 {
-                     ObjInsuranceModel = _workorderems.Insurances.Where(u => u.INS_Id == Id).
-                        Select(x => new VendorInsuranceModel() {
-                            InsuranceDocument = x.INS_InsuranceDocument,                            
-                        }).FirstOrDefault(); 
-                    if(ObjInsuranceModel == null)
+                    ObjInsuranceModel = _workorderems.Insurances.Where(u => u.INS_Id == Id).
+                       Select(x => new VendorInsuranceModel()
+                       {
+                           InsuranceDocument = x.INS_InsuranceDocument,
+                       }).FirstOrDefault();
+                    if (ObjInsuranceModel == null)
                     {
                         ObjInsuranceModel = _workorderems.Licenses.Where(u => u.LNC_Id == Id).
                         Select(x => new VendorInsuranceModel()
@@ -1084,7 +1240,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <param name="sortColumnName"></param>
         /// <param name="sortOrderBy"></param>
         /// <returns></returns>
-        public InsuranceLicenseListDetails GetAllLicenseDataList(long? VendorId, long? LocationId, bool status, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
+        public List<VendorInsuranceModel> GetAllLicenseDataList(long? VendorId, long? LocationId, bool status, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
         {
             try
             {
@@ -1094,13 +1250,18 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 var Results = new List<VendorInsuranceModel>();
                 if (status == true)
                 {
-                    Results = _workorderems.Licenses.Where(x => x.LNC_CMP_Id == VendorId) // .CompanyFacilityMappings.Where(x => x.CFM_CMP_Id == VendorId)
-                    .Select(a => new VendorInsuranceModel()
+
+                    var _result = _workorderems.Licenses.Where(x => x.LNC_CMP_Id == VendorId).ToList();
+
+                    Results = _result.Select(a => new VendorInsuranceModel()
                     {
+
                         LicenseId = a.LNC_Id,
+                        Id = Cryptography.GetEncryptedData(Convert.ToString(a.LNC_Id), true),
                         LicenseName = a.LNC_LicenseName,
                         LicenseNumber = a.LNC_LicenseNumber,
                         LicenseExpirationDate = a.LNC_ExpirationDate,
+                        DisplayLicenseExpirationDate = a.LNC_ExpirationDate.ToString("MM/dd/yyyy"),
                         VendorListId = a.LNC_CMP_Id,
                         LicenseDocument = a.LNC_LicenseDocument,
                         Status = a.LNC_IsActive == "E" ? "Expired" : a.LNC_IsActive == "N" ? "Deactivated" : "Activated"
@@ -1111,22 +1272,25 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     Results = _workorderems.spGetLicense(VendorId).Where(x => x.Status == "N")  // .CompanyFacilityMappings.Where(x => x.CFM_CMP_Id == VendorId)
                     .Select(a => new VendorInsuranceModel()
                     {
+
                         LicenseId = a.LNC_Id,
+                        Id = Cryptography.GetEncryptedData(Convert.ToString(a.LNC_Id), true),
                         LicenseName = a.LNC_LicenseName,
                         LicenseNumber = a.LNC_LicenseNumber,
                         LicenseExpirationDate = a.LNC_ExpirationDate,
+                        DisplayLicenseExpirationDate = a.LNC_ExpirationDate.ToString("MM/dd/yyyy"),
                         VendorListId = a.LNC_CMP_Id,
                         LicenseDocument = a.LNC_LicenseDocument,
                         Status = a.Status == "E" ? "Expired" : a.Status == "N" ? "Deactivated" : "Activated"
                     }).Where(x => x.Status == "N").ToList();
                 }
-                int totRecords = Results.Count();
-                var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
-                objDetails.pageindex = pageindex;
-                objDetails.total = totalPages;
-                objDetails.records = totRecords;
-                objDetails.rows = Results.ToList();
-                return objDetails;
+                //int totRecords = Results.Count();
+                //var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
+                //objDetails.pageindex = pageindex;
+                //objDetails.total = totalPages;
+                //objDetails.records = totRecords;
+                //objDetails.rows = Results.ToList();
+                return Results;
             }
             catch (Exception ex)
             {
@@ -1144,7 +1308,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <param name="UserId"></param>
         /// <param name="IsActive"></param>
         /// <returns></returns>
-        public bool ActiveInsuranceLicenseById(long InsuranceLicenseId, long UserId, string IsActive,string IsInsuranceLicense)
+        public bool ActiveInsuranceLicenseById(long InsuranceLicenseId, long UserId, string IsActive, string IsInsuranceLicense)
         {
             bool result = false;
             string action = "U";
@@ -1195,34 +1359,31 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <param name="sortColumnName"></param>
         /// <param name="sortOrderBy"></param>
         /// <returns></returns>
-        public VendorAccountDetails GetAllAccountsDataList(long? VendorId, long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
+        public List<VendorAccountDetailsModel> GetAllAccountsDataList(long? VendorId, long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
         {
             try
             {
-                var objDetails = new VendorAccountDetails();
+                var objDetails = new List<VendorAccountDetailsModel>();
                 int pageindex = Convert.ToInt32(pageIndex) - 1;
                 int pageSize = Convert.ToInt32(numberOfRows);
-                var Results = _workorderems.spGetCompanyAccountDetail(VendorId)  // .CompanyFacilityMappings.Where(x => x.CFM_CMP_Id == VendorId)
-                    .Select(a => new VendorAccountDetailsModel()
-                    {
-                        AccountID = a.CAD_Id,
-                        AccountDocuments = a.CAD_AccountDocument,
-                        AccountNumber = a.CAD_AccountNumber,
-                        BankLocation = a.CAD_BankLocation, 
-                        BankName = a.CAD_CardOrBankName , 
-                        CardNumber = a.CAD_CreditCardNumber,
-                        IFSCCode = a.CAD_IFSCcode,
-                        SwiftOICCode = a.CAD_SwiftBICcode,
-                        Status = a.CAD_IsActive == "E" ? "Expired" : a.CAD_IsActive == "N" ? "Deactivated" : "Activated"
-                    }).ToList();
+                objDetails = _workorderems.spGetCompanyAccountDetail(VendorId)  // .CompanyFacilityMappings.Where(x => x.CFM_CMP_Id == VendorId)
+                  .Select(a => new VendorAccountDetailsModel()
+                  {
+                      AccountID = a.CAD_Id,
+                      Id = Cryptography.GetEncryptedData(Convert.ToString(a.CAD_Id), true),
+                      AccountDocuments = a.CAD_AccountDocument,
+                      AccountNumber = a.CAD_AccountNumber,
+                      BankLocation = a.CAD_BankLocation,
+                      BankName = a.CAD_CardOrBankName,
+                      CardNumber = a.CAD_CreditCardNumber,
+                      IFSCCode = a.CAD_IFSCcode,
+                      SwiftOICCode = a.CAD_SwiftBICcode,
+                      Status = a.CAD_IsActive == "E" ? "Expired" : a.CAD_IsActive == "N" ? "Deactivated" : "Activated",
+                      IsPrimary=a.CAD_IsPrimary
+                  }).ToList();
 
-                int totRecords = Results.Count();
-                var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
-                objDetails.pageindex = pageindex;
-                objDetails.total = totalPages;
-                objDetails.records = totRecords;
-                objDetails.rows = Results.ToList();
-                return objDetails;
+
+                return objDetails.ToList();
             }
             catch (Exception ex)
             {
@@ -1249,11 +1410,11 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 if (AccountsId > 0)
                 {
 
-                        var getDetails = _workorderems.LogCompanyAccountDetails.Where(x => x.LCAD_CAD_Id == AccountsId)//(action, null)
-                            .FirstOrDefault();
-                        var Update = _workorderems.spSetCompanyAccountDetail(action, AccountsId, getDetails.LCAD_CMP_Id, getDetails.LCAD_PMD_Id,
-                                                                          getDetails.LCAD_CardOrBankName, getDetails.LCAD_BankLocation, getDetails.LCAD_AccountNumber,
-                                                                          getDetails.LCAD_CreditCardNumber, getDetails.LCAD_IFSCcode, getDetails.LCAD_SwiftBICcode, getDetails.LCAD_AccountDocument, UserId, getDetails.LCAD_ApprovedBy, IsActive, getDetails.LCAD_Balance, null);                    
+                    var getDetails = _workorderems.LogCompanyAccountDetails.Where(x => x.LCAD_CAD_Id == AccountsId)//(action, null)
+                        .FirstOrDefault();
+                    var Update = _workorderems.spSetCompanyAccountDetail(action, AccountsId, getDetails.LCAD_CMP_Id, getDetails.LCAD_PMD_Id,
+                                                                      getDetails.LCAD_CardOrBankName, getDetails.LCAD_BankLocation, getDetails.LCAD_AccountNumber,
+                                                                      getDetails.LCAD_CreditCardNumber, getDetails.LCAD_IFSCcode, getDetails.LCAD_SwiftBICcode, getDetails.LCAD_AccountDocument, UserId, getDetails.LCAD_ApprovedBy, IsActive, getDetails.LCAD_Balance, null, getDetails.LCAD_CardHolderName,getDetails.LCAD_CardExpirationDate," ");
                     result = true;
                 }
                 else
@@ -1311,7 +1472,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             bool IsSavedId = false;
             try
             {
-                if(QuickBookVendorId != null && VendorId > 0)
+                if (QuickBookVendorId != null && VendorId > 0)
                 {
                     long QBKId = Convert.ToInt64(QuickBookVendorId);
                     var SaveData = _workorderems.spSetCompanyQBK(QBKId, VendorId);
@@ -1342,7 +1503,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             long getId = 0;
             try
             {
-                if (Id  > 0)
+                if (Id > 0)
                 {
                     var getData = _workorderems.CompanyQBKs.Where(x => x.QBK_RefId == Id).FirstOrDefault();
                     if (getData == null)
@@ -1445,7 +1606,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <param name="CompanyName"></param>
         /// <returns></returns>
         public long GetVendorId(string CompanyName)
-        {            
+        {
             try
             {
                 var getData = _workorderems.Companies.Where(x => x.CMP_NameLegal == CompanyName && x.CMP_IsActive == "Y").FirstOrDefault();
@@ -1458,11 +1619,11 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     return 0;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public long GetVendorId(string CompanyName)", "Exception While getting Vendor id.", null);
                 throw;
-            }            
+            }
         }
 
         /// <summary>
@@ -1482,7 +1643,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     ObjAccountsModel = _workorderems.CompanyAccountDetails.Where(u => u.CAD_Id == CadId).
                        Select(x => new VendorAccountDetailsModel()
                        {
-                           QuickbookAcountId= x.CAD_QBKId
+                           QuickbookAcountId = x.CAD_QBKId
                        }).FirstOrDefault();
                 }
                 return ObjAccountsModel;
@@ -1512,11 +1673,11 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     model = _workorderems.Licenses.Where(x => x.LNC_Id == Id && x.LNC_IsActive == "Y").Select(
                         x => new VendorInsuranceModel()
                         {
-                           LicenseId = x.LNC_Id,
-                           LicenseDocument = x.LNC_LicenseDocument,
-                           LicenseExpirationDate = x.LNC_ExpirationDate,
-                           LicenseNumber = x.LNC_LicenseNumber,
-                           LicenseName = x.LNC_LicenseName,                           
+                            LicenseId = x.LNC_Id,
+                            LicenseDocument = x.LNC_LicenseDocument,
+                            LicenseExpirationDate = x.LNC_ExpirationDate,
+                            LicenseNumber = x.LNC_LicenseNumber,
+                            LicenseName = x.LNC_LicenseName,
                         }).FirstOrDefault();
                 }
                 else
@@ -1552,14 +1713,13 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <param name="sortColumnName"></param>
         /// <param name="sortOrderBy"></param>
         /// <returns></returns>
-        public CompanyFacilityModelDetails GetFacilityListCompanyDetails(long? VendorId, long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
+        public List<VendorFacilityModel> GetFacilityListCompanyDetails(long? VendorId, long? LocationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy)
         {
             try
             {
-                var objDetails = new CompanyFacilityModelDetails();
-                int pageindex = Convert.ToInt32(pageIndex) - 1;
-                int pageSize = Convert.ToInt32(numberOfRows);
-                var Results = _workorderems.spGetCompanyFacilityMapping(LocationId,VendorId)  // .CompanyFacilityMappings.Where(x => x.CFM_CMP_Id == VendorId)
+                var objDetails = new List<VendorFacilityModel>();
+
+                objDetails = _workorderems.spGetCompanyFacilityMapping(LocationId, VendorId)  // .CompanyFacilityMappings.Where(x => x.CFM_CMP_Id == VendorId)
                     .Select(a => new VendorFacilityModel()
                     {
                         Costcode = a.CFM_CCD_CostCode,
@@ -1568,16 +1728,13 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         UnitCost = a.CFM_Rate,
                         ProductServiceName = a.CFM_Discription,
                         VendorId = a.CFM_CMP_Id,
-                        ProductServiceType = a.CFM_FacilityType == "1"? "Product":"Services",
-                        Amount = a.BCM_BalanceAmount
+                        ProductServiceType = a.CFM_FacilityType == "1" ? "Product" : "Services",
+                        Amount = a.BCM_BalanceAmount,
+                        VenderProductImageName = HostingPrefix + DocFacilityPath.Replace("~", "") + Convert.ToString(a.CFM_ImageName)
                     }).ToList();
 
-                int totRecords = Results.Count();
-                var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
-                objDetails.pageindex = pageindex;
-                objDetails.total = totalPages;
-                objDetails.records = totRecords;
-                objDetails.rows = Results.ToList();
+
+
                 return objDetails;
             }
             catch (Exception ex)
@@ -1605,11 +1762,14 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             {
                 if (obj != null && obj.VendorId > 0)
                 {
-                   
+
                     Action = "I";
                     var saveVendorFacility = _workorderems.spSetCompanyFacilityMapping(Action, null, obj.VendorId, obj.Costcode,
                                                                          obj.ProductServiceType, obj.ProductServiceName, obj.UnitCost, obj.Tax, obj.UserId,
-                                                                         obj.UserId, "Y");
+                                                                         obj.UserId, "Y", obj.VenderProductImageName);
+                    //var saveVendorFacility = _workorderems.spSetCompanyFacilityMapping(Action, null, obj.VendorId, obj.Costcode,
+                    //                                                    obj.ProductServiceType, obj.ProductServiceName, obj.UnitCost, obj.Tax, obj.UserId,
+                    //                                                    obj.UserId, "Y");
                     IsSaved = true;
                     var userData = _workorderems.UserRegistrations.Where(x => x.UserId == obj.UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
                     var VendorData = _workorderems.spGetVendorAllDetail(obj.VendorId).FirstOrDefault();
@@ -1628,7 +1788,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         objDAR.CreatedOn = DateTime.UtcNow;
                         CommonManager.SaveDAR(objDAR);
                         #endregion DAR
-                    }                   
+                    }
                 }
                 else
                 {
@@ -1639,6 +1799,190 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             catch (Exception ex)
             {
                 Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SaveFacilityDetails(VendorFacilityModel obj)", "Exception While adding facility details.", obj);
+                throw;
+            }
+            return true;
+        }
+        public VendorCompanyContractDocument GetCompany_ContractDocument(long VendorId)
+        {
+            var CompanyDocument = "/Content/eCountingDocs/CompanyDocs/";
+            var VendorContractDocument = "/Content/eCountingDocs/ContractDocs/";
+            var result = (from c in _workorderems.Companies
+                          join cc in _workorderems.Contracts on c.CMP_Id equals cc.CNT_CMP_IdSecondParty
+                          where c.CMP_Id == VendorId
+                          select new VendorCompanyContractDocument
+                          {
+                              CMP_CompanyDocument = !string.IsNullOrEmpty(c.CMP_CompanyDocument) ? CompanyDocument + c.CMP_CompanyDocument : null,
+                              CNT_ContractDocument = !string.IsNullOrEmpty(cc.CNT_ContractDocument) ? VendorContractDocument + cc.CNT_ContractDocument : null,
+                              VendorId = VendorId,
+                          }).FirstOrDefault();
+
+            return result;
+        }
+        #region "Ajay Kumar"
+       
+        public void SetPrimaryAccount(long VendorId,long AccountId)
+        {
+            try
+            {
+                var _companyDetails = _workorderems.CompanyAccountDetails.Where(n => n.CAD_CMP_Id == VendorId && n.CAD_Id != AccountId).ToList();
+                if (_companyDetails != null)
+                {
+                    _companyDetails.ForEach(a => a.CAD_IsPrimary = "N"); 
+                    _workorderems.SaveChanges();
+
+                }
+                var _companyDetails1 = _workorderems.CompanyAccountDetails.Where(n => n.CAD_CMP_Id == VendorId && n.CAD_Id == AccountId).ToList();
+                if (_companyDetails1 != null)
+                {
+                    _companyDetails1.ForEach(a => a.CAD_IsPrimary = "Y"); 
+                    _workorderems.SaveChanges();
+
+                }
+                var _companyLogDetails = _workorderems.LogCompanyAccountDetails.Where(n => n.LCAD_CMP_Id == VendorId && n.LCAD_CAD_Id  != AccountId).ToList();
+                if (_companyLogDetails != null)
+                {
+                    _companyLogDetails.ForEach(a => a.LCAD_IsPrimary = "N"); 
+                    _workorderems.SaveChanges();
+                   
+
+                }
+                var _companyLogDetails1 = _workorderems.LogCompanyAccountDetails.Where(n => n.LCAD_CMP_Id == VendorId && n.LCAD_CAD_Id == AccountId).ToList();
+                if (_companyLogDetails1 != null)
+                {
+                    _companyLogDetails1.ForEach(a => a.LCAD_IsPrimary = "Y");
+                    _workorderems.SaveChanges();
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+          
+        }
+        public CompanyCountForGraph GetCompanyCountForGraph()
+        {
+            CompanyCountForGraph model = new CompanyCountForGraph();
+            var result = _workorderems.spGetCompanyCountForGraph().FirstOrDefault();
+            if (result != null) {
+                model.RejectedVendorCount = result.RejectedVendorCount;
+                model.ApprovedVendorCount = result.ApprovedVendorCount;
+                model.WaitingVendorCount = result.WaitingVendorCount;
+                model.TotalVendorCount = result.TotalVendorCount;
+            }
+            return model;
+        }
+        public List<LocationAllocationCompanyCountForGraph> GetCompanyAllocationLocationCountForGraph()
+        {
+            List<LocationAllocationCompanyCountForGraph> modellist = new List<LocationAllocationCompanyCountForGraph>();
+              var result = _workorderems.spGetCompanyAllocationLocationCountForGraph().ToList();
+            if (result.Count()>0)
+            {
+                Random r = new Random();
+                foreach (var item in result)
+                {
+                     
+                    LocationAllocationCompanyCountForGraph model = new LocationAllocationCompanyCountForGraph();
+                    model.LocationName = item.LocationName;
+                    model.VendorCount = item.VendorCount;
+                    model.colour =   String.Format("#{0:X6}", r.Next(0x1000000)); // = "#A197B9";
+                    modellist.Add(model);
+                }
+                
+            }
+            return modellist;
+        }
+
+        /// <summary>
+        /// Created By : Ajay Kumar
+        /// Created Date : 19-Sep-2019
+        /// Crated For : To check duplicate TXD_TaxIdNumber  for vendor
+        /// </summary>
+        /// <param name="taxNumber"></param>
+        /// <returns></returns>
+        public bool TaxNumberIsExists(string taxNumber, long VendorId)
+        {
+            bool result = false;
+            if (VendorId > 0)
+            {
+                var status = _workorderems.TaxDetails.Any(u => u.TXD_TaxIdNumber.ToLower() == taxNumber.Trim().ToLower() && u.TXD_Id != VendorId);
+                result = status == true ? result = true : result = false;
+            }
+            else
+            {
+                var status = _workorderems.TaxDetails.Any(u => u.TXD_TaxIdNumber.ToLower() == taxNumber.Trim().ToLower());
+                result = status == true ? result = false : result = true;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Created By : Ajay Kumar
+        /// Created Date : 19-Sep-2019
+        /// Crated For : To check duplicate INS_PolicyNumber  for vendor
+        /// </summary>
+        /// <param name="InsPolicyNumber"></param>
+        /// <returns></returns>
+        public bool InsPolicyNumberIsExists(string InsPolicyNumber)
+        {
+            bool result = false;
+            var status = _workorderems.Insurances.Any(u => u.INS_PolicyNumber.ToLower() == InsPolicyNumber.Trim().ToLower());
+            result = status == true ? result = false : result = true;
+            return result;
+        }
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 16-OCT-2018
+        /// Created For : To Approve or Reject Vendor By Using vendor Id
+        /// </summary>
+        /// <param name="ObjApproveRejectVendorModel"></param>
+        /// <returns></returns>
+        public  string GetFirstCompanyByVendorId(int firstcompanyId)
+        { 
+            string _Name = "";
+            try
+            {
+                var _result = _workorderems.Companies.Where(x => x.CMP_Id == firstcompanyId).FirstOrDefault();
+                if (_result!=null) 
+                {
+                    _Name = _result.CMP_NameLegal;
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public string ApprovePOByPOId(long Id)", "Exception While Approving PO.", null);
+                throw;
+            }
+            return _Name;
+        }
+        #endregion
+        public bool SaveContractAllocation(ContractLocationAllocation obj)
+        {
+            string Action = "";
+            bool IsSaved = false;
+            try
+            {
+                if (obj != null)//&& obj.VendorId > 0
+                {
+
+                    Action = "I";
+                    var saveVendorFacility = "";//_workorderems.spSetVenderLocationAllocation(Action, null, obj.CntId, obj.LocationId, obj.AllocationId,obj.IsActive);
+                    IsSaved = true;
+                }
+                else
+                {
+                    IsSaved = false;
+                    return IsSaved;
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "SaveContractallocation", "Exception While adding allocation details.", obj);
                 throw;
             }
             return true;

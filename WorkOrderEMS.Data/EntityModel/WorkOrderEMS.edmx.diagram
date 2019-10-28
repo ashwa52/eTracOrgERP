@@ -4,248 +4,315 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="70717c90769845e7b34c949de1468c35" Name="Diagram1" ZoomLevel="45">
-        <EntityTypeShape EntityType="workorderEMSModel.AdminEmployeeMapping" Width="1.5" PointX="18.75" PointY="73" />
-        <EntityTypeShape EntityType="workorderEMSModel.AdminLocationMapping" Width="1.5" PointX="5.25" PointY="111.125" />
-        <EntityTypeShape EntityType="workorderEMSModel.DARDetail" Width="1.5" PointX="0.75" PointY="5.75" />
-        <EntityTypeShape EntityType="workorderEMSModel.EmailLog" Width="1.5" PointX="5.25" PointY="115.25" />
-        <EntityTypeShape EntityType="workorderEMSModel.EMaintenanceSurvey" Width="1.5" PointX="3" PointY="47.875" />
-        <EntityTypeShape EntityType="workorderEMSModel.EmployeeLocationMapping" Width="1.5" PointX="5.25" PointY="119.875" />
-        <EntityTypeShape EntityType="workorderEMSModel.ExceptionLog" Width="1.5" PointX="10.75" PointY="5.875" />
-        <EntityTypeShape EntityType="workorderEMSModel.LocationClientMapping" Width="1.5" PointX="5.25" PointY="74" />
-        <EntityTypeShape EntityType="workorderEMSModel.LocationService" Width="1.5" PointX="5.25" PointY="69.25" />
-        <EntityTypeShape EntityType="workorderEMSModel.LoginLog" Width="1.5" PointX="8.25" PointY="69.75" />
-        <EntityTypeShape EntityType="workorderEMSModel.ManagerEmployeeMapping" Width="1.5" PointX="8.75" PointY="5.75" />
-        <EntityTypeShape EntityType="workorderEMSModel.ManagerLocationMapping" Width="1.5" PointX="8.25" PointY="75.125" />
-        <EntityTypeShape EntityType="workorderEMSModel.MasterCountry" Width="1.5" PointX="19.5" PointY="67.125" />
-        <EntityTypeShape EntityType="workorderEMSModel.MasterState" Width="1.5" PointX="19.5" PointY="50.875" />
-        <EntityTypeShape EntityType="workorderEMSModel.PermissionDetail" Width="1.5" PointX="4.625" PointY="11.125" />
-        <EntityTypeShape EntityType="workorderEMSModel.QRCMasterLog" Width="1.5" PointX="13.5" PointY="58.75" />
-        <EntityTypeShape EntityType="workorderEMSModel.ServiceMaster" Width="1.5" PointX="3" PointY="62.25" />
-        <EntityTypeShape EntityType="workorderEMSModel.TrackEmployeeStatu" Width="1.5" PointX="8.625" PointY="11.125" />
-        <AssociationConnector Association="workorderEMSModel.FK_LocationServices_ServiceMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_MasterStates_MasterCountries" />
-        <EntityTypeShape EntityType="workorderEMSModel.GlobalCode" Width="1.5" PointX="0.75" PointY="56.625" />
-        <AssociationConnector Association="workorderEMSModel.FK_EMaintenanceSurvey_GlobalCodes" />
-        <EntityTypeShape EntityType="workorderEMSModel.QRCScanLog" Width="1.5" PointX="29.25" PointY="63.5" />
-        <AssociationConnector Association="workorderEMSModel.FK_QRCScanLog_GlobalCodes" />
-        <AssociationConnector Association="workorderEMSModel.FK_QRCScanLog_GlobalCodesPermit" />
-        <EntityTypeShape EntityType="workorderEMSModel.DashboardWidgetSetting" Width="1.5" PointX="3" PointY="52.125" />
-        <AssociationConnector Association="workorderEMSModel.FK_DashboardWidgetSetting_GlobalCodes" />
-        <EntityTypeShape EntityType="workorderEMSModel.TimeZone" Width="1.5" PointX="13.375" PointY="10.75" />
-        <EntityTypeShape EntityType="workorderEMSModel.eFleetVehicleMasterLog" Width="1.5" PointX="37.5" PointY="71.25" />
-        <EntityTypeShape EntityType="workorderEMSModel.eFleetVehicleScanLog" Width="1.5" PointX="10.5" PointY="69.875" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetVehicleScanLog_GlobalCodes" />
-        <EntityTypeShape EntityType="workorderEMSModel.eFleetMeter" Width="1.5" PointX="37.5" PointY="61.875" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetMeter_GlobalCodes" />
-        <EntityTypeShape EntityType="workorderEMSModel.eFleetPreventativeMaintenance" Width="1.5" PointX="40.5" PointY="68.875" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetPreventativeMaintenance_GlobalCodes" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetPreventativeMaintenance_GlobalCodes1" />
-        <EntityTypeShape EntityType="workorderEMSModel.eFleetDriver" Width="1.5" PointX="40.5" PointY="63.5" />
-        <EntityTypeShape EntityType="workorderEMSModel.eFleetPassengerTrackingRoute" Width="1.5" PointX="37.5" PointY="66" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetPassengerTrackingRoute_GlobalCodes" />
-        <EntityTypeShape EntityType="workorderEMSModel.HoursOfService" Width="1.5" PointX="37.5" PointY="56.625" />
-        <EntityTypeShape EntityType="workorderEMSModel.AddressMaster" Width="1.5" PointX="34.5" PointY="58.125" />
-        <EntityTypeShape EntityType="workorderEMSModel.QRCMaster" Width="1.5" PointX="5.25" PointY="56.375" />
-        <AssociationConnector Association="workorderEMSModel.FK_AddressMaster_MasterCountries" />
-        <AssociationConnector Association="workorderEMSModel.FK_AddressMaster_MasterStates" />
-        <AssociationConnector Association="workorderEMSModel.FK_QRCMaster_GlobalCodes_ClientType" />
-        <AssociationConnector Association="workorderEMSModel.FK_QRCMaster_GlobalCodes_Module" />
-        <AssociationConnector Association="workorderEMSModel.FK_QRCMaster_GlobalCodes_MotorType" />
-        <AssociationConnector Association="workorderEMSModel.FK_QRCMaster_GlobalCodes_QRCSIZE" />
-        <AssociationConnector Association="workorderEMSModel.FK_QRCMaster_GlobalCodes_QRCType" />
-        <AssociationConnector Association="workorderEMSModel.FK_QRCMaster_GlobalCodes_VehicleType" />
-        <AssociationConnector Association="workorderEMSModel.FK_QRCMasterLog_QRCMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_QRCScanLog_QRCMaster" />
-        <EntityTypeShape EntityType="workorderEMSModel.eFleetFueling" Width="1.5" PointX="34.5" PointY="37" />
-        <EntityTypeShape EntityType="workorderEMSModel.eFleetMaintenance" Width="1.5" PointX="42.75" PointY="44.75" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetFueling_DARDetails" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetFueling_GlobalCodes" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetMaintenance_eFleetPreventativeMaintenance" />
-        <AssociationConnector Association="workorderEMSModel.FK_GlobalCodes_eFleetMaintenance" />
-        <EntityTypeShape EntityType="workorderEMSModel.eFleetVehicleIncident" Width="1.5" PointX="34.5" PointY="45.25" />
-        <EntityTypeShape EntityType="workorderEMSModel.eFleetVehicle" Width="1.5" PointX="3" PointY="37.25" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetFueling_eFleetVehicle" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetVehicle_eFleetMaintenance" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetVehicle_GlobalCodes" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetVehicleIncident_eFleetVehicle" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetVehicleMasterLog_eFleetVehicle" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetVehicleScanLog_eFleetVehicle" />
-        <EntityTypeShape EntityType="workorderEMSModel.eFleetVehicleInspectionLog" Width="1.5" PointX="34.5" PointY="53.75" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetVehicleInspectionLog_eFleetVehicle" />
-        <EntityTypeShape EntityType="workorderEMSModel.DefectReportDetail" Width="1.5" PointX="37.5" PointY="50.75" />
-        <AssociationConnector Association="workorderEMSModel.FK_DefectReportDetails_eFleetVehicle" />
-        <EntityTypeShape EntityType="workorderEMSModel.eFleetPassengerTrackingCount" Width="1.5" PointX="39.75" PointY="51.875" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetPassengerTrackingCount_eFleetPassengerTrackingRoute" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetPassengerTrackingCount_eFleetVehicle" />
-        <EntityTypeShape EntityType="workorderEMSModel.WorkRequestAssignment" Width="1.5" PointX="8.25" PointY="50.75" />
-        <AssociationConnector Association="workorderEMSModel.FK_DefectReportDetails_WorkRequestAssignment" />
-        <AssociationConnector Association="workorderEMSModel.FK_WorkRequestAssignment_eFleetVehicle" />
-        <AssociationConnector Association="workorderEMSModel.FK_WorkRequestAssignment_GlobalCodes_PriorityLevel" />
-        <AssociationConnector Association="workorderEMSModel.FK_WorkRequestAssignment_GlobalCodes_WorkRequestStatus" />
-        <AssociationConnector Association="workorderEMSModel.FK_WorkRequestAssignment_GlobalCodes_WorkRequestType" />
-        <EntityTypeShape EntityType="workorderEMSModel.CostCode" Width="1.5" PointX="15.625" PointY="6" />
-        <EntityTypeShape EntityType="workorderEMSModel.CostCodeMaster" Width="1.5" PointX="13.375" PointY="4" />
-        <EntityTypeShape EntityType="workorderEMSModel.LogCostCode" Width="1.5" PointX="17.875" PointY="4.25" />
-        <EntityTypeShape EntityType="workorderEMSModel.LogCostCodeMaster" Width="1.5" PointX="15.625" PointY="2" />
-        <AssociationConnector Association="workorderEMSModel.FK_CostCode_CostCodeMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogCostCode_CostCode" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogCostCode_CostCodeMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogCostCodeMaster_CostCodeMaster" />
-        <EntityTypeShape EntityType="workorderEMSModel.CostCodeLocationMapping" Width="1.5" PointX="17.875" PointY="39.625" />
-        <AssociationConnector Association="workorderEMSModel.FK_CostCodeLocationMapping_CostCode" />
-        <AssociationConnector Association="workorderEMSModel.FK_CostCodeLocationMapping_CostCodeMaster" />
-        <EntityTypeShape EntityType="workorderEMSModel.BudgetCostCodeMapping" Width="1.5" PointX="20.125" PointY="39.5" />
-        <EntityTypeShape EntityType="workorderEMSModel.BudgetLocationMapping" Width="1.5" PointX="5.25" PointY="78.875" />
-        <AssociationConnector Association="workorderEMSModel.FK_BudgetCostCodeMapping_CostCodeLocationMapping" />
-        <AssociationConnector Association="workorderEMSModel.FK_BudgetCostCodeMapping_CostCodeLocationMappingTransfer" />
-        <EntityTypeShape EntityType="workorderEMSModel.IdleEmployee" Width="1.5" PointX="0.75" PointY="0.75" />
-        <EntityTypeShape EntityType="workorderEMSModel.BillType" Width="1.5" PointX="3.375" PointY="4.75" />
-        <EntityTypeShape EntityType="workorderEMSModel.CompanyType" Width="1.5" PointX="3.375" PointY="1.25" />
-        <EntityTypeShape EntityType="workorderEMSModel.ContractType" Width="1.5" PointX="5.375" PointY="4.75" />
-        <EntityTypeShape EntityType="workorderEMSModel.PaymentMode" Width="1.5" PointX="3.375" PointY="7.75" />
-        <EntityTypeShape EntityType="workorderEMSModel.PaymentTerm" Width="1.5" PointX="5.375" PointY="7.75" />
-        <EntityTypeShape EntityType="workorderEMSModel.LogCompanyDetail" Width="1.5" PointX="11.125" PointY="10" />
-        <EntityTypeShape EntityType="workorderEMSModel.POType" Width="1.5" PointX="12.375" PointY="0.75" />
-        <EntityTypeShape EntityType="workorderEMSModel.PONumber" Width="1.5" PointX="12.375" PointY="38.75" />
-        <EntityTypeShape EntityType="workorderEMSModel.POQuestion" Width="1.5" PointX="15.625" PointY="13.875" />
-        <EntityTypeShape EntityType="workorderEMSModel.QuestionAnswer" Width="1.5" PointX="13.375" PointY="14" />
-        <AssociationConnector Association="workorderEMSModel.FK_POQuestion_QuestionAnswer" />
-        <EntityTypeShape EntityType="workorderEMSModel.POFacilityItem" Width="1.5" PointX="20.125" PointY="1.375" />
-        <EntityTypeShape EntityType="workorderEMSModel.VendorType" Width="1.5" PointX="3.375" PointY="15" />
-        <EntityTypeShape EntityType="workorderEMSModel.CompanyDetail" Width="1.5" PointX="9.875" PointY="40.5" />
-        <EntityTypeShape EntityType="workorderEMSModel.Contract" Width="1.5" PointX="9.875" PointY="6.75" />
-        <EntityTypeShape EntityType="workorderEMSModel.Insurance" Width="1.5" PointX="9.875" PointY="46.125" />
-        <EntityTypeShape EntityType="workorderEMSModel.License" Width="1.5" PointX="9.875" PointY="37" />
-        <EntityTypeShape EntityType="workorderEMSModel.LogCompany" Width="1.5" PointX="9.875" PointY="1" />
-        <EntityTypeShape EntityType="workorderEMSModel.LogCompanyFacilityMapping" Width="1.5" PointX="23.125" PointY="9.75" />
-        <EntityTypeShape EntityType="workorderEMSModel.LogContract" Width="1.5" PointX="20.125" PointY="0.75" />
-        <EntityTypeShape EntityType="workorderEMSModel.LogInsurance" Width="1.5" PointX="15.125" PointY="26" />
-        <EntityTypeShape EntityType="workorderEMSModel.LogLicense" Width="1.5" PointX="12.125" PointY="25.375" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogCompanyDetail_CompanyDetail" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogCompany_CompanyType" />
-        <AssociationConnector Association="workorderEMSModel.FK_Contract_ContractType" />
-        <AssociationConnector Association="workorderEMSModel.FK_Contract_PaymentMode" />
-        <AssociationConnector Association="workorderEMSModel.FK_Contract_PaymentTerm" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogContract_Contract" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogContract_ContractType" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogCompanyFacilityMapping_CostCode" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogInsurance_Insurance" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogLicense_License" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogContract_PaymentMode" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogContract_PaymentTerm" />
-        <EntityTypeShape EntityType="workorderEMSModel.LogMiscellaneou" Width="1.5" PointX="20.875" PointY="44" />
-        <EntityTypeShape EntityType="workorderEMSModel.Miscellaneou" Width="1.5" PointX="17.875" PointY="43.625" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogMiscellaneous_CostCode" />
-        <AssociationConnector Association="workorderEMSModel.FK_Miscellaneous_CostCode" />
-        <EntityTypeShape EntityType="workorderEMSModel.CompanyFacilityMapping" Width="1.5" PointX="17.875" PointY="9.125" />
-        <AssociationConnector Association="workorderEMSModel.FK_CompanyFacilityMapping_CostCode" />
-        <EntityTypeShape EntityType="workorderEMSModel.CompanyQBK" Width="1.5" PointX="9.875" PointY="17.75" />
-        <EntityTypeShape EntityType="workorderEMSModel.LogBill" Width="1.5" PointX="12.875" PointY="41.5" />
-        <EntityTypeShape EntityType="workorderEMSModel.CompanyAccountDetail" Width="1.5" PointX="17.875" PointY="13.375" />
-        <EntityTypeShape EntityType="workorderEMSModel.LogCompanyAccountDetail" Width="1.5" PointX="20.125" PointY="9.75" />
-        <AssociationConnector Association="workorderEMSModel.FK_CompanyAccountDetail_PaymentMode" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogCompanyAccountDetail_CompanyAccountDetail" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogCompanyAccountDetail_PaymentMode" />
-        <EntityTypeShape EntityType="workorderEMSModel.Bill" Width="1.5" PointX="14.875" PointY="36.375" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogBill_Bill" />
-        <EntityTypeShape EntityType="workorderEMSModel.Module" Width="1.5" PointX="5.375" PointY="0.75" />
-        <EntityTypeShape EntityType="workorderEMSModel.LogPODetail" Width="1.5" PointX="22.875" PointY="35.5" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogPODetail_POType" />
-        <EntityTypeShape EntityType="workorderEMSModel.Rule" Width="1.5" PointX="7.625" PointY="1.875" />
-        <AssociationConnector Association="workorderEMSModel.FK_Rule_Module" />
-        <EntityTypeShape EntityType="workorderEMSModel.eForm" Width="1.5" PointX="7.625" PointY="15.75" />
-        <AssociationConnector Association="workorderEMSModel.FK_eForm_Module" />
-        <EntityTypeShape EntityType="workorderEMSModel.PODetail" Width="1.5" PointX="17.625" PointY="34.125" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogPODetail_PODetail" />
-        <AssociationConnector Association="workorderEMSModel.FK_PODetail_PONumber" />
-        <AssociationConnector Association="workorderEMSModel.FK_PODetail_POType" />
-        <AssociationConnector Association="workorderEMSModel.FK_POFacilityItem_PODetail" />
-        <EntityTypeShape EntityType="workorderEMSModel.Company" Width="1.5" PointX="7.625" PointY="0.75" />
-        <AssociationConnector Association="workorderEMSModel.FK_Bill_Company" />
-        <AssociationConnector Association="workorderEMSModel.FK_Company_CompanyType" />
-        <AssociationConnector Association="workorderEMSModel.FK_Company_VendorType" />
-        <AssociationConnector Association="workorderEMSModel.FK_CompanyAccountDetail_Company" />
-        <AssociationConnector Association="workorderEMSModel.FK_CompanyDetail_Company" />
-        <AssociationConnector Association="workorderEMSModel.FK_CompanyFacilityMapping_Company" />
-        <AssociationConnector Association="workorderEMSModel.FK_CompanyQBK_Company" />
-        <AssociationConnector Association="workorderEMSModel.FK_Contract_CompanyIdFirstParty" />
-        <AssociationConnector Association="workorderEMSModel.FK_Contract_CompanyIdSecontParty" />
-        <AssociationConnector Association="workorderEMSModel.FK_Insurance_Company" />
-        <AssociationConnector Association="workorderEMSModel.FK_License_Company" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogBill_Company" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogCompany_Company" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogCompanyAccountDetail_Company" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogCompanyDetail_Company" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogCompanyFacilityMapping_Company" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogContract_CompanyIdFirstParty" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogContract_CompanyIdSecontParty" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogInsurance_Company" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogLicense_Company" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogMiscellaneous_Company" />
-        <AssociationConnector Association="workorderEMSModel.FK_Miscellaneous_Company" />
-        <EntityTypeShape EntityType="workorderEMSModel.UserRegistration" Width="1.5" PointX="10.5" PointY="53.875" />
-        <AssociationConnector Association="workorderEMSModel.FK_AddressMaster_UserRegistrations" />
-        <AssociationConnector Association="workorderEMSModel.FK_AdminEmployeeMapping_UserRegistrations_Admin" />
-        <AssociationConnector Association="workorderEMSModel.FK_DefectReportDetails_UserRegistrations" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetDriver_UserRegistrations" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetFueling_UserRegistrations" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetMaintenance_UserRegistrations" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetMeter_UserRegistrations" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetPassengerTrackingCount_UserRegistrations" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetPassengerTrackingRoute_UserRegistrations" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetPreventativeMaintenance_UserRegistrations" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetPreventativeMaintenance_UserRegistrations1" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetVehicleIncident_UserRegistrations" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetVehicleInspectionLog_UserRegistrations" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetVehicleMasterLog_UserRegistrations" />
-        <AssociationConnector Association="workorderEMSModel.FK_User_GlobalCodes_Gender" />
-        <AssociationConnector Association="workorderEMSModel.FK_User_GlobalCodes_UserType" />
-        <AssociationConnector Association="workorderEMSModel.FK_UserRegistrations_GlobalCodes" />
-        <AssociationConnector Association="workorderEMSModel.FK_UserRegistrations_GlobalCodes_DeviceType" />
-        <AssociationConnector Association="workorderEMSModel.FK_HoursOfServices_HoursOfServices" />
-        <AssociationConnector Association="workorderEMSModel.FK_LocationClientMapping_UserRegistrations" />
-        <AssociationConnector Association="workorderEMSModel.FK_LoginLog_UserRegistrations" />
-        <AssociationConnector Association="workorderEMSModel.FK_TrackEmployeeStatus_UserRegistrations" />
-        <AssociationConnector Association="workorderEMSModel.FK_ManagerLocationMapping_UserRegistrations" />
-        <AssociationConnector Association="workorderEMSModel.FK_UserRegistrations_QRCMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_QRCMasterLog_UserRegistrations" />
-        <AssociationConnector Association="workorderEMSModel.FK_QRCScanLog_UserRegistrations" />
-        <EntityTypeShape EntityType="workorderEMSModel.LocationCompanyMapping" Width="1.5" PointX="9.875" PointY="33.375" />
-        <AssociationConnector Association="workorderEMSModel.FK_LocationCompanyMapping_Company" />
-        <EntityTypeShape EntityType="workorderEMSModel.LogPreBill" Width="1.5" PointX="12.875" PointY="32" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogPreBill_Company" />
-        <EntityTypeShape EntityType="workorderEMSModel.NotificationDetail" Width="1.5" PointX="0.75" PointY="14.75" />
-        <EntityTypeShape EntityType="workorderEMSModel.LocationMaster" Width="1.5" PointX="3" PointY="66.875" />
-        <AssociationConnector Association="workorderEMSModel.FK_AdminLocationMapping_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_Bill_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_BudgetLocationMapping_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_CostCodeLocationMapping_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetDriver_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetFueling_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetMaintenance_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetPreventativeMaintenance_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetVehicleIncident_eFleetVehicleIncident" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetVehicleInspectionLog_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_eFleetVehicleScanLog_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_EmailLog_locationmaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_EmployeeLocationMapping_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_LocationMaster_GlobalCodes_SubType" />
-        <AssociationConnector Association="workorderEMSModel.FK_LocationClientMapping_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_LocationCompanyMapping_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_LocationID_WorkRequestAssignment_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_LocationServices_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogBill_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_LoginLog_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogMiscellaneous_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogPODetail_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_LogPreBill_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_ManagerLocationMapping_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_Miscellaneous_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_PODetail_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_QRCMaster_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_QRCScanLog_LocationMaster" />
-        <AssociationConnector Association="workorderEMSModel.FK_TrackEmployeeStatus_LocationMaster" />
+      <Diagram DiagramId="2d5990e73e4e48b6b77f55289512351d" Name="Diagram1" ZoomLevel="63">
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.AccountCategory" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.AddressMaster" Width="1.5" PointX="21.75" PointY="124.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.AdminEmployeeMapping" Width="1.5" PointX="18.75" PointY="126.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.AdminLocationMapping" Width="1.5" PointX="5.25" PointY="151" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.Bill" Width="1.5" PointX="5.25" PointY="163.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.BillFacilityItem" Width="1.5" PointX="22.5" PointY="180.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.BillType" Width="1.5" PointX="0.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.BudgetCostCodeMapping" Width="1.5" PointX="7.5" PointY="166.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.BudgetLocationMapping" Width="1.5" PointX="5.25" PointY="159.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.Citizenship" Width="1.5" PointX="2.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.Company" Width="1.5" PointX="15" PointY="175.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.CompanyAccountDetail" Width="1.5" PointX="17.25" PointY="184.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.CompanyAccountTransaction" Width="1.5" PointX="19.5" PointY="180.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.CompanyDetail" Width="1.5" PointX="17.25" PointY="174.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.CompanyFacilityMapping" Width="1.5" PointX="17.25" PointY="180.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.CompanyLocationCostCodeMapping" Width="1.5" PointX="7.5" PointY="170.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.CompanyQBK" Width="1.5" PointX="17.25" PointY="190.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.CompanyType" Width="1.5" PointX="12.75" PointY="177.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.Contract" Width="1.5" PointX="6" PointY="194" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.ContractLocationAllocation" Width="1.5" PointX="8.25" PointY="161" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.ContractType" Width="1.5" PointX="3.75" PointY="193" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.CostCode" Width="1.5" PointX="3" PointY="6" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.CostCodeLocationMapping" Width="1.5" PointX="5.25" PointY="168" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.CostCodeMaster" Width="1.5" PointX="0.75" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.DARDetail" Width="1.5" PointX="3" PointY="127" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.DashboardWidgetSetting" Width="1.5" PointX="3" PointY="100.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.DefectReportDetail" Width="1.5" PointX="5.25" PointY="133.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.Department" Width="1.5" PointX="17.25" PointY="116.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.eFleetDriver" Width="1.5" PointX="10.25" PointY="164.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.eFleetFueling" Width="1.5" PointX="5.25" PointY="139.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.eFleetMaintenance" Width="1.5" PointX="8.25" PointY="138.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.eFleetMeter" Width="1.5" PointX="3" PointY="119.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.eFleetPassengerTrackingCount" Width="1.5" PointX="8.25" PointY="128.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.eFleetPassengerTrackingRoute" Width="1.5" PointX="6" PointY="118.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.eFleetPreventativeMaintenance" Width="1.5" PointX="11.25" PointY="138.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.eFleetVehicle" Width="1.5" PointX="3" PointY="136.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.eFleetVehicleIncident" Width="1.5" PointX="8.25" PointY="149.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.eFleetVehicleInspectionLog" Width="1.5" PointX="5.25" PointY="155.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.eFleetVehicleMasterLog" Width="1.5" PointX="8.25" PointY="133.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.eFleetVehicleScanLog" Width="1.5" PointX="11.25" PointY="147" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.eForm" Width="1.5" PointX="6" PointY="177.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.eFormTrack" Width="1.5" PointX="8.25" PointY="156.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.EmailLog" Width="1.5" PointX="5.25" PointY="183.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.EMaintenanceSurvey" Width="1.5" PointX="3" PointY="147.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.EmployeeAddress" Width="1.5" PointX="4.75" PointY="9.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.EmployeeLocationMapping" Width="1.5" PointX="5.25" PointY="188.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.ExceptionLog" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.FormMaster" Width="1.5" PointX="9.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.GlobalCode" Width="1.5" PointX="0.75" PointY="116.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.HoursOfService" Width="1.5" PointX="18.75" PointY="131" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.Insurance" Width="1.5" PointX="17.25" PointY="193.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.License" Width="1.5" PointX="17.25" PointY="197" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LocationClientMapping" Width="1.5" PointX="11.25" PointY="160.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LocationCompanyMapping" Width="1.5" PointX="11.25" PointY="157" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LocationMaster" Width="1.5" PointX="3" PointY="154.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LocationService" Width="1.5" PointX="13.25" PointY="165.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogBill" Width="1.5" PointX="16.5" PointY="149.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogCompany" Width="1.5" PointX="22.25" PointY="174.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogCompanyAccountDetail" Width="1.5" PointX="22.5" PointY="184.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogCompanyDetail" Width="1.5" PointX="19.5" PointY="173.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogCompanyFacilityMapping" Width="1.5" PointX="17.25" PointY="201.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogContract" Width="1.5" PointX="20.25" PointY="187.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogCostCode" Width="1.5" PointX="11.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogCostCodeMaster" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LoginLog" Width="1.5" PointX="11.25" PointY="152.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogInsurance" Width="1.5" PointX="25.5" PointY="184" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogLicense" Width="1.5" PointX="22.5" PointY="191.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogLocationCompanyMapping" Width="1.5" PointX="18.5" PointY="165.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogMiscellaneou" Width="1.5" PointX="14.25" PointY="159.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogPODetail" Width="1.5" PointX="14.25" PointY="153.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogPODetailEmergency" Width="1.5" PointX="13.25" PointY="169.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogPreBill" Width="1.5" PointX="10.25" PointY="170.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.LogTaxDetail" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.ManagerEmployeeMapping" Width="1.5" PointX="6.75" PointY="12.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.ManagerLocationMapping" Width="1.5" PointX="16.25" PointY="165.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.MasterCountry" Width="1.5" PointX="19.5" PointY="110.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.MasterState" Width="1.5" PointX="19.5" PointY="140.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.Message" Width="1.5" PointX="0.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.Miscellaneou" Width="1.5" PointX="16.25" PointY="170.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.MisNumber" Width="1.5" PointX="12" PointY="183.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.Module" Width="1.5" PointX="14.25" PointY="112.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.NotificationDetail" Width="1.5" PointX="2.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.PaymentMode" Width="1.5" PointX="3.75" PointY="196" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.PaymentTerm" Width="1.5" PointX="3.75" PointY="199.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.PermissionDetail" Width="1.5" PointX="13.75" PointY="4.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.PODetail" Width="1.5" PointX="5.25" PointY="172.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.PODetailEmergency" Width="1.5" PointX="17.25" PointY="160.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.POFacilityItem" Width="1.5" PointX="7.5" PointY="174" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.PONumber" Width="1.5" PointX="3" PointY="171.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.POQuestion" Width="1.5" PointX="8" PointY="0.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.POType" Width="1.5" PointX="3" PointY="174.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.PreBill" Width="1.5" PointX="17.25" PointY="155.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.PreBillNumber" Width="1.5" PointX="15" PointY="184.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.QRCMaster" Width="1.5" PointX="11.25" PointY="126.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.QRCMasterLog" Width="1.5" PointX="13.5" PointY="130.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.QRCScanLog" Width="1.5" PointX="16.5" PointY="137.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.QuestionAnswer" Width="1.5" PointX="5.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.Rule" Width="1.5" PointX="16.5" PointY="107.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.ServiceMaster" Width="1.5" PointX="11" PointY="186.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.SubCostCode" Width="1.5" PointX="18.75" PointY="135.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.SubModule" Width="1.5" PointX="16.5" PointY="112.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.TaxDetail" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.TimeZone" Width="1.5" PointX="13.75" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.TrackEmployeeStatu" Width="1.5" PointX="8.75" PointY="13.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.UserOverrideUsertype" Width="1.5" PointX="18.75" PointY="123.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.UserRegistration" Width="1.5" PointX="16.5" PointY="119.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.UserVehicleSeatingMap" Width="1.5" PointX="21.75" PointY="120.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.VehicleSeating_DepartmentMapping" Width="1.5" PointX="13.75" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.VehicleSeatingSubModuleMapping" Width="1.5" PointX="21.75" PointY="114.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.VendorType" Width="1.5" PointX="12.75" PointY="180.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.WorkRequestAssignment" Width="1.5" PointX="14.25" PointY="136.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.IdleEmployee" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.QRCMaster1" Width="1.5" PointX="13.75" PointY="14.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.VW_USERTYPE" Width="1.5" PointX="15.75" PointY="4.75" IsExpanded="true" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_AddressMaster_MasterCountries" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_AddressMaster_MasterStates" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_AddressMaster_UserRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_AdminEmployeeMapping_UserRegistrations_Admin" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_AdminLocationMapping_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Bill_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Bill_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogBill_Bill" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_BillFacilityItem_CompanyFacilityMapping" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_BillFacilityItem_PreBillNumber" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_BudgetCostCodeMapping_CostCodeLocationMapping" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_BudgetCostCodeMapping_CostCodeLocationMappingTransfer" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_BudgetLocationMapping_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Company_CompanyType" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Company_VendorType" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyAccountDetail_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyAccountTransaction_CompanyCr" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyAccountTransaction_CompanyDr" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyDetail_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyFacilityMapping_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyQBK_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Contract_CompanyIdFirstParty" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Contract_CompanyIdSecontParty" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Insurance_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_License_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LocationCompanyMapping_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogBill_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCompany_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCompanyAccountDetail_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCompanyDetail_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCompanyFacilityMapping_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogContract_CompanyIdFirstParty" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogContract_CompanyIdSecontParty" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogInsurance_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogLicense_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogLocationCompanyMapping_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogMiscellaneous_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogPreBill_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Miscellaneous_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_PreBill_Company" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyAccountDetail_PaymentMode" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyAccountTransaction_CompanyAccountDetailCr" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyAccountTransaction_CompanyAccountDetailDr" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCompanyAccountDetail_CompanyAccountDetail" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCompanyDetail_CompanyDetail" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CompanyLocationCostCodeMapping_CostCodeLocationMapping" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCompany_CompanyType" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Contract_ContractType" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Contract_PaymentMode" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Contract_PaymentTerm" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_ContractLocationAllocation_Contract" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogContract_Contract" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_ContractLocationAllocation_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogContract_ContractType" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CostCode_CostCodeMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_CostCodeLocationMapping_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetFueling_DARDetails" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_DashboardWidgetSetting_GlobalCodes" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_DefectReportDetails_eFleetVehicle" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_DefectReportDetails_UserRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_DefectReportDetails_WorkRequestAssignment" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetDriver_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetDriver_UserRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetFueling_eFleetVehicle" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetFueling_GlobalCodes" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetFueling_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetFueling_UserRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetMaintenance_eFleetPreventativeMaintenance" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetMaintenance_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetMaintenance_UserRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetVehicle_eFleetMaintenance" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_GlobalCodes_eFleetMaintenance" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetMeter_GlobalCodes" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetMeter_UserRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetPassengerTrackingCount_eFleetPassengerTrackingRoute" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetPassengerTrackingCount_eFleetVehicle" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetPassengerTrackingCount_UserRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetPassengerTrackingRoute_GlobalCodes" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetPassengerTrackingRoute_UserRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetPreventativeMaintenance_GlobalCodes" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetPreventativeMaintenance_GlobalCodes1" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetPreventativeMaintenance_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetPreventativeMaintenance_UserRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetPreventativeMaintenance_UserRegistrations1" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetVehicle_GlobalCodes" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetVehicleIncident_eFleetVehicle" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetVehicleInspectionLog_eFleetVehicle" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetVehicleMasterLog_eFleetVehicle" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetVehicleScanLog_eFleetVehicle" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_WorkRequestAssignment_eFleetVehicle" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetVehicleIncident_eFleetVehicleIncident" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetVehicleIncident_UserRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetVehicleInspectionLog_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetVehicleInspectionLog_UserRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetVehicleMasterLog_UserRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetVehicleScanLog_GlobalCodes" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFleetVehicleScanLog_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eForm_Module" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFormTrack_eForm" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFormTrack_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_eFormTrack_Module" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_EmailLog_locationmaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_EMaintenanceSurvey_GlobalCodes" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_EmployeeLocationMapping_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LocationMaster_GlobalCodes_SubType" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_QRCMaster_GlobalCodes_ClientType" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_QRCMaster_GlobalCodes_Module" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_QRCMaster_GlobalCodes_MotorType" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_QRCMaster_GlobalCodes_QRCSIZE" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_QRCMaster_GlobalCodes_QRCType" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_QRCMaster_GlobalCodes_VehicleType" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_QRCScanLog_GlobalCodes" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_QRCScanLog_GlobalCodesPermit" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_User_GlobalCodes_Gender" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_User_GlobalCodes_UserType" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserOverrideUsertype_GlobalCodes" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserRegistrations_GlobalCodes" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserRegistrations_GlobalCodes_DeviceType" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_WorkRequestAssignment_GlobalCodes_PriorityLevel" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_WorkRequestAssignment_GlobalCodes_WorkRequestStatus" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_WorkRequestAssignment_GlobalCodes_WorkRequestType" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_HoursOfServices_HoursOfServices" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogInsurance_Insurance" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogLicense_License" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LocationClientMapping_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LocationClientMapping_UserRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LocationCompanyMapping_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogLocationCompanyMapping_LocationCompanyMapping" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LocationID_WorkRequestAssignment_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LocationServices_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogBill_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LoginLog_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogLocationCompanyMapping_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogMiscellaneous_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogPODetail_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogPODetailEmergency_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogPreBill_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_ManagerLocationMapping_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Miscellaneous_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_PODetail_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_PODetailEmergency_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_PreBill_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_QRCMaster_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_QRCScanLog_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_TrackEmployeeStatus_LocationMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LocationServices_ServiceMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCompanyAccountDetail_PaymentMode" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogContract_PaymentMode" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogContract_PaymentTerm" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LoginLog_UserRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_TrackEmployeeStatus_UserRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogMiscellaneous_MisNumber" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogPODetail_PODetail" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogPODetail_POType" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogPODetailEmergency_PODetailEmergency" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogPODetailEmergency_POType" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogPreBill_PreBillNumber" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogTaxDetail_TaxDetail" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_ManagerLocationMapping_UserRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_MasterStates_MasterCountries" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Miscellaneous_MisNumber" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Rule_Module" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_SubModule_Module" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_PODetail_PONumber" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_PODetail_POType" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_POFacilityItem_PODetail" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_PODetailEmergency_PONumber" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_PODetailEmergency_POType" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_POQuestion_QuestionAnswer" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_PreBill_PreBillNumber" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_QRCMasterLog_QRCMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_QRCScanLog_QRCMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserRegistrations_QRCMaster" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_QRCMasterLog_UserRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_QRCScanLog_UserRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_SubCostCode_UserRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserOverrideUsertype_SubModule" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_VehicleSeatingSubModuleMapping_SubModule" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserOverrideUsertype_UserRegistrations" ManuallyRouted="false" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserVehicleSeatingMap_UserRegistrations" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.EmergencyContactForm" Width="1.5" PointX="5.375" PointY="16.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.EmployeeHandbook" Width="1.5" PointX="16.375" PointY="7.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.DirectDepositForm" Width="1.5" PointX="16.375" PointY="10.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.InterviewAnswer" Width="1.5" PointX="16.375" PointY="15.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.InterviewQuestion" Width="1.5" PointX="17.375" PointY="0.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.InterviewSchedule" Width="1.5" PointX="7.375" PointY="17.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.ApplicantInfo" Width="1.5" PointX="9.375" PointY="17.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.Employee" Width="1.5" PointX="8.375" PointY="4.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.VehicleSeating" Width="1.5" PointX="19.5" PointY="115.125" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_VehicleSeating_Department" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserVehicleSeatingMap_Module" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_VehicleSeatingSubModuleMapping_Module" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.JobTitle" Width="1.5" PointX="10.375" PointY="4.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.FileType" Width="1.5" PointX="18.375" PointY="3.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

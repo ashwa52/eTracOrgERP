@@ -27,7 +27,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// </summary>
         /// <param name="ObjServiceBaseModel"></param>
         /// <returns></returns>
-        public ServiceResponseModel<List<LocationServiceModel>> GetLocationAssignedListByUserId(ServiceBaseModel ObjServiceBaseModel,bool IsManager)
+        public ServiceResponseModel<List<LocationServiceModel>> GetLocationAssignedListByUserId(ServiceBaseModel ObjServiceBaseModel, bool IsManager)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                                                         && x.IsDeleted == false).FirstOrDefault();
                     if (userData != null)
                     {
-                        lstMiscellaneous =  _workorderems.CostCodes.Join(_workorderems.CostCodeMasters, q => q.CCD_CCM_CostCode, u => u.CCM_CostCode, (q, u) => new { q, u }).
+                        lstMiscellaneous = _workorderems.CostCodes.Join(_workorderems.CostCodeMasters, q => q.CCD_CCM_CostCode, u => u.CCM_CostCode, (q, u) => new { q, u }).
                             Where(x => x.u.CCM_Description == "Miscellaneous" && x.q.CCD_IsActive == "Y").
                             Select(x => new MiscellaneousModel()
                             {
@@ -239,7 +239,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                                                       null, "Y");
                         var locData = _workorderems.LocationMasters.Where(x => x.LocationId == item.LocationId && x.IsDeleted == false).FirstOrDefault();
                         LocationData.Add(locData.LocationName);
-                        MISID = "MIS"+item.MISId.ToString();
+                        MISID = "MIS" + item.MISId.ToString();
                         Mis_Id = item.MISId;
                         UserId = item.UserId;
                         TotalAmount += Convert.ToDecimal(item.InvoiceAmount);
@@ -287,7 +287,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         {
                             //var id = Convert.ToInt64(MISID);
                             objNotify.MiscellaneousID = Mis_Id;
-                        }                        
+                        }
                         var saveDataForNotification = _ICommonMethod.SaveNotificationDetail(objNotify);
                     }
                     if (getRuleData.DeviceId != null)
@@ -299,10 +299,10 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         objEmailHelper.emailid = getRuleData.Email;
                         objEmailHelper.ManagerName = getRuleData.ManagerName;
                         objEmailHelper.LocationName = LocationName;
-                        if(userData != null)
+                        if (userData != null)
                         {
                             objEmailHelper.UserName = userData.FirstName + " " + userData.LastName;
-                        }                       
+                        }
                         objEmailHelper.MISId = MISID;
                         //objEmailHelper.InfractionStatus = obj.Status;
                         objEmailHelper.MailType = "APPROVEMISCELLANEOUS";
@@ -318,7 +318,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     }
                     #endregion Notification
 
-                    return ObjServiceResponseModel;                    
+                    return ObjServiceResponseModel;
                 }
                 else
                 {
@@ -347,32 +347,39 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <param name="textSearch"></param>
         /// <param name="statusType"></param>
         /// <returns></returns>
-        public MiscellaneousListDetails GetListMiscellaneous(long? UserId,long? Location, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType)
+        public List<MiscellaneousListModel> GetListMiscellaneous(long? UserId, long? Location, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType)
         {
+
+            var result = new List<MiscellaneousListModel>();
+
             try
             {
+                /*
                 var objDetails = new MiscellaneousListDetails();
                 int pageindex = Convert.ToInt32(pageIndex) - 1;
                 int pageSize = Convert.ToInt32(numberOfRows);
-                var Results = _workorderems.spGetMiscellaneousList(Location)
-                    .Select(a => new MiscellaneousListModel()
-                    {
-                        MISId = "MIS" + a.LMIS_MIS_Id,
-                        LocationName = a.LocationName,
-                        VendorName = a.CMP_NameLegal,
-                        InvoiceAmount = a.MISAmount,
-                        MISDate = a.MISDate,
-                        UserName = a.Employee_Name,
-                        Status = a.Status == "W"?"Pendig":"Approved"
-                    }).ToList();
-                int totRecords = Results.Count();
+                */
+                result = _workorderems.spGetMiscellaneousList(Location)
+                   .Select(a => new MiscellaneousListModel()
+                   {
+                       MISId = "MIS" + a.LMIS_MIS_Id,
+                       LocationName = a.LocationName,
+                       VendorName = a.CMP_NameLegal,
+                       InvoiceAmount = a.MISAmount,
+                       MISDate = a.MISDate,
+                       UserName = a.Employee_Name,
+                       Status = a.Status == "W" ? "Pendig" : "Approved"
+                   }).ToList();
+                /*int totRecords = Results.Count();
                 var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
+                */
                 //Results = Results.OrderByDescending(s => s.CostCode);
-                objDetails.pageindex = pageindex;
+                /*objDetails.pageindex = pageindex;
                 objDetails.total = totalPages;
                 objDetails.records = totRecords;
                 objDetails.rows = Results.ToList();
-                return objDetails;
+                */
+                return result;
             }
             catch (Exception ex)
             {
@@ -397,17 +404,24 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <param name="textSearch"></param>
         /// <param name="statusType"></param>
         /// <returns></returns>
-        public MiscellaneousListDetails GetListMiscellaneousByMiscId(long? UserId,long?MiscId, long? Location, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType)
+        public List<MiscellaneousListModel> GetListMiscellaneousByMiscId(long? UserId, long? MiscId, long? Location, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType)
         {
+
+            var result = new List<MiscellaneousListModel>();
+
             try
             {
+                /*
                 var objDetails = new MiscellaneousListDetails();
                 int pageindex = Convert.ToInt32(pageIndex) - 1;
                 int pageSize = Convert.ToInt32(numberOfRows);
-                var Results = _workorderems.spGetMiscellaneousDetail(MiscId)
+                */
+                // var Results = _workorderems.spGetMiscellaneousDetail(MiscId)
+                result = _workorderems.spGetMiscellaneousDetail(MiscId)
                     .Select(a => new MiscellaneousListModel()
                     {
                         Status = a.Status,// "w" ? "Pending" : "Approved",
+                        MiscStatus = a.Status == "Y" ? true : false,
                         MISId = "MIS" + a.LMIS_MIS_Id,
                         LocationName = a.LocationName,
                         VendorName = a.CMP_NameLegal,
@@ -417,9 +431,10 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         Document = a.LMIS_InvoiceDocument,
                         Comment = a.LMIS_Comment,
                         MId = a.LMIS_Id,
-                        Vendor =a.LMIS_ModifiedBy,
-                        LocationId =a.LMIS_LocationId
+                        Vendor = a.LMIS_ModifiedBy,
+                        LocationId = a.LMIS_LocationId
                     }).ToList();
+                /*
                 int totRecords = Results.Count();
                 var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
                 //Results = Results.OrderByDescending(s => s.CostCode);
@@ -428,6 +443,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 objDetails.records = totRecords;
                 objDetails.rows = Results.ToList();
                 return objDetails;
+                */
+                return result;
             }
             catch (Exception ex)
             {
@@ -443,7 +460,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// </summary>
         /// <param name="Obj"></param>
         /// <returns></returns>
-        public bool ApproveMiscellaneous(List<MiscellaneousListModel> Obj,string UserName, long UserId, long LocationId,long MiscQbkId, long VendorDetailsId)
+        public bool ApproveMiscellaneous(List<MiscellaneousListModel> Obj, string UserName, long UserId, long LocationId, long MiscQbkId, long VendorDetailsId)
         {
             bool IsApproved = false;
             long MISNumber = 0;
@@ -460,7 +477,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             string Status = "Approved";
             try
             {
-                if(Obj.Count > 0)
+                if (Obj.Count > 0)
                 {
                     foreach (var item in Obj)
                     {
@@ -495,7 +512,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         }
 
                         #region Save DAR
-                        objDAR.ActivityDetails = DarMessage.MiscellaneousApproveReject(LocationDetail.LocationName, MISID, Status);                        
+                        objDAR.ActivityDetails = DarMessage.MiscellaneousApproveReject(LocationDetail.LocationName, MISID, Status);
                         objDAR.UserId = UserId;
                         objDAR.CreatedBy = UserId;
                         objDAR.LocationId = UserDetail.Location;
@@ -504,10 +521,10 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         #endregion DAR
                     }
                     string Action = "I";
-                    var saveBill = _workorderems.spSetBill(Action, MiscQbkId, null, MISNumber,null, VendorDetailsId, Location, "MIS", calculatedAmt,
-                                                          calculatedAmt, date,null, CreatedBy, null,"Y");
+                    var saveBill = _workorderems.spSetBill(Action, MiscQbkId, null, MISNumber, null, VendorDetailsId, Location, "MIS", calculatedAmt,
+                                                          calculatedAmt, date, null, CreatedBy, null, "Y");
                     IsApproved = true;
-               
+
                 }
                 else
                 {
@@ -583,7 +600,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                 context.SaveChanges();
                             }
                             #endregion Email
-                          }
+                        }
 
 
 
@@ -595,7 +612,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 }
                 return IsApproved;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public MiscellaneousListDetails GetListMiscellaneous(long? UserId,long? Location, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType)", "Exception While Getting List of Miscellaneous details.", null);
                 throw;
@@ -616,12 +633,12 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     //    Where(x => x.q.)
                     if (userData != null)
                     {
-                            lstLocation = _workorderems.LocationMasters.Where(x => x.IsDeleted == false).Select(a => new LocationServiceModel()
-                            {
-                                LocationId = a.LocationId,
-                                LocationName = a.LocationName
-                            }).ToList();
-                        
+                        lstLocation = _workorderems.LocationMasters.Where(x => x.IsDeleted == false).Select(a => new LocationServiceModel()
+                        {
+                            LocationId = a.LocationId,
+                            LocationName = a.LocationName
+                        }).ToList();
+
                         if (lstLocation.Count > 0)
                         {
                             ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
@@ -683,7 +700,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                             InvoiceAmount = a.MISAmount,
                             MISDate = a.MISDate,
                             UserName = a.Employee_Name,
-                            Status = a.Status == "W" ? "Pending" : a.Status == "N"?"Pending":"Approved",    
+                            Status = a.Status == "W" ? "Pending" : a.Status == "N" ? "Pending" : "Approved",
                         }).ToList();
                         if (lstMiscellaneous.Count > 0)
                         {
@@ -740,13 +757,13 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                             InvoiceAmount = a.MISAmount,
                             MISDate = a.MISDate,
                             UserName = a.Employee_Name,
-                            Document = a.LMIS_InvoiceDocument == null? HostingPrefix + ProfilePicPath.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + MiscellaneousImagePath.Replace("~", "")+ a.LMIS_InvoiceDocument,
+                            Document = a.LMIS_InvoiceDocument == null ? HostingPrefix + ProfilePicPath.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + MiscellaneousImagePath.Replace("~", "") + a.LMIS_InvoiceDocument,
                             Comment = a.LMIS_Comment,
                             MId = a.LMIS_Id,
                             Vendor = a.LMIS_ModifiedBy,
                             LocationId = a.LMIS_LocationId
                         }).ToList();
-                        if (lstMiscellaneous.Count > 0 )
+                        if (lstMiscellaneous.Count > 0)
                         {
                             ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
                             ObjServiceResponseModel.Message = CommonMessage.Successful();

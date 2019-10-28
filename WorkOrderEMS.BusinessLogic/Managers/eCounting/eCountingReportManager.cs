@@ -20,13 +20,13 @@ namespace WorkOrderEMS.BusinessLogic
         /// Created For : To get Pending Po, Approve PO, Pending bill,approve bill, and pending payment count
         /// </summary>
         /// <returns></returns>
-        public VendorCountListDetails GetListVendorCount(long? VendorId, long? Location, DateTime? fromDate, DateTime? toDate, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType)
+        public List<VendorCountModel> GetListVendorCount(long? VendorId, long? Location, DateTime? fromDate, DateTime? toDate, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType)
         {
             try
             {
-                var objDetails = new VendorCountListDetails();
-                int pageindex = Convert.ToInt32(pageIndex) - 1;
-                int pageSize = Convert.ToInt32(numberOfRows);
+                //var objDetails = new VendorCountListDetails();
+                //int pageindex = Convert.ToInt32(pageIndex) - 1;
+                //int pageSize = Convert.ToInt32(numberOfRows);
                 var Results = _workorderems.spGetVendorShowcase(VendorId, fromDate, toDate)
                     .Select(a => new VendorCountModel()
                     {
@@ -37,14 +37,14 @@ namespace WorkOrderEMS.BusinessLogic
                        PendingPO = a.PendingPO,
                        PendingAmount = a.PendingAmount,
                     }).ToList();
-                int totRecords = Results.Count();
-                var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
-                //Results = Results.OrderByDescending(s => s.CostCode);
-                objDetails.pageindex = pageindex;
-                objDetails.total = totalPages;
-                objDetails.records = totRecords;
-                objDetails.rows = Results.ToList();
-                return objDetails;
+                //int totRecords = Results.Count();
+                //var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
+                ////Results = Results.OrderByDescending(s => s.CostCode);
+                //objDetails.pageindex = pageindex;
+                //objDetails.total = totalPages;
+                //objDetails.records = totRecords;
+                //objDetails.rows = Results.ToList();
+                return Results;
             }
             catch (Exception ex)
             {
@@ -91,6 +91,8 @@ namespace WorkOrderEMS.BusinessLogic
             {
                 //VendorId = 0;
                 Ammount = _workorderems.spGetPayTillDate(VendorId).FirstOrDefault();
+                if (Ammount == null)
+                    Ammount = 0;
                 return Ammount;
             }
             catch (Exception ex)

@@ -32,7 +32,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<System.DateTime> DeletedDate { get; set; }
     
         public virtual eFleetVehicle eFleetVehicle { get; set; }
-        public virtual WorkRequestAssignment WorkRequestAssignment { get; set; }
         public virtual UserRegistration UserRegistration { get; set; }
+        public virtual WorkRequestAssignment WorkRequestAssignment { get; set; }
     }
 }

@@ -10,9 +10,13 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
     public interface IAdminDashboard
     {
         List<AddChartModel> ListSuperiour();
-        bool SaveVSC(AddChartModel Obj);
+        AddChartModel SaveVSC(AddChartModel Obj);
+        //bool SaveVSC(AddChartModel Obj);
         List<AddChartModel> ListVehicleSeatingChart(long? LocationId);
         bool SaveJobTitleVSC(AddChartModel Obj);
         List<AddChartModel> GetJobTitleData(long CSVChartId);
+        AddChartModel GetChartData(long CSVChartId);
+        List<AccessPermisionTreeViewModel> ListTreeViewAccessPermission(long VST_Id);
+        bool SaceAccessPermission(AccessPermisionTreeViewModel obj);
     }
 }

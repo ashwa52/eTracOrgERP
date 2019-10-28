@@ -39,8 +39,25 @@ namespace WorkOrderEMS.Data.DataRepository
             catch (Exception ex)
             {                
                 throw;
+            }
+        }
+
+        //To delete Department
+        public bool IsDepetmentDeleted(DepartmentModel Obj)
+        {
+            bool isSave = false;
+            try
+            {
+                var save = objworkorderEMSEntities.spSetDepartment(Obj.Action, Obj.DeptId, Obj.DepartmentName, Obj.IsActive);
+                isSave = true;
+            }
+            catch (Exception ex)
+            {
+                isSave = false;
+                throw;
 
             }
+            return isSave;
         }
     }
 }

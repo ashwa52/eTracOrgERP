@@ -142,7 +142,6 @@
         $(".jsgrid-insert-row").hide();
         $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
         $("#addNewlocation a").click(function (event) {
-            debugger
             if (hitCount == 1) {
                 hitCount++;
                 $(".jsgrid-insert-row").hide();
@@ -417,10 +416,6 @@ var chart = AmCharts.makeChart("chartdiv", {
 
     //}); // end am4core.ready()
 </script>
-
-
-
-
 <script>
     $(document).ready(function () {
 
@@ -463,7 +458,6 @@ var chart = AmCharts.makeChart("chartdiv", {
                 pieSeries.innerRadius = am4core.percent(50);
                 pieSeries.ticks.template.disabled = true;
                 pieSeries.labels.template.disabled = true;
-
                 var rgm = new am4core.RadialGradientModifier();
                 rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
                 pieSeries.slices.template.fillModifier = rgm;
@@ -485,7 +479,6 @@ var chart = AmCharts.makeChart("chartdiv", {
         $('#main-wrapper').removeClass("menu-toggle");
         $(".hamburger").show();
         $("ul li a").click(function (e) {
-            debugger
             e.preventDefault(); // prevent default link button redirect behaviour
             var url = $(this).attr("href");
             $('#RenderPageId').load(url);

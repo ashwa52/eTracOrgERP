@@ -29,15 +29,17 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <param name="textSearch"></param>
         /// <param name="statusType"></param>
         /// <returns></returns>
-        public PaymentModelDetails GetListPaymentByLocationId(long? UserId, long? LocationID, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType)
+        public List<PaymentModel> GetListPaymentByLocationId(long? UserId, long? LocationID, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType)
         {
             try
             {
-                var objPaymentDetails = new PaymentModelDetails();
-                var obj = new PaymentModel();
-                int pageindex = Convert.ToInt32(pageIndex) - 1;
-                int pageSize = Convert.ToInt32(numberOfRows);
-                var Results = _workorderems.spPaymentDesk(LocationID)
+                var resultList = new List<PaymentModel>();
+
+                //var objPaymentDetails = new PaymentModelDetails();
+                //var obj = new PaymentModel();
+                //int pageindex = Convert.ToInt32(pageIndex) - 1;
+                //int pageSize = Convert.ToInt32(numberOfRows);
+                  resultList = _workorderems.spPaymentDesk(LocationID)
                     .Select(a => new PaymentModel()
                     {
                         LLBL_ID = a.LBLL_Id,
@@ -55,7 +57,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                      
                      OperatingCompany = a.CMP_NameLegalRemitter == null?"N/A": a.CMP_NameLegalRemitter,
                      OperatingCompanyId = a.CMP_IdRemitter > 0 ? a.CMP_IdRemitter :0 ,
-                     LocationId = a.LocationId
+                     LocationId = a.LocationId,
+                     DisplayDate = a.BillDate == null ? "" : a.BillDate.ToString("dd/MM/yyyy")
                     }).Where(x => x.Status == "W" || x.Status == "Y").ToList();
                // Results.Where(x => x.Status == "Y").ToList();
                 //foreach (var item in Results)
@@ -82,18 +85,18 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 //}
                 //Results.Where(x => x.BillType == "ManualBill" && x.Status == "Y").ToList();
                 //Results.Where(x => x. != "X").ToList();
-                int totRecords = Results.Count();
-                var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
+                //int totRecords = Results.Count();
+                //var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
                 //Results = Results.OrderByDescending(s => s.CostCode);
-                objPaymentDetails.pageindex = pageindex;
-                objPaymentDetails.total = totalPages;
-                objPaymentDetails.records = totRecords;
-                objPaymentDetails.rows = Results.ToList();
-                return objPaymentDetails;
+                //objPaymentDetails.pageindex = pageindex;
+                //objPaymentDetails.total = totalPages;
+                //objPaymentDetails.records = totRecords;
+                //objPaymentDetails.rows = Results.ToList();
+                return resultList;
             }
             catch (Exception ex)
             {
-                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public MiscellaneousListDetails GetListMiscellaneous(long? UserId,long? Location, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType)", "Exception While Getting List of Miscellaneous details.", null);
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public GetListPaymentByLocationId GetListPaymentByLocationId(long? UserId,long? Location, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType)", "Exception While Getting List of Miscellaneous details.", null);
                 throw;
             }
         }
@@ -113,13 +116,13 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <param name="textSearch"></param>
         /// <param name="statusType"></param>
         /// <returns></returns>
-        public PaymentModelDetails GetListPaidtByLocationId(long? UserId, long? LocationID, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType)
+        public List<PaymentModel> GetListPaidtByLocationId(long? UserId, long? LocationID, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType)
         {
             try
             {
-                var objPaymentDetails = new PaymentModelDetails();
-                int pageindex = Convert.ToInt32(pageIndex) - 1;
-                int pageSize = Convert.ToInt32(numberOfRows);
+                //var objPaymentDetails = new PaymentModel();
+                //int pageindex = Convert.ToInt32(pageIndex) - 1;
+                //int pageSize = Convert.ToInt32(numberOfRows);
                 var Results = _workorderems.spPaymentDesk(LocationID)
                     .Select(a => new PaymentModel()
                     {
@@ -135,17 +138,18 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         Status = a.Bill_Status,
                         OperatingCompany = a.CMP_NameLegalRemitter == null ? "N/A" : a.CMP_NameLegalRemitter,
                         OperatingCompanyId = a.CMP_IdRemitter > 0 ? 0 : a.CMP_IdRemitter,
-                        LocationId = a.LocationId
+                        LocationId = a.LocationId,
+                        DisplayDate = a.BillDate == null ? "" : a.BillDate.ToString("dd/MM/yyyy")
                     }).Where(x => x.Status == "P" || x.Status == "X").ToList();
                  //Results.Where(x => x.Status == "X").ToList();
-                int totRecords = Results.Count();
-                var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
+                //int totRecords = Results.Count();
+                //var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
                 //Results = Results.OrderByDescending(s => s.CostCode);
-                objPaymentDetails.pageindex = pageindex;
-                objPaymentDetails.total = totalPages;
-                objPaymentDetails.records = totRecords;
-                objPaymentDetails.rows = Results.ToList();
-                return objPaymentDetails;
+                //objPaymentDetails.pageindex = pageindex;
+                //objPaymentDetails.total = totalPages;
+               // objPaymentDetails.records = totRecords;
+                //objPaymentDetails.rows = Results.ToList();
+                return Results;
             }
             catch (Exception ex)
             {

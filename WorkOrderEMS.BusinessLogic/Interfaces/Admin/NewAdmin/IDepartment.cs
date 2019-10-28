@@ -13,5 +13,6 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
         //DepartmentDetails ListAllDepartment(string txt, long? LocationId, long? UserId, long? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
         DepartmentModel GetDepartmentData(long Id);
         List<DepartmentModel> ListAllDepartment(string txt, long? LocationId, long? UserId);
+        bool DeleteDepartmentById(DepartmentModel Obj);
     }
 }

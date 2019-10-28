@@ -87,40 +87,39 @@
             <li><a href="@Url.Action("Index", "NewAdmin")"><i class="mdi mdi-home"></i><span class="nav-text">Home</span></a></li>
             <li>
                 @if (GloblaAdminUser || ITAdminUser)
-                {
-                    <a href="~/GlobalAdmin"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
-                }
+        {
+            <a href="~/GlobalAdmin"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
+}
                 @if (OnlyAdminUser)
-                {
-                    <a href="~/Administrator"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
-                }
+        {
+            <a href="~/Administrator"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
+}
                 @if (ManagerUser)
-                {
-                    <a href="~/Manager/Dashboard"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
-                }
+        {
+            <a href="~/Manager/Dashboard"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
+}
                 @if (EmployeeUser)
-                {
-                    <a href="~/Employee/Dashboard"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
-                }
+        {
+            <a href="~/Employee/Dashboard"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
+}
                 @if (ClientUser)
-                {
-                    <a href="~/Client"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
-                }
+        {
+            <a href="~/Client"><i class="mdi mdi-speedometer"></i><span class="nav-text">Old Dashboard</span></a>
+}
             </li>
-            <li><a href="@Url.Action("ListLocation", "GlobalAdmin")"><i class="mdi mdi-speedometer"></i><span class="nav-text">Location</span></a></li>
-            @*<li class="nav-label">Navigation</li>
-                <li><a href="index.html"><i class="mdi mdi-speedometer"></i><span class="nav-text">Home</span></a></li>*@
-            <li><a href="@Url.Action("OperationDashboard", "NewAdmin")"><i class="mdi mdi-speedometer"></i><span class="nav-text">Operation</span></a></li>
-
+            <li><a href="@Url.Action("ListCostCode", "CostCode")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Cost Code</span></a></li>
+            <li><a href="@Url.Action("Index", "Rule")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Rules</span></a></li>
+            <li><a href="@Url.Action("Index", "PaymentTerms")" data-oldDash="Yes"><i class="fa fa-users"></i><span class="nav-text">Payment Term</span></a></li>
+            <li><a href="@Url.Action("Index", "PaymentMode")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Payment Mode</span></a></li>
+            <li><a href="@Url.Action("Index", "ContractType")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Contract Type</span></a></li>
+            <li><a href="@Url.Action("Index", "POType")" data-oldDash="Yes"><i class="fa fa-users"></i><span class="nav-text">PO Type</span></a></li>
+            <li><a href="@Url.Action("Index", "VendorType")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Vendor Type</span></a></li>
+            <li><a href="@Url.Action("CompanyListAdmin", "AdminCompany")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Admin Company</span></a></li>
+            <li><a href="@Url.Action("Index", "PDFForm")" data-oldDash="Yes"><i class="fa fa-users"></i><span class="nav-text">PDF Form</span></a></li>
+            <li><a href="@Url.Action("SendMail", "SendEmailTemplate")" data-oldDash="Yes"><i class="fa fa-users"></i><span class="nav-text">Send Mail</span></a></li>
         </ul>
     </div>
 </div>
 <!--**********************************
     Sidebar end
 ***********************************-->
-<script>
-    //$(document).ready(function () {
-    //    $('#main-wrapper').toggleClass("menu-toggle");
-    //    $(".hamburger").hide();
-    //})
-</script>

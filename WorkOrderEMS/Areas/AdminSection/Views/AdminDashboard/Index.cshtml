@@ -100,91 +100,36 @@
             </div>
         </div>
         @Html.Partial("_AdminDashboard")
-        <br />
-        <div id="chart-container" style="display:none;height:480px;"class="card" data-aos="fade-up"></div>
     </div>
 </div>
 
-
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForAddingJobPostingAdmin">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Job Title </h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
 <!--**********************************
     Content body end
 ***********************************-->
 @*<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>*@
 <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+<script src="~/Areas/AdminSection/Content/JQUERY/JobPostingJs.js"></script>
 <script src="~/Areas/AdminSection/Content/JQUERY/GetOrg.js"></script>
 <link href="~/Areas/AdminSection/Content/CSS/GetOrg.css" rel="stylesheet" />
 @*<script src="http://www.getorgchart.com/GetOrgChart/getorgchart/getorgchart.js"></script>
-<link href="http://www.getorgchart.com/GetOrgChart/getorgchart/getorgchart.css" rel="stylesheet" />*@
+    <link href="http://www.getorgchart.com/GetOrgChart/getorgchart/getorgchart.css" rel="stylesheet" />*@
 @*<script src="https://cdnjs.cloudflare.com/ajax/libs/orgchart/2.1.5/js/jquery.orgchart.js"></script>*@
 @*<script src="~/Areas/AdminSection/Content/JQUERY/OrganizationalChart.js"></script>*@
 
-<script type="text/javascript">
-    $("#ViewVSC").click(function () {
-        $("#chart-container").show();
-        var peopleElement = document.getElementById("chart-container");
-        var addNewUrl = "@Url.Action("GetChartDisplayData", "AdminDashboard", new { area = "AdminSection" })";
-        $.ajax({
-            type: "POST",
-            url: addNewUrl,
-            success: function (listData) {
-                debugger
-                $("#myModalForChart").modal("hide");
-                var tabledata = [];
-                
-                if (listData != null)
-                {
-                    for (var i = 0; i < listData.length; i++)
-                    {
-                        debugger
-                        var data = {};  
-                        if (i == 0)
-                        {
-                            listData[i].parentId = null;
-                        }
-                        data.id = listData[i].Id;
-                        data.parentId = listData[i].parentId;
-                        data.SeatingName = listData[i].SeatingName;
-                        data.JobDescription = listData[i].JobDescription;
-                        //var jobdet = listData[i].JobDescription.split(",");
-                        //var arrdata;
-                        //if (jobdet.length > 0)
-                        //{
-                        //    debugger
-                        //    for (var job = 0; job < jobdet.length; job++) {
-                        //        if (job == 0 && jobdet[job] != "") { data.job0 = jobdet[job]; arrdata = ["SeatingName", "job0", "DepartmentName"] }
-                        //        else if (job == 1 && jobdet[job] != "") { data.job1 = jobdet[job]; arrdata = ["SeatingName", "job0", "job1", "DepartmentName"] }
-                        //        else if (job == 2 && jobdet[job] != "") { data.job2 = jobdet[job]; arrdata = ["SeatingName", "job0", "job1", "job2", "DepartmentName"] }
-                        //        else if (job == 3 && jobdet[job] != "") { data.job3 = jobdet[job]; arrdata = ["SeatingName", "job0", "job1", "job2", "job3", "DepartmentName"] }
-                        //        else if (job == 4 && jobdet[job] != "") { data.job4 = jobdet[job]; arrdata = ["SeatingName", "job0", "job1", "job2", "job3", "job4", "DepartmentName"] }
-                        //        else if (job == 5 && jobdet[job] != "") { data.job5 = jobdet[job]; arrdata = ["SeatingName", "job0", "job1", "job2", "job3", "job4", "job5", "DepartmentName"] }
-                        //    }
-                            
-                        //}
-                                              
-                        data.DepartmentName = listData[i].DepartmentName;
-                        //data.RolesAndResponsibility = listData[i].RolesAndResponsibility;
-                        //data.image = listData[i].Image;
-                        tabledata.push(data);
-                    }                    
-                    var orgChart = new getOrgChart(peopleElement, {
-                        primaryFields: ["SeatingName", "JobDescription", "DepartmentName"],
-                        dataSource: tabledata,
-                    });
-                    $(".get-text-0").attr("y", "30"); $(".get-text-0").attr("y", "30");
-                    $(".get-text-1").attr("y", "65"); $(".get-text-2").attr("y", "90");
-                    $(".get-text-3").attr("y", "120"); $(".get-text-4").attr("y", "150");
-                    $(".get-text-4").attr("y", "180"); $(".get-text-6").attr("y", "210");
-                    $(".get-text-7").attr("y", "240"); $(".get-text-8").attr("y", "270");
-                    $(".get-text-9").attr("y", "300"); $(".get-text-10").attr("y", "330");
-                }
-            },
-            error: function (err) {
-            }
-        });
-
-    });
-    
-</script>
 @*<script type="text/javascript">
 
         $(function() {

@@ -212,6 +212,8 @@ namespace WorkOrderEMS.Controllers.Login
                 string loginMessage = "";
                 if (ModelState.IsValid)
                 {
+                     
+
                     eTracLoginModel result = _ILogin.AuthenticateUser(eTracLogin);
                     //result.RememberMe = eTracLogin.RememberMe;
                     if (result.UserId > 0)
@@ -233,20 +235,24 @@ namespace WorkOrderEMS.Controllers.Login
                                 Session["eTrac_UserLocations"] = _ILogin.GetUserAssignedLocations(result.UserRoleId, result.UserId);
                                 Session["eTrac_UserRoles"] = Session["eTrac_LocationServices"]; // this line has been added by vijay bcz if usetype is GAdmin or ITAdmin then this type of users will be able too see all services which is assigned to this current location.
                                // QuickBookIndex();
-                                return RedirectToAction("Index", "GlobalAdmin");
+                               return RedirectToAction("Index", "NewAdmin");
+                                //return RedirectToAction("Index", "GlobalAdmin");
                                 break;
                             case ((Int64)(UserType.ITAdministrator)):
                                 Session["eTrac_UserLocations"] = _ILogin.GetUserAssignedLocations(result.UserRoleId, result.UserId);
                                 Session["eTrac_UserRoles"] = Session["eTrac_LocationServices"];
                                 //QuickBookIndex();
-                                return RedirectToAction("Index", "ITAdministrator");
+                                return RedirectToAction("Index", "NewAdmin");
+                                //return RedirectToAction("Index", "ITAdministrator");
                                 break;
                             case ((Int64)(UserType.Administrator)):
                                 Session["eTrac_UserLocations"] = _ILogin.GetAdminAssignedLocation(result.UserId);
-                               // QuickBookIndex();
-                                return RedirectToAction("Index", "Administrator");
+                                // QuickBookIndex();
+                                return RedirectToAction("Index", "NewAdmin");
+                                //return RedirectToAction("Index", "Administrator");
                                 break;
                             case ((Int64)(UserType.Manager)):
+
                                 Session["eTrac_UserLocations"] = _ILogin.GetManagerAssignedLocation(result.UserId);
 
                                 #region this code will execute only when manager declined vendor from vendor email verification page.
@@ -300,17 +306,30 @@ namespace WorkOrderEMS.Controllers.Login
                                 }
                                 #endregion // by Bhushan Dod on 22 September 2015
                                 //QuickBookIndex();
-                                return RedirectToAction("Dashboard", "Manager");
+                                return RedirectToAction("Index", "NewAdmin");
+                                //return RedirectToAction("Dashboard", "Manager");
                                 break;
                             case ((Int64)(UserType.Employee)):
                                 Session["eTrac_UserLocations"] = _ILogin.GetEmployeeAssignedLocation(result.UserId);
                                 //QuickBookIndex();
-                                return RedirectToAction("Index", "Employee");
+                                return RedirectToAction("Index", "NewAdmin");
+                                //return RedirectToAction("Index", "Employee");
                                 break;
                             case ((Int64)(UserType.Client)):
                                 //Session["eTrac_UserLocations"] = _ILogin.GetEmployeeAssignedLocation(result.UserId);
                                 //QuickBookIndex();
                                 return RedirectToAction("Index", "Client");
+                                break;
+							case ((Int64)(UserType.GuestUser)):
+								//Session["eTrac_UserLocations"] = _ILogin.GetEmployeeAssignedLocation(result.UserId);
+								//QuickBookIndex();
+								return RedirectToAction("LandingPage", "Guest");
+								break;
+                            case ((Int64)(UserType.HR)):
+                                Session["eTrac_UserLocations"] = _ILogin.GetUserAssignedLocations(result.UserRoleId, result.UserId);
+                                Session["eTrac_UserRoles"] = Session["eTrac_LocationServices"];
+                                //QuickBookIndex();
+                                return RedirectToAction("Index", "NewAdmin");
                                 break;
                         }
 

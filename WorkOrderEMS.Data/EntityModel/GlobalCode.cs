@@ -14,34 +14,36 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class GlobalCode
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public GlobalCode()
         {
-            this.EMaintenanceSurveys = new HashSet<EMaintenanceSurvey>();
-            this.QRCScanLogs = new HashSet<QRCScanLog>();
-            this.QRCScanLogs1 = new HashSet<QRCScanLog>();
             this.DashboardWidgetSettings = new HashSet<DashboardWidgetSetting>();
-            this.eFleetVehicleScanLogs = new HashSet<eFleetVehicleScanLog>();
+            this.eFleetFuelings = new HashSet<eFleetFueling>();
+            this.eFleetMaintenances = new HashSet<eFleetMaintenance>();
             this.eFleetMeters = new HashSet<eFleetMeter>();
+            this.eFleetPassengerTrackingRoutes = new HashSet<eFleetPassengerTrackingRoute>();
             this.eFleetPreventativeMaintenances = new HashSet<eFleetPreventativeMaintenance>();
             this.eFleetPreventativeMaintenances1 = new HashSet<eFleetPreventativeMaintenance>();
-            this.eFleetPassengerTrackingRoutes = new HashSet<eFleetPassengerTrackingRoute>();
+            this.eFleetVehicles = new HashSet<eFleetVehicle>();
+            this.eFleetVehicleScanLogs = new HashSet<eFleetVehicleScanLog>();
+            this.EMaintenanceSurveys = new HashSet<EMaintenanceSurvey>();
+            this.LocationMasters = new HashSet<LocationMaster>();
             this.QRCMasters = new HashSet<QRCMaster>();
             this.QRCMasters1 = new HashSet<QRCMaster>();
             this.QRCMasters2 = new HashSet<QRCMaster>();
             this.QRCMasters3 = new HashSet<QRCMaster>();
             this.QRCMasters4 = new HashSet<QRCMaster>();
             this.QRCMasters5 = new HashSet<QRCMaster>();
-            this.eFleetFuelings = new HashSet<eFleetFueling>();
-            this.eFleetMaintenances = new HashSet<eFleetMaintenance>();
-            this.eFleetVehicles = new HashSet<eFleetVehicle>();
+            this.QRCScanLogs = new HashSet<QRCScanLog>();
+            this.QRCScanLogs1 = new HashSet<QRCScanLog>();
+            this.UserRegistrations = new HashSet<UserRegistration>();
+            this.UserRegistrations1 = new HashSet<UserRegistration>();
+            this.UserOverrideUsertypes = new HashSet<UserOverrideUsertype>();
+            this.UserRegistrations2 = new HashSet<UserRegistration>();
+            this.UserRegistrations3 = new HashSet<UserRegistration>();
             this.WorkRequestAssignments = new HashSet<WorkRequestAssignment>();
             this.WorkRequestAssignments1 = new HashSet<WorkRequestAssignment>();
             this.WorkRequestAssignments2 = new HashSet<WorkRequestAssignment>();
-            this.UserRegistrations = new HashSet<UserRegistration>();
-            this.UserRegistrations1 = new HashSet<UserRegistration>();
-            this.UserRegistrations2 = new HashSet<UserRegistration>();
-            this.UserRegistrations3 = new HashSet<UserRegistration>();
-            this.LocationMasters = new HashSet<LocationMaster>();
         }
     
         public long GlobalCodeId { get; set; }
@@ -58,31 +60,59 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<long> DeletedBy { get; set; }
         public Nullable<System.DateTime> DeletedDate { get; set; }
     
-        public virtual ICollection<EMaintenanceSurvey> EMaintenanceSurveys { get; set; }
-        public virtual ICollection<QRCScanLog> QRCScanLogs { get; set; }
-        public virtual ICollection<QRCScanLog> QRCScanLogs1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<DashboardWidgetSetting> DashboardWidgetSettings { get; set; }
-        public virtual ICollection<eFleetVehicleScanLog> eFleetVehicleScanLogs { get; set; }
-        public virtual ICollection<eFleetMeter> eFleetMeters { get; set; }
-        public virtual ICollection<eFleetPreventativeMaintenance> eFleetPreventativeMaintenances { get; set; }
-        public virtual ICollection<eFleetPreventativeMaintenance> eFleetPreventativeMaintenances1 { get; set; }
-        public virtual ICollection<eFleetPassengerTrackingRoute> eFleetPassengerTrackingRoutes { get; set; }
-        public virtual ICollection<QRCMaster> QRCMasters { get; set; }
-        public virtual ICollection<QRCMaster> QRCMasters1 { get; set; }
-        public virtual ICollection<QRCMaster> QRCMasters2 { get; set; }
-        public virtual ICollection<QRCMaster> QRCMasters3 { get; set; }
-        public virtual ICollection<QRCMaster> QRCMasters4 { get; set; }
-        public virtual ICollection<QRCMaster> QRCMasters5 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<eFleetFueling> eFleetFuelings { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<eFleetMaintenance> eFleetMaintenances { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<eFleetMeter> eFleetMeters { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<eFleetPassengerTrackingRoute> eFleetPassengerTrackingRoutes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<eFleetPreventativeMaintenance> eFleetPreventativeMaintenances { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<eFleetPreventativeMaintenance> eFleetPreventativeMaintenances1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<eFleetVehicle> eFleetVehicles { get; set; }
-        public virtual ICollection<WorkRequestAssignment> WorkRequestAssignments { get; set; }
-        public virtual ICollection<WorkRequestAssignment> WorkRequestAssignments1 { get; set; }
-        public virtual ICollection<WorkRequestAssignment> WorkRequestAssignments2 { get; set; }
-        public virtual ICollection<UserRegistration> UserRegistrations { get; set; }
-        public virtual ICollection<UserRegistration> UserRegistrations1 { get; set; }
-        public virtual ICollection<UserRegistration> UserRegistrations2 { get; set; }
-        public virtual ICollection<UserRegistration> UserRegistrations3 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<eFleetVehicleScanLog> eFleetVehicleScanLogs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<EMaintenanceSurvey> EMaintenanceSurveys { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LocationMaster> LocationMasters { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QRCMaster> QRCMasters { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QRCMaster> QRCMasters1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QRCMaster> QRCMasters2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QRCMaster> QRCMasters3 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QRCMaster> QRCMasters4 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QRCMaster> QRCMasters5 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QRCScanLog> QRCScanLogs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<QRCScanLog> QRCScanLogs1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserRegistration> UserRegistrations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserRegistration> UserRegistrations1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserOverrideUsertype> UserOverrideUsertypes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserRegistration> UserRegistrations2 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<UserRegistration> UserRegistrations3 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<WorkRequestAssignment> WorkRequestAssignments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<WorkRequestAssignment> WorkRequestAssignments1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<WorkRequestAssignment> WorkRequestAssignments2 { get; set; }
     }
 }

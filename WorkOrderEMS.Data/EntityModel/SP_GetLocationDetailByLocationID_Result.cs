@@ -37,14 +37,21 @@ namespace WorkOrderEMS.Data.EntityModel
         public bool IsVerifiedByManager { get; set; }
         public bool IsVerifiedByClient { get; set; }
         public string LocationSubTypeDesc { get; set; }
+        public Nullable<long> ContractHolder { get; set; }
+        public Nullable<long> OperatingCompany { get; set; }
+        public Nullable<System.DateTime> ContractStartDate { get; set; }
+        public Nullable<System.DateTime> ContractEndDate { get; set; }
+        public Nullable<long> ContractType { get; set; }
+        public string ClientInvoicingTerm { get; set; }
+        public string ReportingType { get; set; }
+        public Nullable<System.DateTime> ReportingDate { get; set; }
+        public Nullable<decimal> InterCompanyMgmFee { get; set; }
+        public Nullable<System.DateTime> InterCompanyInvoicing { get; set; }
+        public string ContractTerm { get; set; }
+        public Nullable<bool> AdditionalYears { get; set; }
+        public string Years { get; set; }
+        public Nullable<long> QuickBookLocId { get; set; }
         public string LocationCountry { get; set; }
         public string LocationState { get; set; }
-        public string ClientName { get; set; }
-        public string ClientImage { get; set; }
-        public Nullable<System.DateTime> ClientDOB { get; set; }
-        public string ClientEmail { get; set; }
-        public string ClientCountry { get; set; }
-        public string ClientState { get; set; }
-        public bool IsEmailVerify { get; set; }
     }
 }

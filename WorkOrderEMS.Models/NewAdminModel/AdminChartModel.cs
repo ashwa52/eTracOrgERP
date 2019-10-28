@@ -24,7 +24,7 @@ namespace WorkOrderEMS.Models
         [Display(Name = "Roles And Responsibility")]
         public string RolesAndResponsibility { get; set; }
         [Display(Name = "Department")]
-        public long Department { get; set; }
+        public long? Department { get; set; }
         public string Action { get; set; }
         public string IsActive { get; set; }
         public string DepartmentName { get; set; }
@@ -32,6 +32,16 @@ namespace WorkOrderEMS.Models
         public string JobTitle { get; set; }
         public string JobTitleDesc { get; set; }
         public string  JobTitleLabel { get; set; }
+        public string EmploymentStatus { get; set; }
+        public string EmploymentClassification { get; set; }
+        public decimal? RateOfPay { get; set; }
+        public long RequisitionId { get; set; }
+        public string EmployeeId { get; set; }
+        public string RequisitionType { get; set; }
+        public string ActionStatus { get; set; }
+        public long UserId { get; set; }
+        public bool IsDeleted { get; set; }
+        public int? JobTitleCount { get; set; }
         //public string[] JDSplitedString { get; set; }
         //public long? MyProperty { get; set; }
     }
@@ -41,5 +51,11 @@ namespace WorkOrderEMS.Models
         public List<AddChartModel> listSuperiour { get; set; }
         public List<DepartmentModel> listDepartment { get; set; }
     }
-    
+    public class JobTitleModel
+    {
+        public long JobTitleId { get; set; }
+        public string JobTitle { get; set; }
+        public int? JobTitleCount { get; set; }
+        public int? JobTitleLastCount { get; set; }
+    }
 }

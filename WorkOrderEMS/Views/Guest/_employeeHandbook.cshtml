@@ -1,0 +1,75 @@
+﻿@model WorkOrderEMS.Models.Employee.EmployeeHandbookModel
+<style>
+	.p1 {
+		font-size: 20px;
+		font-family: Times New Roman;
+		margin: 73px 130px 0px 130px;
+		text-align: justify;
+		color:#000
+	}
+
+	h3 {
+		margin: 117px 0px 0px 50px;
+	}
+
+	.text-line {
+		background-color: transparent;
+		outline: none;
+		outline-style: none;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+		border-bottom: solid #000 1px;
+	}
+
+	.row {
+		display: flex;
+	}
+
+	.center {
+		display: block;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	input[type="checkbox"]:after {
+		line-height: 1.5em !important;
+		content: '' !important;
+		display: block !important;
+		margin-top: -3px !important;
+		margin-left: -3px !important;
+		border: 1px solid transparent !important;
+		border-radius: 0px !important;
+		line-height: 1.3 !important;
+		background: none !important;
+	}
+</style>
+<div class="p1">
+	<div class="row">
+		<img src="~/Images/FormImages/image-form.jpg" alt="background image" />
+		<h3><u>Employee Handbook Acknowledgment and Receipt</u></h3>
+	</div>
+	<p>
+		The employee handbook describes important information about Elite Parking Services of America, Inc. (Elite), and I understand I should consult my direct manager or the Compliance
+		Department regarding any questions I have related to its contents. I have entered into my employment relationship with Elite voluntarily and acknowledge there is no specified length of
+		employment. <b>
+			Accordingly, either I or Elite can terminate the relationship at will, with or without cause, at any time, so long as there is not a violation of applicable federal or state
+			law.
+		</b> I understand and agree that, other than the President of company, no manager, supervisor or representative of Elite has any authority to enter into any agreement for employment other
+		than at-will.<br /> This handbook and the policies and procedures contained herein supersede any and all prior practices, oral or written representations, or statements regarding the terms and conditions of my
+		employment with Elite. By distributing this employee handbook, Elite expressly revokes any and all previous policies and procedures that are inconsistent with those contained herein.
+		I understand that, except for employment-at-will status, any and all policies and practices may be changed at any time by Elite, and the Company reserves the right to change my hours, wages
+		and working conditions at any time. All such changes will be communicated through official notices, and I understand that revised information may supersede, modify or eliminate existing
+		policies.<br /> I have received the handbook, and I understand it is my responsibility to read and comply with the policies contained in this handbook and any revisions made to it. I have had the opportunity
+		to ask questions about the policies in this handbook, and I understand that any future questions I may have about this Employee Handbook or its contents will be answered by the Manager or
+		their designated representative. Upon separation of employment, I will return this employee handbook to my direct manager as I recognize it is Company property.
+	</p>
+	@using (Html.BeginForm("_EmployeeHandbook", "Guest", FormMethod.Post, new { id = "employeeHandbook" }))
+	{
+		<p> @Html.TextBoxFor(x => x.Signature, new { @style = "width:290px;", @class = "text-line" })<br />Employee's Signature</p>
+		<p>@Html.TextBoxFor(x => x.EmployeeName, new { @style = "width:290px;", @class = "text-line" })<br />Employee's Name (Print)</p>
+		<p>@Html.TextBoxFor(x => x.Date, new { @style = "width:290px;", @class = "text-line" })<br />Date</p>
+		<p> @Html.CheckBoxFor(x => x.IsSave, new { @style = "height: 18px;width: 31px;", onchange = "SubmitForm(this,employeeHandbook)" })    i hereby declare that the above information is true to the best of my knowledge </p>
+
+	}
+
+</div>

@@ -75,24 +75,25 @@ namespace WorkOrderEMS.Controllers.eCounting
             try
             {
                 var CoutList = _IeCountingReport.GetListVendorCount(VendorId, locationId, fromDate, toDate, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
-                foreach (var count in CoutList.rows)
-                {
+                //foreach (var count in CoutList.rows)
+                //{
 
-                        JQGridRow row = new JQGridRow();
-                       // row.id = Cryptography.GetEncryptedData(Convert.ToString(misc.MISId), true);
-                        row.cell = new string[5];
-                        row.cell[0] = count.PendingPO.ToString();
-                        row.cell[1] = count.ApprovePO.ToString();
-                        row.cell[2] = count. PendingBill.ToString();
-                        row.cell[3] = count. ApproveBill.ToString();
-                        row.cell[4] = count. PendingPayment.ToString();
-                        rowss.Add(row);
-                    
-                }
-                result.rows = rowss.ToArray();
-                result.page = Convert.ToInt32(page);
-                result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
-                result.records = Convert.ToInt32(TotalRecords.Value);
+                //        JQGridRow row = new JQGridRow();
+                //       // row.id = Cryptography.GetEncryptedData(Convert.ToString(misc.MISId), true);
+                //        row.cell = new string[5];
+                //        row.cell[0] = count.PendingPO.ToString();
+                //        row.cell[1] = count.ApprovePO.ToString();
+                //        row.cell[2] = count. PendingBill.ToString();
+                //        row.cell[3] = count. ApproveBill.ToString();
+                //        row.cell[4] = count. PendingPayment.ToString();
+                //        rowss.Add(row);
+
+                //}
+                // result.rows = rowss.ToArray();
+                //result.page = Convert.ToInt32(page);
+                //result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
+                //result.records = Convert.ToInt32(TotalRecords.Value);
+                return Json(CoutList, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }

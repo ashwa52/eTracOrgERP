@@ -99,9 +99,13 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
                         System.Text.RegularExpressions.Regex rx = new System.Text.RegularExpressions.Regex("<[^>]*>");
                         Obj.RolesAndResponsibility = removeSpace;//rx.Replace(Obj.RolesAndResponsibility, "");
                     }
-
-                    var isSaved = _IAdminDashboard.SaveVSC(Obj);
-                    if (isSaved == true)
+                    if(Obj.Id == null)
+                    {
+                        Obj.Action = "I";
+                        Obj.IsActive = "Y";
+                    }
+                    var SavedData = _IAdminDashboard.SaveVSC(Obj);
+                    if (SavedData.Id > 0)
                     {
                         ViewBag.Message = CommonMessage.SaveSuccessMessage();
                     }
@@ -231,6 +235,41 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
                 if (CSVChartId > 0)
                 {
                     lst = _IAdminDashboard.GetJobTitleData(CSVChartId);
+                    if (lst != null)
+                    {
+                        return Json(lst, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(lst, JsonRequestBehavior.AllowGet);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message; ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger;
+            }
+            return Json(lst, JsonRequestBehavior.AllowGet);
+        }
+
+
+        [HttpPost]
+        public JsonResult GetChartDetailsById(long CSVChartId)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            var lst = new AddChartModel();
+            if (Session != null)
+            {
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                }
+            }
+            try
+            {
+                if (CSVChartId > 0)
+                {
+                    lst = _IAdminDashboard.GetChartData(CSVChartId);
                     if (lst != null)
                     {
                         return Json(lst, JsonRequestBehavior.AllowGet);

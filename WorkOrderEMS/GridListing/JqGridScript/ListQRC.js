@@ -39,7 +39,7 @@ if ($_userTypeId == "1" || $_userTypeId == "5" || $_userTypeId == "6") {
     allLocation = '<div class="onoffswitch2"><input type="checkbox" name="onoffswitch2" class="onoffswitch2-checkbox" id="ViewAllLocation"><label for="ViewAllLocation" class="onoffswitch2-label"><span class="onoffswitch2-inner"></span><span class="onoffswitch2-switch"></span></label></div>'
     //allLocation = '<input type="button" id="allLocationright" value="View All Locations" class="ViewAllButton" onclick="ViewAllRecords();" title="Click to view user on All Locations."/>'
 }
-
+7387895536
 var ExportAllQRC = ''
     + '&nbsp&nbsp<select id="printQRC" class="" onchange="exportAllQRC(arguments[0]||event);">'
     + '<option value="0">Print QRC</option>'
@@ -577,7 +577,7 @@ function generateqrcodeByVJ(id, sizeGenerate) {
                 image: 'http://localhost:57572/Images/upload.jpg'
             };
             //$('"#'+mycontainer+'"').empty().qrcode(options);
-
+            debugger
             $('#container2').empty().qrcode(options);
             //$("#container").attr('class', 'show');
 

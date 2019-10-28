@@ -15,7 +15,7 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces.eCounting
         string ApproveBill(BillListApproveModel Obj, string UserName, long UserId, long LocationId);
         CostCodeModel GetCostCodeData(long CostCodeId);
         ServiceResponseModel<BillNumberData> GetPreBillNumberData(ServiceBaseModel ObjServiceBaseModel);
-        BillListApproveDetails GetListPreBill(long? UserId, long? Location, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
+        List<BillListApproveModel> GetListPreBill(long? UserId, long? Location, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
         List<BillFacilityModel> GetAllBillFacilityListById(long BillId);
         LocationDataModel GetLocationDataByLocId(long LocationId);
         FacilityListData GetFacilityDataByFacilityId(string FacilityId);

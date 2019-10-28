@@ -415,8 +415,7 @@ namespace WorkOrderEMS.Controllers.eFleet
             try
             {
                 if (!string.IsNullOrEmpty(fn) && !string.IsNullOrEmpty(inspectiontype))
-                {
-                                    
+                {                                    
                     string RootDirectory = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath;
                     string IsFileExist = RootDirectory + InspectionDocPath;                   
                         RootDirectory = RootDirectory + InspectionDocPath + fn;

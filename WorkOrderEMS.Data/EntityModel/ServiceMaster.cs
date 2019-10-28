@@ -14,6 +14,7 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class ServiceMaster
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public ServiceMaster()
         {
             this.LocationServices = new HashSet<LocationService>();
@@ -30,6 +31,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<long> DeletedBy { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LocationService> LocationServices { get; set; }
     }
 }

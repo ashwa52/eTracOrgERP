@@ -10,6 +10,7 @@ function requiredqrczise() {
 
 
 function generateqrcode() {
+    debugger
     var size = '155';
     //alert('i am inside'); 
     if ($('#QRCSize') != undefined && $('#QRCSize option:selected').val() != '' && parseInt($('#QRCSize option:selected').val(), 10) > 0)
@@ -117,10 +118,12 @@ function generateqrcode() {
                 //image: $("#img-buffer")[0]
                 image: 'http://localhost:57572/Images/upload.jpg'
             };
+            debugger
             //$('"#'+mycontainer+'"').empty().qrcode(options);
             $('#container').empty().qrcode(options);
             $('#container2').empty().qrcode(options);
-            //$("#container").attr('class', 'show');
+            $('#container4').empty().qrcode(options);
+            //container
             $("#divToPrint").attr('class', 'show');
 
         },

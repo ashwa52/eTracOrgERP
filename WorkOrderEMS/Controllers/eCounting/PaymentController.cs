@@ -80,47 +80,68 @@ namespace WorkOrderEMS.Controllers.eCounting
                 }
                 UserId = ObjLoginModel.UserId;
             }
-            JQGridResults result = new JQGridResults();
-            List<JQGridRow> rowss = new List<JQGridRow>();
-            sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
-            sidx = string.IsNullOrEmpty(sidx) ? "UserEmail" : sidx;
-            txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
+
             try
-            {
-                locationId = 0;//Need to fetch all data
-                var paymentList = _IPaymentManager.GetListPaymentByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
-                foreach (var payment in paymentList.rows)
+            {                
+                locationId = 0;//Need to fetch all data // it was previously done need to be discussed
+                
+                if (!string.IsNullOrEmpty(txtSearch))
                 {
-                    if (payment.BillNo != null)
-                    {
-                        JQGridRow row = new JQGridRow();
-                        row.id = Cryptography.GetEncryptedData(Convert.ToString(payment.BillNo), true);
-                        row.cell = new string[14];
-                        row.cell[0] = payment.BillNo.ToString();
-                        row.cell[1] = payment.LocationName == null ? "N/A" : payment.LocationName;
-                        row.cell[2] = payment.VendorName == null ? "N/A" : payment.VendorName;
-                        row.cell[3] = payment.OperatingCompany == null ? "N/A" : payment.OperatingCompany;
-                        row.cell[4] = payment.BillType == null ? "N/A" : payment.BillType;
-                        row.cell[5] = payment.BillAmount.ToString();
-                        row.cell[6] = payment.BillDate.ToString();
-                        row.cell[7] = payment.GracePeriod == null ? "N/A" : payment.GracePeriod.ToString();
-                        row.cell[8] = (payment.PaymentMode == null && payment.BillType == "MIS") ? "MISC" : (payment.PaymentMode == null && payment.BillType == "ManualBill") ? "ManualBill" : payment.PaymentMode.ToString();
-                        row.cell[9] = payment.Status.ToString();
-                        row.cell[10] = payment.VendorId > 0 ? payment.VendorId.ToString() : "0";
-                        row.cell[11] = payment.OperatingCompanyId > 0 ? payment.OperatingCompanyId.ToString() : "0";
-                        row.cell[12] = payment.LocationId > 0 ? payment.LocationId.ToString() : "0";
-                        row.cell[13] = payment.LLBL_ID.ToString();
-                        rowss.Add(row);
-                    }
+                    var paymentList = _IPaymentManager.GetListPaymentByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType).Where(x => !String.IsNullOrEmpty(x.VendorName));
+                    var FilterList = paymentList.Where(X => X.VendorName.ToLower().Contains(txtSearch.ToLower())).ToList();
+                    return Json(FilterList.ToList(), JsonRequestBehavior.AllowGet);
                 }
-                result.rows = rowss.ToArray();
-                result.page = Convert.ToInt32(page);
-                result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
-                result.records = Convert.ToInt32(TotalRecords.Value);
+                else {
+                    var paymentList = _IPaymentManager.GetListPaymentByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
+                    return Json(paymentList.ToList(), JsonRequestBehavior.AllowGet);
+                }
             }
             catch (Exception ex)
-            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
-            return Json(result, JsonRequestBehavior.AllowGet);
+            {
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+
+            //JQGridResults result = new JQGridResults();
+            //List<JQGridRow> rowss = new List<JQGridRow>();
+            //sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
+            //sidx = string.IsNullOrEmpty(sidx) ? "UserEmail" : sidx;
+            //txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
+            //try
+            //{
+            //    locationId = 0;//Need to fetch all data
+            //    var paymentList = _IPaymentManager.GetListPaymentByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
+            //    foreach (var payment in paymentList.rows)
+            //    {
+            //        if (payment.BillNo != null)
+            //        {
+            //            JQGridRow row = new JQGridRow();
+            //            row.id = Cryptography.GetEncryptedData(Convert.ToString(payment.BillNo), true);
+            //            row.cell = new string[14];
+            //            row.cell[0] = payment.BillNo.ToString();
+            //            row.cell[1] = payment.LocationName == null ? "N/A" : payment.LocationName;
+            //            row.cell[2] = payment.VendorName == null ? "N/A" : payment.VendorName;
+            //            row.cell[3] = payment.OperatingCompany == null ? "N/A" : payment.OperatingCompany;
+            //            row.cell[4] = payment.BillType == null ? "N/A" : payment.BillType;
+            //            row.cell[5] = payment.BillAmount.ToString();
+            //            row.cell[6] = payment.BillDate.ToString();
+            //            row.cell[7] = payment.GracePeriod == null ? "N/A" : payment.GracePeriod.ToString();
+            //            row.cell[8] = (payment.PaymentMode == null && payment.BillType == "MIS") ? "MISC" : (payment.PaymentMode == null && payment.BillType == "ManualBill") ? "ManualBill" : payment.PaymentMode.ToString();
+            //            row.cell[9] = payment.Status.ToString();
+            //            row.cell[10] = payment.VendorId > 0 ? payment.VendorId.ToString() : "0";
+            //            row.cell[11] = payment.OperatingCompanyId > 0 ? payment.OperatingCompanyId.ToString() : "0";
+            //            row.cell[12] = payment.LocationId > 0 ? payment.LocationId.ToString() : "0";
+            //            row.cell[13] = payment.LLBL_ID.ToString();
+            //            rowss.Add(row);
+            //        }
+            //    }
+            //    result.rows = rowss.ToArray();
+            //    result.page = Convert.ToInt32(page);
+            //    result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
+            //    result.records = Convert.ToInt32(TotalRecords.Value);
+            //}
+            //catch (Exception ex)
+            //{ return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+
         }
 
         /// <summary>
@@ -153,46 +174,65 @@ namespace WorkOrderEMS.Controllers.eCounting
                 }
                 UserId = ObjLoginModel.UserId;
             }
-            JQGridResults result = new JQGridResults();
-            List<JQGridRow> rowss = new List<JQGridRow>();
-            sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
-            sidx = string.IsNullOrEmpty(sidx) ? "UserEmail" : sidx;
-            txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
+
             try
             {
-                locationId = 0;//Need to fetch all data
-                var paymentList = _IPaymentManager.GetListPaidtByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
-                foreach (var payment in paymentList.rows)
+                locationId = 0;//Need to fetch all data // was done previously need to be discussed
+                if (!string.IsNullOrEmpty(txtSearch))
                 {
-                    if (payment.BillNo != null)
-                    {
-                        JQGridRow row = new JQGridRow();
-                        row.id = Cryptography.GetEncryptedData(Convert.ToString(payment.BillNo), true);
-                        row.cell = new string[13];
-                        row.cell[0] = payment.BillNo.ToString();
-                        row.cell[1] = payment.LocationName == null ? "N/A" : payment.LocationName; ;
-                        row.cell[2] = payment.VendorName == null ? "N/A" : payment.VendorName;
-                        row.cell[3] = payment.OperatingCompany == null ? "N/A" : payment.OperatingCompany;
-                        row.cell[4] = payment.BillType == null ? "N/A" : payment.BillType;
-                        row.cell[5] = payment.BillAmount.ToString();
-                        row.cell[6] = payment.BillDate.ToString();
-                        row.cell[7] = payment.GracePeriod == null ? "N/A" : payment.GracePeriod.ToString();
-                        row.cell[8] = (payment.PaymentMode == null && payment.BillType == "MIS") ? "MISC" : (payment.PaymentMode == null && payment.BillType == "ManualBill") ? "ManualBill" : payment.PaymentMode.ToString();
-                        row.cell[9] = payment.Description == null ? "N/A" : payment.Description;
-                        row.cell[10] = payment.Status == "P" ? "Paid" : "Cancel";
-                        row.cell[11] = payment.OperatingCompanyId > 0 ? payment.OperatingCompanyId.ToString() : "0";
-                        row.cell[12] = payment.LocationId > 0 ? payment.LocationId.ToString() : "0";
-                        rowss.Add(row);
-                    }
+                    var paymentList = _IPaymentManager.GetListPaidtByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType).Where(x => !String.IsNullOrEmpty(x.VendorName));
+                    var returnFilteredList = paymentList.Where(item => item.VendorName.ToLower().Contains(txtSearch.ToLower()));
+                    return Json(returnFilteredList.ToList(), JsonRequestBehavior.AllowGet);
                 }
-                result.rows = rowss.ToArray();
-                result.page = Convert.ToInt32(page);
-                result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
-                result.records = Convert.ToInt32(TotalRecords.Value);
+                else {
+                    var paymentList = _IPaymentManager.GetListPaidtByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
+                    return Json(paymentList.ToList(), JsonRequestBehavior.AllowGet);
+                }                
             }
             catch (Exception ex)
-            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
-            return Json(result, JsonRequestBehavior.AllowGet);
+            {
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+
+            //JQGridResults result = new JQGridResults();
+            //List<JQGridRow> rowss = new List<JQGridRow>();
+            //sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
+            //sidx = string.IsNullOrEmpty(sidx) ? "UserEmail" : sidx;
+            //txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
+            //try
+            //{
+            //    locationId = 0;//Need to fetch all data
+            //    var paymentList = _IPaymentManager.GetListPaidtByLocationId(UserId, locationId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
+            //    foreach (var payment in paymentList.rows)
+            //    {
+            //        if (payment.BillNo != null)
+            //        {
+            //            JQGridRow row = new JQGridRow();
+            //            row.id = Cryptography.GetEncryptedData(Convert.ToString(payment.BillNo), true);
+            //            row.cell = new string[13];
+            //            row.cell[0] = payment.BillNo.ToString();
+            //            row.cell[1] = payment.LocationName == null ? "N/A" : payment.LocationName; ;
+            //            row.cell[2] = payment.VendorName == null ? "N/A" : payment.VendorName;
+            //            row.cell[3] = payment.OperatingCompany == null ? "N/A" : payment.OperatingCompany;
+            //            row.cell[4] = payment.BillType == null ? "N/A" : payment.BillType;
+            //            row.cell[5] = payment.BillAmount.ToString();
+            //            row.cell[6] = payment.BillDate.ToString();
+            //            row.cell[7] = payment.GracePeriod == null ? "N/A" : payment.GracePeriod.ToString();
+            //            row.cell[8] = (payment.PaymentMode == null && payment.BillType == "MIS") ? "MISC" : (payment.PaymentMode == null && payment.BillType == "ManualBill") ? "ManualBill" : payment.PaymentMode.ToString();
+            //            row.cell[9] = payment.Description == null ? "N/A" : payment.Description;
+            //            row.cell[10] = payment.Status == "P" ? "Paid" : "Cancel";
+            //            row.cell[11] = payment.OperatingCompanyId > 0 ? payment.OperatingCompanyId.ToString() : "0";
+            //            row.cell[12] = payment.LocationId > 0 ? payment.LocationId.ToString() : "0";
+            //            rowss.Add(row);
+            //        }
+            //    }
+            //    result.rows = rowss.ToArray();
+            //    result.page = Convert.ToInt32(page);
+            //    result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
+            //    result.records = Convert.ToInt32(TotalRecords.Value);
+            //}
+            //catch (Exception ex)
+            //{ return Json(ex.Message, JsonRequestBehavior.AllowGet); }            
         }
 
         /// <summary>
@@ -482,39 +522,39 @@ namespace WorkOrderEMS.Controllers.eCounting
                 {
                     getResult.IssueDateDisplay = getResult.IssueDate.ToString();
                     getResult.DeliveryDateDisplay = getResult.DeliveryDate.ToString();
-                    JQGridResults result = new JQGridResults();
-                    List<JQGridRow> rowss = new List<JQGridRow>();
-                    decimal? grandTotal = 0;
-                    sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
-                    sidx = string.IsNullOrEmpty(sidx) ? "UserEmail" : sidx;
+                    //JQGridResults result = new JQGridResults();
+                    //List<JQGridRow> rowss = new List<JQGridRow>();
+                    //decimal? grandTotal = 0;
+                    //sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
+                    //sidx = string.IsNullOrEmpty(sidx) ? "UserEmail" : sidx;
                     txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
                     getResult.NewPOTypeDetails = _IPOTypeDetails.GetAllPOFacilityByPOIdList(ObjLoginModel.UserId, getPOByBillNo.POId, rows, TotalRecords, sidx, sord);
                    
-                    foreach (var poFacilityList in getResult.NewPOTypeDetails.rows)
-                    {
-                        grandTotal += poFacilityList.UnitPrice * poFacilityList.Quantity;
-                        poFacilityList.TotalPrice = grandTotal;
-                        //poFacilityList.TotalPrice = poFacilityList.UnitPrice * poFacilityList.Quantity;
-                        poFacilityList.Total = poFacilityList.UnitPrice * poFacilityList.Quantity;
-                        JQGridRow row = new JQGridRow();
-                        row.id = Cryptography.GetEncryptedData(Convert.ToString(poFacilityList.COM_FacilityId), true);
-                        row.cell = new string[10];
-                        row.cell[0] = poFacilityList.COM_FacilityId.ToString();
-                        row.cell[1] = poFacilityList.CostCode.ToString();
-                        row.cell[2] = poFacilityList.FacilityType.ToString();
-                        row.cell[3] = poFacilityList.COM_Facility_Desc.ToString();
-                        row.cell[4] = poFacilityList.UnitPrice.ToString();
-                        row.cell[5] = poFacilityList.Tax.ToString();
-                        row.cell[6] = poFacilityList.Quantity.ToString();
-                        row.cell[7] = poFacilityList.Total.ToString();
-                        row.cell[8] = poFacilityList.TotalPrice.ToString();
-                        row.cell[9] = poFacilityList.CostCodeName.ToString();
-                        rowss.Add(row);
-                    }
-                    result.rows = rowss.ToArray();
-                    result.page = Convert.ToInt32(page);
-                    result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
-                    result.records = Convert.ToInt32(TotalRecords.Value);
+                    //foreach (var poFacilityList in getResult.NewPOTypeDetails.rows)
+                    //{
+                    //    grandTotal += poFacilityList.UnitPrice * poFacilityList.Quantity;
+                    //    poFacilityList.TotalPrice = grandTotal;
+                    //    //poFacilityList.TotalPrice = poFacilityList.UnitPrice * poFacilityList.Quantity;
+                    //    poFacilityList.Total = poFacilityList.UnitPrice * poFacilityList.Quantity;
+                    //    JQGridRow row = new JQGridRow();
+                    //    row.id = Cryptography.GetEncryptedData(Convert.ToString(poFacilityList.COM_FacilityId), true);
+                    //    row.cell = new string[10];
+                    //    row.cell[0] = poFacilityList.COM_FacilityId.ToString();
+                    //    row.cell[1] = poFacilityList.CostCode.ToString();
+                    //    row.cell[2] = poFacilityList.FacilityType.ToString();
+                    //    row.cell[3] = poFacilityList.COM_Facility_Desc.ToString();
+                    //    row.cell[4] = poFacilityList.UnitPrice.ToString();
+                    //    row.cell[5] = poFacilityList.Tax.ToString();
+                    //    row.cell[6] = poFacilityList.Quantity.ToString();
+                    //    row.cell[7] = poFacilityList.Total.ToString();
+                    //    row.cell[8] = poFacilityList.TotalPrice.ToString();
+                    //    row.cell[9] = poFacilityList.CostCodeName.ToString();
+                    //    // .Add(row);
+                    //}
+                   //result.rows = rowss.ToArray();
+                   // result.page = Convert.ToInt32(page);
+                    //result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
+                    //result.records = Convert.ToInt32(TotalRecords.Value);
                     }
             }
             catch (Exception ex)

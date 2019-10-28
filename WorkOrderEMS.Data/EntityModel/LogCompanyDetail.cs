@@ -40,7 +40,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string LCOD_IsApprove { get; set; }
         public string LCOD_IsActive { get; set; }
     
-        public virtual CompanyDetail CompanyDetail { get; set; }
         public virtual Company Company { get; set; }
+        public virtual CompanyDetail CompanyDetail { get; set; }
     }
 }

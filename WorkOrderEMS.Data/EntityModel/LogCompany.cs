@@ -29,7 +29,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string LCMP_IsApprove { get; set; }
         public string LCMP_IsActive { get; set; }
     
-        public virtual CompanyType CompanyType { get; set; }
         public virtual Company Company { get; set; }
+        public virtual CompanyType CompanyType { get; set; }
     }
 }

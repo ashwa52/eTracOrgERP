@@ -14,17 +14,20 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class CompanyType
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CompanyType()
         {
-            this.LogCompanies = new HashSet<LogCompany>();
             this.Companies = new HashSet<Company>();
+            this.LogCompanies = new HashSet<LogCompany>();
         }
     
         public long COT_Id { get; set; }
         public string COT_CompanyType { get; set; }
         public string COT_IsActive { get; set; }
     
-        public virtual ICollection<LogCompany> LogCompanies { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Company> Companies { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LogCompany> LogCompanies { get; set; }
     }
 }

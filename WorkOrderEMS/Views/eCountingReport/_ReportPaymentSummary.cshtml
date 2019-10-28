@@ -1,79 +1,89 @@
 ﻿
 @{
     ViewBag.Title = "Payment Summary";
-    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
     long viewallloc = (Convert.ToInt64(Session["eTrac_SelectedDasboardLocationID"]));
 }
 @Styles.Render("~/Scripts/ReportCss")
 <link href="~/Content/Dashboard/ExportDataTable/buttons.dataTables.css" rel="stylesheet" />
-@Scripts.Render("~/Scripts/ReportJS")
-@Scripts.Render("~/Scripts/ReportJsDTExporting")
-<script src="~/Scripts/Report/highcharts-3d.js"></script>
-<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-    <div class="panel panel-defaultReport">
-        <div class="panel-headingReport">
-            <div class="pull-left">
-                <span id="txtFromdate"></span><span id="txtFromTime"></span><span id="txtTodate"></span><span id="txtToTime"></span><label></label>
-            </div>
-            <div class="text-right form-inline pull-right">
-                <button type="button" class="btn btn-default fullPageExport hide pdf_export" value="Full Page Export" title="Full page export"><i class="fa fa-file-pdf-o"></i></button>
-                <select id="ddlLocation" class="form-control"></select>
-                <div class="input-group date" style="width: 165px">
-                    <input type="text" placeholder="From Date" id="FromDate" class="form-control" style="cursor: pointer" />
-                    <span class="input-group-addon" style="margin-left:-40px;">
-                        <i class="glyphicon glyphicon-calendar"></i>
-                    </span>
-                </div>
-                <div class="input-group date" style="width: 165px">
-                    <input type="text" id="ToDate" placeholder="To Date" class="form-control" style="cursor: pointer" />
-                    <span class="input-group-addon" style="margin-left:-40px;">
-                        <i class="glyphicon glyphicon-calendar"></i>
-                    </span>
-                </div>
-                @*<div class="dropdown" style="display:inline-block">
-                    <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-list-ul" style="color: #fff"> Filters</i>
-                    </a>
-                    <ul class="dropdown-menu filterReportDd" id="filterby" style="min-width:70px">
-                        <li id="reportrange">
-                            <i data-toggle="tooltip" title="Compare Range" class="fa fa-calendar-o reportrange reportcomparerange" onclick="return false;" data-fromcomparedate="04/24/2015" data-tocomparedate="04/30/2015"> </i>Compare Range
-                        </li>
-                        <li id="daterange">
-                            <i data-toggle="tooltip" title="Date Range" class="fa fa-calendar reportrange" onclick="return false;" data-fromdate="01/02/2010" data-todate="04/17/2015"></i>Date Range
-                        </li>
-                        <li id="clockpicker">
-                            <i data-toggle="tooltip" title="Clock Range" class="clockpicker  fa fa-clock-o" onclick="return false;"></i>Clock Range
-                        </li>
-                    </ul>
-                    <div style="top: 50.2333px; right: auto; left: 9px; display: none;" id="showDiv" class="daterangepicker dropdown-menu opensleft show-calendar">
-                        <div class="ranges">
-                            <div class="range_inputs">
-                                <div class="daterangepicker_start_input clockpicker" data-placement="bottom" data-align="top" data-autoclose="true">
-                                    <label for="daterangepicker_start">From Time</label>
-                                    <input class="input-mini" name="txtFromTimeClock" id="txtFromTimeClock" placeholder="Choose From Time" onkeypress="return isNumberKey(event)" type="text" data-role="datebox" data-options='{"mode":"durationflipbox","useFocus":true,"overrideDurationOrder":["h","i"],"overrideDurationFormat": "%Dl:%DM" }'>
+<style>
+    .panel-headingReport {
+        height: 56px;
+    }
+    .form-control ,.btn {
+    font-size: 14px !important;
+}
+.label-heading-report-grid {
+    float: left;
+    width: 100%;
+    background-color: #007ea4;
+    padding: 15px 10px;
+    border-radius: 3px 3px 0 0;
+    color: #fff !important;
+}
+</style>
+<div class="content-body" style="min-height: 920px;">
+    <!-- row -->
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card aos-init" data-aos="fade-up">
+
+                    <div class="card-body" style="padding:0">
+                        <div id="jsGrid-basic" class="jsgrid" style="position: relative;  width: 100%;">
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="panel panel-defaultReport">
+                                    <div class="panel-headingReport">
+                                        <div class="pull-left">
+                                            <span id="txtFromdate"></span><span id="txtFromTime"></span><span id="txtTodate"></span><span id="txtToTime"></span><label></label>
+                                        </div>
+                                        <div class="col-md-8 text-right form-inline pull-right">
+                                            <div class="col-md-1">
+                                                <button style="font-size: 21px;color:#fff;display:none" type="button" class="btn btn-default fullPageExport hide pdf_export" value="Full Page Export" title="Full page export"><i class="fa fa-file-pdf-o"></i></button>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <select id="ddlLocation" class="form-control"></select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="input-group date" style="width: 165px">
+                                                    <input type="text" placeholder="From Date" id="FromDate" class="form-control" style="cursor: pointer" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="input-group date" style="width: 165px">
+                                                    <input type="text" id="ToDate" placeholder="To Date" class="form-control" style="cursor: pointer" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-1">
+                                                <input type="button" class="btn btn-secondary" value="Go" id="btnSearchByLoc">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="pagi" id="divCharts">
+                                        <div id="containerCharts" style="height: 400px"></div>
+                                    </div>
+
+
                                 </div>
-                                <div class="daterangepicker_end_input clockpicker" data-placement="bottom" data-align="top" data-autoclose="true">
-                                    <label for="daterangepicker_end">To Time</label>
-                                    <input class="input-mini" name="txtToTimeClock" id="txtToTimeClock" placeholder="Choose To Time" onkeypress="return isNumberKey(event)" type="text" data-role="datebox" data-options='{"mode":"durationflipbox","useFocus":true,"overrideDurationOrder":["h","i"],"overrideDurationFormat": "%Dl:%DM" }'>
-                                </div>
-                                <button class="applyBtn btn btn-small btn-sm btn-success" id="btnApplyClock">Apply</button>
-                                <button class="cancelBtn btn btn-small btn-sm btn-default" id="btnCancelClock">Cancel</button>
                             </div>
+
                         </div>
                     </div>
-                </div>*@
-                <input type="button" class="btn btn-default" value="Go" id="btnSearchByLoc">
+                </div>
             </div>
         </div>
-
-        <div class="pagi" id="divCharts">
-            <div id="containerCharts" style="height: 400px"></div>
-        </div>
-
-
     </div>
 </div>
-<script>
+
+@section scriptsbottom{
+    @Scripts.Render("~/Scripts/ReportJS")
+    @Scripts.Render("~/Scripts/ReportJsDTExporting")
+    <script src="~/Scripts/Report/highcharts-3d.js"></script>
+    <script>
+    var currentName,currentCategory ,sortCol ,sortDir ,EXPORT_WIDTH ;
     $(document).ready(function () {
         $('#FromDate,#ToDate').datepicker();
         var GetAllLocation = 'eCountingReport/GetAllLocationList';
@@ -88,7 +98,7 @@
                 ($('<option></option>').val(0).html("---All Location---"));
                 for (var i = 0; i < result.length; i++) {
                     $("#ddlLocation").append('<option value=' + result[i].LocationId + '>' + result[i].LocationName + '</option>');
-                }                
+                }
             },
             error: function(){alert(" Something went wrong..")},
         });
@@ -200,7 +210,7 @@
             }
         });//ajax end block
 
-        function getPaymentSummaryDetails(PaymentType, LocID, FromDateData, ToDateData) {
+        function getPaymentSummaryDetails(PaymentType, LocID, FromDateData, ToDateData) { 
             var GetDetails = 'eCountingReport/GetAllPaymentSummaryDetails';
             if (PaymentType != null && PaymentType != "") {
                 try {
@@ -221,7 +231,7 @@
                                 if (!$("#divDT  #Scandetail_wrapper").length > 0) {
                                     $('#detail').dataTable().fnDestroy();
                                     $('.dataTables').remove();
-                                        $('.pagi').append("<div class='dataTables' id=divDT><label  ID=lblBillType style=margin-top:20px;margin-bottom:10px;color:#333333;font-size:medium;></label><table id='detail' class='display reportList' cellspacing='0' width='100%'><thead><tr><th>Bill No</th><th>Location Name</th><th>Employee Name</th><th>Amount</th><th>Date</th></tr></thead><tbody>")
+                                    $('.pagi').append("<div class='dataTables' id=divDT><label class='label-heading-report-grid'  ID=lblBillType style=margin-top:20px;margin-bottom:10px;color:#333333;font-size:medium;></label><table id='detail' class='display reportList' cellspacing='0' width='100%'><thead><tr><th>Bill No</th><th>Location Name</th><th>Employee Name</th><th>Amount</th><th>Date</th></tr></thead><tbody>")
                                         $.each(target, function (i, v) { $('#detail').append("<tr><td>" + v.BillId + "</td><td>" + v.LocationName + "</td><td>" + v.UserName + "</td><td>" + v.Amount + "</td><td>" + v.Date + "</td></tr>") });
                                     $('#detail').append("</tbody></table></div>");
                                     $('#lblBillType').text(PaymentType + ' Details');
@@ -543,7 +553,8 @@
             image.src = 'data:image/svg+xml;base64,' + window.btoa(svg);
         }
     })
-</script>
+    </script>
+}
 @*<script type="text/javascript">
         $('.clockpicker').clockpicker();
     </script>*@

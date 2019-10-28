@@ -9,7 +9,7 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
 {
     public interface IeCountingReport
     {
-        VendorCountListDetails GetListVendorCount(long? VendorId, long? Location, DateTime? fromDate, DateTime? toDate, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
+        List<VendorCountModel> GetListVendorCount(long? VendorId, long? Location, DateTime? fromDate, DateTime? toDate, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
         List<VendorTypeListServiceModel> GetAllVendorList(long LocationId);
         decimal? GetPaymentTillDateData(int VendorId);
         List<eCountingCountDetailReportModel> GetPendingPODetailsReport(DateTime FromDate, DateTime ToDate, long? VendorId);

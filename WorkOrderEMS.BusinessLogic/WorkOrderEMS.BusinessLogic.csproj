@@ -116,6 +116,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
@@ -174,8 +175,10 @@
     <Compile Include="Interfaces\Admin\IVendorType.cs" />
     <Compile Include="Interfaces\Admin\NewAdmin\IAdminDashboard.cs" />
     <Compile Include="Interfaces\Admin\NewAdmin\IDepartment.cs" />
+    <Compile Include="Interfaces\Admin\NewAdmin\IePeopleManager.cs" />
     <Compile Include="Interfaces\Admin\Rule\IRuleManager.cs" />
     <Compile Include="Interfaces\eCounting\IBillDataManager.cs" />
+    <Compile Include="Interfaces\eCounting\IDebitMemo.cs" />
     <Compile Include="Interfaces\eCounting\IeCountingReport.cs" />
     <Compile Include="Interfaces\eCounting\IMiscellaneousManager.cs" />
     <Compile Include="Interfaces\eCounting\IPaymentManager.cs" />
@@ -191,6 +194,7 @@
     <Compile Include="Interfaces\eFleet\IHoursOfServices.cs" />
     <Compile Include="Interfaces\eFleet\IMaintenanceManager.cs" />
     <Compile Include="Interfaces\eFleet\IPassengerTracking.cs" />
+    <Compile Include="Interfaces\ePeople\IFillableFormManager.cs" />
     <Compile Include="Interfaces\IAddressManager.cs" />
     <Compile Include="Interfaces\IBudgetLocationManager.cs" />
     <Compile Include="Interfaces\IClientManager.cs" />
@@ -201,6 +205,7 @@
     <Compile Include="Interfaces\eFleet\IEfleetVehicle.cs" />
     <Compile Include="Interfaces\IEmailDetail.cs" />
     <Compile Include="Interfaces\IEmployeeManager.cs" />
+    <Compile Include="Interfaces\IGuestUserRepository.cs" />
     <Compile Include="Interfaces\ILogin.cs" />
     <Compile Include="Interfaces\IManageManager.cs" />
     <Compile Include="Interfaces\IManagerAppeMaintenance.cs" />
@@ -235,6 +240,7 @@
     <Compile Include="Managers\DARManager.cs" />
     <Compile Include="Managers\DashboardWidgetSettingManager.cs" />
     <Compile Include="Managers\eCounting\BillDataManager.cs" />
+    <Compile Include="Managers\eCounting\DebitMemoManager.cs" />
     <Compile Include="Managers\eCounting\eCountingReportManager.cs" />
     <Compile Include="Managers\eCounting\MiscellaneousManager.cs" />
     <Compile Include="Managers\eCounting\PaymentManager.cs" />
@@ -253,12 +259,15 @@
     <Compile Include="Managers\GlobalAdminManager.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Managers\GuestUserRepository.cs" />
     <Compile Include="Managers\HubManager.cs" />
     <Compile Include="Managers\LoginManager.cs" />
     <Compile Include="Managers\ManageManager.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Managers\ManagerAppManager\ManagerAppeMaintenanceManager.cs" />
+    <Compile Include="Managers\NewAdminManager\ePeopleManager.cs" />
+    <Compile Include="Managers\NewAdminManager\FillableFormManager.cs" />
     <Compile Include="Managers\NewAdminManager\VehicleSeatingChartManager.cs" />
     <Compile Include="Managers\NewAdminManager\DepartmentManager.cs" />
     <Compile Include="Managers\NewEmployeeApp\NewEmployeeAppManager.cs" />

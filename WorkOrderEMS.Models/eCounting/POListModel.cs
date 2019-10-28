@@ -21,6 +21,11 @@ namespace WorkOrderEMS.Models
         public string POStatusToDisplay { get; set; }
         public long? CreatedBy { get; set; }
         public string UserName { get; set; }
+        public string id { get; set; }
+        public string DisplayDeliveryDate { get; set; }
+        public string DisplayPODate { get; set; }
+        public string DisplayLogPOId { get; set; }
+
     }
 
     public class POListDetails
