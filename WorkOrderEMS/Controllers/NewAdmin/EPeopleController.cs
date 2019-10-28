@@ -29,6 +29,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         private readonly string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private readonly string ProfilePicPath = System.Configuration.ConfigurationManager.AppSettings["ProfilePicPath"];
         private readonly string ConstantImages = ConfigurationManager.AppSettings["ConstantImages"];
+        private readonly string FilePath = ConfigurationManager.AppSettings["FilesUploadRedYellowGreen"];
         public EPeopleController(IePeopleManager _IePeopleManager, IAdminDashboard _IAdminDashboard, IGuestUserRepository _IGuestUserRepository, ICommonMethod _ICommonMethod, IDepartment _IDepartment, IGuestUser _IGuestUser, IFillableFormManager _IFillableFormManager)
         {
             this._IePeopleManager = _IePeopleManager;
@@ -850,9 +851,10 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 var id = Cryptography.GetDecryptedData(Id, true);
                 long _UserId = 0;
                 long.TryParse(id, out _UserId);
-                var _FillableFormRepository = new FillableFormRepository();
-                model = _IePeopleManager.GetUploadedFilesOfUser(Id);
                 var getUser = _workorderems.UserRegistrations.Where(x => x.UserId == _UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
+                var _FillableFormRepository = new FillableFormRepository();
+                model = _IePeopleManager.GetUploadedFilesOfUser(getUser.EmployeeID);
+                
                 if (getUser != null)
                 {
                     var details = _IGuestUserRepository.GetEmployee(_UserId);
@@ -872,8 +874,15 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
         }
         [HttpPost]
-        public ActionResult UploadFiles(string EMPId, long FileId)
+        public ActionResult UploadFiles(string EMPId, long FileId, string FileName)
         {
+            eTracLoginModel ObjLoginModel = null;
+            var Obj = new UploadedFiles();
+            var _workorderems = new workorderEMSEntities();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);               
+            }
             if (Request.Files.Count > 0)
             {
                 try
@@ -897,11 +906,27 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                         else
                         {
                             fname = file.FileName;
+                            
                         }
-
+                        var getUser = _workorderems.UserRegistrations.Where(x => x.UserId == ObjLoginModel.UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
+                        if (getUser != null)
+                        {
+                            if (fname != null)
+                            {
+                                string FName = ObjLoginModel.UserId + "_" + DateTime.Now.Ticks.ToString() + "_" + fname;
+                                CommonHelper.StaticUploadImage(file, Server.MapPath(ConfigurationManager.AppSettings["FilesUploadRedYellowGreen"]), FName);
+                                Obj.FileName = FileName;
+                                Obj.FileId = FileId;
+                                Obj.FileEmployeeId = EMPId;
+                                string LoginEMployeeId = getUser.EmployeeID;
+                                Obj.AttachedFileName = FName;
+                                var IsSaved = _IFillableFormManager.SaveFile(Obj, LoginEMployeeId);
+                            }
+                        }
+                        
                         // Get the complete folder path and store the file inside it.  
                         //fname = Path.Combine(Server.MapPath("~/Uploads/"), fname);
-                        file.SaveAs(fname);
+                        //file.SaveAs(fname);
                     }
                     // Returns message that successfully uploaded  
                     return Json("File Uploaded Successfully!");

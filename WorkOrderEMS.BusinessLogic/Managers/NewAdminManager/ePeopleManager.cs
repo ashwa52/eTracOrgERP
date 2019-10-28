@@ -681,9 +681,12 @@ namespace WorkOrderEMS.BusinessLogic
                 var ePeopleRepository = new ePeopleRepository();
                 lst = ePeopleRepository.GetUploadFilesList(EmployeeId).Select(x => new UploadedFiles()
                 {
-
+                    FileName = x.FLU_FileName,
+                    FileTypeName =  x.FLT_FileType,
+                    AttachedFileName = x.FLU_FileAttached,
+                    FileId = x.FLU_FLT_Id
                 }).ToList();
-                return null;
+                return lst;
             }
             catch (Exception ex)
             {

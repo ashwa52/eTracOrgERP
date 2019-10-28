@@ -2,6 +2,7 @@
 var HOBurl = '../EPeople/EmployeeManagementList';
 var clients;
 var GetEMPId;
+var FileId;
 var $_LocationId = $("#drp_MasterLocation1 option:selected").val();
 var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_RequestedBy = 0;//= $("#drp_MasterLocation option:selected").val();
 (function ($) {
@@ -529,4 +530,42 @@ function BindJobTitleDetailsForPlusMinus() {
         }
     });
        
+}
+
+function GetFileId($_this) {
+    debugger
+    FileId = $_this.value;
+    $("#myModalToAddInputAndFileName").modal('show');
+    $("#myModalForAddFileData").modal('hide');
+
+}
+function saveFile() {
+    debugger
+    var fileUpload = $("#myfileUpload").get(0);
+    var EmployeeIdFile = $("#EmployeeIdFile").val();
+    var fileName = $("#fileNameInputVal").val();
+    var files = fileUpload.files;
+
+    // Create FormData object  
+    var fileData = new FormData();
+
+    // Looping over all files and add it to FormData object  
+    for (var i = 0; i < files.length; i++) {
+        fileData.append(files[i].name, files[i]);
+    }
+    $.ajax({
+        url: '../EPeople/UploadFiles?EMPId=' + EmployeeIdFile + '&FileId=' + FileId + '&FileName=' + fileName,
+        type: "POST",
+        contentType: false, // Not to set any content header  
+        processData: false, // Not to process data  
+        data: fileData,
+        success: function (result) {
+            $("#fileNameInputVal").val("");
+            $("#fileNameInputVal").val("");
+            alert(result);
+        },
+        error: function (err) {
+            alert(err.statusText);
+        }
+    });
 }

@@ -11,5 +11,6 @@ namespace WorkOrderEMS.BusinessLogic
     {
        CommonFormModel GetFormDetails(CommonFormModel Obj);
         List<FormTypeListModel> GetFileList(eTracLoginModel obj);
+        bool SaveFile(UploadedFiles Obj, string EmployeeId);
     }
 }

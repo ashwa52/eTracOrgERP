@@ -119,5 +119,31 @@ namespace WorkOrderEMS.BusinessLogic
                 throw;
             }
         }
+        /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created Date : 10-Oct-2019
+        /// Created For : To save file
+        /// </summary>
+        /// <param name="Obj"></param>
+        /// <param name="EmployeeId"></param>
+        /// <returns></returns>
+        public bool SaveFile(UploadedFiles Obj, string EmployeeId)
+        {
+            var _repo = new FillableFormRepository();
+            bool isSaved = false;
+            try
+            {
+                Obj.Action = Obj.Id != null ? "U" : "I";                
+                var save = _repo.SetFiles(Obj, EmployeeId);               
+                isSaved = true;
+            }
+            catch (Exception ex)
+            {
+                isSaved = false;
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SaveFile(UploadedFiles Obj, string EmployeeId)", "Exception While Saving File.", Obj);
+                throw;
+            }
+            return isSaved;
+        }
     }
 }

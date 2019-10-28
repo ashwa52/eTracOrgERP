@@ -8,6 +8,7 @@
 </style>
 <link href="~/Content/NewAdminContent/CSS/FilesUICss.css" rel="stylesheet" />
 <div>
+    <input type="hidden" value="@ViewBag.EmployeeID" id="EmployeeIdFile" />
     <div class="col-md-12">
         <div class="devider top">
             <img src="" id="EmployeeImage" class="employeeImage" />
@@ -38,10 +39,10 @@
                                         <i class="fa fa-list fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
                                     </div>
                                     <div class="lock">
-                                        <i class="fa fa-lock" style="color:#FFDFB0" aria-hidden="true"></i>
+                                        <i class="fa fa-download" style="color:#FFDFB0" title="Download" aria-hidden="true"></i>
                                     </div>
                                     <div class="faemail">
-                                        <i class="fa fa-envelope" title="E-mail" aria-hidden="true"></i>
+                                        <i class="fa fa-eye fa-2x" title="View" style="color:#000000" aria-hidden="true"></i>
                                     </div>
                                 </div>
                             </div>
@@ -200,50 +201,20 @@
             </div>
         </div>*@
     </div>
-<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="myModalToAddInputAndFileName">
-    <div class="modal-dialog ">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Details</h5>
-                <button type="button" class="close" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-sm-8" style="margin-bottom: 12px;">
-                        <input id="myfileUpload" type="file" style="margin-left:50%;" />
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control input-rounded" />
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background: white;">               
-                <button type="button" class="btn btn-secondary" id="UploadDoc"  style="border-radius:100px;width:25%;">Upload</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 <script>
     var id;
-    function GetFileId($_this) {
-        debugger
-        id = $_this.value;
-        $("#myModalToAddInputAndFileName").modal('show');
-        //$("#myModalForAddFileData").modal('hide');
-        
-    }
+
     $(document).ready(function () {
         $("#myfileUpload").change(function () {
             debugger
             //$("#dvAccountPreview").html("");
             var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
+            $("#addFileName").html();
             var size = this.files[0].size;
             if (!allowedExtensions.exec($(this).val().toLowerCase())) {
                 alert("Invalid file type");
-                $(this).val("");
-               
+                $(this).val("");               
                 return false;
             }
             else if (size >= 4194304) {
@@ -254,32 +225,7 @@
         })
     })
 
-    function saveFile(Id) {
-        debugger
-        var fileUpload = $("#myfileUpload").get(0);
-        var files = fileUpload.files;  
-              
-        // Create FormData object  
-        var fileData = new FormData();  
-  
-        // Looping over all files and add it to FormData object  
-        for (var i = 0; i < files.length; i++) {  
-            fileData.append(files[i].name, files[i]);  
-        }  
-        $.ajax({  
-            url: '../EPeople/UploadFiles?EMPId=' + '@ViewBag.EmployeeID' + '&FileId=' + Id,
-            type: "POST",  
-            contentType: false, // Not to set any content header  
-            processData: false, // Not to process data  
-            data: fileData,  
-            success: function (result) {  
-                alert(result);  
-            },  
-            error: function (err) {  
-                alert(err.statusText);  
-            }  
-        });  
-    }
+   
     function myFunctionGreenFiles() {
         debugger
       var x = document.getElementById("openGreenFile");

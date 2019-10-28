@@ -6501,6 +6501,7 @@
     <Folder Include="Content\eFleetDocs\VehicleImage\" />
     <Folder Include="Content\eFleetDocs\VehicleIncident\" />
     <Folder Include="Content\eMaintenance\SurveyDownload\" />
+    <Folder Include="Content\FilesRGY\" />
     <Folder Include="Content\Images\DARSignature\" />
     <Folder Include="Content\Images\Default\" />
     <Folder Include="Content\Images\FRSignature\" />

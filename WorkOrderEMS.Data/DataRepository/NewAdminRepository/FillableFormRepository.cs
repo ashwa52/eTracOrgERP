@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkOrderEMS.Data.EntityModel;
+using WorkOrderEMS.Models;
 
 namespace WorkOrderEMS.Data.DataRepository
 {
@@ -75,6 +76,17 @@ namespace WorkOrderEMS.Data.DataRepository
             try
             {
                 return _workorderems.FileTypes.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        public int SetFiles(UploadedFiles Obj, string EmployeeId)
+        {
+            try
+            {
+                return _workorderems.spSetFileUpload(Obj.Action,Obj.Id, Obj.FileEmployeeId, Obj.FileId, Obj.FileName,Obj.AttachedFileName,EmployeeId,"Y");
             }
             catch (Exception ex)
             {
