@@ -28,7 +28,7 @@ namespace WorkOrderEMS.Models
         public string AccountNo { get; set; }
 
         [Required(ErrorMessage = "Please add cheque Number")]
-        public string ChequeNo { get; set; }
+        public long? ChequeNo { get; set; }
         public string Payment { get; set; }
 
         [Required(ErrorMessage = "Please add Account Number")]
@@ -50,6 +50,8 @@ namespace WorkOrderEMS.Models
         public long OpeartorCAD_Id { get; set; }
         public string DisplayDate { get; set; }
         public string PaymentNote { get; set; }
+        public string ActionDoneOn { get; set; }
+        public string ActionDoneBy { get; set; }
     }
     public class Card
     {

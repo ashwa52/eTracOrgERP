@@ -33,7 +33,7 @@ function onChangeBill(item) {
             loadData: function (filter) {
                 return $.ajax({
                     type: "GET",
-                    url: $_HostPrefix + PaymentUrl + '?LocationId=' + $_locationId + '&BillTypeId=' + item,
+                    url: $_HostPrefix + PaymentUrl + '?LocationId=' + $_locationId,
                     data: filter,
                     dataType: "json"
                 });
@@ -446,7 +446,7 @@ function doPaymentSearch() {
             loadData: function (filter) {
                 return $.ajax({
                     type: "GET",
-                    url: $_HostPrefix + PaymentUrl + '?LocationId=' + $_locationId + '&txtSearch=' + _searchresult,
+                    url: $_HostPrefix + PaymentUrl + '?LocationId=' + $_locationId,
                     data: filter,
                     dataType: "json"
                 });
@@ -458,8 +458,7 @@ function doPaymentSearch() {
             { name: "VendorName", title: "Vendor Name/Employee name", type: "text", width: 35 },
             { name: "OperatingCompany", title: "Operating Company", type: "text", width: 30 },
             {
-                name: "BillType", title: "Bill Type", type: "text", width: 20, itemTemplate: function (value, item) {//rowid, iCol, id // value, item
-                    debugger;
+                name: "BillType", title: "Bill Type", type: "text", width: 20, itemTemplate: function (value, item) {
                     var $text = $("<a>").text(item.BillType);
                     return $("<div>").append($text).click(function () {
                         RowClickbillType(value, item)
@@ -470,7 +469,7 @@ function doPaymentSearch() {
             { name: "DisplayDate", title: "Bill Date", type: "text", width: 30 },
             { name: "BillDate", title: "Bill Date", type: "text", width: 30, visible: false },
             { name: "GracePeriod", title: "Grace Period", type: "text", width: 10 },
-            { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20, visible: false  },//, visible: false 
+            { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20, visible: false },//, visible: false 
             { name: "Status", title: "Status", type: "text", width: 20, visible: false },
             { name: "VendorId", title: "VendorId", type: "text", width: 20, visible: false },
             { name: "OperatingCompanyId", title: "Operating Company Id", type: "text", width: 20, visible: false },
@@ -478,18 +477,18 @@ function doPaymentSearch() {
             { name: "LLBL_ID", title: "LLBL ID", type: "text", width: 50, visible: false },
             {
                 name: "act", items: act, title: "Action", width: 15, css: "text-center", itemTemplate: function (value, item) {
-                    var $iconCheck = $("<i>").attr({ class: "fa fa-check" }).attr({ style: "color:green;font-size: 22px;" });
+                    var $iconCheck = $("<i>").attr({ class: "fa fa-credit-card" }).attr({ style: "color:green;font-size: 22px;" });
                     var $iconClose = $("<i>").attr({ class: "fa fa-close" }).attr({ style: "color:red;font-size: 22px;" });
 
                     var $customCheck = $("<span style='padding: 0 5px 0 0;'>")
                         .attr({ title: "Pay Bill" })
-                        .attr({ id: "PayBill" }).click(function (e) {
+                        .attr({ id: "PayBill" + item.BillNo }).click(function (e) {
                             PayBillSave(item);
                         }).append($iconCheck);
 
                     var $customCancel = $("<span style='padding: 0 5px 0 0;'>")
                         .attr({ title: "Cancel Bill" })
-                        .attr({ id: "CancelBill" }).click(function (e) {
+                        .attr({ id: "CancelBill" + item.BillNo }).click(function (e) {
                             CancelBill(item);
                         }).append($iconClose);
                     return $("<div>").attr({ class: "btn-toolbar" }).append($customCheck).append($customCancel);
@@ -503,6 +502,9 @@ function PayBillSave(item) {
 
     //$("#lblPaymentModeForChange option:selected").val();
     $("#lblPaymentModeForChange").val($("#lblPaymentModeForChange option:first").val());
+
+
+    $('#lblAmountFrom').html(item.BillAmount);
 
     $('.WhenMisc').hide();
     $('.WhenWired').hide();
@@ -632,7 +634,8 @@ function callAjaxPayment() {      //$("#ApproveBill").live("click", function (ev
     var GridData = GridValue;
     var obj = new Object();
     var _paymentMode = $("#lblPaymentModeForChange option:selected").val();
-
+    GridData.ChequeNo = $("#ChequeNo").val();
+    GridData.PaymentByCash = $("#PaymentByCash").val();
     obj.ChequeNo = $("#ChequeNo").val();
     obj.PaymentByCash = $("#PaymentByCash").val();
     //obj.PaymentNote = $("#PaymentNote").val();
@@ -663,13 +666,14 @@ function callAjaxPayment() {      //$("#ApproveBill").live("click", function (ev
     }
     else if (_paymentMode=="Cash") {
         obj.CompanyAccountId = $('#CompanyAccountId').val();
-        obj.OpeartorCAD_Id = "Cash";
+        obj.OpeartorCAD_Id = GridData.OperatingCompanyId;
     }
     else if (_paymentMode == "Cheque") {
         obj.CompanyAccountId = $('#CompanyAccountId').val();
-        obj.OpeartorCAD_Id = "Cheque";
+        obj.OpeartorCAD_Id = GridData.OperatingCompanyId;
     }
-    else { obj.CompanyAccountId = $('#CompanyAccountId').val(); }
+
+    obj.CompanyAccountId = $('#CompanyAccountId').val();
 
     //var Card = $("#dvOptions input[type='radio']").attr("id");
     //obj.CARDNo = $('#' + Card).val();
