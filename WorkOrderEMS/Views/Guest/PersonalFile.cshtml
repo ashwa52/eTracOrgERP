@@ -138,20 +138,7 @@
 					</div>
 					<label>W-4 Form</label>
 				</div>
-				<div class="inline" onclick="OpenForm('I9Form',this)" id="i9form">
-					<div class="devider">
-						<div class="bluesky">
-							<div class="int">
-								<i class="fa fa-table fa-lg" aria-hidden="true"></i>
-							</div>
-							<div class="lock">
-								<i class="fa fa-unlock" style="color:#FFDFB0" aria-hidden="true"></i>
-							</div>
-						</div>
-					</div>
-					<label>I-9 Form</label>
-				</div>
-				<div class="inline" onclick="OpenForm('EmergencyContectForm',this)" id="emergencycontactformicn">
+				<div class="inline" onclick="OpenForm('EmergencyContactForm',this)" id="emergencycontactformicn">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
@@ -165,7 +152,7 @@
 					<label>Emergency Contact Form</label>
 
 				</div>
-				<div class="inline" onclick="OpenForm('employeehandbook',this)" id="employeeHandbookicn">
+				<div class="inline" onclick="OpenForm('employeehandbook',this)" id="employeehandbookicn">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
@@ -179,33 +166,35 @@
 					<label>Employee Handbook</label>
 				</div>
 				<div class="inline" onclick="OpenForm('directdeposite',this)" id="directdepositeicn">
-
-					<div class="bluesky">
-						<div class="int">
-							<i class="fa fa-th fa-lg" aria-hidden="true"></i>
-						</div>
-						<div class="lock" >
-							<i class="fa fa-unlock" style="color:#FFDFB0" aria-hidden="true"></i>
-						</div>
-					</div>
-
-					<label>Direct Diposite Form</label>
-				</div>
-			</div>
-			<div class="col-md-12" style="text-align:center">
-				<div class=" inline" onclick="OpenForm('photorelease',this)" id="photoreleaseicn">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
-								<i class="fa fa-file-image-o fa-lg" aria-hidden="true"></i>
+								<i class="fa fa-th fa-lg" aria-hidden="true"></i>
 							</div>
 							<div class="lock">
 								<i class="fa fa-unlock" style="color:#FFDFB0" aria-hidden="true"></i>
 							</div>
 						</div>
 					</div>
+
+					<label>Direct Diposite Form</label>
+				</div>
+				<div class=" inline" onclick="OpenForm('photorelease',this)" id="photoreleaseicn">
+
+					<div class="bluesky">
+						<div class="int">
+							<i class="fa fa-file-image-o fa-lg" aria-hidden="true"></i>
+						</div>
+						<div class="lock">
+							<i class="fa fa-unlock" style="color:#FFDFB0" aria-hidden="true"></i>
+						</div>
+					</div>
+
 					<label>Photo Release Form</label>
 				</div>
+
+			</div>
+			<div class="col-md-12" style="text-align:center">
 
 				<div class="inline" onclick="OpenForm('confidentiality',this)" id="confidentialityagreementicn">
 					<div class="devider">
@@ -247,16 +236,30 @@
 					<label>Creditcard Authorization Form</label>
 				</div>
 				<div class="inline" onclick="OpenForm('previousEmployeement',this)">
+					<div class="devider">
+						<div class="bluesky">
+							<div class="int">
+								<i class="fa fa-users fa-lg" aria-hidden="true"></i>
+							</div>
+							<div class="lock">
+								<i class="fa fa-unlock" style="color:#FFDFB0" aria-hidden="true"></i>
+							</div>
+						</div>
+					</div>
+					<label>Previous Employment</label>
+				</div>
+				<div class="inline" onclick="OpenForm('I9Form',this)" id="i9form">
+
 					<div class="bluesky">
 						<div class="int">
-							<i class="fa fa-users fa-lg" aria-hidden="true"></i>
+							<i class="fa fa-table fa-lg" aria-hidden="true"></i>
 						</div>
 						<div class="lock">
 							<i class="fa fa-unlock" style="color:#FFDFB0" aria-hidden="true"></i>
 						</div>
 					</div>
 
-					<label>Previous Employment</label>
+					<label>I-9 Form</label>
 				</div>
 			</div>
 		</div>
@@ -285,7 +288,7 @@
 
 	</div>
 	<div class="row" style="margin-right: 144px;margin-bottom: 13px;">
-		<div class="col-md-12 bottom-area"> 
+		<div class="col-md-12 bottom-area">
 			<button class="btn btn-default btnsubmit" onclick="ThankYou();">
 				Submit
 			</button>
@@ -298,9 +301,9 @@
 	<div style="float:right;cursor:pointer;" onclick="closeModel();">
 		<i class="fa fa-times fa-lg" aria-hidden="true"></i>
 	</div>
-	<div class="modal-dialog modal-lg" >
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content" id="formid" style="color:#000">
-			
+
 		</div>
 	</div>
 </div>

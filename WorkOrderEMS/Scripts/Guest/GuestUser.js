@@ -7,7 +7,7 @@
 	});
 	if (isLocked)
 		return;
-	unblink('w4formicn');
+	unblink(formname.toLowerCase()+'icn');
 	switch (formname) {
 		case 'directdeposite':
 			geturl = '/Guest/_DirectDepositeForm';
@@ -21,7 +21,7 @@
 		case 'I9Form':
 			geturl = '/Guest/_I9Form';
 			break;
-		case 'EmergencyContectForm':
+		case 'EmergencyContactForm':
 			geturl = '/Guest/_emergencyContactForm';
 			break;
 		case 'photorelease':
@@ -68,10 +68,6 @@ function SubmitForm(element, formName) {
 			case 'photoreleaseform':
 				url = '/Guest/_photoreleaseform';
 				data = $('#photoreleaseform').serialize();
-				break;
-			case 'emergencycontactform':
-				url = '/Guest/_emergencyContactForm';
-				data = $('#emergencycontactform').serialize();
 				break;
 			case 'emergencycontactform':
 				url = '/Guest/_emergencyContactForm';
@@ -153,31 +149,49 @@ function LockItem(formId) {
 			var elm = $("#directdepositeicn").find('.lock i').first();
 			elm.removeClass('fa-unlock');
 			elm.addClass('fa-lock');
+			var elm = $("#directdepositeicn").find('.bluesky').first();
+			elm.removeClass('bluesky');
+			elm.addClass('grn-icn');
 			break;
 		case 'employeeHandbook':
-			var elm = $("#employeeHandbookicn").find('.lock i').first();
+			var elm = $("#employeehandbookicn").find('.lock i').first();
 			elm.removeClass('fa-unlock');
 			elm.addClass('fa-lock');
+			var elm = $("#employeehandbookicn").find('.bluesky').first();
+			elm.removeClass('bluesky');
+			elm.addClass('grn-icn');
 			break;
 		case 'photoreleaseform':
 			var elm = $("#photoreleaseicn").find('.lock i').first();
 			elm.removeClass('fa-unlock');
 			elm.addClass('fa-lock');
+			var elm = $("#photoreleaseicn").find('.bluesky').first();
+			elm.removeClass('bluesky');
+			elm.addClass('grn-icn');
 			break;
 		case 'emergencycontactform':
 			var elm = $("#emergencycontactformicn").find('.lock i').first();
 			elm.removeClass('fa-unlock');
 			elm.addClass('fa-lock');
+			var elm = $("#emergencycontactformicn").find('.bluesky').first();
+			elm.removeClass('bluesky');
+			elm.addClass('grn-icn');
 			break;
 		case 'confidentialityagreementform':
 			var elm = $("#confidentialityagreementicn").find('.lock i').first();
 			elm.removeClass('fa-unlock');
 			elm.addClass('fa-lock');
+			var elm = $("#confidentialityagreementicn").find('.bluesky').first();
+			elm.removeClass('bluesky');
+			elm.addClass('grn-icn');
 			break;
 		case 'educationverificationform':
 			var elm = $("#educationverificationformicn").find('.lock i').first();
 			elm.removeClass('fa-unlock');
 			elm.addClass('fa-lock');
+			var elm = $("#educationverificationformicn").find('.bluesky').first();
+			elm.removeClass('bluesky');
+			elm.addClass('grn-icn');
 			break;
 		case 'w4form':
 			var elm = $("#w4formicn").find('.lock i').first();
@@ -202,6 +216,7 @@ function unblink(id) {
 } 
 blink('w4formicn');
 function NextBlink(id) {
-	var siblingid = $("#" + id).siblings()[0].id;
+	
+	var siblingid = $("#" + id).next()[0].id;
 	blink(siblingid);
 }
