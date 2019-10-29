@@ -259,3 +259,6 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/WorkOrderEMS/Content/eCountingDocs/ContractDocs/4_637079567201439562_Credit_Card.png
+/WorkOrderEMS/Content/eCountingDocs/ImageFacility/4_637079567061002573_plus.png
+/WorkOrderEMS/Content/eCountingDocs/ImageFacility/4_637079564250680349_CarLogo.png

@@ -31,12 +31,15 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<AddressMaster> AddressMasters { get; set; }
         public virtual DbSet<AdminEmployeeMapping> AdminEmployeeMappings { get; set; }
         public virtual DbSet<AdminLocationMapping> AdminLocationMappings { get; set; }
+        public virtual DbSet<ApplicantInfo> ApplicantInfoes { get; set; }
         public virtual DbSet<Bill> Bills { get; set; }
         public virtual DbSet<BillFacilityItem> BillFacilityItems { get; set; }
         public virtual DbSet<BillType> BillTypes { get; set; }
         public virtual DbSet<BudgetCostCodeMapping> BudgetCostCodeMappings { get; set; }
         public virtual DbSet<BudgetLocationMapping> BudgetLocationMappings { get; set; }
+        public virtual DbSet<Citizenship> Citizenships { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
+        public virtual DbSet<CompanyAccountDetail> CompanyAccountDetails { get; set; }
         public virtual DbSet<CompanyAccountTransaction> CompanyAccountTransactions { get; set; }
         public virtual DbSet<CompanyDetail> CompanyDetails { get; set; }
         public virtual DbSet<CompanyFacilityMapping> CompanyFacilityMappings { get; set; }
@@ -51,7 +54,9 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<CostCodeMaster> CostCodeMasters { get; set; }
         public virtual DbSet<DARDetail> DARDetails { get; set; }
         public virtual DbSet<DashboardWidgetSetting> DashboardWidgetSettings { get; set; }
+        public virtual DbSet<DebitMemo> DebitMemoes { get; set; }
         public virtual DbSet<DefectReportDetail> DefectReportDetails { get; set; }
+        public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<eFleetDriver> eFleetDrivers { get; set; }
         public virtual DbSet<eFleetFueling> eFleetFuelings { get; set; }
         public virtual DbSet<eFleetMaintenance> eFleetMaintenances { get; set; }
@@ -68,12 +73,16 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<eFormTrack> eFormTracks { get; set; }
         public virtual DbSet<EmailLog> EmailLogs { get; set; }
         public virtual DbSet<EMaintenanceSurvey> EMaintenanceSurveys { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<EmployeeAddress> EmployeeAddresses { get; set; }
         public virtual DbSet<EmployeeLocationMapping> EmployeeLocationMappings { get; set; }
         public virtual DbSet<ExceptionLog> ExceptionLogs { get; set; }
         public virtual DbSet<FormMaster> FormMasters { get; set; }
         public virtual DbSet<GlobalCode> GlobalCodes { get; set; }
         public virtual DbSet<HoursOfService> HoursOfServices { get; set; }
         public virtual DbSet<Insurance> Insurances { get; set; }
+        public virtual DbSet<JobPosting> JobPostings { get; set; }
+        public virtual DbSet<JobTitle> JobTitles { get; set; }
         public virtual DbSet<License> Licenses { get; set; }
         public virtual DbSet<LocationClientMapping> LocationClientMappings { get; set; }
         public virtual DbSet<LocationCompanyMapping> LocationCompanyMappings { get; set; }
@@ -81,6 +90,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<LocationService> LocationServices { get; set; }
         public virtual DbSet<LogBill> LogBills { get; set; }
         public virtual DbSet<LogCompany> LogCompanies { get; set; }
+        public virtual DbSet<LogCompanyAccountDetail> LogCompanyAccountDetails { get; set; }
         public virtual DbSet<LogCompanyDetail> LogCompanyDetails { get; set; }
         public virtual DbSet<LogCompanyFacilityMapping> LogCompanyFacilityMappings { get; set; }
         public virtual DbSet<LogContract> LogContracts { get; set; }
@@ -126,22 +136,12 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<TimeZone> TimeZones { get; set; }
         public virtual DbSet<TrackEmployeeStatu> TrackEmployeeStatus { get; set; }
         public virtual DbSet<UserRegistration> UserRegistrations { get; set; }
+        public virtual DbSet<VehicleSeating> VehicleSeatings { get; set; }
+        public virtual DbSet<VehicleSeating_DepartmentMapping> VehicleSeating_DepartmentMapping { get; set; }
         public virtual DbSet<VendorType> VendorTypes { get; set; }
         public virtual DbSet<WorkRequestAssignment> WorkRequestAssignments { get; set; }
         public virtual DbSet<IdleEmployee> IdleEmployees { get; set; }
         public virtual DbSet<QRCMaster1> QRCMaster1 { get; set; }
-        public virtual DbSet<CompanyAccountDetail> CompanyAccountDetails { get; set; }
-        public virtual DbSet<LogCompanyAccountDetail> LogCompanyAccountDetails { get; set; }
-        public virtual DbSet<ApplicantInfo> ApplicantInfoes { get; set; }
-        public virtual DbSet<Citizenship> Citizenships { get; set; }
-        public virtual DbSet<Department> Departments { get; set; }
-        public virtual DbSet<Employee> Employees { get; set; }
-        public virtual DbSet<EmployeeAddress> EmployeeAddresses { get; set; }
-        public virtual DbSet<JobPosting> JobPostings { get; set; }
-        public virtual DbSet<JobTitle> JobTitles { get; set; }
-        public virtual DbSet<VehicleSeating> VehicleSeatings { get; set; }
-        public virtual DbSet<VehicleSeating_DepartmentMapping> VehicleSeating_DepartmentMapping { get; set; }
-        public virtual DbSet<DebitMemo> DebitMemoes { get; set; }
     
         public virtual ObjectResult<CommonQeriesByVijay_Result> CommonQeriesByVijay()
         {
@@ -2813,63 +2813,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("spGetPayTillDate", cMP_IdParameter);
         }
     
-        public virtual int spSetCompanyAccountTransaction(string cATAction, Nullable<long> cAT_CMP_IdDr, Nullable<long> cAT_CMP_IdCr, Nullable<long> cAT_CAD_IdDr, Nullable<long> cAT_CAD_IdCr, Nullable<long> cAT_BLL_Id, Nullable<decimal> cAT_Amount, Nullable<int> cAT_ChequeNo, string cAT_Discription, Nullable<long> cAT_PayBy, Nullable<long> bLL_LocationId, string cAT_BillType, string cAT_IsActive)
-        {
-            var cATActionParameter = cATAction != null ?
-                new ObjectParameter("CATAction", cATAction) :
-                new ObjectParameter("CATAction", typeof(string));
-    
-            var cAT_CMP_IdDrParameter = cAT_CMP_IdDr.HasValue ?
-                new ObjectParameter("CAT_CMP_IdDr", cAT_CMP_IdDr) :
-                new ObjectParameter("CAT_CMP_IdDr", typeof(long));
-    
-            var cAT_CMP_IdCrParameter = cAT_CMP_IdCr.HasValue ?
-                new ObjectParameter("CAT_CMP_IdCr", cAT_CMP_IdCr) :
-                new ObjectParameter("CAT_CMP_IdCr", typeof(long));
-    
-            var cAT_CAD_IdDrParameter = cAT_CAD_IdDr.HasValue ?
-                new ObjectParameter("CAT_CAD_IdDr", cAT_CAD_IdDr) :
-                new ObjectParameter("CAT_CAD_IdDr", typeof(long));
-    
-            var cAT_CAD_IdCrParameter = cAT_CAD_IdCr.HasValue ?
-                new ObjectParameter("CAT_CAD_IdCr", cAT_CAD_IdCr) :
-                new ObjectParameter("CAT_CAD_IdCr", typeof(long));
-    
-            var cAT_BLL_IdParameter = cAT_BLL_Id.HasValue ?
-                new ObjectParameter("CAT_BLL_Id", cAT_BLL_Id) :
-                new ObjectParameter("CAT_BLL_Id", typeof(long));
-    
-            var cAT_AmountParameter = cAT_Amount.HasValue ?
-                new ObjectParameter("CAT_Amount", cAT_Amount) :
-                new ObjectParameter("CAT_Amount", typeof(decimal));
-    
-            var cAT_ChequeNoParameter = cAT_ChequeNo.HasValue ?
-                new ObjectParameter("CAT_ChequeNo", cAT_ChequeNo) :
-                new ObjectParameter("CAT_ChequeNo", typeof(int));
-    
-            var cAT_DiscriptionParameter = cAT_Discription != null ?
-                new ObjectParameter("CAT_Discription", cAT_Discription) :
-                new ObjectParameter("CAT_Discription", typeof(string));
-    
-            var cAT_PayByParameter = cAT_PayBy.HasValue ?
-                new ObjectParameter("CAT_PayBy", cAT_PayBy) :
-                new ObjectParameter("CAT_PayBy", typeof(long));
-    
-            var bLL_LocationIdParameter = bLL_LocationId.HasValue ?
-                new ObjectParameter("BLL_LocationId", bLL_LocationId) :
-                new ObjectParameter("BLL_LocationId", typeof(long));
-    
-            var cAT_BillTypeParameter = cAT_BillType != null ?
-                new ObjectParameter("CAT_BillType", cAT_BillType) :
-                new ObjectParameter("CAT_BillType", typeof(string));
-    
-            var cAT_IsActiveParameter = cAT_IsActive != null ?
-                new ObjectParameter("CAT_IsActive", cAT_IsActive) :
-                new ObjectParameter("CAT_IsActive", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetCompanyAccountTransaction", cATActionParameter, cAT_CMP_IdDrParameter, cAT_CMP_IdCrParameter, cAT_CAD_IdDrParameter, cAT_CAD_IdCrParameter, cAT_BLL_IdParameter, cAT_AmountParameter, cAT_ChequeNoParameter, cAT_DiscriptionParameter, cAT_PayByParameter, bLL_LocationIdParameter, cAT_BillTypeParameter, cAT_IsActiveParameter);
-        }
-    
         public virtual ObjectResult<spGetVendorShowcase_Result1> spGetVendorShowcase(Nullable<long> cMP_Id, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
         {
             var cMP_IdParameter = cMP_Id.HasValue ?
@@ -5273,19 +5216,6 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("Status", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetDebitMemoList_Result1>("spGetDebitMemoList", locationIdParameter, statusParameter);
-        }
-    
-        public virtual ObjectResult<spPaymentDesk_Result> spPaymentDesk(Nullable<long> locationId, string billId)
-        {
-            var locationIdParameter = locationId.HasValue ?
-                new ObjectParameter("LocationId", locationId) :
-                new ObjectParameter("LocationId", typeof(long));
-    
-            var billIdParameter = billId != null ?
-                new ObjectParameter("BillId", billId) :
-                new ObjectParameter("BillId", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spPaymentDesk_Result>("spPaymentDesk", locationIdParameter, billIdParameter);
         }
     
         public virtual int spSetDebitMemo(Nullable<long> dBM_ID, string dBM_Action, Nullable<long> dBM_LocationId, Nullable<long> dBM_CMP_Id, Nullable<long> dBM_PurchaseOrder, Nullable<long> dBM_DebitAmount, string dBM_Note, Nullable<int> dBM_Status, string dBM_DocumentName, Nullable<System.DateTime> dBM_CreatedDate, Nullable<System.DateTime> dBM_ModifiedDate, string dBM_ModifiedBy, Nullable<bool> dBM_IsDeleted, string dBM_DeletedBy, Nullable<System.DateTime> dBM_DeletedDate)
