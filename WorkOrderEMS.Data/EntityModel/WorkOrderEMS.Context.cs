@@ -5324,5 +5324,88 @@ namespace WorkOrderEMS.Data.EntityModel
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdatePODetail", lPOD_IdParameter, pOD_RUL_IdParameter, pOD_RUL_LevelParameter, pOD_RUL_CurrentLevelParameter, lPOD_IsApproveParameter);
         }
+    
+        public virtual int SP_GetAllDetailsOfPOForGraphs(Nullable<long> userId)
+        {
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GetAllDetailsOfPOForGraphs", userIdParameter);
+        }
+    
+        public virtual ObjectResult<spPaymentDesk_Result> spPaymentDesk(Nullable<long> locationId, string billId)
+        {
+            var locationIdParameter = locationId.HasValue ?
+                new ObjectParameter("LocationId", locationId) :
+                new ObjectParameter("LocationId", typeof(long));
+    
+            var billIdParameter = billId != null ?
+                new ObjectParameter("BillId", billId) :
+                new ObjectParameter("BillId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spPaymentDesk_Result>("spPaymentDesk", locationIdParameter, billIdParameter);
+        }
+    
+        public virtual int spSetCompanyAccountTransaction(string cATAction, Nullable<long> cAT_CMP_IdDr, Nullable<long> cAT_CMP_IdCr, Nullable<long> cAT_CAD_IdDr, Nullable<long> cAT_CAD_IdCr, Nullable<long> cAT_BLL_Id, Nullable<decimal> cAT_Amount, Nullable<long> cAT_ChequeNo, Nullable<int> cAT_PaymentMode, string cAT_Discription, Nullable<long> cAT_PayBy, Nullable<long> bLL_LocationId, string cAT_BillType, string cAT_IsActive)
+        {
+            var cATActionParameter = cATAction != null ?
+                new ObjectParameter("CATAction", cATAction) :
+                new ObjectParameter("CATAction", typeof(string));
+    
+            var cAT_CMP_IdDrParameter = cAT_CMP_IdDr.HasValue ?
+                new ObjectParameter("CAT_CMP_IdDr", cAT_CMP_IdDr) :
+                new ObjectParameter("CAT_CMP_IdDr", typeof(long));
+    
+            var cAT_CMP_IdCrParameter = cAT_CMP_IdCr.HasValue ?
+                new ObjectParameter("CAT_CMP_IdCr", cAT_CMP_IdCr) :
+                new ObjectParameter("CAT_CMP_IdCr", typeof(long));
+    
+            var cAT_CAD_IdDrParameter = cAT_CAD_IdDr.HasValue ?
+                new ObjectParameter("CAT_CAD_IdDr", cAT_CAD_IdDr) :
+                new ObjectParameter("CAT_CAD_IdDr", typeof(long));
+    
+            var cAT_CAD_IdCrParameter = cAT_CAD_IdCr.HasValue ?
+                new ObjectParameter("CAT_CAD_IdCr", cAT_CAD_IdCr) :
+                new ObjectParameter("CAT_CAD_IdCr", typeof(long));
+    
+            var cAT_BLL_IdParameter = cAT_BLL_Id.HasValue ?
+                new ObjectParameter("CAT_BLL_Id", cAT_BLL_Id) :
+                new ObjectParameter("CAT_BLL_Id", typeof(long));
+    
+            var cAT_AmountParameter = cAT_Amount.HasValue ?
+                new ObjectParameter("CAT_Amount", cAT_Amount) :
+                new ObjectParameter("CAT_Amount", typeof(decimal));
+    
+            var cAT_ChequeNoParameter = cAT_ChequeNo.HasValue ?
+                new ObjectParameter("CAT_ChequeNo", cAT_ChequeNo) :
+                new ObjectParameter("CAT_ChequeNo", typeof(long));
+    
+            var cAT_PaymentModeParameter = cAT_PaymentMode.HasValue ?
+                new ObjectParameter("CAT_PaymentMode", cAT_PaymentMode) :
+                new ObjectParameter("CAT_PaymentMode", typeof(int));
+    
+            var cAT_DiscriptionParameter = cAT_Discription != null ?
+                new ObjectParameter("CAT_Discription", cAT_Discription) :
+                new ObjectParameter("CAT_Discription", typeof(string));
+    
+            var cAT_PayByParameter = cAT_PayBy.HasValue ?
+                new ObjectParameter("CAT_PayBy", cAT_PayBy) :
+                new ObjectParameter("CAT_PayBy", typeof(long));
+    
+            var bLL_LocationIdParameter = bLL_LocationId.HasValue ?
+                new ObjectParameter("BLL_LocationId", bLL_LocationId) :
+                new ObjectParameter("BLL_LocationId", typeof(long));
+    
+            var cAT_BillTypeParameter = cAT_BillType != null ?
+                new ObjectParameter("CAT_BillType", cAT_BillType) :
+                new ObjectParameter("CAT_BillType", typeof(string));
+    
+            var cAT_IsActiveParameter = cAT_IsActive != null ?
+                new ObjectParameter("CAT_IsActive", cAT_IsActive) :
+                new ObjectParameter("CAT_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetCompanyAccountTransaction", cATActionParameter, cAT_CMP_IdDrParameter, cAT_CMP_IdCrParameter, cAT_CAD_IdDrParameter, cAT_CAD_IdCrParameter, cAT_BLL_IdParameter, cAT_AmountParameter, cAT_ChequeNoParameter, cAT_PaymentModeParameter, cAT_DiscriptionParameter, cAT_PayByParameter, bLL_LocationIdParameter, cAT_BillTypeParameter, cAT_IsActiveParameter);
+        }
     }
 }

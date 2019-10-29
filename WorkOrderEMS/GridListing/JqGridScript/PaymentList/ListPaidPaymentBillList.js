@@ -37,13 +37,13 @@ $(function () {
             { name: "BillAmount", title: "Bill Amount", type: "text", width: 20 },
             { name: "BillDate", title: "Bill Date", type: "text", width: 30, visible: false},
             { name: "DisplayDate", title: "Bill Date", type: "text", width: 30 },
-            { name: "GracePeriod", title: "Grace Period", type: "text", width: 10 },
+            { name: "GracePeriod", title: "Grace Period", type: "text", width: 10, visible: false },
             { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20, visible: false },//, visible: false 
-            { name: "Description", title: "Description", type: "text", width: 20 },
+            { name: "Description", title: "Description", type: "text", width: 20, visible: false},
             { name: "Status", title: "Status", type: "text", width: 20, visible: false },
             {
                 name: "act", items: act, title: "Action", width: 15, css: "text-center", itemTemplate: function (value, item) {
-                    var $iconCheck = $("<i>").attr({ class: "fa fa-list" }).attr({ style: "color:black;font-size: 22px;" });                    
+                    var $iconCheck = $("<a style='color:blue'><b>View Details</b></a>");                    
 
                     var $customCheck = $("<span style='padding: 0 5px 0 0;'>")
                         .attr({ title: "Payment status" })
@@ -169,13 +169,13 @@ function doPaymentSearchresult()
             { name: "BillAmount", title: "Bill Amount", type: "text", width: 20 },
             { name: "BillDate", title: "Bill Date", type: "text", width: 30, visible: false},
             { name: "DisplayDate", title: "Bill Date", type: "text", width: 30 },
-            { name: "GracePeriod", title: "Grace Period", type: "text", width: 10 },
+            { name: "GracePeriod", title: "Grace Period", type: "text", width: 10, visible: false },
             { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20, visible: false},//, visible: false 
-            { name: "Description", title: "Description", type: "text", width: 20 },
+            { name: "Description", title: "Description", type: "text", width: 20, visible: false},
             { name: "Status", title: "Status", type: "text", width: 20, visible: false },
             {
                 name: "act", items: act, title: "Action", width: 15, css: "text-center", itemTemplate: function (value, item) {
-                    var $iconCheck = $("<i>").attr({ class: "fa fa-list" }).attr({ style: "color:black;font-size: 22px;" });
+                    var $iconCheck = $("<a style='color:blue'><b>View Details</b></a>");  
 
                     var $customCheck = $("<span style='padding: 0 5px 0 0;'>")
                         .attr({ title: "Payment status" })
@@ -206,6 +206,8 @@ function PaymentStatus(item) {
     $("#lblViewAmountPaid").html(item.BillAmount);
     $("#lblViewPaymentMode").html(item.PaymentMode);
     $("#lblViewNotes").html(item.PaymentNote);
+    $("#lblActionDoneOn").html(item.ActionDoneOn);
+    $("#lblActionDoneBy").html(item.ActionDoneBy);
     if (item.Status == "X") {
         $("#lblViewStatus").html("Cancelled");
     }

@@ -127,6 +127,7 @@ select {
     background-repeat: no-repeat !important;
     background-position: right center !important;
     background-size: 20px auto !important;
+    width:100% !important;
 }
 
 
@@ -488,7 +489,7 @@ body {
         width: 40px;
 }
 
-    .material-switch > label::after {
+.material-switch > label::after {
         background: rgb(255, 255, 255);
         border-radius: 16px;
         box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
@@ -500,7 +501,7 @@ body {
         top: -4px;
         transition: all 0.3s ease-in-out;
         width: 24px;
-    }
+}
 .material-switch > input[type="checkbox"]:checked + label::before {
     background: inherit;
     opacity: 0.5;
@@ -522,4 +523,37 @@ span.toggle-text {
 .label-info.toggle {
     background: #1fe213;
     color: #fff;
+}
+span.btn-icon-left.text-info {
+    margin: -.5rem 0.2rem -.5rem -1.5rem !important;
+}
+i.fa.fa-plus.color-info {
+    position: relative;
+    top: 2px;
+    left: 2px;
+}
+ul.attachment li {
+    margin-top: 14px;
+    margin-left: 10px;
+}
+ul.attachment {
+    margin-top: 15px;
+}
+.img-rounded {
+    border-radius: 50%;
+    object-fit: cover;
+}
+.m-b-20 {
+    margin-bottom:20px;
+}
+.po-number {
+    width: 100%;
+    text-align: center;
+    font-size:23px;
+    font-weight:600;
+}
+.po-headings {
+    text-align: center;
+    font-size: 17px;
+    font-weight: 500;
 }

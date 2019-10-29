@@ -161,6 +161,7 @@
                 @Html.ValidationMessageFor(model => model.VendorFacilityModel.Costcode)
 
             </div>
+
             <div class="form-group col-md-6">
                 <label class="col-form-label"> Product Image   <span class="req">*</span></label>
 
@@ -179,14 +180,18 @@
                          class="img-rounded" alt="No Image " style="width:110px; height:110px;">
                     @Html.ValidationMessageFor(model => model.VendorFacilityModel.ProductImage)
                     @Html.ValidationMessageFor(model => model.VendorFacilityModel.ProductImageFile)
-                    </div>
-                </div>
-                <div class="form-group col-md-12">
-
-                    <input type="button" name="Save" class="btn btn-rounded btn-success pull-right" id="SaveProduct" value="Save Product" />
-
                 </div>
             </div>
+
+
+
+
+            <div class="form-group col-md-12">
+
+                <input type="button" name="Save" class="btn btn-rounded btn-success pull-right" id="SaveProduct" value="Save Product" />
+
+            </div>
+        </div>
     </div>
 </div>
 

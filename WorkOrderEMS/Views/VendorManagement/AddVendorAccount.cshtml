@@ -67,7 +67,7 @@
 
                                 <div class="basic-form">
                                     <div class="form-group row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-6">
                                             <label class="col-form-label" for="LocationName">Pay Mode</label>
 
                                             @if (ViewBag.PaymentModeList != null)
@@ -81,36 +81,36 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group row wiredSelectHideShow" style="display:none;">
-                                        <div class="col-md-6">
+                                    <div class="row wiredSelectHideShow" style="display:none;">
+                                        <div class="form-group col-md-6">
                                             <label class="col-form-label" for="LocationName"> Bank Name<span class="req">*</span></label>
 
                                             @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankName, null, new { @id = "BankName", @class = "form-control input-rounded" })
                                             @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankName)
                                         </div>
 
-                                        <div class="col-md-6">
+                                        <div class="form-group col-md-6">
                                             <label class="col-form-label" for="VendorName">Bank Location<span class="req">*</span></label>
 
                                             @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankLocation, null, new { @id = "BankLocation", @class = "form-control input-rounded" })
                                             @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.BankLocation)
                                         </div>
 
-                                        <div class="col-md-6">
+                                        <div class="form-group col-md-6">
                                             <label class="col-form-label" for="LocationName"> Account Number<span class="req">*</span></label>
 
                                             @Html.TextBoxFor(model => model.VendorAccountDetailsModel.AccountNumber, null, new { @id = "AccountNumber", @class = "form-control input-rounded" })
                                             @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.AccountNumber)
                                         </div>
 
-                                        <div class="col-md-6">
+                                        <div class="form-group col-md-6">
                                             <label class="col-form-label" for="VendorName">  IFSC Code<span class="req">*</span></label>
 
                                             @Html.TextBoxFor(model => model.VendorAccountDetailsModel.IFSCCode, null, new { @id = "IFSCCode", @class = "form-control input-rounded" })
                                             @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.IFSCCode)
                                         </div>
 
-                                        <div class="col-md-6">
+                                        <div class="form-group col-md-6">
                                             <label class="col-form-label" for="LocationName">  Swift OIC Code<span class="req">*</span></label>
 
                                             @Html.TextBoxFor(model => model.VendorAccountDetailsModel.SwiftOICCode, null, new { @id = "SwiftOICCode", @class = "form-control input-rounded" })
@@ -135,15 +135,15 @@
 
                                     </div>
 
-                                    <div class="form-group row CardSelectHideShow" style="display:none;">
-                                        <div class="col-md-6">
+                                    <div class="row CardSelectHideShow" style="display:none;">
+                                        <div class="form-group col-md-6">
                                             <label class="col-form-label" for="LocationName">  Card Number<span class="req">*</span></label>
 
                                             @Html.TextBoxFor(model => model.VendorAccountDetailsModel.CardNumber, null, new { @id = "CardNumber", @class = "form-control input-rounded" })
                                             @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.CardNumber)
                                         </div>
 
-                                        <div class="col-md-6">
+                                        <div class="form-group col-md-6">
                                             <label class="col-form-label" for="VendorName"> Bank Name <span class="req">*</span></label>
 
                                             @Html.TextBoxFor(model => model.VendorAccountDetailsModel.BankName, null, new { @id = "PolicyNumber", @class = "form-control input-rounded" })
@@ -151,14 +151,14 @@
                                         </div>
 
 
-                                        <div class="col-md-6">
+                                        <div class="form-group col-md-6">
                                             <label class="col-form-label" for="LocationName"> Card Holder Name<span class="req">*</span></label>
 
                                             @Html.TextBoxFor(model => model.VendorAccountDetailsModel.CardHolderName, null, new { @id = "CardHolderName", @class = "form-control input-rounded" })
                                             @Html.ValidationMessageFor(model => model.VendorAccountDetailsModel.CardHolderName)
                                         </div>
 
-                                        <div class="col-md-6">
+                                        <div class="form-group col-md-6">
                                             <label class="col-form-label" for="VendorName"> Expiration Date <span class="req">*</span></label>
 
                                             @Html.TextBoxFor(model => model.VendorAccountDetailsModel.ExpirationDate, null, new { @id = "ExpirationDate", @onkeydown = "return false;", @class = "form-control input-rounded" })

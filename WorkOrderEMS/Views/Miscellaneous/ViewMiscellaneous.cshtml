@@ -81,22 +81,28 @@
             <div class="col-lg-12">
                 <div class="card aos-init" data-aos="fade-up">
                    
-                        <div class="card-header headerSize">
-                            <div class="basic-form">
-                                
-                                    <input id="SearchText" name="SearchText" type="text" class="form-control input-rounded" placeholder="MISC Number">
-                                
-                            </div>
-                            
-                                <div class="onoffswitch2 float-right">
-                                    <input type="checkbox" name="onoffswitch2" class="onoffswitch2-checkbox" id="ViewAllLocation"><label for="ViewAllLocation" class="onoffswitch2-label"><span class="onoffswitch2-inner"></span><span class="onoffswitch2-switch"></span></label>
-                                </div>
-                            
+                    <div class="card-header headerSize">
+                        <div class="basic-form">
+
+                            <input id="SearchText" name="SearchText" type="text" class="form-control input-rounded" placeholder="MISC Number">
 
                         </div>
+
+                        <div class="material-switch pull-right m-t-10">
+                            <input id="ViewAllLocation" name="onoffswitch2" type="checkbox" />
+                            <label for="ViewAllLocation" class="label-success"></label>
+                            <span class="toggle-text">View all Location</span>
+                        </div>
+
+                        @*<div class="onoffswitch2 float-right">
+                            <input type="checkbox" name="onoffswitch2" class="onoffswitch2-checkbox" id="ViewAllLocation"><label for="ViewAllLocation" class="onoffswitch2-label"><span class="onoffswitch2-inner"></span><span class="onoffswitch2-switch"></span></label>
+                        </div>*@
+
+
+                    </div>
                    
                     <div class="card-body">
-                        <div id="tbl_MasterMiscellaneousList" class="jsgrid" style="position: relative; height: 400px; width: 100%;">
+                        <div id="tbl_MasterMiscellaneousList" class="jsgrid">
                         </div>
                     </div>
                 </div>
