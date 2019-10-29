@@ -56,7 +56,7 @@ function onChangeBill(item) {
             { name: "DisplayDate", title: "Bill Date", type: "text", width: 30 },
             { name: "BillDate", title: "Bill Date", type: "text", width: 30, visible: false },
             { name: "GracePeriod", title: "Grace Period", type: "text", width: 10 },
-            { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20 },//, visible: false 
+            { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20, visible: false },//, visible: false 
             { name: "Status", title: "Status", type: "text", width: 20, visible: false },
             { name: "VendorId", title: "VendorId", type: "text", width: 20, visible: false },
             { name: "OperatingCompanyId", title: "Operating Company Id", type: "text", width: 20, visible: false },
@@ -131,7 +131,7 @@ $(function () {
             { name: "DisplayDate", title: "Bill Date", type: "text", width: 30 },
             { name: "BillDate", title: "Bill Date", type: "text", width: 30, visible: false },
             { name: "GracePeriod", title: "Grace Period", type: "text", width: 10 },
-            { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20 },//, visible: false 
+            { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20, visible: false},//, visible: false 
             { name: "Status", title: "Status", type: "text", width: 20, visible: false },
             { name: "VendorId", title: "VendorId", type: "text", width: 20, visible: false },
             { name: "OperatingCompanyId", title: "Operating Company Id", type: "text", width: 20, visible: false },
@@ -470,7 +470,7 @@ function doPaymentSearch() {
             { name: "DisplayDate", title: "Bill Date", type: "text", width: 30 },
             { name: "BillDate", title: "Bill Date", type: "text", width: 30, visible: false },
             { name: "GracePeriod", title: "Grace Period", type: "text", width: 10 },
-            { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20 },//, visible: false 
+            { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20, visible: false  },//, visible: false 
             { name: "Status", title: "Status", type: "text", width: 20, visible: false },
             { name: "VendorId", title: "VendorId", type: "text", width: 20, visible: false },
             { name: "OperatingCompanyId", title: "Operating Company Id", type: "text", width: 20, visible: false },
@@ -484,7 +484,7 @@ function doPaymentSearch() {
                     var $customCheck = $("<span style='padding: 0 5px 0 0;'>")
                         .attr({ title: "Pay Bill" })
                         .attr({ id: "PayBill" }).click(function (e) {
-                            PayBill(item);
+                            PayBillSave(item);
                         }).append($iconCheck);
 
                     var $customCancel = $("<span style='padding: 0 5px 0 0;'>")
@@ -631,7 +631,7 @@ function callAjaxPayment() {      //$("#ApproveBill").live("click", function (ev
     //var GridData = $('#tbl_PaymentList').getRowData(id);
     var GridData = GridValue;
     var obj = new Object();
-    var _paymentMode = $("#lblPaymentModeForChange option:selected").text();
+    var _paymentMode = $("#lblPaymentModeForChange option:selected").val();
 
     obj.ChequeNo = $("#ChequeNo").val();
     obj.PaymentByCash = $("#PaymentByCash").val();
@@ -685,7 +685,8 @@ function callAjaxPayment() {      //$("#ApproveBill").live("click", function (ev
             new fn_showMaskloader('Please wait...');
         },
         success: function (result) {
-            doPaymentSearchresult();
+            doPaymentSearch();//refresh first grid
+            doPaymentSearchresult();//refresh 2nd grid
         },
         error: function () { alert(" Something went wrong..") },
         complete: function () {

@@ -558,8 +558,8 @@
         $(function () {
             $("#fileuploadContract").change(function (e) {
                 $("#dvContractPreview").html("");
-                 var fileName = e.target.files[0].name;  
-             $("#fileuploadContract").next("label").html(fileName);
+                var fileName = e.target.files[0].name;
+                $("#fileuploadContract").next("label").html(fileName);
                 var regex = /^([a-zA-Z0-9\s_\\.\-:])+(.pdf|.doc|.txt)$/;
                 if (regex.test($(this).val().toLowerCase())) {
                     if ($.browser.msie && parseFloat(jQuery.browser.version) <= 9.0) {
@@ -609,7 +609,7 @@
                     Percentage: $(this).val()
                 };
             }).get();
-            if (inputs.filter(x => x.Percentage <= 0).length > 0) { 
+            if (inputs.filter(x => x.Percentage <= 0).length > 0) {
                 saveAllocationError.html("Percentage should be greater than zero").show();
                 return false;
             }
@@ -618,29 +618,26 @@
                 sumNumber = Number(sumNumber) + Number(grade);
             })
             if (inputs.length === 0) {
-                saveAllocationError.html("Select atleast one location").show(); 
+                saveAllocationError.html("Select atleast one location").show();
                 return false;
             }
             else if (sumNumber != 100) {
-                saveAllocationError.html("Sum of percentage should be equal to 100").show(); 
+                saveAllocationError.html("Sum of percentage should be equal to 100").show();
                 return false;
             }
             $('#vendorAllocationRequiredError').html('');
             $('#LocationIds').val(JSON.stringify(inputs));
             $('#myModalForContract').modal('hide');
         });
-        $(".rbtn").change(function ()
-        {
+        $(".rbtn").change(function () {
 
-            if ($(this).val() == "Own")
-            {
-               $(".ContractExecutedByHideShow1").hide();
+            if ($(this).val() == "Own") {
+                $(".ContractExecutedByHideShow1").hide();
             }
-            else if ($(this).val() == "Vendor")
-            {
-                 $(".ContractExecutedByHideShow1").show();
+            else if ($(this).val() == "Vendor") {
+                $(".ContractExecutedByHideShow1").show();
             }
-           
+
         });
     });
 </script>

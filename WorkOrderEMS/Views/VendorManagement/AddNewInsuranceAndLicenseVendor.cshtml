@@ -241,17 +241,22 @@
         });
 
         $(function () {
-            $("#fileuploadLicense").change(function () {
+            $("#fileuploadLicense").change(function (e) {
+             var fileName = e.target.files[0].name;
+            $(this).html(fileName);
+             $("#fileuploadLicense").next("label").html(fileName);
                 $("#dvLicensePreview").html("");
                 var size = this.files[0].size;
                 var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
                 if (!allowedExtensions.exec($(this).val().toLowerCase())) {
                     alert("Invalid file type");
+                     $("#fileuploadLicense").next("label").html("Choose file");
                     $(this).val("");
                     return false;
                 }
                 else if (size >= 4194304) {
                     alert("Max file size 4 mb.");
+                     $("#fileuploadLicense").next("label").html("Choose file");
                     $(this).val("");
                     return false;
                 }
@@ -259,17 +264,22 @@
 
 
 
-            $("#fileuploadInsurance").change(function () {
+            $("#fileuploadInsurance").change(function (e) {
+            var fileName = e.target.files[0].name;
+            $(this).html(fileName);
+             $("#fileuploadInsurance").next("label").html(fileName);
                 $("#dvInsurancePreview").html("");
                 var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
                 var size = this.files[0].size; 
                 if (!allowedExtensions.exec($(this).val().toLowerCase())) {
                     alert("Invalid file type");
+                     $("#fileuploadInsurance").next("label").html("Choose file");
                     $(this).val("");
                     return false;
                 }
                 else if (size >= 4194304) {
                     alert("Max file size 4 mb.");
+                     $("#fileuploadInsurance").next("label").html("Choose file");
                     $(this).val("");
                     return false;
                 }

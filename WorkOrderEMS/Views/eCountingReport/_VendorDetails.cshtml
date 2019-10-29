@@ -22,562 +22,532 @@
 @*@Scripts.Render("~/Scripts/ReportJsDTeMaintenance")
     @Scripts.Render("~/Scripts/ReportJsDTExporting")*@
 
-<style type="text/css">
-    table.dataTable thead th div.DataTables_sort_wrapper span {
-        position: absolute;
-        top: 50%;
-        margin-top: -8px;
-        right: -5px;
-    }
+<link href="~/Content/NewAdminContent/CSS/custom.css" rel="stylesheet" />
 
-    .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter, .dataTables_wrapper .dataTables_info, .dataTables_wrapper .dataTables_processing, .dataTables_wrapper .dataTables_paginate {
-        color: #000 !important;
-    }
-
-    #tbl_AllVendorCountList td:nth-child(2) {
-        cursor: pointer;
-    }
-
-    #tbl_AllVendorCountList td:nth-child(3) {
-        cursor: pointer;
-    }
-
-    #tbl_AllVendorCountList td:nth-child(4) {
-        cursor: pointer;
-    }
-
-    #tbl_AllVendorCountList td:nth-child(5) {
-        cursor: pointer;
-    }
-
-    #tbl_AllVendorCountList td:nth-child(6) {
-        cursor: pointer;
-    }
-</style>
-
-<div class="content-body" style="min-height: 920px;">
+<div class="content-body">
     <!-- row -->
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-top:15px;">
 
         <div class="row">
             <div class="col-lg-12">
                 <div class="card aos-init" data-aos="fade-up">
 
-                    <div class="card-body" style="padding:0">
-                        <div id="jsGrid-basic" style="position: relative;  width: 100%;">
-
-                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="panel panel-defaultReport">
-                                    <div class="panel-headingReport row">
-                                        <div class="col-md-3" style="font-size: 1rem;"> 
-                                            <span id="txtFromdate"></span><span id="txtFromTime"></span><span id="txtTodate"></span><span id="txtToTime"></span><label></label> 
-                                        </div>
-                                        <div class="col-md-9">
-                                            <div class="row">
-                                                <div class="col-md-2">
-                                                    @if (ViewBag.VendorType != null)
-                                                    {
-                                                        @Html.DropDownList("ddlVendorType", new SelectList(ViewBag.VendorType, "VendorTypeId", "VendorTypeName"), "--Select Vendor--", new { @id = "ddlVendorType", @class = "form-control" })
-                                                    }
-                                                    else
-                                                    {
-                                                        <select id="ddlVendorList"><option value="-1">@ViewBag.VendorType</option></select>
-                                                    }
-                                                </div>
-                                                <div class="col-md-2">
-                                                    @if (ViewBag.VendorList != null)
-                                                    {
-                                                        @Html.DropDownList("ddlVendorList", new SelectList(ViewBag.VendorList, "CompanyId", "CompanyNameLegal"), "--Select Vendor--", new { @id = "ddlVendorList", @class = "form-control" })
-                                                    }
-                                                    else
-                                                    {<select id="ddlVendorList"><option value="-1">@ViewBag.VendorList</option></select>}
-                                                </div>
-                                                <div class="col-md-3" style="padding: 0;">
-                                                    <div class="row">
-                                                        <div class="col-md-8">
-                                                            <label style="font-size: 14px;color: #eef8fb;">Payment Till Date:</label>
-                                                        </div>
-                                                        <div class="col-md-4">
-                                                            <input type="text" id="displayAmount" class="form-control" style="display:none;border: 0px solid;" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <div class="input-group date">
-                                                        <input type="text" placeholder="From Date" id="FromDate" class="form-control" style="cursor: pointer" />
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-2">
-                                                    <div class="input-group date">
-                                                        <input type="text" id="ToDate" placeholder="To Date" class="form-control" style="cursor: pointer" />
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-1">
-                                                    <input type="button" class="btn btn-secondary" value="Go" id="btnSearchByVendorId">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                        </div>
-                                    <br /><br />
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style="width: 1352px;margin-left: -15px;    margin-bottom: 60px;">
-                                        <div id="jqGrid_containerVendorCount">
-                                            <table id="tbl_AllVendorCountList" border="0" cellpadding="0" cellspacing="0"></table>
-                                            <div id="divAllVendorCountListPager"></div>
-                                        </div>
-                                    </div>
-                                    <div class="dataTables" id="PendingPODatatable">
-                                        @if (Model != null)
+                    <div class="card-header headerSize">
+                        <div class="row page-titles mb-0 pl-0 pt-0 pb-0" style="width:100%;">
+                            <div class="col-md-3 m-t-10">
+                                <span id="txtFromdate"></span><span id="txtFromTime"></span><span id="txtTodate"></span><span id="txtToTime"></span><label></label>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        @if (ViewBag.VendorType != null)
                                         {
-                                            <table id="eCountingDetailsList" class="display reportList" cellspacing="0" width="100%" style="display:none">
-                                                <thead>
-                                                    <tr>
-                                                        <td>
-                                                            PO Number
-                                                        </td>
-                                                        <td>
-                                                            PO Type
-                                                        </td>
-                                                        <td>
-                                                            Vendor Name
-                                                        </td>
-                                                        <td>
-                                                            PO Date
-                                                        </td>
-                                                        <td>
-                                                            PO Amount
-                                                        </td>
-                                                        <td>
-                                                            Location
-                                                        </td>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                    <tr>
-                                                        <td>
-                                                            PO Number
-                                                        </td>
-                                                        <td>
-                                                            PO Type
-                                                        </td>
-                                                        <td>
-                                                            Vendor Name
-                                                        </td>
-                                                        <td>
-                                                            PO Date
-                                                        </td>
-                                                        <td>
-                                                            PO Amount
-                                                        </td>
-                                                        <td>
-                                                            Location
-                                                        </td>
-                                                    </tr>
-
-                                                </tbody>
-                                            </table>
+                                            @Html.DropDownList("ddlVendorType", new SelectList(ViewBag.VendorType, "VendorTypeId", "VendorTypeName"), "--Select Vendor--", new { @id = "ddlVendorType", @class = "form-control input-rounded" })
                                         }
                                         else
                                         {
-                                            <script>
-                                                $(".dataTables").html("No records found")
-                                            </script>
+                                            <select id="ddlVendorList"><option value="-1">@ViewBag.VendorType</option></select>
                                         }
                                     </div>
-                                    <br /><br />
-                                    <div class="dataTables" id="ApprovePODataTable">
-                                        @if (Model != null)
+                                    <div class="col-md-2">
+                                        @if (ViewBag.VendorList != null)
                                         {
-                                            <table id="ApproveDetailsList" class="display reportList" cellspacing="0" width="100%" style="display:none">
-                                                <thead>
-                                                    <tr>
-                                                        <td>
-                                                            PO Number
-                                                        </td>
-                                                        <td>
-                                                            PO Type
-                                                        </td>
-                                                        <td>
-                                                            Vendor Name
-                                                        </td>
-                                                        <td>
-                                                            PO Date
-                                                        </td>
-                                                        <td>
-                                                            PO Amount
-                                                        </td>
-                                                        <td>
-                                                            Location
-                                                        </td>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-
-                                                    <tr>
-                                                        <td>
-                                                            PO Number
-                                                        </td>
-                                                        <td>
-                                                            PO Type
-                                                        </td>
-                                                        <td>
-                                                            Vendor Name
-                                                        </td>
-                                                        <td>
-                                                            PO Date
-                                                        </td>
-                                                        <td>
-                                                            PO Amount
-                                                        </td>
-                                                        <td>
-                                                            Location
-                                                        </td>
-                                                    </tr>
-
-                                                </tbody>
-                                            </table>
+                                            @Html.DropDownList("ddlVendorList", new SelectList(ViewBag.VendorList, "CompanyId", "CompanyNameLegal"), "--Select Vendor--", new { @id = "ddlVendorList", @class = "form-control input-rounded" })
                                         }
                                         else
-                                        {
-                                            <script>
-                                                $(".dataTables").html("No records found")
-                                            </script>
-                                        }
+                                        {<select id="ddlVendorList"><option value="-1">@ViewBag.VendorList</option></select>}
                                     </div>
-
-                                    <br /><br />
-                                    <div class="panel-group" id="accordion" style="display:none;">
-                                        <div class="panel-default">
-
-                                            <div class="panel-heading" style="height: 40px;margin-top: 80px;">
-                                                @*<h4 class="panel-title">
-                                                        <a data-toggle="collapse" data-parent="#accordion" id="vendordetails" href="#collapse1">Vendor Details</a>
-                                                    </h4>*@
-                                                <h4 class="panel-title">
-                                                    <a data-toggle="collapse" data-target="#demo">Vendor Details</a>
-                                                </h4>
+                                    <div class="col-md-3" style="padding: 0;">
+                                        <div class="row">
+                                            <div class="col-md-8 text-right">
+                                                <h6 class="m-t-10 white-text">Payment Till Date:</h6>
                                             </div>
-                                            @*<div id="collapse1"  class="panel-collapse collapse in">*@
-                                            <div id="demo" class="collapse">
-                                                <div class="panel-body">
-                                                    <div id="divVendorDetailPreview" class="">
-                                                        <div id="vendordetails">
-                                                            <div class="row">
-                                                                <div class="col-lg-3">
-                                                                    <div class="form-group">
-                                                                        <label>Vendor Name</label>
-                                                                        <div id="lblVendorNameLegal" class="form-control-static"></div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-3">
-                                                                    <div class="form-group">
-                                                                        <label>Vendor Name DBA</label>
-                                                                        <div id="lblVendorNameDBA" class="form-control-static"></div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-3">
-                                                                    <div class="form-group">
-                                                                        <label>Vendor Type</label>
-                                                                        <div id="lblVendorType" class="form-control-static"></div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-3">
-                                                                    <div class="form-group">
-                                                                        <label>Point Of Contact</label>
-                                                                        <div id="lblPointOfContact" class="form-control-static"></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-lg-3">
-                                                                    <div class="form-group">
-                                                                        <label>Address</label>
-                                                                        <div id="lblAddress" class="form-control-static"></div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-3">
-                                                                    <div class="form-group">
-                                                                        <label>Phone1</label>
-                                                                        <div id="lblPhone1" class="form-control-static"></div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-3">
-                                                                    <div class="form-group">
-                                                                        <label>Phone2</label>
-                                                                        <div id="lblPhone2" class="form-control-static"></div>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-lg-3">
-                                                                    <div class="form-group">
-                                                                        <label>Email</label>
-                                                                        <div id="lblEmail" class="form-control-static"></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row">
-                                                                <div class="col-lg-3">
-                                                                    <div class="form-group">
-                                                                        <label>Website</label>
-                                                                        <div id="lblWebsite" class="form-control-static"></div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                            <div class="col-md-4">
+                                                <input type="text" id="displayAmount" class="form-control input-rounded" style="display:none;border: 0px solid;" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="input-group date">
+                                            <input type="text" placeholder="From Date" id="FromDate" class="form-control input-rounded" style="cursor: pointer" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="input-group date">
+                                            <input type="text" id="ToDate" placeholder="To Date" class="form-control input-rounded" style="cursor: pointer" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <input type="button" class="btn btn-secondary btn-rounded" value="Go" id="btnSearchByVendorId">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div id="jsGrid-basic">
+
+                            <div class="">
+                               
+
+                                <div class="">
+                                    <div id="jqGrid_containerVendorCount">
+                                        <table id="tbl_AllVendorCountList" border="0" cellpadding="0" cellspacing="0"></table>
+                                        <div id="divAllVendorCountListPager"></div>
+                                    </div>
+                                </div>
+                                <div class="dataTables" id="PendingPODatatable">
+                                    @if (Model != null)
+                                    {
+                                        <table id="eCountingDetailsList" class="display reportList" cellspacing="0" width="100%" style="display:none">
+                                            <thead>
+                                                <tr>
+                                                    <td>
+                                                        PO Number
+                                                    </td>
+                                                    <td>
+                                                        PO Type
+                                                    </td>
+                                                    <td>
+                                                        Vendor Name
+                                                    </td>
+                                                    <td>
+                                                        PO Date
+                                                    </td>
+                                                    <td>
+                                                        PO Amount
+                                                    </td>
+                                                    <td>
+                                                        Location
+                                                    </td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr>
+                                                    <td>
+                                                        PO Number
+                                                    </td>
+                                                    <td>
+                                                        PO Type
+                                                    </td>
+                                                    <td>
+                                                        Vendor Name
+                                                    </td>
+                                                    <td>
+                                                        PO Date
+                                                    </td>
+                                                    <td>
+                                                        PO Amount
+                                                    </td>
+                                                    <td>
+                                                        Location
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <script>
+                                            $(".dataTables").html("No records found")
+                                        </script>
+                                    }
+                                </div>
+                                <br /><br />
+                                <div class="dataTables" id="ApprovePODataTable">
+                                    @if (Model != null)
+                                    {
+                                        <table id="ApproveDetailsList" class="display reportList" cellspacing="0" width="100%" style="display:none">
+                                            <thead>
+                                                <tr>
+                                                    <td>
+                                                        PO Number
+                                                    </td>
+                                                    <td>
+                                                        PO Type
+                                                    </td>
+                                                    <td>
+                                                        Vendor Name
+                                                    </td>
+                                                    <td>
+                                                        PO Date
+                                                    </td>
+                                                    <td>
+                                                        PO Amount
+                                                    </td>
+                                                    <td>
+                                                        Location
+                                                    </td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr>
+                                                    <td>
+                                                        PO Number
+                                                    </td>
+                                                    <td>
+                                                        PO Type
+                                                    </td>
+                                                    <td>
+                                                        Vendor Name
+                                                    </td>
+                                                    <td>
+                                                        PO Date
+                                                    </td>
+                                                    <td>
+                                                        PO Amount
+                                                    </td>
+                                                    <td>
+                                                        Location
+                                                    </td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <script>
+                                            $(".dataTables").html("No records found")
+                                        </script>
+                                    }
+                                </div>
+
+                               
+                                <div class="panel-group" id="accordion" style="display:none;">
+                                    <div class="panel-default">
+
+                                        <div class="panel-heading" style="height: 40px;margin-top: 80px;">
+                                            @*<h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" id="vendordetails" href="#collapse1">Vendor Details</a>
+                                </h4>*@
+                                            <h4 class="panel-title">
+                                                <a data-toggle="collapse" data-target="#demo">Vendor Details</a>
+                                            </h4>
+                                        </div>
+                                        @*<div id="collapse1"  class="panel-collapse collapse in">*@
+                                        <div id="demo" class="collapse">
+                                            <div class="panel-body">
+                                                <div id="divVendorDetailPreview" class="">
+                                                    <div id="vendordetails">
                                                         <div class="row">
-                                                            <div style="background-color:#0792bc;height:2%;">
-                                                                <center><p style="color:white;"><b>Vendor Insurance & License Details</b></p></center>
-                                                            </div>
-                                                        </div>
-                                                        <br />
-                                                        <div class="row">
                                                             <div class="col-lg-3">
                                                                 <div class="form-group">
-                                                                    <label>License Name</label>
-                                                                    <div id="lblLicenseName" class="form-control-static"></div>
+                                                                    <label>Vendor Name</label>
+                                                                    <div id="lblVendorNameLegal" class="form-control-static"></div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-3">
                                                                 <div class="form-group">
-                                                                    <label>License Number</label>
-                                                                    <div id="lblLicenseNumber" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>License Expiration Date</label>
-                                                                    <div id="lblLicenseExpirationDate" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Insurance Carries</label>
-                                                                    <div id="lblInsuranceCarries" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Policy Number</label>
-                                                                    <div id="lblPolicyNumber" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Insurance Expiration Date</label>
-                                                                    <div id="lblInsuranceExpirationDate" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div style="background-color:#0792bc;height:2%;">
-                                                                <center><p style="color:white;"><b>Vendor Contract Details</b></p></center>
-                                                            </div>
-                                                        </div>
-                                                        <br />
-                                                        <div class="row">
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>First Company</label>
-                                                                    <div id="lblFirstCompany" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Secondary Company</label>
-                                                                    <div id="lblSecondaryCompany" class="form-control-static"></div>
+                                                                    <label>Vendor Name DBA</label>
+                                                                    <div id="lblVendorNameDBA" class="form-control-static"></div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-3">
                                                                 <div class="form-group">
                                                                     <label>Vendor Type</label>
-                                                                    <div id="lblVendorTypeContract" class="form-control-static"></div>
+                                                                    <div id="lblVendorType" class="form-control-static"></div>
                                                                 </div>
                                                             </div>
                                                             <div class="col-lg-3">
                                                                 <div class="form-group">
-                                                                    <label>Contract Type</label>
-                                                                    <div id="lblContractType" class="form-control-static"></div>
+                                                                    <label>Point Of Contact</label>
+                                                                    <div id="lblPointOfContact" class="form-control-static"></div>
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-3">
+                                                                <div class="form-group">
+                                                                    <label>Address</label>
+                                                                    <div id="lblAddress" class="form-control-static"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3">
+                                                                <div class="form-group">
+                                                                    <label>Phone1</label>
+                                                                    <div id="lblPhone1" class="form-control-static"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3">
+                                                                <div class="form-group">
+                                                                    <label>Phone2</label>
+                                                                    <div id="lblPhone2" class="form-control-static"></div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-3">
+                                                                <div class="form-group">
+                                                                    <label>Email</label>
+                                                                    <div id="lblEmail" class="form-control-static"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-lg-3">
+                                                                <div class="form-group">
+                                                                    <label>Website</label>
+                                                                    <div id="lblWebsite" class="form-control-static"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div style="background-color:#0792bc;height:2%;">
+                                                            <center><p style="color:white;"><b>Vendor Insurance & License Details</b></p></center>
+                                                        </div>
+                                                    </div>
+                                                    <br />
+                                                    <div class="row">
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>License Name</label>
+                                                                <div id="lblLicenseName" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>License Number</label>
+                                                                <div id="lblLicenseNumber" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>License Expiration Date</label>
+                                                                <div id="lblLicenseExpirationDate" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Insurance Carries</label>
+                                                                <div id="lblInsuranceCarries" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Policy Number</label>
+                                                                <div id="lblPolicyNumber" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Insurance Expiration Date</label>
+                                                                <div id="lblInsuranceExpirationDate" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div style="background-color:#0792bc;height:2%;">
+                                                            <center><p style="color:white;"><b>Vendor Contract Details</b></p></center>
+                                                        </div>
+                                                    </div>
+                                                    <br />
+                                                    <div class="row">
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>First Company</label>
+                                                                <div id="lblFirstCompany" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Secondary Company</label>
+                                                                <div id="lblSecondaryCompany" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Vendor Type</label>
+                                                                <div id="lblVendorTypeContract" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Contract Type</label>
+                                                                <div id="lblContractType" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                                                        <div class="row">
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Contract issued by</label>
-                                                                    <div id="lblContractissuedby" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Contract executed by</label>
-                                                                    <div id="lblContractexecutedby" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Primary Payment Mode</label>
-                                                                    <div id="lblPrimaryPaymentMode" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Payment Term</label>
-                                                                    <div id="lblPaymentTerm" class="form-control-static"></div>
-                                                                </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Contract issued by</label>
+                                                                <div id="lblContractissuedby" class="form-control-static"></div>
                                                             </div>
                                                         </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Contract executed by</label>
+                                                                <div id="lblContractexecutedby" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Primary Payment Mode</label>
+                                                                <div id="lblPrimaryPaymentMode" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Payment Term</label>
+                                                                <div id="lblPaymentTerm" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                                                        <div class="row">
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Grace Period</label>
-                                                                    <div id="lblGracePeriod" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Invoicing Frequency</label>
-                                                                    <div id="lblInvoicingFrequency" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Start Date</label>
-                                                                    <div id="lblStartDate" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>End Date</label>
-                                                                    <div id="lblEndDate" class="form-control-static"></div>
-                                                                </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Grace Period</label>
+                                                                <div id="lblGracePeriod" class="form-control-static"></div>
                                                             </div>
                                                         </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Invoicing Frequency</label>
+                                                                <div id="lblInvoicingFrequency" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Start Date</label>
+                                                                <div id="lblStartDate" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>End Date</label>
+                                                                <div id="lblEndDate" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                                                        <div class="row">
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Cost During Period</label>
-                                                                    <div id="lblCostDuringPeriod" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Annual Value Of Aggriment</label>
-                                                                    <div id="lblAnnualValueOfAggriment" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Minimum Bill Amount</label>
-                                                                    <div id="lblMinimumBillAmount" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Bill Due Date</label>
-                                                                    <div id="lblBillDueDate" class="form-control-static"></div>
-                                                                </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Cost During Period</label>
+                                                                <div id="lblCostDuringPeriod" class="form-control-static"></div>
                                                             </div>
                                                         </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Annual Value Of Aggriment</label>
+                                                                <div id="lblAnnualValueOfAggriment" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Minimum Bill Amount</label>
+                                                                <div id="lblMinimumBillAmount" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Bill Due Date</label>
+                                                                <div id="lblBillDueDate" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                                                        <div class="row">
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label> Late Fine/Fee</label>
-                                                                    <div id="lblLateFineFee" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Location</label>
-                                                                    <div id="lblSelectedLocation" class="form-control-static"></div>
-                                                                </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label> Late Fine/Fee</label>
+                                                                <div id="lblLateFineFee" class="form-control-static"></div>
                                                             </div>
                                                         </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Location</label>
+                                                                <div id="lblSelectedLocation" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                                                        <div class="row">
-                                                            <div style="background-color:#0792bc;height:2%;">
-                                                                <center><p style="color:white;margin-top:4px;"><b>Vendor Account Details</b></p></center>
+                                                    <div class="row">
+                                                        <div style="background-color:#0792bc;height:2%;">
+                                                            <center><p style="color:white;margin-top:4px;"><b>Vendor Account Details</b></p></center>
+                                                        </div>
+                                                    </div>
+                                                    <br />
+                                                    <div class="row">
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Pay Mode</label>
+                                                                <div id="lblPayMode" class="form-control-static"></div>
                                                             </div>
                                                         </div>
-                                                        <br />
-                                                        <div class="row">
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Pay Mode</label>
-                                                                    <div id="lblPayMode" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Bank Name</label>
-                                                                    <div id="lblBankName" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label> Bank Location</label>
-                                                                    <div id="lblBankLocation" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Account Number</label>
-                                                                    <div id="lblAccountNumber" class="form-control-static"></div>
-                                                                </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Bank Name</label>
+                                                                <div id="lblBankName" class="form-control-static"></div>
                                                             </div>
                                                         </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label> Bank Location</label>
+                                                                <div id="lblBankLocation" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Account Number</label>
+                                                                <div id="lblAccountNumber" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                                                        <div class="row">
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>IFSC Code</label>
-                                                                    <div id="lblIFSCCode" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Swift OIC Code</label>
-                                                                    <div id="lblSwiftOICCode" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label> Card Number</label>
-                                                                    <div id="lblCardNumber" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Policy Number</label>
-                                                                    <div id="lblPolicyNumber" class="form-control-static"></div>
-                                                                </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>IFSC Code</label>
+                                                                <div id="lblIFSCCode" class="form-control-static"></div>
                                                             </div>
                                                         </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Swift OIC Code</label>
+                                                                <div id="lblSwiftOICCode" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label> Card Number</label>
+                                                                <div id="lblCardNumber" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Policy Number</label>
+                                                                <div id="lblPolicyNumber" class="form-control-static"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
 
-                                                        <div class="row">
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Card Holder Name</label>
-                                                                    <div id="lblCardHolderName" class="form-control-static"></div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-lg-3">
-                                                                <div class="form-group">
-                                                                    <label>Expiration Date</label>
-                                                                    <div id="lblExpirationDate" class="form-control-static"></div>
-                                                                </div>
+                                                    <div class="row">
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Card Holder Name</label>
+                                                                <div id="lblCardHolderName" class="form-control-static"></div>
                                                             </div>
                                                         </div>
-                                                        <br />
-                                                        <div class="row">
-                                                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                                <table id="VendorFacility_table" class="table" cellpadding="1" cellspacing="1" border="1"></table>
+                                                        <div class="col-lg-3">
+                                                            <div class="form-group">
+                                                                <label>Expiration Date</label>
+                                                                <div id="lblExpirationDate" class="form-control-static"></div>
                                                             </div>
+                                                        </div>
+                                                    </div>
+                                                    <br />
+                                                    <div class="row">
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                            <table id="VendorFacility_table" class="table" cellpadding="1" cellspacing="1" border="1"></table>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -593,13 +563,14 @@
         </div>
     </div>
 </div>
+</div>
 @section scriptsbottom{
     <script type="text/javascript">
     var $_locationId = '@locationId';
     var $_userTypeId = '@userType';
     </script>
     <script src="~/GridListing/JqGridScript/CompanyList/ListAllCompany.js"></script>
-   
+
     @Scripts.Render("~/Scripts/ReportJsDTeMaintenance")
     @Scripts.Render("~/Scripts/ReportJsDTExporting")
     <script>
@@ -720,7 +691,7 @@
                         $('#records_table').html('');
                         var arrData = [];
                         var thHTML = '';
-                        thHTML += '<tr style="background-color:#0792bc;"><th>Cost Code</th><th>Facility Type</th><th>Description</th><th>Unit Price</th><th>Tax</th></tr>';
+                        thHTML += '<tr style="background-color:#0792bc; color:#fff;"><th>Cost Code</th><th>Facility Type</th><th>Description</th><th>Unit Price</th><th>Tax</th></tr>';
                         $('#VendorFacility_table').append(thHTML);
                         if (result.VendorFacilityModel.length > 0) {
                             for (i = 0; i < result.VendorFacilityModel.length; i++) {
@@ -744,7 +715,7 @@
             var FromDateData = $('#FromDate').val();
             var ToDateData = $('#ToDate').val();
             var VendorId = $("#ddlVendorList option:selected").val();
-            var CountUrl = 'eCountingReport/GetVendorCountList'; 
+            var CountUrl = 'eCountingReport/GetVendorCountList';
             $("#tbl_AllVendorCountList").jsGrid({
                 height: "170%",
                 width: "100%",
@@ -755,9 +726,9 @@
                 paging: true,
                 autoload: true,
                 pageSize: 10,
-                pageButtonCount: 5, 
+                pageButtonCount: 5,
                 controller: {
-                    loadData: function (filter) { 
+                    loadData: function (filter) {
                         return $.ajax({
                             type: "GET",
                             url: $_HostPrefix + CountUrl + '?VendorId=' + VendorId + "&fromDate=" + FromDateData+ "&toDate="+ ToDateData,
@@ -1299,7 +1270,7 @@
             //if ($("#tbl_AllVendorCountList").getGridParam("records") > 20) {
             //    jQuery("#tbl_AllVendorCountList").jqGrid('navGrid', '#divAllVendorCountListPager', { edit: false, add: false, del: false, search: false, edittext: "Edit" });
             //}
-            
+
         });
     });
 

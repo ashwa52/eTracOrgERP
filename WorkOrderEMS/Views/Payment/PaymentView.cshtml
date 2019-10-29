@@ -22,6 +22,7 @@
     </script>
     <script src="~/GridListing/JqGridScript/PaymentList/ListPaymentBill.js"></script>
     <script src="~/GridListing/JqGridScript/PaymentList/ListPaidPaymentBillList.js"></script>
+    <link href="~/Content/NewAdminContent/CSS/custom.css" rel="stylesheet" />
     <script type="text/javascript">
         //$(window).bind('resize', function () {
         //    var width = $('#jqGrid_containerPayment').width();
@@ -35,8 +36,9 @@
 }
 <style>
     .form-control.input-rounded {
-    border: 1px solid #CACABC !important;
-}
+        border: 1px solid #CACABC !important;
+    }
+
     input[type="radio"] {
         height: 20px;
         width: 20px;
@@ -65,7 +67,6 @@
     #tbl_PaymentList td:nth-child(2) {
         cursor: pointer;
     }
-   
 </style>
 
 <div class="content-body" style="min-height: 920px;">
@@ -84,7 +85,7 @@
                           new SelectListItem{ Text="Manual Bill", Value = "Manual Bill" },
                           new SelectListItem{ Text="PO", Value = "PO" },
                           new SelectListItem{ Text="MISC", Value = "MIS" }
-                       }, new { @class = "form-control input-rounded",@style="margin-top:15px;width:200px" ,onchange="onChangeBill(this.value)" })
+                       }, new { @class = "form-control input-rounded", @style = "margin-top:15px;width:200px", onchange = "onChangeBill(this.value)" })
                                 </div>
                             </div>
 
@@ -105,7 +106,7 @@
                     <div class="card-header" style="height: 45px;">
                         <div class="card-header headerSize" style="height:45px; padding:0;">
                             <div class="basic-form">
-                                <div class="form-group">                                    
+                                <div class="form-group">
                                     <input id="SearchTextResult" type="text" style="margin-top:15px;" class="form-control input-rounded" placeholder="Vendor Name" onkeyup="doPaymentSearchresult()">
                                 </div>
                             </div>
@@ -128,7 +129,7 @@
                 <h5 class="modal-title" id="myModalLabel">Bill Details</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>×</span>
-                </button>                
+                </button>
             </div>
             <div class="modal-body">
                 <div id="divDetailPreview" class="">
@@ -203,15 +204,15 @@
             </div>
             <div class="modal-body m-0">
                 <form class="form">
-                    
-                        <div class="form-group">
-                            @Html.Label("Comment", htmlAttributes: new { @class = "control-label star" })
-                            
-                                @Html.TextBoxFor(model => model.Comment, new { @class = "form-control input-rounded", @id = "CommentPay", @placeholder = "Comment", @style = "border-radios:0px;" })
-                                @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
 
-                        </div>
-                 
+                    <div class="form-group">
+                        @Html.Label("Comment", htmlAttributes: new { @class = "control-label star" })
+
+                        @Html.TextBoxFor(model => model.Comment, new { @class = "form-control input-rounded", @id = "CommentPay", @placeholder = "Comment", @style = "border-radios:0px;" })
+                        @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+
+                    </div>
+
                 </form>
             </div>
             <div class="modal-footer">
@@ -227,7 +228,7 @@
             <div class="modal-header">
                 <h4 class="modal-title" id="myModalLabel">Make Payments</h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                
+
             </div>
             <div class="modal-body m-0">
                 <form class="form">
@@ -270,10 +271,10 @@
 
                             <div id="dvOptions"></div>
                             @*@foreach(var item in Model.CardNumber)
-                {
-                    @Html.RadioButtonFor(m=> m.CARDNo,item.CardNo)
-                    @Html.Label(item.CardNo)
-                }*@
+                                {
+                                    @Html.RadioButtonFor(m=> m.CARDNo,item.CardNo)
+                                    @Html.Label(item.CardNo)
+                                }*@
                             @Html.ValidationMessageFor(model => model.CardNumber, "", new { @class = "text-danger" })
 
                         </div>
@@ -285,10 +286,10 @@
 
                             <div id="dvOptionsWired"></div>
                             @*@foreach(var item in Model.AccountNumber)
-                {
-                    @Html.RadioButtonFor(m=> m.AccountNo,item.AccountNumber)
-                    @Html.Label(item.AccountNumber)
-                }*@
+                                {
+                                    @Html.RadioButtonFor(m=> m.AccountNo,item.AccountNumber)
+                                    @Html.Label(item.AccountNumber)
+                                }*@
                             @Html.ValidationMessageFor(model => model.CARDNo, "", new { @class = "text-danger" })
 
                         </div>
@@ -327,39 +328,39 @@
             </div>
             <div class="modal-body m-0">
                 <div id="divDetailPreview" class="">
-                    
-                        <div class="" id="DivPODetailsIndex">
-                            <div class="row">
-                                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                    <label>PO ID</label>
-                                    <div id="lblPOId" class="form-control-static"></div>
-                                </div>
-                                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                    <label>PO Type</label>
-                                    <div id="lblPOType" class="form-control-static"></div>
-                                </div>
-                                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                    <label>Company Name</label>
-                                    <div id="lblCompanyName" class="form-control-static"></div>
-                                </div>
-                                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                    <label>Grand Total</label>
-                                    <div id="lblTotal" class="form-control-static"></div>
-                                </div>
-                                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                    <label>Location Name</label>
-                                    <div id="lblLocationName" class="form-control-static"></div>
-                                </div>
-                                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                    <label>PO Date</label>
-                                    <div id="lblPODate" class="form-control-static"></div>
-                                </div>
-                                <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                    <label>Delivery Date</label>
-                                    <div id="lblDeliveryDate" class="form-control-static"></div>
-                                </div>
 
+                    <div class="" id="DivPODetailsIndex">
+                        <div class="row">
+                            <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <label>PO ID</label>
+                                <div id="lblPOId" class="form-control-static"></div>
                             </div>
+                            <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <label>PO Type</label>
+                                <div id="lblPOType" class="form-control-static"></div>
+                            </div>
+                            <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <label>Company Name</label>
+                                <div id="lblCompanyName" class="form-control-static"></div>
+                            </div>
+                            <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <label>Grand Total</label>
+                                <div id="lblTotal" class="form-control-static"></div>
+                            </div>
+                            <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <label>Location Name</label>
+                                <div id="lblLocationName" class="form-control-static"></div>
+                            </div>
+                            <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <label>PO Date</label>
+                                <div id="lblPODate" class="form-control-static"></div>
+                            </div>
+                            <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                <label>Delivery Date</label>
+                                <div id="lblDeliveryDate" class="form-control-static"></div>
+                            </div>
+
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -401,19 +402,23 @@
                     <div class="" id="DivPODetailsIndex">
                         <div class="row">
                             <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                <label>Amount Paid</label>
+                                <label>Bill Amount</label>
                                 <div id="lblViewAmountPaid" class="form-control-static"></div>
                             </div>
+                            @*<div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                    <label>Payment Mode</label>
+                                    <div id="lblViewPaymentMode" class="form-control-static"></div>
+                                </div>*@
                             <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                <label>Payment Mode</label>
-                                <div id="lblViewPaymentMode" class="form-control-static"></div>
+                                <label>Bill Status</label>
+                                <div id="lblViewStatus" class="form-control-static"></div>
                             </div>
                             <div class="form-group col-lg-4 col-md-4 col-sm-4 col-xs-12">
                                 <label>Notes</label>
                                 <div id="lblViewNotes" class="form-control-static"></div>
-                            </div>                           
+                            </div>
                         </div>
-                    </div>                    
+                    </div>
                 </div>
             </div><br /><br />
             <div class="panel-footer p-3">
@@ -430,6 +435,6 @@
     })
     $("#RejectBill").on("click", function (event) {
         $("#myModelRejectBill").modal('show');
-    });     
+    });
 </script>
 <script src="~/Scripts/Search/Searching.js"></script>

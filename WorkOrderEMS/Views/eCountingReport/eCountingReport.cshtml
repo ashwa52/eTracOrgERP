@@ -8,60 +8,56 @@
 <link href="http://fonts.googleapis.com/css?family=Lustria|Lato:300,400,700,400italic" rel="stylesheet" type="text/css">
 <link href="~/Content/Report-NavBar/ohover.css" rel="stylesheet" />
 <link href="~/Content/Report-NavBar/main.css" rel="stylesheet" />
-<style>
-    #ReportBar li a {
-        border-radius: 4px 4px 0 0 !important;
-        border-color: lightgray;
-    }
+<link href="~/Content/NewAdminContent/CSS/custom.css" rel="stylesheet" />
 
-    l .active a {
-        background-color: #0aa0cd !important;
-        color: white !important;
-    }
-</style>
-<div class="content-body" style="min-height: 920px;">
+<div class="content-body">
     <!-- row -->
-    <div class="container-fluid">
-
-        <br>
+    <div class="container-fluid" style="margin-top:15px;">
         <div class="row">
             <div class="col-lg-12">
                 <div class="card aos-init" data-aos="fade-up">
-                    <div class="card-header" style="height: 45px;">
-                        <div class="card-header headerSize" style="height:45px; padding-top: 20px;">
-                            <h3> Vendor Report </h3> 
-                        </div>
+
+                    <div class="card-header headerSize">
+                        <h4 class="card-title"> Vendor Report </h4>
                     </div>
+
                     <div class="card-body">
-                        <div class="content-header ">
-                            <div class="panel">
-                                <div data-example-id="simple-nav-justified" class="bs-example">
-                                    <div class="row-2">
-                                        <div class="item-hover circle effect3 left_to_right">
-                                            <a href="@Url.Action("VendorDetails","eCountingReport")">
-                                                <div class="img"><img src="~/Content/Images/Report/WorkOrderIssued.png"></div>
-                                                <div class="info">
-                                                    <h5>Vendor Detail</h5>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="row-2">
-                                        <div class="item-hover circle effect3 left_to_right">
-                                            <a href="@Url.Action("PaymentSummaryView","eCountingReport")">
-                                                <div class="img"><img src="~/Content/Images/Report/WorkOrderIssued.png"></div>
-                                                <div class="info">
-                                                    <h5 style="width:64px">Payment Summery</h5>
-                                                </div>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="row row-justify-center">
+                        <div class="col-xl-6 col-xxl-6 col-lg-6 col-sm-6">
+                            <div class="card-header card-custom-padding border-radius-card-header">
+
+
+                                <a href="@Url.Action("VendorDetails","eCountingReport")">
+                                    
+                                        <h4 class="card-text white-text">
+                                            <i class="fa fa-list list-icon-vendor" aria-hidden="true"></i>
+                                            Vendor Detail
+                                        </h4>
+                                    
+                                </a>
+
+</div>
                         </div>
 
+                        <div class="col-xl-6 col-xxl-6 col-lg-6 col-sm-6">
+                            <div class="card-header card-custom-padding border-radius-card-header">
+
+                                <a href="@Url.Action("PaymentSummaryView","eCountingReport")">
+                                 
+                                        <h4 class="card-text white-text">
+                                            <i class="fa fa-list list-icon-vendor"></i>
+                                            Payment Summary
+                                        </h4>
+                                   
+                                    </a>
+
+                            </div>
+                        </div>
+                            </div>
                     </div>
-                </div>
+
+                  
+                    </div>
             </div>
         </div>
     </div>

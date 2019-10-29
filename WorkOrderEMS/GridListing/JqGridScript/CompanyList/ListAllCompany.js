@@ -53,13 +53,13 @@ $(function () {
                
                 name: "act", type: "control", items: act, title: "Action", width: 50, css: "text-center", itemTemplate: function (value, item)
                 {  
-                    var $iconPencilForEdit = $("<i>").attr({ class: "fa fa-pencil" }).attr({ style:"color:green;font-size: 22px;" });
-                    var $iconPencilForAccount = $("<i>").attr({ class: "fa fa-university" }).attr({ style:"color:#ee82ee;font-size: 22px;" });
-                    var $iconPencilForFacility = $("<i>").attr({ class: "fa fa-list" }).attr({ style:"color:#3cb371;font-size: 22px;" });
-                    var $iconPencilForView = $("<i>").attr({ class: "fa fa-eye" }).attr({ style:"color:bluelight;font-size: 22px;" });
-                    var $iconPencilForInsurance = $("<i>").attr({ class: "fa fa-medkit" }).attr({ style: "color:#ffa500;font-size: 22px;" });
-                    var $iconPencilForImport = $("<i>").attr({ class: "fa fa-upload" }).attr({ style: "color:#0080ff;font-size: 22px;" });
-                    var $iconFileForImport = $("<i>").attr({ class: "fa fa-file" }).attr({ style: "color:#a1a8c3;font-size: 22px;" });
+                    var $iconPencilForEdit = $("<i>").attr({ class: "fa fa-pencil pencil-icon" }).attr({ style:"" });
+                    var $iconPencilForAccount = $("<i>").attr({ class: "fa fa-university university-icon" }).attr({ style:"" });
+                    var $iconPencilForFacility = $("<i>").attr({ class: "fa fa-list list-icon" }).attr({ style:"" });
+                    var $iconPencilForView = $("<i>").attr({ class: "fa fa-eye eye-icon" }).attr({ style:"" });
+                    var $iconPencilForInsurance = $("<i>").attr({ class: "fa fa-medkit medkit-icon" }).attr({ style: "" });
+                    var $iconPencilForImport = $("<i>").attr({ class: "fa fa-upload upload-icon" }).attr({ style: "" });
+                    var $iconFileForImport = $("<i>").attr({ class: "fa fa-file file-icon" }).attr({ style: "" });
 
                     var $customFileButton = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "Document" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
                         window.location.href = $_HostPrefix + venderDocument + '?id=' + item.id;
@@ -258,7 +258,7 @@ function ViewVendorDetails(VendorId) {
                 var arrData = [];
                 var thHTML = '';
                 $('#VendorFacility_table').empty();
-                thHTML += '<tr style="background-color:#0792bc;"><th>Cost Code</th><th>Facility Type</th><th>Description</th><th>Unit Price</th><th>Tax</th></tr>';
+                thHTML += '<tr style="background-color:#0792bc; color:#fff;"><th>Cost Code</th><th>Facility Type</th><th>Description</th><th>Unit Price</th><th>Tax</th></tr>';
                 $('#VendorFacility_table').append(thHTML);
                 if (result.VendorFacilityModel.length > 0) {
                     for (i = 0; i < result.VendorFacilityModel.length; i++) {

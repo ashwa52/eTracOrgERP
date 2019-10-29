@@ -190,17 +190,22 @@
         $('input[name="VendorAccountDetailsModel.BankName"]').change(function () {
             $('input[name="VendorAccountDetailsModel.BankName"]').val($(this).val());
         });
-        $("#fileuploadAccount").change(function () {
+        $("#fileuploadAccount").change(function (e) {
+              var fileName = e.target.files[0].name;
+            $(this).html(fileName);
+             $("#fileuploadAccount").next("label").html(fileName);
             $("#dvAccountPreview").html("");
             var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
             var size = this.files[0].size;
             if (!allowedExtensions.exec($(this).val().toLowerCase())) {
                 alert("Invalid file type");
+                 $("#fileuploadAccount").next("label").html("Choose file");
                 $(this).val("");
                 return false;
             } 
             else if (size >= 4194304) {
                 alert("Max file size 4 mb.");
+                 $("#fileuploadAccount").next("label").html("Choose file");
                 $(this).val("");
                 return false;
             }

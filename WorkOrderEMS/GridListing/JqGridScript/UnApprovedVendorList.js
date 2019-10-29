@@ -389,7 +389,7 @@ $("#ViewUnApprovedVendorData").on("click", function (event) {
                 var arrData = [];
                 $('#UnVendorFacility_table tbody').empty();
                 var thHTML = '';
-                thHTML += '<tr style="background-color:#0792bc;"><th>Cost Code</th><th>Facility Type</th><th>Description</th><th>Unit Price</th><th>Tax</th></tr>';
+                thHTML += '<tr style="background-color:#0792bc; color:#fff;"><th>Cost Code</th><th>Facility Type</th><th>Description</th><th>Unit Price</th><th>Tax</th></tr>';
                 $('#UnVendorFacility_table').append(thHTML);
                 if (result.VendorFacilityModel.length > 0) {
                     for (i = 0; i < result.VendorFacilityModel.length; i++) {

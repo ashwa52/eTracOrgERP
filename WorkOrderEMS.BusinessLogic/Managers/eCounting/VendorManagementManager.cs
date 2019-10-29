@@ -1932,7 +1932,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             bool result = false;
             if (VendorId > 0)
             {
-                var status = _workorderems.CompanyDetails.Any(u => u.COD_PointOfContact.ToLower() == txtPointOfContact.Trim().ToLower() && u.COD_CMP_Id != VendorId);
+                var status = _workorderems.CompanyDetails.Any(u => u.COD_PointOfContact.ToLower() == txtPointOfContact.Trim().ToLower() && u.COD_CMP_Id == VendorId);
                 result = status == true ? result = true : result = false;
             }
             else

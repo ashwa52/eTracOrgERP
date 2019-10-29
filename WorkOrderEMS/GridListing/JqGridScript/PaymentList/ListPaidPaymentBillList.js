@@ -38,7 +38,7 @@ $(function () {
             { name: "BillDate", title: "Bill Date", type: "text", width: 30, visible: false},
             { name: "DisplayDate", title: "Bill Date", type: "text", width: 30 },
             { name: "GracePeriod", title: "Grace Period", type: "text", width: 10 },
-            { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20 },//, visible: false 
+            { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20, visible: false },//, visible: false 
             { name: "Description", title: "Description", type: "text", width: 20 },
             { name: "Status", title: "Status", type: "text", width: 20, visible: false },
             {
@@ -170,7 +170,7 @@ function doPaymentSearchresult()
             { name: "BillDate", title: "Bill Date", type: "text", width: 30, visible: false},
             { name: "DisplayDate", title: "Bill Date", type: "text", width: 30 },
             { name: "GracePeriod", title: "Grace Period", type: "text", width: 10 },
-            { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20 },//, visible: false 
+            { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20, visible: false},//, visible: false 
             { name: "Description", title: "Description", type: "text", width: 20 },
             { name: "Status", title: "Status", type: "text", width: 20, visible: false },
             {
@@ -206,6 +206,12 @@ function PaymentStatus(item) {
     $("#lblViewAmountPaid").html(item.BillAmount);
     $("#lblViewPaymentMode").html(item.PaymentMode);
     $("#lblViewNotes").html(item.PaymentNote);
+    if (item.Status == "X") {
+        $("#lblViewStatus").html("Cancelled");
+    }
+    if (item.Status == "P") {
+        $("#lblViewStatus").html("Paid");
+    }    
     $('#myModalForPOStatus').modal('show');
 }
 //#endregion

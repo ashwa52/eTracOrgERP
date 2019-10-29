@@ -6,68 +6,69 @@
 }
 @Styles.Render("~/Scripts/ReportCss")
 <link href="~/Content/Dashboard/ExportDataTable/buttons.dataTables.css" rel="stylesheet" />
-<style>
-    .panel-headingReport {
-        height: 56px;
-    }
-    .form-control ,.btn {
-    font-size: 14px !important;
-}
-.label-heading-report-grid {
-    float: left;
-    width: 100%;
-    background-color: #007ea4;
-    padding: 15px 10px;
-    border-radius: 3px 3px 0 0;
-    color: #fff !important;
-}
-</style>
-<div class="content-body" style="min-height: 920px;">
+<link href="~/Content/NewAdminContent/CSS/custom.css" rel="stylesheet" />
+
+<div class="content-body">
     <!-- row -->
-    <div class="container-fluid">
+    <div class="container-fluid" style="margin-top:15px;">
 
         <div class="row">
             <div class="col-lg-12">
                 <div class="card aos-init" data-aos="fade-up">
 
+                    <div class="card-header headerSize">
+                        <div class="row page-titles mb-0 pl-0 pt-0 pb-0" style="width:100%;">
+
+                           
+                                <div class="pull-left">
+                                    <span id="txtFromdate"></span><span id="txtFromTime"></span><span id="txtTodate"></span><span id="txtToTime"></span><label></label>
+                                </div>
+                                <div class="col-md-12 text-right form-inline pull-right">
+                                    <div class="col-md-1 text-left pl-0">
+                                        <button type="button" class="btn btn-light fullPageExport hide pdf_export" value="Full Page Export" title="Full page export"><i class="fa fa-file-pdf-o"></i></button>
+                                    </div>
+
+                                    <div class="col-md-11">
+                                        <div class="row">
+                                    <div class="col-md-4">
+                                        <select id="ddlLocation" class="form-control input-rounded"></select>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="input-group date">
+                                            <input type="text" placeholder="From Date" id="FromDate" class="form-control input-rounded" style="cursor: pointer" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="input-group date">
+                                            <input type="text" id="ToDate" placeholder="To Date" class="form-control input-rounded" style="cursor: pointer" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-1">
+                                        <input type="button" class="btn btn-secondary btn-rounded" value="Go" id="btnSearchByLoc">
+                                    </div>
+                                            </div>
+                                        </div>
+                                </div>
+                           
+                        </div>
+                    </div>
+
+
+
+
                     <div class="card-body" style="padding:0">
                         <div id="jsGrid-basic" class="jsgrid" style="position: relative;  width: 100%;">
 
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <div class="panel panel-defaultReport">
-                                    <div class="panel-headingReport">
-                                        <div class="pull-left">
-                                            <span id="txtFromdate"></span><span id="txtFromTime"></span><span id="txtTodate"></span><span id="txtToTime"></span><label></label>
-                                        </div>
-                                        <div class="col-md-8 text-right form-inline pull-right">
-                                            <div class="col-md-1">
-                                                <button style="font-size: 21px;color:#fff;display:none" type="button" class="btn btn-default fullPageExport hide pdf_export" value="Full Page Export" title="Full page export"><i class="fa fa-file-pdf-o"></i></button>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <select id="ddlLocation" class="form-control"></select>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="input-group date" style="width: 165px">
-                                                    <input type="text" placeholder="From Date" id="FromDate" class="form-control" style="cursor: pointer" />
-                                                </div>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <div class="input-group date" style="width: 165px">
-                                                    <input type="text" id="ToDate" placeholder="To Date" class="form-control" style="cursor: pointer" />
-                                                </div>
-                                            </div>
-                                            <div class="col-md-1">
-                                                <input type="button" class="btn btn-secondary" value="Go" id="btnSearchByLoc">
-                                            </div>
-                                        </div>
-                                    </div>
+                                
+                                   
 
-                                    <div class="pagi" id="divCharts">
+                                    <div id="divCharts">
                                         <div id="containerCharts" style="height: 400px"></div>
                                     </div>
 
 
-                                </div>
+                               
                             </div>
 
                         </div>
