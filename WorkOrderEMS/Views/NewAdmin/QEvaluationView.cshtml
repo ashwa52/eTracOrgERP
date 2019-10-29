@@ -16,11 +16,24 @@
 
 }
 <style>
-    .table tbody tr td {
+    .table tbody tr td.que {
         vertical-align: middle;
         border-color: #f5f5f5;
-        width: 80%;
+        width: 70%;
     }
+        .form-control {
+    border-radius:20px;
+    }
+        /*.table tbody tr td.asn {
+        vertical-align: middle;
+        border-color: #f5f5f5;
+        width: 20%;
+    }
+        .table tbody tr td {
+        vertical-align: middle;
+        border-color: #f5f5f5;
+        width: 10%;
+    }*/
 </style>
 <i id="back" class="fa fa-arrow-circle-o-left x4" style="
     font-size: 36px;
@@ -40,7 +53,7 @@
                 {
 
                     <tr class="table-primary">
-                        <td>GWC</td>
+                        <td colspan="2">GWC</td>
 
 
                         <td>
@@ -52,7 +65,7 @@
                 else if ((item.QuestionType == "P" || item.QuestionType == "A" || item.QuestionType == "R" || item.QuestionType == "K") && count == 1)
                 {
                     <tr class="table-primary">
-                        <td>Core Values</td>
+                        <td colspan="2">Core Values</td>
 
 
                         <td>
@@ -64,7 +77,7 @@
                 else if ((item.QuestionType == "CORP" || item.QuestionType == "MGMT") && count == 2)
                 {
                     <tr class="table-primary">
-                        <td>Select Entitlement Expectation</td>
+                        <td colspan="2">Seat Entitlement Expectation</td>
 
 
                         <td>
@@ -75,80 +88,163 @@
 
                 }
 
-                <tr class="table-light">
-                    <td class="que">
-                        @Html.DisplayFor(modelItem => item.Question)
+        <tr class="table-light">
 
+            <td class="que">
+                @Html.DisplayFor(modelItem => item.Question)
+
+            </td>
+            @if ((item.QuestionType == "P" || item.QuestionType == "A" || item.QuestionType == "R" || item.QuestionType == "K"))
+            {
+                if (item.SAM_IsActive == "S")
+                {
+                    <td class="ans asn" colspan="2" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
+
+
+                        @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
+                        {
+
+                            <input type="radio" value="Y" name="Opt_@item.QuestionId" checked disabled />
+                        }
+                        else
+                        {
+                            <input type="radio" value="Y" name="Opt_@item.QuestionId" disabled />
+                        }Always |
+
+                        @if (item.Answer == "S" && @item.SelfAssessmentId > 0)
+                        {
+
+                            <input type="radio" value="S" name="Opt_@item.QuestionId" checked disabled />
+                        }
+                        else
+                        {
+                            <input type="radio" value="S" name="Opt_@item.QuestionId" disabled />
+                        }Sometimes |
+
+                        @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
+                        {
+                            <input type="radio" value="N" name="Opt_@item.QuestionId" checked disabled />
+                        }
+                        else
+                        {
+                            <input type="radio" value="N" name="Opt_@item.QuestionId" disabled />
+                        }Never
                     </td>
-                    @if (item.SAM_IsActive == "S")
+                }
+                else
+                {
+                    <td class="ans asn" colspan="2" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
+
+
+                        @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
+                        {
+
+                            <input type="radio" value="Y" name="Opt_@item.QuestionId" checked />
+                        }
+                        else
+                        {
+                            <input type="radio" value="Y" name="Opt_@item.QuestionId" />
+                        }Always |
+                        @if (item.Answer == "S" && @item.SelfAssessmentId > 0)
+                        {
+
+                            <input type="radio" value="S" name="Opt_@item.QuestionId" checked />
+                        }
+                        else
+                        {
+                            <input type="radio" value="S" name="Opt_@item.QuestionId" />
+                        }Sometimes |
+                        @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
+                        {
+                            <input type="radio" value="N" name="Opt_@item.QuestionId" checked />
+                        }
+                        else
+                        {
+                            <input type="radio" value="N" name="Opt_@item.QuestionId" />
+                        }Never
+                    </td>
+                }
+            }
+            else if (item.QuestionType == "COMNT1")
+            {
+
+            }
+            else if (item.QuestionType == "COMNT2")
+            {
+                <td class="ans" colspan="2" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
+                    @if (isSubmitted == "S")
                     {
-                        <td class="ans" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
-
-
-                            @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
-                            {
-
-                                <input type="radio" value="Y" name="Opt_@item.QuestionId" checked disabled />
-                            }
-                            else
-                            {
-                                <input type="radio" value="Y" name="Opt_@item.QuestionId" disabled />
-                            }Yes |
-
-                            @if (item.Answer == "S" && @item.SelfAssessmentId > 0)
-                            {
-
-                                <input type="radio" value="S" name="Opt_@item.QuestionId" checked disabled />
-                            }
-                            else
-                            {
-                                <input type="radio" value="S" name="Opt_@item.QuestionId" disabled />
-                            }Some what |
-
-                            @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
-                            {
-                                <input type="radio" value="N" name="Opt_@item.QuestionId" checked disabled />
-                            }
-                            else
-                            {
-                                <input type="radio" value="N" name="Opt_@item.QuestionId" disabled />
-                            }No
-                        </td>
+                        <input type="text" value="@item.Answer" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;" placeholder="Comments" multiple disabled />
                     }
                     else
                     {
-                        <td class="ans" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
+                        <input type="text" value="@item.Answer" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;" placeholder="Comments" multiple />
 
-
-                            @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
-                            {
-
-                                <input type="radio" value="Y" name="Opt_@item.QuestionId" checked />
-                            }
-                            else
-                            {
-                                <input type="radio" value="Y" name="Opt_@item.QuestionId" />
-                            }Yes |
-                            @if (item.Answer == "S" && @item.SelfAssessmentId > 0)
-                            {
-
-                                <input type="radio" value="S" name="Opt_@item.QuestionId" checked />
-                            }
-                            else
-                            {
-                                <input type="radio" value="S" name="Opt_@item.QuestionId" />
-                            }Some what |
-                            @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
-                            {
-                                <input type="radio" value="N" name="Opt_@item.QuestionId" checked />
-                            }
-                            else
-                            {
-                                <input type="radio" value="N" name="Opt_@item.QuestionId" />
-                            }No
-                        </td>
                     }
-                </tr>
+                </td>
+            }
+            else
+            {
+                if (item.SAM_IsActive == "S")
+                {
+                    <td class="ans" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
+
+
+                        @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
+                        {
+
+                            <input type="radio" value="Y" name="Opt_@item.QuestionId" checked disabled />
+                        }
+                        else
+                        {
+                            <input type="radio" value="Y" name="Opt_@item.QuestionId" disabled />
+                        }Yes |
+
+                        @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
+                        {
+                            <input type="radio" value="N" name="Opt_@item.QuestionId" checked disabled />
+                        }
+                        else
+                        {
+                            <input type="radio" value="N" name="Opt_@item.QuestionId" disabled />
+                        }No
+                    </td>
+                    <td class="ans" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
+                        <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" disabled />
+
+                    </td>
+                }
+                else
+                {
+                    <td class="ans" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
+
+
+                        @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
+                        {
+
+                            <input type="radio" value="Y" name="Opt_@item.QuestionId" checked />
+                        }
+                        else
+                        {
+                            <input type="radio" value="Y" name="Opt_@item.QuestionId" />
+                        }Yes |
+
+                        @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
+                        {
+                            <input type="radio" value="N" name="Opt_@item.QuestionId" checked />
+                        }
+                        else
+                        {
+                            <input type="radio" value="N" name="Opt_@item.QuestionId" />
+                        }No
+                    </td>
+                    <td class="ans" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
+                        <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" />
+
+                    </td>
+                }
+            }
+        </tr>
             }
 
             <tr align="center">
@@ -205,12 +301,12 @@
             EEL_AnswerSelf = $("input[type='radio'][name='Opt_" + ASQ_Id + "']:checked").val();
             EEL_Comments = $("input[type='text'][name='input_" + ASQ_Id + "']").val();
             EEL_FinencialYear = elem.getAttribute("data-fy");
-            EEL_FinQuarter= elem.getAttribute("data-fq");
+            EEL_FinQuarter = elem.getAttribute("data-fq");
             EEL_Id = elem.getAttribute("data-sam");
             QuestionType = elem.getAttribute("data-qType");
             AssessmentType = elem.getAttribute("data-Type");
 
-            obj.push({ "ASQ_Id": ASQ_Id, "EEL_AnswerSelf": EEL_AnswerSelf, "EEL_EMP_EmployeeId": EEL_EMP_EmployeeId, "EEL_Id": EEL_Id, "EEL_IsActive": EEL_IsActive,"EEL_Comments":EEL_Comments ,"EEL_FinencialYear":EEL_FinencialYear,"EEL_FinQuarter":EEL_FinQuarter,"QuestionType":QuestionType});
+            obj.push({ "ASQ_Id": ASQ_Id, "EEL_AnswerSelf": EEL_AnswerSelf, "EEL_EMP_EmployeeId": EEL_EMP_EmployeeId, "EEL_Id": EEL_Id, "EEL_IsActive": EEL_IsActive, "EEL_Comments": EEL_Comments, "EEL_FinencialYear": EEL_FinencialYear, "EEL_FinQuarter": EEL_FinQuarter, "QuestionType": QuestionType });
 
         });
         obj = JSON.stringify({ 'data': obj });
@@ -225,22 +321,21 @@
             },
             success: function (result) {
                 if (result != null) {
-                                          $.ajax({
-                                          type: "POST",
-                                          data: { 'Id': EEL_EMP_EmployeeId, 'Assesment': AssessmentType,"FinYear":EEL_FinencialYear,"FinQuarter":EEL_FinQuarter},
-                                          url: '../NewAdmin/QEvaluationView/',
-                                          error: function (xhr, status, error) {
-                                          },
-                                          success: function (result) {
-                                              debugger
-                                              if (result != null)
-                                              {
-                                                  $("#gridArea").hide();
-                                                  $('#profileArea').show();
-                                                  $('#profileArea').html(result);
-                                              }
-                                          }
-                                      });
+                    $.ajax({
+                        type: "POST",
+                        data: { 'Id': EEL_EMP_EmployeeId, 'Assesment': AssessmentType, "FinYear": EEL_FinencialYear, "FinQuarter": EEL_FinQuarter },
+                        url: '../NewAdmin/QEvaluationView/',
+                        error: function (xhr, status, error) {
+                        },
+                        success: function (result) {
+                            debugger
+                            if (result != null) {
+                                $("#gridArea").hide();
+                                $('#profileArea').show();
+                                $('#profileArea').html(result);
+                            }
+                        }
+                    });
                 }
             }
         });

@@ -797,7 +797,7 @@ namespace WorkOrderEMS.Data
             {
                 string EmployeeId = string.Empty;
                 string AssessmentType = string.Empty;
-
+                
                 if (data.Count() > 0)
                 {
                     foreach (var i in data)
@@ -890,9 +890,10 @@ namespace WorkOrderEMS.Data
         {
             try
             {
+               var list = data.GroupBy(x => x.ASQ_Id).Select(x => x.First());
                 if (data.Count() > 0)
                 {
-                    foreach (var i in data)
+                    foreach (var i in list)
                     {
                         _workorderEMSEntities.spSetSelfAssessmentQuarterly((i.EEL_IsActive == null || i.EEL_IsActive == "" || i.EEL_IsActive != "Y") ? "I" : "U", i.EEL_EMP_EmployeeId,i.EEL_EMP_EmployeeIdManager,i.QuestionType, i.ASQ_Id, i.EEL_Id,i.EEL_FinencialYear,i.EEL_FinQuarter, i.EEL_AnswerSelf == "Y" ? "Y" : i.EEL_AnswerSelf == "N" ? "N" : i.EEL_AnswerSelf == "S" ? "S" : null, action == "S" ? "S" : "Y");
                     }
@@ -955,11 +956,15 @@ namespace WorkOrderEMS.Data
         {
             try
             {
+                var list = data.GroupBy(x => x.ASQ_Id).Select(x => x.First());
+
                 if (data.Count() > 0)
                 {
-                    foreach (var i in data)
+                    foreach (var i in list)
                     {
-                        _workorderEMSEntities.spSetEvaluationQuarterly((i.EEL_IsActive == null || i.EEL_IsActive == "" || i.EEL_IsActive != "Y") ? "I" : "U", i.EEL_EMP_EmployeeId, i.QuestionType, i.EEL_Id, i.EEL_FinencialYear, i.EEL_FinQuarter, i.EEL_AnswerSelf == "Y" ? "Y" : i.EEL_AnswerSelf == "N" ? "N" : i.EEL_AnswerSelf == "S" ? "S" : null,i.EEL_Comments, action == "S" ? "S" : "Y");
+                        //_workorderEMSEntities.spSetEvaluationQuarterly((i.EEL_IsActive == null || i.EEL_IsActive == "" || i.EEL_IsActive != "Y") ? "I" : "U", i.EEL_EMP_EmployeeId, i.QuestionType, i.EEL_Id, i.EEL_FinencialYear, i.EEL_FinQuarter, i.EEL_AnswerSelf == "Y" ? "Y" : i.EEL_AnswerSelf == "N" ? "N" : i.EEL_AnswerSelf == "S" ? "S" : null,i.EEL_Comments, action == "S" ? "S" : "Y");
+                        _workorderEMSEntities.spSetSelfAssessmentQuarterly((i.EEL_IsActive == null || i.EEL_IsActive == "" || i.EEL_IsActive != "Y") ? "I" : "U", i.EEL_EMP_EmployeeId,i.EEL_EMP_EmployeeIdManager,i.QuestionType, i.ASQ_Id, i.EEL_Id,i.EEL_FinencialYear,i.EEL_FinQuarter, i.EEL_AnswerSelf == "Y" ? "Y" : i.EEL_AnswerSelf == "N" ? "N" : i.EEL_AnswerSelf == "S" ? "S" : null, action == "S" ? "S" : "Y");
+
                     }
                 }
 
