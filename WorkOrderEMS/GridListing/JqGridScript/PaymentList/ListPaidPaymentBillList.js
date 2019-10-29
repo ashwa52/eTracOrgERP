@@ -208,11 +208,16 @@ function PaymentStatus(item) {
     $("#lblViewNotes").html(item.PaymentNote);
     $("#lblActionDoneOn").html(item.ActionDoneOn);
     $("#lblActionDoneBy").html(item.ActionDoneBy);
+    $("#lblCardNumberDisplay").html(item.BillAmount);
+    $("#lblAccountnumberDisplay").html(item.BillAmount);
+    $("#lblCheckNumberDisplay").html(item.BillAmount);
     if (item.Status == "X") {
         $("#lblViewStatus").html("Cancelled");
+        $("#lblViewPaymentModeDiv").hide();
     }
     if (item.Status == "P") {
         $("#lblViewStatus").html("Paid");
+        $("#lblViewPaymentModeDiv").show();
     }    
     $('#myModalForPOStatus').modal('show');
 }
