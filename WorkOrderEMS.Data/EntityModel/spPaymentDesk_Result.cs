@@ -30,5 +30,8 @@ namespace WorkOrderEMS.Data.EntityModel
         public string CAT_Discription { get; set; }
         public string Bill_Status { get; set; }
         public string LBLL_Comment { get; set; }
+        public Nullable<long> CAT_ChequeNo { get; set; }
+        public Nullable<System.DateTime> LBLL_ApprovedOn { get; set; }
+        public string ApprovedBy { get; set; }
     }
 }

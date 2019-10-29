@@ -54,7 +54,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                      Description = a.CAT_Discription,
                      Status = a.Bill_Status,
                      VendorId = a.CMP_IdBeneficiary,
-                     
+                     ChequeNo = a.CAT_ChequeNo,
                      OperatingCompany = a.CMP_NameLegalRemitter == null?"N/A": a.CMP_NameLegalRemitter,
                      OperatingCompanyId = a.CMP_IdRemitter > 0 ? a.CMP_IdRemitter :0 ,
                      LocationId = a.LocationId,
@@ -141,8 +141,16 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         OperatingCompanyId = a.CMP_IdRemitter > 0 ? 0 : a.CMP_IdRemitter,
                         LocationId = a.LocationId,
                         DisplayDate = a.BillDate == null ? "" : a.BillDate.ToString("MMM dd,yyyy"),
-                        PaymentNote = a.LBLL_Comment
+                        PaymentNote = a.LBLL_Comment,
+                        ActionDoneOn = a.LBLL_ApprovedOn.ToString("MMM dd,yyyy"),
+                        ActionDoneBy = a.ApprovedBy
                     }).Where(x => x.Status == "P" || x.Status == "X").ToList();
+
+
+                //foreach (var item in Results)
+                //{
+                //    item.Status = item.Status == "P" ? "Pending" : "Cancelled";
+                //}
                  //Results.Where(x => x.Status == "X").ToList();
                 //int totRecords = Results.Count();
                 //var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
@@ -230,7 +238,23 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             {
                 if (objPaymentModel != null && ObjData != null)
                 {
+
+                    if (objPaymentModel.PaymentMode == "Cash") {
+                    
+                    }
+                    else if (objPaymentModel.PaymentMode == "Wired")
+                    {
+
+                    }else if (objPaymentModel.PaymentMode == "Card")
+                    {
+
+                    }else if (objPaymentModel.PaymentMode == "Cheque")
+                    {
+
+                    }
+
                     var ChequeNo = Convert.ToInt32(objPaymentModel.ChequeNo);
+                    var PaymentMode = Convert.ToInt32(objPaymentModel.PaymentMode);
                     PaidStatus = "Paid";
                     if (objPaymentModel.ChequeNo != null)
                     {
@@ -258,10 +282,36 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     Action = "I";
                     if (objPaymentModel.IsCancel == false)
                     {
-                        var savePayment = _workorderems.spSetCompanyAccountTransaction(Action, null, ObjData.VendorId, objPaymentModel.OpeartorCAD_Id, objPaymentModel.CompanyAccountId,
-                                                                                     ObjData.BillNo, ObjData.BillAmount, ChequeNo,
+                        if (objPaymentModel.PaymentByCash == "wired") 
+                        {
+                            var savePayment = _workorderems.spSetCompanyAccountTransaction(Action, null, ObjData.VendorId, ObjData.OperatingCompanyId, objPaymentModel.CompanyAccountId,
+                                                                                        ObjData.BillNo, ObjData.BillAmount, ChequeNo, PaymentMode,
+                                                                                        objPaymentModel.Comment, objPaymentModel.UserId, ObjData.LocationId,
+                                                                                        ObjData.BillType, Status);
+
+                        }
+                        if (objPaymentModel.PaymentByCash == "Card")
+                        {
+                            var savePayment = _workorderems.spSetCompanyAccountTransaction(Action, null, ObjData.VendorId, ObjData.OperatingCompanyId, objPaymentModel.CompanyAccountId,
+                                                                                        ObjData.BillNo, ObjData.BillAmount, ChequeNo, PaymentMode,
+                                                                                        objPaymentModel.Comment, objPaymentModel.UserId, ObjData.LocationId,
+                                                                                        ObjData.BillType, Status);
+
+                        }
+                        if (objPaymentModel.PaymentByCash == "Cash")
+                        {
+                            var savePayment = _workorderems.spSetCompanyAccountTransaction(Action, null, ObjData.VendorId, ObjData.OperatingCompanyId, objPaymentModel.CompanyAccountId,
+                                                                                     ObjData.BillNo, ObjData.BillAmount, ChequeNo, PaymentMode,
                                                                                      objPaymentModel.Comment, objPaymentModel.UserId, ObjData.LocationId,
                                                                                      ObjData.BillType, Status);
+                        }
+                        if (objPaymentModel.PaymentByCash == "Cheque")
+                        {
+                            var savePayment = _workorderems.spSetCompanyAccountTransaction(Action, null, ObjData.VendorId, ObjData.OperatingCompanyId, objPaymentModel.CompanyAccountId,
+                                                                                     ObjData.BillNo, ObjData.BillAmount, ChequeNo, PaymentMode,
+                                                                                     objPaymentModel.Comment, objPaymentModel.UserId, ObjData.LocationId,
+                                                                                     ObjData.BillType, Status);
+                        }                        
                     }
                     if(Status == "Y")
                     {

@@ -14,12 +14,6 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class PODetail
     {
-        public PODetail()
-        {
-            this.LogPODetails = new HashSet<LogPODetail>();
-            this.POFacilityItems = new HashSet<POFacilityItem>();
-        }
-    
         public long POD_Id { get; set; }
         public long POD_LocationId { get; set; }
         public long POD_POT_Id { get; set; }
@@ -36,9 +30,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string POD_ReccuringStatus { get; set; }
     
         public virtual LocationMaster LocationMaster { get; set; }
-        public virtual ICollection<LogPODetail> LogPODetails { get; set; }
         public virtual PONumber PONumber { get; set; }
         public virtual POType POType { get; set; }
-        public virtual ICollection<POFacilityItem> POFacilityItems { get; set; }
     }
 }
