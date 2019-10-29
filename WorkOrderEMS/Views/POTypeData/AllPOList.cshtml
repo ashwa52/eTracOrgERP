@@ -38,13 +38,42 @@
                 </div>
             </div>
         </div>
-        
+        <div class="row justify-content-center">
+            <div class="col-lg-4">
+                <div class="card bg-success white-text card-custom-padding">
+                    
+                        <p class="text-center po-number">9</p>
+                        <div class="po-headings">Number of Open POS</div>
+                    
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="card bg-warning white-text card-custom-padding">
+                   
+                        <p class="text-center po-number">6</p>
+                        <div class="po-headings">Number of Unauthorize POS</div>
+                    
+                </div>
+                </div>
+
+
+            <div class="col-lg-4">
+                <div class="card bg-danger white-text card-custom-padding">
+                    
+                        <p class="text-center po-number">5</p>
+                        <div class="po-headings">NUMBER of POS not Approved Timely</div>
+                   
+                </div>
+                </div>
+
+            </div>
+        <br>
         <div class="row">
             <div class="col-lg-12">
                 <div class="card aos-init" data-aos="fade-up">
                     <div class="card-header headerSize">
                         <div class="row page-titles mb-0 pl-0 pt-0 pb-0" style="width:100%;">
-                            <div class="col-sm-12 col-xxl-5 col-lg-5 col-md-5 col-12 pl-0">
+                            <div class="col-sm-12 col-xxl-5 col-lg-5 col-md-5 col-12">
                                 <div class="row">
                                     <div class="col-sm-12 col-xxl-6 col-lg-6 col-md-6 col-12">
                                         <select id="ApproveData" class="form-control input-rounded">
@@ -62,21 +91,28 @@
                             <div class="col-sm-12 col-xxl-7 col-lg-7 col-md-7 col-12 pr-0">
                                 <div class="row">
                                     <div class="col-xl-10 col-lg-10 col-md-9 col-sm-6 col-12 pr-0">
-                                        <div class="form-group mb-0">
+
+                                        <div class="material-switch pull-right m-t-10">
+                                            <input id="ViewAllLocation" name="onoffswitch2" type="checkbox" />
+                                            <label for="ViewAllLocation" class="label-success"></label>
+                                            <span class="toggle-text">View all Location</span>
+                                        </div>
+
+                                        @*<div class="form-group mb-0">
                                             <div class="onoffswitch2 m-0">
                                                 <input type="checkbox" name="onoffswitch2" class="onoffswitch2-checkbox" id="ViewAllLocation"><label for="ViewAllLocation" class="onoffswitch2-label"><span class="onoffswitch2-inner"></span><span class="onoffswitch2-switch"></span></label>
                                             </div>
 
-                                        </div>
+                                        </div>*@
                                     </div>
 
                                     <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-12 pr-0 pl-0 text-right">
                                         <a href="@Url.Action("index","POTypeData")" id="AddCompany" class="btn btn-rounded btn-success"><span class="btn-icon-left text-info"><i class="fa fa-plus color-info"></i></span> Add</a>
                                     </div>
-                                    </div>
                                 </div>
+                            </div>
 
-                        </div>                           
+                        </div>
                     </div>
 
                     <div class="card-body">
@@ -88,23 +124,23 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card aos-init" data-aos="fade-up">
-                                
-                                    <div class="card-header headerSize">
-                                        <div class="basic-form">
-                                            <div class="form-group mb-0">
-                                                <div class="row">
 
-                                                    <div class="col-md-5">
-                                                        <input id="SearchTextForList2" class="inputSearch form-control input-rounded" placeholder="Serach By PO Number" onkeyup="doSearchforsecondList()" style="width: 260px;" type="text">
-                                                    </div>
+                                <div class="card-header headerSize">
+                                    <div class="basic-form">
+                                        <div class="form-group mb-0">
+                                            <div class="row">
 
+                                                <div class="col-md-5">
+                                                    <input id="SearchTextForList2" class="inputSearch form-control input-rounded" placeholder="Serach By PO Number" onkeyup="doSearchforsecondList()" style="width: 260px;" type="text">
                                                 </div>
 
                                             </div>
 
                                         </div>
+
                                     </div>
-                               
+                                </div>
+
                                 <div class="card-body">
                                     <table id="tbl_AllSelfPOList" class="jsgrid"></table>
                                 </div>

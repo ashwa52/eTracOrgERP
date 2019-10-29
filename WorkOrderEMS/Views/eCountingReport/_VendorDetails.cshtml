@@ -88,19 +88,19 @@
                     <div class="card-body">
                         <div id="jsGrid-basic">
 
-                            <div class="">
+                           
                                
 
-                                <div class="">
+                               
                                     <div id="jqGrid_containerVendorCount">
-                                        <table id="tbl_AllVendorCountList" border="0" cellpadding="0" cellspacing="0"></table>
+                                        <table id="tbl_AllVendorCountList" class="mb-10" border="0" cellpadding="0" cellspacing="0"></table>
                                         <div id="divAllVendorCountListPager"></div>
                                     </div>
-                                </div>
+                             
                                 <div class="dataTables" id="PendingPODatatable">
                                     @if (Model != null)
                                     {
-                                        <table id="eCountingDetailsList" class="display reportList" cellspacing="0" width="100%" style="display:none">
+                                        <table id="eCountingDetailsList" class="display reportList table table-bordered table-responsive-sm" style="display:none">
                                             <thead>
                                                 <tr>
                                                     <td>
@@ -156,11 +156,11 @@
                                         </script>
                                     }
                                 </div>
-                                <br /><br />
-                                <div class="dataTables" id="ApprovePODataTable">
+                               
+                                <div class="dataTables mb-10" id="ApprovePODataTable">
                                     @if (Model != null)
                                     {
-                                        <table id="ApproveDetailsList" class="display reportList" cellspacing="0" width="100%" style="display:none">
+                                        <table id="ApproveDetailsList" class="display reportList table table-bordered table-responsive-sm" cellspacing="0" width="100%" style="display:none">
                                             <thead>
                                                 <tr>
                                                     <td>
@@ -221,19 +221,28 @@
                                 <div class="panel-group" id="accordion" style="display:none;">
                                     <div class="panel-default">
 
-                                        <div class="panel-heading" style="height: 40px;margin-top: 80px;">
+
+
+                                        <div class="panel-heading">
                                             @*<h4 class="panel-title">
-                                    <a data-toggle="collapse" data-parent="#accordion" id="vendordetails" href="#collapse1">Vendor Details</a>
-                                </h4>*@
-                                            <h4 class="panel-title">
-                                                <a data-toggle="collapse" data-target="#demo">Vendor Details</a>
-                                            </h4>
+                <a data-toggle="collapse" data-parent="#accordion" id="vendordetails" href="#collapse1">Vendor Details</a>
+            </h4>*@
+                                            <button data-toggle="collapse" data-target="#demo" class="btn btn-primary btn-rounded dropdown-toggle m-t-10">Vendor Details</button>
+
+
                                         </div>
                                         @*<div id="collapse1"  class="panel-collapse collapse in">*@
                                         <div id="demo" class="collapse">
                                             <div class="panel-body">
                                                 <div id="divVendorDetailPreview" class="">
                                                     <div id="vendordetails">
+
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <h4 class="card-title modal-heading">Vendor Details</h4>
+                                                            </div>
+                                                        </div>
+
                                                         <div class="row">
                                                             <div class="col-lg-3">
                                                                 <div class="form-group">
@@ -259,8 +268,7 @@
                                                                     <div id="lblPointOfContact" class="form-control-static"></div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="row">
+
                                                             <div class="col-lg-3">
                                                                 <div class="form-group">
                                                                     <label>Address</label>
@@ -285,8 +293,7 @@
                                                                     <div id="lblEmail" class="form-control-static"></div>
                                                                 </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="row">
+
                                                             <div class="col-lg-3">
                                                                 <div class="form-group">
                                                                     <label>Website</label>
@@ -295,12 +302,15 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
+
                                                     <div class="row">
-                                                        <div style="background-color:#0792bc;height:2%;">
-                                                            <center><p style="color:white;"><b>Vendor Insurance & License Details</b></p></center>
+                                                        <div class="col-sm-12">
+                                                            <h4 class="card-title modal-heading">Vendor Insurance & License Details</h4>
                                                         </div>
                                                     </div>
-                                                    <br />
+
+
                                                     <div class="row">
                                                         <div class="col-lg-3">
                                                             <div class="form-group">
@@ -326,8 +336,7 @@
                                                                 <div id="lblInsuranceCarries" class="form-control-static"></div>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                    <div class="row">
+
                                                         <div class="col-lg-3">
                                                             <div class="form-group">
                                                                 <label>Policy Number</label>
@@ -341,12 +350,14 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
+
                                                     <div class="row">
-                                                        <div style="background-color:#0792bc;height:2%;">
-                                                            <center><p style="color:white;"><b>Vendor Contract Details</b></p></center>
+                                                        <div class="col-sm-12">
+                                                            <h4 class="card-title modal-heading">Vendor Contract Details</h4>
                                                         </div>
                                                     </div>
-                                                    <br />
+
                                                     <div class="row">
                                                         <div class="col-lg-3">
                                                             <div class="form-group">
@@ -372,9 +383,7 @@
                                                                 <div id="lblContractType" class="form-control-static"></div>
                                                             </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="row">
                                                         <div class="col-lg-3">
                                                             <div class="form-group">
                                                                 <label>Contract issued by</label>
@@ -399,9 +408,7 @@
                                                                 <div id="lblPaymentTerm" class="form-control-static"></div>
                                                             </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="row">
                                                         <div class="col-lg-3">
                                                             <div class="form-group">
                                                                 <label>Grace Period</label>
@@ -426,9 +433,7 @@
                                                                 <div id="lblEndDate" class="form-control-static"></div>
                                                             </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="row">
                                                         <div class="col-lg-3">
                                                             <div class="form-group">
                                                                 <label>Cost During Period</label>
@@ -453,9 +458,7 @@
                                                                 <div id="lblBillDueDate" class="form-control-static"></div>
                                                             </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="row">
                                                         <div class="col-lg-3">
                                                             <div class="form-group">
                                                                 <label> Late Fine/Fee</label>
@@ -470,12 +473,14 @@
                                                         </div>
                                                     </div>
 
+
+
                                                     <div class="row">
-                                                        <div style="background-color:#0792bc;height:2%;">
-                                                            <center><p style="color:white;margin-top:4px;"><b>Vendor Account Details</b></p></center>
+                                                        <div class="col-sm-12">
+                                                            <h4 class="card-title modal-heading">Vendor Account Details</h4>
                                                         </div>
                                                     </div>
-                                                    <br />
+
                                                     <div class="row">
                                                         <div class="col-lg-3">
                                                             <div class="form-group">
@@ -501,9 +506,7 @@
                                                                 <div id="lblAccountNumber" class="form-control-static"></div>
                                                             </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="row">
                                                         <div class="col-lg-3">
                                                             <div class="form-group">
                                                                 <label>IFSC Code</label>
@@ -528,9 +531,7 @@
                                                                 <div id="lblPolicyNumber" class="form-control-static"></div>
                                                             </div>
                                                         </div>
-                                                    </div>
 
-                                                    <div class="row">
                                                         <div class="col-lg-3">
                                                             <div class="form-group">
                                                                 <label>Card Holder Name</label>
@@ -544,10 +545,10 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <br />
+
                                                     <div class="row">
-                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                                            <table id="VendorFacility_table" class="table" cellpadding="1" cellspacing="1" border="1"></table>
+                                                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 m-t-10">
+                                                            <table id="VendorFacility_table" class="table table-bordered table-responsive-sm"></table>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -555,7 +556,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                           
                         </div>
                     </div>
                 </div>

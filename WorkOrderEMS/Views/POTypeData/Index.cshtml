@@ -104,7 +104,7 @@
                             @Html.AntiForgeryToken()
                             @Html.ValidationSummary(true)
                             @Html.HiddenFor(model => model.POId)
-                            <br />
+                         
 
                             <div class="panel panel-primary setup-content">
                                 <div class="basic-form">
@@ -163,7 +163,7 @@
                                         <div class="form-group col-md-6 ShowRowForEmergency" style="display:none">
                                             <h6 class="col-form-label"> Is Vendor is registered ? <span class="req">*</span></h6>
 
-                                          
+
                                             <span>
                                                 <input type="radio" id='IsVendorRegisterYes' value="1" name="IsVendorRegister" class="IsVendorRegister" /><span class="radio_span"> Yes</span>
                                                 <input type="radio" id='IsVendorRegisterNo' value="0" name="IsVendorRegister" class="IsVendorRegister" /><span class="radio_span"> No</span>
@@ -256,16 +256,24 @@
                                             @Html.TextAreaFor(model => model.PointOfContactAddress, new { @id = "PointOfContactAddress", @readonly = "readonly", @class = "form-control input-rounded" })
 
                                         </div>
+
+
                                         <div class="form-group col-md-6 AdressShowHide">
                                             <label class="col-form-label" id="lblCostDuringPeriod"> PO Document</label>
 
                                             <div id="dvDocPreview">
                                             </div>
-                                            <input id="fileuploadEmergency" type="file" style="margin-left:auto;" name="POD_EmergencyPODocumentFile" />
+
+                                            <div class="custom-file">
+                                                <input id="fileuploadEmergency" type="file" style="" class="custom-file-input" name="POD_EmergencyPODocumentFile" />
+                                                <label class="custom-file-label">Choose file</label>
+                                            </div>
+
+                                          
                                             <ul class="attachment">
                                                 @if (Model.POD_EmergencyPODocument != null && Model.POD_EmergencyPODocument != "")
                                                 {
-                                                    <li style="margin-left :25%;margin-top:20px;">
+                                                    <li>
                                                         <a class="title" href="@Url.Content(EMD+Model.POD_EmergencyPODocument)">@Model.POD_EmergencyPODocument</a>
                                                     </li>
                                                 }
@@ -275,6 +283,17 @@
                                             </div>
 
                                         </div>
+
+
+
+                                       
+
+
+
+
+
+
+
 
                                         @Html.HiddenFor(model => model.PointOfContactAddressHidden, new { @id = "PointOfContactAddressHidden" })
 
@@ -293,34 +312,34 @@
 
                                         <div class="form-group col-md-6 IsVendorNotRegister" style="display:none;">
                                             <label class="col-form-label">Ammount<span class="req">*</span></label>
-                                           
-                                                @Html.TextBoxFor(model => model.Amount, new { @id = "Amount", @class = "form-control input-rounded" })
-                                           
+
+                                            @Html.TextBoxFor(model => model.Amount, new { @id = "Amount", @class = "form-control input-rounded" })
+
                                         </div>
 
                                         <div class="form-group col-md-12 IsVendorNotRegister" style="display:none;">
                                             <label class="col-form-label" id="">PO Document<span class="req">*</span></label>
-                                            
-                                                <div id="dvDocPreview">
-                                                </div>
-                                                <input id="fileuploadEmergency" type="file" style="margin-left:auto;" name="POD_EmergencyPODocumentFile" />
-                                                <ul class="attachment">
-                                                    @if (Model.POD_EmergencyPODocument != null && Model.POD_EmergencyPODocument != "")
-                                                    {
-                                                        <li style="margin-left :25%;margin-top:20px;">
-                                                            <a class="title" href="@Url.Content(EMD+Model.POD_EmergencyPODocument)">@Model.POD_EmergencyPODocument</a>
-                                                        </li>
-                                                    }
-                                                </ul>
-                                                <div class="errorspace">
-                                                    @Html.ValidationMessageFor(model => model.POD_EmergencyPODocumentFile)
-                                                </div>
-                                            
+
+                                            <div id="dvDocPreview">
+                                            </div>
+                                            <input id="fileuploadEmergency" type="file" style="margin-left:auto;" name="POD_EmergencyPODocumentFile" />
+                                            <ul class="attachment">
+                                                @if (Model.POD_EmergencyPODocument != null && Model.POD_EmergencyPODocument != "")
+                                                {
+                                                    <li style="margin-left :25%;margin-top:20px;">
+                                                        <a class="title" href="@Url.Content(EMD+Model.POD_EmergencyPODocument)">@Model.POD_EmergencyPODocument</a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                            <div class="errorspace">
+                                                @Html.ValidationMessageFor(model => model.POD_EmergencyPODocumentFile)
+                                            </div>
+
                                         </div>
 
 
-                                        <div class="form-group col-md-6 EmergencyQuestionsInjured" style="display:none;">            
-                                           <h6 class="col-form-label">Q.1) Is Someone Injured or Life Endangered ?<span class="req">*</span></h6>
+                                        <div class="form-group col-md-6 EmergencyQuestionsInjured" style="display:none;">
+                                            <h6 class="col-form-label">Q.1) Is Someone Injured or Life Endangered ?<span class="req">*</span></h6>
                                             <span>
                                                 <input type="radio" id='IsInjuredYes' value="Y" name="IsInjured" class="IsVendorRegister" /><span class="radio_span">Yes</span>
                                                 <input type="radio" id='IsInjuredNo' value="N" name="IsInjured" class="IsVendorRegister" /><span class="radio_span">NO</span>
@@ -330,15 +349,15 @@
 
                                         <div class="form-group col-md-6 EmergencyQuestionsContinues" style="display:none;">
                                             <h6 class="col-form-label">Q.2) Is continuation of operation and low contractual obligation ?<span class="req">*</span></h6>
-                                           
+
                                             <span>
                                                 <input type="radio" id='IscontinuationYes' value="Y" name="Iscontinuation" class="IsVendorRegister" /><span class="radio_span">Yes</span>
                                                 <input type="radio" id='IscontinuationNo' value="N" name="Iscontinuation" class="IsVendorRegister" /><span class="radio_span">No</span>
                                             </span>
                                         </div>
 
-                                        <div class="form-group col-md-6 EmergencyQuestionsBill" style="display:none;"> 
-                                                <h6 class="col-form-label">Q.3) Vendor Requesting pay immediately ?<span class="req">*</span></h6>
+                                        <div class="form-group col-md-6 EmergencyQuestionsBill" style="display:none;">
+                                            <h6 class="col-form-label">Q.3) Vendor Requesting pay immediately ?<span class="req">*</span></h6>
                                             <span>
                                                 <input type="radio" id='IsVendorRequestYes' value="Y" name="IsVendorRequest" class="IsVendorRegister" /><span class="radio_span">Yes</span>
                                                 <input type="radio" id='IsVendorRequestNo' value="N" name="IsVendorRequest" class="IsVendorRegister" /><span class="radio_span">No</span>
@@ -346,7 +365,7 @@
                                         </div>
 
                                         <div class="form-group col-md-6 EmergencyQuestionsBill" style="display:none;">
-                                            <h6 class="col-form-label"> Q.4) Vendor willing to bill ?<span class="req">*</span></h6>                                          
+                                            <h6 class="col-form-label"> Q.4) Vendor willing to bill ?<span class="req">*</span></h6>
                                             <span>
                                                 <input type="radio" id='IsVendorbillYes' value="Y" name="IsVendorwillingToBill" class="IsVendorRegister" /><span class="radio_span">Yes</span>
                                                 <input type="radio" id='IsVendorbillNo' value="N" name="IsVendorwillingToBill" class="IsVendorRegister" /><span class="radio_span">No</span>
@@ -411,8 +430,8 @@
                                                         <div class="row">
                                                             <div class="col-lg-12">
                                                                 <div class="card aos-init" data-aos="fade-up">
-                                                                    <div class="card-header" style="height: 45px;">
-                                                                        <div class="card-header headerSize" style="height:45px; padding:0;">
+                                                                    
+                                                                        <div class="card-header headerSize">
                                                                             <div class="form-group mb-0">
                                                                                 <div class="row">
 
@@ -424,7 +443,7 @@
 
                                                                             </div>
                                                                         </div>
-                                                                    </div>
+                                                                   
                                                                     <div class="card-body">
                                                                         <table id="tbl_CompanyFacilityDataList" class="jsgrid" style="position: relative; height: 400px; width: 100%;"></table>
                                                                     </div>

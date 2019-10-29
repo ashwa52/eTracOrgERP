@@ -130,35 +130,42 @@
                                     @Html.ValidationMessageFor(model => model.Costcode)
 
                                 </div>
+
+
+
+
+                                <div class="form-group col-md-6 AdressShowHide">
+                                    <label class="col-form-label" for="VendorName">Product Image<span class="req">*</span></label>
+
+                                    <div id="dvDocPreview">
+                                    </div>
+
+                                    @*<div class="custom-file">
+                <input id="fileuploadEmergency" type="file" style="" class="custom-file-input" name="POD_EmergencyPODocumentFile" />
+                <label class="custom-file-label">Choose file</label>
+            </div>*@
+
+                                    <div class="custom-file">
+                                        <input id = "fileuploadAdddProduct" type="file" style="" class="custom-file-input" name="imgVehicleImage" />
+                                        <label class="custom-file-label">Choose file</label>
+                                    </div>
+
+                                    <ul class="attachment">
+                                        @*@if (Model.ProductImage != null)
+                                        {
+                                            Image = Model.ProductImage + "ProductImage";
+                                        }
+                                        @Html.TextBoxFor(m => m.ProductImageFile, new { id = "fileuploadAdddProduct", type = "file", @style = "margin-left:auto;" })*@
+                                        <img id='imgFacilityProductImage' name='imgVehicleImage' src="@Url.Content(Image)"
+                                             class="img-rounded" alt="No Image">
+                                    </ul>
+                                    <div class="errorspace">
+                                        @Html.ValidationMessageFor(model => model.ProductImageFile)
+                                    </div>
+
+                                </div>
                             </div>
 
-
-
-                            <div class="form-group col-md-6 AdressShowHide">
-                                <label class="col-form-label" for="VendorName">Product Image<span class="req">*</span></label>
-
-                                <div id="dvDocPreview">
-                                </div>
-
-                                @*<div class="custom-file">
-                                    <input id="fileuploadEmergency" type="file" style="" class="custom-file-input" name="POD_EmergencyPODocumentFile" />
-                                    <label class="custom-file-label">Choose file</label>
-                                </div>*@
-
-                                <ul class="attachment">
-                                    @if (Model.ProductImage != null)
-                                    {
-                                        Image = Model.ProductImage + "ProductImage";
-                                    }
-                                    @Html.TextBoxFor(m => m.ProductImageFile, new { id = "fileuploadAdddProduct", type = "file", @style = "margin-left:auto;" })
-                                    <img id='imgFacilityProductImage' name='imgVehicleImage' src="@Url.Content(Image)"
-                                         class="img-rounded" alt="No Image " style="width:110px; height:110px; margin-left:55%;">
-                                </ul>
-                                <div class="errorspace">
-                                    @Html.ValidationMessageFor(model => model.ProductImageFile)
-                                </div>
-
-                            </div>
 
 
                         </div>
