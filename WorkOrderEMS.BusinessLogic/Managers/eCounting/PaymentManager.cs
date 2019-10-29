@@ -143,7 +143,10 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         DisplayDate = a.BillDate == null ? "" : a.BillDate.ToString("MMM dd,yyyy"),
                         PaymentNote = a.LBLL_Comment,
                         ActionDoneOn = a.LBLL_ApprovedOn.ToString("MMM dd,yyyy"),
-                        ActionDoneBy = a.ApprovedBy
+                        ActionDoneBy = a.ApprovedBy,
+                        //AccountNo = a.acc
+                        //ChequeNo
+                        //CARDNo
                     }).Where(x => x.Status == "P" || x.Status == "X").ToList();
 
 
