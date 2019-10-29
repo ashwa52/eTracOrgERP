@@ -196,7 +196,7 @@ function MyOpeningSummery() {
 			{
 				name: " ", width: 100, align: "center", Title: "",
 				itemTemplate: function (value) {
-				    return $("<div>").append($("<div>").addClass("inlineDivdonut").append("<img src='Images/donut.png' class='donutC'>"))
+					return $("<div>").append($("<div id='detailDiv'>").addClass('text').text("asdadfaf")).append($("<div>").addClass("inlineDivdonut").append("<img src='Images/donut.png' class='donutC' onmouseover='GetSummeryDetail(this);' onmouseout='HideDetail(this)'>"))
 						.append($("<div>").append("<i>").addClass("fa fa-envelope-o fa-lg actionBtn"))
 						.append($("<div>").append("<i>").addClass("fa fa-trash fa-lg actionBtn"));
 				}
@@ -209,6 +209,66 @@ function MyOpeningSummery() {
 			myOpenings();
 		}
 	});
+}
+function GetSummeryDetail(elm) {
+	debugger;
+	if ($('.text').is(':visible')) {
+		$('.text').hide();
+	}
+	// Create chart instance
+	$("#detailDiv").empty();
+	var chart = am4core.create("detailDiv", am4charts.PieChart);
+
+	// Add data
+	chart.data = [{
+		"country": "Lithuania",
+		"litres": 501.9
+	}, {
+		"country": "Czech Republic",
+		"litres": 301.9
+	}, {
+		"country": "Ireland",
+		"litres": 201.1
+	}, {
+		"country": "Germany",
+		"litres": 165.8
+	}, {
+		"country": "Australia",
+		"litres": 139.9
+	}, {
+		"country": "Austria",
+		"litres": 128.3
+	}, {
+		"country": "UK",
+		"litres": 99
+	}, {
+		"country": "Belgium",
+		"litres": 60
+	}, {
+		"country": "The Netherlands",
+		"litres": 50
+	}];
+
+	// Set inner radius
+	chart.innerRadius = am4core.percent(50);
+
+	// Add and configure Series
+	var pieSeries = chart.series.push(new am4charts.PieSeries());
+	pieSeries.dataFields.value = "litres";
+	pieSeries.dataFields.category = "country";
+	pieSeries.slices.template.stroke = am4core.color("#fff");
+	pieSeries.slices.template.strokeWidth = 2;
+	pieSeries.slices.template.strokeOpacity = 1;
+
+	// This creates initial animation
+	pieSeries.hiddenState.properties.opacity = 1;
+	pieSeries.hiddenState.properties.endAngle = -90;
+	pieSeries.hiddenState.properties.startAngle = -90;
+	$($(elm).parent()).prev().show()
+}
+function HideDetail(elm) {
+	$("#detailDiv").empty();
+	$($(elm).parent()).prev().hide()
 }
 function JobPosting() {
 	$("#ListMyOpening").hide();
