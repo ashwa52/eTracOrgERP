@@ -632,7 +632,6 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
 
         [HttpPost]
-        //data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle },
         public ActionResult userEvaluationView(string Id, string Assesment,string Name,string Image,string JobTitle)
         {
             eTracLoginModel ObjLoginModel = null;
@@ -753,7 +752,8 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
 
         [HttpPost]
-        public ActionResult userExpectationsView(string Id, string Assesment,string FinYear,string FinQuarter)
+
+        public ActionResult userExpectationsView(string Id, string Assesment,string Name,string Image,string JobTitle, string FinYear, string FinQuarter)
         {
             eTracLoginModel ObjLoginModel = null;
             string Employee_Id = string.Empty;
@@ -782,6 +782,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
 
 
             }
+            ViewData["employeeInfo"] = new GWCQUestionModel() { EmployeeName = Name, AssessmentType = Assesment, Image = Image, JobTitle = JobTitle };
             return PartialView("userExpectationsView", ListQuestions);
         }
 
@@ -824,7 +825,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
 
         [HttpPost]
-        public ActionResult QEvaluationView(string Id, string Assesment, string FinYear, string FinQuarter)
+        public ActionResult QEvaluationView(string Id, string Assesment, string Name, string Image, string JobTitle, string FinYear, string FinQuarter)
         {
             eTracLoginModel ObjLoginModel = null;
             string Employee_Id = string.Empty;
@@ -853,6 +854,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
 
 
             }
+            ViewData["employeeInfo"] = new GWCQUestionModel() { EmployeeName = Name, AssessmentType = Assesment, Image = Image, JobTitle = JobTitle };
             return PartialView("QEvaluationView", ListQuestions);
         }
 
@@ -941,12 +943,42 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
             try
             {
+                foreach (var item in data)
+                {
+                    item.EEL_EMP_EmployeeIdManager = ObjLoginModel.UserName; 
+
+
+                }
                 result = _GlobalAdminManager.saveQEvaluations(data, "S");
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public JsonResult saveFinalEvaluations(List<GWCQUestionModel> data)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            bool result = false;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                foreach (var item in data)
+                {
+                    item.EEL_EMP_EmployeeIdManager = ObjLoginModel.UserName;
+
+
+                }
+                result = _GlobalAdminManager.saveQEvaluations(data, "C");
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        
     }
 
 }

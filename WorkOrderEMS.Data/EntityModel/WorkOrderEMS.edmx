@@ -5239,6 +5239,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="EEL_FinQuarter" Type="varchar" Mode="In" />
           <Parameter Name="EEL_AnswerSelf" Type="char" Mode="In" />
           <Parameter Name="EEL_IsActive" Type="char" Mode="In" />
+          <Parameter Name="EEL_Comments" Type="varchar(max)" Mode="In" />
         </Function>
         <Function Name="spSetTaxDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="TXDAction" Type="char" Mode="In" />
@@ -8401,6 +8402,17 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="EEL_Comments" Mode="In" Type="String" />
             <Parameter Name="EEL_IsActive" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="ExpectationEvaluations" EntityType="workorderEMSModel.ExpectationEvaluation" />
+          <FunctionImport Name="spGetAssessmentQuestionQCQM" ReturnType="Collection(workorderEMSModel.spGetAssessmentQuestionQCQM_Result)">
+            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="AssessmentType" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetAssessmentList" ReturnType="Collection(workorderEMSModel.spGetAssessmentList_Result)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetEvaluationList" ReturnType="Collection(workorderEMSModel.spGetEvaluationList_Result)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
           <FunctionImport Name="spSetSelfAssessmentQuarterly">
             <Parameter Name="Action" Mode="In" Type="String" />
             <Parameter Name="EmployeeID" Mode="In" Type="String" />
@@ -8412,17 +8424,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="EEL_FinQuarter" Mode="In" Type="String" />
             <Parameter Name="EEL_AnswerSelf" Mode="In" Type="String" />
             <Parameter Name="EEL_IsActive" Mode="In" Type="String" />
-          </FunctionImport>
-          <EntitySet Name="ExpectationEvaluations" EntityType="workorderEMSModel.ExpectationEvaluation" />
-          <FunctionImport Name="spGetAssessmentQuestionQCQM" ReturnType="Collection(workorderEMSModel.spGetAssessmentQuestionQCQM_Result)">
-            <Parameter Name="EmployeeID" Mode="In" Type="String" />
-            <Parameter Name="AssessmentType" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="spGetAssessmentList" ReturnType="Collection(workorderEMSModel.spGetAssessmentList_Result)">
-            <Parameter Name="EmployeeId" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="spGetEvaluationList" ReturnType="Collection(workorderEMSModel.spGetEvaluationList_Result)">
-            <Parameter Name="EmployeeId" Mode="In" Type="String" />
+            <Parameter Name="EEL_Comments" Mode="In" Type="String" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="CommonQeriesByVijay_Result">
@@ -20499,7 +20501,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spSetReview306090" FunctionName="workorderEMSModel.Store.spSetReview306090" />
           <FunctionImportMapping FunctionImportName="spSetEvaluationQuarterly" FunctionName="workorderEMSModel.Store.spSetEvaluationQuarterly" />
-          <FunctionImportMapping FunctionImportName="spSetSelfAssessmentQuarterly" FunctionName="workorderEMSModel.Store.spSetSelfAssessmentQuarterly" />
           <EntitySetMapping Name="ExpectationEvaluations">
             <EntityTypeMapping TypeName="workorderEMSModel.ExpectationEvaluation">
               <MappingFragment StoreEntitySet="ExpectationEvaluation">
@@ -20577,6 +20578,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetSelfAssessmentQuarterly" FunctionName="workorderEMSModel.Store.spSetSelfAssessmentQuarterly" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

@@ -756,11 +756,13 @@ namespace WorkOrderEMS.Data
                          QuestionId = t.ASQ_Id,
                          Question = t.ASQ_Question,
                          Answer = t.EEL_AnswerSelf,
-                         SAR_AnswerManager = t.EEL_AnswerManager,
-                         Comment = t.EEL_Comments,
+                         EEL_AnswerManager=t.EEL_AnswerManager,
+                         //SAR_AnswerManager = t.EEL_AnswerManager,
+                         EEL_Comments = t.EEL_Comments,
                          SAM_IsActive = t.EEL_IsActive,
                          EEL_FinencialYear=t.EEL_FinencialYear,
                          EEL_FinQuarter=t.EEL_FinQuarter,
+                         EEL_ScoreSelf=t.EEL_ScoreSelf
 
                      }).ToList();
                 }
@@ -895,7 +897,7 @@ namespace WorkOrderEMS.Data
                 {
                     foreach (var i in list)
                     {
-                        _workorderEMSEntities.spSetSelfAssessmentQuarterly((i.EEL_IsActive == null || i.EEL_IsActive == "" || i.EEL_IsActive != "Y") ? "I" : "U", i.EEL_EMP_EmployeeId,i.EEL_EMP_EmployeeIdManager,i.QuestionType, i.ASQ_Id, i.EEL_Id,i.EEL_FinencialYear,i.EEL_FinQuarter, i.EEL_AnswerSelf == "Y" ? "Y" : i.EEL_AnswerSelf == "N" ? "N" : i.EEL_AnswerSelf == "S" ? "S" : null, action == "S" ? "S" : "Y");
+                        _workorderEMSEntities.spSetSelfAssessmentQuarterly((i.EEL_IsActive == null || i.EEL_IsActive == "" || i.EEL_IsActive != "Y") ? "I" : "U", i.EEL_EMP_EmployeeId,i.EEL_EMP_EmployeeIdManager,i.QuestionType, i.ASQ_Id, i.EEL_Id,i.EEL_FinencialYear,i.EEL_FinQuarter, i.EEL_AnswerSelf, action == "S" ? "S" : "Y",i.EEL_Comments);
                     }
                 }
 
@@ -962,8 +964,8 @@ namespace WorkOrderEMS.Data
                 {
                     foreach (var i in list)
                     {
-                        //_workorderEMSEntities.spSetEvaluationQuarterly((i.EEL_IsActive == null || i.EEL_IsActive == "" || i.EEL_IsActive != "Y") ? "I" : "U", i.EEL_EMP_EmployeeId, i.QuestionType, i.EEL_Id, i.EEL_FinencialYear, i.EEL_FinQuarter, i.EEL_AnswerSelf == "Y" ? "Y" : i.EEL_AnswerSelf == "N" ? "N" : i.EEL_AnswerSelf == "S" ? "S" : null,i.EEL_Comments, action == "S" ? "S" : "Y");
-                        _workorderEMSEntities.spSetSelfAssessmentQuarterly((i.EEL_IsActive == null || i.EEL_IsActive == "" || i.EEL_IsActive != "Y") ? "I" : "U", i.EEL_EMP_EmployeeId,i.EEL_EMP_EmployeeIdManager,i.QuestionType, i.ASQ_Id, i.EEL_Id,i.EEL_FinencialYear,i.EEL_FinQuarter, i.EEL_AnswerSelf == "Y" ? "Y" : i.EEL_AnswerSelf == "N" ? "N" : i.EEL_AnswerSelf == "S" ? "S" : null, action == "S" ? "S" : "Y");
+                        _workorderEMSEntities.spSetEvaluationQuarterly("U", i.EEL_EMP_EmployeeId, i.QuestionType, i.EEL_Id, i.EEL_FinencialYear, i.EEL_FinQuarter, i.EEL_AnswerSelf ,i.EEL_Comments, action == "C" ? "C" : "S");
+                        //_workorderEMSEntities.spSetSelfAssessmentQuarterly((i.EEL_IsActive == null || i.EEL_IsActive == "" || i.EEL_IsActive != "Y") ? "I" : "U", i.EEL_EMP_EmployeeId,i.EEL_EMP_EmployeeIdManager,i.QuestionType, i.ASQ_Id, i.EEL_Id,i.EEL_FinencialYear,i.EEL_FinQuarter, i.EEL_AnswerSelf == "Y" ? "Y" : i.EEL_AnswerSelf == "N" ? "N" : i.EEL_AnswerSelf == "S" ? "S" : null, action == "S" ? "S" : "Y");
 
                     }
                 }

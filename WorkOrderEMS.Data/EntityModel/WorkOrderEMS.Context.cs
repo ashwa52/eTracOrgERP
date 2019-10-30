@@ -4873,7 +4873,38 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetEvaluationQuarterly", actionParameter, employeeIDParameter, aSQ_QuestionTypeParameter, eEL_IdParameter, eEL_FinencialYearParameter, eEL_FinQuarterParameter, eEL_AnswerManagerParameter, eEL_CommentsParameter, eEL_IsActiveParameter);
         }
     
-        public virtual int spSetSelfAssessmentQuarterly(string action, string employeeID, string employeeIdManager, string aSQ_QuestionType, Nullable<long> aSQ_Id, Nullable<long> eEL_Id, string eEL_FinencialYear, string eEL_FinQuarter, string eEL_AnswerSelf, string eEL_IsActive)
+        public virtual ObjectResult<spGetAssessmentQuestionQCQM_Result> spGetAssessmentQuestionQCQM(string employeeID, string assessmentType)
+        {
+            var employeeIDParameter = employeeID != null ?
+                new ObjectParameter("EmployeeID", employeeID) :
+                new ObjectParameter("EmployeeID", typeof(string));
+    
+            var assessmentTypeParameter = assessmentType != null ?
+                new ObjectParameter("AssessmentType", assessmentType) :
+                new ObjectParameter("AssessmentType", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentQuestionQCQM_Result>("spGetAssessmentQuestionQCQM", employeeIDParameter, assessmentTypeParameter);
+        }
+    
+        public virtual ObjectResult<spGetAssessmentList_Result> spGetAssessmentList(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentList_Result>("spGetAssessmentList", employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetEvaluationList_Result> spGetEvaluationList(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEvaluationList_Result>("spGetEvaluationList", employeeIdParameter);
+        }
+    
+        public virtual int spSetSelfAssessmentQuarterly(string action, string employeeID, string employeeIdManager, string aSQ_QuestionType, Nullable<long> aSQ_Id, Nullable<long> eEL_Id, string eEL_FinencialYear, string eEL_FinQuarter, string eEL_AnswerSelf, string eEL_IsActive, string eEL_Comments)
         {
             var actionParameter = action != null ?
                 new ObjectParameter("Action", action) :
@@ -4915,38 +4946,11 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("EEL_IsActive", eEL_IsActive) :
                 new ObjectParameter("EEL_IsActive", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetSelfAssessmentQuarterly", actionParameter, employeeIDParameter, employeeIdManagerParameter, aSQ_QuestionTypeParameter, aSQ_IdParameter, eEL_IdParameter, eEL_FinencialYearParameter, eEL_FinQuarterParameter, eEL_AnswerSelfParameter, eEL_IsActiveParameter);
-        }
+            var eEL_CommentsParameter = eEL_Comments != null ?
+                new ObjectParameter("EEL_Comments", eEL_Comments) :
+                new ObjectParameter("EEL_Comments", typeof(string));
     
-        public virtual ObjectResult<spGetAssessmentQuestionQCQM_Result> spGetAssessmentQuestionQCQM(string employeeID, string assessmentType)
-        {
-            var employeeIDParameter = employeeID != null ?
-                new ObjectParameter("EmployeeID", employeeID) :
-                new ObjectParameter("EmployeeID", typeof(string));
-    
-            var assessmentTypeParameter = assessmentType != null ?
-                new ObjectParameter("AssessmentType", assessmentType) :
-                new ObjectParameter("AssessmentType", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentQuestionQCQM_Result>("spGetAssessmentQuestionQCQM", employeeIDParameter, assessmentTypeParameter);
-        }
-    
-        public virtual ObjectResult<spGetAssessmentList_Result> spGetAssessmentList(string employeeId)
-        {
-            var employeeIdParameter = employeeId != null ?
-                new ObjectParameter("EmployeeId", employeeId) :
-                new ObjectParameter("EmployeeId", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentList_Result>("spGetAssessmentList", employeeIdParameter);
-        }
-    
-        public virtual ObjectResult<spGetEvaluationList_Result> spGetEvaluationList(string employeeId)
-        {
-            var employeeIdParameter = employeeId != null ?
-                new ObjectParameter("EmployeeId", employeeId) :
-                new ObjectParameter("EmployeeId", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEvaluationList_Result>("spGetEvaluationList", employeeIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetSelfAssessmentQuarterly", actionParameter, employeeIDParameter, employeeIdManagerParameter, aSQ_QuestionTypeParameter, aSQ_IdParameter, eEL_IdParameter, eEL_FinencialYearParameter, eEL_FinQuarterParameter, eEL_AnswerSelfParameter, eEL_IsActiveParameter, eEL_CommentsParameter);
         }
     }
 }

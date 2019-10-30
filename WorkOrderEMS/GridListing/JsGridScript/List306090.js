@@ -196,7 +196,8 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                             debugger;
                             $.ajax({
                                 type: "POST",
-                                data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType ,'FinYear':item.FinYear,'FinQuarter':item.Expectation},
+                                data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation },
+                                //data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType ,'FinYear':item.FinYear,'FinQuarter':item.Expectation},
                                 url: '../NewAdmin/userExpectationsView/',
                                 error: function (xhr, status, error) {
                                 },
@@ -241,7 +242,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                             });
                         }).append($evaluationText);
                     if (item.Status == "Review Submitted") {
-                        return $("<div>").attr({ class: "btn-toolbar" }).append($customUserViewButton).append($customTextButton).append($customTextButton).append($evaluationTextButton);
+                        return $("<div>").attr({ class: "btn-toolbar" }).append($customUserViewButton).append($customTextButton).append($customTextButton);
                     } else {
                         return $("<div>").attr({ class: "btn-toolbar" }).append($customUserViewButton).append($customTextButton).append($customTextButton)
                     }
@@ -317,12 +318,13 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                     var $evaluationText = $("<span>").append('<i class= "fa fa-calendar-check-o fa-2x" style="color:white;margin-left: 6px;margin-top: 4px;" ></i>');//.attr({ class: "fa fa-file-text fa-2x" }).attr({ style: "color:white;background-color:#32ACDA;margin-left:20px;border-radius:35px;width:35px;height:35px" });
 
                     var $customUserViewButton = $("<span style='background: #36CA7E; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
-                        .attr({ title: "Assessment" })
+                        .attr({ title: "Evaluation" })
                         .attr({ id: "btn-profile-" + item.id }).click(function (e) {
                             debugger;
                             $.ajax({
                                 type: "POST",
-                                data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation },
+                                data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation },
+                                //data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation },
                                 url: '../NewAdmin/QEvaluationView/',
                                 error: function (xhr, status, error) {
                                 },
@@ -337,7 +339,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                             });
 
 
-                        }).append($iconUserView);
+                        }).append($evaluationText);
 
                     var $customTextButton = $("<span style='background: #32ACDA; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
                         .attr({ title: "Notification" })
@@ -347,13 +349,10 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                     var $evaluationTextButton = $("<span style='background: #32ACDA; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
                         .attr({ title: "Evaluation" })
                         .attr({ id: "btn-status-" + item.id }).click(function (e) {
-                            debugger;
                             $.ajax({
                                 type: "POST",
-                                //data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment },
-                                data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle },
-
-                                url: '../NewAdmin/userEvaluationView/',
+                                data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation },
+                                url: '../NewAdmin/QEvaluationView/',
                                 error: function (xhr, status, error) {
                                 },
                                 success: function (result) {
@@ -367,9 +366,9 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                             });
                         }).append($evaluationText);
                     if (item.Status == "Review Submitted") {
-                        return $("<div>").attr({ class: "btn-toolbar" }).append($customUserViewButton).append($customTextButton).append($customTextButton).append($evaluationTextButton);
+                        return $("<div>").attr({ class: "btn-toolbar" }).append($evaluationTextButton).append($customTextButton).append($evaluationTextButton);
                     } else {
-                        return $("<div>").attr({ class: "btn-toolbar" }).append($customUserViewButton).append($customTextButton).append($customTextButton)
+                        return $("<div>").attr({ class: "btn-toolbar" }).append($customTextButton);
                     }
                 }
             },
