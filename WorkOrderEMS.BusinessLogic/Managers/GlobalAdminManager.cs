@@ -3785,7 +3785,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 
 		public List<MyOpeningModel> GetMyOpenings()
 		{
-			try
+            workorderEMSEntities Context = new workorderEMSEntities();
+            try
 			{
                 var model = new RecruiteeAPI();                
                 string Url = "https://api.recruitee.com/c/40359/candidates/";
@@ -3793,9 +3794,31 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 if (getList != "false")
                 {
                     var aa = JsonConvert.DeserializeObject<CandidateGetModel.CandidateGet>(getList);
+                    if (aa.candidates.Count() > 0)
+                    {
+                        foreach (var item in aa.candidates)
+                        {
+                            var getApplicantInfo = Context.spGetMyOpening().Where(x => x.API_Email == item.emails[0]).FirstOrDefault();
+                            if(getApplicantInfo == null)
+                            {
+                                string Action = "I";
+                                Url = "https://api.recruitee.com/c/40359/candidates/"+ item.id;
+                                var getCVList = model.Index(Url).Result;
+                                if (getCVList != null)
+                                {
+
+                                    var data = JsonConvert.DeserializeObject<Models.NewAdminModel.RecruiteeModels.Candidate.PerCandidateData>(getCVList);
+                                    var phoneNumber = Convert.ToInt64(data.candidate.phones[0]);
+                                    var EmailId = data.candidate.emails[0];
+                                    var setInfo = Context.spSetApplicantInfo(Action, null, data.candidate.name,null, null, null, data.references[0].location, "Dallas", null, data.candidate.cv_url, null
+                                       , phoneNumber, EmailId, null, data.candidate.photo_url, "USA", null, null, null, null, null, null, null,5,
+                                        null,null,null,null,"Y");
+                                }
+                            }
+                        }
+                    }
                 }            
-                using (workorderEMSEntities Context = new workorderEMSEntities())
-				{
+
 					var myOpenings = (from x in Context.spGetMyOpening()
 									  select new MyOpeningModel
 									  {
@@ -3811,8 +3834,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 										  DesireSalary=x.API_DesireSalary
 									  }
 									).ToList();
-					return myOpenings;
-				}
+					return myOpenings;				
 			}
 			catch (Exception ex)
 			{

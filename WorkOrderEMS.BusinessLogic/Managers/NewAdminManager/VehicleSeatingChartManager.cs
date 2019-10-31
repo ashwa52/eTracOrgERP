@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 using WorkOrderEMS.BusinessLogic.Interfaces;
 using WorkOrderEMS.Data.DataRepository;
 using WorkOrderEMS.Data.EntityModel;
+using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
 
 namespace WorkOrderEMS.BusinessLogic
@@ -60,7 +62,7 @@ namespace WorkOrderEMS.BusinessLogic
                 if (Obj != null && Obj.SeatingName != null)
                 {
                     if (Obj.Id == null)
-                    {                     
+                    {
                         isSaved = _VSCRepository.SaveVSCRepository(Obj);
                         Obj.Id = _workorderEMS.VehicleSeatings.OrderByDescending(x => x.VST_Id).FirstOrDefault().VST_Id;
                     }
@@ -68,8 +70,8 @@ namespace WorkOrderEMS.BusinessLogic
                     {
                         Obj.Action = "U";
                         Obj.IsActive = "Y";
-                        isSaved = _VSCRepository.SaveVSCRepository(Obj); 
-                    }                    
+                        isSaved = _VSCRepository.SaveVSCRepository(Obj);
+                    }
                 }
                 else
                 {
@@ -97,22 +99,22 @@ namespace WorkOrderEMS.BusinessLogic
             var lstVSC = new List<AddChartModel>();
             try
             {
-               var data  = _VSCRepository.GetVSCList(LocationId).Select(x => new AddChartModel() {
-                   DepartmentName = x.DPT_Name,
-                   Id = x.VST_Id,
-                   Department = 0,
-                   parentId = x.VST_ParentId,
-                   JobDescription = x.VST_JobDescription,
-                   RolesAndResponsibility = x.VST_RolesAndResponsiblities,
-                   IsActive = x.VST_IsExempt,
-                   SeatingName  = x.VST_Title,
-                   //Image = HostingPrefix + ProfileImagePath.Replace("~", "") + "no-profile-pic.jpg"
-               }).ToList();
-                if(data.Count() > 0)
+                var data = _VSCRepository.GetVSCList(LocationId).Select(x => new AddChartModel() {
+                    DepartmentName = x.DPT_Name,
+                    Id = x.VST_Id,
+                    Department = 0,
+                    parentId = x.VST_ParentId,
+                    JobDescription = x.VST_JobDescription,
+                    RolesAndResponsibility = x.VST_RolesAndResponsiblities,
+                    IsActive = x.VST_IsExempt,
+                    SeatingName = x.VST_Title,
+                    //Image = HostingPrefix + ProfileImagePath.Replace("~", "") + "no-profile-pic.jpg"
+                }).ToList();
+                if (data.Count() > 0)
                 {
                     foreach (var item in data)
                     {
-                        if(item.JobDescription != null)
+                        if (item.JobDescription != null)
                         {
                             item.JobDescription = item.JobDescription.Replace("|", ",");
                             //item.JDSplitedString = item.JobDescription.Split('|');
@@ -120,7 +122,7 @@ namespace WorkOrderEMS.BusinessLogic
                         }
                     }
                 }
-                
+
             }
             catch (Exception ex)
             {
@@ -151,7 +153,7 @@ namespace WorkOrderEMS.BusinessLogic
                         Obj.Action = "I";
                         Obj.IsActive = "N";
                         Obj.Id = Obj.JobTitleId;
-                        if(Obj.JobTitleDesc != null)
+                        if (Obj.JobTitleDesc != null)
                         {
                             string[] JobTitleList = Obj.JobTitleDesc.Split('|');
                             foreach (string title in JobTitleList)
@@ -162,7 +164,7 @@ namespace WorkOrderEMS.BusinessLogic
                                     isSaved = _VSCRepository.SaveJobTitleRepository(Obj);
                                 }
                             }
-                        }                        
+                        }
                     }
                     else
                     {
@@ -210,16 +212,16 @@ namespace WorkOrderEMS.BusinessLogic
             var data = new List<AddChartModel>();
             try
             {
-                var _VSCRepository = new VehicleSeatingChartRepository();               
+                var _VSCRepository = new VehicleSeatingChartRepository();
                 string Action = string.Empty;
                 if (CSVChartId > 0)
                 {
                     data = _VSCRepository.GetJobTitleList(CSVChartId).
                         Select(x => new AddChartModel() {
-                          Id = x.JBT_Id,
-                          parentId = x.JBT_VST_Id,
-                          JobTitleLabel = x.JBT_JobTitle
-                        }).ToList();                                   
+                            Id = x.JBT_Id,
+                            parentId = x.JBT_VST_Id,
+                            JobTitleLabel = x.JBT_JobTitle
+                        }).ToList();
                 }
             }
             catch (Exception ex)
@@ -254,7 +256,9 @@ namespace WorkOrderEMS.BusinessLogic
                             JobDescription = x.VST_JobDescription,
                             RolesAndResponsibility = x.VST_RolesAndResponsiblities,
                             SeatingName = x.VST_Title,
-                            Department = x.DPT_Id
+                            Department = x.DPT_Id,
+                            DepartmentName = x.DPT_Name,
+
                         }).FirstOrDefault();
                 }
             }
@@ -286,7 +290,7 @@ namespace WorkOrderEMS.BusinessLogic
                         ModuleName = x.MDL_ModuleName,
                         @checked = false
                     }).ToList();
-                
+
                 var Results = _VSCRepository.GetAccessPermissionList(VST_Id)
                     .Select(l => new AccessPermisionTreeViewModel//_workorderems.spGetCostCode(action, null).Select(l => new TreeViewModel
                     {
@@ -328,7 +332,7 @@ namespace WorkOrderEMS.BusinessLogic
                 id = l.SubModuleId,
                 name = l.SubModuleName,
                 @checked = false
-            }).ToList();           
+            }).ToList();
         }
 
         public bool SaceAccessPermission(AccessPermisionTreeViewModel obj)
@@ -337,9 +341,9 @@ namespace WorkOrderEMS.BusinessLogic
             bool isSaved = false;
             try
             {
-                if(obj != null)
+                if (obj != null)
                 {
-                    if(obj.id > 0)
+                    if (obj.id > 0)
                     {
 
                     }
@@ -353,6 +357,97 @@ namespace WorkOrderEMS.BusinessLogic
             catch (Exception ex)
             {
                 Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SaceAccessPermission(AccessPermisionTreeViewModel obj)", "Exception While saving access permission", obj);
+                throw;
+            }
+            return isSaved;
+        }
+        /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created Date : 30-Oct-2019
+        /// Created For : To get Hiring manager list
+        /// </summary>
+        /// <param name="VSCId"></param>
+        /// <returns></returns>
+        public List<JobPostingModel> GetChartHiringManager(long VSCId)
+        {
+            var lst = new List<JobPostingModel>();
+            var _VSCRepository = new VehicleSeatingChartRepository();
+            try
+            {
+                if(VSCId > 0)
+                {
+                    lst = _VSCRepository.GetHiringManagerList(VSCId).Select(x => new JobPostingModel() {
+                        HiringManager = x.asHiringManagerId,
+                        HiringManagerName = x.HiringManagerName
+                    }).ToList();
+                }
+                else
+                {
+                    lst = null;
+                }
+                return lst;
+            }
+            catch(Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SaceAccessPermission(AccessPermisionTreeViewModel obj)", "Exception While saving access permission", VSCId);
+                throw;
+            }
+        }
+
+        public bool SaveJobPosting(JobPostingModel Obj)
+        {
+            var _VSCRepository = new VehicleSeatingChartRepository();
+            bool isSaved = false;
+            try
+            {
+                if (Obj != null)
+                {
+                    if (Obj.AddChartModel.Id > 0)
+                    {
+                        var modelRecruitee = new RecruiteeAPI();
+                        var dynamicJson = new Models.NewAdminModel.RootObjectData();
+                        string url = "/c/40359/offers/";
+                        dynamicJson.offer = new Models.NewAdminModel.Offer
+                        {
+                            department = Obj.AddChartModel.DepartmentName,
+                            description = Obj.AddChartModel.RolesAndResponsibility,
+                            kind = "Job",
+                            title = Obj.AddChartModel.JobTitle,
+                            status = "published",
+                            position = Convert.ToInt32(Obj.NumberOfPost),
+                            followed = true,
+                            slug = "offer",
+                            employment_type = null,
+                            city = null,
+                            state_code = null,
+                            country_code = null,
+                            postal_code = null,
+                            requirements = null,
+                            remote = false,
+                            min_hours =30,
+                            max_hours =40,
+                            options_cv = "required",
+                            email_confirmation = true,
+                            location ="",
+                            experience = null,
+                        };
+                        #region Demo Code
+                        string message = JsonConvert.SerializeObject(dynamicJson);
+                        var getSttring = modelRecruitee.POSTreq(message, url);
+                        // Obj.AddChartModel.Action = "I";
+                        var saved = _VSCRepository.SaveJob(Obj);
+                        #endregion Demo Code
+                    }
+                    else
+                    {
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SaceAccessPermission(AccessPermisionTreeViewModel obj)", "Exception While saving access permission", Obj);
                 throw;
             }
             return isSaved;

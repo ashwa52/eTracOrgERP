@@ -18,6 +18,7 @@ namespace WorkOrderEMS.BusinessLogic
         workorderEMSEntities objworkorderEMSEntities = new workorderEMSEntities();
         private readonly string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private readonly string ProfilePicPath = System.Configuration.ConfigurationManager.AppSettings["ProfilePicPath"];
+        private readonly string FilePath = System.Configuration.ConfigurationManager.AppSettings["FilesUploadRedYellowGreen"];
         public List<UserModelList> GetUserList(long? LocationId)
         {
             try
@@ -684,8 +685,9 @@ namespace WorkOrderEMS.BusinessLogic
                     FileName = x.FLU_FileName,
                     FileTypeName =  x.FLT_FileType,
                     AttachedFileName = x.FLU_FileAttached,
-                    FileId = x.FLU_FLT_Id
-                }).ToList();
+                    FileId = x.FLU_FLT_Id,
+                    AttachedFileLink = x.FLU_FileAttached == null ? null : HostingPrefix + FilePath.Replace("~", "") + x.FLU_FileAttached
+            }).ToList();
                 return lst;
             }
             catch (Exception ex)

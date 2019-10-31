@@ -18,5 +18,7 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
         AddChartModel GetChartData(long CSVChartId);
         List<AccessPermisionTreeViewModel> ListTreeViewAccessPermission(long VST_Id);
         bool SaceAccessPermission(AccessPermisionTreeViewModel obj);
+        bool SaveJobPosting(JobPostingModel Obj);
+        List<JobPostingModel> GetChartHiringManager(long VSCId);
     }
 }

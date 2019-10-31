@@ -21,6 +21,10 @@ namespace WorkOrderEMS.Models
         public string Requirement { get; set; }
         public string JoiningBonus { get; set; }
         public long HiringManagerId { get; set; }
+        public long? RecruiteeId { get; set; }
+        public int? NumberOfPost { get; set; }
+        public string HiringManagerName { get; set; }
+        public string HiringManager { get; set; }
 
     }
 }

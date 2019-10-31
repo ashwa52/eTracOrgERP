@@ -5902,5 +5902,164 @@ namespace WorkOrderEMS.Data.EntityModel
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentList306090_Result1>("spGetAssessmentList306090", employeeIdParameter);
         }
+    
+        public virtual int spSetJobPosting(string action, Nullable<long> jPS_JobPostingIdRecruitee, Nullable<long> jPS_JobTitleID, string jPS_HiringManagerID, Nullable<int> jPS_NumberOfPost, string jPS_IsActive)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var jPS_JobPostingIdRecruiteeParameter = jPS_JobPostingIdRecruitee.HasValue ?
+                new ObjectParameter("JPS_JobPostingIdRecruitee", jPS_JobPostingIdRecruitee) :
+                new ObjectParameter("JPS_JobPostingIdRecruitee", typeof(long));
+    
+            var jPS_JobTitleIDParameter = jPS_JobTitleID.HasValue ?
+                new ObjectParameter("JPS_JobTitleID", jPS_JobTitleID) :
+                new ObjectParameter("JPS_JobTitleID", typeof(long));
+    
+            var jPS_HiringManagerIDParameter = jPS_HiringManagerID != null ?
+                new ObjectParameter("JPS_HiringManagerID", jPS_HiringManagerID) :
+                new ObjectParameter("JPS_HiringManagerID", typeof(string));
+    
+            var jPS_NumberOfPostParameter = jPS_NumberOfPost.HasValue ?
+                new ObjectParameter("JPS_NumberOfPost", jPS_NumberOfPost) :
+                new ObjectParameter("JPS_NumberOfPost", typeof(int));
+    
+            var jPS_IsActiveParameter = jPS_IsActive != null ?
+                new ObjectParameter("JPS_IsActive", jPS_IsActive) :
+                new ObjectParameter("JPS_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetJobPosting", actionParameter, jPS_JobPostingIdRecruiteeParameter, jPS_JobTitleIDParameter, jPS_HiringManagerIDParameter, jPS_NumberOfPostParameter, jPS_IsActiveParameter);
+        }
+    
+        public virtual int spSetApplicantInfo(string aPIAction, Nullable<long> aPI_ApplicantId, string aPI_FirstName, string aPI_MiddleName, string aPI_LastName, string aPI_HomeAddress, string aPI_City, string aPI_State, Nullable<int> aPI_Zip, string aPI_Resume, string aPI_CoverLetter, Nullable<long> aPI_PhoneNumber, string aPI_Email, string aPI_DLNumber, string aPI_Photo, string aPI_Citizenship, string aPI_MilitaryService, string aPI_Gender, string aPI_HighestEducation, string aPI_AnyRefOrEmployeeInELITE, Nullable<System.DateTime> aPI_EverELITEWorkFrom, Nullable<System.DateTime> aPI_EverELITEWorkTo, string aPI_WorkEligibleInUS, Nullable<long> aPI_JobTitleID, string aPI_HiringManagerID, Nullable<System.DateTime> aPI_DateOfJoining, Nullable<decimal> aPI_DesireSalary, string aPI_ApplicantStatus, string aPI_IsActive)
+        {
+            var aPIActionParameter = aPIAction != null ?
+                new ObjectParameter("APIAction", aPIAction) :
+                new ObjectParameter("APIAction", typeof(string));
+    
+            var aPI_ApplicantIdParameter = aPI_ApplicantId.HasValue ?
+                new ObjectParameter("API_ApplicantId", aPI_ApplicantId) :
+                new ObjectParameter("API_ApplicantId", typeof(long));
+    
+            var aPI_FirstNameParameter = aPI_FirstName != null ?
+                new ObjectParameter("API_FirstName", aPI_FirstName) :
+                new ObjectParameter("API_FirstName", typeof(string));
+    
+            var aPI_MiddleNameParameter = aPI_MiddleName != null ?
+                new ObjectParameter("API_MiddleName", aPI_MiddleName) :
+                new ObjectParameter("API_MiddleName", typeof(string));
+    
+            var aPI_LastNameParameter = aPI_LastName != null ?
+                new ObjectParameter("API_LastName", aPI_LastName) :
+                new ObjectParameter("API_LastName", typeof(string));
+    
+            var aPI_HomeAddressParameter = aPI_HomeAddress != null ?
+                new ObjectParameter("API_HomeAddress", aPI_HomeAddress) :
+                new ObjectParameter("API_HomeAddress", typeof(string));
+    
+            var aPI_CityParameter = aPI_City != null ?
+                new ObjectParameter("API_City", aPI_City) :
+                new ObjectParameter("API_City", typeof(string));
+    
+            var aPI_StateParameter = aPI_State != null ?
+                new ObjectParameter("API_State", aPI_State) :
+                new ObjectParameter("API_State", typeof(string));
+    
+            var aPI_ZipParameter = aPI_Zip.HasValue ?
+                new ObjectParameter("API_Zip", aPI_Zip) :
+                new ObjectParameter("API_Zip", typeof(int));
+    
+            var aPI_ResumeParameter = aPI_Resume != null ?
+                new ObjectParameter("API_Resume", aPI_Resume) :
+                new ObjectParameter("API_Resume", typeof(string));
+    
+            var aPI_CoverLetterParameter = aPI_CoverLetter != null ?
+                new ObjectParameter("API_CoverLetter", aPI_CoverLetter) :
+                new ObjectParameter("API_CoverLetter", typeof(string));
+    
+            var aPI_PhoneNumberParameter = aPI_PhoneNumber.HasValue ?
+                new ObjectParameter("API_PhoneNumber", aPI_PhoneNumber) :
+                new ObjectParameter("API_PhoneNumber", typeof(long));
+    
+            var aPI_EmailParameter = aPI_Email != null ?
+                new ObjectParameter("API_Email", aPI_Email) :
+                new ObjectParameter("API_Email", typeof(string));
+    
+            var aPI_DLNumberParameter = aPI_DLNumber != null ?
+                new ObjectParameter("API_DLNumber", aPI_DLNumber) :
+                new ObjectParameter("API_DLNumber", typeof(string));
+    
+            var aPI_PhotoParameter = aPI_Photo != null ?
+                new ObjectParameter("API_Photo", aPI_Photo) :
+                new ObjectParameter("API_Photo", typeof(string));
+    
+            var aPI_CitizenshipParameter = aPI_Citizenship != null ?
+                new ObjectParameter("API_Citizenship", aPI_Citizenship) :
+                new ObjectParameter("API_Citizenship", typeof(string));
+    
+            var aPI_MilitaryServiceParameter = aPI_MilitaryService != null ?
+                new ObjectParameter("API_MilitaryService", aPI_MilitaryService) :
+                new ObjectParameter("API_MilitaryService", typeof(string));
+    
+            var aPI_GenderParameter = aPI_Gender != null ?
+                new ObjectParameter("API_Gender", aPI_Gender) :
+                new ObjectParameter("API_Gender", typeof(string));
+    
+            var aPI_HighestEducationParameter = aPI_HighestEducation != null ?
+                new ObjectParameter("API_HighestEducation", aPI_HighestEducation) :
+                new ObjectParameter("API_HighestEducation", typeof(string));
+    
+            var aPI_AnyRefOrEmployeeInELITEParameter = aPI_AnyRefOrEmployeeInELITE != null ?
+                new ObjectParameter("API_AnyRefOrEmployeeInELITE", aPI_AnyRefOrEmployeeInELITE) :
+                new ObjectParameter("API_AnyRefOrEmployeeInELITE", typeof(string));
+    
+            var aPI_EverELITEWorkFromParameter = aPI_EverELITEWorkFrom.HasValue ?
+                new ObjectParameter("API_EverELITEWorkFrom", aPI_EverELITEWorkFrom) :
+                new ObjectParameter("API_EverELITEWorkFrom", typeof(System.DateTime));
+    
+            var aPI_EverELITEWorkToParameter = aPI_EverELITEWorkTo.HasValue ?
+                new ObjectParameter("API_EverELITEWorkTo", aPI_EverELITEWorkTo) :
+                new ObjectParameter("API_EverELITEWorkTo", typeof(System.DateTime));
+    
+            var aPI_WorkEligibleInUSParameter = aPI_WorkEligibleInUS != null ?
+                new ObjectParameter("API_WorkEligibleInUS", aPI_WorkEligibleInUS) :
+                new ObjectParameter("API_WorkEligibleInUS", typeof(string));
+    
+            var aPI_JobTitleIDParameter = aPI_JobTitleID.HasValue ?
+                new ObjectParameter("API_JobTitleID", aPI_JobTitleID) :
+                new ObjectParameter("API_JobTitleID", typeof(long));
+    
+            var aPI_HiringManagerIDParameter = aPI_HiringManagerID != null ?
+                new ObjectParameter("API_HiringManagerID", aPI_HiringManagerID) :
+                new ObjectParameter("API_HiringManagerID", typeof(string));
+    
+            var aPI_DateOfJoiningParameter = aPI_DateOfJoining.HasValue ?
+                new ObjectParameter("API_DateOfJoining", aPI_DateOfJoining) :
+                new ObjectParameter("API_DateOfJoining", typeof(System.DateTime));
+    
+            var aPI_DesireSalaryParameter = aPI_DesireSalary.HasValue ?
+                new ObjectParameter("API_DesireSalary", aPI_DesireSalary) :
+                new ObjectParameter("API_DesireSalary", typeof(decimal));
+    
+            var aPI_ApplicantStatusParameter = aPI_ApplicantStatus != null ?
+                new ObjectParameter("API_ApplicantStatus", aPI_ApplicantStatus) :
+                new ObjectParameter("API_ApplicantStatus", typeof(string));
+    
+            var aPI_IsActiveParameter = aPI_IsActive != null ?
+                new ObjectParameter("API_IsActive", aPI_IsActive) :
+                new ObjectParameter("API_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApplicantInfo", aPIActionParameter, aPI_ApplicantIdParameter, aPI_FirstNameParameter, aPI_MiddleNameParameter, aPI_LastNameParameter, aPI_HomeAddressParameter, aPI_CityParameter, aPI_StateParameter, aPI_ZipParameter, aPI_ResumeParameter, aPI_CoverLetterParameter, aPI_PhoneNumberParameter, aPI_EmailParameter, aPI_DLNumberParameter, aPI_PhotoParameter, aPI_CitizenshipParameter, aPI_MilitaryServiceParameter, aPI_GenderParameter, aPI_HighestEducationParameter, aPI_AnyRefOrEmployeeInELITEParameter, aPI_EverELITEWorkFromParameter, aPI_EverELITEWorkToParameter, aPI_WorkEligibleInUSParameter, aPI_JobTitleIDParameter, aPI_HiringManagerIDParameter, aPI_DateOfJoiningParameter, aPI_DesireSalaryParameter, aPI_ApplicantStatusParameter, aPI_IsActiveParameter);
+        }
+    
+        public virtual ObjectResult<spGetHiringManager_Result> spGetHiringManager(Nullable<long> vST_Id)
+        {
+            var vST_IdParameter = vST_Id.HasValue ?
+                new ObjectParameter("VST_Id", vST_Id) :
+                new ObjectParameter("VST_Id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetHiringManager_Result>("spGetHiringManager", vST_IdParameter);
+        }
     }
 }

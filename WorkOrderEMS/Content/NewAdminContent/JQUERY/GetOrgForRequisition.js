@@ -1,6 +1,6 @@
 ﻿getOrgChartW = '<a style="display: block !important; position: absolute !important; bottom: 15px !important; right: 15px !important; color: rgb(172, 25, 61) !important; width: auto; height!important;: auto !important; text-decoration: none; margin: 0 !important; zoom: 1; padding: 0 !important; visibility: visible !important; opacity: 1 !important; z-index: 2147483647 !important; font-size: 12px !important;" title="GetOrgChart plugin" target="_blank" href="#">GetOrgChart</a></div>';
 var getOrgChartW;
-getOrgChart = function(b, a) {
+getOrgChart = function (b, a) {
     this.config = {
         theme: "ula",
         color: "blue",
@@ -62,7 +62,7 @@ getOrgChart = function(b, a) {
     }
     if (a) {
         for (var c in this.config) {
-            if (typeof(a[c]) != "undefined") {
+            if (typeof (a[c]) != "undefined") {
                 this.config[c] = a[c]
             }
         }
@@ -107,22 +107,22 @@ getOrgChart = function(b, a) {
     this._ad();
     this.load()
 };
-getOrgChart.prototype._ad = function() {
+getOrgChart.prototype._ad = function () {
     this._f();
     var a = getOrgChart.INNER_HTML.replace("[theme]", this.config.theme).replace("[color]", this.config.color).replace(/\[height]/g, this._a9).replace(/\[toolbar-height]/g, this.theme.toolbarHeight);
-    if (typeof(getOrgChartW) !== "undefined") {
+    if (typeof (getOrgChartW) !== "undefined") {
         a = a.slice(0, -6);
         a += getOrgChartW
     }
     this.element.innerHTML = a
 };
-getOrgChart.prototype.resize = function() {
+getOrgChart.prototype.resize = function () {
     this._f();
     this._X._t.style.height = this._a9 + "px";
     this._X._u.style.height = this._a9 + "px";
     this._X._0.style.height = this._a9 + "px"
 };
-getOrgChart.prototype._f = function() {
+getOrgChart.prototype._f = function () {
     this._zP = get._c().msie ? this.element.clientWidth : window.getComputedStyle(this.element, null).width;
     this._zP = parseInt(this._zP);
     if (this._zP < 3) {
@@ -138,14 +138,14 @@ getOrgChart.prototype._f = function() {
     this._a0 = this._zP;
     this._a9 = this._zL - this.theme.toolbarHeight
 };
-getOrgChart.prototype.changeColorScheme = function(a) {
+getOrgChart.prototype.changeColorScheme = function (a) {
     if (this.config.color == a) {
         return
     }
     this._X._zO.className = this._X._zO.className.replace(this.config.color, a);
     this.config.color = a
 };
-getOrgChart.prototype._zs = function() {
+getOrgChart.prototype._zs = function () {
     this._aZ = [];
     this._aW = [];
     this._zv = [];
@@ -153,7 +153,7 @@ getOrgChart.prototype._zs = function() {
     getOrgChart._zX(this, this._zu, 0, 0, 0);
     getOrgChart._zH(this)
 };
-getOrgChart.prototype._zC = function(b, a) {
+getOrgChart.prototype._zC = function (b, a) {
     if (this._aZ[a] == null) {
         this._aZ[a] = 0
     }
@@ -161,7 +161,7 @@ getOrgChart.prototype._zC = function(b, a) {
         this._aZ[a] = b.h
     }
 };
-getOrgChart.prototype._zR = function(b, a) {
+getOrgChart.prototype._zR = function (b, a) {
     if (this._aW[a] == null) {
         this._aW[a] = 0
     }
@@ -169,14 +169,14 @@ getOrgChart.prototype._zR = function(b, a) {
         this._aW[a] = b.w
     }
 };
-getOrgChart.prototype._zF = function(b, a) {
+getOrgChart.prototype._zF = function (b, a) {
     b.leftNeighbor = this._zv[a];
     if (b.leftNeighbor != null) {
         b.leftNeighbor.rightNeighbor = b
     }
     this._zv[a] = b
 };
-getOrgChart.prototype._3 = function(a) {
+getOrgChart.prototype._3 = function (a) {
     switch (this.config.orientation) {
         case getOrgChart.RO_TOP:
         case getOrgChart.RO_TOP_PARENT_LEFT:
@@ -191,7 +191,7 @@ getOrgChart.prototype._3 = function(a) {
     }
     return 0
 };
-getOrgChart.prototype._1 = function(g, d, e) {
+getOrgChart.prototype._1 = function (g, d, e) {
     if (d >= e) {
         return g
     }
@@ -208,7 +208,7 @@ getOrgChart.prototype._1 = function(g, d, e) {
     }
     return null
 };
-getOrgChart.prototype._A = function() {
+getOrgChart.prototype._A = function () {
     var f = [];
     var h;
     if (this._X._v) {
@@ -242,7 +242,7 @@ getOrgChart.prototype._A = function() {
     var a = f.join("");
     return a
 };
-getOrgChart.prototype._r = function(a, i, c, b, g, h) {
+getOrgChart.prototype._r = function (a, i, c, b, g, h) {
     var d = a;
     var f = null;
     if (i) {
@@ -265,7 +265,7 @@ getOrgChart.prototype._r = function(a, i, c, b, g, h) {
     }
     return d
 };
-getOrgChart.prototype._9 = function() {
+getOrgChart.prototype._9 = function () {
     var p = this.config.siblingSeparation / 2;
     var q = this.config.levelSeparation / 2;
     var o;
@@ -404,7 +404,7 @@ getOrgChart.prototype._9 = function() {
     }
     return this.initialViewBoxMatrix.toString()
 };
-getOrgChart.prototype.draw = function(a) {
+getOrgChart.prototype.draw = function (a) {
     this._X._zd();
     this._zs();
     this._X._t.innerHTML = this._A();
@@ -439,7 +439,7 @@ getOrgChart.prototype.draw = function(a) {
     this.showMainView();
     return this
 };
-getOrgChart.prototype._z = function(a) {
+getOrgChart.prototype._z = function (a) {
     var g = [];
     for (var d in this.nodes) {
         if (this.nodes[d]._z2 == null || this.nodes[d]._z3 == null) {
@@ -465,7 +465,7 @@ getOrgChart.prototype._z = function(a) {
             transform: b
         }, {
             transform: h
-        }, 200, get._z._a3, function(i) {
+        }, 200, get._z._a3, function (i) {
             if (a && g[g.length - 1].id == i[0].getAttribute("data-node-id")) {
                 a()
             }
@@ -475,12 +475,12 @@ getOrgChart.prototype._z = function(a) {
         a()
     }
 };
-getOrgChart.prototype._aR = function(c, b) {
+getOrgChart.prototype._aR = function (c, b) {
     this._q(c, "mouseup", this._aF);
     this._q(c, "mouseleave", this._aF);
     var d = this;
     var a = 100;
-    c.interval = setInterval(function() {
+    c.interval = setInterval(function () {
         switch (c) {
             case d._X._zn:
                 d.move("right", a);
@@ -500,12 +500,12 @@ getOrgChart.prototype._aR = function(c, b) {
         }
     }, 20)
 };
-getOrgChart.prototype._aF = function(b, a) {
+getOrgChart.prototype._aF = function (b, a) {
     this._zy(b, "mouseup", this._aF);
     this._zy(b, "mouseleave", this._aF);
     clearInterval(b.interval)
 };
-getOrgChart.prototype.move = function(f, a, b) {
+getOrgChart.prototype.move = function (f, a, b) {
     var h = getOrgChart.util._8(this._X);
     var e = h.slice(0);
     var c = this.theme.size[0] / a;
@@ -537,7 +537,7 @@ getOrgChart.prototype.move = function(f, a, b) {
             viewBox: h
         }, {
             viewBox: e
-        }, 300, get._z._at, function() {
+        }, 300, get._z._at, function () {
             if (b) {
                 b()
             }
@@ -547,7 +547,7 @@ getOrgChart.prototype.move = function(f, a, b) {
     }
     return this
 };
-getOrgChart.prototype.isCollapsed = function(a) {
+getOrgChart.prototype.isCollapsed = function (a) {
     if ((a.parent == this._zu) || (a.parent == null)) {
         return false
     }
@@ -558,7 +558,7 @@ getOrgChart.prototype.isCollapsed = function(a) {
     }
     return false
 };
-getOrgChart.prototype._e = function() {
+getOrgChart.prototype._e = function () {
     if (this.config.enableGridView) {
         this._q(this._X._aq, "click", this._zV);
         this._q(this._X._aa, "click", this._zT)
@@ -631,7 +631,7 @@ getOrgChart.prototype._e = function() {
         this._q(this._X._u, "touchmove", this._zo, "detilsView")
     }
 };
-getOrgChart.prototype._q = function(b, c, d, e) {
+getOrgChart.prototype._q = function (b, c, d, e) {
     if (!e) {
         e = ""
     }
@@ -643,7 +643,7 @@ getOrgChart.prototype._q = function(b, c, d, e) {
     }
 
     function g(h, j) {
-        return function() {
+        return function () {
             if (j) {
                 return j.apply(h, [this, arguments])
             }
@@ -675,14 +675,14 @@ getOrgChart.prototype._q = function(b, c, d, e) {
     }
     b.getListenerList[c + e] = f
 };
-getOrgChart.prototype._zy = function(a, b) {
+getOrgChart.prototype._zy = function (a, b) {
     if (a.getListenerList[b]) {
         var c = a.getListenerList[b];
         a.removeEventListener(b, c, false);
         delete a.getListenerList[b]
     }
 };
-getOrgChart.prototype._z1 = function(b, a) {
+getOrgChart.prototype._z1 = function (b, a) {
     if (!this._E) {
         this._E = {}
     }
@@ -691,7 +691,7 @@ getOrgChart.prototype._z1 = function(b, a) {
     }
     this._E[b].push(a)
 };
-getOrgChart.prototype._d = function() {
+getOrgChart.prototype._d = function () {
     if (this.config.removeNodeEvent) {
         this._z1("removeNodeEvent", this.config.removeNodeEvent)
     }
@@ -717,7 +717,7 @@ getOrgChart.prototype._d = function() {
         this._z1("changeFileInputEvent", this.config.changeFileInputEvent)
     }
 };
-getOrgChart.prototype._V = function(b, a) {
+getOrgChart.prototype._V = function (b, a) {
     if (!this._E) {
         return true
     }
@@ -735,11 +735,11 @@ getOrgChart.prototype._V = function(b, a) {
     }
     return d
 };
-getOrgChart._X = function(a) {
+getOrgChart._X = function (a) {
     this.element = a;
     this._n
 };
-getOrgChart._X.prototype._zd = function() {
+getOrgChart._X.prototype._zd = function () {
     this._zO = this.element.getElementsByTagName("div")[0];
     var a = this._zO.children;
     this._zN = a[0];
@@ -747,7 +747,7 @@ getOrgChart._X.prototype._zd = function() {
     this._u = a[2];
     this._0 = a[3]
 };
-getOrgChart._X.prototype._ze = function() {
+getOrgChart._X.prototype._ze = function () {
     this._v = this._t.getElementsByTagName("svg")[0];
     this._zw = this._v.getElementsByTagName("g")[0];
     this._zU = this._zN.getElementsByTagName("div")[0];
@@ -781,14 +781,14 @@ getOrgChart._X.prototype._ze = function() {
     this._Q = this._zO.getElementsByClassName("get-down")[0];
     this._zK = this._zO.getElementsByClassName("get-up")[0]
 };
-getOrgChart._X.prototype._zk = function(a) {
+getOrgChart._X.prototype._zk = function (a) {
     this._t.style.overflow = "auto";
     this._v.style.width = (a + "px")
 };
-getOrgChart._X.prototype._I = function() {
+getOrgChart._X.prototype._I = function () {
     return this._i.querySelectorAll('input[type="hidden"]')[0]
 };
-getOrgChart._X.prototype._J = function() {
+getOrgChart._X.prototype._J = function () {
     var a = this._i.querySelectorAll('input[type="text"]');
     var c = {};
     for (i = 0; i < a.length; i++) {
@@ -798,13 +798,13 @@ getOrgChart._X.prototype._J = function() {
     }
     return c
 };
-getOrgChart._X.prototype._K = function() {
+getOrgChart._X.prototype._K = function () {
     return this._i.querySelectorAll('input[type="text"]')
 };
-getOrgChart._X.prototype._U = function() {
+getOrgChart._X.prototype._U = function () {
     return this._i.querySelector('input[type="file"]')
 };
-getOrgChart._X.prototype._M = function() {
+getOrgChart._X.prototype._M = function () {
     var a = this._i.getElementsByTagName("select");
     for (i = 0; i < a.length; i++) {
         if (a[i].className == "get-oc-labels") {
@@ -813,7 +813,7 @@ getOrgChart._X.prototype._M = function() {
     }
     return null
 };
-getOrgChart._X.prototype._O = function() {
+getOrgChart._X.prototype._O = function () {
     var a = this._i.getElementsByTagName("select");
     for (i = 0; i < a.length; i++) {
         if (a[i].className == "get-oc-select-parent") {
@@ -822,10 +822,10 @@ getOrgChart._X.prototype._O = function() {
     }
     return null
 };
-getOrgChart._X.prototype.getNodeById = function(a) {
+getOrgChart._X.prototype.getNodeById = function (a) {
     return this._zw.querySelector("[data-node-id='" + a + "']")
 };
-getOrgChart._X.prototype.removeLinks = function() {
+getOrgChart._X.prototype.removeLinks = function () {
     var a = this._zw.querySelectorAll("[data-link-id]");
     var b = a.length;
     while (b--) {
@@ -835,7 +835,7 @@ getOrgChart._X.prototype.removeLinks = function() {
 getOrgChart._X.prototype.getButtonByType = function (a) {
     return this._zw.querySelector("[data-btn-action='" + a + "']")
 };
-getOrgChart._X.prototype._zI = function(a) {
+getOrgChart._X.prototype._zI = function (a) {
     var c;
     if (!a) {
         c = this._zY
@@ -883,7 +883,7 @@ getOrgChart.NOT_DEFINED = 0;
 getOrgChart.COLLAPSED = 1;
 getOrgChart.EXPANDED = 2;
 getOrgChart.MIXED_HIERARCHY_RIGHT_LINKS = 0;
-getOrgChart._T = function(h, g, d) {
+getOrgChart._T = function (h, g, d) {
     var c = null;
     g.x = 0;
     g.y = 0;
@@ -927,7 +927,7 @@ getOrgChart._T = function(h, g, d) {
         }
     }
 };
-getOrgChart._w = function(t, m, g) {
+getOrgChart._w = function (t, m, g) {
     var a = m._L();
     var b = a.leftNeighbor;
     var c = 1;
@@ -970,7 +970,7 @@ getOrgChart._w = function(t, m, g) {
         }
     }
 };
-getOrgChart._zX = function(i, e, b, j, l) {
+getOrgChart._zX = function (i, e, b, j, l) {
     if (b <= i.config.maxDepth) {
         var k = i._zj + e._zc + j;
         var m = i._zm + l;
@@ -1024,7 +1024,7 @@ getOrgChart._zX = function(i, e, b, j, l) {
         }
     }
 };
-getOrgChart._zH = function(e) {
+getOrgChart._zH = function (e) {
     e._zj = e._zu.x;
     e._zm = e._zu.y;
     if (e._a2) {
@@ -1040,7 +1040,7 @@ getOrgChart._zH = function(e) {
     }
     e._a2 = null
 };
-getOrgChart.node = function(d, f, h, c, g, e, a, b) {
+getOrgChart.node = function (d, f, h, c, g, e, a, b) {
     this.id = d;
     this.pid = f;
     this.spid = h;
@@ -1067,7 +1067,7 @@ getOrgChart.node = function(d, f, h, c, g, e, a, b) {
     this._zc = 0;
     this._aS = 0
 };
-getOrgChart.node.prototype._ay = function(a) {
+getOrgChart.node.prototype._ay = function (a) {
     var b = this.parent;
     while (b != null) {
         if (b == a) {
@@ -1077,13 +1077,13 @@ getOrgChart.node.prototype._ay = function(a) {
     }
     return false
 };
-getOrgChart.node.prototype.getParent = function() {
+getOrgChart.node.prototype.getParent = function () {
     if (this.displayParent != null) {
         return this.displayParent
     }
     return this.parent
 };
-getOrgChart.node.prototype.getChildren = function() {
+getOrgChart.node.prototype.getChildren = function () {
     if (this.displayChildren != null) {
         return this.displayChildren
     }
@@ -1095,13 +1095,13 @@ getOrgChart.node.prototype.getChildren = function() {
     }
     return a
 };
-getOrgChart.node.prototype.getImageUrl = function() {
+getOrgChart.node.prototype.getImageUrl = function () {
     if (this.photoFields && this.data[this.photoFields[0]]) {
         return this.data[this.photoFields[0]]
     }
     return null
 };
-getOrgChart.node.prototype._N = function() {
+getOrgChart.node.prototype._N = function () {
     if (this.displayChildren == null && this.collapsed == getOrgChart.COLLAPSED) {
         return 0
     } else {
@@ -1112,41 +1112,41 @@ getOrgChart.node.prototype._N = function() {
         }
     }
 };
-getOrgChart.node.prototype._2 = function() {
+getOrgChart.node.prototype._2 = function () {
     if (this.leftNeighbor != null && this.leftNeighbor.getParent() == this.getParent()) {
         return this.leftNeighbor
     } else {
         return null
     }
 };
-getOrgChart.node.prototype.isVisible = function() {
+getOrgChart.node.prototype.isVisible = function () {
     if (this.x == 0 && this.y == 0) {
         return false
     }
     return true
 };
-getOrgChart.node.prototype._5 = function() {
+getOrgChart.node.prototype._5 = function () {
     if (this.rightNeighbor != null && this.rightNeighbor.getParent() == this.getParent()) {
         return this.rightNeighbor
     } else {
         return null
     }
 };
-getOrgChart.node.prototype._Y = function(a) {
+getOrgChart.node.prototype._Y = function (a) {
     return this.getChildren()[a]
 };
-getOrgChart.node.prototype._H = function(a) {
+getOrgChart.node.prototype._H = function (a) {
     node = this._L();
     node1 = this._P();
     return node._zc + ((node1._zc - node._zc) + a._3(node1)) / 2
 };
-getOrgChart.node.prototype._L = function() {
+getOrgChart.node.prototype._L = function () {
     return this._Y(0)
 };
-getOrgChart.node.prototype._P = function() {
+getOrgChart.node.prototype._P = function () {
     return this._Y(this._N() - 1)
 };
-getOrgChart.node.prototype._Z = function(a) {
+getOrgChart.node.prototype._Z = function (a) {
     if (!this.getChildren().length) {
         return []
     }
@@ -1284,7 +1284,7 @@ getOrgChart.node.prototype._Z = function(a) {
     }
     return d.join("")
 };
-getOrgChart.node.prototype._W = function(c) {
+getOrgChart.node.prototype._W = function (c) {
     if (!this.secondChildren.length) {
         return []
     }
@@ -1430,7 +1430,7 @@ getOrgChart.node.prototype._W = function(c) {
     }
     return p.join("")
 };
-getOrgChart.node.prototype.isCollapsed = function() {
+getOrgChart.node.prototype.isCollapsed = function () {
     if (this.parent == null) {
         return false
     }
@@ -1441,7 +1441,7 @@ getOrgChart.node.prototype.isCollapsed = function() {
     }
     return true
 };
-getOrgChart.node.prototype.getMostDeepChild = function(c) {
+getOrgChart.node.prototype.getMostDeepChild = function (c) {
     var b = this;
 
     function a(f, g) {
@@ -1458,7 +1458,7 @@ getOrgChart.node.prototype.getMostDeepChild = function(c) {
     a(this, c);
     return b
 };
-getOrgChart.node.prototype.draw = function(a) {
+getOrgChart.node.prototype.draw = function (a) {
     var h = [];
     var b = this.getImageUrl();
     var m = a.customize[this.id] && a.customize[this.id].theme ? getOrgChart.themes[a.customize[this.id].theme] : getOrgChart.themes[a.theme];
@@ -1484,7 +1484,6 @@ getOrgChart.node.prototype.draw = function(a) {
                 }
                 break;
             case "text":
-                debugger
                 var j = 0;
                 for (k = 0; k < a.primaryFields.length; k++) {
                     var g = l[j];
@@ -2190,10 +2189,10 @@ getOrgChart.themes = {
         image: '<image xlink:href="[href]" x="20" y="0" height="140" preserveAspectRatio="xMidYMid slice" width="350"/>'
     }
 };
-if (typeof(get) == "undefined") {
+if (typeof (get) == "undefined") {
     get = {}
 }
-get._z = function(a, c, b, h, i, d) {
+get._z = function (a, c, b, h, i, d) {
     var n;
     var e = 10;
     var k = 1;
@@ -2280,7 +2279,7 @@ get._z = function(a, c, b, h, i, d) {
     }
     n = setInterval(f, e)
 };
-get._z._ag = function(b) {
+get._z._ag = function (b) {
     var a = 2;
     if (b < 0) {
         return 0
@@ -2290,7 +2289,7 @@ get._z._ag = function(b) {
     }
     return Math.pow(b, a)
 };
-get._z._a6 = function(c) {
+get._z._a6 = function (c) {
     var a = 2;
     if (c < 0) {
         return 0
@@ -2301,7 +2300,7 @@ get._z._a6 = function(c) {
     var b = a % 2 == 0 ? -1 : 1;
     return (b * (Math.pow(c - 1, a) + b))
 };
-get._z._av = function(c) {
+get._z._av = function (c) {
     var a = 2;
     if (c < 0) {
         return 0
@@ -2316,7 +2315,7 @@ get._z._av = function(c) {
     var b = a % 2 == 0 ? -1 : 1;
     return (b / 2 * (Math.pow(c - 2, a) + b * 2))
 };
-get._z._ab = function(a) {
+get._z._ab = function (a) {
     if (a < 0) {
         return 0
     }
@@ -2325,7 +2324,7 @@ get._z._ab = function(a) {
     }
     return -Math.cos(a * (Math.PI / 2)) + 1
 };
-get._z._a7 = function(a) {
+get._z._a7 = function (a) {
     if (a < 0) {
         return 0
     }
@@ -2334,7 +2333,7 @@ get._z._a7 = function(a) {
     }
     return Math.sin(a * (Math.PI / 2))
 };
-get._z._at = function(a) {
+get._z._at = function (a) {
     if (a < 0) {
         return 0
     }
@@ -2343,7 +2342,7 @@ get._z._at = function(a) {
     }
     return -0.5 * (Math.cos(Math.PI * a) - 1)
 };
-get._z._ae = function(a) {
+get._z._ae = function (a) {
     if (a < 0) {
         return 0
     }
@@ -2352,7 +2351,7 @@ get._z._ae = function(a) {
     }
     return Math.pow(2, 10 * (a - 1))
 };
-get._z._a5 = function(a) {
+get._z._a5 = function (a) {
     if (a < 0) {
         return 0
     }
@@ -2361,7 +2360,7 @@ get._z._a5 = function(a) {
     }
     return -Math.pow(2, -10 * a) + 1
 };
-get._z._af = function(a) {
+get._z._af = function (a) {
     if (a < 0) {
         return 0
     }
@@ -2370,7 +2369,7 @@ get._z._af = function(a) {
     }
     return a < 0.5 ? 0.5 * Math.pow(2, 10 * (2 * a - 1)) : 0.5 * (-Math.pow(2, 10 * (-2 * a + 1)) + 2)
 };
-get._z._ax = function(a) {
+get._z._ax = function (a) {
     if (a < 0) {
         return 0
     }
@@ -2379,7 +2378,7 @@ get._z._ax = function(a) {
     }
     return -(Math.sqrt(1 - a * a) - 1)
 };
-get._z._a4 = function(a) {
+get._z._a4 = function (a) {
     if (a < 0) {
         return 0
     }
@@ -2388,7 +2387,7 @@ get._z._a4 = function(a) {
     }
     return Math.sqrt(1 - (a - 1) * (a - 1))
 };
-get._z._ar = function(a) {
+get._z._ar = function (a) {
     if (a < 0) {
         return 0
     }
@@ -2397,7 +2396,7 @@ get._z._ar = function(a) {
     }
     return a < 1 ? -0.5 * (Math.sqrt(1 - a * a) - 1) : 0.5 * (Math.sqrt(1 - ((2 * a) - 2) * ((2 * a) - 2)) + 1)
 };
-get._z._zb = function(a) {
+get._z._zb = function (a) {
     if (a < 0) {
         return 0
     }
@@ -2418,7 +2417,7 @@ get._z._zb = function(a) {
         }
     }
 };
-get._z._as = function(a) {
+get._z._as = function (a) {
     if (a < 0) {
         return 0
     }
@@ -2427,7 +2426,7 @@ get._z._as = function(a) {
     }
     return a * a * ((1.70158 + 1) * a - 1.70158)
 };
-get._z._a3 = function(a) {
+get._z._a3 = function (a) {
     if (a < 0) {
         return 0
     }
@@ -2436,7 +2435,7 @@ get._z._a3 = function(a) {
     }
     return (a - 1) * (a - 1) * ((1.70158 + 1) * (a - 1) + 1.70158) + 1
 };
-get._z._ac = function(a) {
+get._z._ac = function (a) {
     if (a < 0) {
         return 0
     }
@@ -2445,12 +2444,12 @@ get._z._ac = function(a) {
     }
     return a < 0.5 ? 0.5 * (4 * a * a * ((2.5949 + 1) * 2 * a - 2.5949)) : 0.5 * ((2 * a - 2) * (2 * a - 2) * ((2.5949 + 1) * (2 * a - 2) + 2.5949) + 2)
 };
-get._z._aw = function(c) {
+get._z._aw = function (c) {
     var b = 2;
     var a = b * c;
     return a * Math.exp(1 - a)
 };
-get._z._R = function(c) {
+get._z._R = function (c) {
     var a = 2;
     var b = 2;
     return Math.exp(-a * Math.pow(c, b))
@@ -2463,7 +2462,7 @@ getOrgChart.buttons = {
     edit: '<g style="display:none;" class="get-btn" data-btn-id="[id]" data-btn-action="edit" transform="matrix(0.14,0,0,0.14,0,0)"><rect style="opacity:0" x="0" y="0" height="300" width="300" /><path fill="#E5E203" d="M149.996,0C67.157,0,0.001,67.161,0.001,149.997S67.157,300,149.996,300s150.003-67.163,150.003-150.003 S232.835,0,149.996,0z M221.302,107.945l-14.247,14.247l-29.001-28.999l-11.002,11.002l29.001,29.001l-71.132,71.126 l-28.999-28.996L84.92,186.328l28.999,28.999l-7.088,7.088l-0.135-0.135c-0.786,1.294-2.064,2.238-3.582,2.575l-27.043,6.03 c-0.405,0.091-0.817,0.135-1.224,0.135c-1.476,0-2.91-0.581-3.973-1.647c-1.364-1.359-1.932-3.322-1.512-5.203l6.027-27.035 c0.34-1.517,1.286-2.798,2.578-3.582l-0.137-0.137L192.3,78.941c1.678-1.675,4.404-1.675,6.082,0.005l22.922,22.917 C222.982,103.541,222.982,106.267,221.302,107.945z"/></g>',
     del: '<g style="display:none;" class="get-btn" data-btn-id="[id]" data-btn-action="del" transform="matrix(0.14,0,0,0.14,0,0)"><rect style="opacity:0" x="0" y="0" height="300" width="300" /><path fill="#686868" d="M112.782,205.804c10.644,7.166,23.449,11.355,37.218,11.355c36.837,0,66.808-29.971,66.808-66.808 c0-13.769-4.189-26.574-11.355-37.218L112.782,205.804z"/> <path stroke="#686868" fill="#686868" d="M150,83.542c-36.839,0-66.808,29.969-66.808,66.808c0,15.595,5.384,29.946,14.374,41.326l93.758-93.758 C179.946,88.926,165.595,83.542,150,83.542z"/><path stroke="#686868" fill="#CB2D0E" d="M149.997,0C67.158,0,0.003,67.161,0.003,149.997S67.158,300,149.997,300s150-67.163,150-150.003S232.837,0,149.997,0z M150,237.907c-48.28,0-87.557-39.28-87.557-87.557c0-48.28,39.277-87.557,87.557-87.557c48.277,0,87.557,39.277,87.557,87.557 C237.557,198.627,198.277,237.907,150,237.907z"/></g>',
     //AddJobTItle: '<g style="display:none;" class="get-btn" data-btn-id="[id]" data-btn-action="JobTItle" transform="matrix(0.14,0,0,0.14,0,0)"><rect style="opacity:0" x="0" y="0" height="500" width="300" /><path fill="green" d="M149.996,0C67.157,0,0.001,67.161,0.001,149.997S67.157,300,149.996,300s150.003-67.163,150.003-150.003 S232.835,0,149.996,0z M221.302,107.945l-14.247,14.247l-29.001-28.999l-11.002,11.002l29.001,29.001l-71.132,71.126 l-28.999-28.996L84.92,186.328l28.999,28.999l-7.088,7.088l-0.135-0.135c-0.786,1.294-2.064,2.238-3.582,2.575l-27.043,6.03 c-0.405,0.091-0.817,0.135-1.224,0.135c-1.476,0-2.91-0.581-3.973-1.647c-1.364-1.359-1.932-3.322-1.512-5.203l6.027-27.035 c0.34-1.517,1.286-2.798,2.578-3.582l-0.137-0.137L192.3,78.941c1.678-1.675,4.404-1.675,6.082,0.005l22.922,22.917 C222.982,103.541,222.982,106.267,221.302,107.945z"/></g>',
-    details: '<g style="display:none;" class="get-btn" data-btn-id="[id]" data-btn-action="details" transform="matrix(0.14,0,0,0.14,0,0)"><rect style="opacity:0" x="0" y="0" height="300" width="300" /><path fill="#686868" d="M139.414,96.193c-22.673,0-41.056,18.389-41.056,41.062c0,22.678,18.383,41.062,41.056,41.062 c22.678,0,41.059-18.383,41.059-41.062C180.474,114.582,162.094,96.193,139.414,96.193z M159.255,146.971h-12.06v12.06 c0,4.298-3.483,7.781-7.781,7.781c-4.298,0-7.781-3.483-7.781-7.781v-12.06h-12.06c-4.298,0-7.781-3.483-7.781-7.781 c0-4.298,3.483-7.781,7.781-7.781h12.06v-12.063c0-4.298,3.483-7.781,7.781-7.781c4.298,0,7.781,3.483,7.781,7.781v12.063h12.06 c4.298,0,7.781,3.483,7.781,7.781C167.036,143.488,163.555,146.971,159.255,146.971z"/><path stroke="#686868" fill="#686868" d="M149.997,0C67.157,0,0.001,67.158,0.001,149.995s67.156,150.003,149.995,150.003s150-67.163,150-150.003 S232.836,0,149.997,0z M225.438,221.254c-2.371,2.376-5.48,3.561-8.59,3.561s-6.217-1.185-8.593-3.561l-34.145-34.147 c-9.837,6.863-21.794,10.896-34.697,10.896c-33.548,0-60.742-27.196-60.742-60.744c0-33.548,27.194-60.742,60.742-60.742 c33.548,0,60.744,27.194,60.744,60.739c0,11.855-3.408,22.909-9.28,32.256l34.56,34.562 C230.185,208.817,230.185,216.512,225.438,221.254z"/></g>',    
+    details: '<g style="display:none;" class="get-btn" data-btn-id="[id]" data-btn-action="details" transform="matrix(0.14,0,0,0.14,0,0)"><rect style="opacity:0" x="0" y="0" height="300" width="300" /><path fill="#686868" d="M139.414,96.193c-22.673,0-41.056,18.389-41.056,41.062c0,22.678,18.383,41.062,41.056,41.062 c22.678,0,41.059-18.383,41.059-41.062C180.474,114.582,162.094,96.193,139.414,96.193z M159.255,146.971h-12.06v12.06 c0,4.298-3.483,7.781-7.781,7.781c-4.298,0-7.781-3.483-7.781-7.781v-12.06h-12.06c-4.298,0-7.781-3.483-7.781-7.781 c0-4.298,3.483-7.781,7.781-7.781h12.06v-12.063c0-4.298,3.483-7.781,7.781-7.781c4.298,0,7.781,3.483,7.781,7.781v12.063h12.06 c4.298,0,7.781,3.483,7.781,7.781C167.036,143.488,163.555,146.971,159.255,146.971z"/><path stroke="#686868" fill="#686868" d="M149.997,0C67.157,0,0.001,67.158,0.001,149.995s67.156,150.003,149.995,150.003s150-67.163,150-150.003 S232.836,0,149.997,0z M225.438,221.254c-2.371,2.376-5.48,3.561-8.59,3.561s-6.217-1.185-8.593-3.561l-34.145-34.147 c-9.837,6.863-21.794,10.896-34.697,10.896c-33.548,0-60.742-27.196-60.742-60.744c0-33.548,27.194-60.742,60.742-60.742 c33.548,0,60.744,27.194,60.744,60.739c0,11.855-3.408,22.909-9.28,32.256l34.56,34.562 C230.185,208.817,230.185,216.512,225.438,221.254z"/></g>',
     expColl: '<g transform="matrix(1,0,0,1,[xa],[ya])" data-btn-id="[id]" data-btn-action="expColl"><circle cx="[middle]" cy="[middle]" r="[middle]" class="get-btn" /><line x1="[start]" y1="[middle]" x2="[end]" y2="[middle]" class="get-btn get-btn-line" /><line style="display:[display]" x1="[middle]" y1="[start]" x2="[middle]" y2="[end]" class="get-btn get-btn-line" /></g>'
 };
 getOrgChart.buttons.draw = function () {
@@ -2475,10 +2474,10 @@ getOrgChart.buttons.draw = function () {
     a.push(getOrgChart.buttons.del);
     return a
 };
-if (typeof(get) == "undefined") {
+if (typeof (get) == "undefined") {
     get = {}
 }
-get._c = function() {
+get._c = function () {
     if (getOrgChart._c) {
         return getOrgChart._c
     }
@@ -2502,14 +2501,14 @@ get._c = function() {
     return getOrgChart._c
 };
 getOrgChart.util = {};
-getOrgChart.util._8 = function(a) {
+getOrgChart.util._8 = function (a) {
     var b = a._v.getAttribute("viewBox");
     b = "[" + b + "]";
     b = b.replace(/\ /g, ",");
     b = JSON.parse(b);
     return b
 };
-getOrgChart.util._6 = function(a) {
+getOrgChart.util._6 = function (a) {
     var b = a.getAttribute("transform");
     b = b.replace("matrix", "").replace("(", "").replace(")", "");
     if (get._c().msie) {
@@ -2520,10 +2519,10 @@ getOrgChart.util._6 = function(a) {
     b = JSON.parse(b);
     return b
 };
-getOrgChart.util._zM = function(a) {
+getOrgChart.util._zM = function (a) {
     return a.replace(/^\s+|\s+$/g, "")
 };
-getOrgChart.util._s = function(a, c) {
+getOrgChart.util._s = function (a, c) {
     if (a && Array.isArray(a)) {
         var b = a.length;
         while (b--) {
@@ -2534,14 +2533,14 @@ getOrgChart.util._s = function(a, c) {
     }
     return false
 };
-getOrgChart.util._G = function(b) {
+getOrgChart.util._G = function (b) {
     var a = "1";
     while (b[a]) {
         a++
     }
     return a
 };
-getOrgChart.util._7 = function(f) {
+getOrgChart.util._7 = function (f) {
     var h = [],
         c;
     var d = window.location.href.slice(window.location.href.indexOf("?") + 1).split("&");
@@ -2560,7 +2559,7 @@ getOrgChart.util._7 = function(f) {
     }
     return null
 };
-getOrgChart.util._zG = function(c) {
+getOrgChart.util._zG = function (c) {
     if (window.ActiveXObject) {
         var a = new ActiveXObject("Microsoft.XMLDOM");
         a.async = "false";
@@ -2571,16 +2570,16 @@ getOrgChart.util._zG = function(c) {
     }
     return a
 };
-getOrgChart.util._au = function(a) {
-    if (a == null || typeof(a) == "undefined" || a == "" || a == -1) {
+getOrgChart.util._au = function (a) {
+    if (a == null || typeof (a) == "undefined" || a == "" || a == -1) {
         return true
     }
     return false
 };
-getOrgChart.util._ah = function(a) {
+getOrgChart.util._ah = function (a) {
     return (typeof a !== "undefined" && a !== null)
 };
-getOrgChart.util._zq = function(b, a) {
+getOrgChart.util._zq = function (b, a) {
     var c = b.getBoundingClientRect();
     var d = a.touches[0].pageX - c.left;
     var f = a.touches[0].pageY - c.top;
@@ -2588,7 +2587,7 @@ getOrgChart.util._zq = function(b, a) {
     var h = a.touches[1].pageY - c.top;
     return Math.sqrt((d - g) * (d - g) + (f - h) * (f - h))
 };
-getOrgChart.util._zz = function(b, a) {
+getOrgChart.util._zz = function (b, a) {
     var c = b.getBoundingClientRect();
     var g = a.touches[0].pageX - c.left;
     var h = a.touches[0].pageY - c.top;
@@ -2598,7 +2597,7 @@ getOrgChart.util._zz = function(b, a) {
     var f = ((h - j) / 2 + j) / (c.height / 100);
     return [d, f]
 };
-getOrgChart.util._aC = function(a, b, c) {
+getOrgChart.util._aC = function (a, b, c) {
     var d = a.getBoundingClientRect();
     var g = b - d.left;
     var h = c - d.top;
@@ -2606,20 +2605,20 @@ getOrgChart.util._aC = function(a, b, c) {
     var f = (h) / (d.height / 100);
     return [e, f]
 };
-getOrgChart.util._zJ = function(b, a) {
+getOrgChart.util._zJ = function (b, a) {
     var c = b.getBoundingClientRect();
     var d = a.touches[0].pageX - c.left;
     var f = a.touches[0].pageY - c.top;
     return Math.sqrt((d - t2x) * (d - t2x) + (f - t2y) * (f - t2y))
 };
-getOrgChart.util._4 = function(a) {
+getOrgChart.util._4 = function (a) {
     var b = ["darkred", "pink", "darkorange", "orange", "lightgreen", "green", "lightteal", "teal", "lightblue", "blue", "darkpurple", "purple", "mediumdarkblue", "darkblue", "cordovan", "darkcordovan", "neutralgrey"];
     var c = b.indexOf(a);
     b.splice(c, 1);
     var d = Math.floor((Math.random() * 16) + 1);
     return b[d]
 };
-getOrgChart.util._ap = function(b, a) {
+getOrgChart.util._ap = function (b, a) {
     var c = b.parent;
     if (a >= 0) {
         a++
@@ -2632,7 +2631,7 @@ getOrgChart.util._ap = function(b, a) {
         return a
     }
 };
-get._c = function() {
+get._c = function () {
     if (getOrgChart._c) {
         return getOrgChart._c
     }
@@ -2655,10 +2654,10 @@ get._c = function() {
     };
     return getOrgChart._c
 };
-getOrgChart.prototype.showDetailsView = function(e) {
+getOrgChart.prototype.showDetailsView = function (e) {
     var j = this.nodes[e];
     var g = (j.parent == this._zu);
-    var b = function(r, p, s) {
+    var b = function (r, p, s) {
         var n = g ? 'style="display:none;"' : "";
         var t = "<select " + n + 'class="get-oc-select-parent"><option value="' + r + '">--select parent--</option>';
         var q = null;
@@ -2688,7 +2687,7 @@ getOrgChart.prototype.showDetailsView = function(e) {
         t += "</select>";
         return t
     };
-    var a = function(n, m) {
+    var a = function (n, m) {
         var p = '<select class="get-oc-labels"><option value="">--other--</option>';
         var o;
         for (i = 0; i < m.length; i++) {
@@ -2720,11 +2719,11 @@ getOrgChart.prototype.showDetailsView = function(e) {
     var c = this._X._U();
     var k = this;
     if (c) {
-        c.addEventListener("change", function() {
+        c.addEventListener("change", function () {
             var m = this.previousSibling;
             k._V("changeFileInputEvent", {
                 input: this,
-                callback: function(n) {
+                callback: function (n) {
                     m.value = n;
                     k._X._m.innerHTML = getOrgChart.DETAILS_VIEW_ID_IMAGE.replace("[src]", n)
                 }
@@ -2765,13 +2764,13 @@ getOrgChart.prototype.showDetailsView = function(e) {
         opacity: 1
     }, 200, get._z._ab)
 };
-getOrgChart.prototype._k = function() {
+getOrgChart.prototype._k = function () {
     var a = this._X._K();
     if (this._X._M()) {
         this._q(this._X._M(), "change", this._j)
     }
 };
-getOrgChart.prototype._j = function(m, a) {
+getOrgChart.prototype._j = function (m, a) {
     var n = this._X._J();
     var l = this._X._M();
     var k = l.value;
@@ -2795,11 +2794,11 @@ getOrgChart.prototype._j = function(m, a) {
     var b = this._X._U();
     var o = this;
     if (b) {
-        b.addEventListener("change", function() {
+        b.addEventListener("change", function () {
             var j = this.previousSibling;
             o._V("changeFileInputEvent", {
                 input: this,
-                callback: function(p) {
+                callback: function (p) {
                     j.value = p;
                     o._X._m.innerHTML = getOrgChart.DETAILS_VIEW_ID_IMAGE.replace("[src]", p)
                 }
@@ -2814,7 +2813,7 @@ getOrgChart.prototype._j = function(m, a) {
     }
     this._k()
 };
-getOrgChart.prototype._zi = function(e, a) {
+getOrgChart.prototype._zi = function (e, a) {
     if (this._S) {
         var b = this._X._I().value;
         var d;
@@ -2827,10 +2826,10 @@ getOrgChart.prototype._zi = function(e, a) {
     }
     this.showMainView()
 };
-getOrgChart.prototype._zV = function() {
+getOrgChart.prototype._zV = function () {
     this.showGridView()
 };
-getOrgChart.prototype.showGridView = function() {
+getOrgChart.prototype.showGridView = function () {
     var a = '<table cellpadding="0" cellspacing="0" border="0">';
     a += "<tr>";
     a += "<th>ID</th><th>Parent ID</th>";
@@ -2876,10 +2875,10 @@ getOrgChart.prototype.showGridView = function() {
         top: -this.theme.toolbarHeight * 2
     }, 200, get._z._a7)
 };
-getOrgChart.prototype._zT = function(b, a) {
+getOrgChart.prototype._zT = function (b, a) {
     this.showMainView()
 };
-getOrgChart.prototype.showMainView = function() {
+getOrgChart.prototype.showMainView = function () {
     this._X._t.style.top = this.theme.toolbarHeight + "px";
     this._X._t.style.left = "0px";
     this._X._u.style.top = "-9999px";
@@ -2895,10 +2894,10 @@ getOrgChart.prototype.showMainView = function() {
         }, 200, get._z._a7)
     }
 };
-getOrgChart.prototype._zg = function(b, a) {
+getOrgChart.prototype._zg = function (b, a) {
     this.print()
 };
-getOrgChart.prototype.print = function() {
+getOrgChart.prototype.print = function () {
     var b = this,
         d = this._X.element,
         k = this._X._zN,
@@ -2923,7 +2922,7 @@ getOrgChart.prototype.print = function() {
     a.appendChild(d);
     window.focus();
     window.print();
-    setTimeout(function() {
+    setTimeout(function () {
         h.appendChild(d);
         for (e = 0; e < c.length; e++) {
             var i = c[e];
@@ -2935,19 +2934,19 @@ getOrgChart.prototype.print = function() {
         b._an = false
     }, 1000)
 };
-getOrgChart.prototype._z6 = function() {
+getOrgChart.prototype._z6 = function () {
     this.zoom(true, true)
 };
-getOrgChart.prototype._z8 = function() {
+getOrgChart.prototype._z8 = function () {
     this.zoom(false, true)
 };
-getOrgChart.prototype._zl = function(b, a) {
+getOrgChart.prototype._zl = function (b, a) {
     this._zp = this._X._u.scrollTop + a[0].touches[0].pageY
 };
-getOrgChart.prototype._zo = function(b, a) {
+getOrgChart.prototype._zo = function (b, a) {
     this._X._u.scrollTop = this._zp - a[0].touches[0].pageY
 };
-getOrgChart.prototype._zQ = function(d, b) {
+getOrgChart.prototype._zQ = function (d, b) {
     this._X._n = undefined;
     var a = b[0].wheelDelta ? b[0].wheelDelta / 40 : b[0].detail ? -b[0].detail : 0;
     if (a) {
@@ -2957,13 +2956,13 @@ getOrgChart.prototype._zQ = function(d, b) {
     }
     return b[0].preventDefault() && false
 };
-getOrgChart.prototype._zh = function(b, a) {
+getOrgChart.prototype._zh = function (b, a) {
     var c = this;
-    window.setTimeout(function() {
+    window.setTimeout(function () {
         c.resize()
     }, 300)
 };
-getOrgChart.prototype._aE = function(g, b) {
+getOrgChart.prototype._aE = function (g, b) {
     this._X._n = undefined;
     if (this._a8.dragStart) {
         this._X._t.style.cursor = "move";
@@ -3025,7 +3024,7 @@ getOrgChart.prototype._aE = function(g, b) {
             }, {
                 right: -30,
                 opacity: 0
-            }, 500, get._z._ae, function() {
+            }, 500, get._z._ae, function () {
                 i._aV = null
             });
             get._z(i._X._al, {
@@ -3034,7 +3033,7 @@ getOrgChart.prototype._aE = function(g, b) {
             }, {
                 left: -30,
                 opacity: 0
-            }, 500, get._z._ae, function() {
+            }, 500, get._z._ae, function () {
                 i._aV = null
             });
             get._z(i._X._zK, {
@@ -3043,7 +3042,7 @@ getOrgChart.prototype._aE = function(g, b) {
             }, {
                 top: 19,
                 opacity: 0
-            }, 500, get._z._ae, function() {
+            }, 500, get._z._ae, function () {
                 i._aV = null
             });
             get._z(i._X._Q, {
@@ -3052,7 +3051,7 @@ getOrgChart.prototype._aE = function(g, b) {
             }, {
                 bottom: -30,
                 opacity: 0
-            }, 500, get._z._ae, function() {
+            }, 500, get._z._ae, function () {
                 i._aV = null
             })
         }
@@ -3060,7 +3059,7 @@ getOrgChart.prototype._aE = function(g, b) {
         this._aV = setTimeout(d, 4000)
     }
 };
-getOrgChart.prototype._aX = function(b, a) {
+getOrgChart.prototype._aX = function (b, a) {
     document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = "none";
     var c = getOrgChart.util._8(this._X);
     this._a8.dragStart = {
@@ -3070,11 +3069,11 @@ getOrgChart.prototype._aX = function(b, a) {
         viewBoxTop: c[1]
     }
 };
-getOrgChart.prototype._aD = function(b, a) {
+getOrgChart.prototype._aD = function (b, a) {
     this._a8.dragStart = null;
     this._X._t.style.cursor = "default"
 };
-getOrgChart.prototype.zoom = function(c, a, b) {
+getOrgChart.prototype.zoom = function (c, a, b) {
     if (this._z4) {
         return false
     }
@@ -3123,7 +3122,7 @@ getOrgChart.prototype.zoom = function(c, a, b) {
             viewBox: f
         }, {
             viewBox: j
-        }, 300, get._z._a3, function() {
+        }, 300, get._z._a3, function () {
             i._z4 = false
         })
     } else {
@@ -3132,34 +3131,34 @@ getOrgChart.prototype.zoom = function(c, a, b) {
     }
     return false
 };
-getOrgChart.prototype._aG = function(c, b) {
+getOrgChart.prototype._aG = function (c, b) {
     if (c.className.indexOf("get-disabled") > -1) {
         return false
     }
     var a = this;
     clearTimeout(this._zA.timer);
-    this._zA.timer = setTimeout(function() {
+    this._zA.timer = setTimeout(function () {
         a._zA.currentIndex++;
         a._l();
         a._az()
     }, 100)
 };
-getOrgChart.prototype._zf = function(c, b) {
+getOrgChart.prototype._zf = function (c, b) {
     if (c.className.indexOf("get-disabled") > -1) {
         return false
     }
     var a = this;
     clearTimeout(this._zA.timer);
-    this._zA.timer = setTimeout(function() {
+    this._zA.timer = setTimeout(function () {
         a._zA.currentIndex--;
         a._l();
         a._az()
     }, 100)
 };
-getOrgChart.prototype._zW = function(c, b) {
+getOrgChart.prototype._zW = function (c, b) {
     var a = this;
     clearTimeout(this._zA.timer);
-    this._zA.timer = setTimeout(function() {
+    this._zA.timer = setTimeout(function () {
         a._zA.found = a._F(a._X._zZ.value);
         a._zA.currentIndex = 0;
         a._l();
@@ -3167,10 +3166,10 @@ getOrgChart.prototype._zW = function(c, b) {
         a._az()
     }, 500)
 };
-getOrgChart.prototype._zS = function(c, b) {
+getOrgChart.prototype._zS = function (c, b) {
     var a = this;
     clearTimeout(this._zA.timer);
-    this._zA.timer = setTimeout(function() {
+    this._zA.timer = setTimeout(function () {
         a._zA.currentIndex = 0;
         a._zA.found = a._F(a._X._zZ.value);
         a._am();
@@ -3178,12 +3177,12 @@ getOrgChart.prototype._zS = function(c, b) {
         a._az()
     }, 100)
 };
-getOrgChart.prototype._az = function() {
+getOrgChart.prototype._az = function () {
     if (this._zA.found.length) {
         this.highlightNode(this._zA.found[this._zA.currentIndex].node.id)
     }
 };
-getOrgChart.prototype.highlightNode = function(c) {
+getOrgChart.prototype.highlightNode = function (c) {
     var a = this;
 
     function b() {
@@ -3191,7 +3190,7 @@ getOrgChart.prototype.highlightNode = function(c) {
         var e = getOrgChart.util._8(a._X);
         var f = d.x - a.initialViewBoxMatrix[2] / 2 + d.w / 2;
         var g = d.y - a.initialViewBoxMatrix[3] / 2 + d.h / 2;
-        a.move([f, g, a.initialViewBoxMatrix[2], a.initialViewBoxMatrix[3]], null, function() {
+        a.move([f, g, a.initialViewBoxMatrix[2], a.initialViewBoxMatrix[3]], null, function () {
             var i = a._X.getNodeById(c);
             var h = getOrgChart.util._6(i);
             var j = h.slice(0);
@@ -3203,12 +3202,12 @@ getOrgChart.prototype.highlightNode = function(c) {
                 transform: h
             }, {
                 transform: j
-            }, 200, get._z._ab, function(k) {
+            }, 200, get._z._ab, function (k) {
                 get._z(k[0], {
                     transform: j
                 }, {
                     transform: h
-                }, 200, get._z._a7, function() {})
+                }, 200, get._z._a7, function () { })
             })
         })
     }
@@ -3218,8 +3217,8 @@ getOrgChart.prototype.highlightNode = function(c) {
         b()
     }
 };
-getOrgChart.prototype._am = function(a) {};
-getOrgChart.prototype._l = function() {
+getOrgChart.prototype._am = function (a) { };
+getOrgChart.prototype._l = function () {
     if ((this._zA.currentIndex < this._zA.found.length - 1) && (this._zA.found.length != 0)) {
         this._X._aT.className = this._X._aT.className.replace(" get-disabled", "")
     } else {
@@ -3235,7 +3234,7 @@ getOrgChart.prototype._l = function() {
         }
     }
 };
-getOrgChart.prototype._F = function(g) {
+getOrgChart.prototype._F = function (g) {
     var e = [];
     if (g == "") {
         return e
@@ -3276,7 +3275,7 @@ getOrgChart.prototype._F = function(g) {
     e.sort(a);
     return e
 };
-getOrgChart.prototype._aK = function(g, a) {
+getOrgChart.prototype._aK = function (g, a) {
     var c = g.getAttribute("data-node-id");
     var e = this.nodes[c];
     var f = e.x + e.w - 15;
@@ -3292,7 +3291,7 @@ getOrgChart.prototype._aK = function(g, a) {
         this._zD("del", d, b, c)
     }
 };
-getOrgChart.prototype._aI = function(i, c) {
+getOrgChart.prototype._aI = function (i, c) {
     var b = c[0];
     b.preventDefault();
     this._aK(i, c);
@@ -3350,103 +3349,49 @@ getOrgChart.prototype._zD = function (a, d, e, c) {
     b.setAttribute("transform", "matrix(0.14,0,0,0.14," + d + "," + e + ")");
     b.setAttribute("data-btn-id", c)
 };
-getOrgChart.prototype._aH = function(d, a) {
+getOrgChart.prototype._aH = function (d, a) {
     var b = d.getAttribute("data-node-id");
     var c = this.nodes[b];
     if (!this._V("clickNodeEvent", {
-            node: c
-        })) {
+        node: c
+    })) {
         return
     }
 };
-getOrgChart.prototype._aY = function(d, b) {
+getOrgChart.prototype._aY = function (d, b) {
     b[0].preventDefault();
     var c = d.getAttribute("data-btn-id");
     var a = d.getAttribute("data-btn-action");
     if (a == "del") {
-        debugger
-        $.ajax({
-            type: "GET",
-            url: '../AdminSection/OrgChart/OpenJobPostingForm?CSVChartId=' + c, //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
-            success: function (Data) {
-                debugger
-                $("#AddDivContentToAddJob").html(Data)
-                $("#ModalAddJobPostal").modal('show');
-                $("#myModalForAddingJobTitle").modal('hide');
-            },
-            error: function (err) {
-            }
-        });
-        //this.removeNode(c)
-    } else {
+        //emoveNode(c)
+    }
+    else {
         if (a == "add") {
-            debugger
+            debugger          
             $.ajax({
-                type: "POST",
-                url: '../AdminSection/AdminDashboard/GetJobTitleById?CSVChartId=' + c, //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
+                type: "GET",
+                url: '../EPeople/OpenJobPostingForm?CSVChartId=' + c, //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
                 success: function (Data) {
                     debugger
-                    if (Data.length > 0) {
-                        $("#addJobTitleLabel").html("");
-                        $("#JobTitleId").val("");
-                        for (var ii = 0 ; ii < Data.length; ii++) {
-                            //$("#JobTitleId").val(Data[ii].parentId);
-                            var divID = $('#addJobTitleLabel div.dymanicDelete').length;
-                            $('#addJobTitleLabel').append('<div class="form-group row dymanicDelete d_' + ii + '"><div class="col-sm-10 getJobTitleData"><label class="col-sm-5 col-form-label">' + Data[ii].JobTitleLabel + '</label></div><a class="addjobtitleDeleterows col-sm-1"  id=d' + ii + ' jobtitleid =' + Data[ii].Id + '><i class="fa fa-trash addColorTrash fa-2x" style="cursor:pointer;margin-left: 30px;color:#cd0a2499;" aria-hidden="true"></i></a></div>');
-                        }
-                    }
-                    else {
-                        $("#addJobTitleLabel").html("");
-                        $("#JobTitleId").val("");
-                    }
-                    $("#myModalForAddingJobTitle").modal('show');
-                    $("#parentIdForJobTitle").val(c);
+                    $("#divOpenJobPostForm").html("");
+                    $("#divOpenJobPostForm").html(Data)
+                    $("#myModalToAddJobPost").modal('show');
                 },
                 error: function (err) {
                 }
-            }); 
+            });
             //this.insertNode(c)
         } else {
             if (a == "details") {
-               debugger
-                        homogeneous = new kendo.data.HierarchicalDataSource({
-                            transport: {
-                                read: {
-                                    url: "../AdminSection/OrgChart/GetAccessDataList",
-                                    data: { VST_Id: c },
-                                    dataType: "json"
-                                }
-                            },
-                            schema: {
-                                model: {
-                                    id: "id",
-                                    children: "item"
-                                }
-                            }
-                        });
                 debugger
-                        $("#treeData").kendoTreeView({
-                            dataSource: homogeneous,
-                            dataTextField: ["name"],
-                            checkboxes: {
-                                checkChildren: true
-                            },
-                            check: onCheck,
-                            dataBound: function (e) {
-                                var treeView = $('#treeData').data('kendoTreeView');
-                                treeView.expand(".k-item");
-                            }
-                        });
-                        $("#myModalForAccessManagementTree").modal('show');
-                       
-               // this.showDetailsView(c)
+                // this.showDetailsView(c)
             } else {
                 if (a == "edit") {
                     $.ajax({
                         type: "POST",
                         url: '../AdminSection/AdminDashboard/GetChartDetailsById?CSVChartId=' + c, //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
                         success: function (Data) {
-                            debugger
+
                             var roles;
                             if (Data != null) {
                                 $("#SeatingName").val(Data.SeatingName);
@@ -3457,8 +3402,8 @@ getOrgChart.prototype._aY = function(d, b) {
                                 if (Data.RolesAndResponsibility != null) {
                                     roles = Data.RolesAndResponsibility;
                                 }
-                                if(Data.JobDescription != null){
-                                   var getJobData =  Data.JobDescription.split("|");                                
+                                if (Data.JobDescription != null) {
+                                    var getJobData = Data.JobDescription.split("|");
                                     for (var ii = 0 ; ii < getJobData.length; ii++) {
                                         //$("#JobTitleId").val(Data[ii].parentId);
                                         if (ii == 0) {
@@ -3469,7 +3414,7 @@ getOrgChart.prototype._aY = function(d, b) {
                                                 var divID = $('#routeDiv div.dymanicAdd').length;
                                                 $('#routeDiv').append('<div class="form-group row dymanicAdd d' + divID + '"><div class="col-sm-11 getJobDesc"><input type="text" class="form-control input-rounded required" placeholder="Job Description" value="' + getJobData[ii] + '" /></div><div class="col-sm-1"><a class="addrows minusSign" id=d' + divID + '><i class="fa fa-minus-circle addColorPlusMinus fa-2x" style="cursor:pointer;" aria-hidden="true"></i></a></div></div>');
                                             }
-                                         }
+                                        }
                                     }
                                 }
                             }
@@ -3495,15 +3440,15 @@ getOrgChart.prototype._aY = function(d, b) {
         }
     }
 };
-getOrgChart.prototype.showEditView = function(a) {
+getOrgChart.prototype.showEditView = function (a) {
     this._S = true;
     this.showDetailsView(a)
 };
-getOrgChart.prototype.expand = function(b, a) {
+getOrgChart.prototype.expand = function (b, a) {
     var c = this;
     b.collapsed = getOrgChart.EXPANDED;
     if ((b.parent == this._zu) || (b.parent == null)) {
-        this.loadFromJSON(this.nodes, true, function() {
+        this.loadFromJSON(this.nodes, true, function () {
             c._V("updatedEvent");
             a()
         })
@@ -3511,7 +3456,7 @@ getOrgChart.prototype.expand = function(b, a) {
         this.expand(b.parent, a)
     }
 };
-getOrgChart.prototype.expandOrCollapse = function(a) {
+getOrgChart.prototype.expandOrCollapse = function (a) {
     var c = this;
     var b = this.nodes[a];
     this._a2 = {
@@ -3524,14 +3469,14 @@ getOrgChart.prototype.expandOrCollapse = function(a) {
     } else {
         b.collapsed = getOrgChart.EXPANDED
     }
-    this.loadFromJSON(this.nodes, true, function() {
+    this.loadFromJSON(this.nodes, true, function () {
         if (b.collapsed == getOrgChart.EXPANDED) {
             c.moveToMostDeepChildForNode(b)
         }
         c._V("updatedEvent")
     })
 };
-getOrgChart.prototype.moveToMostDeepChildForNode = function(b) {
+getOrgChart.prototype.moveToMostDeepChildForNode = function (b) {
     var c = getOrgChart.util._8(this._X);
     b = b.getMostDeepChild(this.nodes);
     var d = this.config.siblingSeparation / 2;
@@ -3568,7 +3513,7 @@ getOrgChart.prototype.moveToMostDeepChildForNode = function(b) {
             break
     }
 };
-getOrgChart.prototype.insertNode = function(e, b, c) {
+getOrgChart.prototype.insertNode = function (e, b, c) {
     var a = {
         id: c,
         pid: e,
@@ -3592,24 +3537,24 @@ getOrgChart.prototype.insertNode = function(e, b, c) {
     }
     if (b == undefined || b == null) {
         b = {};
-        this.config.primaryFields.forEach(function(h) {
+        this.config.primaryFields.forEach(function (h) {
             b[h] = h
         })
     }
     var d = this._h(c, e, null, b, false);
     d.x = f.x;
     d.y = f.y;
-    this.loadFromJSON(this.nodes, true, function() {
+    this.loadFromJSON(this.nodes, true, function () {
         g.moveToMostDeepChildForNode(g.nodes[d.id]);
         g._V("updatedEvent")
     });
     return d
 };
-getOrgChart.prototype.removeNode = function(b) {
+getOrgChart.prototype.removeNode = function (b) {
     var e = this;
     if (!this._V("removeNodeEvent", {
-            id: b
-        })) {
+        id: b
+    })) {
         return
     }
     var a = this.nodes[b];
@@ -3620,32 +3565,32 @@ getOrgChart.prototype.removeNode = function(b) {
     var c = this._X.getNodeById(b);
     c.parentNode.removeChild(c);
     delete this.nodes[b];
-    this.loadFromJSON(this.nodes, true, function() {
+    this.loadFromJSON(this.nodes, true, function () {
         e._V("updatedEvent")
     })
 };
-getOrgChart.prototype.updateNode = function(b, d, a) {
+getOrgChart.prototype.updateNode = function (b, d, a) {
     var e = this;
     var c = e.nodes[b];
     if (this._V("updateNodeEvent", {
-            node: c,
-            pid: d,
-            data: a
-        })) {
+        node: c,
+        pid: d,
+        data: a
+    })) {
         c.pid = d;
         c.data = a;
-        this.loadFromJSON(this.nodes, true, function() {
+        this.loadFromJSON(this.nodes, true, function () {
             e._V("updatedEvent")
         })
     }
 };
-getOrgChart.prototype._h = function(d, f, g, c, a, b) {
+getOrgChart.prototype._h = function (d, f, g, c, a, b) {
     var h = this.config.customize[d] && this.config.customize[d].theme ? getOrgChart.themes[this.config.customize[d].theme] : this.theme;
     a = (a == undefined ? getOrgChart.NOT_DEFINED : a);
     var e = new getOrgChart.node(d, f, g, c, h.size, this.config.photoFields, a, b);
     if (!this._V("createNodeEvent", {
-            node: e
-        })) {
+        node: e
+    })) {
         return null
     }
     if (this.nodes[d]) {
@@ -3663,7 +3608,7 @@ getOrgChart.prototype._h = function(d, f, g, c, a, b) {
     }
     return e
 };
-getOrgChart.prototype._aN = function(k, c) {
+getOrgChart.prototype._aN = function (k, c) {
     c[0].stopPropagation();
     c[0].preventDefault();
     document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = "none";
@@ -3683,7 +3628,7 @@ getOrgChart.prototype._aN = function(k, c) {
     var a = k.cloneNode(true);
     l.insertBefore(a, l.firstChild);
     a.style.opacity = 0.7;
-    var f = function(q) {
+    var f = function (q) {
         if (b) {
             var r = q.clientX;
             var s = q.clientY;
@@ -3694,7 +3639,7 @@ getOrgChart.prototype._aN = function(k, c) {
             a.setAttribute("transform", "matrix(" + d.toString() + ")")
         }
     };
-    var e = function(q) {
+    var e = function (q) {
         l.removeChild(a);
         l.removeEventListener("mousemove", f);
         l.removeEventListener("mouseup", e);
@@ -3712,22 +3657,22 @@ getOrgChart.prototype._aN = function(k, c) {
     l.addEventListener("mouseup", e);
     l.addEventListener("mouseleave", e)
 };
-getOrgChart.prototype._aJ = function(b, a) {
+getOrgChart.prototype._aJ = function (b, a) {
     if (!this.config.enableDragDrop) {
         return
     }
     this._ak = b.getAttribute("data-node-id")
 };
-getOrgChart.prototype._aU = function(b, a) {
+getOrgChart.prototype._aU = function (b, a) {
     if (!this.config.enableDragDrop) {
         return
     }
     this._ak = null
 };
-getOrgChart.prototype._C = function(b, a) {
+getOrgChart.prototype._C = function (b, a) {
     this.exportToImage()
 };
-getOrgChart.prototype.exportToImage = function() {
+getOrgChart.prototype.exportToImage = function () {
     var d = document.getElementById("getExportChartDiv");
     if (!d) {
         d = document.createElement("div");
@@ -3794,9 +3739,9 @@ getOrgChart.prototype.exportToImage = function() {
             s()
         } else {
             var u = new XMLHttpRequest();
-            u.onload = function() {
+            u.onload = function () {
                 var v = new FileReader();
-                v.onloadend = function() {
+                v.onloadend = function () {
                     t.href.baseVal = v.result;
                     s()
                 };
@@ -3809,7 +3754,7 @@ getOrgChart.prototype.exportToImage = function() {
     }
 
     function e(u, t, s) {
-        p(u[t], function() {
+        p(u[t], function () {
             if (u.length > t - 1) {
                 t++;
                 var v = u[t];
@@ -3846,7 +3791,7 @@ getOrgChart.prototype.exportToImage = function() {
                 break
             }
         }
-        get._a._B(s, null, function(u) {
+        get._a._B(s, null, function (u) {
             var v = (new XMLSerializer()).serializeToString(o._X._v);
             v = v.replace("<svg", '<svg width="' + width + '" height="' + height + '" ').replace("<defs/>", '<defs/><g class="' + o._X._zO.className + '"><g class="get-oc-tb"><g class="get-oc-c">').replace("</defs>", '</defs><g class="' + o._X._zO.className + '"><g class="get-oc-tb"><g class="get-oc-c">').replace("<defs/>", '<defs><style type="text/css">' + u + "</style></defs>").replace("</defs>", '<style type="text/css">' + u + "</style></defs>").replace("</svg>", "</g></g></g></svg>");
             var w = window.URL || window.webkitURL || window;
@@ -3855,7 +3800,7 @@ getOrgChart.prototype.exportToImage = function() {
                 type: "image/svg+xml;charset=utf-8"
             });
             var z = w.createObjectURL(y);
-            x.onload = function() {
+            x.onload = function () {
                 c.drawImage(x, 0, 0);
                 w.revokeObjectURL(z);
                 var A = a.toDataURL("image/png").replace("image/png", "image/octet-stream");
@@ -3864,11 +3809,11 @@ getOrgChart.prototype.exportToImage = function() {
             x.src = z
         })
     }
-    e(h, 0, function() {
+    e(h, 0, function () {
         f()
     })
 };
-getOrgChart.prototype.load = function() {
+getOrgChart.prototype.load = function () {
     var a = this.config.dataSource;
     if (!a) {
         return
@@ -3876,7 +3821,7 @@ getOrgChart.prototype.load = function() {
     if (a.constructor && (a.constructor.toString().indexOf("HTML") > -1)) {
         this.loadFromHTMLTable(a)
     } else {
-        if (typeof(a) == "string") {
+        if (typeof (a) == "string") {
             this.loadFromXML(a)
         } else {
             a = JSON.parse(JSON.stringify(this.config.dataSource));
@@ -3884,7 +3829,7 @@ getOrgChart.prototype.load = function() {
         }
     }
 };
-getOrgChart.prototype.loadFromJSON = function(g, q, a) {
+getOrgChart.prototype.loadFromJSON = function (g, q, a) {
     this._zm = 0;
     this._zj = 0;
     this._zu = new getOrgChart.node(-1, null, null, null, 2, 2);
@@ -3977,7 +3922,7 @@ getOrgChart.prototype.loadFromJSON = function(g, q, a) {
     }
     this.draw(a)
 };
-getOrgChart.prototype.loadFromHTMLTable = function(c) {
+getOrgChart.prototype.loadFromHTMLTable = function (c) {
     var d = c.rows[0];
     var g = [];
     for (var e = 1; e < c.rows.length; e++) {
@@ -3991,23 +3936,23 @@ getOrgChart.prototype.loadFromHTMLTable = function(c) {
     }
     this.loadFromJSON(g)
 };
-getOrgChart.prototype.loadFromXML = function(c) {
+getOrgChart.prototype.loadFromXML = function (c) {
     var a = this;
     var b = [];
-    get._a._B(c, null, function(d) {
+    get._a._B(c, null, function (d) {
         a._aA = 0;
         a._aQ(d, null, true, b);
         a.loadFromJSON(b)
     }, "xml")
 };
-getOrgChart.prototype.loadFromXMLDocument = function(b) {
+getOrgChart.prototype.loadFromXMLDocument = function (b) {
     var a = [];
     var c = getOrgChart.util._zG(b);
     this._aA = 0;
     this._aQ(c, null, true, a);
     this.loadFromJSON(a)
 };
-getOrgChart.prototype._aQ = function(m, l, d, h) {
+getOrgChart.prototype._aQ = function (m, l, d, h) {
     var a = this;
     if (m.nodeType == 1) {
         if (m.attributes.length > 0) {
@@ -4039,11 +3984,11 @@ getOrgChart.prototype._aQ = function(m, l, d, h) {
         }
     }
 };
-if (typeof(get) == "undefined") {
+if (typeof (get) == "undefined") {
     get = {}
 }
 get._a = {};
-get._a._z1 = function() {
+get._a._z1 = function () {
     var a;
     if (window.XMLHttpRequest) {
         return new XMLHttpRequest()
@@ -4051,10 +3996,10 @@ get._a._z1 = function() {
         return new ActiveXObject("Microsoft.XMLHTTP")
     }
 };
-get._a._zE = function(f, a, d, c, b, e) {
+get._a._zE = function (f, a, d, c, b, e) {
     var g = get._a._z1();
     g.open(d, f, e);
-    g.onreadystatechange = function() {
+    g.onreadystatechange = function () {
         if (!get._c().msie && c == "xml" && g.readyState == 4) {
             a(g.responseXML)
         } else {
@@ -4080,21 +4025,21 @@ get._a._zE = function(f, a, d, c, b, e) {
     }
     g.send(b)
 };
-get._a._B = function(g, b, a, c, f) {
+get._a._B = function (g, b, a, c, f) {
     var e = [];
     for (var d in b) {
         e.push(encodeURIComponent(d) + "=" + encodeURIComponent(b[d]))
     }
     get._a._zE(g + "?" + e.join("&"), a, "GET", c, null, f)
 };
-get._a._zx = function(g, b, a, c, f) {
+get._a._zx = function (g, b, a, c, f) {
     var e = [];
     for (var d in b) {
         e.push(encodeURIComponent(d) + "=" + encodeURIComponent(b[d]))
     }
     get._a._zE(g, a, "POST", c, e.join("&"), f)
 };
-getOrgChart.prototype._y = function(d, b) {
+getOrgChart.prototype._y = function (d, b) {
     var a = b[0];
     var c = new Date().getTime();
     if (b[0].touches.length == 1) {
@@ -4112,7 +4057,7 @@ getOrgChart.prototype._y = function(d, b) {
         this._za = getOrgChart.util._zq(this._X._v, a)
     }
 };
-getOrgChart.prototype._b = function(j, d) {
+getOrgChart.prototype._b = function (j, d) {
     var c = d[0];
     c.preventDefault();
     if (d[0].touches.length == 1) {
@@ -4140,11 +4085,11 @@ getOrgChart.prototype._b = function(j, d) {
         this._za = b
     }
 };
-getOrgChart.prototype._g = function(d, b) {
+getOrgChart.prototype._g = function (d, b) {
     var a = b[0];
     var c = new Date().getTime()
 };
-getOrgChart.prototype._a1 = function(i, c) {
+getOrgChart.prototype._a1 = function (i, c) {
     var b = c[0];
     this._aH(i, c);
     this._aK(i, c);
@@ -4195,48 +4140,13 @@ getOrgChart.prototype._a1 = function(i, c) {
         this._aM.time = h
     }
 };
-getOrgChart.prototype._aP = function(c, b) {
+getOrgChart.prototype._aP = function (c, b) {
     var a = b[0];
     a.preventDefault()
 };
-getOrgChart.prototype._aL = function(c, b) {
+getOrgChart.prototype._aL = function (c, b) {
     var a = b[0];
     if (a.touches && a.touches.length && a.touches.length == 0) {
         this._aM = null
     }
 };
-
-
-//to delete
-$(".deletejobtitlerows").click(function (e) {
-    debugger
-    var jobId = this.attr("jobtitleid");
-    var valId = $(this).find('option:selected').val();
-    $.ajax({
-        type: "POST",
-        url: '../AdminSection/AdminDashboard/DeleteJobTitleById?JobTitleId=' + jobId, //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
-        success: function (Data) {
-            debugger
-            if (Data != null) {
-                debugger
-                $("#addJobTitleLabel").html("");
-                $("#JobTitleId").val("");
-                if (Data.JobTitleLabel != null) {
-                    $("#JobTitleId").val(Data.Id);
-                    var nameArr = Data.JobTitleLabel.split('|');
-                    for (var splited = 0; splited < nameArr.length; splited++) {
-                        debugger
-                        if (nameArr[splited] != " " && nameArr[splited] != "") {
-                            var divID = $('#addJobTitleLabel div.dymanicDelete').length;
-                            $('#addJobTitleLabel').append('<div class="form-group row dymanicDelete d_' + splited + '"><div class="col-sm-10 getJobTitleData"><label class="col-sm-2 col-form-label">' + nameArr[splited] + '</label></div><div class="col-sm-1"><a class="addjobtitleDeleterows" id=d' + splited + ' jobtitleid =' + Data.Id + '><i class="fa fa-trash addColorTrash fa-2x" style="cursor:pointer;margin-left: 30px;color:#cd0a2499;" aria-hidden="true"></i></a></div></div>');
-                        }
-                    }
-                }
-            }
-            $("#myModalForAddingJobTitle").modal('show');
-            $("#parentIdForJobTitle").val(c);
-        },
-        error: function (err) {
-        }
-    });
-});

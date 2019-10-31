@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -873,6 +874,14 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 return PartialView("~/Views/NewAdmin/ePeople/_FilesEmployeeManagement.cshtml", model);
             }
         }
+
+        public FileStreamResult GetPDF(string fileName)
+        {
+            var str = fileName.Replace("'", "");
+            FileStream fs = new FileStream(Server.MapPath("~/Content/FilesRGY/"+ str), FileMode.Open, FileAccess.Read);           
+            return File(fs, "application/pdf");           
+        }
+
         [HttpPost]
         public ActionResult UploadFiles(string EMPId, long FileId, string FileName)
         {
@@ -941,7 +950,105 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 return Json("No files selected.");
             }
         }
+
+        public ActionResult FileDownload(string id, string fileName)
+        {
+            try
+            {
+                if (fileName != null)
+                {
+                    //id = Cryptography.GetDecryptedData(Id, true);
+                    //var _eFleetFuelModel = _IeFleetFuelingManager.GeteFleetFuelingDetailsById(Convert.ToInt64(Id));
+                    if (!string.IsNullOrEmpty(fileName))
+                    {
+                        string RootDirectory = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath;
+                        string IsFileExist = RootDirectory + FilePath.Replace("~", "");
+                        RootDirectory = RootDirectory + FilePath.Replace("~", "") + fileName;
+                        //RootDirectory = RootDirectory.Substring(0, RootDirectory.Length - 2).Substring(0, RootDirectory.Substring(0, RootDirectory.Length - 2).LastIndexOf("\\")) + DisclaimerFormPath + ObjWorkRequestAssignmentModel.DisclaimerForm;
+                        if (Directory.GetFiles(IsFileExist, fileName).Length > 0)
+                        {
+                            byte[] fileBytes = System.IO.File.ReadAllBytes(RootDirectory);
+                            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, fileName);
+                        }
+                        else
+                        {
+                            RootDirectory = System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath + FilePath.Replace("~", "") + "FileNotFound.png";
+                            byte[] fileBytes = System.IO.File.ReadAllBytes(RootDirectory);
+                            return File(fileBytes, System.Net.Mime.MediaTypeNames.Application.Octet, "FileNotFound.png");
+                        }
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else { return Json("Id is Empty!"); }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message;
+                return Json(ex.Message);
+            }
+        }
         #endregion edit Forms
 
+        #region Job Post
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 30-Oct-2019
+        /// Created For : To open Job posting form
+        /// </summary>
+        /// <param name="CSVChartId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult OpenJobPostingForm(long CSVChartId)
+        {
+            var objeTracLoginModel = new eTracLoginModel();
+            var model = new JobPostingModel();
+            var chartModel = new AddChartModel();
+            var _manager = new VehicleSeatingChartManager();
+            if (CSVChartId > 0)
+            {
+                var data = _manager.GetChartData(CSVChartId);
+                ViewBag.GetHiringManagerList = _manager.GetChartHiringManager(CSVChartId);
+                ViewBag.JobTitle = _manager.GetJobTitleData(CSVChartId);
+                if (data != null)
+                {
+                    chartModel.DepartmentName = data.DepartmentName;
+                    chartModel.SeatingName = data.SeatingName;
+                    chartModel.JobDescription = data.JobDescription.Replace("|", ",");
+                    chartModel.RolesAndResponsibility = data.RolesAndResponsibility;
+                    chartModel.Id = data.Id;
+                    model.AddChartModel = chartModel;
+                }
+            }
+            //return Json("Acc", JsonRequestBehavior.AllowGet);
+            return PartialView("~/Views/NewAdmin/ePeople/JobPosting/_AddJobPostingFromVSC.cshtml", model);
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 30-Oct-2019
+        /// Created For : To save Job posting
+        /// </summary>
+        /// <param name="Obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult SaveJobPostingData(JobPostingModel Obj)
+        {
+            var _manager = new VehicleSeatingChartManager();
+            try
+            {
+                if (Obj != null)
+                {
+                    var isSaved = _manager.SaveJobPosting(Obj);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return null;
+        }
+        #endregion Job Post
     }
 }

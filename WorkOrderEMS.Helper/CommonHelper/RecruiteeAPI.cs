@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
+//using Windows.Web.Http.Filters;
 using System.Text;
 using System.Threading.Tasks;
 using WorkOrderEMS;
@@ -12,16 +13,23 @@ namespace WorkOrderEMS.Helper
 {
     public class RecruiteeAPI 
     {
-        static readonly HttpClient client = new HttpClient();
+        //static readonly 
         public async Task<string> Index(string URL)
         {
             string returnString = "";
             // Call asynchronous network methods in a try/catch block to handle exceptions.
             try
             {
+                //var httpFilter = new Windows.Web.Http.Filters.HttpBaseProtocolFilter();
+                //httpFilter.CacheControl.ReadBehavior =
+                //    Windows.Web.Http.Filters.HttpCacheReadBehavior.MostRecent;
+                //var httpClient = new Windows.Web.Http.HttpClient(httpFilter);
+                HttpClient client = new HttpClient();
+                client.CancelPendingRequests();
                 System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Ssl3 | System.Net.SecurityProtocolType.Tls | System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;
                 var header = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes("terralwright@eliteparkingsoa.com:Elite19!!")));///username:password for auth
                 client.DefaultRequestHeaders.Authorization = header;
+                
                 var result = await client.GetAsync(URL, HttpCompletionOption.ResponseHeadersRead)
                              .ConfigureAwait(false);
                 //HttpResponseMessage response = await client.GetAsync("https://api.recruitee.com/c/40359/offers/");
@@ -106,6 +114,51 @@ namespace WorkOrderEMS.Helper
 
             }
             return str;
+        }
+        public string POSTreq(string PostData, string url)
+        {
+            string returnData = "";
+            try
+            {
+                using (HttpClient objClint = new HttpClient())
+                {
+                    System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Ssl3 | System.Net.SecurityProtocolType.Tls | System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;
+                    objClint.BaseAddress = new Uri("https://api.recruitee.com");
+                    objClint.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "dkpEaHRJSzJiempBUlVNOC9QN3JlUT09");
+                    //objClint.DefaultRequestHeaders.Add("OData-MaxVersion", "4.0");
+                    //objClint.DefaultRequestHeaders.Add("OData-Version", "4.0");
+                    //var dynamicJson = new RecruiteeOfferModel();
+                    //dynamicJson.offer = new Offer
+                    //{
+                    //    department = "Test",
+                    //    description = "Test",
+                    //    kind = "Test",
+                    //    title = "Test"
+                    //};
+                    #region Demo Code
+                    //string message = JsonConvert.SerializeObject(dynamicJson);
+                    var stringContent = new StringContent(PostData, Encoding.UTF8, "application/json");
+                    //var response = objClint.PostAsync(url, stringContent).Result;
+                    var response = objClint.PostAsync(url, stringContent).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        returnData = response.Content.ReadAsStringAsync().Result;
+                    }
+                    else
+                    {
+                        var result = response.Content.ReadAsStringAsync().Result;
+                    }
+                    #endregion Demo Code
+
+                }
+
+            }
+
+            catch (Exception Ex)
+            {
+
+            }
+            return returnData;
         }
     }
 }

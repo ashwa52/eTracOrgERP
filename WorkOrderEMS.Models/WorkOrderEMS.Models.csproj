@@ -261,6 +261,8 @@
     <Compile Include="NewAdminModel\OnboardingDetailRequestModel.cs" />
     <Compile Include="NewAdminModel\PerformanceModel.cs" />
     <Compile Include="NewAdminModel\RecruiteeModels\CandidateGetModel.cs" />
+    <Compile Include="NewAdminModel\RecruiteeModels\Candidate\PerCandidateModel.cs" />
+    <Compile Include="NewAdminModel\RecruiteeModels\RecruiteeOfferAddModel.cs" />
     <Compile Include="NewAdminModel\RecruiteeOfferModel.cs" />
     <Compile Include="PDF\CharitableContributionForm.cs" />
     <Compile Include="PDF\PDFSaveModel.cs" />

@@ -25,5 +25,6 @@ namespace WorkOrderEMS.Models
         public string EmployeeId { get; set; }
         public string Action { get; set; }
         public long? Id { get; set; }
+        public string AttachedFileLink { get; set; }
     }
 }

@@ -1,19 +1,30 @@
-﻿function JobPosting(chatId) {
-    debugger
-    $("#myModalForAddingJobPostingAdmin").modal('show');
-    //$.ajax({
-    //    type: "GET",
-    //    contentType: "application/json",
-    //    url: '../AdminSection/OrgChart/OpenJobPostingForm?CSVChartId=' + chatId, //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
-    //    success: function (result) {
-    //        debugger
-    //        //$("#divPostingJob").html("");
-    //        //$("#Maintaindiv").html(result);
-    //        $("#myModalForAddingJobPostingAdmin").modal('show');
-    //        //$("#myModalForAddingJobTitle").modal('show');
-    //        //$("#myModalForAddingJobTitle").modal('show');
-    //    },
-    //    error: function (err) {
-    //    }
-    //});
-}
+﻿$(document).ready(function () { 
+    $("#SaveJobPost").click(function () {
+        debugger
+
+        if ($("#SaveJobPostingFormVSC").valid()); {
+            var value = $("#JobTitleId option:selected").text();
+            $("SaveJobTitleWithText").val(value);
+            var dataObject = $("#SaveJobPostingFormVSC").serialize();
+            $.ajax({
+                type: 'POST',
+                //contentType: "application/json",
+                url: '../EPeople/SaveJobPostingData/',
+                data: dataObject,//{ objWorkRequestAssignmentModel: dataObject, fileData: file },
+                beforeSend: function () {
+                    new fn_showMaskloader('Please wait...');
+                },
+                success: function (result) {
+                    debugger
+                    $("#divOpenJobPostForm").html("");
+                    $("#myModalToAddJobPost").modal('hide');
+                },
+                error: function (err) {
+                },
+                complete: function () {
+                    fn_hideMaskloader();
+                }
+            });
+        }
+    });
+});

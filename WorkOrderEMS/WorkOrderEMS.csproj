@@ -1555,6 +1555,7 @@
     <Content Include="Content\NewAdminContent\CSS\clockPicker.css" />
     <Content Include="Content\NewAdminContent\CSS\Common.css" />
     <Content Include="Content\NewAdminContent\CSS\FilesUICss.css" />
+    <Content Include="Content\NewAdminContent\CSS\GetOrgForRequision.css" />
     <Content Include="Content\NewAdminContent\CSS\MultstepWizardNew.css" />
     <Content Include="Content\NewAdminContent\CSS\perfect-scrollbar.css" />
     <Content Include="Content\NewAdminContent\CSS\RadioButtonCSS.css" />
@@ -1680,6 +1681,7 @@
     <Content Include="Content\NewAdminContent\JQUERY\Charts\serial.js" />
     <Content Include="Content\NewAdminContent\JQUERY\Charts\serial3.js" />
     <Content Include="Content\NewAdminContent\JQUERY\clockPicker.js" />
+    <Content Include="Content\NewAdminContent\JQUERY\GetOrgForRequisition.js" />
     <Content Include="Content\NewAdminContent\JQUERY\MaskLoaderNew.js" />
     <Content Include="Content\NewAdminContent\JQUERY\tinymce.min.js" />
     <Content Include="Content\NewAdminContent\VENDOR\amcharts\amcharts.js" />
@@ -5903,6 +5905,7 @@
     <Content Include="Content\NewAdminContent\AnimatedChart\SCSS\_horizontal.scss" />
     <Content Include="Content\NewAdminContent\AnimatedChart\SCSS\_vertical.scss" />
     <Content Include="Areas\AdminSection\Views\OrgChart\_AddJobPosting.cshtml" />
+    <Content Include="Areas\AdminSection\Views\OrgChart\_JobTitilView.cshtml" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\eTrac - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\eTrac - Web Deploy.pubxml" />
@@ -6473,6 +6476,7 @@
     <Content Include="Views\NewAdmin\userAssessmentView.cshtml" />
     <Content Include="Views\NewAdmin\userEvaluationView.cshtml" />
     <Content Include="Views\NewAdmin\userExpectationsView.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\JobPosting\_AddJobPostingFromVSC.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
