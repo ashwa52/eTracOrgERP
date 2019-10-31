@@ -432,6 +432,7 @@ namespace WorkOrderEMS.BusinessLogic
                             experience = null,
                         };
                         #region Demo Code
+                        //string tt = JsonConvert.SerializeObject()
                         string message = JsonConvert.SerializeObject(dynamicJson);
                         var getSttring = modelRecruitee.POSTreq(message, url);
                         // Obj.AddChartModel.Action = "I";
