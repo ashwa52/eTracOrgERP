@@ -5933,6 +5933,7 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Parameter Name="EEL_FinencialYear" Type="varchar" Mode="In" />
           <Parameter Name="EEL_FinQuarter" Type="varchar" Mode="In" />
           <Parameter Name="EEL_AnswerSelf" Type="char" Mode="In" />
+          <Parameter Name="EEL_Comments" Type="varchar(max)" Mode="In" />
           <Parameter Name="EEL_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetSubModule" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -14092,18 +14093,6 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
             <Parameter Name="EmployeeId" Mode="In" Type="String" />
             <Parameter Name="AssessmentType" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spSetSelfAssessmentQuarterly">
-            <Parameter Name="Action" Mode="In" Type="String" />
-            <Parameter Name="EmployeeID" Mode="In" Type="String" />
-            <Parameter Name="EmployeeIdManager" Mode="In" Type="String" />
-            <Parameter Name="ASQ_QuestionType" Mode="In" Type="String" />
-            <Parameter Name="ASQ_Id" Mode="In" Type="Int64" />
-            <Parameter Name="EEL_Id" Mode="In" Type="Int64" />
-            <Parameter Name="EEL_FinencialYear" Mode="In" Type="String" />
-            <Parameter Name="EEL_FinQuarter" Mode="In" Type="String" />
-            <Parameter Name="EEL_AnswerSelf" Mode="In" Type="String" />
-            <Parameter Name="EEL_IsActive" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="spGetAssessmentList306090" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetAssessmentList306090_Result1)">
           <Parameter Name="EmployeeId" Mode="In" Type="String" />
           </FunctionImport>
@@ -14147,7 +14136,20 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
             <Parameter Name="API_IsActive" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetHiringManager" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetHiringManager_Result)">
-            <Parameter Name="VST_Id" Mode="In" Type="Int64" />
+          <Parameter Name="VST_Id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spSetSelfAssessmentQuarterly">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="EmployeeIdManager" Mode="In" Type="String" />
+            <Parameter Name="ASQ_QuestionType" Mode="In" Type="String" />
+            <Parameter Name="ASQ_Id" Mode="In" Type="Int64" />
+            <Parameter Name="EEL_Id" Mode="In" Type="Int64" />
+            <Parameter Name="EEL_FinencialYear" Mode="In" Type="String" />
+            <Parameter Name="EEL_FinQuarter" Mode="In" Type="String" />
+            <Parameter Name="EEL_AnswerSelf" Mode="In" Type="String" />
+            <Parameter Name="EEL_Comments" Mode="In" Type="String" />
+            <Parameter Name="EEL_IsActive" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Proc_GetAllWorkAssignedToEmployee_Result">
@@ -22520,7 +22522,6 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <FunctionImportMapping FunctionImportName="spSetEvaluationQuarterly" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetEvaluationQuarterly" />
           <FunctionImportMapping FunctionImportName="spSetReview306090" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetReview306090" />
           <FunctionImportMapping FunctionImportName="spSetSelfAssessment306090Submmit" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetSelfAssessment306090Submmit" />
-          <FunctionImportMapping FunctionImportName="spSetSelfAssessmentQuarterly" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetSelfAssessmentQuarterly" />
           <FunctionImportMapping FunctionImportName="spGetAssessmentList306090" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetAssessmentList306090">
             <ResultMapping>
               <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetAssessmentList306090_Result1">
@@ -22550,6 +22551,7 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetSelfAssessmentQuarterly" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetSelfAssessmentQuarterly" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

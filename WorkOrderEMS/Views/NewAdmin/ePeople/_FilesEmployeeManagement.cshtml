@@ -14,9 +14,9 @@
     <input type="hidden" value="@ViewBag.EmployeeID" id="EmployeeIdFile" />
     <div class="col-md-12">
         <div class="devider top">
-            <img src="" id="EmployeeImage" class="employeeImage" />
-            <label class="marignClass">Name : </label><span class="marignClass" id="EmployeeName">@ViewBag.EmployeeID</span>
-            <label class="marignClass">Designation : </label><span class="marignClass" id="EmployeeDesignation">@ViewBag.EmployeeName</span>
+            <img src="@ViewBag.ImageUser" id="EmployeeImage" class="employeeImage" />
+            <label class="marignClass">Name : </label><span class="marignClass" id="EmployeeName"><label>@ViewBag.EmployeeID</label></span>
+            <label class="marignClass">Designation : </label><span class="marignClass" id="EmployeeDesignation"><label>@ViewBag.EmployeeName</label></span>
         </div>
         <hr class="hrHeight" />
         <div class="row">

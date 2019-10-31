@@ -5849,51 +5849,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetSelfAssessment306090Submmit", employeeIdParameter, assessmentTypeParameter);
         }
     
-        public virtual int spSetSelfAssessmentQuarterly(string action, string employeeID, string employeeIdManager, string aSQ_QuestionType, Nullable<long> aSQ_Id, Nullable<long> eEL_Id, string eEL_FinencialYear, string eEL_FinQuarter, string eEL_AnswerSelf, string eEL_IsActive)
-        {
-            var actionParameter = action != null ?
-                new ObjectParameter("Action", action) :
-                new ObjectParameter("Action", typeof(string));
-    
-            var employeeIDParameter = employeeID != null ?
-                new ObjectParameter("EmployeeID", employeeID) :
-                new ObjectParameter("EmployeeID", typeof(string));
-    
-            var employeeIdManagerParameter = employeeIdManager != null ?
-                new ObjectParameter("EmployeeIdManager", employeeIdManager) :
-                new ObjectParameter("EmployeeIdManager", typeof(string));
-    
-            var aSQ_QuestionTypeParameter = aSQ_QuestionType != null ?
-                new ObjectParameter("ASQ_QuestionType", aSQ_QuestionType) :
-                new ObjectParameter("ASQ_QuestionType", typeof(string));
-    
-            var aSQ_IdParameter = aSQ_Id.HasValue ?
-                new ObjectParameter("ASQ_Id", aSQ_Id) :
-                new ObjectParameter("ASQ_Id", typeof(long));
-    
-            var eEL_IdParameter = eEL_Id.HasValue ?
-                new ObjectParameter("EEL_Id", eEL_Id) :
-                new ObjectParameter("EEL_Id", typeof(long));
-    
-            var eEL_FinencialYearParameter = eEL_FinencialYear != null ?
-                new ObjectParameter("EEL_FinencialYear", eEL_FinencialYear) :
-                new ObjectParameter("EEL_FinencialYear", typeof(string));
-    
-            var eEL_FinQuarterParameter = eEL_FinQuarter != null ?
-                new ObjectParameter("EEL_FinQuarter", eEL_FinQuarter) :
-                new ObjectParameter("EEL_FinQuarter", typeof(string));
-    
-            var eEL_AnswerSelfParameter = eEL_AnswerSelf != null ?
-                new ObjectParameter("EEL_AnswerSelf", eEL_AnswerSelf) :
-                new ObjectParameter("EEL_AnswerSelf", typeof(string));
-    
-            var eEL_IsActiveParameter = eEL_IsActive != null ?
-                new ObjectParameter("EEL_IsActive", eEL_IsActive) :
-                new ObjectParameter("EEL_IsActive", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetSelfAssessmentQuarterly", actionParameter, employeeIDParameter, employeeIdManagerParameter, aSQ_QuestionTypeParameter, aSQ_IdParameter, eEL_IdParameter, eEL_FinencialYearParameter, eEL_FinQuarterParameter, eEL_AnswerSelfParameter, eEL_IsActiveParameter);
-        }
-    
         public virtual ObjectResult<spGetAssessmentList306090_Result1> spGetAssessmentList306090(string employeeId)
         {
             var employeeIdParameter = employeeId != null ?
@@ -6060,6 +6015,55 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("VST_Id", typeof(long));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetHiringManager_Result>("spGetHiringManager", vST_IdParameter);
+        }
+    
+        public virtual int spSetSelfAssessmentQuarterly(string action, string employeeID, string employeeIdManager, string aSQ_QuestionType, Nullable<long> aSQ_Id, Nullable<long> eEL_Id, string eEL_FinencialYear, string eEL_FinQuarter, string eEL_AnswerSelf, string eEL_Comments, string eEL_IsActive)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var employeeIDParameter = employeeID != null ?
+                new ObjectParameter("EmployeeID", employeeID) :
+                new ObjectParameter("EmployeeID", typeof(string));
+    
+            var employeeIdManagerParameter = employeeIdManager != null ?
+                new ObjectParameter("EmployeeIdManager", employeeIdManager) :
+                new ObjectParameter("EmployeeIdManager", typeof(string));
+    
+            var aSQ_QuestionTypeParameter = aSQ_QuestionType != null ?
+                new ObjectParameter("ASQ_QuestionType", aSQ_QuestionType) :
+                new ObjectParameter("ASQ_QuestionType", typeof(string));
+    
+            var aSQ_IdParameter = aSQ_Id.HasValue ?
+                new ObjectParameter("ASQ_Id", aSQ_Id) :
+                new ObjectParameter("ASQ_Id", typeof(long));
+    
+            var eEL_IdParameter = eEL_Id.HasValue ?
+                new ObjectParameter("EEL_Id", eEL_Id) :
+                new ObjectParameter("EEL_Id", typeof(long));
+    
+            var eEL_FinencialYearParameter = eEL_FinencialYear != null ?
+                new ObjectParameter("EEL_FinencialYear", eEL_FinencialYear) :
+                new ObjectParameter("EEL_FinencialYear", typeof(string));
+    
+            var eEL_FinQuarterParameter = eEL_FinQuarter != null ?
+                new ObjectParameter("EEL_FinQuarter", eEL_FinQuarter) :
+                new ObjectParameter("EEL_FinQuarter", typeof(string));
+    
+            var eEL_AnswerSelfParameter = eEL_AnswerSelf != null ?
+                new ObjectParameter("EEL_AnswerSelf", eEL_AnswerSelf) :
+                new ObjectParameter("EEL_AnswerSelf", typeof(string));
+    
+            var eEL_CommentsParameter = eEL_Comments != null ?
+                new ObjectParameter("EEL_Comments", eEL_Comments) :
+                new ObjectParameter("EEL_Comments", typeof(string));
+    
+            var eEL_IsActiveParameter = eEL_IsActive != null ?
+                new ObjectParameter("EEL_IsActive", eEL_IsActive) :
+                new ObjectParameter("EEL_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetSelfAssessmentQuarterly", actionParameter, employeeIDParameter, employeeIdManagerParameter, aSQ_QuestionTypeParameter, aSQ_IdParameter, eEL_IdParameter, eEL_FinencialYearParameter, eEL_FinQuarterParameter, eEL_AnswerSelfParameter, eEL_CommentsParameter, eEL_IsActiveParameter);
         }
     }
 }
