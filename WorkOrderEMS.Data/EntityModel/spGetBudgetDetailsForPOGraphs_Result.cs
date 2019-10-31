@@ -11,10 +11,9 @@ namespace WorkOrderEMS.Data.EntityModel
 {
     using System;
     
-    public partial class spSetEmployee_Result1
+    public partial class spGetBudgetDetailsForPOGraphs_Result
     {
-        public string EmployeeID { get; set; }
-        public long UserId { get; set; }
-        public string Password { get; set; }
+        public decimal BudgetAmount { get; set; }
+        public string Years { get; set; }
     }
 }

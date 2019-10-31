@@ -30,6 +30,8 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
         ServiceResponseModel<List<POListModel>> GetAllPOListForMobile(POCommonServiceModel objPOCommonServiceModel);
         string SendMailToManagerForBudget(long UserId, decimal CalculateRemainingAmt, long CostCodeData, long LocationData, long Vendordata);
         List<POListModel> GetAllSelfPOList(long? UserId, long? LocationId, string status, long? UserTypeId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy);
-        PODetail GetApprovalResponseToSaveQBKId(POApproveRejectModel objPOApproveRejectModel, POListModel objListData);
+        PODetail GetApprovalResponseToSaveQBKId(POApproveRejectModel objPOApproveRejectModel, POListModel objListData); 
+        POApproveRejectModel GetPODetailsForGraphs(long Userid);
+        List<GetBudgetDetailsForPOSGraphs> GetAllBudgetDetailsForPOGraphs();
     }
 }

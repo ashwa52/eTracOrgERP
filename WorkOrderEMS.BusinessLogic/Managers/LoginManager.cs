@@ -386,7 +386,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             try
             {
                 string mypassword = Cryptography.GetEncryptedData(loginViewModel.Password, true); 
-                //string mypassword23 = Cryptography.GetDecryptedData("Hgh3FnTxNlViZ+s5XyXVUQ==", true); 
+                 //string mypassword23 = Cryptography.GetDecryptedData("RUNPkrIID3Q=", true); 
 
                 var authuser = ObjUserRepository.GetAll(x => x.AlternateEmail == loginViewModel.UserName && x.Password == mypassword && x.IsDeleted == false && x.IsLoginActive == true && x.IsEmailVerify == true).FirstOrDefault();
 

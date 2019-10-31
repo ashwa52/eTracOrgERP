@@ -11,13 +11,10 @@ namespace WorkOrderEMS.Data.EntityModel
 {
     using System;
     
-    public partial class spGetAssessmentQuestion_Result1
+    public partial class SP_GetAllDetailsOfPOForGraphs_Result
     {
-        public long ASQ_Id { get; set; }
-        public string ASQ_AssessmentType { get; set; }
-        public string ASQ_QuestionType { get; set; }
-        public string ASQ_Question { get; set; }
-        public string SAM_Id { get; set; }
-        public string SAM_Answer { get; set; }
+        public int OpenPOCount { get; set; }
+        public int UnauthorizePoCount { get; set; }
+        public int NotApprovedPoCount { get; set; }
     }
 }

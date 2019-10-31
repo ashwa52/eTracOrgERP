@@ -5325,15 +5325,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spUpdatePODetail", lPOD_IdParameter, pOD_RUL_IdParameter, pOD_RUL_LevelParameter, pOD_RUL_CurrentLevelParameter, lPOD_IsApproveParameter);
         }
     
-        public virtual int SP_GetAllDetailsOfPOForGraphs(Nullable<long> userId)
-        {
-            var userIdParameter = userId.HasValue ?
-                new ObjectParameter("UserId", userId) :
-                new ObjectParameter("UserId", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("SP_GetAllDetailsOfPOForGraphs", userIdParameter);
-        }
-    
         public virtual ObjectResult<spPaymentDesk_Result> spPaymentDesk(Nullable<long> locationId, string billId)
         {
             var locationIdParameter = locationId.HasValue ?
@@ -5406,6 +5397,20 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("CAT_IsActive", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetCompanyAccountTransaction", cATActionParameter, cAT_CMP_IdDrParameter, cAT_CMP_IdCrParameter, cAT_CAD_IdDrParameter, cAT_CAD_IdCrParameter, cAT_BLL_IdParameter, cAT_AmountParameter, cAT_ChequeNoParameter, cAT_PaymentModeParameter, cAT_DiscriptionParameter, cAT_PayByParameter, bLL_LocationIdParameter, cAT_BillTypeParameter, cAT_IsActiveParameter);
+        }
+    
+        public virtual ObjectResult<SP_GetAllDetailsOfPOForGraphs_Result> SP_GetAllDetailsOfPOForGraphs(Nullable<long> userId)
+        {
+            var userIdParameter = userId.HasValue ?
+                new ObjectParameter("UserId", userId) :
+                new ObjectParameter("UserId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<SP_GetAllDetailsOfPOForGraphs_Result>("SP_GetAllDetailsOfPOForGraphs", userIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetBudgetDetailsForPOGraphs_Result> spGetBudgetDetailsForPOGraphs()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetBudgetDetailsForPOGraphs_Result>("spGetBudgetDetailsForPOGraphs");
         }
     }
 }
