@@ -116,12 +116,43 @@
             }
 
         <tr class="table-light">
+            @if (item.QuestionType == "COMNT1")
+            {
+            <td class="ans" colspan="2" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
+                @if (isSubmitted == "S" || isSubmitted == "C")
+                {
+                    <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;" placeholder="Self Comment" multiple disabled />
+                }
+                else
+                {
+                    <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;" placeholder="Self Comment" multiple />
+
+                }
+            </td>
+            }
+            else if (item.QuestionType == "COMNT2")
+            {
+            <td class="ans" colspan="2" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
+                @if (isSubmitted == "S" || isSubmitted == "C")
+                {
+                    <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;" placeholder="Manager Comment" multiple disabled />
+                }
+                else
+                {
+                    <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;" placeholder="Manager Comment" multiple />
+
+                }
+            </td>
+            }
+            else
+            {
             <td class="que">
                 @Html.DisplayFor(modelItem => item.Question)
             </td>
+            }
             @if ((item.QuestionType == "P" || item.QuestionType == "A" || item.QuestionType == "R" || item.QuestionType == "K"))
             {
-                if (item.SAM_IsActive == "S" ||item.SAM_IsActive=="C")
+                if (item.SAM_IsActive == "S" || item.SAM_IsActive == "C")
                 {
                     <td class="ans asn" colspan="2" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
 
@@ -192,36 +223,36 @@
             }
             else if (item.QuestionType == "COMNT1")
             {
-                <td class="ans" colspan="2" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
-                    @if (isSubmitted == "S"||isSubmitted=="C")
-                    {
-                        <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;" placeholder="Comments" multiple disabled />
-                    }
-                    else
-                    {
-                        <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;" placeholder="Comments" multiple />
+                @*<td class="ans" colspan="2" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
+                @if (isSubmitted == "S"||isSubmitted=="C")
+                {
+                    <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;" placeholder="Comments" multiple disabled />
+                }
+                else
+                {
+                    <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;" placeholder="Comments" multiple />
 
-                    }
-                </td>
+                }
+            </td>*@
             }
             else if (item.QuestionType == "COMNT2")
             {
-                <td class="ans" colspan="2" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
-                    @if (isSubmitted == "S" ||isSubmitted=="C")
-                    {
-                        <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;" placeholder="Comments" multiple disabled />
-                    }
-                    else
-                    {
-                        <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;" placeholder="Comments" multiple />
+                @*<td class="ans" colspan="2" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
+                @if (isSubmitted == "S" ||isSubmitted=="C")
+                {
+                    <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;" placeholder="Comments" multiple disabled />
+                }
+                else
+                {
+                    <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;" placeholder="Comments" multiple />
 
-                    }
-                </td>
+                }
+            </td>*@
             }
 
             else
             {
-                if (item.SAM_IsActive == "S" ||item.SAM_IsActive=="C")
+                if (item.SAM_IsActive == "S" || item.SAM_IsActive == "C")
                 {
                     <td class="ans" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
 

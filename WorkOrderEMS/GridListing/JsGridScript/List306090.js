@@ -245,7 +245,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                     if (item.Status == "Review Submitted" || item.EMP_EmployeeID==$("#LoggedInUser").val()) {
                         return $("<div>").attr({ class: "btn-toolbar" }).append($customUserViewButton).append($customTextButton).append($customTextButton);
                     } else {
-                        return $("<div>").attr({ class: "btn-toolbar" }).append($customTextButton).append($customTextButton)
+                        return $("<div>").attr({ class: "btn-toolbar" }).append($customUserViewButton).append($customTextButton).append($customTextButton)
                     }
                 }
             },
