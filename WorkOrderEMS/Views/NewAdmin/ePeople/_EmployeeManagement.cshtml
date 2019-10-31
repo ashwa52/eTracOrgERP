@@ -580,58 +580,48 @@ chart.legend.position = "right";
 }); // end am4core.ready()
 </script>
 <script>
-    var chartDAR = AmCharts.makeChart("eTimediv", {
-    "theme": "none",
-    "type": "serial",
-    "startDuration": 7,
-    "dataProvider": [{
-        "Cost Code": "Travel",
-        "Budget": 4334,
-        "color": "#1740AE"
-    }, {
-        "Cost Code": "Marketing",
-        "Budget": 4000,
-        "color": "#758DCB"
-    }, {
-        "Cost Code": "Other Travel",
-        "Budget": 3466,
-        "color": "#86E2E8"
-    }],
-    "valueAxes": [{
-        "position": "left",
-        "axisAlpha":0,
-        "gridAlpha":0
-    }],
-    "graphs": [{
-        "balloonText": "[[category]]: <b>[[value]]</b>",
-        "colorField": "color",
-        "fillAlphas": 0.85,
-        "lineAlpha": 0.1,
-        "type": "column",
-        "topRadius":1,
-        "valueField": "Budget"
-    }],
-    "depth3D": 40,
-    "angle": 30,
-    "chartCursor": {
-        "categoryBalloonEnabled": false,
-        "cursorAlpha": 0,
-        "zoomable": false
-    },
-    "categoryField": "Cost Code",
-    "categoryAxis": {
-        "gridPosition": "start",
-        "axisAlpha":1,
-        "gridAlpha":0,
-        "labelRotation": 20,
-    },
-    "export": {
-    	"enabled": true
-     }
+am4core.ready(function() {
 
-}, 0);
+    // Themes begin
+    am4core.useTheme(am4themes_material);
+    am4core.useTheme(am4themes_animated);
+    // Themes end
+
+    // Create chart instance
+    var chart = am4core.create("eTimediv", am4charts.PieChart);
+
+    // Add data
+    chart.data = [{
+        "User Type": "Administrator",
+        "Count": 2//dataJSON.CountPanel[0].ManagerCount
+    }, {
+        "User Type": "Manager",
+        "Count": 4
+    }, {
+        "User Type": "Employee",
+        "Count": 12//dataJSON.CountPanel[0].EmpCount
+    }];
+
+    // Add and configure Series
+    var pieSeries = chart.series.push(new am4charts.PieSeries());
+    pieSeries.dataFields.value = "Count";
+    pieSeries.dataFields.category = "User Type";
+    pieSeries.innerRadius = am4core.percent(50);
+    pieSeries.ticks.template.disabled = true;
+    pieSeries.labels.template.disabled = true;
+
+    var rgm = new am4core.RadialGradientModifier();
+    rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, - 0.5);
+    pieSeries.slices.template.fillModifier = rgm;
+    pieSeries.slices.template.strokeModifier = rgm;
+    pieSeries.slices.template.strokeOpacity = 0.4;
+    pieSeries.slices.template.strokeWidth = 0;
+
+    chart.legend = new am4charts.Legend();
+    chart.legend.position = "right";
+
+});
 </script>
-
 <script>
     $(document).ready(function () {
         $("#SaveEditInfo").click(function () {
