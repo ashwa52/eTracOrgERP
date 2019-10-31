@@ -14,6 +14,7 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class CompanyAccountDetail
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CompanyAccountDetail()
         {
             this.CompanyAccountTransactions = new HashSet<CompanyAccountTransaction>();
@@ -36,11 +37,15 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<long> CAD_QBKId { get; set; }
         public string CAD_CardHolderName { get; set; }
         public Nullable<System.DateTime> CAD_CardExpirationDate { get; set; }
+        public string CAD_IsPrimary { get; set; }
     
         public virtual Company Company { get; set; }
         public virtual PaymentMode PaymentMode { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompanyAccountTransaction> CompanyAccountTransactions { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompanyAccountTransaction> CompanyAccountTransactions1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LogCompanyAccountDetail> LogCompanyAccountDetails { get; set; }
     }
 }

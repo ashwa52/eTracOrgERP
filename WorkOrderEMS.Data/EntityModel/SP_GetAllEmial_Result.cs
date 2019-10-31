@@ -20,7 +20,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string SentEmail { get; set; }
         public string Subject { get; set; }
         public Nullable<long> LocationId { get; set; }
-        public System.DateTime CreatedDate { get; set; }
+        public string CreatedDate { get; set; }
         public bool IsDeleted { get; set; }
         public bool isForgot { get; set; }
     }

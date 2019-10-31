@@ -54,6 +54,7 @@ namespace WorkOrderEMS.Controllers.Services
         private readonly IBillDataManager _IBillDataManager;
         private readonly IMiscellaneousManager _IMiscellaneousManager;
         private readonly ICommonMethod _ICommonMethod;
+        private readonly IFillableFormManager _IFillableFormManager; 
 
         private string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private string EmeregencyImagePath = ConfigurationManager.AppSettings["POEmeregencyImage"];
@@ -62,7 +63,7 @@ namespace WorkOrderEMS.Controllers.Services
         public ServiceApiController()
         {
         }
-        public ServiceApiController(IEfleetPM _IEfleetPM, IeFleetFuelingManager _IFuelingManager, IEfleetVehicle _IEfleetVehicle, IDARManager _IDARManager, IEfleetVehicleIncidentReport _IEfleetVehicleIncidentReport, IEfleetMaintenance _IEfleetMaintenance, IPassengerTracking _IPassengerTracking, IHoursOfServices _IHoursOfServices, IBillDataManager _IBillDataManager, IMiscellaneousManager _IMiscellaneousManager, ICommonMethod _ICommonMethod)
+        public ServiceApiController(IEfleetPM _IEfleetPM, IeFleetFuelingManager _IFuelingManager, IEfleetVehicle _IEfleetVehicle, IDARManager _IDARManager, IEfleetVehicleIncidentReport _IEfleetVehicleIncidentReport, IEfleetMaintenance _IEfleetMaintenance, IPassengerTracking _IPassengerTracking, IHoursOfServices _IHoursOfServices, IBillDataManager _IBillDataManager, IMiscellaneousManager _IMiscellaneousManager, ICommonMethod _ICommonMethod, IFillableFormManager _IFillableFormManager)
         {
             this._IFuelingManager = _IFuelingManager;
             this._IEfleetPM = _IEfleetPM;
@@ -75,12 +76,14 @@ namespace WorkOrderEMS.Controllers.Services
             this._IBillDataManager = _IBillDataManager;
             this._IMiscellaneousManager = _IMiscellaneousManager;
             this._ICommonMethod = _ICommonMethod;
+            this._IFillableFormManager = _IFillableFormManager;
         }
         // GET: api/ServiceApi
         public IHttpActionResult Get()
         {
             return Ok("Hello");
         }
+   
 
         /// <summary>Get eFleetVehicleID Details 
         /// <CreatedBy>Bhushan Dod</CreatedBY>
@@ -3460,8 +3463,7 @@ namespace WorkOrderEMS.Controllers.Services
             }
 
             return Ok(serviceresponse);
-        }
-
+        }		
         #region Facility
 
         /// <summary>
@@ -5310,6 +5312,145 @@ namespace WorkOrderEMS.Controllers.Services
             }
         }
         #endregion Notification
+
+        #region ePeople
+        [HttpPost]
+        public IHttpActionResult SendUserInfo(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<List<POListSelfServiceModel>>();
+            try
+            {
+                if (obj != null && obj.ServiceAuthKey != null)
+                {
+                    var result = _ICommonMethod.GetPOList(obj);
+                    if (result != null)
+                    {
+                        ObjServiceResponseModel.Response = result.Response;
+                        ObjServiceResponseModel.Message = result.Message;
+                        ObjServiceResponseModel.Data = result.Data;
+                    }
+                    else
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.NoRecordMessage();
+                        ObjServiceResponseModel.Data = null;
+                    }
+                    return Ok(ObjServiceResponseModel);
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.InvalidUser();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+
+        /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created For : To get All forms details by Form name
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult GetFormInfo(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<CommonFormModel>();
+            var model = new CommonFormModel();
+            try
+            {
+                if (obj != null && obj.ServiceAuthKey != null && obj.FormName != null && obj.UserId > 0)
+                {
+                    model.FormName = obj.FormName;
+                    model.ServiceAuthKey = obj.ServiceAuthKey;
+                    model.UserId = obj.UserId;
+                    var result = _IFillableFormManager.GetFormDetails(model);
+                    if (result != null)
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.Successful();
+                        ObjServiceResponseModel.Data = result;
+                    }
+                    else
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.NoRecordMessage();
+                        ObjServiceResponseModel.Data = null;
+                    }
+                    return Ok(ObjServiceResponseModel);
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.InvalidUser();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 24-Oct-2019
+        /// Created For : To get File type list 
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult GetFileListWithFileType(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<List<FormTypeListModel>>();
+            var model = new CommonFormModel();
+            try
+            {
+                if (obj != null && obj.ServiceAuthKey != null  && obj.UserId > 0)
+                {
+                    model.FormName = obj.FormName;
+                    model.ServiceAuthKey = obj.ServiceAuthKey;
+                    model.UserId = obj.UserId;
+                    var result = _IFillableFormManager.GetFileList(obj);
+                    if (result != null)
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.Successful();
+                        ObjServiceResponseModel.Data = result;
+                    }
+                    else
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.NoRecordMessage();
+                        ObjServiceResponseModel.Data = null;
+                    }
+                    return Ok(ObjServiceResponseModel);
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.InvalidUser();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+        #endregion ePeople
         #endregion New Employee App
     }
 }

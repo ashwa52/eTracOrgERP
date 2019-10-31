@@ -1,0 +1,312 @@
+﻿<style>
+    .top {
+        border: 1px solid #bbbbdb;
+        padding: 9px 18px 8px 21px;
+        background-image: linear-gradient(to right, #3588CD, #fff);
+    }
+</style>
+<link href="~/Content/NewAdminContent/CSS/FilesUICss.css" rel="stylesheet" />
+<div>
+    <div class="col-md-12">
+        <div class="devider top">
+            <img src="" id="EmployeeImage" class="employeeImage" />
+            <label class="marignClass">Name : </label><span class="marignClass" id="EmployeeName"></span>
+            <label class="marignClass">Designation : </label><span class="marignClass" id="EmployeeDesignation"></span>
+        </div>
+        <hr class="hrHeight" />
+        <div class="row">
+            <div class="col-md-8"><i class="fa fa-folder-open greenFileOpen" onclick="myFunctionGreenFiles()" title="Green Files" aria-hidden="true"></i></div>
+            <div class="col-md-4">
+            </div>
+        </div>
+        <div class="col-md-12" id="openGreenFile" style="text-align:center;display:none;">
+            <div class=" inline">
+                <div class="devider">
+                    <div class="grn-icn">
+                        <div class="int">
+                            <i class="fa fa-list fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                        </div>
+                        <div class="lock">
+                            <i class="fa fa-lock" style="color:#FFDFB0" aria-hidden="true"></i>
+                        </div>
+                        <div class="faemail">
+                            <i class="fa fa-envelope" title="E-mail" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <label>W-4 Form</label>
+            </div>
+            <div class="inline">
+                <div class="devider">
+                    <div class="grn-icn">
+                        <div class="int">
+                            <i class="fa fa-table fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                        </div>
+                        <div class="lock">
+                            <i class="fa fa-lock" style="color:#FFDFB0" aria-hidden="true"></i>
+                        </div>
+                        <div class="faemail">
+                            <i class="fa fa-envelope" title="E-mail" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <label>I-9 Form</label>
+            </div>
+
+        </div>
+        <hr />
+        <div class="col-md-12"><i class="fa fa-folder-open yellowFileOpen" onclick="myFunctionYellowFiles()" title="Yellow Files" aria-hidden="true"></i></div>
+        <div class="col-md-12" id="openYellowFile" style="text-align:center;display:none;">
+            <div class=" inline">
+                <div class="devider">
+                    <div class="yellowsky">
+                        <div class="int">
+                            <i class="fa fa-file-image-o fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                        </div>
+                        <div class="lock">
+                            <i class="fa fa-lock" style="color:#FFDFB0" aria-hidden="true"></i>
+                        </div>
+                        <div class="faemail">
+                            <i class="fa fa-envelope" title="E-mail" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <label>Photo Release Form</label>
+            </div>
+            <div class="inline">
+                <div class="devider">
+                    <div class="yellowsky">
+                        <div class="int">
+                            <i class="fa fa-exclamation fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                        </div>
+                        <div class="lock">
+                            <i class="fa fa-lock" style="color:#FFDFB0" aria-hidden="true"></i>
+                        </div>
+                        <div class="faemail">
+                            <i class="fa fa-envelope" title="E-mail" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <label>Confidentiality Agreement</label>
+            </div>
+            <div class="inline" onclick="OpenForm('educationVerificationForm')">
+                <div class="devider">
+                    <div class="yellowsky">
+                        <div class="int">
+                            <i class="fa fa-graduation-cap fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                        </div>
+                        <div class="lock">
+                            <i class="fa fa-lock" style="color:#FFDFB0" aria-hidden="true"></i>
+                        </div>
+                        <div class="faemail">
+                            <i class="fa fa-envelope" title="E-mail" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <label>Education Verification Form</label>
+            </div>
+            <div class="inline">
+                <div class="devider">
+                    <div class="yellowsky">
+                        <div class="int">
+                            <i class="fa fa-credit-card fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                        </div>
+                        <div class="lock">
+                            <i class="fa fa-lock" style="color:#FFDFB0" aria-hidden="true"></i>
+                        </div>
+                        <div class="faemail">
+                            <i class="fa fa-envelope" title="E-mail" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <label>Creditcard Authorization Form</label>
+            </div>
+            <div class="inline">
+                <div class="yellowsky">
+                    <div class="int">
+                        <i class="fa fa-users fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                    </div>
+                    <div class="lock">
+                        <i class="fa fa-lock" style="color:#FFDFB0" aria-hidden="true"></i>
+                    </div>
+                    <div class="faemail">
+                        <i class="fa fa-envelope" title="E-mail" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <label>Previous Employment</label>
+            </div>
+        </div>
+        <hr />
+        <div class="col-md-12"><i class="fa fa-folder-open redFileOpen" onclick="myFunctionRedFiles()" title="Red Files" aria-hidden="true"></i></div>
+        <div class="col-md-12" id="openRedFile" style="text-align:center;display:none;">
+            <div class=" inline">
+                <div class="devider">
+                    <div class="redsky">
+                        <div class="int">
+                            <i class="fa fa-file-image-o fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <label>Photo Release Form</label>
+            </div>
+            <div class="inline">
+                <div class="devider">
+                    <div class="redsky">
+                        <div class="int">
+                            <i class="fa fa-exclamation fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <label>Confidentiality Agreement</label>
+            </div>
+            <div class="inline" onclick="OpenForm('educationVerificationForm')">
+                <div class="devider">
+                    <div class="redsky">
+                        <div class="int">
+                            <i class="fa fa-graduation-cap fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <label>Education Verification Form</label>
+            </div>
+            <div class="inline">
+                <div class="devider">
+                    <div class="redsky">
+                        <div class="int">
+                            <i class="fa fa-credit-card fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <label>Creditcard Authorization Form</label>
+            </div>
+            <div class="inline">
+                <div class="redsky">
+                    <div class="int">
+                        <i class="fa fa-users fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                    </div>
+                </div>
+                <label>Previous Employment</label>
+            </div>
+        </div>
+        <hr />
+        <div class="col-md-12"><i class="fa fa-folder-open blueFileOpen" onclick="myFunctionBlueFiles()" title="Blue Files" aria-hidden="true"></i></div>
+        <div class="col-md-12" id="openBlueFile" style="text-align:center;display:none;">
+            <div class=" inline">
+                <div class="devider">
+                    <div class="bluesky">
+                        <div class="int">
+                            <i class="fa fa-file-image-o fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <label>Photo Release Form</label>
+            </div>
+            <div class="inline">
+                <div class="devider">
+                    <div class="bluesky">
+                        <div class="int">
+                            <i class="fa fa-exclamation fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <label>Confidentiality Agreement</label>
+            </div>
+            <div class="inline" onclick="OpenForm('educationVerificationForm')">
+                <div class="devider">
+                    <div class="bluesky">
+                        <div class="int">
+                            <i class="fa fa-graduation-cap fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <label>Education Verification Form</label>
+            </div>
+            <div class="inline">
+                <div class="devider">
+                    <div class="bluesky">
+                        <div class="int">
+                            <i class="fa fa-credit-card fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+                <label>Creditcard Authorization Form</label>
+            </div>
+            <div class="inline">
+                <div class="bluesky">
+                    <div class="int">
+                        <i class="fa fa-users fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                    </div>
+                </div>
+                <label>Previous Employment</label>
+            </div>
+        </div>
+    </div>
+    <hr />
+    @*<div class="col-md-12 bottom-area" style="margin-bottom: 12px;">
+            <div class="upload-btn-wrapper">
+                <button class="btn btn-default btnfile">Social Security Card</button>
+                <span> No File Choosen</span>
+                <input type="file" name="myfile" />
+            </div>
+        </div>
+        <div class="col-md-12 bottom-area" style="margin-bottom: 12px;">
+            <div class="upload-btn-wrapper">
+                <button class="btn btn-default btnfile"> Driver's License</button>
+                <span>No File Choosen</span>
+                <input type="file" name="myfile" />
+            </div>
+        </div>
+        <div class="col-md-12 bottom-area" style="margin-bottom: 12px;">
+            <div class="upload-btn-wrapper">
+                <button class="btn btn-default btnfile">Void Check</button>
+                <span> No File Choosen</span>
+                <input type="file" name="myfile" />
+            </div>
+        </div>*@
+</div>
+
+<!-- Modal -->
+@*<div class="modal fade" id="educationVerificationModel" role="dialog">
+        <div class="modal-dialog modal-lg">
+            @{ Html.RenderPartial("_educationVarificationForm");}
+        </div>
+    </div>*@
+
+<script>
+    function myFunctionGreenFiles() {
+        debugger
+      var x = document.getElementById("openGreenFile");
+  if (x.style.display === "none") {
+    x.style.display = "block";
+     } else {
+    x.style.display = "none";
+   }
+    }
+    function myFunctionYellowFiles() {
+        debugger
+        var x = document.getElementById("openYellowFile");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+    function myFunctionRedFiles() {
+        debugger
+        var x = document.getElementById("openRedFile");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+    function myFunctionBlueFiles() {
+        debugger
+        var x = document.getElementById("openBlueFile");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+</script>

@@ -14,6 +14,7 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class License
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public License()
         {
             this.LogLicenses = new HashSet<LogLicense>();
@@ -28,6 +29,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string LNC_IsActive { get; set; }
     
         public virtual Company Company { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LogLicense> LogLicenses { get; set; }
     }
 }

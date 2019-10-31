@@ -34,7 +34,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<long> AssignByUserId { get; set; }
         public string Remarks { get; set; }
         public long CreatedBy { get; set; }
-        public System.DateTime CreatedDate { get; set; }
+        public Nullable<System.DateTime> CreatedDate { get; set; }
         public Nullable<long> ModifiedBy { get; set; }
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public Nullable<bool> IsDeleted { get; set; }

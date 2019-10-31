@@ -162,6 +162,9 @@
 </div> <div class="clearfix"></div>
 <script>
     $(document).ready(function () {
+
+        $("#drp_MasterLocation1").hide();
+
         $('input[name="VendorAccountDetailsModel.BankName"]').change(function () {
             $('input[name="VendorAccountDetailsModel.BankName"]').val($(this).val());
         });

@@ -13,15 +13,15 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class SP_GetAllNotAssignedUsers_Result
     {
-        public Nullable<long> RN { get; set; }
+        public long RN { get; set; }
         public string CodeName { get; set; }
-        public Nullable<long> GlobalCodeId { get; set; }
-        public Nullable<long> UserId { get; set; }
+        public long GlobalCodeId { get; set; }
+        public long UserId { get; set; }
         public string UserEmail { get; set; }
         public string Name { get; set; }
-        public Nullable<long> Gender { get; set; }
-        public Nullable<System.DateTime> DOB { get; set; }
+        public long Gender { get; set; }
+        public System.DateTime DOB { get; set; }
         public string ProfileImage { get; set; }
-        public Nullable<bool> IsLoginActive { get; set; }
+        public bool IsLoginActive { get; set; }
     }
 }

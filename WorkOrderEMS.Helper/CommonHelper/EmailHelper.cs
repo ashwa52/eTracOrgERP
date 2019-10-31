@@ -1055,7 +1055,7 @@ namespace WorkOrderEMS.Helper
                         strMailBody = strMailBody.Replace("##LocationName", LocationName);
                         strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
                         break;
-
+                  
                 }
                 string body = System.Web.HttpUtility.HtmlDecode(strMailBody);
                 List<Attachment> tt = new List<Attachment>();

@@ -33,25 +33,43 @@
 
 
 }
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/c3/css/c3.min.css" rel="stylesheet" />
+
 <style>
-    .package {
-            margin-top: 0px !important;
-    display: inline-flex;
-    justify-items: center;
-    align-items: center;
-    text-align: center;
+    #chartdiv, #EmployeeCount1 {
+        width: 100%;
+        height: 250px;
     }
-     label .req {
+
+    .package {
+        margin-top: 0px !important;
+        display: inline-flex;
+        justify-items: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    label .req {
         margin: 2px;
         color: #ed2f35;
     }
-      .form-control {
+
+    .form-control {
         border: 1px solid #a0b3b0 !important;
     }
+
     .jsgrid-grid-body {
         height: 100% !important;
     }
-     .headerSize {
+
+    .headerSize {
         height: 36px;
     }
 </style>
@@ -72,21 +90,40 @@
             <div class="col-lg-6">
                 <a href="@Url.Action("UnApprovedVendor", "VendorManagement")">
                     <div class="pricing_table_content mt-5" style="background-color: #529F9D;color:white;">
-                       <p style="margin-top:-20px;font-size:20px;"><b> </b></p> 
-                        <div class="package" style="margin-top:-30px;"><i class="mdi mdi-cart" style="color:yellow;font-size:30px;margin-left: -10px;"></i>&nbsp;&nbsp;&nbsp;<b>SetUp Vendor</b></div>
+                        <p style="margin-top:-20px;font-size:20px;"><b> </b></p>
+                        <div class="package" style="margin-top:-30px;"><i class="mdi mdi-cart" style="color:yellow;font-size:30px;margin-left: -10px;"></i>&nbsp;&nbsp;&nbsp;<b>Add Vendor</b></div>
                     </div>
                 </a>
             </div>
             <div class="col-lg-6">
                 <a href="@Url.Action("CompanyList", "VendorManagement")" data-oldDash="Yes">
                     <div class="pricing_table_content mt-5" style="background-color: #3F8ADA;color:white;">
-                       <p style="margin-top:-20px;font-size:20px;"><b> </b></p> 
-                       <div class="package" style="margin-top:-30px;"><i class="mdi mdi-account-check" style="color:white;font-size:30px;"></i>&nbsp;&nbsp;&nbsp;<b>Vendor List</b></div>
+                        <p style="margin-top:-20px;font-size:20px;"><b> </b></p>
+                        <div class="package" style="margin-top:-30px;"><i class="mdi mdi-account-check" style="color:white;font-size:30px;"></i>&nbsp;&nbsp;&nbsp;<b>Vendor List</b></div>
                     </div>
                 </a>
             </div>
         </div>
-
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-body">
+                        <h4 class="card-title">Vendor Count</h4>
+                        <div id="EmployeeCount1"></div>
+                        @*<div id="EmployeeCount"></div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-body">
+                        <h4 class="card-title">Location Allocation</h4>
+                        <div id="chartdiv"></div>
+                        @*<div id="c3-combination"></div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
         <br>
         <div class="row">
             <div class="col-lg-12">
@@ -94,16 +131,16 @@
                     <div class="card-header" style="height: 45px;">
                         <div class="card-header headerSize" style="height:45px; padding:0;">
                             <a href="javascript:void(0)"><span><i id="AddCompany" class="mdi mdi-plus" style="color:white;font-size:50px;"></i></span></a>
-                             <div class="basic-form">
-                                    <div class="form-group">
-                                        <input id="SearchText" type="text" style="margin-top:15px;" class="form-control input-rounded" placeholder="Vendor Name" onkeyup="doSearch()">
-                                    </div>
-                                </div> 
+                            <div class="basic-form">
+                                <div class="form-group">
+                                    <input id="SearchText" type="text" style="margin-top:15px;" class="form-control input-rounded" placeholder="Vendor Name" onkeyup="doSearch()">
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">
                         <div id="jsGrid-basic" class="jsgrid" style="position: relative; height: 400px; width: 100%;">
-                             
+
                         </div>
                     </div>
                 </div>
@@ -470,7 +507,7 @@
                     <label class="col-sm-2 col-form-label">Comment<span class="req">*</span></label>
                     <div class="col-sm-4">
                         @Html.TextBoxFor(model => model.Comment, new { @class = "form-control", @id = "CommentVendor", @placeholder = "Comment", @style = "border-radios:0px;" })
-                       @*<span id="spn_valcomment" style="color:red"></span>*@
+                        @*<span id="spn_valcomment" style="color:red"></span>*@
                         @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
                     </div>
 
@@ -486,9 +523,126 @@
     </div>
 </div>
 
- 
+
 
 <script src="~/GridListing/JqGridScript/UnApprovedVendorList.js"></script>
+<script>
+    $(document).ready(function () {
+
+    $.ajax({
+        type: "GET",
+        url: "@Url.Action("GetDashboardForVendorCount", "VendorManagement")",
+        data: {},
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (dataJSON) {
+
+            am4core.ready(function () {
+
+                // Themes begin
+                am4core.useTheme(am4themes_animated);
+                // Themes end
+
+                // Create chart instance
+                var chart = am4core.create("EmployeeCount1", am4charts.PieChart);
+
+                // Add data
+                chart.data = [{
+                    "User": "Approved",
+                    "Count": dataJSON.model.ApprovedVendorCount,
+                }, {
+                    "User": "Waiting",
+                    "Count":dataJSON.model.WaitingVendorCount,
+                }, {
+                    "User": "Rejected",
+                    "Count": dataJSON.model.RejectedVendorCount,
+                }];
+
+                // Add and configure Series
+                var pieSeries = chart.series.push(new am4charts.PieSeries());
+                pieSeries.dataFields.value = "Count";
+                pieSeries.dataFields.category = "User";
+                pieSeries.innerRadius = am4core.percent(50);
+                pieSeries.ticks.template.disabled = true;
+                pieSeries.labels.template.disabled = true;
+
+                var rgm = new am4core.RadialGradientModifier();
+                rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
+                pieSeries.slices.template.fillModifier = rgm;
+                pieSeries.slices.template.strokeModifier = rgm;
+                pieSeries.slices.template.strokeOpacity = 0.4;
+                pieSeries.slices.template.strokeWidth = 0;
+
+                chart.legend = new am4charts.Legend();
+                chart.legend.position = "right";
+
+            }); // end am4core.ready()
+
+    }
+    });
+
+        var  chartData =[];
+         $.ajax({
+        type: "GET",
+        url: "@Url.Action("GetDashboardForLocationAllocaionVendorCount", "VendorManagement")",
+        data: {},
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+             success: function (_result) {
+                 $.each(_result.data, function (index, value)
+                 {
+                     chartData.push(value);
+
+                  });
+
+          AmCharts.makeChart("chartdiv", {
+        "theme": "none",
+        "type": "serial",
+        "startDuration": 7,
+          "dataProvider":chartData,
+
+
+        "valueAxes": [{
+            "position": "left",
+            "axisAlpha": 0,
+            "gridAlpha": 0
+        }],
+        "graphs": [{
+            "balloonText": "[[category]]: <b>[[value]]</b>",
+            "colorField": "colour",
+            "fillAlphas": 0.85,
+            "lineAlpha": 0.1,
+            "type": "column",
+            "topRadius": 1,
+            "valueField": "VendorCount"
+        }],
+        "depth3D": 40,
+        "angle": 30,
+        "chartCursor": {
+            "categoryBalloonEnabled": false,
+            "cursorAlpha": 0,
+            "zoomable": false
+        },
+        "categoryField": "LocationName",
+        "categoryAxis": {
+            "gridPosition": "start",
+            "axisAlpha": 1,
+            "gridAlpha": 0,
+            "labelRotation": 20,
+        },
+        "export": {
+            "enabled": true
+        }
+
+    }, 0);
+
+
+
+
+    }
+    });
+    });
+</script>
 @*<div class="content-body" style="min-height: 920px;">Cost Code
         <div class="container-fluid">
 

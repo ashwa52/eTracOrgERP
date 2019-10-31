@@ -1,8 +1,20 @@
 ﻿
 var clients;
 var $_LocationId = $("#drp_MasterLocation1 option:selected").val();
-var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_RequestedBy=0;//= $("#drp_MasterLocation option:selected").val();
+var $_OperationName = "", $_filterwrtype = "", $_filter = "", $_filterqrc = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_RequestedBy = 0;//= $("#drp_MasterLocation option:selected").val();
+$("#QRCTypeList").change(function () {
+    $_filterqrc = $("#QRCTypeList option:selected").val();
+    $("#ListWorkOrderAsssignment").jsGrid("loadData");
 
+});
+$("#SelectWOType").change(function () {
+    $_filterwrtype = $("#SelectWOType option:selected").val();
+    $("#ListWorkOrderAsssignment").jsGrid("loadData");
+});
+$("#SelectStatusOfWO").change(function () {
+    $_filter = $("#SelectStatusOfWO option:selected").text();
+    $("#ListWorkOrderAsssignment").jsGrid("loadData");
+});
 (function ($) {
     'use strict'
     var data;
@@ -22,7 +34,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
             loadData: function (filter) {
                 return $.ajax({
                     type: "GET",
-                    url: '../NewAdmin/GetWorkOrderList?LocationId=' + $("#drp_MasterLocation1 option:selected").val() + '&workRequestProjectId=' + $_workRequestAssignmentId,
+                    url: '../NewAdmin/GetWorkOrderList?LocationId=' + $("#drp_MasterLocation1 option:selected").val() + '&workRequestProjectId=' + $_workRequestAssignmentId + '&filterwrtype=' + $_filterwrtype + '&filterqrc=' + $_filterqrc + '&filter=' + $_filter,
                     datatype: 'json',
                     contentType: "application/json",
                 });
@@ -41,7 +53,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
             $(".jsgrid-insert-row").hide();
             $(".jsgrid-filter-row").hide()
             $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
-           
+
         },
         fields: [
             //{ name: "Id", visible: false },
@@ -53,16 +65,17 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                     { name: "AssignToUserName", width: 150, title: "Assign To User", css: "text-center" },
                     { name: "WorkRequestProjectTypeName", width: 150, title: "ProjectType", css: "text-center" },
                     { name: "FacilityRequestType", width: 150, title: "Facility Request Type", css: "text-center" },
-                    {name: "ProfileImage",title: "Profile Image",
-                        itemTemplate: function(val, item) {
+                    {
+                        name: "ProfileImage", title: "Profile Image",
+                        itemTemplate: function (val, item) {
                             return $("<img>").attr("src", val).css({ height: 50, width: 50, "border-radius": "50px" }).on("click", function () {
-                               
+
                             });
                         }
                     },
                     {
                         name: "AssignedWorkOrderImage", Img: "AssignedWorkOrderImage", width: 100, title: "WorkOrder Image", itemTemplate: function (val, item) {
-                            return $("<img>").attr("src", val).css({ height: 50, width: 50,"border-radius": "50px" }).on("click", function () {
+                            return $("<img>").attr("src", val).css({ height: 50, width: 50, "border-radius": "50px" }).on("click", function () {
 
                             });
                         }
@@ -70,13 +83,12 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                     { name: "CreatedByUserName", width: 190, title: "Submitted By", css: "text-center" },
                     {
                         name: "act", title: "Action", width: 150, css: "text-center", itemTemplate: function (value, item) {
-                             var $iconAssign = "";
-                             var $iconPencil = $("<i>").attr({ class: "fa fa-pencil" }).attr({ style: "color:yellow;font-size:22px;" });
+                            var $iconAssign = "";
+                            var $iconPencil = $("<i>").attr({ class: "fa fa-pencil" }).attr({ style: "color:yellow;font-size:22px;" });
                             var $iconTrash = $("<i>").attr({ class: "fa fa-trash" }).attr({ style: "color:red;font-size:26px;margin-left:8px;" });
                             //var $iconList = $("<i>").attr({ class: "fa fa-list" }).attr({ style: "color:#26B8C7;font-size:26px;margin-left:8px;" });
-                            if (item.PriorityLevel != 11 && item.WorkRequestStatusName == "Pending")
-                            {
-                                 $iconAssign = $("<i>").attr({ class: "fa fa-file-text" }).attr({ style: "color:green;font-size:26px;margin-left:8px;" });
+                            if (item.PriorityLevel != 11 && item.WorkRequestStatusName == "Pending") {
+                                $iconAssign = $("<i>").attr({ class: "fa fa-file-text" }).attr({ style: "color:green;font-size:26px;margin-left:8px;" });
                             }
                             else {
 
@@ -136,7 +148,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                               }).append($iconAssign);
                             return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton).append($customDeleteButton).append($customAssignButton);
                         }
-            },
+                    },
             //{ type: "control" }
         ],
         rowClick: function (args) {
@@ -145,7 +157,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
             var getData = args.item;
             var keys = Object.keys(getData);
             ViewWODetails(getData);
-            
+
             var text = [];
             //var url = "../NewAdmin/DisplayLocationData/?LocationId=" + getData.LocationId;
             //$('#RenderPageId').load(url);
@@ -340,7 +352,7 @@ function ViewWODetails(detials) {
 
     if (detials.AssignToUserId != null && detials.AssignToUserId != "" && detials.AssignToUserId != '') {
         $('#divEmpAssigned').show();
-        $("#lblProfile img").attr('src',detials.ProfileImage);//.html(detials.ProfileImage);
+        $("#lblProfile img").attr('src', detials.ProfileImage);//.html(detials.ProfileImage);
         //$("#lblProfile").html(detials.ProfileImage);
         $("#lblAssignToUser").html(detials.AssignToUserName);
     }

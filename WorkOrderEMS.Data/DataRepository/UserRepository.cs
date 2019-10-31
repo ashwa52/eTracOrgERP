@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data.Entity.Core.Objects;
+using System.Globalization;
 using System.Linq;
 using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Data.Interfaces;
@@ -16,6 +18,9 @@ namespace WorkOrderEMS.Data
     {
         workorderEMSEntities _workorderEMSEntities = new workorderEMSEntities();
 
+        private readonly string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
+        private readonly string ProfilePicPath = System.Configuration.ConfigurationManager.AppSettings["ProfilePicPath"];
+        private readonly string ConstantImages = ConfigurationManager.AppSettings["ConstantImages"];
 
         public UserModel GetUserById(long userId, string operationName, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string textSearch, ObjectParameter paramTotalRecords)
         {
@@ -806,7 +811,7 @@ namespace WorkOrderEMS.Data
                     {
                         EmployeeId = i.EmployeeId;
                         AssessmentType = i.AssessmentType;
-                        _workorderEMSEntities.spSetSelfAssessment3060901((i.SAM_IsActive == null || i.SAM_IsActive == "" || i.SAM_IsActive != "Y") ? "I" : "U", i.EmployeeId, i.QuestionId, i.SelfAssessmentId, i.Answer == "Y" ? "Y" : i.Answer == "N" ? "N" : i.Answer == "S" ? "S" : null, action == "S" ? "S" : "Y");
+                        _workorderEMSEntities.spSetSelfAssessment306090((i.SAM_IsActive == null || i.SAM_IsActive == "" || i.SAM_IsActive != "Y") ? "I" : "U", i.EmployeeId, i.QuestionId, i.SelfAssessmentId, i.Answer == "Y" ? "Y" : i.Answer == "N" ? "N" : i.Answer == "S" ? "S" : null, action == "S" ? "S" : "Y");
                     }
 
                     if (action == "S")

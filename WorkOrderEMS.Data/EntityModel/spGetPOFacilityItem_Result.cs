@@ -13,10 +13,14 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class spGetPOFacilityItem_Result
     {
-        public long POF_Id { get; set; }
-        public long POF_POD_Id { get; set; }
-        public long POF_CFM_Id { get; set; }
-        public Nullable<long> POF_Unit { get; set; }
-        public string POF_IsActive { get; set; }
+        public long CFM_Id { get; set; }
+        public long CFM_CMP_Id { get; set; }
+        public long CFM_CCD_CostCode { get; set; }
+        public string CFM_FacilityType { get; set; }
+        public Nullable<decimal> CFM_Rate { get; set; }
+        public Nullable<decimal> CFM_Tax { get; set; }
+        public string CFM_Discription { get; set; }
+        public string CFM_IsActive { get; set; }
+        public Nullable<decimal> BCM_BalanceAmount { get; set; }
     }
 }

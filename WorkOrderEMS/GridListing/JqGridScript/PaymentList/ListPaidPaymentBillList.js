@@ -1,7 +1,7 @@
 ﻿var PaidUrl = 'Payment/GetPaidListByBillID';
 $(function () {
 
-    $("#SearchTextResult").keyup(function () {
+    $("#SearchTextResult").keyup(function () {        
         doPaymentSearchresult()
     });
 
@@ -121,6 +121,8 @@ $(function () {
 
 function doPaymentSearchresult()
 {
+    var _searchresult = $("#SearchTextResult").val();
+
     debugger;
     var act;
     $("#tbl_PaymentPaidList").jsGrid({

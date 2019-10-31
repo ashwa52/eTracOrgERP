@@ -322,6 +322,136 @@ namespace WorkOrderEMS.Controllers
         }
         #endregion
         #region "Ajay Kumar"
+        [HttpPost]
+        public JsonResult PrimeryAccounts(string AccountsId, string IsActive,string VendorId)
+        {
+            try
+            {
+                eTracLoginModel ObjLoginModel = null;
+                bool result = false;
+                long _AccountsId = 0;
+                long _VendorsId = 0;
+                if (Session != null)
+                {
+                    if (Session["eTrac"] != null)
+                    {
+                        ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                        if (Convert.ToInt64(Session["eTrac_SelectedDasboardLocationID"]) == 0)
+                        {
+                            (Session["eTrac_SelectedDasboardLocationID"]) = ObjLoginModel.LocationID;
+                        }
+                    }
+                }
+                long UserId = ObjLoginModel.UserId;
+                if (!string.IsNullOrEmpty(AccountsId))
+                {
+                    AccountsId = Cryptography.GetDecryptedData(AccountsId, true);
+                    long.TryParse(AccountsId, out _AccountsId);
+                }
+                if (!string.IsNullOrEmpty(VendorId))
+                {
+                   
+                    long.TryParse(VendorId, out _VendorsId);
+                }
+                if (IsActive == "Y")
+                {
+                    result = _IVendorManagement.ActiveAccountsById(_AccountsId, UserId, IsActive);
+                    _IVendorManagement.SetPrimaryAccount(_VendorsId, _AccountsId);
+                }
+                else
+                {
+                    _IVendorManagement.SetPrimaryAccount(_VendorsId,_AccountsId );
+                }
+                if (result == true)
+                {
+                    string Message = "";
+                    if (IsActive == "Y")
+                    {
+                        Message = "Account is Activeted.";
+                    } 
+                    ViewBag.Message = Message;
+                    ViewBag.AlertMessageClass = ObjAlertMessageClass.Success;
+                    return Json(Message, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    ViewBag.Message = "Error while activating payment mode.";
+                    ViewBag.AlertMessageClass = ObjAlertMessageClass.Success;
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+        }
+
+
+        [HttpGet]
+        public JsonResult GetDashboardForLocationAllocaionVendorCount()
+        {
+            try
+            {
+                long LocationID = 0;
+                if ((eTracLoginModel)Session["eTrac"] != null)
+                {
+                    eTracLoginModel objLoginSession = new eTracLoginModel();
+                    objLoginSession = (eTracLoginModel)Session["eTrac"];
+                    if (Session["eTrac_SelectedDasboardLocationID"] != null)
+                    {
+                        if (Convert.ToInt64(Session["eTrac_SelectedDasboardLocationID"]) != 0)
+                        {
+                            LocationID = objLoginSession.LocationID;
+                        }
+                    }
+                     
+                    var data = _IVendorManagement.GetCompanyAllocationLocationCountForGraph();
+                  
+                    return Json(new { data }, JsonRequestBehavior.AllowGet);
+                }
+                else { return Json(null, JsonRequestBehavior.AllowGet); }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { ex.InnerException }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+        [HttpGet]
+        public JsonResult GetDashboardForVendorCount() 
+        {
+            try
+            {
+                long LocationID = 0;
+                if ((eTracLoginModel)Session["eTrac"] != null)
+                { 
+                    eTracLoginModel objLoginSession = new eTracLoginModel();
+                    objLoginSession = (eTracLoginModel)Session["eTrac"]; 
+                    if (Session["eTrac_SelectedDasboardLocationID"] != null)
+                    {
+                        if (Convert.ToInt64(Session["eTrac_SelectedDasboardLocationID"]) != 0)
+                        {
+                            LocationID = objLoginSession.LocationID;
+                        }
+                    }
+                    CompanyCountForGraph model = new CompanyCountForGraph();
+                    var data = _IVendorManagement.GetCompanyCountForGraph();
+                    if (data !=null) 
+                    {
+                        model.WaitingVendorCount= data.WaitingVendorCount > 0 ?  ((data.WaitingVendorCount * 100) / data.TotalVendorCount) : 0;
+                        model.RejectedVendorCount = data.RejectedVendorCount > 0 ? ((data.RejectedVendorCount * 100) / data.TotalVendorCount) : 0;
+                        model.ApprovedVendorCount = data.ApprovedVendorCount > 0 ? ((data.ApprovedVendorCount * 100) / data.TotalVendorCount) : 0; 
+                    }
+                    return Json(new { model }, JsonRequestBehavior.AllowGet);
+                }
+                else { return Json(null, JsonRequestBehavior.AllowGet); }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { ex.InnerException }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
         public JsonResult IsTaxNumberIsExists(string TaxNo, long? VendorId)
         {
             bool result = _IVendorManagement.TaxNumberIsExists(TaxNo, Convert.ToInt32(VendorId));
@@ -458,8 +588,9 @@ namespace WorkOrderEMS.Controllers
             {
                 if (_search != null && _search != "")
                 {
-                    var AllCompanyListForSearch = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord).Where(x => x.CompanyNameLegal.ToLower() == _search.ToLower().Trim()).ToList();
-                    return Json(AllCompanyListForSearch.ToList(), JsonRequestBehavior.AllowGet);
+                    var AllCompanyListForSearch = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord);
+                    var FilteredList = AllCompanyListForSearch.Where(x => x.CompanyNameLegal.ToLower().Contains(_search.ToLower().Trim())).ToList();
+                    return Json(FilteredList.ToList(), JsonRequestBehavior.AllowGet);
                 }
                 else
                 {
@@ -1457,15 +1588,16 @@ namespace WorkOrderEMS.Controllers
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
                 UserId = ObjLoginModel.UserId;
-                //LocationId = ObjLoginModel.LocationID;
+                 //LocationId = ObjLoginModel.LocationID;
             }
             try
             {
 
                 if (_search != null && _search != "")
                 {
-                    var AllCompanyListForSearch = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord).Where(x => x.CompanyNameLegal.ToLower() == _search.ToLower().Trim()).ToList();
-                    return Json(AllCompanyListForSearch.ToList(), JsonRequestBehavior.AllowGet);
+                    var AllCompanyListForSearch = _IVendorManagement.GetAllCompanyDataList1(LocationId, rows, TotalRecords, sidx, sord).Where(x => !String.IsNullOrEmpty(x.CompanyNameLegal));
+                    var FilteredList = AllCompanyListForSearch.Where(x => x.CompanyNameLegal.ToLower().Contains(_search.ToLower().Trim())).ToList();
+                    return Json(FilteredList.ToList(), JsonRequestBehavior.AllowGet);
                 }
                 else
                 {

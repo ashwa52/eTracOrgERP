@@ -1,0 +1,272 @@
+﻿@model WorkOrderEMS.Models.Employee.EmployeeVIewModel
+<link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/CSS/FilesUICss.css" rel="stylesheet" />
+
+<style>
+
+    .info {
+        display: inline-block;
+        margin: 10px;
+    }
+
+    .profile {
+        display: inline-block;
+    }
+
+        .profile img {
+            width: 89px;
+            height: 89px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+        }
+
+
+
+    .middle {
+        text-align: center;
+        background-color: yellow;
+        margin-top: 13px;
+        height: 28px;
+    }
+
+    .input-rounded {
+        border: 1px solid #000;
+    }
+
+    .btnverify {
+        background-color: #156baf;
+        width: 157px;
+        height: 42px;
+        font-size: 20px;
+        color: white;
+        border-radius: 30px;
+    }
+
+    label {
+        margin-bottom: 0;
+    }
+
+    .form-control:disabled, .form-control[readonly] {
+        background: #ddd;
+        opacity: 1;
+    }
+
+    input[type=checkbox] {
+        display: none;
+    }
+        /* to hide the checkbox itself */
+        input[type=checkbox] + label:before {
+            font-family: FontAwesome;
+            display: inline-block;
+        }
+
+        input[type=checkbox] + label:before {
+            content: "\f096";
+        }
+        /* unchecked icon */
+        input[type=checkbox] + label:before {
+            letter-spacing: 10px;
+        }
+        /* space between checkbox and label */
+
+        input[type=checkbox]:checked + label:before {
+            content: "\f046";
+        }
+        /* checked icon */
+        input[type=checkbox]:checked + label:before {
+            letter-spacing: 5px;
+        }
+    /* allow space for check mark */
+    .top {
+        border: 1px solid #bbbbdb;
+        padding: 9px 18px 8px 21px;
+        background-image: linear-gradient(to right, #3588CD, #fff);
+    }
+</style>
+<script>
+	function EnableEdit(elm) {
+		var inputs = $('.basic-form :input');
+		if (elm.checked) {
+		    $("#SaveEditInfo").show();
+			inputs.each(function (i, elm) {
+				$(elm).removeAttr('disabled');
+			})
+		}
+		else {
+		    $("#SaveEditInfo").hide();
+			inputs.each(function (i, elm) {
+				$(elm).attr('disabled',true);
+			})
+		}
+	}
+</script>
+
+<div>
+    <div>
+        <div class="top">
+            <div class="profile">
+                <img src="@Model.Image" />
+            </div>
+            <div class="info">
+                <label style="margin-left:30px;">Employee Id</label><span style="color:black;">:&nbsp;&nbsp;&nbsp; @Model.EmpId</span>
+                <label style="margin-left:092px">Name</label><span style="color:black;">:&nbsp;&nbsp;&nbsp; @Model.FirstName  @Model.LastName</span>
+            </div>
+            @*<div class="info">
+                <span style="color:black"><b>Employee Id</b>: @Model.EmpId</span>
+                <span style="color:black"><b>Name</b>: @Model.FirstName  @Model.LastName </span>
+            </div>*@
+        </div>
+        @Html.AntiForgeryToken()
+        @*@using (Html.BeginForm())
+            {*@
+        <form id="SaveEditableUserInfo">
+            <div class="middle" style="cursor:pointer">
+                <label style="margin-top: 2px;">
+                    <input id="box1" type="checkbox" onchange="EnableEdit(this);" />
+                    <label for="box1">Enable To Edit</label>
+                </label>
+            </div>
+            @Html.HiddenFor(model => model.EmpId,new { @id= "EmpIdEdit" })
+            <div class="bottom-sec" style="margin-top: 28px;">
+                <div class="basic-form">
+                    <div class="form-group row">
+                        <div class="col-sm-4">
+                            @Html.HiddenFor(model => model.EmpId)
+                            @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "First Name", @disabled = "disabled" } })
+
+                        </div>
+                        <div class="col-sm-4">
+                            @Html.EditorFor(model => model.MiddleName, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Middle Name", @disabled = "disabled" } })
+
+                        </div>
+                        <div class="col-sm-4">
+                            @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Last Name", @disabled = "disabled" } })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Street Address1", @disabled = "disabled" } })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "City", @disabled = "disabled" } })
+
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.DropDownListFor(model => model.State, new SelectList(ViewBag.StateList, "StateId", "StateName"), "State", new { @id = "Address1State", @class = "form-control input-rounded" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-3">
+                            @Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "ZipCode", @disabled = "disabled" } })
+
+                        </div>
+                        <div class="col-sm-3">
+                            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Phone", @disabled = "disabled" } })
+
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Email", @disabled = "disabled" } })
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(model => model.Dob, new { @class = "form-control input-rounded", @disabled = "disabled", @id = "DOBEMP" })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            @Html.EditorFor(model => model.SocialSecurityNumber, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Social Security Number", @disabled = "disabled" } })
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.EditorFor(model => model.Cityzenship, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Cityzenship" } })
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col-sm-6">
+                            @Html.EditorFor(model => model.LicenseNumber, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Driver License Number" } })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="col-md-12" style="text-align:center;margin-top: -26px;">
+                <label>Add Files</label>
+                <div class=" inline">
+                    <div class="devider" onclick="OpenForm('EmergencyContactForm')" id="EmergencyContactForm">
+                        <div class="grn-icn" style="width: 94px;height: 81px;">
+                            <div class="int" style="margin-top: -10px;">
+                                <i class="fa fa-table fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <label>Emergency Contact</label>
+                </div>
+                <div class="inline">
+                    <div class="devider" onclick="OpenForm('DirectDeposit')" id="DirectDeposit" style="margin-top: -18px;">
+                        <div class="grn-icn" style="width: 94px;height: 81px;">
+                            <div class="int" style="margin-top: -10px;">
+                                <i class="fa fa-table fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <label>Direct Deposit</label>
+                </div>
+                <div class="inline">
+                    <div class="devider" onclick="OpenForm('W4Form')" id="W4Form" style="margin-top: -18px;">
+                        <div class="grn-icn" style="width: 94px;height: 81px;">
+                            <div class="int" style="margin-top: -10px;">
+                                <i class="fa fa-table fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <label>W-4</label>
+                </div>
+                <div class="inline">
+                    <div class="devider" onclick="OpenForm('EducationInformation')" id="EducationInformation">
+                        <div class="grn-icn" style="width: 94px;height: 81px;">
+                            <div class="int" style="margin-top: -10px;">
+                                <i class="fa fa-table fa-lg fa-lg-Custom-css " aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <label>Education Information</label>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script src="~/Scripts/NewAdminJS/SaveEditForm.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+<script>
+    $(document).ready(function () {
+        $("#DOBEMP").datepicker();
+
+    });
+    function OpenForm(formname) {
+        debugger
+        if (formname === 'DirectDeposit') {
+            debugger
+            $.ajax({
+                url: '../EPeople/_DirectDepositeForm?Id=' + "@Model.EmpId",
+                type: 'GET',
+                success: function (response) {
+                    debugger
+                    $("#formidEditInfo").html(response);
+                    $("#formModelEdit").modal('show');
+                }
+            });
+        }
+        if (formname === 'employeehandbook') {
+            $.ajax({
+                url: '/EPeople/_EmployeeHandbook',
+                method: 'GET',
+                success: function (response) {
+                    $("#formidEditInfo").html(response);
+                }
+            });
+        }
+        $("#formModel").modal('show');
+    }
+</script>

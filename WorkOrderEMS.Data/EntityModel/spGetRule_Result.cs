@@ -15,11 +15,12 @@ namespace WorkOrderEMS.Data.EntityModel
     {
         public long RUL_Id { get; set; }
         public long RUL_MDL_Id { get; set; }
+        public string MDL_ModuleName { get; set; }
         public string RUL_RuleName { get; set; }
         public string RUL_Level { get; set; }
         public Nullable<decimal> RUL_SlabFrom { get; set; }
         public Nullable<decimal> RUL_SlabTo { get; set; }
-        public long RUL_ByPass_UserId { get; set; }
+        public Nullable<long> RUL_ByPass_UserId { get; set; }
         public Nullable<System.DateTime> RUL_Date { get; set; }
         public string RUL_IsActive { get; set; }
     }

@@ -21,7 +21,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<decimal> BFI_Rate { get; set; }
         public string BFI_IsActive { get; set; }
     
-        public virtual PreBillNumber PreBillNumber { get; set; }
         public virtual CompanyFacilityMapping CompanyFacilityMapping { get; set; }
+        public virtual PreBillNumber PreBillNumber { get; set; }
     }
 }

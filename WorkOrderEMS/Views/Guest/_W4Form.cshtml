@@ -1,0 +1,259 @@
+﻿@model  WorkOrderEMS.Models.Employee.W4FormModel
+<style>
+
+	* {
+		box-sizing: border-box;
+	}
+
+	p {
+		text-align: justify;
+		color: #000;
+	}
+
+	.column {
+		float: left;
+		width: 33.33%;
+		padding: 10px;
+		text-align: justify;
+		color: #000;
+	}
+
+	.left3 {
+		float: left;
+		border-bottom: 2px solid black;
+		border-right: 2px solid black;
+		width: 265px;
+	}
+
+	.right3 {
+		float: right;
+		border-bottom: 2px solid black;
+		border-left: 2px solid black;
+	}
+
+	.center3 {
+		border-bottom: 2px solid black;
+	}
+
+	.row:after {
+		content: "";
+		display: table;
+		clear: both;
+	}
+
+	hr.new1 {
+		border: 2px solid black;
+	}
+
+	hr.new2 {
+		border: 3px solid black;
+	}
+
+	hr.new3 {
+		border-top: 1px dashed black;
+	}
+
+	hr.new4 {
+		border-top: 2px solid black;
+	}
+
+	.column-left {
+		float: left;
+		width: 15.333%;
+		margin-top: 36px;
+	}
+
+	.column-right {
+		float: right;
+		width: 15.333%;
+		margin-top: 36px;
+	}
+
+	.column-center {
+		display: inline-block;
+		width: 60.333%;
+		margin-left: 63px;
+	}
+
+	.vertical {
+		border-left: 2px solid black;
+		height: 127px;
+		position: absolute;
+		left: 20%;
+		margin: 27px 0px 0px 0px;
+	}
+
+	.vertical1 {
+		border-left: 2px solid black;
+		height: 126px;
+		position: absolute;
+		left: 19%;
+		margin: -116px 0px 0px 750px;
+	}
+
+	table {
+		border-collapse: collapse;
+		width: 100%;
+	}
+
+	table, td, th {
+		border: 1px solid black;
+	}
+
+	input[type="checkbox"]:after {
+		line-height: 1.5em !important;
+		content: '' !important;
+		display: block !important;
+		margin-top: -3px !important;
+		margin-left: -3px !important;
+		border: 1px solid transparent !important;
+		border-radius: 0px !important;
+		line-height: 1.3 !important;
+		background: none !important;
+	}
+
+	.text-line {
+		padding: 3px 5px 5px 5px;
+		margin: 2px;
+		border: 1px solid;
+	}
+</style>
+@using (Html.BeginForm("_W4Form", "Guest", FormMethod.Post, new { id = "w4form" }))
+{
+	<div>
+		<hr class="new1" />
+		<div>
+			<div class="row">
+				<div class="column">
+
+					<div>
+						<h2>Form W-4 (2019)</h2><hr class="new2">
+						<b>Future developments.</b> For the latest information about any future developments related to Form W-4, such as legislation enacted after it was published, go to www.irs.gov/FormW4.
+						<br /><b>Purpose.</b> Complete Form W-4 so that your employer can withhold the correct federal income tax from your pay. Consider completing a new Form W-4 each year and when your personal or financial situation changes.
+						<br /><b>Exemption from withholding.</b> You may claim exemption from withholding for 2019 if <b>both</b> of the following apply.
+						<ul>
+							<li>For 2018 you had a right to a refund of <b>all</b> federal income tax withheld because you had no tax liability, <b>and</b></li>
+							<li>For 2019 you expect a refund of <b>all</b> federal income tax withheld because you expect to have <b>no</b> tax liability.</li>
+						</ul>
+						If you’re exempt, complete <b>only</b> lines 1, 2, 3, 4, and 7 and sign the form to validate it. Your exemption for 2019 expires February 17, 2020. See Pub. 505, Tax Withholding and Estimated Tax, to learn more about whether you qualify for exemption from withholding.
+						<h2>General Instructions</h2>
+						If you aren’t exempt, follow the rest of these instructions to determine the number of withholding allowances you should claim for withholding for 2019 and any additional amount of tax to have withheld. For regular wages, withholding must be based on allowances you claimed and may not be a flat amount or percentage of wages.
+						You can also use the calculator at <b>www.irs.gov/W4App</b> to determine your tax withholding more accurately. Consider
+					</div>
+				</div>
+				<div class="column">
+
+					<div>
+						using this calculator if you have a more complicated tax situation, such as if you have a working spouse, more than one job, or a large amount of nonwage income not subject to withholding outside of your job. After your Form W-4 takes effect, you can also use this calculator to see how the amount of tax you’re having withheld compares to your projected total tax for 2019. If you use the calculator, you don’t need to complete any of the worksheets for Form W-4.<br />
+						Note that if you have too much tax withheld, you will receive a refund when you file your tax return. If you have too little tax withheld, you will owe tax when you file your tax return, and you might owe a penalty.<br />
+						<b>Filers with multiple jobs or working spouses.</b> If you have more than one job at a time, or if you’re married filing jointly and your spouse is also working, read all of the instructions including the instructions for the Two-Earners/Multiple Jobs Worksheet before beginning.<br />
+						<b>Nonwage income.</b> If you have a large amount of nonwage income not subject to withholding, such as interest or dividends, consider making estimated tax payments using Form 1040-ES, Estimated Tax for Individuals. Otherwise, you might owe additional tax. Or, you can use the Deductions, Adjustments, and Additional Income Worksheet on page 3 or the calculator at www.irs.gov/W4App to make sure you have enough tax withheld from your paycheck. If you have pension or annuity income, see Pub. 505 or use the calculator at www.irs.gov/W4App to find out if you should adjust your withholding on Form W-4 or W-4P.
+						<b>Nonresident alien.</b> If you’re a nonresident alien, see Notice 1392, Supplemental Form W-4 Instructions for Nonresident Aliens, before completing this form.
+					</div>
+				</div>
+				<div class="column">
+
+					<div>
+						<h2>Specific Instructions</h2>
+						<b>Personal Allowances Worksheet</b><br />
+						Complete this worksheet on page 3 first to determine the number of withholding allowances to claim.<br />
+						<b>Line C. Head of household please note:</b><br /> Generally, you may claim head of household filing status on your tax return only if you're unmarried and pay more than 50% of the costs of keeping up a home for yourself and a qualifying individual. See Pub. 501 for more information about filing status.
+						<b>Line E. Child tax credit.</b> <br />When you file your tax return, you may be eligible to claim a child tax credit for each of your eligible children. To qualify, the child must be under age 17 as of December 31, must be your dependent who lives with you for more than half the year, and must have a valid social security number. To learn more about this credit, see Pub. 972, Child Tax Credit. To reduce the tax withheld from your pay by taking this credit into account, follow the instructions on line E of the worksheet. On the worksheet you will be asked about your total income. For this purpose, total income includes all of your wages and other
+						income, including income earned by a spouse if you are filing a joint return.<br />
+						<b>Line F. Credit for other dependents.</b><br /> When you file your tax return, you may be eligible to claim a credit for other dependents for whom a child tax credit can’t be claimed, such as a qualifying child who doesn’t meet the age or social security number requirement for the chiid tax credit, or a qualifying relative. To learn more about this credit, see Pub. 972. To reduce the tax withheld from your pay by taking this credit into account, follow the instructions on line F of the worksheet. On the worksheet, you will be asked about your total income. For this purpose, total
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<div>
+			<div class="row">
+				<div class="column left">
+					<hr class="new3">
+				</div>
+				<div class="column center">
+					Separate here and give Form W-4 to your employer. Keep the worksheet(s) for your records.
+				</div>
+				<div class="column rigth">
+					<hr class="new3">
+				</div>
+			</div>
+		</div>
+
+		<div class="container" style="color:#000">
+			<div class="column-left">
+				Form <span style="font-weight:bold;">W-4</span><br />
+				Department of the Treasury Internal Revenue Service
+
+			</div>
+			<div class="vertical"></div>
+			<div class="column-center">
+				<h3> Employee’s Withholding Allowance Certificate</h3>
+				<b>► Whether you're entitled to claim a certain number of allowances or exemption from withholding is subject to review by the IRS. Your employer may be required to send a copy of this form to the IRS.</b>
+
+			</div>
+			<div class="vertical1"></div>
+			<div class="column-right">
+				OMB No. 1545-0074<br />
+
+				<span>20<span style="font-weight:bold">19</span>
+
+			</div>
+		</div>  <hr class="new4">
+		<div class="top" style="color:#000">
+			<table>
+				<tr>
+					<td colspan="40" style="padding-bottom: 48px;">1. Your first name and middle initial @Html.TextBoxFor(x => x.FirstName, new { @class = "text-line", @style = "width:590px;" }) @Html.ValidationMessageFor(x => x.FirstName, "", new { @style = "color:red;" })</td>
+					<td colspan="40" style="padding-bottom: 48px;">Last name @Html.TextBoxFor(x => x.LastName, new { @class = "text-line", @style = "width:100px;" }) @Html.ValidationMessageFor(x => x.LastName, "", new { @style = "color:red;" })</td>
+					<td colspan="20" style="padding-bottom: 48px;">2. Your social security number @Html.TextBoxFor(x => x.SSN, new { @class = "text-line", @style = "width:590px;" }) @Html.ValidationMessageFor(x => x.SSN, "", new { @style = "color:red;" })</td>
+				</tr>
+				<tr>
+					<td colspan="50" style="padding-bottom: 48px;">Home address (number and street or rural route) </td>
+					<td colspan="50">
+						3. @Html.CheckBoxFor(x => x.MeritalStatus.Single, new { @style = "height: 18px;width: 31px;" })) Single @Html.CheckBoxFor(x => x.MeritalStatus.Married, new { @style = "height: 18px;width: 31px;" }))  Married @Html.CheckBoxFor(x => x.MeritalStatus.PartiallyMarried, new { @style = "height: 18px;width: 31px;" })) Married, but withhold at higher Single rate<br />
+						<b>Note:</b> If married filing separately, check “Married, but withhold at higher Single rate.”
+					</td>
+				</tr>
+				<tr>
+					<td colspan="50" style="padding-bottom: 48px;">City or town, state, and ZIP code </td>
+					<td colspan="50">
+						4. lf your last name differs from that shown on your social security card, check here.<br /> You must call 800-772-1213 for a replacement card.
+						►@Html.CheckBoxFor(x => x.NameDiffer, new { @style = "height: 18px;width: 31px;" }))
+					</td>
+				</tr>
+				<tr>
+					<td colspan="90">
+						5. Total number of allowances you're claiming (from the applicable worksheet on the following pages). <br />
+						6. Additional amount, if any, you want withheld from each paycheck..... <br />
+						7. claim exemption from withholding for 2019, and I certify that I meet both of the folowing conditions for exemption....  <br />
+						<ul>
+							<li>Last year I had a right to a refund of all federal income tax withheld because I had no tax liability, and</li>
+							<li>This year I expect a refund of all federal income tax withheld because I expect to have no tax liability.</li>
+						</ul><br />
+						If you meet both conditions, write “Exempt” here ...►
+					</td>
+					<td colspan="10">
+						@Html.TextBoxFor(x => x.TotalAllowence, new { @class = "text-line", @style = "width:100px;" })<br />
+						@Html.TextBoxFor(x => x.AdditionalAmount, new { @class = "text-line", @style = "width:100px;" })<br />
+						@Html.TextBoxFor(x => x.ClaimExemption, new { @class = "text-line", @style = "width:100px;" })<br />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="100">
+						Under penalties of perjury, I declare that I have examined this certificate and, to the best of my knowledge and belief, it is true, correct, and complete.<br />
+						<b>Employee’s signature</b><br /><span style="margin-right: 720px;">(This form is not valid unless you sign it.) ►</span> <span style="font-weight:bold;margin-left:800px;">Date ►</span>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="70" style="padding-bottom: 48px;">8. Employer’s name and address (<b>Employer</b>: Complete boxes 8 and 10 if sending to IRS and complete boxes 8, 9, and 10 if sending to State Directory of New Hires.)  @Html.TextBoxFor(x => x.EmployeerNameAndAddress, new { @class = "text-line", @style = "width:100px;" })</td>
+					<td colspan="15" style="padding-bottom: 48px;">9. First date of employment  @Html.TextBoxFor(x => x.FirstEmployeementDate, new { @class = "text-line", @style = "width:100px;" })</td>
+					<td colspan="15" style="padding-bottom: 48px;">10. Employer identification number (EIN)  @Html.TextBoxFor(x => x.EIN, new { @class = "text-line", @style = "width:100px;" })</td>
+				</tr>
+			</table>
+
+
+		</div>
+	</div>
+	<p> @Html.CheckBoxFor(x => x.IsSave, new { @style = "height: 18px;width: 31px;", onchange = "SubmitForm(this,w4form)" })    i hereby declare that the above information is true to the best of my knowledge </p>
+
+}

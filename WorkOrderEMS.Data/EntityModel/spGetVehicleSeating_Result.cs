@@ -19,7 +19,8 @@ namespace WorkOrderEMS.Data.EntityModel
         public string VST_RolesAndResponsiblities { get; set; }
         public string VST_Level { get; set; }
         public long VST_ParentId { get; set; }
-        public Nullable<System.DateTime> VST_Date { get; set; }
+        public Nullable<long> DPT_Id { get; set; }
+        public string DPT_Name { get; set; }
         public string VST_IsActive { get; set; }
     }
 }
