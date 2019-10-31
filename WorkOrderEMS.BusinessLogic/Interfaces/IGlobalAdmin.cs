@@ -283,8 +283,11 @@ namespace WorkOrderEMS.BusinessLogic
         bool saveSelfAssessment(List<GWCQUestionModel> data, string action);
         bool saveEvaluation(List<GWCQUestionModel> data, string action);
         List<PerformanceModel> GetListOfExpectationsForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords);
-
         bool saveExpectations(List<GWCQUestionModel> data, string action);
-        // BudgetDetails GetListBudgetDetails(long? LocationId, long? UserId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
+        List<PerformanceModel> GetListOfQEvaluationsForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords);
+        
+        
+        bool saveQEvaluations(List<GWCQUestionModel> data, string action);
+
     }
 }

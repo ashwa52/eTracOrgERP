@@ -4,7 +4,7 @@
 
     string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
     WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
-    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "",CurrentUser="";
     long loginUserType = 0;
     long locationId = 0;
     long UserId = 0;
@@ -17,7 +17,9 @@
         //loginUserContactNo = ObjLogin.ContactNo;
         locationId = ObjLogin.LocationID;
         UserId = ObjLogin.UserId;
+        CurrentUser = WorkOrderEMS.Helper.Cryptography.GetEncryptedData(ObjLogin.UserName, true);
     }
+    <input type="hidden" value="@CurrentUser" id="LoggedInUser"/>
 }
 @*@section scripts{
         <script type="text/javascript">
