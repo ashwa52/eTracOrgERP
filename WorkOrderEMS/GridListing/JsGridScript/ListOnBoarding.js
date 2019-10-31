@@ -58,7 +58,7 @@ let details = [
                     { name: "Date", width: 150, title: "Date" },
                     {
                         name: "act", title: "Action", width: 100, css: "text-center", itemTemplate: function (value, item) {
-                            debugger
+                            
                             var $iconPencil = $("<input>").attr({ type: "button" }).attr({ class: "btn btn-primary" }).attr({ value: "Add", id: "AddEmployee" }).attr({ style: "color:white;background-color:green;margin-left:20px;border-radius:35px;" });
                             var $iconTrash = $("<input>").attr({ type: "button" }).attr({ class: "btn btn-primary" }).attr({ value: "Verify" }).attr({ style: "color:white;background-color:gray;margin-left:20px;border-radius:35px;" });;
                             var $customEditButton = $("<span>")

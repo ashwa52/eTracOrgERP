@@ -66,7 +66,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                             var $customUserViewButton = $("<span style='background: #36CA7E; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
                                   .attr({ title: "Assessment" })
                                   .attr({ id: "btn-profile-" + item.id }).click(function (e) {
-                                      debugger;
+                                    
                                       $.ajax({
                                           type: "POST",
                                           data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment},
@@ -74,7 +74,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                           error: function (xhr, status, error) {
                                           },
                                           success: function (result) {
-                                              debugger
+                                             
                                               if (result != null)
                                               {
                                                   $("#gridArea").hide();
@@ -95,7 +95,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                             var $evaluationTextButton = $("<span style='background: #32ACDA; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
                                 .attr({ title:"Evaluation" })
                                 .attr({ id: "btn-status-" + item.id }).click(function (e) {
-                                    debugger;
+                                
                                     $.ajax({
                                         type: "POST",
                                         //data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment },
@@ -105,7 +105,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                         error: function (xhr, status, error) {
                                         },
                                         success: function (result) {
-                                            debugger
+                                          
                                             if (result != null) {
                                                 $("#gridArea").hide();
                                                 $('#profileArea').show();
@@ -193,7 +193,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                     var $customUserViewButton = $("<span style='background: #36CA7E; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
                         .attr({ title: "Assessment" })
                         .attr({ id: "btn-profile-" + item.id }).click(function (e) {
-                            debugger;
+                           
                             $.ajax({
                                 type: "POST",
                                 data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation },
@@ -202,7 +202,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                 error: function (xhr, status, error) {
                                 },
                                 success: function (result) {
-                                    debugger
+                                    
                                     if (result != null) {
                                         $("#gridArea").hide();
                                         $('#profileArea').show();
@@ -222,7 +222,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                     var $evaluationTextButton = $("<span style='background: #32ACDA; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
                         .attr({ title: "Evaluation" })
                         .attr({ id: "btn-status-" + item.id }).click(function (e) {
-                            debugger;
+                           
                             $.ajax({
                                 type: "POST",
                                 //data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment },
@@ -232,7 +232,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                 error: function (xhr, status, error) {
                                 },
                                 success: function (result) {
-                                    debugger
+                                 
                                     if (result != null) {
                                         $("#gridArea").hide();
                                         $('#profileArea').show();
@@ -241,10 +241,11 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                 }
                             });
                         }).append($evaluationText);
-                    if (item.Status == "Review Submitted") {
+                    debugger;
+                    if (item.Status == "Review Submitted" || item.EMP_EmployeeID==$("#LoggedInUser").val()) {
                         return $("<div>").attr({ class: "btn-toolbar" }).append($customUserViewButton).append($customTextButton).append($customTextButton);
                     } else {
-                        return $("<div>").attr({ class: "btn-toolbar" }).append($customUserViewButton).append($customTextButton).append($customTextButton)
+                        return $("<div>").attr({ class: "btn-toolbar" }).append($customTextButton).append($customTextButton)
                     }
                 }
             },
@@ -320,7 +321,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                     var $customUserViewButton = $("<span style='background: #36CA7E; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
                         .attr({ title: "Evaluation" })
                         .attr({ id: "btn-profile-" + item.id }).click(function (e) {
-                            debugger;
+                            
                             $.ajax({
                                 type: "POST",
                                 data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation },
@@ -329,7 +330,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                 error: function (xhr, status, error) {
                                 },
                                 success: function (result) {
-                                    debugger
+                                   
                                     if (result != null) {
                                         $("#gridArea").hide();
                                         $('#profileArea').show();
@@ -356,7 +357,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                 error: function (xhr, status, error) {
                                 },
                                 success: function (result) {
-                                    debugger
+                                    
                                     if (result != null) {
                                         $("#gridArea").hide();
                                         $('#profileArea').show();
@@ -365,6 +366,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                 }
                             });
                         }).append($evaluationText);
+                    debugger;
                     if (item.Status == "Review Submitted") {
                         return $("<div>").attr({ class: "btn-toolbar" }).append($evaluationTextButton).append($customTextButton).append($evaluationTextButton);
                     } else {

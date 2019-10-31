@@ -121,7 +121,7 @@
             </td>
             @if ((item.QuestionType == "P" || item.QuestionType == "A" || item.QuestionType == "R" || item.QuestionType == "K"))
             {
-                if (item.SAM_IsActive == "S")
+                if (item.SAM_IsActive == "S" ||item.SAM_IsActive=="C")
                 {
                     <td class="ans asn" colspan="2" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
 
@@ -190,27 +190,38 @@
                     </td>
                 }
             }
-            else if (item.QuestionType == "COMNT1" )
+            else if (item.QuestionType == "COMNT1")
             {
                 <td class="ans" colspan="2" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
-                    @if (isSubmitted == "S")
+                    @if (isSubmitted == "S"||isSubmitted=="C")
                     {
                         <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;" placeholder="Comments" multiple disabled />
                     }
                     else
                     {
-                        <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;" placeholder="Comments" multiple  />
+                        <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;" placeholder="Comments" multiple />
 
                     }
                 </td>
             }
             else if (item.QuestionType == "COMNT2")
             {
+                <td class="ans" colspan="2" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
+                    @if (isSubmitted == "S" ||isSubmitted=="C")
+                    {
+                        <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;" placeholder="Comments" multiple disabled />
+                    }
+                    else
+                    {
+                        <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px;" placeholder="Comments" multiple />
+
+                    }
+                </td>
             }
 
             else
             {
-                if (item.SAM_IsActive == "S")
+                if (item.SAM_IsActive == "S" ||item.SAM_IsActive=="C")
                 {
                     <td class="ans" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
 
@@ -237,9 +248,9 @@
 
                     </td>
                     @*<td class="ans" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
-                        <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" disabled />
+                    <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" disabled />
 
-                    </td>*@
+                </td>*@
                 }
                 else
                 {
@@ -249,34 +260,34 @@
                         @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
                         {
 
-                            <input type = "radio" value = "Y" name = "Opt_@item.QuestionId" checked />
+                            <input type="radio" value="Y" name="Opt_@item.QuestionId" checked />
                         }
                         else
                         {
-                            <input type = "radio" value = "Y" name = "Opt_@item.QuestionId" />
+                            <input type="radio" value="Y" name="Opt_@item.QuestionId" />
                         }
                         Yes |
                         @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
                         {
-                            <input type = "radio" value = "N" name = "Opt_@item.QuestionId" checked />
+                            <input type="radio" value="N" name="Opt_@item.QuestionId" checked />
                         }
                         else
                         {
-                            <input type = "radio" value = "N" name = "Opt_@item.QuestionId" />
+                            <input type="radio" value="N" name="Opt_@item.QuestionId" />
                         }
                         No
                     </td>
                     @*<td class="ans" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
-                        <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" />
-                    </td>*@
+                    <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" />
+                </td>*@
                 }
             }
         </tr>
             }
 
             <tr align="center">
-                <td>
-                    @if (isSubmitted == "S")
+                <td colspan="3">
+                    @if (isSubmitted == "S" ||isSubmitted=="C")
                     {
                         <button id="draft" class="btn btn-secondary" disabled onclick="saveExpectations('Draft')">Draft</button>
 

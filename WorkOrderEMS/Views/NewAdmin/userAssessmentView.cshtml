@@ -9,7 +9,6 @@
     {
         isSubmitted=Model.First().SAM_IsActive != null ? Model.FirstOrDefault().SAM_IsActive : "Y";
     }
-
     @Html.Hidden(isSubmitted, new { id = "isSubmitted" })
 
 }
