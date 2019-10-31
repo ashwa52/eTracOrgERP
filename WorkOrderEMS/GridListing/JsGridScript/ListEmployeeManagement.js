@@ -1,5 +1,6 @@
 ﻿//var HOBurl = '../GlobalAdmin/GetListITAdministratorForJSGrid';
-var HOBurl = '../EPeople/EmployeeManagementList';
+var base_url = window.location.origin;
+var HOBurl = '/EPeople/EmployeeManagementList';
 var clients;
 var GetEMPId;
 var FileId;
@@ -24,7 +25,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
             loadData: function (filter) {
                 return $.ajax({
                     type: "GET",
-                    url: HOBurl + '?locationId=' + $_LocationId,
+                    url: base_url + HOBurl + '?locationId=' + $_LocationId,
                     datatype: 'json',
                     contentType: "application/json",
                 });
@@ -60,11 +61,10 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                             var $customEditButton = $("<span style='background: green; width: 35px; height: 35px;border-radius: 35px;'>")
                                 .attr({ title: jsGrid.fields.control.prototype.filesButtonTooltip })
                                 .attr({ id: "btn-file-" + item.id }).click(function (e) {
-                                    debugger
                                     $.ajax({
                                         type: "GET",
                                         // data: { 'Id': item.id},
-                                        url: '../EPeople/GetFileView?Id=' + item.id,
+                                        url: base_url + '/EPeople/GetFileView?Id=' + item.id,
                                         beforeSend: function () {
                                             new fn_showMaskloader('Please wait...');
                                         },
@@ -72,7 +72,6 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                         error: function (xhr, status, error) {
                                         },
                                         success: function (result) {
-                                            debugger
                                             $("#ContaierAddFile").html(result);
                                             $("#myModalForAddFileData").modal('show');
                                         },
@@ -92,7 +91,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                       $.ajax({
                                           type: "POST",
                                          // data: { 'Id': item.id},
-                                          url: '../EPeople/GetEmployeeDetailsForEdit?Id=' + item.id,
+                                          url: base_url+'/EPeople/GetEmployeeDetailsForEdit?Id=' + item.id,
                                           beforeSend: function () {
                                               new fn_showMaskloader('Please wait...');
                                           },
@@ -133,7 +132,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                        $.ajax({
                                            type: "GET",
                                            data: { 'Id': item.id, 'LocationId': $("#drp_MasterLocation1 option:selected").val() },
-                                           url: '../EPeople/GetUserListByUserId/',
+                                           url: base_url+'/EPeople/GetUserListByUserId/',
                                            contentType: "application/json; charset=utf-8",
                                            beforeSend: function () {
                                                new fn_showMaskloader('Please wait...');
@@ -173,7 +172,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                var $customEditButton = $("<span>")
                                    .attr({ title: jsGrid.fields.control.prototype.diagramEmployeeTooltip })
                                    .attr({ id: "btn-diagram-" + item.id }).click(function (e) {
-                                       $('#RenderPageId').load('../EPeople/ChartDetailsView?Id=' + item.id);
+                                       $('#RenderPageId').load(base_url+'/EPeople/ChartDetailsView?Id=' + item.id);
                                        //$.ajax({
                                        //    type: "POST",
                                        //    // data: { 'Id': item.id},
@@ -229,7 +228,7 @@ $(".callNextEmployeeData").click(function () {
     $.ajax({
         type: "POST",
         data: { 'Id': id, 'model': '@Model' },
-        url: '../EPeople/GetUserTreeViewListTesting/',
+        url: base_url+'/EPeople/GetUserTreeViewListTesting/',
         beforeSend: function () {
             new fn_showMaskloader('Please wait...');
         },
@@ -278,7 +277,7 @@ $(document).ready(function () {
            $.ajax({
                type: "POST",
                // data: { 'Id': item.id},
-               url: '../EPeople/OpenVSCFormForRequistion',
+               url: base_url+'/EPeople/OpenVSCFormForRequistion',
                beforeSend: function () {
                    new fn_showMaskloader('Please wait...');
                },
@@ -297,7 +296,7 @@ $(document).ready(function () {
        }
        else if (value == 2) {
            $.ajax({
-               url: '../EPeople/GetListOfVSCChart',
+               url: base_url+'/EPeople/GetListOfVSCChart',
                type: 'POST',
                contentType: "application/json",
                success: function (result) {
@@ -317,7 +316,7 @@ $(document).ready(function () {
        }
        else {
            $.ajax({
-               url: '../EPeople/GetListOfVSCChart',
+               url: base_url+'/EPeople/GetListOfVSCChart',
                type: 'POST',
                contentType: "application/json",
                success: function (result) {
@@ -343,7 +342,7 @@ $(document).ready(function () {
         $.ajax({
             type: "GET",
             // data: { 'Id': item.id},
-            url: '../EPeople/OpenDemotionForm?Id=' + GetEMPId,
+            url: base_url+'/EPeople/OpenDemotionForm?Id=' + GetEMPId,
             beforeSend: function () {
                 new fn_showMaskloader('Please wait...');
             },
@@ -363,7 +362,7 @@ $(document).ready(function () {
         $.ajax({
             type: "GET",
             // data: { 'Id': item.id},
-            url: '../EPeople/OpenEmploymentStatusChange?Id=' + GetEMPId,
+            url: base_url+'/EPeople/OpenEmploymentStatusChange?Id=' + GetEMPId,
             beforeSend: function () {
                 new fn_showMaskloader('Please wait...');
             },
@@ -403,7 +402,7 @@ $(document).ready(function () {
         //})
         $.ajax({
             type: 'POST',
-            url: '../EPeople/SendJobCountForApproval?JobTitleLastCount=' + object.JobTitleLastCount + "&JobTitleId=" + object.JobTitleId + "&JobTitleCount=" + object.JobTitleCount,
+            url: base_url+'/EPeople/SendJobCountForApproval?JobTitleLastCount=' + object.JobTitleLastCount + "&JobTitleId=" + object.JobTitleId + "&JobTitleCount=" + object.JobTitleCount,
             //data: { model: object },
             contentType: "application/json",
             beforeSend: function () {
@@ -428,7 +427,7 @@ function myFunction() {
     debugger
     var value = $("#GetDetailsRequisition option:selected").val();
         $.ajax({
-            url: '../EPeople/GetVCSDetailsById?VSCId=' + value,
+            url: base_url+'/EPeople/GetVCSDetailsById?VSCId=' + value,
             //data:{VSCID : value},
             type: 'POST',
             contentType: "application/json",
@@ -454,7 +453,7 @@ function DeleteRequisition() {
     var value = $("#VSTIdToDelete").val();
     //var value = $("#GetDetailsRequisition option:selected").val();
     $.ajax({
-        url: '../EPeople/SendVCSForDeleteApproval?VSCId=' + value,
+        url: base_url+'/EPeople/SendVCSForDeleteApproval?VSCId=' + value,
         type: 'POST',
         contentType: "application/json",
         beforeSend: function () {

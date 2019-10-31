@@ -832,7 +832,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
             ViewBag.NotSaved = true;
-             return Json(false, JsonRequestBehavior.AllowGet);;
+             return Json(false, JsonRequestBehavior.AllowGet);
 
         }
         /// <summary>
@@ -1036,18 +1036,23 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         public JsonResult SaveJobPostingData(JobPostingModel Obj)
         {
             var _manager = new VehicleSeatingChartManager();
+            bool isSaved = false;
             try
             {
                 if (Obj != null)
                 {
-                    var isSaved = _manager.SaveJobPosting(Obj);
+                    isSaved = _manager.SaveJobPosting(Obj);
+                }
+                else
+                {
+                    isSaved = false;
                 }
             }
             catch (Exception ex)
             {
-
+                return Json(false, JsonRequestBehavior.AllowGet);
             }
-            return null;
+            return Json(false, JsonRequestBehavior.AllowGet);
         }
         #endregion Job Post
     }

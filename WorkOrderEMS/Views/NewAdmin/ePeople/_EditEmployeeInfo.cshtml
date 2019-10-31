@@ -241,6 +241,7 @@
 <script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
 <script>
     $(document).ready(function () {
+        var base_url = window.location.origin;
         $("#DOBEMP").datepicker();
 
     });
@@ -249,7 +250,7 @@
         if (formname === 'DirectDeposit') {
             debugger
             $.ajax({
-                url: '../EPeople/_DirectDepositeForm?Id=' + "@Model.EmpId",
+                url: base_url+'/EPeople/_DirectDepositeForm?Id=' + "@Model.EmpId",
                 type: 'GET',
                 success: function (response) {
                     debugger
@@ -260,7 +261,7 @@
         }
         if (formname === 'employeehandbook') {
             $.ajax({
-                url: '/EPeople/_EmployeeHandbook',
+                url: base_url+'/EPeople/_EmployeeHandbook',
                 method: 'GET',
                 success: function (response) {
                     $("#formidEditInfo").html(response);

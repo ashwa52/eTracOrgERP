@@ -1,5 +1,6 @@
-﻿var HOBurl = '../NewAdmin/GetListOf306090ForJSGrid';
-var QExpectationsUrl = '../NewAdmin/GetListOfQExpectationsForJSGrid';
+﻿var HOBurl = '/NewAdmin/GetListOf306090ForJSGrid';
+var QExpectationsUrl = '/NewAdmin/GetListOfQExpectationsForJSGrid';
+var base_url = window.location.origin;
 var clients;
 var $_LocationId = $("#drp_MasterLocation1 option:selected").val();
 var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_RequestedBy = 0;//= $("#drp_MasterLocation option:selected").val();
@@ -22,7 +23,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
             loadData: function (filter) {
                 return $.ajax({
                     type: "GET",
-                    url: HOBurl + '?locationId=' + $_LocationId,
+                    url: base_url+HOBurl + '?locationId=' + $_LocationId,
                     datatype: 'json',
                     contentType: "application/json",
                 });
@@ -68,7 +69,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                       $.ajax({
                                           type: "POST",
                                           data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment},
-                                          url: '../NewAdmin/userAssessmentView/',
+                                          url: base_url+'/NewAdmin/userAssessmentView/',
                                           error: function (xhr, status, error) {
                                           },
                                           success: function (result) {
@@ -99,7 +100,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                         //data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment },
                                         data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle },
 
-                                        url: '../NewAdmin/userEvaluationView/',
+                                        url: base_url+'/NewAdmin/userEvaluationView/',
                                         error: function (xhr, status, error) {
                                         },
                                         success: function (result) {
@@ -146,7 +147,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
             loadData: function (filter) {
                 return $.ajax({
                     type: "GET",
-                    url: QExpectationsUrl + '?locationId=' + $_LocationId,
+                    url:base_url+ QExpectationsUrl + '?locationId=' + $_LocationId,
                     datatype: 'json',
                     contentType: "application/json",
                 });
@@ -195,7 +196,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                             $.ajax({
                                 type: "POST",
                                 data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType ,'FinYear':item.FinYear,'FinQuarter':item.Expectation},
-                                url: '../NewAdmin/userExpectationsView/',
+                                url: base_url+'/NewAdmin/userExpectationsView/',
                                 error: function (xhr, status, error) {
                                 },
                                 success: function (result) {
@@ -225,7 +226,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                 //data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment },
                                 data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle },
 
-                                url: '../NewAdmin/userEvaluationView/',
+                                url: base_url+'/NewAdmin/userEvaluationView/',
                                 error: function (xhr, status, error) {
                                 },
                                 success: function (result) {

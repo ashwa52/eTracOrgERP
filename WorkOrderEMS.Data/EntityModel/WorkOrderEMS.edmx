@@ -97,13 +97,15 @@
           <Property Name="API_EverELITEWorkTo" Type="date" />
           <Property Name="API_WorkEligibleInUS" Type="char" MaxLength="1" />
           <Property Name="API_JobPostingId" Type="bigint" />
-          <Property Name="API_JobTitleID" Type="bigint" Nullable="false" />
+          <Property Name="API_JobTitleID" Type="bigint" />
           <Property Name="API_HiringManagerID" Type="varchar" MaxLength="20" />
           <Property Name="API_DateOfJoining" Type="date" />
           <Property Name="API_DesireSalary" Type="numeric" Precision="18" Scale="2" />
           <Property Name="API_ApplicantStatus" Type="char" MaxLength="1" />
           <Property Name="API_Date" Type="datetime" />
           <Property Name="API_IsActive" Type="char" MaxLength="1" />
+          <Property Name="API_ApplicantIdRecruitee" Type="bigint" />
+          <Property Name="API_JobPostingIdRecruitee" Type="bigint" />
         </EntityType>
         <EntityType Name="Bill">
           <Key>
@@ -5203,6 +5205,7 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
         <Function Name="spSetApplicantInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="APIAction" Type="char" Mode="In" />
           <Parameter Name="API_ApplicantId" Type="bigint" Mode="In" />
+          <Parameter Name="API_ApplicantIdRecruitee" Type="bigint" Mode="In" />
           <Parameter Name="API_FirstName" Type="varchar" Mode="In" />
           <Parameter Name="API_MiddleName" Type="varchar" Mode="In" />
           <Parameter Name="API_LastName" Type="varchar" Mode="In" />
@@ -5224,6 +5227,8 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Parameter Name="API_EverELITEWorkFrom" Type="date" Mode="In" />
           <Parameter Name="API_EverELITEWorkTo" Type="date" Mode="In" />
           <Parameter Name="API_WorkEligibleInUS" Type="char" Mode="In" />
+          <Parameter Name="API_JobPostingId" Type="bigint" Mode="In" />
+          <Parameter Name="API_JobPostingIdRecruitee" Type="bigint" Mode="In" />
           <Parameter Name="API_JobTitleID" Type="bigint" Mode="In" />
           <Parameter Name="API_HiringManagerID" Type="varchar" Mode="In" />
           <Parameter Name="API_DateOfJoining" Type="date" Mode="In" />
@@ -5933,6 +5938,7 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Parameter Name="EEL_FinencialYear" Type="varchar" Mode="In" />
           <Parameter Name="EEL_FinQuarter" Type="varchar" Mode="In" />
           <Parameter Name="EEL_AnswerSelf" Type="char" Mode="In" />
+          <Parameter Name="EEL_Comments" Type="varchar(max)" Mode="In" />
           <Parameter Name="EEL_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetSubModule" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -14092,18 +14098,6 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
             <Parameter Name="EmployeeId" Mode="In" Type="String" />
             <Parameter Name="AssessmentType" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spSetSelfAssessmentQuarterly">
-            <Parameter Name="Action" Mode="In" Type="String" />
-            <Parameter Name="EmployeeID" Mode="In" Type="String" />
-            <Parameter Name="EmployeeIdManager" Mode="In" Type="String" />
-            <Parameter Name="ASQ_QuestionType" Mode="In" Type="String" />
-            <Parameter Name="ASQ_Id" Mode="In" Type="Int64" />
-            <Parameter Name="EEL_Id" Mode="In" Type="Int64" />
-            <Parameter Name="EEL_FinencialYear" Mode="In" Type="String" />
-            <Parameter Name="EEL_FinQuarter" Mode="In" Type="String" />
-            <Parameter Name="EEL_AnswerSelf" Mode="In" Type="String" />
-            <Parameter Name="EEL_IsActive" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="spGetAssessmentList306090" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetAssessmentList306090_Result1)">
           <Parameter Name="EmployeeId" Mode="In" Type="String" />
           </FunctionImport>
@@ -14115,9 +14109,13 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
             <Parameter Name="JPS_NumberOfPost" Mode="In" Type="Int32" />
             <Parameter Name="JPS_IsActive" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="spGetHiringManager" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetHiringManager_Result)">
+          <Parameter Name="VST_Id" Mode="In" Type="Int64" />
+          </FunctionImport>
           <FunctionImport Name="spSetApplicantInfo">
             <Parameter Name="APIAction" Mode="In" Type="String" />
             <Parameter Name="API_ApplicantId" Mode="In" Type="Int64" />
+            <Parameter Name="API_ApplicantIdRecruitee" Mode="In" Type="Int64" />
             <Parameter Name="API_FirstName" Mode="In" Type="String" />
             <Parameter Name="API_MiddleName" Mode="In" Type="String" />
             <Parameter Name="API_LastName" Mode="In" Type="String" />
@@ -14139,6 +14137,8 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
             <Parameter Name="API_EverELITEWorkFrom" Mode="In" Type="DateTime" />
             <Parameter Name="API_EverELITEWorkTo" Mode="In" Type="DateTime" />
             <Parameter Name="API_WorkEligibleInUS" Mode="In" Type="String" />
+            <Parameter Name="API_JobPostingId" Mode="In" Type="Int64" />
+            <Parameter Name="API_JobPostingIdRecruitee" Mode="In" Type="Int64" />
             <Parameter Name="API_JobTitleID" Mode="In" Type="Int64" />
             <Parameter Name="API_HiringManagerID" Mode="In" Type="String" />
             <Parameter Name="API_DateOfJoining" Mode="In" Type="DateTime" />
@@ -14146,8 +14146,18 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
             <Parameter Name="API_ApplicantStatus" Mode="In" Type="String" />
             <Parameter Name="API_IsActive" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spGetHiringManager" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetHiringManager_Result)">
-            <Parameter Name="VST_Id" Mode="In" Type="Int64" />
+          <FunctionImport Name="spSetSelfAssessmentQuarterly">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="EmployeeIdManager" Mode="In" Type="String" />
+            <Parameter Name="ASQ_QuestionType" Mode="In" Type="String" />
+            <Parameter Name="ASQ_Id" Mode="In" Type="Int64" />
+            <Parameter Name="EEL_Id" Mode="In" Type="Int64" />
+            <Parameter Name="EEL_FinencialYear" Mode="In" Type="String" />
+            <Parameter Name="EEL_FinQuarter" Mode="In" Type="String" />
+            <Parameter Name="EEL_AnswerSelf" Mode="In" Type="String" />
+            <Parameter Name="EEL_Comments" Mode="In" Type="String" />
+            <Parameter Name="EEL_IsActive" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Proc_GetAllWorkAssignedToEmployee_Result">
@@ -16517,13 +16527,15 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Property Name="API_EverELITEWorkTo" Type="DateTime" Precision="0" />
           <Property Name="API_WorkEligibleInUS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="API_JobPostingId" Type="Int64" />
-          <Property Name="API_JobTitleID" Type="Int64" Nullable="false" />
+          <Property Name="API_JobTitleID" Type="Int64" />
           <Property Name="API_HiringManagerID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="API_DateOfJoining" Type="DateTime" Precision="0" />
           <Property Name="API_DesireSalary" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="API_ApplicantStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="API_Date" Type="DateTime" Precision="3" />
           <Property Name="API_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="API_ApplicantIdRecruitee" Type="Int64" />
+          <Property Name="API_JobPostingIdRecruitee" Type="Int64" />
         </EntityType>
         <ComplexType Name="spGetAssessmentList306090_Result">
           <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
@@ -22017,6 +22029,8 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <EntitySetMapping Name="ApplicantInfoes">
             <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.ApplicantInfo">
               <MappingFragment StoreEntitySet="ApplicantInfo">
+                <ScalarProperty Name="API_JobPostingIdRecruitee" ColumnName="API_JobPostingIdRecruitee" />
+                <ScalarProperty Name="API_ApplicantIdRecruitee" ColumnName="API_ApplicantIdRecruitee" />
                 <ScalarProperty Name="API_IsActive" ColumnName="API_IsActive" />
                 <ScalarProperty Name="API_Date" ColumnName="API_Date" />
                 <ScalarProperty Name="API_ApplicantStatus" ColumnName="API_ApplicantStatus" />
@@ -22520,7 +22534,6 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <FunctionImportMapping FunctionImportName="spSetEvaluationQuarterly" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetEvaluationQuarterly" />
           <FunctionImportMapping FunctionImportName="spSetReview306090" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetReview306090" />
           <FunctionImportMapping FunctionImportName="spSetSelfAssessment306090Submmit" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetSelfAssessment306090Submmit" />
-          <FunctionImportMapping FunctionImportName="spSetSelfAssessmentQuarterly" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetSelfAssessmentQuarterly" />
           <FunctionImportMapping FunctionImportName="spGetAssessmentList306090" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetAssessmentList306090">
             <ResultMapping>
               <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetAssessmentList306090_Result1">
@@ -22538,7 +22551,6 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spSetJobPosting" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetJobPosting" />
-          <FunctionImportMapping FunctionImportName="spSetApplicantInfo" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetApplicantInfo" />
           <FunctionImportMapping FunctionImportName="spGetHiringManager" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetHiringManager">
             <ResultMapping>
               <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetHiringManager_Result">
@@ -22550,6 +22562,8 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetApplicantInfo" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetApplicantInfo" />
+          <FunctionImportMapping FunctionImportName="spSetSelfAssessmentQuarterly" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetSelfAssessmentQuarterly" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

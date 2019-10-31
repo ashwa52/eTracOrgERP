@@ -122,8 +122,8 @@
                                 <li class="nav-item WidthForTab">
                                     <a class="nav-link active CenterText" data-toggle="tab" href="#EMPList">Employee Management</a>
                                 </li>
-                                <li class="nav-item WidthForTab">
-                                    <a class="nav-link CenterText" data-toggle="tab" href="#ListRequisition">Requisition</a>
+                                <li class="nav-item WidthForTab" style="width:190px;" >
+                                    <a class="nav-link CenterText" style="text-align: center;" data-toggle="tab" href="#ListRequisition">Requisition</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
@@ -545,7 +545,7 @@ am4core.useTheme(am4themes_animated);
 // Themes end
 
 // Create chart instance
-var chart = am4core.create("EmployeePieChart", am4charts.PieChart);
+var chart = am4core.create("QRCCount", am4charts.PieChart);
 
 // Add data
 chart.data = [{
@@ -624,12 +624,13 @@ am4core.ready(function() {
 </script>
 <script>
     $(document).ready(function () {
+        var base_url = window.location.origin;
         $("#SaveEditInfo").click(function () {
             debugger
             var dataObject = $("#SaveEditableUserInfo").serialize();
             $.ajax({
                 type: "POST",
-                url: '../EPeople/SaveUserEditableInfo',
+                url: base_url+ '/EPeople/SaveUserEditableInfo',
                 data: dataObject,
                 beforeSend: function () {
                     new fn_showMaskloader('Please wait...');
@@ -663,39 +664,39 @@ am4core.ready(function() {
         if (jsondata != null && jsondata != "" && jsondata.dataJson.trim() != "") {
             var dataJSON = JSON.parse(jsondata.dataJson);
             dataJSON.CountPanel[0].AdminCount;
-            am4core.ready(function () {
-                am4core.useTheme(am4themes_animated);
-                var chartQRC = am4core.create("QRCCount", am4charts.PieChart);
-                chartQRC.data = [{
-                    "UserType": "Administrator",
-                    "Count": 20
-                }, {
-                    "UserType": "Manager",
-                    "Count": 5//dataJSON.CountPanel[0].EmpCount
-                }, {
-                    "UserType": "Employee",
-                    "Count": 3//dataJSON.CountPanel[0].ManagerCount
-                }];
+            //am4core.ready(function () {
+            //    am4core.useTheme(am4themes_animated);
+            //    var chartQRC = am4core.create("QRCCount", am4charts.PieChart);
+            //    chartQRC.data = [{
+            //        "UserType": "Administrator",
+            //        "Count": 20
+            //    }, {
+            //        "UserType": "Manager",
+            //        "Count": 5//dataJSON.CountPanel[0].EmpCount
+            //    }, {
+            //        "UserType": "Employee",
+            //        "Count": 3//dataJSON.CountPanel[0].ManagerCount
+            //    }];
 
-                // Add and configure Series
-                var pieSeries = chartQRC.series.push(new am4charts.PieSeries());
-                pieSeries.dataFields.value = "Count";
-                pieSeries.dataFields.category = "UserType";
-                pieSeries.innerRadius = am4core.percent(50);
-                pieSeries.ticks.template.disabled = true;
-                pieSeries.labels.template.disabled = true;
+            //    // Add and configure Series
+            //    var pieSeries = chartQRC.series.push(new am4charts.PieSeries());
+            //    pieSeries.dataFields.value = "Count";
+            //    pieSeries.dataFields.category = "UserType";
+            //    pieSeries.innerRadius = am4core.percent(50);
+            //    pieSeries.ticks.template.disabled = true;
+            //    pieSeries.labels.template.disabled = true;
 
-                var rgm = new am4core.RadialGradientModifier();
-                rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
-                pieSeries.slices.template.fillModifier = rgm;
-                pieSeries.slices.template.strokeModifier = rgm;
-                pieSeries.slices.template.strokeOpacity = 0.4;
-                pieSeries.slices.template.strokeWidth = 0;
+            //    var rgm = new am4core.RadialGradientModifier();
+            //    rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
+            //    pieSeries.slices.template.fillModifier = rgm;
+            //    pieSeries.slices.template.strokeModifier = rgm;
+            //    pieSeries.slices.template.strokeOpacity = 0.4;
+            //    pieSeries.slices.template.strokeWidth = 0;
 
-                chartQRC.legend = new am4charts.Legend();
-                chartQRC.legend.position = "right";
+            //    chartQRC.legend = new am4charts.Legend();
+            //    chartQRC.legend.position = "right";
 
-            }); // end am4core.ready()
+            //}); // end am4core.ready()
         }
     }
         });

@@ -5849,51 +5849,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetSelfAssessment306090Submmit", employeeIdParameter, assessmentTypeParameter);
         }
     
-        public virtual int spSetSelfAssessmentQuarterly(string action, string employeeID, string employeeIdManager, string aSQ_QuestionType, Nullable<long> aSQ_Id, Nullable<long> eEL_Id, string eEL_FinencialYear, string eEL_FinQuarter, string eEL_AnswerSelf, string eEL_IsActive)
-        {
-            var actionParameter = action != null ?
-                new ObjectParameter("Action", action) :
-                new ObjectParameter("Action", typeof(string));
-    
-            var employeeIDParameter = employeeID != null ?
-                new ObjectParameter("EmployeeID", employeeID) :
-                new ObjectParameter("EmployeeID", typeof(string));
-    
-            var employeeIdManagerParameter = employeeIdManager != null ?
-                new ObjectParameter("EmployeeIdManager", employeeIdManager) :
-                new ObjectParameter("EmployeeIdManager", typeof(string));
-    
-            var aSQ_QuestionTypeParameter = aSQ_QuestionType != null ?
-                new ObjectParameter("ASQ_QuestionType", aSQ_QuestionType) :
-                new ObjectParameter("ASQ_QuestionType", typeof(string));
-    
-            var aSQ_IdParameter = aSQ_Id.HasValue ?
-                new ObjectParameter("ASQ_Id", aSQ_Id) :
-                new ObjectParameter("ASQ_Id", typeof(long));
-    
-            var eEL_IdParameter = eEL_Id.HasValue ?
-                new ObjectParameter("EEL_Id", eEL_Id) :
-                new ObjectParameter("EEL_Id", typeof(long));
-    
-            var eEL_FinencialYearParameter = eEL_FinencialYear != null ?
-                new ObjectParameter("EEL_FinencialYear", eEL_FinencialYear) :
-                new ObjectParameter("EEL_FinencialYear", typeof(string));
-    
-            var eEL_FinQuarterParameter = eEL_FinQuarter != null ?
-                new ObjectParameter("EEL_FinQuarter", eEL_FinQuarter) :
-                new ObjectParameter("EEL_FinQuarter", typeof(string));
-    
-            var eEL_AnswerSelfParameter = eEL_AnswerSelf != null ?
-                new ObjectParameter("EEL_AnswerSelf", eEL_AnswerSelf) :
-                new ObjectParameter("EEL_AnswerSelf", typeof(string));
-    
-            var eEL_IsActiveParameter = eEL_IsActive != null ?
-                new ObjectParameter("EEL_IsActive", eEL_IsActive) :
-                new ObjectParameter("EEL_IsActive", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetSelfAssessmentQuarterly", actionParameter, employeeIDParameter, employeeIdManagerParameter, aSQ_QuestionTypeParameter, aSQ_IdParameter, eEL_IdParameter, eEL_FinencialYearParameter, eEL_FinQuarterParameter, eEL_AnswerSelfParameter, eEL_IsActiveParameter);
-        }
-    
         public virtual ObjectResult<spGetAssessmentList306090_Result1> spGetAssessmentList306090(string employeeId)
         {
             var employeeIdParameter = employeeId != null ?
@@ -5932,7 +5887,16 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetJobPosting", actionParameter, jPS_JobPostingIdRecruiteeParameter, jPS_JobTitleIDParameter, jPS_HiringManagerIDParameter, jPS_NumberOfPostParameter, jPS_IsActiveParameter);
         }
     
-        public virtual int spSetApplicantInfo(string aPIAction, Nullable<long> aPI_ApplicantId, string aPI_FirstName, string aPI_MiddleName, string aPI_LastName, string aPI_HomeAddress, string aPI_City, string aPI_State, Nullable<int> aPI_Zip, string aPI_Resume, string aPI_CoverLetter, Nullable<long> aPI_PhoneNumber, string aPI_Email, string aPI_DLNumber, string aPI_Photo, string aPI_Citizenship, string aPI_MilitaryService, string aPI_Gender, string aPI_HighestEducation, string aPI_AnyRefOrEmployeeInELITE, Nullable<System.DateTime> aPI_EverELITEWorkFrom, Nullable<System.DateTime> aPI_EverELITEWorkTo, string aPI_WorkEligibleInUS, Nullable<long> aPI_JobTitleID, string aPI_HiringManagerID, Nullable<System.DateTime> aPI_DateOfJoining, Nullable<decimal> aPI_DesireSalary, string aPI_ApplicantStatus, string aPI_IsActive)
+        public virtual ObjectResult<spGetHiringManager_Result> spGetHiringManager(Nullable<long> vST_Id)
+        {
+            var vST_IdParameter = vST_Id.HasValue ?
+                new ObjectParameter("VST_Id", vST_Id) :
+                new ObjectParameter("VST_Id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetHiringManager_Result>("spGetHiringManager", vST_IdParameter);
+        }
+    
+        public virtual int spSetApplicantInfo(string aPIAction, Nullable<long> aPI_ApplicantId, Nullable<long> aPI_ApplicantIdRecruitee, string aPI_FirstName, string aPI_MiddleName, string aPI_LastName, string aPI_HomeAddress, string aPI_City, string aPI_State, Nullable<int> aPI_Zip, string aPI_Resume, string aPI_CoverLetter, Nullable<long> aPI_PhoneNumber, string aPI_Email, string aPI_DLNumber, string aPI_Photo, string aPI_Citizenship, string aPI_MilitaryService, string aPI_Gender, string aPI_HighestEducation, string aPI_AnyRefOrEmployeeInELITE, Nullable<System.DateTime> aPI_EverELITEWorkFrom, Nullable<System.DateTime> aPI_EverELITEWorkTo, string aPI_WorkEligibleInUS, Nullable<long> aPI_JobPostingId, Nullable<long> aPI_JobPostingIdRecruitee, Nullable<long> aPI_JobTitleID, string aPI_HiringManagerID, Nullable<System.DateTime> aPI_DateOfJoining, Nullable<decimal> aPI_DesireSalary, string aPI_ApplicantStatus, string aPI_IsActive)
         {
             var aPIActionParameter = aPIAction != null ?
                 new ObjectParameter("APIAction", aPIAction) :
@@ -5941,6 +5905,10 @@ namespace WorkOrderEMS.Data.EntityModel
             var aPI_ApplicantIdParameter = aPI_ApplicantId.HasValue ?
                 new ObjectParameter("API_ApplicantId", aPI_ApplicantId) :
                 new ObjectParameter("API_ApplicantId", typeof(long));
+    
+            var aPI_ApplicantIdRecruiteeParameter = aPI_ApplicantIdRecruitee.HasValue ?
+                new ObjectParameter("API_ApplicantIdRecruitee", aPI_ApplicantIdRecruitee) :
+                new ObjectParameter("API_ApplicantIdRecruitee", typeof(long));
     
             var aPI_FirstNameParameter = aPI_FirstName != null ?
                 new ObjectParameter("API_FirstName", aPI_FirstName) :
@@ -6026,6 +5994,14 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("API_WorkEligibleInUS", aPI_WorkEligibleInUS) :
                 new ObjectParameter("API_WorkEligibleInUS", typeof(string));
     
+            var aPI_JobPostingIdParameter = aPI_JobPostingId.HasValue ?
+                new ObjectParameter("API_JobPostingId", aPI_JobPostingId) :
+                new ObjectParameter("API_JobPostingId", typeof(long));
+    
+            var aPI_JobPostingIdRecruiteeParameter = aPI_JobPostingIdRecruitee.HasValue ?
+                new ObjectParameter("API_JobPostingIdRecruitee", aPI_JobPostingIdRecruitee) :
+                new ObjectParameter("API_JobPostingIdRecruitee", typeof(long));
+    
             var aPI_JobTitleIDParameter = aPI_JobTitleID.HasValue ?
                 new ObjectParameter("API_JobTitleID", aPI_JobTitleID) :
                 new ObjectParameter("API_JobTitleID", typeof(long));
@@ -6050,16 +6026,56 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("API_IsActive", aPI_IsActive) :
                 new ObjectParameter("API_IsActive", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApplicantInfo", aPIActionParameter, aPI_ApplicantIdParameter, aPI_FirstNameParameter, aPI_MiddleNameParameter, aPI_LastNameParameter, aPI_HomeAddressParameter, aPI_CityParameter, aPI_StateParameter, aPI_ZipParameter, aPI_ResumeParameter, aPI_CoverLetterParameter, aPI_PhoneNumberParameter, aPI_EmailParameter, aPI_DLNumberParameter, aPI_PhotoParameter, aPI_CitizenshipParameter, aPI_MilitaryServiceParameter, aPI_GenderParameter, aPI_HighestEducationParameter, aPI_AnyRefOrEmployeeInELITEParameter, aPI_EverELITEWorkFromParameter, aPI_EverELITEWorkToParameter, aPI_WorkEligibleInUSParameter, aPI_JobTitleIDParameter, aPI_HiringManagerIDParameter, aPI_DateOfJoiningParameter, aPI_DesireSalaryParameter, aPI_ApplicantStatusParameter, aPI_IsActiveParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApplicantInfo", aPIActionParameter, aPI_ApplicantIdParameter, aPI_ApplicantIdRecruiteeParameter, aPI_FirstNameParameter, aPI_MiddleNameParameter, aPI_LastNameParameter, aPI_HomeAddressParameter, aPI_CityParameter, aPI_StateParameter, aPI_ZipParameter, aPI_ResumeParameter, aPI_CoverLetterParameter, aPI_PhoneNumberParameter, aPI_EmailParameter, aPI_DLNumberParameter, aPI_PhotoParameter, aPI_CitizenshipParameter, aPI_MilitaryServiceParameter, aPI_GenderParameter, aPI_HighestEducationParameter, aPI_AnyRefOrEmployeeInELITEParameter, aPI_EverELITEWorkFromParameter, aPI_EverELITEWorkToParameter, aPI_WorkEligibleInUSParameter, aPI_JobPostingIdParameter, aPI_JobPostingIdRecruiteeParameter, aPI_JobTitleIDParameter, aPI_HiringManagerIDParameter, aPI_DateOfJoiningParameter, aPI_DesireSalaryParameter, aPI_ApplicantStatusParameter, aPI_IsActiveParameter);
         }
     
-        public virtual ObjectResult<spGetHiringManager_Result> spGetHiringManager(Nullable<long> vST_Id)
+        public virtual int spSetSelfAssessmentQuarterly(string action, string employeeID, string employeeIdManager, string aSQ_QuestionType, Nullable<long> aSQ_Id, Nullable<long> eEL_Id, string eEL_FinencialYear, string eEL_FinQuarter, string eEL_AnswerSelf, string eEL_Comments, string eEL_IsActive)
         {
-            var vST_IdParameter = vST_Id.HasValue ?
-                new ObjectParameter("VST_Id", vST_Id) :
-                new ObjectParameter("VST_Id", typeof(long));
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetHiringManager_Result>("spGetHiringManager", vST_IdParameter);
+            var employeeIDParameter = employeeID != null ?
+                new ObjectParameter("EmployeeID", employeeID) :
+                new ObjectParameter("EmployeeID", typeof(string));
+    
+            var employeeIdManagerParameter = employeeIdManager != null ?
+                new ObjectParameter("EmployeeIdManager", employeeIdManager) :
+                new ObjectParameter("EmployeeIdManager", typeof(string));
+    
+            var aSQ_QuestionTypeParameter = aSQ_QuestionType != null ?
+                new ObjectParameter("ASQ_QuestionType", aSQ_QuestionType) :
+                new ObjectParameter("ASQ_QuestionType", typeof(string));
+    
+            var aSQ_IdParameter = aSQ_Id.HasValue ?
+                new ObjectParameter("ASQ_Id", aSQ_Id) :
+                new ObjectParameter("ASQ_Id", typeof(long));
+    
+            var eEL_IdParameter = eEL_Id.HasValue ?
+                new ObjectParameter("EEL_Id", eEL_Id) :
+                new ObjectParameter("EEL_Id", typeof(long));
+    
+            var eEL_FinencialYearParameter = eEL_FinencialYear != null ?
+                new ObjectParameter("EEL_FinencialYear", eEL_FinencialYear) :
+                new ObjectParameter("EEL_FinencialYear", typeof(string));
+    
+            var eEL_FinQuarterParameter = eEL_FinQuarter != null ?
+                new ObjectParameter("EEL_FinQuarter", eEL_FinQuarter) :
+                new ObjectParameter("EEL_FinQuarter", typeof(string));
+    
+            var eEL_AnswerSelfParameter = eEL_AnswerSelf != null ?
+                new ObjectParameter("EEL_AnswerSelf", eEL_AnswerSelf) :
+                new ObjectParameter("EEL_AnswerSelf", typeof(string));
+    
+            var eEL_CommentsParameter = eEL_Comments != null ?
+                new ObjectParameter("EEL_Comments", eEL_Comments) :
+                new ObjectParameter("EEL_Comments", typeof(string));
+    
+            var eEL_IsActiveParameter = eEL_IsActive != null ?
+                new ObjectParameter("EEL_IsActive", eEL_IsActive) :
+                new ObjectParameter("EEL_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetSelfAssessmentQuarterly", actionParameter, employeeIDParameter, employeeIdManagerParameter, aSQ_QuestionTypeParameter, aSQ_IdParameter, eEL_IdParameter, eEL_FinencialYearParameter, eEL_FinQuarterParameter, eEL_AnswerSelfParameter, eEL_CommentsParameter, eEL_IsActiveParameter);
         }
     }
 }

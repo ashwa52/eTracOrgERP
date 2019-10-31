@@ -1,4 +1,5 @@
 ﻿var HOBurl = '../HirinngOnBoarding/GetHiringOnBoardingList';
+var base_url = window.location.origin;
 var clients;
 var $_LocationId = $("#drp_MasterLocation option:selected").val();
 var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_RequestedBy = 0;//= $("#drp_MasterLocation option:selected").val();
@@ -20,7 +21,7 @@ function myOpenings() {
 				var deferred = $.Deferred();
 
 				$.ajax({
-					url: '/NewAdmin/MyOpenings',
+				    url: base_url+ '/NewAdmin/MyOpenings',
 					dataType: 'json',
 					success: function (data) {
 						debugger;
@@ -105,7 +106,7 @@ function MyInterviews() {
 				var deferred = $.Deferred();
 
 				$.ajax({
-					url: '/NewAdmin/MyInterviews',
+				    url: base_url+'/NewAdmin/MyInterviews',
 					dataType: 'json',
 					success: function (data) {
 						debugger;
@@ -171,7 +172,7 @@ function MyOpeningSummery() {
 				var d = $.Deferred();
 
 				$.ajax({
-					url: "/NewAdmin/GetJobPostong",
+				    url: base_url+"/NewAdmin/GetJobPostong",
 					dataType: "json"
 				}).done(function (response) {
 					d.resolve(response);
@@ -298,7 +299,7 @@ function GetInterviewers(elm, applicantId) {
 	});
 	$("#interviewArea").empty();
 	$.ajax({
-		url: '/NewAdmin/GetInterviewers?applicantId=' + applicantId,
+	    url: base_url+'/NewAdmin/GetInterviewers?applicantId=' + applicantId,
 		method: 'GET',
 		success: function (response) {
 			$("#interviewArea").html(response);
@@ -308,7 +309,7 @@ function GetInterviewers(elm, applicantId) {
 function GetInterviewQuestions() {
 	$("#interviewArea").empty();
 	$.ajax({
-		url: '/NewAdmin/GetInterviewQuestionView',
+	    url: base_url+'/NewAdmin/GetInterviewQuestionView',
 		method: 'GET',
 		success: function (response) {
 			Getquestions(null);
@@ -319,7 +320,7 @@ function GetInterviewQuestions() {
 
 function Getquestions(id) {
 	$.ajax({
-		url: '/NewAdmin/GetInterviewQuestions',
+	    url: base_url+'/NewAdmin/GetInterviewQuestions',
 		method: 'POST',
 		data: { id: id },
 		success: function (innerResponse) {
@@ -401,7 +402,7 @@ function SaveAnswer(callback) {
 	console.log(INA_Answer);
 	console.log(INA_Comments);
 	$.ajax({
-		url: '/NewAdmin/SaveAnswers',
+	    url:base_url+ '/NewAdmin/SaveAnswers',
 		method: 'POST',
 		async: false,
 		cache: false,
@@ -415,7 +416,7 @@ function GoOnline(elm, empid) {
 	var comment = '';
 	var IsAvailable = 'Y';
 	$.ajax({
-		url: '/NewAdmin/CanInterviewerIsOnline',
+	    url: base_url+'/NewAdmin/CanInterviewerIsOnline',
 		method: 'POST',
 		data: { ApplicantId: ApplicantId, IsAvailable: IsAvailable, Comment: comment },
 		success: function (response) {
@@ -454,7 +455,7 @@ function CheckIfOptionNotSelected() {
 function GetScore(callback) {
 	var ApplicantId = $("#applicant_id").val();
 	$.ajax({
-		url: '/NewAdmin/GetScore?ApplicantId=' + ApplicantId,
+	    url:base_url+ '/NewAdmin/GetScore?ApplicantId=' + ApplicantId,
 		method: 'GET',
 		success: callback
 	});
@@ -480,7 +481,7 @@ function FinishInterview() {
 }
 function CheckIfAllResponded(applicantId, callback) {
 	$.ajax({
-		url: '/NewAdmin/CheckNextQuestion?ApplicantId=' + applicantId,
+	    url: base_url+'/NewAdmin/CheckNextQuestion?ApplicantId=' + applicantId,
 		method: 'GET',
 		success: callback
 	});

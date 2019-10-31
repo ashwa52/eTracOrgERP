@@ -15,18 +15,19 @@
             </div>
             <div class="form-group row">
                 <div class="col-sm-6">
-                    @Html.TextAreaFor(model => model.AddChartModel.RolesAndResponsibility, new { @Placeholder = "Job Title", @id = "RolesAndResponsibilityJobPosting", @class = "form-control input-rounded required isValidLocationName" })
+                    @Html.TextAreaFor(model => model.AddChartModel.RolesAndResponsibility, new { @Placeholder = "Job Title", @id = "RolesAndResponsibilityJobPosting", @class = "form-control input-rounded required" })
                 </div>
                 <div class="col-sm-6">
-                    <label>@Model.AddChartModel.JobDescription</label>
+                    @Html.TextBoxFor(model => model.AddChartModel.JobDescription, new { @Placeholder = "Job Description", @id = "JobDescriptionVCS", @class = "form-control input-rounded required" })
+                    @*<label>@Model.AddChartModel.JobDescription</label>*@
                 </div>
             </div>
             <div class="form-group row">
                 <div class="col-sm-6">
-                    @Html.TextBoxFor(model => model.Location, new { @Placeholder = "Location", @id = "LocationJobPosting", @class = "form-control input-rounded required isValidLocationName" })
+                    @Html.TextBoxFor(model => model.Location, new { @Placeholder = "Location", @id = "LocationJobPosting", @class = "form-control input-rounded required" })
                 </div>
                 <div class="col-sm-6">
-                    @Html.TextBoxFor(model => model.Education, new { @Placeholder = "Education", @id = "EducationJobPosting", @class = "form-control input-rounded required isValidLocationName" })
+                    @Html.TextBoxFor(model => model.Education, new { @Placeholder = "Education", @id = "EducationJobPosting", @class = "form-control input-rounded required" })
                 </div>
             </div>
             <div class="form-group row">

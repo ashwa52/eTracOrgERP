@@ -404,6 +404,7 @@ namespace WorkOrderEMS.BusinessLogic
                 {
                     if (Obj.AddChartModel.Id > 0)
                     {
+                        var saved = _VSCRepository.SaveJob(Obj);
                         var modelRecruitee = new RecruiteeAPI();
                         var dynamicJson = new Models.NewAdminModel.RootObjectData();
                         string url = "/c/40359/offers/";
@@ -436,7 +437,7 @@ namespace WorkOrderEMS.BusinessLogic
                         string message = JsonConvert.SerializeObject(dynamicJson);
                         var getSttring = modelRecruitee.POSTreq(message, url);
                         // Obj.AddChartModel.Action = "I";
-                        var saved = _VSCRepository.SaveJob(Obj);
+                        //var saved = _VSCRepository.SaveJob(Obj);
                         #endregion Demo Code
                     }
                     else

@@ -150,7 +150,7 @@ namespace WorkOrderEMS.Data.DataRepository
         {
             try
             {
-                var data = objworkorderEMSEntities.spSetJobPosting(Obj.AddChartModel.Action, Obj.RecruiteeId,null,"thomashardy", Obj.NumberOfPost,"Y");
+                var data = objworkorderEMSEntities.spSetJobPosting(Obj.AddChartModel.Action, Obj.RecruiteeId, Obj.AddChartModel.JobTitleId, Obj.HiringManager, Obj.NumberOfPost,"Y");
                 return data;
             }
             catch (Exception ex)

@@ -172,7 +172,7 @@
 </div>
 <script>
     $("document").ready(function () {
-
+        var base_url = window.location.origin;
         enableDisableBtn();
         $("td.ans input[type='radio']").on("click", function () {
             $('#submit').attr("disabled", false);
@@ -214,7 +214,7 @@
 
         });
         obj = JSON.stringify({ 'data': obj });
-        var url = (action == "Draft") ? '../NewAdmin/draftExpectations/' : '../NewAdmin/saveExpectations/'
+        var url = (action == "Draft") ? base_url+'/NewAdmin/draftExpectations/' : base_url+'/NewAdmin/saveExpectations/'
         $.ajax({
             type: "POST",
             data: obj,
@@ -228,7 +228,7 @@
                                           $.ajax({
                                           type: "POST",
                                           data: { 'Id': EEL_EMP_EmployeeId, 'Assesment': AssessmentType,"FinYear":EEL_FinencialYear,"FinQuarter":EEL_FinQuarter},
-                                          url: '../NewAdmin/userExpectationsView/',
+                                          url: base_url+'/NewAdmin/userExpectationsView/',
                                           error: function (xhr, status, error) {
                                           },
                                           success: function (result) {

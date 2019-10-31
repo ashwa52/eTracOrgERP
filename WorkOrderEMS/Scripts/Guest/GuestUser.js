@@ -1,4 +1,5 @@
-﻿function OpenForm(formname,elm) {
+﻿var base_url = window.location.origin;
+function OpenForm(formname, elm) {
 	var geturl = '';
 	var isLocked = false;
 	$(elm).find('i').each(function (i, ielm) {
@@ -10,34 +11,34 @@
 	unblink(formname.toLowerCase()+'icn');
 	switch (formname) {
 		case 'directdeposite':
-			geturl = '/Guest/_DirectDepositeForm';
+		    geturl = base_url+'/Guest/_DirectDepositeForm';
 			break;
 		case 'employeehandbook':
-			geturl = '/Guest/_EmployeeHandbook';
+		    geturl = base_url + '/Guest/_EmployeeHandbook';
 			break;
 		case 'W4Form':
-			geturl = '/Guest/_W4Form';
+		    geturl = base_url + '/Guest/_W4Form';
 			break;
 		case 'I9Form':
-			geturl = '/Guest/_I9Form';
+		    geturl = base_url + '/Guest/_I9Form';
 			break;
 		case 'EmergencyContactForm':
-			geturl = '/Guest/_emergencyContactForm';
+		    geturl = base_url + '/Guest/_emergencyContactForm';
 			break;
 		case 'photorelease':
-			geturl = '/Guest/_PhotoReleaseForm';
+		    geturl = base_url + '/Guest/_PhotoReleaseForm';
 			break;
 		case 'confidentiality':
-			geturl = '/Guest/_ConfidentialityAgreementForm';
+		    geturl = base_url + '/Guest/_ConfidentialityAgreementForm';
 			break;
 		case 'educationVerificationForm':
-			geturl = '/Guest/_EducationVarificationForm';
+		    geturl = base_url + '/Guest/_EducationVarificationForm';
 			break;
 		case 'creditCardAuthorizationForm':
-			geturl = '/Guest/_CreditCardAuthorizationForm';
+		    geturl = base_url + '/Guest/_CreditCardAuthorizationForm';
 			break;
 		case 'previousEmployeement':
-			geturl = '/Guest/_PreviousEmployeement';
+		    geturl = base_url + '/Guest/_PreviousEmployeement';
 			break;
 	}
 	GetForm(geturl, function (successRes) {
@@ -58,31 +59,31 @@ function SubmitForm(element, formName) {
 	if (isSubmit) {
 		switch (formName.id) {
 			case 'depositeForm':
-				url = '/Guest/_DirectDepositeForm';
+			    url = base_url + '/Guest/_DirectDepositeForm';
 				data = $('#depositeForm').serialize();
 				break;
 			case 'employeeHandbook':
-				url = '/Guest/_EmployeeHandbook';
+			    url = base_url + '/Guest/_EmployeeHandbook';
 				data = $('#employeeHandbook').serialize();
 				break;
 			case 'photoreleaseform':
-				url = '/Guest/_photoreleaseform';
+			    url = base_url + '/Guest/_photoreleaseform';
 				data = $('#photoreleaseform').serialize();
 				break;
 			case 'emergencycontactform':
-				url = '/Guest/_emergencyContactForm';
+			    url = base_url + '/Guest/_emergencyContactForm';
 				data = $('#emergencycontactform').serialize();
 				break;
 			case 'confidentialityagreementform':
-				url = '/Guest/_ConfidentialityAgreementForm';
+			    url = base_url + '/Guest/_ConfidentialityAgreementForm';
 				data = $('#confidentialityagreementform').serialize();
 				break;
 			case 'educationverificationform':
-				url = '/Guest/_EducationVarificationForm';
+			    url = base_url + '/Guest/_EducationVarificationForm';
 				data = $('#educationverificationform').serialize();
 				break;
 			case 'w4form':
-				url = '/Guest/_W4Form';
+			    url = base_url + '/Guest/_W4Form';
 				data = $('#w4form').serialize();
 				break;
 		}
@@ -141,7 +142,7 @@ function GetForm(url, successCallback, errorCallback) {
 }
 
 function ThankYou() {
-	location.href = '/Guest/ThankYou';
+    location.href = base_url + '/Guest/ThankYou';
 }
 function LockItem(formId) {
 	switch (formId) {
