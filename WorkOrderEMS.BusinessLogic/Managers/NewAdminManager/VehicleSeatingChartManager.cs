@@ -424,28 +424,36 @@ namespace WorkOrderEMS.BusinessLogic
                             description = Obj.AddChartModel.RolesAndResponsibility,
                             kind = "Job",
                             title = Obj.AddChartModel.JobTitle,
-                            status = "published",
-                            position = Convert.ToInt32(Obj.NumberOfPost),
-                            followed = true,
-                            slug = "offer",
-                            employment_type = null,
-                            city = null,
-                            state_code = null,
-                            country_code = null,
-                            postal_code = null,
-                            requirements = null,
-                            remote = false,
-                            min_hours =30,
-                            max_hours =40,
-                            options_cv = "required",
-                            email_confirmation = true,
-                            location ="",
-                            experience = null
+                            position = Convert.ToInt32(Obj.NumberOfPost)
+
+
+                            //department = Obj.AddChartModel.DepartmentName,
+                            //description = Obj.AddChartModel.RolesAndResponsibility,
+                            //kind = "Job",
+                            //title = Obj.AddChartModel.JobTitle,
+                            //status = "published",
+                            //position = Convert.ToInt32(Obj.NumberOfPost),
+                            //followed = true,
+                            //slug = "offer",
+                            //employment_type = null,
+                            //city = null,
+                            //state_code = null,
+                            //country_code = null,
+                            //postal_code = null,
+                            //requirements = null,
+                            //remote = false,
+                            //min_hours =30,
+                            //max_hours =40,
+                            //options_cv = "required",
+                            //email_confirmation = true,
+                            //location ="",
+                            //experience = null
                         };
                         #region Demo Code
                         //string tt = JsonConvert.SerializeObject()
                         string message = JsonConvert.SerializeObject(dynamicJson);
-                        var getSttring = modelRecruitee.POSTreq(message, url);
+                        //var getSttring = modelRecruitee.POSTreq(message, url);
+                        var getSttring = modelRecruitee.POSTreqDemo(message, url);
                         // Obj.AddChartModel.Action = "I";
                         //var saved = _VSCRepository.SaveJob(Obj);
                         #endregion Demo Code

@@ -66,6 +66,11 @@
         font-size: 16px;
         margin-left: -20px;
     }
+    .closeClass {
+        border-radius: 100px;
+        width: 9%;
+        cursor:pointer;
+    }
 </style>
 <div class="content-body">
     <!-- row -->
@@ -157,7 +162,6 @@
 <!-----------------------------------------
     star Modal Body
  ------------------------------------>
-
 <div class="modal fade  bd-example-modal-lg" @*data-backdrop="false" *@ id="ModalProfilePreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg">
         <div class="modal-content">
@@ -172,7 +176,7 @@
                 </div>
             </div>
             <div class="modal-footer" style="background: white;">
-                <button type="button" class="btn btn-secondary" id="close" style="border-radius:100px;width:9%;" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary closeClass" id="close" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -192,7 +196,7 @@
                 </div>
             </div>
             <div class="modal-footer" style="background: white;">
-                <button type="button" class="btn btn-secondary" id="close" style="border-radius:100px;width:9%;" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary closeClass" id="close" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -212,7 +216,7 @@
             </div>
         </div>
         <div class="modal-footer" style="background: white;">
-            <button type="button" class="btn btn-secondary" id="closeUserView" style="border-radius:100px;width:9%;" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary closeClass" id="closeUserView" data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>
@@ -233,7 +237,7 @@
             </div>
         </div>
         <div class="modal-footer" style="background: white;">
-            <button type="button" class="btn btn-secondary" id="closeVSC" style="border-radius:100px;width:9%;" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary closeClass" id="closeVSC" data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>
@@ -255,7 +259,7 @@
             </div>
         </div>
         <div class="modal-footer" style="background: white;">
-            <button type="button" class="btn btn-secondary" id="closeStatus" style="border-radius:100px;width:23%;" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary closeClass" id="closeStatus" style="width:23%;" data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>
@@ -279,7 +283,7 @@
         </div>
         <div class="modal-footer" style="background: white;">
             @*<button type="button" class="btn btn-secondary" id="SaveFiles" style="border-radius:100px;width:9%;" data-dismiss="modal">Save</button>*@
-            <button type="button" class="btn btn-secondary" id="closeStatus" style="border-radius:100px;width:9%;" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary closeClass" id="closeStatus" data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>
@@ -328,7 +332,7 @@
             </div>
         </div>
         <div class="modal-footer" style="background: white;">
-            <button type="button" class="btn btn-secondary" id="closeStatus" style="border-radius:100px;width:23%;" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary closeClass" id="closeStatus" style="border-radius:100px;width:23%;" data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>
@@ -419,7 +423,7 @@
             </div>
             <div class="modal-footer" style="background: white;">
                 <button type="button" class="btn btn-secondary" style="border-radius:100px;" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-secondary" @*id="DeleteRequisition"*@ onclick="DeleteRequisition()" style="border-radius:100px;" >Delete</button>
+                <button type="button" class="btn btn-secondary" @*id="DeleteRequisition"*@ onclick="DeleteRequisition()" style="border-radius:100px;background-color:crimson" >Delete</button>
             </div>
         </div>
     </div>

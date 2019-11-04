@@ -12,11 +12,17 @@
             <div class="form-control-static col-lg-4">@Model.AddChartModel.SeatingName</div>
         </div>
         <div class="row">
-            <label class="col-lg-2">Seating Name</label>
-            <div class="form-control-static col-lg-4">@Model.AddChartModel.SeatingName</div>
-            <label class="col-lg-2">Department Name</label>
-            <div class="form-control-static col-lg-4">@Model.AddChartModel.SeatingName</div>
+            <label class="col-lg-2">Rate Of Pay</label>
+            <div class="form-control-static col-lg-4">@Model.AddChartModel.RateOfPay</div>
+            <label class="col-lg-2">Job Description</label>
+            <div class="form-control-static col-lg-4">@Model.AddChartModel.JobDescription</div>
         </div>
+        <div class="row">
+            <label class="col-lg-2">Roles and Responsibility</label>
+            @Html.TextAreaFor(model => model.AddChartModel.RolesAndResponsibility,new { @rows = "12", @style= "color:#9ba6b2;margin-left: -15px;", @id = "RolesAndResponsibilityJobPost", @class= "col-lg-10" })            
+        </div>
+        <br />
+        <hr style="height:7px;background:cornflowerblue;"/>
         <div class="basic-form" style="margin-right: 40px;">
             @*<div class="form-group row">
                 <div class="col-sm-6">
