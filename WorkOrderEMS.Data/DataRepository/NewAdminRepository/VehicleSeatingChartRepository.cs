@@ -80,7 +80,7 @@ namespace WorkOrderEMS.Data.DataRepository
             bool isSave = false;
             try
             {
-                var save = objworkorderEMSEntities.spSetJobTitle(Obj.Action, Obj.Id, Obj.JobTitleDesc,null,null, Obj.parentId, Obj.IsActive);
+                var save = objworkorderEMSEntities.spSetJobTitle(Obj.Action, Obj.Id, Obj.JobTitleDesc, Obj.JobTitleCount, null, Obj.parentId, Obj.IsActive);
                 isSave = true;
             }
             catch (Exception ex)

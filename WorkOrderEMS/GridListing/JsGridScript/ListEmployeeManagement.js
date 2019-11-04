@@ -202,8 +202,27 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                     .attr({ title: jsGrid.fields.control.prototype.userEmployeeTooltip })
                                     .attr({ id: "btn-user-view" + item.id }).click(function (e) {
                                         debugger
+                                        $.ajax({
+                                            type: "POST",
+                                            url: base_url + '/EPeople/GetUserTreeViewList1?Id=' + item.id + "&LocationId=" + $_LocationId,
+                                            beforeSend: function () {
+                                                new fn_showMaskloader('Please wait...');
+                                            },
+                                            contentType: "application/json; charset=utf-8",
+                                            error: function (xhr, status, error) {
+                                            },
+                                            success: function (result) {
+                                                debugger
+                                                $("#viewUserTreeData").html(result);
+                                                $("#myModalForViewUserChart").modal('show');
+                                            },
+                                            complete: function () {
+                                                fn_hideMaskloader();
+                                            }
+                                        });
+                                        $("#viewUserTreeData").html()
                                         $("#myModalForViewUserChart").modal("show");
-                                        ViewTreeUserData(item.id);
+                                        //ViewTreeUserData(item.id);
 
                                       
                                         e.stopPropagation();
@@ -308,6 +327,7 @@ $(document).ready(function () {
                    VSCDDL = VSCDDL + '</select>';
                    $("#divOpenRquisitionActionDelete").html(VSCDDL);
                    $("#myModalForRequisitionAction").modal("hide");
+                   $("#MaintainSizeForDelete").css("width", "");
                    $("#myModalForGetDetailsToDeleteRequisition").modal('show');
                },
                error: function (er) {
@@ -412,6 +432,7 @@ $(document).ready(function () {
                 debugger
                 $("#divAddRemoveJobTitle").html("");
                 $("#myModalToAddRemoveJobCount").modal("hide");
+                $("#ListRquisitionData").jsGrid("loadData");
                 toastr.success(result.Message)
             },
             error: function (er) {
@@ -437,7 +458,8 @@ function myFunction() {
             success: function (result) {
                 debugger
                 $("#divOpenRquisitionActionDelete").html("");
-                $("#divOpenRquisitionActionDelete").html(result);                
+                $("#divOpenRquisitionActionDelete").html(result);
+                $("#MaintainSizeForDelete").css("width", "805px");
                 $("#myModalForGetDetailsToDeleteRequisition").modal('show');
             },
             error: function (er) {
@@ -462,6 +484,7 @@ function DeleteRequisition() {
         success: function (result) {
             debugger
             $("#divOpenRquisitionActionDelete").html("");
+            $("#MaintainSizeForDelete").css("width", "");
             $("#myModalForGetDetailsToDeleteRequisition").modal('hide');
             toastr.success(result.Message)
             $("#ListRquisitionData").jsGrid("loadData");
@@ -487,16 +510,20 @@ function GetJobTitleCount() {
         success: function (result) {
             debugger
             if (result.length > 0) {
-            var VSCDDL = '<select style="    width: 559px;height: 58px;margin-top: 110px;" id="GetJobTitle" onchange="BindJobTitleDetailsForPlusMinus()" class="form-control input-rounded"><option value="0">-Select Job Title to add remove head count-</option>'
+                var VSCDDL = '<select style="    width: 559px;height: 58px;margin-top: 110px;" id="GetJobTitle" onchange="BindJobTitleDetailsForPlusMinus()" class="form-control input-rounded"><option value="0">-Select Job Title to add remove head count-</option>'
                 for (var i = 0; i < result.length; i++) {
                     VSCDDL = VSCDDL + '<option value="' + result[i].Id + '">' + result[i].JobTitle + '</option>';
                 }
+                VSCDDL = VSCDDL + '</select>';
+                $("#divForVSCDropDown").html("");
+                $("#divForVSCDropDown").html(VSCDDL);
+                $("#myModalForRequisitionAction").modal("hide");
+                $("#myModalForVSCDropDown").modal('show');
             }
-            VSCDDL = VSCDDL + '</select>';
-            $("#divForVSCDropDown").html("");
-            $("#divForVSCDropDown").html(VSCDDL);
-            $("#myModalForRequisitionAction").modal("hide");
-            $("#myModalForVSCDropDown").modal('show');
+            else {              
+                $("#myModalForNoRecordFound").modal('show');
+                $("#myModalForVSCDropDown").modal('hide');
+            }
                     
         },
         error: function (er) {
@@ -508,6 +535,7 @@ function GetJobTitleCount() {
 }
 
 function BindJobTitleDetailsForPlusMinus() {
+    debugger
     var value = $("#GetJobTitle option:selected").val();
     $.ajax({
         url: '../EPeople/GetJobTitleCountById?JobId=' + value ,
@@ -558,13 +586,22 @@ function saveFile() {
         contentType: false, // Not to set any content header  
         processData: false, // Not to process data  
         data: fileData,
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
         success: function (result) {
+            toastr.success(result)
             $("#fileNameInputVal").val("");
-            $("#fileNameInputVal").val("");
-            alert(result);
+            $("#addFileName").val("");
+            $("#addFileName").html("Choose file");
+            $("#myModalToAddInputAndFileName").modal('hide');           
+            //alert(result);
         },
         error: function (err) {
             alert(err.statusText);
+        },
+        complete: function () {
+            fn_hideMaskloader();
         }
     });
 }

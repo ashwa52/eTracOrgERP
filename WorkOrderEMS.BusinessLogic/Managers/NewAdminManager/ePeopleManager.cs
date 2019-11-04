@@ -141,6 +141,7 @@ namespace WorkOrderEMS.BusinessLogic
                             JobTitle = x.JBT_JobTitle,
                             LocationId = x.EMP_LocationId,
                             JobTitleId = x.EMP_JobTitleId,
+                            UserId = Cryptography.GetEncryptedData(x.UserId.ToString(), true),
                             ProfilePhoto = x.EMP_Photo == null ? HostingPrefix + ProfilePicPath.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + x.EMP_Photo
                         }).ToList();
                     }
@@ -602,30 +603,36 @@ namespace WorkOrderEMS.BusinessLogic
         /// <returns></returns>
         public bool SendJobTitleForApproval(JobTitleModel model)
         {
+            workorderEMSEntities _workorderEMS = new workorderEMSEntities();
             bool isSaved = false;
             var Obj = new AddChartModel();
             try
             {
                 var ePeopleRepository = new ePeopleRepository();
-                if (model != null)
+                var getEmpDetails = _workorderEMS.UserRegistrations.Where(x => x.UserId == model.UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
+                if (getEmpDetails != null)
                 {
-                    Obj.JobTitleCount = model.JobTitleCount;
-                    Obj.Id = model.JobTitleId;
-                    if (model.JobTitleCount > model.JobTitleLastCount)
+                    if (model != null)
                     {
-                        Obj.ActionStatus = "Y";
-                        Obj.IsActive = "Y";
-                        Obj.RequisitionType = "Add Head Count";
-                    }
-                    else
-                    {
-                        Obj.ActionStatus = "Y";
-                        Obj.IsActive = "Y";
-                        Obj.RequisitionType = "Remove Head Count";
+                        Obj.JobTitleCount = model.JobTitleCount;
+                        Obj.Id = model.JobTitleId;
+                        Obj.EmployeeId = getEmpDetails.EmployeeID;
+                        if (model.JobTitleCount > model.JobTitleLastCount)
+                        {
+                            Obj.ActionStatus = "Y";
+                            Obj.IsActive = "Y";
+                            Obj.RequisitionType = "Add Head Count";
+                        }
+                        else
+                        {
+                            Obj.ActionStatus = "Y";
+                            Obj.IsActive = "Y";
+                            Obj.RequisitionType = "Remove Head Count";
 
+                        }
+                        isSaved = ePeopleRepository.SendForApproval(Obj);
+                        isSaved = true;
                     }
-                    isSaved = ePeopleRepository.SendForApproval(Obj);
-                    isSaved = true;
                 }
                 else
                     isSaved = false;

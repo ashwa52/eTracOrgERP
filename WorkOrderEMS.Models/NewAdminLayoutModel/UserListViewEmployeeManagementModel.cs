@@ -18,6 +18,7 @@ namespace WorkOrderEMS.Models
         public long? JobTitleId { get; set; }
         public long? LocationId { get; set; }
         public long? VSTId { get; set; }
+        public string UserId { get; set; }
         public List<string> JobDescList { get; set; }
     }
 }

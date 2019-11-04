@@ -52,9 +52,10 @@ $(document).ready(function () {
     $('#SendVSCForApproval').click(function (e) {
         debugger
         // 
-        var content = $("#tinymce").innerHTML;
-        var content = window.parent.tinymce.get('RolesAndResponsibilityRequisition').getContent();
-        $('#RolesAndResponsibilityRequisition').val(content);
+        //will use this when our client want to use tinymce
+        //var content = $("#tinymce").innerHTML;
+        //var content = window.parent.tinymce.get('RolesAndResponsibilityRequisition').getContent();
+        //$('#RolesAndResponsibilityRequisition').val(content);
         createAddJobDescArray();
         var dataObject = $("#SaveVCSChartFormForRequisition").serialize();
 
@@ -78,7 +79,7 @@ $(document).ready(function () {
                 $("#routeDivRequisition").html("");
                 //var addNewUrl = "@Url.Action("ePeopleDashboard", "NewAdmin")";
                 $('#RenderPageId').load('../NewAdmin/ePeopleDashboard');
-                tinymce.activeEditor.setContent("");
+                //tinymce.activeEditor.setContent("");
                 $("#myModalForRequisitionVSCChart").modal("hide");
                 $("#ListRquisitionData").jsGrid("loadData");
                 //var addNewUrl = '../AdminSection/OrgChart/Index';// "@Url.Action("Index", "OrgChart", new { area = "AdminSection" })";

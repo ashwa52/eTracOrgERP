@@ -208,3 +208,45 @@
   })();
 
 </script>
+<script>
+    function ViewTreeUserData(id) {
+        debugger
+
+        $.ajax({
+            type: "POST",
+            data: { 'Id': id },
+            url: '../EPeople/GetUserTreeViewList/',
+            beforeSend: function () {
+                new fn_showMaskloader('Please wait...');
+            },
+            //contentType: "application/json; charset=utf-8",
+            error: function (xhr, status, error) {
+            },
+            success: function (ChildrenList) {
+                debugger
+                $(".stiff-chart-inner").html("");
+                if (ChildrenList.length > 0) {
+                    for(i = 0;i < ChildrenList.length ;i++)
+                    {
+                        if (i == 0) {
+                            var tt = $(".stiff-chart-inner").append('<div class="stiff-chart-level" data-level="01"><div class="stiff-main-parent"><ul><li data-parent="a"><div class="the-chart"><img src="' + ChildrenList[i].ProfilePhoto + '" alt=""><p>"' + ChildrenList[i].EmployeeName + '"</p></div></li></ul></div></div>');
+                            var secondUL = '<div class="stiff-chart-level" data-level="02"><div class="stiff-child" data-child-from="a"><ul>'
+                        }
+                        else {
+                            secondUL = secondUL + '<li data-parent="a01" class="clicklielement"><div class="the-chart"><img src="' + ChildrenList[i].ProfilePhoto + '" alt=""> <p>"' + ChildrenList[i].EmployeeName + '"</p></div> </li>'
+                        }
+                    }
+                    secondUL = secondUL + '</ul></div></div>';
+                    //$(".stiff-chart-inner").after(secondUL);
+                    $(".stiff-chart-inner").append(secondUL);
+                }
+                else {
+                    $(".stiff-chart-inner").html("No record found");
+                }
+            },
+            complete: function () {
+                fn_hideMaskloader();
+            }
+        });
+    }
+</script>

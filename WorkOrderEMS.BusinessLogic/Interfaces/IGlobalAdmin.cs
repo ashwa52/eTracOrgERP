@@ -266,7 +266,8 @@ namespace WorkOrderEMS.BusinessLogic
         List<ContractDropdownDetailsModel> ListClientInvoicingTerm();
         List<listForEmployeeDevice> send30SecFRNotificaitonToAllManager(long LocationId, long UserId);
         List<listForEmployeeDevice> GetAllManagerList(long LocationId, long UserId);
-		List<MyOpeningModel> GetMyOpenings();
+
+		List<MyOpeningModel> GetMyOpenings(long PostingId);
 		List<JobPosting> GetJobPostong(long userId);
 		List<spGetApplicantInfo_Result1> GetApplicantInfo(long userId);
 		bool SaveApplicantInfo(OnboardingDetailRequestModel onboardingDetailRequestModel);

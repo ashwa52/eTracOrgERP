@@ -3783,7 +3783,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 			}
 		}
 
-		public List<MyOpeningModel> GetMyOpenings()
+		public List<MyOpeningModel> GetMyOpenings(long PostingId)
 		{
             workorderEMSEntities Context = new workorderEMSEntities();
             try
@@ -3799,7 +3799,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         foreach (var item in aa.candidates)
                         {
                             var email = item.emails[0];
-                            var getApplicantInfo = Context.spGetMyOpening().Where(x => x.API_Email == email).FirstOrDefault();
+                            var getApplicantInfo = Context.ApplicantInfoes.Where(x => x.API_Email == email).FirstOrDefault();
                             if(getApplicantInfo == null)
                             {
                                 string Action = "I";
@@ -3809,23 +3809,26 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                 {
 
                                     var data = JsonConvert.DeserializeObject<Models.NewAdminModel.RecruiteeModels.Candidate.PerCandidateData>(getCVList);
-                                    var phoneNumber = Convert.ToInt64(data.candidate.phones[0]);
+                                    var tt = data.candidate.phones[0];
+                                    var changePhoneString = tt.Replace("-", "");
+                                    var replacebracketright = changePhoneString.Replace("(", "");
+                                      var replacebracketleft = replacebracketright.Replace(")","");
+                                    var replacebracketSPace = replacebracketleft.Replace(" ", "");
+                                    var phoneNumber =  Convert.ToInt64(replacebracketSPace);
                                     var EmailId = data.candidate.emails[0];
                                     var offerId = data.candidate.placements[0].offer_id;
-                                    var coverletter = data.candidate.cover_letter.ToString();
-                                    //var setInfo = Context.spSetApplicantInfo(Action, null, data.candidate.id, data.candidate.name,null, null, null, data.references[0].location, "Dallas", null, data.candidate.cv_url, null
-                                    //   , phoneNumber, EmailId, null, data.candidate.photo_url, "USA", null, null, null, null, null, null, null,null, data.candidate.placements[0].offer_id,
-                                    //    null,null,null, data.candidate.cv_processing_status, "Y");
-                                    var setInfo = Context.spSetApplicantInfo(Action, null, data.candidate.id, data.candidate.name, null, null, null, data.references[0].location, "Dallas", null,
-                                        data.candidate.cv_url, coverletter, phoneNumber, EmailId, null, data.candidate.photo_url,
-                                        "USA", null,null,null,null,null,null,null,null, offerId,null,null,null,null,"A","Y");
+                                    if (offerId == 394152 || offerId == 393383)
+                                    {
+                                        var setInfo = Context.spSetApplicantInfo(Action, null, data.candidate.id, data.candidate.name, null, null, null, data.references[0].location, "Dallas", null,
+                                            data.candidate.cv_url, null, phoneNumber, EmailId, null, data.candidate.photo_url,
+                                            "USA", null, null, null, null, null, null, null, null, offerId, null, null, null, null, "A", "Y");
+                                    }
                                 }
                             }
                         }
                     }
                 }            
-
-					var myOpenings = (from x in Context.spGetMyOpening()
+					var myOpenings = (from x in Context.spGetMyOpening(PostingId)
 									  select new MyOpeningModel
 									  {
 										  Email = x.API_Email,
@@ -3865,8 +3868,9 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 										  Status = x.API_ApplicantStatus,
 										  Image = x.API_Photo,
 										  JobTitle = x.JBT_JobTitle,
-										  ApplicantId = x.API_ApplicantId
-									  }
+										  ApplicantId = x.API_ApplicantId,
+                                          JobTitleId = x.API_JobTitleID == null ? 0: x.API_JobTitleID
+                                      }
 									).ToList();
 					return myOpenings;
 				}

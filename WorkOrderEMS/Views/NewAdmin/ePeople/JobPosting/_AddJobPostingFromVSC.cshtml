@@ -3,9 +3,22 @@
     <form id="SaveJobPostingFormVSC">
         @Html.HiddenFor(model => model.AddChartModel.Id)
         @Html.HiddenFor(model => model.JobPostingId, new { @id = "JobPostingId" })
-        @Html.HiddenFor(model => model.AddChartModel.JobTitle, new { @id="SaveJobTitleWithText"})
+        @Html.HiddenFor(model => model.AddChartModel.JobTitle, new { @id = "SaveJobTitleWithText" })
+
+        <div class="row">
+            <label class="col-lg-2">Seating Name</label>
+            <div class="form-control-static col-lg-4">@Model.AddChartModel.SeatingName</div>
+            <label class="col-lg-2">Department Name</label>
+            <div class="form-control-static col-lg-4">@Model.AddChartModel.SeatingName</div>
+        </div>
+        <div class="row">
+            <label class="col-lg-2">Seating Name</label>
+            <div class="form-control-static col-lg-4">@Model.AddChartModel.SeatingName</div>
+            <label class="col-lg-2">Department Name</label>
+            <div class="form-control-static col-lg-4">@Model.AddChartModel.SeatingName</div>
+        </div>
         <div class="basic-form" style="margin-right: 40px;">
-            <div class="form-group row">
+            @*<div class="form-group row">
                 <div class="col-sm-6">
                     @Html.TextBoxFor(model => model.AddChartModel.SeatingName, new { @id = "SeatingNameJobPosting", @Placeholder = "Seating Name", @class = "form-control input-rounded required" })
                 </div>
@@ -19,7 +32,6 @@
                 </div>
                 <div class="col-sm-6">
                     @Html.TextBoxFor(model => model.AddChartModel.JobDescription, new { @Placeholder = "Job Description", @id = "JobDescriptionVCS", @class = "form-control input-rounded required" })
-                    @*<label>@Model.AddChartModel.JobDescription</label>*@
                 </div>
             </div>
             <div class="form-group row">
@@ -29,24 +41,24 @@
                 <div class="col-sm-6">
                     @Html.TextBoxFor(model => model.Education, new { @Placeholder = "Education", @id = "EducationJobPosting", @class = "form-control input-rounded required" })
                 </div>
-            </div>
+            </div>*@
             <div class="form-group row">
                 <div class="col-sm-6">
                     @Html.DropDownListFor(x => x.EmployeeStatus, new List<SelectListItem>
-                                                                                    {
-                               new SelectListItem() {Text = "--Select Employee Status--", Value="0"},
-                                                                                         new SelectListItem() {Text = "EXEMPT", Value="Y"},
-                                                                                         new SelectListItem() {Text = "NON-EXEMPT", Value="N"}
-                                                                                    }, new { @class = "form-control input-rounded requiredselect", @id = "EmployeeStatusJobPosting" })
+                                                                                        {
+                                   new SelectListItem() {Text = "--Select Employee Status--", Value="0"},
+                                                                                             new SelectListItem() {Text = "EXEMPT", Value="Y"},
+                                                                                             new SelectListItem() {Text = "NON-EXEMPT", Value="N"}
+                                                                                        }, new { @class = "form-control input-rounded requiredselect", @id = "EmployeeStatusJobPosting" })
                 </div>
                 <div class="col-sm-6">
                     @Html.DropDownListFor(x => x.JobType, new List<SelectListItem>
-                                                                                    {
-                                                                             new SelectListItem() {Text = "--Select Job Type--", Value="0"},
-                                                                                         new SelectListItem() {Text = "FT", Value="FT"},
-                                                                                         new SelectListItem() {Text = "PT", Value="PT"},
-                                                                                         new SelectListItem() {Text = "TEMP", Value="TEMP"}
-                                                                                    }, new { @class = "form-control input-rounded requiredselect", @id = "JobTypeJobPosting" })
+                                                                                        {
+                                                                                 new SelectListItem() {Text = "--Select Job Type--", Value="0"},
+                                                                                             new SelectListItem() {Text = "FT", Value="FT"},
+                                                                                             new SelectListItem() {Text = "PT", Value="PT"},
+                                                                                             new SelectListItem() {Text = "TEMP", Value="TEMP"}
+                                                                                        }, new { @class = "form-control input-rounded requiredselect", @id = "JobTypeJobPosting" })
 
                 </div>
             </div>
@@ -58,26 +70,26 @@
                     @Html.TextBoxFor(model => model.Country, new { @Placeholder = "Country", @id = "CountryJobPosting", @class = "form-control input-rounded required" })
                 </div>
             </div>
-             <div class="form-group row">
+            <div class="form-group row">
                 <div class="col-sm-6">
-                   @if (ViewBag.GetHiringManagerList != null)
-                   {
-                       @Html.DropDownListFor(model => model.HiringManager, new SelectList(ViewBag.GetHiringManagerList, "HiringManager", "HiringManagerName"), "--Select Hiring Manager--", new { @id = "HiringManager", @class = "form-control input-rounded" })
-                   }
-                   else
-                   {
-                       <select id="HiringManager"><option value="-1">@ViewBag.GetHiringManagerList</option></select>
-                   }
+                    @if (ViewBag.GetHiringManagerList != null)
+                {
+                    @Html.DropDownListFor(model => model.HiringManager, new SelectList(ViewBag.GetHiringManagerList, "HiringManager", "HiringManagerName"), "--Select Hiring Manager--", new { @id = "HiringManager", @class = "form-control input-rounded" })
+            }
+            else
+            {
+                <select id="HiringManager"><option value="-1">@ViewBag.GetHiringManagerList</option></select>
+        }
                 </div>
                 <div class="col-sm-6">
-                   @if (ViewBag.JobTitle != null)
-                   {
-                       @Html.DropDownListFor(model => model.AddChartModel.JobTitleId, new SelectList(ViewBag.JobTitle, "Id", "JobTitleLabel"), "--Select Job Title--", new { @id = "JobTitleId", @class = "form-control input-rounded" })
-                   }
-                   else
-                   {
-                       <select id="JobTitleId"><option value="-1">@ViewBag.JobTitle</option></select>
-                   }
+                    @if (ViewBag.JobTitle != null)
+                {
+                    @Html.DropDownListFor(model => model.AddChartModel.JobTitleId, new SelectList(ViewBag.JobTitle, "Id", "JobTitleLabel"), "--Select Job Title--", new { @id = "JobTitleId", @class = "form-control input-rounded" })
+            }
+            else
+            {
+                <select id="JobTitleId"><option value="-1">@ViewBag.JobTitle</option></select>
+        }
                 </div>
             </div>
             <div class="form-group row">

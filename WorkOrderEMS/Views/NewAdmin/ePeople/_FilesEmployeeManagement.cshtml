@@ -29,7 +29,7 @@
         </div>
         <div id="openGreenFile" style="text-align:center;display:none;">
         <div class="col-md-12"  >
-            @if (Model != null)
+            @if (Model != null && Model.Count() > 0)
             {
                 foreach (var item in Model)
                 {
@@ -60,7 +60,7 @@
                 <span>No File available</span>
             }
           </div>
-          @if (Model != null)
+          @if (Model != null && Model.Count() > 0)
           {
               foreach (var item in Model)
               {
@@ -84,7 +84,7 @@
         </div>
         <div id="openYellowFile" style="text-align:center;display:none;">
         <div class="col-md-12" >
-            @if (Model != null)
+            @if (Model != null && Model.Count() > 0)
             {
                 foreach (var item in Model)
                 {
@@ -114,10 +114,10 @@
             }
             else
             {
-                <span>No File available</span>
+                <span id="YellowFileOpenClose">No File available</span>
             }
         </div>
-        @if (Model != null)
+        @if (Model != null && Model.Count() > 0)
         {
             foreach (var item in Model)
             {
@@ -141,7 +141,7 @@
         </div>
         <div id="openRedFile" style="text-align:center;display:none;">
         <div class="col-md-12" >
-            @if (Model != null)
+            @if (Model != null && Model.Count() > 0)
             {
                 foreach (var item in Model)
                 {
@@ -174,7 +174,7 @@
                 <span>No file available</span>
             }
         </div>
-        @if (Model != null)
+        @if (Model != null && Model.Count() > 0)
         {
             foreach (var item in Model)
             {
@@ -316,6 +316,7 @@
     })
 
     function myFunctionGreenFiles() {
+        debugger
         $(".viewAndPrintFile").hide();
       var x = document.getElementById("openGreenFile");
   if (x.style.display === "none") {
@@ -325,6 +326,20 @@
    }
     }
     function myFunctionYellowFiles() {
+        @*debugger
+        var model = '@Model';
+        if (model != null && model.length > 0) {
+            for(var i=1;i<= model.length;i++){
+                var yellow = model[i].FileTypeName;
+                if (yellow != "Yellow") {
+                    $("#YellowFileOpenClose").show();
+                }
+                else {
+                    $("#YellowFileOpenClose").hide();
+                }
+            }
+        }*@
+        
         $(".viewAndPrintFile").hide();
         var x = document.getElementById("openYellowFile");
         if (x.style.display === "none") {
@@ -334,6 +349,7 @@
         }
     }
     function myFunctionRedFiles() {
+        debugger
         $(".viewAndPrintFile").hide();
         var x = document.getElementById("openRedFile");
         if (x.style.display === "none") {

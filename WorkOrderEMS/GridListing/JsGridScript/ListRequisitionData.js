@@ -1,4 +1,4 @@
-﻿var RequisitonList = '../EPeople/RequisitionList';
+﻿var RequisitonList = '/EPeople/RequisitionList';
 var base_url = window.location.origin;
 (function ($) {
     'use strict'

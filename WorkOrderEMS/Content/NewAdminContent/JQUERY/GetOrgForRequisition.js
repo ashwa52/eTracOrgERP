@@ -3367,10 +3367,11 @@ getOrgChart.prototype._aY = function (d, b) {
     }
     else {
         if (a == "add") {
-            debugger          
+            debugger
+            var origin_Url = window.location.origin;
             $.ajax({
                 type: "GET",
-                url: '../EPeople/OpenJobPostingForm?CSVChartId=' + c, //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
+                url: origin_Url+'/EPeople/OpenJobPostingForm?CSVChartId=' + c, //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
                 success: function (Data) {
                     debugger
                     $("#divOpenJobPostForm").html("");

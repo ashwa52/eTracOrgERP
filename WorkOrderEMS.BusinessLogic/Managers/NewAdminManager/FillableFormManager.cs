@@ -7,6 +7,7 @@ using WorkOrderEMS.BusinessLogic.Interfaces;
 using WorkOrderEMS.Data.DataRepository;
 using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Models;
+using WorkOrderEMS.Models.Employee;
 
 namespace WorkOrderEMS.BusinessLogic
 {
@@ -148,6 +149,65 @@ namespace WorkOrderEMS.BusinessLogic
                 isSaved = false;
                 Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SaveFile(UploadedFiles Obj, string EmployeeId)", "Exception While Saving File.", Obj);
                 throw;
+            }
+            return isSaved;
+        }
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 02-11-2019
+        /// Created For : TO save files from mobile
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public bool SaveFileList(CommonFormModel obj)
+        {
+            bool isSaved = false;
+            var _guestRepository = new GuestUserRepository();
+
+            try
+            {
+                if(obj != null)
+                {
+                    if(obj.FormName == "EducationForm" && obj.EducationFormModel != null)
+                    {
+                        var educatioModel = new EducationVarificationModel();
+                        educatioModel.EvfId = obj.EducationFormModel.EVF_Id;
+                        educatioModel.Certificate = obj.EducationFormModel.EVF_SchoolDegreeDiplomaCert;
+                        educatioModel.HighSchool.SchoolName = obj.EducationFormModel.EVF_OrganizationName;
+                        educatioModel.HighSchool.City = obj.EducationFormModel.EVF_City;
+                        educatioModel.HighSchool.State = obj.EducationFormModel.EVF_State;
+                        educatioModel.HighSchool.AttendFrom = obj.EducationFormModel.EVF_AttendedFrom;
+                        educatioModel.HighSchool.AttendTo = obj.EducationFormModel.EVF_AttendedTo;
+                        educatioModel.IsActive = "Y";
+                        _guestRepository.SetEducationVerificationForm(obj.UserId, educatioModel);
+                        isSaved = true;
+                    }
+                    else if (obj.FormName == "DirectDepositForm" && obj.DirectDepositFormModel != null)
+                    {
+                        var directDepo = new DirectDepositeFormModel();
+                        directDepo.Account1.EmployeeBankName = obj.DirectDepositFormModel.DDF_BankName_1;
+                        directDepo.Account1.AccountType = obj.DirectDepositFormModel.DDF_AccountType_1;
+                        directDepo.Account1.Account = obj.DirectDepositFormModel.DDF_AccountNumber_1;
+                        directDepo.Account1.BankRouting = obj.DirectDepositFormModel.DDF_BankRountingNumber_1;
+                        directDepo.Account1.DepositeAmount = obj.DirectDepositFormModel.DDF_PercentageOrDollarAmount_1;
+                        directDepo.Account2.EmployeeBankName = obj.DirectDepositFormModel.DDF_BankName_2;
+                        directDepo.Account2.AccountType = obj.DirectDepositFormModel.DDF_AccountType_2;
+                        directDepo.Account2.Account = obj.DirectDepositFormModel.DDF_AccountNumber_2;
+                        directDepo.Account2.BankRouting = obj.DirectDepositFormModel.DDF_BankRountingNumber_2;
+                        directDepo.Account2.DepositeAmount = obj.DirectDepositFormModel.DDF_PercentageOrDollarAmount_2;
+                        _guestRepository.SetDirectDepositeFormData(directDepo,obj.UserId);
+                        isSaved = true;
+                    }
+                    else
+                    {
+                        isSaved = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
             }
             return isSaved;
         }

@@ -209,14 +209,19 @@
                         <div class="" id="DivContractDetailsIndex">
                             <form id="SaveJobTitleForm">
                                 @Html.HiddenFor(model => model.JobTitleDesc)
+                                @Html.HiddenFor(model => model.JobTitleCountDesc)
                                 @Html.HiddenFor(model => model.JobTitleId, new { @id = "JobTitleId" })
                                 @Html.HiddenFor(model => model.parentId, new { @id = "parentIdForJobTitle" })
                                 <div class="basic-form" style="margin-right: 40px;">
                                     <span id="addJobTitleLabel">
                                     </span>
                                     <div class="form-group row">
-                                        <div class="col-sm-10">
-                                            @Html.TextBoxFor(model => model.JobTitle, new { @Placeholder = "Job Title", @id = "JobTitle", @style = "width: 600px;", @class = "form-control input-rounded required isValidLocationName" })
+                                        <div class="col-sm-8">
+                                            @Html.TextBoxFor(model => model.JobTitle, new { @Placeholder = "Job Title", @id = "JobTitle", @style = "width: 441px;", @class = "form-control input-rounded required" })
+                                        </div>
+                                        <div class="col-sm-3">
+                                            @Html.TextBoxFor(model => model.JobTitleCount, new { @Placeholder = "Job Count", @id = "JobCount", @style = "width: 130px;", @class = "form-control input-rounded required" })
+                                            @*<input type="text" class="form-control input-rounded required" placeholder="Job Count" value="" style="width: 130px;" />*@
                                         </div>
                                         <a class="addjobtitlerows col-sm-1"><i class="fa fa-plus-circle fa-2x addColorPlusMinus" style="cursor:pointer;margin-left:30px;" aria-hidden="true"></i></a>
                                     </div>

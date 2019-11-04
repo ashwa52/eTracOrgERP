@@ -96,7 +96,7 @@
             <div class="col-lg-6">
                 <div class="card" data-aos="fade-up">
                     <div class="card-header widthHeader ">
-                        <h4 class="card-title addWhite" style="color: white;">eTime</h4>
+                        <h4 class="card-title addWhite" style="color: white;">Requisition</h4>
                     </div>
                     <div class="card-body">
                         <div id="eTimediv"></div>
@@ -188,7 +188,7 @@
             </div>
             <div class="modal-body">
                 <div id="viewUserTreeData">
-                    @Html.Partial("~/Views/NewAdmin/ePeople/_TreeViewUser1.cshtml")
+                    @*@Html.Partial("~/Views/NewAdmin/ePeople/_TreeViewUser1.cshtml")*@
                 </div>
             </div>
             <div class="modal-footer" style="background: white;">
@@ -406,7 +406,7 @@
 <!--Get Details of Requisition for Delete-->
 <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForGetDetailsToDeleteRequisition">
     <div class="modal-dialog ">
-        <div class="modal-content">
+        <div class="modal-content" id="MaintainSizeForDelete">
             <div class="modal-header">
                 <h5 class="modal-title">Details</h5>
                 <button type="button" class="close" data-dismiss="modal">
@@ -456,7 +456,18 @@
         </div>
     </div>
 </div>
-
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForNoRecordFound">
+    <div class="modal-dialog ">
+        <div class="modal-content" style="background:white;margin-top: 165px;">
+            <button type="button" class="close" data-dismiss="modal">
+                <span>&times;</span>
+            </button>
+            <div class="modal-body">
+                <label>No Record found</label>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" id="myModalToAddRemoveJobCount">
     <div class="modal-dialog " >
         <div class="modal-content">

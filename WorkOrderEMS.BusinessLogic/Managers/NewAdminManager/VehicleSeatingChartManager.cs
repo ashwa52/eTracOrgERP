@@ -156,11 +156,21 @@ namespace WorkOrderEMS.BusinessLogic
                         if (Obj.JobTitleDesc != null)
                         {
                             string[] JobTitleList = Obj.JobTitleDesc.Split('|');
-                            foreach (string title in JobTitleList)
+                            string[] JobTitleCountList = Obj.JobTitleCountDesc.Split('|');
+                            //foreach (string title in JobTitleList)
+                            //{
+                            //    if (title != " " && title != "")
+                            //    {
+                            //        Obj.JobTitleDesc = title;
+                            //        isSaved = _VSCRepository.SaveJobTitleRepository(Obj);
+                            //    }
+                            //}
+                            for(int i = 0;i< JobTitleList.Length; i++)
                             {
-                                if (title != " " && title != "")
+                                if (JobTitleList[i] != " " && JobTitleList[i] != "" && JobTitleCountList[i] != " " && JobTitleCountList[i] != "")
                                 {
-                                    Obj.JobTitleDesc = title;
+                                    Obj.JobTitleDesc = JobTitleList[i];
+                                    Obj.JobTitleCount = Convert.ToInt32(JobTitleCountList[i]);
                                     isSaved = _VSCRepository.SaveJobTitleRepository(Obj);
                                 }
                             }
@@ -430,7 +440,7 @@ namespace WorkOrderEMS.BusinessLogic
                             options_cv = "required",
                             email_confirmation = true,
                             location ="",
-                            experience = null,
+                            experience = null
                         };
                         #region Demo Code
                         //string tt = JsonConvert.SerializeObject()

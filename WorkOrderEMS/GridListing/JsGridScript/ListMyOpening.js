@@ -4,7 +4,7 @@ var clients;
 var $_LocationId = $("#drp_MasterLocation option:selected").val();
 var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_RequestedBy = 0;//= $("#drp_MasterLocation option:selected").val();
 
-function myOpenings() {
+function myOpenings(PostingId) {
 	$("#ListMyOpening").show();
 	$("#ListMyOpening").jsGrid({
 		width: "100%",
@@ -21,7 +21,7 @@ function myOpenings() {
 				var deferred = $.Deferred();
 
 				$.ajax({
-				    url: base_url+ '/NewAdmin/MyOpenings',
+				    url: base_url + '/NewAdmin/MyOpenings?PostingId=' + PostingId,
 					dataType: 'json',
 					success: function (data) {
 						debugger;
@@ -32,7 +32,7 @@ function myOpenings() {
 				return deferred.promise();
 			}
 		},
-
+        
 		//rowRenderer : function (item) {
 		//	debugger;
 		//	var openings = item;
@@ -58,7 +58,7 @@ function myOpenings() {
 			},
 			{
 				title: "Applicant Name", width: 60, itemTemplate: function (v, i) {
-					return i.FirstName + ' ' + i.LastName;
+				    return i.FirstName;// + ' ' + i.LastName;
 				}
 			},
 			{
@@ -207,7 +207,7 @@ function MyOpeningSummery() {
 			console.log(args.item);
 			$("#MyOpeningSummery").hide();
 			$("#btnBack").show();
-			myOpenings();
+			myOpenings(args.item.JobPostingId);
 		}
 	});
 }

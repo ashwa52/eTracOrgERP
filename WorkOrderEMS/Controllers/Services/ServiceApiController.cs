@@ -5450,6 +5450,56 @@ namespace WorkOrderEMS.Controllers.Services
                 return Ok(ObjServiceResponseModel);
             }
         }
+
+        /// <summary>
+        /// Creted By : Ashwajit Bansod
+        /// Created For : To save files
+        /// Created Date : -2-Nov-2019
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult SaveForm(CommonFormModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<string>();
+            var model = new CommonFormModel();
+            try
+            {
+                if (obj != null && obj.ServiceAuthKey != null && obj.UserId > 0)
+                {
+                    model.FormName = obj.FormName;
+                    model.ServiceAuthKey = obj.ServiceAuthKey;
+                    model.UserId = obj.UserId;
+                    var result = _IFillableFormManager.SaveFileList(obj);
+                    if (result != null)
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.Successful();
+                        //ObjServiceResponseModel.Data = result;
+                    }
+                    else
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.NoRecordMessage();
+                        ObjServiceResponseModel.Data = null;
+                    }
+                    return Ok(ObjServiceResponseModel);
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.InvalidUser();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
         #endregion ePeople
         #endregion New Employee App
     }

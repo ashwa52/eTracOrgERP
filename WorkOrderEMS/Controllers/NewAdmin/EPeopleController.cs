@@ -161,6 +161,61 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
 
         [HttpPost]
+        public ActionResult GetUserTreeViewList1(string Id, long? LocationId)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            var details = new List<UserListViewEmployeeManagementModel>();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                if (LocationId == 0)
+                {
+                    LocationId = Convert.ToInt32(ObjLoginModel.LocationID);
+                }
+            }
+           ViewBag.UserIdFirstTime = Id;
+            var id = Cryptography.GetDecryptedData(Id, true);
+            long _UserId = 0;
+            long.TryParse(id, out _UserId);
+            var data = _IePeopleManager.GetUserTreeViewList(_UserId);
+            if (data.Count() > 0)
+            {
+                return PartialView("~/Views/NewAdmin/ePeople/_TreeViewUser1.cshtml", data);
+            }
+            else
+            {
+                return PartialView("~/Views/NewAdmin/ePeople/_TreeViewUser1.cshtml", data);
+            }
+        }
+
+        [HttpPost]
+        public JsonResult GetUserTreeViewListById(string Id, long? LocationId)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            var details = new List<UserListViewEmployeeManagementModel>();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                if (LocationId == 0)
+                {
+                    LocationId = Convert.ToInt32(ObjLoginModel.LocationID);
+                }
+            }
+            var id = Cryptography.GetDecryptedData(Id, true);
+            long _UserId = 0;
+            long.TryParse(id, out _UserId);
+            var data = _IePeopleManager.GetUserTreeViewListTesting(_UserId);
+            if (data.Count() > 0)
+            {
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
         public ActionResult GetUserTreeViewListTesting(string Id, long? LocationId, List<UserListViewEmployeeManagementModel> model)
         {
             eTracLoginModel ObjLoginModel = null;
@@ -321,7 +376,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             bool isSaveSuccess = false;
             try
             {
-                 isSaveSuccess = _IGuestUserRepository.UpdateApplicantInfo(model);
+                 isSaveSuccess = _IGuestUserRepository.UpdateApplicantInfoEMPMangemnt(model);
                 if (isSaveSuccess)
                     return Json(isSaveSuccess, JsonRequestBehavior.AllowGet);
                 else
@@ -436,13 +491,14 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 {
                     if (Obj.RolesAndResponsibility != null)
                     {
-                        var ex = System.Text.RegularExpressions.Regex.Replace(Obj.RolesAndResponsibility, @"<[^>]+>|&nbsp;", "").Trim();                       
-                        var removeNR = Obj.RolesAndResponsibility.Replace("\r\n", "");
-                        var removepTag = removeNR.Replace("<p>", "");
-                        var removeendTag = removepTag.Replace("</p>", ",");
-                        var removeSpace = removeendTag.Replace("&nbsp;", " ");
-                        System.Text.RegularExpressions.Regex rx = new System.Text.RegularExpressions.Regex("<[^>]*>");
-                        Obj.RolesAndResponsibility = removeSpace;//rx.Replace(Obj.RolesAndResponsibility, "");
+                        ////will use this when our client want to use tinymce
+                        //var ex = System.Text.RegularExpressions.Regex.Replace(Obj.RolesAndResponsibility, @"<[^>]+>|&nbsp;", "").Trim();                       
+                        //var removeNR = Obj.RolesAndResponsibility.Replace("\r\n", "");
+                        //var removepTag = removeNR.Replace("<p>", "");
+                        //var removeendTag = removepTag.Replace("</p>", ",");
+                        //var removeSpace = removeendTag.Replace("&nbsp;", " ");
+                        //System.Text.RegularExpressions.Regex rx = new System.Text.RegularExpressions.Regex("<[^>]*>");
+                        //Obj.RolesAndResponsibility = removeSpace;//rx.Replace(Obj.RolesAndResponsibility, "");
                     }
                     var _manager = new VehicleSeatingChartManager();
                     if (Obj.Id == null)
@@ -718,6 +774,15 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         {
             bool IsSaved = false;
             var model = new JobTitleModel();
+            eTracLoginModel ObjLoginModel = null;
+            if (Session != null)
+            {
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                    model.UserId = ObjLoginModel.UserId;
+                }
+            }
             try
             {
                 if (JobTitleLastCount > 0 && JobTitleId > 0 && JobTitleCount > 0)
@@ -725,6 +790,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                     model.JobTitleLastCount = JobTitleLastCount;
                     model.JobTitleId = JobTitleId;
                     model.JobTitleCount = JobTitleCount;
+
                     IsSaved = _IePeopleManager.SendJobTitleForApproval(model);
                     if (IsSaved == true)
                     {
@@ -846,6 +912,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         public ActionResult GetFileView(string Id)
         {
             var _workorderems = new workorderEMSEntities();
+           
             var model = new List<UploadedFiles>();
             try
             {

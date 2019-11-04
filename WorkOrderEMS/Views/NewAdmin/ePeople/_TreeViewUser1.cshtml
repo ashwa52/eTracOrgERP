@@ -1,87 +1,112 @@
-﻿<link href="~/Content/NewAdminContent/AnimatedChart/CSS/JqueryScripttop.css" rel="stylesheet" />
-<link href="~/Content/NewAdminContent/AnimatedChart/CSS/reset-html5.css" rel="stylesheet" />
-<link href="~/Content/NewAdminContent/AnimatedChart/CSS/micro-clearfix.css" rel="stylesheet" />
-<link href="~/Content/NewAdminContent/AnimatedChart/CSS/stiff-chart.css" rel="stylesheet" />
-<link href="~/Content/NewAdminContent/AnimatedChart/CSS/custom.css" rel="stylesheet" />
-
-<div id="AddNewChartData">
-    <div class="stiff-chart-inner">     
+﻿@model IEnumerable<WorkOrderEMS.Models.UserListViewEmployeeManagementModel>
+    @{ 
+        string EmpIdFirst = @ViewBag.UserIdFirstTime;
+    }
+<link href="~/Content/NewAdminContent/CSS/NewTreeUserView.css" rel="stylesheet" />
+<div class="pg-orgchart">
+    <div class="org-chart">
+        <ul>
+            @if (Model.Count() > 0 && Model != null)
+            {
+                var i = 0;
+            <li>                
+                @foreach (var item in Model)
+                {
+                    if (i == 0)
+                    {
+                        <div class="user firstRoot" id="rootChart_@item.VSTId" style="cursor:pointer;">
+                           <img src="@item.ProfilePhoto" class="img-responsive" />
+                           <div class="name">@item.EmployeeName</div>
+                           <div class="role">@item.JobTitle</div>
+                           @*<a class="manager" href="#">Mike Dinardo</a>*@
+                        </div>
+                        i++;
+                    }
+                }                
+                </li>
+            }
+        </ul>
     </div>
 </div>
 
-
-
-<script src="~/Content/NewAdminContent/AnimatedChart/JS/stiffChart.js"></script>
 <script>
-       $(document).ready(function() {
-           $('#AddNewChartData').stiffChart();
-
-       });
-</script>
-@*<script>
-    $('#AddNewChartData').stiffChart({
-            lineColor:'#3498db',
-    lineWidth: 2,
-    lineShape:'curved',
-    enable: '<a href="https://www.jqueryscript.net/zoom/">Zoom</a>:true',
-    layoutType:'vertical',// 'vertical' or 'horizontal'
-    childCounter:true,
-    activeClass:'chart-active',
-    bootstrapPopover:false // enable <a href="https://www.jqueryscript.net/tags.php?/Bootstrap/">Bootstrap</a> popover
+    $(document).ready(function(){
+        var base_url = window.location.origin;
+        var EmpId = '@ViewBag.UserIdFirstTime';
+    $.ajax({
+        url: base_url + '/EPeople/GetUserTreeViewListById?Id=' + EmpId,
+        type: 'POST',
+        contentType: "application/json",
+        success: function (result) {
+            debugger
+              var addnextChart = '<ul>';
+              for (var i = 0; i < result.length; i++) {
+                  addnextChart += '<li> <div class="user nextRoot" onclick="GetNextTree(this)" userId="' + result[i].UserId + '" id="NextLevel_' + result[i].EmployeeId + '" style="cursor:pointer;"><img src="' + result[i].ProfilePhoto + '" class="img-responsive" /><div class="name">' + result[i].EmployeeName + '</div><div class="role">' + result[i].JobTitle + '</div></div></li>';
+              }
+                addnextChart += '</ul>';
+                $(".firstRoot").after(addnextChart);
+                
+            },
+            error: function (er) {
+        }
     });
+        // $(".nextRoot").click(function () {
+        //     debugger
+        //     $_this = this;
+        //     var getUserId = $($_this).attr("id");
+        //     if (getUserId != null) {
+        //    $.ajax({
+        //        url: base_url + '/EPeople/GetUserTreeViewListById?Id=' + getUserId,
+        //        type: 'POST',
+        //        contentType: "application/json",
+        //        success: function (result) {
+        //            debugger
+        //            var addnextChart = '<ul>';
+        //            for (var i = 0; i < result.length; i++) {
 
-</script>*@
-<script type="text/javascript">
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', 'UA-36251023-1']);
-      _gaq.push(['_setDomainName', 'jqueryscript.net']);
-      _gaq.push(['_trackPageview']);
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
-
-    </script>
-<script>
-    function ViewTreeUserData(id) {
+        //                    addnextChart += '<li> <div class="user nextRoot" id="NextLevel_' + result[i].EmployeeId + '" style="cursor:pointer;"><img src="' + result[i].ProfilePhoto + '" class="img-responsive" /><div class="name">' + result[i].EmployeeName + '</div><div class="role">' + result[i].JobTitle + '</div></div></li>';
+        //            }
+        //            addnextChart += '</ul>';
+        //            $(getUserId).after(addnextChart);
+        //        },
+        //        error: function (er) {
+        //        }
+        //    })
+        //}
+        // })
+    });
+    function GetNextTree($_this){
         debugger
+        //$_this = this;
+        var getUserId = $($_this).attr("userId");
+        var getdivId = $($_this).attr("id");
+        var getNextElementData = $("#" + getdivId).next().html();
+        if (getNextElementData == "" || getNextElementData == null) {
+            if (getUserId != null) {
+                $.ajax({
+                    url: base_url + '/EPeople/GetUserTreeViewListById?Id=' + getUserId,
+                    type: 'POST',
+                    contentType: "application/json",
+                    success: function (result) {
+                        debugger
+                        if (result.length > 0) {
+                            var addnextChart = '<ul>';
+                            for (var i = 0; i < result.length; i++) {
 
-        $.ajax({
-            type: "POST",
-            data: { 'Id': id },
-            url: '../EPeople/GetUserTreeViewList/',
-            beforeSend: function () {
-                new fn_showMaskloader('Please wait...');
-            },
-            //contentType: "application/json; charset=utf-8",
-            error: function (xhr, status, error) {
-            },
-            success: function (ChildrenList) {
-                debugger
-                $(".stiff-chart-inner").html("");
-                if (ChildrenList.length > 0) {
-                    for(i = 0;i < ChildrenList.length ;i++)
-                    {
-                        if (i == 0) {
-                            var tt = $(".stiff-chart-inner").append('<div class="stiff-chart-level" data-level="01"><div class="stiff-main-parent"><ul><li data-parent="a"><div class="the-chart"><img src="' + ChildrenList[i].ProfilePhoto + '" alt=""><p>"' + ChildrenList[i].EmployeeName + '"</p></div></li></ul></div></div>');
-                            var secondUL = '<div class="stiff-chart-level" data-level="02"><div class="stiff-child" data-child-from="a"><ul>'
+                                addnextChart += '<li> <div class="user nextRoot" id="NextLevel_' + result[i].EmployeeId + '" style="cursor:pointer;"><img src="' + result[i].ProfilePhoto + '" class="img-responsive" /><div class="name">' + result[i].EmployeeName + '</div><div class="role">' + result[i].JobTitle + '</div></div></li>';
+                            }
+                            addnextChart += '</ul>';
+                            $("#" + getdivId).after(addnextChart);
+                            $("#myModalForViewUserChart").modal('show');
                         }
-                        else {
-                            secondUL = secondUL + '<li data-parent="a01" class="clicklielement"><div class="the-chart"><img src="' + ChildrenList[i].ProfilePhoto + '" alt=""> <p>"' + ChildrenList[i].EmployeeName + '"</p></div> </li>'
-                        }
+                    },
+                    error: function (er) {
                     }
-                    secondUL = secondUL + '</ul></div></div>';
-                    //$(".stiff-chart-inner").after(secondUL);
-                    $(".stiff-chart-inner").append(secondUL);
-                }
-                else {
-                    $(".stiff-chart-inner").html("No record found");
-                }
-            },
-            complete: function () {
-                fn_hideMaskloader();
+                })
             }
-        });
+        }
+        else {
+            $("#" + getdivId).next().html("");
+        }
     }
 </script>

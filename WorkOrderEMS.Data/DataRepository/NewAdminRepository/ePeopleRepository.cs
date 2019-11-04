@@ -95,7 +95,7 @@ namespace WorkOrderEMS.Data
         /// </summary>
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
-        public List<spGetOrgnizationUserView_Result1> UserTreeViewDetails(string EmployeeId)
+        public List<spGetOrgnizationUserView_Result2> UserTreeViewDetails(string EmployeeId)
         {
             try
             {

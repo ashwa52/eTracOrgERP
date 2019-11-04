@@ -969,8 +969,10 @@ namespace WorkOrderEMS.Data
                 {
                     foreach (var i in list)
                     {
-                        var IsActive = (i.EEL_IsActive == null || i.EEL_IsActive == "" || i.EEL_IsActive != "Y") ? "I" : "U";
-                        _workorderEMSEntities.spSetSelfAssessmentQuarterly(IsActive, i.EEL_EMP_EmployeeId,i.EEL_EMP_EmployeeIdManager,i.QuestionType, i.ASQ_Id, i.EEL_Id,i.EEL_FinencialYear,i.EEL_FinQuarter, i.EEL_AnswerSelf == "Y" ? "Y" : i.EEL_AnswerSelf == "N" ? "N" : i.EEL_AnswerSelf == "S" ? "S" : null, action == "S" ? "S" : "Y","Y");
+
+                        _workorderEMSEntities.spSetEvaluationQuarterly("U", i.EEL_EMP_EmployeeId, i.QuestionType, i.EEL_Id, i.EEL_FinencialYear, i.EEL_FinQuarter, i.EEL_AnswerSelf, i.EEL_Comments, action == "C" ? "C" : "S");
+                        //var IsActive = (i.EEL_IsActive == null || i.EEL_IsActive == "" || i.EEL_IsActive != "Y") ? "I" : "U";
+                        //_workorderEMSEntities.spSetSelfAssessmentQuarterly(IsActive, i.EEL_EMP_EmployeeId,i.EEL_EMP_EmployeeIdManager,i.QuestionType, i.ASQ_Id, i.EEL_Id,i.EEL_FinencialYear,i.EEL_FinQuarter, i.EEL_AnswerSelf == "Y" ? "Y" : i.EEL_AnswerSelf == "N" ? "N" : i.EEL_AnswerSelf == "S" ? "S" : null, action == "S" ? "S" : "Y","Y");
                     }
                 }
 

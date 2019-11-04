@@ -42,6 +42,7 @@ namespace WorkOrderEMS.Models
         public long UserId { get; set; }
         public bool IsDeleted { get; set; }
         public int? JobTitleCount { get; set; }
+        public string JobTitleCountDesc { get; set; }
         //public string[] JDSplitedString { get; set; }
         //public long? MyProperty { get; set; }
     }
@@ -57,5 +58,6 @@ namespace WorkOrderEMS.Models
         public string JobTitle { get; set; }
         public int? JobTitleCount { get; set; }
         public int? JobTitleLastCount { get; set; }
+        public long UserId { get; set; }
     }
 }

@@ -49,18 +49,55 @@ namespace WorkOrderEMS.Data.DataRepository
                 using (workorderEMSEntities Context = new workorderEMSEntities())
                 {
                     var isEmployeeExists = Context.Employees.Where(x => x.EMP_Email == onboardingDetailRequestModel.Email).Any();
+                    var getDetails = Context.Employees.Where(x => x.EMP_Email == onboardingDetailRequestModel.Email).FirstOrDefault();
+                    var Image = getDetails == null ? null : getDetails.EMP_Photo;
                     var EMPAction = isEmployeeExists ? "U" : "I";
                     var result = Context.spSetEmployee(EMPAction, null, onboardingDetailRequestModel.EmpId, null,
                                                 onboardingDetailRequestModel.FirstName, onboardingDetailRequestModel.MiddleName, onboardingDetailRequestModel.LastName,
                                                 onboardingDetailRequestModel.Email, onboardingDetailRequestModel.Phone
                                                 , onboardingDetailRequestModel.DlNumber, onboardingDetailRequestModel.Dob, onboardingDetailRequestModel.SocialSecurityNumber,
-                                                null, null, null, null, null,
+                                                Image, null, null, null, null,
                                                 null, null, null, DateTime.Now, "1", null, onboardingDetailRequestModel.Address,
                                                 onboardingDetailRequestModel.City, onboardingDetailRequestModel.State, null, onboardingDetailRequestModel.Cityzenship).ToList();
 
                     if (result.Any())
                         return true;
                     return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool UpdateApplicantInfoEMPMangemnt(EmployeeVIewModel onboardingDetailRequestModel)
+        {
+            bool isUpdate = false;
+            try
+            {
+                using (workorderEMSEntities Context = new workorderEMSEntities())
+                {
+                    //var isEmployeeExists = Context.Employees.Where(x => x.EMP_Email == onboardingDetailRequestModel.Email).Any();
+                    var getDetails = Context.Employees.Where(x => x.EMP_Email == onboardingDetailRequestModel.Email).FirstOrDefault();
+                    var UserDetails = Context.UserRegistrations.Where(x => x.EmployeeID == onboardingDetailRequestModel.EmpId).FirstOrDefault();
+                    var Image = getDetails == null ? null : getDetails.EMP_Photo;
+                    var EMPAction = "U";
+                    if (UserDetails != null && getDetails != null)
+                    {
+                        var result = Context.spSetEmployee(EMPAction, null, onboardingDetailRequestModel.EmpId, getDetails.EMP_API_ApplicantId,
+                                                    onboardingDetailRequestModel.FirstName, onboardingDetailRequestModel.MiddleName, onboardingDetailRequestModel.LastName,
+                                                    onboardingDetailRequestModel.Email, onboardingDetailRequestModel.Phone
+                                                    , onboardingDetailRequestModel.DlNumber, onboardingDetailRequestModel.Dob, onboardingDetailRequestModel.SocialSecurityNumber,
+                                                    Image, null, Convert.ToInt64(getDetails.EMP_Gender), getDetails.EMP_JobTitleId, getDetails.EMP_ManagerId,
+                                                    getDetails.EMP_DateOfJoining, getDetails.EMP_LocationId, getDetails.EMP_IsCreatedBy, DateTime.Now, "1", UserDetails.UserType, onboardingDetailRequestModel.Address,
+                                                    onboardingDetailRequestModel.City, onboardingDetailRequestModel.State, onboardingDetailRequestModel.Zip, onboardingDetailRequestModel.Cityzenship).ToList();
+                        if (result.Any())
+                            isUpdate =  true;
+                        isUpdate = false;
+                    }
+
+                    return isUpdate;
                 }
             }
             catch (Exception ex)

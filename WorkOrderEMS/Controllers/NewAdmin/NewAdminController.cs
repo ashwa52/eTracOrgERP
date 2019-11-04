@@ -838,12 +838,12 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             return PartialView("~/Views/NewAdmin/ePeople/_HiringOnBoardingDashboard.cshtml");
         }
         [HttpGet]
-        public ActionResult MyOpenings()
+        public ActionResult MyOpenings(long PostingId)
         {
             //var cont = new RecruiteeAPIController();
             //string url = "";
             //var tt = cont.Index();
-            var myOpenings = _GlobalAdminManager.GetMyOpenings();
+            var myOpenings = _GlobalAdminManager.GetMyOpenings(PostingId);
             return Json(myOpenings, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]

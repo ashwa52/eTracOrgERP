@@ -1557,6 +1557,7 @@
     <Content Include="Content\NewAdminContent\CSS\FilesUICss.css" />
     <Content Include="Content\NewAdminContent\CSS\GetOrgForRequision.css" />
     <Content Include="Content\NewAdminContent\CSS\MultstepWizardNew.css" />
+    <Content Include="Content\NewAdminContent\CSS\NewTreeUserView.css" />
     <Content Include="Content\NewAdminContent\CSS\perfect-scrollbar.css" />
     <Content Include="Content\NewAdminContent\CSS\RadioButtonCSS.css" />
     <Content Include="Content\NewAdminContent\CSS\style.css" />
@@ -5167,6 +5168,9 @@
     <Content Include="Images\eTrac450-light.png" />
     <Content Include="Images\eTrac450.png" />
     <Content Include="Images\etracblur450.png" />
+    <Content Include="Images\FormImages\I-9-stop.jpg" />
+    <Content Include="Images\FormImages\I-9.jpg" />
+    <Content Include="Images\FormImages\image-form.jpg" />
     <Content Include="Images\headerbg_wht.png" />
     <Content Include="Images\HighChartsImageForExport\00335944-7762-464c-8ad4-de8ee11a049e.png" />
     <Content Include="Images\HighChartsImageForExport\0262c4a5-a7ee-47f1-92b9-b8c35e1bfe6c.png" />
@@ -6477,7 +6481,7 @@
     <Content Include="Views\NewAdmin\userEvaluationView.cshtml" />
     <Content Include="Views\NewAdmin\userExpectationsView.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\JobPosting\_AddJobPostingFromVSC.cshtml" />
-	<Content Include="Views\NewAdmin\QEvaluationView.cshtml" />
+    <Content Include="Views\NewAdmin\QEvaluationView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

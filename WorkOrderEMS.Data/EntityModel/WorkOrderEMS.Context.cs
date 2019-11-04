@@ -147,11 +147,11 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<InterviewAnswer> InterviewAnswers { get; set; }
         public virtual DbSet<InterviewQuestion> InterviewQuestions { get; set; }
         public virtual DbSet<InterviewSchedule> InterviewSchedules { get; set; }
-        public virtual DbSet<ApplicantInfo> ApplicantInfoes { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<VehicleSeating> VehicleSeatings { get; set; }
         public virtual DbSet<JobTitle> JobTitles { get; set; }
         public virtual DbSet<FileType> FileTypes { get; set; }
+        public virtual DbSet<ApplicantInfo> ApplicantInfoes { get; set; }
     
         [DbFunction("workorderEMSEntities", "fn_Split")]
         public virtual IQueryable<fn_Split_Result> fn_Split(string sText, string sDelim)
@@ -5089,128 +5089,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetInterviewScore", applicantIdParameter);
         }
     
-        public virtual ObjectResult<spSetEmployee_Result2> spSetEmployee(string eMPAction, Nullable<long> eMP_Id, string eMP_EmployeeID, Nullable<long> eMP_API_ApplicantId, string eMP_FirstName, string eMP_MiddleName, string eMP_LastName, string eMP_Email, Nullable<long> eMP_Phone, string eMP_DrivingLicenseNumber, Nullable<System.DateTime> eMP_DateOfBirth, string eMP_SSN, string eMP_Photo, string eMP_MilitaryService, Nullable<long> eMP_Gender, Nullable<long> eMP_JobTitleId, Nullable<long> eMP_ManagerId, Nullable<System.DateTime> eMP_DateOfJoining, Nullable<long> eMP_LocationId, Nullable<long> eMP_IsCreatedBy, Nullable<System.DateTime> eMP_IsCreatedOn, string eMP_IsActive, Nullable<long> userType, string eMA_Address, string eMA_City, string eMA_State, Nullable<int> eMA_Zip, string cTZ_Citizenship)
-        {
-            var eMPActionParameter = eMPAction != null ?
-                new ObjectParameter("EMPAction", eMPAction) :
-                new ObjectParameter("EMPAction", typeof(string));
-    
-            var eMP_IdParameter = eMP_Id.HasValue ?
-                new ObjectParameter("EMP_Id", eMP_Id) :
-                new ObjectParameter("EMP_Id", typeof(long));
-    
-            var eMP_EmployeeIDParameter = eMP_EmployeeID != null ?
-                new ObjectParameter("EMP_EmployeeID", eMP_EmployeeID) :
-                new ObjectParameter("EMP_EmployeeID", typeof(string));
-    
-            var eMP_API_ApplicantIdParameter = eMP_API_ApplicantId.HasValue ?
-                new ObjectParameter("EMP_API_ApplicantId", eMP_API_ApplicantId) :
-                new ObjectParameter("EMP_API_ApplicantId", typeof(long));
-    
-            var eMP_FirstNameParameter = eMP_FirstName != null ?
-                new ObjectParameter("EMP_FirstName", eMP_FirstName) :
-                new ObjectParameter("EMP_FirstName", typeof(string));
-    
-            var eMP_MiddleNameParameter = eMP_MiddleName != null ?
-                new ObjectParameter("EMP_MiddleName", eMP_MiddleName) :
-                new ObjectParameter("EMP_MiddleName", typeof(string));
-    
-            var eMP_LastNameParameter = eMP_LastName != null ?
-                new ObjectParameter("EMP_LastName", eMP_LastName) :
-                new ObjectParameter("EMP_LastName", typeof(string));
-    
-            var eMP_EmailParameter = eMP_Email != null ?
-                new ObjectParameter("EMP_Email", eMP_Email) :
-                new ObjectParameter("EMP_Email", typeof(string));
-    
-            var eMP_PhoneParameter = eMP_Phone.HasValue ?
-                new ObjectParameter("EMP_Phone", eMP_Phone) :
-                new ObjectParameter("EMP_Phone", typeof(long));
-    
-            var eMP_DrivingLicenseNumberParameter = eMP_DrivingLicenseNumber != null ?
-                new ObjectParameter("EMP_DrivingLicenseNumber", eMP_DrivingLicenseNumber) :
-                new ObjectParameter("EMP_DrivingLicenseNumber", typeof(string));
-    
-            var eMP_DateOfBirthParameter = eMP_DateOfBirth.HasValue ?
-                new ObjectParameter("EMP_DateOfBirth", eMP_DateOfBirth) :
-                new ObjectParameter("EMP_DateOfBirth", typeof(System.DateTime));
-    
-            var eMP_SSNParameter = eMP_SSN != null ?
-                new ObjectParameter("EMP_SSN", eMP_SSN) :
-                new ObjectParameter("EMP_SSN", typeof(string));
-    
-            var eMP_PhotoParameter = eMP_Photo != null ?
-                new ObjectParameter("EMP_Photo", eMP_Photo) :
-                new ObjectParameter("EMP_Photo", typeof(string));
-    
-            var eMP_MilitaryServiceParameter = eMP_MilitaryService != null ?
-                new ObjectParameter("EMP_MilitaryService", eMP_MilitaryService) :
-                new ObjectParameter("EMP_MilitaryService", typeof(string));
-    
-            var eMP_GenderParameter = eMP_Gender.HasValue ?
-                new ObjectParameter("EMP_Gender", eMP_Gender) :
-                new ObjectParameter("EMP_Gender", typeof(long));
-    
-            var eMP_JobTitleIdParameter = eMP_JobTitleId.HasValue ?
-                new ObjectParameter("EMP_JobTitleId", eMP_JobTitleId) :
-                new ObjectParameter("EMP_JobTitleId", typeof(long));
-    
-            var eMP_ManagerIdParameter = eMP_ManagerId.HasValue ?
-                new ObjectParameter("EMP_ManagerId", eMP_ManagerId) :
-                new ObjectParameter("EMP_ManagerId", typeof(long));
-    
-            var eMP_DateOfJoiningParameter = eMP_DateOfJoining.HasValue ?
-                new ObjectParameter("EMP_DateOfJoining", eMP_DateOfJoining) :
-                new ObjectParameter("EMP_DateOfJoining", typeof(System.DateTime));
-    
-            var eMP_LocationIdParameter = eMP_LocationId.HasValue ?
-                new ObjectParameter("EMP_LocationId", eMP_LocationId) :
-                new ObjectParameter("EMP_LocationId", typeof(long));
-    
-            var eMP_IsCreatedByParameter = eMP_IsCreatedBy.HasValue ?
-                new ObjectParameter("EMP_IsCreatedBy", eMP_IsCreatedBy) :
-                new ObjectParameter("EMP_IsCreatedBy", typeof(long));
-    
-            var eMP_IsCreatedOnParameter = eMP_IsCreatedOn.HasValue ?
-                new ObjectParameter("EMP_IsCreatedOn", eMP_IsCreatedOn) :
-                new ObjectParameter("EMP_IsCreatedOn", typeof(System.DateTime));
-    
-            var eMP_IsActiveParameter = eMP_IsActive != null ?
-                new ObjectParameter("EMP_IsActive", eMP_IsActive) :
-                new ObjectParameter("EMP_IsActive", typeof(string));
-    
-            var userTypeParameter = userType.HasValue ?
-                new ObjectParameter("UserType", userType) :
-                new ObjectParameter("UserType", typeof(long));
-    
-            var eMA_AddressParameter = eMA_Address != null ?
-                new ObjectParameter("EMA_Address", eMA_Address) :
-                new ObjectParameter("EMA_Address", typeof(string));
-    
-            var eMA_CityParameter = eMA_City != null ?
-                new ObjectParameter("EMA_City", eMA_City) :
-                new ObjectParameter("EMA_City", typeof(string));
-    
-            var eMA_StateParameter = eMA_State != null ?
-                new ObjectParameter("EMA_State", eMA_State) :
-                new ObjectParameter("EMA_State", typeof(string));
-    
-            var eMA_ZipParameter = eMA_Zip.HasValue ?
-                new ObjectParameter("EMA_Zip", eMA_Zip) :
-                new ObjectParameter("EMA_Zip", typeof(int));
-    
-            var cTZ_CitizenshipParameter = cTZ_Citizenship != null ?
-                new ObjectParameter("CTZ_Citizenship", cTZ_Citizenship) :
-                new ObjectParameter("CTZ_Citizenship", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSetEmployee_Result2>("spSetEmployee", eMPActionParameter, eMP_IdParameter, eMP_EmployeeIDParameter, eMP_API_ApplicantIdParameter, eMP_FirstNameParameter, eMP_MiddleNameParameter, eMP_LastNameParameter, eMP_EmailParameter, eMP_PhoneParameter, eMP_DrivingLicenseNumberParameter, eMP_DateOfBirthParameter, eMP_SSNParameter, eMP_PhotoParameter, eMP_MilitaryServiceParameter, eMP_GenderParameter, eMP_JobTitleIdParameter, eMP_ManagerIdParameter, eMP_DateOfJoiningParameter, eMP_LocationIdParameter, eMP_IsCreatedByParameter, eMP_IsCreatedOnParameter, eMP_IsActiveParameter, userTypeParameter, eMA_AddressParameter, eMA_CityParameter, eMA_StateParameter, eMA_ZipParameter, cTZ_CitizenshipParameter);
-        }
-    
-        public virtual ObjectResult<spGetMyOpening_Result1> spGetMyOpening()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetMyOpening_Result1>("spGetMyOpening");
-        }
-    
         public virtual ObjectResult<spGetVehicleSeating_Result2> spGetVehicleSeating()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVehicleSeating_Result2>("spGetVehicleSeating");
@@ -5285,15 +5163,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentQuestion_Result3>("spGetAssessmentQuestion", employeeIDParameter, assessmentTypeParameter);
         }
     
-        public virtual ObjectResult<spGetOrgnizationUserView_Result1> spGetOrgnizationUserView(string employeeId)
-        {
-            var employeeIdParameter = employeeId != null ?
-                new ObjectParameter("EmployeeId", employeeId) :
-                new ObjectParameter("EmployeeId", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetOrgnizationUserView_Result1>("spGetOrgnizationUserView", employeeIdParameter);
-        }
-    
         public virtual ObjectResult<spGetApplicantInfo_Result1> spGetApplicantInfo(string employeeId)
         {
             var employeeIdParameter = employeeId != null ?
@@ -5301,15 +5170,6 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("EmployeeId", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantInfo_Result1>("spGetApplicantInfo", employeeIdParameter);
-        }
-    
-        public virtual ObjectResult<spGetApplicantInfoForMyInterview_Result1> spGetApplicantInfoForMyInterview(string employeeId)
-        {
-            var employeeIdParameter = employeeId != null ?
-                new ObjectParameter("EmployeeId", employeeId) :
-                new ObjectParameter("EmployeeId", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantInfoForMyInterview_Result1>("spGetApplicantInfoForMyInterview", employeeIdParameter);
         }
     
         public virtual int spSetRequisitionApproval(Nullable<long> rQS_Id, string rQS_ApprovedBy, string rQS_ApprovalStatus, string rQS_ApprovalComment, string rQS_IsActive)
@@ -6029,7 +5889,7 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApplicantInfo", aPIActionParameter, aPI_ApplicantIdParameter, aPI_ApplicantIdRecruiteeParameter, aPI_FirstNameParameter, aPI_MiddleNameParameter, aPI_LastNameParameter, aPI_HomeAddressParameter, aPI_CityParameter, aPI_StateParameter, aPI_ZipParameter, aPI_ResumeParameter, aPI_CoverLetterParameter, aPI_PhoneNumberParameter, aPI_EmailParameter, aPI_DLNumberParameter, aPI_PhotoParameter, aPI_CitizenshipParameter, aPI_MilitaryServiceParameter, aPI_GenderParameter, aPI_HighestEducationParameter, aPI_AnyRefOrEmployeeInELITEParameter, aPI_EverELITEWorkFromParameter, aPI_EverELITEWorkToParameter, aPI_WorkEligibleInUSParameter, aPI_JobPostingIdParameter, aPI_JobPostingIdRecruiteeParameter, aPI_JobTitleIDParameter, aPI_HiringManagerIDParameter, aPI_DateOfJoiningParameter, aPI_DesireSalaryParameter, aPI_ApplicantStatusParameter, aPI_IsActiveParameter);
         }
     
-        public virtual int spSetSelfAssessmentQuarterly(string action, string employeeID, string employeeIdManager, string aSQ_QuestionType, Nullable<long> aSQ_Id, Nullable<long> eEL_Id, string eEL_FinencialYear, string eEL_FinQuarter, string eEL_AnswerSelf, string eEL_Comments, string eEL_IsActive)
+        public virtual int spSetSelfAssessmentQuarterly(string action, string employeeID, string employeeIdManager, string aSQ_QuestionType, Nullable<long> aSQ_Id, Nullable<long> eEL_Id, string eEL_FinencialYear, string eEL_FinQuarter, string eEL_AnswerSelf, string eEL_IsActive, string eEL_Comments)
         {
             var actionParameter = action != null ?
                 new ObjectParameter("Action", action) :
@@ -6067,15 +5927,159 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("EEL_AnswerSelf", eEL_AnswerSelf) :
                 new ObjectParameter("EEL_AnswerSelf", typeof(string));
     
-            var eEL_CommentsParameter = eEL_Comments != null ?
-                new ObjectParameter("EEL_Comments", eEL_Comments) :
-                new ObjectParameter("EEL_Comments", typeof(string));
-    
             var eEL_IsActiveParameter = eEL_IsActive != null ?
                 new ObjectParameter("EEL_IsActive", eEL_IsActive) :
                 new ObjectParameter("EEL_IsActive", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetSelfAssessmentQuarterly", actionParameter, employeeIDParameter, employeeIdManagerParameter, aSQ_QuestionTypeParameter, aSQ_IdParameter, eEL_IdParameter, eEL_FinencialYearParameter, eEL_FinQuarterParameter, eEL_AnswerSelfParameter, eEL_CommentsParameter, eEL_IsActiveParameter);
+            var eEL_CommentsParameter = eEL_Comments != null ?
+                new ObjectParameter("EEL_Comments", eEL_Comments) :
+                new ObjectParameter("EEL_Comments", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetSelfAssessmentQuarterly", actionParameter, employeeIDParameter, employeeIdManagerParameter, aSQ_QuestionTypeParameter, aSQ_IdParameter, eEL_IdParameter, eEL_FinencialYearParameter, eEL_FinQuarterParameter, eEL_AnswerSelfParameter, eEL_IsActiveParameter, eEL_CommentsParameter);
+        }
+    
+        public virtual ObjectResult<spSetEmployee_Result3> spSetEmployee(string eMPAction, Nullable<long> eMP_Id, string eMP_EmployeeID, Nullable<long> eMP_API_ApplicantId, string eMP_FirstName, string eMP_MiddleName, string eMP_LastName, string eMP_Email, Nullable<long> eMP_Phone, string eMP_DrivingLicenseNumber, Nullable<System.DateTime> eMP_DateOfBirth, string eMP_SSN, string eMP_Photo, string eMP_MilitaryService, Nullable<long> eMP_Gender, Nullable<long> eMP_JobTitleId, string eMP_ManagerId, Nullable<System.DateTime> eMP_DateOfJoining, Nullable<long> eMP_LocationId, Nullable<long> eMP_IsCreatedBy, Nullable<System.DateTime> eMP_IsCreatedOn, string eMP_IsActive, Nullable<long> userType, string eMA_Address, string eMA_City, string eMA_State, Nullable<int> eMA_Zip, string cTZ_Citizenship)
+        {
+            var eMPActionParameter = eMPAction != null ?
+                new ObjectParameter("EMPAction", eMPAction) :
+                new ObjectParameter("EMPAction", typeof(string));
+    
+            var eMP_IdParameter = eMP_Id.HasValue ?
+                new ObjectParameter("EMP_Id", eMP_Id) :
+                new ObjectParameter("EMP_Id", typeof(long));
+    
+            var eMP_EmployeeIDParameter = eMP_EmployeeID != null ?
+                new ObjectParameter("EMP_EmployeeID", eMP_EmployeeID) :
+                new ObjectParameter("EMP_EmployeeID", typeof(string));
+    
+            var eMP_API_ApplicantIdParameter = eMP_API_ApplicantId.HasValue ?
+                new ObjectParameter("EMP_API_ApplicantId", eMP_API_ApplicantId) :
+                new ObjectParameter("EMP_API_ApplicantId", typeof(long));
+    
+            var eMP_FirstNameParameter = eMP_FirstName != null ?
+                new ObjectParameter("EMP_FirstName", eMP_FirstName) :
+                new ObjectParameter("EMP_FirstName", typeof(string));
+    
+            var eMP_MiddleNameParameter = eMP_MiddleName != null ?
+                new ObjectParameter("EMP_MiddleName", eMP_MiddleName) :
+                new ObjectParameter("EMP_MiddleName", typeof(string));
+    
+            var eMP_LastNameParameter = eMP_LastName != null ?
+                new ObjectParameter("EMP_LastName", eMP_LastName) :
+                new ObjectParameter("EMP_LastName", typeof(string));
+    
+            var eMP_EmailParameter = eMP_Email != null ?
+                new ObjectParameter("EMP_Email", eMP_Email) :
+                new ObjectParameter("EMP_Email", typeof(string));
+    
+            var eMP_PhoneParameter = eMP_Phone.HasValue ?
+                new ObjectParameter("EMP_Phone", eMP_Phone) :
+                new ObjectParameter("EMP_Phone", typeof(long));
+    
+            var eMP_DrivingLicenseNumberParameter = eMP_DrivingLicenseNumber != null ?
+                new ObjectParameter("EMP_DrivingLicenseNumber", eMP_DrivingLicenseNumber) :
+                new ObjectParameter("EMP_DrivingLicenseNumber", typeof(string));
+    
+            var eMP_DateOfBirthParameter = eMP_DateOfBirth.HasValue ?
+                new ObjectParameter("EMP_DateOfBirth", eMP_DateOfBirth) :
+                new ObjectParameter("EMP_DateOfBirth", typeof(System.DateTime));
+    
+            var eMP_SSNParameter = eMP_SSN != null ?
+                new ObjectParameter("EMP_SSN", eMP_SSN) :
+                new ObjectParameter("EMP_SSN", typeof(string));
+    
+            var eMP_PhotoParameter = eMP_Photo != null ?
+                new ObjectParameter("EMP_Photo", eMP_Photo) :
+                new ObjectParameter("EMP_Photo", typeof(string));
+    
+            var eMP_MilitaryServiceParameter = eMP_MilitaryService != null ?
+                new ObjectParameter("EMP_MilitaryService", eMP_MilitaryService) :
+                new ObjectParameter("EMP_MilitaryService", typeof(string));
+    
+            var eMP_GenderParameter = eMP_Gender.HasValue ?
+                new ObjectParameter("EMP_Gender", eMP_Gender) :
+                new ObjectParameter("EMP_Gender", typeof(long));
+    
+            var eMP_JobTitleIdParameter = eMP_JobTitleId.HasValue ?
+                new ObjectParameter("EMP_JobTitleId", eMP_JobTitleId) :
+                new ObjectParameter("EMP_JobTitleId", typeof(long));
+    
+            var eMP_ManagerIdParameter = eMP_ManagerId != null ?
+                new ObjectParameter("EMP_ManagerId", eMP_ManagerId) :
+                new ObjectParameter("EMP_ManagerId", typeof(string));
+    
+            var eMP_DateOfJoiningParameter = eMP_DateOfJoining.HasValue ?
+                new ObjectParameter("EMP_DateOfJoining", eMP_DateOfJoining) :
+                new ObjectParameter("EMP_DateOfJoining", typeof(System.DateTime));
+    
+            var eMP_LocationIdParameter = eMP_LocationId.HasValue ?
+                new ObjectParameter("EMP_LocationId", eMP_LocationId) :
+                new ObjectParameter("EMP_LocationId", typeof(long));
+    
+            var eMP_IsCreatedByParameter = eMP_IsCreatedBy.HasValue ?
+                new ObjectParameter("EMP_IsCreatedBy", eMP_IsCreatedBy) :
+                new ObjectParameter("EMP_IsCreatedBy", typeof(long));
+    
+            var eMP_IsCreatedOnParameter = eMP_IsCreatedOn.HasValue ?
+                new ObjectParameter("EMP_IsCreatedOn", eMP_IsCreatedOn) :
+                new ObjectParameter("EMP_IsCreatedOn", typeof(System.DateTime));
+    
+            var eMP_IsActiveParameter = eMP_IsActive != null ?
+                new ObjectParameter("EMP_IsActive", eMP_IsActive) :
+                new ObjectParameter("EMP_IsActive", typeof(string));
+    
+            var userTypeParameter = userType.HasValue ?
+                new ObjectParameter("UserType", userType) :
+                new ObjectParameter("UserType", typeof(long));
+    
+            var eMA_AddressParameter = eMA_Address != null ?
+                new ObjectParameter("EMA_Address", eMA_Address) :
+                new ObjectParameter("EMA_Address", typeof(string));
+    
+            var eMA_CityParameter = eMA_City != null ?
+                new ObjectParameter("EMA_City", eMA_City) :
+                new ObjectParameter("EMA_City", typeof(string));
+    
+            var eMA_StateParameter = eMA_State != null ?
+                new ObjectParameter("EMA_State", eMA_State) :
+                new ObjectParameter("EMA_State", typeof(string));
+    
+            var eMA_ZipParameter = eMA_Zip.HasValue ?
+                new ObjectParameter("EMA_Zip", eMA_Zip) :
+                new ObjectParameter("EMA_Zip", typeof(int));
+    
+            var cTZ_CitizenshipParameter = cTZ_Citizenship != null ?
+                new ObjectParameter("CTZ_Citizenship", cTZ_Citizenship) :
+                new ObjectParameter("CTZ_Citizenship", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spSetEmployee_Result3>("spSetEmployee", eMPActionParameter, eMP_IdParameter, eMP_EmployeeIDParameter, eMP_API_ApplicantIdParameter, eMP_FirstNameParameter, eMP_MiddleNameParameter, eMP_LastNameParameter, eMP_EmailParameter, eMP_PhoneParameter, eMP_DrivingLicenseNumberParameter, eMP_DateOfBirthParameter, eMP_SSNParameter, eMP_PhotoParameter, eMP_MilitaryServiceParameter, eMP_GenderParameter, eMP_JobTitleIdParameter, eMP_ManagerIdParameter, eMP_DateOfJoiningParameter, eMP_LocationIdParameter, eMP_IsCreatedByParameter, eMP_IsCreatedOnParameter, eMP_IsActiveParameter, userTypeParameter, eMA_AddressParameter, eMA_CityParameter, eMA_StateParameter, eMA_ZipParameter, cTZ_CitizenshipParameter);
+        }
+    
+        public virtual ObjectResult<spGetMyOpening_Result2> spGetMyOpening(Nullable<long> jPS_JobPostingId)
+        {
+            var jPS_JobPostingIdParameter = jPS_JobPostingId.HasValue ?
+                new ObjectParameter("JPS_JobPostingId", jPS_JobPostingId) :
+                new ObjectParameter("JPS_JobPostingId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetMyOpening_Result2>("spGetMyOpening", jPS_JobPostingIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetApplicantInfoForMyInterview_Result2> spGetApplicantInfoForMyInterview(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantInfoForMyInterview_Result2>("spGetApplicantInfoForMyInterview", employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetOrgnizationUserView_Result2> spGetOrgnizationUserView(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetOrgnizationUserView_Result2>("spGetOrgnizationUserView", employeeIdParameter);
         }
     }
 }
