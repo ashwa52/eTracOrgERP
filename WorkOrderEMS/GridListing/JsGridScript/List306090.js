@@ -66,7 +66,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                             var $customUserViewButton = $("<span style='background: #36CA7E; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
                                   .attr({ title: "Assessment" })
                                   .attr({ id: "btn-profile-" + item.id }).click(function (e) {
-                                    
+                                    debugger
                                       $.ajax({
                                           type: "POST",
                                           data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment},
