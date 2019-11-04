@@ -5,9 +5,9 @@
 		if ($(ielm).hasClass('fa-lock'))
 			isLocked=true;
 	});
-	if (isLocked)
+	if (isLocked) {
 		return;
-	unblink(formname.toLowerCase()+'icn');
+	}
 	switch (formname) {
 		case 'directdeposite':
 			geturl = '/Guest/_DirectDepositeForm';
@@ -90,6 +90,7 @@ function SubmitForm(element, formName) {
 			if (successResponse == true) {
 				LockItem(formName.id);
 				$("#formModel").modal('hide');
+				location.href = '/Guest/PersonalFile';
 			}
 			else {
 				
@@ -203,8 +204,8 @@ function LockItem(formId) {
 			break;
 	}
 }
-function blink(id) {
-	$("#"+id).fadeOut('slow', function () {
+function blink() {
+	$(".blink").fadeOut('slow', function () {
 		$(this).fadeIn('slow', function () {
 			blink(this.id);
 		});
@@ -214,9 +215,61 @@ function unblink(id) {
 	$("#" + id).stop().fadeIn();
 	NextBlink(id);
 } 
-blink('w4formicn');
+//blink('w4formicn');
 function NextBlink(id) {
 	
 	var siblingid = $("#" + id).next()[0].id;
 	blink(siblingid);
+}
+function SetFormStatus() {
+	$.ajax({
+		url: '/Guest/GetFormsStatus',
+		method: 'GET',
+		success: function (response) {
+			debugger;
+			if (response.W4Status == 'Y') {
+				$("#w4formicn").removeClass('blink');
+				$($("#w4formicn").find('.bluesky')[0]).removeClass('bluesky').addClass('grn-icn');
+				LockItem('w4form');
+
+			}
+			if (response.EmergencyContactFormStatus == 'Y') {
+				$("#emergencycontactformicn").removeClass('blink');
+				$($("#emergencycontactformicn").find('.bluesky')[0]).removeClass('bluesky').addClass('grn-icn');
+				LockItem('emergencycontactform');
+
+			}
+			if (response.EmployeeHandbook == 'Y') {
+				$("#employeehandbookicn").removeClass('blink');
+				$($("#employeehandbookicn").find('.bluesky')[0]).removeClass('bluesky').addClass('grn-icn');
+				LockItem('employeehandbook');
+			}
+			if (response.DirectDepositForm == 'Y') {
+				$("#directdepositeicn").removeClass('blink');
+				$($("#directdepositeicn").find('.bluesky')[0]).removeClass('bluesky').addClass('grn-icn');
+				LockItem('depositeForm');
+
+			}
+			if (response.PhotoReleaseForm == 'Y') {
+				$("#photoreleaseicn").removeClass('blink');
+				$($("#photoreleaseicn").find('.bluesky')[0]).removeClass('bluesky').addClass('grn-icn')
+
+			}
+			if (response.ConfidentialityAgreement == 'Y') {
+				$("#confidentialityagreementicn").removeClass('blink');
+				$($("#confidentialityagreementicn").find('.bluesky')[0]).removeClass('bluesky').addClass('grn-icn')
+
+			}
+			if (response.EducationVerificationForm == 'Y') {
+				$("#educationverificationformicn").removeClass('blink');
+				$($("#educationverificationformicn").find('.bluesky')[0]).removeClass('bluesky').addClass('grn-icn');
+				LockItem('educationverificationform');
+
+			}
+			var $div2blink = $(".blink"); // Save reference, only look this item up once, then save
+			var backgroundInterval = setInterval(function () {
+				$div2blink.toggleClass("backgroundRed");
+			}, 1500)
+		}
+	});
 }

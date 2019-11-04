@@ -496,7 +496,7 @@ namespace WorkOrderEMS.BusinessLogic
 						MeritalStatus = GetMaritalStatus(x.w4F_3MaritalStatus),
 						FirstEmployeementDate = x.w4F_9,
 						AdditionalAmount = x.w4F_6,
-						NameDiffer = x.w4F_4=="Y"?true:false,
+						NameDiffer = x.w4F_4 == "Y" ? true : false,
 						ClaimExemption = x.w4F_7,
 						TotalAllowence = x.w4F_5,
 						W4FId = x.W4F_Id
@@ -539,7 +539,7 @@ namespace WorkOrderEMS.BusinessLogic
 					var isexist = GetW4Form(userId);
 					if (ReferenceEquals(isexist, null))
 					{
-						Context.spSetW4Form("I", model.W4FId, empid, model.SSN,GetMaritalStatusAsString(model.MeritalStatus), model.NameDiffer==true?"Y":"N", model.TotalAllowence, model.AdditionalAmount, model.ClaimExemption, model.EmployeerNameAndAddress, model.FirstEmployeementDate, model.EIN, model.IsActive);
+						Context.spSetW4Form("I", model.W4FId, empid, model.SSN, GetMaritalStatusAsString(model.MeritalStatus), model.NameDiffer == true ? "Y" : "N", model.TotalAllowence, model.AdditionalAmount, model.ClaimExemption, model.EmployeerNameAndAddress, model.FirstEmployeementDate, model.EIN, model.IsActive);
 					}
 					else
 					{
@@ -562,6 +562,34 @@ namespace WorkOrderEMS.BusinessLogic
 			if (meritalStatus.Single)
 				return "Single";
 			return "PartiallyMarried";
+		}
+		public PersonalFileModel GetFormsStatus(long userId)
+		{
+			try
+			{
+
+				using (workorderEMSEntities Context = new workorderEMSEntities())
+				{
+
+					var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
+					var formsStatus = Context.spGetForrmStatus(empid).Select(x => new PersonalFileModel
+					{
+						W4Status=x.W4F_IsActive,
+						ConfidentialityAgreement=x.CDA_IsActive,
+						DirectDepositForm=x.DDF_IsActive,
+						EducationVerificationForm=x.EVF_IsActive,
+						EmergencyContactFormStatus=x.ECF_IsActive ,
+						EmployeeHandbook=x.EHB_IsActive,
+						PhotoReleaseForm=x.PRF_IsActive
+					}).FirstOrDefault();
+					return formsStatus;
+
+				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
 		}
 	}
 

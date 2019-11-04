@@ -339,6 +339,7 @@ function RecordYes(isFinal) {
 		$("#selectAns").val('Y');
 		document.querySelector('#commentboxlast').required = true;
 	}
+	//SaveAnswer(function (data) { });
 
 }
 function RecordNo(isFinal) {
@@ -350,6 +351,7 @@ function RecordNo(isFinal) {
 		document.querySelector('#commentboxlast').required = false;
 		$("#lblmsglast").hide();
 	}
+	//SaveAnswer(function (data) { });
 }
 function SaveAndNext() {
 	debugger;
@@ -367,7 +369,7 @@ function SaveAndNext() {
 		if (data) {
 			$("#commentbox").val('');
 			var INA_API_ApplicantId = $("#applicant_id").val();
-			CheckIfAllResponded(INA_API_ApplicantId, function (responseForNextQuestion) {
+			CheckIfAllResponded(INA_API_ApplicantId, $("#q_id").val(), function (responseForNextQuestion) {
 				if (responseForNextQuestion) {
 					Getquestions(null);
 				}
@@ -478,9 +480,9 @@ function FinishInterview() {
 		});
 	}));
 }
-function CheckIfAllResponded(applicantId, callback) {
+function CheckIfAllResponded(applicantId, qusid,callback) {
 	$.ajax({
-		url: '/NewAdmin/CheckNextQuestion?ApplicantId=' + applicantId,
+		url: '/NewAdmin/CheckNextQuestion?ApplicantId=' + applicantId + "&QusId=" + qusid,
 		method: 'GET',
 		success: callback
 	});

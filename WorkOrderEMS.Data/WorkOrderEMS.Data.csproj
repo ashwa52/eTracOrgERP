@@ -116,7 +116,6 @@
     <Compile Include="DataRepository\NewAdminRepository.cs" />
     <Compile Include="DataRepository\NewAdminRepository\DepartmentRepository.cs" />
     <Compile Include="DataRepository\NewAdminRepository\ePeopleRepository.cs" />
-    <Compile Include="DataRepository\NewAdminRepository\FillableFormRepository.cs" />
     <Compile Include="DataRepository\NewAdminRepository\VehicleSeatingChartRepository.cs" />
     <Compile Include="DataRepository\NotificationDetailsRepository.cs" />
     <Compile Include="DataRepository\PassengerTrackingCountRepository.cs" />
@@ -282,9 +281,6 @@
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\ExceptionLog.cs">
-      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EntityModel\FileType.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\fnGetManager_Result.cs">
@@ -666,6 +662,9 @@
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\spGetFormMaster_Result.cs">
+      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\spGetForrmStatus_Result.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\spGetInsurance_Result.cs">

@@ -27,5 +27,6 @@ namespace WorkOrderEMS.BusinessLogic
 		EducationVarificationModel GetEducationVerificationForm(long userId);
 		void SetW4Form(long userId, W4FormModel model);
 		W4FormModel GetW4Form(long userId);
+		PersonalFileModel GetFormsStatus(long userId);
 	}
 }

@@ -1,4 +1,4 @@
-﻿
+﻿@model WorkOrderEMS.Models.Employee.PersonalFileModel
 @{
 	ViewBag.Title = "PersonalFile";
 	Layout = "~/Views/Shared/_GuestLayout.cshtml";
@@ -117,7 +117,14 @@
 		border-right: 1px solid;
 		padding: 0px 35px 0px 0px;
 	}
+	
+
 </style>
+<script>
+	$(document).ready(function () {
+		SetFormStatus();
+	});
+</script>
 
 <link href="~/Content/guest.css" rel="stylesheet" />
 <div class="card" style="width: 80%;margin: auto;">
@@ -138,7 +145,7 @@
 					</div>
 					<label>W-4 Form</label>
 				</div>
-				<div class="inline" onclick="OpenForm('EmergencyContactForm',this)" id="emergencycontactformicn">
+				<div class="inline blink" onclick="OpenForm('EmergencyContactForm',this)" id="emergencycontactformicn">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
@@ -152,7 +159,7 @@
 					<label>Emergency Contact Form</label>
 
 				</div>
-				<div class="inline" onclick="OpenForm('employeehandbook',this)" id="employeehandbookicn">
+				<div class="inline blink" onclick="OpenForm('employeehandbook',this)" id="employeehandbookicn">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
@@ -165,7 +172,7 @@
 					</div>
 					<label>Employee Handbook</label>
 				</div>
-				<div class="inline" onclick="OpenForm('directdeposite',this)" id="directdepositeicn">
+				<div class="inline blink" onclick="OpenForm('directdeposite',this)" id="directdepositeicn">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
@@ -179,7 +186,7 @@
 
 					<label>Direct Diposite Form</label>
 				</div>
-				<div class=" inline" onclick="OpenForm('photorelease',this)" id="photoreleaseicn">
+				<div class=" inline blink" onclick="OpenForm('photorelease',this)" id="photoreleaseicn">
 
 					<div class="bluesky">
 						<div class="int">
@@ -196,7 +203,7 @@
 			</div>
 			<div class="col-md-12" style="text-align:center">
 
-				<div class="inline" onclick="OpenForm('confidentiality',this)" id="confidentialityagreementicn">
+				<div class="inline blink" onclick="OpenForm('confidentiality',this)" id="confidentialityagreementicn">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
@@ -209,7 +216,7 @@
 					</div>
 					<label>Confidentiality Agreement</label>
 				</div>
-				<div class="inline" onclick="OpenForm('educationVerificationForm',this)" id="educationverificationformicn">
+				<div class="inline blink" onclick="OpenForm('educationVerificationForm',this)" id="educationverificationformicn">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
@@ -222,7 +229,7 @@
 					</div>
 					<label>Education Verification Form</label>
 				</div>
-				<div class="inline" onclick="OpenForm('creditCardAuthorizationForm',this)">
+				<div class="inline blink" onclick="OpenForm('creditCardAuthorizationForm',this)">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
@@ -235,7 +242,7 @@
 					</div>
 					<label>Creditcard Authorization Form</label>
 				</div>
-				<div class="inline" onclick="OpenForm('previousEmployeement',this)">
+				<div class="inline blink" onclick="OpenForm('previousEmployeement',this)">
 					<div class="devider">
 						<div class="bluesky">
 							<div class="int">
@@ -248,7 +255,7 @@
 					</div>
 					<label>Previous Employment</label>
 				</div>
-				<div class="inline" onclick="OpenForm('I9Form',this)" id="i9form">
+				<div class="inline blink" onclick="OpenForm('I9Form',this)" id="i9form">
 
 					<div class="bluesky">
 						<div class="int">

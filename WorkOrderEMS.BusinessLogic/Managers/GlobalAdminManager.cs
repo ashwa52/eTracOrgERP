@@ -3938,7 +3938,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 						INS_IsAvailable = x.INS_IsAvailable,
 						INS_IsHiringManager = x.INS_IsHiringManager,
 						InterviwerName = x.InterviwerName,
-						ProfileImage = x.EMP_Photo
+						ProfileImage = x.ProfileImage
 					}).ToList();
 					interviewersList.Interviewers = interviewers;
 					interviewersList.currentEmployeeId = hiringManagerId;
@@ -4023,14 +4023,14 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             return 1;
 
         }
-		public bool CheckIfAllRespondedForQuestion(long ApplicantId)
+		public bool CheckIfAllRespondedForQuestion(long ApplicantId,long QusId)
 		{
 			try
 			{
 				using (workorderEMSEntities context = new workorderEMSEntities())
 				{
 					ObjectParameter isStart = new ObjectParameter("IsNext", "");
-					var res = context.spGetNextQuestion(ApplicantId, isStart);
+					var res = context.spGetNextQuestion( QusId, ApplicantId,isStart);
 					if (isStart.Value.ToString().Equals("y", StringComparison.OrdinalIgnoreCase))
 						return true;
 					else

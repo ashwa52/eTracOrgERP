@@ -151,7 +151,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<VehicleSeating> VehicleSeatings { get; set; }
         public virtual DbSet<JobTitle> JobTitles { get; set; }
-        public virtual DbSet<FileType> FileTypes { get; set; }
     
         [DbFunction("workorderEMSEntities", "fn_Split")]
         public virtual IQueryable<fn_Split_Result> fn_Split(string sText, string sDelim)
@@ -4883,13 +4882,17 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetInterviewCanStart", applicantIdParameter, isStart);
         }
     
-        public virtual int spGetNextQuestion(Nullable<long> applicantId, ObjectParameter isNext)
+        public virtual int spGetNextQuestion(Nullable<long> maxQuestionId, Nullable<long> applicantId, ObjectParameter isNext)
         {
+            var maxQuestionIdParameter = maxQuestionId.HasValue ?
+                new ObjectParameter("maxQuestionId", maxQuestionId) :
+                new ObjectParameter("maxQuestionId", typeof(long));
+    
             var applicantIdParameter = applicantId.HasValue ?
                 new ObjectParameter("ApplicantId", applicantId) :
                 new ObjectParameter("ApplicantId", typeof(long));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetNextQuestion", applicantIdParameter, isNext);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetNextQuestion", maxQuestionIdParameter, applicantIdParameter, isNext);
         }
     
         public virtual ObjectResult<string> spGetEmployeeHandbook(string employeeID)
@@ -5089,7 +5092,7 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spGetInterviewScore", applicantIdParameter);
         }
     
-        public virtual ObjectResult<spSetEmployee_Result2> spSetEmployee(string eMPAction, Nullable<long> eMP_Id, string eMP_EmployeeID, Nullable<long> eMP_API_ApplicantId, string eMP_FirstName, string eMP_MiddleName, string eMP_LastName, string eMP_Email, Nullable<long> eMP_Phone, string eMP_DrivingLicenseNumber, Nullable<System.DateTime> eMP_DateOfBirth, string eMP_SSN, string eMP_Photo, string eMP_MilitaryService, Nullable<long> eMP_Gender, Nullable<long> eMP_JobTitleId, Nullable<long> eMP_ManagerId, Nullable<System.DateTime> eMP_DateOfJoining, Nullable<long> eMP_LocationId, Nullable<long> eMP_IsCreatedBy, Nullable<System.DateTime> eMP_IsCreatedOn, string eMP_IsActive, Nullable<long> userType, string eMA_Address, string eMA_City, string eMA_State, Nullable<int> eMA_Zip, string cTZ_Citizenship)
+        public virtual ObjectResult<spSetEmployee_Result2> spSetEmployee(string eMPAction, Nullable<long> eMP_Id, string eMP_EmployeeID, Nullable<long> eMP_API_ApplicantId, string eMP_FirstName, string eMP_MiddleName, string eMP_LastName, string eMP_Email, Nullable<long> eMP_Phone, string eMP_DrivingLicenseNumber, Nullable<System.DateTime> eMP_DateOfBirth, string eMP_SSN, string eMP_Photo, string eMP_MilitaryService, string eMP_Gender, Nullable<long> eMP_JobTitleId, Nullable<long> eMP_ManagerId, Nullable<System.DateTime> eMP_DateOfJoining, Nullable<long> eMP_LocationId, Nullable<long> eMP_IsCreatedBy, Nullable<System.DateTime> eMP_IsCreatedOn, string eMP_IsActive, Nullable<long> userType, string eMA_Address, string eMA_City, string eMA_State, Nullable<int> eMA_Zip, string cTZ_Citizenship)
         {
             var eMPActionParameter = eMPAction != null ?
                 new ObjectParameter("EMPAction", eMPAction) :
@@ -5147,9 +5150,9 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("EMP_MilitaryService", eMP_MilitaryService) :
                 new ObjectParameter("EMP_MilitaryService", typeof(string));
     
-            var eMP_GenderParameter = eMP_Gender.HasValue ?
+            var eMP_GenderParameter = eMP_Gender != null ?
                 new ObjectParameter("EMP_Gender", eMP_Gender) :
-                new ObjectParameter("EMP_Gender", typeof(long));
+                new ObjectParameter("EMP_Gender", typeof(string));
     
             var eMP_JobTitleIdParameter = eMP_JobTitleId.HasValue ?
                 new ObjectParameter("EMP_JobTitleId", eMP_JobTitleId) :
@@ -5437,7 +5440,7 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetJobTitle_Result1>("spGetJobTitle", jBT_VST_IdParameter);
         }
     
-        public virtual int spSetJobTitle(string jBTAction, Nullable<long> jBT_Id, string jBT_JobTitle, Nullable<int> jBT_JobCount, Nullable<int> jBT_FillJobCount, Nullable<long> jBT_VST_Id, string jBT_IsActive)
+        public virtual int spSetJobTitle(string jBTAction, Nullable<long> jBT_Id, string jBT_JobTitle, Nullable<long> jBT_VST_Id, string jBT_IsActive)
         {
             var jBTActionParameter = jBTAction != null ?
                 new ObjectParameter("JBTAction", jBTAction) :
@@ -5451,14 +5454,6 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("JBT_JobTitle", jBT_JobTitle) :
                 new ObjectParameter("JBT_JobTitle", typeof(string));
     
-            var jBT_JobCountParameter = jBT_JobCount.HasValue ?
-                new ObjectParameter("JBT_JobCount", jBT_JobCount) :
-                new ObjectParameter("JBT_JobCount", typeof(int));
-    
-            var jBT_FillJobCountParameter = jBT_FillJobCount.HasValue ?
-                new ObjectParameter("JBT_FillJobCount", jBT_FillJobCount) :
-                new ObjectParameter("JBT_FillJobCount", typeof(int));
-    
             var jBT_VST_IdParameter = jBT_VST_Id.HasValue ?
                 new ObjectParameter("JBT_VST_Id", jBT_VST_Id) :
                 new ObjectParameter("JBT_VST_Id", typeof(long));
@@ -5467,7 +5462,7 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("JBT_IsActive", jBT_IsActive) :
                 new ObjectParameter("JBT_IsActive", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetJobTitle", jBTActionParameter, jBT_IdParameter, jBT_JobTitleParameter, jBT_JobCountParameter, jBT_FillJobCountParameter, jBT_VST_IdParameter, jBT_IsActiveParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetJobTitle", jBTActionParameter, jBT_IdParameter, jBT_JobTitleParameter, jBT_VST_IdParameter, jBT_IsActiveParameter);
         }
     
         public virtual ObjectResult<spGetEducationVerificationForm_Result> spGetEducationVerificationForm(string employeeID)
@@ -5570,25 +5565,25 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("spGetPhotoReleaseForm", employeeIDParameter);
         }
     
-        public virtual int spSetConfidentialityAgreement(string cDAAction, Nullable<long> cDA_Id, string cDA_EMP_EmployeeID, string cDA_IsActive)
+        public virtual int spSetConfidentialityAgreement(string cAFAction, Nullable<long> cAF_Id, string cAF_EMP_EmployeeID, string cAF_IsActive)
         {
-            var cDAActionParameter = cDAAction != null ?
-                new ObjectParameter("CDAAction", cDAAction) :
-                new ObjectParameter("CDAAction", typeof(string));
+            var cAFActionParameter = cAFAction != null ?
+                new ObjectParameter("CAFAction", cAFAction) :
+                new ObjectParameter("CAFAction", typeof(string));
     
-            var cDA_IdParameter = cDA_Id.HasValue ?
-                new ObjectParameter("CDA_Id", cDA_Id) :
-                new ObjectParameter("CDA_Id", typeof(long));
+            var cAF_IdParameter = cAF_Id.HasValue ?
+                new ObjectParameter("CAF_Id", cAF_Id) :
+                new ObjectParameter("CAF_Id", typeof(long));
     
-            var cDA_EMP_EmployeeIDParameter = cDA_EMP_EmployeeID != null ?
-                new ObjectParameter("CDA_EMP_EmployeeID", cDA_EMP_EmployeeID) :
-                new ObjectParameter("CDA_EMP_EmployeeID", typeof(string));
+            var cAF_EMP_EmployeeIDParameter = cAF_EMP_EmployeeID != null ?
+                new ObjectParameter("CAF_EMP_EmployeeID", cAF_EMP_EmployeeID) :
+                new ObjectParameter("CAF_EMP_EmployeeID", typeof(string));
     
-            var cDA_IsActiveParameter = cDA_IsActive != null ?
-                new ObjectParameter("CDA_IsActive", cDA_IsActive) :
-                new ObjectParameter("CDA_IsActive", typeof(string));
+            var cAF_IsActiveParameter = cAF_IsActive != null ?
+                new ObjectParameter("CAF_IsActive", cAF_IsActive) :
+                new ObjectParameter("CAF_IsActive", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetConfidentialityAgreement", cDAActionParameter, cDA_IdParameter, cDA_EMP_EmployeeIDParameter, cDA_IsActiveParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetConfidentialityAgreement", cAFActionParameter, cAF_IdParameter, cAF_EMP_EmployeeIDParameter, cAF_IsActiveParameter);
         }
     
         public virtual int spSetEducationVerificationForm(string eVFAction, Nullable<long> eVF_Id, string eVF_EMP_EmployeeID, string eVF_SchoolDegreeDiplomaCirtificate, string eVF_OrgnizationName, string eVF_Address, string eVF_City, string eVF_State, Nullable<System.DateTime> eVF_AttendedFrom, Nullable<System.DateTime> eVF_AttendedTo, string dDF_IsActive)
@@ -5901,6 +5896,15 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("EmployeeId", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentList306090_Result1>("spGetAssessmentList306090", employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetForrmStatus_Result> spGetForrmStatus(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetForrmStatus_Result>("spGetForrmStatus", employeeIdParameter);
         }
     }
 }

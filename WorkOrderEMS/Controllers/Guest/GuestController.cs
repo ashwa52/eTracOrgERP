@@ -225,5 +225,15 @@ namespace WorkOrderEMS.Controllers.Guest
 			}
 			return PartialView("_emergencyContactForm", model);
 		}
+		[HttpGet]
+		public ActionResult GetFormsStatus()
+		{
+			
+				var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+				var data=_IGuestUserRepository.GetFormsStatus(objloginmodel.UserId);
+				return Json(data, JsonRequestBehavior.AllowGet);
+			
+			
+		}
 	}
 }
