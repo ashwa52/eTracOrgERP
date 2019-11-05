@@ -948,6 +948,21 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             var data = _GlobalAdminManager.SaveApplicantInfo(onboardingDetailRequestModel);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// Created By : Ashwajit bansod
+        /// Created Date : 05-Nov-2019
+        /// Created for : to verify user
+        /// </summary>
+        /// <param name="onboardingDetailRequestModel"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult VerifyEmployeeAfterGenerate(OnboardingDetailRequestModel onboardingDetailRequestModel)
+        {
+            var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            onboardingDetailRequestModel.CreatedBy = ObjLoginModel.UserId;
+            var data = _GlobalAdminManager.VerifyEmployee(onboardingDetailRequestModel);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
 
         [HttpPost]
         public ActionResult SaveGuestEmployeeBasicInfo(GuestEmployeeBasicInfoRequestModel guestEmployeeBasicInfoRequestModel)
@@ -975,9 +990,9 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             return Json(res, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        public JsonResult CheckNextQuestion(long ApplicantId)
+        public JsonResult CheckNextQuestion(long ApplicantId, long QusId)
         {
-            var res = _GlobalAdminManager.CheckIfAllRespondedForQuestion(ApplicantId);
+            var res = _GlobalAdminManager.CheckIfAllRespondedForQuestion(ApplicantId, QusId);
             return Json(res, JsonRequestBehavior.AllowGet);
         }
 

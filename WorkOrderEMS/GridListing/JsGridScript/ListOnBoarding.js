@@ -4,7 +4,7 @@ var clients;
 var $_LocationId = $("#drp_MasterLocation option:selected").val();
 var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_RequestedBy = 0;//= $("#drp_MasterLocation option:selected").val();
 
-
+var API_id;
 let details = [];
 
 var datadetails = "";
@@ -176,25 +176,14 @@ function getApplicantInfo() {
                                 .attr({ id: "btn-edit-" + item.Id }).click(function (e) {
                                     //call function to render the page
                                     debugger;
-
+                                    API_id = item.API_ApplicantId;
                                     addNewOnboardingDetail(item);
                                     
                                 }).append($iconPencil);
                             var $customDeleteButton = $("<span>")
                                 .attr({ title: jsGrid.fields.control.prototype.deleteButtonTooltip })
                                 .attr({ id: "btn-delete-" + item.Id }).click(function (e) {
-                                    $.ajax({
-                                        type: "POST",
-                                        url: base_url+"../GlobalAdmin/DeleteLocation?id=" + item.Id,
-                                        success: function (Data) {
-                                            //$("#jsGrid-basic").jsGrid("loadData");
-                                            var addNewUrl = "../GlobalAdmin/ListLocation";
-                                            $('#RenderPageId').load(addNewUrl);
-                                        },
-                                        error: function (err) {
-                                        }
-                                    });
-
+                                    $("#myModalToShowLocation").modal("show");                                   
                                     e.stopPropagation();
                                 }).append($iconTrash);
 
@@ -236,4 +225,24 @@ function checkempID() {
 			}
         }
     });
+}
+
+function VerifyEmployee() {
+    debugger
+    var object = new Object();
+    object.Status = "I";
+    object.App_Id = API_id;
+    object.Location = $("#ddl_LocationForEmployee option:selected").val();
+    $.ajax({
+        type: "POST",
+        url: base_url + "/NewAdmin/VerifyEmployeeAfterGenerate",
+        data: { onboardingDetailRequestModel: object },
+        success: function (Data) {
+            debugger
+            $("#myModalToShowLocation").modal("show");
+        },
+        error: function (err) {
+        }
+    });
+
 }

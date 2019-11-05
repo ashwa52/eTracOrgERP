@@ -1055,7 +1055,22 @@ namespace WorkOrderEMS.Helper
                         strMailBody = strMailBody.Replace("##LocationName", LocationName);
                         strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
                         break;
-                  
+
+                    case "EMPLOYEEHIRED":
+
+                        TemplatePath = ConfigurationManager.AppSettings["EmployeeHired"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";
+                        Subject = "eTrac: Your username and password is generated";
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##UserName", UserName);
+                        strMailBody = strMailBody.Replace("##Email", emailid);
+                        strMailBody = strMailBody.Replace("##Name", Name);
+                        strMailBody = strMailBody.Replace("##LOGINLINK", RegistrationLink);
+                        strMailBody = strMailBody.Replace("##PASSWORD", Password);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+                        break;
+                        
                 }
                 string body = System.Web.HttpUtility.HtmlDecode(strMailBody);
                 List<Attachment> tt = new List<Attachment>();

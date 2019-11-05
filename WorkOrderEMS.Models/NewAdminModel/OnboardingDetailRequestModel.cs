@@ -21,7 +21,9 @@ namespace WorkOrderEMS.Models.NewAdminModel
 		public string EmpId { get; set; }
 		public long CreatedBy { get; set; }
 		public long? API_JobTitleID { get; set; }
-		public Nullable<System.DateTime> API_DateOfJoining { get; set; }
+        public string Status { get; set; }
+        public int LocationId { get; set; }
+        public Nullable<System.DateTime> API_DateOfJoining { get; set; }
 
 	}
 

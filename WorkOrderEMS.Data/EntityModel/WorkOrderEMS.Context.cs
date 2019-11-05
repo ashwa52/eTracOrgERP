@@ -4883,13 +4883,17 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetInterviewCanStart", applicantIdParameter, isStart);
         }
     
-        public virtual int spGetNextQuestion(Nullable<long> applicantId, ObjectParameter isNext)
+        public virtual int spGetNextQuestion(Nullable<long> maxQuestionId, Nullable<long> applicantId, ObjectParameter isNext)
         {
+            var maxQuestionIdParameter = maxQuestionId.HasValue ?
+                new ObjectParameter("maxQuestionId", maxQuestionId) :
+                new ObjectParameter("maxQuestionId", typeof(long));
+    
             var applicantIdParameter = applicantId.HasValue ?
                 new ObjectParameter("ApplicantId", applicantId) :
                 new ObjectParameter("ApplicantId", typeof(long));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetNextQuestion", applicantIdParameter, isNext);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetNextQuestion", maxQuestionIdParameter, applicantIdParameter, isNext);
         }
     
         public virtual ObjectResult<string> spGetEmployeeHandbook(string employeeID)
@@ -6080,6 +6084,23 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("EmployeeId", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetOrgnizationUserView_Result2>("spGetOrgnizationUserView", employeeIdParameter);
+        }
+    
+        public virtual int spSetUserVerify(string employeeId, Nullable<long> locationId, Nullable<long> createdBy)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            var locationIdParameter = locationId.HasValue ?
+                new ObjectParameter("LocationId", locationId) :
+                new ObjectParameter("LocationId", typeof(long));
+    
+            var createdByParameter = createdBy.HasValue ?
+                new ObjectParameter("CreatedBy", createdBy) :
+                new ObjectParameter("CreatedBy", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetUserVerify", employeeIdParameter, locationIdParameter, createdByParameter);
         }
     }
 }

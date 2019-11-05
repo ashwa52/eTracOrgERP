@@ -27,6 +27,10 @@ namespace WorkOrderEMS.Data.DataRepository
 		{
 			return true;
 		}
-
-	}
+        public int Verify(OnboardingDetailRequestModel onboardingDetailRequestModel)
+        {
+            return _workorderEMSEntities.spSetUserVerify(onboardingDetailRequestModel.EmpId, onboardingDetailRequestModel.LocationId,
+                                                          onboardingDetailRequestModel.CreatedBy);
+        }
+    }
 }

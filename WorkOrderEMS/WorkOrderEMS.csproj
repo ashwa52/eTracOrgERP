@@ -5203,6 +5203,7 @@
     <Content Include="MailTemplate\ApproveRejectVendorTemplate.html" />
     <Content Include="MailTemplate\CreateVendorTemplate.html" />
     <Content Include="MailTemplate\DailyAPTrendInCountTemplate.html" />
+    <Content Include="MailTemplate\EPeople\EmployeeHired.html" />
     <Content Include="MailTemplate\POSendForApprovalTemplate.html" />
     <Content Include="MailTemplate\CellphoneButtonsTemplate.html" />
     <Content Include="MailTemplate\CellphoneFunctionalTemplate.html" />

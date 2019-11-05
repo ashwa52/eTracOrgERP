@@ -5066,6 +5066,7 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Parameter Name="JPS_JobPostingId" Type="bigint" Mode="In" />
         </Function>
         <Function Name="spGetNextQuestion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="maxQuestionId" Type="bigint" Mode="In" />
           <Parameter Name="ApplicantId" Type="bigint" Mode="In" />
           <Parameter Name="IsNext" Type="char" Mode="InOut" />
         </Function>
@@ -5967,6 +5968,11 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Parameter Name="UOU_SMD_Id" Type="bigint" Mode="In" />
           <Parameter Name="UOU_OverrideUserTypeId" Type="bigint" Mode="In" />
           <Parameter Name="UOU_IsActive" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetUserVerify" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
+          <Parameter Name="LocationId" Type="bigint" Mode="In" />
+          <Parameter Name="CreatedBy" Type="bigint" Mode="In" />
         </Function>
         <Function Name="spSetVehicleSeating" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="VSTAction" Type="char" Mode="In" />
@@ -13804,6 +13810,7 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
             <Parameter Name="IsStart" Mode="InOut" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetNextQuestion">
+            <Parameter Name="maxQuestionId" Mode="In" Type="Int64" />
             <Parameter Name="ApplicantId" Mode="In" Type="Int64" />
             <Parameter Name="IsNext" Mode="InOut" Type="String" />
           </FunctionImport>
@@ -14161,7 +14168,12 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Parameter Name="EmployeeId" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetOrgnizationUserView" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetOrgnizationUserView_Result2)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetUserVerify">
             <Parameter Name="EmployeeId" Mode="In" Type="String" />
+            <Parameter Name="LocationId" Mode="In" Type="Int64" />
+            <Parameter Name="CreatedBy" Mode="In" Type="Int64" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Proc_GetAllWorkAssignedToEmployee_Result">
@@ -22653,6 +22665,7 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetUserVerify" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetUserVerify" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
