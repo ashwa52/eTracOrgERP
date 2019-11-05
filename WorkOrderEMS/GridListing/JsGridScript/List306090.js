@@ -19,6 +19,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
         autoload: true,
         pageSize: 10,
         pageButtonCount: 5,
+
         loadMessage: "Please, wait...",
         controller: {
             loadData: function (filter) {
@@ -36,12 +37,41 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
             $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
 
         },
+  //      rowRenderer: function (item) {
+  //         var user = item;
+  //          //<tr > <td ><img src="http://localhost:57572/Content/Images/ProfilePic/4_636464971121344334.png" style="height: 50px; width: 50px; border-radius: 50px;"></td>
+  //          //<td class="jsgrid-cell" style="width: 80px;">George  T  Smith</td>
+  //          //    <td class="jsgrid-cell" style="width: 60px;"></td>
+  //          //    <td class="jsgrid-cell" style="width: 60px;">Review Submitted</td>
+  //          //    <td class="jsgrid-cell" style="width: 60px;">Q4</td>
+  //          //    <td class="jsgrid-cell" style="width: 60px;">2019</td>
+  //          //    <td class="jsgrid-cell" style="width: 60px;"><div class="btn-toolbar"><span style="background: #36CA7E; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;" title="Assessment" id="btn-profile-undefined"><span><i class="fa fa-user fa-2x" style="color:black;margin-left: 6px;margin-top: 4px;"></i></span></span><span style="background: #32ACDA; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;" title="Notification" id="btn-status-undefined"><span><i class="fa fa-file-text fa-2x" style="color:white;margin-left: 6px;margin-top: 4px;"></i></span></span></div></td></tr>
+
+  //         // var $photo = $("<div>").addClass("client-photo").append($("<img>").attr("src", user.picture.large));
+  //          var $info = $('<tr class="jsgrid-row">')
+  //              .append($("<img>").attr("src", user.EMP_Photo).css({ height: 50, width: 50, "border-radius": "50px" }).on("click", function () {
+  //              })).append()
+  //              .append('<td class="jsgrid-cell">' + user.EmployeeName)
+  //              .append('<td class="jsgrid-cell">' + user.JBT_JobTitle)
+  //              .append('<td class="jsgrid-cell">' + user.Status)
+  //              .append('<td class="jsgrid-cell">' + user.Assesment)
+  //.append('<td class="jsgrid-cell" style="width: 60px;"><div class="btn-toolbar"><span style="background: #36CA7E; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;" title="Assessment" id="btn-profile-undefined"><span><i class="fa fa-user fa-2x" style="color:black;margin-left: 6px;margin-top: 4px;"></i></span></span><span style="background: #32ACDA; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;" title="Notification" id="btn-status-undefined"><span><i class="fa fa-file-text fa-2x" style="color:white;margin-left: 6px;margin-top: 4px;"></i></span></span></div></td>');
+            
+
+
+  //              //.append($("<p>").text("Location: " + user.location.city.capitalize() + ", " + user.location.street))
+  //              //.append($("<p>").text("Email: " + user.email))
+  //              //.append($("<p>").text("Phone: " + user.phone))
+  //              //.append($("<p>").text("Cell: " + user.cell));
+                                    
+  //          return $info;
+  //      },
         fields: [
             {
                 name: "EMP_Photo", title: "Profile Image", width: 30,
                 itemTemplate: function (val, item) {
                     return $("<img>").attr("src", val).css({ height: 50, width: 50, "border-radius": "50px" }).on("click", function () {
-
+                       
                     });
                 }
             },
@@ -66,7 +96,6 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                             var $customUserViewButton = $("<span style='background: #36CA7E; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
                                   .attr({ title: "Assessment" })
                                   .attr({ id: "btn-profile-" + item.id }).click(function (e) {
-                                    debugger
                                       $.ajax({
                                           type: "POST",
                                           data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment},
@@ -99,13 +128,12 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                     $.ajax({
                                         type: "POST",
                                         //data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment },
-                                        data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle },
+                                        data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'Department': item.DepartmentName, 'LocationName': item.LocationName },
 
                                         url: '../NewAdmin/userEvaluationView/',
                                         error: function (xhr, status, error) {
                                         },
                                         success: function (result) {
-                                          
                                             if (result != null) {
                                                 $("#gridArea").hide();
                                                 $('#profileArea').show();
@@ -115,9 +143,9 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                     });
                                 }).append($evaluationText);
                             if (item.Status == "Review Submitted") {
-                                return $("<div>").attr({ class: "btn-toolbar" }).append($customUserViewButton).append($customTextButton).append($customTextButton).append($evaluationTextButton);
+                                return $("<div>").attr({ class: "btn-toolbar", id: "Action_"+item.EMP_EmployeeID }).append($customUserViewButton).append($customTextButton).append($customTextButton).append($evaluationTextButton);
                             }else {
-                                return $("<div>").attr({ class: "btn-toolbar" }).append($customUserViewButton).append($customTextButton).append($customTextButton)
+                                return $("<div>").attr({ class: "btn-toolbar", id: "Action_" + item.EMP_EmployeeID }).append($customUserViewButton).append($customTextButton).append($customTextButton)
                             }
                             }
                     },
@@ -131,6 +159,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
             var keys = Object.keys(getData);
             var text = [];
         }
+       
     });
     $("#ListQExpectations").jsGrid({
         width: "100%",
@@ -196,7 +225,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                            
                             $.ajax({
                                 type: "POST",
-                                data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation },
+                                data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation, 'Department': item.DepartmentName, 'LocationName': item.LocationName  },
                                 //data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType ,'FinYear':item.FinYear,'FinQuarter':item.Expectation},
                                 url: '../NewAdmin/userExpectationsView/',
                                 error: function (xhr, status, error) {
@@ -226,7 +255,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                             $.ajax({
                                 type: "POST",
                                 //data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment },
-                                data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle },
+                                data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'Department': item.DepartmentName, 'LocationName': item.LocationName  },
 
                                 url: '../NewAdmin/userEvaluationView/',
                                 error: function (xhr, status, error) {
@@ -241,7 +270,6 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                 }
                             });
                         }).append($evaluationText);
-                    debugger;
                     if (item.Status == "Review Submitted" || item.EMP_EmployeeID==$("#LoggedInUser").val()) {
                         return $("<div>").attr({ class: "btn-toolbar" }).append($customUserViewButton).append($customTextButton).append($customTextButton);
                     } else {
@@ -324,7 +352,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                             
                             $.ajax({
                                 type: "POST",
-                                data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation },
+                                data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation, 'Department': item.DepartmentName, 'LocationName': item.LocationName  },
                                 //data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation },
                                 url: '../NewAdmin/QEvaluationView/',
                                 error: function (xhr, status, error) {
@@ -352,7 +380,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                         .attr({ id: "btn-status-" + item.id }).click(function (e) {
                             $.ajax({
                                 type: "POST",
-                                data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation },
+                                data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation, 'Department': item.DepartmentName, 'LocationName': item.LocationName  },
                                 url: '../NewAdmin/QEvaluationView/',
                                 error: function (xhr, status, error) {
                                 },
@@ -366,7 +394,6 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                 }
                             });
                         }).append($evaluationText);
-                    debugger;
                     if (item.Status == "Review Submitted") {
                         return $("<div>").attr({ class: "btn-toolbar" }).append($evaluationTextButton).append($customTextButton).append($evaluationTextButton);
                     } else {

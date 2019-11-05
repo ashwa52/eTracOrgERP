@@ -41,12 +41,12 @@
         </div>
         <div class="col-sm-1" style="margin: 0px 0px 10px 20px;">
             <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
-                <span style="font-size: 16px;    font-weight: 600;">Finance</span>
+                <span style="font-size: 16px;    font-weight: 600;" id="Department">@employeeInfo.Department</span>
             </div>
         </div>
         <div class="col-sm-2" style="margin: 0px 0px 10px 20px;">
             <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
-                <span style="font-size: 16px;    font-weight: 600;">Lane stadium</span>
+                <span style="font-size: 16px;    font-weight: 600;" id="LocationName">@employeeInfo.LocationName</span>
             </div>
         </div>
         <div class="col-sm-1" style="margin: 0px 0px 10px 20px;">
@@ -235,30 +235,7 @@
                 <tr class="table-primary">
                     <td colspan="3">Core Values</td>
                 </tr>
-                @*<tr class="table-info">
-                        <td style="width:30%">Accountability</td>
-                        <td>
-                            Always  <input type="radio" value="true" name="Opt_" />
-                            Sometimes <input type="radio" value="true" name="Opt_" />
-                            Never <input type="radio" value="true" name="Opt_" />
-                        </td>
-                    </tr>
-                    <tr class="table-warning">
-                        <td style="width:30%">Revolutionized</td>
-                        <td>
-                            Always  <input type="radio" value="true" name="Opt_" />
-                            Sometimes <input type="radio" value="true" name="Opt_" />
-                            Never <input type="radio" value="true" name="Opt_" />
-                        </td>
-                    </tr>
-                    <tr class="table-warning">
-                        <td style="width:30%">Keep Growing</td>
-                        <td>
-                            Always  <input type="radio" value="true" name="Opt_" />
-                            Sometimes <input type="radio" value="true" name="Opt_" />
-                            Never <input type="radio" value="true" name="Opt_" />
-                        </td>
-                    </tr>*@
+
                 @foreach (var item in Model)
                 {
                     if ((item.SAR_QuestionType == "P" || item.SAR_QuestionType == "A" || item.SAR_QuestionType == "R" || item.SAR_QuestionType == "K"))
@@ -339,13 +316,27 @@
                             </td>
                         </tr>
                     }
-                }
-
-            </tbody>
-        </table>
+                    else if (item.SAR_QuestionType == "COMNT")
+                    {
+                        <tr class="table-light">
+                            <td class="ans" colspan="3" data-value="@item.ASQ_Id" data-user="@item.SAR_EMP_EmployeeId" data-sam="@item.SAR_Id" data-isAct="@item.SAR_IsActive">
+                                @if (isSubmitted == "S" )
+                                {
+                                    <input type="text" value="@item.SAR_Comments" name="input_@item.ASQ_Id" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px; border-radius:20px" placeholder="Self Comment" multiple disabled />
+                                }
+                                else
+                                {
+                                    <input type="text" value="@item.SAR_Comments" name="input_@item.ASQ_Id" class="form-control" style="background-color: #DEDEDE;height:100px;margin: 0px 0 0px -10px; border-radius:20px" placeholder="Self Comment" multiple />
+                                }
+                            </td>
+                            </tr>
+                            }
+                            }
+                    </tbody>
+            </table>
     </div>
 </div>
-<div class="row">
+@*<div class="row">
     <div class="col-sm-2"></div>
     <div class="col-sm-10">
         @if (isSubmitted == "S")
@@ -358,7 +349,7 @@
 
         }
     </div>
-</div>
+</div>*@
 <div class="row" style="margin-top:50px">
     <div class="col-sm-2"></div>
 
@@ -455,7 +446,7 @@
                 if (result != null) {
                     $.ajax({
                         type: "POST",
-                        data: { 'Id': SAR_EMP_EmployeeId, 'Assesment': $("#AssessmentType").text(), 'Name': $("#EmployeeName").text(), 'Image': $("#ProfileImage").attr('src'), 'JobTitle': $("#JobTitle").text() },
+                        data: { 'Id': SAR_EMP_EmployeeId, 'Assesment': $("#AssessmentType").text(), 'Name': $("#EmployeeName").text(), 'Image': $("#ProfileImage").attr('src'), 'JobTitle': $("#JobTitle").text(),'Department':$("#Department").text(),'LocationName':$("#LocationName").text() },
 
                         url: '../NewAdmin/userEvaluationView/',
                         error: function (xhr, status, error) {
