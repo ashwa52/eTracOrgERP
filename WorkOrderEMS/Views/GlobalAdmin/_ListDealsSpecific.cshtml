@@ -1,0 +1,172 @@
+﻿@{
+
+
+    var isRefresh =ViewBag.IsPageRefresh;
+    if(isRefresh == true)
+    {
+        Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = null;
+    }
+
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+    long loginUserType = 0;
+    long locationId = 0;
+    if (ObjLogin != null)
+    {
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+        loginUserType = ObjLogin.UserRoleId;
+        //loginUserContactNo = ObjLogin.ContactNo;
+        locationId = ObjLogin.LocationID;
+    }
+
+}
+
+<!-- Resources -->
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/c3/css/c3.min.css" rel="stylesheet" />
+
+<div id="preloader"></div>
+
+<div class="content-body">
+    <div class="container-fluid">
+        <br />
+        <div class="row">
+            <div class="col-12">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header headerSize" style="height: 45px;">
+                        <span id="adddeals">
+                            <a href="javascript:void(0)"><span><i class="mdi mdi-plus" style="color:white;font-size:35px;"></i></span></a>
+                            <strong>Deals Specific To Locations</strong>
+                        </span>
+                        <h4 class="card-title" style="color:white;"> <a href="javascript:void(0);" id="SendToLoationList"><i class="fa fa-arrow-left" style="font-size: 25px;color: white;"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Location Portal</strong></h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="jsGrid-basic1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
+@*<script src="~/Scripts/NewAdminJS/plugins-init/jsgrid-init.js"></script>*@
+<script src="~/Content/NewAdminContent/VENDOR/d3/d3.min.js"></script>
+<script src="~/Content/NewAdminContent/VENDOR/c3/js/c3.min.js"></script>
+<script src="~/Scripts/NewAdminJS/plugins-init/c3-init.js"></script>
+<script src="~/Content/NewAdminContent/VENDOR/raphael/raphael.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var hitCount = 1;
+        $(".jsgrid-mode-button").hide();
+        $(".jsgrid-insert-row").hide();
+        $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
+        $("#adddeals a").click(function (event) {
+            if (hitCount == 1) {
+                hitCount++;
+                $(".jsgrid-insert-row").hide();
+                event.preventDefault();
+                $("#preloader").html('<div class="loader">eTrac<span></span><span></span><span></span><span></span></div>');
+                var addNewUrl = "../GlobalAdmin/DealsSpecific?id=" + 0 + "&LocationId=" + '@ViewBag.LocationId';
+                $('#RenderPageId').load(addNewUrl);
+            }
+        });
+       
+       
+
+        (function ($) {
+         $.ajax({
+            type: 'GET',
+            url: '/NewAdmin/GetListDealsSpecific?id='+'@ViewBag.LocationId',
+            datatype: 'json',
+            contentType: "application/json",
+            success: function (data) {
+                //clients = data;
+                //clients = data.rows;
+                var act;
+                $("#jsGrid-basic1").jsGrid({
+                    width: "100%",
+                    height: "400px",
+                    inserting: true,
+                    editing: true,
+                    sorting: true,
+                    paging: true,
+                    rownum: 10,
+                    deleteConfirm: "Do you really want to delete client?",
+                    loadMessage: "Please, wait...",
+                    data: data,
+                    //onRefreshingfunction(args) { 
+                    //},
+                    onRefreshed: function (args) {
+                        $(".jsgrid-insert-row").hide();
+                        $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
+                    },
+
+                    fields: [
+                        //{ name: "Id", visible: false },
+                        { name: "DealName", css: "text-center", validate: "required" },//visible: true
+                        { name: "Condition", css: "text-center" },
+                        { name: "NewCost", title: "New Cost", css: "text-center" },
+                        { name: "StartDateDisplay", title: "Start Date", css: "text-center", type: "date" },
+                        { name: "EndDateDisplay", title: "End Date", css: "text-center", type: "date" },
+                        {
+                            name: "act", items: act, title: "Action", css: "text-center", itemTemplate: function (value, item) {
+                                //TO add icon edit and delete to perform update and delete operation
+                                var $iconPencil = $("<i>").attr({ class: "fa fa-pencil" }).attr({ style: "color:yellow;font-size: 22px;" });
+
+                                var $customEditButton = $("<span style='padding: 0 10px 0 0;'>")
+                                    .attr({ title: jsGrid.fields.control.prototype.editButtonTooltip })
+                                    .attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                                        var addNewUrl = "../GlobalAdmin/DealsSpecific?id=" + item.Id + "&LocationId=" + '@ViewBag.LocationId';
+                                        $('#RenderPageId').load(addNewUrl);
+                                        e.stopPropagation();
+                                    }).append($iconPencil);
+                                return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton);
+                            }
+                        },
+                    ],
+
+                    //On row click show location details
+                    //rowClick: function (args) {
+
+                    //    console.log(args)
+                    //    var getData = args.item;
+                    //    var keys = Object.keys(getData);
+                    //    var text = [];
+                    //    var url = "../NewAdmin/DisplayLocationData/?LocationId=" + getData.LocationId;
+                    //    $('#RenderPageId').load(url);
+                    //    //window.location.href = "../NewAdmin/DisplayLocationData/?LocationId=" + getData.LocationId;
+                    //    //$.each(keys, function (idx, value) {
+                    //    //    text.push(value + " : " + getData[value])
+                    //    //});
+
+                    //    //$("#label").text(text.join(", "))
+                    //}
+                });
+            },
+            error: function (err, e, er) {
+            }
+
+        });
+
+    })(jQuery);
+
+    });
+
+      $('#SendToLoationList').click(function () {
+            var addNewUrl = "@Url.Action("ListLocation", "GlobalAdmin")";
+            $('#RenderPageId').load(addNewUrl);
+        })
+
+</script>
+
+
+

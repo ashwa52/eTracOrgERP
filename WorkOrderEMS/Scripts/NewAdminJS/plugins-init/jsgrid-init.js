@@ -24,14 +24,14 @@ var clients;
                 rownum: 10,
                 deleteConfirm: "Do you really want to delete client?",
                 loadMessage: "Please, wait...",
-                onDataLoading: function (args) {
-                    debugger
-                    var $_row = $("#grid").jsGrid("rowByItem", item);
-                    // cancel loading data if 'name' is empty
-                    if (args.filter.name === "") {
-                        args.cancel = true;
-                    }
-                },
+                //onDataLoading: function (args) {
+                //    debugger
+                //    var $_row = $("#grid").jsGrid("rowByItem", item);
+                //    // cancel loading data if 'name' is empty
+                //    if (args.filter.name === "") {
+                //        args.cancel = true;
+                //    }
+                //},
                 data: data,
                 //onRefreshingfunction(args) { 
                 //},
@@ -53,60 +53,86 @@ var clients;
                 },
                 fields: [
                     //{ name: "Id", visible: false },
-                    { name: "Address", css: "text-center",  validate: "required" },//visible: true
-                    { name: "City",  css: "text-center" },
+                    { name: "Address", css: "text-center", validate: "required" },//visible: true
+                    { name: "City", css: "text-center" },
                     { name: "LocationName", title: "Location Name", css: "text-center" },
                     { name: "PhoneNo", title: "Phone No", css: "text-center" },
                     { name: "ZipCode", title: "Zip Code", css: "text-center" },
                     {
-                        name: "act", items: act, title: "Action", css: "text-center", itemTemplate: function (value, item) {
+                        name: "act", items: act, title: "Action ", css: "text-center", itemTemplate: function (value, item) {
                             //TO add icon edit and delete to perform update and delete operation
                             var $iconPencil = $("<i>").attr({ class: "fa fa-pencil" }).attr({ style: "color:yellow;font-size: 22px;" });
                             var $iconTrash = $("<i>").attr({ class: "fa fa-trash" }).attr({ style: "color:red;font-size: 22px;" });
                             var $iconChart = $("<i>").attr({ class: "fa fa-plus" }).attr({ style: "color:#149D48;font-size: 22px;" });
                             var $iconDollar = $("<i>").attr({ class: "fa fa-usd" }).attr({ style: "color:#166C88;font-size: 22px;" });
+                            var $iconLocSetting = $("<i>").attr({ class: "fa fa-cog" }).attr({ style: "color:#818688;font-size: 22px;" });
+                            var $iconOffers = $("<i>").attr({ class: "fa fa-tag" }).attr({ style: "color:#da63c6;font-size: 22px;" });
 
                             var $customEditButton = $("<span style='padding: 0 10px 0 0;'>")
-                                .attr({title: jsGrid.fields.control.prototype.editButtonTooltip})
+                                .attr({ title: jsGrid.fields.control.prototype.editButtonTooltip })
                                 .attr({ id: "btn-edit-" + item.Id }).click(function (e) {
-
+                                    new fn_showMaskloader('Please wait...');
                                     var addNewUrl = "../GlobalAdmin/EditLocationSetup?loc=" + item.Id;
                                     $('#RenderPageId').load(addNewUrl);
                                     e.stopPropagation();
-                                  }).append($iconPencil);
-                            var $customDeleteButton = $("<span style='padding: 0 10px 0 0;'>")
-                                 .attr({title: jsGrid.fields.control.prototype.deleteButtonTooltip})
-                                 .attr({ id: "btn-delete-" + item.Id }).click(function (e) {
-                                     $.ajax({
-                                         type: "POST",
-                                         url: "../GlobalAdmin/DeleteLocation?id=" + item.Id,
-                                         success: function (Data) {
-                                             //$("#jsGrid-basic").jsGrid("loadData");
-                                             var addNewUrl = "../GlobalAdmin/ListLocation";
-                                             $('#RenderPageId').load(addNewUrl);
-                                         },
-                                         error: function (err) {                                             
-                                         }
+                                    new fn_hideMaskloader();
+                                }).append($iconPencil);
 
-                                     });
-                                                                                   
-                                     e.stopPropagation();
-                                 }).append($iconTrash);
+                            var $customDeleteButton = $("<span style='padding: 0 10px 0 0;'>")
+                                .attr({ title: jsGrid.fields.control.prototype.deleteButtonTooltip })
+                                .attr({ id: "btn-delete-" + item.Id }).click(function (e) {
+                                    if (confirm("Are you sure you want to delete this?")) {
+                                        new fn_showMaskloader('Please wait...');
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "../GlobalAdmin/DeleteLocation?id=" + item.Id,
+                                            success: function (Data) {
+                                                var addNewUrl = "../GlobalAdmin/ListLocation";
+                                                $('#RenderPageId').load(addNewUrl);
+                                                new fn_hideMaskloader();
+                                            },
+                                            error: function (err) {
+                                                new fn_hideMaskloader();
+                                            }
+
+                                        });
+                                    }
+                                    e.stopPropagation();
+                                }).append($iconTrash);
 
                             var $customChartButton = $("<span style='padding: 0 10px 0 0;'>")
-                               .attr({ title: jsGrid.fields.control.prototype.costCodeButtonTooltip })
-                               .attr({ id: "btn-chart-" + item.Id }).click(function (e) {
-                                   window.location.href = '../GlobalAdmin/TreeView/?loc=' + item.Id;
-                                   e.stopPropagation();
-                               }).append($iconChart);
+                                .attr({ title: jsGrid.fields.control.prototype.costCodeButtonTooltip })
+                                .attr({ id: "btn-chart-" + item.Id }).click(function (e) {
+                                    new fn_showMaskloader('Please wait...');
+                                    window.location.href = '../GlobalAdmin/TreeView/?loc=' + item.Id;
+                                    e.stopPropagation();
+                                }).append($iconChart);
                             var $customDollarButton = $("<span style='padding: 0 10px 0 0;'>")
-                              .attr({ title: jsGrid.fields.control.prototype.budgetButtonTooltip })
-                              .attr({ id: "btn-dollar-" + item.Id }).click(function (e) {
-                                  window.location.href = '../GlobalAdmin/BudgetAllocation/?loc=' + item.Id;
-                                  e.stopPropagation();
-                              }).append($iconDollar);
-
-                           return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton).append($customDeleteButton).append($customChartButton).append($customDollarButton);
+                                .attr({ title: jsGrid.fields.control.prototype.budgetButtonTooltip })
+                                .attr({ id: "btn-dollar-" + item.Id }).click(function (e) {
+                                    new fn_showMaskloader('Please wait...');
+                                    window.location.href = '../GlobalAdmin/BudgetAllocation/?loc=' + item.Id;
+                                    e.stopPropagation();
+                                }).append($iconDollar);
+                            var $customLocSettingButton = $("<span style='padding: 0 10px 0 0;'>")
+                                .attr({ title: jsGrid.fields.control.prototype.editButtonTooltip })
+                                .attr({ id: "btn-LocSetting-" + item.Id }).click(function (e) {
+                                    new fn_showMaskloader('Please wait...');
+                                    var addNewUrl = "../GlobalAdmin/LocationSettiing?loc=" + item.Id;
+                                    $('#RenderPageId').load(addNewUrl);
+                                    e.stopPropagation();
+                                    new fn_hideMaskloader();
+                                }).append($iconLocSetting);
+                            var $customiconOffersButton = $("<span style='padding: 0 10px 0 0;'>")
+                                .attr({ title: jsGrid.fields.control.prototype.editButtonTooltip })
+                                .attr({ id: "btn-LocSetting-" + item.Id }).click(function (e) {
+                                    new fn_showMaskloader('Please wait...');
+                                    var addNewUrl = "../GlobalAdmin/ListDealsSpecific?loc=" + item.Id + "&type=" + 0;
+                                    $('#RenderPageId').load(addNewUrl);
+                                    e.stopPropagation();
+                                    new fn_hideMaskloader();
+                                }).append($iconOffers);
+                            return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton).append($customDeleteButton).append($customChartButton).append($customDollarButton).append($customLocSettingButton).append($customiconOffersButton);
 
                             //var ed = "<a href='javascript:void(0)' class='EditRecord' Id='" + item.Id + "' style='margin-right: 10px;cursor:pointer;'><span class='mdi mdi-pencil fa-1x' style='color:yellow;'></span></a>";
                             //var de = "<a href='javascript:void(0)' class='DeleteRecord' Id='" + item.Id + "' style='margin-right: 10px;cursor:pointer;'><span class='mdi mdi-delete fa-1x' style='color:black;'></span></a>";
@@ -114,7 +140,8 @@ var clients;
                             ////return $("<span>").attr("class", ed);
                             //var alldiv = "<span>" + ed + "</span>" + "<span>" + de + "</span>" + "<span>" + vi + "</span>";
                             //return $("<div>").html(alldiv);
-                    }},
+                        }
+                    },
                     //{ type: "control" }
                 ],
                 

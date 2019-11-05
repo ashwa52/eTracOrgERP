@@ -1,0 +1,118 @@
+﻿@model WorkOrderEMS.Models.Employee_PunchTimeRequestModel
+@{
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+    long loginUserType = 0;
+    long locationId = 0;
+    if (ObjLogin != null)
+    {
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+        loginUserType = ObjLogin.UserRoleId;
+        locationId = ObjLogin.LocationID;
+    }
+}
+
+<link href="~/Content/NewAdminContent/CSS/clockPicker.css" rel="stylesheet" />
+@*<link href="~/Content/NewAdminContent/CSS/style.css" rel="stylesheet" />*@
+@*<link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />*@
+
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3" data-aos="fade-up">
+            <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
+                <div class="welcome-text">
+                    <h4>Hi, welcome back! @loginUserName</h4>
+                    <p class="mb-0">Dashboard</p>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header" style="height: 45px;">
+                        <h4 class="card-title addWhite"><b>Add Punch Time Request</b></h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="ListEmployeeManagement">
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true)
+                            <form action="@Url.Action("AddPunchTimerequest", "eTime")" *@ method="post" id="WorkorderSave" class="step-form-horizontal" role="form" style="margin-left:20px;">
+                                @Html.ValidationSummary(true)
+                                @Html.HiddenFor(model => model.PunchTimeId)
+                                <div class="basic-form">
+                                    <div class="form-group row">
+                                        <div class="col-sm-6">
+                                            @Html.TextBox("AttendanceDate", Model.AttendanceDate.ToString("MM/dd/yyyy"), new { @Placeholder = "Attendance Date", @class = "form-control required input-rounded", @maxlength = "10" })
+                                            @*@Html.TextBoxFor(model => model.AttendanceDate, new { @Placeholder = "Punch Time Date", @id = "AttendanceDate", @class = "form-control input-rounded required" })*@
+                                            @Html.ValidationMessageFor(model => model.AttendanceDate)
+                                        </div>
+                                        <div class="col-sm-6">
+                                            @Html.TextAreaFor(model => model.Remarks, new { @Placeholder = "remarks", @class = "form-control input-rounded required" })
+                                            @Html.ValidationMessageFor(model => model.Remarks)
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-6">
+                                            @Html.TextBoxFor(model => model.InTimeString, new { @class = "form-control input-rounded required clockpicker", @onkeypress = "return isNumberKey(event)", @id = "InTimeString", @placeholder = "In Time" })
+                                            <span class="pull-left text-info" style="color:gray;"><i>(HH:MM i.e 00:30)</i></span>
+                                            @Html.ValidationMessageFor(model => model.InTimeString)
+                                        </div>
+                                        <div class="col-sm-6">
+                                            @Html.TextBoxFor(model => model.OutTimeString, new { @class = "form-control input-rounded required clockpicker", @onkeypress = "return isNumberKey(event)", @id = "OutTimeString", @placeholder = "Out Time" })
+                                            <span class="pull-left text-info" style="color:gray;"><i>(HH:MM i.e 00:30)</i></span>
+                                            @Html.ValidationMessageFor(model => model.OutTimeString)
+                                        </div>
+                                    </div>
+                                    <input type="button" id="SavePuntReq" class="btn btn-primary pull-right" style="border-radius: 35px;width: 100px;background-color:#0aa0cd;" value="Submit" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Content/NewAdminContent/JQUERY/clockPicker.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+<script>
+    $('.clockpicker').clockpicker();
+    $('#AttendanceDate').datepicker({
+        format: "mm/dd/yyyy",
+        startDate: new Date()
+    });
+    //$("#InTimeString,#OutTimeString").change(function () {
+    //    HandleValidations();
+    //});
+    $("#SavePuntReq").click(function () {
+        if (HandleValidations()) {
+            if (!$("#WorkorderSave").valid()) {
+                return false;
+            }
+            else {
+                document.forms["WorkorderSave"].submit();
+            }
+        }
+    });
+    var HandleValidations = function () {
+        console.log("test");
+        var DateoftheDay = $("#AttendanceDate").val();
+        var InTime = $("#InTimeString").val();
+        var OutTime = $("#OutTimeString").val();
+        var FromDate = new Date(DateoftheDay.toString() + ' ' + InTime.toString());
+        var ToDate = new Date(DateoftheDay.toString() + ' ' + OutTime.toString());
+
+        if (FromDate > ToDate) {
+            alert("Please select Large To Time than From");
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+</script>

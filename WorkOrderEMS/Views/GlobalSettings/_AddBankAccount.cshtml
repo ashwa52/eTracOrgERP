@@ -1,0 +1,102 @@
+﻿@model WorkOrderEMS.Models.GlobalSettings.BankAccount
+@{
+    Layout = null;
+
+
+    string EntryType = ViewBag.EntryType;
+}
+ 
+
+<br />
+@Html.AntiForgeryToken()
+@Html.ValidationSummary(true)
+<div class="content-body">
+    <div class="container-fluid">
+        <!-- row -->
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header headerSize">
+                        <h4 class="card-title" style="color:white;"><strong>Add Bank Account</strong></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="stepwizard">
+                            <div class="stepwizard-row setup-panel">
+                            </div>
+                        </div>
+                        <br />
+                        <form action="@Url.Action("NewBankAccountSubmit", "GlobalSettings")" method="post" id="step-form-horizontal" class="step-form-horizontal" role="form" style="margin-left:80px;">
+                            @Html.ValidationSummary(true)
+                            @Html.HiddenFor(model => model.Id)
+                            <div class="basic-form">
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.BankId, new { @class = "col-sm-2 col-form-label" })
+                                    <div class="col-sm-4">
+                                        @Html.DropDownListFor(model => model.BankId, new SelectList(ViewBag.GlobalCodes, "GlobalCodeId", "CodeName"), "--Select Bank--", new { @class = "form-control input-rounded required requiredselect"  })
+
+                                        @*@Html.TextBoxFor(model => model.BankId, new { @Placeholder = "Rule Name", @class = "form-control input-rounded required isValidRuleName" })*@
+                                        <span style="display:none;" data-valmsg-replace="true" class="field-validation-error"><span class="">Rule Name already exists.</span></span>
+                                        @Html.Hidden("EntryType", EntryType)
+                                    </div>
+                                     
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.BankUserId, new { @class = "col-sm-2 col-form-label" })
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(model => model.BankUserId, new { @Placeholder = "User Id", @class = "form-control input-rounded required", @maxLength = "200" })
+                                        @Html.ValidationMessageFor(model => model.BankUserId)
+                                    </div>
+                                    @Html.LabelFor(model => model.BankPin, new { @class = "col-sm-2 col-form-label" })
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(model => model.BankPin, new { @Placeholder = "Pin", @class = "form-control input-rounded required", @maxLength = "200" })
+                                        @Html.ValidationMessageFor(model => model.BankPin)
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <input type="button" id="submitBankData" class="btn btn-success pull-right" style="margin-left: 30px;" value="Submit" />
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--**********************************
+    Content body end
+***********************************-->
+ 
+<script>
+    $(document).ready(function () {
+
+       // alert("Hello");
+        $("#submitBankData").click( function (e) {
+            var i = 1;
+            if ($("#step-form-horizontal").validate()) {
+                //prevent Default functionality
+                //get the action-url of the form
+
+                var dataObject = $("#step-form-horizontal").serialize()
+                $("#submitBankData").attr("disabled", true);
+                //do your own request an handle the results
+                if (i == 1) {
+                    i++;
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("NewBankAccountSubmit", "GlobalSettings")',
+                        data: dataObject,
+                        success: function (Data) {
+                            $("#submitBankData").attr("disabled", false);
+                            var addNewUrl = "@Url.Action("_BankAccountList", "GlobalSettings")";
+                            $('#RenderPageId').load(addNewUrl);
+                        },
+                        error: function (err) {
+                        }
+                    });
+                }
+            }
+        });
+    });
+</script>

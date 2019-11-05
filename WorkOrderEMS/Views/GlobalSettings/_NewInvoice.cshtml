@@ -1,0 +1,210 @@
+﻿@model WorkOrderEMS.Models.GlobalSettings.Invoices
+@{
+    Layout = null;
+
+    Model.InvoiceDate = System.DateTime.Now;
+    Model.DueDate = System.DateTime.Now;
+    string EntryType = ViewBag.EntryType;
+
+    Model.WhomYou = 1;
+}
+@Scripts.Render("~/bundles/modernizr") 
+<link href="~/Content/NewAdminContent/CSS/style.css" rel="stylesheet" />
+
+<br />
+@Html.AntiForgeryToken()
+@Html.ValidationSummary(true)
+<div class="content-body">
+    <div class="container-fluid">
+        <!-- row -->
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header headerSize">
+                        <h4 class="card-title" style="color:white;"><strong>Add Invoice</strong></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="stepwizard">
+                            <div class="stepwizard-row setup-panel">
+                            </div>
+                        </div>
+                        <br />
+                        <form action="@Url.Action("NewInvoiceSubmit", "GlobalSettings")" method="post" id="step-form-horizontal" class="step-form-horizontal" role="form" style="margin-left:80px;">
+                            @Html.ValidationSummary(true)
+                            @Html.HiddenFor(model => model.Id)
+                            @Html.HiddenFor(model => model.InvoiceNo)
+
+                            @Html.HiddenFor(model => model.InvoiceDate)
+                            @Html.HiddenFor(model => model.DueDate)
+                            <div class="basic-form">
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.InvoiceType, new { @class = "col-sm-2 col-form-label" })
+                                    <div class="col-sm-4">
+                                        @Html.DropDownListFor(model => model.InvoiceType, new SelectList(ViewBag.InvoiceType, "CodeName", "Description"), "--Select Invoice Type--", new { @class = "form-control input-rounded required requiredselect" })
+
+                                        @*@Html.TextBoxFor(model => model.BankId, new { @Placeholder = "Rule Name", @class = "form-control input-rounded required isValidRuleName" })*@
+                                        <span style="display:none;" data-valmsg-replace="true" class="field-validation-error"><span class="">Rule Name already exists.</span></span>
+                                        @Html.Hidden("EntryType", EntryType)
+                                    </div>
+                                    @Html.LabelFor(model => model.WhomYou, new { @class = "col-sm-2 col-form-label" })
+                                    <div class="col-sm-4">
+                                        @Html.RadioButton("WhomYou1", "1", new { @name = "WhomYou", @id = "1", @selected = "true" })&nbsp;Business &nbsp;
+                                        @Html.RadioButton("WhomYou1", "2", new { @name = "WhomYou", @style = "margin-left:20%;", @id = "2" })&nbsp;Consumer
+                                        @Html.HiddenFor(model => model.WhomYou)
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.Business, new { @class = "col-sm-2 col-form-label" })
+                                    <div class="col-sm-4">
+                                        @Html.DropDownListFor(model => model.Business, new SelectList(ViewBag.Customer, "CustomerId", "CustomerName"), "--Select Business--", new { @class = "form-control input-rounded required requiredselect" })
+
+                                        @*@Html.TextBoxFor(model => model.BankId, new { @Placeholder = "Rule Name", @class = "form-control input-rounded required isValidRuleName" })*@
+                                        <span style="display:none;" data-valmsg-replace="true" class="field-validation-error"><span class="">Rule Name already exists.</span></span>
+
+                                    </div>
+                                    @Html.LabelFor(model => model.PuposeOfBilling, new { @class = "col-sm-2 col-form-label" })
+                                    <div class="col-sm-4">
+                                        @Html.DropDownListFor(model => model.PuposeOfBilling, new SelectList(ViewBag.PuposeOfBilling, "CodeName", "Description"), "--Select Pupose Of Billing--", new { @class = "form-control input-rounded required requiredselect" })
+
+                                        @*@Html.TextBoxFor(model => model.BankId, new { @Placeholder = "Rule Name", @class = "form-control input-rounded required isValidRuleName" })*@
+                                        <span style="display:none;" data-valmsg-replace="true" class="field-validation-error"><span class="">Rule Name already exists.</span></span>
+
+                                    </div>
+                                </div>
+                                <div class="form-group row clsFee">
+                                    @Html.LabelFor(model => model.FeeType, new { @class = "col-sm-2 col-form-label" })
+                                    <div class="col-sm-4">
+                                        @Html.DropDownListFor(model => model.FeeType, new SelectList(ViewBag.InvoiceType, "CodeName", "Description"), "--Select Business--", new { @class = "form-control input-rounded required requiredselect" })
+
+                                        @*@Html.TextBoxFor(model => model.BankId, new { @Placeholder = "Rule Name", @class = "form-control input-rounded required isValidRuleName" })*@
+                                        <span style="display:none;" data-valmsg-replace="true" class="field-validation-error"><span class="">Rule Name already exists.</span></span>
+
+                                    </div>
+
+                                </div>
+                                <div class="form-group row clsOthers">
+
+                                    @Html.LabelFor(model => model.Description, new { @class = "col-sm-2 col-form-label" })
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(model => model.Description, new { @Placeholder = "Description", @class = "form-control input-rounded required", @maxLength = "200" })
+                                        @Html.ValidationMessageFor(model => model.Description)
+                                    </div>
+
+                                    @Html.LabelFor(model => model.Amount, new { @class = "col-sm-2 col-form-label" })
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(model => model.Amount, new { @Placeholder = "Amount", @class = "form-control input-rounded required", @maxLength = "200" })
+                                        @Html.ValidationMessageFor(model => model.Amount)
+                                    </div>
+                                </div>
+                                <div class="form-group row ">
+
+
+                                    @Html.LabelFor(model => model.IsInvoiceDate, new { @class = "col-sm-2 col-form-label" })
+                                    <div class="col-sm-4">
+                                        @Html.RadioButton("IsInvoiceDate1", "true", new { @name = "IsInvoiceDate", @id = "1" })&nbsp;Yes &nbsp;
+                                        @Html.RadioButton("IsInvoiceDate1", "false", new { @name = "IsInvoiceDate", @style = "margin-left:20%;", @id = "0" })&nbsp;No
+                                        @Html.HiddenFor(model => model.IsInvoiceDate)
+                                    </div>
+                                 
+                                    
+                                </div>
+
+                                <div class="form-group row IsInvoiceDate">
+                                    @Html.LabelFor(model => model.InvoiceDate, new { @class = "col-sm-2 col-form-label" })
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(model => model.InvoiceDate, new { @Placeholder = "Invoice Date", @class = "form-control input-rounded required", @maxLength = "200" })
+                                        @Html.ValidationMessageFor(model => model.InvoiceDate)
+                                    </div>
+                                </div>
+                                <div class="form-group row OverrideCode">
+                                    @Html.LabelFor(model => model.OverrideCode, new { @class = "col-sm-2 col-form-label" })
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(model => model.OverrideCode, new { @Placeholder = "Override Code", @class = "form-control input-rounded required", @maxLength = "200" })
+                                        @Html.ValidationMessageFor(model => model.OverrideCode)
+                                    </div>
+                                </div>
+
+                            </div>
+                                <input type="button" id="submitInvoiceData" class="btn btn-success pull-right" style="margin-left: 30px;" value="Submit" />
+
+</form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--**********************************
+    Content body end
+***********************************-->
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
+<script>
+    $(document).ready(function () {
+
+        $(".clsOthers").hide();
+        $(".clsFee").hide();
+
+        $("#PuposeOfBilling").change(function (e) {
+            $(".clsOthers").hide();
+            $(".clsFee").hide();
+            if ($(this).val() == "1") {
+                $(".clsFee").show();
+            } else if ($(this).val() == "2") {
+                $(".clsOthers").show();
+            }
+
+
+        });
+
+
+        $("input[name='WhomYou1']").change(function () {
+            $("#WhomYou").val($(this).val());           
+        });
+        $(".OverrideCode").hide();
+        $(".IsInvoiceDate").hide();
+        $("input[name='IsInvoiceDate1']").change(function () {
+            $("#IsInvoiceDate").val($(this).val());
+            
+            if ($(this).val()=="true") {
+                $(".IsInvoiceDate").show();
+                $(".OverrideCode").hide();
+            }
+            else {
+                $(".OverrideCode").show();
+                $(".IsInvoiceDate").hide();
+            }
+            
+
+        });
+
+       // alert("Hello");
+        $("#submitInvoiceData").click( function (e) {
+            var i = 1;
+            if ($("#step-form-horizontal").valid()) {
+                //prevent Default functionality
+                //get the action-url of the form
+
+                var dataObject = $("#step-form-horizontal").serialize()
+                $("#submitInvoiceData").attr("disabled", true);
+                //do your own request an handle the results
+                if (i == 1) {
+                    i++;
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("NewInvoiceSubmit", "GlobalSettings")',
+                        data: dataObject,
+                        success: function (Data) {
+                            $("#submitInvoiceData").attr("disabled", false);
+                            var addNewUrl = "@Url.Action("InvoicetList", "GlobalSettings")";
+                            $('#RenderPageId').load(addNewUrl);
+                        },
+                        error: function (err) {
+                        }
+                    });
+                }
+            }
+        });
+    });
+</script>

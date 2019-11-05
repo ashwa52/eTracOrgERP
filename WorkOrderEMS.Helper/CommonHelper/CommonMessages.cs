@@ -502,10 +502,18 @@ namespace WorkOrderEMS.Helper
         {
             return "Vendor approved successfully.";
         }
+        public static string CustomerApprove()
+        {
+            return "Customer approved successfully.";
+        }
 
         public static string VendorReject()
         {
             return "Vendor reject successfully.";
+        }
+        public static string CustomerReject()
+        {
+            return "Customer reject successfully.";
         }
         public static string VendorSave()
         {

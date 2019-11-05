@@ -178,7 +178,9 @@
     <Compile Include="Interfaces\Admin\NewAdmin\IePeopleManager.cs" />
     <Compile Include="Interfaces\Admin\Rule\IRuleManager.cs" />
     <Compile Include="Interfaces\eCounting\IBillDataManager.cs" />
+    <Compile Include="Interfaces\eCounting\ICustomerManagement.cs" />
     <Compile Include="Interfaces\eCounting\IDebitMemo.cs" />
+    <Compile Include="Interfaces\eCounting\IDOTDetails.cs" />
     <Compile Include="Interfaces\eCounting\IeCountingReport.cs" />
     <Compile Include="Interfaces\eCounting\IMiscellaneousManager.cs" />
     <Compile Include="Interfaces\eCounting\IPaymentManager.cs" />
@@ -240,7 +242,9 @@
     <Compile Include="Managers\DARManager.cs" />
     <Compile Include="Managers\DashboardWidgetSettingManager.cs" />
     <Compile Include="Managers\eCounting\BillDataManager.cs" />
+    <Compile Include="Managers\eCounting\CustomerManagementManager.cs" />
     <Compile Include="Managers\eCounting\DebitMemoManager.cs" />
+    <Compile Include="Managers\eCounting\DOTDetailsManager.cs" />
     <Compile Include="Managers\eCounting\eCountingReportManager.cs" />
     <Compile Include="Managers\eCounting\MiscellaneousManager.cs" />
     <Compile Include="Managers\eCounting\PaymentManager.cs" />

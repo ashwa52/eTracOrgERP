@@ -254,7 +254,9 @@
 	Header end ti-comment-alt
 ***********************************-->
 <script>
-    @{long Location = ((WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"]).LocationID;}
+    @{
+        long Location = ((WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"]) != null ? ((WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"]).LocationID : 0;
+        }
     if ('@Location' != undefined || '@Location' > '0' || '@Location' != '') {
         $("#drp_MasterLocation1").val(@Location);
     }
