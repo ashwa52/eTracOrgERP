@@ -921,8 +921,10 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 long.TryParse(id, out _UserId);
                 var getUser = _workorderems.UserRegistrations.Where(x => x.UserId == _UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
                 var _FillableFormRepository = new FillableFormRepository();
-                model = _IePeopleManager.GetUploadedFilesOfUser(getUser.EmployeeID);
-                
+                if (getUser != null)
+                {
+                    model = _IePeopleManager.GetUploadedFilesOfUser(getUser.EmployeeID);
+                }
                 if (getUser != null)
                 {
                     var details = _IGuestUserRepository.GetEmployee(_UserId);

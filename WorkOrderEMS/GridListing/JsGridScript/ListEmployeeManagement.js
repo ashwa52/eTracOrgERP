@@ -61,6 +61,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                             var $customEditButton = $("<span style='background: green; width: 35px; height: 35px;border-radius: 35px;'>")
                                 .attr({ title: jsGrid.fields.control.prototype.filesButtonTooltip })
                                 .attr({ id: "btn-file-" + item.id }).click(function (e) {
+                                    debugger
                                     $.ajax({
                                         type: "GET",
                                         // data: { 'Id': item.id},
@@ -72,6 +73,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                         error: function (xhr, status, error) {
                                         },
                                         success: function (result) {
+                                            debugger
                                             $("#ContaierAddFile").html(result);
                                             $("#myModalForAddFileData").modal('show');
                                         },

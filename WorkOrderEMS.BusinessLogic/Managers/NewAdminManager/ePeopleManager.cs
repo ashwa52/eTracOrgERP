@@ -687,14 +687,17 @@ namespace WorkOrderEMS.BusinessLogic
             try
             {
                 var ePeopleRepository = new ePeopleRepository();
-                lst = ePeopleRepository.GetUploadFilesList(EmployeeId).Select(x => new UploadedFiles()
+                if (EmployeeId != null)
                 {
-                    FileName = x.FLU_FileName,
-                    FileTypeName =  x.FLT_FileType,
-                    AttachedFileName = x.FLU_FileAttached,
-                    FileId = x.FLU_FLT_Id,
-                    AttachedFileLink = x.FLU_FileAttached == null ? null : HostingPrefix + FilePath.Replace("~", "") + x.FLU_FileAttached
-            }).ToList();
+                    lst = ePeopleRepository.GetUploadFilesList(EmployeeId).Select(x => new UploadedFiles()
+                    {
+                        FileName = x.FLU_FileName,
+                        FileTypeName = x.FLT_FileType,
+                        AttachedFileName = x.FLU_FileAttached,
+                        FileId = x.FLU_FLT_Id,
+                        AttachedFileLink = x.FLU_FileAttached == null ? null : HostingPrefix + FilePath.Replace("~", "") + x.FLU_FileAttached
+                    }).ToList();
+                }
                 return lst;
             }
             catch (Exception ex)

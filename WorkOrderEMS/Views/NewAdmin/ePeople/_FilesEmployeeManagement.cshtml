@@ -2,7 +2,7 @@
 <style>
     .top {
         border: 1px solid #bbbbdb;
-        padding: 9px 18px 8px 21px;
+        padding: 3px 0px 4px 3px;
         background-image: linear-gradient(to right, #3588CD, #fff);
     }
     .modal {
@@ -16,7 +16,7 @@
         <div class="devider top">
             <img src="@ViewBag.ImageUser" id="EmployeeImage" class="employeeImage" />
             <label class="marignClass">Employee ID : </label><span class="marignClass" id="EmployeeName"><label>@ViewBag.EmployeeID</label></span>
-            <label class="marignClass">Name : </label><span class="marignClass" id="EmployeeDesignation">@ViewBag.EmployeeName</span>
+            <label class="marignClass">Name : </label><span class="marignClass" id="EmployeeDesignation"><label>@ViewBag.EmployeeName</label></span>
         </div>
         <hr class="hrHeight" />
         <div class="row">
@@ -190,7 +190,8 @@
         <hr />
         <div class="col-md-12"><i class="fa fa-folder-open blueFileOpen" onclick="myFunctionBlueFiles()" title="Blue Files" aria-hidden="true"></i></div>
         <div class="col-md-12" id="openBlueFile" style="text-align:center;display:none;">
-            <div class=" inline">
+            <span>No file available</span>
+            @*<div class=" inline">
                 <div class="devider">
                     <div class="bluesky">
                         <div class="int">
@@ -237,7 +238,7 @@
                     </div>
                 </div>
                 <label>Previous Employment</label>
-            </div>
+            </div>*@
         </div>
     </div>
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalViewPDFFiles">

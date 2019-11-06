@@ -1,254 +1,259 @@
 ﻿<style>
-	body {
-		font-size: 20px;
-		font-family: Times New Roman;
-		margin: 73px 130px 0px 130px;
-		text-align: justify;
-	}
 
-	.leftnright {
-		margin: 20px 20px 39px 19px;
-	}
+    .leftnright {
+        margin: 20px 20px 39px 19px;
+    }
 
-	.text-line {
-		background-color: transparent;
-		outline: none;
-		outline-style: none;
-		border-top: none;
-		border-left: none;
-		border-right: none;
-		border-bottom: solid #000 1px;
-	}
+    .text-line {
+        background-color: transparent;
+        outline: none;
+        outline-style: none;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: solid #000 1px;
+    }
 
-	.marg {
-		margin-left: 47px;
-	}
+    .marg {
+        margin-left: 47px;
+    }
 
-	* {
-		box-sizing: border-box;
-	}
+    * {
+        box-sizing: border-box;
+    }
 
-	.column {
-		float: left;
-		width: 50%;
-		margin-left: -66px;
-	}
+    .column {
+        float: left;
+        width: 50%;
+        margin-left: -66px;
+    }
 
-	.column1 {
-		float: left;
-		width: 50%;
-	}
+    .column1 {
+        float: left;
+        width: 50%;
+    }
 
-	.left {
-		width: 77%;
-		margin-top: 30px;
-		margin-left: 5px;
-	}
+    .left {
+        width: 77%;
+        margin-top: 30px;
+        margin-left: 5px;
+    }
 
-	.right {
-		width: 15%;
-	}
+    .right {
+        width: 15%;
+    }
 
-	.center {
-		width: 5%;
-		border-left: 1px solid black;
-		height: 120px;
-		margin-left: 24px;
-		margin-top: 30px;
-	}
+    .center {
+        width: 5%;
+        border-left: 1px solid black;
+        height: 120px;
+        margin-left: 24px;
+        margin-top: 30px;
+    }
 
-	.box {
-		margin-bottom: 35px;
-		border: 5px solid black;
-	}
+    .box {
+        margin-bottom: 35px;
+        border: 5px solid black;
+    }
 
-	.text1 {
-		text-align: center;
-		border-bottom: 5px solid black;
-		padding-bottom: 72px;
-		background-color: #b3adad;
-		font-weight: bold;
-	}
+    .text1 {
+        text-align: center;
+        border-bottom: 5px solid black;
+        padding-bottom: 72px;
+        background-color: #b3adad;
+        font-weight: bold;
+    }
 
+    .text2 {
+        text-align: center;
+        font-weight: bold;
+        background-color: #b3adad;
+    }
 
-	.text2 {
-		text-align: center;
-		font-weight: bold;
-		background-color: #b3adad;
-	}
+    .text3 {
+        text-align: center;
+        border-bottom: 5px solid black;
+        font-weight: bold;
+        background-color: #b3adad;
+    }
 
-	.text3 {
-		text-align: center;
-		border-bottom: 5px solid black;
-		font-weight: bold;
-		background-color: #b3adad;
-	}
+    .text4 {
+        border-bottom: 5px solid black;
+        background-color: #b3adad;
+        padding: 0 30px 0 30px;
+    }
 
-	.text4 {
-		border-bottom: 5px solid black;
-		background-color: #b3adad;
-		padding: 0 30px 0 30px;
-	}
+    .para2 {
+        border-bottom: 5px solid black;
+        padding-bottom: 72px;
+        background-color: #b3adad;
+    }
 
-	.para2 {
-		border-bottom: 5px solid black;
-		padding-bottom: 72px;
-		background-color: #b3adad;
-	}
+    .row:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
 
-	.row:after {
-		content: "";
-		display: table;
-		clear: both;
-	}
+    .vl {
+        width: 5%;
+    }
 
-	.vl {
-		width: 5%;
-	}
+    input[type="checkbox"]:after {
+        line-height: 1.5em !important;
+        content: '' !important;
+        display: block !important;
+        margin-top: -3px !important;
+        margin-left: -3px !important;
+        border: 1px solid transparent !important;
+        border-radius: 0px !important;
+        line-height: 1.3 !important;
+        background: none !important;
+    }
 </style>
 <div class="row">
-	<div class="column">
-		<img src="image-form.jpg" alt="background image" />
-	</div>
-	<div class="column">
-		<h3 style="margin-top: 104px;"><u>Corporate Credit Card Request Application</u></h3>
+    <div class="column">
+        <img src="~/Images/image-form.jpg" alt="background image" />
+    </div>
+    <div class="column">
+        <h3 style="margin-top: 104px;"><u>Corporate Credit Card Request Application</u></h3>
 
-	</div>
+    </div>
 </div>
 <p class="marg">
-	<b>
-		Card Profile:
-		<input type="radio" name="radio">
-		<label class="container">
-			Operational Use Only
-		</label>
-		<input type="radio" name="radio">
-		<label class="container">
-			Travel Use Only
-		</label>
-		<input type="radio" name="radio">
-		<label class="container">
-			Business Development Use Only
-		</label>
-		<input type="radio" name="radio">
-		<label class="container">
-			All Purpose Use
-		</label>
-	</b>
+    <b>
+        Card Profile:
+        <input type="radio" name="radio">
+        <label class="container">
+            Operational Use Only
+        </label>
+        <input type="radio" name="radio">
+        <label class="container">
+            Travel Use Only
+        </label>
+        <input type="radio" name="radio">
+        <label class="container">
+            Business Development Use Only
+        </label>
+        <input type="radio" name="radio">
+        <label class="container">
+            All Purpose Use
+        </label>
+    </b>
 </p>
 <p class="marg">
-	<b>
-		Action Requested:
-		<input type="radio" name="radio">
-		<label class="container">
-			New Card
-		</label>
-		<input type="radio" name="radio">
-		<label class="container">
-			Update Cardholder Information
-		</label>
-		<input type="radio" name="radio">
-		<label class="container">
-			Request for Credit Limit Increase
-		</label>
-		<input type="radio" name="radio">
-		<label class="container">
-			Other
-		</label>
-	</b>
+    <b>
+        Action Requested:
+        <input type="radio" name="radio">
+        <label class="container">
+            New Card
+        </label>
+        <input type="radio" name="radio">
+        <label class="container">
+            Update Cardholder Information
+        </label>
+        <input type="radio" name="radio">
+        <label class="container">
+            Request for Credit Limit Increase
+        </label>
+        <input type="radio" name="radio">
+        <label class="container">
+            Other
+        </label>
+    </b>
 </p>
 <div class="box">
-	<div class="text1">Cardholder Information</div>
-	<div class="leftnright">
-		First Name:<input type="text" style="width: 265px;" class="text-line" />
-		MI:<input type="text" style="width: 60px;" class="text-line" />
-		Last Name:<input type="text" style="width:265px;" class="text-line" />
-		Employee ID:<input type="text" style="width:84px;" class="text-line" />
-		Job Title:<input type="text" style="width: 382px;" class="text-line" />
-		Operation Location:<input type="text" style="width:382px;" class="text-line" />
-		Cost Center Number:<input type="text" style="width: 300px;" class="text-line" />
-		Work Phone:<input type="text" style="width:170px;" class="text-line" />
-		Email:<input type="text" style="width:170px;" class="text-line" />
-		Immediate Supervisor:<input type="text" style="width: 275px;" class="text-line" />
-		Applicant Social Security Number:<input type="text" style="width:275px;" class="text-line" />
-		<p style="padding-top:20px;padding-bottom:30px;">
-			<b>APPLICANT SIGNATURE:</b><input type="text" style="width: 471px;" class="text-line" />
-			<b>Date:</b><input type="text" style="width:240px;" class="text-line" />
-		</p>
-	</div>
+    <div class="text1">Cardholder Information</div>
+    <div class="leftnright">
+        First Name:<input type="text" style="width: 265px;" class="text-line" />
+        MI:<input type="text" style="width: 60px;" class="text-line" />
+        Last Name:<input type="text" style="width:265px;" class="text-line" />
+        Employee ID:<input type="text" style="width:84px;" class="text-line" />
+        Job Title:<input type="text" style="width: 382px;" class="text-line" />
+        Operation Location:<input type="text" style="width:382px;" class="text-line" />
+        Cost Center Number:<input type="text" style="width: 300px;" class="text-line" />
+        Work Phone:<input type="text" style="width:170px;" class="text-line" />
+        Email:<input type="text" style="width:170px;" class="text-line" />
+        Immediate Supervisor:<input type="text" style="width: 275px;" class="text-line" />
+        Applicant Social Security Number:<input type="text" style="width:275px;" class="text-line" />
+        <p style="padding-top:20px;padding-bottom:30px;">
+            <b>APPLICANT SIGNATURE:</b><input type="text" style="width: 471px;" class="text-line" />
+            <b>Date:</b><input type="text" style="width:240px;" class="text-line" />
+        </p>
+    </div>
 </div>
 <div class="box">
-	<div class="para2">
-		<div class="text2">Justification</div><br /><br />
+    <div class="para2">
+        <div class="text2">Justification</div><br /><br />
 
-		<input type="checkbox" name="checkbox">
-		<label class="container">
-			<b>Existing Cardholders:</b> Include detailed justification for any changes to your account.
-		</label><br />
-		<input type="checkbox" name="checkbox">
-		<label class="container">
-			<b>New cardholders:</b> Submit detailed reasons for requesting a Corporate Credit Card - explain how the card will be used and the purposes.
-		</label>
+        <input type="checkbox" name="checkbox">
+        <label class="container">
+            <b>Existing Cardholders:</b> Include detailed justification for any changes to your account.
+        </label><br />
+        <input type="checkbox" name="checkbox">
+        <label class="container">
+            <b>New cardholders:</b> Submit detailed reasons for requesting a Corporate Credit Card - explain how the card will be used and the purposes.
+        </label>
 
-	</div>
-	<div class="leftnright">
-		<input type="text" style="width: 1000px;" class="text-line" />
-		<input type="text" style="width: 1000px;" class="text-line" />
-		<input type="text" style="width:1000px;" class="text-line" />
-	</div>
+    </div>
+    <div class="leftnright">
+        <input type="text" style="width: 1000px;" class="text-line" />
+        <input type="text" style="width: 1000px;" class="text-line" />
+        <input type="text" style="width:1000px;" class="text-line" />
+    </div>
 </div>
 <div class="box">
-	<div class="text3">Approver / Reconciler Information</div>
+    <div class="text3">Approver / Reconciler Information</div>
 
-	<div class="row">
-		<div class="column1 left">
-			Approver Name:<input type="text" style="width: 208px;" class="text-line" />
-			Employee ID:<input type="text" style="width: 51px;" class="text-line" />
-			Signature:<input type="text" style="width:208px;" class="text-line" />
-			Back-Up Approver Name:<input type="text" style="width:195px;" class="text-line" />
-			Employee ID:<input type="text" style="width: 30px;" class="text-line" />
-			Signature:<input type="text" style="width:160px;" class="text-line" />
-			(optional) Reconciler Name:<input type="text" style="width:192px;" class="text-line" />
-			Employee ID:<input type="text" style="width: 30px;" class="text-line" />
-			Signature:<input type="text" style="width:170px;" class="text-line" />
-		</div>
-		<div class="column1 center"></div>
-		<div class="column1 right">
-			<p>
-				<u>Subordinate?</u><br />
-				Yes &nbsp&nbsp&nbsp&nbsp&nbsp <b>NO</b><br />
-				Yes &nbsp&nbsp&nbsp&nbsp&nbsp <b>NO</b><br />
-				Yes &nbsp&nbsp&nbsp&nbsp&nbsp <b>NO</b>
-			</p>
-		</div>
+    <div class="row">
+        <div class="column1 left">
+            Approver Name:<input type="text" style="width: 208px;" class="text-line" />
+            Employee ID:<input type="text" style="width: 51px;" class="text-line" />
+            Signature:<input type="text" style="width:208px;" class="text-line" />
+            Back-Up Approver Name:<input type="text" style="width:195px;" class="text-line" />
+            Employee ID:<input type="text" style="width: 30px;" class="text-line" />
+            Signature:<input type="text" style="width:160px;" class="text-line" />
+            (optional) Reconciler Name:<input type="text" style="width:192px;" class="text-line" />
+            Employee ID:<input type="text" style="width: 30px;" class="text-line" />
+            Signature:<input type="text" style="width:170px;" class="text-line" />
+        </div>
+        <div class="column1 center"></div>
+        <div class="column1 right">
+            <p>
+                <u>Subordinate?</u><br />
+                Yes &nbsp&nbsp&nbsp&nbsp&nbsp <b>NO</b><br />
+                Yes &nbsp&nbsp&nbsp&nbsp&nbsp <b>NO</b><br />
+                Yes &nbsp&nbsp&nbsp&nbsp&nbsp <b>NO</b>
+            </p>
+        </div>
 
-	</div>
+    </div>
 </div>
 <div class="box">
-	<div class="text3"><b>Authorization By Unit Approver</b></div>
-	<div class="text4">I understand my responsibilities as they relate to the Corporate Credit Card Program and authorize the above request. I also certify that any Approvers noted on this request are non-subordinates to the cardholder listed above.</div>
-	<div class="leftnright">
-		Authorized By (Printed Name):<input type="text" style="width: 350px;" class="text-line" />
-		Title:<input type="text" style="width: 350px;" class="text-line" />
-		Signature:<input type="text" style="width: 440px;" class="text-line" />
-		Date:<input type="text" style="width:440px;" class="text-line" />
-	</div>
+    <div class="text3"><b>Authorization By Unit Approver</b></div>
+    <div class="text4">I understand my responsibilities as they relate to the Corporate Credit Card Program and authorize the above request. I also certify that any Approvers noted on this request are non-subordinates to the cardholder listed above.</div>
+    <div class="leftnright">
+        Authorized By (Printed Name):<input type="text" style="width: 350px;" class="text-line" />
+        Title:<input type="text" style="width: 350px;" class="text-line" />
+        Signature:<input type="text" style="width: 440px;" class="text-line" />
+        Date:<input type="text" style="width:440px;" class="text-line" />
+    </div>
 </div>
 <div class="box">
-	<div class="text3"><b>For Use By Accounting Department Only</b></div>
-	<div class="leftnright">
-		App Received:<input type="text" style="width: 200px;" class="text-line" />
-		Date Card Ordered:<input type="text" style="width: 200px;" class="text-line" />
-		Card Type:<input type="text" style="width: 200px;" class="text-line" />
-		Approved:<input type="text" style="width:250px;" class="text-line" />
-		Approved By:<input type="text" style="width:250px;" class="text-line" />
-		Approvers Employee ID #:<input type="text" style="width:90px;" class="text-line" /><br /><br />
-		Credit Card Training Completed:<input type="text" style="width:280px;" class="text-line" />
-		Guidelines Executed:<input type="text" style="width:280px;" class="text-line" />
-		Date of Training:<input type="text" style="width:320px;" class="text-line" />
-		Date of Guideline Execution:<input type="text" style="width:320px;" class="text-line" />
-	</div>
+    <div class="text3"><b>For Use By Accounting Department Only</b></div>
+    <div class="leftnright">
+        App Received:<input type="text" style="width: 200px;" class="text-line" />
+        Date Card Ordered:<input type="text" style="width: 200px;" class="text-line" />
+        Card Type:<input type="text" style="width: 200px;" class="text-line" />
+        Approved:<input type="text" style="width:250px;" class="text-line" />
+        Approved By:<input type="text" style="width:250px;" class="text-line" />
+        Approvers Employee ID #:<input type="text" style="width:90px;" class="text-line" /><br /><br />
+        Credit Card Training Completed:<input type="text" style="width:280px;" class="text-line" />
+        Guidelines Executed:<input type="text" style="width:280px;" class="text-line" />
+        Date of Training:<input type="text" style="width:320px;" class="text-line" />
+        Date of Guideline Execution:<input type="text" style="width:320px;" class="text-line" />
+    </div>
 </div>
 <div style="text-align:center;">
-	<b>Once completed email document to <a href="mailto:accounts@eliteparkingsoa.com">accounts@eliteparkingsoa.com</a></b>
+    <b>Once completed email document to <a href="mailto:accounts@eliteparkingsoa.com">accounts@eliteparkingsoa.com</a></b>
 </div>

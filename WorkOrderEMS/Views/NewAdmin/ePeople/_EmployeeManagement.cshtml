@@ -71,6 +71,9 @@
         width: 9%;
         cursor:pointer;
     }
+    .modal-header {
+        display: inherit;
+    }
 </style>
 <div class="content-body">
     <!-- row -->
@@ -165,7 +168,7 @@
 <div class="modal fade  bd-example-modal-lg" @*data-backdrop="false" *@ id="ModalProfilePreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title">View Profile</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -184,7 +187,7 @@
 <div class="modal fade  bd-example-modal-lg" id="myModalForViewUserChart" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title">View User</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -204,7 +207,7 @@
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForUserList">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title">User List</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -224,7 +227,7 @@
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForViewVCSData">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title">User Vehicle Seating Chart</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -245,7 +248,7 @@
 <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForChangeStatusData">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title">Status Change</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -267,13 +270,13 @@
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForAddFileData">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title">Personnel Files</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="margin-left: 1px;">
                 <div class="card-body">
                     @*@Html.Partial("_FilesEmployeeManagement.cshtml")*@
                     @*@Html.Partial("~/Views/NewAdmin/ePeople/_FilesEmployeeManagement.cshtml")*@
@@ -292,7 +295,7 @@
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForeditUserInfoData">
     <div class="modal-dialog modal-lg" style="width:980px;">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title">Edit User Info</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -319,7 +322,7 @@
 <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForTreeViewUserData">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title">Tree View</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -383,7 +386,7 @@
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForRequisitionVSCChart">
     <div class="modal-dialog modal-lg" style="width:800px;">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title">Add Vehicle Seating Chart </h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -411,7 +414,7 @@
 <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForGetDetailsToDeleteRequisition">
     <div class="modal-dialog ">
         <div class="modal-content" id="MaintainSizeForDelete">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title">Details</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -432,7 +435,7 @@
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForDemotionEmployee">
     <div class="modal-dialog modal-lg" style="width:750px;">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title" id="ChangeTitle">Demotion</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -475,7 +478,7 @@
 <div class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" id="myModalToAddRemoveJobCount">
     <div class="modal-dialog " >
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title" id="ChangeTitle">Job Count</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -506,7 +509,7 @@
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalToAddInputAndFileName">
     <div class="modal-dialog modal-lg" style="width:700px;">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title">Details</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>

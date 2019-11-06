@@ -6102,5 +6102,23 @@ namespace WorkOrderEMS.Data.EntityModel
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetUserVerify", employeeIdParameter, locationIdParameter, createdByParameter);
         }
+    
+        public virtual ObjectResult<spGetForrmStatus_Result> spGetForrmStatus(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetForrmStatus_Result>("spGetForrmStatus", employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetI9Form_Result> spGetI9Form(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetI9Form_Result>("spGetI9Form", employeeIdParameter);
+        }
     }
 }

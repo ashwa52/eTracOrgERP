@@ -4008,8 +4008,14 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         {
             bool IsVerify = false;
             ObjnewAdminRepository = new NewAdminRepository();
+            var Context = new workorderEMSEntities();
             try
             {
+                if(onboardingDetailRequestModel.App_Id > 0)
+                {
+                    var getEmpDetails = Context.Employees.Where(x => x.EMP_API_ApplicantId == onboardingDetailRequestModel.App_Id).FirstOrDefault().EMP_EmployeeID;
+                    onboardingDetailRequestModel.EmpId = getEmpDetails;
+                }
                 if(onboardingDetailRequestModel.CreatedBy > 0 && onboardingDetailRequestModel.EmpId != null && onboardingDetailRequestModel.Status != null)
                 {
                     var verify = ObjnewAdminRepository.Verify(onboardingDetailRequestModel);

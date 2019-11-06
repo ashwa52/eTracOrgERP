@@ -159,17 +159,19 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-3">
-                            @Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "ZipCode", @disabled = "disabled" } })
+                            @*@Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "ZipCode", @disabled = "disabled" } })*@
+                            @Html.TextBoxFor(model => model.Zip,  new { @class = "form-control input-rounded", placeholder = "ZipCode", @disabled = "disabled", @pattern = "[0-9]", @minLength = "5", @maxLength = "5" })
 
                         </div>
                         <div class="col-sm-3">
-                            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Phone", @disabled = "disabled" } })
+                            @*@Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Phone", @disabled = "disabled" } })*@
+                            @Html.TextBoxFor(model => model.Phone,  new { @class = "form-control input-rounded", placeholder = "Phone", @disabled = "disabled", @pattern = "[0-9]", @minLength = "10", @maxLength = "10" })
 
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-6">
-                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Email", @disabled = "disabled" } })
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Email", @readonly = "readonly"} })
                         </div>
                         <div class="col-sm-6">
                             @Html.TextBoxFor(model => model.Dob, new { @class = "form-control input-rounded", @disabled = "disabled", @id = "DOBEMP" })

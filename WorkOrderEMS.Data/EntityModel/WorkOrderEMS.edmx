@@ -5013,8 +5013,14 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
         </Function>
         <Function Name="spGetFormMaster" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetForrmStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spGetHiringManager" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="VST_Id" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="spGetI9Form" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
         </Function>
         <Function Name="spGetInsurance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CMP_Id" Type="bigint" Mode="In" />
@@ -14175,6 +14181,12 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
             <Parameter Name="LocationId" Mode="In" Type="Int64" />
             <Parameter Name="CreatedBy" Mode="In" Type="Int64" />
           </FunctionImport>
+          <FunctionImport Name="spGetForrmStatus" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetForrmStatus_Result)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetI9Form" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetI9Form_Result)">
+            <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Proc_GetAllWorkAssignedToEmployee_Result">
           <Property Type="Int64" Name="RN" Nullable="true" />
@@ -17175,6 +17187,92 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Property Type="Int64" Name="EMP_LocationId" Nullable="true" />
           <Property Type="String" Name="EMP_ManagerId" Nullable="true" MaxLength="20" />
           <Property Type="Int64" Name="UserId" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetForrmStatus_Result">
+          <Property Type="String" Name="W4F_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="ECF_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="EHB_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="DDF_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="PRF_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="CDA_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="EVF_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="I9F_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetI9Form_Result">
+          <Property Type="String" Name="EMP_FirstName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMP_MiddleName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMP_LastName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMA_Address" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="EMA_City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EMA_State" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="EMA_Zip" Nullable="true" />
+          <Property Type="Int64" Name="I9F_Id" Nullable="false" />
+          <Property Type="String" Name="I9F_EMP_EmployeeId" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="I9F_Sec1_SSN" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="I9F_Sec1_CitizenOfUS" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="I9F_Sec1_NonCitizenOfUS" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="I9F_Sec1_AlienRegistrationNum_USCIS" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="I9F_Sec1_AlienAuthorizedToWorkDate" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec1_I94AdmissionNumber" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="I9F_Sec1_ForeignPassportNumber" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="I9F_Sec1_ForeignPassportIssuanceCountry" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="I9F_Sec1_SignatureOfEmployee" Nullable="true" />
+          <Property Type="DateTime" Name="I9F_Sec1_DateOfEmployeeSign" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec1_QRCodeSec1" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec1_PreparerAndTranslator" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="I9F_Sec1_SignatureOfPreparerOrTranslator" Nullable="true" />
+          <Property Type="DateTime" Name="I9F_Sec1_DateOfPreparerOrTranslatorSign" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec1_FirstName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec1_LastName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec1_Address" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="I9F_Sec1_City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="I9F_Sec1_State" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="I9F_Sec1_ZipCode" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_ListA_DocumentTitle1" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_ListA_IssuingAuthority1" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_ListA_DocumentNumber1" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="I9F_Sec2_ListA_ExpirationDate1" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_ListA_DocumentTitle2" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_ListA_IssuingAuthority2" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_ListA_DocumentNumber2" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="I9F_Sec2_ListA_ExpirationDate2" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_ListA_DocumentTitle3" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_ListA_IssuingAuthority3" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_ListA_DocumentNumber3" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="I9F_Sec2_ListA_ExpirationDate3" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_ListB_DocumentTitle" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_ListB_IssuingAuthority" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_ListB_DocumentNumber" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="I9F_Sec2_ListB_ExpirationDate" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_ListC_DocumentTitle" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_ListC_IssuingAuthority" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_ListC_DocumentNumber" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="I9F_Sec2_ListC_ExpirationDate" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_AdditionalInformation" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_QRCodeSec2AndSec3" Nullable="true" />
+          <Property Type="DateTime" Name="I9F_Sec2_EmployeesFirstDayOfEmployment" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_SignatureOfEmployerOrAuthorized" Nullable="true" />
+          <Property Type="DateTime" Name="I9F_Sec2_DateOfEmployerOrAuthorizedSign" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_LastNameOfEmployerOrAuthorized" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_FirstNameOfEmployerOrAuthorized" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_MiddleInitialOfEmployerOrAuthorized" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_EmployersBusinessOrgnization_Name" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_EmployersBusinessOrgnization_Address" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="I9F_Sec2_EmployersBusinessOrgnization_City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="I9F_Sec2_EmployersBusinessOrgnization_State" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="I9F_Sec2_EmployersBusinessOrgnization_ZipCode" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_A_LastName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_A_FirstName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_A_MiddleInitial" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="I9F_Sec2_B_DateOfReHire" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_C_DocumentTitle" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_C_DocumentNumber" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="I9F_Sec2_C_ExpirationDate" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_C_SignatureOfEmployerOrAuthorized" Nullable="true" />
+          <Property Type="DateTime" Name="I9F_Sec2_C_DateOfEmployerOrAuthorizedSign" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_C_NameOfEmployerOrAuthorized" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="I9F_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="I9F_IsActive" Nullable="true" MaxLength="1" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -22666,6 +22764,100 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spSetUserVerify" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetUserVerify" />
+          <FunctionImportMapping FunctionImportName="spGetForrmStatus" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetForrmStatus">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetForrmStatus_Result">
+                <ScalarProperty Name="W4F_IsActive" ColumnName="W4F_IsActive" />
+                <ScalarProperty Name="ECF_IsActive" ColumnName="ECF_IsActive" />
+                <ScalarProperty Name="EHB_IsActive" ColumnName="EHB_IsActive" />
+                <ScalarProperty Name="DDF_IsActive" ColumnName="DDF_IsActive" />
+                <ScalarProperty Name="PRF_IsActive" ColumnName="PRF_IsActive" />
+                <ScalarProperty Name="CDA_IsActive" ColumnName="CDA_IsActive" />
+                <ScalarProperty Name="EVF_IsActive" ColumnName="EVF_IsActive" />
+                <ScalarProperty Name="I9F_IsActive" ColumnName="I9F_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetI9Form" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetI9Form">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetI9Form_Result">
+                <ScalarProperty Name="EMP_FirstName" ColumnName="EMP_FirstName" />
+                <ScalarProperty Name="EMP_MiddleName" ColumnName="EMP_MiddleName" />
+                <ScalarProperty Name="EMP_LastName" ColumnName="EMP_LastName" />
+                <ScalarProperty Name="EMA_Address" ColumnName="EMA_Address" />
+                <ScalarProperty Name="EMA_City" ColumnName="EMA_City" />
+                <ScalarProperty Name="EMA_State" ColumnName="EMA_State" />
+                <ScalarProperty Name="EMA_Zip" ColumnName="EMA_Zip" />
+                <ScalarProperty Name="I9F_Id" ColumnName="I9F_Id" />
+                <ScalarProperty Name="I9F_EMP_EmployeeId" ColumnName="I9F_EMP_EmployeeId" />
+                <ScalarProperty Name="I9F_Sec1_SSN" ColumnName="I9F_Sec1_SSN" />
+                <ScalarProperty Name="I9F_Sec1_CitizenOfUS" ColumnName="I9F_Sec1_CitizenOfUS" />
+                <ScalarProperty Name="I9F_Sec1_NonCitizenOfUS" ColumnName="I9F_Sec1_NonCitizenOfUS" />
+                <ScalarProperty Name="I9F_Sec1_AlienRegistrationNum_USCIS" ColumnName="I9F_Sec1_AlienRegistrationNum_USCIS" />
+                <ScalarProperty Name="I9F_Sec1_AlienAuthorizedToWorkDate" ColumnName="I9F_Sec1_AlienAuthorizedToWorkDate" />
+                <ScalarProperty Name="I9F_Sec1_I94AdmissionNumber" ColumnName="I9F_Sec1_I94AdmissionNumber" />
+                <ScalarProperty Name="I9F_Sec1_ForeignPassportNumber" ColumnName="I9F_Sec1_ForeignPassportNumber" />
+                <ScalarProperty Name="I9F_Sec1_ForeignPassportIssuanceCountry" ColumnName="I9F_Sec1_ForeignPassportIssuanceCountry" />
+                <ScalarProperty Name="I9F_Sec1_SignatureOfEmployee" ColumnName="I9F_Sec1_SignatureOfEmployee" />
+                <ScalarProperty Name="I9F_Sec1_DateOfEmployeeSign" ColumnName="I9F_Sec1_DateOfEmployeeSign" />
+                <ScalarProperty Name="I9F_Sec1_QRCodeSec1" ColumnName="I9F_Sec1_QRCodeSec1" />
+                <ScalarProperty Name="I9F_Sec1_PreparerAndTranslator" ColumnName="I9F_Sec1_PreparerAndTranslator" />
+                <ScalarProperty Name="I9F_Sec1_SignatureOfPreparerOrTranslator" ColumnName="I9F_Sec1_SignatureOfPreparerOrTranslator" />
+                <ScalarProperty Name="I9F_Sec1_DateOfPreparerOrTranslatorSign" ColumnName="I9F_Sec1_DateOfPreparerOrTranslatorSign" />
+                <ScalarProperty Name="I9F_Sec1_FirstName" ColumnName="I9F_Sec1_FirstName" />
+                <ScalarProperty Name="I9F_Sec1_LastName" ColumnName="I9F_Sec1_LastName" />
+                <ScalarProperty Name="I9F_Sec1_Address" ColumnName="I9F_Sec1_Address" />
+                <ScalarProperty Name="I9F_Sec1_City" ColumnName="I9F_Sec1_City" />
+                <ScalarProperty Name="I9F_Sec1_State" ColumnName="I9F_Sec1_State" />
+                <ScalarProperty Name="I9F_Sec1_ZipCode" ColumnName="I9F_Sec1_ZipCode" />
+                <ScalarProperty Name="I9F_Sec2_ListA_DocumentTitle1" ColumnName="I9F_Sec2_ListA_DocumentTitle1" />
+                <ScalarProperty Name="I9F_Sec2_ListA_IssuingAuthority1" ColumnName="I9F_Sec2_ListA_IssuingAuthority1" />
+                <ScalarProperty Name="I9F_Sec2_ListA_DocumentNumber1" ColumnName="I9F_Sec2_ListA_DocumentNumber1" />
+                <ScalarProperty Name="I9F_Sec2_ListA_ExpirationDate1" ColumnName="I9F_Sec2_ListA_ExpirationDate1" />
+                <ScalarProperty Name="I9F_Sec2_ListA_DocumentTitle2" ColumnName="I9F_Sec2_ListA_DocumentTitle2" />
+                <ScalarProperty Name="I9F_Sec2_ListA_IssuingAuthority2" ColumnName="I9F_Sec2_ListA_IssuingAuthority2" />
+                <ScalarProperty Name="I9F_Sec2_ListA_DocumentNumber2" ColumnName="I9F_Sec2_ListA_DocumentNumber2" />
+                <ScalarProperty Name="I9F_Sec2_ListA_ExpirationDate2" ColumnName="I9F_Sec2_ListA_ExpirationDate2" />
+                <ScalarProperty Name="I9F_Sec2_ListA_DocumentTitle3" ColumnName="I9F_Sec2_ListA_DocumentTitle3" />
+                <ScalarProperty Name="I9F_Sec2_ListA_IssuingAuthority3" ColumnName="I9F_Sec2_ListA_IssuingAuthority3" />
+                <ScalarProperty Name="I9F_Sec2_ListA_DocumentNumber3" ColumnName="I9F_Sec2_ListA_DocumentNumber3" />
+                <ScalarProperty Name="I9F_Sec2_ListA_ExpirationDate3" ColumnName="I9F_Sec2_ListA_ExpirationDate3" />
+                <ScalarProperty Name="I9F_Sec2_ListB_DocumentTitle" ColumnName="I9F_Sec2_ListB_DocumentTitle" />
+                <ScalarProperty Name="I9F_Sec2_ListB_IssuingAuthority" ColumnName="I9F_Sec2_ListB_IssuingAuthority" />
+                <ScalarProperty Name="I9F_Sec2_ListB_DocumentNumber" ColumnName="I9F_Sec2_ListB_DocumentNumber" />
+                <ScalarProperty Name="I9F_Sec2_ListB_ExpirationDate" ColumnName="I9F_Sec2_ListB_ExpirationDate" />
+                <ScalarProperty Name="I9F_Sec2_ListC_DocumentTitle" ColumnName="I9F_Sec2_ListC_DocumentTitle" />
+                <ScalarProperty Name="I9F_Sec2_ListC_IssuingAuthority" ColumnName="I9F_Sec2_ListC_IssuingAuthority" />
+                <ScalarProperty Name="I9F_Sec2_ListC_DocumentNumber" ColumnName="I9F_Sec2_ListC_DocumentNumber" />
+                <ScalarProperty Name="I9F_Sec2_ListC_ExpirationDate" ColumnName="I9F_Sec2_ListC_ExpirationDate" />
+                <ScalarProperty Name="I9F_Sec2_AdditionalInformation" ColumnName="I9F_Sec2_AdditionalInformation" />
+                <ScalarProperty Name="I9F_Sec2_QRCodeSec2AndSec3" ColumnName="I9F_Sec2_QRCodeSec2AndSec3" />
+                <ScalarProperty Name="I9F_Sec2_EmployeesFirstDayOfEmployment" ColumnName="I9F_Sec2_EmployeesFirstDayOfEmployment" />
+                <ScalarProperty Name="I9F_Sec2_SignatureOfEmployerOrAuthorized" ColumnName="I9F_Sec2_SignatureOfEmployerOrAuthorized" />
+                <ScalarProperty Name="I9F_Sec2_DateOfEmployerOrAuthorizedSign" ColumnName="I9F_Sec2_DateOfEmployerOrAuthorizedSign" />
+                <ScalarProperty Name="I9F_Sec2_LastNameOfEmployerOrAuthorized" ColumnName="I9F_Sec2_LastNameOfEmployerOrAuthorized" />
+                <ScalarProperty Name="I9F_Sec2_FirstNameOfEmployerOrAuthorized" ColumnName="I9F_Sec2_FirstNameOfEmployerOrAuthorized" />
+                <ScalarProperty Name="I9F_Sec2_MiddleInitialOfEmployerOrAuthorized" ColumnName="I9F_Sec2_MiddleInitialOfEmployerOrAuthorized" />
+                <ScalarProperty Name="I9F_Sec2_EmployersBusinessOrgnization_Name" ColumnName="I9F_Sec2_EmployersBusinessOrgnization_Name" />
+                <ScalarProperty Name="I9F_Sec2_EmployersBusinessOrgnization_Address" ColumnName="I9F_Sec2_EmployersBusinessOrgnization_Address" />
+                <ScalarProperty Name="I9F_Sec2_EmployersBusinessOrgnization_City" ColumnName="I9F_Sec2_EmployersBusinessOrgnization_City" />
+                <ScalarProperty Name="I9F_Sec2_EmployersBusinessOrgnization_State" ColumnName="I9F_Sec2_EmployersBusinessOrgnization_State" />
+                <ScalarProperty Name="I9F_Sec2_EmployersBusinessOrgnization_ZipCode" ColumnName="I9F_Sec2_EmployersBusinessOrgnization_ZipCode" />
+                <ScalarProperty Name="I9F_Sec2_A_LastName" ColumnName="I9F_Sec2_A_LastName" />
+                <ScalarProperty Name="I9F_Sec2_A_FirstName" ColumnName="I9F_Sec2_A_FirstName" />
+                <ScalarProperty Name="I9F_Sec2_A_MiddleInitial" ColumnName="I9F_Sec2_A_MiddleInitial" />
+                <ScalarProperty Name="I9F_Sec2_B_DateOfReHire" ColumnName="I9F_Sec2_B_DateOfReHire" />
+                <ScalarProperty Name="I9F_Sec2_C_DocumentTitle" ColumnName="I9F_Sec2_C_DocumentTitle" />
+                <ScalarProperty Name="I9F_Sec2_C_DocumentNumber" ColumnName="I9F_Sec2_C_DocumentNumber" />
+                <ScalarProperty Name="I9F_Sec2_C_ExpirationDate" ColumnName="I9F_Sec2_C_ExpirationDate" />
+                <ScalarProperty Name="I9F_Sec2_C_SignatureOfEmployerOrAuthorized" ColumnName="I9F_Sec2_C_SignatureOfEmployerOrAuthorized" />
+                <ScalarProperty Name="I9F_Sec2_C_DateOfEmployerOrAuthorizedSign" ColumnName="I9F_Sec2_C_DateOfEmployerOrAuthorizedSign" />
+                <ScalarProperty Name="I9F_Sec2_C_NameOfEmployerOrAuthorized" ColumnName="I9F_Sec2_C_NameOfEmployerOrAuthorized" />
+                <ScalarProperty Name="I9F_Date" ColumnName="I9F_Date" />
+                <ScalarProperty Name="I9F_IsActive" ColumnName="I9F_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

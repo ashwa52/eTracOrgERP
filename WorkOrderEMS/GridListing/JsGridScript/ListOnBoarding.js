@@ -183,6 +183,7 @@ function getApplicantInfo() {
                             var $customDeleteButton = $("<span>")
                                 .attr({ title: jsGrid.fields.control.prototype.deleteButtonTooltip })
                                 .attr({ id: "btn-delete-" + item.Id }).click(function (e) {
+                                    API_id = item.API_ApplicantId;
                                     $("#myModalToShowLocation").modal("show");                                   
                                     e.stopPropagation();
                                 }).append($iconTrash);
@@ -232,14 +233,14 @@ function VerifyEmployee() {
     var object = new Object();
     object.Status = "I";
     object.App_Id = API_id;
-    object.Location = $("#ddl_LocationForEmployee option:selected").val();
+    object.LocationId = $("#ddl_LocationForEmployee option:selected").val();
     $.ajax({
         type: "POST",
         url: base_url + "/NewAdmin/VerifyEmployeeAfterGenerate",
         data: { onboardingDetailRequestModel: object },
         success: function (Data) {
             debugger
-            $("#myModalToShowLocation").modal("show");
+            $("#myModalToShowLocation").modal("hide");
         },
         error: function (err) {
         }
