@@ -63,9 +63,9 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                 .attr({ id: "btn-file-" + item.id }).click(function (e) {
                                     debugger
                                     $.ajax({
-                                        type: "GET",
+                                        type: "POST",
                                         // data: { 'Id': item.id},
-                                        url: base_url + '/EPeople/GetFileView?Id=' + item.id,
+                                        url: base_url + '/EPeople/GetFileView?EMPId=' + item.id,
                                         beforeSend: function () {
                                             new fn_showMaskloader('Please wait...');
                                         },
@@ -444,6 +444,19 @@ $(document).ready(function () {
             }
         });
     });
+
+
+    $('#SearchbyAssignUser').on('keyup', function () {
+        var searchTerm = $(this).val().toLowerCase();
+        $('#ListEmployeeManagement table tbody tr').each(function () {
+            var lineStr = $(this).text().toLowerCase();
+            if (lineStr.indexOf(searchTerm) === -1) {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
+    });
 })
 
 function myFunction() {
@@ -607,3 +620,4 @@ function saveFile() {
         }
     });
 }
+

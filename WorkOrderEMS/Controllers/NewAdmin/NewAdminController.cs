@@ -903,7 +903,8 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         [HttpGet]
         public PartialViewResult GetInterviewQuestionView()
         {
-            var questions = _GlobalAdminManager.GetInterviewQuestions().Where(x => x.INQ_Id == 1).ToList();
+            //var questions = _GlobalAdminManager.GetInterviewQuestions().Where(x => x.INQ_Id == 1).ToList();
+            var questions = _GlobalAdminManager.GetInterviewQuestions().ToList();//.Where(x => x.INQ_Id == 1).ToList();
             Session["eTrac_questions"] = questions;
             return PartialView("ePeople/_questionsview");
         }
@@ -1191,7 +1192,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-    }
+    
     #region Location wise Deal Master
     /// <summary>
     /// Created By : Jemin Vasoya

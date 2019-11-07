@@ -911,17 +911,20 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        [HttpGet]
-        public ActionResult GetFileView(string Id)
+        [HttpPost]
+        public ActionResult GetFileView(string EMPId)
         {
             var _workorderems = new workorderEMSEntities();
            
             var model = new List<UploadedFiles>();
+            long _UserId = 0;
             try
             {
-                var id = Cryptography.GetDecryptedData(Id, true);
-                long _UserId = 0;
-                long.TryParse(id, out _UserId);
+                if (EMPId != null)
+                {
+                    var id = Cryptography.GetDecryptedData(EMPId, true);
+                    long.TryParse(id, out _UserId);
+                }               
                 var getUser = _workorderems.UserRegistrations.Where(x => x.UserId == _UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
                 var _FillableFormRepository = new FillableFormRepository();
                 if (getUser != null)

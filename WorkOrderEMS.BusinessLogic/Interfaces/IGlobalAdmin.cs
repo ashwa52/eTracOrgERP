@@ -273,7 +273,7 @@ namespace WorkOrderEMS.BusinessLogic
 		bool SaveApplicantInfo(OnboardingDetailRequestModel onboardingDetailRequestModel);
 		bool SaveGuestEmployeeBasicInfo(GuestEmployeeBasicInfoRequestModel guestEmployeeBasicInfoRequestModel);
 		InterviewersViewModel GetInterviewersList(long applicantId, long userId);
-		IEnumerable<spGetInterviewQuestion_Result> GetInterviewQuestions();
+		List<spGetInterviewQuestion_Result> GetInterviewQuestions();
 		bool SaveInterviewAnswers(InterviewAnswerModel model, long UserId);
 		List<MyOpeningModel> GetMyInterviews(long userId);
 		bool IsInterviewerOnline(long ApplicantId, long UserId, string IsAvailable, string Comment);

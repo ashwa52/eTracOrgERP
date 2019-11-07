@@ -4073,13 +4073,14 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             catch (Exception ex)
             { throw; }
         }
-        public IEnumerable<spGetInterviewQuestion_Result> GetInterviewQuestions()
+        public List<spGetInterviewQuestion_Result> GetInterviewQuestions()
         {
             try
             {
                 using (workorderEMSEntities context = new workorderEMSEntities())
                 {
-                    return context.spGetInterviewQuestion("Y").ToList();
+                    return context.spGetInterviewQuestion("Y").ToList();                   
+                    //return context.spGetInterviewQuestion("Y").ToList();
                 }
             }
             catch (Exception ex)
