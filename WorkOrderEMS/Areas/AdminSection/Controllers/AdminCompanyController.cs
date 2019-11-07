@@ -52,6 +52,7 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
                 ViewBag.Country = _ICommonMethod.GetAllcountries();
                 ViewBag.StateList = _ICommonMethod.GetStateByCountryId(CountryId);
                 ViewBag.JobTitleList = _ICommonMethod.GetGlobalCodeData("UserJobTitle");
+                ViewBag.LEAVETYPELIST = _ICommonMethod.GetGlobalCodeData("LEAVETYPE");
                 ViewBag.ClientInvoicingTerm = _IGlobalAdmin.ListClientInvoicingTerm();
                 ViewBag.VendorType = _IVendorManagement.ListVendorType();
                 ViewBag.OperatingHolder = _IGlobalAdmin.ListCompanyHolder(true);

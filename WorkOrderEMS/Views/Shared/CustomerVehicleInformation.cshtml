@@ -1,0 +1,253 @@
+﻿@model WorkOrderEMS.Models.CustomerSetupManagementModel
+@*@model dynamic*@
+@{
+    long UserType = 0; bool GloblaAdminUser, ITAdminUser, OnlyAdminUser, ManagerUser, EmployeeUser, ClientUser;
+    GloblaAdminUser = ITAdminUser = OnlyAdminUser = ManagerUser = EmployeeUser = ClientUser = false;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    if (ObjLogin != null)
+    {
+        UserType = ObjLogin.UserRoleId;
+
+        #region Get Active User Type Flag
+
+        switch ((WorkOrderEMS.Helper.UserType)ObjLogin.UserRoleId)
+        {
+            case WorkOrderEMS.Helper.UserType.GlobalAdmin:
+                GloblaAdminUser = true;
+                break;
+            case WorkOrderEMS.Helper.UserType.ITAdministrator:
+                ITAdminUser = true;
+                break;
+            case WorkOrderEMS.Helper.UserType.Administrator:
+                OnlyAdminUser = true;
+                break;
+            case WorkOrderEMS.Helper.UserType.Manager:
+                ManagerUser = true;
+                break;
+            case WorkOrderEMS.Helper.UserType.Employee:
+                EmployeeUser = true;
+                break;
+            case WorkOrderEMS.Helper.UserType.Client:
+                ClientUser = true;
+                break;
+            default:
+                GloblaAdminUser = ITAdminUser = OnlyAdminUser = ManagerUser = EmployeeUser = ClientUser = false;
+                break;
+        }
+
+        #endregion
+    }
+    else
+    {
+        WorkOrderEMS.Helper.AlertMessageClass ObjAlertMessageClass = new WorkOrderEMS.Helper.AlertMessageClass();
+        ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger; ViewBag.Message = WorkOrderEMS.Helper.CommonMessage.SessionExpired();
+        Response.Redirect("~/Views/Shared/_GlobalAdminLayout.cshtml");
+    }
+
+    string myModelprefix = ViewBag.myModelprefixName;
+    string UserTypeControlName = myModelprefix + "UserType";
+    var routeValues = HttpContext.Current.Request.RequestContext.RouteData.Values;
+    string Controller = string.Empty, ActionName = string.Empty;
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    string VendorInsuranceDocPath = System.Configuration.ConfigurationManager.AppSettings["CompanyDocuments"];
+
+    if (routeValues != null)
+    {
+        if (routeValues.ContainsKey("controller"))
+        {
+            Controller = ViewContext.RouteData.GetRequiredString("controller");
+        }
+        if (routeValues.ContainsKey("action"))
+        {
+            ActionName = ViewContext.RouteData.GetRequiredString("action");
+        }
+    }
+    if (ViewBag.UpdateMode != null && ViewBag.UpdateMode == true)
+    {
+        //ViewBag.Title = "Update Item";
+    }
+
+
+    //Code written By gayatri
+    //on 24-Nov-2014
+    //For Binding Dropdown on the basis of the user type
+    string idState = string.Empty;
+    string idCountry = string.Empty;
+    string functionName = string.Empty;
+    string stateName = string.Empty;
+    string ddlAdminSelectName = string.Empty;
+    stateName = myModelprefix + "Address.StateId";
+
+    ddlAdminSelectName = myModelprefix + "Administrator";
+    if (ViewBag.ActionSection == "manager")
+    {
+        idState = "BillingStates";
+        idCountry = "BillingCountry";
+        functionName = "BindState(true)";
+    }
+    else if ((ViewBag.ActionSection == "user") || (ViewBag.ActionSection == "employee"))
+    {
+        idState = "EmployeeStates";
+        idCountry = "EmployeeCountry";
+        functionName = "BindState('user')";
+    }
+    else
+    {
+        idState = "CompanyStates";
+        idCountry = "CompanyCountry";
+        functionName = "BindState(false)";
+    }
+    long hiddnUserType = 0;
+    if (!string.IsNullOrEmpty(ViewBag.ActionSection) && (ViewBag.ActionSection == "employee" || ViewBag.ActionSection == "user"))
+    { hiddnUserType = Convert.ToInt64(WorkOrderEMS.Helper.UserType.Employee); }
+
+}
+
+@Styles.Render("~/Scripts/ClockPickerCss")
+@Scripts.Render("~/Scripts/ClockPickerJs")
+<style>
+    .roundedtext {
+        border-radius: 12px
+    }
+
+    ::-webkit-input-placeholder {
+        font-style: italic;
+    }
+
+    :-moz-placeholder {
+        font-style: italic;
+    }
+
+    ::-moz-placeholder {
+        font-style: italic;
+    }
+
+    :-ms-input-placeholder {
+        font-style: italic;
+    }
+
+    .top-row > div {
+        float: left;
+        width: 48%;
+        margin-right: 4%;
+    }
+
+    input[type="radio"] {
+        height: 20px;
+        width: 20px;
+        background-color: #4475b5;
+        color: #4475b5;
+        float: left;
+    }
+</style>
+@Html.ValidationSummary(true)
+@Html.AntiForgeryToken()
+
+<script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+<input type="hidden" value='@hiddnUserType' name='@UserTypeControlName'>
+@*<input type="hidden" name="UserModel.EmployeeCategory" id="UserCategory" value='@Controller' />*@
+@Html.Hidden("StateList", null, new { id = myModelprefix + "StateList", Value = ViewBag.StateList })
+@Html.Hidden(myModelprefix + "UserId")
+@Html.Hidden(myModelprefix + "AddressMasterId")
+@Html.Hidden(myModelprefix + "Address.AddressMasterId")
+@Html.Hidden(myModelprefix + "OperatingHolderSameId")
+
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.maskedinput-1.3.min.js")"></script>
+<div class="panel panel-primary setup-content" id="myContractDetails">
+    <div class="basic-form">
+        <div class="form-group row">
+            <table id="tblSubItem" class="table table-striped table-bordered table-hover">
+                <tbody id="containerTblSubItem">
+                    @foreach (var item in Model.CustomerVehicleModel.CustomerVehicleDetails)
+                    {
+                        Html.RenderPartial("_CustomerVehicleDetails", item);
+                    }
+                </tbody>
+            </table>
+            <div class="col-md-12 pull-right">
+                <a id="btnAddRows" class="btn btn-lg right">
+                    <i class="fa fa-plus"></i> Add More Vehicle
+                </a>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">  Would you like to schedule an appoint to retrieve monthly parking pass - <span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.RadioButtonFor(model => model.IsMonthlyAppointmentSchedule, "true", new { @class = "radio rbtn", data_title = "Yes" })<span class="radio_span">
+                    &nbsp;Yes &nbsp;&nbsp;
+                </span>
+                @Html.RadioButtonFor(model => model.IsMonthlyAppointmentSchedule, "false", new { @style = "margin-left:20%;", @class = "radio rbtn", data_title = "No" })<span class="radio_span">
+                    &nbsp;No
+                </span>
+                @Html.ValidationMessageFor(model => model.IsMonthlyAppointmentSchedule)
+            </div>
+        </div>
+        <div class="form-group row clsScheduleAppointment" style="display:none;">
+            <label class="col-sm-2 col-form-label" for="ScheduleAppointDate">Select Date<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBox("ScheduleAppointDate", Model.ScheduleAppointDate.ToString("MM/dd/yyyy"), new { @Placeholder = "Schedule Appoint Date", @class = "form-control-sm input-rounded", @maxlength = "10" })
+                @Html.ValidationMessageFor(model => model.ScheduleAppointDate)
+            </div>
+        </div>
+        <div class="form-group row clsScheduleAppointment" style="display:none;">
+            <label class="col-sm-2 col-form-label" for="ScheduleAppointTime">Select Time<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.ScheduleAppointTime, null, new { @id = "ScheduleAppointTime", @onkeydown = "return false;", @class = "form-control-sm clockpicker input-rounded" })
+                @Html.ValidationMessageFor(model => model.ScheduleAppointTime)
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('.clockpicker').clockpicker();
+</script>
+<script>
+    $(document).ready(function () {
+        var itemIndex = $("#tblSubItem input.iHidden").length + 1;
+        $("input[type='radio']").change(function () {
+            if ($(this).val() == "true") {
+                $(".clsScheduleAppointment").show();
+                $("#ScheduleAppointDate").addClass('required');
+                $("#ScheduleAppointTime").addClass('required');
+            }
+            else if ($(this).val() == "false") {
+                bootbox.confirm("Are you sure, this will help ensure a member of management is available?", function (result) {
+                    if (result) {
+                        $(".clsScheduleAppointment").hide();
+                        $("#ScheduleAppointDate").removeClass('required');
+                        $("#ScheduleAppointTime").removeClass('required');
+                    } else {
+                        $('input:radio[name=IsMonthlyAppointmentSchedule][value=true]').prop('checked', true);
+                    }
+                });
+            }
+        });
+        $('#ScheduleAppointDate').datepicker({
+            format: "mm/dd/yyyy",
+        });
+
+        $("#btnAddRows").click(function () {
+            setTimeout(function () {
+                itemIndex = itemIndex + 1;
+                AddVehicleList(itemIndex);
+            }, 350);
+        });
+
+        var AddVehicleList = function (itemIndex) {
+            var StrURL = $_HostPrefix + '/CustomerManagement/AddVehicleList?id=' + itemIndex;
+            $.ajax({
+                url: StrURL,
+                cache: false,
+                data: {},
+                type: 'POST',
+                success: function (html) {
+                    $("#containerTblSubItem").append(html);
+                },
+                error: function (jqXHR, exception) {
+                    //TosterNotification("error", errorResult(jqXHR, exception), "Error");
+                }
+            });
+        }
+    });
+</script>

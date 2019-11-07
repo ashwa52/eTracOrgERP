@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.Entity.Core.Objects;
 using System.Globalization;
 using System.IO;
@@ -13,6 +14,8 @@ using System.Web.Mvc;
 using WorkOrderEMS.BusinessLogic;
 using WorkOrderEMS.BusinessLogic.Interfaces;
 using WorkOrderEMS.BusinessLogic.Managers;
+using WorkOrderEMS.Data;
+using WorkOrderEMS.Data.Classes;
 using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Helpers;
@@ -23,172 +26,191 @@ using WorkOrderEMS.Models.NewAdminModel;
 
 namespace WorkOrderEMS.Controllers.NewAdmin
 {
-	public class NewAdminController : Controller
-	{
-		// GET: NewAdmin
-		private readonly IDepartment _IDepartment;
-		private readonly IGlobalAdmin _GlobalAdminManager;
-		private readonly ICommonMethod _ICommonMethod;
-        private readonly IePeopleManager _IePeopleManager;
+    [Authorize]
+    public class NewAdminController : Controller
+    {
+        // GET: NewAdmin
+        UserRepository ObjUserRepository;
+        private readonly IDepartment _IDepartment;
+        private readonly IGlobalAdmin _GlobalAdminManager;
+        private readonly ICommonMethod _ICommonMethod;
         private readonly IQRCSetup _IQRCSetup;
-		private readonly string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
-		private readonly string WorkRequestImagepath = ConfigurationManager.AppSettings["WorkRequestImage"];
-		private readonly string ProfilePicPath = ConfigurationManager.AppSettings["ProfilePicPath"];
-		private readonly string ConstantImages = ConfigurationManager.AppSettings["ConstantImages"];
-		private readonly string NoImage = ConfigurationManager.AppSettings["DefaultImage"];
+        private readonly IePeopleManager _IePeopleManager;
+        private readonly string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
+        private readonly string WorkRequestImagepath = ConfigurationManager.AppSettings["WorkRequestImage"];
+        private readonly string ProfilePicPath = ConfigurationManager.AppSettings["ProfilePicPath"];
+        private readonly string ConstantImages = ConfigurationManager.AppSettings["ConstantImages"];
+        private readonly string NoImage = ConfigurationManager.AppSettings["DefaultImage"];
 
-		public NewAdminController(IDepartment _IDepartment, IGlobalAdmin _GlobalAdminManager, ICommonMethod _ICommonMethod, IQRCSetup _IQRCSetup)
-		{
-			this._IDepartment = _IDepartment;
-			this._GlobalAdminManager = _GlobalAdminManager;
-			this._ICommonMethod = _ICommonMethod;
-			this._IQRCSetup = _IQRCSetup;
-		}
-		public ActionResult Index()
-		{
-			return View("~/Views/Shared/_NewDashboard.cshtml");
-		}
-		public ActionResult ListLocation()
-		{
-			return View();
-		}
-		/// <summary>
-		/// Created By : Ashwajit Bansod
-		/// Created Date : 17-August-2019
-		/// Created For : To get location List
-		/// </summary>
-		/// <param name="_search"></param>
-		/// <param name="UserId"></param>
-		/// <param name="locationId"></param>
-		/// <param name="rows"></param>
-		/// <param name="page"></param>
-		/// <param name="TotalRecords"></param>
-		/// <param name="sord"></param>
-		/// <param name="txtSearch"></param>
-		/// <param name="sidx"></param>
-		/// <param name="UserType"></param>
-		/// <returns></returns>
-		[HttpGet]
-		public JsonResult GetListLocation(string _search, long? UserId, int? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
-		{
-			eTracLoginModel ObjLoginModel = null;
-			GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
-			if (Session["eTrac"] != null)
-			{
-				ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-				//if (locationId == null)
-				//{
-				//    locationId = Convert.ToInt32(ObjLoginModel.LocationID);
-				//}
-				UserId = ObjLoginModel.UserId;
-			}
 
-			JQGridResults result = new JQGridResults();
-			var result1 = new List<ListLocationModel>();
-			List<JQGridRow> rowss = new List<JQGridRow>();
-			sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
-			sidx = string.IsNullOrEmpty(sidx) ? "LocationId" : sidx;
-			txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
-			try
-			{
-				ObjectParameter paramTotalRecords = new ObjectParameter("TotalRecords", typeof(int));
-				var data = _GlobalAdminManager.ListAllLocation(locationId, page, rows, sidx, sord, txtSearch, paramTotalRecords);
+        DBUtilities DB = new DBUtilities();
+        public NewAdminController(IDepartment _IDepartment, IGlobalAdmin _GlobalAdminManager, ICommonMethod _ICommonMethod, IQRCSetup _IQRCSetup, IePeopleManager _IePeopleManager)
+        {
+            this._IDepartment = _IDepartment;
+            this._GlobalAdminManager = _GlobalAdminManager;
+            this._ICommonMethod = _ICommonMethod;
+            this._IQRCSetup = _IQRCSetup;
+            this._IePeopleManager = _IePeopleManager;
+        }
+        public ActionResult Index()
+        {
 
-				foreach (var locList in data)
-				{
-					//Convert Id to Encrypted data
-					var id = Cryptography.GetEncryptedData(locList.LocationId.ToString(), true);
-					locList.Id = id;
-					result1.Add(locList);
-				}
-				//This is for JSGrid
-				var tt = result1.ToArray();
-				//foreach (var locList in result1)
-				//{
-				//    JQGridRow row = new JQGridRow();
-				//    row.id = Cryptography.GetEncryptedData(locList.LocationId.ToString(), true);
-				//    row.cell = new string[11];
-				//    row.cell[0] = locList.LocationName;
-				//    row.cell[1] = locList.Address + "," + locList.City + ", " + locList.State + ", " + locList.ZipCode + "," + locList.Country;
-				//    row.cell[2] = locList.LocationAdministrator;
-				//    row.cell[3] = locList.LocationManager;
-				//    row.cell[4] = locList.LocationEmployee;
-				//    row.cell[5] = locList.City;
-				//    row.cell[6] = locList.State;
-				//    row.cell[7] = locList.Country;
-				//    row.cell[8] = locList.PhoneNo + " / " + locList.Mobile;
-				//    row.cell[9] = locList.Description;
-				//    row.cell[10] = Convert.ToString(locList.QRCID);
-				//    rowss.Add(row);
-				//}
-				result.rows = rowss.ToArray();
-				result.page = Convert.ToInt32(page);
-				result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
-				result.records = Convert.ToInt32(TotalRecords.Value);
-				return Json(tt, JsonRequestBehavior.AllowGet);
-			}
-			catch (Exception ex)
-			{ return Json(ex.Message, JsonRequestBehavior.AllowGet); }
-		}
-		/// <summary>
-		/// Created By : Ashwajit Bansod
-		/// Created Date : 18-August-2019
-		/// Created For : To get Location details by Location Id
-		/// </summary>
-		/// <param name="LocationId"></param>
-		/// <param name="rows"></param>
-		/// <param name="page"></param>
-		/// <param name="TotalRecords"></param>
-		/// <param name="sord"></param>
-		/// <param name="sidx"></param>
-		/// <param name="txtSearch"></param>
-		/// <returns></returns>
-		[HttpGet]
-		public ActionResult DisplayLocationData(int LocationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, String sidx = null, string txtSearch = null)
-		{
-			eTracLoginModel ObjLoginModel = null;
-			GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
-			var details = new LocationDetailsModel();
-			if (Session["eTrac"] != null)
-			{
-				ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-				if (LocationId == null)
-				{
-					LocationId = Convert.ToInt32(ObjLoginModel.LocationID);
-				}
-			}
-			try
-			{
-				sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
-				sidx = string.IsNullOrEmpty(sidx) ? "LocationId" : sidx;
-				var obj_Common_B = new Common_B();
-				ObjectParameter paramTotalRecords = new ObjectParameter("TotalRecords", typeof(int));
-				var data = _GlobalAdminManager.LocationDetailByLocationID(LocationId);
-				if (data.Count() > 0)
-				{
-					var ListLocationModel = new ListLocationModel();
-					var serivces = obj_Common_B.GetLocationServicesByLocationID(LocationId, 0);
-					foreach (var locList in data)
-					{
-						//var id = Cryptography.GetEncryptedData(locList.LocationId.ToString(), true);
-						ListLocationModel.LocationName = locList.LocationName;
-						ListLocationModel.Address = locList.Address1 + "," + locList.Address2;
-						ListLocationModel.City = locList.City;
-						ListLocationModel.State = locList.LocationState;
-						ListLocationModel.Country = locList.LocationCountry;
-						ListLocationModel.Mobile = locList.PhoneNo + " / " + locList.Mobile;
-						ListLocationModel.Description = locList.Description;
-						ListLocationModel.ZipCode = locList.ZipCode;
-						ListLocationModel.LocationSubTypeDesc = locList.LocationSubTypeDesc;
-						//ListLocationModel.LocationCode = locList.Loc;
-						ListLocationModel.LocationServices = serivces;
-					}
-					details.ListLocationModel = ListLocationModel;
-				}
+            //if(Session["eTrac"]==null)
+            //{
+            //  string usedd=  HttpContext.User.Identity.Name;
+            //    ObjUserRepository = new UserRepository();
+            //    UserRegistration loginUser = ObjUserRepository.GetAll(u => u.AlternateEmail == usedd).FirstOrDefault();
 
-			}
-			catch (Exception ex)
-			{
+            //    Session["eTrac"] = loginUser;
+            // }
+            return View("~/Views/Shared/_NewDashboard.cshtml");
+        }
+
+
+        public ActionResult ListLocation()
+        {
+            return View();
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 17-August-2019
+        /// Created For : To get location List
+        /// </summary>
+        /// <param name="_search"></param>
+        /// <param name="UserId"></param>
+        /// <param name="locationId"></param>
+        /// <param name="rows"></param>
+        /// <param name="page"></param>
+        /// <param name="TotalRecords"></param>
+        /// <param name="sord"></param>
+        /// <param name="txtSearch"></param>
+        /// <param name="sidx"></param>
+        /// <param name="UserType"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public JsonResult GetListLocation(string _search, long? UserId, int? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                //if (locationId == null)
+                //{
+                //    locationId = Convert.ToInt32(ObjLoginModel.LocationID);
+                //}
+                UserId = ObjLoginModel.UserId;
+            }
+
+            JQGridResults result = new JQGridResults();
+            var result1 = new List<ListLocationModel>();
+            List<JQGridRow> rowss = new List<JQGridRow>();
+            sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
+            sidx = string.IsNullOrEmpty(sidx) ? "LocationId" : sidx;
+            txtSearch = string.IsNullOrEmpty(_search) ? "" : _search; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
+            try
+            {
+                ObjectParameter paramTotalRecords = new ObjectParameter("TotalRecords", typeof(int));
+                var data = _GlobalAdminManager.ListAllLocation(locationId, page, rows, sidx, sord, txtSearch, paramTotalRecords);
+
+                foreach (var locList in data)
+                {
+                    //Convert Id to Encrypted data
+                    var id = Cryptography.GetEncryptedData(locList.LocationId.ToString(), true);
+                    locList.Id = id;
+                    result1.Add(locList);
+                }
+                //This is for JSGrid
+                var tt = result1.ToArray();
+                //foreach (var locList in result1)
+                //{
+                //    JQGridRow row = new JQGridRow();
+                //    row.id = Cryptography.GetEncryptedData(locList.LocationId.ToString(), true);
+                //    row.cell = new string[11];
+                //    row.cell[0] = locList.LocationName;
+                //    row.cell[1] = locList.Address + "," + locList.City + ", " + locList.State + ", " + locList.ZipCode + "," + locList.Country;
+                //    row.cell[2] = locList.LocationAdministrator;
+                //    row.cell[3] = locList.LocationManager;
+                //    row.cell[4] = locList.LocationEmployee;
+                //    row.cell[5] = locList.City;
+                //    row.cell[6] = locList.State;
+                //    row.cell[7] = locList.Country;
+                //    row.cell[8] = locList.PhoneNo + " / " + locList.Mobile;
+                //    row.cell[9] = locList.Description;
+                //    row.cell[10] = Convert.ToString(locList.QRCID);
+                //    rowss.Add(row);
+                //}
+                result.rows = rowss.ToArray();
+                result.page = Convert.ToInt32(page);
+                result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
+                result.records = Convert.ToInt32(TotalRecords.Value);
+                return Json(tt, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 18-August-2019
+        /// Created For : To get Location details by Location Id
+        /// </summary>
+        /// <param name="LocationId"></param>
+        /// <param name="rows"></param>
+        /// <param name="page"></param>
+        /// <param name="TotalRecords"></param>
+        /// <param name="sord"></param>
+        /// <param name="sidx"></param>
+        /// <param name="txtSearch"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult DisplayLocationData(int LocationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, String sidx = null, string txtSearch = null)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
+            var details = new LocationDetailsModel();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                if (LocationId == null)
+                {
+                    LocationId = Convert.ToInt32(ObjLoginModel.LocationID);
+                }
+            }
+            try
+            {
+                sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
+                sidx = string.IsNullOrEmpty(sidx) ? "LocationId" : sidx;
+                var obj_Common_B = new Common_B();
+                ObjectParameter paramTotalRecords = new ObjectParameter("TotalRecords", typeof(int));
+                var data = _GlobalAdminManager.LocationDetailByLocationID(LocationId);
+                if (data.Count() > 0)
+                {
+                    var ListLocationModel = new ListLocationModel();
+                    var serivces = obj_Common_B.GetLocationServicesByLocationID(LocationId, 0);
+                    foreach (var locList in data)
+                    {
+                        //var id = Cryptography.GetEncryptedData(locList.LocationId.ToString(), true);
+                        ListLocationModel.LocationName = locList.LocationName;
+                        ListLocationModel.Address = locList.Address1 + "," + locList.Address2;
+                        ListLocationModel.City = locList.City;
+                        ListLocationModel.State = locList.LocationState;
+                        ListLocationModel.Country = locList.LocationCountry;
+                        ListLocationModel.Mobile = locList.PhoneNo + " / " + locList.Mobile;
+                        ListLocationModel.Description = locList.Description;
+                        ListLocationModel.ZipCode = locList.ZipCode;
+                        ListLocationModel.LocationSubTypeDesc = locList.LocationSubTypeDesc;
+                        //ListLocationModel.LocationCode = locList.Loc;
+                        ListLocationModel.LocationServices = serivces;
+                    }
+                    details.ListLocationModel = ListLocationModel;
+                }
+                var ContractDetailsModel = new ContractDetailsModel();
+                var LocationRuleMappingModel = new LocationRuleMappingModel();
+                details.ContractDetailsModel = GetContractInfo(LocationId).First();
+                details.LocationRuleMappingModel = GetLocationRules(LocationId).First();
+            }
+            catch (Exception ex)
+            {
 
             }
             return View(details);
@@ -458,7 +480,9 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             {
                 DateTime tt = Convert.ToDateTime(toDate);
                 if (tt.ToLongTimeString() == "12:00:00 AM")
+                {
                     isUTCDay = false;
+                }
             }
 
             if (fromDate != null && toDate != null)
@@ -1168,5 +1192,52 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             return Json(result, JsonRequestBehavior.AllowGet);
         }
     }
+    #region Location wise Deal Master
+    /// <summary>
+    /// Created By : Jemin Vasoya
+    /// Created Date : 19-Oct-2019
+    /// Created For : To Manage Location wise Deal
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    public JsonResult GetListDealsSpecific(int id)
+    {
+        List<ListDealsSpecificToLocation> LDSTL = new List<ListDealsSpecificToLocation>();
+        try
+        {
+            LDSTL = new List<ListDealsSpecificToLocation>();
+            LDSTL = GetDealsSpecificList(id);
+            //This is for JSGrid
+            var tt = LDSTL.ToArray();
+            return Json(tt, JsonRequestBehavior.AllowGet);
+        }
+        catch (Exception ex)
+        { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+    }
 
+    public List<ContractDetailsModel> GetContractInfo(int LocationId)
+    {
+        string QueryString = "exec Usp_GetContractInfo '" + LocationId + "'";
+        DataTable dataTable = DB.GetDTResponse(QueryString);
+        List<ContractDetailsModel> ItemList = DataRowToObject.CreateListFromTable<ContractDetailsModel>(dataTable);
+        return ItemList;
+    }
+
+    public List<ListDealsSpecificToLocation> GetDealsSpecificList(int id)
+    {
+        string QueryString = "exec Usp_GetDealsSpecificList '" + id + "'";
+        DataTable dataTable = DB.GetDTResponse(QueryString);
+        List<ListDealsSpecificToLocation> ItemList = DataRowToObject.CreateListFromTable<ListDealsSpecificToLocation>(dataTable);
+        return ItemList;
+    }
+
+    public List<LocationRuleMappingModel> GetLocationRules(int LocationId)
+    {
+        string QueryString = "exec Usp_GetContractInfo '" + LocationId + "'";
+        DataTable dataTable = DB.GetDTResponse(QueryString);
+        List<LocationRuleMappingModel> ItemList = DataRowToObject.CreateListFromTable<LocationRuleMappingModel>(dataTable);
+        return ItemList;
+    }
+    #endregion
+}
 }

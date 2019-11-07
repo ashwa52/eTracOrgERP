@@ -11,5 +11,8 @@ namespace WorkOrderEMS.Models
         public ListLocationModel ListLocationModel { get; set; }
         public CostCodeModel CostCodeModel { get; set; }
         public BudgetForLocationModel BudgetForLocationModel { get; set; }
+        public ContractDetailsModel ContractDetailsModel { get; set; }
+
+        public LocationRuleMappingModel LocationRuleMappingModel { get; set; }
     }
 }

@@ -1,0 +1,68 @@
+﻿@model WorkOrderEMS.Models.CustomerVehicleDetails
+@using WorkOrderEMS.Helpers;
+@using WorkOrderEMS.Data.Classes;
+@using WorkOrderEMS.BusinessLogic;
+
+@{
+//ICommonMethod _ICommonMethod;
+//long CountryId = 1;
+//ViewBag.StateList = _ICommonMethod.GetStateByCountryId(CountryId);
+}
+<tr class="editorRow">
+    @Html.Hidden("hdnblnk", Model.SrNo, new { @class = "iHidden" })
+    @using (Html.BeginCollectionItem("CustomerVehicleDetailsList", Model.SrNo.ToString()))
+        {
+    <td>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="VendorName"> License Plate No.</label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.LicensePlateNo, new { @class = "form-control input-rounded ", @placeholder = "LicensePlateNo" })
+                <div class="errorspace">
+                    @Html.ValidationMessageFor(model => model.LicensePlateNo)
+                </div>
+                @Html.HiddenFor(model => model.ID)
+            </div>
+            <label class="col-sm-2 col-form-label" for="VendorName"> State</label>
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.State, new SelectList(ViewBag.StateList, "StateId", "StateName"), "--Select State--", new {@class = "form-control input-rounded" })
+                <div class="errorspace">
+                    @Html.ValidationMessageFor(model => model.State)
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="VendorName"> Year</label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(c => c.Year, new { @class = "form-control input-rounded ", @placeholder = "Year" })
+                <div class="errorspace">
+                    @Html.ValidationMessageFor(model => model.Year)
+                </div>
+            </div>
+            <label class="col-sm-2 col-form-label" for="VendorName"> Make</label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(c => c.Make, new { @class = "form-control input-rounded ", @placeholder = "Make" })
+                <div class="errorspace">
+                    @Html.ValidationMessageFor(model => model.Make)
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="VendorName"> Model</label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(c => c.Model, new { @class = "form-control input-rounded", @placeholder = "Model" })
+                <div class="errorspace">
+                    @Html.ValidationMessageFor(c => c.Model)
+                </div>
+            </div>
+            <label class="col-sm-2 col-form-label" for="VendorName"> Color</label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(c => c.Color, new { @class = "form-control input-rounded", @placeholder = "Color" })
+                <div class="errorspace">
+                    @Html.ValidationMessageFor(c => c.Color)
+                </div>
+            </div>
+        </div>
+    </td>
+        }
+</tr>
+

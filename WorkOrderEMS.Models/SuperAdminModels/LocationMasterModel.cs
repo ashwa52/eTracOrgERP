@@ -79,6 +79,14 @@ namespace WorkOrderEMS.Models
 
         public ContractDetailsModel ContractDetailsModel { get; set; }
         public long QuickBookLocationId { get; set; }
+
+        // jemin
+        [Required]
+        [DisplayName("Payment Terms")]
+        public Nullable<int> PaymenttermsId { get; set; }
+        public LocationRuleMappingModel LocationRuleMappingModel { get; set; }
+
+
     }
 
     public class LocationListModel

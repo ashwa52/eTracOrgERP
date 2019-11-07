@@ -121,7 +121,14 @@
             <li>
                 <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-user-circle-o"></i><span class="nav-text">ePeople</span></a>
                 <ul aria-expanded="false">
+                    <li><a href="@Url.Action("HolidayMaster", "EPeople")" data-oldDash="Yes">Holiday Management </a></li>
+                    <li><a href="@Url.Action("LeaveManagement", "EPeople")" data-oldDash="Yes">Leave Management </a></li>
                     <li><a href="@Url.Action("ePeopleDashboard", "NewAdmin")" data-oldDash="No">Employee Management</a></li>
+                    <li><a href="@Url.Action("AttandanceManager", "eTime")" data-oldDash="No">Attandance Card</a></li>
+                    <li><a href="@Url.Action("ShiftMaster", "HRMS")" data-oldDash="Yes">Manage Shift</a></li>
+                    <li><a href="@Url.Action("WebEmployeeAttendance", "EPeople")" data-oldDash="Yes">Web Attendance</a></li>
+                    <li><a href="@Url.Action("ePeopleDashboard", "NewAdmin")" data-oldDash="No">Hiring & Onboarding</a></li>
+                    <li><a href="@Url.Action( "ePeopleDashboard", "NewAdmin")" data-oldDash="No">Performance Management</a></li>
                     <li><a href="@Url.Action("HiringOnBoardingDashboard", "NewAdmin")" data-oldDash="No">Hiring & Onboarding</a></li>
                     <li><a href="@Url.Action( "PerformanceManagement", "NewAdmin" )" data-oldDash="No">Performance Management</a></li>
                     @*<li><a href="@Url.Action( "ePeopleDashboard", "NewAdmin")" data-oldDash="No">eTime </a></li>*@
@@ -198,8 +205,10 @@
                 <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-usd"></i><span class="nav-text">eCounting</span></a>
                 <ul aria-expanded="false">
                     <li>
+                        <a class="" href="@Url.Action("ListWaitingCustomers", "CustomerManagement")" data-oldDash="Yes"><i class="fa fa-user" aria-hidden="true"></i>Customers</a>
+                    </li>
+                    <li>
                         <a class="" href="@Url.Action("UnApprovedVendor", "VendorManagement")" data-oldDash="Yes"><i class="fa fa-vimeo" aria-hidden="true"></i>Vendor Management </a>
-
                     </li>
                     <li><a href="@Url.Action("AllPOList", "POTypeData")" data-oldDash="Yes"><i class="fa fa-file-text" aria-hidden="true"></i><span class="nav-text">PO</span></a></li>
                     <li>
@@ -209,6 +218,14 @@
 
                     <li><a href="@Url.Action("PaymentView", "Payment")" data-oldDash="Yes"><i class="fa fa-money" aria-hidden="true"></i><span class="nav-text">Payment Desk</span></a></li>
                     <li><a href="@Url.Action("eCountingReport", "eCountingReport")" data-oldDash="Yes"><i class="fa fa-bar-chart" aria-hidden="true"></i><span class="nav-text">Reports</span></a></li>
+                    <li>
+                        <a class="" href="@Url.Action("InvoicetList", "GlobalSettings")" data-oldDash="No"><i class="fa fa-vimeo" aria-hidden="true"></i>Invoices </a>
+
+                    </li>
+                    <li>
+                        <a class="" href="@Url.Action("ListCustomerEnquiry", "CustomerManagement")" data-oldDash="No"><i class="fa fa-vimeo" aria-hidden="true"></i>Invoices </a>
+
+                    </li>
                     @*<li>
             <a class="" href="javascript:void()" aria-expanded="false">Financial Form</a>
             <ul aria-expanded="false">
@@ -223,10 +240,28 @@
         <li><a href="@Url.Action("DebitMemoView", "DebitMemo")" data-oldDash="Yes"><i class="mdi mdi-speedometer"></i><span class="nav-text">Debit Memo</span></a></li>*@
 
                 </ul>
-              
+
 
             </li>
-            
+            <li>
+                <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-usd"></i><span class="nav-text">Admin Settings </span></a>
+                <ul aria-expanded="false">
+                    <li>
+                        <a class="" href="@Url.Action("GlobalSettingsMaster", "GlobalAdmin")" data-oldDash="No"><i class="fa fa-vimeo" aria-hidden="true"></i>Global Settings </a>
+                    </li>
+                    <li>
+                        <a class="" href="@Url.Action("BankAccountList", "GlobalSettings")" data-oldDash="No"><i class="fa fa-vimeo" aria-hidden="true"></i>Bank Account </a>
+
+                    </li>
+                    <li>
+                        <a class="" href="@Url.Action("RuleList", "GlobalSettings")" data-oldDash="No"><i class="fa fa-vimeo" aria-hidden="true"></i>Global A/R Rules </a>
+
+                    </li>
+
+                </ul>
+
+
+            </li>
         </ul>
     </div>
 </div>

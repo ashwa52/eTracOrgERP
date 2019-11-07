@@ -1,0 +1,326 @@
+﻿@model WorkOrderEMS.Models.CustomerAllViewDataModel
+@{
+    var isRefresh = ViewBag.IsPageRefresh;
+    if (isRefresh == true)
+    {
+        Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = null;
+    }
+    long locationId = 0;
+    long userType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserProfile = "";
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+    }
+}
+@section scripts{
+    <script type="text/javascript">
+        var $_locationId = '@locationId';
+        var $_userTypeId = '@userType';
+        var IsUpdate = '@ViewBag.UpdateMode';
+        //var $_LocationIdData = @ViewBag.AllocatedLocation;
+        var ServiceID;
+        var LocationIDs;
+
+    </script>
+}
+
+<style>
+
+    .form-control {
+        border: 1px solid #a0b3b0 !important;
+    }
+
+    label .req {
+        margin: 2px;
+        color: #ed2f35;
+    }
+
+    .form-control:hover, .form-control:focus, .form-control.active {
+        box-shadow: none;
+        background: #fff;
+        color: #454545;
+    }
+
+    .stepwizard {
+        display: table;
+        width: 100% !important;
+        position: relative;
+        margin-left: 0% !important;
+    }
+
+    .headerSize {
+        height: 36px;
+    }
+
+    .error {
+        color: red;
+    }
+
+    .stepwizard-step p {
+        margin-top: 0px;
+        color: #666;
+        font-size: 20px;
+        margin-left: -35px;
+    }
+
+    .stepwizard-row {
+        display: table-row;
+    }
+
+
+
+    .stepwizard-step button[disabled] {
+        /*opacity: 1 !important;
+    filter: alpha(opacity=100) !important;*/
+    }
+
+    .stepwizard .btn.disabled, .stepwizard .btn[disabled], .stepwizard fieldset[disabled] .btn {
+        opacity: 1 !important;
+        color: #bbb;
+    }
+
+    .stepwizard-row:before {
+        top: 14px;
+        bottom: 0;
+        position: absolute;
+        content: " ";
+        width: 100%;
+        height: 1px;
+        background-color: #ccc;
+        z-index: 0;
+    }
+
+    .stepwizard-step {
+        display: table-cell;
+        /*text-align: center;*/
+        position: relative;
+    }
+
+    .btn-circledata {
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        padding: 6px 0;
+        font-size: 12px;
+        line-height: 1.428571429;
+        border-radius: 15px;
+    }
+
+    .stepwizard-step {
+        width: 20%;
+        text-align: center;
+        font-size: 14px;
+    }
+
+        .stepwizard-step p {
+            font-size: 14px;
+            margin-left: 0;
+            text-align: center;
+        }
+
+    .multiselect-container .checkbox input {
+        margin-right: 8px;
+    }
+
+    .multiselect-container label.checkbox {
+        margin: 6px 0 0 !important;
+        padding: 0 0 0 30px;
+        width: 100%;
+    }
+
+    .multiselect-container input {
+        float: left;
+        margin-rop: 7px !important;
+    }
+
+    input[type="checkbox"]:after {
+        background: #0aa0cd;
+    }
+
+    .radio_span {
+        float: left;
+    }
+</style>
+<link href="~/Content/eCounting/VendorWizard.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/common/Common.js"></script>
+<script type="text/javascript" src="~/Scripts/BindDropDown/DropDownList.js"></script>
+<script src="~/Scripts/simple.money.format.js"></script>
+<script type="text/javascript" src="~/Scripts/common/Masking.js"></script>
+<style>
+
+    .input-disabled {
+        background-color: #EBEBE4;
+    }
+</style>
+<br />
+<div class="content-body">
+    <div class="container-fluid">
+        <!-- row -->
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card aos-init aos-animate" data-aos="fade-up">
+                    <div class="card-header headerSize">
+                        <h4 class="card-title" style="color:white;"><strong>SetUp Customer</strong></h4>
+                    </div>
+                    <div class="card-body">
+
+                        @using (Html.BeginForm("CustomerManagementSetup", "CustomerManagement", FormMethod.Post, new { enctype = "multipart/form-data", @id = "msform", @class = "step-form-horizontal", @style = "" }))
+                        {
+
+                            @Html.ValidationSummary(true)
+                            @Html.AntiForgeryToken()
+                            <!-- progressbar -->
+                            //if (ViewBag.UpdateMode == false)
+                            //{
+                            <div class="stepwizard">
+                                <div class="stepwizard-row setup-panel" id="progressbar">
+                                    @*if (ViewBag.UpdateMode == false)
+                                        {*@
+                                    <div class="stepwizard-step col-xs-2">
+                                        <a href="#step-1" type="button" class="btn btn-circledata btn-default btn-success active">1</a>
+                                        <p><small>Basic Information</small></p>
+                                    </div>
+                                    <div class="stepwizard-step col-xs-2">
+                                        <a href="#step-2" type="button" class="btn btn-circledata btn-default btn-default ">2</a>
+                                        <p><small>Notes</small></p>
+                                    </div>
+                                    <div class="stepwizard-step col-xs-2">
+                                        <a href="#step-3" type="button" class="btn btn-circledata btn-default btn-default ">3</a>
+                                        <p><small>Process </small></p>
+                                    </div>
+                                    
+                                    @*<div class="stepwizard-step col-xs-2">
+                                            <a href="#step-5" type="button" class="btn btn-circledata btn-default btn-default ">5</a>
+                                            <p><small> Complete</small></p>
+                                        </div>*@
+                                </div>
+                            </div>
+                            //}
+                            <!-- fieldsets -->
+                            
+                            <br />
+                            <fieldset id="CustomerSetUp">
+                                <div class="panel panel-primary setup-content">
+                                    <div class="basic-form">
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label" for="FirstName">First Name<span class="req">*</span></label>
+                                            <div class="col-sm-4">
+                                                @Html.DisplayFor(model => model.FirstName, new { @class = "form-control input-rounded", @placeholder = "First Name" })
+                                                @Html.ValidationMessageFor(model => model.FirstName)
+                                            </div>
+                                            <label class="col-sm-2 col-form-label" for="LastName">Last Name<span class="req">*</span></label>
+                                            <div class="col-sm-4">
+                                                @Html.DisplayFor(model => model.LastName, new { @class = "form-control input-rounded", @placeholder = "Last Name" })
+                                                @Html.ValidationMessageFor(model => model.LastName)
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label" for="Address1">Address<span class="req">*</span></label>
+                                            <div class="col-sm-4">
+                                                @Html.DisplayFor(model => model.Address1, new { @id = "Address1", @class = "form-control input-rounded", @placeholder = "Address" })
+                                                <div class="errorspace">
+                                                    @Html.ValidationMessageFor(model => model.Address1)
+                                                </div>
+                                            </div>
+                                            <label class="col-sm-2 col-form-label" for="Address1City"> City<span class="req">*</span></label>
+                                            <div class="col-sm-4">
+                                                @Html.DisplayFor(model => model.Address1City, new { @id = "Address1City", @class = "form-control input-rounded", @placeholder = "City" })
+                                                <div class="errorspace">
+                                                    @Html.ValidationMessageFor(model => model.Address1City)
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label" for="Address1State">State<span class="req">*</span></label>
+                                            <div class="col-sm-4">
+                                                @Html.DisplayFor(model => model.Address1StateText, new { @id = "Address1City", @class = "form-control input-rounded", @placeholder = "City" })
+                                                <div class="errorspace">
+                                                    @Html.ValidationMessageFor(model => model.Address1StateText)
+                                                </div>
+                                            </div>
+                                            <label class="col-sm-2 col-form-label" for="ZipCode1"> Zip<span class="req">*</span></label>
+                                            <div class="col-sm-4">
+                                                @*@Html.DisplayFor(model => model.ZipCode1, new { @class = "form-control input-rounded", @placeholder = "Zip" })
+                                                <div class="errorspace">
+                                                    @Html.ValidationMessageFor(model => model.ZipCode1)
+                                                </div>*@
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            
+                                            @*<label class="col-sm-2 col-form-label" for="Email">E-mail<span class="req">*</span></label>
+                                            <div class="col-sm-4">
+                                                @Html.TextBoxFor(model => model.EmailId, new { @class = "form-control input-rounded", @placeholder = "Email Id" })
+                                                <div class="errorspace">
+                                                    @Html.ValidationMessageFor(model => model.EmailId)
+                                                </div>
+                                            </div>*@
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="col-sm-2 col-form-label" for="Phone1">Work Phone No.<span class="req">*</span></label>
+                                            <div class="col-sm-4">
+                                                @Html.DisplayFor(model => model.Phone1, new { @maxLength = "15", @class = "form-control input-rounded", @placeholder = "Work Phone No." })
+                                                <div class="errorspace">
+                                                    @Html.ValidationMessageFor(model => model.Phone1)
+                                                </div>
+                                            </div>
+                                            <label class="col-sm-2 col-form-label" for="Phone2">Cell Phone No.</label>
+                                            <div class="col-sm-4">
+                                                @Html.DisplayFor(model => model.Phone2, new { @maxLength = "15", @class = "form-control input-rounded", @placeholder = "Cell Phone No." })
+                                                <div class="errorspace">
+                                                    @Html.ValidationMessageFor(model => model.Phone2)
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                       
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                @if (ViewBag.UpdateMode == false)
+                                {
+                                    <a href="javascript:void(0)" id="LocationNext" class="next fa fa-long-arrow-right previousBtndata pull-right" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>
+                                }
+                                else
+                                {
+                                    <a href="javascript:void(0)" id="LocationNext" class="next fa fa-long-arrow-right previousBtndata pull-right" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>
+                                    @*<button type="submit" onclick="return validateCustomFields(this);" class="btn btn-success pull-right marginright10 marginbottom10 Lmar10" style="border-radius:25px;width:150px;">Save &amp; Update </button>*@
+                                    @*<input type="button" onclick="location.href='@Url.Action("ListCustomers", "CustomerManagement")'" class="btn btn-default bluebutton pull-right marginright10 marginbottom10 Lmar10" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />*@
+                                }
+                            </fieldset>
+
+                            <fieldset id="CustomerVehicleInformation">
+                                
+                                <a href="javascript:void(0)" id="" class="next fa fa-long-arrow-right previousBtndata pull-right" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>
+                                <a href="javascript:void(0)" class="previous fa fa-long-arrow-left pull-left" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>
+                            </fieldset>
+
+                            <fieldset id="CustomerPaymentDetails">
+                                
+                                <a href="javascript:void(0)" id="" class="next nxt-btn fa fa-long-arrow-right previousBtndata pull-right" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>
+                                <a href="javascript:void(0)" class="previous fa fa-long-arrow-left pull-left prev_btn" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>
+                            </fieldset>
+
+                        
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/eCounting/CustomerMultiStepWizard.js"></script>
+<script src="~/Content/NewAdminContent/VENDOR/jquery-steps/build/jquery.steps.min.js"></script>
+<script src="~/Scripts/NewAdminJS/plugins-init/jquery-steps-init.js"></script>

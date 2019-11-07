@@ -190,4 +190,61 @@ namespace WorkOrderEMS.Models
         public int records { get; set; }
         public List<UserModel> rows { get; set; }
     }
+    public class ShiftModel
+    {
+        public int Id { get; set; }
+        public string ShiftCode { get; set; }
+        public string ShiftName { get; set; }
+        public string Description { get; set; }
+        public bool IsActive { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
+    }
+    public class HolidayManagment    {
+        public int Id { get; set; }
+        public int SrNo { get; set; }
+        public DateTime HolidayDate { get; set; }
+        public string HolidayName { get; set; }
+        public string Description { get; set; }
+        public bool IsActive { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public List<HolidayManagment> HMM { get; set; }
+        public string HolidayDateString { get; set; }
+    }
+
+    public class Tbl_Employee_Leave_Management
+    {
+        public int Id { get; set; }
+        public int SrNo { get; set; }
+        public int EmployeeId { get; set; }
+        
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+        public string LeaveReason { get; set; }
+        public string LeaveType { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsApproved { get; set; }
+        public bool IsRejected { get; set; }
+        public int ApprovedRejectBy { get; set; }
+        public string RejectReason { get; set; }
+        public int IdHid { get; set; }
+        public DateTime RejectDate { get; set; }
+        public DateTime ApprovedDate { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string FromDateString { get; set; }
+        public string ToDateString { get; set; }
+
+        public List<Tbl_Employee_Leave_Management> TELM { get; set; }
+    }
+    public class WebEmployeeAttendance
+    {
+        public int Id { get; set; }
+        public int SrNo { get; set; }
+        public string CreatedBy { get; set; }
+        public List<WebEmployeeAttendance> HMM { get; set; }
+    }
 }

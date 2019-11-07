@@ -45,5 +45,19 @@ namespace WorkOrderEMS.Models
         public string ReportingType { get; set; }
         public string Years { get; set; }
         public long OperatingHolderSameId { get; set; }
+
+        //jemin
+
+        [Required(ErrorMessage = "Client Invoicing Date is Required")]
+        public DateTime ClientInvoicingDate { get; set; }
+
+        [Required(ErrorMessage = "Automatic Billing Date is Required")]
+        public DateTime Automaticbillingdate { get; set; }
+
+        [Required(ErrorMessage = "Cut Off Card Date is Required")]
+        public DateTime Cutoffcarddate { get; set; }
+
+        [Required(ErrorMessage = "Frequency Of Invoicing is Required")]
+        public decimal FrequencyOfInvoicing { get; set; }
     }
 }

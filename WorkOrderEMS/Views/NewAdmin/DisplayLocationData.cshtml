@@ -62,10 +62,10 @@
                                     <a class="nav-link active" data-toggle="tab" href="#home1">Location Details</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#profile1">Location Cost Code</a>
+                                    <a class="nav-link" data-toggle="tab" href="#profile1">Contract Info</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link" data-toggle="tab" href="#contact1">Location Budget</a>
+                                    <a class="nav-link" data-toggle="tab" href="#contact1">Location Rules</a>
                                 </li>
                                 @*<li class="nav-item">
                                     <a class="nav-link" data-toggle="tab" href="#message1">Message</a>
@@ -136,43 +136,122 @@
                                 </div>
                                 <div class="tab-pane fade" id="profile1">
                                     <div class="pt-4">
-                                        <h4>This is profile title</h4>
-                                        <p>
-                                            Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt
-                                            tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor.
-                                        </p>
-                                        <p>
-                                            Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt
-                                            tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor.
-                                        </p>
+                                        <div id="abc" class="" style="background: white !important;">
+                                            <div class="basic-form">
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label"><strong>Contract Holder :</strong></label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.ContractDetailsModel.ContractHolder)
+                                                    </div>
+                                                    <label class="col-sm-1 col-form-label"><strong>Operating Company :</strong></label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.ContractDetailsModel.OperatingHolder)
+                                                    </div>
+
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label"><strong>Contract Start Date :</strong></label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.ContractDetailsModel.ContractStartDate)
+                                                    </div>
+                                                    <label class="col-sm-1 col-form-label"><strong>Contract End Date :</strong></label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.ContractDetailsModel.ContractEndDate)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label"><strong>Contract type :</strong></label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.ContractDetailsModel.ContractType)
+                                                    </div>
+                                                    <label class="col-sm-1 col-form-label"><strong>Client Invoicing Term :</strong></label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.ContractDetailsModel.ClientInvoicingTerm)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label"><strong>Reporting Type :</strong></label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.ContractDetailsModel.ReportingType)
+                                                    </div>
+                                                    <label class="col-sm-2 col-form-label"><strong>Reporting Date :</strong></label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.ContractDetailsModel.ReportingDate)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label"><strong>Monthly Intercompany Managment Fee :</strong></label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.ContractDetailsModel.IntercompanyMgmFee)
+                                                    </div>
+                                                    <label class="col-sm-1 col-form-label"><strong>Monthly Intercompany Invoicing :</strong></label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.ContractDetailsModel.IntercompanyInvoicing)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label"><strong>Additional Years :</strong></label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.ContractDetailsModel.AdditonalYears)
+                                                    </div>
+                                                    <label class="col-sm-2 col-form-label"><strong>Years :</strong></label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.ContractDetailsModel.Years)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label"><strong>Client Invoicing Date :</strong></label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.ContractDetailsModel.ClientInvoicingDate)
+                                                    </div>
+                                                    <label class="col-sm-1 col-form-label"><strong>Frequency Of Invoicing :</strong></label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.ContractDetailsModel.FrequencyOfInvoicing)
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label"><strong>Automatic Billing Date :</strong></label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.ContractDetailsModel.Automaticbillingdate)
+                                                    </div>
+                                                    <label class="col-sm-2 col-form-label"><strong>Cut Off Card Date :</strong></label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.ContractDetailsModel.Cutoffcarddate)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="contact1">
                                     <div class="pt-4">
-                                        <h4>This is contact title</h4>
-                                        <p>
-                                            Far far away, behind the word mountains, far from the countries Vokalia and
-                                            Consonantia, there live the blind texts. Separated they live in Bookmarksgrove.
-                                        </p>
-                                        <p>
-                                            Far far away, behind the word mountains, far from the countries Vokalia and
-                                            Consonantia, there live the blind texts. Separated they live in Bookmarksgrove.
-                                        </p>
+                                        <div id="abc" class="" style="background: white !important;">
+                                            <div class="basic-form">
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label"><strong>Charge Deposite For Monthly Parker Card :</strong></label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.LocationRuleMappingModel.ChargeDepositeMonthlyParkerCard)
+                                                    </div>
+                                                    <label class="col-sm-1 col-form-label"><strong>Is Charge Deposite For Monthly Parker Card :</strong></label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.LocationRuleMappingModel.IsChargeDepositeMonthlyParkerCard)
+                                                    </div>
+
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label"><strong>Avialiable Space :</strong></label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.LocationRuleMappingModel.ChargeDepositeMonthlyParkerCard)
+                                                    </div>
+                                                    <label class="col-sm-1 col-form-label"><strong>Are there any special rules for position billable hourly man :</strong></label>
+                                                    <div class="col-sm-4">
+                                                        @Html.DisplayFor(model => model.LocationRuleMappingModel.IsSpecialRulesHourlyMan)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                @*<div class="tab-pane fade" id="message1">
-                                    <div class="pt-4">
-                                        <h4>This is message title</h4>
-                                        <p>
-                                            Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt
-                                            tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor.
-                                        </p>
-                                        <p>
-                                            Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt
-                                            tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor.
-                                        </p>
-                                    </div>
-                                </div>*@
                             </div>
 
                         </div>

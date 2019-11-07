@@ -1,0 +1,182 @@
+﻿@model WorkOrderEMS.Models.ApproveRejectVendorModel
+@{
+    ViewBag.Title = "Customers Enquiry List";
+    //Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+
+    var isRefresh = ViewBag.IsPageRefresh;
+    if (isRefresh == true)
+    {
+        Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = null;
+    }
+    long locationId = 0;
+    long userType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserProfile = "";
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+    }
+}
+@section scripts{
+    <script type="text/javascript">
+    var $_locationId = '@locationId';
+    var $_userTypeId = '@userType';
+    var $_VendorStatus = "false";
+    </script>
+}
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/c3/css/c3.min.css" rel="stylesheet" />
+
+<style>
+    #chartdiv, #EmployeeCount1 {
+        width: 100%;
+        height: 250px;
+    }
+
+    .package {
+        margin-top: 0px !important;
+        display: inline-flex;
+        justify-items: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    label .req {
+        margin: 2px;
+        color: #ed2f35;
+    }
+
+    .form-control {
+        border: 1px solid #a0b3b0 !important;
+    }
+
+    .jsgrid-grid-body {
+        height: 100% !important;
+    }
+
+    .headerSize {
+        height: 36px;
+    }
+</style>
+<br />
+<div class="content-body" style="min-height: 920px;">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card aos-init aos-animate" data-aos="fade-up">
+                    <div class="card-header headerSize">
+                        <h4 class="card-title" style="color:white;"><strong>Customers Enquiry List</strong></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+        <br>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card aos-init" data-aos="fade-up">
+                    <div class="card-header" style="height: 45px;">
+                        <div class="card-header headerSize" style="height:45px; padding:0;">
+                            <a href="javascript:void(0)"><span><i id="AddCustomer" class="mdi mdi-plus" style="color:white;font-size:50px;"></i></span></a>
+                            @*<div class="basic-form">*@
+                            &nbsp;&nbsp;
+                            <div class="form-group">
+                                <input id="SearchText" type="text" style="margin-top:15px;" class="form-control input-rounded" placeholder="Customer Name" onkeyup="doSearch()">
+                            </div>
+                            @*</div>*@
+                            &nbsp;&nbsp;
+                            <div class="form-group">
+                                <select class="form-control input-rounded" style="margin-top: 15px;" id="CustomerType" onchange="doSearch()">
+                                    <option selected value="All">Customer Type</option>
+                                    <option value="C">Company</option>
+                                    <option value="I">Individual</option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="jsGrid-basic" class="jsgrid" style="position: relative; height: 400px; width: 100%;">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+ 
+
+@*<script src="~/GridListing/JqGridScript/CustomersList.js"></script>*@
+<script>
+    var veiwCustomerDetails = 'CustomerManagement/CustomerEnquiryView/';
+    $(function () {
+        var act;
+        $("#jsGrid-basic").jsGrid({
+            height: "170%",
+            width: "100%",
+            filtering: false,
+            editing: false,
+            inserting: false,
+            sorting: false,
+            paging: true,
+            autoload: true,
+            pageSize: 10,
+            pageButtonCount: 5,
+
+            controller: {
+                loadData: function (filter) {
+                    return $.ajax({
+                        type: "GET",
+                        url: '/CustomerManagement/GetAllCustomerList?flagApproved=Y&LocationId=' + $_locationId,
+                        data: filter,
+                        dataType: "json"
+                    });
+                }
+            },
+
+            fields: [
+                { name: "CustomerId", title: "Customer Id", type: "text", width: 50 },
+                { name: "CustomerName", title: "Name", type: "text", width: 50 },
+                { name: "LocationName", title: "Location", type: "text", width: 50 },
+                { name: "Email", title: "Email", type: "text", width: 50 },
+                { name: "Phone1", title: "Phone1", type: "text", width: 50 },
+                { name: "CustomerTypeText", title: "Company", type: "text", width: 50 },
+               
+                {
+                    name: "act",   type: "control", items: act, title: "Action", width: 50, css: "text-center", itemTemplate: function (value, item) {
+                        var $iconPencilForEdit = $("<i>").attr({ class: "fa fa-pencil" }).attr({ style: "color:green;font-size: 22px;" });
+                        var $customEditButton = $("<span style='padding: 0 5px 0 0;'>")
+                            .attr({ title: "Edit" })
+                            .attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                                window.location.href = $_HostPrefix + veiwCustomerDetails + '?CustomerId=' + item.CustomerId+'&Status=U1';
+                            }).append($iconPencilForEdit);
+
+                        return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton) ;
+                    }
+                }
+            ]
+        });
+
+    });
+    $(document).ready(function () {
+
+    });
+</script>

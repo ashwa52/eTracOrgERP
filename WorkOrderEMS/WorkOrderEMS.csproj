@@ -364,6 +364,7 @@
     <Compile Include="Areas\AdminSection\Controllers\VendorTypeController.cs" />
     <Compile Include="Controllers\Account\AccountSectionController.cs" />
     <Compile Include="Controllers\Administrator\AdministratorController.cs" />
+    <Compile Include="Controllers\Administrator\BaseController.cs" />
     <Compile Include="Controllers\Client\ClientController.cs" />
     <Compile Include="Controllers\Client\NewClientController.cs" />
     <Compile Include="Controllers\Common\CommonController.cs" />
@@ -372,7 +373,9 @@
     <Compile Include="Controllers\Common\Schedular.cs" />
     <Compile Include="Controllers\DAR\DARController.cs" />
     <Compile Include="Controllers\eCounting\BillController.cs" />
+    <Compile Include="Controllers\eCounting\CustomerManagementController.cs" />
     <Compile Include="Controllers\eCounting\DebitMemoController.cs" />
+    <Compile Include="Controllers\eCounting\DOTmanagement.cs" />
     <Compile Include="Controllers\eCounting\eCountingReportController.cs" />
     <Compile Include="Controllers\eCounting\MiscellaneousController.cs" />
     <Compile Include="Controllers\eCounting\PaymentController.cs" />
@@ -390,6 +393,7 @@
     <Compile Include="Controllers\EmployeeIdle\IdleEmployeeController.cs" />
     <Compile Include="Controllers\GlobalAdmin\GlobalAdminController.cs" />
     <Compile Include="Controllers\Guest\GuestController.cs" />
+    <Compile Include="Controllers\HRMS\HRMSController.cs" />
     <Compile Include="Controllers\ITAdministrator\ITAdministratorController.cs" />
     <Compile Include="Controllers\Login\AccountController.cs" />
     <Compile Include="Controllers\Login\LoginController.cs" />
@@ -397,6 +401,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controllers\NewAdmin\EPeopleController.cs" />
+    <Compile Include="Controllers\NewAdmin\eTimeController.cs" />
+    <Compile Include="Controllers\NewAdmin\GlobalSettingsController.cs" />
     <Compile Include="Controllers\NewAdmin\NewAdminController.cs" />
     <Compile Include="Controllers\PDF\PDFDataController.cs" />
     <Compile Include="Controllers\QRCSetup\QRCSetupController.cs" />
@@ -476,6 +482,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Service\ARService.svc.cs">
+      <DependentUpon>ARService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Service\IARService.cs" />
     <Compile Include="Service\IService.cs" />
     <Compile Include="Service\Service.svc.cs">
       <DependentUpon>Service.svc</DependentUpon>
@@ -5101,6 +5111,7 @@
     <Content Include="GridListing\JqGridScript\CompanyList\ListCompanyProduct.js" />
     <Content Include="GridListing\JqGridScript\CompanyList\ListInsurance.js" />
     <Content Include="GridListing\JqGridScript\CompanyList\ListLicense.js" />
+    <Content Include="GridListing\JqGridScript\ListAllHolidayJS.js" />
     <Content Include="GridListing\JqGridScript\ListAllPO.js" />
     <Content Include="GridListing\JqGridScript\ListAllSelfCreatedPO.js" />
     <Content Include="GridListing\JqGridScript\ListBudgetForLocation.js" />
@@ -6196,6 +6207,7 @@
     <Content Include="Scripts\UserDefine\LoginEmailValidation.js" />
     <Content Include="Scripts\UserDefine\NewDashboard.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Service\ARService.svc" />
     <Content Include="Service\Service.svc" />
     <Content Include="Views\Manager\Dashboard.cshtml" />
     <Content Include="Views\QRCSetup\Index.cshtml">
@@ -6482,7 +6494,39 @@
     <Content Include="Views\NewAdmin\userEvaluationView.cshtml" />
     <Content Include="Views\NewAdmin\userExpectationsView.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\JobPosting\_AddJobPostingFromVSC.cshtml" />
-    <Content Include="Views\NewAdmin\QEvaluationView.cshtml" />
+    <Content Include="Views\CustomerManagement\CustomerEnquiryView.cshtml" />
+    <Content Include="Views\CustomerManagement\CustomerManagementSetup.cshtml" />
+    <Content Include="Views\CustomerManagement\ListCustomerEnquiry.cshtml" />
+    <Content Include="Views\CustomerManagement\ListCustomers.cshtml" />
+    <Content Include="Views\CustomerManagement\ListWaitingCustomers.cshtml" />
+    <Content Include="Views\EPeople\HolidayMaster.cshtml" />
+    <Content Include="Views\EPeople\HolidayMasterAddEdit.cshtml" />
+    <Content Include="Views\EPeople\LeaveManagement.cshtml" />
+    <Content Include="Views\EPeople\LeaveManagementAddEdit.cshtml" />
+    <Content Include="Views\EPeople\WebEmployeeAttendance.cshtml" />
+    <Content Include="Views\GlobalAdmin\ListDealsSpecific.cshtml" />
+    <Content Include="Views\GlobalAdmin\Shift.cshtml" />
+    <Content Include="Views\GlobalAdmin\_GlobalSettingsMaster.cshtml" />
+    <Content Include="Views\GlobalAdmin\_ListDealsSpecific.cshtml" />
+    <Content Include="Views\GlobalAdmin\_LocationSettiing.cshtml" />
+    <Content Include="Views\GlobalAdmin\_Shift.cshtml" />
+    <Content Include="Views\GlobalSettings\_AddBankAccount.cshtml" />
+    <Content Include="Views\GlobalSettings\_AddNewARRule.cshtml" />
+    <Content Include="Views\GlobalSettings\_BankAccountList.cshtml" />
+    <Content Include="Views\GlobalSettings\_InvoiceList.cshtml" />
+    <Content Include="Views\GlobalSettings\_NewInvoice.cshtml" />
+    <Content Include="Views\GlobalSettings\_RuleList.cshtml" />
+    <Content Include="Views\HRMS\ShiftMaster.cshtml" />
+    <Content Include="Views\HRMS\ShiftMasterAddEdit.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_PunchTimeRequest.cshtml" />
+    <Content Include="Views\NewAdmin\_AddDealsSpecificToLocation.cshtml" />
+    <Content Include="Views\Shared\_AttandanceManager.cshtml" />
+    <Content Include="Views\Shared\CustomerVehicleInformation.cshtml" />
+    <Content Include="Views\Shared\Registration.cshtml" />
+    <Content Include="Views\Shared\_CustomerPaymentDetails.cshtml" />
+    <Content Include="Views\Shared\_CustomerRecapDetails.cshtml" />
+    <Content Include="Views\Shared\_CustomerVehicleDetails.cshtml" />
+	<Content Include="Views\NewAdmin\QEvaluationView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

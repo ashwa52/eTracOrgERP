@@ -26,6 +26,7 @@
 }
 <!--Multistep wizard CSS-->
 <style>
+
     .error {
         color: red;
     }
@@ -107,8 +108,9 @@
         <div class="row">
             <div class="col-xl-12 col-xxl-12">
                 <div class="card" data-aos="fade-up">
-                    <div class="card-header headerSize">
-                        <h4 class="card-title" style="color:white;"><strong>Add Location</strong></h4>
+                    <div class="card-header headerSize" style="padding: 19px;">
+                        <h4 class="card-title" style="color:white;"><strong>@ViewBag.Title</strong></h4>
+                        @*<h4 class="card-title" style="color:white;"> <a href="javascript:void(0);" id="SendToLoationList"><i class="fa fa-arrow-left" style="font-size: 25px;color: white;"></i></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong>Location Portal</strong></h4>*@
                     </div>
                     <div class="card-body">
                         <div class="stepwizard">
@@ -121,14 +123,10 @@
                                     <a href="#step-2" type="button" class="btn btn-default btn-circledata" disabled="disabled">2</a>
                                     <p><small>Contract Info</small></p>
                                 </div>
-                                @*<div class="stepwizard-step col-xs-3">
-                                        <a href="#step-3" type="button" class="btn btn-default btn-circledata" disabled="disabled">3</a>
-                                        <p><small>Schedule</small></p>
-                                    </div>
-                                    <div class="stepwizard-step col-xs-3">
-                                        <a href="#step-4" type="button" class="btn btn-default btn-circledata" disabled="disabled">4</a>
-                                        <p><small>Cargo</small></p>
-                                    </div>*@
+                                <div class="stepwizard-step col-xs-3">
+                                    <a href="#step-3" type="button" class="btn btn-default btn-circledata" disabled="disabled">3</a>
+                                    <p><small>Location Rules</small></p>
+                                </div>
                             </div>
                         </div>
                         <br />
@@ -136,7 +134,7 @@
                             @Html.ValidationSummary(true)
                             @Html.HiddenFor(model => model.LocationId)
                             <div class="panel panel-primary setup-content" id="step-1">
-                                <div class="basic-form">
+                                <div class="basic-form" id="step-1">
                                     <div class="form-group row">
                                         @Html.LabelFor(model => model.LocationName, new { @class = "col-sm-2 col-form-label" })
                                         <div class="col-sm-4">
@@ -214,7 +212,7 @@
                                         </div>
                                         @Html.Label("Location Services", new { @class = "col-sm-1 col-form-label" })
                                         <div class="col-sm-4">
-                                            @Html.DropDownList("Services", new SelectList(ViewBag.Services, "ServiceID", "ServiceName", "Description"), new { @id = "ddlServices", @multiple = "multiple", @class = "form-control input-rounded basic-multiselect" })
+                                            @Html.DropDownList("Services", new SelectList(ViewBag.Services, "ServiceID", "ServiceName", "Description"), new { @id = "ddlServices", @multiple = "multiple", @class = "form-control input-rounded basic-multiselect required requiredselect" })
                                             <span style="display: none; color:red;" class="">Select at least one service for this location.</span>
                                             @Html.Hidden("ServicesID")
                                         </div>
@@ -234,12 +232,27 @@
                                             }
                                         </div>
                                     </div>
+                                    <div class="form-group row">
+                                        @Html.LabelFor(model => model.PaymenttermsId, new { @class = "col-sm-2 col-form-label" })
+                                        <div class="col-sm-4">
+                                            @if (ViewBag.PaymentTerms != null)
+                                            {
+                                                @Html.DropDownListFor(model => model.PaymenttermsId, new SelectList(ViewBag.PaymentTerms, "PaymentTermId", "PaymentTermName"), new { @class = "form-control input-rounded required requiredselect", @id = "Payment Terms" })
+                                            }
+                                            else
+                                            {
+                                                <select id="PaymenttermsId" class="form-control input-rounded requiredselect"><option value="-1">--Select--</option></select>
+                                            }
+                                            @Html.ValidationMessageFor(model => model.PaymenttermsId)
+                                        </div>
+                                    </div>
                                 </div>
-                                <i class="fa fa-long-arrow-right nextBtndata pull-right" style="font-size: 33px;color:#0aa0cd;cursor: pointer;"></i>@*<button id="nextBtndata1" class="btn btn-primary nextBtndata pull-right" type="button">Next</button>*@
+                                @*<i class="fa fa-long-arrow-right nextBtndata pull-right" style="font-size: 33px;color:#0aa0cd;cursor: pointer;"></i>*@
+                                <button type="button" class="btn btn-success pull-right nextBtndata" style="margin-left: 10px;"><i class="fa fa-arrow-right"></i></button>
+                                <button type="button" class="btn btn-success pull-right" id="SendToLoationList"><i class="fa fa-arrow-left"></i>&nbsp;Back to List</button>
                             </div>
-
                             <div class="panel panel-primary setup-content" id="step-2">
-                                <div class="basic-form">
+                                <div class="basic-form" id="step-2">
                                     <div class="form-group row">
                                         @Html.Label("Contract Holder", new { @class = "col-sm-2 col-form-label" })
                                         <div class="col-sm-4">
@@ -285,12 +298,12 @@
                                     <div class="form-group row">
                                         @Html.Label("Contract Start Date", new { @class = "col-sm-2 col-form-label" })
                                         <div class="col-sm-4">
-                                            @Html.TextBoxFor(model => model.ContractDetailsModel.ContractStartDate, null, new { @Placeholder = "Contract Start Time", @id = "ContractStartDate", @class = "form-control input-rounded" })
+                                            @Html.TextBox("ContractDetailsModel.ContractStartDate", Convert.ToDateTime(Model.ContractDetailsModel.ContractStartDate).ToString("MM/dd/yyyy"), new { @Placeholder = "Contract Start Time", @id = "ContractStartDate", @class = "form-control input-rounded" })
                                             @Html.ValidationMessageFor(model => model.ContractDetailsModel.ContractStartDate)
                                         </div>
                                         @Html.Label("Contract End Date", new { @class = "col-sm-2 col-form-label" })
-                                        <div class="col-sm-4">
-                                            @Html.TextBoxFor(model => model.ContractDetailsModel.ContractEndDate, null, new { @Placeholder = "Contract End Time", @class = "form-control input-rounded", @id = "ContractEndDate", @onkeydown = "return false;" })
+                                        <div class="col-sm-4 datetimepicker">
+                                            @Html.TextBox("ContractDetailsModel.ContractEndDate", Convert.ToDateTime(Model.ContractDetailsModel.ContractEndDate).ToString("MM/dd/yyyy"), new { @Placeholder = "Contract End Time", @class = "form-control input-rounded", @id = "ContractEndDate", @onkeydown = "return false;" })
                                             @Html.ValidationMessageFor(model => model.ContractDetailsModel.ContractEndDate)
                                         </div>
                                     </div>
@@ -332,7 +345,7 @@
                                         </div>
                                         @Html.Label("Reporting Date", new { @class = "col-sm-2 col-form-label" })
                                         <div class="col-sm-4">
-                                            @Html.TextBoxFor(model => model.ContractDetailsModel.ReportingDate, null, new { @Placeholder = "Reporting Date", @id = "ReportingDate", @class = "form-control input-rounded" })
+                                            @Html.TextBox("ContractDetailsModel.ReportingDate", Convert.ToDateTime(Model.ContractDetailsModel.ReportingDate).ToString("MM/dd/yyyy"), new { @Placeholder = "Reporting Date", @id = "ReportingDate", @class = "form-control input-rounded" })
                                             @Html.ValidationMessageFor(model => model.ContractDetailsModel.ReportingDate)
                                         </div>
                                     </div>
@@ -366,10 +379,66 @@
                                             @Html.ValidationMessageFor(model => model.ContractDetailsModel.Years)
                                         </div>
                                     </div>
+                                    <div class="form-group row">
+                                        @Html.Label("Client Invoicing Date", new { @class = "col-sm-2 col-form-label" })
+                                        <div class="col-sm-4">
+                                            @*@Html.TextBoxFor(model => model.ContractDetailsModel.ClientInvoicingDate, null, new { @Placeholder = "Client Invoicing Date", @id = "ClientInvoicingDate", @class = "form-control input-rounded" })*@
+                                            @Html.TextBox("ContractDetailsModel.ClientInvoicingDate", Model.ContractDetailsModel.ClientInvoicingDate.ToString("MM/dd/yyyy"), new { @Placeholder = "Client Invoicing Date", @id = "ClientInvoicingDate", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.ContractDetailsModel.ClientInvoicingDate)
+                                        </div>
+                                        @Html.Label("Frequency Of Invoicing", new { @class = "col-sm-2 col-form-label" })
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.ContractDetailsModel.FrequencyOfInvoicing, null, new { @Placeholder = "Frequency Of Invoicing", @id = "FrequencyOfInvoicing", @class = "form-control input-rounded", @type = "number" })
+                                            @Html.ValidationMessageFor(model => model.ContractDetailsModel.FrequencyOfInvoicing)
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.Label("Automatic Billing Date", new { @class = "col-sm-2 col-form-label" })
+                                        <div class="col-sm-4">
+                                            @*@Html.TextBoxFor(model => model.ContractDetailsModel.Automaticbillingdate, null, new { @Placeholder = "Automatic Billing Date", @id = "AutomaticBillingDate", @class = "form-control input-rounded" })*@
+                                            @Html.TextBox("ContractDetailsModel.Automaticbillingdate", Model.ContractDetailsModel.Automaticbillingdate.ToString("MM/dd/yyyy"), new { @Placeholder = "Automatic Billing Date", @id = "AutomaticBillingDate", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.ContractDetailsModel.Automaticbillingdate)
+                                        </div>
+                                        @Html.Label("Cut Off Card Date", new { @class = "col-sm-2 col-form-label" })
+                                        <div class="col-sm-4">
+                                            @*@Html.TextBoxFor(model => model.ContractDetailsModel.Cutoffcarddate, null, new { @Placeholder = "Cut Off Card Date", @id = "CutOffCardDate", @class = "form-control input-rounded" })*@
+                                            @Html.TextBox("ContractDetailsModel.Cutoffcarddate", Model.ContractDetailsModel.Cutoffcarddate.ToString("MM/dd/yyyy"), new { @Placeholder = "Cut Off Card Date", @id = "CutOffCardDate", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.ContractDetailsModel.Cutoffcarddate)
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="#step-3" class="btn btn-success pull-right nextBtndata" style="margin-left: 10px;">
+                                    <i class="fa fa-arrow-right"></i>
+                                </a>
+                                @*<a href="#step-1" class="btn btn-success pull-right nextBtndata" style="margin-left: 10px;">
+                                        <i class="fa fa-arrow-left"></i>
+                                    </a>*@
+                                <button type="button" class="btn btn-success pull-right" id="SendToLoationList"><i class="fa fa-arrow-left"></i>&nbsp;Back to List</button>
+                            </div>
+                            <div class="panel panel-primary setup-content" id="step-3">
+                                <div class="basic-form" id="step-3">
+                                    <div class="form-group row">
+                                        @Html.Label("Charge Deposite For Monthly Parker Card", new { @class = "col-sm-2 col-form-label" })
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.LocationRuleMappingModel.ChargeDepositeMonthlyParkerCard, new { @Placeholder = "Charge Deposite For Monthly Parker Card", @class = "form-control input-rounded required " })
+                                        </div>
+                                        @Html.Label("Is Charge Deposite For Monthly Parker Card", new { @class = "col-sm-2 col-form-label" })
+                                        <div class="col-sm-4">
+                                            @Html.CheckBoxFor(model => model.LocationRuleMappingModel.IsChargeDepositeMonthlyParkerCard)
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        @Html.Label("Avialiable Space", new { @class = "col-sm-2 col-form-label" })
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.LocationRuleMappingModel.AviailableSpaces, new { @Placeholder = "Avialiable Space", @class = "form-control input-rounded required " })
+                                        </div>
+                                        @Html.Label("Are there any special rules for position billable hourly man", new { @class = "col-sm-2 col-form-label" })
+                                        <div class="col-sm-4">
+                                            @Html.CheckBoxFor(model => model.LocationRuleMappingModel.IsSpecialRulesHourlyMan)
+                                        </div>
+                                    </div>
                                 </div>
                                 <input type="submit" id="submitlocationData" class="btn btn-success pull-right" style="margin-left: 30px;" value="Submit" />
-                                <a href="#step-1" class="fa fa-long-arrow-left previousBtndata pull-right" style="font-size: 33px;color:#0aa0cd;cursor: pointer;"></a>@*<button class="btn btn-primary previousBtndata pull-right" type="button">Previous</button>*@
-                                @*<a href="#step-1" type="button" class="btn btn-success btn-circledata">1</a>*@
                             </div>
                         </form>
                     </div>
@@ -378,7 +447,6 @@
         </div>
     </div>
 </div>
-
 <div class="modal fade" id="myModalForContract">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -412,12 +480,10 @@
 @*<script src="~/Scripts/bootstrap.min.js"></script>*@
 <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
-
 <script src="~/Content/NewAdminContent/VENDOR/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
 <script src="~/Scripts/NewAdminJS/plugins-init/bootstrap-multiselect-init.js"></script>
 <script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
 <!-- daterangepicker -->
-
 <script src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js")"></script>
 <script src="@Url.Content("~/Content/Dashboard/plugins/daterangepicker/daterangepicker.js")"></script>
 <!-- bootstrap color picker -->
@@ -526,10 +592,37 @@
                 $(".test").attr({ style: "display:none" });
             }
         });
-        $('#ContractStartDate,#ContractEndDate,#ReportingDate,#IntercompanyInvoicing').datepicker({
-            format: "yyyy/mm/dd",
+        $('#ContractStartDate,#ContractEndDate,#ReportingDate,#IntercompanyInvoicing,#ClientInvoicingDate,#AutomaticBillingDate,#CutOffCardDate').datepicker({
+            format: "mm/dd/yyyy",
             startDate: new Date()
         });
+
+
+
+        //$("#ContractStartDate").change(function () {
+        //    $("#datetimepicker").datepicker("destroy");
+        //    $('#ContractEndDatepicker').datepicker({
+        //        format: "mm/dd/yyyy",
+        //        startDate: new Date($("#ContractStartDate").val())
+        //    });
+        //});
+
+
+        $("#ContractEndDate").change(function () {
+             var startDate = new Date($('#ContractStartDate').val());
+             var endDate = new Date($('#ContractEndDate').val());
+            if (endDate < startDate) {
+                 alert("* End date must be Greater than start date")
+                $('#ContractEndDate').val("");
+                return false;
+                //break;
+             }
+        });
+
+
+
+        //$("#ContractEndDate").rules('add', { greaterThan: "#ContractStartDate" });
+
         //If Operating Company is same as contract company
         $('#YesForSameCompany').click( function () {
             $('#OperatingHolder').val(contractVal).trigger('change');
@@ -648,4 +741,9 @@
             }
         }
     });
+
+    $('#SendToLoationList').click(function () {
+            var addNewUrl = "@Url.Action("ListLocation", "GlobalAdmin")";
+            $('#RenderPageId').load(addNewUrl);
+        })
 </script>
