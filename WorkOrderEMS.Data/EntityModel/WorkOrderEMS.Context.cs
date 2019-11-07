@@ -5906,5 +5906,27 @@ namespace WorkOrderEMS.Data.EntityModel
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetForrmStatus_Result>("spGetForrmStatus", employeeIdParameter);
         }
+    
+        public virtual ObjectResult<spGetHiringGraph_Result> spGetHiringGraph(string jPS_HiringManagerID, Nullable<long> jPS_JobPostingId)
+        {
+            var jPS_HiringManagerIDParameter = jPS_HiringManagerID != null ?
+                new ObjectParameter("JPS_HiringManagerID", jPS_HiringManagerID) :
+                new ObjectParameter("JPS_HiringManagerID", typeof(string));
+    
+            var jPS_JobPostingIdParameter = jPS_JobPostingId.HasValue ?
+                new ObjectParameter("JPS_JobPostingId", jPS_JobPostingId) :
+                new ObjectParameter("JPS_JobPostingId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetHiringGraph_Result>("spGetHiringGraph", jPS_HiringManagerIDParameter, jPS_JobPostingIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetJobPostingDetails_ForCompanyOpening_Result> spGetJobPostingDetails_ForCompanyOpening(Nullable<long> jPS_JobPostingId)
+        {
+            var jPS_JobPostingIdParameter = jPS_JobPostingId.HasValue ?
+                new ObjectParameter("JPS_JobPostingId", jPS_JobPostingId) :
+                new ObjectParameter("JPS_JobPostingId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetJobPostingDetails_ForCompanyOpening_Result>("spGetJobPostingDetails_ForCompanyOpening", jPS_JobPostingIdParameter);
+        }
     }
 }

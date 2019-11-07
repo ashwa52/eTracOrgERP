@@ -4975,6 +4975,10 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
         <Function Name="spGetForrmStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="spGetHiringGraph" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="JPS_HiringManagerID" Type="varchar" Mode="In" />
+          <Parameter Name="JPS_JobPostingId" Type="bigint" Mode="In" />
+        </Function>
         <Function Name="spGetInsurance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CMP_Id" Type="bigint" Mode="In" />
         </Function>
@@ -4993,6 +4997,9 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
         </Function>
         <Function Name="spGetJobPosting" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="JPS_HiringManagerID" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spGetJobPostingDetails_ForCompanyOpening" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="JPS_JobPostingId" Type="bigint" Mode="In" />
         </Function>
         <Function Name="spGetJobTitle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="JBT_VST_Id" Type="bigint" Mode="In" />
@@ -13945,6 +13952,13 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Parameter Name="EmployeeId" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="JobTitles" EntityType="WorkOrderEMS.Data.EntityModel.JobTitle" />
+          <FunctionImport Name="spGetHiringGraph" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetHiringGraph_Result)">
+            <Parameter Name="JPS_HiringManagerID" Mode="In" Type="String" />
+            <Parameter Name="JPS_JobPostingId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spGetJobPostingDetails_ForCompanyOpening" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetJobPostingDetails_ForCompanyOpening_Result)">
+            <Parameter Name="JPS_JobPostingId" Mode="In" Type="Int64" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Proc_GetAllWorkAssignedToEmployee_Result">
           <Property Type="Int64" Name="RN" Nullable="true" />
@@ -16849,6 +16863,52 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
           <Property Name="JBT_Date" Type="DateTime" Precision="3" />
           <Property Name="JBT_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
+        <ComplexType Name="spGetHiringGraph_Result">
+          <Property Type="Int32" Name="Applied" Nullable="true" />
+          <Property Type="Int32" Name="IntervieweSchedule" Nullable="true" />
+          <Property Type="Int32" Name="Interviewed" Nullable="true" />
+          <Property Type="Int32" Name="Shortlisted" Nullable="true" />
+          <Property Type="Int32" Name="AssessmentSend" Nullable="true" />
+          <Property Type="Int32" Name="AssessmentPass" Nullable="true" />
+          <Property Type="Int32" Name="AssessmentFail" Nullable="true" />
+          <Property Type="Int32" Name="BackgroundCheckSend" Nullable="true" />
+          <Property Type="Int32" Name="BackgroundCheckPass" Nullable="true" />
+          <Property Type="Int32" Name="BackgroundCheckFail" Nullable="true" />
+          <Property Type="Int32" Name="OnHold" Nullable="true" />
+          <Property Type="Int32" Name="Hired" Nullable="true" />
+          <Property Type="Int32" Name="Onboarded" Nullable="true" />
+          <Property Type="Int32" Name="OnboardedDrop" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetJobPostingDetails_ForCompanyOpening_Result">
+          <Property Type="Int64" Name="API_ApplicantId" Nullable="false" />
+          <Property Type="String" Name="API_FirstName" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="API_MiddleName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_LastName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_HomeAddress" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="API_City" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="API_State" Nullable="false" MaxLength="50" />
+          <Property Type="Int64" Name="API_PhoneNumber" Nullable="false" />
+          <Property Type="String" Name="API_Email" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="API_DLNumber" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_Photo" Nullable="true" />
+          <Property Type="String" Name="API_Citizenship" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_Gender" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="API_HighestEducation" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="API_AnyRefOrEmployeeInELITE" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="API_EverELITEWorkFrom" Nullable="true" />
+          <Property Type="DateTime" Name="API_EverELITEWorkTo" Nullable="true" />
+          <Property Type="String" Name="API_WorkEligibleInUS" Nullable="true" MaxLength="1" />
+          <Property Type="Int64" Name="JPS_JobPostingId" Nullable="true" />
+          <Property Type="DateTime" Name="JobPostingDate" Nullable="true" Precision="23" />
+          <Property Type="Int64" Name="API_JobTitleID" Nullable="false" />
+          <Property Type="String" Name="API_HiringManagerID" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="API_DateOfJoining" Nullable="true" />
+          <Property Type="Decimal" Name="API_DesireSalary" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="API_ApplicantStatus" Nullable="true" MaxLength="19" />
+          <Property Type="String" Name="API_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="HiringManager" Nullable="true" MaxLength="403" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -22110,6 +22170,60 @@ warning 6002: The table/view 'workorderemslive.dbo.VW_USERTYPE' does not have a 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetHiringGraph" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetHiringGraph">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetHiringGraph_Result">
+                <ScalarProperty Name="Applied" ColumnName="Applied" />
+                <ScalarProperty Name="IntervieweSchedule" ColumnName="IntervieweSchedule" />
+                <ScalarProperty Name="Interviewed" ColumnName="Interviewed" />
+                <ScalarProperty Name="Shortlisted" ColumnName="Shortlisted" />
+                <ScalarProperty Name="AssessmentSend" ColumnName="AssessmentSend" />
+                <ScalarProperty Name="AssessmentPass" ColumnName="AssessmentPass" />
+                <ScalarProperty Name="AssessmentFail" ColumnName="AssessmentFail" />
+                <ScalarProperty Name="BackgroundCheckSend" ColumnName="BackgroundCheckSend" />
+                <ScalarProperty Name="BackgroundCheckPass" ColumnName="BackgroundCheckPass" />
+                <ScalarProperty Name="BackgroundCheckFail" ColumnName="BackgroundCheckFail" />
+                <ScalarProperty Name="OnHold" ColumnName="OnHold" />
+                <ScalarProperty Name="Hired" ColumnName="Hired" />
+                <ScalarProperty Name="Onboarded" ColumnName="Onboarded" />
+                <ScalarProperty Name="OnboardedDrop" ColumnName="OnboardedDrop" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetJobPostingDetails_ForCompanyOpening" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetJobPostingDetails_ForCompanyOpening">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetJobPostingDetails_ForCompanyOpening_Result">
+                <ScalarProperty Name="API_ApplicantId" ColumnName="API_ApplicantId" />
+                <ScalarProperty Name="API_FirstName" ColumnName="API_FirstName" />
+                <ScalarProperty Name="API_MiddleName" ColumnName="API_MiddleName" />
+                <ScalarProperty Name="API_LastName" ColumnName="API_LastName" />
+                <ScalarProperty Name="API_HomeAddress" ColumnName="API_HomeAddress" />
+                <ScalarProperty Name="API_City" ColumnName="API_City" />
+                <ScalarProperty Name="API_State" ColumnName="API_State" />
+                <ScalarProperty Name="API_PhoneNumber" ColumnName="API_PhoneNumber" />
+                <ScalarProperty Name="API_Email" ColumnName="API_Email" />
+                <ScalarProperty Name="API_DLNumber" ColumnName="API_DLNumber" />
+                <ScalarProperty Name="API_Photo" ColumnName="API_Photo" />
+                <ScalarProperty Name="API_Citizenship" ColumnName="API_Citizenship" />
+                <ScalarProperty Name="API_Gender" ColumnName="API_Gender" />
+                <ScalarProperty Name="API_HighestEducation" ColumnName="API_HighestEducation" />
+                <ScalarProperty Name="API_AnyRefOrEmployeeInELITE" ColumnName="API_AnyRefOrEmployeeInELITE" />
+                <ScalarProperty Name="API_EverELITEWorkFrom" ColumnName="API_EverELITEWorkFrom" />
+                <ScalarProperty Name="API_EverELITEWorkTo" ColumnName="API_EverELITEWorkTo" />
+                <ScalarProperty Name="API_WorkEligibleInUS" ColumnName="API_WorkEligibleInUS" />
+                <ScalarProperty Name="JPS_JobPostingId" ColumnName="JPS_JobPostingId" />
+                <ScalarProperty Name="JobPostingDate" ColumnName="JobPostingDate" />
+                <ScalarProperty Name="API_JobTitleID" ColumnName="API_JobTitleID" />
+                <ScalarProperty Name="API_HiringManagerID" ColumnName="API_HiringManagerID" />
+                <ScalarProperty Name="API_DateOfJoining" ColumnName="API_DateOfJoining" />
+                <ScalarProperty Name="API_DesireSalary" ColumnName="API_DesireSalary" />
+                <ScalarProperty Name="API_ApplicantStatus" ColumnName="API_ApplicantStatus" />
+                <ScalarProperty Name="API_IsActive" ColumnName="API_IsActive" />
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="HiringManager" ColumnName="HiringManager" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

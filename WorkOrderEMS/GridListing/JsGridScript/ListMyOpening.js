@@ -490,3 +490,83 @@ function CheckIfAllResponded(applicantId, qusid,callback) {
 function MarkAbsent() {
 
 }
+
+
+
+
+function GetCompanyOpening() {
+	
+	$("#companyOpening").jsGrid({
+		width: "100%",
+		height: "300px",
+		sorting: true,
+		paging: true,
+		autoload: true,
+		pageSize: 10,
+		pageButtonCount: 5,
+		controller: {
+			loadData: function () {
+				var d = $.Deferred();
+
+				$.ajax({
+					url: "/NewAdmin/GetCompanyOpening",
+					dataType: "json"
+				}).done(function (response) {
+					d.resolve(response);
+				});
+
+				return d.promise();
+			}
+		},
+
+		fields: [
+			{
+				title: "Applicant Name", width: 60, itemTemplate: function (v, i) {
+					return i.API_FirstName + ' ' + i.API_MiddleName + ' ' + i.API_LastName;
+				}
+			},
+			{
+				title: "City", width: 60, itemTemplate: function (v, i) {
+					return i.API_City;
+				}
+			},
+			{
+				title: "State", width: 60, itemTemplate: function (v, i) {
+					return i.API_State;
+				}
+			},
+			{
+				title: "Email", width: 60, itemTemplate: function (v, i) {
+					return i.API_Email;
+				}
+			},
+			{
+				title: "Phone Number", width: 60, itemTemplate: function (v, i) {
+					return i.API_PhoneNumber;
+				}
+			},
+			{
+				title: "Desire Salary", width: 60, itemTemplate: function (v, i) {
+					return i.API_DesireSalary;
+				}
+			},
+			{
+				title: "Job Title", width: 60, itemTemplate: function (v, i) {
+					return i.JBT_JobTitle;
+				}
+			},
+			{
+				title: "Application Status", width: 60, itemTemplate: function (v, i) {
+					return i.API_ApplicantStatus;
+				}
+			}
+			
+		],
+		rowClick: function (args) {
+			console.log(args.item);
+			$("#MyOpeningSummery").hide();
+			$("#btnBack").show();
+			myOpenings();
+		}
+	});
+}

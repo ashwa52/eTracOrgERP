@@ -989,7 +989,12 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         {
             return View("~/Views/NewAdmin/GuestEmployee/GuestEmployee.cshtml");
         }
-        #endregion
-    }
+		public ActionResult GetCompanyOpening()
+		{
+			var data = _GlobalAdminManager.GetJobPostingDetailsForCompanyOpening(1);
+			return Json(data, JsonRequestBehavior.AllowGet);
+		}
+		#endregion
+	}
 
 }
