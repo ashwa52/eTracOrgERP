@@ -12,10 +12,16 @@
         isSubmitted = Model.First().SAM_IsActive != null ? Model.FirstOrDefault().SAM_IsActive : "Y";
     }
 
-    @Html.Hidden(isSubmitted, new { id = "isSubmitted" })
+    @*@Html.Hidden(isSubmitted, new { id = "isSubmitted" })*@
+    <input type="hidden" value="@isSubmitted" id="isSubmitted" />
+
 
 }
 <style>
+    td.ans div {
+        display: inline-flex;
+    }
+
     .table tbody tr td.que {
         vertical-align: middle;
         border-color: #f5f5f5;
@@ -161,32 +167,48 @@
 
                                 @if (item.Answer == "A" && @item.SelfAssessmentId > 0)
                                 {
-
-                                    <input type="radio" value="A" name="Opt_@item.QuestionId" checked disabled />
+                                    <div>
+                                        <input type="radio" value="A" name="Opt_@item.QuestionId" id="Always_@item.QuestionId" checked disabled />
+                                        <label for="Always_@item.QuestionId" class="radio">Always</label>
+                                    </div>
                                 }
                                 else
                                 {
-                                    <input type="radio" value="A" name="Opt_@item.QuestionId" disabled />
-                                }Always |
+                                    <div>
+                                        <input type="radio" value="A" name="Opt_@item.QuestionId" id="Always_@item.QuestionId" disabled />
+                                        <label for="Always_@item.QuestionId" class="radio">Always</label>
+                                    </div>
+                                } |
 
                                 @if (item.Answer == "S" && @item.SelfAssessmentId > 0)
                                 {
-
-                                    <input type="radio" value="S" name="Opt_@item.QuestionId" checked disabled />
+                                    <div>
+                                        <input type="radio" value="S" name="Opt_@item.QuestionId" id="Sometimes_@item.QuestionId" checked disabled />
+                                        <label for="Sometimes_@item.QuestionId" class="radio">Sometimes</label>
+                                    </div>
                                 }
                                 else
                                 {
-                                    <input type="radio" value="S" name="Opt_@item.QuestionId" disabled />
-                                }Sometimes |
+                                    <div>
+                                        <input type="radio" value="S" name="Opt_@item.QuestionId" id="Sometimes_@item.QuestionId" disabled />
+                                        <label for="Sometimes_@item.QuestionId" class="radio">Sometimes</label>
+                                    </div>
+                                }|
 
                                 @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
                                 {
-                                    <input type="radio" value="N" name="Opt_@item.QuestionId" checked disabled />
+                                    <div>
+                                        <input type="radio" value="N" name="Opt_@item.QuestionId" id="Never_@item.QuestionId" checked disabled />
+                                        <label for="Never_@item.QuestionId" class="radio">Never</label>
+                                    </div>
                                 }
                                 else
                                 {
-                                    <input type="radio" value="N" name="Opt_@item.QuestionId" disabled />
-                                }Never
+                                    <div>
+                                        <input type="radio" value="N" name="Opt_@item.QuestionId" id="Never_@item.QuestionId" disabled />
+                                        <label for="Never_@item.QuestionId" class="radio">Never</label>
+                                    </div>
+                                }
                             </td>
                         }
                         else
@@ -196,30 +218,48 @@
 
                                 @if (item.Answer == "A" && @item.SelfAssessmentId > 0)
                                 {
-
-                                    <input type="radio" value="A" name="Opt_@item.QuestionId" checked />
+                                    <div>
+                                        <input type="radio" value="A" name="Opt_@item.QuestionId" id="Always_@item.QuestionId" checked />
+                                        <label for="Always_@item.QuestionId" class="radio">Always</label>
+                                    </div>
                                 }
                                 else
                                 {
-                                    <input type="radio" value="A" name="Opt_@item.QuestionId" />
-                                }Always |
+                                    <div>
+                                        <input type="radio" value="A" name="Opt_@item.QuestionId" id="Always_@item.QuestionId" />
+                                        <label for="Always_@item.QuestionId" class="radio">Always</label>
+                                    </div>
+                                } |
+
                                 @if (item.Answer == "S" && @item.SelfAssessmentId > 0)
                                 {
-
-                                    <input type="radio" value="S" name="Opt_@item.QuestionId" checked />
+                                    <div>
+                                        <input type="radio" value="S" name="Opt_@item.QuestionId" id="Sometimes_@item.QuestionId" checked />
+                                        <label for="Sometimes_@item.QuestionId" class="radio">Sometimes</label>
+                                    </div>
                                 }
                                 else
                                 {
-                                    <input type="radio" value="S" name="Opt_@item.QuestionId" />
-                                }Sometimes |
+                                    <div>
+                                        <input type="radio" value="S" name="Opt_@item.QuestionId" id="Sometimes_@item.QuestionId" />
+                                        <label for="Sometimes_@item.QuestionId" class="radio">Sometimes</label>
+                                    </div>
+                                } |
+
                                 @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
                                 {
-                                    <input type="radio" value="N" name="Opt_@item.QuestionId" checked />
+                                    <div>
+                                        <input type="radio" value="N" name="Opt_@item.QuestionId" checked id="Never_@item.QuestionId" />
+                                        <label for="Never_@item.QuestionId" class="radio">Never</label>
+                                    </div>
                                 }
                                 else
                                 {
-                                    <input type="radio" value="N" name="Opt_@item.QuestionId" />
-                                }Never
+                                    <div>
+                                        <input type="radio" value="N" name="Opt_@item.QuestionId" id="Never_@item.QuestionId" />
+                                        <label for="Never_@item.QuestionId" class="radio">Never</label>
+                                    </div>
+                                }
                             </td>
                         }
                     }
@@ -261,23 +301,34 @@
 
                                 @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
                                 {
-
-                                    <input type="radio" value="Y" name="Opt_@item.QuestionId" checked disabled />
+                                    <div>
+                                        <input type="radio" value="Y" name="Opt_@item.QuestionId" id="Yes_@item.QuestionId" checked disabled />
+                                        <label for="Yes_@item.QuestionId" class="radio">Yes</label>
+                                    </div>
                                 }
                                 else
                                 {
-                                    <input type="radio" value="Y" name="Opt_@item.QuestionId" disabled />
+                                    <div>
+                                        <input type="radio" value="Y" name="Opt_@item.QuestionId" id="Yes_@item.QuestionId" disabled />
+                                        <label for="Yes_@item.QuestionId" class="radio">Yes</label>
+                                    </div>
                                 }
-                                Yes |
+                                |
 
                                 @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
                                 {
-                                    <input type="radio" value="N" name="Opt_@item.QuestionId" checked disabled />
+                                    <div>
+                                        <input type="radio" value="N" name="Opt_@item.QuestionId" id="No_@item.QuestionId" checked disabled />
+                                        <label for="No_@item.QuestionId" class="radio">No</label>
+                                    </div>
                                 }
                                 else
                                 {
-                                    <input type="radio" value="N" name="Opt_@item.QuestionId" disabled />
-                                }No
+                                    <div>
+                                        <input type="radio" value="N" name="Opt_@item.QuestionId" id="No_@item.QuestionId" disabled />
+                                        <label for="No_@item.QuestionId" class="radio">No</label>
+                                    </div>
+                                }
 
                             </td>
                             @*<td class="ans" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
@@ -292,23 +343,34 @@
 
                                 @if (item.Answer == "Y" && @item.SelfAssessmentId > 0)
                                 {
-
-                                    <input type="radio" value="Y" name="Opt_@item.QuestionId" checked />
+                                    <div>
+                                        <input type="radio" value="Y" name="Opt_@item.QuestionId" id="Yes_@item.QuestionId" checked />
+                                        <label for="Yes_@item.QuestionId" class="radio">Yes</label>
+                                    </div>
                                 }
                                 else
                                 {
-                                    <input type="radio" value="Y" name="Opt_@item.QuestionId" />
+                                    <div>
+                                        <input type="radio" value="Y" name="Opt_@item.QuestionId" id="Yes_@item.QuestionId" />
+                                        <label for="Yes_@item.QuestionId" class="radio">Yes</label>
+                                    </div>
                                 }
-                                Yes |
+                                |
                                 @if (item.Answer == "N" && @item.SelfAssessmentId > 0)
                                 {
-                                    <input type="radio" value="N" name="Opt_@item.QuestionId" checked />
+                                    <div>
+                                        <input type="radio" value="N" name="Opt_@item.QuestionId" id="No_@item.QuestionId" checked />
+                                        <label for="No_@item.QuestionId" class="radio">No</label>
+                                    </div>
                                 }
                                 else
                                 {
-                                    <input type="radio" value="N" name="Opt_@item.QuestionId" />
+                                    <div>
+                                        <input type="radio" value="N" name="Opt_@item.QuestionId" id="No_@item.QuestionId" />
+                                        <label for="No_@item.QuestionId" class="radio">No</label>
+                                    </div>
                                 }
-                                No
+
                             </td>
                             @*<td class="ans" data-Type="@item.AssessmentType" data-value="@item.QuestionId" data-user="@item.EmployeeId" data-sam="@item.SelfAssessmentId" data-isAct="@item.SAM_IsActive" data-fy="@item.EEL_FinencialYear" data-fq="@item.EEL_FinQuarter" data-qType="@item.QuestionType">
                                     <input type="text" value="@item.EEL_Comments" name="input_@item.QuestionId" class="form-control" />
@@ -362,12 +424,12 @@
 
         enableDisableBtn();
         $("td.ans input[type='radio']").on("click", function () {
-            $('#submit').attr("disabled", false);
+            enableDisableBtn();
         })
 
     });
     function enableDisableBtn() {
-        if ($("td.ans input[type='radio']checked").length > 1) {
+        if ($("td.ans input[type='radio']:checked").length == 11 && $("#isSubmitted").val() != "S") {
 
             $('#submit').attr("disabled", false);
         }
@@ -415,7 +477,7 @@
                 if (result != null) {
                     $.ajax({
                         type: "POST",
-                        data: { 'Id': EEL_EMP_EmployeeId, 'Assesment': AssessmentType, 'Name': $("#EmployeeName").text(), 'Image': $("#ProfileImage").attr('src'), 'JobTitle': $("#JobTitle").text(), 'FinYear': EEL_FinencialYear, 'FinQuarter': EEL_FinQuarter,'Department':$("#Department").text(),'LocationName':$("#LocationName").text()  },
+                        data: { 'Id': EEL_EMP_EmployeeId, 'Assesment': AssessmentType, 'Name': $("#EmployeeName").text(), 'Image': $("#ProfileImage").attr('src'), 'JobTitle': $("#JobTitle").text(), 'FinYear': EEL_FinencialYear, 'FinQuarter': EEL_FinQuarter, 'Department': $("#Department").text(), 'LocationName': $("#LocationName").text() },
                         url: '../NewAdmin/userExpectationsView/',
                         error: function (xhr, status, error) {
                         },
@@ -432,8 +494,8 @@
                                 else {
                                     $("#SaveExpectationsModalLabel").text("Save Expectations");
                                     $("#successExpectationsLabel").text("Expectations saved successfully");
-                                    setTimeout(function(){ HideModal("SaveExpectationsModal"); }, 3000);
-                                    
+                                    setTimeout(function () { HideModal("SaveExpectationsModal"); }, 3000);
+
                                 }
                                 $("#SaveExpectationsModal").modal('show');
 
@@ -449,7 +511,7 @@
 
     function HideModal(param) {
         $("#" + param).modal('hide');
-          $("#gridArea").show();
+        $("#gridArea").show();
         $('#profileArea').hide();
         $("#ListQExpectations").jsGrid("loadData");
         $("#ListQEvaluations").jsGrid("loadData");
