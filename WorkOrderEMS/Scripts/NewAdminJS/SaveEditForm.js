@@ -10,9 +10,9 @@ function SubmitForm(element, formName) {
                 url = base_url+'/EPeople/_DirectDepositeForm';
                 data = $('#depositeForm').serialize();
                 break;
-            case 'employeeHandbook':
-                url = base_url+'/EPeople/_EmployeeHandbook';
-                data = $('#employeeHandbook').serialize();
+            case 'EmergencyContactForm':
+                url = base_url + '/EPeople/_EmergencyContactForm';
+                data = $('#EmergencyContactForm').serialize();
                 break;
         }
             debugger

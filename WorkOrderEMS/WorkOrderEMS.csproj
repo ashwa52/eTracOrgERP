@@ -6573,6 +6573,7 @@
     <Folder Include="obj\" />
     <Folder Include="ReportPDF\FullPageReport\eFleet\" />
     <Folder Include="Views\DebitMemo\" />
+    <Folder Include="Views\NewAdmin\ePeople\EditEmployeeForm\" />
     <Folder Include="Views\NewClient\" />
   </ItemGroup>
   <ItemGroup>

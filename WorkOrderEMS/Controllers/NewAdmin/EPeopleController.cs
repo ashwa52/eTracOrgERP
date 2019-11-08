@@ -885,6 +885,13 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             model = _IGuestUser.GetDirectDepositeDataByEmployeeId(Id);
             return PartialView("~/Views/NewAdmin/ePeople/_DirectDepositeEditForm.cshtml", model);
         }
+        [HttpGet]
+        public PartialViewResult _EmergencyContactForm(string Id)
+        {
+            var model = new DirectDepositeFormModel();
+            model = _IGuestUser.GetDirectDepositeDataByEmployeeId(Id);
+            return PartialView("~/Views/Guest/_emergencyContactForm.cshtml", model);
+        }
         /// <summary>
         /// Created By : Ashwajit bansod
         /// Created Date : 25-Oct-2019

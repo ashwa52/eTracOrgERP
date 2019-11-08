@@ -3,36 +3,28 @@
 <link href="~/Content/NewAdminContent/CSS/FilesUICss.css" rel="stylesheet" />
 
 <style>
-
     .info {
         display: inline-block;
         margin: 10px;
     }
-
     .profile {
         display: inline-block;
     }
-
-        .profile img {
-            width: 70px;
-            height: 70px;
-            border-radius: 50%;
-            border: 1px solid #ddd;
-        }
-
-
-
+   .profile img {
+       width: 70px;
+       height: 70px;
+       border-radius: 50%;
+       border: 1px solid #ddd;
+   }
     .middle {
         text-align: center;
         background-color: yellow;
         margin-top: 13px;
         height: 22px;
     }
-
     .input-rounded {
         border: 1px solid #000;
     }
-
     .btnverify {
         background-color: #156baf;
         width: 157px;
@@ -41,25 +33,24 @@
         color: white;
         border-radius: 30px;
     }
-
     label {
         margin-bottom: 0;
     }
-
     .form-control:disabled, .form-control[readonly] {
         background: #ddd;
         opacity: 1;
     }
-
-    input[type=checkbox] {
+    /*input[type=checkbox] {
+        display: none;
+    }*/
+    #box1 {
         display: none;
     }
-        /* to hide the checkbox itself */
-        input[type=checkbox] + label:before {
-            font-family: FontAwesome;
-            display: inline-block;
-        }
-
+    /* to hide the checkbox itself */
+    input[type=checkbox] + label:before {
+        font-family: FontAwesome;
+        display: inline-block;
+    }
         input[type=checkbox] + label:before {
             content: "\f096";
         }
@@ -68,7 +59,6 @@
             letter-spacing: 10px;
         }
         /* space between checkbox and label */
-
         input[type=checkbox]:checked + label:before {
             content: "\f046";
         }
@@ -101,7 +91,6 @@
 		}
 	}
 </script>
-
 <div>
     <div>
         <div class="top">
@@ -262,12 +251,13 @@
                 }
             });
         }
-        if (formname === 'employeehandbook') {
+        if (formname === 'EmergencyContactForm') {
             $.ajax({
-                url: base_url+'/EPeople/_EmployeeHandbook',
+                url: base_url + '/EPeople/_EmergencyContactForm?Id=' + "@Model.EmpId",
                 method: 'GET',
                 success: function (response) {
                     $("#formidEditInfo").html(response);
+                    $("#formModelEdit").modal('show');
                 }
             });
         }
