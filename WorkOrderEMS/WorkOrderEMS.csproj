@@ -5111,6 +5111,9 @@
     <Content Include="GridListing\JqGridScript\CompanyList\ListCompanyProduct.js" />
     <Content Include="GridListing\JqGridScript\CompanyList\ListInsurance.js" />
     <Content Include="GridListing\JqGridScript\CompanyList\ListLicense.js" />
+    <Content Include="GridListing\JqGridScript\CustomersList.js" />
+    <Content Include="GridListing\JqGridScript\CustomersWaitingList.js" />
+    <Content Include="GridListing\JqGridScript\LeaveManagementJS.js" />
     <Content Include="GridListing\JqGridScript\ListAllHolidayJS.js" />
     <Content Include="GridListing\JqGridScript\ListAllPO.js" />
     <Content Include="GridListing\JqGridScript\ListAllSelfCreatedPO.js" />
