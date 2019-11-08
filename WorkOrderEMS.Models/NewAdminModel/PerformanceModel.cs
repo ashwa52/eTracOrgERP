@@ -72,6 +72,8 @@ namespace WorkOrderEMS.Models.NewAdminModel
 
         public string ASQ_QuestionType { get; set; }
         public decimal? EEL_ScoreSelf { get; set; }
+        public string LocationName { get; set; }
+        public string Department { get; set; }
     }
 
 }

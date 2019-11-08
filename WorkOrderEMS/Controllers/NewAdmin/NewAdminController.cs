@@ -659,7 +659,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
 
         [HttpPost]
-        public ActionResult userEvaluationView(string Id, string Assesment,string Name,string Image,string JobTitle)
+        public ActionResult userEvaluationView(string Id, string Assesment,string Name,string Image,string JobTitle,string Department,string LocationName)
         {
             eTracLoginModel ObjLoginModel = null;
             string Employee_Id = string.Empty;
@@ -679,7 +679,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 Employee_Id = Id;
             }
             ListQuestions = _GlobalAdminManager.GetGWCQuestions(Employee_Id, Assesment=="30"?"31":Assesment=="60"?"61":"91");
-            ViewData["employeeInfo"] = new GWCQUestionModel(){ EmployeeName=Name,AssessmentType=Assesment,Image=Image, JobTitle=JobTitle }; 
+            ViewData["employeeInfo"] = new GWCQUestionModel(){ EmployeeName=Name,AssessmentType=Assesment,Image=Image, JobTitle=JobTitle,Department=Department,LocationName=LocationName }; 
             return PartialView("userEvaluationView", ListQuestions);
         }
 
@@ -780,7 +780,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
 
         [HttpPost]
 
-        public ActionResult userExpectationsView(string Id, string Assesment,string Name,string Image,string JobTitle, string FinYear, string FinQuarter)
+        public ActionResult userExpectationsView(string Id, string Assesment,string Name,string Image,string JobTitle, string FinYear, string FinQuarter, string Department, string LocationName)
         {
             eTracLoginModel ObjLoginModel = null;
             string Employee_Id = string.Empty;
@@ -809,7 +809,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
 
 
             }
-            ViewData["employeeInfo"] = new GWCQUestionModel() { EmployeeName = Name, AssessmentType = Assesment, Image = Image, JobTitle = JobTitle };
+            ViewData["employeeInfo"] = new GWCQUestionModel() { EmployeeName = Name, AssessmentType = Assesment, Image = Image, JobTitle = JobTitle, Department= Department, LocationName= LocationName };
             return PartialView("userExpectationsView", ListQuestions);
         }
 
@@ -1039,7 +1039,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
         #endregion
         [HttpPost]
-        public ActionResult QEvaluationView(string Id, string Assesment, string Name, string Image, string JobTitle, string FinYear, string FinQuarter)
+        public ActionResult QEvaluationView(string Id, string Assesment, string Name, string Image, string JobTitle, string FinYear, string FinQuarter,string Department,string  LocationName)
         {
             eTracLoginModel ObjLoginModel = null;
             string Employee_Id = string.Empty;
@@ -1068,7 +1068,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
 
 
             }
-            ViewData["employeeInfo"] = new GWCQUestionModel() { EmployeeName = Name, AssessmentType = Assesment, Image = Image, JobTitle = JobTitle };
+            ViewData["employeeInfo"] = new GWCQUestionModel() { EmployeeName = Name, AssessmentType = Assesment, Image = Image, JobTitle = JobTitle, Department = Department, LocationName = LocationName };
             return PartialView("QEvaluationView", ListQuestions);
         }
 
