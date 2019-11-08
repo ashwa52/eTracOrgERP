@@ -779,7 +779,6 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
 
         [HttpPost]
-
         public ActionResult userExpectationsView(string Id, string Assesment,string Name,string Image,string JobTitle, string FinYear, string FinQuarter, string Department, string LocationName)
         {
             eTracLoginModel ObjLoginModel = null;
@@ -1238,7 +1237,5 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             var data = _GlobalAdminManager.GetJobPostingDetailsForCompanyOpening(1);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
-#endregion
     }
-}
 }

@@ -19,7 +19,6 @@ function myOpenings(PostingId) {
         controller: {
             loadData: function () {
                 var deferred = $.Deferred();
-
                 $.ajax({
                     url: base_url + '/NewAdmin/MyOpenings?PostingId=' + PostingId,
                     dataType: 'json',
@@ -28,7 +27,6 @@ function myOpenings(PostingId) {
                         deferred.resolve(data);
                     }
                 });
-
                 return deferred.promise();
             }
         },

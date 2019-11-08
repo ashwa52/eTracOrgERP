@@ -290,8 +290,7 @@ namespace WorkOrderEMS.BusinessLogic
         
         bool saveQEvaluations(List<GWCQUestionModel> data, string action);
         bool VerifyEmployee(OnboardingDetailRequestModel onboardingDetailRequestModel);
-
-        bool saveExpectations(List<GWCQUestionModel> data, string action);
+        List<spGetJobPostingDetails_ForCompanyOpening_Result> GetJobPostingDetailsForCompanyOpening(long JPS_JobPostingId);
         // BudgetDetails GetListBudgetDetails(long? LocationId, long? UserId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
     }
 }
