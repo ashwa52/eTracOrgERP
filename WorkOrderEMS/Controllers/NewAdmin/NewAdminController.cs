@@ -926,15 +926,8 @@ namespace WorkOrderEMS.Controllers.NewAdmin
 
                         return PartialView("ePeople/_questions", currentQus);
                     }
-                    return PartialView("ePeople/_questions", new spGetInterviewQuestion_Result
-                    {
-                        INQ_QuestionType = "LastQuestion",
-                        INQ_Exempt = "Y",
-                        INQ_Id = 9999,
-                        INQ_Question = "Did applicant have any question?",
-                        INQ_IsActive = "Y"
-                    });
-                }
+					return PartialView("ePeople/_questions", questions.Where(x=>x.INQ_QuestionType== "LastQuestion").FirstOrDefault());
+				}
                 else
                 {
                     var currentQus = questions.Skip(0).Take(1).FirstOrDefault();
@@ -1239,6 +1232,13 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         List<LocationRuleMappingModel> ItemList = DataRowToObject.CreateListFromTable<LocationRuleMappingModel>(dataTable);
         return ItemList;
     }
-    #endregion
+        #endregion
+        public ActionResult GetCompanyOpening()
+        {
+            var data = _GlobalAdminManager.GetJobPostingDetailsForCompanyOpening(1);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
+#endregion
+    }
 }
 }

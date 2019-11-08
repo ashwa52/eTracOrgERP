@@ -160,79 +160,80 @@ namespace WorkOrderEMS.Controllers.Guest
             return PartialView("_photoreleaseform", model);
         }
 
-        [HttpGet]
-        public PartialViewResult _EducationVarificationForm()
-        {
-            EducationVarificationModel model = new EducationVarificationModel();
-            var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-            model = _IGuestUserRepository.GetEducationVerificationForm(objloginmodel.UserId);
-            return PartialView("_EducationVarificationForm", model);
-        }
-        [HttpPost]
-        public ActionResult _EducationVarificationForm(EducationVarificationModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-                _IGuestUserRepository.SetEducationVerificationForm(objloginmodel.UserId, model);
-                return Json(true, JsonRequestBehavior.AllowGet);
-            }
-            model.IsSave = false;
-            return PartialView("_EducationVarificationForm", model);
-        }
-        [HttpGet]
-        public PartialViewResult _ConfidentialityAgreementForm()
-        {
-            return PartialView("_ConfidentialityAgreementForm");
-        }
-        [HttpPost]
-        public ActionResult _ConfidentialityAgreementForm(ConfidenialityAgreementModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-                _IGuestUserRepository.SetConfidenialityAgreementForm(objloginmodel.UserId, model);
-                return Json(true, JsonRequestBehavior.AllowGet);
-            }
-            return PartialView("_ConfidentialityAgreementForm", model);
-        }
-        [HttpGet]
-        public PartialViewResult _CreditCardAuthorizationForm()
-        {
-            return PartialView("_CreditCardAuthorizationForm");
-        }
-        [HttpGet]
-        public PartialViewResult _PreviousEmployeement()
-        {
-            return PartialView("_PreviousEmployeement");
-        }
-        [HttpGet]
-        public PartialViewResult _emergencyContactForm()
-        {
-            EmergencyContectForm model = new EmergencyContectForm();
-            var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-            model = _IGuestUserRepository.GetEmergencyForm(objloginmodel.UserId);
-            return PartialView("_emergencyContactForm", model);
-        }
-        [HttpPost]
-        public ActionResult _emergencyContactForm(EmergencyContectForm model)
-        {
-            if (ModelState.IsValid)
-            {
-                var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-                _IGuestUserRepository.SetEmergencyForm(objloginmodel.UserId, model);
-                return Json(true, JsonRequestBehavior.AllowGet);
-            }
-            return PartialView("_emergencyContactForm", model);
-        }
-        [HttpGet]
-        public ActionResult GetFormsStatus()
-        {
-            var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-            var data = _IGuestUserRepository.GetFormsStatus(objloginmodel.UserId);
-            return Json(data, JsonRequestBehavior.AllowGet);
-
-
-        }
-    }
+		[HttpGet]
+		public PartialViewResult _EducationVarificationForm()
+		{
+			EducationVarificationModel model = new EducationVarificationModel();
+			var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+			model = _IGuestUserRepository.GetEducationVerificationForm(objloginmodel.UserId);
+			return PartialView("_EducationVarificationForm",model);
+		}
+		[HttpPost]
+		public ActionResult _EducationVarificationForm(EducationVarificationModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+				_IGuestUserRepository.SetEducationVerificationForm(objloginmodel.UserId, model);
+				return Json(true, JsonRequestBehavior.AllowGet);
+			}
+			model.IsSave = false;
+			return PartialView("_EducationVarificationForm",model);
+		}
+		[HttpGet]
+		public PartialViewResult _ConfidentialityAgreementForm()
+		{
+			return PartialView("_ConfidentialityAgreementForm");
+		}
+		[HttpPost]
+		public ActionResult _ConfidentialityAgreementForm(ConfidenialityAgreementModel model)
+		{
+			if (ModelState.IsValid)
+			{
+				var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+				_IGuestUserRepository.SetConfidenialityAgreementForm(objloginmodel.UserId, model);
+				return Json(true, JsonRequestBehavior.AllowGet);
+			}
+			return PartialView("_ConfidentialityAgreementForm", model);
+		}
+		[HttpGet]
+		public PartialViewResult _CreditCardAuthorizationForm()
+		{
+			return PartialView("_CreditCardAuthorizationForm");
+		}
+		[HttpGet]
+		public PartialViewResult _PreviousEmployeement()
+		{
+			return PartialView("_PreviousEmployeement");
+		}
+		[HttpGet]
+		public PartialViewResult _emergencyContactForm()
+		{
+			EmergencyContectForm model = new EmergencyContectForm();
+			var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+			model = _IGuestUserRepository.GetEmergencyForm(objloginmodel.UserId);
+			return PartialView("_emergencyContactForm", model);
+		}
+		[HttpPost]
+		public ActionResult _emergencyContactForm(EmergencyContectForm model)
+		{
+			if (ModelState.IsValid)
+			{
+				var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+				_IGuestUserRepository.SetEmergencyForm(objloginmodel.UserId, model);
+				return Json(true, JsonRequestBehavior.AllowGet);
+			}
+			return PartialView("_emergencyContactForm", model);
+		}
+		[HttpGet]
+		public ActionResult GetFormsStatus()
+		{
+			
+				var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+				var data=_IGuestUserRepository.GetFormsStatus(objloginmodel.UserId);
+				return Json(data, JsonRequestBehavior.AllowGet);
+			
+			
+		}
+	}
 }

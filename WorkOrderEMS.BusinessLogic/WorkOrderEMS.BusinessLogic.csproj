@@ -271,7 +271,6 @@
     </Compile>
     <Compile Include="Managers\ManagerAppManager\ManagerAppeMaintenanceManager.cs" />
     <Compile Include="Managers\NewAdminManager\ePeopleManager.cs" />
-    <Compile Include="Managers\NewAdminManager\FillableFormManager.cs" />
     <Compile Include="Managers\NewAdminManager\VehicleSeatingChartManager.cs" />
     <Compile Include="Managers\NewAdminManager\DepartmentManager.cs" />
     <Compile Include="Managers\NewEmployeeApp\NewEmployeeAppManager.cs" />

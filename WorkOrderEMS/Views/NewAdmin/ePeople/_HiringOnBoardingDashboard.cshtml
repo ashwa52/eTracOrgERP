@@ -205,7 +205,7 @@
                                         <a class="nav-link CenterText" data-toggle="tab" onclick="MyOpeningSummery();" href="#profile1">My Opening</a>
                                     </li>
                                     <li class="nav-item WidthForTab">
-                                        <a class="nav-link CenterText" data-toggle="tab" href="#contact1">Company Opening</a>
+                                        <a class="nav-link CenterText" data-toggle="tab" href="#contact1" onclick="GetCompanyOpening()">Company Opening</a>
                                     </li>
                                     <li class="nav-item WidthForTab">
                                         <a class="nav-link CenterText" data-toggle="tab" href="#myinterview" onclick="MyInterviews()">My Interview</a>
@@ -233,8 +233,9 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="contact1">
-                                        <div class="pt-4">
-                                        </div>
+										<div class="pt-4">
+											<div id="companyOpening"></div>
+										</div>
                                     </div>
                                     <div class="tab-pane fade" id="myinterview">
                                         <div class="pt-4">

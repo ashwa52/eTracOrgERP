@@ -4315,7 +4315,20 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 throw;
             }
         }
-
+        public List<spGetJobPostingDetails_ForCompanyOpening_Result> GetJobPostingDetailsForCompanyOpening(long JPS_JobPostingId)
+        {
+            try
+            {
+                using (workorderEMSEntities context = new workorderEMSEntities())
+                {
+                    return context.spGetJobPostingDetails_ForCompanyOpening(JPS_JobPostingId).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 
 
