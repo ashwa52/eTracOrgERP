@@ -29,5 +29,6 @@ namespace WorkOrderEMS.BusinessLogic
         bool SendJobTitleForApproval(JobTitleModel model);
         bool SaveDirectDepositeForm(DirectDepositeFormModel model);
         List<UploadedFiles> GetUploadedFilesOfUser(string EmployeeId);
+        List<GraphCountModel> GetEMP_ReqCount();
     }
 }

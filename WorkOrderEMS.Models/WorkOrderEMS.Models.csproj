@@ -263,6 +263,7 @@
     <Compile Include="NewAdminModel\Admin\JobPostingModel.cs" />
     <Compile Include="NewAdminModel\DepartmentModel.cs" />
     <Compile Include="NewAdminModel\EmployeeManagement\DemotionModel.cs" />
+    <Compile Include="NewAdminModel\EmployeeManagement\GraphCountModel.cs" />
     <Compile Include="NewAdminModel\FormsModel\CommonFormModel.cs" />
     <Compile Include="NewAdminModel\FormsModel\DirectDepositFormModel.cs" />
     <Compile Include="NewAdminModel\FormsModel\EducationFormModel.cs" />
@@ -272,6 +273,7 @@
     <Compile Include="NewAdminModel\OnboardingDetailRequestModel.cs" />
     <Compile Include="NewAdminModel\PerformanceModel.cs" />
     <Compile Include="NewAdminModel\RecruiteeModels\CandidateGetModel.cs" />
+    <Compile Include="NewAdminModel\RecruiteeModels\Candidate\AddJobPostingRecruiteeModel.cs" />
     <Compile Include="NewAdminModel\RecruiteeModels\Candidate\PerCandidateModel.cs" />
     <Compile Include="NewAdminModel\RecruiteeModels\RecruiteeOfferAddModel.cs" />
     <Compile Include="NewAdminModel\RecruiteeOfferModel.cs" />

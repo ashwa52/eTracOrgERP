@@ -950,13 +950,28 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
         }
 
+        /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created Date : 02-Nov-2019
+        /// Created For : To get file by file name to view in employee manegement file
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         public FileStreamResult GetPDF(string fileName)
         {
             var str = fileName.Replace("'", "");
             FileStream fs = new FileStream(Server.MapPath("~/Content/FilesRGY/"+ str), FileMode.Open, FileAccess.Read);           
             return File(fs, "application/pdf");           
         }
-
+        /// <summary>
+        /// Created By  :Ashwajit bansod
+        /// Created Date : 07-Nov-2019
+        /// Created For : To upload files by file type and employee id
+        /// </summary>
+        /// <param name="EMPId"></param>
+        /// <param name="FileId"></param>
+        /// <param name="FileName"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult UploadFiles(string EMPId, long FileId, string FileName)
         {
@@ -1025,7 +1040,14 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 return Json("No files selected.");
             }
         }
-
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 07-Nov-2019
+        /// Created For : To download file
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         public ActionResult FileDownload(string id, string fileName)
         {
             try
@@ -1488,5 +1510,28 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
 
         #endregion Employee Attendance Management
+
+        #region GRAPH COUNT
+
+        [HttpGet]
+        public ActionResult GetCountEmployeeRequisition()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            try
+            {
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                }
+                var getCount = _IePeopleManager.GetEMP_ReqCount();
+                return Json(getCount, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+            
+        }
+        #endregion GRAPH COUNT
     }
 }

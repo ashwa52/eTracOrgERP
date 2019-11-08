@@ -689,12 +689,13 @@ namespace WorkOrderEMS.BusinessLogic
                 var ePeopleRepository = new ePeopleRepository();
                 if (EmployeeId != null)
                 {
-                    lst = ePeopleRepository.GetUploadFilesList(EmployeeId).Select(x => new UploadedFiles()
+                    var getFileList  = ePeopleRepository.GetUploadFilesList(EmployeeId).ToList();
+                    lst = getFileList.Select(x => new UploadedFiles()
                     {
-                        FileName = x.FLU_FileName,
-                        FileTypeName = x.FLT_FileType,
-                        AttachedFileName = x.FLU_FileAttached,
-                        FileId = x.FLU_FLT_Id,
+                        FileName = x.FLU_FileName == null?null: x.FLU_FileName,
+                        FileTypeName = x.FLT_FileType == null ? null : x.FLT_FileType,
+                        AttachedFileName = x.FLU_FileAttached == null ? null : x.FLU_FileAttached,
+                        FileId = x.FLU_FLT_Id > 0 ? 0 : x.FLU_FLT_Id,
                         AttachedFileLink = x.FLU_FileAttached == null ? null : HostingPrefix + FilePath.Replace("~", "") + x.FLU_FileAttached
                     }).ToList();
                 }
@@ -707,5 +708,36 @@ namespace WorkOrderEMS.BusinessLogic
             }
         }
         #endregion Files
+
+        #region GRAPH COUNT
+        public List<GraphCountModel> GetEMP_ReqCount()
+        {
+            var repository = new ePeopleRepository();
+            var lst = new List<GraphCountModel>();
+            try
+            {
+                var getEmpCount = repository.GetEmployeeManagementListData(0, null).GroupBy(x => x.JBT_JobTitle)
+                    .Select(x => new GraphCountModel() {
+                      Employee = x.Count(),
+                      JobTitle = x.Key
+
+                    });
+                var requisitionlst = repository.GetRequisitionlist().GroupBy(x => x.RQS_RequizationType).
+                    Select(x => new GraphCountModel()
+                    {
+                        RequisitionName = x.Key,
+                        Requisition = x.Count()
+                    }).ToList();
+                lst.AddRange(getEmpCount);
+                lst.AddRange(requisitionlst);
+                return lst;
+            }
+            catch(Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<GraphCountModel> GetEMP_ReqCount()", "Exception While getting count list.", null);
+                throw;
+            }
+        }
+        #endregion GRAPH COUNT
     }
 }

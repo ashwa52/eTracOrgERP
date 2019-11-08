@@ -413,49 +413,35 @@ namespace WorkOrderEMS.BusinessLogic
                 if (Obj != null)
                 {
                     if (Obj.AddChartModel.Id > 0)
-                    {
-                        var saved = _VSCRepository.SaveJob(Obj);
+                    {                        
                         var modelRecruitee = new RecruiteeAPI();
-                        var dynamicJson = new Models.NewAdminModel.RootObjectData();
+                        var dynamicJson = new Models.NewAdminModel.RecruiteeModels.Candidate.Add.Root();
                         string url = "/c/40359/offers/";
-                        dynamicJson.offer = new Models.NewAdminModel.Offer
+                        dynamicJson.offer = new Models.NewAdminModel.RecruiteeModels.Candidate.Add.Offer
                         {
                             department = Obj.AddChartModel.DepartmentName,
                             description = Obj.AddChartModel.RolesAndResponsibility,
-                            kind = "Job",
-                            title = Obj.AddChartModel.JobTitle,
-                            position = Convert.ToInt32(Obj.NumberOfPost)
-
-
-                            //department = Obj.AddChartModel.DepartmentName,
-                            //description = Obj.AddChartModel.RolesAndResponsibility,
-                            //kind = "Job",
-                            //title = Obj.AddChartModel.JobTitle,
-                            //status = "published",
-                            //position = Convert.ToInt32(Obj.NumberOfPost),
-                            //followed = true,
-                            //slug = "offer",
-                            //employment_type = null,
-                            //city = null,
-                            //state_code = null,
-                            //country_code = null,
-                            //postal_code = null,
-                            //requirements = null,
-                            //remote = false,
-                            //min_hours =30,
-                            //max_hours =40,
-                            //options_cv = "required",
-                            //email_confirmation = true,
-                            //location ="",
-                            //experience = null
+                            kind = "job",
+                            title = Obj.AddChartModel.SeatingName,
+                            position = Convert.ToInt32(Obj.NumberOfPost),
+                            status = "published",
+                            postal_code = Obj.zipCode,
+                            requirements = Obj.AddChartModel.SeatingName,
+                            remote = false,
+                            city = Obj.City,
+                            country_code = "1"
                         };
                         #region Demo Code
                         //string tt = JsonConvert.SerializeObject()
                         string message = JsonConvert.SerializeObject(dynamicJson);
-                        //var getSttring = modelRecruitee.POSTreq(message, url);
-                        var getSttring = modelRecruitee.POSTreqDemo(message, url);
-                        // Obj.AddChartModel.Action = "I";
-                        //var saved = _VSCRepository.SaveJob(Obj);
+                        var getString = modelRecruitee.POSTreq(message, url);
+                        var getSavedJobRecruitee = JsonConvert.DeserializeObject<Models.NewAdminModel.RootObject>(getString);
+                        if (getSavedJobRecruitee != null)
+                        {
+                            Obj.RecruiteeId = getSavedJobRecruitee.offer.id;
+                            Obj.AddChartModel.Action = "I";
+                            var saved = _VSCRepository.SaveJob(Obj);
+                        }
                         #endregion Demo Code
                     }
                     else

@@ -8,7 +8,7 @@ function myOpenings(PostingId) {
     $("#ListMyOpening").show();
     $("#ListMyOpening").jsGrid({
         width: "100%",
-        height: "300px",
+        height: "430px",
         filtering: true,
         sorting: true,
         paging: true,
@@ -31,6 +31,12 @@ function myOpenings(PostingId) {
 
                 return deferred.promise();
             }
+        },
+        onRefreshed: function (args) {
+            $(".jsgrid-insert-row").hide();
+            $(".jsgrid-filter-row").hide()
+            $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
+
         },
 
         //rowRenderer : function (item) {
@@ -276,7 +282,6 @@ function JobPosting() {
     MyOpeningSummery();
 }
 function TakeInterview(item) {
-    debugger;
     $.ajax({
         url: base_url + '/NewAdmin/InfoFactSheet',
         method: 'POST',
@@ -288,7 +293,6 @@ function TakeInterview(item) {
     });
 }
 function GetInterviewers(elm, applicantId) {
-    debugger;
     $(elm).removeClass("btnNotSelected");
     $(elm).addClass("btnSelected");
     $(elm.parentElement).find('button').each(function (index, element) {

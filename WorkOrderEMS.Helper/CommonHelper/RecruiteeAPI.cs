@@ -66,6 +66,7 @@ namespace WorkOrderEMS.Helper
         }
         public string POSTreq(string PostData, string url)
         {
+
             string returnData = "";
             try
             {
@@ -76,10 +77,10 @@ namespace WorkOrderEMS.Helper
                     objClint.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "dkpEaHRJSzJiempBUlVNOC9QN3JlUT09");
                     #region Demo Code
                     //string message = JsonConvert.SerializeObject(dynamicJson);
-                    HttpContent c = new StringContent(PostData, Encoding.UTF8, "application/json");
-                    //var stringContent = new StringContent(PostData, Encoding.UTF8, "application/json");
-                    var response = objClint.PostAsync(url, c).Result;
-                    //var response = objClint.PostAsync(url, stringContent).Result;
+                    //HttpContent c = new StringContent(PostData, Encoding.UTF8, "application/json");
+                    var stringContent = new StringContent(PostData, Encoding.UTF8, "application/json");
+                   // var response = objClint.PostAsync(url, c).Result;
+                    var response = objClint.PostAsync(url, stringContent).Result;
                     if (response.IsSuccessStatusCode)
                     {
                         returnData = response.Content.ReadAsStringAsync().Result;

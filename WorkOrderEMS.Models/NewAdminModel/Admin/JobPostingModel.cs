@@ -15,6 +15,7 @@ namespace WorkOrderEMS.Models
         public string EmployeeStatus { get; set; }
         public string State { get; set; }
         public string City { get; set; }
+        public string zipCode { get; set; }
         public string Country { get; set; }
         public string JobType { get; set; }
         public string EEO { get; set; }

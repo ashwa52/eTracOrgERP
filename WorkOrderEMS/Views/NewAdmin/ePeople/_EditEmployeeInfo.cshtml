@@ -14,8 +14,8 @@
     }
 
         .profile img {
-            width: 89px;
-            height: 89px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             border: 1px solid #ddd;
         }
@@ -26,7 +26,7 @@
         text-align: center;
         background-color: yellow;
         margin-top: 13px;
-        height: 28px;
+        height: 22px;
     }
 
     .input-rounded {
@@ -79,7 +79,8 @@
     /* allow space for check mark */
     .top {
         border: 1px solid #bbbbdb;
-        padding: 9px 18px 8px 21px;
+        padding: 3px 0px 4px 3px;
+        /*padding: 9px 18px 8px 21px;*/
         background-image: linear-gradient(to right, #3588CD, #fff);
     }
 </style>
@@ -108,8 +109,8 @@
                 <img src="@Model.Image" />
             </div>
             <div class="info">
-                <label style="margin-left:30px;">Employee Id</label><span style="color:black;">:&nbsp;&nbsp;&nbsp; @Model.EmpId</span>
-                <label style="margin-left:092px">Name</label><span style="color:black;">:&nbsp;&nbsp;&nbsp; @Model.FirstName  @Model.LastName</span>
+                <label style="margin-left:30px;">Employee Id</label><span style="color:black;">:&nbsp;&nbsp;&nbsp;<label style="color: floralwhite"> @Model.EmpId</label></span>
+                <label style="margin-left:092px">Name</label><span style="color:black;">:&nbsp;&nbsp;&nbsp;<label style="color: floralwhite"> @Model.FirstName  @Model.LastName</label></span>
             </div>
             @*<div class="info">
                 <span style="color:black"><b>Employee Id</b>: @Model.EmpId</span>

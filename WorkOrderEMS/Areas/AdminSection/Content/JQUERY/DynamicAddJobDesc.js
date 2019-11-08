@@ -148,23 +148,23 @@ $(document).ready(function () {
     //function SaveJobPost(){
     //    debugger
     //}
-    $('#SaveJobPost').click(function (e) {
-        debugger
-        if ($("#SaveJobPostingForm").valid()) {
-            //var dataObject = $("#SaveJobPostingForm").serialize();
-            var dataJobTitleObject = $("#SaveJobPostingForm").serialize();
-            $.ajax({
-                type: "POST",
-                url: '../AdminSection/OrgChart/SaveJobPosting', //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
-                data: dataJobTitleObject,
+    //$('#SaveJobPost').click(function (e) {
+    //    debugger
+    //    if ($("#SaveJobPostingForm").valid()) {
+    //        //var dataObject = $("#SaveJobPostingForm").serialize();
+    //        var dataJobTitleObject = $("#SaveJobPostingForm").serialize();
+    //        $.ajax({
+    //            type: "POST",
+    //            url: '../AdminSection/OrgChart/SaveJobPosting', //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
+    //            data: dataJobTitleObject,
 
-                success: function (Data) {
-                    debugger
+    //            success: function (Data) {
+    //                debugger
                     
-                },
-                error: function (err) {
-                }
-            });
-        }
-        });
+    //            },
+    //            error: function (err) {
+    //            }
+    //        });
+    //    }
+    //    });
 })

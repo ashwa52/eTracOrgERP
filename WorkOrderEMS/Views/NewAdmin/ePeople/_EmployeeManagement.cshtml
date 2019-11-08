@@ -21,12 +21,12 @@
 <!--**********************************
            Content body start
        ***********************************-->
-<script src="https://www.amcharts.com/lib/4/core.js"></script>
-<script src="https://www.amcharts.com/lib/4/charts.js"></script>
-<script src="https://www.amcharts.com/lib/4/themes/material.js"></script>
-<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
-<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
-<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/Core4.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/Chart4.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/Material4.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/Animated4.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/amchart3.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/serial3.js"></script>
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />
@@ -62,19 +62,23 @@
         margin-right: 7px;
         cursor: pointer;
     }
+
     .RequisitionRadioButtonCss {
         font-size: 16px;
         margin-left: -20px;
     }
+
     .closeClass {
         border-radius: 100px;
         width: 9%;
-        cursor:pointer;
+        cursor: pointer;
     }
+
     .modal-header {
         display: inherit;
     }
 </style>
+<br />
 <div class="content-body">
     <!-- row -->
     <div class="container-fluid">
@@ -97,7 +101,7 @@
                         <h4 class="card-title addWhite" style="color: white;">Employee</h4>
                     </div>
                     <div class="card-body">
-                        <div id="QRCCount"></div>
+                        <div id="eTimediv"></div>
                     </div>
                 </div>
             </div>
@@ -107,7 +111,7 @@
                         <h4 class="card-title addWhite" style="color: white;">Requisition</h4>
                     </div>
                     <div class="card-body">
-                        <div id="eTimediv"></div>
+                        <div id="RequisitionGraph"></div>
                         @*<div id="c3-combination"></div>*@
                     </div>
                 </div>
@@ -121,7 +125,7 @@
                         <div class="form-group row" style="margin-top:6px;margin-left:10px;">
                             <div class="col-sm-2">
                                 <input type="text" id="SearchbyAssignUser" class="form-control input-rounded dispayListWOName" placeholder="Search by User">
-                            </div>                          
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">
@@ -130,7 +134,7 @@
                                 <li class="nav-item WidthForTab">
                                     <a class="nav-link active CenterText" data-toggle="tab" href="#EMPList">Employee Management</a>
                                 </li>
-                                <li class="nav-item WidthForTab" style="width:190px;" >
+                                <li class="nav-item WidthForTab" style="width:190px;">
                                     <a class="nav-link CenterText" style="text-align: center;" data-toggle="tab" href="#ListRequisition">Requisition</a>
                                 </li>
                             </ul>
@@ -142,7 +146,7 @@
                                 </div>
                                 <div class="tab-pane fade" id="ListRequisition">
                                     <div class="pt-4">
-                                        <div class="row" style="margin-top:-20px;">                                    
+                                        <div class="row" style="margin-top:-20px;">
                                             <div class="col-sm-11"></div>
                                             <div class="col-sm-1">
                                                 <span id="AddRequisition" style="cursor:pointer;" title="Requisition Action"><i class="fa fa-plus fa-2x" style="color:forestgreen;" aria-hidden="true"></i></span>
@@ -345,11 +349,11 @@
     <div class="modal-dialog modal-lg" style="width:800px;margin-top: 102px;">
         <div class="modal-content">
             @*<div class="modal-header" style="display:none">
-                <h5 class="modal-title">Requisition Action</h5>
-                <button type="button" class="close" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
-            </div>*@
+                    <h5 class="modal-title">Requisition Action</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>*@
             <div class="modal-body">
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -377,8 +381,8 @@
                 </div>
             </div>
             @*<div class="modal-footer" style="background: white;display:none;">
-                <button type="button" class="btn btn-secondary" style="border-radius:100px;" data-dismiss="modal">Close</button>
-            </div>*@
+                    <button type="button" class="btn btn-secondary" style="border-radius:100px;" data-dismiss="modal">Close</button>
+                </div>*@
         </div>
     </div>
 </div>
@@ -426,7 +430,7 @@
             </div>
             <div class="modal-footer" style="background: white;">
                 <button type="button" class="btn btn-secondary" style="border-radius:100px;" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-secondary" @*id="DeleteRequisition"*@ onclick="DeleteRequisition()" style="border-radius:100px;background-color:crimson" >Delete</button>
+                <button type="button" class="btn btn-secondary" @*id="DeleteRequisition"*@ onclick="DeleteRequisition()" style="border-radius:100px;background-color:crimson">Delete</button>
             </div>
         </div>
     </div>
@@ -455,11 +459,11 @@
 </div>
 <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForVSCDropDown">
     <div class="modal-dialog ">
-        <div class="modal-content" style="background:transparent;">          
-            <div class="modal-body" >               
+        <div class="modal-content" style="background:transparent;">
+            <div class="modal-body">
                 <div id="divForVSCDropDown" class="">
                 </div>
-            </div>         
+            </div>
         </div>
     </div>
 </div>
@@ -476,7 +480,7 @@
     </div>
 </div>
 <div class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" id="myModalToAddRemoveJobCount">
-    <div class="modal-dialog " >
+    <div class="modal-dialog ">
         <div class="modal-content">
             <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title" id="ChangeTitle">Job Count</h5>
@@ -485,12 +489,12 @@
                 </button>
             </div>
             <div class="modal-body" style="margin-left: 2px;">
-                <div id="divAddRemoveJobTitle" class="">                  
+                <div id="divAddRemoveJobTitle" class="">
                 </div>
             </div>
             <div class="modal-footer" style="background: white;">
                 <button type="button" class="btn btn-success" id="PlusMinusJobTitle" style="border-radius:100px;">Save</button>
-                <button type="button" class="btn btn-primary"  style="border-radius:100px;" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" style="border-radius:100px;" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -518,20 +522,20 @@
             <div class="modal-body">
                 <form id="FileUploadModalForm">
                     <div class="form-group row">
-                        <div class="input-group col-sm-6">                          
+                        <div class="input-group col-sm-6">
                             <div class="custom-file">
                                 <input type="file" class="custom-file-input" id="myfileUpload">
                                 <label class="custom-file-label" id="addFileName">Choose file</label>
                             </div>
                         </div>
                         @*<div class="col-sm-8" style="margin-bottom: 12px;">
-                            <input id="myfileUpload" type="file" style="margin-left:50%;" />
-                        </div>*@
+                                <input id="myfileUpload" type="file" style="margin-left:50%;" />
+                            </div>*@
                         <div class="col-sm-6">
                             <input type="text" class="form-control input-rounded" id="fileNameInputVal" />
                         </div>
                     </div>
-                 </form>
+                </form>
             </div>
             <div class="modal-footer" style="background: white;">
                 <button type="button" class="btn btn-secondary" id="UploadDoc" onclick="saveFile()" style="border-radius:100px;width:25%;">Upload</button>
@@ -554,92 +558,6 @@
 <script src="~/GridListing/JsGridScript/ListEmployeeManagement.js"></script>
 <script src="~/GridListing/JsGridScript/ListRequisitionData.js"></script>
 <script type="text/javascript" src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
-<script>
-am4core.ready(function() {
-
-// Themes begin
-am4core.useTheme(am4themes_material);
-am4core.useTheme(am4themes_animated);
-// Themes end
-
-// Create chart instance
-var chart = am4core.create("QRCCount", am4charts.PieChart);
-
-// Add data
-chart.data = [{
-    "User Type": "Administrator",
-    "Count": 2//dataJSON.CountPanel[0].ManagerCount
-}, {
-    "User Type": "Manager",
-    "Count": 4
-}, {
-    "User Type": "Employee",
-    "Count": 12//dataJSON.CountPanel[0].EmpCount
-}];
-
-// Add and configure Series
-var pieSeries = chart.series.push(new am4charts.PieSeries());
-pieSeries.dataFields.value = "Count";
-pieSeries.dataFields.category = "User Type";
-pieSeries.innerRadius = am4core.percent(50);
-pieSeries.ticks.template.disabled = true;
-pieSeries.labels.template.disabled = true;
-
-var rgm = new am4core.RadialGradientModifier();
-rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, - 0.5);
-pieSeries.slices.template.fillModifier = rgm;
-pieSeries.slices.template.strokeModifier = rgm;
-pieSeries.slices.template.strokeOpacity = 0.4;
-pieSeries.slices.template.strokeWidth = 0;
-
-chart.legend = new am4charts.Legend();
-chart.legend.position = "right";
-
-}); // end am4core.ready()
-</script>
-<script>
-am4core.ready(function() {
-
-    // Themes begin
-    am4core.useTheme(am4themes_material);
-    am4core.useTheme(am4themes_animated);
-    // Themes end
-
-    // Create chart instance
-    var chart = am4core.create("eTimediv", am4charts.PieChart);
-
-    // Add data
-    chart.data = [{
-        "User Type": "Administrator",
-        "Count": 2//dataJSON.CountPanel[0].ManagerCount
-    }, {
-        "User Type": "Manager",
-        "Count": 4
-    }, {
-        "User Type": "Employee",
-        "Count": 12//dataJSON.CountPanel[0].EmpCount
-    }];
-
-    // Add and configure Series
-    var pieSeries = chart.series.push(new am4charts.PieSeries());
-    pieSeries.dataFields.value = "Count";
-    pieSeries.dataFields.category = "User Type";
-    pieSeries.innerRadius = am4core.percent(50);
-    pieSeries.ticks.template.disabled = true;
-    pieSeries.labels.template.disabled = true;
-
-    var rgm = new am4core.RadialGradientModifier();
-    rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, - 0.5);
-    pieSeries.slices.template.fillModifier = rgm;
-    pieSeries.slices.template.strokeModifier = rgm;
-    pieSeries.slices.template.strokeOpacity = 0.4;
-    pieSeries.slices.template.strokeWidth = 0;
-
-    chart.legend = new am4charts.Legend();
-    chart.legend.position = "right";
-
-});
-</script>
 <script>
     $(document).ready(function () {
         var base_url = window.location.origin;
@@ -671,53 +589,6 @@ am4core.ready(function() {
                 }
             });
         });
-        $.ajax({
-            type: "GET",
-            url: "@Url.Action("GetDashboardHeadCount", "GlobalAdmin")",
-            data: {},
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (jsondata) {
-        //successFuncPie(response);
-        if (jsondata != null && jsondata != "" && jsondata.dataJson.trim() != "") {
-            var dataJSON = JSON.parse(jsondata.dataJson);
-            dataJSON.CountPanel[0].AdminCount;
-            //am4core.ready(function () {
-            //    am4core.useTheme(am4themes_animated);
-            //    var chartQRC = am4core.create("QRCCount", am4charts.PieChart);
-            //    chartQRC.data = [{
-            //        "UserType": "Administrator",
-            //        "Count": 20
-            //    }, {
-            //        "UserType": "Manager",
-            //        "Count": 5//dataJSON.CountPanel[0].EmpCount
-            //    }, {
-            //        "UserType": "Employee",
-            //        "Count": 3//dataJSON.CountPanel[0].ManagerCount
-            //    }];
-
-            //    // Add and configure Series
-            //    var pieSeries = chartQRC.series.push(new am4charts.PieSeries());
-            //    pieSeries.dataFields.value = "Count";
-            //    pieSeries.dataFields.category = "UserType";
-            //    pieSeries.innerRadius = am4core.percent(50);
-            //    pieSeries.ticks.template.disabled = true;
-            //    pieSeries.labels.template.disabled = true;
-
-            //    var rgm = new am4core.RadialGradientModifier();
-            //    rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
-            //    pieSeries.slices.template.fillModifier = rgm;
-            //    pieSeries.slices.template.strokeModifier = rgm;
-            //    pieSeries.slices.template.strokeOpacity = 0.4;
-            //    pieSeries.slices.template.strokeWidth = 0;
-
-            //    chartQRC.legend = new am4charts.Legend();
-            //    chartQRC.legend.position = "right";
-
-            //}); // end am4core.ready()
-        }
-    }
-        });
 
         $("#HiringOnBoard").click(function () {
             $("#hiringOnBordingDiv").show();
@@ -734,31 +605,70 @@ am4core.ready(function() {
                 scrollTop: $("#EmployeeManagementDiv").offset().top
             }, 'slow');
         });
+        $.ajax({
+            url: base_url + '/EPeople/GetCountEmployeeRequisition',
+            type: 'GET',
+            success: function (countData) {
+                var arrData = [];
+                var arrRequisiotionData = [];
+                if (countData.length > 0 && countData != null) {
+                    for (var i = 0; i < countData.length; i++) {
+                        if (countData[i].Employee > 0 ) {
+                            arrData.push({
+                                "User Type": countData[i].JobTitle,
+                                "Count": parseInt(countData[i].Employee)
+                            });
+                        }
+                        if (countData[i].Requisition > 0) {
+                            arrRequisiotionData.push({
+                                "Requisition Type": countData[i].RequisitionName,
+                                "Count": parseInt(countData[i].Requisition)
+                            });
+                        }
+                    }
+                }
+                am4core.ready(function () {
+                    am4core.useTheme(am4themes_material);
+                    am4core.useTheme(am4themes_animated);
+                    var chart = am4core.create("eTimediv", am4charts.PieChart);
+                    chart.data = arrData;
+                    var pieSeries = chart.series.push(new am4charts.PieSeries());
+                    pieSeries.dataFields.value = "Count";
+                    pieSeries.dataFields.category = "User Type";
+                    pieSeries.innerRadius = am4core.percent(50);
+                    pieSeries.ticks.template.disabled = true;
+                    pieSeries.labels.template.disabled = true;
+                    var rgm = new am4core.RadialGradientModifier();
+                    rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
+                    pieSeries.slices.template.fillModifier = rgm;
+                    pieSeries.slices.template.strokeModifier = rgm;
+                    pieSeries.slices.template.strokeOpacity = 0.4;
+                    pieSeries.slices.template.strokeWidth = 0;
+                    chart.legend = new am4charts.Legend();
+                    chart.legend.position = "right";
+                });
+                am4core.ready(function () {
+                    am4core.useTheme(am4themes_material);
+                    am4core.useTheme(am4themes_animated);
+                    var chart = am4core.create("RequisitionGraph", am4charts.PieChart);
+                    chart.data = arrRequisiotionData;
+                    var pieSeries = chart.series.push(new am4charts.PieSeries());
+                    pieSeries.dataFields.value = "Count";
+                    pieSeries.dataFields.category = "Requisition Type";
+                    pieSeries.innerRadius = am4core.percent(50);
+                    pieSeries.ticks.template.disabled = true;
+                    pieSeries.labels.template.disabled = true;
+                    var rgm = new am4core.RadialGradientModifier();
+                    rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
+                    pieSeries.slices.template.fillModifier = rgm;
+                    pieSeries.slices.template.strokeModifier = rgm;
+                    pieSeries.slices.template.strokeOpacity = 0.4;
+                    pieSeries.slices.template.strokeWidth = 0;
+                    chart.legend = new am4charts.Legend();
+                    chart.legend.position = "right";
 
-        //$("#GetDetailsRequisition").change(function () {
-        //    debugger
-        //    var value = $("#GetDetailsRequisition option:selected").val();
-        //    $.ajax({
-        //        url: '../EPeople/GetVCSDetailsById?VSCId=' + value,
-        //        type: 'POST',
-        //        contentType: "application/json",
-        //        success: function (result) {
-        //            $("#divOpenRquisitionActionDelete").html(result);
-        //            $("#myModalForRequisitionAction").modal("hide");
-        //            $("#txtSeatingName").html(result.SeatingName);
-        //            $("#txtJobDescription").html(result.JobDescription);
-        //            $("#txtDepartmentName").html(result.DepartmentName);
-        //            $("#txtRateOfPay").html(result.RateOfPay);
-        //            $("#txtEmploymentClassification").html(result.EmploymentClassification);
-        //            $("#txtEmploymentStatus").html(result.EmploymentStatus);
-        //            $("#txtRolesAndResponsibility").html(result.RolesAndResponsibility);
-        //            $("#myModalForGetDetailsToDeleteRequisition").modal('show');
-        //        },
-        //        error: function (er) {
-        //        }
-        //    });
-
-        //})
-
+                });
+            }
+        });
  });
 </script>
