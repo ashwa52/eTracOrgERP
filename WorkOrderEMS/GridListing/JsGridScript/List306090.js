@@ -341,11 +341,12 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
             ,
 
             {
-                name: "UserTask", title: "User Task", width: 60, itemTemplate: function (value, item) {
+                name: "UserTask", title: "User Task", width: 70, itemTemplate: function (value, item) {
                     var $iconUserView = $("<span>").append('<i class= "fa fa-user fa-2x" style="color:black;margin-left: 6px;margin-top: 4px;" ></i>');//attr({ class: "fa fa-user fa-2x" }).attr({ style: "color:white;background-color:#36CA7E;margin-left:20px;border-radius:35px;width:35px;height:35px" });
                     var $iconText = $("<span>").append('<i class= "fa fa-file-text fa-2x" style="color:white;margin-left: 6px;margin-top: 4px;" ></i>');//.attr({ class: "fa fa-file-text fa-2x" }).attr({ style: "color:white;background-color:#32ACDA;margin-left:20px;border-radius:35px;width:35px;height:35px" });
                     var $evaluationText = $("<span>").append('<i class= "fa fa-calendar-check-o fa-2x" style="color:white;margin-left: 6px;margin-top: 4px;" ></i>');//.attr({ class: "fa fa-file-text fa-2x" }).attr({ style: "color:white;background-color:#32ACDA;margin-left:20px;border-radius:35px;width:35px;height:35px" });
                     var $iconMeeting = $("<span>").append('<i class="fa fa-clock-o fa-2x " style="color:white;margin-left: 6px;margin-top: 4px;" ></i>');//.attr({ class: "fa fa-file-text fa-2x" }).attr({ style: "color:white;background-color:#32ACDA;margin-left:20px;border-radius:35px;width:35px;height:35px" });
+                    var $iconPiP = $("<span>").append('<i class="fa fa-user-circle-o fa-2x " style="color:white;margin-left: 6px;margin-top: 4px;" ></i>');//.attr({ class: "fa fa-file-text fa-2x" }).attr({ style: "color:white;background-color:#32ACDA;margin-left:20px;border-radius:35px;width:35px;height:35px" });
 
                     var $customUserViewButton = $("<span style='background: #36CA7E; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
                         .attr({ title: "Evaluation" })
@@ -385,6 +386,12 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                            
                         }).append($iconMeeting);
 
+                    var $customPiPButton = $("<span style='background: #32ACDA; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
+                        .attr({ title: "PIP" })
+                        .attr({ id: "btn-status" }).click(function (e) {
+
+                        }).append($iconPiP);
+
 
                     var $evaluationTextButton = $("<span style='background: #32ACDA; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
                         .attr({ title: "Evaluation" })
@@ -406,7 +413,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                             });
                         }).append($evaluationText);
                     if (item.Status == "Expectations Submitted" || item.Status == "Evaluation Submitted") {
-                        return $("<div>").attr({ class: "btn-toolbar" }).append($evaluationTextButton).append($customTextButton).append($customMeetingButton).append($evaluationTextButton);
+                        return $("<div>").attr({ class: "btn-toolbar" }).append($evaluationTextButton).append($customTextButton).append($customMeetingButton).append($customPiPButton).append($evaluationTextButton);
                     } else {
                         return $("<div>").attr({ class: "btn-toolbar" }).append($customTextButton);
                     }
