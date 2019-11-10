@@ -5,6 +5,7 @@ using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
 using WorkOrderEMS.Models.CommonModels;
 using WorkOrderEMS.Models.ManagerModels;
+using WorkOrderEMS.Models.NewAdminModel;
 using static WorkOrderEMS.Models.PrintQRCModel;
 
 namespace WorkOrderEMS.BusinessLogic
@@ -194,6 +195,8 @@ namespace WorkOrderEMS.BusinessLogic
         List<EmailHelper> GetUnseenList(NotificationDetailModel objDetails);
         ServiceResponseModel<List<POListSelfServiceModel>> GetPOList(eTracLoginModel obj);
         List<EmailHelper> GetUnseenNotifications(long UserId);
+
+
 
     }
 }

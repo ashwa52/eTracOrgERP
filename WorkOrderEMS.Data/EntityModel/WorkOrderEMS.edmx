@@ -1738,6 +1738,18 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="QNA_Application" Type="char" MaxLength="3" />
           <Property Name="QNA_IsActive" Type="char" MaxLength="1" />
         </EntityType>
+        <EntityType Name="Review_MeetingSchedule">
+          <Key>
+            <PropertyRef Name="RMS_Id" />
+          </Key>
+          <Property Name="RMS_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RMS_EMP_EmployeeId" Type="varchar" MaxLength="20" />
+          <Property Name="RMS_FinencialYear" Type="varchar" MaxLength="10" />
+          <Property Name="RMS_FinQuarter" Type="varchar" MaxLength="10" />
+          <Property Name="RMS_InterviewDateTime" Type="datetime" />
+          <Property Name="RMS_Date" Type="datetime" />
+          <Property Name="RMS_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
         <EntityType Name="Rule">
           <Key>
             <PropertyRef Name="RUL_Id" />
@@ -4681,6 +4693,11 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         <Function Name="spGetQuestionAnswer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="QNA_Application" Type="char" Mode="In" />
         </Function>
+        <Function Name="spGetReviewMeetingDateTime" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RMS_EMP_EmployeeId" Type="varchar" Mode="In" />
+          <Parameter Name="RMS_FinencialYear" Type="varchar" Mode="In" />
+          <Parameter Name="RMS_FinQuarter" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spGetRule" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetSelfPOList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="bigint" Mode="In" />
@@ -5204,6 +5221,15 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="SAR_Comments" Type="varchar(max)" Mode="In" />
           <Parameter Name="SAR_IsActive" Type="char" Mode="In" />
         </Function>
+        <Function Name="spSetReviewMeetingDateTime" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Action" Type="char" Mode="In" />
+          <Parameter Name="RMS_Id" Type="bigint" Mode="In" />
+          <Parameter Name="RMS_IsActive" Type="char" Mode="In" />
+          <Parameter Name="RMS_EMP_EmployeeId" Type="varchar" Mode="In" />
+          <Parameter Name="RMS_FinencialYear" Type="varchar" Mode="In" />
+          <Parameter Name="RMS_FinQuarter" Type="varchar" Mode="In" />
+          <Parameter Name="RMS_InterviewDateTime" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spSetRule" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="RULAction" Type="char" Mode="In" />
           <Parameter Name="RUL_Id" Type="bigint" Mode="In" />
@@ -5486,6 +5512,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="QRCMasterLog" EntityType="Self.QRCMasterLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QRCScanLog" EntityType="Self.QRCScanLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestionAnswer" EntityType="Self.QuestionAnswer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Review_MeetingSchedule" EntityType="Self.Review_MeetingSchedule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rule" EntityType="Self.Rule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SelfAssessment306090" EntityType="Self.SelfAssessment306090" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SelfAssessmentReview306090" EntityType="Self.SelfAssessmentReview306090" Schema="dbo" store:Type="Tables" />
@@ -8425,6 +8452,21 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="EEL_AnswerSelf" Mode="In" Type="String" />
             <Parameter Name="EEL_IsActive" Mode="In" Type="String" />
             <Parameter Name="EEL_Comments" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Review_MeetingSchedule" EntityType="workorderEMSModel.Review_MeetingSchedule" />
+          <FunctionImport Name="spGetReviewMeetingDateTime" ReturnType="Collection(workorderEMSModel.spGetReviewMeetingDateTime_Result)">
+            <Parameter Name="RMS_EMP_EmployeeId" Mode="In" Type="String" />
+            <Parameter Name="RMS_FinencialYear" Mode="In" Type="String" />
+            <Parameter Name="RMS_FinQuarter" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetReviewMeetingDateTime">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="RMS_Id" Mode="In" Type="Int64" />
+            <Parameter Name="RMS_IsActive" Mode="In" Type="String" />
+            <Parameter Name="RMS_EMP_EmployeeId" Mode="In" Type="String" />
+            <Parameter Name="RMS_FinencialYear" Mode="In" Type="String" />
+            <Parameter Name="RMS_FinQuarter" Mode="In" Type="String" />
+            <Parameter Name="RMS_InterviewDateTime" Mode="In" Type="String" />
           </FunctionImport>
           </EntityContainer>
         <ComplexType Name="CommonQeriesByVijay_Result">
@@ -16051,6 +16093,27 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="Int32" Name="FinYear" Nullable="true" />
           <Property Type="String" Name="EEL_IsActive" Nullable="true" MaxLength="1" />
         </ComplexType>
+        <EntityType Name="Review_MeetingSchedule">
+          <Key>
+            <PropertyRef Name="RMS_Id" />
+          </Key>
+          <Property Name="RMS_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RMS_EMP_EmployeeId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="RMS_FinencialYear" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="RMS_FinQuarter" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="RMS_InterviewDateTime" Type="DateTime" Precision="3" />
+          <Property Name="RMS_Date" Type="DateTime" Precision="3" />
+          <Property Name="RMS_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="spGetReviewMeetingDateTime_Result">
+          <Property Type="Int64" Name="RMS_Id" Nullable="false" />
+          <Property Type="String" Name="RMS_EMP_EmployeeId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="RMS_FinencialYear" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="RMS_FinQuarter" Nullable="true" MaxLength="10" />
+          <Property Type="DateTime" Name="RMS_InterviewDateTime" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="RMS_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="RMS_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -20579,6 +20642,33 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spSetSelfAssessmentQuarterly" FunctionName="workorderEMSModel.Store.spSetSelfAssessmentQuarterly" />
+          <EntitySetMapping Name="Review_MeetingSchedule">
+            <EntityTypeMapping TypeName="workorderEMSModel.Review_MeetingSchedule">
+              <MappingFragment StoreEntitySet="Review_MeetingSchedule">
+                <ScalarProperty Name="RMS_IsActive" ColumnName="RMS_IsActive" />
+                <ScalarProperty Name="RMS_Date" ColumnName="RMS_Date" />
+                <ScalarProperty Name="RMS_InterviewDateTime" ColumnName="RMS_InterviewDateTime" />
+                <ScalarProperty Name="RMS_FinQuarter" ColumnName="RMS_FinQuarter" />
+                <ScalarProperty Name="RMS_FinencialYear" ColumnName="RMS_FinencialYear" />
+                <ScalarProperty Name="RMS_EMP_EmployeeId" ColumnName="RMS_EMP_EmployeeId" />
+                <ScalarProperty Name="RMS_Id" ColumnName="RMS_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetReviewMeetingDateTime" FunctionName="workorderEMSModel.Store.spGetReviewMeetingDateTime">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="workorderEMSModel.spGetReviewMeetingDateTime_Result">
+                <ScalarProperty Name="RMS_Id" ColumnName="RMS_Id" />
+                <ScalarProperty Name="RMS_EMP_EmployeeId" ColumnName="RMS_EMP_EmployeeId" />
+                <ScalarProperty Name="RMS_FinencialYear" ColumnName="RMS_FinencialYear" />
+                <ScalarProperty Name="RMS_FinQuarter" ColumnName="RMS_FinQuarter" />
+                <ScalarProperty Name="RMS_InterviewDateTime" ColumnName="RMS_InterviewDateTime" />
+                <ScalarProperty Name="RMS_Date" ColumnName="RMS_Date" />
+                <ScalarProperty Name="RMS_IsActive" ColumnName="RMS_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetReviewMeetingDateTime" FunctionName="workorderEMSModel.Store.spSetReviewMeetingDateTime" />
           </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

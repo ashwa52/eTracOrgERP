@@ -113,6 +113,7 @@
     <Compile Include="DataRepository\ManagerRepositroy.cs" />
     <Compile Include="DataRepository\NewAdminRepository\DepartmentRepository.cs" />
     <Compile Include="DataRepository\NewAdminRepository\ePeopleRepository.cs" />
+    <Compile Include="DataRepository\NewAdminRepository\PerformanceRepository.cs" />
     <Compile Include="DataRepository\NewAdminRepository\VehicleSeatingChartRepository.cs" />
     <Compile Include="DataRepository\NotificationDetailsRepository.cs" />
     <Compile Include="DataRepository\PassengerTrackingCountRepository.cs" />
@@ -443,6 +444,9 @@
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\QuestionAnswer.cs">
+      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Review_MeetingSchedule.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\Rule.cs">
@@ -863,6 +867,9 @@
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\spGetQuestionAnswer_Result.cs">
+      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\spGetReviewMeetingDateTime_Result.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\spGetRule_Result.cs">

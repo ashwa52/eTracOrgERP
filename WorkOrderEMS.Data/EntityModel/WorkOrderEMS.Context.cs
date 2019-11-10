@@ -136,6 +136,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<SelfAssessment306090> SelfAssessment306090 { get; set; }
         public virtual DbSet<SelfAssessmentReview306090> SelfAssessmentReview306090 { get; set; }
         public virtual DbSet<ExpectationEvaluation> ExpectationEvaluations { get; set; }
+        public virtual DbSet<Review_MeetingSchedule> Review_MeetingSchedule { get; set; }
     
         public virtual ObjectResult<CommonQeriesByVijay_Result> CommonQeriesByVijay()
         {
@@ -4951,6 +4952,56 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("EEL_Comments", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetSelfAssessmentQuarterly", actionParameter, employeeIDParameter, employeeIdManagerParameter, aSQ_QuestionTypeParameter, aSQ_IdParameter, eEL_IdParameter, eEL_FinencialYearParameter, eEL_FinQuarterParameter, eEL_AnswerSelfParameter, eEL_IsActiveParameter, eEL_CommentsParameter);
+        }
+    
+        public virtual ObjectResult<spGetReviewMeetingDateTime_Result> spGetReviewMeetingDateTime(string rMS_EMP_EmployeeId, string rMS_FinencialYear, string rMS_FinQuarter)
+        {
+            var rMS_EMP_EmployeeIdParameter = rMS_EMP_EmployeeId != null ?
+                new ObjectParameter("RMS_EMP_EmployeeId", rMS_EMP_EmployeeId) :
+                new ObjectParameter("RMS_EMP_EmployeeId", typeof(string));
+    
+            var rMS_FinencialYearParameter = rMS_FinencialYear != null ?
+                new ObjectParameter("RMS_FinencialYear", rMS_FinencialYear) :
+                new ObjectParameter("RMS_FinencialYear", typeof(string));
+    
+            var rMS_FinQuarterParameter = rMS_FinQuarter != null ?
+                new ObjectParameter("RMS_FinQuarter", rMS_FinQuarter) :
+                new ObjectParameter("RMS_FinQuarter", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetReviewMeetingDateTime_Result>("spGetReviewMeetingDateTime", rMS_EMP_EmployeeIdParameter, rMS_FinencialYearParameter, rMS_FinQuarterParameter);
+        }
+    
+        public virtual int spSetReviewMeetingDateTime(string action, Nullable<long> rMS_Id, string rMS_IsActive, string rMS_EMP_EmployeeId, string rMS_FinencialYear, string rMS_FinQuarter, string rMS_InterviewDateTime)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var rMS_IdParameter = rMS_Id.HasValue ?
+                new ObjectParameter("RMS_Id", rMS_Id) :
+                new ObjectParameter("RMS_Id", typeof(long));
+    
+            var rMS_IsActiveParameter = rMS_IsActive != null ?
+                new ObjectParameter("RMS_IsActive", rMS_IsActive) :
+                new ObjectParameter("RMS_IsActive", typeof(string));
+    
+            var rMS_EMP_EmployeeIdParameter = rMS_EMP_EmployeeId != null ?
+                new ObjectParameter("RMS_EMP_EmployeeId", rMS_EMP_EmployeeId) :
+                new ObjectParameter("RMS_EMP_EmployeeId", typeof(string));
+    
+            var rMS_FinencialYearParameter = rMS_FinencialYear != null ?
+                new ObjectParameter("RMS_FinencialYear", rMS_FinencialYear) :
+                new ObjectParameter("RMS_FinencialYear", typeof(string));
+    
+            var rMS_FinQuarterParameter = rMS_FinQuarter != null ?
+                new ObjectParameter("RMS_FinQuarter", rMS_FinQuarter) :
+                new ObjectParameter("RMS_FinQuarter", typeof(string));
+    
+            var rMS_InterviewDateTimeParameter = rMS_InterviewDateTime != null ?
+                new ObjectParameter("RMS_InterviewDateTime", rMS_InterviewDateTime) :
+                new ObjectParameter("RMS_InterviewDateTime", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetReviewMeetingDateTime", actionParameter, rMS_IdParameter, rMS_IsActiveParameter, rMS_EMP_EmployeeIdParameter, rMS_FinencialYearParameter, rMS_FinQuarterParameter, rMS_InterviewDateTimeParameter);
         }
     }
 }

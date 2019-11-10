@@ -10,6 +10,7 @@ using System.Web.Mvc;
 using WorkOrderEMS.Data;
 using WorkOrderEMS.Data.DataRepository;
 using WorkOrderEMS.Data.DataRepository.AdminSection;
+using WorkOrderEMS.Data.DataRepository.NewAdminRepository;
 using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
@@ -45,6 +46,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         CommonMethodManager commonMethodManager;
         WorkRequestAssignmentRepository objWorkRequestAssignmentRepository;
         EmailLogRepository objEmailLogRepository = null;
+        PerformanceRepository ObjPerformanceRepository = null;
 
         private string ProfileImagePath = ConfigurationManager.AppSettings["ProfilePicPath"];
         private string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
@@ -3928,6 +3930,33 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             {
                 throw;
             }
+        }
+        public bool SetupMeetingEmail(SetupMeeting objSetupMeeting)
+        {
+            EmailHelper objEmailHelper = new EmailHelper();
+            bool result = false;
+            ObjPerformanceRepository = new PerformanceRepository();
+            ObjUserRepository = new UserRepository();
+            try
+            {
+                objEmailHelper.Subject = objSetupMeeting.Subject;
+                objEmailHelper.EmailTo = objSetupMeeting.EmailTo;
+                objEmailHelper.emailid = ObjUserRepository.GetUserEmail(objSetupMeeting.ReceipientEmailId);
+                objEmailHelper.EmailFrom = objSetupMeeting.EmailFrom;
+                objEmailHelper.StartTime = objSetupMeeting.StartTime;
+                objEmailHelper.StartDate = objSetupMeeting.StartDate;
+                objEmailHelper.Body = objSetupMeeting.Body;
+                objEmailHelper.MailType = "SETUPEVALUATIONMEETING";
+                objEmailHelper.SendEmailWithTemplate();
+                ObjPerformanceRepository.SaveMeetingDetails(objSetupMeeting);
+
+    }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return result;
         }
 
     }

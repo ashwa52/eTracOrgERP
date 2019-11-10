@@ -76,4 +76,17 @@ namespace WorkOrderEMS.Models.NewAdminModel
         public string Department { get; set; }
     }
 
+    public class SetupMeeting { 
+        public string EmailTo { get; set; }
+        public string ReceipientEmailId { get; set; }
+        public string EmailFrom { get; set; }
+        public string StartTime { get; set; }
+        public string StartDate { get; set; }
+        public string Subject { get; set; }
+        public string Body { get; set; }
+        public string FinYear { get; set; }
+        public string FinQrtr{ get; set; }
+
+    }
+
 }

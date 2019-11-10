@@ -977,6 +977,24 @@ namespace WorkOrderEMS.Data
             { throw; }
         }
 
+        public string GetUserEmail(string userid) {
+            string UserEmail = string.Empty;
+
+            try
+            {
+                using (workorderEMSEntities objContext = new workorderEMSEntities())
+                {
+                    UserEmail= objContext.UserRegistrations.Where(x => x.EmployeeID == userid).First().UserEmail;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return UserEmail;
+        }
+
 
     }
 }

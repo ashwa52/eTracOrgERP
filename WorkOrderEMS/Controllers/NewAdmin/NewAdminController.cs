@@ -584,7 +584,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 {
                     ITAdmin.EMP_Photo = (ITAdmin.EMP_Photo == "" || ITAdmin.EMP_Photo == "null") ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~/", "") + ITAdmin.EMP_Photo;
                     ITAdmin.EMP_EmployeeID = Cryptography.GetEncryptedData(ITAdmin.EMP_EmployeeID.ToString(), true);
-                    ITAdmin.Status=ITAdmin.Status=="S"?"Review Submitted": ITAdmin.Status == "Y" ? "Review Draft":"Assessment Pending";
+                    ITAdmin.Status=ITAdmin.Status=="S"? "Assessment Submitted" : ITAdmin.Status == "Y" ? "Assessment Drafted" : "Assessment Pending";
                     detailsList.Add(ITAdmin);
                 }
             }
@@ -742,7 +742,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                     ITAdmin.EMP_Photo = (ITAdmin.EMP_Photo == "" || ITAdmin.EMP_Photo == "null") ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~/", "") + ITAdmin.EMP_Photo;
 
                     ITAdmin.EMP_EmployeeID = Cryptography.GetEncryptedData(ITAdmin.EMP_EmployeeID.ToString(), true);
-                    ITAdmin.Status = ITAdmin.Status=="C"?"Review Submitted":ITAdmin.Status == "S" ? "Review Submitted" : ITAdmin.Status == "Y" ? "Review Draft" : "Assessment Pending";
+                    ITAdmin.Status = ITAdmin.Status=="C"? "Expectations Submitted" : ITAdmin.Status == "S" ? "Expectations Submitted" : ITAdmin.Status == "Y" ? "Expectations Drafted" : "Expectations Pending";
                     detailsList.Add(ITAdmin);
                 }
             }
@@ -752,7 +752,6 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
 
         [HttpPost]
-
         public ActionResult userExpectationsView(string Id, string Assesment,string Name,string Image,string JobTitle, string FinYear, string FinQuarter, string Department, string LocationName)
         {
             eTracLoginModel ObjLoginModel = null;
@@ -905,7 +904,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                     ITAdmin.EMP_Photo = (ITAdmin.EMP_Photo == "" || ITAdmin.EMP_Photo == "null") ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~/", "") + ITAdmin.EMP_Photo;
 
                     ITAdmin.EMP_EmployeeID = Cryptography.GetEncryptedData(ITAdmin.EMP_EmployeeID.ToString(), true);
-                    ITAdmin.Status = ITAdmin.Status == "C"? "Review Submitted":ITAdmin.Status == "S" ? "Review Submitted" : ITAdmin.Status == "Y" ? "Review Draft" : "Assessment Pending";
+                    ITAdmin.Status = ITAdmin.Status == "C"? "Evaluation Submitted" : ITAdmin.Status == "S" ? "Expectations Submitted" : ITAdmin.Status == "Y" ? "Expectations Drafted" : "Expectations Pending";
                     detailsList.Add(ITAdmin);
                 }
             }
@@ -978,7 +977,27 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-        
+        [HttpPost]
+        public JsonResult SetupMeeting(SetupMeeting SetupMeeting)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            bool result = false;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                SetupMeeting.ReceipientEmailId = Cryptography.GetDecryptedData(SetupMeeting.ReceipientEmailId, true);
+               result= _GlobalAdminManager.SetupMeetingEmail(SetupMeeting);
+            }
+            catch(Exception ex)
+            {
+               result= _GlobalAdminManager.SetupMeetingEmail(SetupMeeting);
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
     }
 
 }

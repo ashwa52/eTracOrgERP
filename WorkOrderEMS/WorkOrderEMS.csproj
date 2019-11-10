@@ -5173,6 +5173,7 @@
     <Content Include="Images\user.png" />
     <Content Include="Images\version.png" />
     <Content Include="IOSTimePicker.html" />
+    <Content Include="MailTemplate\SetupEvaluationMeetingTemplate.html" />
     <Content Include="MailTemplate\AddMoreBudgetForLocationTemplate.html" />
     <Content Include="MailTemplate\ApprovedRejectPOTemplate.html" />
     <Content Include="MailTemplate\ApproveMiscellaneous.html" />

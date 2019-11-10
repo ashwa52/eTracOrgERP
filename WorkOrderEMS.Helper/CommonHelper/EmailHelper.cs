@@ -235,7 +235,11 @@ namespace WorkOrderEMS.Helper
 
         public string EmployeeImage { get; set; }
         public string CreatedBy { get; set; }
-
+        //Added By Mayur 10112019
+        public string EmailTo { get; set; }
+        public string ReceipientEmailId { get; set; }
+        public string EmailFrom { get; set; }
+        public string Body { get; set; }
 
         public bool SendEmailWithTemplate(string[] attachedUrl = null)
         {
@@ -1055,6 +1059,21 @@ namespace WorkOrderEMS.Helper
                         strMailBody = strMailBody.Replace("##LocationName", LocationName);
                         strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
                         break;
+                    case "SETUPEVALUATIONMEETING":
+                        TemplatePath = ConfigurationManager.AppSettings["SetupEvaluationMeetingTemplate"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";
+                        Subject = "eTrac: "+Subject;
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##Year", Year);
+                        strMailBody = strMailBody.Replace("##Logo", LogoPath);
+                        strMailBody = strMailBody.Replace("##MailHeading", strMailHeading);
+                        strMailBody = strMailBody.Replace("##EmployeeName", EmailTo);
+                        strMailBody = strMailBody.Replace("##StartTime", StartTime);
+                        strMailBody = strMailBody.Replace("##StartDate", StartDate);
+                        strMailBody = strMailBody.Replace("##Body", Body);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+                        break;
 
                 }
                 string body = System.Web.HttpUtility.HtmlDecode(strMailBody);
@@ -1130,8 +1149,9 @@ namespace WorkOrderEMS.Helper
                 SmtpServer.Credentials = new System.Net.NetworkCredential(smtpEmailAddress, smtpPassword);
                 SmtpServer.Port = Convert.ToInt32(ConfigurationManager.AppSettings["SMTP_DEFAULT_PORT"]);
                 mail.Priority = MailPriority.High;
-                
+
                 mail.From = new MailAddress(System.Configuration.ConfigurationManager.AppSettings["SMTP_DEFAULT_EMAIL"].ToString(), "eTrac");
+
                 mail.To.Add(emailId.Trim());
                 mail.Subject = subject;
                 mail.Body = body;
