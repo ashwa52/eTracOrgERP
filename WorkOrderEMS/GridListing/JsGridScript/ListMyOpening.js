@@ -55,7 +55,7 @@ function myOpenings(PostingId) {
 
         fields: [
 			{
-			    title: "Applicant Image", name: "Image", width: 60,
+			    title: "Applicant Image", name: "Image", width: 30,
 			    itemTemplate: function (value) {
 			        return $("<div>").append($("<img>").addClass("client-photo").attr("src", value === '' || value === "null" ? "https://www.w3schools.com/howto/img_avatar.png" : value));
 			    }
@@ -66,7 +66,7 @@ function myOpenings(PostingId) {
 			    }
 			},
 			{
-			    title: "Rating", width: 60,
+			    title: "Rating", width: 40,
 			    itemTemplate: function () {
 			        return $("<i>").addClass("fa fa-star").append($("<i>").addClass("fa fa-star")).append($("<i>").addClass("fa fa-star"))
 						.append($("<i>").addClass("fa fa-star")).append($("<i>").addClass("fa fa-star"));
@@ -82,7 +82,7 @@ function myOpenings(PostingId) {
 						.append($("<div>").addClass("action1 inline actionbox").append($("<a>").attr({ "onclick": "TakeInterview(" + JSON.stringify(item) + ")", "href": "#" }).append("<i>").addClass("fa fa-diamond whiteGr")))
 						.append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-check-circle whiteY"))
 						.append($("<div>").addClass("action1 inline actionboxR").append("<i>").addClass("fa fa-check white"))
-			        .append($("<div>").addClass("action1 inline actionboxS").append("<i>").attr({ "onclick": "ScheduleInterview(" + JSON.stringify(item) + ")" }).addClass("fa fa-clock-o whiteS"));
+			        .append($("<div>").addClass("action1 inline actionboxS").append("<a href='https://app.recruitee.com/#/settings/scheduler' title='Schedule Interview'>").addClass("fa fa-clock-o fa-2x whiteS"));
 			    }
 			},
         ]
