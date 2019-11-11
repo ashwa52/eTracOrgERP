@@ -383,6 +383,8 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                             $("#EmailTo").val(item.EmployeeName);
                             $("#ReceipientEmailId").val(item.EMP_EmployeeID);
                             $("#SetUpMeetingModal").modal('show');
+                            $("#FinYear").val(item.FinYear);
+                            $("#FinQrtr").val(item.Expectation);
                            
                         }).append($iconMeeting);
 
@@ -398,19 +400,36 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                         .attr({ id: "btn-status-" + item.id }).click(function (e) {
                             $.ajax({
                                 type: "POST",
-                                data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation, 'Department': item.DepartmentName, 'LocationName': item.LocationName  },
-                                url: '../NewAdmin/QEvaluationView/',
+                                data: { 'Id': item.EMP_EmployeeID, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation },
+                                url: '../NewAdmin/GetMeetingDetail/',
                                 error: function (xhr, status, error) {
                                 },
                                 success: function (result) {
-                                    
-                                    if (result != null) {
-                                        $("#gridArea").hide();
-                                        $('#profileArea').show();
-                                        $('#profileArea').html(result);
+
+                                    if (result != null && result == true) {
+                                        $.ajax({
+                                            type: "POST",
+                                            data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation, 'Department': item.DepartmentName, 'LocationName': item.LocationName },
+                                            url: '../NewAdmin/QEvaluationView/',
+                                            error: function (xhr, status, error) {
+                                            },
+                                            success: function (result) {
+
+                                                if (result != null) {
+                                                    $("#gridArea").hide();
+                                                    $('#profileArea').show();
+                                                    $('#profileArea').html(result);
+                                                }
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        $("#MeetingNotDoneModal").modal('show');
                                     }
                                 }
                             });
+
+                            
                         }).append($evaluationText);
                     if (item.Status == "Expectations Submitted" || item.Status == "Evaluation Submitted") {
                         return $("<div>").attr({ class: "btn-toolbar" }).append($evaluationTextButton).append($customTextButton).append($customMeetingButton).append($customPiPButton).append($evaluationTextButton);

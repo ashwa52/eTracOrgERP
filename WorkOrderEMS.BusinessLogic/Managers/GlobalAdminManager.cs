@@ -3950,7 +3950,23 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 objEmailHelper.SendEmailWithTemplate();
                 ObjPerformanceRepository.SaveMeetingDetails(objSetupMeeting);
 
-    }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return result;
+        }
+        public bool GetMeetingDetail(string Id, string FinYear, string FinQuarter) {
+            bool result = false;
+            ObjPerformanceRepository = new PerformanceRepository();
+            try
+            {
+                var obj =ObjPerformanceRepository.GetMeetingDetail( Id,  FinYear,  FinQuarter);
+               result= (DateTime.Now > obj.RMS_InterviewDateTime) ?  true : false;
+
+            }
             catch (Exception)
             {
 

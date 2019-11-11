@@ -51,6 +51,9 @@
                 <div>
                     <form id="SetupMeetingForm" class="step-form-horizontal" role="form">
                         <input id="ReceipientEmailId" name="ReceipientEmailId" type="hidden" />
+                        <input id="FinYear" name="FinYear" type="hidden" />
+                        <input id="FinQrtr" name="FinQrtr" type="hidden" />
+
                         <div class="basic-form">
                             <div class="ContinuesWODIV" style="">
                                 <div class="form-group row">
@@ -135,6 +138,28 @@
             </div>
             <div class="modal-footer">
                 <button   class="btn btn-primary" data-dismiss="modal">OK</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="MeetingNotDoneModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title" id="SaveMeetingDetails">Meeting Not Completed </h4>
+
+            </div>
+            <div class="modal-body ">
+                <div>
+                    <label id="successSaveMeetingDetails">
+                        Please complete the meeting before submitting the Evaluation
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal">OK</button>
 
             </div>
         </div>

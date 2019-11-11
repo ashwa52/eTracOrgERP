@@ -998,6 +998,28 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
+        [HttpPost]
+        public JsonResult GetMeetingDetail(string Id, string FinYear, string FinQuarter)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            bool result = false;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                Id = Cryptography.GetDecryptedData(Id, true);
+                result = _GlobalAdminManager.GetMeetingDetail(Id, FinYear, FinQuarter);
+            }
+            catch (Exception ex)
+            {
+                result = _GlobalAdminManager.GetMeetingDetail(Id, FinYear, FinQuarter);
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
+        
     }
 
 }
