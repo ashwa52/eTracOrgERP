@@ -79,7 +79,7 @@ function myOpenings(PostingId) {
 			    title: 'Action', width: 70, itemTemplate: function (value, item) {
 			        return $("<div>").addClass("actionDiv").append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-exclamation-triangle whiteR"))
 						.append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-gg-circle whiteB"))
-						.append($("<div>").addClass("action1 inline actionbox").append($("<a>").attr({ "onclick": "TakeInterview(" + JSON.stringify(item) + ")", "href": "#" }).append("<i>").addClass("fa fa-diamond whiteGr")))
+						.append($("<div>").addClass("action1 inline actionbox").append($("<a>").attr({ "onclick": "TakeInterview(" + JSON.stringify(item) + ")", "href": "#" }).append("<i>").attr({ "style": "color:darkblue" }).addClass("fa fa-diamond whiteGr")))
 						.append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-check-circle whiteY"))
 						.append($("<div>").addClass("action1 inline actionboxR").append("<i>").addClass("fa fa-check white"))
 			        .append($("<div>").addClass("action1 inline actionboxS").append("<a>").attr({ "onclick": "GoToRecruitee(" + JSON.stringify(item) + ")", "href": "#" }).addClass("fa fa-clock-o fa-2x whiteS"));
@@ -147,7 +147,7 @@ function MyInterviews() {
 			{
 			    title: '', width: 60, itemTemplate: function (value, item) {
 			        return $("<div>")
-						.append($("<div>").addClass("action1 inline actionbox").append($("<a>").attr({ "onclick": "TakeInterview(" + JSON.stringify(item) + ")", "href": "#" }).append("<i>").addClass("fa fa-diamond white")));
+						.append($("<div>").addClass("action1 inline actionbox").append($("<a>").attr({ "onclick": "TakeInterview(" + JSON.stringify(item) + ")", "href": "#" }).append("<i>").attr({ "style": "color:darkblue" }).addClass("fa fa-diamond white")));
 			    }
 			}
         ]

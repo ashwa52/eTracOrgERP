@@ -45,6 +45,7 @@
         min-height: 20px;
         color: green !important;
     }
+
     .actionboxS {
         /*background-color: #118434;*/
         text-align: center;
@@ -67,6 +68,7 @@
         color: blue !important;
         font-size: 25px;
     }
+
     .whiteGr {
         color: #ddd !important;
         font-size: 25px;
@@ -110,34 +112,32 @@
         width: 27px;
         height: auto;
     }
-	.text {
-		z-index: 999999;
-		width: 495px;
-		height: 200px;
-		padding: 20px;
-		border: 1px solid #ccc;
-		box-shadow: 0 0 3px rgba(0, 0, 0, .3);
-		-webkit-box-shadow: 0 0 3px rgba(0, 0, 0, .3);
-		border-radius: 3px;
-		-webkit-border-radius: 3px;
-		position: absolute;
-		top: 21px;
-		/* left: 50px; */
-		background: #ddd;
-		display: none;
-		right: 116px;
-	}
+
+    .text {
+        z-index: 999999;
+        width: 495px;
+        height: 200px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 3px rgba(0, 0, 0, .3);
+        -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, .3);
+        border-radius: 3px;
+        -webkit-border-radius: 3px;
+        position: absolute;
+        top: 21px;
+        /* left: 50px; */
+        background: #ddd;
+        display: none;
+        right: 116px;
+    }
 </style>
 <script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
-<script src="https://www.amcharts.com/lib/4/core.js"></script>
-<script src="https://www.amcharts.com/lib/4/charts.js"></script>
-
-<script src="https://www.amcharts.com/lib/4/themes/dataviz.js"></script>
-<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
-<script src="https://www.amcharts.com/lib/4/themes/material.js"></script>
-<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
-<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
-<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/Core4.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/Chart4.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/Material4.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/Animated4.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/amchart3.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/serial3.js"></script>
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />
@@ -161,15 +161,15 @@
 <div class="content-body">
     <!-- row -->
     <div class="container-fluid">
-        <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3" data-aos="fade-up">
-            @*<div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
-                <div class="welcome-text">
-                    <h4>Hi, welcome back! @loginUserName</h4>                 
+        @*<div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3" data-aos="fade-up">
+            <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
+                    <div class="welcome-text">
+                        <h4>Hi, welcome back! @loginUserName</h4>
+                    </div>
                 </div>
-            </div>*@
 
         </div>
-        <br />
+        <br />*@
         <div id="infofactsheet">
             <div class="row">
                 <div class="col-lg-6">
@@ -240,9 +240,9 @@
                                         </div>
                                     </div>
                                     <div class="tab-pane fade" id="contact1">
-										<div class="pt-4">
-											<div id="companyOpening"></div>
-										</div>
+                                        <div class="pt-4">
+                                            <div id="companyOpening"></div>
+                                        </div>
                                     </div>
                                     <div class="tab-pane fade" id="myinterview">
                                         <div class="pt-4">
@@ -260,7 +260,7 @@
     </div>
     @*<div id="infofactsheet">
 
-    </div>*@
+        </div>*@
 </div>
 </div>
 @Html.Partial("~/Views/NewAdmin/ePeople/_HiringOnBoarding.cshtml")
