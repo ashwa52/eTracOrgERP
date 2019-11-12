@@ -1239,45 +1239,38 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             var data = _GlobalAdminManager.GetJobPostingDetailsForCompanyOpening(1);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
-        [HttpGet]
-        public JsonResult CheckNextQuestion(long ApplicantId)
-        {
-            var res = _GlobalAdminManager.CheckIfAllRespondedForQuestion(ApplicantId);
-            return Json(res, JsonRequestBehavior.AllowGet);
-        }
+        //[HttpPost]
+        //public ActionResult QEvaluationView(string Id, string Assesment, string Name, string Image, string JobTitle, string FinYear, string FinQuarter)
+        //{
+        //    eTracLoginModel ObjLoginModel = null;
+        //    string Employee_Id = string.Empty;
+        //    GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
+        //    var details = new LocationDetailsModel();
+        //    if (Session["eTrac"] != null)
+        //    {
+        //        ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+        //    }
+        //    List<GWCQUestionModel> ListQuestions = new List<GWCQUestionModel>();
+        //    try
+        //    {
+        //        Employee_Id = Cryptography.GetDecryptedData(Id, true);
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        Employee_Id = Id;
+        //    }
 
-        [HttpPost]
-        public ActionResult QEvaluationView(string Id, string Assesment, string Name, string Image, string JobTitle, string FinYear, string FinQuarter)
-        {
-            eTracLoginModel ObjLoginModel = null;
-            string Employee_Id = string.Empty;
-            GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
-            var details = new LocationDetailsModel();
-            if (Session["eTrac"] != null)
-            {
-                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-            }
-            List<GWCQUestionModel> ListQuestions = new List<GWCQUestionModel>();
-            try
-            {
-                Employee_Id = Cryptography.GetDecryptedData(Id, true);
-            }
-            catch (Exception e)
-            {
-                Employee_Id = Id;
-            }
-
-            ListQuestions = _GlobalAdminManager.GetGWCQuestions(Employee_Id, Assesment);
-            foreach (var item in ListQuestions)
-            {
-                item.EEL_FinencialYear = FinYear;
-                item.EEL_FinQuarter = FinQuarter;
-                item.AssessmentType = Assesment;
+        //    ListQuestions = _GlobalAdminManager.GetGWCQuestions(Employee_Id, Assesment);
+        //    foreach (var item in ListQuestions)
+        //    {
+        //        item.EEL_FinencialYear = FinYear;
+        //        item.EEL_FinQuarter = FinQuarter;
+        //        item.AssessmentType = Assesment;
 
 
-            }
-            ViewData["employeeInfo"] = new GWCQUestionModel() { EmployeeName = Name, AssessmentType = Assesment, Image = Image, JobTitle = JobTitle };
-            return PartialView("QEvaluationView", ListQuestions);
-        }
+        //    }
+        //    ViewData["employeeInfo"] = new GWCQUestionModel() { EmployeeName = Name, AssessmentType = Assesment, Image = Image, JobTitle = JobTitle };
+        //    return PartialView("QEvaluationView", ListQuestions);
+        //}
     }
 }

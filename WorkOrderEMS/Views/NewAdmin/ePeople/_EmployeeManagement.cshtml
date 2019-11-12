@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = null;
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
     string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
     WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
     string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
@@ -537,7 +537,7 @@
                 </form>
             </div>
             <div class="modal-footer" style="background: white;">
-                <button type="button" class="btn btn-success SaveEdit" id="UploadDoc" onclick="saveFile()" style="border-radius:100px;width:25%;">Upload</button>
+                <button type="button" class="btn btn-success" id="UploadDoc" onclick="saveFile()" style="border-radius:100px;width:18%;">Upload</button>
             </div>
         </div>
     </div>
