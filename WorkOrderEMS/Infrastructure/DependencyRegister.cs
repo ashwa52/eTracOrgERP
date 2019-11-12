@@ -15,8 +15,6 @@ using WorkOrderEMS.BusinessLogic.Interfaces.eFleet;
 using WorkOrderEMS.BusinessLogic.Managers;
 using WorkOrderEMS.BusinessLogic.Managers.Accounts;
 using WorkOrderEMS.BusinessLogic.Managers.eFleet;
-using WorkOrderEMS.Data.DataRepository;
-using WorkOrderEMS.Data.Interfaces;
 
 namespace WorkOrderEMS.Infrastructure
 {
@@ -102,6 +100,7 @@ namespace WorkOrderEMS.Infrastructure
                 For<IGuestUserRepository>().Use<GuestUserRepositoryData>();
                 For<IFillableFormManager>().Use<FillableFormManager>();
                 For<INewAdminRepository>().Use<NewAdminRepository>();
+                For<IDebitMemo>().Use<DebitMemoManager>();
             }
         }
     }

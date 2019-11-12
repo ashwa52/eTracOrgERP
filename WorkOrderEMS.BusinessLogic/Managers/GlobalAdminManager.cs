@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity.Core.Objects;
@@ -15,8 +14,6 @@ using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
 using WorkOrderEMS.Models.CommonModels;
-using WorkOrderEMS.Models.Employee;
-using WorkOrderEMS.Models.NewAdminModel;
 using WorkOrderEMS.Models.SuperAdminModels;
 using WorkOrderEMS.Models.UserModels;
 
@@ -307,15 +304,14 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         loc obj = new loc();
                         obj.LocationId = Convert.ToString(locationId);
                         var aa = ser.Serialize(obj);
-                        // sp_DeleteLocation_Result objRes = new sp_DeleteLocation_Result();
-                        var objRes = "";
+                        sp_DeleteLocation_Result objRes = new sp_DeleteLocation_Result();
                         using (workorderEMSEntities Context = new workorderEMSEntities())
                         {
                             objRes = Context.sp_DeleteLocation(aa).FirstOrDefault();
                         }
 
 
-                        if (objRes == "success")
+                        if (objRes.Result == "success")
                         {
 
                             #region Save DAR

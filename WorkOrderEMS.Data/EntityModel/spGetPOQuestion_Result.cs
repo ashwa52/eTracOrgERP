@@ -13,7 +13,6 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class spGetPOQuestion_Result
     {
-        public long POQ_Id { get; set; }
         public long POQ_POD_Id { get; set; }
         public long POQ_QNA_Id { get; set; }
         public string POQ_Answer { get; set; }

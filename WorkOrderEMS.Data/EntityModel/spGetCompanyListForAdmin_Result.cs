@@ -14,12 +14,10 @@ namespace WorkOrderEMS.Data.EntityModel
     public partial class spGetCompanyListForAdmin_Result
     {
         public long CMP_Id { get; set; }
-        public string CMP_NameLegal { get; set; }
-        public Nullable<long> COT_Id { get; set; }
         public string COT_CompanyType { get; set; }
-        public string TXD_TaxIdNumber { get; set; }
-        public string LNC_LicenseDocument { get; set; }
-        public Nullable<System.DateTime> LNC_ExpirationDate { get; set; }
+        public string CMP_NameLegal { get; set; }
+        public string VDT_VendorType { get; set; }
+        public string COD_PointOfContact { get; set; }
         public string Address1 { get; set; }
         public string COD_Phone1 { get; set; }
         public string Status { get; set; }

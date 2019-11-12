@@ -16,7 +16,6 @@ using WorkOrderEMS.Controllers.Administrator;
 using WorkOrderEMS.Data.Classes;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
-using WorkOrderEMS.Models.Employee;
 
 namespace WorkOrderEMS.Controllers.NewAdmin
 {
@@ -45,7 +44,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
         public ActionResult Index()
         {
-            return View("~/Views/NewAdmin/ePeople/_EmployeeManagement.cshtml");
+            return View();
         }
         /// <summary>
         /// Created By  :Ashwajit bansod
@@ -61,7 +60,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             var details = new List<UserModelList>();
             if (Session["eTrac"] != null)
             {
-                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                ObjLoginModel = (eTracLoginModel) (Session["eTrac"]);
                 if (LocationId == 0)
                 {
                     LocationId = Convert.ToInt32(ObjLoginModel.LocationID);
@@ -72,9 +71,9 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             long.TryParse(id, out _UserId);
             var data = _IePeopleManager.GetUserHeirarchyList(LocationId, _UserId);
             if (data.Count() > 0)
-            {
+            {              
                 foreach (var item in data)
-                {
+                {                   
                     item.ProfileImage = item.ProfileImage == null ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + item.ProfileImage;
                     details.Add(item);
                 }
@@ -87,50 +86,12 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
 
         #region Employee Management
-        public ActionResult ChartDetailsView(string Id)
-        {//D:\Project\eTrac\eTracOrgERP\WorkOrderEMS\Views\NewAdmin\ePeople\_VSCPointingChartDemo.cshtml
-            //return PartialView("~/Views/NewAdmin/ePeople/_VSCPointingChart.cshtml");
-            Session["EmployeeId"] = Id;
-            return PartialView("~/Views/NewAdmin/ePeople/_VSCPointingChartDemo.cshtml");
-        }
         /// <summary>
-        /// Created BY : Ashwajit Bansod
-        /// Created Date : 12-OCT-2019
-        /// Created For : To get details of vehicle chart
+        /// Created By : Ashwajit Bansod
         /// </summary>
+        /// <param name="Id"></param>
         /// <param name="LocationId"></param>
         /// <returns></returns>
-        [HttpPost]
-        public ActionResult GetChartDisplayDataForEmployee(long? LocationId)
-        {
-            eTracLoginModel ObjLoginModel = null;
-            var lstChart = new List<AddChartModel>();
-            if (Session != null)
-            {
-                if (Session["eTrac"] != null)
-                {
-                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-                }
-            }
-            try
-            {
-                var _manager = new VehicleSeatingChartManager();
-                lstChart = _manager.ListVehicleSeatingChart(LocationId);
-                if (lstChart.Count() > 0)
-                {
-                    return Json(lstChart, JsonRequestBehavior.AllowGet);
-                }
-                else
-                {
-                    return Json(lstChart, JsonRequestBehavior.AllowGet);
-                }
-            }
-            catch (Exception ex)
-            {
-                return Json(lstChart, JsonRequestBehavior.AllowGet);
-            }
-
-        }
         [HttpPost]
         public ActionResult GetUserTreeViewList(string Id, long? LocationId)
         {
@@ -311,7 +272,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             long.TryParse(id, out _UserId);
             var data = _IePeopleManager.GetVCSPositionByUserId(_UserId);
             if (data != null)
-            {
+            {               
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
             else
@@ -326,7 +287,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             var details = new List<UserModelList>();
             if (Session["eTrac"] != null)
             {
-                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]); 
             }
             return PartialView("~/Views/NewAdmin/ePeople/_VSCPintingChart.cshtml");
         }

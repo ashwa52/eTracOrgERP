@@ -13,6 +13,7 @@
         userType = ObjLogin.UserRoleId;
     }
 }
+    
 @section scripts{
     <script type="text/javascript">
     var $_locationId = '@locationId';
@@ -23,12 +24,15 @@
     <script src="~/GridListing/JqGridScript/CompanyList/ListInsurance.js"></script> 
     <script src="~/GridListing/JqGridScript/CompanyList/ListLicense.js"></script>
     <script type="text/javascript">
+     
     //$(window).bind('resize', function () {
     //    var width = $('#jqGrid_container,#jqGrid_containerLicense').width();
     //    $('#tbl_LicenseAndInsuranceList,#tbl_LicenseList').setGridWidth(width);
     //});
     </script>
 }
+
+<link href="~/Content/NewAdminContent/CSS/custom.css" rel="stylesheet" />
 <style>
      
     .jsgrid-grid-body {
@@ -38,14 +42,16 @@
 <div class="content-body" style="min-height: 920px;">
     <!-- row -->
     <div class="container-fluid">
-        <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3 aos-init aos-animate" data-aos="fade-up">
-            <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
+        <div class="row page-titles mx-0 aos-init aos-animate" data-aos="fade-up">
+            <div class="col-sm-6 p-md-0">
                 <div class="welcome-text">
-                    <br /> <br />
+                    <h4> Insurance/License List</h4>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="@Url.Action("CompanyList","VendorManagement")">Vendor List Dashboard</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)"> Insurance/License List</a></li>
+                    </ol>
                 </div>
             </div>
-
-
         </div>
         @*<div class="row justify-content-center">
 
@@ -71,23 +77,15 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card aos-init" data-aos="fade-up">
-                    <div class="card-header" style="height: 45px;">
-                        <div class="card-header headerSize" style="height:45px; padding:0;">
-                            <a href="javascript:void(0)"><span><i onclick="AddInsurance()" class="mdi mdi-plus" style="color:white;font-size:50px;"></i></span></a>
-                            <div class="basic-form">
-                                <div class="form-group  m-0">
-                                    <p class="m-0">Add Insurance</p>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="card-header headerSize">
+                        <h4 class="card-title">Add Insurance</h4>
+                        <a href="javascript:void(0)" onclick="AddInsurance()" class="btn btn-rounded btn-success"><span class="btn-icon-left text-info"><i class="fa fa-plus color-info"></i></span> Add</a>
                     </div>
+
                     <div class="card-body">
-                        <div id="tbl_LicenseAndInsuranceList" class="jsgrid" style="position: relative; height: 400px; width: 100%;">
-
+                        <div id="tbl_LicenseAndInsuranceList" class="jsgrid">
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
@@ -96,16 +94,12 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="card aos-init" data-aos="fade-up">
-                    <div class="card-header" style="height: 45px;">
-                        <div class="card-header headerSize" style="height:45px; padding:0;">
-                            <a href="javascript:void(0)"><span><i  onclick="AddLicense()" class="mdi mdi-plus" style="color:white;font-size:50px;"></i></span></a>
-                            <div class="basic-form">
-                                <div class="form-group  m-0">
-                                    <p class="m-0">Add License</p>
-                                </div>
-                            </div>
-                        </div>
+
+                    <div class="card-header headerSize">
+                        <h4 class="card-title">Add License</h4>
+                        <a href="javascript:void(0)" onclick="AddLicense()" class="btn btn-rounded btn-success"><span class="btn-icon-left text-info"><i class="fa fa-plus color-info"></i></span> Add</a>
                     </div>
+
                     <div class="card-body">
                         <div id="tbl_LicenseList" class="jsgrid" style="position: relative; height: 400px; width: 100%;">
 

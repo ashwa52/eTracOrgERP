@@ -14,7 +14,6 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class MisNumber
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public MisNumber()
         {
             this.LogMiscellaneous = new HashSet<LogMiscellaneou>();
@@ -24,9 +23,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public long MIN_Id { get; set; }
         public string MIN_IsActive { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LogMiscellaneou> LogMiscellaneous { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Miscellaneou> Miscellaneous { get; set; }
     }
 }

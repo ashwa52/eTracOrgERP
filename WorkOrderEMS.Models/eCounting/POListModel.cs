@@ -48,5 +48,15 @@ namespace WorkOrderEMS.Models
         public long LogId { get; set; }
         public long? QuickBookPOId { get; set; }
         public decimal? Amount { get; set; }
+        public int OpenPOCount { get; set; }
+        public int UnauthorizePoCount { get; set; }
+        public int NotApprovedPoCount { get; set; }
+    }
+    public class GetBudgetDetailsForPOSGraphs
+    {
+        public string Years { get; set; }
+        public decimal BudgetAmount { get; set; }
+        public string colour { get; set; }
+
     }
 }

@@ -13,16 +13,11 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class spGetPOFacilityItemForApproval_Result
     {
-        public Nullable<long> POF_Id { get; set; }
         public long CFM_Id { get; set; }
         public long CFM_CCD_CostCode { get; set; }
         public string CFM_FacilityType { get; set; }
         public Nullable<decimal> CFM_Rate { get; set; }
         public Nullable<decimal> CFM_Tax { get; set; }
         public string CFM_Discription { get; set; }
-        public Nullable<long> POF_Unit { get; set; }
-        public string POF_IsActive { get; set; }
-        public Nullable<long> CCD_QBKId { get; set; }
-        public string CCD_Description { get; set; }
     }
 }

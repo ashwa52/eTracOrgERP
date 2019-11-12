@@ -34,9 +34,10 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<long> LPOD_RUL_Id { get; set; }
         public string LPOD_RUL_Level { get; set; }
         public string LPOD_RUL_CurrentLevel { get; set; }
+        public Nullable<System.DateTime> LPOD_POD_ReccuringDate { get; set; }
+        public string LPOD_POD_ReccuringStatus { get; set; }
     
         public virtual LocationMaster LocationMaster { get; set; }
-        public virtual PODetail PODetail { get; set; }
         public virtual POType POType { get; set; }
     }
 }

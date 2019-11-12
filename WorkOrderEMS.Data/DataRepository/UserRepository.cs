@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.Entity.Core.Objects;
-using System.Globalization;
 using System.Linq;
 using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Data.Interfaces;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
-using WorkOrderEMS.Models.NewAdminModel;
 using WorkOrderEMS.Models.UserModels;
 
 
@@ -18,9 +15,6 @@ namespace WorkOrderEMS.Data
     {
         workorderEMSEntities _workorderEMSEntities = new workorderEMSEntities();
 
-        private readonly string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
-        private readonly string ProfilePicPath = System.Configuration.ConfigurationManager.AppSettings["ProfilePicPath"];
-        private readonly string ConstantImages = ConfigurationManager.AppSettings["ConstantImages"];
 
         public UserModel GetUserById(long userId, string operationName, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string textSearch, ObjectParameter paramTotalRecords)
         {
@@ -305,7 +299,7 @@ namespace WorkOrderEMS.Data
 
                                 where UR.UserType == userTy
                                 && UR.UserId != ((from ad in objContext.AdminLocationMappings where ad.LocationId == LocationId && ad.IsDeleted == false select ad.AdminUserId).FirstOrDefault())
-                                //&& ADL.LocationId != LocationId
+                                    //&& ADL.LocationId != LocationId
                                 && UR.IsLoginActive == true
                                 && UR.IsEmailVerify == true
                                 && UR.IsDeleted == false
@@ -342,7 +336,7 @@ namespace WorkOrderEMS.Data
 
                                 where UR.UserType == userTy
                                 && UR.UserId != ((from m in objContext.ManagerLocationMappings where m.LocationId == LocationId && m.IsDeleted == false select m.ManagerUserId).FirstOrDefault())
-                                //&& ADL.LocationId != LocationId
+                                    //&& ADL.LocationId != LocationId
                                 && UR.IsLoginActive == true
                                     && UR.IsEmailVerify == true
                                 && UR.IsDeleted == false
@@ -361,7 +355,7 @@ namespace WorkOrderEMS.Data
 
                                 where UR.UserType == userTy
                                 && UR.UserId != ((from m in objContext.EmployeeLocationMappings where m.LocationId == LocationId && m.IsDeleted == false select m.EmployeeUserId).FirstOrDefault())
-                                //&& ADL.LocationId != LocationId
+                                    //&& ADL.LocationId != LocationId
                                 && UR.IsLoginActive == true
                                 && UR.IsEmailVerify == true
                                 && UR.IsDeleted == false
@@ -643,7 +637,7 @@ namespace WorkOrderEMS.Data
         {
             UserModel objUserModel = new UserModel();
             var data = _workorderEMSEntities.SP_GetUnverifiedUser(userId, operationName, pageIndex, sortColumnName, sortOrderBy, numberOfRows, textSearch, paramTotalRecords);
-            if (data != null)
+            if(data != null)
             {
                 foreach (var item in data)
                 {
@@ -673,7 +667,7 @@ namespace WorkOrderEMS.Data
                     objUserModel.JobTitleOther = item.JobTitleOther;
                 }
             }
-
+            
             return objUserModel;
         }
 

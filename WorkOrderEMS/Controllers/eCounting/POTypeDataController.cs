@@ -274,8 +274,7 @@ namespace WorkOrderEMS.Controllers.eCounting
                                 Account account = new Account();
 
                                 QueryService<Account> querySvcCompany = new QueryService<Account>(serviceContext);
-                                List<Account> listAccount = querySvcCompany.ExecuteIdsQuery("SELECT * FROM Account MaxResults 1000")
-                                    .ToList();
+                                List<Account> listAccount = querySvcCompany.ExecuteIdsQuery("SELECT * FROM Account MaxResults 1000").ToList();
 
                                 QueryService<Vendor> querySvc = new QueryService<Vendor>(serviceContext);
                                 List<Vendor> vendorList = querySvc.ExecuteIdsQuery("SELECT * FROM Vendor MaxResults 1000").ToList();
@@ -310,7 +309,8 @@ namespace WorkOrderEMS.Controllers.eCounting
                                     name = "Accounts Payable (A/P)",
                                     Value = "33"
                                 };
-
+                            if (obj.Count()>0) 
+                            {
                                 foreach (var item in obj)
                                 {
                                     var line = new Line();
@@ -332,7 +332,8 @@ namespace WorkOrderEMS.Controllers.eCounting
                                     line.Description = item.COM_Facility_Desc;
                                     lineList.Add(line);
                                 }
-                                purchaseOrder.Line = lineList.ToArray();
+                            }
+                            purchaseOrder.Line = lineList.ToArray();
                                 resultSave = commonServiceQBO.Add(purchaseOrder) as PurchaseOrder;
                             }
                             catch (Exception ex)
@@ -446,8 +447,50 @@ namespace WorkOrderEMS.Controllers.eCounting
         /// <returns></returns>
         public ActionResult AllPOList()
         {
-            return View();
+            long UserId=0;
+            POApproveRejectModel model = new POApproveRejectModel();
+            eTracLoginModel ObjLoginModel = null;
+            if (Session != null && Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]); 
+                UserId = ObjLoginModel.UserId;
+                 
+            }
+            model = _IPOTypeDetails.GetPODetailsForGraphs(UserId);
+            return View(model);
         }
+
+        [HttpGet]
+        public JsonResult GetBudgetDetailsForPODashboard()
+        {
+            try
+            {
+                long LocationID = 0;
+                if ((eTracLoginModel)Session["eTrac"] != null)
+                {
+                    eTracLoginModel objLoginSession = new eTracLoginModel();
+                    objLoginSession = (eTracLoginModel)Session["eTrac"];
+                    if (Session["eTrac_SelectedDasboardLocationID"] != null)
+                    {
+                        if (Convert.ToInt64(Session["eTrac_SelectedDasboardLocationID"]) != 0)
+                        {
+                            LocationID = objLoginSession.LocationID;
+                        }
+                    }
+
+                    var data = _IPOTypeDetails.GetAllBudgetDetailsForPOGraphs();
+
+                    return Json(new { data }, JsonRequestBehavior.AllowGet);
+                }
+                else { return Json(null, JsonRequestBehavior.AllowGet); }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { ex.InnerException }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
 
         /// <summary>
         /// Created By : Ashwajit Bansod

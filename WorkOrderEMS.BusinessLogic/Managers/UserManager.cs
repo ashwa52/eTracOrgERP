@@ -185,7 +185,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     //UserType = obj_UserRegistration.UserType;
                     workorderEMSEntities Context = new workorderEMSEntities();
 
-                    var resu = Context.ssp_DeleteUser(UserId, DeletedBy).ToList();
+                    List<ssp_DeleteUser_Result> resu = Context.ssp_DeleteUser(UserId, DeletedBy).ToList();
 
 
 

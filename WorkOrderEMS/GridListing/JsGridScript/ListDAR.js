@@ -2,7 +2,7 @@
 var clients;
 var $_LocationId = $("#drp_MasterLocation option:selected").val();
 var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_RequestedBy = 0;//= $("#drp_MasterLocation option:selected").val();
-var FromDate = "", ToDate = "", FromTime = "", ToTime = "", TastType = "";
+var FromDate = "", ToDate = "", FromTime = "", ToTime = "", TastType="";
 $("#ShowDAR").click(function () {
     debugger
     FromDate = $("#FromDate").val();

@@ -23,7 +23,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         using (workorderEMSEntities Context = new workorderEMSEntities())
                         {
                             var abc = Context.sp_permissionAssign(userId, userType, createdBy, locationId, "").FirstOrDefault();
-                            if (abc == 1 || abc == 2)
+                            if (abc.Result == 1 || abc.Result == 2)
                             {
                                 result = 1;
                             }

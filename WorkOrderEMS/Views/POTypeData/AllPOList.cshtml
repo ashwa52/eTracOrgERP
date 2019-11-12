@@ -18,172 +18,162 @@
     var $_locationId = '@locationId';
     var $_userTypeId = '@userType';
     </script>*@
-
-    <script src="~/GridListing/JqGridScript/ListAllPO.js"></script>
-    <script src="~/GridListing/JqGridScript/ListAllSelfCreatedPO.js"></script> 
+@*<style>
+    .amcharts-chart-div {
+        height:250px!important;
+    }
+</style>*@
 <style>
-
-    .package {
-        margin-top: 0px !important;
-        display: inline-flex;
-        justify-items: center;
-        align-items: center;
-        text-align: center;
-    }
-
-   
-      .jsgrid-grid-body {
-        height: 100% !important;
-    }
-     .onoffswitch2 {
-        -moz-user-select: none;
-        float: right;
-        margin-right: 30px;
-        position: relative;
-        width: 200px;
-    }
-
-    .onoffswitch2-checkbox {
-        display: none;
-    }
-
-    .onoffswitch2-label {
-        border: 1px solid #0aaebd;
-        border-radius: 3px;
-        cursor: pointer;
-        display: block;
-        overflow: hidden;
-    }
-
-    .onoffswitch2-inner {
-        display: block;
-        width: 200%;
-        margin-left: -100%;
-        -moz-transition: margin 0.3s ease-in 0s;
-        -webkit-transition: margin 0.3s ease-in 0s;
-        -o-transition: margin 0.3s ease-in 0s;
-        transition: margin 0.3s ease-in 0s;
-    }
-
-        .onoffswitch2-inner:before, .onoffswitch2-inner:after {
-            display: block;
-            float: left;
-            width: 50%;
-            height: 30px;
-            padding: 0;
-            line-height: 30px;
-            font-size: 14px;
-            color: white;
-            font-family: Trebuchet, Arial, sans-serif;
-            font-weight: normal;
-            -moz-box-sizing: border-box;
-            -webkit-box-sizing: border-box;
-            box-sizing: border-box;
-        }
-
-        .onoffswitch2-inner:before {
-            content: "View All Location Enabled";
-            padding-left: 10px;
-            background-color: #0aa4dd;
-            color: #FFFFFF;
-        }
-
-        .onoffswitch2-inner:after {
-            content: "View All Location Disabled";
-            padding-right: 10px;
-            background-color: #84CFE6;
-            color: #000;
-            text-align: right;
-            border: 1px solid #dddddd;
-            border-radius: 3px;
-        }
-
-    .onoffswitch2-switch {
-        display: block;
-        width: 14px;
-        height: 31px;
-        margin: 0px;
-        background: #fff;
-        border: 1px solid #f4f4f4;
-        border-radius: 3px;
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        right: 185px;
-        -moz-transition: all 0.3s ease-in 0s;
-        -webkit-transition: all 0.3s ease-in 0s;
-        -o-transition: all 0.3s ease-in 0s;
-        transition: all 0.3s ease-in 0s;
-        /*  background-image: -moz-linear-gradient(center top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%);
-    background-image: -webkit-linear-gradient(center top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%);
-    background-image: -o-linear-gradient(center top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%);
-    background-image: linear-gradient(center top, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%);*/
-    }
-
-    .onoffswitch2-checkbox:checked + .onoffswitch2-label .onoffswitch2-inner {
-        margin-left: 0;
-    }
-
-    .onoffswitch2-checkbox:checked + .onoffswitch2-label .onoffswitch2-switch {
-        right: 0px;
-    }
-       .form-control {
-        border: 1px solid #a0b3b0 !important;
+    #chartdiv {
+        width: 100%;
+        height: 500px;
     }
 </style>
-<div class="content-body" style="min-height: 920px;">
+
+<script src="~/GridListing/JqGridScript/ListAllPO.js"></script>
+<script src="~/GridListing/JqGridScript/ListAllSelfCreatedPO.js"></script>
+<link href="~/Content/NewAdminContent/CSS/custom.css" rel="stylesheet" />
+
+
+
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+ 
+ 
+<div class="content-body">
     <!-- row -->
     <div class="container-fluid">
-        <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3 aos-init aos-animate" data-aos="fade-up">
-            <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
+
+        <div class="row page-titles mx-0 aos-init aos-animate" data-aos="fade-up">
+            <div class="col-sm-6 p-md-0">
                 <div class="welcome-text">
-                    <H4>PO List</H4>
-                    <p>Po dashboard</p>
-                    
+                    <h4>PO</h4>
+                    <ol class="breadcrumb">
+                        @*<li class="breadcrumb-item"><a href="javascript:void(0)">PO</a></li>*@
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">PO List</a></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-3">
+                <div class="card bg-success white-text card-custom-padding">
+                    @if (Model!=null) 
+                    {
+                    <p class="text-center po-number">@Model.OpenPOCount</p>
+                    }  
+                 
+                    <div class="po-headings">Number of Open POS</div>
+
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card bg-warning white-text card-custom-padding">
+                    @if (Model != null)
+                    {
+                        <p class="text-center po-number">@Model.UnauthorizePoCount</p>
+                    }
+                 
+                    <div class="po-headings">Number of Unauthorize POS</div>
+
                 </div>
             </div>
 
 
-        </div> 
+            <div class="col-lg-3">
+                <div class="card bg-danger white-text card-custom-padding">
+
+                    @if (Model != null)
+                    {
+                        <p class="text-center po-number">@Model.NotApprovedPoCount</p>
+                    }
+                    <div class="po-headings"> POS not Approved Timely</div>
+
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div class="card bg-success white-text card-custom-padding">
+
+                    <p class="text-center po-number">3</p>
+                    <div class="po-headings">Cost Codes Over Budget</div>
+
+                </div>
+            </div>
+
+        </div>
         <br>
+        
+
+
+
+            <div class="col-lg-12">
+                <div class="card aos-init aos-animate" data-aos="fade-up">
+                    <div class="card-body">
+                        <h4 class="card-title">YTD BUDGET VS. ACTUAL POS</h4>
+                        
+                            <div id="chartdiv"></div>
+                             
+                        
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        
         <div class="row">
             <div class="col-lg-12">
                 <div class="card aos-init" data-aos="fade-up">
-                    <div class="card-header" style="height: 45px;">
-                        <div class="card-header headerSize" style="height:45px;width:100%;padding:0px;">
-
-                            <div class="basic-form">
-                                <div class="form-group mb-0">
-                                    <div class="row">
-                                        <div class="col-md-1">
-                                            <a href="@Url.Action("index","POTypeData")"><span><i id="AddCompany" class="mdi mdi-plus" style="vertical-align:bottom;    line-height: 31px; color:white;font-size:50px;"></i></span></a>
-
-                                        </div>
-                                        <div class="col-md-5">
-
-                                            <select id="ApproveData" style="width: 260px;" class="form-control input-rounded">
-                                                <option value="W">Not Approved</option>
-                                                <option value="Y">Approved PO</option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-5">
-                                            <input id="SearchText" class="inputSearch form-control input-rounded" placeholder="Serach By PO Number" style="width: 260px;" onkeyup="doSearch()" type="text">
-                                        </div>
-
+                    <div class="card-header headerSize">
+                        <div class="row page-titles mb-0 pl-0 pt-0 pb-0" style="width:100%;">
+                            <div class="col-sm-12 col-xxl-5 col-lg-5 col-md-5 col-12">
+                                <div class="row">
+                                    <div class="col-sm-12 col-xxl-6 col-lg-6 col-md-6 col-12">
+                                        <select id="ApproveData" class="form-control input-rounded">
+                                            <option value="W">Not Approved</option>
+                                            <option value="Y">Approved PO</option>
+                                        </select>
                                     </div>
 
+                                    <div class="col-sm-12 col-xxl-6 col-lg-6 col-md-6 col-12">
+                                        <input id="SearchText" class="inputSearch form-control input-rounded" placeholder="Serach By PO Number" style="width: 260px;" onkeyup="doSearch()" type="text">
+                                    </div>
                                 </div>
+                            </div>
 
-                            </div>
-                            <div class="form-group float-right" style="clear:both;margin-top:25px;">
-                                <div class="onoffswitch2 m-0" style="float:right;">
-                                    <input type="checkbox" name="onoffswitch2" class="onoffswitch2-checkbox" id="ViewAllLocation"><label for="ViewAllLocation" class="onoffswitch2-label"><span class="onoffswitch2-inner"></span><span class="onoffswitch2-switch"></span></label>
+                            <div class="col-sm-12 col-xxl-7 col-lg-7 col-md-7 col-12 pr-0">
+                                <div class="row">
+                                    <div class="col-xl-10 col-lg-10 col-md-9 col-sm-6 col-12 pr-0">
+
+                                        <div class="material-switch pull-right m-t-10">
+                                            <input id="ViewAllLocation" name="onoffswitch2" type="checkbox" />
+                                            <label for="ViewAllLocation" class="label-success"></label>
+                                            <span class="toggle-text">View all Location</span>
+                                        </div>
+
+                                        @*<div class="form-group mb-0">
+                                                <div class="onoffswitch2 m-0">
+                                                    <input type="checkbox" name="onoffswitch2" class="onoffswitch2-checkbox" id="ViewAllLocation"><label for="ViewAllLocation" class="onoffswitch2-label"><span class="onoffswitch2-inner"></span><span class="onoffswitch2-switch"></span></label>
+                                                </div>
+
+                                            </div>*@
+                                    </div>
+
+                                    <div class="col-xl-2 col-lg-2 col-md-3 col-sm-6 col-12 pr-0 pl-0 text-right">
+                                        <a href="@Url.Action("index","POTypeData")" id="AddCompany" class="btn btn-rounded btn-success"><span class="btn-icon-left text-info"><i class="fa fa-plus color-info"></i></span> Add</a>
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
+
                     <div class="card-body">
-                        <div id="tbl_AllPOList" class="jsgrid" style="position: relative; height: 400px; width: 100%;">
+                        <div id="tbl_AllPOList" class="jsgrid">
 
                         </div>
                     </div>
@@ -191,47 +181,47 @@
                     <div class="row">
                         <div class="col-lg-12">
                             <div class="card aos-init" data-aos="fade-up">
-                                <div class="card-header" style="height: 45px;">
-                                    <div class="card-header headerSize" style="height:45px; padding:0;">
-                                        <div class="basic-form">
-                                            <div class="form-group mb-0">
-                                                <div class="row">
-                                                     
-                                                    <div class="col-md-5">
-                                                        <input id="SearchTextForList2" class="inputSearch form-control input-rounded" placeholder="Serach By PO Number" onkeyup="doSearchforsecondList()" style="width: 260px;"  type="text">
-                                                    </div>
 
+                                <div class="card-header headerSize">
+                                    <div class="basic-form">
+                                        <div class="form-group mb-0">
+                                            <div class="row">
+
+                                                <div class="col-md-5">
+                                                    <input id="SearchTextForList2" class="inputSearch form-control input-rounded" placeholder="Serach By PO Number" onkeyup="doSearchforsecondList()" style="width: 260px;" type="text">
                                                 </div>
 
                                             </div>
 
                                         </div>
+
                                     </div>
                                 </div>
+
                                 <div class="card-body">
-                                    <table id="tbl_AllSelfPOList" class="jsgrid" style="position: relative; height: 400px; width: 100%;"></table>
+                                    <table id="tbl_AllSelfPOList" class="jsgrid"></table>
                                 </div>
 
                             </div>
                         </div>
                     </div>
-                   
+
                     <div>
 
                     </div>
                 </div>
-        </div>
+            </div>
 
+        </div>
     </div>
-</div>
- 
+
 </div>
 
 
 
 @*<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-   
-</div>*@
+
+    </div>*@
 <br />
 <div class="modal bs-example-modal-lg fade preview" id="myModalForGetPODetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg ">
@@ -247,71 +237,70 @@
 
                 <div id="divDetailPreview" class="">
                     <div class="row">
-                        <div class="col-lg-3">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>PO ID</label>
                                 <div id="lblPOId" class="form-control-static"></div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>PO Type</label>
                                 <div id="lblPOType" class="form-control-static"></div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Company Name</label>
                                 <div id="lblCompanyName" class="form-control-static"></div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>PO Status</label>
                                 <div id="lblPOStatus" class="form-control-static"></div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-3">
+
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Location Name</label>
                                 <div id="lblLocationName" class="form-control-static"></div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>PO Date</label>
                                 <div id="lblPODate" class="form-control-static"></div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Delivery Date</label>
                                 <div id="lblDeliveryDate" class="form-control-static"></div>
                             </div>
                         </div>
-                        <div class="col-lg-3">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Grand Total</label>
                                 <div id="lblTotal" class="form-control-static"></div>
                             </div>
                         </div>
                     </div>
-              
+
                     <br />
-                  
-                   
+
+
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <table id="records_table" class="table" cellpadding="1" cellspacing="1" border="1">
-                                <tr style="background-color:#0792bc;">
-                                    <th style="width:150px">Cost Code</th>
-                                    <th style="width:40px">Description</th>
-                                    <th style="width:150px">Unit Price</th>
-                                    <th style="width:150px">Quantity</th>
-                                    <th style="width:40px">Total</th>
-                                    <th style="width:40px">Tax</th>
+                            <table id="records_table" class="table table-bordered table-responsive-sm">
+                                <tr style="background-color:#0792bc; color:#ffffff;">
+                                    <th>Cost Code</th>
+                                    <th>Description</th>
+                                    <th>Unit Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                    <th>Tax</th>
                                 </tr>
                             </table>
                         </div>
@@ -320,94 +309,94 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary  bluebutton text-right" onclick="return AppprovePO();" id="btnApproveData">Approve</button>
-                <button class="btn btn-danger" onclick="return RejectPO();" id="btnRejectPO">Reject</button>
-                <button data-dismiss="modal" class="btn btn-secondary" style="border-radius:25px;width:90px;" id="btnCancel">Cancel</button>
+                <button type="button" class="btn btn-primary btn-rounded m-l-10-btn" onclick="return AppprovePO();" id="btnApproveData">Approve</button>
+                <button class="btn btn-danger btn-rounded m-l-10-btn" onclick="return RejectPO();" id="btnRejectPO">Reject</button>
+                <button data-dismiss="modal" class="btn btn-secondary btn-rounded" id="btnCancel">Cancel</button>
             </div>
 
         </div>
     </div>
 </div>
 
- 
+
 
 @*<div class="modal bs-example-modal-lg fade preview" id="myModalForGetPODetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg ">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">X</span></button>
-                <h4 class="modal-title" id="myModalLabel">PO Details</h4>
-            </div>
-            <div class="modal-body">
-                <div id="divDetailPreview" class="">
-                    <div class="row">
-                        <div class="" id="DivPODetailsIndex">
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                <div class="form-group">
-                                    <label>PO ID</label>
-                                    <div id="lblPOId" class="form-control-static"></div>
-                                </div>
-                                <div class="form-group">
-                                    <label>PO Type</label>
-                                    <div id="lblPOType" class="form-control-static"></div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Company Name</label>
-                                    <div id="lblCompanyName" class="form-control-static"></div>
-                                </div>
-                                <div class="form-group">
-                                    <label>PO Status</label>
-                                    <div id="lblPOStatus" class="form-control-static"></div>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
-                                <div class="form-group">
-                                    <label>Location Name</label>
-                                    <div id="lblLocationName" class="form-control-static"></div>
-                                </div>
-                                <div class="form-group">
-                                    <label>PO Date</label>
-                                    <div id="lblPODate" class="form-control-static"></div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Delivery Date</label>
-                                    <div id="lblDeliveryDate" class="form-control-static"></div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Grand Total</label>
-                                    <div id="lblTotal" class="form-control-static"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <table id="records_table" class="table" cellpadding="1" cellspacing="1" border="1">
-                                <tr style="background-color:#0792bc;">
-                                    <th style="width:150px">Cost Code</th>
-                                    <th style="width:40px">Description</th>
-                                    <th style="width:150px">Unit Price</th>
-                                    <th style="width:150px">Quantity</th>
-                                    <th style="width:40px">Total</th>
-                                    <th style="width:40px">Tax</th>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
+        <div class="modal-dialog modal-lg ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">X</span></button>
+                    <h4 class="modal-title" id="myModalLabel">PO Details</h4>
                 </div>
-            </div><br /><br />
-            <div class="panel-footer">
-                <div class="text-right">
-                    <button type="button" class="btn btn-default bluebutton text-right" onclick="return AppprovePO();" id="btnApproveData">Approve</button>
-                    <button class="btn btn-danger" onclick="return RejectPO();" id="btnRejectPO">Reject</button>
-                    <button data-dismiss="modal" class="btn btn-default" id="btnCancel">Cancel</button>
+                <div class="modal-body">
+                    <div id="divDetailPreview" class="">
+                        <div class="row">
+                            <div class="" id="DivPODetailsIndex">
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label>PO ID</label>
+                                        <div id="lblPOId" class="form-control-static"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>PO Type</label>
+                                        <div id="lblPOType" class="form-control-static"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Company Name</label>
+                                        <div id="lblCompanyName" class="form-control-static"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>PO Status</label>
+                                        <div id="lblPOStatus" class="form-control-static"></div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
+                                    <div class="form-group">
+                                        <label>Location Name</label>
+                                        <div id="lblLocationName" class="form-control-static"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>PO Date</label>
+                                        <div id="lblPODate" class="form-control-static"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Delivery Date</label>
+                                        <div id="lblDeliveryDate" class="form-control-static"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Grand Total</label>
+                                        <div id="lblTotal" class="form-control-static"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <table id="records_table" class="table" cellpadding="1" cellspacing="1" border="1">
+                                    <tr style="background-color:#0792bc;">
+                                        <th style="width:150px">Cost Code</th>
+                                        <th style="width:40px">Description</th>
+                                        <th style="width:150px">Unit Price</th>
+                                        <th style="width:150px">Quantity</th>
+                                        <th style="width:40px">Total</th>
+                                        <th style="width:40px">Tax</th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div><br /><br />
+                <div class="panel-footer">
+                    <div class="text-right">
+                        <button type="button" class="btn btn-default bluebutton text-right" onclick="return AppprovePO();" id="btnApproveData">Approve</button>
+                        <button class="btn btn-danger" onclick="return RejectPO();" id="btnRejectPO">Reject</button>
+                        <button data-dismiss="modal" class="btn btn-default" id="btnCancel">Cancel</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>*@
+    </div>*@
 
- 
+
 
 
 <div class="modal bs-example-modal-lg fade preview" id="myModelApproveReject" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -426,7 +415,7 @@
                     <div class="col-sm-4">
                         @Html.TextBoxFor(model => model.Comment, new { @class = "form-control", @id = "CommentPO", @placeholder = "Comment", @style = "border-radios:0px;" })
                         @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
-                 
+
                     </div>
 
                 </div>
@@ -440,3 +429,66 @@
         </div>
     </div>
 </div>
+<script>
+   var  chartData =[];
+         $.ajax({
+        type: "GET",
+        url: "@Url.Action("GetBudgetDetailsForPODashboard", "POTypeData")",
+        data: {},
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+             success: function (_result) {
+                 $.each(_result.data, function (index, value)
+                 {
+                     chartData.push(value);
+
+                  });
+
+          AmCharts.makeChart("chartdiv", {
+        "theme": "none",
+        "type": "serial",
+        "startDuration": 7,
+          "dataProvider":chartData,
+
+
+        "valueAxes": [{
+            "position": "left",
+            "axisAlpha": 0,
+            "gridAlpha": 0
+        }],
+        "graphs": [{
+            "balloonText": "[[category]]: <b>[[value]]</b>",
+            "colorField": "colour",
+            "fillAlphas": 0.85,
+            "lineAlpha": 0.1,
+            "type": "column",
+            "topRadius": 1,
+            "valueField": "BudgetAmount"
+        }],
+        "depth3D": 40,
+        "angle": 30,
+        "chartCursor": {
+            "categoryBalloonEnabled": false,
+            "cursorAlpha": 0,
+            "zoomable": false
+        },
+        "categoryField": "Years",
+        "categoryAxis": {
+            "gridPosition": "start",
+            "axisAlpha": 1,
+            "gridAlpha": 0,
+            "labelRotation": 20,
+        },
+        "export": {
+            "enabled": true
+        }
+
+    }, 0);
+
+
+
+
+    }
+    });
+    
+</script>

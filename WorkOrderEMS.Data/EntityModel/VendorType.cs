@@ -14,7 +14,6 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class VendorType
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public VendorType()
         {
             this.Companies = new HashSet<Company>();
@@ -24,7 +23,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public string VDT_VendorType { get; set; }
         public string VDT_IsActive { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Company> Companies { get; set; }
     }
 }

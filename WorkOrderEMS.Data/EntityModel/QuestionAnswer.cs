@@ -14,7 +14,6 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class QuestionAnswer
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public QuestionAnswer()
         {
             this.POQuestions = new HashSet<POQuestion>();
@@ -25,7 +24,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public string QNA_Application { get; set; }
         public string QNA_IsActive { get; set; }
     
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<POQuestion> POQuestions { get; set; }
     }
 }

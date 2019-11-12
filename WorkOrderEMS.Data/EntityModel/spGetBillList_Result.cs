@@ -13,17 +13,16 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class spGetBillList_Result
     {
-        public long LBLL_Id { get; set; }
         public Nullable<long> LBLL_BLL_Id { get; set; }
-        public string LocationName { get; set; }
+        public Nullable<long> LBLL_POD_Id { get; set; }
+        public Nullable<long> LBLL_MIS_Id { get; set; }
         public string CMP_NameLegal { get; set; }
-        public string VDT_VendorType { get; set; }
-        public Nullable<System.DateTime> CNT_BillDueDate { get; set; }
+        public string LocationName { get; set; }
+        public string LBLL_BillType { get; set; }
+        public Nullable<decimal> LBLL_PoMisBdaAmount { get; set; }
         public Nullable<decimal> LBLL_InvoiceAmount { get; set; }
         public Nullable<System.DateTime> LBLL_InvoiceDate { get; set; }
-        public string LBLL_InvoiceDocument { get; set; }
         public System.DateTime BillDate { get; set; }
         public string Bill_Status { get; set; }
-        public string LBLL_Comment { get; set; }
     }
 }

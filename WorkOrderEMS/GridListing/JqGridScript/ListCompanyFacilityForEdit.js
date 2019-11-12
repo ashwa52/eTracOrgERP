@@ -148,7 +148,7 @@ $(function (event) {
             {
                 name: "act", type: "control", items: act, title: "Action", width: 50, css: "text-center", itemTemplate: function (value, item) {
 
-                    var $iconPencilFordelete = $("<i>").attr({ class: "fa fa-trash" }).attr({ style: "color:green;font-size: 22px;" });
+                    var $iconPencilFordelete = $("<i>").attr({ class: "fa fa-trash close-icon" }).attr({ style: "" });
 
                     $customButtonForDelete = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "delete" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {
 

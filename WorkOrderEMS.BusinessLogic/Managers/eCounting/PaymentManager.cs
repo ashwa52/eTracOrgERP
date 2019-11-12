@@ -29,7 +29,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <param name="textSearch"></param>
         /// <param name="statusType"></param>
         /// <returns></returns>
-        public List<PaymentModel> GetListPaymentByLocationId(long? UserId, long? LocationID, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType)
+        public List<PaymentModel> GetListPaymentByLocationId(long? UserId, long? LocationID, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType,string BillTypeId)
         {
             try
             {
@@ -39,10 +39,10 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 //var obj = new PaymentModel();
                 //int pageindex = Convert.ToInt32(pageIndex) - 1;
                 //int pageSize = Convert.ToInt32(numberOfRows);
-                  resultList = _workorderems.spPaymentDesk(LocationID)
+                  resultList = _workorderems.spPaymentDesk(LocationID, BillTypeId)
                     .Select(a => new PaymentModel()
                     {
-                        LLBL_ID = a.LBLL_Id,
+                     LLBL_ID = a.LBLL_Id,
                      BillNo = a.LBLL_BLL_Id,
                      BillAmount = a.LBLL_InvoiceAmount,
                      BillDate = a.BillDate,
@@ -54,11 +54,12 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                      Description = a.CAT_Discription,
                      Status = a.Bill_Status,
                      VendorId = a.CMP_IdBeneficiary,
-                     
+                     ChequeNo = a.CAT_ChequeNo,
                      OperatingCompany = a.CMP_NameLegalRemitter == null?"N/A": a.CMP_NameLegalRemitter,
                      OperatingCompanyId = a.CMP_IdRemitter > 0 ? a.CMP_IdRemitter :0 ,
                      LocationId = a.LocationId,
-                     DisplayDate = a.BillDate == null ? "" : a.BillDate.ToString("dd/MM/yyyy")
+                     DisplayDate = a.BillDate == null ? "" : a.BillDate.ToString("MMM dd,yyyy"),
+                     PaymentNote = a.LBLL_Comment
                     }).Where(x => x.Status == "W" || x.Status == "Y").ToList();
                // Results.Where(x => x.Status == "Y").ToList();
                 //foreach (var item in Results)
@@ -116,14 +117,14 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <param name="textSearch"></param>
         /// <param name="statusType"></param>
         /// <returns></returns>
-        public List<PaymentModel> GetListPaidtByLocationId(long? UserId, long? LocationID, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType)
+        public List<PaymentModel> GetListPaidtByLocationId(long? UserId, long? LocationID, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType,string BillTypeId)
         {
             try
             {
                 //var objPaymentDetails = new PaymentModel();
                 //int pageindex = Convert.ToInt32(pageIndex) - 1;
                 //int pageSize = Convert.ToInt32(numberOfRows);
-                var Results = _workorderems.spPaymentDesk(LocationID)
+                var Results = _workorderems.spPaymentDesk(LocationID, BillTypeId)
                     .Select(a => new PaymentModel()
                     {
                         BillNo = a.LBLL_BLL_Id,
@@ -139,8 +140,20 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         OperatingCompany = a.CMP_NameLegalRemitter == null ? "N/A" : a.CMP_NameLegalRemitter,
                         OperatingCompanyId = a.CMP_IdRemitter > 0 ? 0 : a.CMP_IdRemitter,
                         LocationId = a.LocationId,
-                        DisplayDate = a.BillDate == null ? "" : a.BillDate.ToString("dd/MM/yyyy")
+                        DisplayDate = a.BillDate == null ? "" : a.BillDate.ToString("MMM dd,yyyy"),
+                        PaymentNote = a.LBLL_Comment,
+                        ActionDoneOn = a.LBLL_ApprovedOn.ToString("MMM dd,yyyy"),
+                        ActionDoneBy = a.ApprovedBy,
+                        //AccountNo = a.acc
+                        //ChequeNo
+                        //CARDNo
                     }).Where(x => x.Status == "P" || x.Status == "X").ToList();
+
+
+                //foreach (var item in Results)
+                //{
+                //    item.Status = item.Status == "P" ? "Pending" : "Cancelled";
+                //}
                  //Results.Where(x => x.Status == "X").ToList();
                 //int totRecords = Results.Count();
                 //var totalPages = (int)Math.Ceiling((float)totRecords / (float)numberOfRows);
@@ -182,15 +195,19 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                      result = _workorderems.spGetCompanyAccountDetailForPayment(OperatingCompanyId).
                         Select(x => new PaymentModel()
                         {
-                            AccountNo = x.CAD_AccountNumber,
-                            CARDNo = x.CAD_CreditCardNumber,
+                            AccountNo = x.CAD_AccountNumber ?? "",
+                            CARDNo = x.CAD_CreditCardNumber ?? "",
                             VendorId = x.CAD_CMP_Id,
                             CompanyAccountId = x.CAD_Id,
                             PaymentMode = x.CAD_PMD_Id.ToString(),
-                            VendorName = _workorderems.Companies.Where(a => a.CMP_Id == VendorId).FirstOrDefault().CMP_NameLegal,
+                            //VendorName = _workorderems.Companies.Where(a => a.CMP_Id == VendorId).FirstOrDefault().CMP_NameLegal,
                             OpeartorCAD_Id = OperatorCADId
-                        }).ToList();                   
-                }
+                        }).ToList();
+                    foreach (var item in result)
+                    {
+                        item.VendorName = _workorderems.Companies.Where(a => a.CMP_Id == VendorId).FirstOrDefault().CMP_NameLegal;
+                    }
+                }                
                 else
                 {
                     return null;
@@ -224,7 +241,23 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             {
                 if (objPaymentModel != null && ObjData != null)
                 {
+
+                    if (objPaymentModel.PaymentMode == "Cash") {
+                    
+                    }
+                    else if (objPaymentModel.PaymentMode == "Wired")
+                    {
+
+                    }else if (objPaymentModel.PaymentMode == "Card")
+                    {
+
+                    }else if (objPaymentModel.PaymentMode == "Cheque")
+                    {
+
+                    }
+
                     var ChequeNo = Convert.ToInt32(objPaymentModel.ChequeNo);
+                    var PaymentMode = Convert.ToInt32(objPaymentModel.PaymentMode);
                     PaidStatus = "Paid";
                     if (objPaymentModel.ChequeNo != null)
                     {
@@ -252,10 +285,36 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     Action = "I";
                     if (objPaymentModel.IsCancel == false)
                     {
-                        var savePayment = _workorderems.spSetCompanyAccountTransaction(Action, null, ObjData.VendorId, objPaymentModel.OpeartorCAD_Id, objPaymentModel.CompanyAccountId,
-                                                                                     ObjData.BillNo, ObjData.BillAmount, ChequeNo,
+                        if (objPaymentModel.PaymentByCash == "wired") 
+                        {
+                            var savePayment = _workorderems.spSetCompanyAccountTransaction(Action, null, ObjData.VendorId, ObjData.OperatingCompanyId, objPaymentModel.CompanyAccountId,
+                                                                                        ObjData.BillNo, ObjData.BillAmount, ChequeNo, PaymentMode,
+                                                                                        objPaymentModel.Comment, objPaymentModel.UserId, ObjData.LocationId,
+                                                                                        ObjData.BillType, Status);
+
+                        }
+                        if (objPaymentModel.PaymentByCash == "Card")
+                        {
+                            var savePayment = _workorderems.spSetCompanyAccountTransaction(Action, null, ObjData.VendorId, ObjData.OperatingCompanyId, objPaymentModel.CompanyAccountId,
+                                                                                        ObjData.BillNo, ObjData.BillAmount, ChequeNo, PaymentMode,
+                                                                                        objPaymentModel.Comment, objPaymentModel.UserId, ObjData.LocationId,
+                                                                                        ObjData.BillType, Status);
+
+                        }
+                        if (objPaymentModel.PaymentByCash == "Cash")
+                        {
+                            var savePayment = _workorderems.spSetCompanyAccountTransaction(Action, null, ObjData.VendorId, ObjData.OperatingCompanyId, objPaymentModel.CompanyAccountId,
+                                                                                     ObjData.BillNo, ObjData.BillAmount, ChequeNo, PaymentMode,
                                                                                      objPaymentModel.Comment, objPaymentModel.UserId, ObjData.LocationId,
                                                                                      ObjData.BillType, Status);
+                        }
+                        if (objPaymentModel.PaymentByCash == "Cheque")
+                        {
+                            var savePayment = _workorderems.spSetCompanyAccountTransaction(Action, null, ObjData.VendorId, ObjData.OperatingCompanyId, objPaymentModel.CompanyAccountId,
+                                                                                     ObjData.BillNo, ObjData.BillAmount, ChequeNo, PaymentMode,
+                                                                                     objPaymentModel.Comment, objPaymentModel.UserId, ObjData.LocationId,
+                                                                                     ObjData.BillType, Status);
+                        }                        
                     }
                     if(Status == "Y")
                     {

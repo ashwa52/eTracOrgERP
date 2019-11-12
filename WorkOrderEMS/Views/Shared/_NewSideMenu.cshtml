@@ -111,7 +111,7 @@
             <li>
                 <a class="has-arrow" href="javascript:void()" aria-expanded="false"><i class="fa fa-cogs"></i><span class="nav-text">Operation</span></a>
                 <ul aria-expanded="false">
-                    <li><a href="@Url.Action("EMaintananceDashboard", "NewAdmin")" data-oldDash="No"><i class="fa fa-wrench"></i>eMaintenance</a></li>
+                    <li><a href="@Url.Action("EMaintananceDashboard", "NewAdmin")" data-oldDash="No"><i class="fa fa-wrench"></i>eMaintanace</a></li>
                     <li><a href="@Url.Action("EScanDashboard", "NewAdmin")" data-oldDash="No"><i class="fa fa-print"></i>eScanner</a></li>
                     <li><a href="@Url.Action( "DARDashboard", "NewAdmin")" data-oldDash="No"><i class="fa fa-list"></i>DAR</a></li>
                     <li><a href="@Url.Action( "OperationReports", "NewAdmin")" data-oldDash="No"><i class="fa fa-area-chart"></i>Report</a></li>
@@ -215,6 +215,9 @@
                     </li>
 
                     <li><a href="@Url.Action("PaymentView", "Payment")" data-oldDash="Yes"><i class="fa fa-money" aria-hidden="true"></i><span class="nav-text">Payment Desk</span></a></li>
+                    <li><a href="@Url.Action("Reconciliationsreports", "VendorManagement")" data-oldDash="Yes"><i class="fa fa-money" aria-hidden="true"></i><span class="nav-text">Bank Reconciliations</span></a></li>
+                    <li><a href="@Url.Action("Index", "DebitMemo")" data-oldDash="Yes"><i class="fa fa-envelope-open-o" aria-hidden="true"></i><span class="nav-text">Debit Memo</span></a></li>
+                   
                     <li><a href="@Url.Action("eCountingReport", "eCountingReport")" data-oldDash="Yes"><i class="fa fa-bar-chart" aria-hidden="true"></i><span class="nav-text">Reports</span></a></li>
                     <li>
                         <a class="" href="@Url.Action("InvoicetList", "GlobalSettings")" data-oldDash="No"><i class="fa fa-vimeo" aria-hidden="true"></i>Invoices </a>
