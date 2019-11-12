@@ -505,7 +505,8 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             return PartialView("_PerformanceManagement");
         }
         [HttpPost]
-        public ActionResult userAssessmentView(string Id,string Assesment)
+        public ActionResult userAssessmentView(string Id, string Assesment, string Name, string Image, string JobTitle, string Department, string LocationName)
+
         {
             eTracLoginModel ObjLoginModel = null;
             string Employee_Id = string.Empty;
@@ -525,6 +526,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
 
             ListQuestions = _GlobalAdminManager.GetGWCQuestions(Employee_Id, Assesment);
+            ViewData["employeeInfo"] = new GWCQUestionModel() { EmployeeName = Name, AssessmentType = Assesment, Image = Image, JobTitle = JobTitle, Department = Department, LocationName = LocationName };
             return PartialView("userAssessmentView", ListQuestions);
         }
         public ActionResult PerformanceManagementGrid()

@@ -75,8 +75,12 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                     });
                 }
             },
-            { name: 'EmployeeName', width: 80, title: "Employee Name", },
-            { name: 'JBT_JobTitle', width: 60, title: "User Type" },
+            {
+                name: 'EmployeeName', width: 80, title: "Employee Name", itemTemplate: function (value, item) {
+                    return $("<div>").append("" + item.EmployeeName + "<br><span style='font-size:10px;color:black;font-style:italic;'>" + item.JBT_JobTitle + "</span></div>");
+                }
+            },
+            //{ name: 'JBT_JobTitle', width: 60, title: "User Type" },
             {
                 name: 'Status', width: 60, title: "Status"
                 
@@ -98,7 +102,8 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                   .attr({ id: "btn-profile-" + item.id }).click(function (e) {
                                       $.ajax({
                                           type: "POST",
-                                          data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment},
+                                          //data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment},
+                                          data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.Assesment, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'Department': item.DepartmentName, 'LocationName': item.LocationName },
                                           url: '../NewAdmin/userAssessmentView/',
                                           error: function (xhr, status, error) {
                                           },
@@ -198,8 +203,12 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                     });
                 }
             },
-            { name: 'EmployeeName', width: 80, title: "Employee Name", },
-            { name: 'JBT_JobTitle', width: 60, title: "User Type" },
+            {
+                name: 'EmployeeName', width: 80, title: "Employee Name", itemTemplate: function (value, item) {
+                    return $("<div>").append("" + item.EmployeeName + "<br><span style='font-size:10px;color:black;font-style:italic;'>" + item.JBT_JobTitle + "</span></div>");
+                }
+            },
+            //{ name: 'JBT_JobTitle', width: 60, title: "User Type" },
             {
                 name: 'Status', width: 60, title: "Status"
 
@@ -325,8 +334,12 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                     });
                 }
             },
-            { name: 'EmployeeName', width: 80, title: "Employee Name", },
-            { name: 'JBT_JobTitle', width: 60, title: "User Type" },
+            {
+                name: 'EmployeeName', width: 80, title: "Employee Name", itemTemplate: function (value, item) {
+                    return $("<div>").append("" + item.EmployeeName + "<br><span style='font-size:10px;color:black;font-style:italic;'>" + item.JBT_JobTitle + "</span></div>");
+                }
+            },
+            //{ name: 'JBT_JobTitle', width: 60, title: "User Type" },
             {
                 name: 'Status', width: 60, title: "Status"
 
@@ -436,6 +449,171 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                     } else {
                         return $("<div>").attr({ class: "btn-toolbar" }).append($customTextButton);
                     }
+                }
+            },
+
+
+        ],
+        rowClick: function (args) {
+            this
+            console.log(args)
+            var getData = args.item;
+            var keys = Object.keys(getData);
+            var text = [];
+        }
+    });
+    $("#ListCorrectiveAction").jsGrid({
+        width: "100%",
+        height: "400px",
+        filtering: true,
+        inserting: true,
+        editing: true,
+        sorting: true,
+        paging: true,
+        autoload: true,
+        pageSize: 10,
+        pageButtonCount: 5,
+        loadMessage: "Please, wait...",
+        controller: {
+            loadData: function (filter) {
+                return $.ajax({
+                    type: "GET",
+                    url: QEvaluationsUrl + '?locationId=' + $_LocationId,
+                    datatype: 'json',
+                    contentType: "application/json",
+                });
+            }
+        },
+        onRefreshed: function (args) {
+            $(".jsgrid-insert-row").hide();
+            $(".jsgrid-filter-row").hide()
+            $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
+
+        },
+        fields: [
+            {
+                name: "EMP_Photo", title: "Profile Image", width: 30,
+                itemTemplate: function (val, item) {
+                    return $("<img>").attr("src", val).css({ height: 50, width: 50, "border-radius": "50px" }).on("click", function () {
+
+                    });
+                }
+            },
+            {
+                name: 'EmployeeName', width: 80, title: "Employee Name", itemTemplate: function (value, item) {
+                    return $("<div>").append("" + item.EmployeeName + "<br><span style='font-size:10px;color:black;font-style:italic;'>" + item.JBT_JobTitle + "</span></div>");
+                }
+            },
+            //{ name: 'JBT_JobTitle', width: 60, title: "User Type" },
+            {
+                name: 'Status', width: 60, title: "Status"
+
+            },
+
+            {
+                name: 'Expectation', width: 60, title: "Expectation"
+            },
+            {
+                name: 'FinYear', width: 60, title: "Financial Year"
+            }
+            ,
+
+            {
+                name: "UserTask", title: "User Task", width: 70, itemTemplate: function (value, item) {
+                    var $iconUserView = $("<span>").append('<i class= "fa fa-user fa-2x" style="color:black;margin-left: 6px;margin-top: 4px;" ></i>');//attr({ class: "fa fa-user fa-2x" }).attr({ style: "color:white;background-color:#36CA7E;margin-left:20px;border-radius:35px;width:35px;height:35px" });
+                    var $iconText = $("<span>").append('<i class= "fa fa-plus-square fa-2x" style="color:white;margin-left: 6px;margin-top: 4px;" ></i>');//.attr({ class: "fa fa-file-text fa-2x" }).attr({ style: "color:white;background-color:#32ACDA;margin-left:20px;border-radius:35px;width:35px;height:35px" });
+                    var $evaluationText = $("<span>").append('<i class= "fa fa-calendar-check-o fa-2x" style="color:white;margin-left: 6px;margin-top: 4px;" ></i>');//.attr({ class: "fa fa-file-text fa-2x" }).attr({ style: "color:white;background-color:#32ACDA;margin-left:20px;border-radius:35px;width:35px;height:35px" });
+                    var $iconMeeting = $("<span>").append('<i class="fa fa-clock-o fa-2x " style="color:white;margin-left: 6px;margin-top: 4px;" ></i>');//.attr({ class: "fa fa-file-text fa-2x" }).attr({ style: "color:white;background-color:#32ACDA;margin-left:20px;border-radius:35px;width:35px;height:35px" });
+                    var $iconPiP = $("<span>").append('<i class="fa fa-user-circle-o fa-2x " style="color:white;margin-left: 6px;margin-top: 4px;" ></i>');//.attr({ class: "fa fa-file-text fa-2x" }).attr({ style: "color:white;background-color:#32ACDA;margin-left:20px;border-radius:35px;width:35px;height:35px" });
+
+                    var $customUserViewButton = $("<span style='background: #36CA7E; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
+                        .attr({ title: "Evaluation" })
+                        .attr({ id: "btn-profile-" + item.id }).click(function (e) {
+
+                            $.ajax({
+                                type: "POST",
+                                data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation, 'Department': item.DepartmentName, 'LocationName': item.LocationName },
+                                //data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation },
+                                url: '../NewAdmin/QEvaluationView/',
+                                error: function (xhr, status, error) {
+                                },
+                                success: function (result) {
+
+                                    if (result != null) {
+                                        $("#gridArea").hide();
+                                        $('#profileArea').show();
+                                        $('#profileArea').html(result);
+                                    }
+                                }
+                            });
+
+
+                        }).append($evaluationText);
+
+                    var $customTextButton = $("<span style='background: #32ACDA; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
+                        .attr({ title: "Issue Corrective" })
+                        .attr({ id: "btn-status-" + item.id }).click(function (e) {
+                        }).append($iconText);
+
+                    var $customMeetingButton = $("<span style='background: #32ACDA; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
+                        .attr({ title: "Setup Meeting" })
+                        .attr({ id: "btn-status" }).click(function (e) {
+                            $("#EmailTo").val(item.EmployeeName);
+                            $("#ReceipientEmailId").val(item.EMP_EmployeeID);
+                            $("#SetUpMeetingModal").modal('show');
+                            $("#FinYear").val(item.FinYear);
+                            $("#FinQrtr").val(item.Expectation);
+
+                        }).append($iconMeeting);
+
+                    var $customPiPButton = $("<span style='background: #32ACDA; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
+                        .attr({ title: "PIP" })
+                        .attr({ id: "btn-status" }).click(function (e) {
+
+                        }).append($iconPiP);
+
+
+                    var $evaluationTextButton = $("<span style='background: #32ACDA; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
+                        .attr({ title: "Evaluation" })
+                        .attr({ id: "btn-status-" + item.id }).click(function (e) {
+                            $.ajax({
+                                type: "POST",
+                                data: { 'Id': item.EMP_EmployeeID, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation },
+                                url: '../NewAdmin/GetMeetingDetail/',
+                                error: function (xhr, status, error) {
+                                },
+                                success: function (result) {
+
+                                    if (result != null && result == true) {
+                                        $.ajax({
+                                            type: "POST",
+                                            data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation, 'Department': item.DepartmentName, 'LocationName': item.LocationName },
+                                            url: '../NewAdmin/QEvaluationView/',
+                                            error: function (xhr, status, error) {
+                                            },
+                                            success: function (result) {
+
+                                                if (result != null) {
+                                                    $("#gridArea").hide();
+                                                    $('#profileArea').show();
+                                                    $('#profileArea').html(result);
+                                                }
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        $("#MeetingNotDoneModal").modal('show');
+                                    }
+                                }
+                            });
+
+
+                        }).append($evaluationText);
+                    //if (item.Status == "Expectations Submitted" || item.Status == "Evaluation Submitted") {
+                    //    return $("<div>").attr({ class: "btn-toolbar" }).append($evaluationTextButton).append($customTextButton).append($customMeetingButton).append($customPiPButton).append($evaluationTextButton);
+                    //} else {
+                        return $("<div>").attr({ class: "btn-toolbar" }).append($customTextButton);
+                    //}
                 }
             },
 

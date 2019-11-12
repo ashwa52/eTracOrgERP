@@ -432,9 +432,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title" id="SaveEvaluationsModalLabel">Draft Evaluations </h4>
-
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             </div>
             <div class="modal-body ">
                 <div>
@@ -444,8 +443,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" id="BackToPerformance" class="btn btn-primary" onclick="HideModal('SaveEvaluationsModal')">OK</button>
-
+                <button type="submit" id="BackToPerformance" class="btn btn-primary" onclick="HideModal('SaveEvaluationsModal')" style="width: 90px">OK</button>
             </div>
         </div>
     </div>
@@ -521,14 +519,15 @@
                                 $('#profileArea').html(result);
                                 if (action == "Draft") {
                                     $("#SaveEvaluationsModalLabel").text("Draft Evaluations");
-                                    $("#successEvaluationsLabel").text("Evaluations saved successfully");
+                                    $("#successEvaluationsLabel").text("Evaluations drafted successfully");
                                 }
                                 else {
-                                    $("#SaveEvaluationsModalLabel").text("Save Evaluations");
-                                    $("#successEvaluationsLabel").text("Evaluations saved successfully");
-                                    setTimeout(function () { HideModal("SaveEvaluationsModal"); }, 3000);
+                                    $("#SaveEvaluationsModalLabel").text("Submit Evaluations");
+                                    $("#successEvaluationsLabel").text("Evaluations submitted successfully");
                                 }
                                 $("#SaveEvaluationsModal").modal('show');
+                                setTimeout(function () { HideModal("SaveEvaluationsModal"); }, 3000);
+
                             }
                         }
                     });

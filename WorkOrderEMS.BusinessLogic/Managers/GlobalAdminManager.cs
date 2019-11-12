@@ -3970,7 +3970,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             catch (Exception)
             {
 
-                throw;
+                result = false;
             }
             return result;
         }

@@ -16,7 +16,9 @@
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#Evaluations">Q-Evaluations</a>
                 </li>
-
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#CorrectiveAction">Corrective Action</a>
+                </li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="th306090" role="tabpanel">
@@ -27,6 +29,9 @@
                 </div>
                 <div class="tab-pane fade" id="Evaluations">
                     <div id="ListQEvaluations"></div>
+                </div>
+                <div class="tab-pane fade" id="CorrectiveAction">
+                    <div id="ListCorrectiveAction"></div>
                 </div>
 
             </div>
@@ -39,11 +44,11 @@
 
 </div>
 <div class="modal fade" id="SetUpMeetingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title" id="">Setup Meeting </h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 
             </div>
             <div class="modal-body">
@@ -81,9 +86,9 @@
                                     <div class="col-sm-4">
                                         <input placeholder="Start Date" class="form-control input-rounded required " data-val="true" data-val-date="The field Start Date must be a date." data-val-required="Start Date field is required." id="StartDate" name="StartDate" type="text" value="">
                                     </div>
-                                    <div class="col-sm-4">
+                                    @*<div class="col-sm-4">
                                         <input class="form-control input-rounded required" data-val="true" data-val-date="The field End Date must be a date." data-val-required="End Date field is required." id="EndDate" name="EndDate" onkeypress="return isNumberKey(event)" placeholder="End Date" type="text" value="">
-                                    </div>
+                                    </div>*@
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-sm-4">
@@ -110,14 +115,16 @@
                                 </div>
 
                             </div>
-                            <input type="button" id="SetUpMeeting" class="btn btn-primary pull-right" style="border-radius: 35px;width: 100px;background-color:#0aa0cd;" value="Save">
-                        </div>
-                    </form>
+                            <div class="modal-footer">
+                                <input type="button" id="SetUpMeeting" class="btn btn-primary pull-right" style="width: 90px;background-color:#0aa0cd;" value="Save">
+                            </div>
+                            </div>
+</form>
                 </div>
             </div>
-            <div class="modal-footer">
-                @*<button type="submit" id="" class="btn btn-primary">OK</button>*@
-            </div>
+            @*<div class="modal-footer">
+                <button type="submit" id="" class="btn btn-primary">OK</button>
+            </div>*@
         </div>
     </div>
 </div>
@@ -125,9 +132,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title" id="SaveMeetingDetails">Setup Meeting </h4>
-
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             </div>
             <div class="modal-body ">
                 <div>
@@ -137,8 +143,27 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button   class="btn btn-primary" data-dismiss="modal">OK</button>
-
+                <button   class="btn btn-primary" data-dismiss="modal" style="width: 90px">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ErrorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="SaveMeetingDetails">Setup Meeting </h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body ">
+                <div>
+                    <label id="successSaveMeetingDetails">
+                        Please enter proper date and time
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal" style="width: 90px">OK</button>
             </div>
         </div>
     </div>
@@ -147,9 +172,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title" id="SaveMeetingDetails">Meeting Not Completed </h4>
-
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             </div>
             <div class="modal-body ">
                 <div>
@@ -159,8 +183,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" data-dismiss="modal">OK</button>
-
+                <button class="btn btn-primary" data-dismiss="modal" style="width:90px;">OK</button>
             </div>
         </div>
     </div>
@@ -203,16 +226,15 @@
             dataType:'JSON',
             url: '../NewAdmin/SetupMeeting/',
             error: function (xhr, status, error) {
+                $("#SetUpMeetingModal").modal('hide');
+                    $("#ErrorModal").modal('show');
+
             },
             success: function (result) {
-                if (result != null) {
 
                     $("#SetUpMeetingModal").modal('hide');
                     $("#SuccessModal").modal('show');
-
-                    
-
-                }
+                
             }
         });
     });
