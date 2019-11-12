@@ -1565,6 +1565,7 @@
     <Content Include="Content\NewAdminContent\AnimatedChart\JS\stiffChart.js" />
     <Content Include="Content\NewAdminContent\CSS\clockPicker.css" />
     <Content Include="Content\NewAdminContent\CSS\Common.css" />
+    <Content Include="Content\NewAdminContent\CSS\custom.css" />
     <Content Include="Content\NewAdminContent\CSS\FilesUICss.css" />
     <Content Include="Content\NewAdminContent\CSS\GetOrgForRequision.css" />
     <Content Include="Content\NewAdminContent\CSS\MultstepWizardNew.css" />
