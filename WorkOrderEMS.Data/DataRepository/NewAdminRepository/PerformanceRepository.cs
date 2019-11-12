@@ -12,6 +12,11 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
     public class PerformanceRepository
     {
         workorderEMSEntities objworkorderEMSEntities = new workorderEMSEntities();
+        /// <summary>
+        /// SaveMeetingDetails
+        /// </summary>
+        /// <param name="objSetupMeeting"></param>
+        /// <returns></returns>
         public bool SaveMeetingDetails(SetupMeeting objSetupMeeting)
         {
             try
