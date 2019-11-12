@@ -54,6 +54,8 @@ namespace WorkOrderEMS.Controllers.Services
         private readonly IBillDataManager _IBillDataManager;
         private readonly IMiscellaneousManager _IMiscellaneousManager;
         private readonly ICommonMethod _ICommonMethod;
+        private readonly IFillableFormManager _IFillableFormManager;
+
 
         private string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private string EmeregencyImagePath = ConfigurationManager.AppSettings["POEmeregencyImage"];
@@ -62,7 +64,7 @@ namespace WorkOrderEMS.Controllers.Services
         public ServiceApiController()
         {
         }
-        public ServiceApiController(IEfleetPM _IEfleetPM, IeFleetFuelingManager _IFuelingManager, IEfleetVehicle _IEfleetVehicle, IDARManager _IDARManager, IEfleetVehicleIncidentReport _IEfleetVehicleIncidentReport, IEfleetMaintenance _IEfleetMaintenance, IPassengerTracking _IPassengerTracking, IHoursOfServices _IHoursOfServices, IBillDataManager _IBillDataManager, IMiscellaneousManager _IMiscellaneousManager, ICommonMethod _ICommonMethod)
+        public ServiceApiController(IEfleetPM _IEfleetPM, IeFleetFuelingManager _IFuelingManager, IEfleetVehicle _IEfleetVehicle, IDARManager _IDARManager, IEfleetVehicleIncidentReport _IEfleetVehicleIncidentReport, IEfleetMaintenance _IEfleetMaintenance, IPassengerTracking _IPassengerTracking, IHoursOfServices _IHoursOfServices, IBillDataManager _IBillDataManager, IMiscellaneousManager _IMiscellaneousManager, ICommonMethod _ICommonMethod, IFillableFormManager _IFillableFormManager)
         {
             this._IFuelingManager = _IFuelingManager;
             this._IEfleetPM = _IEfleetPM;
@@ -75,6 +77,7 @@ namespace WorkOrderEMS.Controllers.Services
             this._IBillDataManager = _IBillDataManager;
             this._IMiscellaneousManager = _IMiscellaneousManager;
             this._ICommonMethod = _ICommonMethod;
+            this._IFillableFormManager = _IFillableFormManager;
         }
         // GET: api/ServiceApi
         public IHttpActionResult Get()

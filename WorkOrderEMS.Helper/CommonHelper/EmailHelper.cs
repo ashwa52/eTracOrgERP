@@ -112,7 +112,8 @@ namespace WorkOrderEMS.Helper
         public long? FacilityRequest { get; set; }
         public string AddressFacilityReq { get; set; }
         public string LicensePlateNo { get; set; }
-
+        public string CreatedBy { get; set; }
+        public string EmployeeImage { get; set; }
         //Added by Ashwajit Bansod for WO
         public long WorkRequestProjectType { get; set; }
         public long? PriorityLevel { get; set; }

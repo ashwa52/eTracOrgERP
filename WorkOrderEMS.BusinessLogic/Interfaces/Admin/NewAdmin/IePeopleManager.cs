@@ -30,5 +30,7 @@ namespace WorkOrderEMS.BusinessLogic
         bool SaveDirectDepositeForm(DirectDepositeFormModel model);
         List<UploadedFiles> GetUploadedFilesOfUser(string EmployeeId);
         List<GraphCountModel> GetEMP_ReqCount();
+        List<JobTitleModel> GetJobTitleVacantList(long VSC_Id);
+        bool SavePromoDemo(DemotionModel Obj);
     }
 }

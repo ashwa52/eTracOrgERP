@@ -174,25 +174,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                var $customEditButton = $("<span>")
                                    .attr({ title: jsGrid.fields.control.prototype.diagramEmployeeTooltip })
                                    .attr({ id: "btn-diagram-" + item.id }).click(function (e) {
-                                       $('#RenderPageId').load(base_url+'/EPeople/ChartDetailsView?Id=' + item.id);
-                                       //$.ajax({
-                                       //    type: "POST",
-                                       //    // data: { 'Id': item.id},
-                                       //    url: '../EPeople/ChartDetailsView',
-                                       //    beforeSend: function () {
-                                       //        new fn_showMaskloader('Please wait...');
-                                       //    },
-                                       //    contentType: "application/json; charset=utf-8",
-                                       //    error: function (xhr, status, error) {
-                                       //    },
-                                       //    success: function (result) {
-                                       //        debugger
-                                       //        $("#containerDivForViewChart").html(result);
-                                       //    },
-                                       //    complete: function () {
-                                       //        fn_hideMaskloader();
-                                       //    }
-                                       //});                                 
+                                       $('#RenderPageId').load(base_url+'/EPeople/ChartDetailsView?Id=' + item.id);                              
                                    }).append($DiagramView);
                                return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton);
                            }
@@ -290,7 +272,6 @@ $(document).ready(function () {
         $("#myModalForRequisitionAction").modal("show");
     })
 
-    //$(".ActionRequisition").change(function () {
         $(".ActionRequisition").click(function () {
        debugger
        var value =  $(this).attr("value");
@@ -400,28 +381,33 @@ $(document).ready(function () {
         });
     });
 
+    $("#LocationTransfer").click(function () {
+        $.ajax({
+            type: "GET",
+            // data: { 'Id': item.id},
+            url: base_url + '/EPeople/OpenLocationForTransfer?Id=' + GetEMPId,
+            beforeSend: function () {
+                new fn_showMaskloader('Please wait...');
+            },
+            success: function (FormView) {
+                $("#divOpenDemotionForm").html(FormView);
+                $("#myModalForDemotionEmployee").modal("show");
+                $("#myModalForChangeStatusData").modal("hide");
+                $("#ChangeTitle").html("Location Transfer");
+            },
+            complete: function () {
+                fn_hideMaskloader();
+            }
+        });
+    });
+
     $("#PlusMinusJobTitle").click(function () {
         debugger
-
-        //var model = $("#getallInputDetails").serialize();
         var object = new Object();
         object.JobTitleLastCount = $('#JobTitleLastCount').val();
         object.JobTitleId = $('#JobTitleId').val();
         object.JobTitleCount = $('#NewCount').val();
         var JobTitleIdOriginal, JobTitleValueOriginal, JobTitleIdNew, JobTitleValuenew;
-        //$(".mainClassTOMap").each(function () {
-        //    debugger
-        //    var myObjJson = {};
-        //    $this = $(this);
-        //    //var job = $this.find(".getallOriginalValue").val();
-        //    //var JobId = $this.find(".getallOriginalValue").attr("data-id");
-        //    var newJobId = $this.find(".counterInput").attr("data-id-copy");
-        //    var newJobVal = $this.find(".getallOriginalValue").val();
-        //    //JobTitleIdOriginal = JobTitleIdOriginal + job + ',';
-        //    //JobTitleValueOriginal = JobTitleValueOriginal + JobId + ',';
-        //    JobTitleIdNew = JobTitleIdNew + newJobId + ',';
-        //    JobTitleValuenew = JobTitleValuenew + newJobVal + ',';
-        //})
         $.ajax({
             type: 'POST',
             url: base_url+'/EPeople/SendJobCountForApproval?JobTitleLastCount=' + object.JobTitleLastCount + "&JobTitleId=" + object.JobTitleId + "&JobTitleCount=" + object.JobTitleCount,
@@ -445,7 +431,6 @@ $(document).ready(function () {
         });
     });
 
-
     $('#SearchbyAssignUser').on('keyup', function () {
         var searchTerm = $(this).val().toLowerCase();
         $('#ListEmployeeManagement table tbody tr').each(function () {
@@ -457,6 +442,33 @@ $(document).ready(function () {
             }
         });
     });
+
+    $("#SaveDemotion").click(function () {
+        debugger
+        var modelData = $("#SaveStatusEmployee").serialize();
+        $.ajax({
+            type: "POST",
+            url: base_url + '/EPeople/SavePromotionDemotion',
+            data: modelData,
+            beforeSend: function () {
+                new fn_showMaskloader('Please wait...');
+            },
+            success: function (message) {
+                if (message != null) {
+                    toastr.success(message);
+                }
+                else {
+                    toastr.success(message);
+                }
+                $("#myModalForDemotionEmployee").modal("hide");
+            },
+            error: function (err) {
+            },
+            complete: function () {
+                fn_hideMaskloader();
+            }
+        });
+    })
 })
 
 function myFunction() {

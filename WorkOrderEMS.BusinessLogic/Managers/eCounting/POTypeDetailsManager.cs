@@ -825,7 +825,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                 Calculation = Convert.ToInt64(getPODetails.LPOD_RUL_CurrentLevel) + 1;
                             }
                             getRuleData.CurrentLevel = Calculation.ToString();
-                             var updatePO = _workorderems.spUpdatePODetail(objPOApproveRejectModel.POId, getRuleData.RuleId, getRuleData.RuleLevel, getRuleData.CurrentLevel,"W");
+                             //var updatePO = _workorderems.spUpdatePODetail(objPOApproveRejectModel.POId, getRuleData.RuleId, getRuleData.RuleLevel, getRuleData.CurrentLevel,"W");
                             //var updatePO = _workorderems.spSetPODetail(Action, objPOApproveRejectModel.POModifiedId, getPODetails.LPOD_LocationId,
                             //                                       Convert.ToInt64(getPODetails.LPOD_POT_Id), getPODetails.LPOD_CMP_Id, getPODetails.LPOD_DeliveryDate,
                             //                                       getPODetails.LPOD_POAmount, getPODetails.LPOD_ReoccourringBillDate, getPODetails.LPOD_EmergencyPODocument, getPODetails.LPOD_ModifiedBy,
@@ -1538,14 +1538,14 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             {
                
 
-                var _result = _workorderems.SP_GetAllDetailsOfPOForGraphs(Userid).FirstOrDefault();
-                if (_result !=null) 
-                {
-                    model.UnauthorizePoCount = _result.UnauthorizePoCount;
-                    model.OpenPOCount = _result.OpenPOCount;
-                    model.NotApprovedPoCount = _result.NotApprovedPoCount;
+                //var _result = _workorderems.SP_GetAllDetailsOfPOForGraphs(Userid).FirstOrDefault();
+                //if (_result !=null) 
+                //{
+                //    model.UnauthorizePoCount = _result.UnauthorizePoCount;
+                //    model.OpenPOCount = _result.OpenPOCount;
+                //    model.NotApprovedPoCount = _result.NotApprovedPoCount;
 
-                }  
+                //}  
               
             }
             catch (Exception ex)
@@ -1558,21 +1558,21 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         public List<GetBudgetDetailsForPOSGraphs> GetAllBudgetDetailsForPOGraphs()
         {
             List<GetBudgetDetailsForPOSGraphs> modellist = new List<GetBudgetDetailsForPOSGraphs>();
-            var result = _workorderems.spGetBudgetDetailsForPOGraphs().ToList();
-            if (result.Count() > 0)
-            {
-                Random r = new Random();
-                foreach (var item in result)
-                {
+            //var result = _workorderems.spGetBudgetDetailsForPOGraphs().ToList();
+            //if (result.Count() > 0)
+            //{
+            //    Random r = new Random();
+            //    foreach (var item in result)
+            //    {
 
-                    GetBudgetDetailsForPOSGraphs model = new GetBudgetDetailsForPOSGraphs();
-                    model.BudgetAmount = item.BudgetAmount;
-                    model.Years = item.Years;
-                    model.colour = String.Format("#{0:X6}", r.Next(0x1000000)); // = "#A197B9";
-                    modellist.Add(model);
-                }
+            //        GetBudgetDetailsForPOSGraphs model = new GetBudgetDetailsForPOSGraphs();
+            //        model.BudgetAmount = item.BudgetAmount;
+            //        model.Years = item.Years;
+            //        model.colour = String.Format("#{0:X6}", r.Next(0x1000000)); // = "#A197B9";
+            //        modellist.Add(model);
+            //    }
 
-            }
+            //}
             return modellist;
         }
 

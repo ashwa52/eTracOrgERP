@@ -425,7 +425,7 @@ namespace WorkOrderEMS.BusinessLogic
             {
                 var ePeopleRepository = new ePeopleRepository();
                 string Action = string.Empty;
-                
+
                 var getEmpDetails = _workorderEMS.UserRegistrations.Where(x => x.UserId == Obj.UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
                 if (getEmpDetails != null)
                 {
@@ -433,7 +433,7 @@ namespace WorkOrderEMS.BusinessLogic
                     if (Obj.IsDeleted == false)
                     {
                         if (Obj != null && Obj.SeatingName != null)
-                        {                        
+                        {
                             if (Obj.RequisitionId == 0)
                             {
                                 Obj.Action = "I";
@@ -455,7 +455,7 @@ namespace WorkOrderEMS.BusinessLogic
                         Obj.ActionStatus = "X";
                         Obj.RequisitionType = "Remove Seat";
                         isSaved = ePeopleRepository.SendForApproval(Obj);
-                    }                    
+                    }
                     isSaved = true;
                 }
                 else
@@ -486,7 +486,7 @@ namespace WorkOrderEMS.BusinessLogic
                     RequisitionId = x.RQS_Id,
                     Id = x.RQS_ActivityId,
                     RequisitionType = x.RQS_RequizationType,
-                    ActionStatus = x.RQS_ApprovalStatus == "W"?"Waiting": x.RQS_ApprovalStatus == "A"?"Approved":"Reject",
+                    ActionStatus = x.RQS_ApprovalStatus == "W" ? "Waiting" : x.RQS_ApprovalStatus == "A" ? "Approved" : "Reject",
                     SeatingName = x.Activity
                 }).ToList();
                 return lst;
@@ -578,7 +578,8 @@ namespace WorkOrderEMS.BusinessLogic
             {
                 var ePeopleRepository = new ePeopleRepository();
                 var data = ePeopleRepository.GetJobCount(JobId);
-                if (data != null) {
+                if (data != null)
+                {
 
                     details.JobTitleCount = data.JBT_JobCount;
                     details.JobTitleId = data.JBT_Id;
@@ -689,10 +690,10 @@ namespace WorkOrderEMS.BusinessLogic
                 var ePeopleRepository = new ePeopleRepository();
                 if (EmployeeId != null)
                 {
-                    var getFileList  = ePeopleRepository.GetUploadFilesList(EmployeeId).ToList();
+                    var getFileList = ePeopleRepository.GetUploadFilesList(EmployeeId).ToList();
                     lst = getFileList.Select(x => new UploadedFiles()
                     {
-                        FileName = x.FLU_FileName == null?null: x.FLU_FileName,
+                        FileName = x.FLU_FileName == null ? null : x.FLU_FileName,
                         FileTypeName = x.FLT_FileType == null ? null : x.FLT_FileType,
                         AttachedFileName = x.FLU_FileAttached == null ? null : x.FLU_FileAttached,
                         FileId = x.FLU_FLT_Id > 0 ? 0 : x.FLU_FLT_Id,
@@ -717,9 +718,10 @@ namespace WorkOrderEMS.BusinessLogic
             try
             {
                 var getEmpCount = repository.GetEmployeeManagementListData(0, null).GroupBy(x => x.JBT_JobTitle)
-                    .Select(x => new GraphCountModel() {
-                      Employee = x.Count(),
-                      JobTitle = x.Key
+                    .Select(x => new GraphCountModel()
+                    {
+                        Employee = x.Count(),
+                        JobTitle = x.Key
 
                     });
                 var requisitionlst = repository.GetRequisitionlist().GroupBy(x => x.RQS_RequizationType).
@@ -732,12 +734,82 @@ namespace WorkOrderEMS.BusinessLogic
                 lst.AddRange(requisitionlst);
                 return lst;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<GraphCountModel> GetEMP_ReqCount()", "Exception While getting count list.", null);
                 throw;
             }
         }
         #endregion GRAPH COUNT
+        #region Status Change
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 11-Nov-2019
+        /// Created For : TO get vacant job title
+        /// </summary>
+        /// <param name="VSC_Id"></param>
+        /// <returns></returns>
+        public List<JobTitleModel> GetJobTitleVacantList(long VSC_Id)
+        {
+            var jobTitle = new List<JobTitleModel>();
+            var repository = new ePeopleRepository();
+            try
+            {
+                if(VSC_Id> 0)
+                {
+                    jobTitle =  repository.GetJobTitleVacant(VSC_Id).Select(x => new JobTitleModel() {
+                        JobTitle = x.JBT_JobTitle,
+                        JobTitleId = x.JBT_Id
+                    }).ToList();
+                }
+                return jobTitle;
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<JobTitleModel> GetJobTitleVacantList(long VSC_Id)", "Exception While getting Job title list.", VSC_Id);
+                throw;
+            }
+        }
+        /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created Date : 11-Nov-2019
+        /// Created For : To save demotion promotion
+        /// </summary>
+        /// <param name="Obj"></param>
+        /// <returns></returns>
+        public bool SavePromoDemo(DemotionModel Obj)
+        {
+            bool isSaved = false;
+            try
+            {
+                if(Obj != null)
+                {
+                    if(Obj.StatusAction == "L")
+                    {
+
+                    }
+                    else if (Obj.StatusAction == "S")
+                    {
+
+                    }
+                    else
+                    {
+                    
+                    }
+                    isSaved = true;
+                }
+                else
+                {
+                    isSaved = false;
+                }
+                return isSaved;
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SavePromoDemo(DemotionModel Obj)", "Exception While saving promotion demotion.", Obj);
+                throw;
+            }
+        }
+        #endregion Status Change
     }
 }

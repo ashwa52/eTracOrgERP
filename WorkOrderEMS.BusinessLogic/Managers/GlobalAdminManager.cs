@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity.Core.Objects;
@@ -14,6 +15,8 @@ using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
 using WorkOrderEMS.Models.CommonModels;
+using WorkOrderEMS.Models.Employee;
+using WorkOrderEMS.Models.NewAdminModel;
 using WorkOrderEMS.Models.SuperAdminModels;
 using WorkOrderEMS.Models.UserModels;
 
@@ -304,14 +307,15 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         loc obj = new loc();
                         obj.LocationId = Convert.ToString(locationId);
                         var aa = ser.Serialize(obj);
-                        sp_DeleteLocation_Result objRes = new sp_DeleteLocation_Result();
+                        // sp_DeleteLocation_Result objRes = new sp_DeleteLocation_Result();
+                        var objRes = "";
                         using (workorderEMSEntities Context = new workorderEMSEntities())
                         {
                             objRes = Context.sp_DeleteLocation(aa).FirstOrDefault();
                         }
 
 
-                        if (objRes.Result == "success")
+                        if (objRes == "success")
                         {
 
                             #region Save DAR
@@ -3896,7 +3900,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
             //return lst;
         }
-        public List<spGetApplicantInfo_Result1> GetApplicantInfo(long userId)
+        public List<spGetApplicantInfo_Result2> GetApplicantInfo(long userId)
         {
             ObjnewAdminRepository = new NewAdminRepository();
             try
@@ -4007,21 +4011,22 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             var Context = new workorderEMSEntities();
             try
             {
-                if(onboardingDetailRequestModel.App_Id > 0)
+                if (onboardingDetailRequestModel.App_Id > 0)
                 {
                     var getEmpDetails = Context.Employees.Where(x => x.EMP_API_ApplicantId == onboardingDetailRequestModel.App_Id).FirstOrDefault().EMP_EmployeeID;
                     onboardingDetailRequestModel.EmpId = getEmpDetails;
                 }
-                if(onboardingDetailRequestModel.CreatedBy > 0 && onboardingDetailRequestModel.EmpId != null && onboardingDetailRequestModel.Status != null)
+                if (onboardingDetailRequestModel.CreatedBy > 0 && onboardingDetailRequestModel.EmpId != null && onboardingDetailRequestModel.Status != null)
                 {
                     var verify = ObjnewAdminRepository.Verify(onboardingDetailRequestModel);
                     IsVerify = true;
                 }
-                else{
+                else
+                {
                     IsVerify = false;
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 IsVerify = false;
                 throw;
@@ -4069,13 +4074,13 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             catch (Exception ex)
             { throw; }
         }
-        public List<spGetInterviewQuestion_Result> GetInterviewQuestions()
+        public List<spGetInterviewQuestion_Result1> GetInterviewQuestions()
         {
             try
             {
                 using (workorderEMSEntities context = new workorderEMSEntities())
                 {
-                    return context.spGetInterviewQuestion("Y").ToList();                   
+                    return context.spGetInterviewQuestion("Y").ToList();
                     //return context.spGetInterviewQuestion("Y").ToList();
                 }
             }
@@ -4205,7 +4210,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
 
         }
-        public bool saveSelfAssessment(List<GWCQUestionModel> data, string action) {
+        public bool saveSelfAssessment(List<GWCQUestionModel> data, string action)
+        {
 
             ObjUserRepository = new UserRepository();
             try

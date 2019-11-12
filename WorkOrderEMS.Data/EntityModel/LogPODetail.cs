@@ -38,6 +38,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string LPOD_POD_ReccuringStatus { get; set; }
     
         public virtual LocationMaster LocationMaster { get; set; }
+        public virtual PODetail PODetail { get; set; }
         public virtual POType POType { get; set; }
     }
 }

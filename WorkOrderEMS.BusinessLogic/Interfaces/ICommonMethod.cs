@@ -193,5 +193,7 @@ namespace WorkOrderEMS.BusinessLogic
         bool UpdateNotificationDetail(NotificationDetailModel obj);
         List<EmailHelper> GetUnseenList(NotificationDetailModel objDetails);
         ServiceResponseModel<List<POListSelfServiceModel>> GetPOList(eTracLoginModel obj);
+        List<EmailHelper> GetUnseenNotifications(long UserId);
+        bool CheckEmployeeIdExist(string employeeId);
     }
 }

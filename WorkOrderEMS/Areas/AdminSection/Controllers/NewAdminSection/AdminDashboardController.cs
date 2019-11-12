@@ -101,7 +101,7 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
                     }
 
                     var isSaved = _IAdminDashboard.SaveVSC(Obj);
-                    if (isSaved == true)
+                    if (isSaved != null)
                     {
                         ViewBag.Message = CommonMessage.SaveSuccessMessage();
                     }

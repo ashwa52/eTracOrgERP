@@ -16,6 +16,7 @@ using WorkOrderEMS.Controllers.Administrator;
 using WorkOrderEMS.Data.Classes;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
+using WorkOrderEMS.Models.Employee;
 
 namespace WorkOrderEMS.Controllers.NewAdmin
 {
@@ -44,7 +45,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
         public ActionResult Index()
         {
-            return View();
+            return View("~/Views/NewAdmin/ePeople/_EmployeeManagement.cshtml");
         }
         /// <summary>
         /// Created By  :Ashwajit bansod
@@ -60,7 +61,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             var details = new List<UserModelList>();
             if (Session["eTrac"] != null)
             {
-                ObjLoginModel = (eTracLoginModel) (Session["eTrac"]);
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
                 if (LocationId == 0)
                 {
                     LocationId = Convert.ToInt32(ObjLoginModel.LocationID);
@@ -71,9 +72,9 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             long.TryParse(id, out _UserId);
             var data = _IePeopleManager.GetUserHeirarchyList(LocationId, _UserId);
             if (data.Count() > 0)
-            {              
+            {
                 foreach (var item in data)
-                {                   
+                {
                     item.ProfileImage = item.ProfileImage == null ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + item.ProfileImage;
                     details.Add(item);
                 }
@@ -86,12 +87,50 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
 
         #region Employee Management
+        public ActionResult ChartDetailsView(string Id)
+        {//D:\Project\eTrac\eTracOrgERP\WorkOrderEMS\Views\NewAdmin\ePeople\_VSCPointingChartDemo.cshtml
+            //return PartialView("~/Views/NewAdmin/ePeople/_VSCPointingChart.cshtml");
+            Session["EmployeeId"] = Id;
+            return PartialView("~/Views/NewAdmin/ePeople/_VSCPointingChartDemo.cshtml");
+        }
         /// <summary>
-        /// Created By : Ashwajit Bansod
+        /// Created BY : Ashwajit Bansod
+        /// Created Date : 12-OCT-2019
+        /// Created For : To get details of vehicle chart
         /// </summary>
-        /// <param name="Id"></param>
         /// <param name="LocationId"></param>
         /// <returns></returns>
+        [HttpPost]
+        public ActionResult GetChartDisplayDataForEmployee(long? LocationId)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            var lstChart = new List<AddChartModel>();
+            if (Session != null)
+            {
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                }
+            }
+            try
+            {
+                var _manager = new VehicleSeatingChartManager();
+                lstChart = _manager.ListVehicleSeatingChart(LocationId);
+                if (lstChart.Count() > 0)
+                {
+                    return Json(lstChart, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(lstChart, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(lstChart, JsonRequestBehavior.AllowGet);
+            }
+
+        }
         [HttpPost]
         public ActionResult GetUserTreeViewList(string Id, long? LocationId)
         {
@@ -137,7 +176,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                     LocationId = Convert.ToInt32(ObjLoginModel.LocationID);
                 }
             }
-           ViewBag.UserIdFirstTime = Id;
+            ViewBag.UserIdFirstTime = Id;
             var id = Cryptography.GetDecryptedData(Id, true);
             long _UserId = 0;
             long.TryParse(id, out _UserId);
@@ -272,7 +311,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             long.TryParse(id, out _UserId);
             var data = _IePeopleManager.GetVCSPositionByUserId(_UserId);
             if (data != null)
-            {               
+            {
                 return Json(data, JsonRequestBehavior.AllowGet);
             }
             else
@@ -287,7 +326,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             var details = new List<UserModelList>();
             if (Session["eTrac"] != null)
             {
-                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]); 
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
             }
             return PartialView("~/Views/NewAdmin/ePeople/_VSCPintingChart.cshtml");
         }
@@ -321,7 +360,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                     return PartialView("~/Views/NewAdmin/ePeople/_EditEmployeeInfo.cshtml", new EmployeeVIewModel());
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return PartialView("~/Views/NewAdmin/ePeople/_EditEmployeeInfo.cshtml", new EmployeeVIewModel());
             }
@@ -340,7 +379,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             bool isSaveSuccess = false;
             try
             {
-                 isSaveSuccess = _IGuestUserRepository.UpdateApplicantInfoEMPMangemnt(model);
+                isSaveSuccess = _IGuestUserRepository.UpdateApplicantInfoEMPMangemnt(model);
                 if (isSaveSuccess)
                     return Json(isSaveSuccess, JsonRequestBehavior.AllowGet);
                 else
@@ -348,7 +387,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                     return Json(isSaveSuccess, JsonRequestBehavior.AllowGet);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Json(isSaveSuccess, JsonRequestBehavior.AllowGet);
             }
@@ -548,7 +587,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             catch (Exception ex)
             {
                 return PartialView("~/Views/NewAdmin/ePeople/_ViewVSCDetails.cshtml", new AddChartModel());
-               // return Json(null, JsonRequestBehavior.AllowGet);
+                // return Json(null, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -594,7 +633,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
                 UserId = ObjLoginModel.UserId;
             }
-            if(Id > 0 && Status != null)
+            if (Id > 0 && Status != null)
             {
                 var data = _IePeopleManager.ApproveRejectAction(Id, Status, UserId);
                 if (data == true)
@@ -602,7 +641,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                     if (Status == "A")
                     {
                         ViewBag.Message = CommonMessage.ApprovedRequisition();
-                        return Json(new { Message = ViewBag.Message}, JsonRequestBehavior.AllowGet);
+                        return Json(new { Message = ViewBag.Message }, JsonRequestBehavior.AllowGet);
                     }
                     else
                     {
@@ -655,7 +694,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 else
                 {
                     ViewBag.Message = CommonMessage.FailureMessage();
-                }               
+                }
             }
             catch (Exception ex)
             {
@@ -713,7 +752,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 if (JobId > 0)
                 {
                     lst = _IePeopleManager.GetJobTitleCount(JobId);
-                   return PartialView("~/Views/NewAdmin/ePeople/Requisition/_AddRemoveJobTitleCount.cshtml", lst);
+                    return PartialView("~/Views/NewAdmin/ePeople/Requisition/_AddRemoveJobTitleCount.cshtml", lst);
                 }
                 else
                 {
@@ -734,7 +773,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public JsonResult SendJobCountForApproval(int JobTitleLastCount,int JobTitleId, int JobTitleCount)
+        public JsonResult SendJobCountForApproval(int JobTitleLastCount, int JobTitleId, int JobTitleCount)
         {
             bool IsSaved = false;
             var model = new JobTitleModel();
@@ -797,13 +836,14 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             if (Session["eTrac"] != null)
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-              
             }
             var id = Cryptography.GetDecryptedData(Id, true);
             long _UserId = 0;
             long.TryParse(id, out _UserId);
             var getDetails = _IePeopleManager.GetEMployeeData(_UserId);
-            if(getDetails != null)
+            getDetails.StatusAction = EmployeeStatusChnage.D;
+            ViewBag.VSCList = _IePeopleManager.GetVSCList();
+            if (getDetails != null)
             {
                 return PartialView("~/Views/NewAdmin/ePeople/StatusChaneForm/_DemotionEmployeeForm.cshtml", getDetails);
             }
@@ -827,6 +867,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             long _UserId = 0;
             long.TryParse(id, out _UserId);
             var getDetails = _IePeopleManager.GetEMployeeData(_UserId);
+            getDetails.StatusAction = EmployeeStatusChnage.S;
             if (getDetails != null)
             {
                 return PartialView("~/Views/NewAdmin/ePeople/StatusChaneForm/_EmploymentStatusChangeForm.cshtml", getDetails);
@@ -835,6 +876,92 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             {
                 return PartialView("~/Views/NewAdmin/ePeople/StatusChaneForm/_EmploymentStatusChangeForm.cshtml", new DemotionModel());
             }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created For  : To view Location to transfer
+        /// Created Date : 11-Nov-2019
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult OpenLocationForTransfer(string Id)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            var details = new List<UserListViewEmployeeManagementModel>();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            var id = Cryptography.GetDecryptedData(Id, true);
+            long _UserId = 0;
+            long.TryParse(id, out _UserId);
+            var getDetails = _IePeopleManager.GetEMployeeData(_UserId);
+            getDetails.StatusAction = EmployeeStatusChnage.L;
+            if (getDetails != null)
+            {
+                return PartialView("~/Views/NewAdmin/ePeople/StatusChaneForm/_LocationTransfer.cshtml", getDetails);
+            }
+            else
+            {
+                return PartialView("~/Views/NewAdmin/ePeople/StatusChaneForm/_LocationTransfer.cshtml", new DemotionModel());
+            }
+        }
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 11-Nov-2019
+        /// Created For : TO get vacant job title
+        /// </summary>
+        /// <param name="VSC_Id"></param>
+        /// <returns></returns>
+        public JsonResult GetVacantJobTitle(long VSCId)
+        {
+            var getList = new List<JobTitleModel>();
+            try
+            {
+                if (VSCId > 0)
+                {
+                    getList = _IePeopleManager.GetJobTitleVacantList(VSCId);
+                }
+                return Json(getList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created Date : 11-Nov-2019
+        /// Created For : To save demotion promotion
+        /// </summary>
+        /// <param name="Obj"></param>
+        /// <returns></returns>
+        public JsonResult SaveStatus(DemotionModel Obj) 
+        {
+            string message = "";
+            try
+            {
+                if(Obj != null)
+                {
+                    var isSaved = _IePeopleManager.SavePromoDemo(Obj);
+                    if(isSaved == true)
+                    {
+                         message = CommonMessage.Successful();
+                    }
+                    else
+                    {
+                        message = CommonMessage.FailureMessage();                       
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                return Json(ex, JsonRequestBehavior.AllowGet);
+            }
+            return Json(message, JsonRequestBehavior.AllowGet);
         }
         #endregion Status Change
 
@@ -869,7 +996,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
             ViewBag.NotSaved = true;
-             return Json(false, JsonRequestBehavior.AllowGet);
+            return Json(false, JsonRequestBehavior.AllowGet);
 
         }
         /// <summary>
@@ -883,7 +1010,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         public ActionResult GetFileView(string EMPId)
         {
             var _workorderems = new workorderEMSEntities();
-           
+
             var model = new List<UploadedFiles>();
             long _UserId = 0;
             try
@@ -892,7 +1019,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 {
                     var id = Cryptography.GetDecryptedData(EMPId, true);
                     long.TryParse(id, out _UserId);
-                }               
+                }
                 var getUser = _workorderems.UserRegistrations.Where(x => x.UserId == _UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
                 var _FillableFormRepository = new FillableFormRepository();
                 if (getUser != null)
@@ -928,8 +1055,8 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         public FileStreamResult GetPDF(string fileName)
         {
             var str = fileName.Replace("'", "");
-            FileStream fs = new FileStream(Server.MapPath("~/Content/FilesRGY/"+ str), FileMode.Open, FileAccess.Read);           
-            return File(fs, "application/pdf");           
+            FileStream fs = new FileStream(Server.MapPath("~/Content/FilesRGY/" + str), FileMode.Open, FileAccess.Read);
+            return File(fs, "application/pdf");
         }
         /// <summary>
         /// Created By  :Ashwajit bansod
@@ -948,7 +1075,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             var _workorderems = new workorderEMSEntities();
             if (Session["eTrac"] != null)
             {
-                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);               
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
             }
             if (Request.Files.Count > 0)
             {
@@ -973,7 +1100,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                         else
                         {
                             fname = file.FileName;
-                            
+
                         }
                         var getUser = _workorderems.UserRegistrations.Where(x => x.UserId == ObjLoginModel.UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
                         if (getUser != null)
@@ -990,7 +1117,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                                 var IsSaved = _IFillableFormManager.SaveFile(Obj, LoginEMployeeId);
                             }
                         }
-                        
+
                         // Get the complete folder path and store the file inside it.  
                         //fname = Path.Combine(Server.MapPath("~/Uploads/"), fname);
                         //file.SaveAs(fname);
@@ -1120,8 +1247,8 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             return Json(false, JsonRequestBehavior.AllowGet);
         }
         #endregion Job Post
-		
-		#region Holiday Master
+
+        #region Holiday Master
         /// <summary>
         /// Created By : Tushar Goyani
         /// Created Date : 20-Oct-2019
@@ -1170,7 +1297,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 string SQRY = "EXEC USP_Get_Holiday_Management '" + Search + "'";
                 DataTable DT = DBUtilities.GetDTResponse(SQRY);
                 List<HolidayManagment> ITAdministratorList = DataRowToObject.CreateListFromTable<HolidayManagment>(DT);
-                foreach(var items in ITAdministratorList)
+                foreach (var items in ITAdministratorList)
                 {
                     items.HolidayDateString = items.HolidayDate.ToString("dd MMM yyyy", CultureInfo.InvariantCulture);
                 }
@@ -1187,11 +1314,11 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             if (Session["eTrac"] != null)
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-                UserId =Convert.ToString(ObjLoginModel.UserId);
+                UserId = Convert.ToString(ObjLoginModel.UserId);
             }
             try
             {
-                string SQRY = "EXEC INSERT_HOLIDAY_MANAGEMENT '" + Holiday.Id + "','" + Holiday.HolidayDate + "','" + Holiday.HolidayName + "','" + Holiday.Description+ "','" + Holiday.IsActive+ "','" + Convert.ToString(ObjLoginModel.UserId) + "'";
+                string SQRY = "EXEC INSERT_HOLIDAY_MANAGEMENT '" + Holiday.Id + "','" + Holiday.HolidayDate + "','" + Holiday.HolidayName + "','" + Holiday.Description + "','" + Holiday.IsActive + "','" + Convert.ToString(ObjLoginModel.UserId) + "'";
                 DataTable DT = DBUtilities.GetDTResponse(SQRY);
             }
             catch (Exception ex)
@@ -1297,7 +1424,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
             try
             {
-                string SQRY = "EXEC INSERT_LEAVE_MANAGEMENT '" + Leave.Id + "','" + Leave.FromDate + "','" + Leave.ToDate + "','" + Leave.EmployeeId + "','" + Leave.LeaveReason+ "','" + Leave.LeaveType + "','" + Convert.ToString(ObjLoginModel.UserId) + "'";
+                string SQRY = "EXEC INSERT_LEAVE_MANAGEMENT '" + Leave.Id + "','" + Leave.FromDate + "','" + Leave.ToDate + "','" + Leave.EmployeeId + "','" + Leave.LeaveReason + "','" + Leave.LeaveType + "','" + Convert.ToString(ObjLoginModel.UserId) + "'";
                 DataTable DT = DBUtilities.GetDTResponse(SQRY);
             }
             catch (Exception ex)
@@ -1343,7 +1470,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 if (Id > 0)
                 {
                     DataTable dt = new DataTable();
-                    string SQRY = "EXEC USP_Get_Leave_Management_Approved '" + Id + "','" + Convert.ToString(ObjLoginModel.UserId) +"'";
+                    string SQRY = "EXEC USP_Get_Leave_Management_Approved '" + Id + "','" + Convert.ToString(ObjLoginModel.UserId) + "'";
                     dt = DBUtilities.GetDTResponse(SQRY);
                     //if (dt != null)
                     //{
@@ -1357,7 +1484,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             return RedirectToAction("LeaveManagement", "EPeople");
         }
 
-        public ActionResult LeavemanagementRejected(int Id,string RejectReason)
+        public ActionResult LeavemanagementRejected(int Id, string RejectReason)
         {
             Tbl_Employee_Leave_Management Holiday = new Tbl_Employee_Leave_Management();
             eTracLoginModel ObjLoginModel = null;
@@ -1370,7 +1497,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 if (Id > 0)
                 {
                     DataTable dt = new DataTable();
-                    string SQRY = "EXEC USP_Get_Leave_Management_Rejected '" + Id + "','"+ RejectReason + "','" + Convert.ToString(ObjLoginModel.UserId) + "'";
+                    string SQRY = "EXEC USP_Get_Leave_Management_Rejected '" + Id + "','" + RejectReason + "','" + Convert.ToString(ObjLoginModel.UserId) + "'";
                     dt = DBUtilities.GetDTResponse(SQRY);
                 }
             }
@@ -1494,11 +1621,11 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 var getCount = _IePeopleManager.GetEMP_ReqCount();
                 return Json(getCount, JsonRequestBehavior.AllowGet);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Json(null, JsonRequestBehavior.AllowGet);
             }
-            
+
         }
         #endregion GRAPH COUNT
     }

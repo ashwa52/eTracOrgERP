@@ -568,5 +568,18 @@ namespace WorkOrderEMS.Helper
         {
             return FirstName + " "+ LastName + "want to checkout QRC" + QRCID + " " + " which is already checked out by" + " " + UserName;
         }
+        public static string ApprovedRequisition()
+        {
+            return "Requisition has been approve";
+        }
+        public static string RejectRequisition()
+        {
+            return "Requisition has been reject";
+        }
+        public static string JobCountSendApproval()
+        {
+            return "Send for approval";
+        }
+        
     }
 }

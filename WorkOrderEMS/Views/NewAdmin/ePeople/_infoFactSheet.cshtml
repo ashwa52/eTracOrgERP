@@ -82,19 +82,19 @@
     .btnSelected {
         background-color: green;
         font-weight: bold;
-        font-size: 23px;
-        padding: 7px 13px 7px 13px;
+        font-size: 16px;
+        /*padding: 7px 13px 7px 13px;*/
         margin: 2px;
-        width: 150px;
+        width: 168px;
     }
 
     .btnNotSelected {
         background-color: #5c545f;
         font-weight: bold;
-        font-size: 23px;
-        padding: 7px 13px 7px 13px;
+        font-size: 16px;
+        /*padding: 7px 13px 7px 13px;*/
         margin: 2px;
-        width: 150px;
+        width: 168px;
         color: #fff;
     }
 
@@ -108,9 +108,9 @@
 <div class="row" style="padding:3px 15px 0px 15px;">
 	<div class="col-lg-12">
 		<div class="card">
-			<div class="card-header">
+			<div class="card-header" style="background-image: linear-gradient(to right, #3588CD, #fff);">
 				<div class="profile_image inline spccing">
-					<img src="https://www.w3schools.com/howto/img_avatar.png" alt="Avatar">
+					<img src="@Model.model.Image" alt="Avatar">
 				</div>
 				<div class="profile_detail inline spccing">
 					<span class="name">
@@ -128,14 +128,14 @@
 					<i class="fa fa-star" aria-hidden="true"></i>
 				</div>
 				<input type="hidden" id="applicant_id" value="@Model.model.ApplicantId" />
-				<div class="mobile inline spccing"><span>@Model.model.PhoneNumber</span></div>
-				<div class="email inline spccing"><span>@Model.model.Email</span></div>
-				<div class="status inline spccing" style="width: 56px;">@Model.model.Status</div>
+				<div class="mobile inline spccing"><span style="color:black;">@Model.model.PhoneNumber</span></div>
+				<div class="email inline spccing"><span style="color:black;">@Model.model.Email</span></div>
+				<div class="status inline spccing" style="width: 56px;color:black;">@Model.model.Status</div>
 			</div>
 			<div class="panel-body">
 				<div class="row">
-					<div class="col-lg-10" id="interviewArea" style="background:#A0D2FA;margin-left:16px;height:425px;overflow:auto">
-						<iframe src="@Url.Action("GetPDF")#toolbar=0" style="width:100%; height:425px;" frameborder="0"></iframe>
+					<div class="col-lg-10" id="interviewArea" style="background:#A0D2FA;margin-left:16px;height:530px;overflow:auto">
+						<iframe src="@Url.Action("GetPDF")#toolbar=0" style="width:100%; height:530px;" frameborder="0"></iframe>
 					</div>
 					<div class="col-md-2 rightList" style="float:right">
 						<div class="email-sec right-pad">
@@ -166,7 +166,7 @@
 				<button class="btn btn-default btnNotSelected">eMails</button>
 				<button class="btn btn-default btnNotSelected" onclick="GetInterviewers(this,'@Model.model.ApplicantId');">Interview</button>
 				<div class="dropdown" style="float:right;margin:2px">
-					<button type="button" class="btn btn-primary dropdown-toggle" style="padding: 12px 14px 12px 13px;" data-toggle="dropdown">
+					<button type="button" class="btn btn-primary dropdown-toggle" @*style="padding: 12px 14px 12px 13px;"*@ data-toggle="dropdown">
 						Dropdown button
 					</button>
 					<div class="dropdown-menu">

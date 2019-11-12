@@ -666,7 +666,11 @@ namespace WorkOrderEMS.Helper
     {
         Pending,
         Completed,
-       
-
+    }
+    public static class EmployeeStatusChnage
+    {
+        public const string L = "LocationTransfer";
+        public const string S = "EmployeeStatus";
+        public const string D = "Demotion";
     }
 }

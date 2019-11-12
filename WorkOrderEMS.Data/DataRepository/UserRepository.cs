@@ -6,6 +6,7 @@ using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Data.Interfaces;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
+using WorkOrderEMS.Models.NewAdminModel;
 using WorkOrderEMS.Models.UserModels;
 
 

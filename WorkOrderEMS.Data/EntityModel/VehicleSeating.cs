@@ -16,7 +16,8 @@ namespace WorkOrderEMS.Data.EntityModel
     {
         public VehicleSeating()
         {
-            this.JobTitles = new HashSet<JobTitle>();
+            this.UserVehicleSeatingMaps = new HashSet<UserVehicleSeatingMap>();
+            this.VehicleSeatingSubModuleMappings = new HashSet<VehicleSeatingSubModuleMapping>();
         }
     
         public long VST_Id { get; set; }
@@ -28,8 +29,12 @@ namespace WorkOrderEMS.Data.EntityModel
         public long VST_DPT_Id { get; set; }
         public Nullable<System.DateTime> VST_Date { get; set; }
         public string VST_IsActive { get; set; }
+        public string VST_EmploymentStatus { get; set; }
+        public string VST_IsExempt { get; set; }
+        public Nullable<decimal> VST_RateOfPay { get; set; }
     
         public virtual Department Department { get; set; }
-        public virtual ICollection<JobTitle> JobTitles { get; set; }
+        public virtual ICollection<UserVehicleSeatingMap> UserVehicleSeatingMaps { get; set; }
+        public virtual ICollection<VehicleSeatingSubModuleMapping> VehicleSeatingSubModuleMappings { get; set; }
     }
 }

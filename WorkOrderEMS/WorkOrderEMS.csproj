@@ -371,6 +371,7 @@
     <Compile Include="Controllers\Common\DropDownController.cs" />
     <Compile Include="Controllers\Common\JobSchedular.cs" />
     <Compile Include="Controllers\Common\Schedular.cs" />
+    <Compile Include="Controllers\Common\SchedularForPO.cs" />
     <Compile Include="Controllers\DAR\DARController.cs" />
     <Compile Include="Controllers\eCounting\BillController.cs" />
     <Compile Include="Controllers\eCounting\CustomerManagementController.cs" />
@@ -5161,6 +5162,7 @@
     <Content Include="GridListing\JsGridScript\ListAllShiftJS.js" />
     <Content Include="GridListing\JsGridScript\ListDAR.js" />
     <Content Include="GridListing\JsGridScript\List306090.js" />
+    <Content Include="GridListing\JsGridScript\ListDebitMemo.js" />
     <Content Include="GridListing\JsGridScript\ListEmployeeForAttendance.js" />
     <Content Include="GridListing\JsGridScript\ListEmployeeManagement.js" />
     <Content Include="GridListing\JsGridScript\ListMyOpening.js" />
@@ -6532,6 +6534,7 @@
     <Content Include="Views\Shared\_CustomerRecapDetails.cshtml" />
     <Content Include="Views\Shared\_CustomerVehicleDetails.cshtml" />
     <Content Include="Views\NewAdmin\QEvaluationView.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\StatusChaneForm\_LocationTransfer.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

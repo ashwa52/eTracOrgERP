@@ -82,7 +82,7 @@ function myOpenings(PostingId) {
 						.append($("<div>").addClass("action1 inline actionbox").append($("<a>").attr({ "onclick": "TakeInterview(" + JSON.stringify(item) + ")", "href": "#" }).append("<i>").addClass("fa fa-diamond whiteGr")))
 						.append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-check-circle whiteY"))
 						.append($("<div>").addClass("action1 inline actionboxR").append("<i>").addClass("fa fa-check white"))
-			        .append($("<div>").addClass("action1 inline actionboxS").append("<a href='https://app.recruitee.com/#/settings/scheduler' title='Schedule Interview'>").addClass("fa fa-clock-o fa-2x whiteS"));
+			        .append($("<div>").addClass("action1 inline actionboxS").append("<a>").attr({ "onclick": "GoToRecruitee(" + JSON.stringify(item) + ")", "href": "#" }).addClass("fa fa-clock-o fa-2x whiteS"));
 			    }
 			},
         ]
@@ -496,8 +496,6 @@ function MarkAbsent() {
 }
 
 
-
-
 function GetCompanyOpening() {
 	
 	$("#companyOpening").jsGrid({
@@ -573,4 +571,9 @@ function GetCompanyOpening() {
 			myOpenings();
 		}
 	});
+}
+
+function GoToRecruitee(item) {
+    debugger
+    window.location.href = "https://app.recruitee.com/#/settings/scheduler";
 }

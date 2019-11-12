@@ -18,7 +18,7 @@ namespace WorkOrderEMS.Data.DataRepository
         /// </summary>
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
-        public spGetEducationVerificationForm_Result GetEducationFormDetails(string EmployeeId)
+        public spGetEducationVerificationForm_Result1 GetEducationFormDetails(string EmployeeId)
         {
             try
             {
@@ -36,7 +36,7 @@ namespace WorkOrderEMS.Data.DataRepository
         /// </summary>
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
-        public spGetDirectDepositForm_Result1 GetDirectDepositeDetails(string EmployeeId)
+        public spGetDirectDepositForm_Result2 GetDirectDepositeDetails(string EmployeeId)
         {
             try
             {
@@ -54,7 +54,7 @@ namespace WorkOrderEMS.Data.DataRepository
         /// </summary>
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
-        public spGetEmergencyContactForm_Result1 GetEmergencyContactForm(string EmployeeId)
+        public spGetEmergencyContactForm_Result2 GetEmergencyContactForm(string EmployeeId)
         {
             try
             {

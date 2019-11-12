@@ -105,20 +105,15 @@
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.Rule" Width="1.5" PointX="16.5" PointY="107.875" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.ServiceMaster" Width="1.5" PointX="11" PointY="186.625" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.SubCostCode" Width="1.5" PointX="18.75" PointY="135.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.SubModule" Width="1.5" PointX="16.5" PointY="112.25" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.TaxDetail" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.TimeZone" Width="1.5" PointX="13.75" PointY="8.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.TrackEmployeeStatu" Width="1.5" PointX="8.75" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.UserOverrideUsertype" Width="1.5" PointX="18.75" PointY="123.125" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.UserRegistration" Width="1.5" PointX="16.5" PointY="119.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.UserVehicleSeatingMap" Width="1.5" PointX="21.75" PointY="120.875" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.VehicleSeating_DepartmentMapping" Width="1.5" PointX="13.75" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.VehicleSeatingSubModuleMapping" Width="1.5" PointX="21.75" PointY="114.125" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.VendorType" Width="1.5" PointX="12.75" PointY="180.25" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.WorkRequestAssignment" Width="1.5" PointX="14.25" PointY="136.375" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.IdleEmployee" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.QRCMaster1" Width="1.5" PointX="13.75" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.VW_USERTYPE" Width="1.5" PointX="15.75" PointY="4.75" IsExpanded="true" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_AddressMaster_MasterCountries" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_AddressMaster_MasterStates" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_AddressMaster_UserRegistrations" ManuallyRouted="false" />
@@ -234,7 +229,6 @@
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_QRCScanLog_GlobalCodesPermit" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_User_GlobalCodes_Gender" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_User_GlobalCodes_UserType" ManuallyRouted="false" />
-        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserOverrideUsertype_GlobalCodes" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserRegistrations_GlobalCodes" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserRegistrations_GlobalCodes_DeviceType" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_WorkRequestAssignment_GlobalCodes_PriorityLevel" ManuallyRouted="false" />
@@ -281,7 +275,6 @@
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_MasterStates_MasterCountries" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Miscellaneous_MisNumber" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_Rule_Module" ManuallyRouted="false" />
-        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_SubModule_Module" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_PODetail_PONumber" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_PODetail_POType" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_POFacilityItem_PODetail" ManuallyRouted="false" />
@@ -295,24 +288,30 @@
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_QRCMasterLog_UserRegistrations" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_QRCScanLog_UserRegistrations" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_SubCostCode_UserRegistrations" ManuallyRouted="false" />
-        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserOverrideUsertype_SubModule" ManuallyRouted="false" />
-        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_VehicleSeatingSubModuleMapping_SubModule" ManuallyRouted="false" />
-        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserOverrideUsertype_UserRegistrations" ManuallyRouted="false" />
-        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserVehicleSeatingMap_UserRegistrations" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.EmergencyContactForm" Width="1.5" PointX="5.375" PointY="16.75" />
-        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.EmployeeHandbook" Width="1.5" PointX="16.375" PointY="7.75" />
-        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.DirectDepositForm" Width="1.5" PointX="16.375" PointY="10.75" />
-        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.InterviewAnswer" Width="1.5" PointX="16.375" PointY="15.75" />
-        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.InterviewQuestion" Width="1.5" PointX="17.375" PointY="0.75" />
-        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.InterviewSchedule" Width="1.5" PointX="7.375" PointY="17.75" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.Employee" Width="1.5" PointX="8.375" PointY="4.75" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.VehicleSeating" Width="1.5" PointX="19.5" PointY="115.125" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_VehicleSeating_Department" />
-        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserVehicleSeatingMap_Module" />
-        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_VehicleSeatingSubModuleMapping_Module" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.JobTitle" Width="1.5" PointX="10.375" PointY="4.75" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.FileType" Width="1.5" PointX="18.375" PointY="3.75" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.ApplicantInfo" Width="1.5" PointX="9.375" PointY="17.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.DirectDepositForm" Width="1.5" PointX="5.375" PointY="16.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.EmergencyContactForm" Width="1.5" PointX="16.375" PointY="6.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.EmployeeHandbook" Width="1.5" PointX="16.375" PointY="10.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.InterviewAnswer" Width="1.5" PointX="16.375" PointY="13.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.InterviewQuestion" Width="1.5" PointX="17.375" PointY="0.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.InterviewSchedule" Width="1.5" PointX="16.375" PointY="17.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.SubModule" Width="1.5" PointX="16.5" PointY="112.125" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.UserOverrideUsertype" Width="1.5" PointX="18.75" PointY="123.125" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.UserVehicleSeatingMap" Width="1.5" PointX="21.75" PointY="120.625" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.VehicleSeatingSubModuleMapping" Width="1.5" PointX="21.75" PointY="114.375" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserOverrideUsertype_GlobalCodes" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_SubModule_Module" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserOverrideUsertype_SubModule" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_VehicleSeatingSubModuleMapping_SubModule" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserOverrideUsertype_UserRegistrations" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserVehicleSeatingMap_UserRegistrations" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserVehicleSeatingMap_Module" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_VehicleSeatingSubModuleMapping_Module" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

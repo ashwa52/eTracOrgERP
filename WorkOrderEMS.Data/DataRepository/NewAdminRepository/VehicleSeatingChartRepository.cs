@@ -17,7 +17,7 @@ namespace WorkOrderEMS.Data.DataRepository
         /// Created For : TO get Superior Data 
         /// </summary>
         /// <returns></returns>
-        public List<spGetVehicleSeating_Result2> GetSuperiorList()
+        public List<spGetVehicleSeating_Result3> GetSuperiorList()
         {
             try
             {
@@ -54,7 +54,7 @@ namespace WorkOrderEMS.Data.DataRepository
             return isSave;
         }
 
-        public List<spGetVehicleSeating_Result2> GetVSCList(long? LocationId)
+        public List<spGetVehicleSeating_Result3> GetVSCList(long? LocationId)
         {
             try
             {
@@ -99,7 +99,7 @@ namespace WorkOrderEMS.Data.DataRepository
         /// </summary>
         /// <param name="CSVChartId"></param>
         /// <returns></returns>
-        public List<spGetJobTitle_Result1> GetJobTitleList(long CSVChartId)
+        public List<spGetJobTitle_Result2> GetJobTitleList(long CSVChartId)
         {
             try
             {
@@ -112,7 +112,7 @@ namespace WorkOrderEMS.Data.DataRepository
 
             }
         }
-        public List<spGetVehicleSeating_Result2> GetChartDetails()
+        public List<spGetVehicleSeating_Result3> GetChartDetails()
         {
             try
             {

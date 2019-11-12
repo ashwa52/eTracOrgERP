@@ -38,6 +38,8 @@ namespace WorkOrderEMS.Data.EntityModel
             this.QRCMasterLogs = new HashSet<QRCMasterLog>();
             this.QRCScanLogs = new HashSet<QRCScanLog>();
             this.SubCostCodes = new HashSet<SubCostCode>();
+            this.UserOverrideUsertypes = new HashSet<UserOverrideUsertype>();
+            this.UserVehicleSeatingMaps = new HashSet<UserVehicleSeatingMap>();
         }
     
         public long UserId { get; set; }
@@ -112,5 +114,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ICollection<QRCMasterLog> QRCMasterLogs { get; set; }
         public virtual ICollection<QRCScanLog> QRCScanLogs { get; set; }
         public virtual ICollection<SubCostCode> SubCostCodes { get; set; }
+        public virtual ICollection<UserOverrideUsertype> UserOverrideUsertypes { get; set; }
+        public virtual ICollection<UserVehicleSeatingMap> UserVehicleSeatingMaps { get; set; }
     }
 }

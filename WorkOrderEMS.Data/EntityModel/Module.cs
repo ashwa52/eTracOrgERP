@@ -19,6 +19,7 @@ namespace WorkOrderEMS.Data.EntityModel
             this.eForms = new HashSet<eForm>();
             this.eFormTracks = new HashSet<eFormTrack>();
             this.Rules = new HashSet<Rule>();
+            this.SubModules = new HashSet<SubModule>();
         }
     
         public long MDL_Id { get; set; }
@@ -29,5 +30,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ICollection<eForm> eForms { get; set; }
         public virtual ICollection<eFormTrack> eFormTracks { get; set; }
         public virtual ICollection<Rule> Rules { get; set; }
+        public virtual ICollection<SubModule> SubModules { get; set; }
     }
 }

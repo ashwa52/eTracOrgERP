@@ -19,5 +19,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public long POF_CFM_Id { get; set; }
         public Nullable<long> POF_Unit { get; set; }
         public string POF_IsActive { get; set; }
+    
+        public virtual PODetail PODetail { get; set; }
     }
 }

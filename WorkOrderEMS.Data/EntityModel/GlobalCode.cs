@@ -42,6 +42,7 @@ namespace WorkOrderEMS.Data.EntityModel
             this.WorkRequestAssignments = new HashSet<WorkRequestAssignment>();
             this.WorkRequestAssignments1 = new HashSet<WorkRequestAssignment>();
             this.WorkRequestAssignments2 = new HashSet<WorkRequestAssignment>();
+            this.UserOverrideUsertypes = new HashSet<UserOverrideUsertype>();
         }
     
         public long GlobalCodeId { get; set; }
@@ -84,5 +85,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ICollection<WorkRequestAssignment> WorkRequestAssignments { get; set; }
         public virtual ICollection<WorkRequestAssignment> WorkRequestAssignments1 { get; set; }
         public virtual ICollection<WorkRequestAssignment> WorkRequestAssignments2 { get; set; }
+        public virtual ICollection<UserOverrideUsertype> UserOverrideUsertypes { get; set; }
     }
 }

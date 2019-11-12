@@ -18,6 +18,8 @@ namespace WorkOrderEMS.Data.EntityModel
         {
             this.Bills = new HashSet<Bill>();
             this.CompanyAccountDetails = new HashSet<CompanyAccountDetail>();
+            this.CompanyAccountTransactions = new HashSet<CompanyAccountTransaction>();
+            this.CompanyAccountTransactions1 = new HashSet<CompanyAccountTransaction>();
             this.CompanyDetails = new HashSet<CompanyDetail>();
             this.CompanyFacilityMappings = new HashSet<CompanyFacilityMapping>();
             this.CompanyQBKs = new HashSet<CompanyQBK>();
@@ -55,6 +57,8 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual CompanyType CompanyType { get; set; }
         public virtual VendorType VendorType { get; set; }
         public virtual ICollection<CompanyAccountDetail> CompanyAccountDetails { get; set; }
+        public virtual ICollection<CompanyAccountTransaction> CompanyAccountTransactions { get; set; }
+        public virtual ICollection<CompanyAccountTransaction> CompanyAccountTransactions1 { get; set; }
         public virtual ICollection<CompanyDetail> CompanyDetails { get; set; }
         public virtual ICollection<CompanyFacilityMapping> CompanyFacilityMappings { get; set; }
         public virtual ICollection<CompanyQBK> CompanyQBKs { get; set; }

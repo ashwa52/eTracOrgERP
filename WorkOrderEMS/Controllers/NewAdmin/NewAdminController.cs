@@ -910,7 +910,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         [HttpPost]
         public PartialViewResult GetInterviewQuestions(int? id)
         {
-            IEnumerable<spGetInterviewQuestion_Result> questions = (List<spGetInterviewQuestion_Result>)Session["eTrac_questions"];
+            IEnumerable<spGetInterviewQuestion_Result1> questions = (List<spGetInterviewQuestion_Result1>)Session["eTrac_questions"];
             int num = 0;
             if (questions != null)
             {

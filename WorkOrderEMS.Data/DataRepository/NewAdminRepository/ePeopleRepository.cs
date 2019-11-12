@@ -115,7 +115,7 @@ namespace WorkOrderEMS.Data
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
         /// 
-        public List<spGetVehicleSeating_Result2> GetVSCDetails(long VSCId)
+        public List<spGetVehicleSeating_Result3> GetVSCDetails(long VSCId)
         {
             try
             {
@@ -135,7 +135,7 @@ namespace WorkOrderEMS.Data
         /// <param name="LocationId"></param>
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
-        public List<spGetEmployeeManagementList_Result1> GetEmployeeManagementListData(long LocationId, string EmployeeId)
+        public List<spGetEmployeeManagementList_Result2> GetEmployeeManagementListData(long LocationId, string EmployeeId)
         {
             try
             {
@@ -174,7 +174,7 @@ namespace WorkOrderEMS.Data
         /// Created For : To get all requisition list
         /// </summary>
         /// <returns></returns>
-        public List<spGetRequisitionList_Result1> GetRequisitionlist()
+        public List<spGetRequisitionList_Result2> GetRequisitionlist()
         {
             try
             {
@@ -213,7 +213,7 @@ namespace WorkOrderEMS.Data
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public List<spGetJobTitle_Result1> GetJobTitleCount(long? Id)
+        public List<spGetJobTitle_Result2> GetJobTitleCount(long? Id)
         {
             try
             {
@@ -259,6 +259,11 @@ namespace WorkOrderEMS.Data
             {
                 throw;
             }
+        }
+
+        public List<spGetVacant_JobTitle_Result> GetJobTitleVacant(long VSC_Id)
+        {
+            return objworkorderEMSEntities.spGetVacant_JobTitle(VSC_Id).ToList();
         }
     }
 }

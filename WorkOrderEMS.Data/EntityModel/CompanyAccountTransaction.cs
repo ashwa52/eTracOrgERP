@@ -20,12 +20,17 @@ namespace WorkOrderEMS.Data.EntityModel
         public long CAT_CAD_IdDr { get; set; }
         public long CAT_CAD_IdCr { get; set; }
         public Nullable<long> CAT_BLL_Id { get; set; }
-        public Nullable<long> CAT_PMD_Id { get; set; }
         public decimal CAT_Amount { get; set; }
-        public Nullable<long> CAT_ChequeNo { get; set; }
+        public Nullable<int> CAT_ChequeNo { get; set; }
         public string CAT_Discription { get; set; }
         public System.DateTime CAT_TransactionDate { get; set; }
         public Nullable<long> CAT_PayBy { get; set; }
         public string CAT_IsActive { get; set; }
+        public Nullable<long> CAT_PMD_Id { get; set; }
+    
+        public virtual Company Company { get; set; }
+        public virtual Company Company1 { get; set; }
+        public virtual CompanyAccountDetail CompanyAccountDetail { get; set; }
+        public virtual CompanyAccountDetail CompanyAccountDetail1 { get; set; }
     }
 }

@@ -17,5 +17,13 @@ namespace WorkOrderEMS.Models
         public string Name { get; set; }
         public string LocationName { get; set; }
         public string EmploymentStatus { get; set; }
+        public int VSC_Id { get; set; }
+        public DateTime? ToDate { get; set; }
+        public DateTime? FromDate { get; set; }
+        public long LocationId { get; set; }
+        public string TransferType { get; set; }
+        public long JobTitleId { get; set; }
+        public long TempDays { get; set; }
+        public string StatusAction { get; set; }
     }
 }
