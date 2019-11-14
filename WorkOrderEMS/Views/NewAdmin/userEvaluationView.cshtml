@@ -464,7 +464,6 @@
 
     });
     function enableDisableBtn() {
-        debugger;
         if ($("td.ans input[type='radio']:checked").length == 7 && $("#isSubmitted").val() != "S") {
 
             $('#submit').attr("disabled", false);
@@ -514,7 +513,6 @@
                         error: function (xhr, status, error) {
                         },
                         success: function (result) {
-                            debugger
                             if (result != null) {
                                 $("#gridArea").hide();
                                 $('#profileArea').show();

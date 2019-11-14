@@ -956,21 +956,25 @@ namespace WorkOrderEMS.Data
 
         public bool saveQEvaluations(List<GWCQUestionModel> data, string action)
         {
+            bool result = false;
             try
             {
-                var list = data.GroupBy(x => x.ASQ_Id).Select(x => x.First());
+                ObjectParameter IsTermination = new ObjectParameter("IsTermination", typeof(char));
 
+                var list = data.GroupBy(x => x.ASQ_Id).Select(x => x.First());
+                var EmployeeId = string.Empty;
                 if (data.Count() > 0)
                 {
                     foreach (var i in list)
                     {
                         _workorderEMSEntities.spSetEvaluationQuarterly("U", i.EEL_EMP_EmployeeId, i.QuestionType, i.EEL_Id, i.EEL_FinencialYear, i.EEL_FinQuarter, i.EEL_AnswerSelf ,i.EEL_Comments, action == "C" ? "C" : "S");
                         //_workorderEMSEntities.spSetSelfAssessmentQuarterly((i.EEL_IsActive == null || i.EEL_IsActive == "" || i.EEL_IsActive != "Y") ? "I" : "U", i.EEL_EMP_EmployeeId,i.EEL_EMP_EmployeeIdManager,i.QuestionType, i.ASQ_Id, i.EEL_Id,i.EEL_FinencialYear,i.EEL_FinQuarter, i.EEL_AnswerSelf == "Y" ? "Y" : i.EEL_AnswerSelf == "N" ? "N" : i.EEL_AnswerSelf == "S" ? "S" : null, action == "S" ? "S" : "Y");
-
+                        EmployeeId = i.EEL_EMP_EmployeeId;
                     }
+                    result= _workorderEMSEntities.spGetIsTremination(EmployeeId, IsTermination)=='Y'?true:false;
                 }
 
-                return true;
+                return result;
 
             }
             catch (Exception)

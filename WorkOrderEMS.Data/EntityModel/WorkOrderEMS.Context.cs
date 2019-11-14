@@ -5003,5 +5003,14 @@ namespace WorkOrderEMS.Data.EntityModel
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetReviewMeetingDateTime", actionParameter, rMS_IdParameter, rMS_IsActiveParameter, rMS_EMP_EmployeeIdParameter, rMS_FinencialYearParameter, rMS_FinQuarterParameter, rMS_InterviewDateTimeParameter);
         }
+    
+        public virtual int spGetIsTremination(string employeeId, ObjectParameter isTermination)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetIsTremination", employeeIdParameter, isTermination);
+        }
     }
 }

@@ -448,6 +448,29 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="IsTerminationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="IsTerminationModalLabel">Take Action </h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body ">
+                <div>
+                    <label id="SaveIsTerminationModalLabel">
+                        Evaluation submitted successfully.
+                        We found that this employee is eligible for termination as per our records.
+                        Please take the desired action from below.
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" id="BackToPerformance" class="btn btn-primary" onclick="HideModal('IsTerminationModal')" style="width: 90px">OK</button>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     $("document").ready(function () {
@@ -511,22 +534,33 @@
                         url: '../NewAdmin/QEvaluationView/',
                         error: function (xhr, status, error) {
                         },
-                        success: function (result) {
-                            debugger
-                            if (result != null) {
+                        success: function (data) {
+                           
+                            if (data != null) {
                                 $("#gridArea").hide();
                                 $('#profileArea').show();
-                                $('#profileArea').html(result);
+                                $('#profileArea').html(data);
                                 if (action == "Draft") {
                                     $("#SaveEvaluationsModalLabel").text("Draft Evaluations");
                                     $("#successEvaluationsLabel").text("Evaluations drafted successfully");
+                                  $("#SaveEvaluationsModal").modal('show');
+                                setTimeout(function () { HideModal("SaveEvaluationsModal"); }, 3000);
                                 }
                                 else {
                                     $("#SaveEvaluationsModalLabel").text("Submit Evaluations");
                                     $("#successEvaluationsLabel").text("Evaluations submitted successfully");
+                                    
+                                    if (result == true) {
+                                        $("#IsTerminationModal").modal('show');
+
+                                    }
+                                    else {
+                                    $("#SaveEvaluationsModal").modal('show');
+
+                                    }
+
                                 }
-                                $("#SaveEvaluationsModal").modal('show');
-                                setTimeout(function () { HideModal("SaveEvaluationsModal"); }, 3000);
+
 
                             }
                         }
