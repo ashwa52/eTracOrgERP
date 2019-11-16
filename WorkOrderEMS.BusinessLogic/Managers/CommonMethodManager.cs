@@ -2313,7 +2313,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     MiscellaneousID = a.MiscellaneousID,
                     eScanQRCID = a.eScanId,
                     IsRead = a.IsRead,
-                    CreatedBy=a.CreatedBy
+                    CreatedBy=a.CreatedBy,
+                    NotificationId=a.NID
                 }).ToList();
                 var userDetails = _db.UserRegistrations.Where(x => x.UserId == UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
                 if (notification.Count() > 0)
@@ -2361,8 +2362,9 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                           AddressFacilityReq = a.q.Address,
                                           LicensePlateNo = a.q.LicensePlateNo,
                                           CreatedBy=assignedBy.FirstName+" "+assignedBy.LastName,
-                                          EmployeeImage = assignedBy.ProfileImage// == null ? HostingPrefix + "/Content/Images/ProjectLogo/no-profile-pic.jpg" : HostingPrefix + (ConfigurationManager.AppSettings["WorkRequestImage"]).Replace("~", "") + assignedBy.ProfileImage
-
+                                          EmployeeImage = assignedBy.ProfileImage,// == null ? HostingPrefix + "/Content/Images/ProjectLogo/no-profile-pic.jpg" : HostingPrefix + (ConfigurationManager.AppSettings["WorkRequestImage"]).Replace("~", "") + assignedBy.ProfileImage
+                                          NotificationId=item.NotificationId,
+                                          WorkOrderID = item.WorkOrderID
 
                                       }).FirstOrDefault();
                             if (obj != null)
@@ -2394,15 +2396,18 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                 ///This is for Continues WO to send notification as per days 
                                 if (obj.WorkRequestProjectType == Convert.ToInt64(WorkRequestProjectType.ContinuousRequest))
                                 {
-                                    var dateList = obj.WeekDays.Split(',').ToList();
-                                    var todaysDate = DateTime.Now.ToShortDateString();
-                                    obj.Message = "Continous request " + obj.WorkOrderCodeId + " has not been started after arrived time" + obj.StartTime;
-                                    foreach (var date in dateList)
+                                    if (obj.WeekDays != null)
                                     {
-                                        if (date == todaysDate)
+                                        var dateList = obj.WeekDays.Split(',').ToList();
+                                        var todaysDate = DateTime.Now.ToShortDateString();
+                                        obj.Message = "Continous request " + obj.WorkOrderCodeId + " has not been started after arrived time" + obj.StartTime;
+                                        foreach (var date in dateList)
                                         {
-                                            //obj.IsWorkable = false;
-                                            listTask.Add(obj);
+                                            if (date == todaysDate)
+                                            {
+                                                //obj.IsWorkable = false;
+                                                listTask.Add(obj);
+                                            }
                                         }
                                     }
                                 }
@@ -2597,11 +2602,34 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
             catch (Exception ex)
             {
-                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<EmailHelper> GetUnseenList(NotificationDetailModel objDetails)", "Exception while getting the list for notification details", obj);
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<EmailHelper> GetUnseenNotifications(NotificationDetailModel objDetails)", "Exception while getting the list for notification details", obj);
                 throw;
             }
 
 
+        }
+        public bool SetIsReadNotification(long NotificationId)
+        {
+            var _db = new workorderEMSEntities();
+            bool result = false;
+            try
+            {
+                var Notification=_db.NotificationDetails.Where(x => x.NID == NotificationId).First();
+                if (Notification != null)
+                {
+                    Notification.IsRead = true;
+                    _db.SaveChanges();
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SetIsReadNotification(long NotificationId)", "Exception while Updating Notification IsRead Flag",NotificationId);
+
+                throw;
+            }
+            return result;
         }
     }
 }

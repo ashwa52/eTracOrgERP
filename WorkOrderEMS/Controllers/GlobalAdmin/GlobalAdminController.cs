@@ -2825,6 +2825,15 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                     //Added by Bhushan Dod
                     listForEmployeeDevice res = _IGlobalAdmin.sendNotificationContinuousRequestToEmployee(ObjLoginModel.LocationID, objWorkRequestAssignmentModel.AssignToUserId, objWorkRequestAssignmentModel);
                 }
+                if (objWorkRequestAssignmentModel != null && result == Result.Completed)
+                {
+                    var obj = new NotificationDetailModel();
+                    obj.CreatedBy = ObjLoginModel.UserId;
+                    obj.CreatedDate = Convert.ToDateTime(DateTime.UtcNow);
+                    obj.AssignTo = objWorkRequestAssignmentModel.AssignToUserId;
+                    obj.WorkOrderID = objWorkRequestAssignmentModel.WorkRequestAssignmentID;
+                    var saveDataForNotification = _ICommonMethod.SaveNotificationDetail(obj);
+                }
                 if (result == Result.Completed)
                 {
                     ViewBag.Message = CommonMessage.SaveSuccessMessage();
@@ -4232,6 +4241,20 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 UserId = ObjLoginModel.UserId;
             }
             return PartialView("_Notifications",_ICommonMethod.GetUnseenNotifications(UserId));
+        }
+
+        [HttpPost]
+        public ActionResult SetIsReadNotification(long NotificationId)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            long UserId = 0;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                UserId = ObjLoginModel.UserId;
+            }
+            _ICommonMethod.SetIsReadNotification(NotificationId);
+            return PartialView("_Notifications", _ICommonMethod.GetUnseenNotifications(UserId));
         }
 
     }
