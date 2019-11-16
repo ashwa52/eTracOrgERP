@@ -580,6 +580,17 @@ namespace WorkOrderEMS.Helper
         {
             return "Send for approval";
         }
-        
+        public static string ApprovedEmployeeStatus()
+        {
+            return "Employee has been approve";
+        }
+        public static string RejectEmployeeStatus()
+        {
+            return "Employee has been reject";
+        }
+        public static string SendAssessment()
+        {
+            return "Send assessment HR will get back to you.";
+        }
     }
 }

@@ -9,7 +9,7 @@ using WorkOrderEMS.Models.NewAdminModel;
 
 namespace WorkOrderEMS.Data.DataRepository
 {
-	public class NewAdminRepository : BaseRepository<ApplicantInfo>, INewAdminRepository
+	public class NewAdminDataRepository : BaseRepository<ApplicantInfo>, INewAdminRepository
 	{
 		workorderEMSEntities _workorderEMSEntities = new workorderEMSEntities();
 

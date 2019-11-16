@@ -31,6 +31,8 @@ namespace WorkOrderEMS.BusinessLogic
         List<UploadedFiles> GetUploadedFilesOfUser(string EmployeeId);
         List<GraphCountModel> GetEMP_ReqCount();
         List<JobTitleModel> GetJobTitleVacantList(long VSC_Id);
-        bool SavePromoDemo(DemotionModel Obj);
+        bool SaveCommonStatusOfEmployee(DemotionModel Obj);
+        List<EmployeeStatusList> GetEmployeeStatusList();
+        bool ApproveRejectEmployeeStatus(long Id, string Status, long UserId, string Comment);
     }
 }

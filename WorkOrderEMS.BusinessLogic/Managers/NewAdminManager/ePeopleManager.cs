@@ -394,6 +394,8 @@ namespace WorkOrderEMS.BusinessLogic
                             UserModel.Name = selfData.EmployeeName;
                             UserModel.EmpId = selfData.EMP_EmployeeID;
                             UserModel.LocationName = selfData.LocationName;
+                            UserModel.LocationIdCurrent = selfData.EMP_LocationId;
+                            UserModel.JobTitleCurrent = selfData.EMP_JobTitleId;
                             UserModel.Image = selfData.EMP_Photo == null ? HostingPrefix + ProfilePicPath.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + selfData.EMP_Photo;
                         }
                     }
@@ -604,7 +606,7 @@ namespace WorkOrderEMS.BusinessLogic
         /// <returns></returns>
         public bool SendJobTitleForApproval(JobTitleModel model)
         {
-            workorderEMSEntities _workorderEMS = new workorderEMSEntities();
+            var _workorderEMS = new workorderEMSEntities();
             bool isSaved = false;
             var Obj = new AddChartModel();
             try
@@ -691,14 +693,17 @@ namespace WorkOrderEMS.BusinessLogic
                 if (EmployeeId != null)
                 {
                     var getFileList = ePeopleRepository.GetUploadFilesList(EmployeeId).ToList();
-                    lst = getFileList.Select(x => new UploadedFiles()
+                    if (getFileList.Count() > 0)
                     {
-                        FileName = x.FLU_FileName == null ? null : x.FLU_FileName,
-                        FileTypeName = x.FLT_FileType == null ? null : x.FLT_FileType,
-                        AttachedFileName = x.FLU_FileAttached == null ? null : x.FLU_FileAttached,
-                        FileId = x.FLU_FLT_Id > 0 ? 0 : x.FLU_FLT_Id,
-                        AttachedFileLink = x.FLU_FileAttached == null ? null : HostingPrefix + FilePath.Replace("~", "") + x.FLU_FileAttached
-                    }).ToList();
+                        lst = getFileList.Select(x => new UploadedFiles()
+                        {
+                            FileName = x.FLU_FileName == null ? null : x.FLU_FileName,
+                            FileTypeName = x.FLT_FileType == null ? null : x.FLT_FileType,
+                            AttachedFileName = x.FLU_FileAttached == null ? null : x.FLU_FileAttached,
+                            FileId = x.FLU_FLT_Id > 0 ? 0 : x.FLU_FLT_Id,
+                            AttachedFileLink = x.FLU_FileAttached == null ? null : HostingPrefix + FilePath.Replace("~", "") + x.FLU_FileAttached
+                        }).ToList();
+                    }
                 }
                 return lst;
             }
@@ -709,7 +714,6 @@ namespace WorkOrderEMS.BusinessLogic
             }
         }
         #endregion Files
-
         #region GRAPH COUNT
         public List<GraphCountModel> GetEMP_ReqCount()
         {
@@ -777,24 +781,46 @@ namespace WorkOrderEMS.BusinessLogic
         /// </summary>
         /// <param name="Obj"></param>
         /// <returns></returns>
-        public bool SavePromoDemo(DemotionModel Obj)
+        public bool SaveCommonStatusOfEmployee(DemotionModel Obj)
         {
             bool isSaved = false;
+            var repository = new ePeopleRepository();
+            var _workorderEMS = new workorderEMSEntities();
             try
             {
                 if(Obj != null)
                 {
-                    if(Obj.StatusAction == "L")
+                    var getEmpDetails = _workorderEMS.UserRegistrations.Where(x => x.UserId == Obj.UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
+                    if (getEmpDetails != null)
                     {
-
-                    }
-                    else if (Obj.StatusAction == "S")
-                    {
-
-                    }
-                    else
-                    {
-                    
+                        Obj.CreatedBy = getEmpDetails.EmployeeID;
+                        Obj.FromDate = Obj.EffectiveDate;
+                        if (Obj.StatusAction == EmployeeStatusChnage.L)
+                        {        
+                            Obj.ChangeType = "Location Change";
+                            Obj.JobTitleCurrent = null;
+                            Obj.Action = "I";
+                            Obj.JobTitleId = null;
+                            Obj.ToDate = Obj.EffectiveDate.Value.AddDays(Convert.ToDouble(Obj.TempDays));
+                            var saveLocationTransfer = repository.SaveEmployeeStatus(Obj);
+                        }
+                        else if (Obj.StatusAction == EmployeeStatusChnage.S)
+                        {
+                            Obj.ChangeType = "Status Change";
+                            Obj.Action = "I";
+                            Obj.LocationIdCurrent = null;
+                            Obj.JobTitleCurrent = null;
+                            Obj.JobTitleId = null;
+                            var saveEmployeeStatus = repository.SaveEmployeeStatus(Obj);
+                        }
+                        else
+                        {
+                            Obj.ChangeType = "Promotion/Demotion";
+                            Obj.Action = "I";
+                            Obj.LocationIdCurrent = null;
+                            Obj.EmployeeCurrentStatus = null;
+                            var saveDemotion = repository.SaveEmployeeStatus(Obj);
+                        }
                     }
                     isSaved = true;
                 }
@@ -810,6 +836,88 @@ namespace WorkOrderEMS.BusinessLogic
                 throw;
             }
         }
+        /// <summary>
+        /// Created By :Ashwajit Bansod
+        /// Created Date : 14-Nov-2019
+        /// Created For : To get Employee status List
+        /// </summary>
+        /// <returns></returns>
+        public List<EmployeeStatusList> GetEmployeeStatusList()
+        {
+            var repository = new ePeopleRepository();
+            var lst = new List<EmployeeStatusList>();
+            try
+            {
+                lst = repository.GetEmployeeStatusList().Select(x => new EmployeeStatusList() {
+                   ESC_ApprovalStatus= x.ESC_ApprovalStatus == null ? "Not Approved": x.ESC_ApprovalStatus == "A" ? "Approved" :"Reject",
+                   ESC_ApprovedBy = x.ESC_ApprovedBy == null?"N/A": x.ESC_ApprovedBy,
+                   ESC_ChangeType= x.ESC_ChangeType,
+                   ESC_Date= x.ESC_Date.Value.ToString("MM/dd/yyyy"),
+                   ESC_EMP_EmployeeId= x.ESC_EMP_EmployeeId,
+                   ESC_Id = x.ESC_Id
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<EmployeeStatusList> GetEmployeeStatusList()", "Exception While getting list of Employee Status.", null);
+                throw;
+            }
+            return lst;
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 15-Nov-2019
+        /// Created For  : To approve reject employee status
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Status"></param>
+        /// <param name="UserId"></param>
+        /// <param name="Comment"></param>
+        /// <returns></returns>
+        public bool ApproveRejectEmployeeStatus(long Id, string Status, long UserId, string Comment)
+        {
+            var _workorderEMS = new workorderEMSEntities();
+            bool IsApproveReject = false;
+            try
+            {
+                var ePeopleRepository = new ePeopleRepository();
+                if (UserId > 0)
+                {
+                    var getEmpDetails = _workorderEMS.UserRegistrations.Where(x => x.UserId == UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
+                    if (getEmpDetails != null)
+                    {
+                        if (Id > 0 && Status != null)
+                        {
+                            var Statusdata = ePeopleRepository.ApproveRejectEmployeeReject(Id, Status, getEmpDetails.EmployeeID, Comment);
+                            IsApproveReject = true;
+                        }
+                        else
+                        {
+                            IsApproveReject = false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool ApproveRejectEmployeeStatus(long Id, string Status, long UserId, string Comment)", "Exception While approve reject employee status", Id);
+                throw;
+            }
+            return IsApproveReject;
+        }
+        //public bool SendForAssessment(string Status, string IsActive, long ApplicantId)
+        //{
+        //    var ePeopleRepository = new ePeopleRepository();
+        //    try
+        //    {
+        //        var sendForAssessment = ePeopleRepository.SendForAssessment(Status, IsActive, ApplicantId);
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        Exception_B.Exception_B.exceptionHandel_Runtime(ex, "bool SendForAssessment(string Status, string IsActive, long ApplicantId)", "Exception While sending assessment", ApplicantId);
+        //        throw;
+        //    }
+        //}
         #endregion Status Change
     }
 }

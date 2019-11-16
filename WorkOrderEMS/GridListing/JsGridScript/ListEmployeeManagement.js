@@ -65,7 +65,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                     $.ajax({
                                         type: "POST",
                                         // data: { 'Id': item.id},
-                                        url: base_url + '/EPeople/GetFileView?EMPId=' + item.id,
+                                        url: base_url + '/EPeople/GetFileViewTest?EMPId=' + item.id,
                                         beforeSend: function () {
                                             new fn_showMaskloader('Please wait...');
                                         },
@@ -443,12 +443,12 @@ $(document).ready(function () {
         });
     });
 
-    $("#SaveDemotion").click(function () {
+    $(".SaveDemotion").click(function () {
         debugger
         var modelData = $("#SaveStatusEmployee").serialize();
         $.ajax({
             type: "POST",
-            url: base_url + '/EPeople/SavePromotionDemotion',
+            url: base_url + '/EPeople/SaveStatus',
             data: modelData,
             beforeSend: function () {
                 new fn_showMaskloader('Please wait...');
@@ -626,6 +626,33 @@ function saveFile() {
         },
         error: function (err) {
             alert(err.statusText);
+        },
+        complete: function () {
+            fn_hideMaskloader();
+        }
+    });
+}
+
+function SaveEmployeeStatus(data) {
+    debugger
+    var modelData = $("#SaveStatusEmployee").serialize();
+    $.ajax({
+        type: "POST",
+        url: base_url + '/EPeople/SaveStatus',
+        data: modelData,
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
+        success: function (message) {
+            if (message != null) {
+                toastr.success(message);
+            }
+            else {
+                toastr.success(message);
+            }
+            $("#myModalForDemotionEmployee").modal("hide");
+        },
+        error: function (err) {
         },
         complete: function () {
             fn_hideMaskloader();

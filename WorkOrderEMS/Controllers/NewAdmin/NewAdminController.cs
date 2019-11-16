@@ -925,18 +925,18 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                         Session["eTrac_questions_number"] = num;
                         var currentQus = questions.Skip(num).Take(1).FirstOrDefault();
 
-                        return PartialView("ePeople/_questions", currentQus);
+                        return PartialView("~/Views/NewAdmin/ePeople/_questions.cshtml", currentQus);
                     }
-                    return PartialView("ePeople/_questions", questions.Where(x => x.INQ_QuestionType == "LastQuestion").FirstOrDefault());
+                    return PartialView("~/Views/NewAdmin/ePeople/_questions.cshtml", questions.Where(x => x.INQ_QuestionType == "LastQuestion").FirstOrDefault());
                 }
                 else
                 {
                     var currentQus = questions.Skip(0).Take(1).FirstOrDefault();
                     Session["eTrac_questions_number"] = 0;
-                    return PartialView("ePeople/_questions", currentQus);
+                    return PartialView("~/Views/NewAdmin/ePeople/_questions.cshtml", currentQus);
                 }
             }
-            return PartialView("ePeople/_questions", null);
+            return PartialView("~/Views/NewAdmin/ePeople/_questions.cshtml", null);
         }
         [HttpPost]
         public JsonResult SaveAnswers(InterviewAnswerModel model)
@@ -1030,6 +1030,46 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         public ActionResult GuestEmployee()
         {
             return View("~/Views/NewAdmin/GuestEmployee/GuestEmployee.cshtml");
+        }
+
+        //public JsonResult AssessmentStatusChange(string Status,string IsActive,long ApplicantId)
+        //{
+        //    string message =string.Empty;
+        //    try
+        //    {
+        //        if(Status != null && IsActive != null && ApplicantId > 0)
+        //        {
+        //            var sendForAssessment = _IePeopleManager.SendForAssessment(Status, IsActive, ApplicantId)
+        //            message = CommonMessage.SendAssessment();
+        //            return Json(message, JsonRequestBehavior.AllowGet);
+        //        }
+        //        else
+        //        {
+        //            message = CommonMessage.WrongParameterMessage();
+        //            return Json(message, JsonRequestBehavior.AllowGet);
+        //        }
+        //    }
+        //    catch(Exception ex)
+        //    {
+        //        return Json(ex, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
+        [HttpPost]
+        public PartialViewResult InterviewAcceptCancel(string status, long ApplicantId)
+        {
+            try
+            {
+                if(status != null && ApplicantId > 0)
+                {
+                    string IsActive = "Y";
+                    var isAccept = _GlobalAdminManager.SetInterviewAcceptCancel(status, ApplicantId, IsActive);
+                }
+            }
+            catch(Exception ex)
+            {
+
+            }
+            return PartialView("~/Views/NewAdmin/ePeople/_HiringOnBoardingDashboard.cshtml");
         }
         #endregion
         [HttpPost]
@@ -1316,5 +1356,4 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
 
     }
-}
 }

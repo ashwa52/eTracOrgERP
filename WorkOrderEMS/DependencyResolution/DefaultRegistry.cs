@@ -48,6 +48,7 @@ namespace WorkOrderEMS.DependencyResolution {
             For<IMiscellaneousManager>().Use<MiscellaneousManager>();
             For<ICommonMethod>().Use<CommonMethodManager>();
             For<IFillableFormManager>().Use<FillableFormManager>();
+            For<INotification>().Use<NotificationManager>();
         }
 
         #endregion

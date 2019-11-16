@@ -19,7 +19,7 @@
 
         .profile img {
             width: 60px;
-            height: auto;
+            height: 60px;
             border-radius: 50%;
             border: 1px solid #ddd;
         }
@@ -36,7 +36,7 @@
                 <img src="@Model.Image" />
             </div>
             <div class="info">
-                <label style="margin-left:30px;">Employee Id :</label><span style="color:#030ae3;">&nbsp;&nbsp;&nbsp; @Model.EmpId</span>
+                <label @*style="margin-left:30px;"*@>Employee Id :</label><span style="color:#030ae3;">&nbsp;&nbsp;&nbsp; @Model.EmpId</span>
                 <label style="margin-left:092px">Name :</label><span style="color:#030ae3;">&nbsp;&nbsp;&nbsp; @Model.Name</span>
                 <label style="margin-left:092px">Location :</label><span style="color:#030ae3;">&nbsp;&nbsp;&nbsp; @Model.LocationName</span>
             </div>
@@ -46,6 +46,7 @@
             </div>*@
             @Html.HiddenFor(model => model.EmpId)
             @Html.HiddenFor(model => model.StatusAction)
+            @Html.HiddenFor(model => model.JobTitleCurrent)
             <div class="bottom-sec" style="margin-top: 28px;">
                 <div class="basic-form">
                     <div class="form-group row">

@@ -6346,5 +6346,156 @@ namespace WorkOrderEMS.Data.EntityModel
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetVacant_JobTitle_Result>("spGetVacant_JobTitle", jBT_VST_IdParameter);
         }
+    
+        public virtual ObjectResult<spGetReviewMeetingDateTime_Result> spGetReviewMeetingDateTime(string rMS_EMP_EmployeeId, string rMS_FinencialYear, string rMS_FinQuarter)
+        {
+            var rMS_EMP_EmployeeIdParameter = rMS_EMP_EmployeeId != null ?
+                new ObjectParameter("RMS_EMP_EmployeeId", rMS_EMP_EmployeeId) :
+                new ObjectParameter("RMS_EMP_EmployeeId", typeof(string));
+    
+            var rMS_FinencialYearParameter = rMS_FinencialYear != null ?
+                new ObjectParameter("RMS_FinencialYear", rMS_FinencialYear) :
+                new ObjectParameter("RMS_FinencialYear", typeof(string));
+    
+            var rMS_FinQuarterParameter = rMS_FinQuarter != null ?
+                new ObjectParameter("RMS_FinQuarter", rMS_FinQuarter) :
+                new ObjectParameter("RMS_FinQuarter", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetReviewMeetingDateTime_Result>("spGetReviewMeetingDateTime", rMS_EMP_EmployeeIdParameter, rMS_FinencialYearParameter, rMS_FinQuarterParameter);
+        }
+    
+        public virtual int spSetReviewMeetingDateTime(string action, Nullable<long> rMS_Id, string rMS_IsActive, string rMS_EMP_EmployeeId, string rMS_FinencialYear, string rMS_FinQuarter, string rMS_InterviewDateTime)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var rMS_IdParameter = rMS_Id.HasValue ?
+                new ObjectParameter("RMS_Id", rMS_Id) :
+                new ObjectParameter("RMS_Id", typeof(long));
+    
+            var rMS_IsActiveParameter = rMS_IsActive != null ?
+                new ObjectParameter("RMS_IsActive", rMS_IsActive) :
+                new ObjectParameter("RMS_IsActive", typeof(string));
+    
+            var rMS_EMP_EmployeeIdParameter = rMS_EMP_EmployeeId != null ?
+                new ObjectParameter("RMS_EMP_EmployeeId", rMS_EMP_EmployeeId) :
+                new ObjectParameter("RMS_EMP_EmployeeId", typeof(string));
+    
+            var rMS_FinencialYearParameter = rMS_FinencialYear != null ?
+                new ObjectParameter("RMS_FinencialYear", rMS_FinencialYear) :
+                new ObjectParameter("RMS_FinencialYear", typeof(string));
+    
+            var rMS_FinQuarterParameter = rMS_FinQuarter != null ?
+                new ObjectParameter("RMS_FinQuarter", rMS_FinQuarter) :
+                new ObjectParameter("RMS_FinQuarter", typeof(string));
+    
+            var rMS_InterviewDateTimeParameter = rMS_InterviewDateTime != null ?
+                new ObjectParameter("RMS_InterviewDateTime", rMS_InterviewDateTime) :
+                new ObjectParameter("RMS_InterviewDateTime", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetReviewMeetingDateTime", actionParameter, rMS_IdParameter, rMS_IsActiveParameter, rMS_EMP_EmployeeIdParameter, rMS_FinencialYearParameter, rMS_FinQuarterParameter, rMS_InterviewDateTimeParameter);
+        }
+    
+        public virtual ObjectResult<spGetEmployeeStatusChangeDetails_Result> spGetEmployeeStatusChangeDetails(Nullable<long> eSC_Id)
+        {
+            var eSC_IdParameter = eSC_Id.HasValue ?
+                new ObjectParameter("ESC_Id", eSC_Id) :
+                new ObjectParameter("ESC_Id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEmployeeStatusChangeDetails_Result>("spGetEmployeeStatusChangeDetails", eSC_IdParameter);
+        }
+    
+        public virtual ObjectResult<spGetEmployeeStatusChangeList_Result> spGetEmployeeStatusChangeList()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEmployeeStatusChangeList_Result>("spGetEmployeeStatusChangeList");
+        }
+    
+        public virtual int spSetEmployeeStatusChange(string eSC_ChangeType, string eSC_EMP_EmployeeId, Nullable<long> eSC_EMP_JobTitleIdCurrent, Nullable<long> eSC_EMP_JobTitleIdNext, Nullable<long> eSC_EMP_LocationIdCurrent, Nullable<long> eSC_EMP_LocationIdNext, string eSC_VST_EmploymentStatusCurrent, string eSC_VST_EmploymentStatusNext, Nullable<System.DateTime> eSC_EffectiveFromDate, Nullable<System.DateTime> eSC_EffectiveToDate, string eSC_CreatedBy)
+        {
+            var eSC_ChangeTypeParameter = eSC_ChangeType != null ?
+                new ObjectParameter("ESC_ChangeType", eSC_ChangeType) :
+                new ObjectParameter("ESC_ChangeType", typeof(string));
+    
+            var eSC_EMP_EmployeeIdParameter = eSC_EMP_EmployeeId != null ?
+                new ObjectParameter("ESC_EMP_EmployeeId", eSC_EMP_EmployeeId) :
+                new ObjectParameter("ESC_EMP_EmployeeId", typeof(string));
+    
+            var eSC_EMP_JobTitleIdCurrentParameter = eSC_EMP_JobTitleIdCurrent.HasValue ?
+                new ObjectParameter("ESC_EMP_JobTitleIdCurrent", eSC_EMP_JobTitleIdCurrent) :
+                new ObjectParameter("ESC_EMP_JobTitleIdCurrent", typeof(long));
+    
+            var eSC_EMP_JobTitleIdNextParameter = eSC_EMP_JobTitleIdNext.HasValue ?
+                new ObjectParameter("ESC_EMP_JobTitleIdNext", eSC_EMP_JobTitleIdNext) :
+                new ObjectParameter("ESC_EMP_JobTitleIdNext", typeof(long));
+    
+            var eSC_EMP_LocationIdCurrentParameter = eSC_EMP_LocationIdCurrent.HasValue ?
+                new ObjectParameter("ESC_EMP_LocationIdCurrent", eSC_EMP_LocationIdCurrent) :
+                new ObjectParameter("ESC_EMP_LocationIdCurrent", typeof(long));
+    
+            var eSC_EMP_LocationIdNextParameter = eSC_EMP_LocationIdNext.HasValue ?
+                new ObjectParameter("ESC_EMP_LocationIdNext", eSC_EMP_LocationIdNext) :
+                new ObjectParameter("ESC_EMP_LocationIdNext", typeof(long));
+    
+            var eSC_VST_EmploymentStatusCurrentParameter = eSC_VST_EmploymentStatusCurrent != null ?
+                new ObjectParameter("ESC_VST_EmploymentStatusCurrent", eSC_VST_EmploymentStatusCurrent) :
+                new ObjectParameter("ESC_VST_EmploymentStatusCurrent", typeof(string));
+    
+            var eSC_VST_EmploymentStatusNextParameter = eSC_VST_EmploymentStatusNext != null ?
+                new ObjectParameter("ESC_VST_EmploymentStatusNext", eSC_VST_EmploymentStatusNext) :
+                new ObjectParameter("ESC_VST_EmploymentStatusNext", typeof(string));
+    
+            var eSC_EffectiveFromDateParameter = eSC_EffectiveFromDate.HasValue ?
+                new ObjectParameter("ESC_EffectiveFromDate", eSC_EffectiveFromDate) :
+                new ObjectParameter("ESC_EffectiveFromDate", typeof(System.DateTime));
+    
+            var eSC_EffectiveToDateParameter = eSC_EffectiveToDate.HasValue ?
+                new ObjectParameter("ESC_EffectiveToDate", eSC_EffectiveToDate) :
+                new ObjectParameter("ESC_EffectiveToDate", typeof(System.DateTime));
+    
+            var eSC_CreatedByParameter = eSC_CreatedBy != null ?
+                new ObjectParameter("ESC_CreatedBy", eSC_CreatedBy) :
+                new ObjectParameter("ESC_CreatedBy", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetEmployeeStatusChange", eSC_ChangeTypeParameter, eSC_EMP_EmployeeIdParameter, eSC_EMP_JobTitleIdCurrentParameter, eSC_EMP_JobTitleIdNextParameter, eSC_EMP_LocationIdCurrentParameter, eSC_EMP_LocationIdNextParameter, eSC_VST_EmploymentStatusCurrentParameter, eSC_VST_EmploymentStatusNextParameter, eSC_EffectiveFromDateParameter, eSC_EffectiveToDateParameter, eSC_CreatedByParameter);
+        }
+    
+        public virtual int spSetEmployeeStatusChangeApproval(Nullable<long> eSC_Id, string approvedBy, string approvalStatus, string approvalComment)
+        {
+            var eSC_IdParameter = eSC_Id.HasValue ?
+                new ObjectParameter("ESC_Id", eSC_Id) :
+                new ObjectParameter("ESC_Id", typeof(long));
+    
+            var approvedByParameter = approvedBy != null ?
+                new ObjectParameter("ApprovedBy", approvedBy) :
+                new ObjectParameter("ApprovedBy", typeof(string));
+    
+            var approvalStatusParameter = approvalStatus != null ?
+                new ObjectParameter("ApprovalStatus", approvalStatus) :
+                new ObjectParameter("ApprovalStatus", typeof(string));
+    
+            var approvalCommentParameter = approvalComment != null ?
+                new ObjectParameter("ApprovalComment", approvalComment) :
+                new ObjectParameter("ApprovalComment", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetEmployeeStatusChangeApproval", eSC_IdParameter, approvedByParameter, approvalStatusParameter, approvalCommentParameter);
+        }
+    
+        public virtual int spSetApplicantStatus(Nullable<long> applicantId, string aPI_ApplicantStatus, string aPI_IsActive)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("ApplicantId", applicantId) :
+                new ObjectParameter("ApplicantId", typeof(long));
+    
+            var aPI_ApplicantStatusParameter = aPI_ApplicantStatus != null ?
+                new ObjectParameter("API_ApplicantStatus", aPI_ApplicantStatus) :
+                new ObjectParameter("API_ApplicantStatus", typeof(string));
+    
+            var aPI_IsActiveParameter = aPI_IsActive != null ?
+                new ObjectParameter("API_IsActive", aPI_IsActive) :
+                new ObjectParameter("API_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApplicantStatus", applicantIdParameter, aPI_ApplicantStatusParameter, aPI_IsActiveParameter);
+        }
     }
 }

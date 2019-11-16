@@ -101,7 +101,7 @@ namespace WorkOrderEMS.Infrastructure
                 For<IGuestUser>().Use<GuestUserRepository>();
                 For<IGuestUserRepository>().Use<GuestUserRepositoryData>();
                 For<IFillableFormManager>().Use<FillableFormManager>();
-                For<INewAdminRepository>().Use<NewAdminRepository>();
+                For<INewAdminRepository>().Use<NewAdminDataRepository>();
                 For<IDebitMemo>().Use<DebitMemoManager>();
             }
         }

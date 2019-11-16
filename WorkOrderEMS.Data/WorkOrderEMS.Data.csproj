@@ -124,6 +124,7 @@
     <Compile Include="DataRepository\NewAdminRepository\DepartmentRepository.cs" />
     <Compile Include="DataRepository\NewAdminRepository\ePeopleRepository.cs" />
     <Compile Include="DataRepository\NewAdminRepository\FillableFormRepository.cs" />
+    <Compile Include="DataRepository\NewAdminRepository\PerformanceRepository.cs" />
     <Compile Include="DataRepository\NewAdminRepository\VehicleSeatingChartRepository.cs" />
     <Compile Include="DataRepository\NotificationDetailsRepository.cs" />
     <Compile Include="DataRepository\PassengerTrackingCountRepository.cs" />
@@ -705,6 +706,12 @@
     <Compile Include="EntityModel\spGetEmployeePersonalInfo_Result2.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityModel\spGetEmployeeStatusChangeDetails_Result.cs">
+      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\spGetEmployeeStatusChangeList_Result.cs">
+      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\spGetEvaluationList_Result.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
@@ -892,6 +899,9 @@
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\spGetRequisitionList_Result2.cs">
+      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\spGetReviewMeetingDateTime_Result.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\spGetRule_Result.cs">

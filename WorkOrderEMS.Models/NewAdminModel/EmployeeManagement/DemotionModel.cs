@@ -22,8 +22,24 @@ namespace WorkOrderEMS.Models
         public DateTime? FromDate { get; set; }
         public long LocationId { get; set; }
         public string TransferType { get; set; }
-        public long JobTitleId { get; set; }
-        public long TempDays { get; set; }
+        public long? JobTitleId { get; set; }
+        public long? TempDays { get; set; }
         public string StatusAction { get; set; }
+        public string ChangeType { get; set; }
+        public long? JobTitleCurrent { get; set; }
+        public long? LocationIdCurrent { get; set; }
+        public string EmployeeCurrentStatus { get; set; }
+        public string Action { get; set; }
+        public string CreatedBy { get; set; }
+        public long UserId { get; set; }
+    }
+    public class EmployeeStatusList
+    {
+        public long ESC_Id { get; set; }
+        public string ESC_EMP_EmployeeId { get; set; }
+        public string ESC_ChangeType { get; set; }
+        public string ESC_ApprovedBy { get; set; }
+        public string ESC_ApprovalStatus { get; set; }
+        public string ESC_Date { get; set; }
     }
 }

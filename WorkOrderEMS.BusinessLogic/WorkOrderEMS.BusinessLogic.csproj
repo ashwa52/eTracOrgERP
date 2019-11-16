@@ -211,6 +211,7 @@
     <Compile Include="Interfaces\ILogin.cs" />
     <Compile Include="Interfaces\IManageManager.cs" />
     <Compile Include="Interfaces\IManagerAppeMaintenance.cs" />
+    <Compile Include="Interfaces\INotification.cs" />
     <Compile Include="Interfaces\IPushNotification.cs" />
     <Compile Include="Interfaces\IQRCSetup.cs" />
     <Compile Include="Interfaces\IReportManager.cs" />
@@ -275,6 +276,7 @@
     <Compile Include="Managers\NewAdminManager\VehicleSeatingChartManager.cs" />
     <Compile Include="Managers\NewAdminManager\DepartmentManager.cs" />
     <Compile Include="Managers\NewEmployeeApp\NewEmployeeAppManager.cs" />
+    <Compile Include="Managers\NotificationManager.cs" />
     <Compile Include="Managers\PDF\MainPDFFormManager.cs" />
     <Compile Include="Managers\PushNotificationManager.cs" />
     <Compile Include="Managers\QRCSetupManager.cs" />

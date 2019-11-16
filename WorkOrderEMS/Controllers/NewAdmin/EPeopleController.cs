@@ -939,14 +939,21 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         /// </summary>
         /// <param name="Obj"></param>
         /// <returns></returns>
+        [HttpPost]
         public JsonResult SaveStatus(DemotionModel Obj) 
         {
             string message = "";
+            eTracLoginModel ObjLoginModel = null;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                Obj.UserId = ObjLoginModel.UserId;
+            }
             try
             {
                 if(Obj != null)
                 {
-                    var isSaved = _IePeopleManager.SavePromoDemo(Obj);
+                    var isSaved = _IePeopleManager.SaveCommonStatusOfEmployee(Obj);
                     if(isSaved == true)
                     {
                          message = CommonMessage.Successful();
@@ -962,6 +969,71 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 return Json(ex, JsonRequestBehavior.AllowGet);
             }
             return Json(message, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult EmployeestatusList()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            var getDetails = _IePeopleManager.GetEmployeeStatusList();
+            if(getDetails.Count() > 0)
+            {
+                return Json(getDetails, JsonRequestBehavior.AllowGet);
+                //return getDetails;
+            }
+            else
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+                //return null;
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 15-Nov-2019
+        /// Created Fro : To approve/Reject Employee Status
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Status"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult ApproveRejectEmployeeStatus(long Id, string Status, string Comment)
+        {
+            long UserId = 0;
+            eTracLoginModel ObjLoginModel = null;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                UserId = ObjLoginModel.UserId;
+            }
+            try
+            {
+                var isApprove = _IePeopleManager.ApproveRejectEmployeeStatus(Id, Status, UserId, Comment);
+                if (isApprove == true)
+                {
+                    string Message = "";
+                    if (Status == "A")
+                    {
+                        Message = CommonMessage.ApprovedEmployeeStatus();
+                    }
+                    else
+                    {
+                        Message = CommonMessage.RejectEmployeeStatus();
+                    }
+                    return Json(Message, JsonRequestBehavior.AllowGet);
+                    //return getDetails;
+                }
+                else
+                {
+                    return Json(CommonMessage.FailureMessage(), JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch(Exception ex)
+            {
+                return Json(ex, JsonRequestBehavior.AllowGet);
+            }
         }
         #endregion Status Change
 
@@ -1024,15 +1096,47 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 var _FillableFormRepository = new FillableFormRepository();
                 if (getUser != null)
                 {
-                    model = _IePeopleManager.GetUploadedFilesOfUser(getUser.EmployeeID);
-                }
-                if (getUser != null)
-                {
+                    model = _IePeopleManager.GetUploadedFilesOfUser(getUser.EmployeeID);               
                     var details = _IGuestUserRepository.GetEmployee(_UserId);
                     ViewBag.ImageUser = details.Image == null ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + details.Image;
                     ViewBag.EmployeeID = details.EmpId;
                     ViewBag.EmployeeName = details.FirstName + " " + details.LastName;
-                    var getDetails = _FillableFormRepository.GetFileList();
+                    var getDetails = _FillableFormRepository.GetFileList().ToList();
+                    ViewBag.GreenList = getDetails.Where(x => x.FLT_FileType == "Green").ToList();
+                    ViewBag.Red = getDetails.Where(x => x.FLT_FileType == "Red").ToList();
+                    ViewBag.Yellow = getDetails.Where(x => x.FLT_FileType == "Yellow").ToList();
+                }
+                return PartialView("~/Views/NewAdmin/ePeople/_FilesEmployeeManagement.cshtml", model);
+            }
+            catch (Exception ex)
+            {
+                return PartialView("~/Views/NewAdmin/ePeople/_FilesEmployeeManagement.cshtml", model);
+            }
+        }
+        [HttpPost]
+        public ActionResult GetFileViewTest(string EMPId)
+        {
+            var _workorderems = new workorderEMSEntities();
+
+            var model = new List<UploadedFiles>();
+            long _UserId = 0;
+            try
+            {
+                if (EMPId != null)
+                {
+                    var id = Cryptography.GetDecryptedData(EMPId, true);
+                    long.TryParse(id, out _UserId);
+                }
+                var getUser = _workorderems.UserRegistrations.Where(x => x.UserId == _UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
+                var _FillableFormRepository = new FillableFormRepository();
+                if (getUser != null)
+                {
+                    model = _IePeopleManager.GetUploadedFilesOfUser(getUser.EmployeeID);
+                    var details = _IGuestUserRepository.GetEmployee(_UserId);
+                    ViewBag.ImageUser = details.Image == null ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + details.Image;
+                    ViewBag.EmployeeID = details.EmpId;
+                    ViewBag.EmployeeName = details.FirstName + " " + details.LastName;
+                    var getDetails = _FillableFormRepository.GetFileList().ToList();
                     ViewBag.GreenList = getDetails.Where(x => x.FLT_FileType == "Green").ToList();
                     ViewBag.Red = getDetails.Where(x => x.FLT_FileType == "Red").ToList();
                     ViewBag.Yellow = getDetails.Where(x => x.FLT_FileType == "Yellow").ToList();
@@ -1059,7 +1163,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             return File(fs, "application/pdf");
         }
         /// <summary>
-        /// Created By  :Ashwajit bansod
+        /// Created By  :Ashwajit Bansod
         /// Created Date : 07-Nov-2019
         /// Created For : To upload files by file type and employee id
         /// </summary>

@@ -49,7 +49,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         WorkRequestAssignmentRepository objWorkRequestAssignmentRepository;
         EmailLogRepository objEmailLogRepository = null;
         PerformanceRepository ObjPerformanceRepository = null;
-        NewAdminRepository ObjnewAdminRepository;
+        NewAdminDataRepository ObjnewAdminRepository;
         private string ProfileImagePath = ConfigurationManager.AppSettings["ProfilePicPath"];
         private string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private readonly string ConstantImages = ConfigurationManager.AppSettings["ConstantImages"] + "Images/constant/no-profile-pic.jpg";
@@ -3842,7 +3842,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                       Image = x.API_Photo,
                                       JobTitle = x.JBT_JobTitle,
                                       ApplicantId = x.API_ApplicantId,
-                                      DesireSalary = x.API_DesireSalary
+                                      DesireSalary = x.API_DesireSalary,
+                                      IsActive = x.API_IsActive
                                   }
                                 ).ToList();
                 return myOpenings;
@@ -3904,7 +3905,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         }
         public List<spGetApplicantInfo_Result2> GetApplicantInfo(long userId)
         {
-            ObjnewAdminRepository = new NewAdminRepository();
+            ObjnewAdminRepository = new NewAdminDataRepository();
             try
             {
                 using (workorderEMSEntities context = new workorderEMSEntities())
@@ -4009,7 +4010,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         public bool VerifyEmployee(OnboardingDetailRequestModel onboardingDetailRequestModel)
         {
             bool IsVerify = false;
-            ObjnewAdminRepository = new NewAdminRepository();
+            ObjnewAdminRepository = new NewAdminDataRepository();
             var Context = new workorderEMSEntities();
             try
             {
@@ -4037,7 +4038,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         }
         public bool SaveGuestEmployeeBasicInfo(GuestEmployeeBasicInfoRequestModel guestEmployeeBasicInfoRequestModel)
         {
-            ObjnewAdminRepository = new NewAdminRepository();
+            ObjnewAdminRepository = new NewAdminDataRepository();
             try
             {
                 return ObjnewAdminRepository.SaveGuestEmployeeBasicInfo(guestEmployeeBasicInfoRequestModel);
@@ -4170,6 +4171,23 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
         }
 
+        public bool SetInterviewAcceptCancel(string status, long ApplicantId, string IsActive)
+        {
+            bool isAccept = false;
+            if (status != null && ApplicantId > 0)
+            {
+                using (workorderEMSEntities context = new workorderEMSEntities())
+                {
+                    var getData = context.spSetApplicantStatus(ApplicantId, status, IsActive);
+                    isAccept=true;
+                }
+            }
+            else
+            {
+                isAccept = false;
+            }
+            return isAccept;
+        }
 
         /// <summary>GetListOf306090ForJSGrid
         /// <Modified By>mayur sahu</Modified> 

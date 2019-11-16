@@ -154,16 +154,11 @@
                             <i class="fa fa-calendar" aria-hidden="true"></i>
                             <input id="datepicker" type="text" style=" display: inline-block; width: 84%; border-color: #018FFC; background-color: #018FFC; border: 0px; border-bottom: 1px solid #ddd;">
                         </div>
-                        <div class="dropdown right-pad" @*style="float:right;margin:2px"*@>
-                            <button type="button" class="btn btn-primary dropdown-toggle" style="width: 181px;" @*style="padding: 12px 14px 12px 13px;"*@ data-toggle="dropdown">
-                                Dropdown button
-                            </button>
-                            <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Link 1</a>
-                                <a class="dropdown-item" href="#">Link 2</a>
-                                <a class="dropdown-item" href="#">Link 3</a>
-                            </div>
-                        </div>
+                        <select class = "form-control" id = "ToAcceptRejectAfterInterview" onchange="ToAcceptRejectAfterInterview(this)" style="background:#2197ff;color:white;" applicantid ="@Model.model.ApplicantId">
+                            <option value="0">--Select Status--</option>
+                            <option value="D">Accept</option>
+                            <option value="C">Reject</option>
+                        </select>                       
                     </div>
 				</div>
 			</div>

@@ -75,16 +75,92 @@ function myOpenings(PostingId) {
 			{ title: "Phone", width: 60, name: "PhoneNumber" },
 			{ title: "Email", width: 60, name: "Email" },
 			{ title: "Status", width: 50, name: "Status" },
-			{
-			    title: 'Action', width: 70, itemTemplate: function (value, item) {
-			        return $("<div>").addClass("actionDiv").append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-exclamation-triangle whiteR"))
-						.append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-gg-circle whiteB"))
-						.append($("<div>").addClass("action1 inline actionbox").append($("<a>").attr({ "onclick": "TakeInterview(" + JSON.stringify(item) + ")", "href": "#" }).append("<i>").attr({ "style": "color:darkblue" }).addClass("fa fa-diamond whiteGr")))
-						.append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-check-circle whiteY"))
-						.append($("<div>").addClass("action1 inline actionboxR").append("<i>").addClass("fa fa-check white"))
-			        .append($("<div>").addClass("action1 inline actionboxS").append("<a>").attr({ "onclick": "GoToRecruitee(" + JSON.stringify(item) + ")", "href": "#" }).addClass("fa fa-clock-o fa-2x whiteS"));
-			    }
-			},
+			//{
+			//    title: 'Action', width: 70, itemTemplate: function (value, item) {
+			//        return $("<div>").addClass("actionDiv").append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-exclamation-triangle whiteR"))
+			//			.append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-gg-circle whiteB"))
+			//			.append($("<div>").addClass("action1 inline actionbox").append($("<a>").attr({ "onclick": "TakeInterview(" + JSON.stringify(item) + ")", "href": "#" }).append("<i>").attr({ "style": "color:darkblue" }).addClass("fa fa-diamond whiteGr")))
+			//			.append($("<div>").addClass("action1 inline actionbox").append("<i>").addClass("fa fa-buysellads whiteY"))
+			//			.append($("<div>").addClass("action1 inline actionboxR").append("<i>").addClass("fa fa-btc white"))
+			//        .append($("<div>").addClass("action1 inline actionboxS").append("<a>").attr({ "onclick": "GoToRecruitee(" + JSON.stringify(item) + ")", "href": "#" }).addClass("fa fa-clock-o fa-2x whiteS"));
+			//    }
+			//},
+             {
+                 title: "Action", width: 70, css: "text-center", itemTemplate: function (value, item) {
+                     var $iconAssessment, $iconBackground;
+                     var $iconFirst = $("<i>").attr({ class: "fa fa-exclamation-triangle whiteR" });
+                     var $iconSecond = $("<i>").attr({ class: "fa fa-gg-circle whiteB" }).attr({ style: "color:red;font-size:22px;margin-left:8px;" });
+                     //var $iconDiamond = $("<i>").attr({ class: "fa fa-diamond" }).attr({ style: "color:red;font-size:22px;margin-left:8px;" });
+                     var $iconDiamond = $("<i>").attr({ class: "fa fa-diamond whiteGr" }).attr({ style: "color:green;font-size:22px;margin-left:8px;" });
+                     if (item.Status == "Shortlisted") {
+                         $iconAssessment = $("<i>").attr({ class: "fa fa-buysellads whiteY" }).attr({ style: "color:red;font-size:22px;margin-left:8px;" });
+                     }
+                     if (item.Status == "AssessmentPass" && item.IsActive == "Y") {
+                          $iconBackground = $("<i>").attr({ class: "fa fa-btc white" }).attr({ style: "color:green;font-size:22px;margin-left:8px;" });
+                     }
+                     var $iconGoTORecruitee = $("<i>").attr({ class: "fa fa-clock-o fa-2x whiteS" }).attr({ style: "color:red;font-size:22px;margin-left:8px;" });
+                     var $customFirstButton = $("<span>")
+                           .attr({ title: jsGrid.fields.control.prototype.deleteButtonTooltip })
+                           .attr({ id: "btn-first-" + item.ApplicantId }).click(function (e) {
+                               debugger
+                           }).append($iconFirst);
+
+                     var $customSecondButton = $("<span>")
+                           .attr({ title: jsGrid.fields.control.prototype.deleteButtonTooltip })
+                           .attr({ id: "btn-second-" + item.ApplicantId }).click(function (e) {
+                               debugger
+                           }).append($iconSecond);
+
+                     var $customDiamondButton = $("<span>")
+                             .attr({ title: jsGrid.fields.control.prototype.deleteButtonTooltip })
+                             .attr({ id: "btn-diamond-" + item.ApplicantId }).click(function (e) {
+                                 debugger
+                                 TakeInterview(item);
+                             }).append($iconDiamond);
+
+                     var $customAssessmentButton = $("<span>")
+                          .attr({ title: jsGrid.fields.control.prototype.deleteButtonTooltip })
+                          .attr({ id: "btn-Assessment-" + item.ApplicantId }).click(function (e) {
+                              debugger
+                              $.ajax({
+                                  type: "POST",
+                                  url: base_url + '/NewAdmin/AssessmentStatusChange?Status=' + "E" + "&IsActive=" + "S" + "&ApplicantId=" + item.ApplicantId,
+                                  beforeSend: function () {
+                                      new fn_showMaskloader('Please wait...');
+                                  },
+                                  success: function (message) {
+                                      if (message != null) {
+                                          toastr.success(message);
+                                      }
+                                      else {
+                                          toastr.success(message);
+                                      }
+                                      $("#myModalForDemotionEmployee").modal("hide");
+                                  },
+                                  error: function (err) {
+                                  },
+                                  complete: function () {
+                                      fn_hideMaskloader();
+                                  }
+                              });
+                          }).append($iconAssessment);
+
+                     var $customBackgroundButton = $("<span>")
+                          .attr({ title: jsGrid.fields.control.prototype.deleteButtonTooltip })
+                          .attr({ id: "btn-Background-" + item.ApplicantId }).click(function (e) {
+                              debugger
+                          }).append($iconBackground);
+
+                     var $customRecruiteeButton = $("<span>")
+                          .attr({ title: jsGrid.fields.control.prototype.deleteButtonTooltip })
+                          .attr({ id: "btn-Recruitee-" + item.ApplicantId }).click(function (e) {
+                              debugger
+                              window.location.href = "https://app.recruitee.com/#/settings/scheduler";
+                          }).append($iconGoTORecruitee);
+
+                     return $("<div>").attr({ class: "btn-toolbar" }).append($customFirstButton).append($customSecondButton).append($customDiamondButton).append($customAssessmentButton).append($customBackgroundButton).append($customRecruiteeButton);
+                 }
+             }
         ]
     });
 
@@ -281,6 +357,7 @@ function JobPosting() {
     MyOpeningSummery();
 }
 function TakeInterview(item) {
+    debugger
     $.ajax({
         url: base_url + '/NewAdmin/InfoFactSheet',
         method: 'POST',
@@ -315,6 +392,7 @@ function GetInterviewQuestions() {
         url: base_url + '/NewAdmin/GetInterviewQuestionView',
         method: 'GET',
         success: function (response) {
+            debugger
             Getquestions(null);
             $("#interviewArea").html(response);
         }
@@ -575,5 +653,19 @@ function GetCompanyOpening() {
 
 function GoToRecruitee(item) {
     debugger
-    window.location.href = "https://app.recruitee.com/#/settings/scheduler";
+    
 }
+
+   function ToAcceptRejectAfterInterview(data) {
+        debugger
+        var getAppId = $(data).attr("applicantid");
+        var getVal = $("#ToAcceptRejectAfterInterview option:selected").val();
+        $.ajax({
+            url: base_url + '/NewAdmin/InterviewAcceptCancel?status=' + getVal + "&ApplicantId=" + getAppId,
+            method: 'POST',
+            //data: { ApplicantId: ApplicantId, IsAvailable: IsAvailable, Comment: comment },
+            success: function (response) {
+               
+            }
+        });
+    }

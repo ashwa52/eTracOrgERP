@@ -5034,6 +5034,10 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         <Function Name="spGetEmployeePersonalInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="spGetEmployeeStatusChangeDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ESC_Id" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="spGetEmployeeStatusChangeList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetEvaluationList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
         </Function>
@@ -5195,6 +5199,11 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="QNA_Application" Type="char" Mode="In" />
         </Function>
         <Function Name="spGetRequisitionList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetReviewMeetingDateTime" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="RMS_EMP_EmployeeId" Type="varchar" Mode="In" />
+          <Parameter Name="RMS_FinencialYear" Type="varchar" Mode="In" />
+          <Parameter Name="RMS_FinQuarter" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spGetRule" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetSelfPOList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="bigint" Mode="In" />
@@ -5285,6 +5294,11 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="API_HiringManagerID" Type="varchar" Mode="In" />
           <Parameter Name="API_DateOfJoining" Type="date" Mode="In" />
           <Parameter Name="API_DesireSalary" Type="numeric" Mode="In" />
+          <Parameter Name="API_ApplicantStatus" Type="char" Mode="In" />
+          <Parameter Name="API_IsActive" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetApplicantStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ApplicantId" Type="bigint" Mode="In" />
           <Parameter Name="API_ApplicantStatus" Type="char" Mode="In" />
           <Parameter Name="API_IsActive" Type="char" Mode="In" />
         </Function>
@@ -5743,6 +5757,25 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="EHB_EMP_EmployeeID" Type="varchar" Mode="In" />
           <Parameter Name="EHB_IsActive" Type="char" Mode="In" />
         </Function>
+        <Function Name="spSetEmployeeStatusChange" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ESC_ChangeType" Type="varchar" Mode="In" />
+          <Parameter Name="ESC_EMP_EmployeeId" Type="varchar" Mode="In" />
+          <Parameter Name="ESC_EMP_JobTitleIdCurrent" Type="bigint" Mode="In" />
+          <Parameter Name="ESC_EMP_JobTitleIdNext" Type="bigint" Mode="In" />
+          <Parameter Name="ESC_EMP_LocationIdCurrent" Type="bigint" Mode="In" />
+          <Parameter Name="ESC_EMP_LocationIdNext" Type="bigint" Mode="In" />
+          <Parameter Name="ESC_VST_EmploymentStatusCurrent" Type="varchar" Mode="In" />
+          <Parameter Name="ESC_VST_EmploymentStatusNext" Type="varchar" Mode="In" />
+          <Parameter Name="ESC_EffectiveFromDate" Type="date" Mode="In" />
+          <Parameter Name="ESC_EffectiveToDate" Type="date" Mode="In" />
+          <Parameter Name="ESC_CreatedBy" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spSetEmployeeStatusChangeApproval" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ESC_Id" Type="bigint" Mode="In" />
+          <Parameter Name="ApprovedBy" Type="varchar" Mode="In" />
+          <Parameter Name="ApprovalStatus" Type="char" Mode="In" />
+          <Parameter Name="ApprovalComment" Type="varchar(max)" Mode="In" />
+        </Function>
         <Function Name="spSetEvaluationQuarterly" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Action" Type="char" Mode="In" />
           <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
@@ -5980,6 +6013,15 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="SAR_AnswerManager" Type="char" Mode="In" />
           <Parameter Name="SAR_Comments" Type="varchar(max)" Mode="In" />
           <Parameter Name="SAR_IsActive" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetReviewMeetingDateTime" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Action" Type="char" Mode="In" />
+          <Parameter Name="RMS_Id" Type="bigint" Mode="In" />
+          <Parameter Name="RMS_IsActive" Type="char" Mode="In" />
+          <Parameter Name="RMS_EMP_EmployeeId" Type="varchar" Mode="In" />
+          <Parameter Name="RMS_FinencialYear" Type="varchar" Mode="In" />
+          <Parameter Name="RMS_FinQuarter" Type="varchar" Mode="In" />
+          <Parameter Name="RMS_InterviewDateTime" Type="varchar" Mode="In" />
         </Function>
         <Function Name="spSetRule" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="RULAction" Type="char" Mode="In" />
@@ -14190,7 +14232,49 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           </FunctionImport>
           <FunctionImport Name="spGetBudgetDetailsForPOGraphs" />
           <FunctionImport Name="spGetVacant_JobTitle" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetVacant_JobTitle_Result)">
-            <Parameter Name="JBT_VST_Id" Mode="In" Type="Int64" />
+          <Parameter Name="JBT_VST_Id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spGetReviewMeetingDateTime" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetReviewMeetingDateTime_Result)">
+            <Parameter Name="RMS_EMP_EmployeeId" Mode="In" Type="String" />
+            <Parameter Name="RMS_FinencialYear" Mode="In" Type="String" />
+            <Parameter Name="RMS_FinQuarter" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetReviewMeetingDateTime">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="RMS_Id" Mode="In" Type="Int64" />
+            <Parameter Name="RMS_IsActive" Mode="In" Type="String" />
+            <Parameter Name="RMS_EMP_EmployeeId" Mode="In" Type="String" />
+            <Parameter Name="RMS_FinencialYear" Mode="In" Type="String" />
+            <Parameter Name="RMS_FinQuarter" Mode="In" Type="String" />
+            <Parameter Name="RMS_InterviewDateTime" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetEmployeeStatusChangeDetails" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetEmployeeStatusChangeDetails_Result)">
+          <Parameter Name="ESC_Id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spGetEmployeeStatusChangeList" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetEmployeeStatusChangeList_Result)" />
+          <FunctionImport Name="spSetEmployeeStatusChange">
+            <Parameter Name="ESC_ChangeType" Mode="In" Type="String" />
+            <Parameter Name="ESC_EMP_EmployeeId" Mode="In" Type="String" />
+            <Parameter Name="ESC_EMP_JobTitleIdCurrent" Mode="In" Type="Int64" />
+            <Parameter Name="ESC_EMP_JobTitleIdNext" Mode="In" Type="Int64" />
+            <Parameter Name="ESC_EMP_LocationIdCurrent" Mode="In" Type="Int64" />
+            <Parameter Name="ESC_EMP_LocationIdNext" Mode="In" Type="Int64" />
+            <Parameter Name="ESC_VST_EmploymentStatusCurrent" Mode="In" Type="String" />
+            <Parameter Name="ESC_VST_EmploymentStatusNext" Mode="In" Type="String" />
+            <Parameter Name="ESC_EffectiveFromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ESC_EffectiveToDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ESC_CreatedBy" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetEmployeeStatusChangeApproval">
+            <Parameter Name="ESC_Id" Mode="In" Type="Int64" />
+            <Parameter Name="ApprovedBy" Mode="In" Type="String" />
+            <Parameter Name="ApprovalStatus" Mode="In" Type="String" />
+            <Parameter Name="ApprovalComment" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetApplicantStatus">
+            <Parameter Name="ApplicantId" Mode="In" Type="Int64" />
+            <Parameter Name="API_ApplicantStatus" Mode="In" Type="String" />
+            <Parameter Name="API_IsActive" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Proc_GetAllWorkAssignedToEmployee_Result">
@@ -17847,6 +17931,43 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="Int32" Name="JBT_FillJobCount" Nullable="true" />
           <Property Type="DateTime" Name="JBT_Date" Nullable="true" Precision="23" />
           <Property Type="String" Name="JBT_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetReviewMeetingDateTime_Result">
+          <Property Type="Int64" Name="RMS_Id" Nullable="false" />
+          <Property Type="String" Name="RMS_EMP_EmployeeId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="RMS_FinencialYear" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="RMS_FinQuarter" Nullable="true" MaxLength="10" />
+          <Property Type="DateTime" Name="RMS_InterviewDateTime" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="RMS_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="RMS_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetEmployeeStatusChangeDetails_Result">
+          <Property Type="Int64" Name="ESC_Id" Nullable="false" />
+          <Property Type="String" Name="ESC_ChangeType" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ESC_EMP_EmployeeId" Nullable="true" MaxLength="20" />
+          <Property Type="Int64" Name="ESC_EMP_JobTitleIdCurrent" Nullable="true" />
+          <Property Type="Int64" Name="ESC_EMP_JobTitleIdNext" Nullable="true" />
+          <Property Type="Int64" Name="ESC_EMP_LocationIdCurrent" Nullable="true" />
+          <Property Type="Int64" Name="ESC_EMP_LocationIdNext" Nullable="true" />
+          <Property Type="String" Name="ESC_VST_EmploymentStatusCurrent" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="ESC_VST_EmploymentStatusNext" Nullable="true" MaxLength="10" />
+          <Property Type="DateTime" Name="ESC_EffectiveFromDate" Nullable="true" />
+          <Property Type="DateTime" Name="ESC_EffectiveToDate" Nullable="true" />
+          <Property Type="String" Name="ESC_CreatedBy" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ESC_ApprovedBy" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="ESC_ApprovedOn" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ESC_ApprovalStatus" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="ESC_ApprovalComment" Nullable="true" />
+          <Property Type="DateTime" Name="ESC_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ESC_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetEmployeeStatusChangeList_Result">
+          <Property Type="Int64" Name="ESC_Id" Nullable="false" />
+          <Property Type="String" Name="ESC_EMP_EmployeeId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ESC_ChangeType" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ESC_ApprovedBy" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ESC_ApprovalStatus" Nullable="true" MaxLength="1" />
+          <Property Type="DateTime" Name="ESC_Date" Nullable="true" Precision="23" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -23628,6 +23749,59 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetReviewMeetingDateTime" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetReviewMeetingDateTime">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetReviewMeetingDateTime_Result">
+                <ScalarProperty Name="RMS_Id" ColumnName="RMS_Id" />
+                <ScalarProperty Name="RMS_EMP_EmployeeId" ColumnName="RMS_EMP_EmployeeId" />
+                <ScalarProperty Name="RMS_FinencialYear" ColumnName="RMS_FinencialYear" />
+                <ScalarProperty Name="RMS_FinQuarter" ColumnName="RMS_FinQuarter" />
+                <ScalarProperty Name="RMS_InterviewDateTime" ColumnName="RMS_InterviewDateTime" />
+                <ScalarProperty Name="RMS_Date" ColumnName="RMS_Date" />
+                <ScalarProperty Name="RMS_IsActive" ColumnName="RMS_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetReviewMeetingDateTime" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetReviewMeetingDateTime" />
+          <FunctionImportMapping FunctionImportName="spGetEmployeeStatusChangeDetails" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetEmployeeStatusChangeDetails">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetEmployeeStatusChangeDetails_Result">
+                <ScalarProperty Name="ESC_Id" ColumnName="ESC_Id" />
+                <ScalarProperty Name="ESC_ChangeType" ColumnName="ESC_ChangeType" />
+                <ScalarProperty Name="ESC_EMP_EmployeeId" ColumnName="ESC_EMP_EmployeeId" />
+                <ScalarProperty Name="ESC_EMP_JobTitleIdCurrent" ColumnName="ESC_EMP_JobTitleIdCurrent" />
+                <ScalarProperty Name="ESC_EMP_JobTitleIdNext" ColumnName="ESC_EMP_JobTitleIdNext" />
+                <ScalarProperty Name="ESC_EMP_LocationIdCurrent" ColumnName="ESC_EMP_LocationIdCurrent" />
+                <ScalarProperty Name="ESC_EMP_LocationIdNext" ColumnName="ESC_EMP_LocationIdNext" />
+                <ScalarProperty Name="ESC_VST_EmploymentStatusCurrent" ColumnName="ESC_VST_EmploymentStatusCurrent" />
+                <ScalarProperty Name="ESC_VST_EmploymentStatusNext" ColumnName="ESC_VST_EmploymentStatusNext" />
+                <ScalarProperty Name="ESC_EffectiveFromDate" ColumnName="ESC_EffectiveFromDate" />
+                <ScalarProperty Name="ESC_EffectiveToDate" ColumnName="ESC_EffectiveToDate" />
+                <ScalarProperty Name="ESC_CreatedBy" ColumnName="ESC_CreatedBy" />
+                <ScalarProperty Name="ESC_ApprovedBy" ColumnName="ESC_ApprovedBy" />
+                <ScalarProperty Name="ESC_ApprovedOn" ColumnName="ESC_ApprovedOn" />
+                <ScalarProperty Name="ESC_ApprovalStatus" ColumnName="ESC_ApprovalStatus" />
+                <ScalarProperty Name="ESC_ApprovalComment" ColumnName="ESC_ApprovalComment" />
+                <ScalarProperty Name="ESC_Date" ColumnName="ESC_Date" />
+                <ScalarProperty Name="ESC_IsActive" ColumnName="ESC_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetEmployeeStatusChangeList" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetEmployeeStatusChangeList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetEmployeeStatusChangeList_Result">
+                <ScalarProperty Name="ESC_Id" ColumnName="ESC_Id" />
+                <ScalarProperty Name="ESC_EMP_EmployeeId" ColumnName="ESC_EMP_EmployeeId" />
+                <ScalarProperty Name="ESC_ChangeType" ColumnName="ESC_ChangeType" />
+                <ScalarProperty Name="ESC_ApprovedBy" ColumnName="ESC_ApprovedBy" />
+                <ScalarProperty Name="ESC_ApprovalStatus" ColumnName="ESC_ApprovalStatus" />
+                <ScalarProperty Name="ESC_Date" ColumnName="ESC_Date" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetEmployeeStatusChange" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetEmployeeStatusChange" />
+          <FunctionImportMapping FunctionImportName="spSetEmployeeStatusChangeApproval" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetEmployeeStatusChangeApproval" />
+          <FunctionImportMapping FunctionImportName="spSetApplicantStatus" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetApplicantStatus" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

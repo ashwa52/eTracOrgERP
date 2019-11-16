@@ -265,5 +265,68 @@ namespace WorkOrderEMS.Data
         {
             return objworkorderEMSEntities.spGetVacant_JobTitle(VSC_Id).ToList();
         }
+        /// <summary>
+        /// Created By  :Ashwajit bansod
+        /// Created Date : 14-Nov-2019
+        /// Created For :To save Employee Status
+        /// </summary>
+        /// <param name="Obj"></param>
+        /// <returns></returns>
+        public int SaveEmployeeStatus(DemotionModel Obj)
+        {
+            try
+            {
+                return objworkorderEMSEntities.spSetEmployeeStatusChange(Obj.ChangeType,Obj.EmpId,Obj.JobTitleCurrent,
+                                                                         Obj.JobTitleId,Obj.LocationIdCurrent,Obj.LocationId,
+                                                                         Obj.EmployeeCurrentStatus,Obj.EmploymentStatus, Obj.FromDate,
+                                                                         Obj.ToDate,Obj.CreatedBy);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 14-Nov-2019
+        /// Created For : To get Employee status list
+        /// </summary>
+        /// <param name="VSC_Id"></param>
+        /// <returns></returns>
+        public List<spGetEmployeeStatusChangeList_Result> GetEmployeeStatusList()
+        {
+            return objworkorderEMSEntities.spGetEmployeeStatusChangeList().ToList();
+        }
+        /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created Date : 15_Nov-2019
+        /// Created For : To approve reject Employee Status
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Status"></param>
+        /// <param name="EmployeeId"></param>
+        /// <returns></returns>
+        public int ApproveRejectEmployeeReject(long Id, string Status, string EmployeeId, string Comment)
+        {
+            try
+            {
+                return objworkorderEMSEntities.spSetEmployeeStatusChangeApproval(Id, EmployeeId, Status, Comment);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        //public int SendForAssessment(string Status, string IsActive, long ApplicantId)
+        //{
+        //    try
+        //    {
+        //        return objworkorderEMSEntities.spSetEm(Id, EmployeeId, Status, Comment);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw;
+        //    }
+        //}
     }
 }

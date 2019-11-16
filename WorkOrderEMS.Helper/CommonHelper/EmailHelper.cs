@@ -234,8 +234,8 @@ namespace WorkOrderEMS.Helper
         public string CalculatedAmount { get; set; }
         public string CostCode { get; set; }
 
-        public string EmployeeImage { get; set; }
-        public string CreatedBy { get; set; }
+        //public string EmployeeImage { get; set; }
+        //public string CreatedBy { get; set; }
         //Added By Mayur 10112019
         public string EmailTo { get; set; }
         public string ReceipientEmailId { get; set; }

@@ -5160,6 +5160,7 @@
     <Content Include="GridListing\JqGridScript\WorkOrderWeekHistory.js" />
     <Content Include="GridListing\JqGridScript\WorkRequestAssignment.js" />
     <Content Include="GridListing\JqGridScript\WorkRequestList.js" />
+    <Content Include="GridListing\JsGridScript\EmployeeStatusChangeList.js" />
     <Content Include="GridListing\JsGridScript\ListAllShiftJS.js" />
     <Content Include="GridListing\JsGridScript\ListDAR.js" />
     <Content Include="GridListing\JsGridScript\List306090.js" />

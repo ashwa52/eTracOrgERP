@@ -55,7 +55,7 @@ namespace WorkOrderEMS.Controllers.Services
         private readonly IMiscellaneousManager _IMiscellaneousManager;
         private readonly ICommonMethod _ICommonMethod;
         private readonly IFillableFormManager _IFillableFormManager;
-
+        private readonly INotification _INotification;
 
         private string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private string EmeregencyImagePath = ConfigurationManager.AppSettings["POEmeregencyImage"];
@@ -64,7 +64,7 @@ namespace WorkOrderEMS.Controllers.Services
         public ServiceApiController()
         {
         }
-        public ServiceApiController(IEfleetPM _IEfleetPM, IeFleetFuelingManager _IFuelingManager, IEfleetVehicle _IEfleetVehicle, IDARManager _IDARManager, IEfleetVehicleIncidentReport _IEfleetVehicleIncidentReport, IEfleetMaintenance _IEfleetMaintenance, IPassengerTracking _IPassengerTracking, IHoursOfServices _IHoursOfServices, IBillDataManager _IBillDataManager, IMiscellaneousManager _IMiscellaneousManager, ICommonMethod _ICommonMethod, IFillableFormManager _IFillableFormManager)
+        public ServiceApiController(IEfleetPM _IEfleetPM, IeFleetFuelingManager _IFuelingManager, IEfleetVehicle _IEfleetVehicle, IDARManager _IDARManager, IEfleetVehicleIncidentReport _IEfleetVehicleIncidentReport, IEfleetMaintenance _IEfleetMaintenance, IPassengerTracking _IPassengerTracking, IHoursOfServices _IHoursOfServices, IBillDataManager _IBillDataManager, IMiscellaneousManager _IMiscellaneousManager, ICommonMethod _ICommonMethod, IFillableFormManager _IFillableFormManager, INotification _INotification)
         {
             this._IFuelingManager = _IFuelingManager;
             this._IEfleetPM = _IEfleetPM;
@@ -78,6 +78,7 @@ namespace WorkOrderEMS.Controllers.Services
             this._IMiscellaneousManager = _IMiscellaneousManager;
             this._ICommonMethod = _ICommonMethod;
             this._IFillableFormManager = _IFillableFormManager;
+            this._INotification = _INotification;
         }
         // GET: api/ServiceApi
         public IHttpActionResult Get()
@@ -2914,17 +2915,18 @@ namespace WorkOrderEMS.Controllers.Services
             //ServiceResponseModel<eTracLoginModel> serviceresponse = new ServiceResponseModel<eTracLoginModel>();
             var ObjServiceResponseModel = new ServiceResponseModel<eTracLoginModel>();
             LoginManager _ILogin = new LoginManager();
-            long userType = 0;
+            //long userType = 0;
             try
             {
                 if (objLogIn != null && objLogIn.UserName != null && objLogIn.Password != null)
                 {
-                    if (objLogIn.UserType > 0)
-                    {
-                        userType = objLogIn.UserType;
-                    }
+                    //if (objLogIn.UserType > 0)
+                    //{
+                    //    userType = objLogIn.UserType;
+                    //}
                     var result = _ILogin.AuthenticateUser(objLogIn);
-                    if (result.UserRoleId == userType)
+                    //if (result.UserRoleId == userType)
+                    if(result != null)
                     {
                         // This condition for invalid user
                         // Added By Bhushan Dod on Jan 12 2015
@@ -5267,6 +5269,54 @@ namespace WorkOrderEMS.Controllers.Services
                 return Ok(ObjServiceResponseModel);
             }
         }
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 13-Nov-2019
+        /// Created For: To get WO Unseen WO list
+        /// </summary>
+        /// <param name="ObjServiceBaseModel"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult EmaintenanceUnseenList(NotificationDetailModel ObjServiceBaseModel)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<List<EmailHelper>>();
+            try
+            {
+                if (ObjServiceBaseModel != null && ObjServiceBaseModel.UserId > 0)
+                {
+                    var result = _INotification.GetEmaintanaceUnseenList(ObjServiceBaseModel);
+                    if (result.Count() > 0)
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.Successful();
+                        ObjServiceResponseModel.Data = result;
+                    }
+                    else
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.NoRecordMessage();
+                        ObjServiceResponseModel.Data = result;
+                    }
+                    return Ok(ObjServiceResponseModel);
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.InvalidUser();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+
+
 
         /// <summary>
         /// Created By : Ashwajit bansod

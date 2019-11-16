@@ -10,16 +10,14 @@
 namespace WorkOrderEMS.Data.EntityModel
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class Review_MeetingSchedule
+    public partial class spGetEmployeeStatusChangeList_Result
     {
-        public long RMS_Id { get; set; }
-        public string RMS_EMP_EmployeeId { get; set; }
-        public string RMS_FinencialYear { get; set; }
-        public string RMS_FinQuarter { get; set; }
-        public Nullable<System.DateTime> RMS_InterviewDateTime { get; set; }
-        public Nullable<System.DateTime> RMS_Date { get; set; }
-        public string RMS_IsActive { get; set; }
+        public long ESC_Id { get; set; }
+        public string ESC_EMP_EmployeeId { get; set; }
+        public string ESC_ChangeType { get; set; }
+        public string ESC_ApprovedBy { get; set; }
+        public string ESC_ApprovalStatus { get; set; }
+        public Nullable<System.DateTime> ESC_Date { get; set; }
     }
 }
