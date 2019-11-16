@@ -142,7 +142,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                         }
                                     });
                                 }).append($evaluationText);
-                            if (item.Status == "Review Submitted") {
+                            if (item.Status == "Assessment Submitted") {
                                 return $("<div>").attr({ class: "btn-toolbar", id: "Action_"+item.EMP_EmployeeID }).append($customUserViewButton).append($customTextButton).append($customTextButton).append($evaluationTextButton);
                             }else {
                                 return $("<div>").attr({ class: "btn-toolbar", id: "Action_" + item.EMP_EmployeeID }).append($customUserViewButton).append($customTextButton).append($customTextButton)
@@ -270,7 +270,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                 }
                             });
                         }).append($evaluationText);
-                    if (item.Status == "Review Submitted" || item.EMP_EmployeeID==$("#LoggedInUser").val()) {
+                    if (item.Status == "Expectations Submitted" || item.EMP_EmployeeID==$("#LoggedInUser").val()) {
                         return $("<div>").attr({ class: "btn-toolbar" }).append($customUserViewButton).append($customTextButton).append($customTextButton);
                     } else {
                         return $("<div>").attr({ class: "btn-toolbar" }).append($customUserViewButton).append($customTextButton).append($customTextButton)
@@ -341,10 +341,12 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
             ,
 
             {
-                name: "UserTask", title: "User Task", width: 60, itemTemplate: function (value, item) {
+                name: "UserTask", title: "User Task", width: 70, itemTemplate: function (value, item) {
                     var $iconUserView = $("<span>").append('<i class= "fa fa-user fa-2x" style="color:black;margin-left: 6px;margin-top: 4px;" ></i>');//attr({ class: "fa fa-user fa-2x" }).attr({ style: "color:white;background-color:#36CA7E;margin-left:20px;border-radius:35px;width:35px;height:35px" });
                     var $iconText = $("<span>").append('<i class= "fa fa-file-text fa-2x" style="color:white;margin-left: 6px;margin-top: 4px;" ></i>');//.attr({ class: "fa fa-file-text fa-2x" }).attr({ style: "color:white;background-color:#32ACDA;margin-left:20px;border-radius:35px;width:35px;height:35px" });
                     var $evaluationText = $("<span>").append('<i class= "fa fa-calendar-check-o fa-2x" style="color:white;margin-left: 6px;margin-top: 4px;" ></i>');//.attr({ class: "fa fa-file-text fa-2x" }).attr({ style: "color:white;background-color:#32ACDA;margin-left:20px;border-radius:35px;width:35px;height:35px" });
+                    var $iconMeeting = $("<span>").append('<i class="fa fa-clock-o fa-2x " style="color:white;margin-left: 6px;margin-top: 4px;" ></i>');//.attr({ class: "fa fa-file-text fa-2x" }).attr({ style: "color:white;background-color:#32ACDA;margin-left:20px;border-radius:35px;width:35px;height:35px" });
+                    var $iconPiP = $("<span>").append('<i class="fa fa-user-circle-o fa-2x " style="color:white;margin-left: 6px;margin-top: 4px;" ></i>');//.attr({ class: "fa fa-file-text fa-2x" }).attr({ style: "color:white;background-color:#32ACDA;margin-left:20px;border-radius:35px;width:35px;height:35px" });
 
                     var $customUserViewButton = $("<span style='background: #36CA7E; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
                         .attr({ title: "Evaluation" })
@@ -375,27 +377,62 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                         .attr({ id: "btn-status-" + item.id }).click(function (e) {
                         }).append($iconText);
 
+                    var $customMeetingButton = $("<span style='background: #32ACDA; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
+                        .attr({ title: "Setup Meeting" })
+                        .attr({ id: "btn-status" }).click(function (e) {
+                            $("#EmailTo").val(item.EmployeeName);
+                            $("#ReceipientEmailId").val(item.EMP_EmployeeID);
+                            $("#SetUpMeetingModal").modal('show');
+                            $("#FinYear").val(item.FinYear);
+                            $("#FinQrtr").val(item.Expectation);
+                           
+                        }).append($iconMeeting);
+
+                    var $customPiPButton = $("<span style='background: #32ACDA; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
+                        .attr({ title: "PIP" })
+                        .attr({ id: "btn-status" }).click(function (e) {
+
+                        }).append($iconPiP);
+
+
                     var $evaluationTextButton = $("<span style='background: #32ACDA; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
                         .attr({ title: "Evaluation" })
                         .attr({ id: "btn-status-" + item.id }).click(function (e) {
                             $.ajax({
                                 type: "POST",
-                                data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation, 'Department': item.DepartmentName, 'LocationName': item.LocationName  },
-                                url: '../NewAdmin/QEvaluationView/',
+                                data: { 'Id': item.EMP_EmployeeID, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation },
+                                url: '../NewAdmin/GetMeetingDetail/',
                                 error: function (xhr, status, error) {
                                 },
                                 success: function (result) {
-                                    
-                                    if (result != null) {
-                                        $("#gridArea").hide();
-                                        $('#profileArea').show();
-                                        $('#profileArea').html(result);
+
+                                    if (result != null && result == true) {
+                                        $.ajax({
+                                            type: "POST",
+                                            data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation, 'Department': item.DepartmentName, 'LocationName': item.LocationName },
+                                            url: '../NewAdmin/QEvaluationView/',
+                                            error: function (xhr, status, error) {
+                                            },
+                                            success: function (result) {
+
+                                                if (result != null) {
+                                                    $("#gridArea").hide();
+                                                    $('#profileArea').show();
+                                                    $('#profileArea').html(result);
+                                                }
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        $("#MeetingNotDoneModal").modal('show');
                                     }
                                 }
                             });
+
+                            
                         }).append($evaluationText);
-                    if (item.Status == "Review Submitted") {
-                        return $("<div>").attr({ class: "btn-toolbar" }).append($evaluationTextButton).append($customTextButton).append($evaluationTextButton);
+                    if (item.Status == "Expectations Submitted" || item.Status == "Evaluation Submitted") {
+                        return $("<div>").attr({ class: "btn-toolbar" }).append($evaluationTextButton).append($customTextButton).append($customMeetingButton).append($customPiPButton).append($evaluationTextButton);
                     } else {
                         return $("<div>").attr({ class: "btn-toolbar" }).append($customTextButton);
                     }
@@ -418,5 +455,5 @@ $(document).ready(function () {
         $_LocationId = $("#drp_MasterLocation option:selected").val();
         $("#ListQRC").jsGrid("loadData");
     })
-
+  
 });

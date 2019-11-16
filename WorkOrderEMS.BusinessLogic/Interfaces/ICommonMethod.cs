@@ -5,6 +5,7 @@ using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
 using WorkOrderEMS.Models.CommonModels;
 using WorkOrderEMS.Models.ManagerModels;
+using WorkOrderEMS.Models.NewAdminModel;
 using static WorkOrderEMS.Models.PrintQRCModel;
 
 namespace WorkOrderEMS.BusinessLogic

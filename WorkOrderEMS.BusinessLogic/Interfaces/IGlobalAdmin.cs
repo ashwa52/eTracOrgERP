@@ -286,11 +286,13 @@ namespace WorkOrderEMS.BusinessLogic
         List<PerformanceModel> GetListOfExpectationsForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords);
         bool saveExpectations(List<GWCQUestionModel> data, string action);
         List<PerformanceModel> GetListOfQEvaluationsForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords);
-
-
-        bool saveQEvaluations(List<GWCQUestionModel> data, string action);
         bool VerifyEmployee(OnboardingDetailRequestModel onboardingDetailRequestModel);
         List<spGetJobPostingDetails_ForCompanyOpening_Result> GetJobPostingDetailsForCompanyOpening(long JPS_JobPostingId);
         // BudgetDetails GetListBudgetDetails(long? LocationId, long? UserId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
+        bool saveQEvaluations(List<GWCQUestionModel> data, string action);
+        bool SetupMeetingEmail(SetupMeeting objSetupMeeting);
+        bool GetMeetingDetail(string Id,string  FinYear, string FinQuarter);
+
+
     }
 }
