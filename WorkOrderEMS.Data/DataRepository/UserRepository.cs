@@ -944,7 +944,12 @@ namespace WorkOrderEMS.Data
                     Status = t.EEL_IsActive,
                     VST_Level = t.VST_Level,
                     FinYear = t.FinYear.Value,
-                    AssessmentType = t.AssessmentType
+                    AssessmentType = t.AssessmentType,
+                    PRMeetingStatus=t.PRMeetingStatus,
+                    PRMeetingDateTime=t.PRMeetingDateTime,
+                    MeetingDate=t.PRMeetingDateTime.HasValue?t.PRMeetingDateTime.Value.ToShortDateString():"",
+                    MeetingTime = t.PRMeetingDateTime.HasValue ? t.PRMeetingDateTime.Value.ToShortTimeString():""
+
 
                 }).ToList();
                 totalRecords = Convert.ToInt32(totalRecord.Value);

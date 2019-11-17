@@ -116,6 +116,19 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
             var text = [];
         }
     });
+    $.ajax({
+        type: "GET",
+        url: '../GlobalAdmin/GeteScanNotifications',
+        datatype: 'json',
+        contentType: "application/json",
+        success: function (response) {
+            debugger;
+            $("#eScanNotification").html(response);
+        },
+        error: function (data) {
+            debugger;
+        }
+    });
 })(jQuery);
 $(document).ready(function () {
     $("#drp_MasterLocation").change(function () {

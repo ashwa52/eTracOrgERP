@@ -243,6 +243,9 @@ namespace WorkOrderEMS.Helper
 
         public long NotificationId { get; set; }
         public long? WorkOrderID { get; set; }
+        public long? eScanQRCID { get; set; }
+
+        
 
         public bool SendEmailWithTemplate(string[] attachedUrl = null)
         {

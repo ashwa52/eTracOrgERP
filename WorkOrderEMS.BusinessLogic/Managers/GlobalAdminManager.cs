@@ -3958,19 +3958,22 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
             return result;
         }
-        public bool GetMeetingDetail(string Id, string FinYear, string FinQuarter) {
-            bool result = false;
+        public string GetMeetingDetail(string Id, string FinYear, string FinQuarter) {
+            string result = "MEETINGNOTFOUND";
             ObjPerformanceRepository = new PerformanceRepository();
             try
             {
                 var obj =ObjPerformanceRepository.GetMeetingDetail( Id,  FinYear,  FinQuarter);
-               result= (DateTime.Now > obj.RMS_InterviewDateTime) ?  true : false;
+                if (obj != null)
+                {
+                    result = (DateTime.Now > obj.RMS_InterviewDateTime) ? "MEETINGCOMPLETED" : "MEETINGNOTCOMPLETED";
+                }
 
             }
             catch (Exception)
             {
 
-                result = false;
+                result = "MEETINGNOTFOUND";
             }
             return result;
         }

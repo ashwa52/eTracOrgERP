@@ -196,7 +196,9 @@ namespace WorkOrderEMS.BusinessLogic
         ServiceResponseModel<List<POListSelfServiceModel>> GetPOList(eTracLoginModel obj);
         List<EmailHelper> GetUnseenNotifications(long UserId);
         bool SetIsReadNotification(long NotificationId);
+        List<EmailHelper> GeteScanNotifications(long UserId);
 
+        
 
 
     }

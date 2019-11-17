@@ -154,10 +154,6 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
     //    }
     //})
     //basic jsgrid table
-
-   
-
-
     $.ajax({
         type: "GET",
         url: '../GlobalAdmin/GetUnseenNotifications',

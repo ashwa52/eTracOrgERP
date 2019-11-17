@@ -1132,16 +1132,16 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 }
                 UserId = ObjLoginModel.UserId;
             }
-            if(UserType == null)
+            if (UserType == null)
             {
                 UserType = "All Users";
             }
             sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
             sidx = string.IsNullOrEmpty(sidx) ? "Name" : sidx;
-            txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; 
+            txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch;
             long TotalRows = 0;
             try
-            {              
+            {
                 long paramTotalRecords = 0;
                 List<UserModelList> ITAdministratorList = _IGlobalAdmin.GetAllITAdministratorList(UserId, Convert.ToInt64(locationId), page, rows, sidx, sord, txtSearch, UserType, out paramTotalRecords);
                 foreach (var ITAdmin in ITAdministratorList)
@@ -1460,7 +1460,8 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                     #region QuickBook Department
                     //if (Session["realmId"] != null)
                     //{
-                    if (ObjLocationMasterModel.LocationId == 0) {
+                    if (ObjLocationMasterModel.LocationId == 0)
+                    {
                         string realmId = CallbackController.RealMId.ToString();//Session["realmId"].ToString();
                         try
                         {
@@ -2352,7 +2353,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                         //else
                         //{
                         //will use if image not saved
-                            //objWorkRequestAssignmentModel.WorkRequestImage = objWorkRequestAssignmentModel.WorkRequestImg != null ? objWorkRequestAssignmentModel.WorkRequestImg.FileName : string.Empty;
+                        //objWorkRequestAssignmentModel.WorkRequestImage = objWorkRequestAssignmentModel.WorkRequestImg != null ? objWorkRequestAssignmentModel.WorkRequestImg.FileName : string.Empty;
                         //}
                         objWorkRequestAssignmentModel.IsDeleted = false;
                         objWorkRequestAssignmentModel.LocationID = objeTracLoginModel.LocationID;
@@ -2403,7 +2404,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
 
                     _objWorkRequestAssignmentModel = _IGlobalAdmin.SaveWorkRequestAssignment(objWorkRequestAssignmentModel); //saving Data
 
-                    if(objWorkRequestAssignmentModel != null && _objWorkRequestAssignmentModel.Result == Result.Completed)
+                    if (objWorkRequestAssignmentModel != null && _objWorkRequestAssignmentModel.Result == Result.Completed)
                     {
                         var obj = new NotificationDetailModel();
                         obj.CreatedBy = objWorkRequestAssignmentModel.CreatedBy;
@@ -2412,7 +2413,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                         obj.WorkOrderID = _objWorkRequestAssignmentModel.WorkRequestAssignmentID;
                         var saveDataForNotification = _ICommonMethod.SaveNotificationDetail(obj);
                     }
-                    
+
                     ViewBag.WorkAssignmet = _objWorkRequestAssignmentModel.WorkOrderCode + _objWorkRequestAssignmentModel.WorkOrderCodeID;
                     ViewBag.ProjectType = _objWorkRequestAssignmentModel.WorkRequestProjectType;
                     ViewBag.ProrityLevel = _objWorkRequestAssignmentModel.PriorityLevel;
@@ -3655,8 +3656,8 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                         ViewBag.Message = CommonMessage.eFleetDriverSaveSuccessMessage();
                         ViewBag.AlertMessageClass = ObjAlertMessageClass.Success;
                     }
-                    
-                }               
+
+                }
             }
             catch (Exception ex)
             {
@@ -3945,7 +3946,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 CostCodeId = Cryptography.GetDecryptedData(CostCodeId, true);
                 long.TryParse(CostCodeId, out CostId);
             }
-            
+
             ViewBag.CostCodeToTransfer = CostCodeId;
             if (CostId > 0 && LocId > 0)
             {
@@ -4007,7 +4008,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
         /// <param name="UserType"></param>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult GetListOFTransferCostCodeForLocation( string Loc, decimal RemainingAmt ,string CLM_Id, string _search, long? UserId, long? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
+        public JsonResult GetListOFTransferCostCodeForLocation(string Loc, decimal RemainingAmt, string CLM_Id, string _search, long? UserId, long? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
         {
             eTracLoginModel ObjLoginModel = null;
             var _BudgetLocationManager = new BudgetLocationManager();
@@ -4046,10 +4047,10 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                         //row.cell[0] = driverList.QRCCodeID;
                         row.cell[0] = budgetList.Description.ToString();
                         //row.cell[1] = budgetList.AssignedPercent.ToString();
-                       // row.cell[2] = budgetList.AssignedAmount.ToString();
+                        // row.cell[2] = budgetList.AssignedAmount.ToString();
                         row.cell[1] = budgetList.RemainingAmount.ToString();
                         row.cell[2] = budgetList.CostCode.ToString();
-                         row.cell[3] = budgetList.Year.ToString();
+                        row.cell[3] = budgetList.Year.ToString();
                         //row.cell[6] = budgetList.BudgetAmount.ToString();
                         row.cell[4] = budgetList.BCM_Id.ToString();
                         row.cell[5] = budgetList.CLM_Id.ToString();
@@ -4240,11 +4241,11 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
                 UserId = ObjLoginModel.UserId;
             }
-            return PartialView("_Notifications",_ICommonMethod.GetUnseenNotifications(UserId));
+            return PartialView("_Notifications", _ICommonMethod.GetUnseenNotifications(UserId));
         }
 
         [HttpPost]
-        public ActionResult SetIsReadNotification(long NotificationId)
+        public ActionResult SetIsReadNotification(long NotificationId, string NotificationType)
         {
             eTracLoginModel ObjLoginModel = null;
             long UserId = 0;
@@ -4254,8 +4255,34 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 UserId = ObjLoginModel.UserId;
             }
             _ICommonMethod.SetIsReadNotification(NotificationId);
-            return PartialView("_Notifications", _ICommonMethod.GetUnseenNotifications(UserId));
-        }
+            if (NotificationType == "UrgentWorkOrdersList")
+            {
+                return PartialView("_Notifications", _ICommonMethod.GetUnseenNotifications(UserId));
+            }
+            else
+            {
+                return PartialView("_Notifications", _ICommonMethod.GeteScanNotifications(UserId));
 
+            }
+        }
+        ///Get Unseen Notification
+        ///
+        [HttpGet]
+        public ActionResult GeteScanNotifications()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            long UserId = 0;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                UserId = ObjLoginModel.UserId;
+            }
+            var result = _ICommonMethod.GeteScanNotifications(UserId);
+            foreach (var item in result)
+            {
+                item.EmployeeImage = ((item.EmployeeImage == "" || item.EmployeeImage == null) ? HostingPrefix + "/Content/Images/ProjectLogo/no-profile-pic.jpg" : HostingPrefix + ProfileImagePath.Replace("~", "") + item.EmployeeImage);
+            }
+            return PartialView("_Notifications", result);
+        }
     }
 }

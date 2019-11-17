@@ -998,13 +998,12 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                result= _GlobalAdminManager.SetupMeetingEmail(SetupMeeting);
             }
             return Json(result, JsonRequestBehavior.AllowGet);
-
         }
         [HttpPost]
         public JsonResult GetMeetingDetail(string Id, string FinYear, string FinQuarter)
         {
             eTracLoginModel ObjLoginModel = null;
-            bool result = false;
+            string result =string.Empty;
             if (Session["eTrac"] != null)
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
@@ -1019,9 +1018,6 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 result = _GlobalAdminManager.GetMeetingDetail(Id, FinYear, FinQuarter);
             }
             return Json(result, JsonRequestBehavior.AllowGet);
-
         }
-        
     }
-
 }

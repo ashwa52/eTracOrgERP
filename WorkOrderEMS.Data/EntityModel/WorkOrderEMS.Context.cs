@@ -4896,15 +4896,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentList_Result>("spGetAssessmentList", employeeIdParameter);
         }
     
-        public virtual ObjectResult<spGetEvaluationList_Result> spGetEvaluationList(string employeeId)
-        {
-            var employeeIdParameter = employeeId != null ?
-                new ObjectParameter("EmployeeId", employeeId) :
-                new ObjectParameter("EmployeeId", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEvaluationList_Result>("spGetEvaluationList", employeeIdParameter);
-        }
-    
         public virtual int spSetSelfAssessmentQuarterly(string action, string employeeID, string employeeIdManager, string aSQ_QuestionType, Nullable<long> aSQ_Id, Nullable<long> eEL_Id, string eEL_FinencialYear, string eEL_FinQuarter, string eEL_AnswerSelf, string eEL_IsActive, string eEL_Comments)
         {
             var actionParameter = action != null ?
@@ -5011,6 +5002,20 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("EmployeeId", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetIsTremination", employeeIdParameter, isTermination);
+        }
+    
+        public virtual ObjectResult<spGetEvaluationList_Result> spGetEvaluationList(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEvaluationList_Result>("spGetEvaluationList", employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetReviewMeetingList_Result> spGetReviewMeetingList()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetReviewMeetingList_Result>("spGetReviewMeetingList");
         }
     }
 }

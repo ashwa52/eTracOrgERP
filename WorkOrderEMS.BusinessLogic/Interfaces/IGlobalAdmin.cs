@@ -275,7 +275,7 @@ namespace WorkOrderEMS.BusinessLogic
 
         bool saveQEvaluations(List<GWCQUestionModel> data, string action);
         bool SetupMeetingEmail(SetupMeeting objSetupMeeting);
-        bool GetMeetingDetail(string Id,string  FinYear, string FinQuarter);
+        string GetMeetingDetail(string Id,string  FinYear, string FinQuarter);
 
 
     }

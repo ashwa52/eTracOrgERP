@@ -18,12 +18,16 @@ namespace WorkOrderEMS.Models.NewAdminModel
         public int? Assesment { get; set; }
         public string Status { get; set; }
         public string Expectation { get; set; }
-
         public string VST_Level { get; set; }
-
         public int FinYear { get; set; }
         public string IsLoggedInUser { get; set; }
         public string AssessmentType { get; set; }
+        public string PRMeetingStatus { get; set; }
+        public DateTime? PRMeetingDateTime { get; set; }
+        public string MeetingDate { get; set; }
+
+        public string MeetingTime { get; set; }
+
 
     }
     public class GWCQUestionModel

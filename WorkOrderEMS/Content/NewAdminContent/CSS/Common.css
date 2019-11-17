@@ -228,11 +228,11 @@
     right: 0px;
 }
 /*Performance Management*/
-div#UrgentWorkOrdersList p {
+div#UrgentWorkOrdersList p, div#eScanNotification p {
     margin: 0;
 }
 
-div#UrgentWorkOrdersList .notice {
+div#UrgentWorkOrdersList .notice, div#eScanNotification .notice {
     position: relative;
     margin: 1em;
     background: #F9F9F9;
@@ -241,7 +241,7 @@ div#UrgentWorkOrdersList .notice {
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.125);
 }
 
-    div#UrgentWorkOrdersList .notice:before {
+    div#UrgentWorkOrdersList .notice:before, div#eScanNotification .notice:before {
         position: absolute;
         top: 50%;
         margin-top: -17px;
@@ -258,15 +258,15 @@ div#UrgentWorkOrdersList .notice {
         text-shadow: 1px 1px rgba(0, 0, 0, 0.5);
     }
 
-div#UrgentWorkOrdersList .info {
+div#UrgentWorkOrdersList .info, div#eScanNotification .info {
     border-color: #0074D9;
 }
 
-    div#UrgentWorkOrdersList .info:before {
+    div#UrgentWorkOrdersList .info:before, div#eScanNotification .info:before {
         content: "n";
         background-color: #0074D9;
     }
-div#UrgentWorkOrdersList .btn-success, div#profileArea .btn-success {
+div#UrgentWorkOrdersList .btn-success, div#profileArea .btn-success, div#eScanNotification .btn-success {
     color: #fff;
     background-color: #1DC9B7;
     border-color: #1DC9B7;

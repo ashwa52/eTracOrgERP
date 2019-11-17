@@ -2631,5 +2631,96 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
             return result;
         }
+
+        public List<EmailHelper> GeteScanNotifications(long UserId)
+        {
+            var _db = new workorderEMSEntities();
+            var listTask = new List<EmailHelper>();
+            var objEmailHelper = new EmailHelper();
+            var notification = new List<NotificationDetailModel>();
+            var obj = new EmailHelper();
+            var underMe = _db.UserRegistrations.Where(x => x.ManagerForUser == UserId && x.IsDeleted == false && x.IsEmailVerify == true).ToList();
+            try
+            {
+                notification = _db.NotificationDetails.Where(x => x.IsRead == false && x.IsDeleted == false && x.CreatedBy==UserId && x.eScanId!=null).Select(a => new NotificationDetailModel()
+                {
+                    WorkOrderID = a.WorkOrderID,
+                    AssignTo = a.AssignUserId,
+                    POID = a.POID,
+                    BillID = a.BillID,
+                    MiscellaneousID = a.MiscellaneousID,
+                    eScanQRCID = a.eScanId,
+                    IsRead = a.IsRead,
+                    CreatedBy = a.CreatedBy,
+                    NotificationId = a.NID,
+                }).ToList();
+                foreach (var item in underMe) {
+                    var result = _db.NotificationDetails.Where(x => x.IsRead == false && x.IsDeleted == false && x.CreatedBy == item.UserId && x.eScanId != null).Select(a => new NotificationDetailModel()
+                    {
+                        WorkOrderID = a.WorkOrderID,
+                        AssignTo = a.AssignUserId,
+                        POID = a.POID,
+                        BillID = a.BillID,
+                        MiscellaneousID = a.MiscellaneousID,
+                        eScanQRCID = a.eScanId,
+                        IsRead = a.IsRead,
+                        CreatedBy = a.CreatedBy,
+                        NotificationId = a.NID,
+                    }).ToList();
+                    notification.AddRange(result);
+                }
+
+                var userDetails = _db.UserRegistrations.Where(x => x.UserId == UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
+
+                if (notification.Count() > 0)
+                {
+                    foreach (var item in notification)
+                    {
+                        var assignedBy = _db.UserRegistrations.Where(x => x.UserId == item.CreatedBy && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
+                        #region eScan
+                       if (item.eScanQRCID != null && item.eScanQRCID > 0 )
+                        {
+                            var eScanData = new EmailHelper();
+                            if (item.IsRead == false)
+                            {
+                                eScanData = _db.QRCMasters.Where(x => x.QRCID == item.eScanQRCID && x.IsDeleted == false)
+                                   .Select(a => new EmailHelper()
+                                   {
+                                       MailType = a.IsDamage == true ? "QRCVEHICLEDAMAGE" : a.CheckOutStatus == true ? "CHECKINCHECKOUT" : null,
+                                       ManagerName = userDetails.FirstName + " " + userDetails.LastName,
+                                       LocationName = a.LocationMaster.LocationName,
+                                       QrCodeId = a.QRCodeID.ToString(),
+                                       SentBy = userDetails.UserId,
+                                       LocationID = a.LocationId,
+                                       IsWorkable = false,
+                                       CheckoutUserName = a.UserName,
+                                       CreatedBy = assignedBy.FirstName + " " + assignedBy.LastName,
+                                       EmployeeImage = assignedBy.ProfileImage,// == null ? HostingPrefix + "/Content/Images/ProjectLogo/no-profile-pic.jpg" : HostingPrefix + (ConfigurationManager.AppSettings["WorkRequestImage"]).Replace("~", "") + assignedBy.ProfileImage
+                                       NotificationId = item.NotificationId,
+                                       eScanQRCID = item.eScanQRCID
+                                   }).FirstOrDefault();
+                            }
+                            if (eScanData != null)
+                            {
+                                eScanData.Message = "Someone want to checkout QRC " + eScanData.QrCodeId + " which is already checked out by" + eScanData.CheckoutUserName;
+                                eScanData.WorkOrderImage = HostingPrefix + "/Content/Images/WorkRequest/no-asset-pic.png";
+                                ///To approve PO need company name so added this code just for approval process.                        
+                                listTask.Add(eScanData);
+                            }
+                        }
+                        #endregion eScan
+                    }
+                }
+                return listTask.OrderByDescending(x => x.WorkRequestAssignmentID).OrderByDescending(x => x.PONumber).ToList();
+
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<EmailHelper> GetUnseenNotifications(NotificationDetailModel objDetails)", "Exception while getting the list for notification details", obj);
+                throw;
+            }
+
+
+        }
     }
 }
