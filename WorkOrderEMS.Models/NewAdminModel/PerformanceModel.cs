@@ -95,5 +95,19 @@ namespace WorkOrderEMS.Models.NewAdminModel
         public Nullable<System.DateTime> RMS_Date { get; set; }
         public string RMS_IsActive { get; set; }
     }
+    public  class ReviewMeeting
+    {
+        public string EMP_ManagerId { get; set; }
+        public string ManagerPhoto { get; set; }
+        public string ManagerName { get; set; }
+        public string EMP_EmployeeID { get; set; }
+        public string EmployeePhoto { get; set; }
+        public string EmployeeName { get; set; }
+        public Nullable<System.DateTime> PRMeetingDateTime { get; set; }
+
+        public string MeetingDate { get; set; }
+        public string MeetingTime { get; set; }
+
+    }
 
 }

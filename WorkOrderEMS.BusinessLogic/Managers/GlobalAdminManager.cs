@@ -54,6 +54,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         private readonly string ConstantImagesForClient = ConfigurationManager.AppSettings["ConstantImages"] + "no-profile-pic.jpg";
         private readonly string workorderimage = ConfigurationManager.AppSettings["WorkRequestImage"];
 
+
         //workorderEMSEntities _workorderEMSEntities = new workorderEMSEntities();
 
         //Created by Gayatri Pal
@@ -469,7 +470,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 
                     // ObjLocationMasterModel.Services = services.toar
                 }
-                    if (ss.ManagerLocationMappings.FirstOrDefault() != null)
+                if (ss.ManagerLocationMappings.FirstOrDefault() != null)
                 {
                     ObjLocationMasterModel.ManagerModel.UserId = ss.ManagerLocationMappings.FirstOrDefault().UserRegistration.UserId;
                     ObjLocationMasterModel.ManagerModel.EmployeeID = ss.ManagerLocationMappings.FirstOrDefault().UserRegistration.EmployeeID;
@@ -1262,7 +1263,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 
                             if (objLocation.ContractDetailsModel.OperatingHolder == null)
                             {
-                                ObjLocationMaster.OperatingCompany= objLocation.ContractDetailsModel.OperatingHolderSameId;
+                                ObjLocationMaster.OperatingCompany = objLocation.ContractDetailsModel.OperatingHolderSameId;
                             }
                             else
                             {
@@ -1279,8 +1280,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 
                             //Added by Bhushan Dod on 11-August-2016 for objLocation.locationid null due to this not able to send email to client, manager.
                             objLocation.LocationId = ObjLocationMaster.LocationId;
-                           // objLocation.ManagerModel.Location = ObjLocationMaster.LocationId;
-                           // objLocation.ClientModel.Location = ObjLocationMaster.LocationId;
+                            // objLocation.ManagerModel.Location = ObjLocationMaster.LocationId;
+                            // objLocation.ClientModel.Location = ObjLocationMaster.LocationId;
 
                             if (ObjLocationMaster.LocationId > 0)
                             {
@@ -2358,14 +2359,14 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     {
                         objWorkRequestAssignmentModel.CustomerName = objWorkRequestAssignmentModel.CustomerName.ToTitleCase();
                     }
-                   
+
                     AutoMapper.Mapper.CreateMap<WorkRequestAssignmentModel, WorkRequestAssignment>();
                     objWorkRequestAssignment = AutoMapper.Mapper.Map(objWorkRequestAssignmentModel, objWorkRequestAssignment);
                     if (objWorkRequestAssignment.WorkRequestProjectType == 256) // May be wrong code.Comment by Bhu for while creating WO.
                     {
                         objWorkRequestAssignment.AssignByUserId = null;
                     }
-                    if(objWorkRequestAssignment.WorkRequestImage == "")
+                    if (objWorkRequestAssignment.WorkRequestImage == "")
                     {
                         objWorkRequestAssignment.WorkRequestImage = null;
                     }
@@ -2380,10 +2381,10 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     }
 
                     if (objWorkRequestAssignmentModel.CrStartTime != null)
-                    {                              
+                    {
                         objWorkRequestAssignment.ConStartTime = Convert.ToDateTime(objWorkRequestAssignmentModel.CrStartTime).ToUniversalTime();
                         //while converting time to universal time this code use because above ot getting correct Utc Time so minus some hour.
-                        
+
                         //DateTime ContTimeMinusTwoHour = objWorkRequestAssignment.ConStartTime.Value.AddHours(-2 );
                         //DateTime ContTimeMinusThirtyHour = ContTimeMinusTwoHour.AddMinutes(-30);
                         //objWorkRequestAssignment.ConStartTime = ContTimeMinusThirtyHour;
@@ -2569,7 +2570,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
         }
         //Added by Ashwajit Bansod For only fetching list to display in web
-        public List<WorkRequestAssignmentModelList> GetAllWorkRequestAssignmentList(long? workRequestAssignmentId, long? requestedBy, string operationName, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string textSearch, long LocationID, long UserID, DateTime StartDate, DateTime EndDate, string filter, string filterqrc,string filterwrtype, ObjectParameter totalRecords)
+        public List<WorkRequestAssignmentModelList> GetAllWorkRequestAssignmentList(long? workRequestAssignmentId, long? requestedBy, string operationName, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string textSearch, long LocationID, long UserID, DateTime StartDate, DateTime EndDate, string filter, string filterqrc, string filterwrtype, ObjectParameter totalRecords)
         {
             WorkRequestAssignmentRepository _WorkRequestAssignmentRepository = new WorkRequestAssignmentRepository();
             try
@@ -3189,15 +3190,15 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         objEmailHelper.WeekDays = obj.WeekDayLst;
                         //objEmailHelper.StartTime = obj.StartTime.ToString("hh:mm tt");
                         if (obj.CrStartTime != null)
-                        //objEmailHelper.StartTime = obj.StartTime.Value.ToClientTimeZoneinDateTime().ToString("hh:mm tt");
-                        //objEmailHelper.StartTime = obj.CrStartTime.ToString("hh:mm tt"); Convert.ToDateTime(obj.CrStartTime)
-                        objEmailHelper.StartTime = Convert.ToDateTime(obj.CrStartTime).ToString("hh:mm tt");
+                            //objEmailHelper.StartTime = obj.StartTime.Value.ToClientTimeZoneinDateTime().ToString("hh:mm tt");
+                            //objEmailHelper.StartTime = obj.CrStartTime.ToString("hh:mm tt"); Convert.ToDateTime(obj.CrStartTime)
+                            objEmailHelper.StartTime = Convert.ToDateTime(obj.CrStartTime).ToString("hh:mm tt");
                         objEmailHelper.AssignedTime = obj.AssignedTime.ToString("HH:mm") + " (hh:mm)";
                         objEmailHelper.ProjectDesc = obj.ProjectDesc;
                         objEmailHelper.UserName = lst.UserName;
                         objEmailHelper.emailid = lst.UserEmail;
                         objEmailHelper.LocationName = lst.LocationName;
-                        objEmailHelper.WorkOrderImage = obj.WorkRequestImage == null ? HostingPrefix + workorderimage.Replace("~", "") + "no-asset-pic.png" : HostingPrefix + workorderimage.Replace("~", "") + obj.WorkRequestImage; 
+                        objEmailHelper.WorkOrderImage = obj.WorkRequestImage == null ? HostingPrefix + workorderimage.Replace("~", "") + "no-asset-pic.png" : HostingPrefix + workorderimage.Replace("~", "") + obj.WorkRequestImage;
                         bool IsSent = objEmailHelper.SendEmailWithTemplate();
                         if (lst.DeviceId != null)
                         {
@@ -3709,7 +3710,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             if (status == false)
             {
                 //2 Operating , 3 Subsidery
-                 lstCompanyHolder = _workorderems.Companies.Where(x => x.CMP_COT_Id == 2 || x.CMP_COT_Id == 3 && x.CMP_IsActive == "Y").Select(x => new ContractDropdownDetailsModel()
+                lstCompanyHolder = _workorderems.Companies.Where(x => x.CMP_COT_Id == 2 || x.CMP_COT_Id == 3 && x.CMP_IsActive == "Y").Select(x => new ContractDropdownDetailsModel()
                 {
                     CompanyId = x.CMP_Id,
                     CompanyName = x.CMP_NameLegal,
@@ -3718,7 +3719,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
             else
             {
-                 lstCompanyHolder = _workorderems.Companies.Where(x => x.CMP_COT_Id == 2 && x.CMP_IsActive == "Y").Select(x => new ContractDropdownDetailsModel()
+                lstCompanyHolder = _workorderems.Companies.Where(x => x.CMP_COT_Id == 2 && x.CMP_IsActive == "Y").Select(x => new ContractDropdownDetailsModel()
                 {
                     CompanyId = x.CMP_Id,
                     CompanyName = x.CMP_NameLegal,
@@ -3752,16 +3753,16 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             {
                 try
                 {
-                   //var tt= Context.UserRegistrations.Join(Context.ManagerLocationMappings, q => q.UserId, u => u.ManagerUserId, (q, u) => new { q, u }).
-                   //                   Where(x => (x.u.IsDeleted == false)
-                   //                   && (x.u.LocationId == LocationId)).
-                   //                     Select(x =>  new listForEmployeeDevice
-                   //                     {
-                   //                         DeviceId = x.q.DeviceId,
-                   //                         UserId = x.q.UserId,
-                   //                         LocationName = x.u.LocationMaster.LocationName
-                   //                     }).Distinct().ToList();
-                    List<listForEmployeeDevice> a = (from ur in Context.UserRegistrations      
+                    //var tt= Context.UserRegistrations.Join(Context.ManagerLocationMappings, q => q.UserId, u => u.ManagerUserId, (q, u) => new { q, u }).
+                    //                   Where(x => (x.u.IsDeleted == false)
+                    //                   && (x.u.LocationId == LocationId)).
+                    //                     Select(x =>  new listForEmployeeDevice
+                    //                     {
+                    //                         DeviceId = x.q.DeviceId,
+                    //                         UserId = x.q.UserId,
+                    //                         LocationName = x.u.LocationMaster.LocationName
+                    //                     }).Distinct().ToList();
+                    List<listForEmployeeDevice> a = (from ur in Context.UserRegistrations
                                                      join elm in Context.ManagerLocationMappings
                                                             on ur.UserId equals elm.ManagerUserId
                                                      join lm in Context.LocationMasters
@@ -3810,13 +3811,13 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 
         }
         ///
-        public List<GWCQUestionModel> GetGWCQuestions(string Id,string AssessmetType)
+        public List<GWCQUestionModel> GetGWCQuestions(string Id, string AssessmetType)
         {
             ObjUserRepository = new UserRepository();
             try
             {
 
-                return ObjUserRepository.GetGWCQuestions(Id,AssessmetType);
+                return ObjUserRepository.GetGWCQuestions(Id, AssessmetType);
             }
             catch (Exception)
             {
@@ -3824,7 +3825,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
 
         }
-        public bool saveSelfAssessment(List<GWCQUestionModel> data, string action) {
+        public bool saveSelfAssessment(List<GWCQUestionModel> data, string action)
+        {
 
             ObjUserRepository = new UserRepository();
             try
@@ -3958,12 +3960,13 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
             return result;
         }
-        public string GetMeetingDetail(string Id, string FinYear, string FinQuarter) {
+        public string GetMeetingDetail(string Id, string FinYear, string FinQuarter)
+        {
             string result = "MEETINGNOTFOUND";
             ObjPerformanceRepository = new PerformanceRepository();
             try
             {
-                var obj =ObjPerformanceRepository.GetMeetingDetail( Id,  FinYear,  FinQuarter);
+                var obj = ObjPerformanceRepository.GetMeetingDetail(Id, FinYear, FinQuarter);
                 if (obj != null)
                 {
                     result = (DateTime.Now > obj.RMS_InterviewDateTime) ? "MEETINGCOMPLETED" : "MEETINGNOTCOMPLETED";
@@ -3976,6 +3979,22 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 result = "MEETINGNOTFOUND";
             }
             return result;
+        }
+        public List<ReviewMeeting> GetMeetingList()
+        {
+            ObjPerformanceRepository = new PerformanceRepository();
+            List<ReviewMeeting> MeetingList=new List<ReviewMeeting>();
+            try
+            {
+                MeetingList= ObjPerformanceRepository.GetMeetingList();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return MeetingList;
         }
 
     }

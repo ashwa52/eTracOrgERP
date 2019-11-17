@@ -8475,7 +8475,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="IsTermination" Mode="InOut" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetEvaluationList" ReturnType="Collection(workorderEMSModel.spGetEvaluationList_Result)">
-            <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetReviewMeetingList" ReturnType="Collection(workorderEMSModel.spGetReviewMeetingList_Result)" />
           </EntityContainer>
@@ -16128,10 +16128,10 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         </ComplexType>
         <ComplexType Name="spGetReviewMeetingList_Result">
           <Property Type="String" Name="EMP_ManagerId" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="EMP_Photo" Nullable="true" />
+          <Property Type="String" Name="ManagerPhoto" Nullable="true" />
           <Property Type="String" Name="ManagerName" Nullable="true" MaxLength="94" />
           <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="EMP_Photo1" Nullable="true" />
+          <Property Type="String" Name="EmployeePhoto" Nullable="true" />
           <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
           <Property Type="DateTime" Name="PRMeetingDateTime" Nullable="true" Precision="23" />
         </ComplexType>
@@ -20697,10 +20697,10 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <ResultMapping>
               <ComplexTypeMapping TypeName="workorderEMSModel.spGetReviewMeetingList_Result">
                 <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
-                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="ManagerPhoto" ColumnName="ManagerPhoto" />
                 <ScalarProperty Name="ManagerName" ColumnName="ManagerName" />
                 <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
-                <ScalarProperty Name="EMP_Photo1" ColumnName="EMP_Photo1" />
+                <ScalarProperty Name="EmployeePhoto" ColumnName="EmployeePhoto" />
                 <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
                 <ScalarProperty Name="PRMeetingDateTime" ColumnName="PRMeetingDateTime" />
               </ComplexTypeMapping>

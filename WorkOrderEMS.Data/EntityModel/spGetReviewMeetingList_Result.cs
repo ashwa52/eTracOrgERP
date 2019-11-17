@@ -14,10 +14,10 @@ namespace WorkOrderEMS.Data.EntityModel
     public partial class spGetReviewMeetingList_Result
     {
         public string EMP_ManagerId { get; set; }
-        public string EMP_Photo { get; set; }
+        public string ManagerPhoto { get; set; }
         public string ManagerName { get; set; }
         public string EMP_EmployeeID { get; set; }
-        public string EMP_Photo1 { get; set; }
+        public string EmployeePhoto { get; set; }
         public string EmployeeName { get; set; }
         public Nullable<System.DateTime> PRMeetingDateTime { get; set; }
     }

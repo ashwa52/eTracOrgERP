@@ -1,6 +1,8 @@
 ﻿var HOBurl = '../NewAdmin/GetListOf306090ForJSGrid';
 var QExpectationsUrl = '../NewAdmin/GetListOfQExpectationsForJSGrid';
 var QEvaluationsUrl = '../NewAdmin/GetListOfQEvaluationsForJSGrid';
+var MeetingUrl = '../NewAdmin/GetMeetingList';
+
 
 var clients;
 var $_LocationId = $("#drp_MasterLocation1 option:selected").val();
@@ -471,11 +473,11 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                             });
                         }).append($evaluationText);
                     debugger
-                    if (item.Status == "Expectations Submitted" || item.Status == "Evaluation Submitted" && item.PRMeetingStatus!="MEETINGCOMPLETED") {
+                    if (item.Status == "Expectations Submitted" || item.Status == "Evaluation Submitted" && item.PRMeetingStatus != "MEETINGCOMPLETED") {
                         return $("<div>").attr({ class: "btn-toolbar" }).append($evaluationTextButton).append($customTextButton).append($customMeetingButton).append($customPiPButton).append($evaluationTextButton);
                     } else if (item.Status == "Expectations Submitted" || item.Status == "Evaluation Submitted" && item.PRMeetingStatus == "MEETINGCOMPLETED" || item.PRMeetingStatus == "MEETINGNOTCOMPLETED") {
                         return $("<div>").attr({ class: "btn-toolbar" }).append($evaluationTextButton).append($customTextButton).append($customMeetingSuccessButton).append($customPiPButton).append($evaluationTextButton);
-                    }  else {
+                    } else {
                         return $("<div>").attr({ class: "btn-toolbar" }).append($customTextButton);
                     }
                 }
@@ -644,6 +646,76 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                 }
             },
 
+
+        ],
+        rowClick: function (args) {
+            this
+            console.log(args)
+            var getData = args.item;
+            var keys = Object.keys(getData);
+            var text = [];
+        }
+    });
+    $("#ListScheduledMeeting").jsGrid({
+        width: "100%",
+        height: "400px",
+        filtering: true,
+        inserting: true,
+        editing: true,
+        sorting: true,
+        paging: true,
+        autoload: true,
+        pageSize: 10,
+        pageButtonCount: 5,
+        loadMessage: "Please, wait...",
+        controller: {
+            loadData: function (filter) {
+                return $.ajax({
+                    type: "GET",
+                    url: MeetingUrl,
+                    datatype: 'json',
+                    contentType: "application/json",
+                });
+            }
+        },
+        onRefreshed: function (args) {
+            $(".jsgrid-insert-row").hide();
+            $(".jsgrid-filter-row").hide()
+            $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
+
+        },
+        fields: [
+            {
+                name: "ManagerPhoto", title: "Manager Image", width: 30,
+                itemTemplate: function (val, item) {
+                    return $("<img>").attr("src", val).css({ height: 50, width: 50, "border-radius": "50px" }).on("click", function () {
+
+                    });
+                }
+            },
+            {
+                name: 'ManagerName', width: 80, title: "Manager Name", itemTemplate: function (value, item) {
+                    return $("<div>").append("" + item.ManagerName + "<br><span style='font-size:10px;color:black;font-style:italic;'></span></div>");
+                }
+            },
+            {
+                name: "EmployeePhoto", title: "Employee Image", width: 30,
+                itemTemplate: function (val, item) {
+                    return $("<img>").attr("src", val).css({ height: 50, width: 50, "border-radius": "50px" }).on("click", function () {
+
+                    });
+                }
+            },
+            {
+                name: 'EmployeeName', width: 80, title: "Employee Name", itemTemplate: function (value, item) {
+                    return $("<div>").append("" + item.EmployeeName + "<br><span style='font-size:10px;color:black;font-style:italic;'></span></div>");
+                }
+            },
+            {
+                name: 'MeetingDateTime', width: 60, title: "Meeting Date TIme", itemTemplate: function (value, item) {
+                    return $("<div>").append("" + item.MeetingDate + "<br><span style='font-size:10px;color:black;font-style:italic;'>" + item.MeetingTime + "</span></div>");
+                }
+            },
 
         ],
         rowClick: function (args) {

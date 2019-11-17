@@ -36,7 +36,7 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
             SetupMeeting result;
             try
             {
-                 result = objworkorderEMSEntities.spGetReviewMeetingDateTime(Id, FinYear, FinQuarter).Select(x => new SetupMeeting()
+                result = objworkorderEMSEntities.spGetReviewMeetingDateTime(Id, FinYear, FinQuarter).Select(x => new SetupMeeting()
                 {
                     RMS_Id = x.RMS_Id,
                     ReceipientEmailId = x.RMS_EMP_EmployeeId,
@@ -53,6 +53,30 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
                 result = null;
             }
             return result;
+        }
+        /// <summary>
+        /// Get Meeting List For HR
+        /// </summary>
+        /// <returns></returns>
+        public List<ReviewMeeting> GetMeetingList()
+        {
+            try
+            {
+                return objworkorderEMSEntities.spGetReviewMeetingList().Select(x => new ReviewMeeting()
+                {
+                    EmployeeName = x.EmployeeName,
+                    EMP_EmployeeID = x.EMP_EmployeeID,
+                    EMP_ManagerId = x.EMP_ManagerId,
+                    ManagerPhoto = x.ManagerPhoto,
+                    ManagerName = x.ManagerName,
+                    EmployeePhoto = x.EmployeePhoto,
+                    PRMeetingDateTime = x.PRMeetingDateTime
+                }).ToList();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

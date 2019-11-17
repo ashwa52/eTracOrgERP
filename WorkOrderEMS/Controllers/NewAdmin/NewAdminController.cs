@@ -1019,5 +1019,31 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        ///Get Scheduled Meeting List
+        ///17/11/2019
+        public JsonResult GetMeetingList()
+        {
+            List<ReviewMeeting> MeetingList;
+            try
+            {
+                MeetingList = _GlobalAdminManager.GetMeetingList();
+                foreach (var ITAdmin in MeetingList)
+                {
+                    ITAdmin.ManagerPhoto = (ITAdmin.ManagerPhoto == "" || ITAdmin.ManagerPhoto == "null") ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~/", "") + ITAdmin.ManagerPhoto;
+                    ITAdmin.EmployeePhoto = (ITAdmin.EmployeePhoto == "" || ITAdmin.EmployeePhoto == "null") ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~/", "") + ITAdmin.EmployeePhoto;
+                    ITAdmin.MeetingDate = ITAdmin.PRMeetingDateTime.HasValue ? ITAdmin.PRMeetingDateTime.Value.ToShortDateString() : "";
+                    ITAdmin.MeetingTime = ITAdmin.PRMeetingDateTime.HasValue ? ITAdmin.PRMeetingDateTime.Value.ToShortTimeString() : "";
+                }
+                
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return Json(MeetingList, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }
