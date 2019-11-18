@@ -229,7 +229,8 @@ namespace WorkOrderEMS.Helper
 
         //Added By Ashwajit Bansod
         public string MISId { get; set; }
-
+        public string AcceptAssessmentLink { get; set; }
+        public string RejectAssessmentLink { get; set; }
         //Added By Ashwajit Bansod
         public string CalculatedAmount { get; set; }
         public string CostCode { get; set; }
@@ -1090,7 +1091,36 @@ namespace WorkOrderEMS.Helper
                         strMailBody = strMailBody.Replace("##PASSWORD", Password);
                         strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
                         break;
-                        
+
+                    case "SENDFORASSESSMENT":
+
+                        TemplatePath = ConfigurationManager.AppSettings["SendForAssessment"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";
+                        Subject = "eTrac: Check Assessment";
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##UserName", UserName);
+                        strMailBody = strMailBody.Replace("##Email", emailid);
+                        strMailBody = strMailBody.Replace("##Name", Name);
+                        strMailBody = strMailBody.Replace("##AcceptLink", AcceptAssessmentLink);
+                        strMailBody = strMailBody.Replace("##PASSWORD", Password);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+                        break;
+
+                    case "SENDFORBACKGROUNDCHECK":
+
+                        TemplatePath = ConfigurationManager.AppSettings["SendForAssessment"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";
+                        Subject = "eTrac: Background check";
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##UserName", UserName);
+                        strMailBody = strMailBody.Replace("##Email", emailid);
+                        strMailBody = strMailBody.Replace("##Name", Name);
+                        strMailBody = strMailBody.Replace("##AcceptLink", AcceptAssessmentLink);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+                        break;
+
                 }
                 string body = System.Web.HttpUtility.HtmlDecode(strMailBody);
                 List<Attachment> tt = new List<Attachment>();

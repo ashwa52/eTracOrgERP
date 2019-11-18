@@ -9,7 +9,8 @@ namespace WorkOrderEMS.Models.Employee
 {
 	public class EmployeeVIewModel
 	{
-		public string EmpId { get; set; }
+        public long ApplicantId { get; set; }
+        public string EmpId { get; set; }
 		public string Image { get; set; }
 		[Required]
 		public string FirstName { get; set; }
@@ -44,6 +45,8 @@ namespace WorkOrderEMS.Models.Employee
 		[Required]
 		public bool IsEditEnable { get; set; }
         public string LicenseNumber { get; set; }
+        public string ActionValue { get; set; }
+        public string Status { get; set; }
     }
 
 }

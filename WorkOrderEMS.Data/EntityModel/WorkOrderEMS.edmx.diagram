@@ -288,7 +288,6 @@
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_QRCMasterLog_UserRegistrations" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_QRCScanLog_UserRegistrations" ManuallyRouted="false" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_SubCostCode_UserRegistrations" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.Employee" Width="1.5" PointX="8.375" PointY="4.75" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.VehicleSeating" Width="1.5" PointX="19.5" PointY="115.125" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_VehicleSeating_Department" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.JobTitle" Width="1.5" PointX="10.375" PointY="4.75" />
@@ -312,6 +311,7 @@
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserVehicleSeatingMap_UserRegistrations" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_UserVehicleSeatingMap_Module" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_VehicleSeatingSubModuleMapping_Module" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.Employee" Width="1.5" PointX="18.375" PointY="6.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -48,11 +48,12 @@
                 </div>*@
             @Html.HiddenFor(model => model.EmpId)
             @Html.HiddenFor(model => model.StatusAction)
+            @Html.HiddenFor(model => model.EmployeeCurrentStatus)
             <div class="bottom-sec" style="margin-top: 28px;">
                 <div class="basic-form">
                     <div class="form-group row">
                         <div class="col-sm-6">
-                            @Html.DropDownListFor(x => x.Position, new List<SelectListItem>
+                            @Html.DropDownListFor(x => x.EmploymentStatus, new List<SelectListItem>
                                                                             {
                                         new SelectListItem() {Text = "--Select Position--", Value="0"},
                                         new SelectListItem() {Text = "FT", Value="FT"},

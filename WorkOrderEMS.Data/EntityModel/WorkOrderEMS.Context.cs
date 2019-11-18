@@ -136,7 +136,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<WorkRequestAssignment> WorkRequestAssignments { get; set; }
         public virtual DbSet<IdleEmployee> IdleEmployees { get; set; }
         public virtual DbSet<QRCMaster1> QRCMaster1 { get; set; }
-        public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<VehicleSeating> VehicleSeatings { get; set; }
         public virtual DbSet<JobTitle> JobTitles { get; set; }
         public virtual DbSet<FileType> FileTypes { get; set; }
@@ -151,6 +150,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<UserOverrideUsertype> UserOverrideUsertypes { get; set; }
         public virtual DbSet<UserVehicleSeatingMap> UserVehicleSeatingMaps { get; set; }
         public virtual DbSet<VehicleSeatingSubModuleMapping> VehicleSeatingSubModuleMappings { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
     
         [DbFunction("workorderEMSEntities", "fn_Split")]
         public virtual IQueryable<fn_Split_Result> fn_Split(string sText, string sDelim)
@@ -1909,15 +1909,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ObjectResult<spGetModule_Result> spGetModule()
         {
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetModule_Result>("spGetModule");
-        }
-    
-        public virtual ObjectResult<spGetOrgnizationCommonview_Result> spGetOrgnizationCommonview(string employeeId)
-        {
-            var employeeIdParameter = employeeId != null ?
-                new ObjectParameter("EmployeeId", employeeId) :
-                new ObjectParameter("EmployeeId", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetOrgnizationCommonview_Result>("spGetOrgnizationCommonview", employeeIdParameter);
         }
     
         public virtual ObjectResult<spGetOrgnizationListview_Result> spGetOrgnizationListview(string employeeId)
@@ -6496,6 +6487,15 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("API_IsActive", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApplicantStatus", applicantIdParameter, aPI_ApplicantStatusParameter, aPI_IsActiveParameter);
+        }
+    
+        public virtual ObjectResult<spGetOrgnizationCommonview_Result1> spGetOrgnizationCommonview(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetOrgnizationCommonview_Result1>("spGetOrgnizationCommonview", employeeIdParameter);
         }
     }
 }

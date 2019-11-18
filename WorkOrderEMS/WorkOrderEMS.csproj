@@ -403,6 +403,7 @@
     </Compile>
     <Compile Include="Controllers\NewAdmin\EPeopleController.cs" />
     <Compile Include="Controllers\NewAdmin\eTimeController.cs" />
+    <Compile Include="Controllers\NewAdmin\GetMailDataController.cs" />
     <Compile Include="Controllers\NewAdmin\GlobalSettingsController.cs" />
     <Compile Include="Controllers\NewAdmin\NewAdminController.cs" />
     <Compile Include="Controllers\PDF\PDFDataController.cs" />
@@ -1563,6 +1564,7 @@
     <Content Include="Content\NewAdminContent\AnimatedChart\CSS\reset-html5.css" />
     <Content Include="Content\NewAdminContent\AnimatedChart\CSS\stiff-chart.css" />
     <Content Include="Content\NewAdminContent\AnimatedChart\JS\stiffChart.js" />
+    <Content Include="Content\NewAdminContent\CSS\ClearNotClearPage.css" />
     <Content Include="Content\NewAdminContent\CSS\clockPicker.css" />
     <Content Include="Content\NewAdminContent\CSS\Common.css" />
     <Content Include="Content\NewAdminContent\CSS\custom.css" />
@@ -5217,6 +5219,8 @@
     <Content Include="Images\user.png" />
     <Content Include="Images\version.png" />
     <Content Include="IOSTimePicker.html" />
+    <Content Include="MailTemplate\EPeople\Backgroundcheck.html" />
+    <Content Include="MailTemplate\EPeople\SendForAssessment.html" />
     <Content Include="MailTemplate\SetupEvaluationMeetingTemplate.html" />
     <Content Include="MailTemplate\AddMoreBudgetForLocationTemplate.html" />
     <Content Include="MailTemplate\ApprovedRejectPOTemplate.html" />
@@ -6538,6 +6542,7 @@
     <Content Include="Views\Shared\_CustomerVehicleDetails.cshtml" />
     <Content Include="Views\NewAdmin\QEvaluationView.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\StatusChaneForm\_LocationTransfer.cshtml" />
+    <Content Include="Views\GetMailData\GetAssessmentStatus.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

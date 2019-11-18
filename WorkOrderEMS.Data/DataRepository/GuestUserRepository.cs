@@ -12,7 +12,8 @@ namespace WorkOrderEMS.Data.DataRepository
 {
     public class GuestUserRepositoryData : IGuestUserRepository
     {
-  
+        private readonly string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
+        private readonly string ProfilePicPath = System.Configuration.ConfigurationManager.AppSettings["ProfilePicPath"];
         private readonly workorderEMSEntities objworkorderEMSEntities;
         public GuestUserRepositoryData()
         {
@@ -104,6 +105,30 @@ namespace WorkOrderEMS.Data.DataRepository
             {
                 throw ex;
             }
+        }
+
+        public EmployeeVIewModel GetEmployeeDetails(string employeeId)
+        {            
+            return objworkorderEMSEntities.spGetEmployeePersonalInfo(employeeId).
+                Select(x => new EmployeeVIewModel
+                {
+                    Address = x.EMA_Address,
+                    City = x.EMA_City,
+                    State = x.EMA_State,
+                    Cityzenship = x.CTZ_Citizenship,
+                    DlNumber = x.EMP_DrivingLicenseNumber,
+                    Dob = x.EMP_DateOfBirth,
+                    Email = x.EMP_Email,
+                    EmpId = x.EMP_EmployeeID,
+                    FirstName = x.EMP_FirstName,
+                    LastName = x.EMP_LastName,
+                    MiddleName = x.EMP_MiddleName,
+                    Image = x.EMP_Photo == null ? HostingPrefix + ProfilePicPath.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + x.EMP_Photo,
+                    Phone = x.EMP_Phone,
+                    SocialSecurityNumber = x.EMP_SSN,
+                    Zip = x.EMA_Zip,
+                    LicenseNumber = x.EMP_DrivingLicenseNumber
+                }).FirstOrDefault(); ;
         }
     }
 

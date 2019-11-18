@@ -49,6 +49,7 @@ var empStatusId = 0;
                              var $customEditButton = $("<span>")
                                  .attr({ title: jsGrid.fields.control.prototype.approveButtonTooltip })
                                  .attr({ id: "btn-approve-" + item.RequisitionId }).click(function (e) {
+                                     debugger
                                      ApproveRejectEmployeeStatus(item.ESC_Id, "A", null);
                                  }).append($iconPencil);
                              var $customDeleteButton = $("<span>")
@@ -82,6 +83,7 @@ $(document).ready(function () {
 })
 
 function ApproveRejectEmployeeStatus(Id, Status, comment) {
+    debugger
     $.ajax({
         type: "POST",
         // data: { 'Id': item.id},

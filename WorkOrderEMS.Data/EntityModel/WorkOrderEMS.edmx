@@ -865,6 +865,8 @@
           <Property Name="EMP_ManagerId" Type="varchar" MaxLength="20" />
           <Property Name="EMP_DateOfJoining" Type="date" />
           <Property Name="EMP_LocationId" Type="bigint" />
+          <Property Name="EMP_EmploymentStatus" Type="varchar" MaxLength="10" />
+          <Property Name="EMP_IsExempt" Type="char" MaxLength="1" />
           <Property Name="EMP_IsCreatedBy" Type="bigint" />
           <Property Name="EMP_IsCreatedOn" Type="datetime" />
           <Property Name="EMP_IsActive" Type="char" MaxLength="1" />
@@ -12939,9 +12941,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           </FunctionImport>
           <FunctionImport Name="spGetMisNumber" ReturnType="Collection(Int32)" />
           <FunctionImport Name="spGetModule" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetModule_Result)" />
-          <FunctionImport Name="spGetOrgnizationCommonview" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetOrgnizationCommonview_Result)">
-          <Parameter Name="EmployeeId" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="spGetOrgnizationListview" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetOrgnizationListview_Result)">
           <Parameter Name="EmployeeId" Mode="In" Type="String" />
           </FunctionImport>
@@ -13799,7 +13798,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <FunctionImport Name="spGetInterviewScore" ReturnType="Collection(Int32)">
           <Parameter Name="ApplicantId" Mode="In" Type="Int64" />
           </FunctionImport>
-          <EntitySet Name="Employees" EntityType="WorkOrderEMS.Data.EntityModel.Employee" />
           <FunctionImport Name="spSetSelfAssessment306090">
             <Parameter Name="Action" Mode="In" Type="String" />
             <Parameter Name="EmployeeID" Mode="In" Type="String" />
@@ -14275,6 +14273,10 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="ApplicantId" Mode="In" Type="Int64" />
             <Parameter Name="API_ApplicantStatus" Mode="In" Type="String" />
             <Parameter Name="API_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Employees" EntityType="WorkOrderEMS.Data.EntityModel.Employee" />
+          <FunctionImport Name="spGetOrgnizationCommonview" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetOrgnizationCommonview_Result1)">
+            <Parameter Name="EmployeeId" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Proc_GetAllWorkAssignedToEmployee_Result">
@@ -16630,32 +16632,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="Int32" Name="EMA_Zip" Nullable="true" />
           <Property Type="String" Name="CTZ_Citizenship" Nullable="true" MaxLength="50" />
         </ComplexType>
-        <EntityType Name="Employee">
-          <Key>
-            <PropertyRef Name="EMP_Id" />
-          </Key>
-          <Property Name="EMP_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EMP_EmployeeID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_API_ApplicantId" Type="Int64" />
-          <Property Name="EMP_FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_MiddleName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_Phone" Type="Int64" />
-          <Property Name="EMP_DrivingLicenseNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_DateOfBirth" Type="DateTime" Precision="0" />
-          <Property Name="EMP_SSN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="EMP_MilitaryService" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="EMP_Gender" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_JobTitleId" Type="Int64" />
-          <Property Name="EMP_ManagerId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_DateOfJoining" Type="DateTime" Precision="0" />
-          <Property Name="EMP_LocationId" Type="Int64" />
-          <Property Name="EMP_IsCreatedBy" Type="Int64" />
-          <Property Name="EMP_IsCreatedOn" Type="DateTime" Precision="3" />
-          <Property Name="EMP_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-        </EntityType>
         <ComplexType Name="spGetJobPosting_Result2">
           <Property Type="Int64" Name="JPS_JobPostingId" Nullable="false" />
           <Property Type="Int64" Name="JBT_Id" Nullable="true" />
@@ -17968,6 +17944,47 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="String" Name="ESC_ApprovedBy" Nullable="true" MaxLength="20" />
           <Property Type="String" Name="ESC_ApprovalStatus" Nullable="true" MaxLength="1" />
           <Property Type="DateTime" Name="ESC_Date" Nullable="true" Precision="23" />
+        </ComplexType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EMP_Id" />
+          </Key>
+          <Property Name="EMP_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EMP_EmployeeID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_API_ApplicantId" Type="Int64" />
+          <Property Name="EMP_FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_MiddleName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_Phone" Type="Int64" />
+          <Property Name="EMP_DrivingLicenseNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_DateOfBirth" Type="DateTime" Precision="0" />
+          <Property Name="EMP_SSN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EMP_MilitaryService" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="EMP_Gender" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_JobTitleId" Type="Int64" />
+          <Property Name="EMP_ManagerId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_DateOfJoining" Type="DateTime" Precision="0" />
+          <Property Name="EMP_LocationId" Type="Int64" />
+          <Property Name="EMP_EmploymentStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_IsExempt" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="EMP_IsCreatedBy" Type="Int64" />
+          <Property Name="EMP_IsCreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="EMP_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="spGetOrgnizationCommonview_Result1">
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EMP_Photo" Nullable="true" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+          <Property Type="String" Name="DepartmentName" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="VST_JobDescription" Nullable="true" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
+          <Property Type="Int64" Name="EMP_JobTitleId" Nullable="true" />
+          <Property Type="Int64" Name="EMP_LocationId" Nullable="true" />
+          <Property Type="String" Name="EMP_EmploymentStatus" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="EMP_IsExempt" Nullable="true" MaxLength="1" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -21690,21 +21707,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetOrgnizationCommonview" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetOrgnizationCommonview">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetOrgnizationCommonview_Result">
-                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
-                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
-                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
-                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
-                <ScalarProperty Name="VST_JobDescription" ColumnName="VST_JobDescription" />
-                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
-                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
-                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spGetOrgnizationListview" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetOrgnizationListview">
             <ResultMapping>
               <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetOrgnizationListview_Result">
@@ -22669,33 +22671,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <FunctionImportMapping FunctionImportName="spSetInterviewAnswer" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetInterviewAnswer" />
           <FunctionImportMapping FunctionImportName="spSetInterviewerIsOnline" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetInterviewerIsOnline" />
           <FunctionImportMapping FunctionImportName="spGetInterviewScore" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetInterviewScore" />
-          <EntitySetMapping Name="Employees">
-            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.Employee">
-              <MappingFragment StoreEntitySet="Employee">
-                <ScalarProperty Name="EMP_IsActive" ColumnName="EMP_IsActive" />
-                <ScalarProperty Name="EMP_IsCreatedOn" ColumnName="EMP_IsCreatedOn" />
-                <ScalarProperty Name="EMP_IsCreatedBy" ColumnName="EMP_IsCreatedBy" />
-                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
-                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
-                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
-                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
-                <ScalarProperty Name="EMP_Gender" ColumnName="EMP_Gender" />
-                <ScalarProperty Name="EMP_MilitaryService" ColumnName="EMP_MilitaryService" />
-                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
-                <ScalarProperty Name="EMP_SSN" ColumnName="EMP_SSN" />
-                <ScalarProperty Name="EMP_DateOfBirth" ColumnName="EMP_DateOfBirth" />
-                <ScalarProperty Name="EMP_DrivingLicenseNumber" ColumnName="EMP_DrivingLicenseNumber" />
-                <ScalarProperty Name="EMP_Phone" ColumnName="EMP_Phone" />
-                <ScalarProperty Name="EMP_Email" ColumnName="EMP_Email" />
-                <ScalarProperty Name="EMP_LastName" ColumnName="EMP_LastName" />
-                <ScalarProperty Name="EMP_MiddleName" ColumnName="EMP_MiddleName" />
-                <ScalarProperty Name="EMP_FirstName" ColumnName="EMP_FirstName" />
-                <ScalarProperty Name="EMP_API_ApplicantId" ColumnName="EMP_API_ApplicantId" />
-                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
-                <ScalarProperty Name="EMP_Id" ColumnName="EMP_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spSetSelfAssessment306090" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetSelfAssessment306090" />
           <FunctionImportMapping FunctionImportName="spSetRequisitionApproval" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetRequisitionApproval" />
           <FunctionImportMapping FunctionImportName="spSetVehicleSeating" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetVehicleSeating" />
@@ -23802,6 +23777,52 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <FunctionImportMapping FunctionImportName="spSetEmployeeStatusChange" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetEmployeeStatusChange" />
           <FunctionImportMapping FunctionImportName="spSetEmployeeStatusChangeApproval" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetEmployeeStatusChangeApproval" />
           <FunctionImportMapping FunctionImportName="spSetApplicantStatus" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetApplicantStatus" />
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="EMP_IsActive" ColumnName="EMP_IsActive" />
+                <ScalarProperty Name="EMP_IsCreatedOn" ColumnName="EMP_IsCreatedOn" />
+                <ScalarProperty Name="EMP_IsCreatedBy" ColumnName="EMP_IsCreatedBy" />
+                <ScalarProperty Name="EMP_IsExempt" ColumnName="EMP_IsExempt" />
+                <ScalarProperty Name="EMP_EmploymentStatus" ColumnName="EMP_EmploymentStatus" />
+                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
+                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
+                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
+                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
+                <ScalarProperty Name="EMP_Gender" ColumnName="EMP_Gender" />
+                <ScalarProperty Name="EMP_MilitaryService" ColumnName="EMP_MilitaryService" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="EMP_SSN" ColumnName="EMP_SSN" />
+                <ScalarProperty Name="EMP_DateOfBirth" ColumnName="EMP_DateOfBirth" />
+                <ScalarProperty Name="EMP_DrivingLicenseNumber" ColumnName="EMP_DrivingLicenseNumber" />
+                <ScalarProperty Name="EMP_Phone" ColumnName="EMP_Phone" />
+                <ScalarProperty Name="EMP_Email" ColumnName="EMP_Email" />
+                <ScalarProperty Name="EMP_LastName" ColumnName="EMP_LastName" />
+                <ScalarProperty Name="EMP_MiddleName" ColumnName="EMP_MiddleName" />
+                <ScalarProperty Name="EMP_FirstName" ColumnName="EMP_FirstName" />
+                <ScalarProperty Name="EMP_API_ApplicantId" ColumnName="EMP_API_ApplicantId" />
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EMP_Id" ColumnName="EMP_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetOrgnizationCommonview" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetOrgnizationCommonview">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetOrgnizationCommonview_Result1">
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="VST_JobDescription" ColumnName="VST_JobDescription" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
+                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
+                <ScalarProperty Name="EMP_EmploymentStatus" ColumnName="EMP_EmploymentStatus" />
+                <ScalarProperty Name="EMP_IsExempt" ColumnName="EMP_IsExempt" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

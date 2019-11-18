@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkOrderEMS.Data;
+using WorkOrderEMS.Data.DataRepository;
 using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
@@ -397,6 +398,7 @@ namespace WorkOrderEMS.BusinessLogic
                             UserModel.LocationIdCurrent = selfData.EMP_LocationId;
                             UserModel.JobTitleCurrent = selfData.EMP_JobTitleId;
                             UserModel.Image = selfData.EMP_Photo == null ? HostingPrefix + ProfilePicPath.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + selfData.EMP_Photo;
+                            UserModel.EmployeeCurrentStatus = selfData.EMP_EmploymentStatus;
                         }
                     }
                 }
@@ -684,9 +686,10 @@ namespace WorkOrderEMS.BusinessLogic
         /// </summary>
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
-        public List<UploadedFiles> GetUploadedFilesOfUser(string EmployeeId)
+        public IEnumerable<UploadedFiles> GetUploadedFilesOfUser(string EmployeeId)
         {
             var lst = new List<UploadedFiles>();
+            var objworkorderEMSEntities = new workorderEMSEntities();
             try
             {
                 var ePeopleRepository = new ePeopleRepository();
@@ -905,19 +908,192 @@ namespace WorkOrderEMS.BusinessLogic
             }
             return IsApproveReject;
         }
-        //public bool SendForAssessment(string Status, string IsActive, long ApplicantId)
-        //{
-        //    var ePeopleRepository = new ePeopleRepository();
-        //    try
-        //    {
-        //        var sendForAssessment = ePeopleRepository.SendForAssessment(Status, IsActive, ApplicantId);
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        Exception_B.Exception_B.exceptionHandel_Runtime(ex, "bool SendForAssessment(string Status, string IsActive, long ApplicantId)", "Exception While sending assessment", ApplicantId);
-        //        throw;
-        //    }
-        //}
+        /// <summary>
+        /// Created By : Ashwajit Bnasod
+        /// Created Date : 18-Nov-2019
+        /// Created For : To send backgroud check for approve reject via mail.
+        /// </summary>
+        /// <param name="Status"></param>
+        /// <param name="IsActive"></param>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
+        public bool SendForAssessment(string Status, string IsActive, long ApplicantId, long UserId)
+        {
+            var ePeopleRepository = new ePeopleRepository();
+            bool isSend = false;
+            try
+            {
+                var sendForAssessment = ePeopleRepository.SendForAssessment(Status, IsActive, ApplicantId);
+                isSend = true;
+                #region Email
+                if (ApplicantId > 0)
+                {
+                    var objEmailLogRepository = new EmailLogRepository();
+                    var objEmailReturn = new List<EmailToManagerModel>();
+                    var objListEmailog = new List<EmailLog>();
+                    var objTemplateModel = new TemplateModel();
+                    if (isSend == true)
+                    {
+                        bool IsSent = false;
+                        var objEmailHelper = new EmailHelper();
+                        objEmailHelper.emailid = "assessment.check@gmail.com";
+                        //objEmailHelper.AcceptAssessmentLink = HostingPrefix + "api/ServiceApi/GetAssessmentList?ApplicantId="+ ApplicantId+"&";
+                        objEmailHelper.AcceptAssessmentLink = HostingPrefix + "GetMailData/GetAssessmentStatus?ApplicantId=" + ApplicantId + "&Status="+"Y";
+                        //objEmailHelper.InfractionStatus = obj.Status;
+                        objEmailHelper.MailType = "SENDFORASSESSMENT";
+                        objEmailHelper.SentBy = UserId;
+                        objEmailHelper.TimeAttempted = DateTime.UtcNow.ToMobileClientTimeZone(objTemplateModel.TimeZoneName, objTemplateModel.TimeZoneOffset, objTemplateModel.IsTimeZoneinDaylight, false).ToString();
+                        IsSent = objEmailHelper.SendEmailWithTemplate();
+
+                        //if (IsSent == true)
+                        //{
+                        //    var objEmailog = new EmailLog();
+                        //    try
+                        //    {
+                        //        objEmailog.CreatedBy = userData.u.UserId;
+                        //        objEmailog.CreatedDate = DateTime.UtcNow;
+                        //        objEmailog.DeletedBy = null;
+                        //        objEmailog.DeletedOn = null;
+                        //        objEmailog.LocationId = userData.q.LPOD_LocationId;
+                        //        objEmailog.ModifiedBy = null;
+                        //        objEmailog.ModifiedOn = null;
+                        //        objEmailog.SentBy = userData.u.UserId;
+                        //        objEmailog.SentEmail = getRuleData.Email;
+                        //        objEmailog.Subject = objEmailHelper.Subject;
+                        //        objEmailog.SentTo = getRuleData.UserId;
+                        //        objListEmailog.Add(objEmailog);
+                        //    }
+                        //    catch (Exception)
+                        //    {
+                        //        throw;
+                        //    }
+                        //}
+
+                        using (var context = new workorderEMSEntities())
+                        {
+                            context.EmailLogs.AddRange(objListEmailog);
+                            context.SaveChanges();
+                        }
+                        #endregion Email
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "bool SendForAssessment(string Status, string IsActive, long ApplicantId)", "Exception While sending assessment", ApplicantId);
+                throw;
+            }
+            return isSend;
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bnasod
+        /// Created Date : 18-Nov-2019
+        /// Created For : To send assessment for approve reject via mail.
+        /// </summary>
+        /// <param name="Status"></param>
+        /// <param name="IsActive"></param>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
+        public bool SendForBackgroundCheck(string Status, string IsActive, long ApplicantId, long UserId)
+        {
+            var ePeopleRepository = new ePeopleRepository();
+            var _workorderems = new workorderEMSEntities();
+            bool isSend = false;
+            try
+            {
+                var sendForBackgroundCheck = ePeopleRepository.SendForAssessment(Status, IsActive, ApplicantId);
+                isSend = true;
+                #region Email
+                if (ApplicantId > 0)
+                {
+                    var getEMPData = _workorderems.ApplicantInfoes.Where(x => x.API_ApplicantId == ApplicantId).FirstOrDefault();
+                    var objEmailLogRepository = new EmailLogRepository();
+                    var objEmailReturn = new List<EmailToManagerModel>();
+                    var objListEmailog = new List<EmailLog>();
+                    var objTemplateModel = new TemplateModel();
+                    if (isSend == true)
+                    {
+                        bool IsSent = false;
+                        var objEmailHelper = new EmailHelper();
+                        objEmailHelper.emailid = "background360.check@gmail.com";
+                        objEmailHelper.Name = getEMPData.API_FirstName + " " + getEMPData.API_LastName;
+                        //objEmailHelper.AcceptAssessmentLink = HostingPrefix + "api/ServiceApi/GetAssessmentList?ApplicantId="+ ApplicantId+"&";
+                        objEmailHelper.AcceptAssessmentLink = HostingPrefix + "GetMailData/GetBackGroundStatus?ApplicantId=" + ApplicantId + "&Status=" + "Y";
+                        //objEmailHelper.InfractionStatus = obj.Status;
+                        objEmailHelper.MailType = "SENDFORBACKGROUNDCHECK";
+                        objEmailHelper.SentBy = UserId;
+                        //objEmailHelper.TimeAttempted = DateTime.UtcNow.ToMobileClientTimeZone(objTemplateModel.TimeZoneName, objTemplateModel.TimeZoneOffset, objTemplateModel.IsTimeZoneinDaylight, false).ToString();
+                        IsSent = objEmailHelper.SendEmailWithTemplate();
+
+                        //if (IsSent == true)
+                        //{
+                        //    var objEmailog = new EmailLog();
+                        //    try
+                        //    {
+                        //        objEmailog.CreatedBy = userData.u.UserId;
+                        //        objEmailog.CreatedDate = DateTime.UtcNow;
+                        //        objEmailog.DeletedBy = null;
+                        //        objEmailog.DeletedOn = null;
+                        //        objEmailog.LocationId = userData.q.LPOD_LocationId;
+                        //        objEmailog.ModifiedBy = null;
+                        //        objEmailog.ModifiedOn = null;
+                        //        objEmailog.SentBy = userData.u.UserId;
+                        //        objEmailog.SentEmail = getRuleData.Email;
+                        //        objEmailog.Subject = objEmailHelper.Subject;
+                        //        objEmailog.SentTo = getRuleData.UserId;
+                        //        objListEmailog.Add(objEmailog);
+                        //    }
+                        //    catch (Exception)
+                        //    {
+                        //        throw;
+                        //    }
+                        //}
+
+                        using (var context = new workorderEMSEntities())
+                        {
+                            context.EmailLogs.AddRange(objListEmailog);
+                            context.SaveChanges();
+                        }
+                        #endregion Email
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "bool SendForAssessment(string Status, string IsActive, long ApplicantId)", "Exception While sending assessment", ApplicantId);
+                throw;
+            }
+            return isSend;
+        }
         #endregion Status Change
+
+        public bool ClearedOrNot(string IsActive, string ActionVal, long ApplicantId)
+        {
+            bool isCleared = false;
+            var ePeopleRepository = new ePeopleRepository();
+            string Status = string.Empty;
+            try
+            {
+                if (IsActive != null && ActionVal != null && ApplicantId > 0)
+                {
+                    if(ActionVal == "Background")
+                    {
+                        Status = "F";
+                    }
+                    else
+                    {
+                        Status = "E";
+                    }
+                    var isSaved = ePeopleRepository.SendForAssessment(Status, IsActive, ApplicantId);
+                    isCleared = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool ClearedOrNot(string IsActive, string ActionVal, long ApplicantId)", "Exception While cleared or not clear employee", ApplicantId);
+                throw;
+            }
+            return isCleared;
+        }
     }
 }

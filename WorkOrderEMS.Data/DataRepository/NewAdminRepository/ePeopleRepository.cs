@@ -56,7 +56,7 @@ namespace WorkOrderEMS.Data
         /// </summary>
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
-        public spGetOrgnizationCommonview_Result GetUserSelfDetailsByUserId(string EmployeeId)
+        public spGetOrgnizationCommonview_Result1 GetUserSelfDetailsByUserId(string EmployeeId)
         {
             try
             {
@@ -317,16 +317,25 @@ namespace WorkOrderEMS.Data
                 throw;
             }
         }
-        //public int SendForAssessment(string Status, string IsActive, long ApplicantId)
-        //{
-        //    try
-        //    {
-        //        return objworkorderEMSEntities.spSetEm(Id, EmployeeId, Status, Comment);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw;
-        //    }
-        //}
+        /// <summary>
+        /// Created By : Ashwajit Bnasod
+        /// Created Date : 18-Nov-2019
+        /// Created For : To send assessment for approve reject via mail.
+        /// </summary>
+        /// <param name="Status"></param>
+        /// <param name="IsActive"></param>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
+        public int SendForAssessment(string Status, string IsActive, long ApplicantId)
+        {
+            try
+            {
+                return objworkorderEMSEntities.spSetApplicantStatus(ApplicantId, Status, IsActive);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
     }
 }

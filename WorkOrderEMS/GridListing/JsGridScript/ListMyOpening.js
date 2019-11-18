@@ -149,6 +149,27 @@ function myOpenings(PostingId) {
                           .attr({ title: jsGrid.fields.control.prototype.deleteButtonTooltip })
                           .attr({ id: "btn-Background-" + item.ApplicantId }).click(function (e) {
                               debugger
+                              $.ajax({
+                                  type: "POST",
+                                  url: base_url + '/NewAdmin/BackgroundStatusChange?Status=' + "F" + "&IsActive=" + "S" + "&ApplicantId=" + item.ApplicantId,
+                                  beforeSend: function () {
+                                      new fn_showMaskloader('Please wait...');
+                                  },
+                                  success: function (message) {
+                                      if (message != null) {
+                                          toastr.success(message);
+                                      }
+                                      else {
+                                          toastr.success(message);
+                                      }
+                                      $("#myModalForDemotionEmployee").modal("hide");
+                                  },
+                                  error: function (err) {
+                                  },
+                                  complete: function () {
+                                      fn_hideMaskloader();
+                                  }
+                              });
                           }).append($iconBackground);
 
                      var $customRecruiteeButton = $("<span>")

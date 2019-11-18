@@ -12,6 +12,8 @@ namespace WorkOrderEMS.Data.Interfaces
         EmployeeVIewModel GetEmployee(long UserId);
         bool UpdateApplicantInfo(EmployeeVIewModel onboardingDetailRequestModel);
         bool UpdateApplicantInfoEMPMangemnt(EmployeeVIewModel onboardingDetailRequestModel);
-        
+        EmployeeVIewModel GetEmployeeDetails(string employeeId);
+
+
     }
 }

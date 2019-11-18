@@ -32,6 +32,8 @@ namespace WorkOrderEMS.Data.EntityModel
         public string EMP_ManagerId { get; set; }
         public Nullable<System.DateTime> EMP_DateOfJoining { get; set; }
         public Nullable<long> EMP_LocationId { get; set; }
+        public string EMP_EmploymentStatus { get; set; }
+        public string EMP_IsExempt { get; set; }
         public Nullable<long> EMP_IsCreatedBy { get; set; }
         public Nullable<System.DateTime> EMP_IsCreatedOn { get; set; }
         public string EMP_IsActive { get; set; }

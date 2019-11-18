@@ -1031,32 +1031,71 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         {
             return View("~/Views/NewAdmin/GuestEmployee/GuestEmployee.cshtml");
         }
+        [HttpPost]
+        public JsonResult AssessmentStatusChange(string Status, string IsActive, long ApplicantId)
+        {
+            string message = string.Empty;
+            long UserId = 0;
+            eTracLoginModel ObjLoginModel = null;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                UserId = ObjLoginModel.UserId;
+            }
+            try
+            {
+                if (Status != null && IsActive != null && ApplicantId > 0)
+                {
+                    var sendForAssessment = _IePeopleManager.SendForAssessment(Status, IsActive, ApplicantId, UserId);
+                    message = CommonMessage.SendAssessment();
+                    return Json(message, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    message = CommonMessage.WrongParameterMessage();
+                    return Json(message, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(ex, JsonRequestBehavior.AllowGet);
+            }
+        }
 
-        //public JsonResult AssessmentStatusChange(string Status,string IsActive,long ApplicantId)
-        //{
-        //    string message =string.Empty;
-        //    try
-        //    {
-        //        if(Status != null && IsActive != null && ApplicantId > 0)
-        //        {
-        //            var sendForAssessment = _IePeopleManager.SendForAssessment(Status, IsActive, ApplicantId)
-        //            message = CommonMessage.SendAssessment();
-        //            return Json(message, JsonRequestBehavior.AllowGet);
-        //        }
-        //        else
-        //        {
-        //            message = CommonMessage.WrongParameterMessage();
-        //            return Json(message, JsonRequestBehavior.AllowGet);
-        //        }
-        //    }
-        //    catch(Exception ex)
-        //    {
-        //        return Json(ex, JsonRequestBehavior.AllowGet);
-        //    }
-        //}
+        [HttpPost]
+        public JsonResult BackgroundStatusChange(string Status, string IsActive, long ApplicantId)
+        {
+            string message = string.Empty;
+            long UserId = 0;
+            eTracLoginModel ObjLoginModel = null;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                UserId = ObjLoginModel.UserId;
+            }
+            try
+            {
+                if (Status != null && IsActive != null && ApplicantId > 0)
+                {
+                    var sendForAssessment = _IePeopleManager.SendForBackgroundCheck(Status, IsActive, ApplicantId, UserId);
+                    message = CommonMessage.SendAssessment();
+                    return Json(message, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    message = CommonMessage.WrongParameterMessage();
+                    return Json(message, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(ex, JsonRequestBehavior.AllowGet);
+            }
+        }
         [HttpPost]
         public PartialViewResult InterviewAcceptCancel(string status, long ApplicantId)
         {
+            eTracLoginModel ObjLoginModel = null;
             try
             {
                 if(status != null && ApplicantId > 0)

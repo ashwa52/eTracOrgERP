@@ -644,6 +644,7 @@ function SaveEmployeeStatus(data) {
             new fn_showMaskloader('Please wait...');
         },
         success: function (message) {
+            $("#EmployeeStatusChangeGrid").jsGrid("loadData");
             if (message != null) {
                 toastr.success(message);
             }

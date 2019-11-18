@@ -1082,7 +1082,6 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         public ActionResult GetFileView(string EMPId)
         {
             var _workorderems = new workorderEMSEntities();
-
             var model = new List<UploadedFiles>();
             long _UserId = 0;
             try
@@ -1096,7 +1095,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 var _FillableFormRepository = new FillableFormRepository();
                 if (getUser != null)
                 {
-                    model = _IePeopleManager.GetUploadedFilesOfUser(getUser.EmployeeID);               
+                    model = _IePeopleManager.GetUploadedFilesOfUser(getUser.EmployeeID).ToList();               
                     var details = _IGuestUserRepository.GetEmployee(_UserId);
                     ViewBag.ImageUser = details.Image == null ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + details.Image;
                     ViewBag.EmployeeID = details.EmpId;
@@ -1131,7 +1130,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 var _FillableFormRepository = new FillableFormRepository();
                 if (getUser != null)
                 {
-                    model = _IePeopleManager.GetUploadedFilesOfUser(getUser.EmployeeID);
+                    model = _IePeopleManager.GetUploadedFilesOfUser(getUser.EmployeeID).ToList();
                     var details = _IGuestUserRepository.GetEmployee(_UserId);
                     ViewBag.ImageUser = details.Image == null ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + details.Image;
                     ViewBag.EmployeeID = details.EmpId;
