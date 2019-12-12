@@ -291,8 +291,8 @@ namespace WorkOrderEMS.BusinessLogic
         // BudgetDetails GetListBudgetDetails(long? LocationId, long? UserId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
         bool saveQEvaluations(List<GWCQUestionModel> data, string action);
         bool SetupMeetingEmail(SetupMeeting objSetupMeeting);
-        bool GetMeetingDetail(string Id,string  FinYear, string FinQuarter);
+        string GetMeetingDetail(string Id,string  FinYear, string FinQuarter);
+        List<ReviewMeeting> GetMeetingList();
         bool SetInterviewAcceptCancel(string status, long ApplicantId, string IsActive);
-
     }
 }

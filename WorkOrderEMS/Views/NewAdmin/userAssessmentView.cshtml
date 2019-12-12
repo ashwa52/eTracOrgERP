@@ -5,30 +5,83 @@
     Layout = null;
     int count = 0;
     var isSubmitted = "Y";
+    var employeeInfo = ViewData["employeeInfo"] as WorkOrderEMS.Models.NewAdminModel.GWCQUestionModel;
     if (Model.Count() > 0)
     {
         isSubmitted = Model.First().SAM_IsActive != null ? Model.FirstOrDefault().SAM_IsActive : "Y";
     }
     @*@Html.Hidden(isSubmitted, new { id = "isSubmitted" })*@
-    <input type="hidden" value="@isSubmitted" id = "isSubmitted"/>
+    <input type="hidden" value="@isSubmitted" id="isSubmitted" />
 
 }
 <style>
     td.ans div {
-    display: inline-flex;
-}
+        display: inline-flex;
+    }
+
+    .rowExpectation {
+        background-image: linear-gradient(to right, #3588CD, #fff);
+        margin-left: 0px;
+        margin-right: 0px;
+        padding-top:10px;
+    }
+
+    .FontClass {
+        color: black;
+    }
 </style>
-<i id="back" class="fa fa-arrow-circle-o-left x4" style="
+
+<div class="row rowExpectation">
+    <div class="col-sm-3" style="margin: 0px 0px 10px 10px;">
+        <div style="display: inline-block;">
+            <img src="@employeeInfo.Image" alt="" class="rounded-circle" style="width:75px;height:75px;" id="ProfileImage">
+        </div>
+        <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
+            <span class="FontClass" style="font-size: 16px;    font-weight: 600;" id="EmployeeName">@employeeInfo.EmployeeName</span>
+            <span class="FontClass" style="display: list-item;" id="JobTitle">@employeeInfo.JobTitle</span>
+        </div>
+    </div>
+    <div class="col-sm-1" style="margin: 0px 0px 10px 20px;">
+        <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
+            <span class="FontClass" style="font-size: 16px;    font-weight: 600;" id="Department">@employeeInfo.Department</span>
+        </div>
+    </div>
+    <div class="col-sm-2" style="margin: 0px 0px 10px 20px;">
+        <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
+            <span class="FontClass" style="font-size: 16px;    font-weight: 600;" id="LocationName">@employeeInfo.LocationName</span>
+        </div>
+    </div>
+    <div class="col-sm-1" style="margin: 0px 0px 10px 20px;">
+        <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
+            <span class="FontClass" style="font-size: 16px;    font-weight: 600;" id="AssessmentType">@employeeInfo.AssessmentType</span>
+        </div>
+    </div>
+    <div class="col-sm-2" style="margin: 0px 0px 10px 20px;">
+        <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
+            <span class="FontClass" style="font-size: 16px;font-weight: 600;color: blue;">Review Draft</span>
+        </div>
+    </div>
+    <div class="col-sm-1" style="margin: 0px 0px 10px 20px;">
+        <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
+            <span style="font-size: 16px;    font-weight: 600;"><i class="fa fa-bell fa-2x" aria-hidden="true"></i></span>
+        </div>
+
+    </div>
+    <div class="col-sm-1" style="margin: 0px 0px 0px 0px;">
+        <i id="back" class="fa fa-arrow-circle-o-left x4" style="
     font-size: 36px;
     cursor:pointer;
     margin-left: 10px;
-    margin-top: 5px;
+    margin-top: 0px;
     width: 64px;
     float: none;
     " title="back"></i>
+    </div>
+</div>
+<hr />
 <table class="table" id="selfAssessmentTable">
     <tbody>
-        <div class="col-sm-12 col-xs-12 col-md-12 glowbuttonActiveDeactive"> Self Assessment</div>
+        @*<div class="col-sm-12 col-xs-12 col-md-12 glowbuttonActiveDeactive"> Self Assessment</div>*@
         <div class="table-responsive">
             @foreach (var item in Model)
             {
@@ -205,8 +258,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title" id="SaveAssessmentModalLabel">Draft Assessment </h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
 
             </div>
             <div class="modal-body ">
@@ -217,7 +270,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" id="BackToPerformance" class="btn btn-primary" onclick="HideModal('SaveAssessmentModal')">OK</button>
+                <button type="submit" id="BackToPerformance" class="btn btn-primary" style="width: 90px" onclick="HideModal('SaveAssessmentModal')">OK</button>
 
             </div>
         </div>
@@ -280,7 +333,6 @@
                         error: function (xhr, status, error) {
                         },
                         success: function (result) {
-                            debugger
                             if (result != null) {
                                 $("#gridArea").hide();
                                 $('#profileArea').show();
@@ -290,12 +342,12 @@
                                     $("#SaveAssessmentLabel").text("Assessment drafted successfully");
                                 }
                                 else {
-                                    $("#SaveAssessmentModalLabel").text("Save Assessment");
-                                    $("#SaveAssessmentLabel").text("Assessment saved successfully");
-                                    setTimeout(function () { HideModal("SaveAssessmentModal"); }, 3000);
-
+                                    $("#SaveAssessmentModalLabel").text("Submit Assessment");
+                                    $("#SaveAssessmentLabel").text("Assessment submitted successfully");
                                 }
                                 $("#SaveAssessmentModal").modal('show');
+                                setTimeout(function () { HideModal("SaveAssessmentModal"); }, 3000);
+
                             }
                         }
                     });

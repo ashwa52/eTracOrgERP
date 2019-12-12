@@ -204,7 +204,15 @@ namespace WorkOrderEMS.Controllers.QRCSetup
                             ObjQRCModel.AssetPicture = ObjQRCModel.AssetPicture.Split(',')[1];
                             ObjCommonHelper.UploadQRCImage(ObjQRCModel.AssetPicture, path, ObjQRCModel.AssetPictureName);
                         }
-
+                        if (ObjQRCModel != null && _fnResult == Result.Completed)
+                        {
+                            var obj = new NotificationDetailModel();
+                            obj.CreatedBy = ObjLoginModel.UserId;
+                            obj.CreatedDate = Convert.ToDateTime(DateTime.UtcNow);
+                            //1obj.AssignTo = ObjQRCModel.AssignToUserId;
+                            obj.eScanQRCID = _qRCId;
+                            var saveDataForNotification = _ICommonMethod.SaveNotificationDetail(obj);
+                        }
                         if (_fnResult == Result.Completed)
                         {
                             // Code for to get path of root directory and attach path of directory to store image
@@ -901,5 +909,6 @@ namespace WorkOrderEMS.Controllers.QRCSetup
                 return Json("");
             }
         }
+
     }
 }

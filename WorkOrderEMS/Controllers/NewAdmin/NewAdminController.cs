@@ -532,7 +532,8 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             return PartialView("_PerformanceManagement");
         }
         [HttpPost]
-        public ActionResult userAssessmentView(string Id, string Assesment)
+        public ActionResult userAssessmentView(string Id, string Assesment, string Name, string Image, string JobTitle, string Department, string LocationName)
+
         {
             eTracLoginModel ObjLoginModel = null;
             string Employee_Id = string.Empty;
@@ -553,6 +554,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
 
             ListQuestions = _GlobalAdminManager.GetGWCQuestions(Employee_Id, Assesment);
+            ViewData["employeeInfo"] = new GWCQUestionModel() { EmployeeName = Name, AssessmentType = Assesment, Image = Image, JobTitle = JobTitle, Department = Department, LocationName = LocationName };
             return PartialView("userAssessmentView", ListQuestions);
         }
         public ActionResult PerformanceManagementGrid()
@@ -1370,13 +1372,12 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 result = _GlobalAdminManager.SetupMeetingEmail(SetupMeeting);
             }
             return Json(result, JsonRequestBehavior.AllowGet);
-
         }
         [HttpPost]
         public JsonResult GetMeetingDetail(string Id, string FinYear, string FinQuarter)
         {
             eTracLoginModel ObjLoginModel = null;
-            bool result = false;
+            string result =string.Empty;
             if (Session["eTrac"] != null)
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
@@ -1391,7 +1392,31 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 result = _GlobalAdminManager.GetMeetingDetail(Id, FinYear, FinQuarter);
             }
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        ///Get Scheduled Meeting List
+        ///17/11/2019
+        public JsonResult GetMeetingList()
+        {
+            List<ReviewMeeting> MeetingList;
+            try
+            {
+                MeetingList = _GlobalAdminManager.GetMeetingList();
+                foreach (var ITAdmin in MeetingList)
+                {
+                    ITAdmin.ManagerPhoto = (ITAdmin.ManagerPhoto == "" || ITAdmin.ManagerPhoto == "null") ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~/", "") + ITAdmin.ManagerPhoto;
+                    ITAdmin.EmployeePhoto = (ITAdmin.EmployeePhoto == "" || ITAdmin.EmployeePhoto == "null") ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~/", "") + ITAdmin.EmployeePhoto;
+                    ITAdmin.MeetingDate = ITAdmin.PRMeetingDateTime.HasValue ? ITAdmin.PRMeetingDateTime.Value.ToShortDateString() : "";
+                    ITAdmin.MeetingTime = ITAdmin.PRMeetingDateTime.HasValue ? ITAdmin.PRMeetingDateTime.Value.ToShortTimeString() : "";
+                }
+                
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }
+            return Json(MeetingList, JsonRequestBehavior.AllowGet);
         }
 
     }

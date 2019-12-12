@@ -944,7 +944,12 @@ namespace WorkOrderEMS.Data
                     Status = t.EEL_IsActive,
                     VST_Level = t.VST_Level,
                     FinYear = t.FinYear.Value,
-                    AssessmentType = t.AssessmentType
+                    AssessmentType = t.AssessmentType,
+                    PRMeetingStatus=t.PRMeetingStatus,
+                    PRMeetingDateTime=t.PRMeetingDateTime,
+                    MeetingDate=t.PRMeetingDateTime.HasValue?t.PRMeetingDateTime.Value.ToShortDateString():"",
+                    MeetingTime = t.PRMeetingDateTime.HasValue ? t.PRMeetingDateTime.Value.ToShortTimeString():""
+
 
                 }).ToList();
                 totalRecords = Convert.ToInt32(totalRecord.Value);
@@ -956,22 +961,25 @@ namespace WorkOrderEMS.Data
 
         public bool saveQEvaluations(List<GWCQUestionModel> data, string action)
         {
+            bool result = false;
             try
             {
-                var list = data.GroupBy(x => x.ASQ_Id).Select(x => x.First());
+                ObjectParameter IsTermination = new ObjectParameter("IsTermination", typeof(char));
 
+                var list = data.GroupBy(x => x.ASQ_Id).Select(x => x.First());
+                var EmployeeId = string.Empty;
                 if (data.Count() > 0)
                 {
                     foreach (var i in list)
                     {
-
-                        _workorderEMSEntities.spSetEvaluationQuarterly("U", i.EEL_EMP_EmployeeId, i.QuestionType, i.EEL_Id, i.EEL_FinencialYear, i.EEL_FinQuarter, i.EEL_AnswerSelf, i.EEL_Comments, action == "C" ? "C" : "S");
-                        //var IsActive = (i.EEL_IsActive == null || i.EEL_IsActive == "" || i.EEL_IsActive != "Y") ? "I" : "U";
-                        //_workorderEMSEntities.spSetSelfAssessmentQuarterly(IsActive, i.EEL_EMP_EmployeeId,i.EEL_EMP_EmployeeIdManager,i.QuestionType, i.ASQ_Id, i.EEL_Id,i.EEL_FinencialYear,i.EEL_FinQuarter, i.EEL_AnswerSelf == "Y" ? "Y" : i.EEL_AnswerSelf == "N" ? "N" : i.EEL_AnswerSelf == "S" ? "S" : null, action == "S" ? "S" : "Y","Y");
+                        _workorderEMSEntities.spSetEvaluationQuarterly("U", i.EEL_EMP_EmployeeId, i.QuestionType, i.EEL_Id, i.EEL_FinencialYear, i.EEL_FinQuarter, i.EEL_AnswerSelf ,i.EEL_Comments, action == "C" ? "C" : "S");
+                        //_workorderEMSEntities.spSetSelfAssessmentQuarterly((i.EEL_IsActive == null || i.EEL_IsActive == "" || i.EEL_IsActive != "Y") ? "I" : "U", i.EEL_EMP_EmployeeId,i.EEL_EMP_EmployeeIdManager,i.QuestionType, i.ASQ_Id, i.EEL_Id,i.EEL_FinencialYear,i.EEL_FinQuarter, i.EEL_AnswerSelf == "Y" ? "Y" : i.EEL_AnswerSelf == "N" ? "N" : i.EEL_AnswerSelf == "S" ? "S" : null, action == "S" ? "S" : "Y");
+                        EmployeeId = i.EEL_EMP_EmployeeId;
                     }
+                    result= _workorderEMSEntities.spGetIsTremination(EmployeeId, IsTermination)=='Y'?true:false;
                 }
 
-                return true;
+                return result;
 
             }
             catch (Exception)

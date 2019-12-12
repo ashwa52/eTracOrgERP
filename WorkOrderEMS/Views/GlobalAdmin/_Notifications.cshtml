@@ -1,33 +1,103 @@
 ﻿@model IEnumerable<WorkOrderEMS.Helper.EmailHelper>
-
-@foreach (var item in Model)
+@if (Model.Count() > 0)
 {
-    <div class="row notice info">
-        <div class="col-sm-12">
-            <p>WORK ORDER HAS BEEN CREATED </p>
-        </div>
-        <div class="col-sm-2">
-            <img src="@item.EmployeeImage" style="height: 50px; width: 50px;border-radius: 50px" />
 
-        </div>
-        <div class="col-sm-5">
-            @*@Html.DisplayFor(modelItem => item.CreatedBy)*@
-            Work order has been created by @item.CreatedBy
-        </div>
-        <div class="col-sm-5">
-            @if (item.IsWorkable == true)
-            {
+    foreach (var item in Model)
+    {
+        if (item.WorkOrderID != null)
+        {
+            <div class="row notice info">
+                <div class="col-sm-12">
+                    <p>WORK ORDER HAS BEEN CREATED. Work Order Id: @item.WorkOrderID </p>
+                </div>
+                <div class="col-sm-2">
+                    <img src="@item.EmployeeImage" style="height: 50px; width: 50px;border-radius: 50px" />
 
-                <button class="btn btn-danger pull-right">Decline </button>
-                <button class="btn btn-success pull-right">Approve </button>
+                </div>
+                <div class="col-sm-5">
+                    @*@Html.DisplayFor(modelItem => item.CreatedBy)*@
+                    Work order has been created by @item.CreatedBy
 
-            }
-            else
-            {
-                <button class="btn btn-success pull-right" style="width:155px;">Acknowledgement </button>
+                </div>
+                <div class="col-sm-5">
+                    @*@if (item.IsWorkable == true)
+                        {
 
-            }
-        </div>
-        </div>
+                            <button class="btn btn-danger pull-right">Decline </button>
+                            <button class="btn btn-success pull-right">Approve </button>
+
+                        }
+                        else
+                        {*@
+                    <button class="btn btn-success pull-right " style="width:155px;" onclick="ReadNotification(@item.NotificationId,'UrgentWorkOrdersList')" data-id="@item.NotificationId">Acknowledge </button>
+                    @*}*@
+                </div>
+            </div>
+        }
+        else if (item.eScanQRCID != null)
+        {
+            <div class="row notice info">
+                <div class="col-sm-12">
+                    <p>NEW QRC HAS BEEN CREATED. QRC Id: @item.eScanQRCID </p>
+                </div>
+                <div class="col-sm-2">
+                    <img src="@item.EmployeeImage" style="height: 50px; width: 50px;border-radius: 50px" />
+
+                </div>
+                <div class="col-sm-5">
+                    @*@Html.DisplayFor(modelItem => item.CreatedBy)*@
+                    QRC has been created by @item.CreatedBy
+
+                </div>
+                <div class="col-sm-5">
+                    @*@if (item.IsWorkable == true)
+                        {
+
+                            <button class="btn btn-danger pull-right">Decline </button>
+                            <button class="btn btn-success pull-right">Approve </button>
+
+                        }
+                        else
+                        {*@
+                    <button class="btn btn-success pull-right " style="width:155px;" onclick="ReadNotification(@item.NotificationId,'eScanNotification')" data-id="@item.NotificationId">Acknowledge </button>
+                    @*}*@
+                </div>
+            </div>
+
+        }
+
+    }
+}
+else
+{
+    <div style="
+    margin-bottom: 0;
+    margin-top: 0;
+color: #5D78FF;
+    font-size: 1.25rem;
+padding: 20px;
+    ">There are no notifications to show</div>
 }
 
+<script>
+    function ReadNotification(param,div) {
+        $.ajax({
+            type: "POST",
+            data: { 'NotificationId': param,NotificationType:div },
+            url: '../GlobalAdmin/SetIsReadNotification/',
+            error: function (xhr, status, error) {
+            },
+            success: function (result) {
+                debugger;
+                $elem = $("[data-id=" + param + "]");
+                $elem.removeClass("btn-success");
+                $elem.addClass("btn-danger");
+
+                if (result != null) {
+
+                    $("#"+div).html(result);
+                }
+            }
+        });
+    }
+</script>

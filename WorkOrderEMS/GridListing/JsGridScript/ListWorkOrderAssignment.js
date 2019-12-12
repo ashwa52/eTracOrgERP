@@ -166,7 +166,18 @@ $("#SelectStatusOfWO").change(function () {
     //    }
     //})
     //basic jsgrid table
-
+    $.ajax({
+        type: "GET",
+        url: '../GlobalAdmin/GetUnseenNotifications',
+        datatype: 'json',
+        contentType: "application/json",
+        success: function (response) {
+            $("#UrgentWorkOrdersList").html(response);
+        },
+        error: function (data) {
+            debugger;
+        }
+    });
 
 })(jQuery);
 $(document).ready(function () {

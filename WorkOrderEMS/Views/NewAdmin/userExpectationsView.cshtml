@@ -421,9 +421,8 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                 <h4 class="modal-title" id="SaveExpectationsModalLabel">Draft Expectations </h4>
-
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             </div>
             <div class="modal-body ">
                 <div>
@@ -433,7 +432,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" id="BackToPerformance" class="btn btn-primary" onclick="HideModal('SaveExpectationsModal')">OK</button>
+                <button type="submit" id="BackToPerformance" class="btn btn-primary" onclick="HideModal('SaveExpectationsModal')" style="width: 90px">OK</button>
             </div>
         </div>
     </div>
@@ -501,7 +500,7 @@
                         error: function (xhr, status, error) {
                         },
                         success: function (result) {
-                            debugger
+                            
                             if (result != null) {
                                 $("#gridArea").hide();
                                 $('#profileArea').show();
@@ -511,12 +510,13 @@
                                     $("#successExpectationsLabel").text("Expectations drafted successfully");
                                 }
                                 else {
-                                    $("#SaveExpectationsModalLabel").text("Save Expectations");
-                                    $("#successExpectationsLabel").text("Expectations saved successfully");
-                                    setTimeout(function () { HideModal("SaveExpectationsModal"); }, 3000);
+                                    $("#SaveExpectationsModalLabel").text("Submit Expectations");
+                                    $("#successExpectationsLabel").text("Expectations submitted successfully");
 
                                 }
                                 $("#SaveExpectationsModal").modal('show');
+                                setTimeout(function () { HideModal("SaveExpectationsModal"); }, 3000);
+
 
                             }
                         }

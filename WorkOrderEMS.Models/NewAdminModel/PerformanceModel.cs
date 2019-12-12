@@ -18,12 +18,16 @@ namespace WorkOrderEMS.Models.NewAdminModel
         public int? Assesment { get; set; }
         public string Status { get; set; }
         public string Expectation { get; set; }
-
         public string VST_Level { get; set; }
-
         public int FinYear { get; set; }
         public string IsLoggedInUser { get; set; }
         public string AssessmentType { get; set; }
+        public string PRMeetingStatus { get; set; }
+        public DateTime? PRMeetingDateTime { get; set; }
+        public string MeetingDate { get; set; }
+
+        public string MeetingTime { get; set; }
+
 
     }
     public class GWCQUestionModel
@@ -90,6 +94,20 @@ namespace WorkOrderEMS.Models.NewAdminModel
         public Nullable<System.DateTime> RMS_InterviewDateTime { get; set; }
         public Nullable<System.DateTime> RMS_Date { get; set; }
         public string RMS_IsActive { get; set; }
+    }
+    public  class ReviewMeeting
+    {
+        public string EMP_ManagerId { get; set; }
+        public string ManagerPhoto { get; set; }
+        public string ManagerName { get; set; }
+        public string EMP_EmployeeID { get; set; }
+        public string EmployeePhoto { get; set; }
+        public string EmployeeName { get; set; }
+        public Nullable<System.DateTime> PRMeetingDateTime { get; set; }
+
+        public string MeetingDate { get; set; }
+        public string MeetingTime { get; set; }
+
     }
 
 }

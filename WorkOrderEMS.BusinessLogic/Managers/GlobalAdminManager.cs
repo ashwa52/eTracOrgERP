@@ -56,6 +56,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         private readonly string ConstantImagesForClient = ConfigurationManager.AppSettings["ConstantImages"] + "no-profile-pic.jpg";
         private readonly string workorderimage = ConfigurationManager.AppSettings["WorkRequestImage"];
 
+
         //workorderEMSEntities _workorderEMSEntities = new workorderEMSEntities();
 
         //Created by Gayatri Pal
@@ -4364,13 +4365,33 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
             return result;
         }
-        public bool GetMeetingDetail(string Id, string FinYear, string FinQuarter) {
-            bool result = false;
+        public string GetMeetingDetail(string Id, string FinYear, string FinQuarter)
+        {
+            string result = "MEETINGNOTFOUND";
             ObjPerformanceRepository = new PerformanceRepository();
             try
             {
-                var obj =ObjPerformanceRepository.GetMeetingDetail( Id,  FinYear,  FinQuarter);
-               result= (DateTime.Now > obj.RMS_InterviewDateTime) ?  true : false;
+                var obj = ObjPerformanceRepository.GetMeetingDetail(Id, FinYear, FinQuarter);
+                if (obj != null)
+                {
+                    result = (DateTime.Now > obj.RMS_InterviewDateTime) ? "MEETINGCOMPLETED" : "MEETINGNOTCOMPLETED";
+                }
+
+            }
+            catch (Exception)
+            {
+
+                result = "MEETINGNOTFOUND";
+            }
+            return result;
+        }
+        public List<ReviewMeeting> GetMeetingList()
+        {
+            ObjPerformanceRepository = new PerformanceRepository();
+            List<ReviewMeeting> MeetingList=new List<ReviewMeeting>();
+            try
+            {
+                MeetingList= ObjPerformanceRepository.GetMeetingList();
 
             }
             catch (Exception)
@@ -4378,7 +4399,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
 
                 throw;
             }
-            return result;
+            return MeetingList;
         }
         public List<spGetJobPostingDetails_ForCompanyOpening_Result> GetJobPostingDetailsForCompanyOpening(long JPS_JobPostingId)
         {

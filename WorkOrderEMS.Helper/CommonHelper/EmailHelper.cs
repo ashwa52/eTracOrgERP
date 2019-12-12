@@ -243,6 +243,12 @@ namespace WorkOrderEMS.Helper
         public string EmailFrom { get; set; }
         public string Body { get; set; }
 
+        public long NotificationId { get; set; }
+        public long? WorkOrderID { get; set; }
+        public long? eScanQRCID { get; set; }
+
+        
+
         public bool SendEmailWithTemplate(string[] attachedUrl = null)
         {
             bool IsSent = false;

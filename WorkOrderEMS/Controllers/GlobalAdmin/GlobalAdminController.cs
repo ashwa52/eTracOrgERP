@@ -1482,7 +1482,8 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                     #region QuickBook Department
                     //if (Session["realmId"] != null)
                     //{
-                    if (ObjLocationMasterModel.LocationId == 0) {
+                    if (ObjLocationMasterModel.LocationId == 0)
+                    {
                         string realmId = CallbackController.RealMId.ToString();//Session["realmId"].ToString();
                         try
                         {
@@ -2879,6 +2880,15 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                     //Added by Bhushan Dod
                     listForEmployeeDevice res = _IGlobalAdmin.sendNotificationContinuousRequestToEmployee(ObjLoginModel.LocationID, objWorkRequestAssignmentModel.AssignToUserId, objWorkRequestAssignmentModel);
                 }
+                if (objWorkRequestAssignmentModel != null && result == Result.Completed)
+                {
+                    var obj = new NotificationDetailModel();
+                    obj.CreatedBy = ObjLoginModel.UserId;
+                    obj.CreatedDate = Convert.ToDateTime(DateTime.UtcNow);
+                    obj.AssignTo = objWorkRequestAssignmentModel.AssignToUserId;
+                    obj.WorkOrderID = objWorkRequestAssignmentModel.WorkRequestAssignmentID;
+                    var saveDataForNotification = _ICommonMethod.SaveNotificationDetail(obj);
+                }
                 if (result == Result.Completed)
                 {
                     ViewBag.Message = CommonMessage.SaveSuccessMessage();
@@ -3708,8 +3718,8 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                         ViewBag.Message = CommonMessage.eFleetDriverSaveSuccessMessage();
                         ViewBag.AlertMessageClass = ObjAlertMessageClass.Success;
                     }
-                    
-                }               
+
+                }
             }
             catch (Exception ex)
             {
@@ -4621,10 +4631,48 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
                 UserId = ObjLoginModel.UserId;
             }
-            return PartialView("_Notifications",_ICommonMethod.GetUnseenNotifications(UserId));
+            return PartialView("_Notifications", _ICommonMethod.GetUnseenNotifications(UserId));
         }
-		
-		#endregion
-        #endregion
+
+        [HttpPost]
+        public ActionResult SetIsReadNotification(long NotificationId, string NotificationType)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            long UserId = 0;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                UserId = ObjLoginModel.UserId;
+            }
+            _ICommonMethod.SetIsReadNotification(NotificationId);
+            if (NotificationType == "UrgentWorkOrdersList")
+            {
+                return PartialView("_Notifications", _ICommonMethod.GetUnseenNotifications(UserId));
+            }
+            else
+            {
+                return PartialView("_Notifications", _ICommonMethod.GeteScanNotifications(UserId));
+
+            }
+        }
+        ///Get Unseen Notification
+        ///
+        [HttpGet]
+        public ActionResult GeteScanNotifications()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            long UserId = 0;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                UserId = ObjLoginModel.UserId;
+            }
+            var result = _ICommonMethod.GeteScanNotifications(UserId);
+            foreach (var item in result)
+            {
+                item.EmployeeImage = ((item.EmployeeImage == "" || item.EmployeeImage == null) ? HostingPrefix + "/Content/Images/ProjectLogo/no-profile-pic.jpg" : HostingPrefix + ProfileImagePath.Replace("~", "") + item.EmployeeImage);
+            }
+            return PartialView("_Notifications", result);
+        }
     }
 }

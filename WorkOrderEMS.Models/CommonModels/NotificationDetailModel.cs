@@ -29,5 +29,6 @@ namespace WorkOrderEMS.Models
         public long? eScanQRCID { get; set; }
         public bool? IsDamage { get; set; }
         public bool? IsCheckOut { get; set; }
+        public long NotificationId { get; set; }
     }
 }
