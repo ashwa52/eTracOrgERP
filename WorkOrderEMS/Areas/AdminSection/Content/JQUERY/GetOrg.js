@@ -3471,6 +3471,7 @@ getOrgChart.prototype._aY = function(d, b) {
                                 }
                             }
                             $("#myModalForChart").modal("show");
+                           
                             tinymce.editors.RolesAndResponsibility.setContent(roles);
                             $("#parentIdForJobTitle").val(c);
                         },

@@ -1,0 +1,285 @@
+﻿
+@{
+
+    string EmployeeId = (Convert.ToString(Session["EmployeeId"]));
+}
+
+
+@*<link href="~/Areas/AdminSection/Content/CSS/GetOrg.css" rel="stylesheet" />*@
+
+@*<link href="~/Content/NewAdminContent/CSS/GetOrgForRequision.css" rel="stylesheet" />*@
+<br />
+<input type="hidden" id="VSCIdPointingEMP" />
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card" data-aos="fade-up">
+                    <div style="height: 45px;background:#0aa0cd;">
+                        <div class="form-group row" style="margin-left:10px;margin-top:6px;">
+                            <a id="BackToEmployeeGrid" title="Back to Employee List" style="cursor:pointer;"><i class="fa fa-long-arrow-left fa-2x" style="color:white;"></i></a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="ChartContainerEmployeeList" class="card" data-aos="fade-up"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalToAddJobPost">
+    <div class="modal-dialog modal-lg" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Post Job</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="divOpenJobPostForm" class=""></div>
+            </div>
+            <div style="margin-bottom:20px;">
+                <button type="button" class="btn btn-secondary pull-right" id="closeJobPost" style="border-radius:100px;width:16%;margin-right: 10px;" data-dismiss="modal">Close</button>
+                <input type="button" class="btn btn-primary pull-right" id="SaveJobPost" style="border-radius:100px;width:16%;margin-right: 8px;" value="Save" />
+            </div>
+        </div>
+    </div>
+</div>
+@*<script src="~/Areas/AdminSection/Content/JQUERY/GetOrg.js"></script>*@
+@*<script src="https://balkangraph.com/js/latest/OrgChart.js"></script>*@
+
+<script src="~/Content/NewAdminContent/JQUERY/ChartGraphDemo.js"></script>
+
+@*<script src="~/Content/NewAdminContent/JQUERY/GetOrgForRequisition.js"></script>*@
+<script src="~/Areas/AdminSection/Content/JQUERY/JobPostingJs.js"></script>
+@*<script type="text/javascript">
+        debugger
+        google.load("visualization", "1", { packages: ["orgchart"] });
+
+
+            drawEmpChart();
+
+            function drawEmpChart() {
+                debugger
+            var addNewUrl = "@Url.Action("GetChartDisplayData", "AdminDashboard", new { area = "AdminSection" })";
+            $.ajax({
+                type: "POST",
+                url: addNewUrl,
+                data: '{}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (empData) {
+                    debugger
+                    var chartData = new google.visualization.DataTable();
+
+                    chartData.addColumn('string', 'SeatingName');
+                    chartData.addColumn('string', 'JobDescription');
+                    chartData.addColumn('string', 'ToolTip');
+
+                    $.each(empData, function (index, row) {
+                        debugger
+                        var reportID = row.Id.toString() == "0" ? '' : row.Id.toString();
+
+                        chartData.addRows([[{
+                            v: row.Id.toString(),
+                            f: row.SeatingName + '<div>(<span>' + row.JobDescription + '</span>)</div><img height="50px" width="50px" src = "Photos/' + row.Id.toString() + '.jpg" />'
+                        }, reportID, row.JobDescription]]);
+                    });
+
+                    var chart = new google.visualization.OrgChart($("#ChartContainerEmployeeList")[0]);
+                    chart.draw(chartData, { allowHtml: true });
+                },
+                failure: function (xhr, status, error) {
+                    alert("Failure: " + xhr.responseText);
+                },
+                error: function (xhr, status, error) {
+                    alert("Error: " + xhr.responseText);
+                }
+            });
+        }
+    </script>*@
+<script>
+    $(document).ready(function () {
+        $("#BackToEmployeeGrid").click(function () {
+            var addNewUrl = "@Url.Action("ePeopleDashboard", "NewAdmin")";
+            $('#RenderPageId').load(addNewUrl);
+        });
+        var VSCId;
+        debugger
+        var empId = '@EmployeeId';
+        $.ajax({
+            type: "POST",
+            // data: { 'Id': item.id},
+            url: '../EPeople/GetVehicleSeatingChartPositionedUser?Id=' + empId,
+            beforeSend: function () {
+                new fn_showMaskloader('Please wait...');
+            },
+            contentType: "application/json; charset=utf-8",
+            error: function (xhr, status, error) {
+            },
+            success: function (result) {
+                debugger
+                if (result != null) {
+                    VSCId = result.VSTId;
+                    $("#VSCIdPointingEMP").val(VSCId);
+                }
+
+            },
+            complete: function () {
+                fn_hideMaskloader();
+            }
+        });
+        debugger
+        var addNewUrl = "@Url.Action("GetChartDisplayData", "AdminDashboard", new { area = "AdminSection" })";
+        var peopleElement = document.getElementById("ChartContainerEmployeeList");
+        $.ajax({
+            type: "POST",
+            url: addNewUrl,
+            success: function (listData) {
+                debugger
+                var PointingId;
+                var tabledata = [];
+                if (listData != null) {
+                    for (var i = 0; i < listData.length; i++) {
+                        var data = {};
+                        if (i == 0) {
+                            listData[i].parentId = null;
+                        }
+                        data.id = listData[i].Id;
+                        data.pid = listData[i].parentId;
+                        data.SeatingName = listData[i].SeatingName;
+                        data.JobDescription = listData[i].JobDescription;
+                        data.DepartmentName = listData[i].DepartmentName;
+
+                        tabledata.push(data);
+                    }
+
+                    var chart = new OrgChart(peopleElement, {
+
+                        scaleInitial: BALKANGraph.match.boundary,
+                        //enableDragDrop: true,
+                        //tags: {
+                        //    "assistant": {
+                        //        template: "ula"
+                        //    }
+                        //},
+                        nodeMenu: {
+                            //add: { text: "Add" },
+                            add: { text: "Job Posting" },
+                            edit: { text: "Edit" },
+                        },
+                        nodeBinding: {
+                            field_0: "SeatingName",
+                            field_1: "JobDescription",
+                            field_2: "DepartmentName",
+                            //field_2: "DepartmentName"
+                            //img_0: "img"
+                        },
+                        nodes: tabledata,
+                        //nodes: [
+                        //    { id: 1, SeatingName: "Denny Curtis", title: "CEO", img: "https://balkangraph.com/js/img/2.jpg" },
+                        //    { id: 2, pid: 1, name: "Ashley Barnett", title: "Sales Manager", img: "https://balkangraph.com/js/img/3.jpg" },
+                        //    { id: 3, pid: 1, name: "Caden Ellison", title: "Dev Manager", img: "https://balkangraph.com/js/img/4.jpg" },
+                        //    { id: 4, pid: 2, name: "Elliot Patel", title: "Sales", img: "https://balkangraph.com/js/img/5.jpg" },
+                        //    { id: 5, pid: 2, name: "Lynn Hussain", title: "Sales", img: "https://balkangraph.com/js/img/6.jpg" },
+                        //    { id: 6, pid: 3, name: "Tanner May", title: "Developer", img: "https://balkangraph.com/js/img/7.jpg" },
+                        //    //{ id: 8, pid: 1, tags: ["assistant"], name: "Rudy Griffiths", title: "Assistant", img: "https://balkangraph.com/js/img/9.jpg" },
+                        //]
+
+                    });
+                    debugger
+                    $(".field_0").attr({ "style": "font-size:16px;" });
+                    $("tspan").attr("x", "140");
+                    $(".field_0").attr("x", "100"); $(".field_0").attr("x", "65");
+                    $(".field_0").attr("y", "25");
+                    $('[node-id="' + VSCId + '"]').children().first().css("fill", "green");
+                }
+            },  //$('[data-node-id="' + VSCId + '"]').children().first().css("fill", "green");
+        });
+       
+        //$(".field_1").attr("y", "65"); $(".field_1").attr("x", "35");
+        //$("field_2").attr("y", "120"); $(".field_2").attr("y", "150");
+        //$("field_3").attr("y", "180"); $(".field_3").attr("y", "210");
+        //$("tspan").attr("x", "90"); $("tspan").attr("y", "50");
+        
+    });
+</script>
+@*<script>
+            $("#BackToEmployeeGrid").click(function () {
+                var addNewUrl = "@Url.Action("ePeopleDashboard", "NewAdmin")";
+                $('#RenderPageId').load(addNewUrl);
+            });
+            var VSCId;
+            debugger
+            var empId = '@EmployeeId';
+            $.ajax({
+                type: "POST",
+                // data: { 'Id': item.id},
+                url: '../EPeople/GetVehicleSeatingChartPositionedUser?Id=' + empId,
+                beforeSend: function () {
+                    new fn_showMaskloader('Please wait...');
+                },
+                contentType: "application/json; charset=utf-8",
+                error: function (xhr, status, error) {
+                },
+                success: function (result) {
+                    debugger
+                    if (result != null) {
+                        VSCId = result.VSTId;
+                    }
+
+                },
+                complete: function () {
+                    fn_hideMaskloader();
+                }
+            });
+        var peopleElement = document.getElementById("ChartContainerEmployeeList");
+        var addNewUrl = "@Url.Action("GetChartDisplayData", "AdminDashboard", new { area = "AdminSection" })";
+        $.ajax({
+            type: "POST",
+            url: addNewUrl,
+            success: function (listData) {
+                debugger
+                var PointingId;
+                var tabledata = [];
+                if (listData != null)
+                {
+                    for (var i = 0; i < listData.length; i++)
+                    {
+                        var data = {};
+                        if (i == 0)
+                        {
+                            listData[i].parentId = null;
+                        }
+                        data.id = listData[i].Id;
+                        data.parentId = listData[i].parentId;
+                        data.SeatingName = listData[i].SeatingName;
+                        data.JobDescription = listData[i].JobDescription;
+                        data.DepartmentName = listData[i].DepartmentName;
+
+                        tabledata.push(data);
+                    }
+                    var orgChart = new getOrgChart(peopleElement, {
+                        primaryFields: ["SeatingName", "JobDescription", "DepartmentName"],
+                        dataSource: tabledata,
+                    });
+                    $(".get-text-0").attr("y", "30"); $(".get-text-0").attr("y", "30");
+                    $(".get-text-1").attr("y", "65"); $(".get-text-2").attr("y", "90");
+                    $(".get-text-3").attr("y", "120"); $(".get-text-4").attr("y", "150");
+                    $(".get-text-4").attr("y", "180"); $(".get-text-6").attr("y", "210");
+                    $(".get-text-7").attr("y", "240"); $(".get-text-8").attr("y", "270");
+                    $(".get-text-9").attr("y", "300"); $(".get-text-10").attr("y", "330");
+                    $('[data-node-id="' + VSCId + '"]').children().first().css("fill", "green");
+                }
+                $('[data-node-id="' + VSCId + '"]').children().first().css("fill", "green");
+                //$(".get-level-" + PointingId + " ").children().css('fill', 'green');
+            },
+            error: function (err) {
+            }
+        });
+
+
+    </script>*@

@@ -1365,6 +1365,7 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Name="DeletedBy" Type="bigint" />
           <Property Name="DeletedOn" Type="datetime" />
           <Property Name="IsActive" Type="bit" />
+          <Property Name="ShiftEnd" Type="datetime" />
         </EntityType>
         <EntityType Name="LogInsurance">
           <Key>
@@ -5076,6 +5077,10 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         <Function Name="spGetInterviewScore" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ApplicantId" Type="bigint" Mode="In" />
         </Function>
+        <Function Name="spGetIsTremination" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
+          <Parameter Name="IsTermination" Type="char" Mode="InOut" />
+        </Function>
         <Function Name="spGetJobPosting" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="JPS_HiringManagerID" Type="varchar" Mode="In" />
         </Function>
@@ -5206,6 +5211,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="RMS_FinencialYear" Type="varchar" Mode="In" />
           <Parameter Name="RMS_FinQuarter" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="spGetReviewMeetingList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetRule" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetSelfPOList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="bigint" Mode="In" />
@@ -8364,7 +8370,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <NavigationProperty Name="WorkRequestAssignments" Relationship="Self.FK_LocationID_WorkRequestAssignment_LocationMaster" FromRole="LocationMaster" ToRole="WorkRequestAssignment" />
           <NavigationProperty Name="LocationServices" Relationship="Self.FK_LocationServices_LocationMaster" FromRole="LocationMaster" ToRole="LocationServices" />
           <NavigationProperty Name="LogBills" Relationship="Self.FK_LogBill_LocationMaster" FromRole="LocationMaster" ToRole="LogBill" />
-          <NavigationProperty Name="LoginLogs" Relationship="Self.FK_LoginLog_LocationMaster" FromRole="LocationMaster" ToRole="LoginLog" />
           <NavigationProperty Name="LogLocationCompanyMappings" Relationship="Self.FK_LogLocationCompanyMapping_LocationMaster" FromRole="LocationMaster" ToRole="LogLocationCompanyMapping" />
           <NavigationProperty Name="LogMiscellaneous" Relationship="Self.FK_LogMiscellaneous_LocationMaster" FromRole="LocationMaster" ToRole="LogMiscellaneous" />
           <NavigationProperty Name="LogPODetails" Relationship="Self.FK_LogPODetail_LocationMaster" FromRole="LocationMaster" ToRole="LogPODetail" />
@@ -8377,7 +8382,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <NavigationProperty Name="PreBills" Relationship="Self.FK_PreBill_LocationMaster" FromRole="LocationMaster" ToRole="PreBill" />
           <NavigationProperty Name="QRCMasters" Relationship="Self.FK_QRCMaster_LocationMaster" FromRole="LocationMaster" ToRole="QRCMaster" />
           <NavigationProperty Name="QRCScanLogs" Relationship="Self.FK_QRCScanLog_LocationMaster" FromRole="LocationMaster" ToRole="QRCScanLog" />
-          <NavigationProperty Name="LoginLogs1" Relationship="Self.FK_TrackEmployeeStatus_LocationMaster" FromRole="LocationMaster" ToRole="LoginLog" />
           <Property Name="PaymenttermsId" Type="Int32" />
           <Property Name="ClientInvoicingDate" Type="DateTime" Precision="3" />
           <Property Name="Automaticbillingdate" Type="DateTime" Precision="3" />
@@ -8387,6 +8391,8 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="IsChargeDepositeMonthlyParkerCard" Type="Boolean" />
           <Property Name="AviailableSpaces" Type="Decimal" Precision="18" Scale="2" />
           <Property Name="IsSpecialRulesHourlyMan" Type="Boolean" />
+          <NavigationProperty Name="LoginLogs" Relationship="WorkOrderEMS.Data.EntityModel.FK_LoginLog_LocationMaster" FromRole="LocationMaster" ToRole="LoginLog" />
+          <NavigationProperty Name="LoginLogs1" Relationship="WorkOrderEMS.Data.EntityModel.FK_TrackEmployeeStatus_LocationMaster" FromRole="LocationMaster" ToRole="LoginLog" />
         </EntityType>
         <EntityType Name="LocationService">
           <Key>
@@ -8608,27 +8614,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="LCCM_IsApprove" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="LCCM_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="LCCM_Action" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-        </EntityType>
-        <EntityType Name="LoginLog">
-          <Key>
-            <PropertyRef Name="LogId" />
-          </Key>
-          <Property Name="LogId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="Int64" Nullable="false" />
-          <Property Name="UserType" Type="Int64" Nullable="false" />
-          <Property Name="LocationId" Type="Int64" />
-          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
-          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="ModifiedBy" Type="Int64" />
-          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
-          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
-          <Property Name="DeletedBy" Type="Int64" />
-          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
-          <Property Name="IsActive" Type="Boolean" />
-          <NavigationProperty Name="LocationMaster" Relationship="Self.FK_LoginLog_LocationMaster" FromRole="LoginLog" ToRole="LocationMaster" />
-          <NavigationProperty Name="LocationMaster1" Relationship="Self.FK_TrackEmployeeStatus_LocationMaster" FromRole="LoginLog" ToRole="LocationMaster" />
-          <NavigationProperty Name="UserRegistration" Relationship="Self.FK_LoginLog_UserRegistrations" FromRole="LoginLog" ToRole="UserRegistrations" />
-          <NavigationProperty Name="UserRegistration1" Relationship="Self.FK_TrackEmployeeStatus_UserRegistrations" FromRole="LoginLog" ToRole="UserRegistrations" />
         </EntityType>
         <EntityType Name="LogInsurance">
           <Key>
@@ -9369,8 +9354,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <NavigationProperty Name="GlobalCode3" Relationship="Self.FK_UserRegistrations_GlobalCodes_DeviceType" FromRole="UserRegistrations" ToRole="GlobalCodes" />
           <NavigationProperty Name="HoursOfServices" Relationship="Self.FK_HoursOfServices_HoursOfServices" FromRole="UserRegistrations" ToRole="HoursOfServices" />
           <NavigationProperty Name="LocationClientMappings" Relationship="Self.FK_LocationClientMapping_UserRegistrations" FromRole="UserRegistrations" ToRole="LocationClientMapping" />
-          <NavigationProperty Name="LoginLogs" Relationship="Self.FK_LoginLog_UserRegistrations" FromRole="UserRegistrations" ToRole="LoginLog" />
-          <NavigationProperty Name="LoginLogs1" Relationship="Self.FK_TrackEmployeeStatus_UserRegistrations" FromRole="UserRegistrations" ToRole="LoginLog" />
           <NavigationProperty Name="ManagerLocationMappings" Relationship="Self.FK_ManagerLocationMapping_UserRegistrations" FromRole="UserRegistrations" ToRole="ManagerLocationMapping" />
           <NavigationProperty Name="QRCMaster" Relationship="Self.FK_UserRegistrations_QRCMaster" FromRole="UserRegistrations" ToRole="QRCMaster" />
           <NavigationProperty Name="QRCMasterLogs" Relationship="Self.FK_QRCMasterLog_UserRegistrations" FromRole="UserRegistrations" ToRole="QRCMasterLog" />
@@ -9378,6 +9361,8 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <NavigationProperty Name="SubCostCodes" Relationship="Self.FK_SubCostCode_UserRegistrations" FromRole="UserRegistrations" ToRole="SubCostCode" />
           <NavigationProperty Name="UserOverrideUsertypes" Relationship="WorkOrderEMS.Data.EntityModel.FK_UserOverrideUsertype_UserRegistrations" FromRole="UserRegistration" ToRole="UserOverrideUsertype" />
           <NavigationProperty Name="UserVehicleSeatingMaps" Relationship="WorkOrderEMS.Data.EntityModel.FK_UserVehicleSeatingMap_UserRegistrations" FromRole="UserRegistration" ToRole="UserVehicleSeatingMap" />
+          <NavigationProperty Name="LoginLogs" Relationship="WorkOrderEMS.Data.EntityModel.FK_LoginLog_UserRegistrations" FromRole="UserRegistration" ToRole="LoginLog" />
+          <NavigationProperty Name="LoginLogs1" Relationship="WorkOrderEMS.Data.EntityModel.FK_TrackEmployeeStatus_UserRegistrations" FromRole="UserRegistration" ToRole="LoginLog" />
         </EntityType>
         <EntityType Name="VehicleSeating_DepartmentMapping">
           <Key>
@@ -11094,18 +11079,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LoginLog_LocationMaster">
-          <End Role="LocationMaster" Type="Self.LocationMaster" Multiplicity="0..1" />
-          <End Role="LoginLog" Type="Self.LoginLog" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="LocationMaster">
-              <PropertyRef Name="LocationId" />
-            </Principal>
-            <Dependent Role="LoginLog">
-              <PropertyRef Name="LocationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_LogLocationCompanyMapping_LocationMaster">
           <End Role="LocationMaster" Type="Self.LocationMaster" Multiplicity="1" />
           <End Role="LogLocationCompanyMapping" Type="Self.LogLocationCompanyMapping" Multiplicity="*" />
@@ -11250,18 +11223,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_TrackEmployeeStatus_LocationMaster">
-          <End Role="LocationMaster" Type="Self.LocationMaster" Multiplicity="0..1" />
-          <End Role="LoginLog" Type="Self.LoginLog" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="LocationMaster">
-              <PropertyRef Name="LocationId" />
-            </Principal>
-            <Dependent Role="LoginLog">
-              <PropertyRef Name="LocationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_LocationServices_ServiceMaster">
           <End Role="ServiceMaster" Type="Self.ServiceMaster" Multiplicity="1" />
           <End Role="LocationServices" Type="Self.LocationService" Multiplicity="*" />
@@ -11307,30 +11268,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </Principal>
             <Dependent Role="LogContract">
               <PropertyRef Name="LCNT_PTM_Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LoginLog_UserRegistrations">
-          <End Role="UserRegistrations" Type="Self.UserRegistration" Multiplicity="1" />
-          <End Role="LoginLog" Type="Self.LoginLog" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserRegistrations">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="LoginLog">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_TrackEmployeeStatus_UserRegistrations">
-          <End Role="UserRegistrations" Type="Self.UserRegistration" Multiplicity="1" />
-          <End Role="LoginLog" Type="Self.LoginLog" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="UserRegistrations">
-              <PropertyRef Name="UserId" />
-            </Principal>
-            <Dependent Role="LoginLog">
-              <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -11687,7 +11624,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="LogContracts" EntityType="Self.LogContract" />
           <EntitySet Name="LogCostCodes" EntityType="Self.LogCostCode" />
           <EntitySet Name="LogCostCodeMasters" EntityType="Self.LogCostCodeMaster" />
-          <EntitySet Name="LoginLogs" EntityType="Self.LoginLog" />
           <EntitySet Name="LogInsurances" EntityType="Self.LogInsurance" />
           <EntitySet Name="LogLicenses" EntityType="Self.LogLicense" />
           <EntitySet Name="LogLocationCompanyMappings" EntityType="Self.LogLocationCompanyMapping" />
@@ -12252,10 +12188,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <End Role="LocationMaster" EntitySet="LocationMasters" />
             <End Role="LogBill" EntitySet="LogBills" />
           </AssociationSet>
-          <AssociationSet Name="FK_LoginLog_LocationMaster" Association="Self.FK_LoginLog_LocationMaster">
-            <End Role="LocationMaster" EntitySet="LocationMasters" />
-            <End Role="LoginLog" EntitySet="LoginLogs" />
-          </AssociationSet>
           <AssociationSet Name="FK_LogLocationCompanyMapping_LocationMaster" Association="Self.FK_LogLocationCompanyMapping_LocationMaster">
             <End Role="LocationMaster" EntitySet="LocationMasters" />
             <End Role="LogLocationCompanyMapping" EntitySet="LogLocationCompanyMappings" />
@@ -12304,10 +12236,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <End Role="LocationMaster" EntitySet="LocationMasters" />
             <End Role="QRCScanLog" EntitySet="QRCScanLogs" />
           </AssociationSet>
-          <AssociationSet Name="FK_TrackEmployeeStatus_LocationMaster" Association="Self.FK_TrackEmployeeStatus_LocationMaster">
-            <End Role="LocationMaster" EntitySet="LocationMasters" />
-            <End Role="LoginLog" EntitySet="LoginLogs" />
-          </AssociationSet>
           <AssociationSet Name="FK_LocationServices_ServiceMaster" Association="Self.FK_LocationServices_ServiceMaster">
             <End Role="ServiceMaster" EntitySet="ServiceMasters" />
             <End Role="LocationServices" EntitySet="LocationServices" />
@@ -12323,14 +12251,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <AssociationSet Name="FK_LogContract_PaymentTerm" Association="Self.FK_LogContract_PaymentTerm">
             <End Role="PaymentTerm" EntitySet="PaymentTerms" />
             <End Role="LogContract" EntitySet="LogContracts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LoginLog_UserRegistrations" Association="Self.FK_LoginLog_UserRegistrations">
-            <End Role="UserRegistrations" EntitySet="UserRegistrations" />
-            <End Role="LoginLog" EntitySet="LoginLogs" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TrackEmployeeStatus_UserRegistrations" Association="Self.FK_TrackEmployeeStatus_UserRegistrations">
-            <End Role="UserRegistrations" EntitySet="UserRegistrations" />
-            <End Role="LoginLog" EntitySet="LoginLogs" />
           </AssociationSet>
           <AssociationSet Name="FK_LogMiscellaneous_MisNumber" Association="Self.FK_LogMiscellaneous_MisNumber">
             <End Role="MisNumber" EntitySet="MisNumbers" />
@@ -13842,22 +13762,10 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="RQS_IsActive" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="JobTitles" EntityType="WorkOrderEMS.Data.EntityModel.JobTitle" />
-          <FunctionImport Name="spSetJobTitle">
-            <Parameter Name="JBTAction" Mode="In" Type="String" />
-            <Parameter Name="JBT_Id" Mode="In" Type="Int64" />
-            <Parameter Name="JBT_JobTitle" Mode="In" Type="String" />
-            <Parameter Name="JBT_JobCount" Mode="In" Type="Int32" />
-            <Parameter Name="JBT_FillJobCount" Mode="In" Type="Int32" />
-            <Parameter Name="JBT_VST_Id" Mode="In" Type="Int64" />
-            <Parameter Name="JBT_IsActive" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="spGetW4Form" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetW4Form_Result)">
           <Parameter Name="EmployeeId" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="FileTypes" EntityType="WorkOrderEMS.Data.EntityModel.FileType" />
-          <FunctionImport Name="spGetFileUpload" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetFileUpload_Result1)">
-          <Parameter Name="EmployeeId" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="spSetFileUpload">
             <Parameter Name="FLUAction" Mode="In" Type="String" />
             <Parameter Name="FLU_FileId" Mode="In" Type="Int64" />
@@ -13924,9 +13832,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <FunctionImport Name="spGetAssessmentQuestionQCQM" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetAssessmentQuestionQCQM_Result)">
             <Parameter Name="EmployeeID" Mode="In" Type="String" />
             <Parameter Name="AssessmentType" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="spGetEvaluationList" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetEvaluationList_Result)">
-          <Parameter Name="EmployeeId" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spSetEvaluationQuarterly">
             <Parameter Name="Action" Mode="In" Type="String" />
@@ -14276,7 +14181,44 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           </FunctionImport>
           <EntitySet Name="Employees" EntityType="WorkOrderEMS.Data.EntityModel.Employee" />
           <FunctionImport Name="spGetOrgnizationCommonview" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetOrgnizationCommonview_Result1)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetIsTremination">
             <Parameter Name="EmployeeId" Mode="In" Type="String" />
+            <Parameter Name="IsTermination" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetReviewMeetingList" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetReviewMeetingList_Result)" />
+          <FunctionImport Name="spGetEvaluationList" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetEvaluationList_Result1)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetFileUpload" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetFileUpload_Result2)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="LoginLogs" EntityType="WorkOrderEMS.Data.EntityModel.LoginLog" />
+          <AssociationSet Name="FK_LoginLog_LocationMaster" Association="WorkOrderEMS.Data.EntityModel.FK_LoginLog_LocationMaster">
+            <End Role="LocationMaster" EntitySet="LocationMasters" />
+            <End Role="LoginLog" EntitySet="LoginLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrackEmployeeStatus_LocationMaster" Association="WorkOrderEMS.Data.EntityModel.FK_TrackEmployeeStatus_LocationMaster">
+            <End Role="LocationMaster" EntitySet="LocationMasters" />
+            <End Role="LoginLog" EntitySet="LoginLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoginLog_UserRegistrations" Association="WorkOrderEMS.Data.EntityModel.FK_LoginLog_UserRegistrations">
+            <End Role="UserRegistration" EntitySet="UserRegistrations" />
+            <End Role="LoginLog" EntitySet="LoginLogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TrackEmployeeStatus_UserRegistrations" Association="WorkOrderEMS.Data.EntityModel.FK_TrackEmployeeStatus_UserRegistrations">
+            <End Role="UserRegistration" EntitySet="UserRegistrations" />
+            <End Role="LoginLog" EntitySet="LoginLogs" />
+          </AssociationSet>
+          <FunctionImport Name="spSetJobTitle">
+            <Parameter Name="JBTAction" Mode="In" Type="String" />
+            <Parameter Name="JBT_Id" Mode="In" Type="Int64" />
+            <Parameter Name="JBT_JobTitle" Mode="In" Type="String" />
+            <Parameter Name="JBT_JobCount" Mode="In" Type="Int32" />
+            <Parameter Name="JBT_FillJobCount" Mode="In" Type="Int32" />
+            <Parameter Name="JBT_VST_Id" Mode="In" Type="Int64" />
+            <Parameter Name="JBT_IsActive" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Proc_GetAllWorkAssignedToEmployee_Result">
@@ -17986,6 +17928,112 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="String" Name="EMP_EmploymentStatus" Nullable="true" MaxLength="10" />
           <Property Type="String" Name="EMP_IsExempt" Nullable="true" MaxLength="1" />
         </ComplexType>
+        <ComplexType Name="spGetReviewMeetingList_Result">
+          <Property Type="String" Name="EMP_ManagerId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ManagerPhoto" Nullable="true" />
+          <Property Type="String" Name="ManagerName" Nullable="true" MaxLength="94" />
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EmployeePhoto" Nullable="true" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+          <Property Type="DateTime" Name="PRMeetingDateTime" Nullable="true" Precision="23" />
+        </ComplexType>
+        <ComplexType Name="spGetEvaluationList_Result1">
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EMP_Photo" Nullable="true" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+          <Property Type="String" Name="VST_Level" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="AssessmentType" Nullable="false" MaxLength="2" />
+          <Property Type="String" Name="DepartmentName" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
+          <Property Type="DateTime" Name="EMP_DateOfJoining" Nullable="true" />
+          <Property Type="String" Name="Expectation" Nullable="true" MaxLength="2" />
+          <Property Type="Int32" Name="FinYear" Nullable="true" />
+          <Property Type="String" Name="EEL_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="DateTime" Name="PRMeetingDateTime" Nullable="true" Precision="23" />
+          <Property Type="String" Name="PRMeetingStatus" Nullable="true" MaxLength="19" />
+        </ComplexType>
+        <ComplexType Name="spGetFileUpload_Result2">
+          <Property Type="Int64" Name="FLU_FileId" Nullable="false" />
+          <Property Type="Int64" Name="FLU_FLT_Id" Nullable="false" />
+          <Property Type="String" Name="FLT_FileType" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="FLU_EMP_EmployeeId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="FLU_FileName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="FLU_FileAttached" Nullable="true" />
+          <Property Type="String" Name="FLU_FileUploadedBy" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="FLU_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="FLU_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <EntityType Name="LoginLog">
+          <Key>
+            <PropertyRef Name="LogId" />
+          </Key>
+          <Property Name="LogId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="UserType" Type="Int64" Nullable="false" />
+          <Property Name="LocationId" Type="Int64" />
+          <Property Name="CreatedBy" Type="Int64" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ModifiedBy" Type="Int64" />
+          <Property Name="ModifiedOn" Type="DateTime" Precision="3" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DeletedBy" Type="Int64" />
+          <Property Name="DeletedOn" Type="DateTime" Precision="3" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="ShiftEnd" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="LocationMaster" Relationship="WorkOrderEMS.Data.EntityModel.FK_LoginLog_LocationMaster" FromRole="LoginLog" ToRole="LocationMaster" />
+          <NavigationProperty Name="LocationMaster1" Relationship="WorkOrderEMS.Data.EntityModel.FK_TrackEmployeeStatus_LocationMaster" FromRole="LoginLog" ToRole="LocationMaster" />
+          <NavigationProperty Name="UserRegistration" Relationship="WorkOrderEMS.Data.EntityModel.FK_LoginLog_UserRegistrations" FromRole="LoginLog" ToRole="UserRegistration" />
+          <NavigationProperty Name="UserRegistration1" Relationship="WorkOrderEMS.Data.EntityModel.FK_TrackEmployeeStatus_UserRegistrations" FromRole="LoginLog" ToRole="UserRegistration" />
+        </EntityType>
+        <Association Name="FK_LoginLog_LocationMaster">
+          <End Type="WorkOrderEMS.Data.EntityModel.LocationMaster" Role="LocationMaster" Multiplicity="0..1" />
+          <End Type="WorkOrderEMS.Data.EntityModel.LoginLog" Role="LoginLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LocationMaster">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="LoginLog">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TrackEmployeeStatus_LocationMaster">
+          <End Type="WorkOrderEMS.Data.EntityModel.LocationMaster" Role="LocationMaster" Multiplicity="0..1" />
+          <End Type="WorkOrderEMS.Data.EntityModel.LoginLog" Role="LoginLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LocationMaster">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="LoginLog">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoginLog_UserRegistrations">
+          <End Type="WorkOrderEMS.Data.EntityModel.UserRegistration" Role="UserRegistration" Multiplicity="1" />
+          <End Type="WorkOrderEMS.Data.EntityModel.LoginLog" Role="LoginLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserRegistration">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="LoginLog">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TrackEmployeeStatus_UserRegistrations">
+          <End Type="WorkOrderEMS.Data.EntityModel.UserRegistration" Role="UserRegistration" Multiplicity="1" />
+          <End Type="WorkOrderEMS.Data.EntityModel.LoginLog" Role="LoginLog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="UserRegistration">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="LoginLog">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -19217,24 +19265,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
                 <ScalarProperty Name="LCCM_IsApprove" ColumnName="LCCM_IsApprove" />
                 <ScalarProperty Name="LCCM_IsActive" ColumnName="LCCM_IsActive" />
                 <ScalarProperty Name="LCCM_Action" ColumnName="LCCM_Action" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="LoginLogs">
-            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.LoginLog">
-              <MappingFragment StoreEntitySet="LoginLog">
-                <ScalarProperty Name="LogId" ColumnName="LogId" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="UserType" ColumnName="UserType" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
-                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
-                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
-                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
-                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
-                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
-                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -22706,7 +22736,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spSetJobTitle" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetJobTitle" />
           <FunctionImportMapping FunctionImportName="spGetW4Form" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetW4Form">
             <ResultMapping>
               <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetW4Form_Result">
@@ -22742,21 +22771,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spGetFileUpload" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetFileUpload">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetFileUpload_Result1">
-                <ScalarProperty Name="FLU_FileId" ColumnName="FLU_FileId" />
-                <ScalarProperty Name="FLU_FLT_Id" ColumnName="FLU_FLT_Id" />
-                <ScalarProperty Name="FLT_FileType" ColumnName="FLT_FileType" />
-                <ScalarProperty Name="FLU_EMP_EmployeeId" ColumnName="FLU_EMP_EmployeeId" />
-                <ScalarProperty Name="FLU_FileName" ColumnName="FLU_FileName" />
-                <ScalarProperty Name="FLU_FileAttached" ColumnName="FLU_FileAttached" />
-                <ScalarProperty Name="FLU_FileUploadedBy" ColumnName="FLU_FileUploadedBy" />
-                <ScalarProperty Name="FLU_Date" ColumnName="FLU_Date" />
-                <ScalarProperty Name="FLU_IsActive" ColumnName="FLU_IsActive" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spSetFileUpload" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetFileUpload" />
           <FunctionImportMapping FunctionImportName="spGetConfidentialityAgreement" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetConfidentialityAgreement">
             <ResultMapping>
@@ -22823,24 +22837,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
                 <ScalarProperty Name="EEL_AnswerManager" ColumnName="EEL_AnswerManager" />
                 <ScalarProperty Name="EEL_ScoreManager" ColumnName="EEL_ScoreManager" />
                 <ScalarProperty Name="EEL_Comments" ColumnName="EEL_Comments" />
-                <ScalarProperty Name="EEL_IsActive" ColumnName="EEL_IsActive" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetEvaluationList" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetEvaluationList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetEvaluationList_Result">
-                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
-                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
-                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-                <ScalarProperty Name="VST_Level" ColumnName="VST_Level" />
-                <ScalarProperty Name="AssessmentType" ColumnName="AssessmentType" />
-                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
-                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
-                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
-                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
-                <ScalarProperty Name="Expectation" ColumnName="Expectation" />
-                <ScalarProperty Name="FinYear" ColumnName="FinYear" />
                 <ScalarProperty Name="EEL_IsActive" ColumnName="EEL_IsActive" />
               </ComplexTypeMapping>
             </ResultMapping>
@@ -23823,6 +23819,75 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetIsTremination" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetIsTremination" />
+          <FunctionImportMapping FunctionImportName="spGetReviewMeetingList" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetReviewMeetingList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetReviewMeetingList_Result">
+                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
+                <ScalarProperty Name="ManagerPhoto" ColumnName="ManagerPhoto" />
+                <ScalarProperty Name="ManagerName" ColumnName="ManagerName" />
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EmployeePhoto" ColumnName="EmployeePhoto" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="PRMeetingDateTime" ColumnName="PRMeetingDateTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetEvaluationList" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetEvaluationList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetEvaluationList_Result1">
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="VST_Level" ColumnName="VST_Level" />
+                <ScalarProperty Name="AssessmentType" ColumnName="AssessmentType" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
+                <ScalarProperty Name="Expectation" ColumnName="Expectation" />
+                <ScalarProperty Name="FinYear" ColumnName="FinYear" />
+                <ScalarProperty Name="EEL_IsActive" ColumnName="EEL_IsActive" />
+                <ScalarProperty Name="PRMeetingDateTime" ColumnName="PRMeetingDateTime" />
+                <ScalarProperty Name="PRMeetingStatus" ColumnName="PRMeetingStatus" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetFileUpload" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetFileUpload">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetFileUpload_Result2">
+                <ScalarProperty Name="FLU_FileId" ColumnName="FLU_FileId" />
+                <ScalarProperty Name="FLU_FLT_Id" ColumnName="FLU_FLT_Id" />
+                <ScalarProperty Name="FLT_FileType" ColumnName="FLT_FileType" />
+                <ScalarProperty Name="FLU_EMP_EmployeeId" ColumnName="FLU_EMP_EmployeeId" />
+                <ScalarProperty Name="FLU_FileName" ColumnName="FLU_FileName" />
+                <ScalarProperty Name="FLU_FileAttached" ColumnName="FLU_FileAttached" />
+                <ScalarProperty Name="FLU_FileUploadedBy" ColumnName="FLU_FileUploadedBy" />
+                <ScalarProperty Name="FLU_Date" ColumnName="FLU_Date" />
+                <ScalarProperty Name="FLU_IsActive" ColumnName="FLU_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="LoginLogs">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.LoginLog">
+              <MappingFragment StoreEntitySet="LoginLog">
+                <ScalarProperty Name="ShiftEnd" ColumnName="ShiftEnd" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DeletedOn" ColumnName="DeletedOn" />
+                <ScalarProperty Name="DeletedBy" ColumnName="DeletedBy" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ModifiedOn" ColumnName="ModifiedOn" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="ModifiedBy" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CreatedBy" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="UserType" ColumnName="UserType" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="LogId" ColumnName="LogId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spSetJobTitle" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetJobTitle" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

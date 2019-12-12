@@ -15,8 +15,8 @@ namespace WorkOrderEMS.Models
         public string EVF_Address { get; set; }
         public string EVF_City { get; set; }
         public string EVF_State { get; set; }
-        public DateTime? EVF_AttendedFrom { get; set; }
-        public DateTime? EVF_AttendedTo{ get; set; }
+        public string EVF_AttendedFrom { get; set; }
+        public string EVF_AttendedTo{ get; set; }
         public string EVF_EmployeeName{ get; set; }
     }
 }

@@ -174,7 +174,8 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                var $customEditButton = $("<span>")
                                    .attr({ title: jsGrid.fields.control.prototype.diagramEmployeeTooltip })
                                    .attr({ id: "btn-diagram-" + item.id }).click(function (e) {
-                                       $('#RenderPageId').load(base_url+'/EPeople/ChartDetailsView?Id=' + item.id);                              
+                                       //$('#RenderPageId').load(base_url + '/EPeople/ChartDetailsView?Id=' + item.id);
+                                       $('#RenderPageId').load(base_url + '/EPeople/ChartDetailsViewDemo?Id=' + item.id);
                                    }).append($DiagramView);
                                return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton);
                            }

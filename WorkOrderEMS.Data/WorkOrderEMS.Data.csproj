@@ -715,10 +715,16 @@
     <Compile Include="EntityModel\spGetEvaluationList_Result.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityModel\spGetEvaluationList_Result1.cs">
+      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\spGetFileUpload_Result.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\spGetFileUpload_Result1.cs">
+      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\spGetFileUpload_Result2.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\spGetFormMaster_Result.cs">
@@ -905,6 +911,9 @@
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\spGetReviewMeetingDateTime_Result.cs">
+      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\spGetReviewMeetingList_Result.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\spGetRule_Result.cs">

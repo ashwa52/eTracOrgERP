@@ -39,9 +39,11 @@ namespace WorkOrderEMS.Models
 
         [DataMember]
         public string ServiceAuthKey { get; set; }
-
+        [DataMember]
         public string FormName { get; set; }
-
+        //public string Form { get; set; }
+        [DataMember]
+        public string EmployeeID { get; set; }
         #endregion Service Login Data
 
         #region Other Login Data

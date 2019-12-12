@@ -287,12 +287,14 @@ namespace WorkOrderEMS.BusinessLogic
         bool saveExpectations(List<GWCQUestionModel> data, string action);
         List<PerformanceModel> GetListOfQEvaluationsForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords);
         bool VerifyEmployee(OnboardingDetailRequestModel onboardingDetailRequestModel);
-        List<spGetJobPostingDetails_ForCompanyOpening_Result> GetJobPostingDetailsForCompanyOpening(long JPS_JobPostingId);
+        //List<spGetJobPostingDetails_ForCompanyOpening_Result> GetJobPostingDetailsForCompanyOpening(long JPS_JobPostingId);
         // BudgetDetails GetListBudgetDetails(long? LocationId, long? UserId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
+        List<spGetJobPosting_ForCompanyOpening_Result> GetJobPostingForCompanyOpening(string HiringManagerId);
         bool saveQEvaluations(List<GWCQUestionModel> data, string action);
         bool SetupMeetingEmail(SetupMeeting objSetupMeeting);
         string GetMeetingDetail(string Id,string  FinYear, string FinQuarter);
         List<ReviewMeeting> GetMeetingList();
         bool SetInterviewAcceptCancel(string status, long ApplicantId, string IsActive);
+        spGetHiringGraph_Result HiringGraphCount(long PostingId);
     }
 }

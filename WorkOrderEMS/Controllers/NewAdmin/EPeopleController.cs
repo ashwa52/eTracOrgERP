@@ -46,6 +46,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         public ActionResult Index()
         {
             return View("~/Views/NewAdmin/ePeople/_EmployeeManagement.cshtml");
+            //return View("~/Views/NewAdmin/ePeople/EmployeeManagement.cshtml");
         }
         /// <summary>
         /// Created By  :Ashwajit bansod
@@ -92,6 +93,12 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             //return PartialView("~/Views/NewAdmin/ePeople/_VSCPointingChart.cshtml");
             Session["EmployeeId"] = Id;
             return PartialView("~/Views/NewAdmin/ePeople/_VSCPointingChartDemo.cshtml");
+        }
+        public ActionResult ChartDetailsViewDemo(string Id)
+        {//D:\Project\eTrac\eTracOrgERP\WorkOrderEMS\Views\NewAdmin\ePeople\_VSCPointingChartDemo.cshtml
+            //return PartialView("~/Views/NewAdmin/ePeople/_VSCPointingChart.cshtml");
+            Session["EmployeeId"] = Id;
+            return PartialView("~/Views/NewAdmin/ePeople/Requisition/_Chart.cshtml");
         }
         /// <summary>
         /// Created BY : Ashwajit Bansod
@@ -1095,7 +1102,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 var _FillableFormRepository = new FillableFormRepository();
                 if (getUser != null)
                 {
-                    model = _IePeopleManager.GetUploadedFilesOfUser(getUser.EmployeeID).ToList();               
+                    model = _IePeopleManager.GetUploadedFilesOfUserTesting(getUser.EmployeeID).ToList();               
                     var details = _IGuestUserRepository.GetEmployee(_UserId);
                     ViewBag.ImageUser = details.Image == null ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + details.Image;
                     ViewBag.EmployeeID = details.EmpId;
@@ -1130,7 +1137,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 var _FillableFormRepository = new FillableFormRepository();
                 if (getUser != null)
                 {
-                    model = _IePeopleManager.GetUploadedFilesOfUser(getUser.EmployeeID).ToList();
+                    model = _IePeopleManager.GetUploadedFilesOfUserTesting(getUser.EmployeeID);
                     var details = _IGuestUserRepository.GetEmployee(_UserId);
                     ViewBag.ImageUser = details.Image == null ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + details.Image;
                     ViewBag.EmployeeID = details.EmpId;
@@ -1215,9 +1222,9 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                                 Obj.FileName = FileName;
                                 Obj.FileId = FileId;
                                 Obj.FileEmployeeId = EMPId;
-                                string LoginEMployeeId = getUser.EmployeeID;
+                                string LoginEmployeeId = getUser.EmployeeID;
                                 Obj.AttachedFileName = FName;
-                                var IsSaved = _IFillableFormManager.SaveFile(Obj, LoginEMployeeId);
+                                var IsSaved = _IFillableFormManager.SaveFile(Obj, LoginEmployeeId);
                             }
                         }
 

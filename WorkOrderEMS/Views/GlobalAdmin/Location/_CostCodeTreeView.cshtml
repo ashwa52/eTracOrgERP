@@ -1,0 +1,155 @@
+﻿
+@{
+    ViewBag.Title = "Cost Code to Location :" + " " + ViewBag.LocationName;
+    //Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+    Layout = null;
+    long locationId = 0;
+    long userType = 0;
+    long loCId = ViewBag.LocationId;
+    string loginUserName = string.Empty;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+        loginUserName = ObjLogin.FName + "'s";
+    }
+}
+
+<head>
+    <meta charset="utf-8" />
+    @*<link href="~/Content/KendoTreeView/kendo.common-material.min.css" rel="stylesheet" />*@
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.3.1026/styles/kendo.common-material.min.css" />
+    <link href="~/Content/KendoTreeView/kendo.material.min.css" rel="stylesheet" />
+    <link href="~/Content/KendoTreeView/kendo.material.mobile.min.css" rel="stylesheet" />
+    <script src="~/Scripts/KendoTreeView/kendo.all.min.js"></script>
+    <script src="~/Scripts/bootstrap-checkbox.js"></script>
+    <style>
+        .row {
+            margin: 10px;
+        }
+    </style>
+</head>
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3" data-aos="fade-up">
+            <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
+                @*<div class="welcome-text">
+                    <h4>Hi, welcome back! @loginUserName</h4>
+                    <p class="mb-0">Add Cost Code for <strong style="color:black;font-size:13px;background: yellow;">@ViewBag.LocationName</strong></p>
+                </div>*@
+            </div>
+        </div>
+        <input type="hidden" id="LocationId" value="@ViewBag.LocationId" />
+        <input type="hidden" id="IsBudget" value="@ViewBag.IsBudgetView" />
+        <div class="row" style="margin-top: -50px; margin-left: -24px; margin-right: -28px;">
+            <div class="col-lg-12">
+                <div class="card" data-aos="fade-up">
+                    <div style="height: 45px;background:#0aa0cd;">
+                        <div class="form-group row" style="margin-top:6px;margin-left:10px;">
+                            <div class="col-sm-1">
+                                <a href="javascript:void(0)" id="callListLocation"><span><i class="fa fa-arrow-left" title="Back to List" style="color:white;font-size:28px;"></i></span></a>
+                            </div>
+                            <div class="col-sm-6">
+                                <label style="color:white;font-size:17px;"><strong>Add Cost Code for</strong> <strong style="color:black;font-size:17px;background: yellow;">@ViewBag.LocationName</strong></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="example" style="margin-left:20px;">
+                            <div class="demo-section k-content">
+                                <div id="treeview"></div>
+                            </div>
+                        </div>
+                        <input type="submit" class="btn btn-success pull-right" id="btnSave" style="border-radius: 22px;margin-left:9px;" value="Save Cost Code"  />
+                        <a href="@Url.Action("Index", "NewAdmin")"><input type="submit" class="btn btn-primary pull-right" id="btnCancel" value="Cancel" style="width: 135px;border-radius: 22px;" /></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#callListLocation").click(function () {
+        var addNewUrl = "@Url.Action("ListLocation", "GlobalAdmin")";
+        $('#RenderPageId').load(addNewUrl);
+    });
+                var locationId = $("#LocationId").val();
+                $("#drp_MasterLocation1").hide();
+            console.log(locationId);
+            var checkedNodesId = [];
+            var message;
+               homogeneous = new kendo.data.HierarchicalDataSource({
+                    transport: {
+                         read: {
+                             url:'@Url.Action("GetTreeView", "GlobalAdmin")', //"../GetTreeView/",
+                             data: { locationId: locationId },
+                                dataType: "json"
+                            }
+                        },
+                        schema: {
+                            model: {
+                                id: "id",
+                                children: "item"
+                            }
+                        }
+                     });
+                $("#treeview").kendoTreeView({
+                    dataSource: homogeneous,
+                    dataTextField: ["name"],
+                    checkboxes: {
+                        checkChildren: true
+                    },
+                    check: onCheck,
+                    dataBound: function (e)
+                    {
+                        var treeView = $('#treeview').data('kendoTreeView');
+                        treeView.expand(".k-item");
+                    }
+                });
+                function checkedNodeIds(nodes, checkedNodes) {
+                    for (var i = 0; i < nodes.length; i++) {
+                        if (nodes[i].checked) {
+                            checkedNodes.push(nodes[i].id);
+                        }
+                        if (nodes[i].hasChildren) {
+                            checkedNodeIds(nodes[i].children.view(), checkedNodes);
+                        }
+                    }
+                }
+                // show checked node IDs on datasource change
+                function onCheck() {
+                    var checkedNodes = [],
+                treeView = $("#treeview").data("kendoTreeView"),
+                message;
+                    checkedNodeIds(treeView.dataSource.view(), checkedNodes);
+
+                    if (checkedNodes.length > 0) {
+                        message = "IDs of checked nodes: " + checkedNodes.join(",");
+                    } else {
+                        message = "No nodes checked.";
+                    }
+                    $("#result").html(message);
+                    checkedNodesId = checkedNodes;
+                }
+                $('#btnSave').on('click', function () {
+                    var locationId = $("#LocationId").val();;
+                    $.ajax({
+                        type: 'POST',
+                        url: '@Url.Action("SaveCheckedCostCode", "GlobalAdmin")',//../SaveCheckedCostCode/',
+                        data: { checkedNodesId: checkedNodesId, locationId: locationId },
+                        //contentType: 'application/json; charset=utf-8',
+                        datatype: 'json',
+                        success: function (result) {
+                            toastr.success(result.Message);
+                           var addNewUrl = "@Url.Action("ListLocation", "GlobalAdmin")";
+                           $('#RenderPageId').load(addNewUrl);
+                        },
+                        error: function (result) {
+                            alert('Fail ');
+                        }
+                    });
+
+                })
+</script>

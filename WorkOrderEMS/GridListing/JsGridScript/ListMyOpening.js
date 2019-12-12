@@ -100,26 +100,26 @@ function myOpenings(PostingId) {
                      }
                      var $iconGoTORecruitee = $("<i>").attr({ class: "fa fa-clock-o fa-2x whiteS" }).attr({ style: "color:red;font-size:22px;margin-left:8px;" });
                      var $customFirstButton = $("<span>")
-                           .attr({ title: jsGrid.fields.control.prototype.deleteButtonTooltip })
+                           .attr({ title: jsGrid.fields.control.prototype.hiredEmployeeTooltip })
                            .attr({ id: "btn-first-" + item.ApplicantId }).click(function (e) {
                                debugger
                            }).append($iconFirst);
 
                      var $customSecondButton = $("<span>")
-                           .attr({ title: jsGrid.fields.control.prototype.deleteButtonTooltip })
+                           .attr({ title: jsGrid.fields.control.prototype.HRChallengeEmployeeTooltip })
                            .attr({ id: "btn-second-" + item.ApplicantId }).click(function (e) {
                                debugger
                            }).append($iconSecond);
 
                      var $customDiamondButton = $("<span>")
-                             .attr({ title: jsGrid.fields.control.prototype.deleteButtonTooltip })
+                             .attr({ title: jsGrid.fields.control.prototype.InterviewEmployeeTooltip })
                              .attr({ id: "btn-diamond-" + item.ApplicantId }).click(function (e) {
                                  debugger
                                  TakeInterview(item);
                              }).append($iconDiamond);
 
                      var $customAssessmentButton = $("<span>")
-                          .attr({ title: jsGrid.fields.control.prototype.deleteButtonTooltip })
+                          .attr({ title: jsGrid.fields.control.prototype.AssessmentEmployeeTooltip })
                           .attr({ id: "btn-Assessment-" + item.ApplicantId }).click(function (e) {
                               debugger
                               $.ajax({
@@ -146,7 +146,7 @@ function myOpenings(PostingId) {
                           }).append($iconAssessment);
 
                      var $customBackgroundButton = $("<span>")
-                          .attr({ title: jsGrid.fields.control.prototype.deleteButtonTooltip })
+                          .attr({ title: jsGrid.fields.control.prototype.BackgroundEmployeeTooltip })
                           .attr({ id: "btn-Background-" + item.ApplicantId }).click(function (e) {
                               debugger
                               $.ajax({
@@ -173,7 +173,7 @@ function myOpenings(PostingId) {
                           }).append($iconBackground);
 
                      var $customRecruiteeButton = $("<span>")
-                          .attr({ title: jsGrid.fields.control.prototype.deleteButtonTooltip })
+                          .attr({ title: jsGrid.fields.control.prototype.ScheduleEmployeeTooltip })
                           .attr({ id: "btn-Recruitee-" + item.ApplicantId }).click(function (e) {
                               debugger
                               window.location.href = "https://app.recruitee.com/#/settings/scheduler";
@@ -313,61 +313,69 @@ function MyOpeningSummery() {
         }
     });
 }
-function GetSummeryDetail(elm) {
-    debugger;
+function GetSummeryDetail(elm, postingId) {
     if ($('.text').is(':visible')) {
         $('.text').hide();
     }
     // Create chart instance
     $("#detailDiv").empty();
+    var arrData = [];
     var chart = am4core.create("detailDiv", am4charts.PieChart);
+    $.ajax({
+        url: base_url + '/NewAdmin/GetHringChartData?postingId='+postingId,
+        method: 'POST',
+        success: function (response) {
+            chart.data = [{
+                "country": "Lithuania",
+                "litres": response.Applied
+            }, {
+                "country": "Czech Republic",
+                "litres": 301.9
+            }, {
+                "country": "Ireland",
+                "litres": 201.1
+            }, {
+                "country": "Germany",
+                "litres": 165.8
+            }, {
+                "country": "Australia",
+                "litres": 139.9
+            }, {
+                "country": "Austria",
+                "litres": 128.3
+            }, {
+                "country": "UK",
+                "litres": 99
+            }, {
+                "country": "Belgium",
+                "litres": 60
+            }, {
+                "country": "The Netherlands",
+                "litres": 50
+            }];
+            chart.innerRadius = am4core.percent(50);
+
+            // Add and configure Series
+            var pieSeries = chart.series.push(new am4charts.PieSeries());
+            pieSeries.dataFields.value = "litres";
+            pieSeries.dataFields.category = "country";
+            pieSeries.slices.template.stroke = am4core.color("#fff");
+            pieSeries.slices.template.strokeWidth = 2;
+            pieSeries.slices.template.strokeOpacity = 1;
+            // This creates initial animation
+            pieSeries.hiddenState.properties.opacity = 1;
+            pieSeries.hiddenState.properties.endAngle = -90;
+            pieSeries.hiddenState.properties.startAngle = -90;
+            $($(elm).parent()).prev().show()
+        }
+    });
+   
 
     // Add data
-    chart.data = [{
-        "country": "Lithuania",
-        "litres": 501.9
-    }, {
-        "country": "Czech Republic",
-        "litres": 301.9
-    }, {
-        "country": "Ireland",
-        "litres": 201.1
-    }, {
-        "country": "Germany",
-        "litres": 165.8
-    }, {
-        "country": "Australia",
-        "litres": 139.9
-    }, {
-        "country": "Austria",
-        "litres": 128.3
-    }, {
-        "country": "UK",
-        "litres": 99
-    }, {
-        "country": "Belgium",
-        "litres": 60
-    }, {
-        "country": "The Netherlands",
-        "litres": 50
-    }];
+    
 
     // Set inner radius
-    chart.innerRadius = am4core.percent(50);
 
-    // Add and configure Series
-    var pieSeries = chart.series.push(new am4charts.PieSeries());
-    pieSeries.dataFields.value = "litres";
-    pieSeries.dataFields.category = "country";
-    pieSeries.slices.template.stroke = am4core.color("#fff");
-    pieSeries.slices.template.strokeWidth = 2;
-    pieSeries.slices.template.strokeOpacity = 1;
-
-    // This creates initial animation
-    pieSeries.hiddenState.properties.opacity = 1;
-    pieSeries.hiddenState.properties.endAngle = -90;
-    pieSeries.hiddenState.properties.startAngle = -90;
-    $($(elm).parent()).prev().show()
 }
 function HideDetail(elm) {
     $("#detailDiv").empty();
@@ -619,47 +627,40 @@ function GetCompanyOpening() {
 				return d.promise();
 			}
 		},
-
 		fields: [
 			{
-				title: "Applicant Name", width: 60, itemTemplate: function (v, i) {
-					return i.API_FirstName + ' ' + i.API_MiddleName + ' ' + i.API_LastName;
+				title: "Job Title", width: 100, itemTemplate: function (v, i) {
+				    return i.JobTitle;
 				}
 			},
 			{
-				title: "City", width: 60, itemTemplate: function (v, i) {
-					return i.API_City;
+				title: "Position", width: 60, itemTemplate: function (v, i) {
+				    return i.PositionCount;
 				}
 			},
 			{
-				title: "State", width: 60, itemTemplate: function (v, i) {
-					return i.API_State;
+				title: "Applicant", width: 60, itemTemplate: function (v, i) {
+				    return i.ApplicantCount;
 				}
 			},
 			{
-				title: "Email", width: 60, itemTemplate: function (v, i) {
-					return i.API_Email;
+				title: "Date Posted", width: 60, itemTemplate: function (v, i) {
+				    return i.JobPostingDate;
 				}
 			},
 			{
-				title: "Phone Number", width: 60, itemTemplate: function (v, i) {
-					return i.API_PhoneNumber;
+				title: "Duration", width: 60, itemTemplate: function (v, i) {
+				    return i.Duration;
 				}
 			},
+			{ name: "Status", type: "text", width: 50 },
 			{
-				title: "Desire Salary", width: 60, itemTemplate: function (v, i) {
-					return i.API_DesireSalary;
-				}
-			},
-			{
-				title: "Job Title", width: 60, itemTemplate: function (v, i) {
-					return i.JBT_JobTitle;
-				}
-			},
-			{
-				title: "Application Status", width: 60, itemTemplate: function (v, i) {
-					return i.API_ApplicantStatus;
-				}
+			    name: " ", width: 100, align: "center", Title: "",
+			    itemTemplate: function (value,item) {
+			        return $("<div>").append($("<div id='detailDiv'>").addClass('text').text("asdadfaf")).append($("<div>").addClass("inlineDivdonut").append("<img src='Images/donut.png' class='donutC' onmouseover='GetSummeryDetail(this," + item.JPS_JobPostingId + ");' onmouseout='HideDetail(this)'>"))
+						.append($("<div>").append("<i>").addClass("fa fa-envelope-o fa-lg actionBtn"))
+						.append($("<div>").append("<i>").addClass("fa fa-trash fa-lg actionBtn"));
+			    }
 			}
 			
 		],
@@ -667,7 +668,7 @@ function GetCompanyOpening() {
 			console.log(args.item);
 			$("#MyOpeningSummery").hide();
 			$("#btnBack").show();
-			myOpenings();
+			myOpenings(args.item.JobPostingId);
 		}
 	});
 }

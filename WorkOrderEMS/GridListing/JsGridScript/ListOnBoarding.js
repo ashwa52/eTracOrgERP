@@ -78,7 +78,7 @@ $('#SaveVCSChartForm1').validate({
 function saveApplicantInfo() {
     var isValid = $('#SaveVCSChartForm1').valid();
     if (isValid) {
-        alert(isValid);
+        //alert(isValid);
         var myData = {
 			FirstName: $("#onboardFirstName").val(),
 			MiddleName: $("#onboardMobile").val(),

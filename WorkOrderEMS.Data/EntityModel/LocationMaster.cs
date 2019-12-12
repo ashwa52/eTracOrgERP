@@ -36,7 +36,6 @@ namespace WorkOrderEMS.Data.EntityModel
             this.WorkRequestAssignments = new HashSet<WorkRequestAssignment>();
             this.LocationServices = new HashSet<LocationService>();
             this.LogBills = new HashSet<LogBill>();
-            this.LoginLogs = new HashSet<LoginLog>();
             this.LogLocationCompanyMappings = new HashSet<LogLocationCompanyMapping>();
             this.LogMiscellaneous = new HashSet<LogMiscellaneou>();
             this.LogPODetails = new HashSet<LogPODetail>();
@@ -49,6 +48,7 @@ namespace WorkOrderEMS.Data.EntityModel
             this.PreBills = new HashSet<PreBill>();
             this.QRCMasters = new HashSet<QRCMaster>();
             this.QRCScanLogs = new HashSet<QRCScanLog>();
+            this.LoginLogs = new HashSet<LoginLog>();
             this.LoginLogs1 = new HashSet<LoginLog>();
         }
     
@@ -121,7 +121,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ICollection<WorkRequestAssignment> WorkRequestAssignments { get; set; }
         public virtual ICollection<LocationService> LocationServices { get; set; }
         public virtual ICollection<LogBill> LogBills { get; set; }
-        public virtual ICollection<LoginLog> LoginLogs { get; set; }
         public virtual ICollection<LogLocationCompanyMapping> LogLocationCompanyMappings { get; set; }
         public virtual ICollection<LogMiscellaneou> LogMiscellaneous { get; set; }
         public virtual ICollection<LogPODetail> LogPODetails { get; set; }
@@ -134,6 +133,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ICollection<PreBill> PreBills { get; set; }
         public virtual ICollection<QRCMaster> QRCMasters { get; set; }
         public virtual ICollection<QRCScanLog> QRCScanLogs { get; set; }
+        public virtual ICollection<LoginLog> LoginLogs { get; set; }
         public virtual ICollection<LoginLog> LoginLogs1 { get; set; }
     }
 }

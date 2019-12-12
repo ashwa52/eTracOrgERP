@@ -255,15 +255,12 @@
         <!--Side Menu-->
         @if (@ViewBag.AccountSection == true)
         {
-            @Html.Partial("_NewAdminSideMenu")
+            @*@Html.Partial("_NewAdminSideMenu")*@
         }
         else
         {
             @Html.Partial("_NewSideMenu")
         }
-        <div id="loader-wrapper" style="display:none;">
-            <div id="loader"></div>
-        </div>
         @*<a href="~/Views/Shared/_NewSideMenu.cshtml">~/Views/Shared/_NewSideMenu.cshtml</a>*@
         <!--**********************************
             Content body start
@@ -301,7 +298,7 @@
 
             </div>
         </div>
-       
+
     </div>
 
     <!--End Modal connect to quickbook-->

@@ -249,16 +249,30 @@ namespace WorkOrderEMS.Data
         /// </summary>
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
-        public List<spGetFileUpload_Result1> GetUploadFilesList(string EmployeeId)
+        //public List<spGetFileUpload_Result1> GetUploadFilesList(string EmployeeId)
+        //{
+        //    try
+        //    {
+        //        return objworkorderEMSEntities.spGetFileUpload(EmployeeId).ToList();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw;
+        //    }
+        //}
+
+        public List<spGetFileUpload_Result2> GetUploadFilesListTesting(string EmployeeId)
         {
+            var lst = new List<spGetFileUpload_Result2>();
             try
             {
-                return objworkorderEMSEntities.spGetFileUpload(EmployeeId).ToList();
+                lst =  objworkorderEMSEntities.spGetFileUpload(EmployeeId).ToList();
             }
             catch (Exception ex)
             {
                 throw;
             }
+            return lst;
         }
 
         public List<spGetVacant_JobTitle_Result> GetJobTitleVacant(long VSC_Id)

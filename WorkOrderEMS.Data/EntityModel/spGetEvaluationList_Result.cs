@@ -25,7 +25,5 @@ namespace WorkOrderEMS.Data.EntityModel
         public string Expectation { get; set; }
         public Nullable<int> FinYear { get; set; }
         public string EEL_IsActive { get; set; }
-        public Nullable<System.DateTime> PRMeetingDateTime { get; set; }
-        public string PRMeetingStatus { get; set; }
     }
 }

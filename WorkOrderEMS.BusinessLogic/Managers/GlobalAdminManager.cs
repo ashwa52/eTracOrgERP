@@ -3899,7 +3899,6 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     JobTitle = x.JobTitle,
                     Status = x.Status,
                     JobPostingId = x.JPS_JobPostingId,
-
                 }).ToList();
             }
             //return lst;
@@ -4066,7 +4065,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         INS_IsAvailable = x.INS_IsAvailable,
                         INS_IsHiringManager = x.INS_IsHiringManager,
                         InterviwerName = x.InterviwerName,
-                        ProfileImage = x.EMP_Photo
+                        ProfileImage = x.EMP_Photo == null ? HostingPrefix + ProfileImagePath.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfileImagePath.Replace("~", "") + x.EMP_Photo
                     }).ToList();
                     interviewersList.Interviewers = interviewers;
                     interviewersList.currentEmployeeId = hiringManagerId;
@@ -4372,9 +4371,12 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             try
             {
                 var obj = ObjPerformanceRepository.GetMeetingDetail(Id, FinYear, FinQuarter);
+                //var obj = ObjPerformanceRepository.GetMeetingDetail(Id, FinYear, FinQuarter);
                 if (obj != null)
                 {
-                    result = (DateTime.Now > obj.RMS_InterviewDateTime) ? "MEETINGCOMPLETED" : "MEETINGNOTCOMPLETED";
+                    var dt = Convert.ToDateTime(obj.RMS_InterviewDateTime);
+                    result = (DateTime.Now > dt && obj.RMS_IsActive == "Y") ? "MEETINGNOTCOMPLETED" : (DateTime.Now > dt && obj.RMS_IsActive == "C") ?  "MEETINGCOMPLETED": "MEETINGNOTFOUND";
+                    //result = (DateTime.Now > obj.RMS_InterviewDateTime) ? "MEETINGCOMPLETED" : "MEETINGNOTCOMPLETED";
                 }
 
             }
@@ -4401,13 +4403,48 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
             return MeetingList;
         }
-        public List<spGetJobPostingDetails_ForCompanyOpening_Result> GetJobPostingDetailsForCompanyOpening(long JPS_JobPostingId)
+        //public List<spGetJobPostingDetails_ForCompanyOpening_Result> GetJobPostingDetailsForCompanyOpening(long JPS_JobPostingId)
+        //{
+        //    try
+        //    {
+        //        using (workorderEMSEntities context = new workorderEMSEntities())
+        //        {
+        //            return context.spGetJobPostingDetails_ForCompanyOpening(JPS_JobPostingId).ToList();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
+        public List<spGetJobPosting_ForCompanyOpening_Result> GetJobPostingForCompanyOpening(string HiringManagerId)
         {
             try
             {
                 using (workorderEMSEntities context = new workorderEMSEntities())
                 {
-                    return context.spGetJobPostingDetails_ForCompanyOpening(JPS_JobPostingId).ToList();
+                    return context.spGetJobPosting_ForCompanyOpening(HiringManagerId).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 20-Nov-2019
+        /// Created For : To get hiring grapth count
+        /// </summary>
+        /// <param name="PostingId"></param>
+        /// <returns></returns>
+        public spGetHiringGraph_Result HiringGraphCount(long PostingId)
+        {
+            try
+            {
+                using (workorderEMSEntities context = new workorderEMSEntities())
+                {
+                    return context.spGetHiringGraph(null,PostingId).FirstOrDefault();
                 }
             }
             catch (Exception ex)

@@ -58,6 +58,9 @@ namespace WorkOrderEMS.Models
 
         [DataMember]
         public long WorkAssignmentID { get; set; }
+
+        [DataMember]
+        public long LogId { get; set; }
     }
 
     [DataContract]

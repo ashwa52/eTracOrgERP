@@ -892,6 +892,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         {
             InfoFactSheet sheet = new InfoFactSheet { ResumePath = "" };
             sheet.model = model;
+                                         
             return PartialView("ePeople/_infoFactSheet", sheet);
         }
         [HttpGet]
@@ -1317,8 +1318,45 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         #endregion
         public ActionResult GetCompanyOpening()
         {
-            var data = _GlobalAdminManager.GetJobPostingDetailsForCompanyOpening(1);
+            eTracLoginModel ObjLoginModel = null;
+            var _workorderems = new workorderEMSEntities();
+            var data = new List<spGetJobPosting_ForCompanyOpening_Result>();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            var getEMPID = _workorderems.UserRegistrations.Where(x => x.UserId == ObjLoginModel.UserId).FirstOrDefault().EmployeeID;
+            if(getEMPID != null)
+            {
+
+            }
+             data = _GlobalAdminManager.GetJobPostingForCompanyOpening(getEMPID);
             return Json(data, JsonRequestBehavior.AllowGet);
+        }
+        /// <summary>
+        /// Created by  : Ashwajit Bansod
+        /// Created Date : 20-Nov-2019
+        /// Created For : To get hiring manager count
+        /// </summary>
+        /// <param name="postingId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult GetHringChartData(long postingId)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                var getChartData = _GlobalAdminManager.HiringGraphCount(postingId);
+                return Json(getChartData, JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
         }
         //[HttpPost]
         //public ActionResult QEvaluationView(string Id, string Assesment, string Name, string Image, string JobTitle, string FinYear, string FinQuarter)
@@ -1398,16 +1436,18 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         ///17/11/2019
         public JsonResult GetMeetingList()
         {
-            List<ReviewMeeting> MeetingList;
+            var MeetingList = new List<ReviewMeeting>();
+
             try
             {
-                MeetingList = _GlobalAdminManager.GetMeetingList();
-                foreach (var ITAdmin in MeetingList)
+                var lst = _GlobalAdminManager.GetMeetingList();
+                foreach (var ITAdmin in lst)
                 {
                     ITAdmin.ManagerPhoto = (ITAdmin.ManagerPhoto == "" || ITAdmin.ManagerPhoto == "null") ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~/", "") + ITAdmin.ManagerPhoto;
                     ITAdmin.EmployeePhoto = (ITAdmin.EmployeePhoto == "" || ITAdmin.EmployeePhoto == "null") ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~/", "") + ITAdmin.EmployeePhoto;
                     ITAdmin.MeetingDate = ITAdmin.PRMeetingDateTime.HasValue ? ITAdmin.PRMeetingDateTime.Value.ToShortDateString() : "";
                     ITAdmin.MeetingTime = ITAdmin.PRMeetingDateTime.HasValue ? ITAdmin.PRMeetingDateTime.Value.ToShortTimeString() : "";
+                    MeetingList.Add(ITAdmin);
                 }
                 
             }

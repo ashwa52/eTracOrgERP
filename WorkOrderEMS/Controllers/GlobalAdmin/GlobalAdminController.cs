@@ -3637,7 +3637,8 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
             {
                 ViewBag.LocationName = _budgetLocationManager.GetLocationName(LocationId);
             }
-            return View();
+            return PartialView("~/Views/GlobalAdmin/Location/_CostCodeTreeView.cshtml");
+            //return View();
         }
 
         /// <summary>
@@ -3756,7 +3757,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 ViewBag.LocationName = _budgetLocationManager.GetLocationName(LocationId);
             }
 
-            return View(obj);
+            return View("~/Views/GlobalAdmin/Location/_AddBudget.cshtml", obj);
         }
 
         /// <summary>
@@ -3835,6 +3836,50 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetBudgetListByLocationId(string Loc, string _search, long? UserId, long? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            var _BudgetLocationManager = new BudgetLocationManager();
+            long LocationId = 0;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                if (locationId == null)
+                {
+                    locationId = ObjLoginModel.LocationID;
+                }
+                UserId = ObjLoginModel.UserId;
+            }
+
+            if (!string.IsNullOrEmpty(Loc))
+            {
+                ViewBag.UpdateMode = true;
+                Loc = Cryptography.GetDecryptedData(Loc, true);
+                long.TryParse(Loc, out LocationId);
+            }
+            var objBudgetForLocationModel = new List<BudgetForLocationModel>();
+            JQGridResults result = new JQGridResults();
+            List<JQGridRow> rowss = new List<JQGridRow>();
+            sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
+            sidx = string.IsNullOrEmpty(sidx) ? "UserEmail" : sidx;
+            txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
+            try
+            {
+                var budgetCostCodeList = _BudgetLocationManager.GetListBudgetDetails(LocationId, UserId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);               
+                objBudgetForLocationModel = budgetCostCodeList.rows;
+                //foreach (var budgetList in budgetCostCodeList.rows)
+                //{
+                //    objBudgetForLocationModel = budgetCostCodeList.rows;//.Add(budgetList);
+                //}
+                //This is for JSGrid
+                //var tt = objBudgetForLocationModel.ToArray();
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+            return Json(objBudgetForLocationModel.ToArray(), JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -4203,7 +4248,8 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 Loc = Cryptography.GetDecryptedData(Loc, true);
                 long.TryParse(Loc, out LocationId);
             }
-            var objBudgetForLocationModel = new BudgetForLocationModel();
+            
+            var objBudgetForLocationModel = new List<BudgetForLocationModel>();
             JQGridResults result = new JQGridResults();
             List<JQGridRow> rowss = new List<JQGridRow>();
             sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
@@ -4212,35 +4258,12 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
             try
             {
                 var budgetCostCodeList = _BudgetLocationManager.GetListOfCostCodeAfterTransferBudgetDetails(LocationId, UserId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
-                foreach (var budgetList in budgetCostCodeList.rows)
-                {
-                    if (budgetList != null)
-                    {
-                        JQGridRow row = new JQGridRow();
-                        row.id = Cryptography.GetEncryptedData(Convert.ToString(budgetList.CostCode), true);
-                        row.cell = new string[10];
-                        //row.cell[0] = driverList.QRCCodeID;
-                        row.cell[0] = budgetList.Description.ToString();
-                        row.cell[1] = budgetList.AssignedPercent.ToString();
-                        row.cell[2] = budgetList.AssignedAmount.ToString();
-                        row.cell[3] = budgetList.RemainingAmount.ToString();
-                        row.cell[4] = budgetList.CostCode.ToString();
-                        row.cell[5] = budgetList.Year.ToString();
-                        row.cell[6] = budgetList.BudgetAmount.ToString();
-                        row.cell[7] = budgetList.BCM_Id.ToString();
-                        row.cell[8] = budgetList.CLM_Id.ToString();
-                        row.cell[9] = budgetList.BudgetStatus.ToString();
-                        rowss.Add(row);
-                    }
-                }
-                result.rows = rowss.ToArray();
-                result.page = Convert.ToInt32(page);
-                result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
-                result.records = Convert.ToInt32(TotalRecords.Value);
+                objBudgetForLocationModel = budgetCostCodeList.rows;
+               
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(objBudgetForLocationModel.ToArray(), JsonRequestBehavior.AllowGet);
         }
         //[HttpPost]
         //public JsonResult SavingTransferAmountOfCostCode(decimal BudgetAmount,long Location,int Year,int? BCM_Id, int? CLM_Id, int? BCM_CLM_TransferId, int? AssignedPercent, string BudgetSource)//BudgetForLocationModel objBudgetForLocationModel)
@@ -4496,7 +4519,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
             List<LocationSettingMaster> ItemList = DataRowToObject.CreateListFromTable<LocationSettingMaster>(dataTable);
             return ItemList;
         }
-        
+        #endregion Location Master
         public ActionResult GlobalSettingsMaster()
         {
             try
@@ -4620,8 +4643,8 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
             List<ContractDetailsModel> ItemList = DataRowToObject.CreateListFromTable<ContractDetailsModel>(dataTable);
             return ItemList;
         }
-		
-		[HttpGet]
+        #endregion DB Changes
+        [HttpGet]
         public ActionResult GetUnseenNotifications()
         {
             eTracLoginModel ObjLoginModel = null;

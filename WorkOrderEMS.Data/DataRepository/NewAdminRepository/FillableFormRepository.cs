@@ -67,6 +67,24 @@ namespace WorkOrderEMS.Data.DataRepository
         }
         /// <summary>
         /// Created By : Ashwajit Bansod
+        /// Created For : TO get W4 form data
+        /// Created Date : 09-Dec-2019
+        /// </summary>
+        /// <param name="EmployeeId"></param>
+        /// <returns></returns>
+        public spGetW4Form_Result GetW4FormData(string EmployeeId)
+        {
+            try
+            {
+                return _workorderems.spGetW4Form(EmployeeId).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
         /// Created Date : 24-Oct-2019
         /// Created For : To get File type list 
         /// </summary>

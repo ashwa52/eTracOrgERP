@@ -1,5 +1,6 @@
 ﻿@{
-    Layout = null;// "~/Views/Shared/_NewAdminLayout.cshtml";
+    Layout = null;// 
+    //Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
     string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
     WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
     string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
@@ -79,6 +80,7 @@
         display: inherit;
     }
 </style>
+<br />
 <div class="content-body">
     <!-- row -->
     <div class="container-fluid">

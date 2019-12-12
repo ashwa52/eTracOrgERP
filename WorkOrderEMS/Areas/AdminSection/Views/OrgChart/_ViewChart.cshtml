@@ -92,7 +92,7 @@
 @*<script src="~/Scripts/jquery-3.2.1.min.js"></script>*@
 
 <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.css" rel="stylesheet">
-<link href="~/Areas/AdminSection/Content/CSS/GetOrg.css" rel="stylesheet" />
+@*<link href="~/Areas/AdminSection/Content/CSS/GetOrg.css" rel="stylesheet" />*@
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.2/summernote.js"> </script>
 
 <br />
@@ -281,7 +281,7 @@
                     <div class="row">
                         <div class="demo-section k-content">
                             <div id="treeData">
-                                
+
                             </div>
                         </div>
                         @*<div class="" id="DivAccessTreeDetailsIndex">
@@ -299,7 +299,8 @@
         </div>
     </div>
 </div>
-<script src="~/Areas/AdminSection/Content/JQUERY/GetOrg.js"></script>
+<script src="~/Areas/AdminSection/Content/JQUERY/NewOrgChartForAdmin.js"></script>
+@*<script src="~/Areas/AdminSection/Content/JQUERY/GetOrg.js"></script>*@
 <script src="~/Areas/AdminSection/Content/JQUERY/DynamicAddJobDesc.js"></script>
 <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2017.3.1026/styles/kendo.common-material.min.css" />
 <link href="~/Content/KendoTreeView/kendo.material.min.css" rel="stylesheet" />
@@ -366,7 +367,7 @@
     });
 </script>
 <script type="text/javascript">
-    
+
     $("#BackToAdmin").click(function () {
         debugger
         var url = "@Url.Action("Index", "AdminDashboard", new { area = "AdminSection" })";
@@ -393,22 +394,40 @@
                             listData[i].parentId = null;
                         }
                         data.id = listData[i].Id;
-                        data.parentId = listData[i].parentId;
+                        data.pid = listData[i].parentId;
                         data.SeatingName = listData[i].SeatingName;
                         data.JobDescription = listData[i].JobDescription;
                         data.DepartmentName = listData[i].DepartmentName;
                         tabledata.push(data);
                     }
-                    var orgChart = new getOrgChart(peopleElement, {
-                        primaryFields: ["SeatingName", "JobDescription", "DepartmentName"],
-                        dataSource: tabledata,
+                    var chart = new OrgChart(peopleElement, {
+
+                        scaleInitial: BALKANGraph.match.boundary,
+                        //enableDragDrop: true,
+                        //tags: {
+                        //    "assistant": {
+                        //        template: "ula"
+                        //    }
+                        //},
+                        nodeMenu: {
+                            //add: { text: "Add" },
+                            add: { text: "Job Title" },
+                            edit: { text: "Edit" },
+                        },
+                        nodeBinding: {
+                            field_0: "SeatingName",
+                            field_1: "JobDescription",
+                            field_2: "DepartmentName",
+                            //field_2: "DepartmentName"
+                            //img_0: "img"
+                        },
+                        nodes: tabledata,
                     });
-                    $(".get-text-0").attr("y", "30"); $(".get-text-0").attr("y", "30");
-                    $(".get-text-1").attr("y", "65"); $(".get-text-2").attr("y", "90");
-                    $(".get-text-3").attr("y", "120"); $(".get-text-4").attr("y", "150");
-                    $(".get-text-4").attr("y", "180"); $(".get-text-6").attr("y", "210");
-                    $(".get-text-7").attr("y", "240"); $(".get-text-8").attr("y", "270");
-                    $(".get-text-9").attr("y", "300"); $(".get-text-10").attr("y", "330");
+                    debugger
+                    $(".field_0").attr({ "style": "font-size:16px;" });
+                    $("tspan").attr("x", "140");
+                    $(".field_0").attr("x", "100"); $(".field_0").attr("x", "65");
+                    $(".field_0").attr("y", "25");
                 }
             },
             error: function (err) {
@@ -419,7 +438,7 @@
 
 </script>
 <script>
-    
+
     //$(function () {
     //    $("#treeData").jstree({
     //        "checkbox": {
@@ -434,7 +453,7 @@
     //        //alert(JSON.stringify(data));
     //    });
     //});
-    
+
     $("#treeData").kendoTreeView({
             checkboxes: {
                 checkChildren: true

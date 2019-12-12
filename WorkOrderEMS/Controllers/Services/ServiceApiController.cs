@@ -9,6 +9,7 @@ using iTextSharp.text.html.simpleparser;
 using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -30,6 +31,7 @@ using WorkOrderEMS.BusinessLogic.Interfaces.eFleet;
 using WorkOrderEMS.BusinessLogic.Managers;
 using WorkOrderEMS.BusinessLogic.Managers.eFleet;
 using WorkOrderEMS.Controllers.QuickBookData;
+using WorkOrderEMS.Data.DataRepository;
 using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Infrastructure;
@@ -56,7 +58,7 @@ namespace WorkOrderEMS.Controllers.Services
         private readonly ICommonMethod _ICommonMethod;
         private readonly IFillableFormManager _IFillableFormManager;
         private readonly INotification _INotification;
-
+        private readonly IePeopleManager _IePeopleManager;
         private string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private string EmeregencyImagePath = ConfigurationManager.AppSettings["POEmeregencyImage"];
         private string MiscellaneousImagePath = ConfigurationManager.AppSettings["MiscellaneousImage"];
@@ -64,7 +66,7 @@ namespace WorkOrderEMS.Controllers.Services
         public ServiceApiController()
         {
         }
-        public ServiceApiController(IEfleetPM _IEfleetPM, IeFleetFuelingManager _IFuelingManager, IEfleetVehicle _IEfleetVehicle, IDARManager _IDARManager, IEfleetVehicleIncidentReport _IEfleetVehicleIncidentReport, IEfleetMaintenance _IEfleetMaintenance, IPassengerTracking _IPassengerTracking, IHoursOfServices _IHoursOfServices, IBillDataManager _IBillDataManager, IMiscellaneousManager _IMiscellaneousManager, ICommonMethod _ICommonMethod, IFillableFormManager _IFillableFormManager, INotification _INotification)
+        public ServiceApiController(IEfleetPM _IEfleetPM, IeFleetFuelingManager _IFuelingManager, IEfleetVehicle _IEfleetVehicle, IDARManager _IDARManager, IEfleetVehicleIncidentReport _IEfleetVehicleIncidentReport, IEfleetMaintenance _IEfleetMaintenance, IPassengerTracking _IPassengerTracking, IHoursOfServices _IHoursOfServices, IBillDataManager _IBillDataManager, IMiscellaneousManager _IMiscellaneousManager, ICommonMethod _ICommonMethod, IFillableFormManager _IFillableFormManager, INotification _INotification, IePeopleManager _IePeopleManager)
         {
             this._IFuelingManager = _IFuelingManager;
             this._IEfleetPM = _IEfleetPM;
@@ -79,6 +81,7 @@ namespace WorkOrderEMS.Controllers.Services
             this._ICommonMethod = _ICommonMethod;
             this._IFillableFormManager = _IFillableFormManager;
             this._INotification = _INotification;
+            this._IePeopleManager = _IePeopleManager;
         }
         // GET: api/ServiceApi
         public IHttpActionResult Get()
@@ -5552,7 +5555,156 @@ namespace WorkOrderEMS.Controllers.Services
                 return Ok(ObjServiceResponseModel);
             }
         }
-        #endregion ePeople
-        #endregion New Employee App
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 21-Nov-2019
+        /// Created For  : To get all red green blue files list
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult GetFileList(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<List<FileType>>();
+            var model = new CommonFormModel();
+            var _FillableFormRepository = new FillableFormRepository();
+            try
+            {
+                if (obj != null && obj.ServiceAuthKey != null)
+                {
+                    var getDetails = _FillableFormRepository.GetFileList().ToList();
+                    if (getDetails != null)
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.Successful();
+                        ObjServiceResponseModel.Data = getDetails;
+                    }
+                    else
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.NoRecordMessage();
+                        ObjServiceResponseModel.Data = null;
+                    }
+                    return Ok(ObjServiceResponseModel);
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.InvalidUser();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+        
+        /// <summary>
+        /// Created By :  Ashwajit Bansod
+        /// Created Date : 21-Nov-2019
+        /// Created For : To get uploaded files of user
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult GetUploadedRGYFileList(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<List<UploadedFiles>>();
+            var model = new CommonFormModel();
+            var _FillableFormRepository = new FillableFormRepository();
+            try
+            {
+                if (obj != null && obj.ServiceAuthKey != null && obj.EmployeeID != null)
+                {
+                    var getDetailsList = _IePeopleManager.GetUploadedFilesOfUserTesting(obj.EmployeeID);
+                    if (getDetailsList != null)
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.Successful();
+                        ObjServiceResponseModel.Data = getDetailsList;
+                    }
+                    else
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.NoRecordMessage();
+                        ObjServiceResponseModel.Data = null;
+                    }
+                    return Ok(ObjServiceResponseModel);
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.InvalidUser();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+
+        [HttpPost]
+        public async Task<string> FileUpload()
+        //public async Task<string> FileUpload()
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<string>();
+            var Obj = new UploadedFiles();
+            string name = string.Empty;
+
+            var ctx = HttpContext.Current;
+            var root = ctx.Server.MapPath("~/Content/FilesRGY");
+            var provider = new MultipartFormDataStreamProvider(root);
+            try
+            {
+                 await Request.Content.ReadAsMultipartAsync(provider);
+                var FileName = provider.FormData.GetValues("FileName")[0];
+                var FileId = provider.FormData.GetValues("FileId")[0];
+                var EMPId = provider.FormData.GetValues("EMPId")[0];
+
+                foreach (var file in provider.FileData)
+                {
+                     name = file.Headers.ContentDisposition.FileName;
+                    name = name.Trim('"');
+                    var localname  = file.LocalFileName;
+                    var filepath = Path.Combine(root, name);
+                    File.Move(localname, filepath);
+                }
+                Obj.FileName = FileName;
+                Obj.FileId = Convert.ToInt64(FileId);
+                Obj.FileEmployeeId = EMPId;
+                string LoginEmployeeId = EMPId;
+                Obj.AttachedFileName = name;
+                var IsSaved = _IFillableFormManager.SaveFile(Obj, LoginEmployeeId);
+                if (IsSaved == true)
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.Successful();
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.FailureMessage();
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return ObjServiceResponseModel.Message;
+            }
+            return ObjServiceResponseModel.Message;
+        }
     }
+
+    #endregion ePeople
+    #endregion New Employee App
 }

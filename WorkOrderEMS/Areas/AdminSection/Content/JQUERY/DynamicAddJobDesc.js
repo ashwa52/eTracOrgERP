@@ -61,6 +61,7 @@ $(document).ready(function () {
     });
     ///To save Form Data 
     $('#SaveVSC').click(function (e) {
+        debugger
         createAddJobDescArray();
         var content = tinymce.activeEditor.getContent({ format: 'raw' });
         $('#RolesAndResponsibility').val(content);

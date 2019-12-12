@@ -99,7 +99,11 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
                         System.Text.RegularExpressions.Regex rx = new System.Text.RegularExpressions.Regex("<[^>]*>");
                         Obj.RolesAndResponsibility = removeSpace;//rx.Replace(Obj.RolesAndResponsibility, "");
                     }
-
+                    if (Obj.Id == null)
+                    {
+                        Obj.Action = "I";
+                        Obj.IsActive = "Y";
+                    }
                     var isSaved = _IAdminDashboard.SaveVSC(Obj);
                     if (isSaved != null)
                     {
@@ -185,6 +189,7 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
             {
                 if (Obj != null && Obj.JobTitleDesc != null)
                 {
+                    //Obj.Id = Obj.parentId;
                     var isSaved = _IAdminDashboard.SaveJobTitleVSC(Obj);
                     if (isSaved == true)
                     {

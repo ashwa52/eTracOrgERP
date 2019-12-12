@@ -29,7 +29,8 @@ namespace WorkOrderEMS.BusinessLogic
         JobTitleModel GetJobTitleCount(long JobId);
         bool SendJobTitleForApproval(JobTitleModel model);
         bool SaveDirectDepositeForm(DirectDepositeFormModel model);
-        IEnumerable<UploadedFiles> GetUploadedFilesOfUser(string EmployeeId);
+        //IEnumerable<UploadedFiles> GetUploadedFilesOfUser(string EmployeeId);
+        List<UploadedFiles> GetUploadedFilesOfUserTesting(string EmployeeId);
         List<GraphCountModel> GetEMP_ReqCount();
         List<JobTitleModel> GetJobTitleVacantList(long VSC_Id);
         bool SaveCommonStatusOfEmployee(DemotionModel Obj);

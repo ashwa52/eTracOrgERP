@@ -418,6 +418,23 @@ namespace WorkOrderEMS.Data
                 throw;
             }
         }
+        public eTracLoginModel GetLocationDetailsByUserIDForHR(long userId)
+        {
+            try
+            {
+                eTracLoginModel locDetails = (from ur in _workorderEMSEntities.UserRegistrations
+                                              join elm in _workorderEMSEntities.ManagerLocationMappings on ur.UserId equals elm.ManagerUserId
+                                              join lm in _workorderEMSEntities.LocationMasters on elm.LocationId equals lm.LocationId
+                                              where ur.UserId == userId && ur.IsDeleted == false
+                                              select new eTracLoginModel { LocationID = lm.LocationId, Location = lm.LocationName }).FirstOrDefault();
+
+                return locDetails;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
         //public UserRegistration AuthenticateLogin(eTracLoginModel eTracLogin)
         //{
@@ -945,10 +962,13 @@ namespace WorkOrderEMS.Data
                     VST_Level = t.VST_Level,
                     FinYear = t.FinYear.Value,
                     AssessmentType = t.AssessmentType,
-                    PRMeetingStatus=t.PRMeetingStatus,
-                    PRMeetingDateTime=t.PRMeetingDateTime,
-                    MeetingDate=t.PRMeetingDateTime.HasValue?t.PRMeetingDateTime.Value.ToShortDateString():"",
-                    MeetingTime = t.PRMeetingDateTime.HasValue ? t.PRMeetingDateTime.Value.ToShortTimeString():""
+                    PRMeetingStatus = t.PRMeetingStatus,
+                    //PRMeetingDateTime = t.PRMeetingDateTime.HasValue ? new DateTimeOffset(t.PRMeetingDateTime.Value, TimeSpan.FromHours(0)).ToLocalTime().DateTime : (DateTime?)null,
+                    //MeetingDate = t.PRMeetingDateTime.HasValue ? new DateTimeOffset(t.PRMeetingDateTime.Value, TimeSpan.FromHours(0)).ToLocalTime().DateTime.ToShortDateString() : "",
+                    //MeetingTime = t.PRMeetingDateTime.HasValue ? new DateTimeOffset(t.PRMeetingDateTime.Value, TimeSpan.FromHours(0)).ToLocalTime().DateTime.ToShortTimeString() : ""
+                    PRMeetingDateTime = t.PRMeetingDateTime,
+                    MeetingDate = t.PRMeetingDateTime.HasValue ? t.PRMeetingDateTime.Value.ToShortDateString() : "",
+                    MeetingTime = t.PRMeetingDateTime.HasValue ? t.PRMeetingDateTime.Value.ToShortTimeString() : ""
 
 
                 }).ToList();

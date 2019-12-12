@@ -8,7 +8,6 @@ namespace WorkOrderEMS.Data
 {
     public class LoginLogRepository : BaseRepository<LoginLog>, ILoginLogRepository
     {
-
         workorderEMSEntities _workorderEMSEntities = new workorderEMSEntities();
 
         /// <summary>

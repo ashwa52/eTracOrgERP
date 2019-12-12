@@ -444,6 +444,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                             authuser.Longitude = loginViewModel.Long;
                         }
                         ObjUserRepository.Update(authuser);
+                        ObjUserRepository.SaveChanges();
                     }
                     else
                     {
@@ -683,6 +684,20 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                 throw new Exception("You are not authorised to login, Please contact to your superior.");
                             }
                             break;
+                        case (Int64)(UserType.GuestUser):
+                            eTracLoginModel locationDetailsHR = ObjUserRepository.GetLocationDetailsByUserIDForHR(authuser.UserId);
+                            //obj_LocationMasterModel = GetClientUserLocation_First(authuser.UserId);
+                            if (obj_LocationMasterModel != null)
+                            {
+                                loginViewModel.LocationID = locationDetailsHR.LocationID;
+                                loginViewModel.Location = locationDetailsHR.LocationNames;
+                                loginViewModel.LocationCode = locationDetailsHR.LocationCode;
+                            }
+                            else
+                            {
+                                throw new Exception("You are not authorised to login, Please contact to your superior.");
+                            }
+                            break;
                         default:
                             eTracLoginModel locationDetails = ObjUserRepository.GetLocationDetailsByUserID(authuser.UserId);
                             loginViewModel.LocationID = locationDetails == null ? 0 : locationDetails.LocationID;
@@ -734,13 +749,11 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         }
                     }
                     //Commented by Bhushan Dod for maintaining log of each and every login user.
-                    if (((loginViewModel.DeviceId == null || loginViewModel.DeviceId.Trim().Length <= 0) && authuser.UserType == 3) || (loginViewModel.DeviceId == null || loginViewModel.DeviceId.Trim().Length <= 0)) //it will let us know that user is loged in from web or from mobile.. 
+                    if (((loginViewModel.DeviceId == null || loginViewModel.DeviceId.Trim().Length <= 0) && authuser.UserType == 3) || (loginViewModel.DeviceId == null || loginViewModel.DeviceId.Trim().Length <= 0) || (loginViewModel.DeviceId != null || loginViewModel.DeviceId.Trim().Length >= 0)) //it will let us know that user is loged in from web or from mobile.. 
                     {
                         //For login log maintian
-
                         objLoginLogRepository = new LoginLogRepository();
                         LoginLog Obj = new LoginLog();
-
                         Obj.UserID = authuser.UserId;
                         Obj.LocationId = loginViewModel.LocationID;
                         Obj.UserType = authuser.UserType;
@@ -932,6 +945,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     {
                         loginlog.IsActive = false;
                         objLoginLogRepository.Update(loginlog);
+                        objLoginLogRepository.SaveChanges();
                     }
                     #endregion Validate Logout through Serivce call
 

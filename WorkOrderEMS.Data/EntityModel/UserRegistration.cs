@@ -32,14 +32,14 @@ namespace WorkOrderEMS.Data.EntityModel
             this.eFleetVehicleMasterLogs = new HashSet<eFleetVehicleMasterLog>();
             this.HoursOfServices = new HashSet<HoursOfService>();
             this.LocationClientMappings = new HashSet<LocationClientMapping>();
-            this.LoginLogs = new HashSet<LoginLog>();
-            this.LoginLogs1 = new HashSet<LoginLog>();
             this.ManagerLocationMappings = new HashSet<ManagerLocationMapping>();
             this.QRCMasterLogs = new HashSet<QRCMasterLog>();
             this.QRCScanLogs = new HashSet<QRCScanLog>();
             this.SubCostCodes = new HashSet<SubCostCode>();
             this.UserOverrideUsertypes = new HashSet<UserOverrideUsertype>();
             this.UserVehicleSeatingMaps = new HashSet<UserVehicleSeatingMap>();
+            this.LoginLogs = new HashSet<LoginLog>();
+            this.LoginLogs1 = new HashSet<LoginLog>();
         }
     
         public long UserId { get; set; }
@@ -107,8 +107,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual GlobalCode GlobalCode3 { get; set; }
         public virtual ICollection<HoursOfService> HoursOfServices { get; set; }
         public virtual ICollection<LocationClientMapping> LocationClientMappings { get; set; }
-        public virtual ICollection<LoginLog> LoginLogs { get; set; }
-        public virtual ICollection<LoginLog> LoginLogs1 { get; set; }
         public virtual ICollection<ManagerLocationMapping> ManagerLocationMappings { get; set; }
         public virtual QRCMaster QRCMaster { get; set; }
         public virtual ICollection<QRCMasterLog> QRCMasterLogs { get; set; }
@@ -116,5 +114,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ICollection<SubCostCode> SubCostCodes { get; set; }
         public virtual ICollection<UserOverrideUsertype> UserOverrideUsertypes { get; set; }
         public virtual ICollection<UserVehicleSeatingMap> UserVehicleSeatingMaps { get; set; }
+        public virtual ICollection<LoginLog> LoginLogs { get; set; }
+        public virtual ICollection<LoginLog> LoginLogs1 { get; set; }
     }
 }

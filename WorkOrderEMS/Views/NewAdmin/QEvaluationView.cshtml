@@ -58,48 +58,58 @@
         border-color: #f5f5f5;
         width: 10%;
     }*/
+    .rowExpectation {
+        background-image: linear-gradient(to right, #3588CD, #fff);
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    .FontClass {
+        color: black;
+    }
 </style>
-<i id="back" class="fa fa-arrow-circle-o-left x4" style="
-    font-size: 36px;
-    cursor:pointer;
-    margin-left: 10px;
-    margin-top: 5px;
-    width: 64px;
-    float: none;
-    " title="back"></i>
-<div class="row">
-    <div class="col-sm-3" style="margin: 0px 0px 10px 50px;">
+<div class="row rowExpectation">
+    <div class="col-sm-3" style="margin: 12px 0px 10px 50px;">
         <div style="display: inline-block;">
-            <img src="@employeeInfo.Image" alt="" class="rounded-circle" style="width:75px;height:75px;" id="ProfileImage">
+            <img src="@employeeInfo.Image" alt="" class="rounded-circle" style="width:70px;height:70px;margin-left: -53px;" id="ProfileImage">
         </div>
         <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
-            <span style="font-size: 16px;    font-weight: 600;" id="EmployeeName">@employeeInfo.EmployeeName</span>
-            <span style="display: list-item;" id="JobTitle">@employeeInfo.JobTitle</span>
-        </div>
-    </div>
-    <div class="col-sm-1" style="margin: 0px 0px 10px 20px;">
-        <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
-            <span style="font-size: 16px;    font-weight: 600;" id="Department">@employeeInfo.Department</span>
+            <span class="FontClass" style="font-size: 16px;font-weight: 600;" id="EmployeeName">@employeeInfo.EmployeeName</span>
+            <span class="FontClass" style="display: list-item;" id="JobTitle">@employeeInfo.JobTitle</span>
         </div>
     </div>
-    <div class="col-sm-2" style="margin: 0px 0px 10px 20px;">
+    <div class="col-sm-1" style="margin: 15px 0px 10px 20px;">
         <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
-            <span style="font-size: 16px;    font-weight: 600;" id="LocationName">@employeeInfo.LocationName</span>
+            <span class="FontClass" style="font-size: 16px;    font-weight: 600;" id="Department">@employeeInfo.Department</span>
         </div>
     </div>
-    <div class="col-sm-1" style="margin: 0px 0px 10px 20px;">
+    <div class="col-sm-2" style="margin: 15px 0px 10px 20px;">
         <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
-            <span style="font-size: 16px;    font-weight: 600;" id="AssessmentType">@employeeInfo.AssessmentType</span>
+            <span class="FontClass" style="font-size: 16px;    font-weight: 600;" id="LocationName">@employeeInfo.LocationName</span>
         </div>
     </div>
-    <div class="col-sm-2" style="margin: 0px 0px 10px 20px;">
+    <div class="col-sm-1" style="margin-top:15px;" @*style="margin: 0px 0px 10px 20px;"*@>
         <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
-            <span style="font-size: 16px;font-weight: 600;color: blue;">Review Draft</span>
+            <span class="FontClass" style="font-size: 16px;    font-weight: 600;" id="AssessmentType">@employeeInfo.AssessmentType</span>
         </div>
     </div>
-    <div class="col-sm-1" style="margin: 0px 0px 10px 20px;">
+    <div class="col-sm-2" style="margin-top:15px;" @*style="margin: 0px 0px 10px 20px;"*@>
         <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
-            <span style="font-size: 16px;    font-weight: 600;"><i class="fa fa-bell fa-2x" aria-hidden="true"></i></span>
+            <span class="FontClass" style="font-size: 16px;font-weight: 600;">Review Draft</span>
+        </div>
+    </div>
+    <div class="col-sm-1" style="margin-top:15px;" @*style="margin: 0px 0px 10px 20px;"*@>
+        <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
+            <span style="font-size: 16px;font-weight: 600;">
+                <i class="fa fa-bell fa-2x" aria-hidden="true"></i>
+            </span>
+        </div>
+    </div>
+    <div class="col-sm-1" style="margin-top:15px;" @*style="margin: 0px 0px 10px 20px;"*@>
+        <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
+            <span style="font-size: 16px;font-weight: 600;">
+                <i id="back" class="fa fa-arrow-circle-o-left x4" style="font-size: 36px; cursor:pointer;" title="back" aria-hidden="true"></i>
+            </span>
         </div>
     </div>
 </div>

@@ -686,24 +686,75 @@ namespace WorkOrderEMS.BusinessLogic
         /// </summary>
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
-        public IEnumerable<UploadedFiles> GetUploadedFilesOfUser(string EmployeeId)
+        //public IEnumerable<UploadedFiles> GetUploadedFilesOfUser(string EmployeeId)
+        //{
+        //    var lst = new List<UploadedFiles>();
+        //    var objworkorderEMSEntities = new workorderEMSEntities();
+        //    try
+        //    {
+        //        var ePeopleRepository = new ePeopleRepository();
+        //        if (EmployeeId != null)
+        //        {
+        //            var getFileList = ePeopleRepository.GetUploadFilesList(EmployeeId).ToList();
+        //            if (getFileList.Count() > 0)
+        //            {
+        //                lst = getFileList.Select(x => new UploadedFiles()
+        //                {
+        //                    FileName = x.FLU_FileName == null ? null : x.FLU_FileName,
+        //                    FileTypeName = x.FLT_FileType == null ? null : x.FLT_FileType,
+        //                    AttachedFileName = x.FLU_FileAttached == null ? null : x.FLU_FileAttached,
+        //                    FileId = x.FLU_FLT_Id > 0 ? 0 : x.FLU_FLT_Id,
+        //                    AttachedFileLink = x.FLU_FileAttached == null ? null : HostingPrefix + FilePath.Replace("~", "") + x.FLU_FileAttached
+        //                }).ToList();
+        //            }
+        //        }
+        //        return lst;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public UploadedFiles GetUploadedFilesOfUser(string EmployeeId)", "Exception While getting list of files by user id.", EmployeeId);
+        //        throw;
+        //    }
+        //}
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 25-Oct-2019
+        /// Created For : To get uploaded files data
+        /// </summary>
+        /// <param name="EmployeeId"></param>
+        /// <returns></returns>
+        public List<UploadedFiles> GetUploadedFilesOfUserTesting(string EmployeeId)
         {
             var lst = new List<UploadedFiles>();
+            var model = new UploadedFiles();
             var objworkorderEMSEntities = new workorderEMSEntities();
             try
             {
                 var ePeopleRepository = new ePeopleRepository();
                 if (EmployeeId != null)
                 {
-                    var getFileList = ePeopleRepository.GetUploadFilesList(EmployeeId).ToList();
+                    var getFileList = ePeopleRepository.GetUploadFilesListTesting(EmployeeId);
                     if (getFileList.Count() > 0)
                     {
+                        //foreach (var item in getFileList)
+                        //{
+                        //    model.FileName = item.FLU_FileName;
+                        //    model.FileTypeName = item.FLT_FileType;
+                        //    model.AttachedFileName = item.FLU_FileAttached;
+                        //    //model.FileId1 = Convert.ToInt32(item.FLU_FLT_Id);
+                        //    model.FileId = item.FLU_FileId;
+                        //    //model.FileId = item.FLU_FLT_Id;
+                        //    model.AttachedFileLink = item.FLU_FileAttached == null ? null : HostingPrefix + FilePath.Replace("~", "") + item.FLU_FileAttached;
+                        //    lst.Add(model);
+                        //}
                         lst = getFileList.Select(x => new UploadedFiles()
                         {
-                            FileName = x.FLU_FileName == null ? null : x.FLU_FileName,
-                            FileTypeName = x.FLT_FileType == null ? null : x.FLT_FileType,
-                            AttachedFileName = x.FLU_FileAttached == null ? null : x.FLU_FileAttached,
-                            FileId = x.FLU_FLT_Id > 0 ? 0 : x.FLU_FLT_Id,
+                            FileName = x.FLU_FileName,
+                            FileTypeName = x.FLT_FileType,
+                            AttachedFileName = x.FLU_FileAttached,
+                            //FileId = x.FLU_FLT_Id,
+                            FileId = x.FLU_FileId,
                             AttachedFileLink = x.FLU_FileAttached == null ? null : HostingPrefix + FilePath.Replace("~", "") + x.FLU_FileAttached
                         }).ToList();
                     }

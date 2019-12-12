@@ -63,6 +63,7 @@ namespace WorkOrderEMS.BusinessLogic
                 {
                     if (Obj.Id == null)
                     {
+                        Obj.Action = "I";
                         isSaved = _VSCRepository.SaveVSCRepository(Obj);
                         Obj.Id = _workorderEMS.VehicleSeatings.OrderByDescending(x => x.VST_Id).FirstOrDefault().VST_Id;
                     }

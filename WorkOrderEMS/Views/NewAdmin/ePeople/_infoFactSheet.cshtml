@@ -130,7 +130,7 @@
 				<input type="hidden" id="applicant_id" value="@Model.model.ApplicantId" />
 				<div class="mobile inline spccing"><span style="color:black;">@Model.model.PhoneNumber</span></div>
 				<div class="email inline spccing"><span style="color:black;">@Model.model.Email</span></div>
-				<div class="status inline spccing" style="width: 56px;color:black;">@Model.model.Status</div>
+				<div class="status inline spccing" style="width: 200px;color:black;"><strong>@Model.model.Status</strong></div>
 			</div>
 			<div class="panel-body">
 				<div class="row">
@@ -154,11 +154,11 @@
                             <i class="fa fa-calendar" aria-hidden="true"></i>
                             <input id="datepicker" type="text" style=" display: inline-block; width: 84%; border-color: #018FFC; background-color: #018FFC; border: 0px; border-bottom: 1px solid #ddd;">
                         </div>
-                        <select class = "form-control" id = "ToAcceptRejectAfterInterview" onchange="ToAcceptRejectAfterInterview(this)" style="background:#2197ff;color:white;" applicantid ="@Model.model.ApplicantId">
+                        <select class="form-control" id="ToAcceptRejectAfterInterview" onchange="ToAcceptRejectAfterInterview(this)" style="background:#2197ff;color:white;" applicantid="@Model.model.ApplicantId">
                             <option value="0">--Select Status--</option>
-                            <option value="D">Accept</option>
-                            <option value="C">Reject</option>
-                        </select>                       
+                            <option value="D">Shortlisted</option>
+                            <option value="C">Rejected</option>
+                        </select>
                     </div>
 				</div>
 			</div>
@@ -172,3 +172,8 @@
 		</div>
 	</div>
 </div>
+<script>
+    $(document).ready(function () {
+        $("#showHideHiringOnBoardingDashboard").hide();
+    })
+</script>

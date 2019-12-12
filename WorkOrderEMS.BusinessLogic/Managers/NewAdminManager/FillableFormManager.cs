@@ -28,6 +28,7 @@ namespace WorkOrderEMS.BusinessLogic
             var lstDetails = new CommonFormModel();
             var edu_form = new EducationFormModel();
             var direct_depo = new DirectDepositFormModel();
+            var w4_Form = new W4FormModel();
             var emergency_form = new EmergencyContactFormModel();
             try
             {
@@ -46,8 +47,8 @@ namespace WorkOrderEMS.BusinessLogic
                                 edu_form.EVF_Employee_Id = getEducationFormDetails.EVF_EMP_EmployeeID;
                                 edu_form.EVF_City = getEducationFormDetails.EVF_City;
                                 edu_form.EVF_Address = getEducationFormDetails.EVF_Address;
-                                edu_form.EVF_AttendedFrom = getEducationFormDetails.EVF_AttendedFrom;
-                                edu_form.EVF_AttendedTo = getEducationFormDetails.EVF_AttendedTo;
+                                edu_form.EVF_AttendedFrom = getEducationFormDetails.EVF_AttendedFrom.Value.ToString("yyyy-MM-dd");
+                                edu_form.EVF_AttendedTo = getEducationFormDetails.EVF_AttendedTo.Value.ToString("yyyy-MM-dd");
                                 edu_form.EVF_OrganizationName = getEducationFormDetails.EVF_OrgnizationName;
                                 edu_form.EVF_SchoolDegreeDiplomaCert = getEducationFormDetails.EVF_SchoolDegreeDiplomaCirtificate;
                                 edu_form.EVF_State = getEducationFormDetails.EVF_State;
@@ -85,6 +86,31 @@ namespace WorkOrderEMS.BusinessLogic
                                 emergency_form.ECF_Id = getEMCForm.ECF_Id;
                                 emergency_form.ECF_NickName = getEMCForm.ECF_NickName;
                                 lstDetails.EmergencyContactFormModel = emergency_form;
+                            }
+                        }
+                        else if(Obj.FormName == "W-4")
+                        {
+                            var getW4Form = _FillableFormRepository.GetW4FormData(getUserDetails.EmployeeID);
+                            if(getW4Form != null)
+                            {
+                                w4_Form.EmployeerNameAndAddress = getW4Form.EMA_Address;
+                                w4_Form.City = getW4Form.EMA_City;
+                                w4_Form.State = getW4Form.EMA_State;
+                                w4_Form.Zip = getW4Form.EMA_Zip;
+                                w4_Form.FirstName = getW4Form.EMP_FirstName;
+                                w4_Form.LastName = getW4Form.EMP_LastName;
+                                w4_Form.MiddleName = getW4Form.EMP_MiddleName;
+                                w4_Form.w4F_10 = getW4Form.w4F_10;
+                                w4_Form.EmployeeMaritalStatus= getW4Form.w4F_3MaritalStatus;
+                                w4_Form.w4F_4 = getW4Form.w4F_4;
+                                w4_Form.w4F_5 = getW4Form.w4F_5;
+                                w4_Form.w4F_6 = getW4Form.w4F_6;
+                                w4_Form.w4F_7 = getW4Form.w4F_7;
+                                w4_Form.w4F_8EmployersName = getW4Form.w4F_8EmployersName;
+                                w4_Form.w4F_9 = getW4Form.w4F_9;
+                                w4_Form.EmpId = getW4Form.W4F_EMP_EmployeeId;
+                                w4_Form.W4FId = getW4Form.W4F_Id;
+                                w4_Form.SSN = getW4Form.W4F_SSN;
                             }
                         }
                     }
@@ -177,8 +203,8 @@ namespace WorkOrderEMS.BusinessLogic
                         educatioModel.HighSchool.SchoolName = obj.EducationFormModel.EVF_OrganizationName;
                         educatioModel.HighSchool.City = obj.EducationFormModel.EVF_City;
                         educatioModel.HighSchool.State = obj.EducationFormModel.EVF_State;
-                        educatioModel.HighSchool.AttendFrom = obj.EducationFormModel.EVF_AttendedFrom;
-                        educatioModel.HighSchool.AttendTo = obj.EducationFormModel.EVF_AttendedTo;
+                        educatioModel.HighSchool.AttendFrom = Convert.ToDateTime(obj.EducationFormModel.EVF_AttendedFrom);
+                        educatioModel.HighSchool.AttendTo = Convert.ToDateTime(obj.EducationFormModel.EVF_AttendedTo);
                         educatioModel.IsActive = "Y";
                         _guestRepository.SetEducationVerificationForm(obj.UserId, educatioModel);
                         isSaved = true;

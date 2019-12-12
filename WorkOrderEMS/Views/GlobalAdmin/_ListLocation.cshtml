@@ -1,8 +1,8 @@
 ﻿@{
 
 
-    var isRefresh =ViewBag.IsPageRefresh;
-    if(isRefresh == true)
+    var isRefresh = ViewBag.IsPageRefresh;
+    if (isRefresh == true)
     {
         Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
     }
@@ -91,15 +91,16 @@
         <div class="row">
             <div class="col-12">
                 <div class="card" data-aos="fade-up">
-                    <div class="card-header headerSize" id="addNewlocation" style="height: 45px;">
-                        <a href="javascript:void(0)"><span><i class="mdi mdi-plus" style="color:white;font-size:50px;"></i></span></a>
-                        <div class="basic-form">
-                            <div class="form-group" style="    margin-left: -200px;">
-                                <input id="SearchText" type="text" style="margin-top:15px;" class="form-control input-rounded" placeholder="Location Name" onkeyup="doSearch()">
+                    <div style="height: 45px;background:#0aa0cd;">
+                        <div class="form-group row" style="margin-top:-9px;margin-left:10px;">
+                            <div class="col-sm-1" id="addNewlocation" style="margin-top:-6px;">
+                                <a href="javascript:void(0)"><span><i class="mdi mdi-plus" style="color:white;font-size:50px;"></i></span></a>
                             </div>
-                        </div>
-                        <div class="basic-form" style="margin-right: 830px;">
-                            <div class="form-group">
+                            <div class="col-sm-2">
+                                <input id="SearchText" type="text" style="margin-top:15px;" class="form-control input-rounded" placeholder="Location Name" onkeyup="doSearch()">
+                                @*<input type="text" id="SearchbyAssignUser" class="form-control input-rounded dispayListWOName" placeholder="Search by User">*@
+                            </div>
+                            <div class="col-sm-2">
                                 <select class="form-control input-rounded" style="margin-top: 15px;">
                                     <option selected>Zip Code</option>
                                     <option value="1">45355</option>
@@ -111,6 +112,26 @@
                             </div>
                         </div>
                     </div>
+                    @*<div class="card-header headerSize" id="addNewlocation" style="height: 45px;">
+                            <a href="javascript:void(0)"><span><i class="mdi mdi-plus" style="color:white;font-size:50px;"></i></span></a>
+                            <div class="basic-form">
+                                <div class="form-group" style="    margin-left: -200px;">
+                                    <input id="SearchText" type="text" style="margin-top:15px;" class="form-control input-rounded" placeholder="Location Name" onkeyup="doSearch()">
+                                </div>
+                            </div>
+                            <div class="basic-form" style="margin-right: 830px;">
+                                <div class="form-group">
+                                    <select class="form-control input-rounded" style="margin-top: 15px;">
+                                        <option selected>Zip Code</option>
+                                        <option value="1">45355</option>
+                                        <option value="2">35235</option>
+                                        <option value="3">56463</option>
+                                        <option value="2">34567</option>
+                                        <option value="3">55445</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>*@
                     <div class="card-body">
                         <div id="jsGrid-basic"></div>
                     </div>
@@ -121,7 +142,8 @@
 </div>
 
 <script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
-<script src="~/Scripts/NewAdminJS/plugins-init/jsgrid-init.js"></script>
+<script src="~/GridListing/JsGridScript/ListLocation.js"></script>
+@*<script src="~/Scripts/NewAdminJS/plugins-init/jsgrid-init.js"></script>*@
 <script src="~/Content/NewAdminContent/VENDOR/d3/d3.min.js"></script>
 <script src="~/Content/NewAdminContent/VENDOR/c3/js/c3.min.js"></script>
 <script src="~/Scripts/NewAdminJS/plugins-init/c3-init.js"></script>
@@ -133,7 +155,7 @@
     $(document).ready(function () {
         @*var isRefresh = '@ViewBag.IsPageRefresh';
         if (isRefresh == "True")
-        {           
+        {
             var addNewUrl = "../GlobalAdmin/ListLocation";
             $('#RenderPageId').load(addNewUrl);
         }*@
@@ -142,6 +164,7 @@
         $(".jsgrid-insert-row").hide();
         $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
         $("#addNewlocation a").click(function (event) {
+            debugger
             if (hitCount == 1) {
                 hitCount++;
                 $(".jsgrid-insert-row").hide();
