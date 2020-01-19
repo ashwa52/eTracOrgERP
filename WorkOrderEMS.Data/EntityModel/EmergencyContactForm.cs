@@ -21,5 +21,19 @@ namespace WorkOrderEMS.Data.EntityModel
         public string ECF_HomeEmail { get; set; }
         public Nullable<System.DateTime> ECF_Date { get; set; }
         public string ECF_IsActive { get; set; }
+        public string ECF_FirstName { get; set; }
+        public string ECF_MiddleName { get; set; }
+        public string ECF_LastName { get; set; }
+        public string ECF_Gender { get; set; }
+        public string ECF_Citizenship { get; set; }
+        public string ECF_HomeAddress { get; set; }
+        public Nullable<long> ECF_Mobile { get; set; }
+        public Nullable<System.DateTime> ECF_BirthDate { get; set; }
+        public string ECF_SSN { get; set; }
+        public string ECF_DriverLicense { get; set; }
+        public string ECF_EmergencyContactName { get; set; }
+        public string ECF_Relationship { get; set; }
+        public string ECF_Address { get; set; }
+        public Nullable<long> ECF_PhoneNumber { get; set; }
     }
 }

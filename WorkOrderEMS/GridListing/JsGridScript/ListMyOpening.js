@@ -98,7 +98,7 @@ function myOpenings(PostingId) {
                      if (item.Status == "AssessmentPass" && item.IsActive == "Y") {
                           $iconBackground = $("<i>").attr({ class: "fa fa-btc white" }).attr({ style: "color:green;font-size:22px;margin-left:8px;" });
                      }
-                     var $iconGoTORecruitee = $("<i>").attr({ class: "fa fa-clock-o fa-2x whiteS" }).attr({ style: "color:red;font-size:22px;margin-left:8px;" });
+                     //var $iconGoTORecruitee = $("<i>").attr({ class: "fa fa-clock-o fa-2x whiteS" }).attr({ style: "color:red;font-size:22px;margin-left:8px;" });
                      var $customFirstButton = $("<span>")
                            .attr({ title: jsGrid.fields.control.prototype.hiredEmployeeTooltip })
                            .attr({ id: "btn-first-" + item.ApplicantId }).click(function (e) {
@@ -172,12 +172,20 @@ function myOpenings(PostingId) {
                               });
                           }).append($iconBackground);
 
-                     var $customRecruiteeButton = $("<span>")
-                          .attr({ title: jsGrid.fields.control.prototype.ScheduleEmployeeTooltip })
-                          .attr({ id: "btn-Recruitee-" + item.ApplicantId }).click(function (e) {
-                              debugger
-                              window.location.href = "https://app.recruitee.com/#/settings/scheduler";
-                          }).append($iconGoTORecruitee);
+                     //var $customRecruiteeButton = $("<span>")
+                     //     .attr({ title: jsGrid.fields.control.prototype.ScheduleEmployeeTooltip })
+                     //     .attr({ id: "btn-Recruitee-" + item.ApplicantId }).click(function (e) {
+                     //         //window.location.href = "https://app.recruitee.com/#/settings/scheduler";
+                     //         //$("#ModalScheduleInterview").modal('show');
+                     //         $("#JobPostBackBtn").hide();
+                     //         $("#ListMyOpening").hide();
+                     //         $("#Scheduler").show();
+                     //         $("#lblApplicantId").text(item.ApplicantId);
+                     //         $("#lblApplicantName").text(item.FirstName);
+                     //         $("#lblApplicantEmail").text(item.Email);
+
+                     //         loadCalendar(item.ApplicantId);
+                     //     }).append($iconGoTORecruitee);
 
                      return $("<div>").attr({ class: "btn-toolbar" }).append($customFirstButton).append($customSecondButton).append($customDiamondButton).append($customAssessmentButton).append($customBackgroundButton).append($customRecruiteeButton);
                  }
@@ -298,10 +306,29 @@ function MyOpeningSummery() {
 			{ name: "Status", type: "text", width: 50 },
 			{
 			    name: " ", width: 100, align: "center", Title: "",
-			    itemTemplate: function (value) {
+                itemTemplate: function (value,item) {
+                    var $iconOpenCalendar = $("<i>").attr({ class: "fa fa-clock-o fa-2x whiteS" }).attr({ style: "color:red;font-size:22px;margin-left:8px;" });
+                    var $customOpenCalendarButton = $("<span>")
+                        .attr({ title: jsGrid.fields.control.prototype.ScheduleEmployeeTooltip })
+                        .attr({ id: "btn-Recruitee-" + item.Employee }).click(function (e) {
+                            e.stopPropagation();
+                            //window.location.href = "https://app.recruitee.com/#/settings/scheduler";
+                            //$("#ModalScheduleInterview").modal('show');
+                            $("#JobPostBackBtn").hide();
+                            $("#MyOpeningSummery").hide();
+                            $("#Scheduler").show();
+                            $("#JobId").val(item.JobPostingId);
+                            //$("#lblApplicantId").text(item.Employee);
+                            //$("#lblApplicantName").text(item.FirstName);
+                            //$("#lblApplicantEmail").text(item.Email);
+                           // getslots();
+                            loadCalendar(item.Employee);
+                        }).append($iconOpenCalendar);
+
 			        return $("<div>").append($("<div id='detailDiv'>").addClass('text').text("asdadfaf")).append($("<div>").addClass("inlineDivdonut").append("<img src='Images/donut.png' class='donutC' onmouseover='GetSummeryDetail(this);' onmouseout='HideDetail(this)'>"))
 						.append($("<div>").append("<i>").addClass("fa fa-envelope-o fa-lg actionBtn"))
-						.append($("<div>").append("<i>").addClass("fa fa-trash fa-lg actionBtn"));
+                        .append($("<div>").append("<i>").addClass("fa fa-trash fa-lg actionBtn"))
+                        .append($customOpenCalendarButton);
 			    }
 			}
         ],
@@ -604,7 +631,9 @@ function MarkAbsent() {
 
 
 function GetCompanyOpening() {
-	
+    var records = [
+        { "JobTitle": "Otto Clay", "PositionCount": 1, "ApplicantCount": 1, "JobPostingDate": "28/12/2019", "Duration": "30", "Status": true}
+    ];
 	$("#companyOpening").jsGrid({
 		width: "100%",
 		height: "300px",
@@ -691,3 +720,22 @@ function GoToRecruitee(item) {
             }
         });
     }
+function getslots(date) {
+    $.ajax({
+        url: base_url + '/NewAdmin/GetSlotTimings',
+        data: {"date":date},
+        method: 'POST',
+        success: function (optionList) {
+            $("#eventTime").html('');
+            var combo = $("<select class='form-control'></select>");
+            combo.append("<option id='" + 0 + "'>--Select Time Slot--</option>");
+            $.each(optionList, function (i, el) {
+                combo.append("<option id='" + el.SLT_Id + "'>" + el.SLT_fromTime + "</option>");
+                console.log(el.SLT_fromTime );
+            });
+            console.log(combo);
+            $("#eventTime").append(combo);
+        }
+    });
+
+}

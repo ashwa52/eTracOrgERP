@@ -288,6 +288,7 @@
     <Compile Include="NewAdminModel\RecruiteeModels\Candidate\PerCandidateModel.cs" />
     <Compile Include="NewAdminModel\RecruiteeModels\RecruiteeOfferAddModel.cs" />
     <Compile Include="NewAdminModel\RecruiteeOfferModel.cs" />
+    <Compile Include="NewAdminModel\Scheduler.cs" />
     <Compile Include="PDF\CharitableContributionForm.cs" />
     <Compile Include="PDF\PDFSaveModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

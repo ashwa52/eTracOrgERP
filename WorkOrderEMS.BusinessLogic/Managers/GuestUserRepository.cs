@@ -347,11 +347,11 @@ namespace WorkOrderEMS.BusinessLogic
                     var isexist = GetEmergencyForm(userId);
                     if (ReferenceEquals(isexist, null))
                     {
-                        Context.spSetEmergencyContactForm("I", model.EcfId, empid, model.NickName, model.HomePhone, model.HomeEmail, model.EcfDate, model.IsActive);
+                       // Context.spSetEmergencyContactForm("I", model.EcfId, empid, model.NickName, model.HomePhone, model.HomeEmail, model.EcfDate, model.IsActive);
                     }
                     else
                     {
-                        Context.spSetEmergencyContactForm("U", model.EcfId, empid, model.NickName, model.HomePhone, model.HomeEmail, model.EcfDate, model.IsActive);
+                       // Context.spSetEmergencyContactForm("U", model.EcfId, empid, model.NickName, model.HomePhone, model.HomeEmail, model.EcfDate, model.IsActive);
                     }
 
                 }

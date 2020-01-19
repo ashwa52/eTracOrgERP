@@ -312,6 +312,9 @@
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_TrackEmployeeStatus_LocationMaster" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LoginLog_UserRegistrations" />
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_TrackEmployeeStatus_UserRegistrations" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.InterviewProposalTime" Width="1.5" PointX="0.75" PointY="19.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.SlotTime" Width="1.5" PointX="7.75" PointY="7.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.BookSlotTime" Width="1.5" PointX="18.375" PointY="18.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

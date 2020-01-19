@@ -1248,6 +1248,7 @@
     <Content Include="Content\Dashboard\plugins\fullcalendar\fullcalendar.min.css" />
     <Content Include="Content\Dashboard\plugins\fullcalendar\fullcalendar.min.js" />
     <Content Include="Content\Dashboard\plugins\fullcalendar\fullcalendar.print.css" />
+    <Content Include="Content\Dashboard\plugins\fullcalendar\mySchedule.js" />
     <Content Include="Content\Dashboard\plugins\iCheck\all.css" />
     <Content Include="Content\Dashboard\plugins\iCheck\flat\aero%402x.png" />
     <Content Include="Content\Dashboard\plugins\iCheck\flat\aero.css" />

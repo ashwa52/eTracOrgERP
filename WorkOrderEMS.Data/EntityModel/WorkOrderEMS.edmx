@@ -145,6 +145,19 @@
           <Property Name="BLT_Discription" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="BLT_IsActive" Type="char" MaxLength="1" />
         </EntityType>
+        <EntityType Name="BookSlotTime">
+          <Key>
+            <PropertyRef Name="BST_Id" />
+          </Key>
+          <Property Name="BST_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BST_EMP_EmployeeID" Type="bigint" Nullable="false" />
+          <Property Name="BST_SlotDate" Type="date" Nullable="false" />
+          <Property Name="BST_SLT_Id" Type="bigint" Nullable="false" />
+          <Property Name="BST_Status" Type="char" MaxLength="1" />
+          <Property Name="BST_Date" Type="datetime" />
+          <Property Name="BST_IsActive" Type="char" MaxLength="1" />
+          <Property Name="BST_Title" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="BudgetCostCodeMapping">
           <Key>
             <PropertyRef Name="BCM_Id" />
@@ -837,9 +850,23 @@
           </Key>
           <Property Name="ECF_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ECF_EMP_EmployeeID" Type="varchar" MaxLength="20" />
+          <Property Name="ECF_FirstName" Type="varchar" MaxLength="50" />
+          <Property Name="ECF_MiddleName" Type="varchar" MaxLength="50" />
+          <Property Name="ECF_LastName" Type="varchar" MaxLength="50" />
+          <Property Name="ECF_Gender" Type="varchar" MaxLength="10" />
+          <Property Name="ECF_Citizenship" Type="varchar" MaxLength="30" />
+          <Property Name="ECF_HomeAddress" Type="varchar" MaxLength="200" />
+          <Property Name="ECF_Mobile" Type="bigint" />
+          <Property Name="ECF_BirthDate" Type="datetime" />
+          <Property Name="ECF_SSN" Type="varchar" MaxLength="50" />
+          <Property Name="ECF_DriverLicense" Type="varchar" MaxLength="30" />
           <Property Name="ECF_NickName" Type="varchar" MaxLength="30" />
           <Property Name="ECF_HomePhone" Type="bigint" />
           <Property Name="ECF_HomeEmail" Type="varchar" MaxLength="50" />
+          <Property Name="ECF_EmergencyContactName" Type="varchar" MaxLength="100" />
+          <Property Name="ECF_Relationship" Type="varchar" MaxLength="50" />
+          <Property Name="ECF_Address" Type="varchar" MaxLength="200" />
+          <Property Name="ECF_PhoneNumber" Type="bigint" />
           <Property Name="ECF_Date" Type="datetime" />
           <Property Name="ECF_IsActive" Type="char" MaxLength="1" />
         </EntityType>
@@ -1018,6 +1045,25 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Name="INA_Comments" Type="varchar" MaxLength="100" />
           <Property Name="INA_Date" Type="datetime" />
           <Property Name="INA_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="InterviewProposalTime">
+          <Key>
+            <PropertyRef Name="IPT_Id" />
+          </Key>
+          <Property Name="IPT_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IPT_JPS_JobPostingId" Type="bigint" Nullable="false" />
+          <Property Name="IPT_APT_ApplicantId" Type="bigint" />
+          <Property Name="IPT_EMP_EmployeeID_HM" Type="bigint" Nullable="false" />
+          <Property Name="IPT_EMP_EmployeeID_SE" Type="bigint" />
+          <Property Name="IPT_EMP_EmployeeID_TE" Type="bigint" />
+          <Property Name="IPT_BST_Id_HM" Type="bigint" />
+          <Property Name="IPT_BST_Id_SE" Type="bigint" />
+          <Property Name="IPT_BST_Id_TE" Type="bigint" />
+          <Property Name="IPT_InterviewDateTime" Type="datetime" />
+          <Property Name="IPT_Status" Type="char" MaxLength="1" />
+          <Property Name="IPT_SentCount" Type="int" />
+          <Property Name="IPT_Date" Type="datetime" />
+          <Property Name="IPT_IsActive" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="InterviewQuestion">
           <Key>
@@ -1957,6 +2003,16 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="DeletedBy" Type="bigint" />
           <Property Name="DeletedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="SlotTime">
+          <Key>
+            <PropertyRef Name="SLT_Id" />
+          </Key>
+          <Property Name="SLT_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SLT_fromTime" Type="time" Precision="0" Nullable="false" />
+          <Property Name="SLT_ToTime" Type="time" Precision="0" Nullable="false" />
+          <Property Name="SLT_Date" Type="datetime" />
+          <Property Name="SLT_IsActive" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="SubCostCode">
           <Key>
@@ -5051,6 +5107,10 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         <Function Name="spGetForrmStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="spGetFreeSlote" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
+          <Parameter Name="SlotDate" Type="date" Mode="In" />
+        </Function>
         <Function Name="spGetHiringGraph" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="JPS_HiringManagerID" Type="varchar" Mode="In" />
           <Parameter Name="JPS_JobPostingId" Type="bigint" Mode="In" />
@@ -5403,6 +5463,24 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="IsApprove" Type="char" Mode="In" />
           <Parameter Name="ApprovedBy" Type="bigint" Mode="In" />
         </Function>
+        <Function Name="spSetAssetAllocation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Action" Type="char" Mode="In" />
+          <Parameter Name="ATA_Id" Type="bigint" Mode="In" />
+          <Parameter Name="ATA_EMP_EmployeeId" Type="varchar" Mode="In" />
+          <Parameter Name="ATA_Type" Type="varchar" Mode="In" />
+          <Parameter Name="ATA_AssetName" Type="varchar" Mode="In" />
+          <Parameter Name="ATA_AssetDescription" Type="varchar" Mode="In" />
+          <Parameter Name="ATA_Make" Type="date" Mode="In" />
+          <Parameter Name="ATA_Model" Type="varchar" Mode="In" />
+          <Parameter Name="ATA_SerialNumber" Type="varchar" Mode="In" />
+          <Parameter Name="ATA_Login" Type="varchar" Mode="In" />
+          <Parameter Name="ATA_Password" Type="varchar" Mode="In" />
+          <Parameter Name="ATA_AssignDate" Type="datetime" Mode="In" />
+          <Parameter Name="ATA_ReturnAcceptBy" Type="varchar" Mode="In" />
+          <Parameter Name="ATA_ReturnDate" Type="datetime" Mode="In" />
+          <Parameter Name="ATA_ReturnStatus" Type="char" Mode="In" />
+          <Parameter Name="ATA_IsActive" Type="char" Mode="In" />
+        </Function>
         <Function Name="spSetBill" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="BLLAction" Type="char" Mode="In" />
           <Parameter Name="BLL_QBKId" Type="bigint" Mode="In" />
@@ -5435,6 +5513,16 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="BLT_BillType" Type="varchar" Mode="In" />
           <Parameter Name="BLT_Discription" Type="varchar" Mode="In" />
           <Parameter Name="BLT_IsActive" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetBookSlotTime" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Action" Type="char" Mode="In" />
+          <Parameter Name="BST_Id" Type="bigint" Mode="In" />
+          <Parameter Name="BST_Title" Type="nvarchar" Mode="In" />
+          <Parameter Name="BST_EMP_EmployeeID" Type="bigint" Mode="In" />
+          <Parameter Name="BST_SlotDate" Type="date" Mode="In" />
+          <Parameter Name="BST_SLT_Id" Type="bigint" Mode="In" />
+          <Parameter Name="BST_Status" Type="bigint" Mode="In" />
+          <Parameter Name="BST_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetBudgetCostCodeMapping" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="BCMAction" Type="char" Mode="In" />
@@ -5725,8 +5813,21 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="ECF_EMP_EmployeeID" Type="varchar" Mode="In" />
           <Parameter Name="ECF_NickName" Type="varchar" Mode="In" />
           <Parameter Name="ECF_HomePhone" Type="bigint" Mode="In" />
+          <Parameter Name="ECF_HomeAddress" Type="varchar" Mode="In" />
           <Parameter Name="ECF_HomeEmail" Type="varchar" Mode="In" />
-          <Parameter Name="ECF_Date" Type="datetime" Mode="In" />
+          <Parameter Name="ECF_FirstName" Type="varchar" Mode="In" />
+          <Parameter Name="ECF_MiddleName" Type="varchar" Mode="In" />
+          <Parameter Name="ECF_LastName" Type="varchar" Mode="In" />
+          <Parameter Name="ECF_Address" Type="varchar" Mode="In" />
+          <Parameter Name="ECF_Gender" Type="varchar" Mode="In" />
+          <Parameter Name="ECF_Citizenship" Type="varchar" Mode="In" />
+          <Parameter Name="ECF_BirthDate" Type="datetime" Mode="In" />
+          <Parameter Name="ECF_DriverLicense" Type="varchar" Mode="In" />
+          <Parameter Name="ECF_EmergencyContactName" Type="varchar" Mode="In" />
+          <Parameter Name="ECF_Mobile" Type="bigint" Mode="In" />
+          <Parameter Name="ECF_PhoneNumber" Type="bigint" Mode="In" />
+          <Parameter Name="ECF_SSN" Type="varchar" Mode="In" />
+          <Parameter Name="ECF_Relationship" Type="varchar" Mode="In" />
           <Parameter Name="ECF_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -5837,6 +5938,16 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
           <Parameter Name="IsAvailable" Type="char" Mode="In" />
           <Parameter Name="INA_Comments" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spSetInterviewPanel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Action" Type="char" Mode="In" />
+          <Parameter Name="IPT_Id" Type="bigint" Mode="In" />
+          <Parameter Name="IPT_JPS_JobPostingId" Type="bigint" Mode="In" />
+          <Parameter Name="IPT_EMP_EmployeeID_HM" Type="bigint" Mode="In" />
+          <Parameter Name="IPT_EMP_EmployeeID_SE" Type="bigint" Mode="In" />
+          <Parameter Name="IPT_EMP_EmployeeID_TE" Type="bigint" Mode="In" />
+          <Parameter Name="IPT_Status" Type="bigint" Mode="In" />
+          <Parameter Name="IPT_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetJobPosting" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Action" Type="char" Mode="In" />
@@ -6281,6 +6392,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BillFacilityItem" EntityType="Self.BillFacilityItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BillType" EntityType="Self.BillType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BookSlotTime" EntityType="Self.BookSlotTime" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BudgetCostCodeMapping" EntityType="Self.BudgetCostCodeMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BudgetLocationMapping" EntityType="Self.BudgetLocationMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Citizenship" EntityType="Self.Citizenship" Schema="dbo" store:Type="Tables" />
@@ -6331,6 +6443,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="HoursOfServices" EntityType="Self.HoursOfServices" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Insurance" EntityType="Self.Insurance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InterviewAnswer" EntityType="Self.InterviewAnswer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InterviewProposalTime" EntityType="Self.InterviewProposalTime" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InterviewQuestion" EntityType="Self.InterviewQuestion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InterviewSchedule" EntityType="Self.InterviewSchedule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JobTitle" EntityType="Self.JobTitle" Schema="dbo" store:Type="Tables" />
@@ -6382,6 +6495,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="QuestionAnswer" EntityType="Self.QuestionAnswer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rule" EntityType="Self.Rule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ServiceMaster" EntityType="Self.ServiceMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SlotTime" EntityType="Self.SlotTime" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubCostCode" EntityType="Self.SubCostCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubModule" EntityType="Self.SubModule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TaxDetail" EntityType="Self.TaxDetail" Schema="dbo" store:Type="Tables" />
@@ -13677,8 +13791,21 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="ECF_EMP_EmployeeID" Mode="In" Type="String" />
             <Parameter Name="ECF_NickName" Mode="In" Type="String" />
             <Parameter Name="ECF_HomePhone" Mode="In" Type="Int64" />
+            <Parameter Name="ECF_HomeAddress" Mode="In" Type="String" />
             <Parameter Name="ECF_HomeEmail" Mode="In" Type="String" />
-            <Parameter Name="ECF_Date" Mode="In" Type="DateTime" />
+            <Parameter Name="ECF_FirstName" Mode="In" Type="String" />
+            <Parameter Name="ECF_MiddleName" Mode="In" Type="String" />
+            <Parameter Name="ECF_LastName" Mode="In" Type="String" />
+            <Parameter Name="ECF_Address" Mode="In" Type="String" />
+            <Parameter Name="ECF_Gender" Mode="In" Type="String" />
+            <Parameter Name="ECF_Citizenship" Mode="In" Type="String" />
+            <Parameter Name="ECF_BirthDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ECF_DriverLicense" Mode="In" Type="String" />
+            <Parameter Name="ECF_EmergencyContactName" Mode="In" Type="String" />
+            <Parameter Name="ECF_Mobile" Mode="In" Type="Int64" />
+            <Parameter Name="ECF_PhoneNumber" Mode="In" Type="Int64" />
+            <Parameter Name="ECF_SSN" Mode="In" Type="String" />
+            <Parameter Name="ECF_Relationship" Mode="In" Type="String" />
             <Parameter Name="ECF_IsActive" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spSetEmployeeHandbook">
@@ -14219,6 +14346,51 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="JBT_FillJobCount" Mode="In" Type="Int32" />
             <Parameter Name="JBT_VST_Id" Mode="In" Type="Int64" />
             <Parameter Name="JBT_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="InterviewProposalTimes" EntityType="WorkOrderEMS.Data.EntityModel.InterviewProposalTime" />
+          <EntitySet Name="SlotTimes" EntityType="WorkOrderEMS.Data.EntityModel.SlotTime" />
+          <FunctionImport Name="spSetAssetAllocation">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="ATA_Id" Mode="In" Type="Int64" />
+            <Parameter Name="ATA_EMP_EmployeeId" Mode="In" Type="String" />
+            <Parameter Name="ATA_Type" Mode="In" Type="String" />
+            <Parameter Name="ATA_AssetName" Mode="In" Type="String" />
+            <Parameter Name="ATA_AssetDescription" Mode="In" Type="String" />
+            <Parameter Name="ATA_Make" Mode="In" Type="DateTime" />
+            <Parameter Name="ATA_Model" Mode="In" Type="String" />
+            <Parameter Name="ATA_SerialNumber" Mode="In" Type="String" />
+            <Parameter Name="ATA_Login" Mode="In" Type="String" />
+            <Parameter Name="ATA_Password" Mode="In" Type="String" />
+            <Parameter Name="ATA_AssignDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ATA_ReturnAcceptBy" Mode="In" Type="String" />
+            <Parameter Name="ATA_ReturnDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ATA_ReturnStatus" Mode="In" Type="String" />
+            <Parameter Name="ATA_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetFreeSlote" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetFreeSlote_Result)">
+            <Parameter Name="EmployeeId" Mode="In" Type="String" />
+            <Parameter Name="SlotDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <EntitySet Name="BookSlotTimes" EntityType="WorkOrderEMS.Data.EntityModel.BookSlotTime" />
+          <FunctionImport Name="spSetBookSlotTime">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="BST_Id" Mode="In" Type="Int64" />
+            <Parameter Name="BST_Title" Mode="In" Type="String" />
+            <Parameter Name="BST_EMP_EmployeeID" Mode="In" Type="Int64" />
+            <Parameter Name="BST_SlotDate" Mode="In" Type="DateTime" />
+            <Parameter Name="BST_SLT_Id" Mode="In" Type="Int64" />
+            <Parameter Name="BST_Status" Mode="In" Type="Int64" />
+            <Parameter Name="BST_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetInterviewPanel">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="IPT_Id" Mode="In" Type="Int64" />
+            <Parameter Name="IPT_JPS_JobPostingId" Mode="In" Type="Int64" />
+            <Parameter Name="IPT_EMP_EmployeeID_HM" Mode="In" Type="Int64" />
+            <Parameter Name="IPT_EMP_EmployeeID_SE" Mode="In" Type="Int64" />
+            <Parameter Name="IPT_EMP_EmployeeID_TE" Mode="In" Type="Int64" />
+            <Parameter Name="IPT_Status" Mode="In" Type="Int64" />
+            <Parameter Name="IPT_IsActive" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Proc_GetAllWorkAssignedToEmployee_Result">
@@ -17265,6 +17437,20 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="ECF_HomeEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ECF_Date" Type="DateTime" Precision="3" />
           <Property Name="ECF_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="ECF_FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_Citizenship" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_HomeAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_Mobile" Type="Int64" />
+          <Property Name="ECF_BirthDate" Type="DateTime" Precision="3" />
+          <Property Name="ECF_SSN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_DriverLicense" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_EmergencyContactName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_Relationship" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_Address" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_PhoneNumber" Type="Int64" />
         </EntityType>
         <EntityType Name="EmployeeHandbook">
           <Key>
@@ -18034,6 +18220,53 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="InterviewProposalTime">
+          <Key>
+            <PropertyRef Name="IPT_Id" />
+          </Key>
+          <Property Name="IPT_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IPT_JPS_JobPostingId" Type="Int64" Nullable="false" />
+          <Property Name="IPT_APT_ApplicantId" Type="Int64" />
+          <Property Name="IPT_EMP_EmployeeID_HM" Type="Int64" Nullable="false" />
+          <Property Name="IPT_EMP_EmployeeID_SE" Type="Int64" />
+          <Property Name="IPT_EMP_EmployeeID_TE" Type="Int64" />
+          <Property Name="IPT_BST_Id_HM" Type="Int64" />
+          <Property Name="IPT_BST_Id_SE" Type="Int64" />
+          <Property Name="IPT_BST_Id_TE" Type="Int64" />
+          <Property Name="IPT_InterviewDateTime" Type="DateTime" Precision="3" />
+          <Property Name="IPT_Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="IPT_SentCount" Type="Int32" />
+          <Property Name="IPT_Date" Type="DateTime" Precision="3" />
+          <Property Name="IPT_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SlotTime">
+          <Key>
+            <PropertyRef Name="SLT_Id" />
+          </Key>
+          <Property Name="SLT_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SLT_fromTime" Type="Time" Nullable="false" Precision="0" />
+          <Property Name="SLT_ToTime" Type="Time" Nullable="false" Precision="0" />
+          <Property Name="SLT_Date" Type="DateTime" Precision="3" />
+          <Property Name="SLT_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="spGetFreeSlote_Result">
+          <Property Type="Int64" Name="SLT_Id" Nullable="false" />
+          <Property Type="Time" Name="SLT_fromTime" Nullable="false" />
+          <Property Type="Time" Name="SLT_ToTime" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="BookSlotTime">
+          <Key>
+            <PropertyRef Name="BST_Id" />
+          </Key>
+          <Property Name="BST_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BST_EMP_EmployeeID" Type="Int64" Nullable="false" />
+          <Property Name="BST_SlotDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="BST_SLT_Id" Type="Int64" Nullable="false" />
+          <Property Name="BST_Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="BST_Date" Type="DateTime" Precision="3" />
+          <Property Name="BST_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="BST_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -23113,6 +23346,20 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySetMapping Name="EmergencyContactForms">
             <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.EmergencyContactForm">
               <MappingFragment StoreEntitySet="EmergencyContactForm">
+                <ScalarProperty Name="ECF_PhoneNumber" ColumnName="ECF_PhoneNumber" />
+                <ScalarProperty Name="ECF_Address" ColumnName="ECF_Address" />
+                <ScalarProperty Name="ECF_Relationship" ColumnName="ECF_Relationship" />
+                <ScalarProperty Name="ECF_EmergencyContactName" ColumnName="ECF_EmergencyContactName" />
+                <ScalarProperty Name="ECF_DriverLicense" ColumnName="ECF_DriverLicense" />
+                <ScalarProperty Name="ECF_SSN" ColumnName="ECF_SSN" />
+                <ScalarProperty Name="ECF_BirthDate" ColumnName="ECF_BirthDate" />
+                <ScalarProperty Name="ECF_Mobile" ColumnName="ECF_Mobile" />
+                <ScalarProperty Name="ECF_HomeAddress" ColumnName="ECF_HomeAddress" />
+                <ScalarProperty Name="ECF_Citizenship" ColumnName="ECF_Citizenship" />
+                <ScalarProperty Name="ECF_Gender" ColumnName="ECF_Gender" />
+                <ScalarProperty Name="ECF_LastName" ColumnName="ECF_LastName" />
+                <ScalarProperty Name="ECF_MiddleName" ColumnName="ECF_MiddleName" />
+                <ScalarProperty Name="ECF_FirstName" ColumnName="ECF_FirstName" />
                 <ScalarProperty Name="ECF_IsActive" ColumnName="ECF_IsActive" />
                 <ScalarProperty Name="ECF_Date" ColumnName="ECF_Date" />
                 <ScalarProperty Name="ECF_HomeEmail" ColumnName="ECF_HomeEmail" />
@@ -23888,6 +24135,63 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spSetJobTitle" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetJobTitle" />
+          <EntitySetMapping Name="InterviewProposalTimes">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.InterviewProposalTime">
+              <MappingFragment StoreEntitySet="InterviewProposalTime">
+                <ScalarProperty Name="IPT_IsActive" ColumnName="IPT_IsActive" />
+                <ScalarProperty Name="IPT_Date" ColumnName="IPT_Date" />
+                <ScalarProperty Name="IPT_SentCount" ColumnName="IPT_SentCount" />
+                <ScalarProperty Name="IPT_Status" ColumnName="IPT_Status" />
+                <ScalarProperty Name="IPT_InterviewDateTime" ColumnName="IPT_InterviewDateTime" />
+                <ScalarProperty Name="IPT_BST_Id_TE" ColumnName="IPT_BST_Id_TE" />
+                <ScalarProperty Name="IPT_BST_Id_SE" ColumnName="IPT_BST_Id_SE" />
+                <ScalarProperty Name="IPT_BST_Id_HM" ColumnName="IPT_BST_Id_HM" />
+                <ScalarProperty Name="IPT_EMP_EmployeeID_TE" ColumnName="IPT_EMP_EmployeeID_TE" />
+                <ScalarProperty Name="IPT_EMP_EmployeeID_SE" ColumnName="IPT_EMP_EmployeeID_SE" />
+                <ScalarProperty Name="IPT_EMP_EmployeeID_HM" ColumnName="IPT_EMP_EmployeeID_HM" />
+                <ScalarProperty Name="IPT_APT_ApplicantId" ColumnName="IPT_APT_ApplicantId" />
+                <ScalarProperty Name="IPT_JPS_JobPostingId" ColumnName="IPT_JPS_JobPostingId" />
+                <ScalarProperty Name="IPT_Id" ColumnName="IPT_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SlotTimes">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.SlotTime">
+              <MappingFragment StoreEntitySet="SlotTime">
+                <ScalarProperty Name="SLT_IsActive" ColumnName="SLT_IsActive" />
+                <ScalarProperty Name="SLT_Date" ColumnName="SLT_Date" />
+                <ScalarProperty Name="SLT_ToTime" ColumnName="SLT_ToTime" />
+                <ScalarProperty Name="SLT_fromTime" ColumnName="SLT_fromTime" />
+                <ScalarProperty Name="SLT_Id" ColumnName="SLT_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spSetAssetAllocation" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetAssetAllocation" />
+          <FunctionImportMapping FunctionImportName="spGetFreeSlote" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetFreeSlote">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetFreeSlote_Result">
+                <ScalarProperty Name="SLT_Id" ColumnName="SLT_Id" />
+                <ScalarProperty Name="SLT_fromTime" ColumnName="SLT_fromTime" />
+                <ScalarProperty Name="SLT_ToTime" ColumnName="SLT_ToTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="BookSlotTimes">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.BookSlotTime">
+              <MappingFragment StoreEntitySet="BookSlotTime">
+                <ScalarProperty Name="BST_Title" ColumnName="BST_Title" />
+                <ScalarProperty Name="BST_IsActive" ColumnName="BST_IsActive" />
+                <ScalarProperty Name="BST_Date" ColumnName="BST_Date" />
+                <ScalarProperty Name="BST_Status" ColumnName="BST_Status" />
+                <ScalarProperty Name="BST_SLT_Id" ColumnName="BST_SLT_Id" />
+                <ScalarProperty Name="BST_SlotDate" ColumnName="BST_SlotDate" />
+                <ScalarProperty Name="BST_EMP_EmployeeID" ColumnName="BST_EMP_EmployeeID" />
+                <ScalarProperty Name="BST_Id" ColumnName="BST_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spSetBookSlotTime" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetBookSlotTime" />
+          <FunctionImportMapping FunctionImportName="spSetInterviewPanel" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetInterviewPanel" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
