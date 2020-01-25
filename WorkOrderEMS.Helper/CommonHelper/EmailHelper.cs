@@ -247,7 +247,10 @@ namespace WorkOrderEMS.Helper
         public long? WorkOrderID { get; set; }
         public long? eScanQRCID { get; set; }
 
-        
+        public string LoginId { get; set; }
+        public string NewPassword { get; set; }
+
+
 
         public bool SendEmailWithTemplate(string[] attachedUrl = null)
         {
@@ -1124,6 +1127,64 @@ namespace WorkOrderEMS.Helper
                         strMailBody = strMailBody.Replace("##Email", emailid);
                         strMailBody = strMailBody.Replace("##Name", Name);
                         strMailBody = strMailBody.Replace("##AcceptLink", AcceptAssessmentLink);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+                        break;
+
+                    case "SENDOFFER":
+                        TemplatePath = ConfigurationManager.AppSettings["SendOffer"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";
+                        string CompanyLogo = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/etrac-logo-inner.png" + ">";
+                        Subject = "eTrac: Offer Letter";
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##UserName", UserName);
+                        strMailBody = strMailBody.Replace("##CompanyLogo", CompanyLogo);
+                        strMailBody = strMailBody.Replace("##LogoPath", LogoPath);
+                        strMailBody = strMailBody.Replace("##Email", emailid);
+                        strMailBody = strMailBody.Replace("##Name", Name);
+                        strMailBody = strMailBody.Replace("##AcceptLink", AcceptAssessmentLink);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+                        break;
+
+                    case "SIGNUPAPPLICANT":
+                        TemplatePath = ConfigurationManager.AppSettings["SignUpApplicant"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";                        
+                        Subject = "eTrac: Successfully register to Elite Parking Services";
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##UserName", LoginId);
+                        strMailBody = strMailBody.Replace("##LogoPath", LogoPath);
+                        strMailBody = strMailBody.Replace("##Email", emailid);
+                        strMailBody = strMailBody.Replace("##Name", Name);
+                        strMailBody = strMailBody.Replace("##REGISTRATIONLINK", AcceptAssessmentLink);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+                        break;
+
+                    case "CHANGEPASSWORDAPPLICANT":
+                        TemplatePath = ConfigurationManager.AppSettings["ChangePassword"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";
+                        Subject = "eTrac: Password changed successfully";
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##UserName", LoginId);
+                        strMailBody = strMailBody.Replace("##LogoPath", LogoPath);
+                        strMailBody = strMailBody.Replace("##Name", Name);
+                        strMailBody = strMailBody.Replace("##Password", NewPassword);
+                        strMailBody = strMailBody.Replace("##REGISTRATIONLINK", AcceptAssessmentLink);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+                        break;
+
+                    case "FORGOTPASSWORDAPPLICANT":
+                        TemplatePath = ConfigurationManager.AppSettings["ChangePassword"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";
+                        Subject = "eTrac: Password changed successfully";
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##UserName", LoginId);
+                        strMailBody = strMailBody.Replace("##LogoPath", LogoPath);
+                        strMailBody = strMailBody.Replace("##Name", Name);
+                        strMailBody = strMailBody.Replace("##Password", NewPassword);
+                        strMailBody = strMailBody.Replace("##REGISTRATIONLINK", AcceptAssessmentLink);
                         strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
                         break;
 

@@ -1,0 +1,122 @@
+﻿@model WorkOrderEMS.Models.OfferModel
+<style>
+    .p1 {
+        font-size: 20px;
+        font-family: Times New Roman;
+        margin: 73px 149px 0px 80px;
+        text-align: justify;
+    }
+
+    h3 {
+        margin: 117px 0px 0px 50px;
+    }
+
+    .text-line {
+        background-color: transparent;
+        outline: none;
+        outline-style: none;
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: solid #000 1px;
+    }
+
+    .row {
+        display: flex;
+    }
+
+    p {
+        margin-left: 107px;
+        color: #000;
+    }
+
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    input[type="checkbox"]:after {
+        line-height: 1.5em !important;
+        content: '' !important;
+        display: block !important;
+        margin-top: -3px !important;
+        margin-left: -3px !important;
+        border: 1px solid transparent !important;
+        border-radius: 0px !important;
+        line-height: 1.3 !important;
+        background: none !important;
+    }
+    
+</style>
+<link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
+<div class="pageDiv">
+    <div class="row" style="margin-left: 308px;">
+        <img src="~/Images/image-form.jpg" alt="background image" />
+        <h3 style="margin-top: 40px;"><u>Offer Letter</u></h3>
+    </div>
+    <div style="text-align: justify;margin-left: 308px;">
+        <p>
+            76 S Laura St #1702, Jacksonville,<br> FL 32202, United States.
+        </p>
+        <form id="SendOfferData">
+        @*@using (Html.BeginForm("_DirectDepositeForm", "Guest", FormMethod.Post, new { id = "depositeForm" }))
+        {*@
+            @Html.HiddenFor(model => model.ApplicantId)
+            <p style="font-weight:bold;">Dear Ashwajit </p>
+            <p>I am very pleased to offer you a position of <label>Software developer@*@Model.Position*@</label>
+            at <b>eLite parking services of America </b></p>
+            <p>This is full time position of 40 hours a week. Your initial anual salary will be $30000 .</p>
+            <p>
+                As a full-time employee, you are also entitle to the standard company benifits package. The principle features of the employment offer and the benifits are outlined in the enclosure. Your starting date should be
+                @Html.TextBoxFor(x => x.StartDate, new { @style = "width:290px;", @id="StartDateOffer", @class = "text-line" })
+            </p>
+            <p>If you accept this offer, I would appreciate your signing and returning at earliest convenience a copy of this letter along with the enclosed letter of assignment for documentation purpose. If you have any questions regarding employment policies and procedure, please do not hesitate to contact me.</p>
+            <p>Sencerely </p>
+            <p>@Html.TextBoxFor(x => x.HRName, new { @style = "width:290px;", @class = "text-line" })</p>
+            <p>Human Resources Manager</p>  
+            
+            <div>
+                <input type="submit" class="btn btn-success pull-right" style="margin-left: 10px;" value="Send Offer" id="SendOffer" />
+                <input type="submit" class="btn btn-primary pull-right" value="Cancel Offer" id="CancelOffer" />
+            </div>
+        @*}*@
+            </form>
+    </div>
+</div>
+@Html.ValidationSummary()
+<script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+<script>
+    $(document).ready(function () {
+        $('#StartDateOffer').datepicker({
+            format: "yyyy/mm/dd",
+        });       
+    });
+    $("#SendOffer").click(function () {
+        debugger
+        var dataObject = $("#SendOfferData").serialize();
+        $.ajax({
+            type: "POST",
+            url: base_url + '/NewAdmin/SendOfferToApplicant', //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
+            data: dataObject,
+            beforeSend: function () {
+                new fn_showMaskloader('Please wait...');
+            },
+            success: function (Data) {
+                debugger
+                if (Data == true) {
+                    toastr.success("Offer send to applicant");
+                }
+                else {
+                    toastr.success("Offer not send to applicant please send it again..!");
+                }
+                $("#ModalForOfferLtter").modal('hide');
+            },
+            error: function (err) {
+            },
+            complete: function () {
+                fn_hideMaskloader();
+            }
+        });
+    });
+</script>

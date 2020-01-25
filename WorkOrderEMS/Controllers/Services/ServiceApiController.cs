@@ -59,6 +59,7 @@ namespace WorkOrderEMS.Controllers.Services
         private readonly IFillableFormManager _IFillableFormManager;
         private readonly INotification _INotification;
         private readonly IePeopleManager _IePeopleManager;
+        private readonly IApplicantManager _IApplicantManager;
         private string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private string EmeregencyImagePath = ConfigurationManager.AppSettings["POEmeregencyImage"];
         private string MiscellaneousImagePath = ConfigurationManager.AppSettings["MiscellaneousImage"];
@@ -66,7 +67,7 @@ namespace WorkOrderEMS.Controllers.Services
         public ServiceApiController()
         {
         }
-        public ServiceApiController(IEfleetPM _IEfleetPM, IeFleetFuelingManager _IFuelingManager, IEfleetVehicle _IEfleetVehicle, IDARManager _IDARManager, IEfleetVehicleIncidentReport _IEfleetVehicleIncidentReport, IEfleetMaintenance _IEfleetMaintenance, IPassengerTracking _IPassengerTracking, IHoursOfServices _IHoursOfServices, IBillDataManager _IBillDataManager, IMiscellaneousManager _IMiscellaneousManager, ICommonMethod _ICommonMethod, IFillableFormManager _IFillableFormManager, INotification _INotification, IePeopleManager _IePeopleManager)
+        public ServiceApiController(IEfleetPM _IEfleetPM, IeFleetFuelingManager _IFuelingManager, IEfleetVehicle _IEfleetVehicle, IDARManager _IDARManager, IEfleetVehicleIncidentReport _IEfleetVehicleIncidentReport, IEfleetMaintenance _IEfleetMaintenance, IPassengerTracking _IPassengerTracking, IHoursOfServices _IHoursOfServices, IBillDataManager _IBillDataManager, IMiscellaneousManager _IMiscellaneousManager, ICommonMethod _ICommonMethod, IFillableFormManager _IFillableFormManager, INotification _INotification, IePeopleManager _IePeopleManager, IApplicantManager _IApplicantManager)
         {
             this._IFuelingManager = _IFuelingManager;
             this._IEfleetPM = _IEfleetPM;
@@ -82,6 +83,7 @@ namespace WorkOrderEMS.Controllers.Services
             this._IFillableFormManager = _IFillableFormManager;
             this._INotification = _INotification;
             this._IePeopleManager = _IePeopleManager;
+            this._IApplicantManager = _IApplicantManager;
         }
         // GET: api/ServiceApi
         public IHttpActionResult Get()
@@ -4664,9 +4666,19 @@ namespace WorkOrderEMS.Controllers.Services
                     }
                     var ImageLocationCust = DARImagePath + ImageURL;
                     var ImageLocationEmp = DARImagePath + ImageURLEmp;
+                    var ImageCust = objServiceDisclaimerModel.ImageCust.Replace(" ", "+");
+                    
+                    //int mod4 = ImageCust.Length % 4;
+                    //if (mod4 > 0)
+                    //{
+                    //    ImageCust += new string('=', 4 - mod4);
+                    //}
+                    //string converted = objServiceDisclaimerModel.ImageCust.Replace('-', '+');
+                    //converted = converted.Replace('_', '/');
 
+                    //byte[] b = Convert.FromBase64String(CypherText.Replace("", "+"));
                     //Save the image to directory
-                    using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(objServiceDisclaimerModel.ImageCust)))
+                    using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(ImageCust)))
                     {
                         using (Bitmap bm2 = new Bitmap(ms))
                         {
@@ -4676,12 +4688,13 @@ namespace WorkOrderEMS.Controllers.Services
                         }
                     }
                     //Save the image to directory
-                    using (MemoryStream ms1 = new MemoryStream(Convert.FromBase64String(objServiceDisclaimerModel.ImageEmp)))
+                    //objServiceDisclaimerModel.ImageEmp = objServiceDisclaimerModel.ImageEmp.Replace(" ", "+");
+                    var ImageEmp = objServiceDisclaimerModel.ImageEmp.Replace(" ", "+");
+                    using (MemoryStream ms1 = new MemoryStream(Convert.FromBase64String(ImageEmp)))
                     {
                         using (Bitmap bm21 = new Bitmap(ms1))
                         {
                             bm21.Save(ImageLocationEmp);
-
                             objServiceDisclaimerModel.ImageEmp = ImageURLEmp;
                             objServiceDisclaimerModel.ImageUrlEmp = ImageLocationEmp;
                         }
@@ -5238,11 +5251,13 @@ namespace WorkOrderEMS.Controllers.Services
         public IHttpActionResult NotificationUnseenList(NotificationDetailModel ObjServiceBaseModel)
         {
             var ObjServiceResponseModel = new ServiceResponseModel<List<EmailHelper>>();
+            var _notificationManager = new NotificationManager();
             try
             {
                 if (ObjServiceBaseModel != null && ObjServiceBaseModel.UserId > 0)
                 {
-                    var result = _ICommonMethod.GetUnseenList(ObjServiceBaseModel);
+                    var result = _notificationManager.GetEmaintanaceUnseenList(ObjServiceBaseModel);
+                    //var result = _ICommonMethod.GetUnseenList(ObjServiceBaseModel);
                     if (result.Count() > 0)
                     {
                         ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
@@ -5703,8 +5718,285 @@ namespace WorkOrderEMS.Controllers.Services
             }
             return ObjServiceResponseModel.Message;
         }
+        #endregion ePeople
+
+        #region Applicant Portal Wordpress
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 28-Dec-2019
+        /// Created For : To validate applicant using Username and password.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult ApplicantLogin(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<eTracLoginModel>();
+            try
+            {
+                if (obj != null && obj.LoginId != null)
+                {
+                    var getDetails = _IApplicantManager.ValidateApplicant(obj);
+                    if (getDetails != null)
+                    {
+                        return Ok(getDetails);
+                    }
+                    else
+                    {
+                        return Ok(getDetails);                        
+                    }                   
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.WrongParameterMessage();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : To forgot password of applicant
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult ForgotPassword(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<eTracLoginModel>();
+            try
+            {
+                if (obj != null && obj.Email != null)
+                {
+                    var getDetails = _IApplicantManager.ForgotPassword(obj);
+                    return Ok(getDetails);                   
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.WrongParameterMessage();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created For : To set forgot password
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult SetForgotPassword(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<eTracLoginModel>();
+            try
+            {
+                if (obj.NewPassword != null && obj.LoginId != null)
+                {
+                    var getDetails = _IApplicantManager.SetForgotPassword(obj);
+                    return Ok(getDetails);
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.WrongParameterMessage();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+
+        /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created Date : 28-Dec-2019
+        /// Created For : To change password of Applicant
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult ChangePassword(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<string>();
+            try
+            {
+                if (obj != null && obj.LoginId != null)
+                {
+                    var getDetails = _IApplicantManager.ChangePassword(obj);
+                    if (getDetails != null)
+                    {
+                        return Ok(getDetails);
+                    }
+                    else
+                    {
+                        return Ok(getDetails);
+                    }
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.InvalidUser();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+        /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created Date : 28-Dec-2019
+        /// Created For : To sign Up Applicant
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult SignUpApplicant(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<string>();
+            try
+            {
+                if (obj != null)
+                {
+                    var getDetails = _IApplicantManager.SignUpApplicant(obj);
+                    if (getDetails != null)
+                    {
+                        return Ok(getDetails);
+                    }
+                    else
+                    {
+                        return Ok(getDetails);
+                    }
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.InvalidUser();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created For : To check for Login Id is already exist or not
+        /// Created Date : 28-Dec-2019
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult IsLoginIdExist(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<string>();
+            try
+            {
+                if (obj != null)
+                {
+                    var getDetails = _IApplicantManager.CheckLoginId(obj);
+                    if (getDetails != null)
+                    {
+                        return Ok(getDetails);
+                    }
+                    else
+                    {
+                        return Ok(getDetails);
+                    }
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.InvalidUser();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 04-Jan-2020
+        /// Created For -  To save applicant using data table
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult SaveApplicant(CommonApplicantModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<string>();
+            try
+            {
+                if (obj != null)
+                {
+                    var getDetails = _IApplicantManager.SaveApplicantData(obj);
+                    if (getDetails == true)
+                    {
+                     
+                            ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                            ObjServiceResponseModel.Message = CommonMessage.UserSaveSuccessMessage();
+                            //ObjServiceResponseModel.Data = result;
+                    }
+                    else
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.FailureMessage();
+                        ObjServiceResponseModel.Data = null;
+                    }                                           
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.NoRecord, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.WrongParameterMessage();
+                    return Ok(ObjServiceResponseModel);
+                }
+                return Ok(ObjServiceResponseModel);
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+        #endregion Applicant Portal Wordpress
+
+        #endregion New Employee App
     }
 
-    #endregion ePeople
-    #endregion New Employee App
+
 }

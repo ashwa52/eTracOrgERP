@@ -76,6 +76,7 @@ namespace WorkOrderEMS.Models
         public string FName { get; set; }
         [DataMember]
         public string LName { get; set; }
+
         public string ContactNo { get; set; }
         [DataMember]
         public string Location { get; set; }
@@ -123,6 +124,14 @@ namespace WorkOrderEMS.Models
         public string Lat { get; set; }
         [DataMember]
         public string Long { get; set; }
+        [DataMember]
+        public string MName { get; set; }
+        [DataMember]
+        public string LoginId { get; set; }
+        [DataMember]
+        public string Question { get; set; }
+        [DataMember]
+        public string Answer { get; set; }
         #endregion Other Login Data
     }
 }

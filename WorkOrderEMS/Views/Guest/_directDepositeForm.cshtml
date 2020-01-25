@@ -53,33 +53,34 @@
 		<img src="~/Images/FormImages/image-form.jpg" alt="background image" />
 		<h3><u>Direct Deposit Authorization</u></h3>
 	</div>
-	<div>
-		<p>
-			This authorizes Elite Parking Services of America, Inc. (the "Company") to send credit entries (and appropriate debit and adjustment entries), electronically or by any other commercially accepted method, to my (our) account(s) indicated below and to other accounts I (we) identify in the
-			future (the "Account"). This authorizes the financial institution holding the Account to post all such entries.
-		</p>
-		@using (Html.BeginForm("_DirectDepositeForm", "Guest", FormMethod.Post, new { id = "depositeForm" }))
-		{
-			<p style="font-weight:bold;">Account No 1</p>
-			<p>Account Type (Checking or Savings)@Html.TextBoxFor(x => x.Account1.AccountType, new { @style = "width:290px;", @class = "text-line" })</p>
-			<p>Employee Bank Name @Html.TextBoxFor(x => x.Account1.EmployeeBankName, new { @style = "width:290px;", @class = "text-line" })</p>
-			<p>Account @Html.TextBoxFor(x => x.Account1.Account, new { @style = "width:290px;", @class = "text-line" })</p>
-			<p>Bank Routing (ABA) @Html.TextBoxFor(x => x.Account1.BankRouting, new { @style = "width:290px;", @class = "text-line" })</p>
-			<p>Percentage Or Dollar Amount To Be Deposited To This Account @Html.TextBoxFor(x => x.Account1.DepositeAmount, new { @style = "width:290px;", @class = "text-line" })</p>
-			<p><span style="font-weight:bold;">Account No2</span> (remainder to be deposited to this account)</p>
-			<p><span>Account Type (Checking or Savings)</span> @Html.TextBoxFor(x => x.Account2.AccountType, new { @style = "width:290px;", @class = "text-line" })</p>
-			<p>Employee Bank Name @Html.TextBoxFor(x => x.Account2.EmployeeBankName, new { @style = "width:290px;", @class = "text-line" })</p>
-			<p>Account @Html.TextBoxFor(x => x.Account2.Account, new { @style = "width:290px;", @class = "text-line" })</p>
-			<p>Bank Routing (ABA)@Html.TextBoxFor(x => x.Account2.BankRouting, new { @style = "width:290px;", @class = "text-line" })</p>
-			<p>This authorization will be in effect until the Company receives a written termination notice from me and has a reasonable opportunity to act on it.</p>
-			<p>@Html.TextBoxFor(x => x.Signature, new { @style = "width:290px;", @class = "text-line" })<br />Signature</p>
-			<p>@Html.TextBoxFor(x => x.PrintedName, new { @style = "width:290px;", @class = "text-line" })<br />Printed Name</p>
-			<p>@Html.TextBoxFor(x => x.EmployeeId, new { @style = "width:290px;", @class = "text-line" })<br />Employee Id</p>
-			<p>@Html.TextBoxFor(x => x.Date, new { @style = "width:290px;", @class = "text-line" })<br />Date</p>
-			<p style="font-weight:bold;">Important: Attach Voided Check (Not Deposit Slip) Below <U>Or Acquire An Official Direct Deposit Form From You Financial Institution.</U></p>
-			<img class="center" src="~/Images/DIRECT-DEPOSIT.jpg" alt="background image" />
-			<p> @Html.CheckBoxFor(x => x.IsSave, new { @style = "height: 18px;width: 31px;display: block", onchange = "SubmitForm(this,depositeForm)" })    i hereby declare that the above information is true to the best of my knowledge </p>
-		}
-	</div>
+    <div>
+        <p>
+            This authorizes Elite Parking Services of America, Inc. (the "Company") to send credit entries (and appropriate debit and adjustment entries), electronically or by any other commercially accepted method, to my (our) account(s) indicated below and to other accounts I (we) identify in the
+            future (the "Account"). This authorizes the financial institution holding the Account to post all such entries.
+        </p>
+        @using (Html.BeginForm("_DirectDepositeForm", "Guest", FormMethod.Post, new { id = "depositeForm" }))
+    {
+        <p style="font-weight:bold;">Account No 1</p>
+        <p>Account Type (Checking or Savings)@Html.TextBoxFor(x => x.Account1.AccountType, new { @style = "width:290px;", @class = "text-line" })</p>
+        <p>Employee Bank Name @Html.TextBoxFor(x => x.Account1.EmployeeBankName, new { @style = "width:290px;", @class = "text-line" })</p>
+        <p>Account @Html.TextBoxFor(x => x.Account1.Account, new { @style = "width:290px;", @class = "text-line" })</p>
+        <p>Bank Routing (ABA) @Html.TextBoxFor(x => x.Account1.BankRouting, new { @style = "width:290px;", @class = "text-line" })</p>
+        <p>Percentage Or Dollar Amount To Be Deposited To This Account @Html.TextBoxFor(x => x.Account1.DepositeAmount, new { @style = "width:290px;", @class = "text-line" })</p>
+        <p><span style="font-weight:bold;">Account No2</span> (remainder to be deposited to this account)</p>
+        <p><span>Account Type (Checking or Savings)</span> @Html.TextBoxFor(x => x.Account2.AccountType, new { @style = "width:290px;", @class = "text-line" })</p>
+        <p>Employee Bank Name @Html.TextBoxFor(x => x.Account2.EmployeeBankName, new { @style = "width:290px;", @class = "text-line" })</p>
+        <p>Account @Html.TextBoxFor(x => x.Account2.Account, new { @style = "width:290px;", @class = "text-line" })</p>
+        <p>Bank Routing (ABA)@Html.TextBoxFor(x => x.Account2.BankRouting, new { @style = "width:290px;", @class = "text-line" })</p>
+        <p>This authorization will be in effect until the Company receives a written termination notice from me and has a reasonable opportunity to act on it.</p>
+        <p>@Html.TextBoxFor(x => x.Signature, new { @style = "width:290px;", @class = "text-line" })<br />Signature</p>
+        <p>@Html.TextBoxFor(x => x.PrintedName, new { @style = "width:290px;", @class = "text-line" })<br />Printed Name</p>
+        <p>@Html.TextBoxFor(x => x.EmployeeId, new { @style = "width:290px;", @class = "text-line" })<br />Employee Id</p>
+        <p>@Html.TextBoxFor(x => x.Date, new { @style = "width:290px;", @class = "text-line" })<br />Date</p>
+        <p style="font-weight:bold;">Important: Attach Voided Check (Not Deposit Slip) Below <U>Or Acquire An Official Direct Deposit Form From You Financial Institution.</U></p>
+        <img class="center" src="~/Images/DIRECT-DEPOSIT.jpg" alt="background image" />
+        @*<p> @Html.CheckBoxFor(x => x.IsSave, new { @style = "height: 18px;width: 31px;display: block", onchange = "SubmitForm(this,depositeForm)" })    i hereby declare that the above information is true to the best of my knowledge </p>*@
+        <p> @Html.CheckBoxFor(x => x.IsSave, new { @style = "height: 18px;width: 31px;" })    i hereby declare that the above information is true to the best of my knowledge <span style="cursor:pointer;" onclick="SubmitForm(this, depositeForm)" title="Save"><a><i class="fa fa-long-arrow-right" style="font-size: 40px;color: steelblue;margin-left: 967px;"></i></a></span> </p>
+}
+    </div>
 </div>
 @Html.ValidationSummary()

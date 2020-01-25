@@ -70,6 +70,17 @@
           <Property Name="DeletedBy" Type="bigint" />
           <Property Name="DeletedOn" Type="datetime" />
         </EntityType>
+        <EntityType Name="Applicant">
+          <Key>
+            <PropertyRef Name="APT_ApplicantId" />
+          </Key>
+          <Property Name="APT_ApplicantId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="APT_ALA_UserId" Type="bigint" />
+          <Property Name="APT_JobPostingId" Type="bigint" />
+          <Property Name="APT_Status" Type="char" MaxLength="1" />
+          <Property Name="APT_Date" Type="datetime" />
+          <Property Name="APT_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
         <EntityType Name="ApplicantInfo">
           <Key>
             <PropertyRef Name="API_ApplicantId" />
@@ -106,6 +117,38 @@
           <Property Name="API_IsActive" Type="char" MaxLength="1" />
           <Property Name="API_ApplicantIdRecruitee" Type="bigint" />
           <Property Name="API_JobPostingIdRecruitee" Type="bigint" />
+        </EntityType>
+        <EntityType Name="ApplicantLoginAccess">
+          <Key>
+            <PropertyRef Name="ALA_UserId" />
+          </Key>
+          <Property Name="ALA_UserId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ALA_LoginId" Type="varchar" MaxLength="50" />
+          <Property Name="ALA_Password" Type="nvarchar(max)" />
+          <Property Name="ALA_FirstName" Type="varchar" MaxLength="50" />
+          <Property Name="ALA_MidName" Type="varchar" MaxLength="50" />
+          <Property Name="ALA_LastName" Type="varchar" MaxLength="50" />
+          <Property Name="ALA_eMailId" Type="varchar" MaxLength="50" />
+          <Property Name="ALA_Question" Type="varchar" MaxLength="50" />
+          <Property Name="ALA_Answer" Type="varchar" MaxLength="50" />
+          <Property Name="ALA_Date" Type="datetime" />
+          <Property Name="ALA_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="ApplicantPersonalInfo">
+          <Key>
+            <PropertyRef Name="API_Id" />
+          </Key>
+          <Property Name="API_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="API_APT_ApplicantId" Type="bigint" />
+          <Property Name="API_FirstName" Type="varchar" MaxLength="50" />
+          <Property Name="API_MidName" Type="varchar" MaxLength="50" />
+          <Property Name="API_LastName" Type="varchar" MaxLength="50" />
+          <Property Name="API_Resume" Type="nvarchar(max)" />
+          <Property Name="API_SSN" Type="varchar" MaxLength="50" />
+          <Property Name="API_DLNumber" Type="varchar" MaxLength="50" />
+          <Property Name="API_DesireSalaryWages" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="API_Date" Type="datetime" />
+          <Property Name="API_IsActive" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="Bill">
           <Key>
@@ -837,9 +880,23 @@
           </Key>
           <Property Name="ECF_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ECF_EMP_EmployeeID" Type="varchar" MaxLength="20" />
+          <Property Name="ECF_FirstName" Type="varchar" MaxLength="50" />
+          <Property Name="ECF_MiddleName" Type="varchar" MaxLength="50" />
+          <Property Name="ECF_LastName" Type="varchar" MaxLength="50" />
+          <Property Name="ECF_Gender" Type="varchar" MaxLength="10" />
+          <Property Name="ECF_Citizenship" Type="varchar" MaxLength="30" />
+          <Property Name="ECF_HomeAddress" Type="varchar" MaxLength="200" />
+          <Property Name="ECF_Mobile" Type="bigint" />
+          <Property Name="ECF_BirthDate" Type="datetime" />
+          <Property Name="ECF_SSN" Type="varchar" MaxLength="50" />
+          <Property Name="ECF_DriverLicense" Type="varchar" MaxLength="30" />
           <Property Name="ECF_NickName" Type="varchar" MaxLength="30" />
           <Property Name="ECF_HomePhone" Type="bigint" />
           <Property Name="ECF_HomeEmail" Type="varchar" MaxLength="50" />
+          <Property Name="ECF_EmergencyContactName" Type="varchar" MaxLength="100" />
+          <Property Name="ECF_Relationship" Type="varchar" MaxLength="50" />
+          <Property Name="ECF_Address" Type="varchar" MaxLength="200" />
+          <Property Name="ECF_PhoneNumber" Type="bigint" />
           <Property Name="ECF_Date" Type="datetime" />
           <Property Name="ECF_IsActive" Type="char" MaxLength="1" />
         </EntityType>
@@ -1011,7 +1068,7 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
             <PropertyRef Name="INA_Id" />
           </Key>
           <Property Name="INA_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="INA_INQ_Id" Type="bigint" />
+          <Property Name="INA_IQC_Id" Type="bigint" />
           <Property Name="INA_API_ApplicantId" Type="bigint" />
           <Property Name="INA_EMP_EmployeeId" Type="varchar" MaxLength="20" />
           <Property Name="INA_Answer" Type="char" MaxLength="1" />
@@ -1029,6 +1086,28 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Name="INQ_Exempt" Type="char" MaxLength="1" />
           <Property Name="INQ_Date" Type="datetime" />
           <Property Name="INQ_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="InterviewQuestionChild">
+          <Key>
+            <PropertyRef Name="IQC_Id" />
+          </Key>
+          <Property Name="IQC_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IQC_IQM_Id" Type="bigint" Nullable="false" />
+          <Property Name="IQC_Question" Type="varchar(max)" />
+          <Property Name="IQC_ScoreYes" Type="int" />
+          <Property Name="IQC_ScoreNo" Type="int" />
+          <Property Name="IQC_Date" Type="datetime" />
+          <Property Name="IQC_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="InterviewQuestionMaster">
+          <Key>
+            <PropertyRef Name="IQM_Id" />
+          </Key>
+          <Property Name="IQM_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IQM_Question" Type="varchar(max)" />
+          <Property Name="IQM_Exempt" Type="char" MaxLength="1" />
+          <Property Name="IQM_Date" Type="datetime" />
+          <Property Name="IQM_IsActive" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="InterviewSchedule">
           <Key>
@@ -3494,6 +3573,18 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_LogCostCode_CostCode">
+          <End Role="InterviewQuestionMaster" Type="Self.InterviewQuestionMaster" Multiplicity="1" />
+          <End Role="InterviewQuestionChild" Type="Self.InterviewQuestionChild" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InterviewQuestionMaster">
+              <PropertyRef Name="IQM_Id" />
+            </Principal>
+            <Dependent Role="InterviewQuestionChild">
+              <PropertyRef Name="IQC_IQM_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_LoginLog_LocationMaster">
           <End Role="LocationMaster" Type="Self.LocationMaster" Multiplicity="0..1" />
           <End Role="LoginLog" Type="Self.LoginLog" Multiplicity="*" />
@@ -4900,6 +4991,15 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         <Function Name="spGetApplicantInfoForMyInterview" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="spGetApplicantLogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ALA_LiginId" Type="varchar" Mode="In" />
+          <Parameter Name="ALA_Password" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="ALA_UserId" Type="bigint" Mode="InOut" />
+        </Function>
+        <Function Name="spGetApplicantNewLoginCheckAvailability" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ALA_LiginId" Type="varchar" Mode="In" />
+          <Parameter Name="Availability" Type="varchar" Mode="InOut" />
+        </Function>
         <Function Name="spGetApprovedBillList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CMP_Id" Type="bigint" Mode="In" />
           <Parameter Name="FromDate" Type="date" Mode="In" />
@@ -5205,6 +5305,11 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         <Function Name="spGetQuestionAnswer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="QNA_Application" Type="char" Mode="In" />
         </Function>
+        <Function Name="spGetQuestionsForInterview" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Action" Type="char" Mode="In" />
+          <Parameter Name="IsExempt" Type="char" Mode="In" />
+          <Parameter Name="IQC_IQM_Id" Type="bigint" Mode="In" />
+        </Function>
         <Function Name="spGetRequisitionList" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetReviewMeetingDateTime" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="RMS_EMP_EmployeeId" Type="varchar" Mode="In" />
@@ -5270,6 +5375,25 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="EFM_eFormName" Type="varchar" Mode="In" />
           <Parameter Name="EFM_eFormLink" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="EFM_IsActive" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetApplicantChangePassword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LoginID" Type="varchar" Mode="In" />
+          <Parameter Name="Password" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="NewPassword" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="spSetApplicantCreateLoginAccess" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ALA_LoginId" Type="varchar" Mode="In" />
+          <Parameter Name="ALA_Password" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="ALA_FirstName" Type="varchar" Mode="In" />
+          <Parameter Name="ALA_MidName" Type="varchar" Mode="In" />
+          <Parameter Name="ALA_LastName" Type="varchar" Mode="In" />
+          <Parameter Name="ALA_eMailId" Type="varchar" Mode="In" />
+          <Parameter Name="ALA_Question" Type="varchar" Mode="In" />
+          <Parameter Name="ALA_Answer" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spSetApplicantForgotPassword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="LoginID" Type="varchar" Mode="In" />
+          <Parameter Name="NewPassword" Type="nvarchar(max)" Mode="In" />
         </Function>
         <Function Name="spSetApplicantInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="APIAction" Type="char" Mode="In" />
@@ -5402,6 +5526,24 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="Comment" Type="varchar" Mode="In" />
           <Parameter Name="IsApprove" Type="char" Mode="In" />
           <Parameter Name="ApprovedBy" Type="bigint" Mode="In" />
+        </Function>
+        <Function Name="spSetAssetAllocation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Action" Type="char" Mode="In" />
+          <Parameter Name="ATA_Id" Type="bigint" Mode="In" />
+          <Parameter Name="ATA_EMP_EmployeeId" Type="varchar" Mode="In" />
+          <Parameter Name="ATA_Type" Type="varchar" Mode="In" />
+          <Parameter Name="ATA_AssetName" Type="varchar" Mode="In" />
+          <Parameter Name="ATA_AssetDescription" Type="varchar" Mode="In" />
+          <Parameter Name="ATA_Make" Type="date" Mode="In" />
+          <Parameter Name="ATA_Model" Type="varchar" Mode="In" />
+          <Parameter Name="ATA_SerialNumber" Type="varchar" Mode="In" />
+          <Parameter Name="ATA_Login" Type="varchar" Mode="In" />
+          <Parameter Name="ATA_Password" Type="varchar" Mode="In" />
+          <Parameter Name="ATA_AssignDate" Type="datetime" Mode="In" />
+          <Parameter Name="ATA_ReturnAcceptBy" Type="varchar" Mode="In" />
+          <Parameter Name="ATA_ReturnDate" Type="datetime" Mode="In" />
+          <Parameter Name="ATA_ReturnStatus" Type="char" Mode="In" />
+          <Parameter Name="ATA_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetBill" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="BLLAction" Type="char" Mode="In" />
@@ -5725,8 +5867,21 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="ECF_EMP_EmployeeID" Type="varchar" Mode="In" />
           <Parameter Name="ECF_NickName" Type="varchar" Mode="In" />
           <Parameter Name="ECF_HomePhone" Type="bigint" Mode="In" />
+          <Parameter Name="ECF_HomeAddress" Type="varchar" Mode="In" />
           <Parameter Name="ECF_HomeEmail" Type="varchar" Mode="In" />
-          <Parameter Name="ECF_Date" Type="datetime" Mode="In" />
+          <Parameter Name="ECF_FirstName" Type="varchar" Mode="In" />
+          <Parameter Name="ECF_MiddleName" Type="varchar" Mode="In" />
+          <Parameter Name="ECF_LastName" Type="varchar" Mode="In" />
+          <Parameter Name="ECF_Address" Type="varchar" Mode="In" />
+          <Parameter Name="ECF_Gender" Type="varchar" Mode="In" />
+          <Parameter Name="ECF_Citizenship" Type="varchar" Mode="In" />
+          <Parameter Name="ECF_BirthDate" Type="datetime" Mode="In" />
+          <Parameter Name="ECF_DriverLicense" Type="varchar" Mode="In" />
+          <Parameter Name="ECF_EmergencyContactName" Type="varchar" Mode="In" />
+          <Parameter Name="ECF_Mobile" Type="bigint" Mode="In" />
+          <Parameter Name="ECF_PhoneNumber" Type="bigint" Mode="In" />
+          <Parameter Name="ECF_SSN" Type="varchar" Mode="In" />
+          <Parameter Name="ECF_Relationship" Type="varchar" Mode="In" />
           <Parameter Name="ECF_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -5826,7 +5981,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="INS_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetInterviewAnswer" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="INA_INQ_Id" Type="bigint" Mode="In" />
+          <Parameter Name="INA_IQC_Id" Type="bigint" Mode="In" />
           <Parameter Name="INA_API_ApplicantId" Type="bigint" Mode="In" />
           <Parameter Name="INA_EMP_EmployeeID" Type="varchar" Mode="In" />
           <Parameter Name="INA_Answer" Type="char" Mode="In" />
@@ -6277,7 +6432,10 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="AddressMaster" EntityType="Self.AddressMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AdminEmployeeMapping" EntityType="Self.AdminEmployeeMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AdminLocationMapping" EntityType="Self.AdminLocationMapping" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Applicant" EntityType="Self.Applicant" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ApplicantInfo" EntityType="Self.ApplicantInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ApplicantLoginAccess" EntityType="Self.ApplicantLoginAccess" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ApplicantPersonalInfo" EntityType="Self.ApplicantPersonalInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BillFacilityItem" EntityType="Self.BillFacilityItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BillType" EntityType="Self.BillType" Schema="dbo" store:Type="Tables" />
@@ -6332,6 +6490,8 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="Insurance" EntityType="Self.Insurance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InterviewAnswer" EntityType="Self.InterviewAnswer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InterviewQuestion" EntityType="Self.InterviewQuestion" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InterviewQuestionChild" EntityType="Self.InterviewQuestionChild" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InterviewQuestionMaster" EntityType="Self.InterviewQuestionMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InterviewSchedule" EntityType="Self.InterviewSchedule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="JobTitle" EntityType="Self.JobTitle" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="License" EntityType="Self.License" Schema="dbo" store:Type="Tables" />
@@ -6885,6 +7045,10 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <AssociationSet Name="FK_LogContract_PaymentTerm" Association="Self.FK_LogContract_PaymentTerm">
             <End Role="PaymentTerm" EntitySet="PaymentTerm" />
             <End Role="LogContract" EntitySet="LogContract" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LogCostCode_CostCode" Association="Self.FK_LogCostCode_CostCode">
+            <End Role="InterviewQuestionMaster" EntitySet="InterviewQuestionMaster" />
+            <End Role="InterviewQuestionChild" EntitySet="InterviewQuestionChild" />
           </AssociationSet>
           <AssociationSet Name="FK_LoginLog_LocationMaster" Association="Self.FK_LoginLog_LocationMaster">
             <End Role="LocationMaster" EntitySet="LocationMaster" />
@@ -13671,16 +13835,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <FunctionImport Name="spGetEmployeeHandbook" ReturnType="Collection(String)">
           <Parameter Name="EmployeeID" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spSetEmergencyContactForm">
-            <Parameter Name="ECFAction" Mode="In" Type="String" />
-            <Parameter Name="ECF_Id" Mode="In" Type="Int64" />
-            <Parameter Name="ECF_EMP_EmployeeID" Mode="In" Type="String" />
-            <Parameter Name="ECF_NickName" Mode="In" Type="String" />
-            <Parameter Name="ECF_HomePhone" Mode="In" Type="Int64" />
-            <Parameter Name="ECF_HomeEmail" Mode="In" Type="String" />
-            <Parameter Name="ECF_Date" Mode="In" Type="DateTime" />
-            <Parameter Name="ECF_IsActive" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="spSetEmployeeHandbook">
             <Parameter Name="EHBAction" Mode="In" Type="String" />
             <Parameter Name="EHB_Id" Mode="In" Type="Int64" />
@@ -13701,13 +13855,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="DDF_BankRoutingNumber_2" Mode="In" Type="String" />
             <Parameter Name="DDF_VoidCkeck" Mode="In" Type="String" />
             <Parameter Name="DDF_IsActive" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="spSetInterviewAnswer">
-            <Parameter Name="INA_INQ_Id" Mode="In" Type="Int64" />
-            <Parameter Name="INA_API_ApplicantId" Mode="In" Type="Int64" />
-            <Parameter Name="INA_EMP_EmployeeID" Mode="In" Type="String" />
-            <Parameter Name="INA_Answer" Mode="In" Type="String" />
-            <Parameter Name="INA_Comments" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spSetInterviewerIsOnline">
             <Parameter Name="ApplicantId" Mode="In" Type="Int64" />
@@ -13944,9 +14091,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="JPS_JobPostingId" Mode="In" Type="Int64" />
           </FunctionImport>
           <EntitySet Name="DirectDepositForms" EntityType="WorkOrderEMS.Data.EntityModel.DirectDepositForm" />
-          <EntitySet Name="EmergencyContactForms" EntityType="WorkOrderEMS.Data.EntityModel.EmergencyContactForm" />
           <EntitySet Name="EmployeeHandbooks" EntityType="WorkOrderEMS.Data.EntityModel.EmployeeHandbook" />
-          <EntitySet Name="InterviewAnswers" EntityType="WorkOrderEMS.Data.EntityModel.InterviewAnswer" />
           <EntitySet Name="InterviewQuestions" EntityType="WorkOrderEMS.Data.EntityModel.InterviewQuestion" />
           <EntitySet Name="InterviewSchedules" EntityType="WorkOrderEMS.Data.EntityModel.InterviewSchedule" />
           <EntitySet Name="SubModules" EntityType="WorkOrderEMS.Data.EntityModel.SubModule" />
@@ -14003,9 +14148,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="EmployeeID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetEducationVerificationForm" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetEducationVerificationForm_Result1)">
-          <Parameter Name="EmployeeID" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="spGetEmergencyContactForm" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetEmergencyContactForm_Result2)">
           <Parameter Name="EmployeeID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetEmployeeManagementList" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetEmployeeManagementList_Result2)">
@@ -14219,6 +14361,101 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="JBT_FillJobCount" Mode="In" Type="Int32" />
             <Parameter Name="JBT_VST_Id" Mode="In" Type="Int64" />
             <Parameter Name="JBT_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetEmergencyContactForm" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetEmergencyContactForm_Result4)">
+          <Parameter Name="EmployeeID" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="EmergencyContactForms" EntityType="WorkOrderEMS.Data.EntityModel.EmergencyContactForm" />
+          <FunctionImport Name="spSetAssetAllocation">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="ATA_Id" Mode="In" Type="Int64" />
+            <Parameter Name="ATA_EMP_EmployeeId" Mode="In" Type="String" />
+            <Parameter Name="ATA_Type" Mode="In" Type="String" />
+            <Parameter Name="ATA_AssetName" Mode="In" Type="String" />
+            <Parameter Name="ATA_AssetDescription" Mode="In" Type="String" />
+            <Parameter Name="ATA_Make" Mode="In" Type="DateTime" />
+            <Parameter Name="ATA_Model" Mode="In" Type="String" />
+            <Parameter Name="ATA_SerialNumber" Mode="In" Type="String" />
+            <Parameter Name="ATA_Login" Mode="In" Type="String" />
+            <Parameter Name="ATA_Password" Mode="In" Type="String" />
+            <Parameter Name="ATA_AssignDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ATA_ReturnAcceptBy" Mode="In" Type="String" />
+            <Parameter Name="ATA_ReturnDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ATA_ReturnStatus" Mode="In" Type="String" />
+            <Parameter Name="ATA_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetEmergencyContactForm">
+            <Parameter Name="ECFAction" Mode="In" Type="String" />
+            <Parameter Name="ECF_Id" Mode="In" Type="Int64" />
+            <Parameter Name="ECF_EMP_EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="ECF_NickName" Mode="In" Type="String" />
+            <Parameter Name="ECF_HomePhone" Mode="In" Type="Int64" />
+            <Parameter Name="ECF_HomeAddress" Mode="In" Type="String" />
+            <Parameter Name="ECF_HomeEmail" Mode="In" Type="String" />
+            <Parameter Name="ECF_FirstName" Mode="In" Type="String" />
+            <Parameter Name="ECF_MiddleName" Mode="In" Type="String" />
+            <Parameter Name="ECF_LastName" Mode="In" Type="String" />
+            <Parameter Name="ECF_Address" Mode="In" Type="String" />
+            <Parameter Name="ECF_Gender" Mode="In" Type="String" />
+            <Parameter Name="ECF_Citizenship" Mode="In" Type="String" />
+            <Parameter Name="ECF_BirthDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ECF_DriverLicense" Mode="In" Type="String" />
+            <Parameter Name="ECF_EmergencyContactName" Mode="In" Type="String" />
+            <Parameter Name="ECF_Mobile" Mode="In" Type="Int64" />
+            <Parameter Name="ECF_PhoneNumber" Mode="In" Type="Int64" />
+            <Parameter Name="ECF_SSN" Mode="In" Type="String" />
+            <Parameter Name="ECF_Relationship" Mode="In" Type="String" />
+            <Parameter Name="ECF_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Applicants" EntityType="WorkOrderEMS.Data.EntityModel.Applicant" />
+          <FunctionImport Name="spGetApplicantLogin" ReturnType="Collection(Int64)">
+            <Parameter Name="ALA_LiginId" Mode="In" Type="String" />
+            <Parameter Name="ALA_Password" Mode="In" Type="String" />
+            <Parameter Name="ALA_UserId" Mode="InOut" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spGetApplicantNewLoginCheckAvailability">
+            <Parameter Name="ALA_LiginId" Mode="In" Type="String" />
+            <Parameter Name="Availability" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetApplicantChangePassword">
+            <Parameter Name="LoginID" Mode="In" Type="String" />
+            <Parameter Name="Password" Mode="In" Type="String" />
+            <Parameter Name="NewPassword" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetApplicantForgotPassword">
+            <Parameter Name="LoginID" Mode="In" Type="String" />
+            <Parameter Name="NewPassword" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="ApplicantLoginAccesses" EntityType="WorkOrderEMS.Data.EntityModel.ApplicantLoginAccess" />
+          <FunctionImport Name="spSetApplicantCreateLoginAccess" ReturnType="Collection(Int64)">
+            <Parameter Name="ALA_LoginId" Mode="In" Type="String" />
+            <Parameter Name="ALA_Password" Mode="In" Type="String" />
+            <Parameter Name="ALA_FirstName" Mode="In" Type="String" />
+            <Parameter Name="ALA_MidName" Mode="In" Type="String" />
+            <Parameter Name="ALA_LastName" Mode="In" Type="String" />
+            <Parameter Name="ALA_eMailId" Mode="In" Type="String" />
+            <Parameter Name="ALA_Question" Mode="In" Type="String" />
+            <Parameter Name="ALA_Answer" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="ApplicantPersonalInfoes" EntityType="WorkOrderEMS.Data.EntityModel.ApplicantPersonalInfo" />
+          <FunctionImport Name="spGetQuestionsForInterview" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetQuestionsForInterview_Result4)">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="IsExempt" Mode="In" Type="String" />
+            <Parameter Name="IQC_IQM_Id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <EntitySet Name="InterviewQuestionChilds" EntityType="WorkOrderEMS.Data.EntityModel.InterviewQuestionChild" />
+          <EntitySet Name="InterviewQuestionMasters" EntityType="WorkOrderEMS.Data.EntityModel.InterviewQuestionMaster" />
+          <AssociationSet Name="FK_LogCostCode_CostCode" Association="WorkOrderEMS.Data.EntityModel.FK_LogCostCode_CostCode">
+            <End Role="InterviewQuestionMaster" EntitySet="InterviewQuestionMasters" />
+            <End Role="InterviewQuestionChild" EntitySet="InterviewQuestionChilds" />
+          </AssociationSet>
+          <EntitySet Name="InterviewAnswers" EntityType="WorkOrderEMS.Data.EntityModel.InterviewAnswer" />
+          <FunctionImport Name="spSetInterviewAnswer">
+            <Parameter Name="INA_IQC_Id" Mode="In" Type="Int64" />
+            <Parameter Name="INA_API_ApplicantId" Mode="In" Type="Int64" />
+            <Parameter Name="INA_EMP_EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="INA_Answer" Mode="In" Type="String" />
+            <Parameter Name="INA_Comments" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Proc_GetAllWorkAssignedToEmployee_Result">
@@ -17254,18 +17491,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="DDF_Date" Type="DateTime" Precision="3" />
           <Property Name="DDF_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
-        <EntityType Name="EmergencyContactForm">
-          <Key>
-            <PropertyRef Name="ECF_Id" />
-          </Key>
-          <Property Name="ECF_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ECF_EMP_EmployeeID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="ECF_NickName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="ECF_HomePhone" Type="Int64" />
-          <Property Name="ECF_HomeEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ECF_Date" Type="DateTime" Precision="3" />
-          <Property Name="ECF_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-        </EntityType>
         <EntityType Name="EmployeeHandbook">
           <Key>
             <PropertyRef Name="EHB_Id" />
@@ -17274,19 +17499,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="EHB_EMP_EmployeeID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="EHB_Date" Type="DateTime" Precision="3" />
           <Property Name="EHB_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-        </EntityType>
-        <EntityType Name="InterviewAnswer">
-          <Key>
-            <PropertyRef Name="INA_Id" />
-          </Key>
-          <Property Name="INA_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="INA_INQ_Id" Type="Int64" />
-          <Property Name="INA_API_ApplicantId" Type="Int64" />
-          <Property Name="INA_EMP_EmployeeId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="INA_Answer" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="INA_Comments" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <Property Name="INA_Date" Type="DateTime" Precision="3" />
-          <Property Name="INA_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
         <EntityType Name="InterviewQuestion">
           <Key>
@@ -18034,6 +18246,190 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="spGetEmergencyContactForm_Result3">
+          <Property Type="Int64" Name="ECF_Id" Nullable="false" />
+          <Property Type="String" Name="ECF_EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ECF_FirstName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ECF_MiddleName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ECF_LastName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ECF_Gender" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="ECF_Citizenship" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="ECF_HomeAddress" Nullable="true" MaxLength="200" />
+          <Property Type="Int64" Name="ECF_Mobile" Nullable="true" />
+          <Property Type="DateTime" Name="ECF_BirthDate" Nullable="true" Precision="23" />
+          <Property Type="Binary" Name="ECF_SSN" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="ECF_DriverLicense" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="ECF_NickName" Nullable="true" MaxLength="30" />
+          <Property Type="Int64" Name="ECF_HomePhone" Nullable="true" />
+          <Property Type="String" Name="ECF_HomeEmail" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ECF_EmergencyContactName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ECF_Relationship" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ECF_Address" Nullable="true" MaxLength="200" />
+          <Property Type="Int64" Name="ECF_PhoneNumber" Nullable="true" />
+          <Property Type="DateTime" Name="ECF_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ECF_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetEmergencyContactForm_Result4">
+          <Property Type="Int64" Name="ECF_Id" Nullable="false" />
+          <Property Type="String" Name="ECF_EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ECF_FirstName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ECF_MiddleName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ECF_LastName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ECF_Gender" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="ECF_Citizenship" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="ECF_HomeAddress" Nullable="true" MaxLength="200" />
+          <Property Type="Int64" Name="ECF_Mobile" Nullable="true" />
+          <Property Type="DateTime" Name="ECF_BirthDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ECF_SSN" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ECF_DriverLicense" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="ECF_NickName" Nullable="true" MaxLength="30" />
+          <Property Type="Int64" Name="ECF_HomePhone" Nullable="true" />
+          <Property Type="String" Name="ECF_HomeEmail" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ECF_EmergencyContactName" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ECF_Relationship" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ECF_Address" Nullable="true" MaxLength="200" />
+          <Property Type="Int64" Name="ECF_PhoneNumber" Nullable="true" />
+          <Property Type="DateTime" Name="ECF_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ECF_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <EntityType Name="EmergencyContactForm">
+          <Key>
+            <PropertyRef Name="ECF_Id" />
+          </Key>
+          <Property Name="ECF_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ECF_EMP_EmployeeID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_MiddleName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_Gender" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_Citizenship" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_HomeAddress" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_Mobile" Type="Int64" />
+          <Property Name="ECF_BirthDate" Type="DateTime" Precision="3" />
+          <Property Name="ECF_SSN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_DriverLicense" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_NickName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_HomePhone" Type="Int64" />
+          <Property Name="ECF_HomeEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_EmergencyContactName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_Relationship" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_Address" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ECF_PhoneNumber" Type="Int64" />
+          <Property Name="ECF_Date" Type="DateTime" Precision="3" />
+          <Property Name="ECF_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Applicant">
+          <Key>
+            <PropertyRef Name="APT_ApplicantId" />
+          </Key>
+          <Property Name="APT_ApplicantId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="APT_ALA_UserId" Type="Int64" />
+          <Property Name="APT_JobPostingId" Type="Int64" />
+          <Property Name="APT_Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="APT_Date" Type="DateTime" Precision="3" />
+          <Property Name="APT_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ApplicantLoginAccess">
+          <Key>
+            <PropertyRef Name="ALA_UserId" />
+          </Key>
+          <Property Name="ALA_UserId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ALA_LoginId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ALA_Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ALA_FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ALA_MidName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ALA_LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ALA_eMailId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ALA_Question" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ALA_Answer" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ALA_Date" Type="DateTime" Precision="3" />
+          <Property Name="ALA_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="ApplicantPersonalInfo">
+          <Key>
+            <PropertyRef Name="API_Id" />
+          </Key>
+          <Property Name="API_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="API_APT_ApplicantId" Type="Int64" />
+          <Property Name="API_FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_MidName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_Resume" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="API_SSN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_DLNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_DesireSalaryWages" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="API_Date" Type="DateTime" Precision="3" />
+          <Property Name="API_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="spGetQuestionsForInterview_Result">
+          <Property Type="Int64" Name="IQM_Id" Nullable="false" />
+          <Property Type="String" Name="IQM_Question" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetQuestionsForInterview_Result1">
+          <Property Type="Int64" Name="IQM_Id" Nullable="false" />
+          <Property Type="String" Name="IQM_Question" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetQuestionsForInterview_Result2">
+          <Property Type="Int64" Name="IQM_Id" Nullable="false" />
+          <Property Type="String" Name="IQM_Question" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetQuestionsForInterview_Result3">
+          <Property Type="Int64" Name="IQM_Id" Nullable="false" />
+          <Property Type="String" Name="IQM_Question" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="spGetQuestionsForInterview_Result4">
+          <Property Type="Int64" Name="IQM_Id" Nullable="false" />
+          <Property Type="String" Name="IQM_Question" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="InterviewQuestionChild">
+          <Key>
+            <PropertyRef Name="IQC_Id" />
+          </Key>
+          <Property Name="IQC_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IQC_IQM_Id" Type="Int64" Nullable="false" />
+          <Property Name="IQC_Question" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IQC_ScoreYes" Type="Int32" />
+          <Property Name="IQC_ScoreNo" Type="Int32" />
+          <Property Name="IQC_Date" Type="DateTime" Precision="3" />
+          <Property Name="IQC_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="InterviewQuestionMaster" Relationship="WorkOrderEMS.Data.EntityModel.FK_LogCostCode_CostCode" FromRole="InterviewQuestionChild" ToRole="InterviewQuestionMaster" />
+        </EntityType>
+        <EntityType Name="InterviewQuestionMaster">
+          <Key>
+            <PropertyRef Name="IQM_Id" />
+          </Key>
+          <Property Name="IQM_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IQM_Question" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="IQM_Exempt" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="IQM_Date" Type="DateTime" Precision="3" />
+          <Property Name="IQM_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="InterviewQuestionChilds" Relationship="WorkOrderEMS.Data.EntityModel.FK_LogCostCode_CostCode" FromRole="InterviewQuestionMaster" ToRole="InterviewQuestionChild" />
+        </EntityType>
+        <Association Name="FK_LogCostCode_CostCode">
+          <End Type="WorkOrderEMS.Data.EntityModel.InterviewQuestionMaster" Role="InterviewQuestionMaster" Multiplicity="1" />
+          <End Type="WorkOrderEMS.Data.EntityModel.InterviewQuestionChild" Role="InterviewQuestionChild" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InterviewQuestionMaster">
+              <PropertyRef Name="IQM_Id" />
+            </Principal>
+            <Dependent Role="InterviewQuestionChild">
+              <PropertyRef Name="IQC_IQM_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="InterviewAnswer">
+          <Key>
+            <PropertyRef Name="INA_Id" />
+          </Key>
+          <Property Name="INA_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="INA_IQC_Id" Type="Int64" />
+          <Property Name="INA_API_ApplicantId" Type="Int64" />
+          <Property Name="INA_EMP_EmployeeId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="INA_Answer" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="INA_Comments" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="INA_Date" Type="DateTime" Precision="3" />
+          <Property Name="INA_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -22695,10 +23091,8 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <FunctionImportMapping FunctionImportName="spGetInterviewCanStart" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetInterviewCanStart" />
           <FunctionImportMapping FunctionImportName="spGetNextQuestion" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetNextQuestion" />
           <FunctionImportMapping FunctionImportName="spGetEmployeeHandbook" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetEmployeeHandbook" />
-          <FunctionImportMapping FunctionImportName="spSetEmergencyContactForm" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetEmergencyContactForm" />
           <FunctionImportMapping FunctionImportName="spSetEmployeeHandbook" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetEmployeeHandbook" />
           <FunctionImportMapping FunctionImportName="spSetDirectDepositForm" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetDirectDepositForm" />
-          <FunctionImportMapping FunctionImportName="spSetInterviewAnswer" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetInterviewAnswer" />
           <FunctionImportMapping FunctionImportName="spSetInterviewerIsOnline" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetInterviewerIsOnline" />
           <FunctionImportMapping FunctionImportName="spGetInterviewScore" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetInterviewScore" />
           <FunctionImportMapping FunctionImportName="spSetSelfAssessment306090" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetSelfAssessment306090" />
@@ -23110,19 +23504,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="EmergencyContactForms">
-            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.EmergencyContactForm">
-              <MappingFragment StoreEntitySet="EmergencyContactForm">
-                <ScalarProperty Name="ECF_IsActive" ColumnName="ECF_IsActive" />
-                <ScalarProperty Name="ECF_Date" ColumnName="ECF_Date" />
-                <ScalarProperty Name="ECF_HomeEmail" ColumnName="ECF_HomeEmail" />
-                <ScalarProperty Name="ECF_HomePhone" ColumnName="ECF_HomePhone" />
-                <ScalarProperty Name="ECF_NickName" ColumnName="ECF_NickName" />
-                <ScalarProperty Name="ECF_EMP_EmployeeID" ColumnName="ECF_EMP_EmployeeID" />
-                <ScalarProperty Name="ECF_Id" ColumnName="ECF_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="EmployeeHandbooks">
             <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.EmployeeHandbook">
               <MappingFragment StoreEntitySet="EmployeeHandbook">
@@ -23130,20 +23511,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
                 <ScalarProperty Name="EHB_Date" ColumnName="EHB_Date" />
                 <ScalarProperty Name="EHB_EMP_EmployeeID" ColumnName="EHB_EMP_EmployeeID" />
                 <ScalarProperty Name="EHB_Id" ColumnName="EHB_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="InterviewAnswers">
-            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.InterviewAnswer">
-              <MappingFragment StoreEntitySet="InterviewAnswer">
-                <ScalarProperty Name="INA_IsActive" ColumnName="INA_IsActive" />
-                <ScalarProperty Name="INA_Date" ColumnName="INA_Date" />
-                <ScalarProperty Name="INA_Comments" ColumnName="INA_Comments" />
-                <ScalarProperty Name="INA_Answer" ColumnName="INA_Answer" />
-                <ScalarProperty Name="INA_EMP_EmployeeId" ColumnName="INA_EMP_EmployeeId" />
-                <ScalarProperty Name="INA_API_ApplicantId" ColumnName="INA_API_ApplicantId" />
-                <ScalarProperty Name="INA_INQ_Id" ColumnName="INA_INQ_Id" />
-                <ScalarProperty Name="INA_Id" ColumnName="INA_Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -23369,17 +23736,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
                 <ScalarProperty Name="EVF_AttendedFrom" ColumnName="EVF_AttendedFrom" />
                 <ScalarProperty Name="EVF_AttendedTo" ColumnName="EVF_AttendedTo" />
                 <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetEmergencyContactForm" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetEmergencyContactForm">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetEmergencyContactForm_Result2">
-                <ScalarProperty Name="ECF_Id" ColumnName="ECF_Id" />
-                <ScalarProperty Name="ECF_EMP_EmployeeID" ColumnName="ECF_EMP_EmployeeID" />
-                <ScalarProperty Name="ECF_NickName" ColumnName="ECF_NickName" />
-                <ScalarProperty Name="ECF_HomePhone" ColumnName="ECF_HomePhone" />
-                <ScalarProperty Name="ECF_HomeEmail" ColumnName="ECF_HomeEmail" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -23888,6 +24244,160 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spSetJobTitle" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetJobTitle" />
+          <FunctionImportMapping FunctionImportName="spGetEmergencyContactForm" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetEmergencyContactForm">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetEmergencyContactForm_Result4">
+                <ScalarProperty Name="ECF_Id" ColumnName="ECF_Id" />
+                <ScalarProperty Name="ECF_EMP_EmployeeID" ColumnName="ECF_EMP_EmployeeID" />
+                <ScalarProperty Name="ECF_FirstName" ColumnName="ECF_FirstName" />
+                <ScalarProperty Name="ECF_MiddleName" ColumnName="ECF_MiddleName" />
+                <ScalarProperty Name="ECF_LastName" ColumnName="ECF_LastName" />
+                <ScalarProperty Name="ECF_Gender" ColumnName="ECF_Gender" />
+                <ScalarProperty Name="ECF_Citizenship" ColumnName="ECF_Citizenship" />
+                <ScalarProperty Name="ECF_HomeAddress" ColumnName="ECF_HomeAddress" />
+                <ScalarProperty Name="ECF_Mobile" ColumnName="ECF_Mobile" />
+                <ScalarProperty Name="ECF_BirthDate" ColumnName="ECF_BirthDate" />
+                <ScalarProperty Name="ECF_SSN" ColumnName="ECF_SSN" />
+                <ScalarProperty Name="ECF_DriverLicense" ColumnName="ECF_DriverLicense" />
+                <ScalarProperty Name="ECF_NickName" ColumnName="ECF_NickName" />
+                <ScalarProperty Name="ECF_HomePhone" ColumnName="ECF_HomePhone" />
+                <ScalarProperty Name="ECF_HomeEmail" ColumnName="ECF_HomeEmail" />
+                <ScalarProperty Name="ECF_EmergencyContactName" ColumnName="ECF_EmergencyContactName" />
+                <ScalarProperty Name="ECF_Relationship" ColumnName="ECF_Relationship" />
+                <ScalarProperty Name="ECF_Address" ColumnName="ECF_Address" />
+                <ScalarProperty Name="ECF_PhoneNumber" ColumnName="ECF_PhoneNumber" />
+                <ScalarProperty Name="ECF_Date" ColumnName="ECF_Date" />
+                <ScalarProperty Name="ECF_IsActive" ColumnName="ECF_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="EmergencyContactForms">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.EmergencyContactForm">
+              <MappingFragment StoreEntitySet="EmergencyContactForm">
+                <ScalarProperty Name="ECF_IsActive" ColumnName="ECF_IsActive" />
+                <ScalarProperty Name="ECF_Date" ColumnName="ECF_Date" />
+                <ScalarProperty Name="ECF_PhoneNumber" ColumnName="ECF_PhoneNumber" />
+                <ScalarProperty Name="ECF_Address" ColumnName="ECF_Address" />
+                <ScalarProperty Name="ECF_Relationship" ColumnName="ECF_Relationship" />
+                <ScalarProperty Name="ECF_EmergencyContactName" ColumnName="ECF_EmergencyContactName" />
+                <ScalarProperty Name="ECF_HomeEmail" ColumnName="ECF_HomeEmail" />
+                <ScalarProperty Name="ECF_HomePhone" ColumnName="ECF_HomePhone" />
+                <ScalarProperty Name="ECF_NickName" ColumnName="ECF_NickName" />
+                <ScalarProperty Name="ECF_DriverLicense" ColumnName="ECF_DriverLicense" />
+                <ScalarProperty Name="ECF_SSN" ColumnName="ECF_SSN" />
+                <ScalarProperty Name="ECF_BirthDate" ColumnName="ECF_BirthDate" />
+                <ScalarProperty Name="ECF_Mobile" ColumnName="ECF_Mobile" />
+                <ScalarProperty Name="ECF_HomeAddress" ColumnName="ECF_HomeAddress" />
+                <ScalarProperty Name="ECF_Citizenship" ColumnName="ECF_Citizenship" />
+                <ScalarProperty Name="ECF_Gender" ColumnName="ECF_Gender" />
+                <ScalarProperty Name="ECF_LastName" ColumnName="ECF_LastName" />
+                <ScalarProperty Name="ECF_MiddleName" ColumnName="ECF_MiddleName" />
+                <ScalarProperty Name="ECF_FirstName" ColumnName="ECF_FirstName" />
+                <ScalarProperty Name="ECF_EMP_EmployeeID" ColumnName="ECF_EMP_EmployeeID" />
+                <ScalarProperty Name="ECF_Id" ColumnName="ECF_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spSetAssetAllocation" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetAssetAllocation" />
+          <FunctionImportMapping FunctionImportName="spSetEmergencyContactForm" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetEmergencyContactForm" />
+          <EntitySetMapping Name="Applicants">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.Applicant">
+              <MappingFragment StoreEntitySet="Applicant">
+                <ScalarProperty Name="APT_IsActive" ColumnName="APT_IsActive" />
+                <ScalarProperty Name="APT_Date" ColumnName="APT_Date" />
+                <ScalarProperty Name="APT_Status" ColumnName="APT_Status" />
+                <ScalarProperty Name="APT_JobPostingId" ColumnName="APT_JobPostingId" />
+                <ScalarProperty Name="APT_ALA_UserId" ColumnName="APT_ALA_UserId" />
+                <ScalarProperty Name="APT_ApplicantId" ColumnName="APT_ApplicantId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetApplicantLogin" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetApplicantLogin" />
+          <FunctionImportMapping FunctionImportName="spGetApplicantNewLoginCheckAvailability" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetApplicantNewLoginCheckAvailability" />
+          <FunctionImportMapping FunctionImportName="spSetApplicantChangePassword" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetApplicantChangePassword" />
+          <FunctionImportMapping FunctionImportName="spSetApplicantForgotPassword" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetApplicantForgotPassword" />
+          <EntitySetMapping Name="ApplicantLoginAccesses">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.ApplicantLoginAccess">
+              <MappingFragment StoreEntitySet="ApplicantLoginAccess">
+                <ScalarProperty Name="ALA_IsActive" ColumnName="ALA_IsActive" />
+                <ScalarProperty Name="ALA_Date" ColumnName="ALA_Date" />
+                <ScalarProperty Name="ALA_Answer" ColumnName="ALA_Answer" />
+                <ScalarProperty Name="ALA_Question" ColumnName="ALA_Question" />
+                <ScalarProperty Name="ALA_eMailId" ColumnName="ALA_eMailId" />
+                <ScalarProperty Name="ALA_LastName" ColumnName="ALA_LastName" />
+                <ScalarProperty Name="ALA_MidName" ColumnName="ALA_MidName" />
+                <ScalarProperty Name="ALA_FirstName" ColumnName="ALA_FirstName" />
+                <ScalarProperty Name="ALA_Password" ColumnName="ALA_Password" />
+                <ScalarProperty Name="ALA_LoginId" ColumnName="ALA_LoginId" />
+                <ScalarProperty Name="ALA_UserId" ColumnName="ALA_UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spSetApplicantCreateLoginAccess" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetApplicantCreateLoginAccess" />
+          <EntitySetMapping Name="ApplicantPersonalInfoes">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.ApplicantPersonalInfo">
+              <MappingFragment StoreEntitySet="ApplicantPersonalInfo">
+                <ScalarProperty Name="API_IsActive" ColumnName="API_IsActive" />
+                <ScalarProperty Name="API_Date" ColumnName="API_Date" />
+                <ScalarProperty Name="API_DesireSalaryWages" ColumnName="API_DesireSalaryWages" />
+                <ScalarProperty Name="API_DLNumber" ColumnName="API_DLNumber" />
+                <ScalarProperty Name="API_SSN" ColumnName="API_SSN" />
+                <ScalarProperty Name="API_Resume" ColumnName="API_Resume" />
+                <ScalarProperty Name="API_LastName" ColumnName="API_LastName" />
+                <ScalarProperty Name="API_MidName" ColumnName="API_MidName" />
+                <ScalarProperty Name="API_FirstName" ColumnName="API_FirstName" />
+                <ScalarProperty Name="API_APT_ApplicantId" ColumnName="API_APT_ApplicantId" />
+                <ScalarProperty Name="API_Id" ColumnName="API_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetQuestionsForInterview" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetQuestionsForInterview">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetQuestionsForInterview_Result4">
+                <ScalarProperty Name="IQM_Id" ColumnName="IQM_Id" />
+                <ScalarProperty Name="IQM_Question" ColumnName="IQM_Question" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="InterviewQuestionChilds">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.InterviewQuestionChild">
+              <MappingFragment StoreEntitySet="InterviewQuestionChild">
+                <ScalarProperty Name="IQC_IsActive" ColumnName="IQC_IsActive" />
+                <ScalarProperty Name="IQC_Date" ColumnName="IQC_Date" />
+                <ScalarProperty Name="IQC_ScoreNo" ColumnName="IQC_ScoreNo" />
+                <ScalarProperty Name="IQC_ScoreYes" ColumnName="IQC_ScoreYes" />
+                <ScalarProperty Name="IQC_Question" ColumnName="IQC_Question" />
+                <ScalarProperty Name="IQC_IQM_Id" ColumnName="IQC_IQM_Id" />
+                <ScalarProperty Name="IQC_Id" ColumnName="IQC_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InterviewQuestionMasters">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.InterviewQuestionMaster">
+              <MappingFragment StoreEntitySet="InterviewQuestionMaster">
+                <ScalarProperty Name="IQM_IsActive" ColumnName="IQM_IsActive" />
+                <ScalarProperty Name="IQM_Date" ColumnName="IQM_Date" />
+                <ScalarProperty Name="IQM_Exempt" ColumnName="IQM_Exempt" />
+                <ScalarProperty Name="IQM_Question" ColumnName="IQM_Question" />
+                <ScalarProperty Name="IQM_Id" ColumnName="IQM_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InterviewAnswers">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.InterviewAnswer">
+              <MappingFragment StoreEntitySet="InterviewAnswer">
+                <ScalarProperty Name="INA_IsActive" ColumnName="INA_IsActive" />
+                <ScalarProperty Name="INA_Date" ColumnName="INA_Date" />
+                <ScalarProperty Name="INA_Comments" ColumnName="INA_Comments" />
+                <ScalarProperty Name="INA_Answer" ColumnName="INA_Answer" />
+                <ScalarProperty Name="INA_EMP_EmployeeId" ColumnName="INA_EMP_EmployeeId" />
+                <ScalarProperty Name="INA_API_ApplicantId" ColumnName="INA_API_ApplicantId" />
+                <ScalarProperty Name="INA_IQC_Id" ColumnName="INA_IQC_Id" />
+                <ScalarProperty Name="INA_Id" ColumnName="INA_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spSetInterviewAnswer" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetInterviewAnswer" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

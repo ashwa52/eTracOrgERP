@@ -380,11 +380,15 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <UpdatedFor>To add multiple location string</UpdatedFor>
         public eTracLoginModel AuthenticateUser(eTracLoginModel loginViewModel)
         {
+            //var clientUrl = new ApplicantAPI();
+            //var data = clientUrl.Configuration("https://api.availity.com/availity/v1/configurations");
             ObjUserRepository = new UserRepository();
             //objLocationServicesRepository = new LocationServicesRepository();
             objPermissionDetailsRepository = new PermissionDetailsRepository();
             try
             {
+                //var ApplicantAPI = new ApplicantAPI();
+                //var tt = ApplicantAPI.Configuration("");
                 string mypassword = Cryptography.GetEncryptedData(loginViewModel.Password, true); 
                  //string mypassword23 = Cryptography.GetDecryptedData("RUNPkrIID3Q=", true); 
 

@@ -361,7 +361,7 @@ namespace WorkOrderEMS.BusinessLogic
             var obj = new EmailHelper();
             try
             {
-                notification = _db.NotificationDetails.Where(x => x.IsRead == false && x.IsDeleted == false && x.AssignUserId == objDetails.UserId || x.AssignUserId == 0 && (x.WorkOrderID != null && x.WorkOrderID > 0)).Select(a => new NotificationDetailModel()
+                notification = _db.NotificationDetails.Where(x => x.IsRead == false && x.IsDeleted == false &&  x.AssignUserId == objDetails.UserId || x.AssignUserId == 0 && (x.WorkOrderID > 0)).Select(a => new NotificationDetailModel()
                 {
                     WorkOrderID = a.WorkOrderID,
                     AssignTo = a.AssignUserId,
@@ -379,9 +379,11 @@ namespace WorkOrderEMS.BusinessLogic
                         #region Wo
                         if (item.WorkOrderID != null && item.WorkOrderID > 0)
                         {
-                            obj = _db.WorkRequestAssignments.Join(_db.NotificationDetails, q => q.WorkRequestAssignmentID, u => u.WorkOrderID, (q, u) => new { q, u }).
-                                      Where(x => (x.q.WorkRequestAssignmentID == item.WorkOrderID) && (x.u.IsDeleted == false)
-                                      && (x.u.IsRead == false && x.q.IsDeleted == false && (x.q.AssignToUserId == objDetails.UserId || x.q.AssignToUserId == 0))).Select
+                            obj = _db.WorkRequestAssignments.Join(_db.NotificationDetails, q => q.WorkOrderCodeID, u => u.WorkOrderID, (q, u) => new { q, u }).
+                                      Where(x => (x.q.WorkOrderCodeID == item.WorkOrderID) 
+                                      //&& (x.u.IsDeleted == false)
+                                      //&& (x.u.IsRead == false && x.q.IsDeleted == false && (x.q.AssignToUserId == objDetails.UserId || x.q.AssignToUserId == 0)))
+                                      ).Select
                                       (a => new EmailHelper()
                                       {
                                           MailType = a.q.WorkRequestProjectType == 128 ? "WORKORDERREQUESTTOEMPLOYEE" : a.q.WorkRequestProjectType == 129 ? "SPECIALWORKORDERTOEMPLOYEE" : a.q.WorkRequestProjectType == 279 ? "CONTINIOUSREQUEST" : "EMAINTENANCE",
@@ -411,6 +413,7 @@ namespace WorkOrderEMS.BusinessLogic
                                           DriverLicenseNo = a.q.DriverLicenseNo,
                                           CustomerContact = a.q.CustomerContact,
                                           FacilityRequest = a.q.FacilityRequestId,
+                                          FacilityRequestType = a.q.FacilityRequestId != null || a.q.FacilityRequestId > 0 ?_db.GlobalCodes.Where(x => x.GlobalCodeId == a.q.FacilityRequestId).FirstOrDefault().CodeName :null,
                                           AddressFacilityReq = a.q.Address,
                                           LicensePlateNo = a.q.LicensePlateNo
                                       }).FirstOrDefault();

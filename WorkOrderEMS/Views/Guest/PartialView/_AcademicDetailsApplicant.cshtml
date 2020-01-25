@@ -1,0 +1,92 @@
+﻿@model dynamic
+@{
+    ViewBag.Title = "Index";
+    //Layout = "~/Views/Shared/_GuestLayout.cshtml";
+}
+
+@{ 
+    string myModelprefix = ViewBag.myModelprefixName;
+}
+<div class="panel panel-primary setup-content">
+    <div class="basic-form">
+        <div class="panelData">
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label class="col-form-label" for="FirstName">First Name<span class="req">*</span></label>
+                    @Html.TextBox(myModelprefix + "dfjsd", null, new { @id = "FirstName", @class = "form-control input-rounded" })
+                    @Html.ValidationMessage("dfjsd")
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="col-form-label" for="MiddleName">Middle Name<span class="req">*</span></label>
+                    @Html.TextBox("dfjsd", null, new { @id = "MiddleName", @class = "form-control input-rounded" })
+                    @Html.ValidationMessage("dfjsd")
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="col-form-label" for="LastName">Last Name</label>
+                    @Html.TextBox("dfjsd", null, new { @class = "form-control input-rounded" })
+                    <div class="errorspace">
+                        @Html.ValidationMessage("dfjsd")
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label class="col-form-label" for="FirstName">First Name<span class="req">*</span></label>
+                    @Html.TextBox(myModelprefix + "dfjsd", null, new { @id = "FirstName", @class = "form-control input-rounded" })
+                    @Html.ValidationMessage("dfjsd")
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="col-form-label" for="MiddleName">Middle Name<span class="req">*</span></label>
+                    @Html.TextBox("dfjsd", null, new { @id = "MiddleName", @class = "form-control input-rounded" })
+                    @Html.ValidationMessage("dfjsd")
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="col-form-label" for="LastName">Last Name</label>
+                    @Html.TextBox("dfjsd", null, new { @class = "form-control input-rounded" })
+                    <div class="errorspace">
+                        @Html.ValidationMessage("dfjsd")
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label class="col-form-label" for="FirstName">First Name<span class="req">*</span></label>
+                    @Html.TextBox(myModelprefix + "dfjsd", null, new { @id = "FirstName", @class = "form-control input-rounded" })
+                    @Html.ValidationMessage("dfjsd")
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="col-form-label" for="MiddleName">Middle Name<span class="req">*</span></label>
+                    @Html.TextBox("dfjsd", null, new { @id = "MiddleName", @class = "form-control input-rounded" })
+                    @Html.ValidationMessage("dfjsd")
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="col-form-label" for="LastName">Last Name</label>
+                    @Html.TextBox("dfjsd", null, new { @class = "form-control input-rounded" })
+                    <div class="errorspace">
+                        @Html.ValidationMessage("dfjsd")
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label class="col-form-label" for="FirstName">First Name<span class="req">*</span></label>
+                    @Html.TextBox(myModelprefix + "dfjsd", null, new { @id = "FirstName", @class = "form-control input-rounded" })
+                    @Html.ValidationMessage("dfjsd")
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="col-form-label" for="MiddleName">Middle Name<span class="req">*</span></label>
+                    @Html.TextBox("dfjsd", null, new { @id = "MiddleName", @class = "form-control input-rounded" })
+                    @Html.ValidationMessage("dfjsd")
+                </div>
+                <div class="form-group col-md-4">
+                    <label class="col-form-label" for="LastName">Last Name</label>
+                    @Html.TextBox("dfjsd", null, new { @class = "form-control input-rounded" })
+                    <div class="errorspace">
+                        @Html.ValidationMessage("dfjsd")
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+    </div>
+</div>

@@ -140,9 +140,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<FileType> FileTypes { get; set; }
         public virtual DbSet<ApplicantInfo> ApplicantInfoes { get; set; }
         public virtual DbSet<DirectDepositForm> DirectDepositForms { get; set; }
-        public virtual DbSet<EmergencyContactForm> EmergencyContactForms { get; set; }
         public virtual DbSet<EmployeeHandbook> EmployeeHandbooks { get; set; }
-        public virtual DbSet<InterviewAnswer> InterviewAnswers { get; set; }
         public virtual DbSet<InterviewQuestion> InterviewQuestions { get; set; }
         public virtual DbSet<InterviewSchedule> InterviewSchedules { get; set; }
         public virtual DbSet<SubModule> SubModules { get; set; }
@@ -151,6 +149,13 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<VehicleSeatingSubModuleMapping> VehicleSeatingSubModuleMappings { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<LoginLog> LoginLogs { get; set; }
+        public virtual DbSet<EmergencyContactForm> EmergencyContactForms { get; set; }
+        public virtual DbSet<Applicant> Applicants { get; set; }
+        public virtual DbSet<ApplicantLoginAccess> ApplicantLoginAccesses { get; set; }
+        public virtual DbSet<ApplicantPersonalInfo> ApplicantPersonalInfoes { get; set; }
+        public virtual DbSet<InterviewQuestionChild> InterviewQuestionChilds { get; set; }
+        public virtual DbSet<InterviewQuestionMaster> InterviewQuestionMasters { get; set; }
+        public virtual DbSet<InterviewAnswer> InterviewAnswers { get; set; }
     
         [DbFunction("workorderEMSEntities", "fn_Split")]
         public virtual IQueryable<fn_Split_Result> fn_Split(string sText, string sDelim)
@@ -4806,43 +4811,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("spGetEmployeeHandbook", employeeIDParameter);
         }
     
-        public virtual int spSetEmergencyContactForm(string eCFAction, Nullable<long> eCF_Id, string eCF_EMP_EmployeeID, string eCF_NickName, Nullable<long> eCF_HomePhone, string eCF_HomeEmail, Nullable<System.DateTime> eCF_Date, string eCF_IsActive)
-        {
-            var eCFActionParameter = eCFAction != null ?
-                new ObjectParameter("ECFAction", eCFAction) :
-                new ObjectParameter("ECFAction", typeof(string));
-    
-            var eCF_IdParameter = eCF_Id.HasValue ?
-                new ObjectParameter("ECF_Id", eCF_Id) :
-                new ObjectParameter("ECF_Id", typeof(long));
-    
-            var eCF_EMP_EmployeeIDParameter = eCF_EMP_EmployeeID != null ?
-                new ObjectParameter("ECF_EMP_EmployeeID", eCF_EMP_EmployeeID) :
-                new ObjectParameter("ECF_EMP_EmployeeID", typeof(string));
-    
-            var eCF_NickNameParameter = eCF_NickName != null ?
-                new ObjectParameter("ECF_NickName", eCF_NickName) :
-                new ObjectParameter("ECF_NickName", typeof(string));
-    
-            var eCF_HomePhoneParameter = eCF_HomePhone.HasValue ?
-                new ObjectParameter("ECF_HomePhone", eCF_HomePhone) :
-                new ObjectParameter("ECF_HomePhone", typeof(long));
-    
-            var eCF_HomeEmailParameter = eCF_HomeEmail != null ?
-                new ObjectParameter("ECF_HomeEmail", eCF_HomeEmail) :
-                new ObjectParameter("ECF_HomeEmail", typeof(string));
-    
-            var eCF_DateParameter = eCF_Date.HasValue ?
-                new ObjectParameter("ECF_Date", eCF_Date) :
-                new ObjectParameter("ECF_Date", typeof(System.DateTime));
-    
-            var eCF_IsActiveParameter = eCF_IsActive != null ?
-                new ObjectParameter("ECF_IsActive", eCF_IsActive) :
-                new ObjectParameter("ECF_IsActive", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetEmergencyContactForm", eCFActionParameter, eCF_IdParameter, eCF_EMP_EmployeeIDParameter, eCF_NickNameParameter, eCF_HomePhoneParameter, eCF_HomeEmailParameter, eCF_DateParameter, eCF_IsActiveParameter);
-        }
-    
         public virtual int spSetEmployeeHandbook(string eHBAction, Nullable<long> eHB_Id, string eHB_EMP_EmployeeID, string eHB_IsActive)
         {
             var eHBActionParameter = eHBAction != null ?
@@ -4919,31 +4887,6 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("DDF_IsActive", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetDirectDepositForm", dDFActionParameter, dDF_EMP_EmployeeIDParameter, dDF_BankName_1Parameter, dDF_AccountType_1Parameter, dDF_AccountNumber_1Parameter, dDF_BankRoutingNumber_1Parameter, dDF_PrcentageOrDollarAmount_1Parameter, dDF_BankName_2Parameter, dDF_AccountType_2Parameter, dDF_AccountNumber_2Parameter, dDF_BankRoutingNumber_2Parameter, dDF_VoidCkeckParameter, dDF_IsActiveParameter);
-        }
-    
-        public virtual int spSetInterviewAnswer(Nullable<long> iNA_INQ_Id, Nullable<long> iNA_API_ApplicantId, string iNA_EMP_EmployeeID, string iNA_Answer, string iNA_Comments)
-        {
-            var iNA_INQ_IdParameter = iNA_INQ_Id.HasValue ?
-                new ObjectParameter("INA_INQ_Id", iNA_INQ_Id) :
-                new ObjectParameter("INA_INQ_Id", typeof(long));
-    
-            var iNA_API_ApplicantIdParameter = iNA_API_ApplicantId.HasValue ?
-                new ObjectParameter("INA_API_ApplicantId", iNA_API_ApplicantId) :
-                new ObjectParameter("INA_API_ApplicantId", typeof(long));
-    
-            var iNA_EMP_EmployeeIDParameter = iNA_EMP_EmployeeID != null ?
-                new ObjectParameter("INA_EMP_EmployeeID", iNA_EMP_EmployeeID) :
-                new ObjectParameter("INA_EMP_EmployeeID", typeof(string));
-    
-            var iNA_AnswerParameter = iNA_Answer != null ?
-                new ObjectParameter("INA_Answer", iNA_Answer) :
-                new ObjectParameter("INA_Answer", typeof(string));
-    
-            var iNA_CommentsParameter = iNA_Comments != null ?
-                new ObjectParameter("INA_Comments", iNA_Comments) :
-                new ObjectParameter("INA_Comments", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetInterviewAnswer", iNA_INQ_IdParameter, iNA_API_ApplicantIdParameter, iNA_EMP_EmployeeIDParameter, iNA_AnswerParameter, iNA_CommentsParameter);
         }
     
         public virtual int spSetInterviewerIsOnline(Nullable<long> applicantId, string employeeID, string isAvailable, string iNA_Comments)
@@ -5816,15 +5759,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEducationVerificationForm_Result1>("spGetEducationVerificationForm", employeeIDParameter);
         }
     
-        public virtual ObjectResult<spGetEmergencyContactForm_Result2> spGetEmergencyContactForm(string employeeID)
-        {
-            var employeeIDParameter = employeeID != null ?
-                new ObjectParameter("EmployeeID", employeeID) :
-                new ObjectParameter("EmployeeID", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEmergencyContactForm_Result2>("spGetEmergencyContactForm", employeeIDParameter);
-        }
-    
         public virtual ObjectResult<spGetEmployeeManagementList_Result2> spGetEmployeeManagementList(string employeeId)
         {
             var employeeIdParameter = employeeId != null ?
@@ -6510,6 +6444,304 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("JBT_IsActive", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetJobTitle", jBTActionParameter, jBT_IdParameter, jBT_JobTitleParameter, jBT_JobCountParameter, jBT_FillJobCountParameter, jBT_VST_IdParameter, jBT_IsActiveParameter);
+        }
+    
+        public virtual ObjectResult<spGetEmergencyContactForm_Result4> spGetEmergencyContactForm(string employeeID)
+        {
+            var employeeIDParameter = employeeID != null ?
+                new ObjectParameter("EmployeeID", employeeID) :
+                new ObjectParameter("EmployeeID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEmergencyContactForm_Result4>("spGetEmergencyContactForm", employeeIDParameter);
+        }
+    
+        public virtual int spSetAssetAllocation(string action, Nullable<long> aTA_Id, string aTA_EMP_EmployeeId, string aTA_Type, string aTA_AssetName, string aTA_AssetDescription, Nullable<System.DateTime> aTA_Make, string aTA_Model, string aTA_SerialNumber, string aTA_Login, string aTA_Password, Nullable<System.DateTime> aTA_AssignDate, string aTA_ReturnAcceptBy, Nullable<System.DateTime> aTA_ReturnDate, string aTA_ReturnStatus, string aTA_IsActive)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var aTA_IdParameter = aTA_Id.HasValue ?
+                new ObjectParameter("ATA_Id", aTA_Id) :
+                new ObjectParameter("ATA_Id", typeof(long));
+    
+            var aTA_EMP_EmployeeIdParameter = aTA_EMP_EmployeeId != null ?
+                new ObjectParameter("ATA_EMP_EmployeeId", aTA_EMP_EmployeeId) :
+                new ObjectParameter("ATA_EMP_EmployeeId", typeof(string));
+    
+            var aTA_TypeParameter = aTA_Type != null ?
+                new ObjectParameter("ATA_Type", aTA_Type) :
+                new ObjectParameter("ATA_Type", typeof(string));
+    
+            var aTA_AssetNameParameter = aTA_AssetName != null ?
+                new ObjectParameter("ATA_AssetName", aTA_AssetName) :
+                new ObjectParameter("ATA_AssetName", typeof(string));
+    
+            var aTA_AssetDescriptionParameter = aTA_AssetDescription != null ?
+                new ObjectParameter("ATA_AssetDescription", aTA_AssetDescription) :
+                new ObjectParameter("ATA_AssetDescription", typeof(string));
+    
+            var aTA_MakeParameter = aTA_Make.HasValue ?
+                new ObjectParameter("ATA_Make", aTA_Make) :
+                new ObjectParameter("ATA_Make", typeof(System.DateTime));
+    
+            var aTA_ModelParameter = aTA_Model != null ?
+                new ObjectParameter("ATA_Model", aTA_Model) :
+                new ObjectParameter("ATA_Model", typeof(string));
+    
+            var aTA_SerialNumberParameter = aTA_SerialNumber != null ?
+                new ObjectParameter("ATA_SerialNumber", aTA_SerialNumber) :
+                new ObjectParameter("ATA_SerialNumber", typeof(string));
+    
+            var aTA_LoginParameter = aTA_Login != null ?
+                new ObjectParameter("ATA_Login", aTA_Login) :
+                new ObjectParameter("ATA_Login", typeof(string));
+    
+            var aTA_PasswordParameter = aTA_Password != null ?
+                new ObjectParameter("ATA_Password", aTA_Password) :
+                new ObjectParameter("ATA_Password", typeof(string));
+    
+            var aTA_AssignDateParameter = aTA_AssignDate.HasValue ?
+                new ObjectParameter("ATA_AssignDate", aTA_AssignDate) :
+                new ObjectParameter("ATA_AssignDate", typeof(System.DateTime));
+    
+            var aTA_ReturnAcceptByParameter = aTA_ReturnAcceptBy != null ?
+                new ObjectParameter("ATA_ReturnAcceptBy", aTA_ReturnAcceptBy) :
+                new ObjectParameter("ATA_ReturnAcceptBy", typeof(string));
+    
+            var aTA_ReturnDateParameter = aTA_ReturnDate.HasValue ?
+                new ObjectParameter("ATA_ReturnDate", aTA_ReturnDate) :
+                new ObjectParameter("ATA_ReturnDate", typeof(System.DateTime));
+    
+            var aTA_ReturnStatusParameter = aTA_ReturnStatus != null ?
+                new ObjectParameter("ATA_ReturnStatus", aTA_ReturnStatus) :
+                new ObjectParameter("ATA_ReturnStatus", typeof(string));
+    
+            var aTA_IsActiveParameter = aTA_IsActive != null ?
+                new ObjectParameter("ATA_IsActive", aTA_IsActive) :
+                new ObjectParameter("ATA_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetAssetAllocation", actionParameter, aTA_IdParameter, aTA_EMP_EmployeeIdParameter, aTA_TypeParameter, aTA_AssetNameParameter, aTA_AssetDescriptionParameter, aTA_MakeParameter, aTA_ModelParameter, aTA_SerialNumberParameter, aTA_LoginParameter, aTA_PasswordParameter, aTA_AssignDateParameter, aTA_ReturnAcceptByParameter, aTA_ReturnDateParameter, aTA_ReturnStatusParameter, aTA_IsActiveParameter);
+        }
+    
+        public virtual int spSetEmergencyContactForm(string eCFAction, Nullable<long> eCF_Id, string eCF_EMP_EmployeeID, string eCF_NickName, Nullable<long> eCF_HomePhone, string eCF_HomeAddress, string eCF_HomeEmail, string eCF_FirstName, string eCF_MiddleName, string eCF_LastName, string eCF_Address, string eCF_Gender, string eCF_Citizenship, Nullable<System.DateTime> eCF_BirthDate, string eCF_DriverLicense, string eCF_EmergencyContactName, Nullable<long> eCF_Mobile, Nullable<long> eCF_PhoneNumber, string eCF_SSN, string eCF_Relationship, string eCF_IsActive)
+        {
+            var eCFActionParameter = eCFAction != null ?
+                new ObjectParameter("ECFAction", eCFAction) :
+                new ObjectParameter("ECFAction", typeof(string));
+    
+            var eCF_IdParameter = eCF_Id.HasValue ?
+                new ObjectParameter("ECF_Id", eCF_Id) :
+                new ObjectParameter("ECF_Id", typeof(long));
+    
+            var eCF_EMP_EmployeeIDParameter = eCF_EMP_EmployeeID != null ?
+                new ObjectParameter("ECF_EMP_EmployeeID", eCF_EMP_EmployeeID) :
+                new ObjectParameter("ECF_EMP_EmployeeID", typeof(string));
+    
+            var eCF_NickNameParameter = eCF_NickName != null ?
+                new ObjectParameter("ECF_NickName", eCF_NickName) :
+                new ObjectParameter("ECF_NickName", typeof(string));
+    
+            var eCF_HomePhoneParameter = eCF_HomePhone.HasValue ?
+                new ObjectParameter("ECF_HomePhone", eCF_HomePhone) :
+                new ObjectParameter("ECF_HomePhone", typeof(long));
+    
+            var eCF_HomeAddressParameter = eCF_HomeAddress != null ?
+                new ObjectParameter("ECF_HomeAddress", eCF_HomeAddress) :
+                new ObjectParameter("ECF_HomeAddress", typeof(string));
+    
+            var eCF_HomeEmailParameter = eCF_HomeEmail != null ?
+                new ObjectParameter("ECF_HomeEmail", eCF_HomeEmail) :
+                new ObjectParameter("ECF_HomeEmail", typeof(string));
+    
+            var eCF_FirstNameParameter = eCF_FirstName != null ?
+                new ObjectParameter("ECF_FirstName", eCF_FirstName) :
+                new ObjectParameter("ECF_FirstName", typeof(string));
+    
+            var eCF_MiddleNameParameter = eCF_MiddleName != null ?
+                new ObjectParameter("ECF_MiddleName", eCF_MiddleName) :
+                new ObjectParameter("ECF_MiddleName", typeof(string));
+    
+            var eCF_LastNameParameter = eCF_LastName != null ?
+                new ObjectParameter("ECF_LastName", eCF_LastName) :
+                new ObjectParameter("ECF_LastName", typeof(string));
+    
+            var eCF_AddressParameter = eCF_Address != null ?
+                new ObjectParameter("ECF_Address", eCF_Address) :
+                new ObjectParameter("ECF_Address", typeof(string));
+    
+            var eCF_GenderParameter = eCF_Gender != null ?
+                new ObjectParameter("ECF_Gender", eCF_Gender) :
+                new ObjectParameter("ECF_Gender", typeof(string));
+    
+            var eCF_CitizenshipParameter = eCF_Citizenship != null ?
+                new ObjectParameter("ECF_Citizenship", eCF_Citizenship) :
+                new ObjectParameter("ECF_Citizenship", typeof(string));
+    
+            var eCF_BirthDateParameter = eCF_BirthDate.HasValue ?
+                new ObjectParameter("ECF_BirthDate", eCF_BirthDate) :
+                new ObjectParameter("ECF_BirthDate", typeof(System.DateTime));
+    
+            var eCF_DriverLicenseParameter = eCF_DriverLicense != null ?
+                new ObjectParameter("ECF_DriverLicense", eCF_DriverLicense) :
+                new ObjectParameter("ECF_DriverLicense", typeof(string));
+    
+            var eCF_EmergencyContactNameParameter = eCF_EmergencyContactName != null ?
+                new ObjectParameter("ECF_EmergencyContactName", eCF_EmergencyContactName) :
+                new ObjectParameter("ECF_EmergencyContactName", typeof(string));
+    
+            var eCF_MobileParameter = eCF_Mobile.HasValue ?
+                new ObjectParameter("ECF_Mobile", eCF_Mobile) :
+                new ObjectParameter("ECF_Mobile", typeof(long));
+    
+            var eCF_PhoneNumberParameter = eCF_PhoneNumber.HasValue ?
+                new ObjectParameter("ECF_PhoneNumber", eCF_PhoneNumber) :
+                new ObjectParameter("ECF_PhoneNumber", typeof(long));
+    
+            var eCF_SSNParameter = eCF_SSN != null ?
+                new ObjectParameter("ECF_SSN", eCF_SSN) :
+                new ObjectParameter("ECF_SSN", typeof(string));
+    
+            var eCF_RelationshipParameter = eCF_Relationship != null ?
+                new ObjectParameter("ECF_Relationship", eCF_Relationship) :
+                new ObjectParameter("ECF_Relationship", typeof(string));
+    
+            var eCF_IsActiveParameter = eCF_IsActive != null ?
+                new ObjectParameter("ECF_IsActive", eCF_IsActive) :
+                new ObjectParameter("ECF_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetEmergencyContactForm", eCFActionParameter, eCF_IdParameter, eCF_EMP_EmployeeIDParameter, eCF_NickNameParameter, eCF_HomePhoneParameter, eCF_HomeAddressParameter, eCF_HomeEmailParameter, eCF_FirstNameParameter, eCF_MiddleNameParameter, eCF_LastNameParameter, eCF_AddressParameter, eCF_GenderParameter, eCF_CitizenshipParameter, eCF_BirthDateParameter, eCF_DriverLicenseParameter, eCF_EmergencyContactNameParameter, eCF_MobileParameter, eCF_PhoneNumberParameter, eCF_SSNParameter, eCF_RelationshipParameter, eCF_IsActiveParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<long>> spGetApplicantLogin(string aLA_LiginId, string aLA_Password, ObjectParameter aLA_UserId)
+        {
+            var aLA_LiginIdParameter = aLA_LiginId != null ?
+                new ObjectParameter("ALA_LiginId", aLA_LiginId) :
+                new ObjectParameter("ALA_LiginId", typeof(string));
+    
+            var aLA_PasswordParameter = aLA_Password != null ?
+                new ObjectParameter("ALA_Password", aLA_Password) :
+                new ObjectParameter("ALA_Password", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<long>>("spGetApplicantLogin", aLA_LiginIdParameter, aLA_PasswordParameter, aLA_UserId);
+        }
+    
+        public virtual int spGetApplicantNewLoginCheckAvailability(string aLA_LiginId, ObjectParameter availability)
+        {
+            var aLA_LiginIdParameter = aLA_LiginId != null ?
+                new ObjectParameter("ALA_LiginId", aLA_LiginId) :
+                new ObjectParameter("ALA_LiginId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetApplicantNewLoginCheckAvailability", aLA_LiginIdParameter, availability);
+        }
+    
+        public virtual int spSetApplicantChangePassword(string loginID, string password, string newPassword)
+        {
+            var loginIDParameter = loginID != null ?
+                new ObjectParameter("LoginID", loginID) :
+                new ObjectParameter("LoginID", typeof(string));
+    
+            var passwordParameter = password != null ?
+                new ObjectParameter("Password", password) :
+                new ObjectParameter("Password", typeof(string));
+    
+            var newPasswordParameter = newPassword != null ?
+                new ObjectParameter("NewPassword", newPassword) :
+                new ObjectParameter("NewPassword", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApplicantChangePassword", loginIDParameter, passwordParameter, newPasswordParameter);
+        }
+    
+        public virtual int spSetApplicantForgotPassword(string loginID, string newPassword)
+        {
+            var loginIDParameter = loginID != null ?
+                new ObjectParameter("LoginID", loginID) :
+                new ObjectParameter("LoginID", typeof(string));
+    
+            var newPasswordParameter = newPassword != null ?
+                new ObjectParameter("NewPassword", newPassword) :
+                new ObjectParameter("NewPassword", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApplicantForgotPassword", loginIDParameter, newPasswordParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<long>> spSetApplicantCreateLoginAccess(string aLA_LoginId, string aLA_Password, string aLA_FirstName, string aLA_MidName, string aLA_LastName, string aLA_eMailId, string aLA_Question, string aLA_Answer)
+        {
+            var aLA_LoginIdParameter = aLA_LoginId != null ?
+                new ObjectParameter("ALA_LoginId", aLA_LoginId) :
+                new ObjectParameter("ALA_LoginId", typeof(string));
+    
+            var aLA_PasswordParameter = aLA_Password != null ?
+                new ObjectParameter("ALA_Password", aLA_Password) :
+                new ObjectParameter("ALA_Password", typeof(string));
+    
+            var aLA_FirstNameParameter = aLA_FirstName != null ?
+                new ObjectParameter("ALA_FirstName", aLA_FirstName) :
+                new ObjectParameter("ALA_FirstName", typeof(string));
+    
+            var aLA_MidNameParameter = aLA_MidName != null ?
+                new ObjectParameter("ALA_MidName", aLA_MidName) :
+                new ObjectParameter("ALA_MidName", typeof(string));
+    
+            var aLA_LastNameParameter = aLA_LastName != null ?
+                new ObjectParameter("ALA_LastName", aLA_LastName) :
+                new ObjectParameter("ALA_LastName", typeof(string));
+    
+            var aLA_eMailIdParameter = aLA_eMailId != null ?
+                new ObjectParameter("ALA_eMailId", aLA_eMailId) :
+                new ObjectParameter("ALA_eMailId", typeof(string));
+    
+            var aLA_QuestionParameter = aLA_Question != null ?
+                new ObjectParameter("ALA_Question", aLA_Question) :
+                new ObjectParameter("ALA_Question", typeof(string));
+    
+            var aLA_AnswerParameter = aLA_Answer != null ?
+                new ObjectParameter("ALA_Answer", aLA_Answer) :
+                new ObjectParameter("ALA_Answer", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<long>>("spSetApplicantCreateLoginAccess", aLA_LoginIdParameter, aLA_PasswordParameter, aLA_FirstNameParameter, aLA_MidNameParameter, aLA_LastNameParameter, aLA_eMailIdParameter, aLA_QuestionParameter, aLA_AnswerParameter);
+        }
+    
+        public virtual ObjectResult<spGetQuestionsForInterview_Result4> spGetQuestionsForInterview(string action, string isExempt, Nullable<long> iQC_IQM_Id)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var isExemptParameter = isExempt != null ?
+                new ObjectParameter("IsExempt", isExempt) :
+                new ObjectParameter("IsExempt", typeof(string));
+    
+            var iQC_IQM_IdParameter = iQC_IQM_Id.HasValue ?
+                new ObjectParameter("IQC_IQM_Id", iQC_IQM_Id) :
+                new ObjectParameter("IQC_IQM_Id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetQuestionsForInterview_Result4>("spGetQuestionsForInterview", actionParameter, isExemptParameter, iQC_IQM_IdParameter);
+        }
+    
+        public virtual int spSetInterviewAnswer(Nullable<long> iNA_IQC_Id, Nullable<long> iNA_API_ApplicantId, string iNA_EMP_EmployeeID, string iNA_Answer, string iNA_Comments)
+        {
+            var iNA_IQC_IdParameter = iNA_IQC_Id.HasValue ?
+                new ObjectParameter("INA_IQC_Id", iNA_IQC_Id) :
+                new ObjectParameter("INA_IQC_Id", typeof(long));
+    
+            var iNA_API_ApplicantIdParameter = iNA_API_ApplicantId.HasValue ?
+                new ObjectParameter("INA_API_ApplicantId", iNA_API_ApplicantId) :
+                new ObjectParameter("INA_API_ApplicantId", typeof(long));
+    
+            var iNA_EMP_EmployeeIDParameter = iNA_EMP_EmployeeID != null ?
+                new ObjectParameter("INA_EMP_EmployeeID", iNA_EMP_EmployeeID) :
+                new ObjectParameter("INA_EMP_EmployeeID", typeof(string));
+    
+            var iNA_AnswerParameter = iNA_Answer != null ?
+                new ObjectParameter("INA_Answer", iNA_Answer) :
+                new ObjectParameter("INA_Answer", typeof(string));
+    
+            var iNA_CommentsParameter = iNA_Comments != null ?
+                new ObjectParameter("INA_Comments", iNA_Comments) :
+                new ObjectParameter("INA_Comments", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetInterviewAnswer", iNA_IQC_IdParameter, iNA_API_ApplicantIdParameter, iNA_EMP_EmployeeIDParameter, iNA_AnswerParameter, iNA_CommentsParameter);
         }
     }
 }

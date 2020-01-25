@@ -1,0 +1,440 @@
+﻿@model WorkOrderEMS.Models.Employee.EmployeeVIewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_GuestLayout.cshtml";
+}
+<style>
+    .info {
+        display: inline-block;
+        margin: 10px;
+    }
+
+    .profile {
+        display: inline-block;
+    }
+
+        .profile img {
+            width: 100px;
+            height: auto;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+        }
+
+    .middle {
+        text-align: center;
+        background-color: yellow;
+        margin-top: 12px;
+        height: 28px;
+    }
+
+    .input-rounded {
+        border: 1px solid #000;
+    }
+
+    .btnverify {
+        background-color: #0CCC14;
+        width: 157px;
+        height: 58px;
+        font-size: 20px;
+        color: wheat;
+    }
+
+    #RenderPageId {
+        background-image: url(https://eliteparkingofamerica.com/wp-content/uploads/2017/12/parking.gif) !important;
+        
+    }
+
+    label {
+        margin-top: 3px;
+    }
+</style>
+<script>
+	function EnableEdit(elm) {
+		var inputs = $('.basic-form :input');
+		if (elm.checked) {
+			inputs.each(function (i, elm) {
+				$(elm).removeAttr('disabled');
+			})
+			$("#hdnIsEditEnable").val(true);
+		}
+		else {
+			inputs.each(function (i, elm) {
+				$(elm).attr('disabled',true);
+			})
+			$("#hdnIsEditEnable").val(false);
+		}
+	}
+</script>
+<link href="~/Content/eCounting/VendorWizard.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/CSS/custom.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/common/Common.js"></script>
+<script type="text/javascript" src="~/Scripts/BindDropDown/DropDownList.js"></script>
+<script src="~/Scripts/simple.money.format.js"></script>
+<script type="text/javascript" src="~/Scripts/common/Masking.js"></script>
+<style>
+    .input-disabled {
+        background-color: #EBEBE4;
+    }
+
+    .panelData {
+        background: #eceaea;
+        padding: 14px 24px;
+    }
+</style>
+<br />
+<div class="content-body">
+    <div class="container-fluid" style="margin-top:-46px;">
+        <!-- row -->
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card aos-init aos-animate" data-aos="fade-up">
+                    <div class="card-header">
+                        <h4 class="card-title">On-Boarding/Personal Information</h4>
+                    </div>
+                    <div class="card-body">
+                        @*@using (Html.BeginForm("VendorManagementSetup", "VendorManagement", FormMethod.Post, new { enctype = "multipart/form-data", @id = "msform", @class = "step-form-horizontal", @style = "" }))
+                        {*@
+                        <form id = "msform" class = "step-form-horizontal">
+                            @*@Html.ValidationSummary(true)
+                            @Html.AntiForgeryToken()*@
+                            <!-- progressbar -->
+                            <div class="stepwizard">
+                                <div class="stepwizard-row setup-panel" id="progressbar">
+                                    <div class="stepwizard-step col">
+                                        <a href="#step-1" type="button" class="btn btn-circledata btn-success active">1</a>
+                                        <p><small>Personal Details</small></p>
+                                    </div>
+                                    <div class="stepwizard-step col">
+                                        <a href="#step-2" type="button" class="btn btn-circledata btn-default">2</a>
+                                        <p><small>Academic Details</small></p>
+                                    </div>
+                                    <div class="stepwizard-step col">
+                                        <a href="#step-3" type="button" class="btn btn-circledata btn-default">3</a>
+                                        <p><small>Employment History</small></p>
+                                    </div>
+                                    @*<div class="stepwizard-step col">
+                    <a href="#step-4" type="button" class="btn btn-circledata btn-default">4</a>
+                    <p><small>Add Files</small></p>
+                </div>
+                <div class="stepwizard-step col">
+                    <a href="#step-5" type="button" class="btn btn-circledata btn-default">5</a>
+                    <p><small>Benifits</small></p>
+                </div>
+                <div class="stepwizard-step col">
+                    <a href="#step-6" type="button" class="btn btn-circledata btn-default">6</a>
+                    <p><small>Declaration</small></p>
+                </div>*@
+                                </div>
+                            </div>
+                      
+                            <!-- fieldsets -->
+                            @Html.HiddenFor(model => model.FirstName, new { @id = "StateAfterIsSame" })
+                            @Html.HiddenFor(model => model.FirstName, new { @id = "ProductList" })
+
+                            @Html.HiddenFor(model => model.FirstName, new { @id = "VendorId" })
+
+                            @Html.HiddenFor(model => model.FirstName, new { @id = "CompanyDocEdit" })
+                            @Html.HiddenFor(model => model.FirstName)
+                            @if (ViewBag.UpdateMode != false)
+                            {
+                            @Html.HiddenFor(model => model.FirstName, new { @id = "VendorTypeForEdit" })
+                            }
+                            <br />
+                            <fieldset id="OnBoardingSetUp">
+                                <div class="panel panel-primary setup-content">
+                                    <div class="basic-form">
+                                        <div class="panelData">
+                                            <div class="form-row">
+                                                <div class="form-group col-md-4">
+                                                    <label class="col-form-label" for="FirstName">First Name<span class="req">*</span></label>
+                                                    @Html.TextBoxFor(model => model.FirstName, new { @id = "FirstName", @class = "form-control input-rounded" })
+                                                    @Html.ValidationMessageFor(model => model.FirstName)
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="col-form-label" for="MiddleName">Middle Name<span class="req">*</span></label>
+                                                    @Html.TextBoxFor(model => model.MiddleName, new { @id = "MiddleName", @class = "form-control input-rounded" })
+                                                    @Html.ValidationMessageFor(model => model.MiddleName)
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="col-form-label" for="LastName">Last Name</label>
+                                                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control input-rounded" })
+                                                    <div class="errorspace">
+                                                        @Html.ValidationMessageFor(model => model.LastName)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-4">
+                                                    <label class="col-form-label" for="StreetAddress">Street Address<span class="req">*</span></label>
+                                                    @Html.TextBoxFor(model => model.StreetAddress, new { @id = "StreetAddress", @class = "form-control input-rounded" })
+                                                    @Html.ValidationMessageFor(model => model.StreetAddress)
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="col-form-label" for="APIUnit">API/UNIT<span class="req">*</span></label>
+                                                    @Html.TextBoxFor(model => model.APIUnit, new { @id = "MiddleNAPIUnitame", @class = "form-control input-rounded" })
+                                                    @Html.ValidationMessageFor(model => model.APIUnit)
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="col-form-label" for="DesiredSalary">Desired Salary</label>
+                                                    @Html.TextBoxFor(model => model.DesiredSalary, new { @class = "form-control input-rounded" })
+                                                    <div class="errorspace">
+                                                        @Html.ValidationMessageFor(model => model.DesiredSalary)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-4">
+                                                    <label class="col-form-label" for="State">State<span class="req">*</span></label>
+                                                    @Html.TextBoxFor(model => model.State, new { @id = "State", @class = "form-control input-rounded" })
+                                                    @Html.ValidationMessageFor(model => model.State)
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="col-form-label" for="VendorName">City<span class="req">*</span></label>
+                                                    @Html.TextBoxFor(model => model.City, new { @id = "City", @class = "form-control input-rounded" })
+                                                    @Html.ValidationMessageFor(model => model.City)
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="col-form-label" for="LastName">Zip</label>
+                                                    @Html.TextBoxFor(model => model.Zip, new { @class = "form-control input-rounded" })
+                                                    <div class="errorspace">
+                                                        @Html.ValidationMessageFor(model => model.Zip)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-4">
+                                                    <label class="col-form-label" for="PreferendName">Preferred Name<span class="req">*</span></label>
+                                                    @Html.TextBoxFor(model => model.PreferendName, new { @id = "PreferendName", @class = "form-control input-rounded" })
+                                                    @Html.ValidationMessageFor(model => model.PreferendName)
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="col-form-label" for="SocialSecurityNumber">Social Security Number<span class="req">*</span></label>
+                                                    @Html.TextBoxFor(model => model.SocialSecurityNumber, new { @id = "SocialSecurityNumber", @class = "form-control input-rounded" })
+                                                    @Html.ValidationMessageFor(model => model.SocialSecurityNumber)
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="col-form-label" for="YearsAtAddrss">Years At Address</label>
+                                                    @Html.TextBoxFor(model => model.YearsAtAddrss, new { @class = "form-control input-rounded" })
+                                                    <div class="errorspace">
+                                                        @Html.ValidationMessageFor(model => model.YearsAtAddrss)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="panelData">
+                                            <div class="form-row">
+                                                
+                                                <div class="form-group col-md-5"></div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="col-form-label"><h3>Contact Info</h3></label>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                @*<label class="col-form-label" for="Phone">Type<span class="req">*</span></label>*@
+                                                <div class="form-group col-md-4">
+                                                    @Html.DropDownListFor(c => c.ContactType, new SelectList(
+                                      new List<Object>{
+                                                                                                        new { value = 0 , text = "--Type--"  },
+                                                                                                        new { value = "Phone" , text = "Phone"  },
+                                                                                                        new { value = "Mobile" , text = "Mobile" },
+                                      },
+                                      "value",
+                                      "text", 0), new { @id = "ContactType", @class = "form-control input-rounded" })
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="col-form-label" for="Phone">Phone<span class="req">*</span></label>
+                                                    @Html.TextBoxFor(model => model.Phone, new { @id = "Phone", @class = "form-control input-rounded" })
+                                                    @Html.ValidationMessageFor(model => model.Phone)
+                                                </div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="col-form-label" for="Email">Email</label>
+                                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control input-rounded" })
+                                                    <div class="errorspace">
+                                                        @Html.ValidationMessageFor(model => model.Email)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-3">
+                                                    <label class="col-form-label" for="StreetAddress">Preferend Method Of Contact<span class="req">*</span></label>
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
+                                                        <label class="form-check-label">Phone</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
+                                                        <label class="form-check-label">Email</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <div class="panelData">
+                                            <div class="form-row">
+
+                                                <div class="form-group col-md-5"></div>
+                                                <div class="form-group col-md-4">
+                                                    <label class="col-form-label"><h3>Additional Info</h3></label>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <div class="form-row">
+                                                <div class="form-group col-md-3">
+                                                    <label class="col-form-label" for="StreetAddress">Eligible to work in US<span class="req">*</span></label>
+                                                </div>
+                                                <div class="form-group col-md-1">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
+                                                        <label class="form-check-label">Yes</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-1">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
+                                                        <label class="form-check-label">No</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    @*<label class="col-form-label" for="AvailableDate">Date Available</label>*@
+                                                    @Html.TextBoxFor(model => model.AvailableDate, new { @class = "form-control input-rounded", @placeholder= "Date Available" })
+                                                    @Html.ValidationMessageFor(model => model.AvailableDate)
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                    <label class="col-form-label" for="StreetAddress">You are 21 year of age<span class="req">*</span></label>
+                                                </div>
+                                                <div class="form-group col-md-1">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
+                                                        <label class="form-check-label">Yes</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-1">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
+                                                        <label class="form-check-label">No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-3">
+                                                    <label class="col-form-label" for="StreetAddress">DO YOU HAVE ANY FRIEND, RELATIVE AQUANTIANCES THAT WORK IN ELITE?</label>
+                                                </div>
+                                                <div class="form-group col-md-1">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
+                                                        <label class="form-check-label">Yes</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-1">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
+                                                        <label class="form-check-label">No</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <label class="col-form-label" for="StreetAddress">PRIOR MILITARY?</label>
+                                                </div>
+                                                <div class="form-group col-md-1">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
+                                                        <label class="form-check-label">Yes</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-1">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
+                                                        <label class="form-check-label">No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-3">
+                                                    <label class="col-form-label">IF YES PLEASE IDENTFY WHO</label>
+                                                </div>
+                                                <div class="form-group col-md-9">
+                                                    @Html.TextBoxFor(model => model.WhoInElite, new { @class = "form-control input-rounded" })
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-3">
+                                                    <label class="col-form-label" for="StreetAddress">HAVE YOU EVER WORKED FOR ELITE?</label>
+                                                </div>
+                                                <div class="form-group col-md-1">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
+                                                        <label class="form-check-label">Yes</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-1">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
+                                                        <label class="form-check-label">No</label>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-2">
+                                                    <label class="col-form-label" for="DateOFDeparture">IF YES DATE OF DEPARTURE</label>
+                                                </div>
+                                                <div class="form-group col-md-5">
+                                                @Html.TextBoxFor(model => model.DateOFDeparture, new { @class = "form-control input-rounded" })
+                                                <div class="errorspace">
+                                                    @Html.ValidationMessageFor(model => model.DateOFDeparture)
+                                                </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-row">
+                                                <div class="form-group col-md-3">
+                                                    <label class="col-form-label">Reason for leave</label>
+                                                </div>
+                                                <div class="form-group col-md-9">
+                                                    @Html.TextBoxFor(model => model.ReasonForlLeave, new { @class = "form-control input-rounded" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-12 text-right mb-0">
+                                        <hr />
+                                        <a href="javascript:void(0)" id="LocationNext" class="btn btn-rounded btn-success next previousBtndata pull-right">Next <i class="fa fa-long-arrow-right"></i></a>
+                                        @*<button type="submit" onclick="return validateCustomFields(this);" class="btn btn-rounded btn-success pull-right m-l-10-btn">Save &amp; Update </button>*@
+                                        <input type="button" @*onclick="location.href='@Url.Action("CompanyList", "VendorManagement")'"*@ class="btn btn-rounded btn-secondary pull-right m-l-10-btn" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </fieldset>
+                            <fieldset id="AcademicDetailsApplicant">
+                                @{ViewBag.myModelprefixName = "AcademicDetailsApplicantModel."; ViewBag.ActionSection = "AcademicDetailsApplicant";}
+                                <div id="divAcademicDetailsApplicant">
+                                    @Html.Partial("~/Views/Guest/PartialView/_AcademicDetailsApplicant.cshtml")
+                                </div>
+                                <div class="form-group col-md-12 text-right mb-0">
+                                    <a href="javascript:void(0)" id="" class="btn btn-rounded btn-success next previousBtndata pull-right">Next <i class="fa fa-long-arrow-right"></i></a>
+                                    <a href="javascript:void(0)" class="btn btn-secondary btn-rounded previous pull-left"><i class="fa fa-long-arrow-left"></i> Back</a>
+                                </div>
+                            </fieldset>
+                            <fieldset id="ExperianceDetailsApplicant">
+                                @{ViewBag.myModelprefixName = "ExperianceDetailsApplicantModel."; ViewBag.ActionSection = "ExperianceDetailsApplicant";}
+                                <div id="divExperianceDetailsApplicant">
+                                    @Html.Partial("~/Views/Guest/PartialView/_AcademicDetailsApplicant.cshtml")
+                                </div>
+                                <div class="form-group col-md-12 text-right mb-0">
+                                    <a href="javascript:void(0)" class="btn btn-rounded btn-secondary previous pull-left"><i class="fa fa-long-arrow-left"></i> Back </a>
+                                    <input id="SaveApplicantInfo" class="btn btn-rounded btn-success pull-right" style="cursor: pointer;width: 125px;" value="Save & Update"/>
+                                    <input type="button" onclick="callCancel();" class="btn btn-rounded btn-secondary bluebutton pull-right" style="cursor:pointer;" formnovalidate="formnovalidate" value="Cancel" />
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/ePeople/ApplicantFunctionality.js"></script>
+<script src="~/Scripts/ePeople/CustomMultistepWizardApplicant.js"></script>
+<script src="~/Content/NewAdminContent/VENDOR/jquery-steps/build/jquery.steps.min.js"></script>
+
+<script src="~/Scripts/NewAdminJS/plugins-init/jquery-steps-init.js"></script>

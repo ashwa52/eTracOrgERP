@@ -163,10 +163,10 @@
     <div class="container-fluid">
         <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3" data-aos="fade-up">
             <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12" id="showHideHiringOnBoardingDashboard">
-                    <div class="welcome-text">
-                        <h4>Hi, welcome back! @loginUserName</h4>
-                    </div>
+                <div class="welcome-text">
+                    <h4>Hi, welcome back! @loginUserName</h4>
                 </div>
+            </div>
 
         </div>
         <div id="infofactsheet">
@@ -285,6 +285,55 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade  bd-example-modal-lg" @*data-backdrop="false"*@ id="ModalForAssetsAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content" style="width:1000px;">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Assets</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="viewAssetsData">
+                </div>
+            </div>
+            <div class="modal-footer" style="background: white;">
+                <button type="button" class="btn btn-success" id="SaveAssetsApplicant" style="border-radius:100px;">Add Assets</button>
+                <button type="button" class="btn btn-primary" id="CloseAssest" style="border-radius:100px;width:98px;" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ModalForOfferLtter" role="dialog" style="background:#fff" data-backdrop="true">
+    <div style="float:right;cursor:pointer;" data-dismiss="modal" @*onclick="closeModel();"*@>
+        <i class="fa fa-times fa-lg" style="font-size: 54px;" aria-hidden="true"></i>
+    </div>
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="color:#000;width: 1174px;float: right;">
+            <div id="viewOfferData">
+            </div>
+        </div>
+    </div>
+</div>
+@*<div class="modal fade  bd-example-modal-lg" data-backdrop="false" id="ModalForOfferLtter" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content" style="width:1000px;">
+            <button type="button" class="close" data-dismiss="modal">
+                <span>&times;</span>
+            </button>
+            <div class="modal-body">
+                <div id="viewOfferData">
+                </div>
+            </div>
+            @*<div class="modal-footer" style="background: white;">
+                <button type="button" class="btn btn-success" id="SaveAssetsApplicant" style="border-radius:100px;">Add Assets</button>
+                <button type="button" class="btn btn-primary" id="CloseAssest" style="border-radius:100px;width:98px;" data-dismiss="modal">Cancel</button>
+            </div>*@
+@*</div>
+        </div>
+    </div>*@
 <!--**********************************
     Content body end
 ***********************************-->
@@ -292,6 +341,7 @@
 <script src="~/GridListing/JsGridScript/ListOnBoarding.js"></script>
 <script src="~/GridListing/JsGridScript/ListMyOpening.js"></script>
 <script src="~/GridListing/JsGridScript/ListEmployeeManagement.js"></script>
+@*<script src="~/Scripts/NewAdminJS/AssetsAndOffer.js"></script>*@
 <script>
 	am4core.ready(function () {
 
@@ -455,6 +505,9 @@
                 scrollTop: $("#EmployeeManagementDiv").offset().top
             }, 'slow');
         });
+
+
+
  });
 </script>
 

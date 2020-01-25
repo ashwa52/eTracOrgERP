@@ -153,6 +153,7 @@
     long loginUserType = 0;
     long locationId = 0;
     long UserId = 0;
+    long INS_API_ApplicantId = 0;
     if (ObjLogin != null)
     {
         loginUserName = ObjLogin.FName + "'s";
@@ -175,12 +176,13 @@
             <div class="profile_detail inline spccing">
                 <span class="nameD">
                     @item.InterviwerName
+                    <input type="hidden" id="applicantInerviewId" value="@item.INS_API_ApplicantId" />
                 </span>
                 @*<span class="profile">
                     @item.j
                 </span>*@
             </div>
-            @if (item.INS_IsAvailable != "Y" && Model.InterviewStartDateTime >= DateTime.Now && Model.InterviewStartDateTime.Subtract(DateTime.Now).Minutes <= 10)
+            @if (item.INS_IsAvailable != "Y" && Model.InterviewStartDateTime >= DateTime.Now)// && Model.InterviewStartDateTime.Subtract(DateTime.Now).Minutes <= 10)
             {
                 <div style="float:right" id="icnOnline">
                     <label class="toggle">
@@ -222,7 +224,8 @@
         <button class="btn btn-default btncancel">Cancel</button>
         @if (Model.CanInterviewStart && Model.Interviewers.Where(x => x.INS_IsAvailable == "Y" && x.INS_IsHiringManager == "Y").Any())
         {
-            <button class="btn btn-default btnstart" onclick="GetInterviewQuestions();">Start</button>
+            @*<button class="btn btn-default btnstart" onclick="GetInterviewQuestions();">Start</button>*@
+            <button class="btn btn-default btnstart" onclick="GetTypeInterview();">Start</button>
         }
         else
         {
@@ -231,3 +234,26 @@
 
     </div>
 </div>
+
+<script>
+    $(function () {
+        var echoHub = SJ.iwc.SignalR.getHubProxy('notificationAlertHub', {
+            client: {
+                updateMessages: function () {
+                    try {
+
+                        var getId = $("#applicantInerviewId").val();
+                        if (getId > 0) {
+                            echoHub.server.getOnlineInterviewer(getId).done(function (dataItems) {
+                                    if (dataItems != null && dataItems != "") {
+                                        dataJSON = JSON.parse(dataItems);
+                                    }
+                                })
+                            }
+                        }                   
+                    catch (e) { console.log(e); }
+                }
+            }
+        });
+    });
+</script>

@@ -103,6 +103,7 @@ namespace WorkOrderEMS.Infrastructure
                 For<IFillableFormManager>().Use<FillableFormManager>();
                 For<INewAdminRepository>().Use<NewAdminDataRepository>();
                 For<IDebitMemo>().Use<DebitMemoManager>();
+                For<IApplicantManager>().Use<ApplicantManager>();
             }
         }
     }

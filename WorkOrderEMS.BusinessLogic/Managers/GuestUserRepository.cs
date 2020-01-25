@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Data.Interfaces;
+using WorkOrderEMS.Models;
 using WorkOrderEMS.Models.Employee;
 
 namespace WorkOrderEMS.BusinessLogic
@@ -166,9 +167,10 @@ namespace WorkOrderEMS.BusinessLogic
                             model.Account1.Account, model.Account1.BankRouting, model.Account1.DepositeAmount, model.Account2.EmployeeBankName, model.Account2.AccountType, model.Account2.Account
                             , model.Account2.BankRouting, model.VoidCheck, "Y") > 0 ? true : false;
 
-                    return Context.spSetDirectDepositForm("I", EmployeeId, model.Account1.EmployeeBankName, model.Account1.AccountType,
+                    var add =  Context.spSetDirectDepositForm("I", EmployeeId, model.Account1.EmployeeBankName, model.Account1.AccountType,
                             model.Account1.Account, model.Account1.BankRouting, model.Account1.DepositeAmount.HasValue ? model.Account1.DepositeAmount.Value : 0, model.Account2.EmployeeBankName, model.Account2.AccountType, model.Account2.Account
-                            , model.Account2.BankRouting, model.VoidCheck, "Y") > 0 ? true : false;
+                            , model.Account2.BankRouting, model.VoidCheck, "Y");// > 0 ? true : false;
+                    return true;
                 }
             }
             catch (Exception ex)
@@ -339,22 +341,22 @@ namespace WorkOrderEMS.BusinessLogic
 
             try
             {
+                
+                //using (workorderEMSEntities Context = new workorderEMSEntities())
+                //{
 
-                using (workorderEMSEntities Context = new workorderEMSEntities())
-                {
+                //    var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
+                //    var isexist = GetEmergencyForm(userId);
+                //    if (ReferenceEquals(isexist, null))
+                //    {
+                //        Context.spSetEmergencyContactForm("I", model.EcfId, empid, model.NickName, model.HomePhone, model.HomeEmail, model.EcfDate, model.IsActive);
+                //    }
+                //    else
+                //    {
+                //        Context.spSetEmergencyContactForm("U", model.EcfId, empid, model.NickName, model.HomePhone, model.HomeEmail, model.EcfDate, model.IsActive);
+                //    }
 
-                    var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
-                    var isexist = GetEmergencyForm(userId);
-                    if (ReferenceEquals(isexist, null))
-                    {
-                        Context.spSetEmergencyContactForm("I", model.EcfId, empid, model.NickName, model.HomePhone, model.HomeEmail, model.EcfDate, model.IsActive);
-                    }
-                    else
-                    {
-                        Context.spSetEmergencyContactForm("U", model.EcfId, empid, model.NickName, model.HomePhone, model.HomeEmail, model.EcfDate, model.IsActive);
-                    }
-
-                }
+                //}
             }
             catch (Exception ex)
             {
@@ -584,6 +586,34 @@ namespace WorkOrderEMS.BusinessLogic
                     }).FirstOrDefault();
                     return formsStatus;
 
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public bool SetEmergencyContactFormData(EmergencyContactFormModel model, long UserId)
+        {
+            try
+            {
+                using (workorderEMSEntities Context = new workorderEMSEntities())
+                {
+                    var EmployeeId = objworkorderEMSEntities.UserRegistrations.Where(x => x.UserId == UserId).FirstOrDefault()?.EmployeeID;
+                    var data = GetDirectDepositeDataByEmployeeId(EmployeeId);
+                    if (data != null)
+                        //Context.spSetEmergencyContactForm()
+                        return Context.spSetEmergencyContactForm("U", model.ECF_Id, EmployeeId, model.ECF_NickName, model.ECF_HomePhone,
+                            model.ECF_HomeAddress, model.ECF_HomeEmail, model.ECF_FirstName, model.ECF_MiddleName, model.ECF_LastName,
+                            model.ECF_Address, model.ECF_Gender, model.ECF_Citizenship, model.ECF_BirthDate, model.ECF_DriverLicense,
+                            model.ECF_EmergencyContactName, model.ECF_Mobile, model.ECF_PhoneNumber, model.ECF_SSN, model.ECF_Relationship,"Y") > 0 ? true : false;
+
+                    return Context.spSetEmergencyContactForm("I", model.ECF_Id, EmployeeId, model.ECF_NickName, model.ECF_HomePhone,
+                             model.ECF_HomeAddress, model.ECF_HomeEmail, model.ECF_FirstName, model.ECF_MiddleName, model.ECF_LastName,
+                             model.ECF_Address, model.ECF_Gender, model.ECF_Citizenship, model.ECF_BirthDate, model.ECF_DriverLicense,
+                             model.ECF_EmergencyContactName, model.ECF_Mobile, model.ECF_PhoneNumber, model.ECF_SSN, model.ECF_Relationship, "Y") > 0 ? true : false;
+                    //return true;
                 }
             }
             catch (Exception ex)

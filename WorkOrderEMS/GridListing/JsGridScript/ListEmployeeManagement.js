@@ -269,6 +269,25 @@ $(".callNextEmployeeData").click(function () {
     });
 })
 $(document).ready(function () {
+    UserSettingId
+    $.ajax({
+        type: "POST",
+        url: base_url + '/EPeople/GetUserTreeViewList1?Id=' + null + "&LocationId=" + $_LocationId,
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
+        contentType: "application/json; charset=utf-8",
+        error: function (xhr, status, error) {
+        },
+        success: function (result) {
+            debugger
+            $("#UserSettingId").html(result);           
+        },
+        complete: function () {
+            fn_hideMaskloader();
+        }
+    });
+
     $("#AddRequisition").click(function () {
         $("#myModalForRequisitionAction").modal("show");
     })
@@ -342,65 +361,65 @@ $(document).ready(function () {
        }
     })
 
-    $("#AddDemotion").click(function () {
-        $.ajax({
-            type: "GET",
-            // data: { 'Id': item.id},
-            url: base_url+'/EPeople/OpenDemotionForm?Id=' + GetEMPId,
-            beforeSend: function () {
-                new fn_showMaskloader('Please wait...');
-            },
-            success: function (FormView) {
-                $("#divOpenDemotionForm").html(FormView);
-                $("#myModalForDemotionEmployee").modal("show");
-                $("#myModalForChangeStatusData").modal("hide");
-                $("#ChangeTitle").html("Demotion");
-            },
-            complete: function () {
-                fn_hideMaskloader();
-            }
-        });
-    })
+    //$("#AddDemotion").click(function () {
+    //    $.ajax({
+    //        type: "GET",
+    //        // data: { 'Id': item.id},
+    //        url: base_url+'/EPeople/OpenDemotionForm?Id=' + GetEMPId,
+    //        beforeSend: function () {
+    //            new fn_showMaskloader('Please wait...');
+    //        },
+    //        success: function (FormView) {
+    //            $("#divOpenDemotionForm").html(FormView);
+    //            $("#myModalForDemotionEmployee").modal("show");
+    //            $("#myModalForChangeStatusData").modal("hide");
+    //            $("#ChangeTitle").html("Demotion");
+    //        },
+    //        complete: function () {
+    //            fn_hideMaskloader();
+    //        }
+    //    });
+    //})
 
-    $("#EmploymentStatusChange").click(function () {
-        $.ajax({
-            type: "GET",
-            // data: { 'Id': item.id},
-            url: base_url+'/EPeople/OpenEmploymentStatusChange?Id=' + GetEMPId,
-            beforeSend: function () {
-                new fn_showMaskloader('Please wait...');
-            },
-            success: function (FormView) {
-                $("#divOpenDemotionForm").html(FormView);
-                $("#myModalForDemotionEmployee").modal("show");
-                $("#myModalForChangeStatusData").modal("hide");
-                $("#ChangeTitle").html("Employment Status Change");
-            },
-            complete: function () {
-                fn_hideMaskloader();
-            }
-        });
-    });
+    //$("#EmploymentStatusChange").click(function () {
+    //    $.ajax({
+    //        type: "GET",
+    //        // data: { 'Id': item.id},
+    //        url: base_url+'/EPeople/OpenEmploymentStatusChange?Id=' + GetEMPId,
+    //        beforeSend: function () {
+    //            new fn_showMaskloader('Please wait...');
+    //        },
+    //        success: function (FormView) {
+    //            $("#divOpenDemotionForm").html(FormView);
+    //            $("#myModalForDemotionEmployee").modal("show");
+    //            $("#myModalForChangeStatusData").modal("hide");
+    //            $("#ChangeTitle").html("Employment Status Change");
+    //        },
+    //        complete: function () {
+    //            fn_hideMaskloader();
+    //        }
+    //    });
+    //});
 
-    $("#LocationTransfer").click(function () {
-        $.ajax({
-            type: "GET",
-            // data: { 'Id': item.id},
-            url: base_url + '/EPeople/OpenLocationForTransfer?Id=' + GetEMPId,
-            beforeSend: function () {
-                new fn_showMaskloader('Please wait...');
-            },
-            success: function (FormView) {
-                $("#divOpenDemotionForm").html(FormView);
-                $("#myModalForDemotionEmployee").modal("show");
-                $("#myModalForChangeStatusData").modal("hide");
-                $("#ChangeTitle").html("Location Transfer");
-            },
-            complete: function () {
-                fn_hideMaskloader();
-            }
-        });
-    });
+    //$("#LocationTransfer").click(function () {
+    //    $.ajax({
+    //        type: "GET",
+    //        // data: { 'Id': item.id},
+    //        url: base_url + '/EPeople/OpenLocationForTransfer?Id=' + GetEMPId,
+    //        beforeSend: function () {
+    //            new fn_showMaskloader('Please wait...');
+    //        },
+    //        success: function (FormView) {
+    //            $("#divOpenDemotionForm").html(FormView);
+    //            $("#myModalForDemotionEmployee").modal("show");
+    //            $("#myModalForChangeStatusData").modal("hide");
+    //            $("#ChangeTitle").html("Location Transfer");
+    //        },
+    //        complete: function () {
+    //            fn_hideMaskloader();
+    //        }
+    //    });
+    //});
 
     $("#PlusMinusJobTitle").click(function () {
         debugger

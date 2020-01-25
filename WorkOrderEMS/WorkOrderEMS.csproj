@@ -1593,6 +1593,7 @@
     <Content Include="Content\NewAdminContent\CSS\GetOrgForRequision.css" />
     <Content Include="Content\NewAdminContent\CSS\MultstepWizardNew.css" />
     <Content Include="Content\NewAdminContent\CSS\NewTreeUserView.css" />
+    <Content Include="Content\NewAdminContent\CSS\NewTreeVSC.css" />
     <Content Include="Content\NewAdminContent\CSS\perfect-scrollbar.css" />
     <Content Include="Content\NewAdminContent\CSS\RadioButtonCSS.css" />
     <Content Include="Content\NewAdminContent\CSS\style.css" />
@@ -5244,7 +5245,11 @@
     <Content Include="Images\user.png" />
     <Content Include="Images\version.png" />
     <Content Include="IOSTimePicker.html" />
+    <Content Include="MailTemplate\Applicant\ChangePassword.html" />
+    <Content Include="MailTemplate\Applicant\ForgotPasswordApplicant.html" />
+    <Content Include="MailTemplate\Applicant\SignUpApplicant.html" />
     <Content Include="MailTemplate\EPeople\Backgroundcheck.html" />
+    <Content Include="MailTemplate\EPeople\OfferLetter.html" />
     <Content Include="MailTemplate\EPeople\SendForAssessment.html" />
     <Content Include="MailTemplate\SetupEvaluationMeetingTemplate.html" />
     <Content Include="MailTemplate\AddMoreBudgetForLocationTemplate.html" />
@@ -6010,9 +6015,12 @@
     <Content Include="Scripts\eCounting\VendorMultiStepWizard.js" />
     <Content Include="Scripts\eFleetVehicle\reg.js" />
     <Content Include="Scripts\eFleet\PassengerTracking.js" />
+    <Content Include="Scripts\ePeople\ApplicantFunctionality.js" />
+    <Content Include="Scripts\ePeople\CustomMultistepWizardApplicant.js" />
     <Content Include="Scripts\FileUpload\jquery.fileupload-ui.js" />
     <Content Include="Scripts\FileUpload\jquery.fileupload.js" />
     <Content Include="Scripts\FileUpload\jquery.iframe-transport.js" />
+    <Content Include="Scripts\Guest\ApplicantFormSave.js" />
     <Content Include="Scripts\Guest\GuestUser.js" />
     <Content Include="Scripts\ImageUpload\FileUpload.js" />
     <Content Include="Scripts\iwc-all.min.js" />
@@ -6129,6 +6137,7 @@
     <Content Include="Scripts\Morris\morris-data.js" />
     <Content Include="Scripts\Morris\morris.min.js" />
     <Content Include="Scripts\Morris\raphael.min.js" />
+    <Content Include="Scripts\NewAdminJS\AssetsAndOffer.js" />
     <Content Include="Scripts\NewAdminJS\custom.min.js" />
     <Content Include="Scripts\NewAdminJS\CustomizeJSForVSC.js" />
     <Content Include="Scripts\NewAdminJS\dashboard\dashboard-1.js" />
@@ -6200,11 +6209,13 @@
     <Content Include="Scripts\NewAdminJS\plugins-init\webticker-init.js" />
     <Content Include="Scripts\NewAdminJS\plugins-init\widgets-script-init.js" />
     <Content Include="Scripts\NewAdminJS\QRCHideShowFunctionality.js" />
+    <Content Include="Scripts\NewAdminJS\QuestionAnswerFuncionality.js" />
     <Content Include="Scripts\NewAdminJS\quixnav-init.js" />
     <Content Include="Scripts\NewAdminJS\SaveEditForm.js" />
     <Content Include="Scripts\NewAdminJS\settings.js" />
     <Content Include="Scripts\NewAdminJS\styleSwitcher.js" />
     <Content Include="Scripts\NewAdminJS\tynamice.min.js" />
+    <Content Include="Scripts\NewAdminJS\UserTreeFunctionality.js" />
     <Content Include="Scripts\NewAdminJS\WorkOrderHideShowFunctionality.js" />
     <Content Include="Scripts\NewTimePicker\jquery.timesetter.js" />
     <Content Include="Scripts\NewTimePicker\jquery.timesetter.min.css" />
@@ -6860,6 +6871,14 @@
     <Content Include="Views\GlobalAdmin\Location\_AddBudget.cshtml" />
     <Content Include="Views\GlobalAdmin\Location\_CostCodeTreeView.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\Requisition\_Chart.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\NewViewForEMP\_NewTreeView.cshtml" />
+    <Content Include="Views\Guest\Index1.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\OnBoarding\_AssetsAllocation.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\OnBoarding\_OfferLetter.cshtml" />
+    <Content Include="Views\Guest\PartialView\_AcademicDetailsApplicant.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ExperianceDetailsApplicant.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\OnBoarding\_CheckForDOT.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\OnBoarding\_ViewAnswerQuestion.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

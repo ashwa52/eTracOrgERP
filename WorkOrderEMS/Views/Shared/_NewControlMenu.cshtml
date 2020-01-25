@@ -92,7 +92,9 @@
 
                 <ul class="navbar-nav header-right">
                     @if (@ViewBag.AccountSection == true)
-                    { }
+                    {
+                        <li class="nav-item showHome"><a href="@Url.Action("Index", "NewAdmin",new { area ="" })"><i class="fa fa-home showHome" style="font-size:30px;color:ghostwhite;" title="Back to Home"></i></a></li>
+                    }
                     else
                     {
                         <li class="nav-item showAdmin"><a href="@Url.Action("Index", "AdminDashboard", new { area = "AdminSection" })"><i class="fa fa-user-circle showAdmin" style="font-size:30px;color:ghostwhite;" title="Admin"></i></a></li>

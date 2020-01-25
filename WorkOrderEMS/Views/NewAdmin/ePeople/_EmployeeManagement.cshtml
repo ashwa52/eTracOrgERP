@@ -140,6 +140,9 @@
                                 <li class="nav-item WidthForTab" style="width:190px;">
                                     <a class="nav-link CenterText" style="text-align: center;" data-toggle="tab" href="#EmployeeStatusChange">Employee Status</a>
                                 </li>
+                                <li class="nav-item WidthForTab" style="width:191px;">
+                                    <a class="nav-link CenterText" style="text-align: center;" data-toggle="tab" href="#UserSetting">Employee Management</a>
+                                </li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="EMPList" role="tabpanel">
@@ -162,6 +165,11 @@
                                 <div class="tab-pane fade" id="EmployeeStatusChange">
                                     <div class="pt-4">
                                         <div id="EmployeeStatusChangeGrid"></div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="UserSetting">
+                                    <div class="pt-4">
+                                        <div id="UserSettingId"></div>
                                     </div>
                                 </div>
                             </div>
@@ -318,9 +326,9 @@
                     <div id="ContaierEditUserInfo"></div>
                 </div>
             </div>
-            <div style="background:white; height: 46px;">
-                <button type="button" class="btn btn-success pull-right SaveEdit" id="SaveEditInfo">Verify</button>
-                <button type="button" class="btn btn-primary pull-right CloseEdit" style="width: 11%;" id="closeEdit" data-dismiss="modal">Close</button>
+            <div class="modal-footer" style="background:white; height: 46px;">
+                <button type="button" class="btn btn-success pull-right" style="width: 11%;border-radius: 30px;margin-right: 8px; display:none;" id="SaveEditInfo">Verify</button>
+                <button type="button" class="btn btn-primary pull-right" style="width: 11%;border-radius: 30px;margin-right: 7px;" id="closeEdit" data-dismiss="modal">Close</button>
             </div>
         </div>
 
