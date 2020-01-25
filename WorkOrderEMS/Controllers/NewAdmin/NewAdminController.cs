@@ -37,6 +37,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         private readonly ICommonMethod _ICommonMethod;
         private readonly IQRCSetup _IQRCSetup;
         private readonly IePeopleManager _IePeopleManager;
+        private readonly IApplicantManager _IApplicantManager;
         private readonly string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private readonly string WorkRequestImagepath = ConfigurationManager.AppSettings["WorkRequestImage"];
         private readonly string ProfilePicPath = ConfigurationManager.AppSettings["ProfilePicPath"];
@@ -45,13 +46,14 @@ namespace WorkOrderEMS.Controllers.NewAdmin
 
 
         DBUtilities DB = new DBUtilities();
-        public NewAdminController(IDepartment _IDepartment, IGlobalAdmin _GlobalAdminManager, ICommonMethod _ICommonMethod, IQRCSetup _IQRCSetup, IePeopleManager _IePeopleManager)
+        public NewAdminController(IDepartment _IDepartment, IGlobalAdmin _GlobalAdminManager, ICommonMethod _ICommonMethod, IQRCSetup _IQRCSetup, IePeopleManager _IePeopleManager, IApplicantManager _IApplicantManager)
         {
             this._IDepartment = _IDepartment;
             this._GlobalAdminManager = _GlobalAdminManager;
             this._ICommonMethod = _ICommonMethod;
             this._IQRCSetup = _IQRCSetup;
             this._IePeopleManager = _IePeopleManager;
+            this._IApplicantManager = _IApplicantManager;
         }
         public ActionResult Index()
         {
@@ -905,48 +907,130 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             var interviewersList = _GlobalAdminManager.GetInterviewersList(applicantId, ObjLoginModel.UserId);
             return PartialView("ePeople/_interviewers", interviewersList);
         }
+        //[HttpGet]
+        //public PartialViewResult GetInterviewQuestionView()
+        //{
+        //    //var questions = _GlobalAdminManager.GetInterviewQuestions().Where(x => x.INQ_Id == 1).ToList();
+        //    var questions = _GlobalAdminManager.GetInterviewQuestions().ToList();//.Where(x => x.INQ_Id == 1).ToList();
+        //    Session["eTrac_questions"] = questions;
+        //    return PartialView("ePeople/_questionsview");
+        //}
         [HttpGet]
-        public PartialViewResult GetInterviewQuestionView()
+        public PartialViewResult GetInterviewQuestionView(string isExempt)
         {
             //var questions = _GlobalAdminManager.GetInterviewQuestions().Where(x => x.INQ_Id == 1).ToList();
-            var questions = _GlobalAdminManager.GetInterviewQuestions().ToList();//.Where(x => x.INQ_Id == 1).ToList();
+            var questions = _GlobalAdminManager.GetInterviewQuestions("Y").ToList();//.Where(x => x.INQ_Id == 1).ToList();
             Session["eTrac_questions"] = questions;
             return PartialView("ePeople/_questionsview");
         }
-        [HttpPost]
-        public PartialViewResult GetInterviewQuestions(int? id)
+        [HttpGet]
+        public PartialViewResult CheckForTypeInterview()
         {
-            IEnumerable<spGetInterviewQuestion_Result1> questions = (List<spGetInterviewQuestion_Result1>)Session["eTrac_questions"];
-            int num = 0;
-            if (questions != null)
-            {
-                if (Session["eTrac_questions_number"] != null)
-                {
-                    num = (int)Session["eTrac_questions_number"];
-                    num += 1;
-                    if (num <= questions.Count() - 1)
-                    {
-                        Session["eTrac_questions_number"] = num;
-                        var currentQus = questions.Skip(num).Take(1).FirstOrDefault();
+            //var questions = _GlobalAdminManager.GetInterviewQuestions().Where(x => x.INQ_Id == 1).ToList();
+            // var questions = _GlobalAdminManager.GetInterviewQuestions("Y").ToList();//.Where(x => x.INQ_Id == 1).ToList();
+            //Session["eTrac_questions"] = questions;
+            return PartialView("ePeople/OnBoarding/_CheckForDOT");
+        }
 
+        [HttpPost]
+        public PartialViewResult GetInterviewQuestions(int? id, int Applicant)
+        {
+            IEnumerable<InterviewQuestionMaster> Masterquestions = (List<InterviewQuestionMaster>)Session["eTrac_questions"];
+            var questions = new InterviewQuestionAnswerModel();
+            int num = 0;
+            if (Applicant > 0 && id != 6)
+            {
+                if (Masterquestions != null)
+                {
+                    if (Session["eTrac_questions_number"] != null)
+                    {
+                        num = (int)Session["eTrac_questions_number"];
+                        num += 1;
+                        if (num <= Masterquestions.Count() - 1)
+                        {
+
+                            Session["eTrac_questions_number"] = num;
+                            var currentQus1 = Masterquestions.Skip(num).Take(1).FirstOrDefault();
+                            if (id > 0)
+                            {
+                                num = Convert.ToInt32(id) + 1;
+                            }
+                            var getLst = _GlobalAdminManager.GetInterviewChildQuestions(num).ToList();
+                            if (getLst.Count() > 0)
+                            {
+                                questions.ChildrenQuestionModel = getLst;
+                                questions.MasterId = currentQus1.IQM_Id;
+                                questions.MasterQuestion = currentQus1.IQM_Question;
+                            }
+
+                            //    MasterId = currentQus1.IQM_Id,
+                            //    MasterQuestion = currentQus1.IQM_Question,
+                            //     ChildrenQuestionModel = 
+                            //}).ToList();
+                            return PartialView("~/Views/NewAdmin/ePeople/_questions.cshtml", questions);
+                        }
+                        //return PartialView("~/Views/NewAdmin/ePeople/_questions.cshtml", Masterquestions.Where(x => x.INQ_QuestionType == "LastQuestion").FirstOrDefault());
+                    }
+                    else
+                    {
+                        var getLst = _GlobalAdminManager.GetInterviewChildQuestions(1).ToList();
+                        if (getLst.Count() > 0)
+                        {
+                            questions.ChildrenQuestionModel = getLst;
+                        }
+                        var currentQus = Masterquestions.Skip(0).Take(1).Select(x => new InterviewQuestionAnswerModel()
+                        {
+                            MasterId = x.IQM_Id,
+                            MasterQuestion = x.IQM_Question,
+                            ChildrenQuestionModel = getLst
+                        }).FirstOrDefault();
+                        Session["eTrac_questions_number"] = 0;
                         return PartialView("~/Views/NewAdmin/ePeople/_questions.cshtml", currentQus);
                     }
-                    return PartialView("~/Views/NewAdmin/ePeople/_questions.cshtml", questions.Where(x => x.INQ_QuestionType == "LastQuestion").FirstOrDefault());
                 }
-                else
-                {
-                    var currentQus = questions.Skip(0).Take(1).FirstOrDefault();
-                    Session["eTrac_questions_number"] = 0;
-                    return PartialView("~/Views/NewAdmin/ePeople/_questions.cshtml", currentQus);
-                }
+            }
+            else
+            {
+                var getLst = _GlobalAdminManager.GetInterviewAnswerByApplicantId(Applicant);
+                return PartialView("~/Views/NewAdmin/ePeople/OnBoarding/_ViewAnswerQuestion.cshtml", getLst);
             }
             return PartialView("~/Views/NewAdmin/ePeople/_questions.cshtml", null);
         }
+
+        //[HttpPost]
+        //public PartialViewResult GetInterviewQuestions(int? id)
+        //{
+        //    IEnumerable<spGetInterviewQuestion_Result1> questions = (List<spGetInterviewQuestion_Result1>)Session["eTrac_questions"];
+        //    int num = 0;
+        //    if (questions != null)
+        //    {
+        //        if (Session["eTrac_questions_number"] != null)
+        //        {
+        //            num = (int)Session["eTrac_questions_number"];
+        //            num += 1;
+        //            if (num <= questions.Count() - 1)
+        //            {
+        //                Session["eTrac_questions_number"] = num;
+        //                var currentQus = questions.Skip(num).Take(1).FirstOrDefault();
+
+        //                return PartialView("~/Views/NewAdmin/ePeople/_questions.cshtml", currentQus);
+        //            }
+        //            return PartialView("~/Views/NewAdmin/ePeople/_questions.cshtml", questions.Where(x => x.INQ_QuestionType == "LastQuestion").FirstOrDefault());
+        //        }
+        //        else
+        //        {
+        //            var currentQus = questions.Skip(0).Take(1).FirstOrDefault();
+        //            Session["eTrac_questions_number"] = 0;
+        //            return PartialView("~/Views/NewAdmin/ePeople/_questions.cshtml", currentQus);
+        //        }
+        //    }
+        //    return PartialView("~/Views/NewAdmin/ePeople/_questions.cshtml", null);
+        //}
         [HttpPost]
-        public JsonResult SaveAnswers(InterviewAnswerModel model)
+        public JsonResult SaveAnswers(InterviewQuestionAnswerModel model, List<AnswerArr> AnswerArr)
         {
             var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-            var isAnsSaveSuccess = _GlobalAdminManager.SaveInterviewAnswers(model, ObjLoginModel.UserId);
+            var isAnsSaveSuccess = _GlobalAdminManager.SaveInterviewAnswers(model, AnswerArr, ObjLoginModel.UserId);
             return Json(true ? true : false, JsonRequestBehavior.AllowGet);
         }
         public FileStreamResult GetPDF()
@@ -1114,7 +1198,125 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
             return PartialView("~/Views/NewAdmin/ePeople/_HiringOnBoardingDashboard.cshtml");
         }
-        #endregion
+
+        [HttpPost]
+        public PartialViewResult ShowAssetsForApplicant(long ApplicantId)
+        {
+            var model  = new AssetsAllocationModel();
+            model.ApplicantId = ApplicantId;
+            return PartialView("~/Views/NewAdmin/ePeople/OnBoarding/_AssetsAllocation.cshtml", model);
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 20-Dec-2019
+        /// Created For : To save Assets
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult SaveShowAssetsForApplicant(AssetsAllocationModel model)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            bool isSaved = false;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);               
+            }
+            try
+            {
+                if(model != null)
+                {
+                    if (model.AssetsId == 0)
+                    {
+                        model.Action = "I";
+                        isSaved = _IApplicantManager.SaveAssets(model);
+                    }
+                    else
+                    {
+                        model.Action = "U";
+                        isSaved = _IApplicantManager.SaveAssets(model);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                return Json(isSaved, JsonRequestBehavior.AllowGet);
+            }
+            return Json(isSaved, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public PartialViewResult ShwoOfferLetter(long ApplicantId)
+        {
+            var model = new OfferModel();
+            model.ApplicantId = ApplicantId;
+            return PartialView("~/Views/NewAdmin/ePeople/OnBoarding/_OfferLetter.cshtml", model);
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created For : To send offer letter to applicant
+        /// created Date : 24-Dec-2019
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult SendOfferToApplicant(OfferModel model)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            bool isSaved = false;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                if (model != null)
+                {                    
+                   model.Action = "I";
+                   model.UserId = ObjLoginModel.UserId;
+                   isSaved = _IApplicantManager.SendOffer(model);                                        
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(isSaved, JsonRequestBehavior.AllowGet);
+            }
+            return Json(isSaved, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult SaveApplicant(EmployeeVIewModel model)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            bool isSaved = false;
+            W4FormModel returnModel = null;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                if (model != null)
+                {
+                    if (model.ApplicantId == 0)
+                    {
+                    //    model.Action = "I";
+                    //    isSaved = _IApplicantManager.SaveAssets(model);
+                    //}
+                    //else
+                    //{
+                    //    model.Action = "U";
+                    //    isSaved = _IApplicantManager.SaveAssets(model);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return PartialView("~/Views/Guest/Index1.cshtml", returnModel);
+            }
+            return PartialView("~/Views/Guest/_W4Form.cshtml", returnModel);
+        }
+        #endregion Applicant
         [HttpPost]
         public ActionResult QEvaluationView(string Id, string Assesment, string Name, string Image, string JobTitle, string FinYear, string FinQuarter, string Department, string LocationName)
         {

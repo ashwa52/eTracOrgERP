@@ -32,7 +32,7 @@ namespace WorkOrderEMS.Controllers.Guest
             EmployeeVIewModel model = new EmployeeVIewModel();
             ViewBag.StateList = _ICommonMethod.GetStateByCountryId(1);
             model = _IGuestUserRepository.GetEmployee(ObjLoginModel.UserId);
-            return View(model);
+            return View("~/Views/Guest/Index1.cshtml", model);
         }
         [HttpPost]
         public ActionResult Index(EmployeeVIewModel model)
@@ -113,6 +113,22 @@ namespace WorkOrderEMS.Controllers.Guest
         {
             return PartialView("_I9Form");
         }
+        [HttpPost]
+        public PartialViewResult _I9Form(W4FormModel model)
+        {
+            var _model = new EmergencyContectForm();
+            if (ModelState.IsValid)
+            {
+                var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+
+
+               // _IGuestUserRepository.SetW4Form(objloginmodel.UserId, model);
+                //return Json(true, JsonRequestBehavior.AllowGet);
+            }
+
+            return PartialView("_emergencyContactForm", _model);
+            //return PartialView("_I9Form");
+        }
         [HttpGet]
         public PartialViewResult _W4Form()
         {
@@ -122,6 +138,21 @@ namespace WorkOrderEMS.Controllers.Guest
 
             return PartialView("_W4Form", model);
         }
+        //[HttpPost]
+        //public ActionResult _W4Form(W4FormModel model)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+
+
+        //        _IGuestUserRepository.SetW4Form(objloginmodel.UserId, model);
+        //        return Json(true, JsonRequestBehavior.AllowGet);
+        //    }
+
+        //    return PartialView("_W4Form", model);
+        //}
+
         [HttpPost]
         public ActionResult _W4Form(W4FormModel model)
         {
@@ -134,7 +165,7 @@ namespace WorkOrderEMS.Controllers.Guest
                 return Json(true, JsonRequestBehavior.AllowGet);
             }
 
-            return PartialView("_W4Form", model);
+            return PartialView("_I9Form", model);
         }
         [HttpGet]
         public PartialViewResult _PhotoReleaseForm()
@@ -209,23 +240,35 @@ namespace WorkOrderEMS.Controllers.Guest
 		[HttpGet]
 		public PartialViewResult _emergencyContactForm()
 		{
-			EmergencyContectForm model = new EmergencyContectForm();
+			var model = new EmergencyContectForm();
 			var objloginmodel = (eTracLoginModel)(Session["etrac"]);
 			model = _IGuestUserRepository.GetEmergencyForm(objloginmodel.UserId);
 			return PartialView("_emergencyContactForm", model);
 		}
-		[HttpPost]
-		public ActionResult _emergencyContactForm(EmergencyContectForm model)
-		{
-			if (ModelState.IsValid)
-			{
-				var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-				_IGuestUserRepository.SetEmergencyForm(objloginmodel.UserId, model);
-				return Json(true, JsonRequestBehavior.AllowGet);
-			}
-			return PartialView("_emergencyContactForm", model);
-		}
-		[HttpGet]
+		//[HttpPost]
+		//public ActionResult _emergencyContactForm(EmergencyContectForm model)
+		//{
+		//	if (ModelState.IsValid)
+		//	{
+		//		var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+		//		_IGuestUserRepository.SetEmergencyForm(objloginmodel.UserId, model);
+		//		return Json(true, JsonRequestBehavior.AllowGet);
+		//	}
+		//	return PartialView("_emergencyContactForm", model);
+		//}
+        [HttpPost]
+        public ActionResult _emergencyContactForm(EmergencyContectForm model)
+        {
+            var _model = new DirectDepositeFormModel();
+            if (ModelState.IsValid)
+            {
+                var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+                _IGuestUserRepository.SetEmergencyForm(objloginmodel.UserId, model);
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            return PartialView("_directDepositeForm", _model);
+        }
+        [HttpGet]
 		public ActionResult GetFormsStatus()
 		{
 			

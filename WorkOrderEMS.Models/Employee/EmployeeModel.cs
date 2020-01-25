@@ -10,6 +10,7 @@ namespace WorkOrderEMS.Models.Employee
 	public class EmployeeVIewModel
 	{
         public long ApplicantId { get; set; }
+        public string Action { get; set; }
         public string EmpId { get; set; }
 		public string Image { get; set; }
 		[Required]
@@ -47,6 +48,27 @@ namespace WorkOrderEMS.Models.Employee
         public string LicenseNumber { get; set; }
         public string ActionValue { get; set; }
         public string Status { get; set; }
+
+        //Added for Applicant
+        
+        public string StreetAddress { get; set; }
+        public string APIUnit { get; set; }
+        public string DesiredSalary { get; set; }
+        public string PreferendName { get; set; }
+        public Nullable<DateTime> YearsAtAddrss { get; set; }
+        public string ContactType { get; set; }
+        public string PreferendMethodOfContact { get; set; }
+        public bool EligibleToWorkInUS { get; set; }
+        public Nullable<DateTime> AvailableDate { get; set; }
+        public bool Years24Age { get; set; }
+        public bool  RelativeInElite { get; set; }
+        public bool FromMilitary { get; set; }
+        public string WhoInMilatary { get; set; }
+        public string WhoInElite { get; set; }
+        public bool HaveYouWorkELite { get; set; }
+        public Nullable<DateTime> DateOFDeparture { get; set; }
+        public string ReasonForlLeave { get; set; }
+
     }
 
 }

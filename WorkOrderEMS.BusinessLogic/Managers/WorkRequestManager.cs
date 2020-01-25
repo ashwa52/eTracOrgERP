@@ -1001,7 +1001,9 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                     
                                     if (d.s.DeviceId != null)
                                     {
-                                        PushNotification.GCMAndroid("Your continuous task time arrived.", d.s.DeviceId, objEmailHelper);
+                                       
+                                        PushNotificationFCM.FCMAndroid("Your continuous task time arrived.", d.s.DeviceId, objEmailHelper);
+                                        //PushNotification.GCMAndroid("Your continuous task time arrived.", d.s.DeviceId, objEmailHelper);
                                     }
                                     obj = Context.WorkRequestAssignments.Where(x => x.WorkRequestAssignmentID == d.u.WorkRequestAssignmentID
                                                                                && x.WorkOrderCodeID == d.u.WorkOrderCodeID).FirstOrDefault();
@@ -1205,7 +1207,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         }
                         else
                         {
-                            objServiceWorkAssignmentModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                            objServiceWorkAssignmentModel.Response = Convert.ToInt32(ServiceResponse.NoRecord, CultureInfo.CurrentCulture);
                             objServiceWorkAssignmentModel.ResponseMessage = CommonMessage.AlreadyAcceptedUrgentWorkRequest();
                         }
                     }

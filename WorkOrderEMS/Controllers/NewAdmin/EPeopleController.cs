@@ -98,7 +98,11 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         {//D:\Project\eTrac\eTracOrgERP\WorkOrderEMS\Views\NewAdmin\ePeople\_VSCPointingChartDemo.cshtml
             //return PartialView("~/Views/NewAdmin/ePeople/_VSCPointingChart.cshtml");
             Session["EmployeeId"] = Id;
-            return PartialView("~/Views/NewAdmin/ePeople/Requisition/_Chart.cshtml");
+            var lstChart = new List<AddChartModel>();
+            var _manager = new VehicleSeatingChartManager();
+            lstChart = _manager.ListVehicleSeatingChart(0);
+            return View("~/Views/NewAdmin/ePeople/NewViewForEMP/_NewTreeView.cshtml");
+            //return PartialView("~/Views/NewAdmin/ePeople/Requisition/_Chart.cshtml");
         }
         /// <summary>
         /// Created BY : Ashwajit Bansod
@@ -183,11 +187,14 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                     LocationId = Convert.ToInt32(ObjLoginModel.LocationID);
                 }
             }
-            ViewBag.UserIdFirstTime = Id;
-            var id = Cryptography.GetDecryptedData(Id, true);
-            long _UserId = 0;
-            long.TryParse(id, out _UserId);
-            var data = _IePeopleManager.GetUserTreeViewList(_UserId);
+
+            //ViewBag.UserIdFirstTime = Id;
+            ViewBag.UserIdFirstTime = Cryptography.GetEncryptedData(ObjLoginModel.UserId.ToString(), true);
+            //var id = Cryptography.GetDecryptedData(Id, true);
+            //long _UserId = 0;
+            //long.TryParse(id, out _UserId);
+            //var data = _IePeopleManager.GetUserTreeViewList(_UserId);
+            var data = _IePeopleManager.GetUserTreeViewList(ObjLoginModel.UserId);
             if (data.Count() > 0)
             {
                 return PartialView("~/Views/NewAdmin/ePeople/_TreeViewUser1.cshtml", data);
@@ -358,7 +365,8 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                     long.TryParse(id, out _UserId);
                     var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
                     ViewBag.StateList = _ICommonMethod.GetStateByCountryId(1);
-                    model = _IGuestUserRepository.GetEmployee(ObjLoginModel.UserId);
+                    //ObjLoginModel.UserId remove this and add selected Id 
+                    model = _IGuestUserRepository.GetEmployee(_UserId);
                     model.Image = model.Image == null ? HostingPrefix + ConstantImages.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + model.Image;
                     return PartialView("~/Views/NewAdmin/ePeople/_EditEmployeeInfo.cshtml", model);
                 }

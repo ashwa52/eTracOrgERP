@@ -2,6 +2,13 @@
     @{ 
         string EmpIdFirst = @ViewBag.UserIdFirstTime;
     }
+<style>
+    .TreeUserIcons {
+        margin-left: 11px;
+        font-size: 20px;
+        
+    }
+</style>
 <link href="~/Content/NewAdminContent/CSS/NewTreeUserView.css" rel="stylesheet" />
 <div class="pg-orgchart">
     <div class="org-chart">
@@ -9,26 +16,34 @@
             @if (Model.Count() > 0 && Model != null)
             {
                 var i = 0;
-            <li>                
+                <li>                
                 @foreach (var item in Model)
                 {
                     if (i == 0)
                     {
-                        <div class="user firstRoot" id="rootChart_@item.VSTId" style="cursor:pointer;">
-                           <img src="@item.ProfilePhoto" class="img-responsive" />
-                           <div class="name">@item.EmployeeName</div>
-                           <div class="role">@item.JobTitle</div>
-                           @*<a class="manager" href="#">Mike Dinardo</a>*@
+                    <div class="user firstRoot" style="cursor:pointer;">
+                        <div id="rootChart_@item.VSTId">
+                            <img src="@item.ProfilePhoto" class="img-responsive" />
+                            <div class="name">@item.EmployeeName</div>
+                            <div class="role">@item.JobTitle</div>
                         </div>
+                        <div class="IconsData" style="margin-top:14px;">
+                            <i class= "fa fa-folder-open TreeUserIcons AddFilesClass" onclick="AddFileData(this)" data-id="@EmpIdFirst" id="AddFiles" title="Add Files" style="color:yellow;"></i>
+                            <i class= "fa fa-user TreeUserIcons EditUserInfoClass" onclick="EditUserInfo(this)" data-id="@EmpIdFirst" id="EditUserInfo" title="Edit user Info" style="color:black;"></i>
+                            <i class= "fa fa-file TreeUserIcons AddAssessmentClass" onclick="AddAssessment(this)" data-id="@EmpIdFirst" id="AddAssessment" title="Assessment" style="color:#2c7506;"></i>
+                            <i class= "fa fa-file-text TreeUserIcons EmployeeStatusChangeClass" onclick="EmployeeStatusChange(this)" data-id="@EmpIdFirst" id="EmployeeStatusChange" title="Status Change" style="color:#d03f3f;"></i>
+                        </div>
+                        @*<a class="manager" href="#">Mike Dinardo</a>*@
+                    </div>
                         i++;
                     }
                 }                
                 </li>
-            }
+             }
         </ul>
     </div>
 </div>
-
+<script src="~/Scripts/NewAdminJS/UserTreeFunctionality.js"></script>
 <script>
     $(document).ready(function(){
         var base_url = window.location.origin;
@@ -41,11 +56,11 @@
             debugger
               var addnextChart = '<ul>';
               for (var i = 0; i < result.length; i++) {
-                  addnextChart += '<li> <div class="user nextRoot" onclick="GetNextTree(this)" userId="' + result[i].UserId + '" id="NextLevel_' + result[i].EmployeeId + '" style="cursor:pointer;"><img src="' + result[i].ProfilePhoto + '" class="img-responsive" /><div class="name">' + result[i].EmployeeName + '</div><div class="role">' + result[i].JobTitle + '</div></div></li>';
+                  addnextChart += '<li> <div class="user nextRoot" userId="' + result[i].UserId + '" id="NextLevel_' + result[i].EmployeeId + '" style="cursor:pointer;"><div onclick="GetNextTree(this)"><img src="' + result[i].ProfilePhoto + '" class="img-responsive" /><div class="name">' + result[i].EmployeeName + '</div><div class="role">' + result[i].JobTitle + '</div> </div><div class="IconsData" style="margin-top:14px;"><i class= "fa fa-folder-open TreeUserIcons AddFilesClass" onclick="AddFileData(this)" id="AddFiles_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:yellow;"></i><i class= "fa fa-user TreeUserIcons EditUserInfoClass" onclick="EditUserInfo(this)" id="EditUserInfo_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:black;"></i><i class= "fa fa-file TreeUserIcons AddAssessmentClass" onclick="AddAssessment(this)" id="AddAssessment_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:#2c7506;"></i><i class= "fa fa-file-text TreeUserIcons EmployeeStatusChangeClass" onclick="EmployeeStatusChange(this)" id="EmployeeStatusChange_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:#d03f3f;"></i></div></div></li>';
               }
                 addnextChart += '</ul>';
                 $(".firstRoot").after(addnextChart);
-                
+
             },
             error: function (er) {
         }
@@ -78,8 +93,9 @@
     function GetNextTree($_this){
         debugger
         //$_this = this;
-        var getUserId = $($_this).attr("userId");
-        var getdivId = $($_this).attr("id");
+        var getUserId = $($_this).parent().attr("userId");
+        var getdivId =  $($_this).parent().attr("id");
+        //var getdivId = $($_this).attr("id");
         var getNextElementData = $("#" + getdivId).next().html();
         if (getNextElementData == "" || getNextElementData == null) {
             if (getUserId != null) {
@@ -92,12 +108,12 @@
                         if (result.length > 0) {
                             var addnextChart = '<ul>';
                             for (var i = 0; i < result.length; i++) {
-
-                                addnextChart += '<li> <div class="user nextRoot" id="NextLevel_' + result[i].EmployeeId + '" style="cursor:pointer;"><img src="' + result[i].ProfilePhoto + '" class="img-responsive" /><div class="name">' + result[i].EmployeeName + '</div><div class="role">' + result[i].JobTitle + '</div></div></li>';
+                                addnextChart += '<li><div class="user nextRoot" style="cursor:pointer;" userId="' + result[i].UserId + '" id="NextLevel_' + result[i].EmployeeId + '"><div onclick="GetNextTree(this)" ><img src="' + result[i].ProfilePhoto + '" class="img-responsive" /><div class="name">' + result[i].EmployeeName + '</div><div class="role">' + result[i].JobTitle + '</div> </div><div class="IconsData" style="margin-top:14px;"><i class= "fa fa-folder-open TreeUserIcons AddFilesClass" onclick="AddFileData(this)" id="AddFiles_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:yellow;"></i><i class= "fa fa-user TreeUserIcons EditUserInfoClass" onclick="EditUserInfo(this)" id="EditUserInfo_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:black;"></i><i class= "fa fa-file TreeUserIcons AddAssessmentClass" onclick="AddAssessment(this)" id="AddAssessment_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:#2c7506;"></i><i class= "fa fa-file-text TreeUserIcons EmployeeStatusChangeClass" onclick="EmployeeStatusChange(this)" id="EmployeeStatusChange_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:#d03f3f;"></i></div></div></li>';
+                                //addnextChart += '<li><div class="user nextRoot" style="cursor:pointer;"><div onclick="GetNextTree(this)" userId="' + result[i].UserId + '" id="NextLevel_' + result[i].EmployeeId + '"><img src="' + result[i].ProfilePhoto + '" class="img-responsive" /><div class="name">' + result[i].EmployeeName + '</div><div class="role">' + result[i].JobTitle + '</div></div> <div class="IconsData" style="margin-top:14px;"><i class= "fa fa-folder-open TreeUserIcons AddFilesClass" onclick="AddFileData(this)" id="AddFiles_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:yellow;"></i><i class= "fa fa-user TreeUserIcons EditUserInfoClass" onclick="EditUserInfo(this)" id="EditUserInfo_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:black;"></i><i class= "fa fa-file TreeUserIcons AddAssessmentClass" onclick="AddAssessment(this)" id="AddAssessment_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:#2c7506;"></i><i class= "fa fa-file-text TreeUserIcons EmployeeStatusChangeClass" onclick="EmployeeStatusChange(this)" id="EmployeeStatusChange_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:#d03f3f;"></i></div></div></li>';
                             }
                             addnextChart += '</ul>';
                             $("#" + getdivId).after(addnextChart);
-                            $("#myModalForViewUserChart").modal('show');
+                            //$("#myModalForViewUserChart").modal('show');
                         }
                     },
                     error: function (er) {

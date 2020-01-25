@@ -3793,46 +3793,47 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             workorderEMSEntities Context = new workorderEMSEntities();
             try
             {
-                var model = new RecruiteeAPI();
-                string Url = "https://api.recruitee.com/c/40359/candidates/";
-                var getList = model.Index(Url).Result;
-                if (getList != "false")
-                {
-                    var aa = JsonConvert.DeserializeObject<CandidateGetModel.CandidateGet>(getList);
-                    if (aa.candidates.Count() > 0)
-                    {
-                        foreach (var item in aa.candidates)
-                        {
-                            var email = item.emails[0];
-                            var getApplicantInfo = Context.ApplicantInfoes.Where(x => x.API_Email == email).FirstOrDefault();
-                            if (getApplicantInfo == null)
-                            {
-                                string Action = "I";
-                                Url = "https://api.recruitee.com/c/40359/candidates/" + item.id;
-                                var getCVList = model.Index(Url).Result;
-                                if (getCVList != null)
-                                {
+                //Cooment for temporary
+                //var model = new RecruiteeAPI();
+                //string Url = "https://api.recruitee.com/c/40359/candidates/";
+                //var getList = model.Index(Url).Result;
+                //if (getList != "false")
+                //{
+                //    var aa = JsonConvert.DeserializeObject<CandidateGetModel.CandidateGet>(getList);
+                //    if (aa.candidates.Count() > 0)
+                //    {
+                //        foreach (var item in aa.candidates)
+                //        {
+                //            var email = item.emails[0];
+                //            var getApplicantInfo = Context.ApplicantInfoes.Where(x => x.API_Email == email).FirstOrDefault();
+                //            if (getApplicantInfo == null)
+                //            {
+                //                string Action = "I";
+                //                Url = "https://api.recruitee.com/c/40359/candidates/" + item.id;
+                //                var getCVList = model.Index(Url).Result;
+                //                if (getCVList != null)
+                //                {
 
-                                    var data = JsonConvert.DeserializeObject<Models.NewAdminModel.RecruiteeModels.Candidate.PerCandidateData>(getCVList);
-                                    var tt = data.candidate.phones[0];
-                                    var changePhoneString = tt.Replace("-", "");
-                                    var replacebracketright = changePhoneString.Replace("(", "");
-                                    var replacebracketleft = replacebracketright.Replace(")", "");
-                                    var replacebracketSPace = replacebracketleft.Replace(" ", "");
-                                    var phoneNumber = Convert.ToInt64(replacebracketSPace);
-                                    var EmailId = data.candidate.emails[0];
-                                    var offerId = data.candidate.placements[0].offer_id;
-                                    if (offerId == 394152 || offerId == 393383)
-                                    {
-                                        var setInfo = Context.spSetApplicantInfo(Action, null, data.candidate.id, data.candidate.name, null, null, null, data.references[0].location, "Dallas", null,
-                                            data.candidate.cv_url, null, phoneNumber, EmailId, null, data.candidate.photo_url,
-                                            "USA", null, null, null, null, null, null, null, null, offerId, null, null, null, null, "A", "Y");
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                //                    var data = JsonConvert.DeserializeObject<Models.NewAdminModel.RecruiteeModels.Candidate.PerCandidateData>(getCVList);
+                //                    var tt = data.candidate.phones[0];
+                //                    var changePhoneString = tt.Replace("-", "");
+                //                    var replacebracketright = changePhoneString.Replace("(", "");
+                //                    var replacebracketleft = replacebracketright.Replace(")", "");
+                //                    var replacebracketSPace = replacebracketleft.Replace(" ", "");
+                //                    var phoneNumber = Convert.ToInt64(replacebracketSPace);
+                //                    var EmailId = data.candidate.emails[0];
+                //                    var offerId = data.candidate.placements[0].offer_id;
+                //                    if (offerId == 394152 || offerId == 393383)
+                //                    {
+                //                        var setInfo = Context.spSetApplicantInfo(Action, null, data.candidate.id, data.candidate.name, null, null, null, data.references[0].location, "Dallas", null,
+                //                            data.candidate.cv_url, null, phoneNumber, EmailId, null, data.candidate.photo_url,
+                //                            "USA", null, null, null, null, null, null, null, null, offerId, null, null, null, null, "A", "Y");
+                //                    }
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
                 var myOpenings = (from x in Context.spGetMyOpening(PostingId)
                                   select new MyOpeningModel
                                   {
@@ -4079,13 +4080,38 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             catch (Exception ex)
             { throw; }
         }
-        public List<spGetInterviewQuestion_Result1> GetInterviewQuestions()
+        //public List<spGetInterviewQuestion_Result1> GetInterviewQuestions()
+        //{
+        //    try
+        //    {
+        //        using (workorderEMSEntities context = new workorderEMSEntities())
+        //        {
+        //            return context.spGetInterviewQuestion("Y").ToList();
+        //            //return context.spGetInterviewQuestion("Y").ToList();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
+        /// <summary>
+        /// Created By  : Ashwajit Bansod
+        /// Created Date : 18-Jan-2020
+        /// Created For : To get master question exempt non exempt
+        /// </summary>
+        /// <param name="isExempt"></param>
+        /// <returns></returns>
+        public List<InterviewQuestionMaster> GetInterviewQuestions(string isExempt)
+        //public List<spGetQuestionsForInterview_Result4> GetInterviewQuestions(string isExempt)
         {
             try
             {
                 using (workorderEMSEntities context = new workorderEMSEntities())
                 {
-                    return context.spGetInterviewQuestion("Y").ToList();
+                    //var lst = context.spGetQuestionsForInterview("Y", "M", 0).ToList();
+                    var lst = context.InterviewQuestionMasters.Where(x => x.IQM_Exempt == "Y").ToList();
+                    return lst;
                     //return context.spGetInterviewQuestion("Y").ToList();
                 }
             }
@@ -4094,19 +4120,147 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 throw ex;
             }
         }
-
-        public bool SaveInterviewAnswers(InterviewAnswerModel model, long UserId)
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 18-Jan-2020
+        /// Created For : To get child question as per master id
+        /// </summary>
+        /// <param name="num"></param>
+        /// <returns></returns>
+        public List<ChildrenQuestionModel> GetInterviewChildQuestions(int num)
         {
             try
             {
                 using (workorderEMSEntities context = new workorderEMSEntities())
                 {
+                    //var childeQuestioncontext = context.spGetQuestionsForInterview("Y", "C", num).
+                    //    Select(x => new ChildrenQuestionModel() {
+                    //        IQM_Id = x.IQM_Id,
+                    //        IQM_Question = x.IQM_Question
+                    //    }).ToList();
+                    var childeQuestioncontext = context.InterviewQuestionChilds.Where(x => x.IQC_IQM_Id == num && x.IQC_IsActive == "Y").
+                       Select(x => new ChildrenQuestionModel()
+                       {
+                           IQM_Id = x.IQC_Id,
+                           IQM_Question = x.IQC_Question,
+                           IQM_ScoreNo = x.IQC_ScoreNo,
+                           IQM_ScoreYes = x.IQC_ScoreYes
+                       }).ToList();
+                    return childeQuestioncontext;
+                    //return context.spGetInterviewQuestion("Y").ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public bool SaveInterviewAnswers(InterviewQuestionAnswerModel model, List<AnswerArr> AnswerArr, long UserId)
+        {
+            bool isSaved = false;
+            long MasterId = 0;
+            string comment = string.Empty;
+            try
+            {
+                using (workorderEMSEntities context = new workorderEMSEntities())
+                {
                     var EmpId = context.UserRegistrations.Where(x => x.UserId == UserId)?.FirstOrDefault().EmployeeID;
-                    var res = context.spSetInterviewAnswer(model.QusId, model.ApplicantId, EmpId, model.Answer, model.Comment);
-                    if (res > 0)
-                        return true;
-                    else
-                        return false;
+                    foreach (var item in AnswerArr)
+                    {
+                        MasterId = item.masterId;
+                        if (item.Comment != null) {
+                            comment = item.Comment.Replace("undefined", "");
+                        }
+                        
+                        var res = context.spSetInterviewAnswer(item.questionId, model.ApplicantId, EmpId, item.Answer, comment);// item.Comment);
+                        if (res > 0)
+                            isSaved = true;
+                        else
+                            isSaved = false;
+                    }
+                    ObjectParameter isStart = new ObjectParameter("IsNext", "");
+                    var getNExtRes = context.spGetNextQuestion(MasterId, model.ApplicantId, isStart);
+                    if (isStart.Value.ToString().Equals("y", StringComparison.OrdinalIgnoreCase))
+                    {isSaved = true;}else{isSaved = false;}
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return isSaved;
+        }
+        //public bool SaveInterviewAnswers(InterviewAnswerModel model, long UserId)
+        //{
+        //    try
+        //    {
+        //        using (workorderEMSEntities context = new workorderEMSEntities())
+        //        {
+        //            var EmpId = context.UserRegistrations.Where(x => x.UserId == UserId)?.FirstOrDefault().EmployeeID;
+        //            var res = context.spSetInterviewAnswer(model.QusId, model.ApplicantId, EmpId, model.Answer, model.Comment);
+        //            if (res > 0)
+        //                return true;
+        //            else
+        //                return false;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //}
+        /// <summary>
+        /// Created Date : 22-Jan-2019
+        /// Created For : To get all question and answer by applicant Id
+        /// Created By : Ashwajit Bansod
+        /// </summary>
+        /// <param name="Applicant"></param>
+        /// <returns></returns>
+        public AnswerModel GetInterviewAnswerByApplicantId(int Applicant)
+        {
+            try
+            {
+                var childeQuestioncontext = new AnswerModel();
+                var Child = new ListAnswerModel();
+                var Child1 = new List<ListAnswerModel>();
+                using (workorderEMSEntities context = new workorderEMSEntities())
+                {
+                    var getApplicantDetails = context.ApplicantInfoes.Where(x => x.API_ApplicantId == Applicant).FirstOrDefault();
+                    if (getApplicantDetails != null)
+                    {
+                        childeQuestioncontext.ApplicantImage = getApplicantDetails.API_Photo;
+                        childeQuestioncontext.ApplicantName = getApplicantDetails.API_FirstName+" "+ getApplicantDetails.API_LastName;
+                        //will add Exempt non exempt dynamically
+                        var masterQuestion = context.InterviewQuestionMasters.Where(x => x.IQM_Exempt == "Y").ToList();
+                        
+                        foreach (var item in masterQuestion)
+                        {
+                            Child = new ListAnswerModel();
+                            var data = context.InterviewQuestionChilds.Join(context.InterviewAnswers, q => q.IQC_Id, u => u.INA_IQC_Id, (q, u) => new { q, u }).
+                            Where(x => x.q.IQC_IQM_Id == item.IQM_Id).Select(a => new ChildQuestionAnswerModel(){
+                            IQM_Answer = a.u.INA_Answer == "Y"?"Yes":"No",
+                            IQM_Comment = a.u.INA_Comments,
+                            IQM_Question = a.q.IQC_Question,
+                            IQM_Id = a.u.INA_IQC_Id
+                            }).ToList();
+                            Child.IQM_Id = item.IQM_Id;
+                            Child.IQM_Question = item.IQM_Question;
+                            Child.ListAnswerMainModel = data;
+                            Child1.Add(Child);
+
+                            //childeQuestioncontext.ListAnswerModel = context.InterviewAnswers.Where(x => x.INA_API_ApplicantId == Applicant && x.INA_IsActive == "Y").
+                            //Select(x => new ListAnswerModel()
+                            //{
+                            //    IQM_Question = context.InterviewQuestionChilds.Where(a => a.IQC_Id == x.INA_IQC_Id).FirstOrDefault().IQC_Question,
+                            //    IQM_Answer = x.INA_Answer,
+                            //    IQM_Comment = x.INA_Comments,
+                            //    IQM_Id = x.INA_IQC_Id
+                            //}).ToList();
+                        }
+                        childeQuestioncontext.ListAnswerModel = Child1;
+                    }
+
+                    return childeQuestioncontext;
                 }
             }
             catch (Exception ex)

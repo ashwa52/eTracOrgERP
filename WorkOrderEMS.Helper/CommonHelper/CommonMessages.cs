@@ -592,5 +592,37 @@ namespace WorkOrderEMS.Helper
         {
             return "Send assessment HR will get back to you.";
         }
+        public static string SendPassword()
+        {
+            return "New Password is sent to your mail.";
+        }
+        public static string SignUp()
+        {
+            return "You are successfully signed up, login Id and Password sent to your mail id.";
+        }
+        public static string SignUpError()
+        {
+            return "Getting error while siging in please sign up again.";
+        }
+        public static string PasswordChangedError()
+        {
+            return "Getting error while changing password please change it again.";
+        }
+        public static string AlreadyExist()
+        {
+            return "Login Id already exist, please add other.";
+        }
+        public static string NotExist()
+        {
+            return "Login Id not exist.";
+        }
+        public static string PasswordSaved()
+        {
+            return "Password saved successfully, please login.";
+        }
+        public static string ForgotMailSend()
+        {
+            return "Password reset mail sent to your mail id please check and add new password.";
+        }
     }
 }

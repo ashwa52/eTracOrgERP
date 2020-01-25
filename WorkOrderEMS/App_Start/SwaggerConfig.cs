@@ -3,6 +3,8 @@ using WebActivatorEx;
 using WorkOrderEMS;
 using Swashbuckle.Application;
 using WorkOrderEMS.Infrastructure;
+using System.IO;
+using System;
 
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 
@@ -33,7 +35,11 @@ namespace WorkOrderEMS
                         // hold additional metadata for an API. Version and title are required but you can also provide
                         // additional fields by chaining methods off SingleApiVersion.
                         //
+                        //("../swagger/v1/swagger.json", "MyAPI V1");
+                        //c.SingleApiVersion("v1", "My API");
+                        
                         c.SingleApiVersion("v1", "WorkOrderEMS");
+                        //c.IncludeXmlComments(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Docs.xml")); // XML file is outputed to the root directory of website (not bin) and included in csproj file as content
                         c.OperationFilter<AddAuthorizationHeaderParameterOperationFilter>();
 
                         // If you want the output Swagger docs to be indented properly, enable the "PrettyPrint" option.
