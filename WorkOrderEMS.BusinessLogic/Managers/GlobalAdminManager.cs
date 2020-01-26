@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -20,7 +21,8 @@ using WorkOrderEMS.Models.Employee;
 using WorkOrderEMS.Models.NewAdminModel;
 using WorkOrderEMS.Models.SuperAdminModels;
 using WorkOrderEMS.Models.UserModels;
-
+using System.Reflection;
+using Microsoft.Office.Interop;
 
 namespace WorkOrderEMS.BusinessLogic.Managers
 {
@@ -4333,7 +4335,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 using (workorderEMSEntities context = new workorderEMSEntities())
                 {
                     var getData = context.spSetApplicantStatus(ApplicantId, status, IsActive);
-                    isAccept=true;
+                    isAccept = true;
                 }
             }
             else
@@ -4529,7 +4531,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 if (obj != null)
                 {
                     var dt = Convert.ToDateTime(obj.RMS_InterviewDateTime);
-                    result = (DateTime.Now > dt && obj.RMS_IsActive == "Y") ? "MEETINGNOTCOMPLETED" : (DateTime.Now > dt && obj.RMS_IsActive == "C") ?  "MEETINGCOMPLETED": "MEETINGNOTFOUND";
+                    result = (DateTime.Now > dt && obj.RMS_IsActive == "Y") ? "MEETINGNOTCOMPLETED" : (DateTime.Now > dt && obj.RMS_IsActive == "C") ? "MEETINGCOMPLETED" : "MEETINGNOTFOUND";
                     //result = (DateTime.Now > obj.RMS_InterviewDateTime) ? "MEETINGCOMPLETED" : "MEETINGNOTCOMPLETED";
                 }
 
@@ -4544,10 +4546,10 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         public List<ReviewMeeting> GetMeetingList()
         {
             ObjPerformanceRepository = new PerformanceRepository();
-            List<ReviewMeeting> MeetingList=new List<ReviewMeeting>();
+            List<ReviewMeeting> MeetingList = new List<ReviewMeeting>();
             try
             {
-                MeetingList= ObjPerformanceRepository.GetMeetingList();
+                MeetingList = ObjPerformanceRepository.GetMeetingList();
 
             }
             catch (Exception)
@@ -4598,7 +4600,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             {
                 using (workorderEMSEntities context = new workorderEMSEntities())
                 {
-                    return context.spGetHiringGraph(null,PostingId).FirstOrDefault();
+                    return context.spGetHiringGraph(null, PostingId).FirstOrDefault();
                 }
             }
             catch (Exception ex)
@@ -4606,11 +4608,201 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 throw ex;
             }
         }
+        public List<EventModel> GetMyEvents(long  UserId, string start, string end)
+        {
+
+            PerformanceRepository repo = new PerformanceRepository();
+            List<EventModel> list = new List<EventModel>();
+            try
+            {
+                list= repo.GetMyEvents(UserId, start, end);
+               var outlooklist= GetOutlookMeetingDetails(start, end);
+                list.AddRange(outlooklist);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return list;
+
+        }
+        public string CreateNewEvent(string Title, string NewEventDate, string NewEventTime, string NewEventDuration, string JobId, string ApplicantName, string ApplicantEmail, long ManagerId, string selectedManagers)
+        {
+            PerformanceRepository repo = new PerformanceRepository();
+            EmailHelper objEmailHelper = new EmailHelper();
+            bool result = false;
+            string message = string.Empty;
+            try
+            {
+                int AppointmentCount = repo.GetAppointmentCount(JobId);
+                if (AppointmentCount < 5)
+                {
+                    result = repo.CreateNewEvent(Title, NewEventDate, NewEventTime, NewEventDuration, JobId, ApplicantName, ApplicantEmail, ManagerId, selectedManagers);
+                    message = "Appointment Scheduled Successfully";
+                    if (AppointmentCount == 4)
+                    {
+
+                        // var EmailList = GetEmailIds(ApplicantId);
+                        //SEND EMAIL
+                        message = "Email Sent to Managers";
+
+
+                    }
+                }
+                else
+                {
+                    message = "You have already booked 5 Slots for this applicant";
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return message;
+        }
+        public bool UpdateEvent(int id, string NewEventStart, string NewEventEnd)
+        {
+            PerformanceRepository repo = new PerformanceRepository();
+            try
+            {
+                return repo.UpdateEvent(id, NewEventStart, NewEventEnd);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public List<EventModel> GetBookedSlots(long userid)
+        {
+            PerformanceRepository repo = new PerformanceRepository();
+            try
+            {
+                return repo.GetBookedSlots(userid);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        public List<EventModel> GetOutlookMeetingDetails(string start, string end)
+        {
+            List<EventModel> list = new List<EventModel>();
+            try
+            {
+                
+                Microsoft.Office.Interop.Outlook.Application oApp = null;
+                Microsoft.Office.Interop.Outlook.NameSpace mapiNamespace = null;
+                Microsoft.Office.Interop.Outlook.MAPIFolder CalendarFolder = null;
+                Microsoft.Office.Interop.Outlook.Items outlookCalendarItems = null;
+                var fromDate = Convert.ToDateTime(start);
+                var toDate = Convert.ToDateTime(end);
+                oApp = new Microsoft.Office.Interop.Outlook.Application();
+                mapiNamespace = oApp.GetNamespace("MAPI");
+                CalendarFolder = mapiNamespace.GetDefaultFolder(Microsoft.Office.Interop.Outlook.OlDefaultFolders.olFolderCalendar);
+                outlookCalendarItems = CalendarFolder.Items;
+                outlookCalendarItems.IncludeRecurrences = true;//cmplete
+                //for range filtered from above one
+                Microsoft.Office.Interop.Outlook.Folder calFolder =
+                    oApp.Session.GetDefaultFolder(
+                    Microsoft.Office.Interop.Outlook.OlDefaultFolders.olFolderCalendar)
+                    as Microsoft.Office.Interop.Outlook.Folder;
+                Microsoft.Office.Interop.Outlook.Items rangeAppts = GetAppointmentsInRange(calFolder, fromDate, toDate);
+                foreach (Microsoft.Office.Interop.Outlook.AppointmentItem item in rangeAppts)
+                {
+
+                    if (item.IsRecurring)
+                    {
+                        Microsoft.Office.Interop.Outlook.RecurrencePattern rp = item.GetRecurrencePattern();
+                        DateTime first = new DateTime(2019, 7, 14, item.Start.Hour, item.Start.Minute, 0);
+                        DateTime last = new DateTime(2019, 7, 19);
+                        Microsoft.Office.Interop.Outlook.AppointmentItem recur = null;
+
+                        for (DateTime cur = first; cur <= last; cur = cur.AddDays(1))
+                        {
+                            try
+                            {
+                                recur = rp.GetOccurrence(cur);
+                                list.Add(new EventModel { title = recur.Subject, start = recur.Start.ToLongDateString(), end = recur.End.ToLongDateString() });
+
+                            }
+                            catch
+                            { }
+                        }
+                    }
+                    else
+                    {
+                        list.Add(new EventModel { title = item.Subject, start = item.Start.ToLongDateString(), end = item.End.ToLongDateString() });
+                    }
+
+                }
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return list;
+        }
+        /// <summary>
+        /// Get recurring appointments in date range.
+        /// </summary>
+        /// <param name="folder"></param>
+        /// <param name="startTime"></param>
+        /// <param name="endTime"></param>
+        /// <returns>Outlook.Items</returns>
+        private Microsoft.Office.Interop.Outlook.Items GetAppointmentsInRange(
+            Microsoft.Office.Interop.Outlook.Folder folder, DateTime startTime, DateTime endTime)
+        {
+            string filter = "[Start] >= '"
+                + startTime.ToString("g")
+                + "' AND [End] <= '"
+                + endTime.ToString("g") + "'";
+            
+            try
+            {
+                Microsoft.Office.Interop.Outlook.Items calItems = folder.Items;
+                calItems.IncludeRecurrences = true;
+                calItems.Sort("[Start]", Type.Missing);
+                Microsoft.Office.Interop.Outlook.Items restrictItems = calItems.Restrict(filter);
+                if (restrictItems.Count > 0)
+                {
+                    return restrictItems;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch { return null; }
+        }
+
+
+        //public string[] GetEmailIds(string ApplicantId) {
+        //    List<EventModel> list = new List<EventModel>();
+        //    PerformanceRepository repo = new PerformanceRepository();
+        //    string[] listEmails;
+        //    try
+        //    {
+        //        list=repo.GetBookedSlots(ApplicantId).;
+
+        //        lists.SelectMany(l => l.Split(',')).Distinct().ToList();
+
+        //    }
+        //    catch (Exception)
+        //    {
+        //        throw;
+        //    }
+        //    return listEmails;
+        //}
     }
-
-
     public class loc
     {
         public string LocationId { get; set; }
     }
+
+
 }

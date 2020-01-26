@@ -22,6 +22,7 @@ using WorkOrderEMS.Helpers;
 using WorkOrderEMS.Models;
 using WorkOrderEMS.Models.CommonModels;
 using WorkOrderEMS.Models.Employee;
+using WorkOrderEMS.Models.ManagerModels;
 using WorkOrderEMS.Models.NewAdminModel;
 
 namespace WorkOrderEMS.Controllers.NewAdmin
@@ -1660,6 +1661,146 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
             return Json(MeetingList, JsonRequestBehavior.AllowGet);
         }
+        #region Scheduler
+        public ActionResult GetMyEvents(string start, string end, string _)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            List<EventModel> result = new List<EventModel>();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                result = _GlobalAdminManager.GetMyEvents(ObjLoginModel.UserId, start, end);
+                var eventList = from e in result
+                                select new
+                                {
+                                    id = e.id,
+                                    title = e.title,
+                                    start = e.start,
+                                    end = e.end,
+                                    color = e.StatusColor,
+                                    //className = e.ClassName,
+                                    //someKey = e.SomeImportantKeyID,
+                                    allDay = false
+                                };
 
+                var rows = eventList.ToArray();
+                return Json(rows, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        private long ToUnixTimespan(DateTime date)
+        {
+            TimeSpan tspan = date.ToUniversalTime().Subtract(
+     new DateTime(1970, 1, 1, 0, 0, 0));
+            return (long)Math.Truncate(tspan.TotalSeconds);
+        }
+        public string SaveEvent(string Title, string NewEventDate, string  NewEventTime, string NewEventDuration,string JobId, string ApplicantName,string ApplicantEmail,string selectedManagers)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                return _GlobalAdminManager.CreateNewEvent(Title, NewEventDate, NewEventTime, NewEventDuration, JobId, ApplicantName, ApplicantEmail, ObjLoginModel.UserId, selectedManagers);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public void UpdateEvent(int id, string NewEventStart, string NewEventEnd)
+        {
+            _GlobalAdminManager.UpdateEvent(id, NewEventStart, NewEventEnd);
+        }
+
+        public ActionResult GetBookedSlots(string ApplicantId)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            List<EventModel> result = new List<EventModel>();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                result = _GlobalAdminManager.GetBookedSlots(ObjLoginModel.UserId).OrderByDescending(x=>x.start).ToList();
+                var eventList = from e in result
+                                select new 
+                                {
+                                    id = e.id,
+                                    title = e.title,
+                                    startDate = Convert.ToDateTime(e.start).ToShortDateString(),
+                                    startTime = Convert.ToDateTime(e.start).ToShortTimeString(),
+                                    end = Convert.ToDateTime(e.end).ToShortTimeString(),
+                                    color = e.StatusColor,
+                                    allDay = false
+                                } ;
+                var rows = eventList.ToArray();
+                return Json(rows, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+            }
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult GetManagerList()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            List<ManagerModel> result = new List<ManagerModel>();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                result = _ICommonMethod.GetManagerList();
+                var eventList = from e in result
+                                select new
+                                {
+                                    label=e.UserName,
+                                    value=e.UserID.ToString()
+                                };
+                var rows = eventList.ToArray();
+                return Json(rows, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public JsonResult GetSlotTimings(string date) {
+            eTracLoginModel ObjLoginModel = null;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            List<CustomSlotTime> list = new List<CustomSlotTime>();
+            try
+            {
+                list= _ICommonMethod.GetSlotTimings(ObjLoginModel.UserId,date);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return Json(list,JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public void GetOutlookMeeting()
+        {
+            _GlobalAdminManager.GetOutlookMeetingDetails("","");
+        }
+
+
+        #endregion
     }
 }

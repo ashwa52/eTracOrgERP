@@ -18513,6 +18513,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
 
 .fc-scroller.fc-day-grid-container {
     height: 490px !important;
+    overflow: hidden !important;
 }
 
 .fc-row.fc-week.fc-widget-content.fc-rigid {

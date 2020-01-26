@@ -109,5 +109,30 @@ namespace WorkOrderEMS.Models.NewAdminModel
         public string MeetingTime { get; set; }
 
     }
+    public class EventModel
+    {
+        public long id { get; set; }
+        public string title { get; set; }
+
+        public string StatusString { get; set; }
+        public string StatusColor { get; set; }
+
+        public string ClassName { get; set; }
+        public string start { get; set; }
+        public DateTime? StartDate { get; set; }
+        public string end { get; set; }
+        public DateTime? EndDate { get; set; }
+
+
+        public string Descitpion { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public string CreatedFor { get; set; }
+
+        public string CreatedDate { get; set; }
+        public Boolean IsDeleted { get; set; }
+
+    }
 
 }

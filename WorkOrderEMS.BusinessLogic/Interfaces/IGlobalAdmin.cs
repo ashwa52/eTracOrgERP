@@ -298,6 +298,11 @@ namespace WorkOrderEMS.BusinessLogic
         List<ReviewMeeting> GetMeetingList();
         bool SetInterviewAcceptCancel(string status, long ApplicantId, string IsActive);
         spGetHiringGraph_Result HiringGraphCount(long PostingId);
+        List<EventModel> GetMyEvents(long UserName, string start, string end);
+        string CreateNewEvent(string Title, string NewEventDate, string NewEventTime, string NewEventDuration, string JobId, string ApplicantName, string ApplicantEmail,long ManagerId,string selectedManagers);
+        bool UpdateEvent(int id, string NewEventStart, string NewEventEnd);
+        List<EventModel> GetBookedSlots(long userid);
+        List<EventModel> GetOutlookMeetingDetails(string start, string end);
         List<ChildrenQuestionModel> GetInterviewChildQuestions(int num);
         AnswerModel GetInterviewAnswerByApplicantId(int Applicant);
     }
