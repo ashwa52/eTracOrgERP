@@ -156,6 +156,9 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<InterviewQuestionChild> InterviewQuestionChilds { get; set; }
         public virtual DbSet<InterviewQuestionMaster> InterviewQuestionMasters { get; set; }
         public virtual DbSet<InterviewAnswer> InterviewAnswers { get; set; }
+        public virtual DbSet<InterviewProposalTime> InterviewProposalTimes { get; set; }
+        public virtual DbSet<SlotTime> SlotTimes { get; set; }
+        public virtual DbSet<BookSlotTime> BookSlotTimes { get; set; }
     
         [DbFunction("workorderEMSEntities", "fn_Split")]
         public virtual IQueryable<fn_Split_Result> fn_Split(string sText, string sDelim)
@@ -6742,6 +6745,93 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("INA_Comments", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetInterviewAnswer", iNA_IQC_IdParameter, iNA_API_ApplicantIdParameter, iNA_EMP_EmployeeIDParameter, iNA_AnswerParameter, iNA_CommentsParameter);
+        }
+    
+        public virtual ObjectResult<spGetFreeSlote_Result> spGetFreeSlote(string employeeId, Nullable<System.DateTime> slotDate)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            var slotDateParameter = slotDate.HasValue ?
+                new ObjectParameter("SlotDate", slotDate) :
+                new ObjectParameter("SlotDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetFreeSlote_Result>("spGetFreeSlote", employeeIdParameter, slotDateParameter);
+        }
+    
+        public virtual int spSetBookSlotTime(string action, Nullable<long> bST_Id, string bST_Title, Nullable<long> bST_EMP_EmployeeID, Nullable<System.DateTime> bST_SlotDate, Nullable<long> bST_SLT_Id, Nullable<long> bST_Status, string bST_IsActive)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var bST_IdParameter = bST_Id.HasValue ?
+                new ObjectParameter("BST_Id", bST_Id) :
+                new ObjectParameter("BST_Id", typeof(long));
+    
+            var bST_TitleParameter = bST_Title != null ?
+                new ObjectParameter("BST_Title", bST_Title) :
+                new ObjectParameter("BST_Title", typeof(string));
+    
+            var bST_EMP_EmployeeIDParameter = bST_EMP_EmployeeID.HasValue ?
+                new ObjectParameter("BST_EMP_EmployeeID", bST_EMP_EmployeeID) :
+                new ObjectParameter("BST_EMP_EmployeeID", typeof(long));
+    
+            var bST_SlotDateParameter = bST_SlotDate.HasValue ?
+                new ObjectParameter("BST_SlotDate", bST_SlotDate) :
+                new ObjectParameter("BST_SlotDate", typeof(System.DateTime));
+    
+            var bST_SLT_IdParameter = bST_SLT_Id.HasValue ?
+                new ObjectParameter("BST_SLT_Id", bST_SLT_Id) :
+                new ObjectParameter("BST_SLT_Id", typeof(long));
+    
+            var bST_StatusParameter = bST_Status.HasValue ?
+                new ObjectParameter("BST_Status", bST_Status) :
+                new ObjectParameter("BST_Status", typeof(long));
+    
+            var bST_IsActiveParameter = bST_IsActive != null ?
+                new ObjectParameter("BST_IsActive", bST_IsActive) :
+                new ObjectParameter("BST_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetBookSlotTime", actionParameter, bST_IdParameter, bST_TitleParameter, bST_EMP_EmployeeIDParameter, bST_SlotDateParameter, bST_SLT_IdParameter, bST_StatusParameter, bST_IsActiveParameter);
+        }
+    
+        public virtual int spSetInterviewPanel(string action, Nullable<long> iPT_Id, Nullable<long> iPT_JPS_JobPostingId, Nullable<long> iPT_EMP_EmployeeID_HM, Nullable<long> iPT_EMP_EmployeeID_SE, Nullable<long> iPT_EMP_EmployeeID_TE, Nullable<long> iPT_Status, string iPT_IsActive)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var iPT_IdParameter = iPT_Id.HasValue ?
+                new ObjectParameter("IPT_Id", iPT_Id) :
+                new ObjectParameter("IPT_Id", typeof(long));
+    
+            var iPT_JPS_JobPostingIdParameter = iPT_JPS_JobPostingId.HasValue ?
+                new ObjectParameter("IPT_JPS_JobPostingId", iPT_JPS_JobPostingId) :
+                new ObjectParameter("IPT_JPS_JobPostingId", typeof(long));
+    
+            var iPT_EMP_EmployeeID_HMParameter = iPT_EMP_EmployeeID_HM.HasValue ?
+                new ObjectParameter("IPT_EMP_EmployeeID_HM", iPT_EMP_EmployeeID_HM) :
+                new ObjectParameter("IPT_EMP_EmployeeID_HM", typeof(long));
+    
+            var iPT_EMP_EmployeeID_SEParameter = iPT_EMP_EmployeeID_SE.HasValue ?
+                new ObjectParameter("IPT_EMP_EmployeeID_SE", iPT_EMP_EmployeeID_SE) :
+                new ObjectParameter("IPT_EMP_EmployeeID_SE", typeof(long));
+    
+            var iPT_EMP_EmployeeID_TEParameter = iPT_EMP_EmployeeID_TE.HasValue ?
+                new ObjectParameter("IPT_EMP_EmployeeID_TE", iPT_EMP_EmployeeID_TE) :
+                new ObjectParameter("IPT_EMP_EmployeeID_TE", typeof(long));
+    
+            var iPT_StatusParameter = iPT_Status.HasValue ?
+                new ObjectParameter("IPT_Status", iPT_Status) :
+                new ObjectParameter("IPT_Status", typeof(long));
+    
+            var iPT_IsActiveParameter = iPT_IsActive != null ?
+                new ObjectParameter("IPT_IsActive", iPT_IsActive) :
+                new ObjectParameter("IPT_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetInterviewPanel", actionParameter, iPT_IdParameter, iPT_JPS_JobPostingIdParameter, iPT_EMP_EmployeeID_HMParameter, iPT_EMP_EmployeeID_SEParameter, iPT_EMP_EmployeeID_TEParameter, iPT_StatusParameter, iPT_IsActiveParameter);
         }
     }
 }

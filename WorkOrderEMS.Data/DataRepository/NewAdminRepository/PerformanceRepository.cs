@@ -111,7 +111,8 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
                         rec.start = Convert.ToDateTime(item.Meta.BST_SlotDate.ToShortDateString() + " " + item.Post.SLT_fromTime).ToString("s"); // "s" is a preset format that outputs as: "2009-02-27T12:12:22"
                         //rec.start = item.Meta.BST_SlotDate.ToString("s"); // "s" is a preset format that outputs as: "2009-02-27T12:12:22"
                         rec.end = item.Meta.BST_SlotDate.AddMinutes(60).ToString("s"); // field AppointmentLength is in minutes
-                        rec.title = string.IsNullOrEmpty(item.Meta.BST_Title)?"Title:"+ rec.start.ToString() :"Title: " +item.Meta.BST_Title;
+                        rec.title = string.IsNullOrEmpty(item.Meta.BST_IsActive)?"Title:"+ rec.start.ToString() :"Title: " +item.Meta.BST_IsActive;
+                        //rec.title = string.IsNullOrEmpty(item.Meta.BST_Title) ? "Title:" + rec.start.ToString() : "Title: " + item.Meta.BST_Title;
                         //rec.StatusString = Enums.GetName<AppointmentStatus>((AppointmentStatus)item.StatusENUM);
                         //rec.StatusColor = Enums.GetEnumDescription<AppointmentStatus>(rec.StatusString);
                         rec.StatusString = "#FF8000:BOOKED";
@@ -229,7 +230,8 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
                         rec.start = Convert.ToDateTime(item.Meta.BST_SlotDate.ToShortDateString() + " " + item.Post.SLT_fromTime).ToString("s"); // "s" is a preset format that outputs as: "2009-02-27T12:12:22"
                         //rec.start = item.Meta.BST_SlotDate.ToString("s"); // "s" is a preset format that outputs as: "2009-02-27T12:12:22"
                         rec.end = Convert.ToDateTime(item.Meta.BST_SlotDate.ToShortDateString() + " " + item.Post.SLT_ToTime).ToString("s"); // field AppointmentLength is in minutes
-                        rec.title = string.IsNullOrEmpty(item.Meta.BST_Title) ? "Title:" + rec.start.ToString() : "Title: " + item.Meta.BST_Title;
+                        rec.title = string.IsNullOrEmpty(item.Meta.BST_IsActive) ? "Title:" + rec.start.ToString() : "Title: " + item.Meta.BST_IsActive;
+                        //rec.title = string.IsNullOrEmpty(item.Meta.BST_Title) ? "Title:" + rec.start.ToString() : "Title: " + item.Meta.BST_Title;
                         //rec.StatusString = Enums.GetName<AppointmentStatus>((AppointmentStatus)item.StatusENUM);
                         //rec.StatusColor = Enums.GetEnumDescription<AppointmentStatus>(rec.StatusString);
                         rec.StatusString = "#FF8000:BOOKED";

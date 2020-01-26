@@ -188,6 +188,19 @@
           <Property Name="BLT_Discription" Type="varchar" MaxLength="10" Nullable="false" />
           <Property Name="BLT_IsActive" Type="char" MaxLength="1" />
         </EntityType>
+        <EntityType Name="BookSlotTime">
+          <Key>
+            <PropertyRef Name="BST_Id" />
+          </Key>
+          <Property Name="BST_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BST_EMP_EmployeeID" Type="bigint" Nullable="false" />
+          <Property Name="BST_SlotDate" Type="date" Nullable="false" />
+          <Property Name="BST_SLT_Id" Type="bigint" Nullable="false" />
+          <Property Name="BST_Status" Type="char" MaxLength="1" />
+          <Property Name="BST_Date" Type="datetime" />
+          <Property Name="BST_IsActive" Type="char" MaxLength="1" />
+          <Property Name="BST_Title" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="BudgetCostCodeMapping">
           <Key>
             <PropertyRef Name="BCM_Id" />
@@ -1075,6 +1088,25 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Name="INA_Comments" Type="varchar" MaxLength="100" />
           <Property Name="INA_Date" Type="datetime" />
           <Property Name="INA_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="InterviewProposalTime">
+          <Key>
+            <PropertyRef Name="IPT_Id" />
+          </Key>
+          <Property Name="IPT_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IPT_JPS_JobPostingId" Type="bigint" Nullable="false" />
+          <Property Name="IPT_APT_ApplicantId" Type="bigint" />
+          <Property Name="IPT_EMP_EmployeeID_HM" Type="bigint" Nullable="false" />
+          <Property Name="IPT_EMP_EmployeeID_SE" Type="bigint" />
+          <Property Name="IPT_EMP_EmployeeID_TE" Type="bigint" />
+          <Property Name="IPT_BST_Id_HM" Type="bigint" />
+          <Property Name="IPT_BST_Id_SE" Type="bigint" />
+          <Property Name="IPT_BST_Id_TE" Type="bigint" />
+          <Property Name="IPT_InterviewDateTime" Type="datetime" />
+          <Property Name="IPT_Status" Type="char" MaxLength="1" />
+          <Property Name="IPT_SentCount" Type="int" />
+          <Property Name="IPT_Date" Type="datetime" />
+          <Property Name="IPT_IsActive" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="InterviewQuestion">
           <Key>
@@ -2036,6 +2068,16 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="DeletedBy" Type="bigint" />
           <Property Name="DeletedOn" Type="datetime" />
+        </EntityType>
+        <EntityType Name="SlotTime">
+          <Key>
+            <PropertyRef Name="SLT_Id" />
+          </Key>
+          <Property Name="SLT_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SLT_fromTime" Type="time" Precision="0" Nullable="false" />
+          <Property Name="SLT_ToTime" Type="time" Precision="0" Nullable="false" />
+          <Property Name="SLT_Date" Type="datetime" />
+          <Property Name="SLT_IsActive" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="SubCostCode">
           <Key>
@@ -5151,6 +5193,10 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         <Function Name="spGetForrmStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="spGetFreeSlote" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
+          <Parameter Name="SlotDate" Type="date" Mode="In" />
+        </Function>
         <Function Name="spGetHiringGraph" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="JPS_HiringManagerID" Type="varchar" Mode="In" />
           <Parameter Name="JPS_JobPostingId" Type="bigint" Mode="In" />
@@ -5578,6 +5624,16 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="BLT_Discription" Type="varchar" Mode="In" />
           <Parameter Name="BLT_IsActive" Type="char" Mode="In" />
         </Function>
+        <Function Name="spSetBookSlotTime" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Action" Type="char" Mode="In" />
+          <Parameter Name="BST_Id" Type="bigint" Mode="In" />
+          <Parameter Name="BST_Title" Type="nvarchar" Mode="In" />
+          <Parameter Name="BST_EMP_EmployeeID" Type="bigint" Mode="In" />
+          <Parameter Name="BST_SlotDate" Type="date" Mode="In" />
+          <Parameter Name="BST_SLT_Id" Type="bigint" Mode="In" />
+          <Parameter Name="BST_Status" Type="bigint" Mode="In" />
+          <Parameter Name="BST_IsActive" Type="char" Mode="In" />
+        </Function>
         <Function Name="spSetBudgetCostCodeMapping" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="BCMAction" Type="char" Mode="In" />
           <Parameter Name="BCM_Id" Type="bigint" Mode="In" />
@@ -5992,6 +6048,16 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
           <Parameter Name="IsAvailable" Type="char" Mode="In" />
           <Parameter Name="INA_Comments" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spSetInterviewPanel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Action" Type="char" Mode="In" />
+          <Parameter Name="IPT_Id" Type="bigint" Mode="In" />
+          <Parameter Name="IPT_JPS_JobPostingId" Type="bigint" Mode="In" />
+          <Parameter Name="IPT_EMP_EmployeeID_HM" Type="bigint" Mode="In" />
+          <Parameter Name="IPT_EMP_EmployeeID_SE" Type="bigint" Mode="In" />
+          <Parameter Name="IPT_EMP_EmployeeID_TE" Type="bigint" Mode="In" />
+          <Parameter Name="IPT_Status" Type="bigint" Mode="In" />
+          <Parameter Name="IPT_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetJobPosting" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Action" Type="char" Mode="In" />
@@ -6439,6 +6505,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BillFacilityItem" EntityType="Self.BillFacilityItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BillType" EntityType="Self.BillType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BookSlotTime" EntityType="Self.BookSlotTime" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BudgetCostCodeMapping" EntityType="Self.BudgetCostCodeMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BudgetLocationMapping" EntityType="Self.BudgetLocationMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Citizenship" EntityType="Self.Citizenship" Schema="dbo" store:Type="Tables" />
@@ -6489,6 +6556,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="HoursOfServices" EntityType="Self.HoursOfServices" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Insurance" EntityType="Self.Insurance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InterviewAnswer" EntityType="Self.InterviewAnswer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InterviewProposalTime" EntityType="Self.InterviewProposalTime" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InterviewQuestion" EntityType="Self.InterviewQuestion" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InterviewQuestionChild" EntityType="Self.InterviewQuestionChild" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="InterviewQuestionMaster" EntityType="Self.InterviewQuestionMaster" Schema="dbo" store:Type="Tables" />
@@ -6542,6 +6610,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="QuestionAnswer" EntityType="Self.QuestionAnswer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rule" EntityType="Self.Rule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ServiceMaster" EntityType="Self.ServiceMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SlotTime" EntityType="Self.SlotTime" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubCostCode" EntityType="Self.SubCostCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubModule" EntityType="Self.SubModule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TaxDetail" EntityType="Self.TaxDetail" Schema="dbo" store:Type="Tables" />
@@ -14457,6 +14526,33 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="INA_Answer" Mode="In" Type="String" />
             <Parameter Name="INA_Comments" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="spGetFreeSlote" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetFreeSlote_Result)">
+            <Parameter Name="EmployeeId" Mode="In" Type="String" />
+            <Parameter Name="SlotDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="spSetBookSlotTime">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="BST_Id" Mode="In" Type="Int64" />
+            <Parameter Name="BST_Title" Mode="In" Type="String" />
+            <Parameter Name="BST_EMP_EmployeeID" Mode="In" Type="Int64" />
+            <Parameter Name="BST_SlotDate" Mode="In" Type="DateTime" />
+            <Parameter Name="BST_SLT_Id" Mode="In" Type="Int64" />
+            <Parameter Name="BST_Status" Mode="In" Type="Int64" />
+            <Parameter Name="BST_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="InterviewProposalTimes" EntityType="WorkOrderEMS.Data.EntityModel.InterviewProposalTime" />
+          <EntitySet Name="SlotTimes" EntityType="WorkOrderEMS.Data.EntityModel.SlotTime" />
+          <FunctionImport Name="spSetInterviewPanel">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="IPT_Id" Mode="In" Type="Int64" />
+            <Parameter Name="IPT_JPS_JobPostingId" Mode="In" Type="Int64" />
+            <Parameter Name="IPT_EMP_EmployeeID_HM" Mode="In" Type="Int64" />
+            <Parameter Name="IPT_EMP_EmployeeID_SE" Mode="In" Type="Int64" />
+            <Parameter Name="IPT_EMP_EmployeeID_TE" Mode="In" Type="Int64" />
+            <Parameter Name="IPT_Status" Mode="In" Type="Int64" />
+            <Parameter Name="IPT_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="BookSlotTimes" EntityType="WorkOrderEMS.Data.EntityModel.BookSlotTime" />
         </EntityContainer>
         <ComplexType Name="Proc_GetAllWorkAssignedToEmployee_Result">
           <Property Type="Int64" Name="RN" Nullable="true" />
@@ -18429,6 +18525,53 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="INA_Comments" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="INA_Date" Type="DateTime" Precision="3" />
           <Property Name="INA_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="spGetFreeSlote_Result">
+          <Property Type="Int64" Name="SLT_Id" Nullable="false" />
+          <Property Type="Time" Name="SLT_fromTime" Nullable="false" />
+          <Property Type="Time" Name="SLT_ToTime" Nullable="false" />
+        </ComplexType>
+        <EntityType Name="InterviewProposalTime">
+          <Key>
+            <PropertyRef Name="IPT_Id" />
+          </Key>
+          <Property Name="IPT_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IPT_JPS_JobPostingId" Type="Int64" Nullable="false" />
+          <Property Name="IPT_APT_ApplicantId" Type="Int64" />
+          <Property Name="IPT_EMP_EmployeeID_HM" Type="Int64" Nullable="false" />
+          <Property Name="IPT_EMP_EmployeeID_SE" Type="Int64" />
+          <Property Name="IPT_EMP_EmployeeID_TE" Type="Int64" />
+          <Property Name="IPT_BST_Id_HM" Type="Int64" />
+          <Property Name="IPT_BST_Id_SE" Type="Int64" />
+          <Property Name="IPT_BST_Id_TE" Type="Int64" />
+          <Property Name="IPT_InterviewDateTime" Type="DateTime" Precision="3" />
+          <Property Name="IPT_Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="IPT_SentCount" Type="Int32" />
+          <Property Name="IPT_Date" Type="DateTime" Precision="3" />
+          <Property Name="IPT_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SlotTime">
+          <Key>
+            <PropertyRef Name="SLT_Id" />
+          </Key>
+          <Property Name="SLT_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SLT_fromTime" Type="Time" Nullable="false" Precision="0" />
+          <Property Name="SLT_ToTime" Type="Time" Nullable="false" Precision="0" />
+          <Property Name="SLT_Date" Type="DateTime" Precision="3" />
+          <Property Name="SLT_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="BookSlotTime">
+          <Key>
+            <PropertyRef Name="BST_Id" />
+          </Key>
+          <Property Name="BST_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BST_EMP_EmployeeID" Type="Int64" Nullable="false" />
+          <Property Name="BST_SlotDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="BST_SLT_Id" Type="Int64" Nullable="false" />
+          <Property Name="BST_Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="BST_Date" Type="DateTime" Precision="3" />
+          <Property Name="BST_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="BST_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -24398,6 +24541,62 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spSetInterviewAnswer" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetInterviewAnswer" />
+          <FunctionImportMapping FunctionImportName="spGetFreeSlote" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetFreeSlote">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetFreeSlote_Result">
+                <ScalarProperty Name="SLT_Id" ColumnName="SLT_Id" />
+                <ScalarProperty Name="SLT_fromTime" ColumnName="SLT_fromTime" />
+                <ScalarProperty Name="SLT_ToTime" ColumnName="SLT_ToTime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetBookSlotTime" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetBookSlotTime" />
+          <EntitySetMapping Name="InterviewProposalTimes">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.InterviewProposalTime">
+              <MappingFragment StoreEntitySet="InterviewProposalTime">
+                <ScalarProperty Name="IPT_IsActive" ColumnName="IPT_IsActive" />
+                <ScalarProperty Name="IPT_Date" ColumnName="IPT_Date" />
+                <ScalarProperty Name="IPT_SentCount" ColumnName="IPT_SentCount" />
+                <ScalarProperty Name="IPT_Status" ColumnName="IPT_Status" />
+                <ScalarProperty Name="IPT_InterviewDateTime" ColumnName="IPT_InterviewDateTime" />
+                <ScalarProperty Name="IPT_BST_Id_TE" ColumnName="IPT_BST_Id_TE" />
+                <ScalarProperty Name="IPT_BST_Id_SE" ColumnName="IPT_BST_Id_SE" />
+                <ScalarProperty Name="IPT_BST_Id_HM" ColumnName="IPT_BST_Id_HM" />
+                <ScalarProperty Name="IPT_EMP_EmployeeID_TE" ColumnName="IPT_EMP_EmployeeID_TE" />
+                <ScalarProperty Name="IPT_EMP_EmployeeID_SE" ColumnName="IPT_EMP_EmployeeID_SE" />
+                <ScalarProperty Name="IPT_EMP_EmployeeID_HM" ColumnName="IPT_EMP_EmployeeID_HM" />
+                <ScalarProperty Name="IPT_APT_ApplicantId" ColumnName="IPT_APT_ApplicantId" />
+                <ScalarProperty Name="IPT_JPS_JobPostingId" ColumnName="IPT_JPS_JobPostingId" />
+                <ScalarProperty Name="IPT_Id" ColumnName="IPT_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SlotTimes">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.SlotTime">
+              <MappingFragment StoreEntitySet="SlotTime">
+                <ScalarProperty Name="SLT_IsActive" ColumnName="SLT_IsActive" />
+                <ScalarProperty Name="SLT_Date" ColumnName="SLT_Date" />
+                <ScalarProperty Name="SLT_ToTime" ColumnName="SLT_ToTime" />
+                <ScalarProperty Name="SLT_fromTime" ColumnName="SLT_fromTime" />
+                <ScalarProperty Name="SLT_Id" ColumnName="SLT_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spSetInterviewPanel" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetInterviewPanel" />
+          <EntitySetMapping Name="BookSlotTimes">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.BookSlotTime">
+              <MappingFragment StoreEntitySet="BookSlotTime">
+                <ScalarProperty Name="BST_Title" ColumnName="BST_Title" />
+                <ScalarProperty Name="BST_IsActive" ColumnName="BST_IsActive" />
+                <ScalarProperty Name="BST_Date" ColumnName="BST_Date" />
+                <ScalarProperty Name="BST_Status" ColumnName="BST_Status" />
+                <ScalarProperty Name="BST_SLT_Id" ColumnName="BST_SLT_Id" />
+                <ScalarProperty Name="BST_SlotDate" ColumnName="BST_SlotDate" />
+                <ScalarProperty Name="BST_EMP_EmployeeID" ColumnName="BST_EMP_EmployeeID" />
+                <ScalarProperty Name="BST_Id" ColumnName="BST_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
