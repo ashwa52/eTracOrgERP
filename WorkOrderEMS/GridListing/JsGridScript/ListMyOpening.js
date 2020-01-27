@@ -1,6 +1,7 @@
 ﻿var HOBurl = '../HirinngOnBoarding/GetHiringOnBoardingList';
 var base_url = window.location.origin;
 var clients;
+var JobPostingId = 0;
 var $_LocationId = $("#drp_MasterLocation1 option:selected").val();
 var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_RequestedBy = 0;//= $("#drp_MasterLocation option:selected").val();
 
@@ -359,6 +360,7 @@ function MyOpeningSummery() {
             console.log(args.item);
             $("#MyOpeningSummery").hide();
             $("#btnBack").show();
+            //JobPostingId = args.item.JobPostingId;
             myOpenings(args.item.JobPostingId);
         }
     });
@@ -545,17 +547,16 @@ function QuestionYes($_this, isFinal) {
                 $_this.nextElementSibling.style.backgroundColor = "";
                 $_this.nextElementSibling.style.fontSize = "15px";
                 $($_this).attr({ "style": "background-color:#0991A9" });
+                isValChecked = true;
             }
-            else {//if (questionId != AnswerArr[i].questionId) {
-                //for(var j=0;j<AnswerArr.length;j++){
-                //    AnswerArr[i].questionId != questionId
+        }
+            if (isValChecked == false) {//if (questionId != AnswerArr[i].questionId) {
                     AnswerArr.push({ questionId: questionId, Answer: 'Y', masterId: masterId });
-                    $($_this).attr({ "style": "background-color:#0991A9" });
-                //}               
+                    $($_this).attr({ "style": "background-color:#0991A9" });                                             
             }
        
         }
-    }
+    
     else {
         AnswerArr.push({ questionId: questionId, Answer: 'Y', masterId: masterId });
         $($_this).attr({ "style": "background-color:#0991A9" });
@@ -617,7 +618,7 @@ function QuestionYes($_this, isFinal) {
 function QuestionNo($_this, isFinal) {
     var questionId = $($_this).attr("questionId");
     var masterId = $($_this).attr("masterId");
-    
+    var isValChecked = false;
     if (isFinal == false) {
         if (AnswerArr.length > 0) {
             for (var i = 0; i < AnswerArr.length; i++) {
@@ -626,16 +627,18 @@ function QuestionNo($_this, isFinal) {
                     $_this.previousElementSibling.style.backgroundColor = "";
                     $_this.previousElementSibling.style.fontSize = "15px";
                     $($_this).attr({ "style": "background-color:#0991A9" })
+                    isValChecked = true;
                 }
-                else {//if ($.inArray(questionId, AnswerArr)) {
-                    AnswerArr.push({ questionId: questionId, Answer: 'N', masterId: masterId });
-                    $($_this).attr({ "style": "background-color:#0991A9" })
+            }
+            if (isValChecked == false) {//if ($.inArray(questionId, AnswerArr)) {  
+                        AnswerArr.push({ questionId: questionId, Answer: 'N', masterId: masterId });
+                        $($_this).attr({ "style": "background-color:#0991A9" });                   
                 }
                 //else {
                 //    AnswerArr.push({ questionId: questionId, Answer: 'N', masterId: masterId });
                 //    $($_this).attr({ "style": "background-color:#0991A9" })
                 //}
-            }
+           }       
         }
         else {
             AnswerArr.push({ questionId: questionId, Answer: 'N', masterId: masterId })
@@ -697,7 +700,6 @@ function QuestionNo($_this, isFinal) {
         $("#lblmsg").hide();
     }
     //e.preventdefault();
-}
 //======================For Question Answer functionality======================
 
 function RecordYes(isFinal) {
@@ -911,9 +913,11 @@ function SaveAndNext() {
                     $("#Comment3").val("");
                     $("#Comment31").val("");
                     $("#Comment32").val("");
+                    debugger
                     var nextMasterId = $("#hdn_qusnum").val();
                     toastr.success("Success");
                     var ApplicantId = $("#applicant_id").val();
+
                     $.ajax({
                         url: base_url + '/NewAdmin/GetInterviewQuestions?id=' + nextMasterId + "&Applicant=" + ApplicantId,
                         method: 'POST',
@@ -935,6 +939,11 @@ function SaveAndNext() {
                 }
             }
         });
+}
+function RedirectToApplicantGrid() {
+    var link = '@Url.Action("HiringOnBoardingDashboard", "NewAdmin")';
+    $("#RenderPageId").load(link);
+    toastr.success("Interview answer saved Successfully");
 }
 //function SaveAndNext() {
 //    debugger;

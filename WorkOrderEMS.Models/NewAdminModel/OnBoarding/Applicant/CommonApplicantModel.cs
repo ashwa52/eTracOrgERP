@@ -26,8 +26,7 @@ namespace WorkOrderEMS.Models
     public class ApplicantPersonalInfo
     {
         public char API_Action { get; set; }
-        public long API_Id { get; set; }
-        
+        public long API_Id { get; set; }        
         public long ApplicantId { get; set; }
         public string FirstName { get; set; }
         public string MiddleName { get; set; }

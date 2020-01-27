@@ -18,6 +18,7 @@ namespace WorkOrderEMS.Models.NewAdminModel
         public string Comment32 { get; set; }
         public string Comment5 { get; set; }
         public long ApplicantId { get; set; }
+        public string IsExempt { get; set; }
 
     }
     public class ChildrenQuestionModel

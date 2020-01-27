@@ -16,6 +16,9 @@ namespace WorkOrderEMS.Models
         public string APA_Zip { get; set; }
         public Nullable<DateTime> APA_YearsAddressFrom { get; set; }
         public Nullable<DateTime> APA_YearsAddressTo { get; set; }
+        public char APA_Action { get; set; }
+        public long APA_APT_ApplicantId { get; set; }
+        public char APA_IsActive { get; set; }
 
     }
     public class ApplicantContactInfo

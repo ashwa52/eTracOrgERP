@@ -71,13 +71,13 @@
                     <span class="btn btn-default btnNo" questionId="@item.IQM_Id" masterId="@Model.MasterId"  onclick="QuestionNo(this, false);" style="font-size:15px;cursor:pointer;">No</span>
                     @*}*@
                     <!--Question 1-->
-                    @if (item.IQM_Id == 2 && Model.MasterId == 1)
+                    @if (item.IQM_Id == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.QuestionId_2) && Model.MasterId == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.MasterId_1))
                     {
                         <div class="classForQuestionId_@item.IQM_Id" style="display:none;">
                             <input type="text" id="Comment2" name="Comment2" questionId="@item.IQM_Id" class="form-control input-rounded col-sm-9 classForQuestionId_@item.IQM_Id" placeholder="Comment" masterId="@Model.MasterId" id="comment_@item.IQM_Id" style="display:none;margin-top:10px;" />
                         </div>
                     }
-                    @if (item.IQM_Id == 3 && Model.MasterId == 1)
+                    @if (item.IQM_Id == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.QuestionId_3) && Model.MasterId == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.MasterId_1))
                     {
                         <div class="classForQuestionId_@item.IQM_Id" style="display:none;">
                             <div class="form-group row ">
@@ -96,7 +96,7 @@
                     }
                     <!--End Question 1-->
                     <!--End Question 2-->
-                    @if (item.IQM_Id == 4 && Model.MasterId == 2)
+                    @if (item.IQM_Id == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.QuestionId_4) && Model.MasterId == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.MasterId_2))
                     {
                         <div class="classForQuestionId_@item.IQM_Id" style="display:none;">
                             <div class="form-group row ">
@@ -116,15 +116,15 @@
                                 <input type="text" id="Comment12" name="Comment12" questionId="@item.IQM_Id" class="form-control input-rounded col-sm-6 classforSelectSecondQue" placeholder="Comment" masterId="@Model.MasterId" queid_id="comment_@item.IQM_Id" style="display:none;margin-top:15px;" />
                             </div>
                         </div>
-                     }
-                    @if (item.IQM_Id == 6 && Model.MasterId == 2) {
+                    }
+                    @if (item.IQM_Id == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.QuestionId_6) && Model.MasterId == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.MasterId_2)) {
                          <div class="classForQuestionId_@item.IQM_Id" style="display:none;" id="Que26">
                             <input type="text" id="Comment24" name="Comment24" questionId="@item.IQM_Id" class="form-control input-rounded col-sm-9 classForQuestionId_@item.IQM_Id" placeholder="Comment" masterId="@Model.MasterId"  style="display:none;margin-top:10px;" />
                         </div>
                     }
                     <!--End Question 2-->
                     <!--Question 3-->
-                    @if (item.IQM_Id == 7 && Model.MasterId == 3) {
+                    @if (item.IQM_Id == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.QuestionId_7) && Model.MasterId == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.MasterId_3)) {
                          <div class="classForQuestionId_@item.IQM_Id" style="display:none;" id="nextQuestionFor3_1">
                              <div class="form-group row ">
                                  <div class="col-sm-2 question" style="font-size:15px;margin-top:10px;">
@@ -146,7 +146,7 @@
                              </div>
                          </div>
                     }
-                    @if (item.IQM_Id == 8 && Model.MasterId == 3) {
+                    @if (item.IQM_Id == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.QuestionId_8) && Model.MasterId == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.MasterId_3)) {
                          <div class="classForQuestionId_@item.IQM_Id" style="display:none;">
                              <div class="form-group row ">
                                  <div class="col-sm-2 question" style="font-size:15px;margin-top:10px;">
@@ -162,7 +162,7 @@
                              </div>
                          </div>
                     }
-                    @if (item.IQM_Id == 10 && Model.MasterId == 3) {
+                    @if (item.IQM_Id == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.QuestionId_10) && Model.MasterId == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.MasterId_3)) {
                          <div class="classForQuestionId_@item.IQM_Id" style="display:none;" >
                              <div class="form-group row ">
                                  <div class="col-sm-2 question" style="font-size:15px;margin-top:10px;">
@@ -172,7 +172,7 @@
                              </div>
                          </div>
                     }
-                    @if (item.IQM_Id == 11 && Model.MasterId == 3) {
+                    @if (item.IQM_Id == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.QuestionId_11) && Model.MasterId == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.MasterId_3)) {
                          <div class="classForQuestionId_@item.IQM_Id" style="display:none;" >
                              <div class="form-group row ">
                                  <div class="col-sm-2 question" style="font-size:15px;margin-top:10px;">
@@ -184,7 +184,7 @@
                     }
                     <!--End Question 3-->
                     <!--Start Question 4-->
-                    @if (item.IQM_Id == 12 && Model.MasterId == 4) {
+                    @if (item.IQM_Id == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.QuestionId_12) && Model.MasterId == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.MasterId_4)) {
                          <div class="classForQuestionId_@item.IQM_Id" style="display:none;">
                              <div class="form-group row ">
                                  <div class="col-sm-4 question" style="font-size:15px;margin-top:10px;">
@@ -200,21 +200,21 @@
                              </div>
                          </div>
                     }
-                    @if (item.IQM_Id == 13 && Model.MasterId == 4) {
+                    @if (item.IQM_Id == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.QuestionId_13) && Model.MasterId == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.MasterId_4)) {
                          <div class="classForQuestionId_@item.IQM_Id" style="display:none;" >
                              <div class="form-group row ">                               
                                  <input type="text" id="Comment413_1" name="Comment413_1" questionId="@item.IQM_Id" class="form-control input-rounded col-sm-6" placeholder="Comment" masterId="@Model.MasterId" queid_id="comment_@item.IQM_Id" style="margin-top:15px;" />
                              </div>
                          </div>
                     }
-                    @if (item.IQM_Id == 15 && Model.MasterId == 4) {
+                    @if (item.IQM_Id == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.QuestionId_15) && Model.MasterId == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.MasterId_4)) {
                          <div class="classForQuestionId_@item.IQM_Id" style="display:none;" >
                              <div class="form-group row ">                               
                                  <input type="text" id="Comment415_1" name="Comment415_1" questionId="@item.IQM_Id" class="form-control input-rounded col-sm-6" placeholder="Comment" masterId="@Model.MasterId" queid_id="comment_@item.IQM_Id" style="margin-top:15px;" />
                              </div>
                          </div>
                     }
-                    @if (item.IQM_Id == 16 && Model.MasterId == 4) {
+                    @if (item.IQM_Id == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.QuestionId_16) && Model.MasterId == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.MasterId_4)) {
                          <div class="classForQuestionId_@item.IQM_Id" style="display:none;">
                              <div class="form-group row ">
                                  <div class="col-sm-4 question" style="font-size:15px;margin-top:10px;">
@@ -232,21 +232,21 @@
                     }
                     <!--End Question 4-->
                     <!--Start Question 5-->
-                    @if (item.IQM_Id == 22 && Model.MasterId == 5) {
+                    @if (item.IQM_Id == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.QuestionId_22) && Model.MasterId == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.MasterId_5)) {
                          <div class="classForQuestionId_@item.IQM_Id" style="display:none;" >
                              <div class="form-group row ">                               
                                  <input type="text" id="Comment522_1" name="Comment522_1" questionId="@item.IQM_Id" class="form-control input-rounded col-sm-6" placeholder="Comment" masterId="@Model.MasterId" queid_id="comment_@item.IQM_Id" style="margin-top:15px;" />
                              </div>
                          </div>
                     }
-                    @if (item.IQM_Id == 23 && Model.MasterId == 5) {
+                    @if (item.IQM_Id == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.QuestionId_23) && Model.MasterId == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.MasterId_5)) {
                          <div class="classForQuestionId_@item.IQM_Id" style="display:none;" >
                              <div class="form-group row ">                               
                                  <input type="text" id="Comment523_1" name="Comment523_1" questionId="@item.IQM_Id" class="form-control input-rounded col-sm-6" placeholder="Comment" masterId="@Model.MasterId" queid_id="comment_@item.IQM_Id" style="margin-top:15px;" />
                              </div>
                          </div>
                     }
-                    @if (item.IQM_Id == 26 && Model.MasterId == 6) {
+                    @if (item.IQM_Id == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.QuestionId_26) && Model.MasterId == Convert.ToInt64(WorkOrderEMS.Helper.InterviewQuestionsId.MasterId_6)) {
                          <div class="classForQuestionId_@item.IQM_Id" style="display:none;" >
                              <div class="form-group row ">                               
                                  <input type="text" id="Comment626_1" name="Comment626_1" questionId="@item.IQM_Id" class="form-control input-rounded col-sm-6" placeholder="Comment" masterId="@Model.MasterId" queid_id="comment_@item.IQM_Id" style="margin-top:15px;" />
@@ -255,13 +255,17 @@
                     }
                     <!--End Question 5-->
                  </div>
-                 }
-              }
-           }
-           else
-           {
-           <h1>No Question Aligned</h1>
-           }
+            }
+        }
+    }
+    else if (Model.IsExempt == "N")
+    {
+           
+    }
+    else
+    {
+        <h1>No Question Aligned</h1>
+    }
 </form>
     <script src="~/GridListing/JsGridScript/ListMyOpening.js"></script>
 <script>

@@ -588,18 +588,88 @@ namespace WorkOrderEMS.BusinessLogic
                         //var Date = new SqlParameter("@Date", System.Data.SqlDbType.DateTime2);
                         Obj.ApplicantPersonalInfo[0].API_Action = 'I';
                     }
-                    System.Data.DataTable table = Obj.ApplicantPersonalInfo.ToDataTable();
-                    
-
+                    System.Data.DataTable ApplicantPersonalInfoTable = Obj.ApplicantPersonalInfo.ToDataTable();
+                    System.Data.DataTable AplicantAcadmicDetailsTable = Obj.AplicantAcadmicDetails.ToDataTable();
+                    System.Data.DataTable ApplicantAddressTable = Obj.ApplicantAddress.ToDataTable();
+                    System.Data.DataTable ApplicantContactInfoTable = Obj.ApplicantContactInfo.ToDataTable();
+                    System.Data.DataTable ApplicantAdditionalInfoTable = Obj.ApplicantAdditionalInfo.ToDataTable();
+                    System.Data.DataTable ApplicantBackgroundHistoryTable = Obj.ApplicantBackgroundHistory.ToDataTable();
+                    System.Data.DataTable ApplicantPositionTitleTable = Obj.ApplicantPositionTitle.ToDataTable();
+                    System.Data.DataTable ApplicantAccidentRecordTable = Obj.ApplicantAccidentRecord.ToDataTable();
+                    System.Data.DataTable ApplicantTrafficConvictionsTable = Obj.ApplicantTrafficConvictions.ToDataTable();
+                    System.Data.DataTable ApplicantVehiclesOperatedTable = Obj.ApplicantVehiclesOperated.ToDataTable();
+                    System.Data.DataTable ApplicantLicenseHealdTable = Obj.ApplicantLicenseHeald.ToDataTable();
+                    System.Data.DataTable ApplicantSchecduleAvaliblityTable = Obj.ApplicantSchecduleAvaliblity.ToDataTable();
                     var Action = new SqlParameter("@Action", SqlDbType.Char);
                     Action.Value = "I";
                     //var ACB_BillAmount = new SqlParameter("@ACB_BillAmount", SqlDbType.Decimal);
                     //ACB_BillAmount.Value = Obj.ApplicantId;
-
                     var UT_ApplicantPersonalInfo = new SqlParameter("@UT_ApplicantPersonalInfo", SqlDbType.Structured);
-                    UT_ApplicantPersonalInfo.Value = table;
+                    var UT_ApplicantAddress = new SqlParameter("@UT_ApplicantAddress", SqlDbType.Structured);
+                    var UT_ApplicantContactInfo = new SqlParameter("@UT_ApplicantContactInfo", SqlDbType.Structured);
+                    var UT_ApplicantAdditionalInfo = new SqlParameter("@UT_ApplicantAdditionalInfo", SqlDbType.Structured);
+                    var UT_AplicantAcadmicDetails = new SqlParameter("@UT_AplicantAcadmicDetails", SqlDbType.Structured);
+                    var UT_ApplicantBackgroundHistory = new SqlParameter("@UT_ApplicantBackgroundHistory", SqlDbType.Structured);
+                    var UT_ApplicantPositionTitle = new SqlParameter("@UT_ApplicantPositionTitle", SqlDbType.Structured);
+                    var UT_ApplicantAccidentRecord = new SqlParameter("@UT_ApplicantAccidentRecord", SqlDbType.Structured);
+                    var UT_ApplicantTrafficConvictions = new SqlParameter("@UT_ApplicantTrafficConvictions", SqlDbType.Structured);
+                    var UT_ApplicantVehiclesOperated = new SqlParameter("@UT_ApplicantVehiclesOperated", SqlDbType.Structured);
+                    var UT_ApplicantLicenseHeald = new SqlParameter("@UT_ApplicantLicenseHeald", SqlDbType.Structured);
+                    var UT_ApplicantSchecduleAvaliblity = new SqlParameter("@UT_ApplicantSchecduleAvaliblity", SqlDbType.Structured);
+                    // info for ApplicantPersonalInfoTable
+                    UT_ApplicantPersonalInfo.Value = ApplicantPersonalInfoTable;
                     UT_ApplicantPersonalInfo.TypeName = "[dbo].[UT_ApplicantPersonalInfo]";
-                    context.Database.ExecuteSqlCommand("exec [dbo].[spTestUT] @Action, @UT_ApplicantPersonalInfo", Action, UT_ApplicantPersonalInfo);
+
+                    //info for AplicantAcadmicDetailsTable
+                    UT_AplicantAcadmicDetails.Value = AplicantAcadmicDetailsTable;
+                    UT_AplicantAcadmicDetails.TypeName = "[dbo].[UT_AplicantAcadmicDetails]";
+
+                    //info for ApplicantAddressTable
+                    UT_ApplicantAddress.Value = ApplicantAddressTable;
+                    UT_ApplicantAddress.TypeName = "[dbo].[UT_ApplicantAddress]";
+
+                    //info for ApplicantContactInfoTable
+                    UT_ApplicantContactInfo.Value = ApplicantContactInfoTable;
+                    UT_ApplicantContactInfo.TypeName = "[dbo].[UT_ApplicantContactInfo]";
+
+                    //info for ApplicantAdditionalInfoTable
+                    UT_ApplicantAdditionalInfo.Value = ApplicantAdditionalInfoTable;
+                    UT_ApplicantAdditionalInfo.TypeName = "[dbo].[UT_ApplicantAdditionalInfo]";
+
+                    //info for ApplicantBackgroundHistoryTable
+                    UT_ApplicantBackgroundHistory.Value = ApplicantBackgroundHistoryTable;
+                    UT_ApplicantBackgroundHistory.TypeName = "[dbo].[UT_ApplicantBackgroundHistory]";
+
+                    //info for ApplicantPositionTitleTable
+                    UT_ApplicantPositionTitle.Value = ApplicantPositionTitleTable;
+                    UT_ApplicantPositionTitle.TypeName = "[dbo].[UT_ApplicantPositionTitle]";
+
+                    //info for ApplicantAccidentRecordTable
+                    UT_ApplicantAccidentRecord.Value = ApplicantAccidentRecordTable;
+                    UT_ApplicantAccidentRecord.TypeName = "[dbo].[UT_ApplicantAccidentRecord]";
+
+                    //info for ApplicantTrafficConvictionsTable
+                    UT_ApplicantTrafficConvictions.Value = ApplicantTrafficConvictionsTable;
+                    UT_ApplicantTrafficConvictions.TypeName = "[dbo].[UT_ApplicantTrafficConvictions]";
+
+                    //info for ApplicantVehiclesOperatedTable
+                    UT_ApplicantVehiclesOperated.Value = ApplicantVehiclesOperatedTable;
+                    UT_ApplicantVehiclesOperated.TypeName = "[dbo].[UT_ApplicantVehiclesOperated]";
+
+                    //info for ApplicantLicenseHealdTable
+                    UT_ApplicantLicenseHeald.Value = ApplicantLicenseHealdTable;
+                    UT_ApplicantLicenseHeald.TypeName = "[dbo].[UT_ApplicantLicenseHeald]";
+
+                    //info for ApplicantLicenseHealdTable
+                    UT_ApplicantSchecduleAvaliblity.Value = ApplicantSchecduleAvaliblityTable;
+                    UT_ApplicantSchecduleAvaliblity.TypeName = "[dbo].[UT_ApplicantSchecduleAvaliblity]";
+
+                    context.Database.ExecuteSqlCommand("exec [dbo].[spSetApplicantAllDetails] @Action, @UT_ApplicantPersonalInfo", Action, UT_ApplicantPersonalInfo, 
+                        UT_ApplicantAddress, UT_ApplicantContactInfo, UT_ApplicantAdditionalInfo, 
+                        UT_AplicantAcadmicDetails, UT_ApplicantBackgroundHistory, 
+                        UT_ApplicantPositionTitle, UT_ApplicantAccidentRecord, 
+                        UT_ApplicantTrafficConvictions, UT_ApplicantVehiclesOperated, 
+                        UT_ApplicantLicenseHeald, UT_ApplicantSchecduleAvaliblity);
                     Flag = true;
                 }
             }

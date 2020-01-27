@@ -31,7 +31,8 @@ namespace WorkOrderEMS.Helper
             //// create table schema based on properties 
             foreach (var property in properties)
             {
-                table.Columns.Add(property.Name, property.PropertyType);
+                //table.Columns.Add(property.Name, property.PropertyType);
+                table.Columns.Add(property.Name, Nullable.GetUnderlyingType(property.PropertyType) ?? property.PropertyType);
             }
 
             //// create table data from T instances 
