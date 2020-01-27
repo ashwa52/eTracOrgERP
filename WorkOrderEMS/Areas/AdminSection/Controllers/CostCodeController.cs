@@ -156,6 +156,9 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
                                         account.AccountType = AccountTypeEnum.Expense;
                                         account.Classification = AccountClassificationEnum.Expense;
                                         account.AccountSubType = objCostCodeModel.CatagoryValue;
+                                        //account. = objCostCodeModel.CatagoryValue;
+                                        //account.Active = true;
+                                        //account.ClassificationSpecified = true;
                                         break;
                                     case "Fixed Asset":
                                         account.AccountType = AccountTypeEnum.FixedAsset;
@@ -192,16 +195,15 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
                                         account.Classification = AccountClassificationEnum.Revenue;
                                         account.AccountSubType = objCostCodeModel.CatagoryValue;
                                         break;
-
                                     default:
                                         break;
                                 }
-                                account.SubAccount = false;
+                                account.SubAccount = true;
+                               // account.status = Enum
                                 account.AccountTypeSpecified = true;
                                 account.sparse = false;
                                 accountCostCode = commonServiceQBO.Add(account) as Account;
                             }
-
                         }
                         catch (Exception ex)
                         {

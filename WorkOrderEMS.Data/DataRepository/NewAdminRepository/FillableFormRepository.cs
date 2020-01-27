@@ -54,7 +54,7 @@ namespace WorkOrderEMS.Data.DataRepository
         /// </summary>
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
-        public spGetEmergencyContactForm_Result2 GetEmergencyContactForm(string EmployeeId)
+        public spGetEmergencyContactForm_Result4 GetEmergencyContactForm(string EmployeeId)
         {
             try
             {

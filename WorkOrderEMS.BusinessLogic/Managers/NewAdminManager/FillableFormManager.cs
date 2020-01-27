@@ -85,6 +85,20 @@ namespace WorkOrderEMS.BusinessLogic
                                 emergency_form.ECF_HomePhone = getEMCForm.ECF_HomePhone;
                                 emergency_form.ECF_Id = getEMCForm.ECF_Id;
                                 emergency_form.ECF_NickName = getEMCForm.ECF_NickName;
+                                emergency_form.ECF_FirstName = getEMCForm.ECF_FirstName;
+                                emergency_form.ECF_MiddleName = getEMCForm.ECF_MiddleName;
+                                emergency_form.ECF_LastName = getEMCForm.ECF_LastName;
+                                emergency_form.ECF_Address = getEMCForm.ECF_Address;
+                                emergency_form.ECF_Gender = getEMCForm.ECF_Gender;
+                                emergency_form.ECF_Citizenship = getEMCForm.ECF_Citizenship;
+                                emergency_form.ECF_BirthDate = getEMCForm.ECF_BirthDate;
+                                emergency_form.ECF_DriverLicense = getEMCForm.ECF_DriverLicense;
+                                emergency_form.ECF_EmergencyContactName = getEMCForm.ECF_EmergencyContactName;
+                                emergency_form.ECF_Mobile = getEMCForm.ECF_Mobile;
+                                emergency_form.ECF_PhoneNumber = getEMCForm.ECF_PhoneNumber;
+                                emergency_form.ECF_SSN = getEMCForm.ECF_SSN;
+                                emergency_form.ECF_Relationship = getEMCForm.ECF_Relationship;
+                                emergency_form.ECF_HomeAddress = getEMCForm.ECF_HomeAddress;
                                 lstDetails.EmergencyContactFormModel = emergency_form;
                             }
                         }
@@ -111,8 +125,9 @@ namespace WorkOrderEMS.BusinessLogic
                                 w4_Form.EmpId = getW4Form.W4F_EMP_EmployeeId;
                                 w4_Form.W4FId = getW4Form.W4F_Id;
                                 w4_Form.SSN = getW4Form.W4F_SSN;
+                                lstDetails.W4FormModel = w4_Form;
                             }
-                        }
+                        }                      
                     }
                 }
             }
@@ -225,9 +240,53 @@ namespace WorkOrderEMS.BusinessLogic
                         _guestRepository.SetDirectDepositeFormData(directDepo,obj.UserId);
                         isSaved = true;
                     }
-                    else
+                    else if(obj.FormName == "EmergencyContactInfo" && obj.EmergencyContactFormModel != null)
                     {
+                        var emergency_form = new EmergencyContactFormModel();
+                        emergency_form.ECF_EMP_EmployeeId = obj.EmergencyContactFormModel.ECF_EMP_EmployeeId;
+                        emergency_form.ECF_HomeEmail = obj.EmergencyContactFormModel.ECF_HomeEmail;
+                        emergency_form.ECF_HomePhone = obj.EmergencyContactFormModel.ECF_HomePhone;
+                        emergency_form.ECF_Id = obj.EmergencyContactFormModel.ECF_Id;
+                        emergency_form.ECF_NickName = obj.EmergencyContactFormModel.ECF_NickName;
+                        emergency_form.ECF_FirstName = obj.EmergencyContactFormModel.ECF_FirstName;
+                        emergency_form.ECF_MiddleName = obj.EmergencyContactFormModel.ECF_MiddleName;
+                        emergency_form.ECF_LastName = obj.EmergencyContactFormModel.ECF_LastName;
+                        emergency_form.ECF_Address = obj.EmergencyContactFormModel.ECF_Address;
+                        emergency_form.ECF_Gender = obj.EmergencyContactFormModel.ECF_Gender;
+                        emergency_form.ECF_Citizenship = obj.EmergencyContactFormModel.ECF_Citizenship;
+                        emergency_form.ECF_BirthDate = obj.EmergencyContactFormModel.ECF_BirthDate;
+                        emergency_form.ECF_DriverLicense = obj.EmergencyContactFormModel.ECF_DriverLicense;
+                        emergency_form.ECF_EmergencyContactName = obj.EmergencyContactFormModel.ECF_EmergencyContactName;
+                        emergency_form.ECF_Mobile = obj.EmergencyContactFormModel.ECF_Mobile;
+                        emergency_form.ECF_PhoneNumber = obj.EmergencyContactFormModel.ECF_PhoneNumber;
+                        emergency_form.ECF_SSN = obj.EmergencyContactFormModel.ECF_SSN;
+                        emergency_form.ECF_Relationship = obj.EmergencyContactFormModel.ECF_Relationship;
+                        emergency_form.ECF_HomeAddress = obj.EmergencyContactFormModel.ECF_HomeAddress;
+                        _guestRepository.SetEmergencyContactFormData(emergency_form, obj.UserId);
                         isSaved = true;
+                    }
+                    else if (obj.FormName == "W-4" && obj.W4FormModel != null)
+                    {
+                        var w4_Form = new W4FormModel();
+                        w4_Form.EmployeerNameAndAddress = obj.W4FormModel.EmployeerNameAndAddress;
+                        w4_Form.City = obj.W4FormModel.City;
+                        w4_Form.State = obj.W4FormModel.State;
+                        w4_Form.Zip = obj.W4FormModel.Zip;
+                        w4_Form.FirstName = obj.W4FormModel.FirstName;
+                        w4_Form.LastName = obj.W4FormModel.LastName;
+                        w4_Form.MiddleName = obj.W4FormModel.MiddleName;
+                        w4_Form.w4F_10 = obj.W4FormModel.w4F_10;
+                        w4_Form.EmployeeMaritalStatus = obj.W4FormModel.EmployeeMaritalStatus;
+                        w4_Form.w4F_4 = obj.W4FormModel.w4F_4;
+                        w4_Form.w4F_5 = obj.W4FormModel.w4F_5;
+                        w4_Form.w4F_6 = obj.W4FormModel.w4F_6;
+                        w4_Form.w4F_7 = obj.W4FormModel.w4F_7;
+                        w4_Form.w4F_8EmployersName = obj.W4FormModel.w4F_8EmployersName;
+                        w4_Form.w4F_9 = obj.W4FormModel.w4F_9;
+                        w4_Form.EmpId = obj.W4FormModel.EmpId;
+                        w4_Form.W4FId = obj.W4FormModel.W4FId;
+                        w4_Form.SSN = obj.W4FormModel.SSN;
+                       // _guestRepository.SetDirectDepositeFormData(w4_Form, obj.UserId);
                     }
                 }
             }

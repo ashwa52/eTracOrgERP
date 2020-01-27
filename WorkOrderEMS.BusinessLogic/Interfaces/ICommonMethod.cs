@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
+using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
 using WorkOrderEMS.Models.CommonModels;
@@ -198,8 +200,7 @@ namespace WorkOrderEMS.BusinessLogic
         bool SetIsReadNotification(long NotificationId);
         List<EmailHelper> GeteScanNotifications(long UserId);
         bool CheckEmployeeIdExist(string employeeId);
-
-
+        List<CustomSlotTime> GetSlotTimings(long userid,string date);
 
     }
 }

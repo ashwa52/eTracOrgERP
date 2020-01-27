@@ -1,6 +1,4 @@
-﻿
-
-@{
+﻿@{
     Layout = null;
     string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
     WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
@@ -18,6 +16,7 @@
         locationId = ObjLogin.LocationID;
         UserId = ObjLogin.UserId;
     }
+
 }
 <style>
     .client-photo {
@@ -130,6 +129,116 @@
         display: none;
         right: 116px;
     }
+
+    .select-pure__select {
+        align-items: center;
+        background: #f9f9f8;
+        border-radius: 4px;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        box-sizing: border-box;
+        color: #363b3e;
+        cursor: pointer;
+        display: flex;
+        font-size: 16px;
+        font-weight: 500;
+        justify-content: left;
+        min-height: 44px;
+        padding: 5px 10px;
+        position: relative;
+        transition: 0.2s;
+        width: 100%;
+    }
+
+    .select-pure__options {
+        border-radius: 4px;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        box-sizing: border-box;
+        color: #363b3e;
+        display: none;
+        left: 0;
+        max-height: 221px;
+        overflow-y: scroll;
+        position: absolute;
+        top: 50px;
+        width: 100%;
+        z-index: 5;
+    }
+
+    .select-pure__select--opened .select-pure__options {
+        display: block;
+    }
+
+    .select-pure__option {
+        background: #fff;
+        border-bottom: 1px solid #e4e4e4;
+        box-sizing: border-box;
+        height: 44px;
+        line-height: 25px;
+        padding: 10px;
+    }
+
+    .select-pure__option--selected {
+        color: #e4e4e4;
+        cursor: initial;
+        pointer-events: none;
+    }
+
+    .select-pure__option--hidden {
+        display: none;
+    }
+
+    .select-pure__selected-label {
+        align-items: 'center';
+        background: #0A9FCC;
+        border-radius: 4px;
+        color: #fff;
+        cursor: initial;
+        display: inline-flex;
+        justify-content: 'center';
+        margin: 5px 10px 5px 0;
+        padding: 3px 7px;
+    }
+
+        .select-pure__selected-label:last-of-type {
+            margin-right: 0;
+        }
+
+        .select-pure__selected-label i {
+            cursor: pointer;
+            display: inline-block;
+            margin-left: 7px;
+        }
+
+        .select-pure__selected-label img {
+            cursor: pointer;
+            display: inline-block;
+            height: 18px;
+            margin-left: 7px;
+            width: 14px;
+        }
+
+        .select-pure__selected-label i:hover {
+            color: #e4e4e4;
+        }
+
+    .select-pure__autocomplete {
+        background: #f9f9f8;
+        border-bottom: 1px solid #e4e4e4;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        box-sizing: border-box;
+        font-size: 16px;
+        outline: none;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .select-pure__placeholder--hidden {
+        display: none;
+    }
 </style>
 <script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
 <script src="~/Content/NewAdminContent/JQUERY/Charts/Core4.js"></script>
@@ -141,32 +250,79 @@
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />
+<link href="~/Content/Dashboard/plugins/fullcalendar/fullcalendar.css" rel="stylesheet" />
+
 <style>
-    .addWhite {
-        color: white;
-    }
+        .addWhite {
+            color: white;
+        }
 
-    .widthHeader {
-        height: 40px;
-    }
+        .widthHeader {
+            height: 40px;
+        }
 
-    .WidthForTab {
-        width: 14%;
-    }
+        .WidthForTab {
+            width: 14%;
+        }
 
-    .CenterText {
-        text-align: center;
-    }
+        .CenterText {
+            text-align: center;
+        }
+
+        #loading {
+            display: none;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        #calendar {
+            max-width: 900px;
+        }
+
+        /*.ENQUIRY {
+            background-color: #FF9933;
+            border-color: #C0C0C0;
+            color: White;
+            background-position: 1px 1px;
+            background-repeat: no-repeat;
+            background-image: url('Bubble.png');
+            padding-left: 50px;
+        }
+
+        .BOOKED {
+            background-color: #33CCFF;
+            border-color: #C0C0C0;
+            color: White;
+            background-position: 1px 1px;
+            background-repeat: no-repeat;
+            background-image: url('ok.png');
+            padding-left: 50px;
+        }
+
+        .CONFIRMED {
+            background-color: #33CC33;
+            border-color: #C0C0C0;
+            color: White;
+            background-position: 1px 1px;
+            background-repeat: no-repeat;
+            background-image: url('Money.png');
+            padding-left: 50px;
+        }*/
+        /*a.fc-day-grid-event.fc-event.fc-start.fc-end.fc-draggable {
+        background-color: #0074D9!important;
+        border-color: #0074D9!important;
+    }*/
 </style>
 <div class="content-body">
     <!-- row -->
     <div class="container-fluid">
         <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3" data-aos="fade-up">
             <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12" id="showHideHiringOnBoardingDashboard">
-                    <div class="welcome-text">
-                        <h4>Hi, welcome back! @loginUserName</h4>
-                    </div>
+                <div class="welcome-text">
+                    <h4>Hi, welcome back! @loginUserName</h4>
                 </div>
+            </div>
 
         </div>
         <div id="infofactsheet">
@@ -218,7 +374,7 @@
                                     </li>
 
                                 </ul>
-                                <div class="nav-item" style="float:right;display:inline-block">
+                                <div class="nav-item" style="float:right;display:inline-block" id="JobPostBackBtn">
                                     <a onclick="JobPosting();">
                                         <i class="fa fa-chevron-circle-left" id="btnBack" aria-hidden="true" style="font-size: 32px;color: black;padding: 11px 5px 6px 5px;display:none"></i>
                                     </a>
@@ -234,7 +390,41 @@
                                             <div id="ListMyOpening"></div>
                                             <div id="MyOpeningSummery"></div>
                                             <div class="row mx-md-n5">
-
+                                            </div>
+                                            <div id="Scheduler" style="display:none" class="row">
+                                                <div class="nav-item" style="float:right;display:inline-block;position: absolute;right: 0;top: 5%;">
+                                                    <a onclick="ShowMyOpeningGrid();">
+                                                        <i class="fa fa-chevron-circle-left" aria-hidden="true" style="font-size: 32px;color: black;padding: 11px 5px 6px 5px;"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="col-sm-8 col-lg-8">
+                                                    <div id="calendar"></div>
+                                                </div>
+                                                <div id="SchedulerList" class="col-sm-4 col-lg-4">
+                                                    @*<ul class="list-group">
+                                                        <li class="list-group-item list-group-item-success">
+                                                            <label>Applicant Id:</label>
+                                                            <label id="lblApplicantId"></label>
+                                                        </li>
+                                                        <li class="list-group-item list-group-item-info">
+                                                            <label>Applicant Name:</label>
+                                                            <label id="lblApplicantName"></label>
+                                                        </li>
+                                                        <li class="list-group-item list-group-item-warning">
+                                                            <label>Applicant Email:</label>
+                                                            <label id="lblApplicantEmail"></label>
+                                                        </li>
+                                                    </ul>*@
+                                                    <hr />
+                                                    <label>Select additional interviewers</label>
+                                                    <div id="inpManageName">
+                                                        <span class="autocomplete-select"></span>
+                                                    </div>
+                                                    <hr />
+                                                    <h2>Booked Slots</h2>
+                                                    <div id="BookedSlots">
+                                                    </div>
+                                                </div>
                                             </div>
                                             <div id="Scheduler" style="display:none" class="row">
                                                 <div class="nav-item" style="float:right;display:inline-block;position: absolute;right: 0;top: 1%;">
@@ -285,20 +475,20 @@
                                     </div>
                                 </div>
 
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    @*<div id="infofactsheet">
+        @*<div id="infofactsheet">
 
         </div>*@
-</div>
+    </div>
 </div>
 @Html.Partial("~/Views/NewAdmin/ePeople/_HiringOnBoarding.cshtml")
 
-<div class="modal fade  bd-example-modal-lg" @*data-backdrop="false"*@ id="ModalProfilePreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade  bd-example-modal-lg" @*data-backdrop="false" *@ id="ModalProfilePreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -319,6 +509,50 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade  bd-example-modal-lg" id="ModalScheduleInterview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Schedule Interview</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="EventForm" class="well">
+                    <input type="hidden" id="eventID" class="form-control">
+                    <input type="hidden" id="JobId" />
+                    <input type="text" id="eventTitle" placeholder="Title here" class="form-control col-sm-8"><br />
+                    <input type="text" id="eventDate" class="form-control col-sm-8" readonly><br />
+                    <div id="eventTime" class="col-sm-8" style="padding: 0px;"></div><br />
+                    <input type="text" id="eventDuration" placeholder="60 min" class="form-control col-sm-8" readonly><br />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnPopupCancel" data-dismiss="modal" class="btn btn-danger">Cancel</button>
+                <button type="button" id="btnPopupSave" data-dismiss="modal" class="btn btn-primary">Save event</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<div id="popupEventForm" class="modal hide" style="display: none;">
+    <div class="modal-header"><h3>Add new event</h3></div>
+    <div class="modal-body">
+        <form id="EventForm" class="well">
+            <input type="hidden" id="eventID">
+            <label>Event title</label>
+            <input type="text" id="eventTitle" placeholder="Title here"><br />
+            <label>Scheduled date</label>
+            <input type="text" id="eventDate"><br />
+            <label>Scheduled time</label>
+            <input type="text" id="eventTime"><br />
+            <label>Appointment length (minutes)</label>
+            <input type="text" id="eventDuration" placeholder="15"><br />
+        </form>
+    </div>
+</div>
 <!--**********************************
     Content body end
 ***********************************-->
@@ -326,100 +560,104 @@
 <script src="~/GridListing/JsGridScript/ListOnBoarding.js"></script>
 <script src="~/GridListing/JsGridScript/ListMyOpening.js"></script>
 <script src="~/GridListing/JsGridScript/ListEmployeeManagement.js"></script>
+<script src="~/Content/Dashboard/plugins/fullcalendar/mySchedule.js"></script>
+<script src="~/Scripts/moment.min.js"></script>
+<script src="~/Content/Dashboard/plugins/fullcalendar/fullcalendar.min.js"></script>
+<script src="~/Scripts/NewAdminJS/AssetsAndOffer.js"></script>
 <script>
-	am4core.ready(function () {
+    am4core.ready(function () {
 
-		// Themes begin
-		am4core.useTheme(am4themes_material);
-		am4core.useTheme(am4themes_animated);
-		// Themes end
+        // Themes begin
+        am4core.useTheme(am4themes_material);
+        am4core.useTheme(am4themes_animated);
+        // Themes end
 
-		// Create chart instance
-		var chart = am4core.create("EmployeePieChart", am4charts.PieChart);
+        // Create chart instance
+        var chart = am4core.create("EmployeePieChart", am4charts.PieChart);
 
-		// Add data
-		chart.data = [{
-			"User Type": "Administrator",
-			"Count": 2//dataJSON.CountPanel[0].ManagerCount
-		}, {
-			"User Type": "Manager",
-			"Count": 4
-		}, {
-			"User Type": "Employee",
-			"Count": 12//dataJSON.CountPanel[0].EmpCount
-		}];
+        // Add data
+        chart.data = [{
+            "User Type": "Administrator",
+            "Count": 2//dataJSON.CountPanel[0].ManagerCount
+        }, {
+            "User Type": "Manager",
+            "Count": 4
+        }, {
+            "User Type": "Employee",
+            "Count": 12//dataJSON.CountPanel[0].EmpCount
+        }];
 
-		// Add and configure Series
-		var pieSeries = chart.series.push(new am4charts.PieSeries());
-		pieSeries.dataFields.value = "Count";
-		pieSeries.dataFields.category = "User Type";
-		pieSeries.innerRadius = am4core.percent(50);
-		pieSeries.ticks.template.disabled = true;
-		pieSeries.labels.template.disabled = true;
+        // Add and configure Series
+        var pieSeries = chart.series.push(new am4charts.PieSeries());
+        pieSeries.dataFields.value = "Count";
+        pieSeries.dataFields.category = "User Type";
+        pieSeries.innerRadius = am4core.percent(50);
+        pieSeries.ticks.template.disabled = true;
+        pieSeries.labels.template.disabled = true;
 
-		var rgm = new am4core.RadialGradientModifier();
-		rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, - 0.5);
-		pieSeries.slices.template.fillModifier = rgm;
-		pieSeries.slices.template.strokeModifier = rgm;
-		pieSeries.slices.template.strokeOpacity = 0.4;
-		pieSeries.slices.template.strokeWidth = 0;
+        var rgm = new am4core.RadialGradientModifier();
+        rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, - 0.5);
+        pieSeries.slices.template.fillModifier = rgm;
+        pieSeries.slices.template.strokeModifier = rgm;
+        pieSeries.slices.template.strokeOpacity = 0.4;
+        pieSeries.slices.template.strokeWidth = 0;
 
-		chart.legend = new am4charts.Legend();
-		chart.legend.position = "right";
+        chart.legend = new am4charts.Legend();
+        chart.legend.position = "right";
 
-	}); // end am4core.ready()
+    }); // end am4core.ready()
 </script>
 <script>
-	var chartDAR = AmCharts.makeChart("eTimediv", {
-		"theme": "none",
-		"type": "serial",
-		"startDuration": 7,
-		"dataProvider": [{
-			"Cost Code": "Travel",
-			"Budget": 4334,
-			"color": "#1740AE"
-		}, {
-			"Cost Code": "Marketing",
-			"Budget": 4000,
-			"color": "#758DCB"
-		}, {
-			"Cost Code": "Other Travel",
-			"Budget": 3466,
-			"color": "#86E2E8"
-		}],
-		"valueAxes": [{
-			"position": "left",
-			"axisAlpha": 0,
-			"gridAlpha": 0
-		}],
-		"graphs": [{
-			"balloonText": "[[category]]: <b>[[value]]</b>",
-			"colorField": "color",
-			"fillAlphas": 0.85,
-			"lineAlpha": 0.1,
-			"type": "column",
-			"topRadius": 1,
-			"valueField": "Budget"
-		}],
-		"depth3D": 40,
-		"angle": 30,
-		"chartCursor": {
-			"categoryBalloonEnabled": false,
-			"cursorAlpha": 0,
-			"zoomable": false
-		},
-		"categoryField": "Cost Code",
-		"categoryAxis": {
-			"gridPosition": "start",
-			"axisAlpha": 1,
-			"gridAlpha": 0,
-			"labelRotation": 20,
-		},
-		"export": {
-			"enabled": true
-		}
+    var chartDAR = AmCharts.makeChart("eTimediv", {
+        "theme": "none",
+        "type": "serial",
+        "startDuration": 7,
+        "dataProvider": [{
+            "Cost Code": "Travel",
+            "Budget": 4334,
+            "color": "#1740AE"
+        }, {
+            "Cost Code": "Marketing",
+            "Budget": 4000,
+            "color": "#758DCB"
+        }, {
+            "Cost Code": "Other Travel",
+            "Budget": 3466,
+            "color": "#86E2E8"
+        }],
+        "valueAxes": [{
+            "position": "left",
+            "axisAlpha": 0,
+            "gridAlpha": 0
+        }],
+        "graphs": [{
+            "balloonText": "[[category]]: <b>[[value]]</b>",
+            "colorField": "color",
+            "fillAlphas": 0.85,
+            "lineAlpha": 0.1,
+            "type": "column",
+            "topRadius": 1,
+            "valueField": "Budget"
+        }],
+        "depth3D": 40,
+        "angle": 30,
+        "chartCursor": {
+            "categoryBalloonEnabled": false,
+            "cursorAlpha": 0,
+            "zoomable": false
+        },
+        "categoryField": "Cost Code",
+        "categoryAxis": {
+            "gridPosition": "start",
+            "axisAlpha": 1,
+            "gridAlpha": 0,
+            "labelRotation": 20,
+        },
+        "export": {
+            "enabled": true
+        }
 
-	}, 0);
+    }, 0);
 </script>
 
 <script>
@@ -489,6 +727,9 @@
                 scrollTop: $("#EmployeeManagementDiv").offset().top
             }, 'slow');
         });
+
+
+
  });
 </script>
-
+<link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />

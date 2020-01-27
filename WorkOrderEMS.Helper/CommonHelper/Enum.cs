@@ -675,4 +675,31 @@ namespace WorkOrderEMS.Helper
         public const string S = "EmployeeStatus";
         public const string D = "Demotion";
     }
+    /// <summary>
+    /// Created By : Ashwajit Bansod
+    /// </summary>
+    public enum InterviewQuestionsId
+    {
+        MasterId_1 = 1,
+        QuestionId_2 = 2,
+        QuestionId_3 = 3,
+        MasterId_2 = 2,
+        QuestionId_4 = 4,
+        QuestionId_6 = 6,
+        MasterId_3 = 3,
+        QuestionId_7 = 7,
+        QuestionId_8 = 8,
+        QuestionId_10 = 10,
+        QuestionId_11 = 11,
+        MasterId_4 = 4,
+        QuestionId_12 = 12,
+        QuestionId_13 = 13,
+        QuestionId_15 = 15,
+        QuestionId_16 = 16,
+        MasterId_5 = 5,
+        QuestionId_22 = 22,
+        QuestionId_23 = 23,
+        MasterId_6 = 6,
+        QuestionId_26 = 26,
+    }
 }

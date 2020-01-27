@@ -272,9 +272,11 @@ namespace WorkOrderEMS.BusinessLogic
         List<spGetApplicantInfo_Result2> GetApplicantInfo(long userId);
         bool SaveApplicantInfo(OnboardingDetailRequestModel onboardingDetailRequestModel);
         bool SaveGuestEmployeeBasicInfo(GuestEmployeeBasicInfoRequestModel guestEmployeeBasicInfoRequestModel);
-        InterviewersViewModel GetInterviewersList(long applicantId, long userId);
-        List<spGetInterviewQuestion_Result1> GetInterviewQuestions();
-        bool SaveInterviewAnswers(InterviewAnswerModel model, long UserId);
+        InterviewersViewModel GetInterviewersList(long applicantId, long userId);       
+        List<InterviewQuestionMaster> GetInterviewQuestions(string isExempt);
+        //List<spGetQuestionsForInterview_Result4> GetInterviewQuestions(string isExempt);
+        //bool SaveInterviewAnswers(InterviewAnswerModel model, long UserId);
+        bool SaveInterviewAnswers(InterviewQuestionAnswerModel model, List<AnswerArr> AnswerArr, long UserId);
         List<MyOpeningModel> GetMyInterviews(long userId);
         bool IsInterviewerOnline(long ApplicantId, long UserId, string IsAvailable, string Comment);
         int GetScore(long ApplicantId);
@@ -296,5 +298,12 @@ namespace WorkOrderEMS.BusinessLogic
         List<ReviewMeeting> GetMeetingList();
         bool SetInterviewAcceptCancel(string status, long ApplicantId, string IsActive);
         spGetHiringGraph_Result HiringGraphCount(long PostingId);
+        List<EventModel> GetMyEvents(long UserName, string start, string end);
+        string CreateNewEvent(string Title, string NewEventDate, string NewEventTime, string NewEventDuration, string JobId, string ApplicantName, string ApplicantEmail,long ManagerId,string selectedManagers);
+        bool UpdateEvent(int id, string NewEventStart, string NewEventEnd);
+        List<EventModel> GetBookedSlots(long userid);
+        List<EventModel> GetOutlookMeetingDetails(string start, string end);
+        List<ChildrenQuestionModel> GetInterviewChildQuestions(int num);
+        AnswerModel GetInterviewAnswerByApplicantId(int Applicant);
     }
 }
