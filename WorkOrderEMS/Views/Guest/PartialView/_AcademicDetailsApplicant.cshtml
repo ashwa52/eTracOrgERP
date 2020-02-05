@@ -1,4 +1,4 @@
-﻿@model WorkOrderEMS.Models.Employee.EmployeeVIewModel
+﻿@model WorkOrderEMS.Models.CommonApplicantModel
 @{
     ViewBag.Title = "Index";
     //Layout = "~/Views/Shared/_GuestLayout.cshtml";
@@ -7,222 +7,225 @@
 @{
     string myModelprefix = ViewBag.myModelprefixName;
 }
-<div class="main_row">
-    <div class="row">
-        <div class="colmn col-md-2">
-            <div class="form-group">
-                <label class="form-label mt-10"></label>
+@for (var i = 0; i < Model.AplicantAcadmicDetails.Count(); i++)
+{
+    <div class="main_row">
+        <div class="row">
+            <div class="colmn col-md-2">
+                <div class="form-group">
+                    <label class="form-label mt-10"></label>
+                </div>
+            </div>
+            <div class="colmn col-md-5">
+                <div class="form-group">
+                    <label class="form-label mt-10">Name</label>
+                </div>
+            </div>
+            <div class="colmn col-md-5">
+                <div class="form-group">
+                    <label class="form-label mt-10">Address</label>
+                </div>
             </div>
         </div>
-        <div class="colmn col-md-5">
-            <div class="form-group">
-                <label class="form-label mt-10">Name</label>
+
+        <div class="row">
+            <div class="colmn col-md-2">
+                <div class="form-group">
+                    <label class="form-label mt-10">High School</label>
+                </div>
+            </div>
+            <div class="colmn col-md-5">
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_InstituteName, new { @class = "form-control", @placeholder = "High School Name" })
+                    @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_InstituteName)
+                </div>
+            </div>
+            <div class="colmn col-md-5">
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_InstituteAddress, new { @class = "form-control", @placeholder = "Address" })
+                    @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_InstituteAddress)
+                </div>
             </div>
         </div>
-        <div class="colmn col-md-5">
-            <div class="form-group">
-                <label class="form-label mt-10">Address</label>
+
+        <div class="row">
+            <div class="colmn col-md-2">
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_City, new { @class = "form-control", @placeholder = "City" })
+                    @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_City)
+                </div>
+            </div>
+            <div class="colmn col-md-5">
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_State, new { @class = "form-control", @placeholder = "State" })
+                    @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_State)
+                </div>
+            </div>
+            <div class="colmn col-md-5">
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_Zip, new { @class = "form-control", @placeholder = "ZIP" })
+                    @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_Zip)
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="colmn col-md-2">
+                <div class="form-group">
+                    <label class="form-label mt-10">Degree Earned</label>
+                </div>
+            </div>
+            <div class="colmn col-md-5">
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_Degree, new { @class = "form-control", @placeholder = "Degree" })
+                    @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_Degree)
+                </div>
+            </div>
+            <div class="colmn col-md-5">
+                <div class="form-group pt-4 checkbox_group">
+                    <label class="form-label">Graduated</label>
+                    @Html.RadioButtonFor(model => model.AplicantAcadmicDetails[i].AAD_IsGraduated, true, new { @class = "form-label checkbox_label" }) Yes
+                    @Html.RadioButtonFor(model => model.AplicantAcadmicDetails[i].AAD_IsGraduated, false, new { @class = "form-label checkbox_label" }) No
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="colmn col-md-2">
+                <div class="form-group">
+                    <label class="form-label mt-10">Date attended From</label>
+                </div>
+            </div>
+            <div class="colmn col-md-4">
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_AttendedFrom, new { @class = "form-control", @placeholder = "Date Attended From" })
+                    @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_AttendedFrom)
+                </div>
+            </div>
+            <div class="colmn col-md-2">
+                <div class="form-group">
+                    <label class="form-label mt-10">Date attended to</label>
+                </div>
+            </div>
+            <div class="colmn col-md-4">
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_AttendedTo, new { @class = "form-control", @placeholder = "Date Attended To" })
+                    @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_AttendedTo)
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="row">
-        <div class="colmn col-md-2">
-            <div class="form-group">
-                <label class="form-label mt-10">High School</label>
+    <div class="main_row">
+        <div class="row">
+            <div class="colmn col-md-2">
+                <div class="form-group">
+                    <label class="form-label mt-10">School</label>
+                </div>
+            </div>
+            <div class="colmn col-md-5">
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolName, new { @class = "form-control", @placeholder = "School Name" })
+                    @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolName)
+                </div>
+            </div>
+            <div class="colmn col-md-5">
+                <div class="form-group">
+                    <label class="form-label mt-10">Address</label>
+                </div>
             </div>
         </div>
-        <div class="colmn col-md-5">
-            <div class="form-group">
-                @Html.TextBoxFor(model => model.AplicantAcadmicDetails.AAD_InstituteName, new { @class = "form-control", @placeholder = "High School Name" })
-                @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails.AAD_InstituteName)
+
+        <div class="row">
+            <div class="colmn col-md-2">
+                <div class="form-group">
+                    <label class="form-label mt-10">University</label>
+                </div>
+            </div>
+            <div class="colmn col-md-5">
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolAddress, new { @class = "form-control", @placeholder = "School Address" })
+                    @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolAddress)
+                </div>
+            </div>
+            <div class="colmn col-md-5">
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_University, new { @class = "form-control", @placeholder = "University" })
+                    @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_University)
+                </div>
             </div>
         </div>
-        <div class="colmn col-md-5">
-            <div class="form-group">
-                @Html.TextBoxFor(model => model.AplicantAcadmicDetails.AAD_InstituteAddress, new { @class = "form-control", @placeholder = "Address" })
-                @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails.AAD_InstituteAddress)
+
+        <div class="row">
+            <div class="colmn col-md-2">
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolCity, new { @class = "form-control", @placeholder = "City" })
+                    @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolCity)
+                </div>
+            </div>
+            <div class="colmn col-md-5">
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolState, new { @class = "form-control", @placeholder = "State" })
+                    @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolState)
+                </div>
+            </div>
+            <div class="colmn col-md-5">
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolZip, new { @class = "form-control", @placeholder = "Zip" })
+                    @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolZip)
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="colmn col-md-2">
+                <div class="form-group">
+                    <label class="form-label mt-10">Degree Earned</label>
+                </div>
+            </div>
+            <div class="colmn col-md-5">
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolDegree, new { @class = "form-control", @placeholder = "Degree Earned" })
+                    @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolDegree)
+                </div>
+            </div>
+            <div class="colmn col-md-5">
+                <div class="form-group pt-4 checkbox_group">
+                    <label class="form-label">Graduated</label>
+                    @Html.RadioButtonFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolIsGraduated, true, new { @class = "form-label checkbox_label" }) Yes
+                    @Html.RadioButtonFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolIsGraduated, false, new { @class = "form-label checkbox_label" }) No
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="colmn col-md-2">
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolAttendedFrom, new { @class = "form-control", @placeholder = "School Attended From" })
+                    @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolAttendedFrom)
+                </div>
+            </div>
+            <div class="colmn col-md-4">
+                <div class="form-group">
+                    <input type="date" class="form-control">
+                </div>
+            </div>
+            <div class="colmn col-md-2">
+                <div class="form-group">
+                    <label class="form-label mt-10">Date attended to</label>
+                </div>
+            </div>
+            <div class="colmn col-md-4">
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolAttendedTo, new { @class = "form-control", @placeholder = "School Attended To" })
+                    @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolAttendedTo)
+                </div>
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="colmn col-md-2">
-            <div class="form-group">
-                @Html.TextBoxFor(model => model.AplicantAcadmicDetails.AAD_City, new { @class = "form-control", @placeholder = "City" })
-                @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails.AAD_City)
-            </div>
-        </div>
-        <div class="colmn col-md-5">
-            <div class="form-group">
-                @Html.TextBoxFor(model => model.AplicantAcadmicDetails.AAD_State, new { @class = "form-control", @placeholder = "State" })
-                @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails.AAD_State)
-            </div>
-        </div>
-        <div class="colmn col-md-5">
-            <div class="form-group">
-                @Html.TextBoxFor(model => model.AplicantAcadmicDetails.AAD_Zip, new { @class = "form-control", @placeholder = "ZIP" })
-                @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails.AAD_Zip)
-            </div>
-        </div>
-    </div>
-
-
-    <div class="row">
-        <div class="colmn col-md-2">
-            <div class="form-group">
-                <label class="form-label mt-10">Degree Earned</label>
-            </div>
-        </div>
-        <div class="colmn col-md-5">
-            <div class="form-group">
-                @Html.TextBoxFor(model => model.AplicantAcadmicDetails.AAD_Degree, new { @class = "form-control", @placeholder = "Degree" })
-                @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails.AAD_Degree)
-            </div>
-        </div>
-        <div class="colmn col-md-5">
-            <div class="form-group pt-4 checkbox_group">
-                <label class="form-label">Graduated</label>
-                @Html.RadioButtonFor(model => model.AplicantAcadmicDetails.AAD_IsGraduated, true, new { @class = "form-label checkbox_label" }) Yes
-                @Html.RadioButtonFor(model => model.AplicantAcadmicDetails.AAD_IsGraduated, false, new { @class = "form-label checkbox_label" }) No
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="colmn col-md-2">
-            <div class="form-group">
-                <label class="form-label mt-10">Date attended From</label>
-            </div>
-        </div>
-        <div class="colmn col-md-4">
-            <div class="form-group">
-                @Html.TextBoxFor(model => model.AplicantAcadmicDetails.AAD_AttendedFrom, new { @class = "form-control", @placeholder = "Date Attended From" })
-                @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails.AAD_AttendedFrom)
-            </div>
-        </div>
-        <div class="colmn col-md-2">
-            <div class="form-group">
-                <label class="form-label mt-10">Date attended to</label>
-            </div>
-        </div>
-        <div class="colmn col-md-4">
-            <div class="form-group">
-                @Html.TextBoxFor(model => model.AplicantAcadmicDetails.AAD_AttendedTo, new { @class = "form-control", @placeholder = "Date Attended To" })
-                @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails.AAD_AttendedTo)
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="main_row">
-    <div class="row">
-        <div class="colmn col-md-2">
-            <div class="form-group">
-                <label class="form-label mt-10">School</label>
-            </div>
-        </div>
-        <div class="colmn col-md-5">
-            <div class="form-group">
-                @Html.TextBoxFor(model => model.AplicantAcadmicDetails.AAD_SchoolName, new { @class = "form-control", @placeholder = "School Name" })
-                @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails.AAD_SchoolName)
-            </div>
-        </div>
-        <div class="colmn col-md-5">
-            <div class="form-group">
-                <label class="form-label mt-10">Address</label>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="colmn col-md-2">
-            <div class="form-group">
-                <label class="form-label mt-10">University</label>
-            </div>
-        </div>
-        <div class="colmn col-md-5">
-            <div class="form-group">
-                @Html.TextBoxFor(model => model.AplicantAcadmicDetails.AAD_SchoolAddress, new { @class = "form-control", @placeholder = "School Address" })
-                @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails.AAD_SchoolAddress)
-            </div>
-        </div>
-        <div class="colmn col-md-5">
-            <div class="form-group">
-                @Html.TextBoxFor(model => model.AplicantAcadmicDetails.AAD_University, new { @class = "form-control", @placeholder = "University" })
-                @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails.AAD_University)
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="colmn col-md-2">
-            <div class="form-group">
-                @Html.TextBoxFor(model => model.AplicantAcadmicDetails.AAD_SchoolCity, new { @class = "form-control", @placeholder = "City" })
-                @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails.AAD_SchoolCity)
-            </div>
-        </div>
-        <div class="colmn col-md-5">
-            <div class="form-group">
-                @Html.TextBoxFor(model => model.AplicantAcadmicDetails.AAD_SchoolState, new { @class = "form-control", @placeholder = "State" })
-                @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails.AAD_SchoolState)
-            </div>
-        </div>
-        <div class="colmn col-md-5">
-            <div class="form-group">
-                @Html.TextBoxFor(model => model.AplicantAcadmicDetails.AAD_SchoolZip, new { @class = "form-control", @placeholder = "Zip" })
-                @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails.AAD_SchoolZip)
-            </div>
-        </div>
-    </div>
-
-
-    <div class="row">
-        <div class="colmn col-md-2">
-            <div class="form-group">
-                <label class="form-label mt-10">Degree Earned</label>
-            </div>
-        </div>
-        <div class="colmn col-md-5">
-            <div class="form-group">
-                @Html.TextBoxFor(model => model.AplicantAcadmicDetails.AAD_SchoolDegree, new { @class = "form-control", @placeholder = "Degree Earned" })
-                @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails.AAD_SchoolDegree)
-            </div>
-        </div>
-        <div class="colmn col-md-5">
-            <div class="form-group pt-4 checkbox_group">
-                <label class="form-label">Graduated</label>
-                @Html.RadioButtonFor(model => model.AplicantAcadmicDetails.AAD_SchoolIsGraduated, true, new { @class = "form-label checkbox_label" }) Yes
-                @Html.RadioButtonFor(model => model.AplicantAcadmicDetails.AAD_SchoolIsGraduated, false, new { @class = "form-label checkbox_label" }) No
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="colmn col-md-2">
-            <div class="form-group">
-                @Html.TextBoxFor(model => model.AplicantAcadmicDetails.AAD_SchoolAttendedFrom, new { @class = "form-control", @placeholder = "School Attended From" })
-                @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails.AAD_SchoolAttendedFrom)
-            </div>
-        </div>
-        <div class="colmn col-md-4">
-            <div class="form-group">
-                <input type="date" class="form-control">
-            </div>
-        </div>
-        <div class="colmn col-md-2">
-            <div class="form-group">
-                <label class="form-label mt-10">Date attended to</label>
-            </div>
-        </div>
-        <div class="colmn col-md-4">
-            <div class="form-group">
-                @Html.TextBoxFor(model => model.AplicantAcadmicDetails.AAD_SchoolAttendedTo, new { @class = "form-control", @placeholder = "School Attended To" })
-                @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails.AAD_SchoolAttendedTo)
-            </div>
-        </div>
-    </div>
-</div>
+}
 
 
 <div class="main_row">

@@ -1,5 +1,4 @@
-﻿@model WorkOrderEMS.Models.Employee.EmployeeVIewModel
-
+﻿@model WorkOrderEMS.Models.CommonApplicantModel
 
 @{
     Layout = null;
@@ -21,50 +20,50 @@
                 <th>State of Vaiolation</th>
                 <th>Panalties Assessed<br> (select all Panalties that apply)</th>
             </tr>
-            @for (int i = 0; i < Model.ApplicantBackgroundHistory.ListAppTrafficConvictions.Count(); i++)
-                
-                {
-                    <tr>
-                        <td>
-                        @Html.TextBoxFor(m => m.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_ConvictedDate, new { @class = "form-control", @type = "date" })
-                        </td>
-                        <td>
-                            @Html.TextBoxFor(m => m.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_Violation, new { @class = "form-control", @type = "text" })
-                        </td>
-                        <td>
-                            @Html.TextBoxFor(m => m.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_StateOfViolation, new { @class = "form-control", @type = "text" })
+            @for (int i = 0; i < Model.ApplicantTrafficConvictions.Count(); i++)
 
-                        </td>
-                        <td>
-                            <div class="form-group pt-4 checkbox_group">
-                                @*@Html.CheckBox(model=>model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_AtFaultAccident, new { @class = "form-control"})*@
+            {
+                <tr>
+                    <td>
+                        @Html.TextBoxFor(m => m.ApplicantTrafficConvictions[i].ATC_ConvictedDate, new { @class = "form-control", @type = "date" })
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.ApplicantTrafficConvictions[i].ATC_Violation, new { @class = "form-control", @type = "text" })
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.ApplicantTrafficConvictions[i].ATC_StateOfViolation, new { @class = "form-control", @type = "text" })
 
-                                <label class="form-label checkbox_label">
-                                    @if (Model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_AtFaultAccident == 'Y')
-                                    {
-                                        <input type="checkbox" checked name=@Model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_Id id=@Model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_Id> <span>At Fault Accident</span>
-                                    }
-                                    else
-                                    {
-                                        <input type="checkbox" name=@Model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_Id id=@Model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_Id> <span>At Fault Accident</span>
+                    </td>
+                    <td>
+                        <div class="form-group pt-4 checkbox_group">
+                            @*@Html.CheckBox(model=>model.ApplicantTrafficConvictions[i].ATC_AtFaultAccident, new { @class = "form-control"})*@
 
-                                    }
-                                </label>
-                                <label class="form-label checkbox_label">
-                                    @if (Model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_AtMovingViolation == 'Y')
-                                    {
-                                        <input type="checkbox" checked name=@Model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_Id id=@Model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_Id> <span>Moving vaiolation</span>
-                                    }
-                                    else
-                                    {
-                                        <input type="checkbox" name=@Model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_Id id=@Model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_Id> <span>Moving vaiolation</span>
+                            <label class="form-label checkbox_label">
+                                @if (Model.ApplicantTrafficConvictions[i].ATC_AtFaultAccident == 'Y')
+                                {
+                                    <input type="checkbox" checked name=@Model.ApplicantTrafficConvictions[i].ATC_Id id=@Model.ApplicantTrafficConvictions[i].ATC_Id> <span>At Fault Accident</span>
+                                }
+                                else
+                                {
+                                    <input type="checkbox" name=@Model.ApplicantTrafficConvictions[i].ATC_Id id=@Model.ApplicantTrafficConvictions[i].ATC_Id> <span>At Fault Accident</span>
 
-                                    }
-                                </label>
-                            </div>
-                        </td>
-                    </tr>
-                }
+                                }
+                            </label>
+                            <label class="form-label checkbox_label">
+                                @if (Model.ApplicantTrafficConvictions[i].ATC_AtMovingViolation == 'Y')
+                                {
+                                    <input type="checkbox" checked name=@Model.ApplicantTrafficConvictions[i].ATC_Id id=@Model.ApplicantTrafficConvictions[i].ATC_Id> <span>Moving vaiolation</span>
+                                }
+                                else
+                                {
+                                    <input type="checkbox" name=@Model.ApplicantTrafficConvictions[i].ATC_Id id=@Model.ApplicantTrafficConvictions[i].ATC_Id> <span>Moving vaiolation</span>
+
+                                }
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+            }
         </table>
     </div>
 </div>

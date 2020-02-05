@@ -25,33 +25,51 @@ namespace WorkOrderEMS.Controllers.Guest
         public ActionResult Index()
         {
             var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-            EmployeeVIewModel model = new EmployeeVIewModel();
+            CommonApplicantModel model = new CommonApplicantModel();
             ViewBag.StateList = _ICommonMethod.GetStateByCountryId(1);
-            model = _IGuestUserRepository.GetEmployee(ObjLoginModel.UserId);
-            model.AplicantAcadmicDetails = new AplicantAcadmicDetails();
-            model.ApplicantBackgroundHistory = new ApplicantBackgroundHistory();
-            model.ApplicantBackgroundHistory.ApplicantAccidentRecord = new ApplicantAccidentRecord();
-            model.ApplicantBackgroundHistory.ListAppTrafficConvictions = new List<ApplicantTrafficConvictions>();
+            //model = _IGuestUserRepository.GetEmployee(ObjLoginModel.UserId);
+            model.ApplicantPersonalInfo = new List<ApplicantPersonalInfo>();
+            ApplicantPersonalInfo a1 = new ApplicantPersonalInfo();
+            model.ApplicantPersonalInfo.Add(a1);
+            model.ApplicantAddress = new List<ApplicantAddress>();
+            ApplicantAddress a2 = new ApplicantAddress();
+            model.ApplicantAddress.Add(a2);
+
+            model.AplicantAcadmicDetails = new List<AplicantAcadmicDetails>();
+            model.ApplicantBackgroundHistory = new List<ApplicantBackgroundHistory>();
+            model.ApplicantAccidentRecord = new List<ApplicantAccidentRecord>();
+
+            model.ApplicantContactInfo = new List<ApplicantContactInfo>();
+            ApplicantContactInfo c1 = new ApplicantContactInfo();
+            model.ApplicantContactInfo.Add(c1);
+            model.ApplicantTrafficConvictions = new List<ApplicantTrafficConvictions>();
             ApplicantTrafficConvictions obj = new ApplicantTrafficConvictions();
             ApplicantTrafficConvictions obj2 = new ApplicantTrafficConvictions();
             ApplicantTrafficConvictions obj3 = new ApplicantTrafficConvictions();
-            model.ApplicantBackgroundHistory.ListAppTrafficConvictions.Add(obj);
-            model.ApplicantBackgroundHistory.ListAppTrafficConvictions.Add(obj2);
-            model.ApplicantBackgroundHistory.ListAppTrafficConvictions.Add(obj3);
+            model.ApplicantTrafficConvictions.Add(obj);
+            model.ApplicantTrafficConvictions.Add(obj2);
+            model.ApplicantTrafficConvictions.Add(obj3);
 
-            model.ApplicantBackgroundHistory.ListApplicantLicenseHeald = new List<ApplicantLicenseHeald>();
+            model.ApplicantLicenseHeald = new List<ApplicantLicenseHeald>();
             ApplicantLicenseHeald obj4 = new ApplicantLicenseHeald();
             ApplicantLicenseHeald obj5 = new ApplicantLicenseHeald();
             ApplicantLicenseHeald obj6 = new ApplicantLicenseHeald();
-            model.ApplicantBackgroundHistory.ListApplicantLicenseHeald.Add(obj4);
-            model.ApplicantBackgroundHistory.ListApplicantLicenseHeald.Add(obj5);
-            model.ApplicantBackgroundHistory.ListApplicantLicenseHeald.Add(obj6);
+            model.ApplicantLicenseHeald.Add(obj4);
+            model.ApplicantLicenseHeald.Add(obj5);
+            model.ApplicantLicenseHeald.Add(obj6);
 
+            model.ApplicantAdditionalInfo = new List<ApplicantAdditionalInfo>();
+            ApplicantAdditionalInfo ad1 = new ApplicantAdditionalInfo();
+            model.ApplicantAdditionalInfo.Add(ad1);
+
+            model.ApplicantVehiclesOperated = new List<ApplicantVehiclesOperated>();
+            ApplicantVehiclesOperated vo = new ApplicantVehiclesOperated();
+            model.ApplicantVehiclesOperated.Add(vo);
 
             return View("~/Views/Guest/Index1.cshtml", model);
         }
         [HttpPost]
-        public ActionResult Index(EmployeeVIewModel EmployeeVIewModel)
+        public ActionResult Index(CommonApplicantModel CommonApplicantModel)
         {
             ViewBag.StateList = _ICommonMethod.GetStateByCountryId(1);
             if (ModelState.IsValid)

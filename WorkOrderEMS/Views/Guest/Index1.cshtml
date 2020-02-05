@@ -1,6 +1,6 @@
-﻿@model WorkOrderEMS.Models.Employee.EmployeeVIewModel
+﻿@*@model WorkOrderEMS.Models.Employee.EmployeeVIewModel*@
 
-@*@model WorkOrderEMS.Models.CommonApplicantModel*@
+@model WorkOrderEMS.Models.CommonApplicantModel
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_GuestLayout.cshtml";
@@ -127,274 +127,47 @@
                                                     </ul>
                                                     <div class="tab-content">
                                                         <div id="personal_detail" class="tab-pane fade show active">
-                                                            <fieldset id="personaldetails">
-                                                                <div>
-                                                                    <div class="main_row">
-                                                                        <div class="row">
-                                                                            <div class="colmn col-md-4">
-                                                                                <div class="form-group">
-                                                                                    <select type="text" class="form-control">
-                                                                                        <option>Mr</option>
-                                                                                        <option>Ms</option>
-                                                                                        <option>Mrs</option>
-                                                                                    </select>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="colmn col-md-8 d-flex align-item-center">
-                                                                                <div class="form-group">
-                                                                                    <label class="form-label">Please Provide an address for last three years of your residency.</label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="colmn col-md-4">
-                                                                                <div class="form-group">
-                                                                                    @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control" })
-                                                                                    @Html.ValidationMessageFor(model => model.FirstName)
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="colmn col-md-4">
-                                                                                <div class="form-group">
-                                                                                    @Html.TextBoxFor(x => x.MiddleName, new { @class = "form-control" })
-                                                                                    @Html.ValidationMessageFor(model => model.MiddleName)
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="colmn col-md-4">
-                                                                                <div class="form-group">
-                                                                                    @Html.TextBoxFor(x => x.LastName, new { @class = "form-control" })
-                                                                                    @Html.ValidationMessageFor(model => model.LastName)
-
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row">
-                                                                            <div class="colmn col-md-6">
-                                                                                <div class="form-group">
-                                                                                    @Html.TextBoxFor(x => x.StreetAddress, new { @class = "form-control", @placeholder = "Street Addrss" })
-                                                                                    @Html.ValidationMessageFor(model => model.StreetAddress)
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="colmn col-md-3">
-                                                                                <div class="form-group">
-                                                                                    @Html.TextBoxFor(x => x.APIUnit, new { @class = "form-control", @placeholder = "APT/UNIT#:" })
-                                                                                    @Html.ValidationMessageFor(model => model.APIUnit)
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="colmn col-md-3">
-                                                                                <div class="form-group">
-                                                                                    @Html.TextBoxFor(x => x.DesiredSalary, new { @class = "form-control", @placeholder = "Desired salary" })
-                                                                                    @Html.ValidationMessageFor(model => model.DesiredSalary)
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row">
-                                                                            <div class="colmn col-md-4">
-                                                                                <div class="form-group">
-                                                                                    @Html.TextBoxFor(model => model.City, new { @id = "City", @class = "form-control" })
-                                                                                    @Html.ValidationMessageFor(model => model.City)
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="colmn col-md-4">
-                                                                                <div class="form-group">
-                                                                                    @Html.TextBoxFor(model => model.State, new { @id = "State", @class = "form-control" })
-                                                                                    @Html.ValidationMessageFor(model => model.State)
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="colmn col-md-4">
-                                                                                <div class="form-group">
-                                                                                    @*<input type="text" class="form-control" placeholder="Zip">*@
-                                                                                    @Html.TextBoxFor(model => model.Zip, new { @id = "Zip", @class = "form-control" })
-                                                                                    @Html.ValidationMessageFor(model => model.Zip)
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row">
-                                                                            <div class="colmn col-md-4">
-                                                                                <div class="form-group">
-                                                                                    @Html.TextBoxFor(model => model.PreferendName, new { @id = "PreferendName", @class = "form-control", @placeholder = "Prefered Name" })
-                                                                                    @Html.ValidationMessageFor(model => model.PreferendName)
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="colmn col-md-4">
-                                                                                <div class="form-group">
-                                                                                    @Html.TextBoxFor(model => model.SocialSecurityNumber, new { @id = "SocialSecurityNumber", @class = "form-control", @placeholder = "Social Security#:" })
-                                                                                    @Html.ValidationMessageFor(model => model.SocialSecurityNumber)
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="colmn col-md-4">
-                                                                                <div class="form-group yearsaddress">
-                                                                                    <label class="form-label">Years at address</label>
-                                                                                    @Html.TextBoxFor(model => model.YearsAtAddrss, new { @id = "YearsAtAddrss", @class = "form-control", @placeholder = "Social Security#:" })
-                                                                                    @Html.ValidationMessageFor(model => model.YearsAtAddrss)
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row">
-                                                                            <div class="colmn col-md-12 text-right">
-                                                                                <div class="form-group">
-                                                                                    <button class="btn">Add more address</button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
+                                                            <div>
+                                                                <fieldset id="personaldetails">
+                                                                    @{ViewBag.myModelprefixName = "ApplicantPersonalInfo."; ViewBag.ActionSection = "personaldetails";}
+                                                                    <div>
+                                                                        @Html.Partial("~/Views/Guest/PartialView/_ApplicantPersonalInfo.cshtml")
                                                                     </div>
-
-
-                                                                    <div class="main_row">
-
-                                                                        <div class="row">
-                                                                            <div class="colmn col-md-12 text-center">
-                                                                                <div class="form-group">
-                                                                                    <label class="form-label">Please Provide your Contact Info</label>
-                                                                                </div>
-
-                                                                            </div>
-                                                                        </div>
-
-                                                                        <div class="row">
-                                                                            <div class="colmn col-md-4">
-                                                                                <div class="form-group">
-                                                                                    @Html.DropDownListFor(c => c.ContactType, new SelectList(
-                                           new List<Object>{
-                                                                                                                                        new { value = 0 , text = "--Type--"  },
-                                                                                                                                        new { value = "Phone" , text = "Phone"  },
-                                                                                                                                        new { value = "Mobile" , text = "Mobile" },
-                                           },
-                                           "value",
-                                           "text", 0), new { @id = "ContactType", @class = "form-control input-rounded" })
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="colmn col-md-8 d-flex align-item-center">
-                                                                                <div class="form-group">
-                                                                                    @Html.TextBoxFor(model => model.Phone, new { @id = "Phone", @class = "form-control", @placeholder = "Phone" })
-                                                                                    @Html.ValidationMessageFor(model => model.Phone)
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="colmn col-md-12">
-                                                                                <div class="form-group">
-                                                                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Email" })
-                                                                                    @Html.ValidationMessageFor(model => model.Email)
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="colmn col-md-12">
-                                                                                <div class="form-group conact_method">
-                                                                                    <label class="form-label">Perderred Method of contact</label>
-                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>Phone</span></label>
-                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>E-Mail</span></label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
-
-                                                                        <div class="row">
-                                                                            <div class="colmn col-md-12 text-right">
-                                                                                <div class="form-group">
-                                                                                    <button class="btn">Add more Contacts</button>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-
+                                                                </fieldset>
+                                                                <fieldset id="addressdetails">
+                                                                    @{ViewBag.myModelprefixName = "ApplicantAddress."; ViewBag.ActionSection = "addressdetails";}
+                                                                    <div>
+                                                                        @Html.Partial("~/Views/Guest/PartialView/_ApplicantAddress.cshtml")
                                                                     </div>
-
-
-                                                                    <div class="main_row">
-
-                                                                        <div class="row">
-                                                                            <div class="colmn col-md-12 text-center">
-                                                                                <div class="form-group">
-                                                                                    <label class="form-label">Please fill out the additional information</label>
-                                                                                </div>
-                                                                            </div>
+                                                                </fieldset>
+                                                                <div class="main_row">
+                                                                    <fieldset id="contactdetails">
+                                                                        @{ViewBag.myModelprefixName = "ApplicantContactInfo."; ViewBag.ActionSection = "contactdetails";}
+                                                                        <div>
+                                                                            @Html.Partial("~/Views/Guest/PartialView/_ApplicantContactInfo.cshtml")
                                                                         </div>
+                                                                    </fieldset>
+                                                                </div>
 
-                                                                        <div class="row aditinal_top">
-                                                                            <div class="colmn col-md-4">
-                                                                                <div class="form-group conact_method">
-                                                                                    <label class="form-label">Eligible to work in US</label>
-                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>Yes</span></label>
-                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>No</span></label>
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="colmn col-md-4 date_available">
-                                                                                <div class="form-group d-flex align-item-center">
-                                                                                    @Html.TextBoxFor(model => model.AvailableDate, new { @class = "form-control", @placeholder = "Date Avalible" })
-                                                                                    @Html.ValidationMessageFor(model => model.AvailableDate)
-                                                                                </div>
-                                                                            </div>
-
-                                                                            <div class="colmn col-md-4">
-                                                                                <div class="form-group">
-                                                                                    <label class="form-label">Are you 21 years of age</label>
-                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>Yes</span></label>
-                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>No</span></label>
-                                                                                </div>
-                                                                            </div>
+                                                                <div class="main_row">
+                                                                    <fieldset id="additionalinfo">
+                                                                        @{ViewBag.myModelprefixName = "ApplicantAdditionalInfo."; ViewBag.ActionSection = "additionalinfo";}
+                                                                        <div>
+                                                                            @Html.Partial("~/Views/Guest/PartialView/_ApplicantAdditionalInfo.cshtml")
                                                                         </div>
+                                                                    </fieldset>
+                                                                </div>
+                                                                <div class="btn_row">
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-12 d-flex space-between">
+                                                                            <button class="btn">Previous</button>
+                                                                            <button class="btn">Next</button>
 
-
-                                                                        <div class="row">
-                                                                            <div class="colmn col-md-12 relative_sec ">
-                                                                                <div class="form-group">
-                                                                                    <label class="form-label">DO you have any friend, Relative or Aquantiances that work elite?</label>
-                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>Yes</span></label>
-                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>No</span></label>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="colmn col-md-4 relative_sec ">
-                                                                                <div class="form-group pt-4">
-                                                                                    <label class="form-label">Prior Militory</label>
-                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>Yes</span></label>
-                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>No</span></label>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="colmn col-md-8 relative_sec ">
-                                                                                <div class="form-group">
-                                                                                    <input type="text" class="form-control" placeholder="If yes, please identify who">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="colmn col-md-12">
-                                                                                <div class="form-group pt-4 ever_worked">
-                                                                                    <label class="form-label">Have you ever worked for Elite and/or any of its subsidairies</label>
-                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>Yes</span></label>
-                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>No</span></label>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="colmn col-md-12 date_departute">
-                                                                                <div class="form-group d-flex align-item-center">
-                                                                                    <label class="form-label">If Yes, Date of departure</label>
-                                                                                    @Html.TextBoxFor(model => model.DateOFDeparture, new { @class = "form-control", @placeholder = "Date of departure" })
-                                                                                    @Html.ValidationMessageFor(model => model.DateOFDeparture)
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="colmn col-md-12 reason_living ">
-                                                                                <div class="form-group">
-                                                                                    @Html.TextBoxFor(model => model.ReasonForlLeave, new { @class = "form-control", @placeholder = "Reason for leaving" })
-                                                                                    @Html.ValidationMessageFor(model => model.ReasonForlLeave)
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-
-                                                                    <div class="btn_row">
-                                                                        <div class="row">
-                                                                            <div class="colmn col-md-12 d-flex space-between">
-                                                                                <button class="btn">Previous</button>
-                                                                                <button class="btn">Next</button>
-
-                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
+                                                            </div>
 
-                                                            </fieldset>
                                                         </div>
                                                         <div id="acadmic_detail" class="tab-pane fade">
                                                             <fieldset id="academicdetails">
@@ -411,221 +184,251 @@
                                                                     @Html.Partial("~/Views/Guest/PartialView/_EmploymentHistory.cshtml")
                                                                 </div>
                                                             </fieldset>
+                                                            <fieldset id="accidentrecord">
+                                                                @{ViewBag.myModelprefixName = "ApplicantBackgroundHistory.ApplicantAccidentRecord."; ViewBag.ActionSection = "accidentrecord";}
+                                                                <div class="main_row">
+                                                                    @Html.Partial("~/Views/Guest/PartialView/_ApplicantAccidentRecord.cshtml")
+                                                                </div>
+                                                            </fieldset>
+                                                            <fieldset id="trafficconviction">
+                                                                @{ViewBag.myModelprefixName = "ApplicantBackgroundHistory.ListAppTrafficConvictions"; ViewBag.ActionSection = "trafficconviction";}
+                                                                <div class="main_row">
+
+                                                                    @Html.Partial("~/Views/Guest/PartialView/_ApplicantTrafficConvictions.cshtml")
+                                                                </div>
+                                                            </fieldset>
+                                                            <fieldset id="licenseheld">
+                                                                @{ViewBag.myModelprefixName = "ApplicantBackgroundHistory.ApplicantLicenseHeald."; ViewBag.ActionSection = "licenseheld";}
+                                                                <div class="main_row">
+                                                                    @Html.Partial("~/Views/Guest/PartialView/_ApplicantLicenseHeald.cshtml")
+                                                                </div>
+                                                            </fieldset>
+                                                            <fieldset id="vehicleoperated">
+                                                                @{ViewBag.myModelprefixName = "ApplicantBackgroundHistory.ApplicantVehiclesOperated."; ViewBag.ActionSection = "vehicleoperated";}
+                                                                <div class="main_row">
+                                                                    @Html.Partial("~/Views/Guest/PartialView/_ApplicantVehiclesOperated.cshtml")
+                                                                </div>
+                                                            </fieldset>
+                                                            <button type="submit" class="form-control">
+                                                                Submit
+                                                            </button>
+
                                                         </div>
 
-                                                            @*<div id="shedule_avalibility" class="tab-pane fade">
-                <div class="main_row">
-                    <div class="row mb-20">
-                        <div class="colmn col-md-12 text-center">
-                            <div class="form-group">
-                                <label class="form-label">Schedule Avalibility</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="colmn col-md-12 text-center">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <th></th>
-                                        <th>Avalible start time</th>
-                                        <th>Avalible End time</th>
-                                        <th>Total Daily <br>Hours of Avalibility</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Sunday</td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Monday</td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tuesday</td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Wednesday</td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Thursday</td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Friday</td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Saturday</td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="main_row  authorise_row">
-                    <div class="row">
-                        <div class="colmn col-md-12">
-                            <div class="form-group">
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur</p>
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</p>
-                                <ul>
-                                    <li>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</li>
-                                    <li>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</li>
-                                    <li>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</li>
-                                </ul>
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</p>
-                            </div>
-                        </div>
-                    </div>
+                                                        @*<div id="shedule_avalibility" class="tab-pane fade">
+                                                                <div class="main_row">
+                                                                    <div class="row mb-20">
+                                                                        <div class="colmn col-md-12 text-center">
+                                                                            <div class="form-group">
+                                                                                <label class="form-label">Schedule Avalibility</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-12 text-center">
+                                                                            <table>
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <th></th>
+                                                                                        <th>Avalible start time</th>
+                                                                                        <th>Avalible End time</th>
+                                                                                        <th>Total Daily <br>Hours of Avalibility</th>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Sunday</td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Monday</td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Tuesday</td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Wednesday</td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Thursday</td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Friday</td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Saturday</td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="main_row  authorise_row">
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-12">
+                                                                            <div class="form-group">
+                                                                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
+                                                                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur</p>
+                                                                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</p>
+                                                                                <ul>
+                                                                                    <li>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</li>
+                                                                                    <li>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</li>
+                                                                                    <li>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</li>
+                                                                                </ul>
+                                                                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
 
 
 
-                    <div class="btn_row">
-                        <div class="row">
-                            <div class="colmn col-md-12 d-flex space-between">
-                                <button class="btn">Previous</button>
+                                                                    <div class="btn_row">
+                                                                        <div class="row">
+                                                                            <div class="colmn col-md-12 d-flex space-between">
+                                                                                <button class="btn">Previous</button>
 
-                                <a data-toggle="tab" class="btn" href="#customer_decleration"><span class="class_name ">Next</span></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>*@
-
-
-
-                                                            @*<div id="customer_decleration" class="tab-pane fade">
-                <div class="authorise_row">
-                    <div class="main_row">
-                        <div class="row ">
-                            <div class="colmn col-md-12 text-center">
-                                <div class="form-group">
-                                    <label class="form-label">DRIVING TEST HOLD HARMLESS</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="colmn col-md-12">
-                            <div class="form-group">
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur</p>
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</p>
-
-                            </div>
-                        </div>
-                    </div>
-                    <br><br>
-                    <div class="row">
-                        <div class="colmn col-md-12 text-right">
-                            <div class="form-group">
-                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Provide Signature</button>
-                            </div>
-                        </div>
-
-                    </div>
-
-
-                    <br>
-                    <div class="row">
-                        <div class="colmn col-md-4">
-                            <input type="text" placeholder="Signature Here">
-                        </div>
-                        <div class="colmn col-md-4">
-                        </div>
-                        <div class="colmn col-md-4">
-                            <input type="text" placeholder="Print Applicant name here">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="colmn col-md-4">
-                        </div>
-                        <div class="colmn col-md-4">
-                        </div>
-                        <div class="colmn col-md-4">
-                            <input type="text" placeholder="Date Signed">
-                        </div>
-                    </div>
-
-                    <div class="btn_row">
-                        <div class="row">
-                            <div class="colmn col-md-12 d-flex space-between">
-                                <button class="btn">Previous</button>
-                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#thankyouModal">Submit</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>*@
-
-
-                                                            @*<div id="thankyou_message" class="tab-pane fade">
-                <div class="authorise_row">
-                    <div class="row">
-                        <div class="colmn col-md-12">
-                            <div class="form-group">
-                                <p> Congratulations </p>
-                            </div>
-                        </div>
-                    </div>
+                                                                                <a data-toggle="tab" class="btn" href="#customer_decleration"><span class="class_name ">Next</span></a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>*@
 
 
 
-                </div>
-            </div>*@
+                                                        @*<div id="customer_decleration" class="tab-pane fade">
+                                                                <div class="authorise_row">
+                                                                    <div class="main_row">
+                                                                        <div class="row ">
+                                                                            <div class="colmn col-md-12 text-center">
+                                                                                <div class="form-group">
+                                                                                    <label class="form-label">DRIVING TEST HOLD HARMLESS</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-12">
+                                                                            <div class="form-group">
+                                                                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
+                                                                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur</p>
+                                                                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</p>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <br><br>
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-12 text-right">
+                                                                            <div class="form-group">
+                                                                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Provide Signature</button>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+
+                                                                    <br>
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-4">
+                                                                            <input type="text" placeholder="Signature Here">
+                                                                        </div>
+                                                                        <div class="colmn col-md-4">
+                                                                        </div>
+                                                                        <div class="colmn col-md-4">
+                                                                            <input type="text" placeholder="Print Applicant name here">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-4">
+                                                                        </div>
+                                                                        <div class="colmn col-md-4">
+                                                                        </div>
+                                                                        <div class="colmn col-md-4">
+                                                                            <input type="text" placeholder="Date Signed">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="btn_row">
+                                                                        <div class="row">
+                                                                            <div class="colmn col-md-12 d-flex space-between">
+                                                                                <button class="btn">Previous</button>
+                                                                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#thankyouModal">Submit</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>*@
+
+
+                                                        @*<div id="thankyou_message" class="tab-pane fade">
+                                                                <div class="authorise_row">
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-12">
+                                                                            <div class="form-group">
+                                                                                <p> Congratulations </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+
+
+                                                                </div>
+                                                            </div>*@
                                                     </div>
                                                 </div>
                                             </div>
                                         }
-                                        <!--/ .container -->
+                                    </div>
+                                    <!--/ .container -->
                                 </section>
 
                             </div>

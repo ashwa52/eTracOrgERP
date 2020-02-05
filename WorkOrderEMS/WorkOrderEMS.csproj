@@ -6885,6 +6885,11 @@
     <Content Include="Views\Guest\PartialView\_ApplicantAccidentRecord.cshtml" />
     <Content Include="Views\Guest\PartialView\_ApplicantTrafficConvictions.cshtml" />
     <Content Include="Views\Guest\PartialView\_ApplicantLicenseHeald.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantPersonalInfo.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantAddress.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantContactInfo.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantAdditionalInfo.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantVehiclesOperated.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
