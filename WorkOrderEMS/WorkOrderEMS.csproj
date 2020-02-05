@@ -6880,6 +6880,11 @@
     <Content Include="Views\Guest\PartialView\_ExperianceDetailsApplicant.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\OnBoarding\_CheckForDOT.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\OnBoarding\_ViewAnswerQuestion.cshtml" />
+    <Content Include="Views\Guest\PartialView\_EmploymentHistory.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantInfomation.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantAccidentRecord.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantTrafficConvictions.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantLicenseHeald.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

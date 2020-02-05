@@ -1,0 +1,50 @@
+﻿@model WorkOrderEMS.Models.Employee.EmployeeVIewModel
+
+@{
+    Layout = null;
+}
+
+<div class="row mb-20">
+    <div class="colmn col-md-12 text-center">
+        <div class="form-group">
+            <label class="form-label">Accident record for the past three years</label>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="colmn col-md-12 text-center">
+        <table>
+            <tr>
+                <th>Dates<br> List most recent to latest</th>
+                <th>Accident Description<br>(HEAD-ON, REAR-END, ETC.)</th>
+                <th>Number of <br>fatalities</th>
+                <th>Number of <br>Injuries</th>
+            </tr>
+            <tr>
+                <td>
+                    @Html.TextBoxFor(model => model.ApplicantBackgroundHistory.ApplicantAccidentRecord.AAR_AccidantDate, new { @class = "form-control", @placeholder = "DD MM YYYY" })
+                    @Html.ValidationMessageFor(model => model.ApplicantBackgroundHistory.ApplicantAccidentRecord.AAR_AccidantDate)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.ApplicantBackgroundHistory.ApplicantAccidentRecord.AAR_Discription, new { @class = "form-control", @placeholder = "Description" })
+                    @Html.ValidationMessageFor(model => model.ApplicantBackgroundHistory.ApplicantAccidentRecord.AAR_Discription)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.ApplicantBackgroundHistory.ApplicantAccidentRecord.AAR_NumberOfFatalities, new { @class = "form-control", @placeholder = "Number of fatalities" })
+                    @Html.ValidationMessageFor(model => model.ApplicantBackgroundHistory.ApplicantAccidentRecord.AAR_NumberOfFatalities)
+                </td>
+                <td>
+                    @Html.TextBoxFor(model => model.ApplicantBackgroundHistory.ApplicantAccidentRecord.AAR_NumberOfInjuries, new { @class = "form-control", @placeholder = "Number of Injuries" })
+                    @Html.ValidationMessageFor(model => model.ApplicantBackgroundHistory.ApplicantAccidentRecord.AAR_NumberOfInjuries)
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="colmn col-md-12 text-right">
+        <div class="form-group">
+            <button class="btn">Add more Contacts</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,77 @@
+﻿@model WorkOrderEMS.Models.Employee.EmployeeVIewModel
+
+
+@{
+    Layout = null;
+}
+
+<div class="row mb-20">
+    <div class="colmn col-md-12 text-center">
+        <div class="form-group">
+            <label class="form-label">Traffic convictions and forefeitures for the past 3 years (Other then parking vaolations)</label>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="colmn col-md-12 text-center">
+        <table>
+            <tr>
+                <th>Dates Convicted<br> (Month/Year)</th>
+                <th>Vaiolation</th>
+                <th>State of Vaiolation</th>
+                <th>Panalties Assessed<br> (select all Panalties that apply)</th>
+            </tr>
+            @for (int i = 0; i < Model.ApplicantBackgroundHistory.ListAppTrafficConvictions.Count(); i++)
+                
+                {
+                    <tr>
+                        <td>
+                        @Html.TextBoxFor(m => m.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_ConvictedDate, new { @class = "form-control", @type = "date" })
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_Violation, new { @class = "form-control", @type = "text" })
+                        </td>
+                        <td>
+                            @Html.TextBoxFor(m => m.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_StateOfViolation, new { @class = "form-control", @type = "text" })
+
+                        </td>
+                        <td>
+                            <div class="form-group pt-4 checkbox_group">
+                                @*@Html.CheckBox(model=>model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_AtFaultAccident, new { @class = "form-control"})*@
+
+                                <label class="form-label checkbox_label">
+                                    @if (Model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_AtFaultAccident == 'Y')
+                                    {
+                                        <input type="checkbox" checked name=@Model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_Id id=@Model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_Id> <span>At Fault Accident</span>
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name=@Model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_Id id=@Model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_Id> <span>At Fault Accident</span>
+
+                                    }
+                                </label>
+                                <label class="form-label checkbox_label">
+                                    @if (Model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_AtMovingViolation == 'Y')
+                                    {
+                                        <input type="checkbox" checked name=@Model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_Id id=@Model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_Id> <span>Moving vaiolation</span>
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" name=@Model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_Id id=@Model.ApplicantBackgroundHistory.ListAppTrafficConvictions[i].ATC_Id> <span>Moving vaiolation</span>
+
+                                    }
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                }
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="colmn col-md-12 text-right">
+        <div class="form-group">
+            <button class="btn">Add more</button>
+        </div>
+    </div>
+</div>

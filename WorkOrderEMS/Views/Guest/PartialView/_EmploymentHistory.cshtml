@@ -1,0 +1,259 @@
+﻿@model WorkOrderEMS.Models.Employee.EmployeeVIewModel
+
+@{
+    Layout = null;
+}
+
+<div class="main_row">
+
+    <div class="row">
+        <div class="colmn col-md-12">
+            <div class="form-group pt-4 checkbox_group">
+                <label class="form-label">Over the last 3 years have  you operated a commercial motor vheicle got hire?</label>
+                @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory.ABH_OperatedCommercialMotor, true, new { @class = "form-label checkbox_label" }) Yes
+                @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory.ABH_OperatedCommercialMotor, false, new { @class = "form-label checkbox_label" }) No
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="colmn col-md-12">
+        <div class="form-group">
+            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
+        </div>
+    </div>
+</div>
+
+<div class="main_row">
+    <div class="row">
+        <div class="colmn col-md-8">
+            <div class="form-group">
+                @Html.TextBoxFor(model => model.ApplicantBackgroundHistory.ABH_CompanyName, new { @class = "form-control", @placeholder = "Company Name" })
+                @Html.ValidationMessageFor(model => model.ApplicantBackgroundHistory.ABH_CompanyName)
+            </div>
+        </div>
+        <div class="colmn col-md-4">
+            <div class="form-group">
+                @Html.TextBoxFor(model => model.ApplicantBackgroundHistory.ABH_Phone, new { @class = "form-control", @placeholder = "Phone" })
+                @Html.ValidationMessageFor(model => model.ApplicantBackgroundHistory.ABH_Phone)
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="colmn col-md-12">
+            <div class="form-group">
+                @Html.TextBoxFor(model => model.ApplicantBackgroundHistory.ABH_Address, new { @class = "form-control", @placeholder = "Address" })
+                @Html.ValidationMessageFor(model => model.ApplicantBackgroundHistory.ABH_Address)
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="colmn col-md-3">
+            <div class="form-group">
+                @Html.TextBoxFor(model => model.ApplicantBackgroundHistory.ABH_City, new
+                {
+                    @class = "form-control",
+                    @placeholder = "City" +
+                ""
+                })
+                @Html.ValidationMessageFor(model => model.ApplicantBackgroundHistory.ABH_City)
+            </div>
+        </div>
+        <div class="colmn col-md-3">
+            <div class="form-group">
+                @Html.TextBoxFor(model => model.ApplicantBackgroundHistory.ABH_State, new { @class = "form-control", @placeholder = "State" })
+                @Html.ValidationMessageFor(model => model.ApplicantBackgroundHistory.ABH_State)
+            </div>
+        </div>
+        <div class="colmn col-md-3">
+            <div class="form-group">
+                @Html.TextBoxFor(model => model.ApplicantBackgroundHistory.ABH_ZIPCode, new { @class = "form-control", @placeholder = "ZIP" })
+                @Html.ValidationMessageFor(model => model.ApplicantBackgroundHistory.ABH_ZIPCode)
+            </div>
+        </div>
+        <div class="colmn col-md-3">
+            <div class="form-group">
+                @Html.TextBoxFor(model => model.ApplicantBackgroundHistory.ABH_Salary, new { @class = "form-control", @placeholder = "Salary" })
+                @Html.ValidationMessageFor(model => model.ApplicantBackgroundHistory.ABH_Salary)
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="colmn col-md-3">
+            <div class="form-group">
+                @Html.TextBoxFor(model => model.ApplicantBackgroundHistory.ABH_PositionHeld, new { @class = "form-control", @placeholder = "Position held" })
+                @Html.ValidationMessageFor(model => model.ApplicantBackgroundHistory.ABH_PositionHeld)
+            </div>
+        </div>
+        <div class="colmn col-md-3">
+            <div class="form-group pt-4 checkbox_group">
+                <label class="form-label">Still Employed</label>
+                @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory.ABH_StillEmployed, true, new { @class = "form-label" }) Yes
+                @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory.ABH_StillEmployed, false, new { @class = "form-label" }) No
+
+            </div>
+        </div>
+        <div class="colmn col-md-1">
+            <div class="form-group">
+                <label class="form-label mt-10">From MO/YR</label>
+            </div>
+        </div>
+        <div class="colmn col-md-2">
+            <div class="form-group">
+                @Html.TextBoxFor(model => model.ApplicantBackgroundHistory.ABH_FromMO, new { @class = "form-control", @placeholder = "DD MM YYYY" })
+                @Html.ValidationMessageFor(model => model.ApplicantBackgroundHistory.ABH_PositionHeld)
+            </div>
+        </div>
+        <div class="colmn col-md-1">
+            <div class="form-group">
+                <label class="form-label mt-10">To MO/YR</label>
+            </div>
+        </div>
+        <div class="colmn col-md-2">
+            <div class="form-group">
+                @Html.TextBoxFor(model => model.ApplicantBackgroundHistory.ABH_ToMO, new { @class = "form-control", @placeholder = "DD MM YYYY" })
+                @Html.ValidationMessageFor(model => model.ApplicantBackgroundHistory.ABH_ToMO)
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="colmn col-md-12">
+            <div class="form-group">
+                @Html.TextBoxFor(model => model.ApplicantBackgroundHistory.ABH_ReasonforLeaving, new { @class = "form-control", @placeholder = "DD MM YYYY" })
+                @Html.ValidationMessageFor(model => model.ApplicantBackgroundHistory.ABH_ReasonforLeaving)
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="main_row">
+    <div class="row">
+        <div class="colmn col-md-9">
+            <div class="form-group pt-4 checkbox_group">
+                <label class="form-label">While Employed here, were you subject to the federal motor acrrier safety regulations?</label>
+            </div>
+        </div>
+        <div class="colmn col-md-3">
+            <div class="form-group pt-4 checkbox_group">
+                @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory.ABH_SubToFedralMotor, true, new { @class = "form-label" }) Yes
+                @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory.ABH_SubToFedralMotor, false, new { @class = "form-label" }) No
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="colmn col-md-9">
+            <div class="form-group pt-4 checkbox_group">
+                <label class="form-label">Was the job designated as a safety-sensitive function in any department of transportation-regulated mode subject to alcohol and controlled substances testing as required by 49 cfr, part 40?</label>
+            </div>
+        </div>
+        <div class="colmn col-md-3">
+            <div class="form-group pt-4 checkbox_group">
+                @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory.ABH_SafetySensitiveFunction, true, new { @class = "form-label" }) Yes
+                @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory.ABH_SafetySensitiveFunction, false, new { @class = "form-label" }) No
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="colmn col-md-12">
+            <div class="form-group">
+                @Html.TextAreaFor(model => model.ApplicantBackgroundHistory.ABH_ReasonForGAP, new { @class = "form-control", @placeholder = "Reason for Gap" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="colmn col-md-12 text-right">
+            <div class="form-group">
+                <button class="btn">Add more</button>
+            </div>
+        </div>
+    </div>
+</div>
+<fieldset id="accidentrecord">
+    @{ViewBag.myModelprefixName = "ApplicantBackgroundHistory.ApplicantAccidentRecord."; ViewBag.ActionSection = "accidentrecord";}
+    <div class="main_row">
+        @Html.Partial("~/Views/Guest/PartialView/_ApplicantAccidentRecord.cshtml")
+    </div>
+</fieldset>
+<fieldset id="trafficconviction">
+    @{ViewBag.myModelprefixName = "ApplicantBackgroundHistory.ListAppTrafficConvictions"; ViewBag.ActionSection = "trafficconviction";}
+    <div class="main_row">
+   
+        @Html.Partial("~/Views/Guest/PartialView/_ApplicantTrafficConvictions.cshtml")
+    </div>
+</fieldset>
+<fieldset id="licenseheld">
+    @{ViewBag.myModelprefixName = "ApplicantBackgroundHistory.ApplicantLicenseHeald."; ViewBag.ActionSection = "licenseheld";}
+    <div class="main_row">
+        @Html.Partial("~/Views/Guest/PartialView/_ApplicantLicenseHeald.cshtml")
+    </div>
+</fieldset>
+
+@*
+        <div class="main_row">
+        @Html.Partial("~/Views/Guest/PartialView/_ApplicantLicenseHeald.cshtml", model.ApplicantBackgroundHistory.ListApplicantLicenseHeald)
+    </div>*@
+
+<div class="main_row">
+    <div class="row">
+        <div class="colmn col-md-12 text-left">
+            <div class="form-group">
+                <label class="form-label">Please list the vehicle oprated</label>
+            </div>
+        </div>
+    </div><div class="row">
+        <div class="colmn col-md-9">
+            <div class="form-group pt-4 checkbox_group">
+                <label class="form-label">Have you ever been denied a licence,Permit, or privilege to operate a moter Vehicle</label>
+            </div>
+        </div>
+        <div class="colmn col-md-3">
+            <div class="form-group pt-4 checkbox_group">
+                <label class="form-label checkbox_label"><input type="checkbox"> <span>Yes</span></label>
+                <label class="form-label checkbox_label"><input type="checkbox"> <span>No</span></label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="colmn col-md-12">
+            <div class="form-group">
+                <textarea class="form-control" placeholder="If yes, Explain"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="colmn col-md-9">
+            <div class="form-group pt-4 checkbox_group">
+                <label class="form-label">Has any licence, permitor previlrge ever been suspended or rewoked?</label>
+            </div>
+        </div>
+        <div class="colmn col-md-3">
+            <div class="form-group pt-4 checkbox_group">
+                <label class="form-label checkbox_label"><input type="checkbox"> <span>Yes</span></label>
+                <label class="form-label checkbox_label"><input type="checkbox"> <span>No</span></label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="colmn col-md-12">
+            <div class="form-group">
+                <textarea class="form-control" placeholder="If yes, Explain"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="btn_row">
+        <div class="row">
+            <div class="colmn col-md-12 d-flex space-between">
+                <button class="btn">Previous</button>
+                <button class="btn">Next</button>
+            </div>
+        </div>
+    </div>
+</div>
+<button type="submit" class="form-control">
+    Submit
+</button>

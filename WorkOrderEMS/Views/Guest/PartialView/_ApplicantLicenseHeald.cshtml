@@ -1,0 +1,107 @@
+﻿@model WorkOrderEMS.Models.Employee.EmployeeVIewModel
+@{
+    Layout = null;
+}
+
+<div class="row mb-20">
+    <div class="colmn col-md-12 text-left">
+        <div class="form-group">
+            <label class="form-label">Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed </label>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="colmn col-md-12 text-center">
+        <table>
+            <tr>
+                <th>State</th>
+                <th>License No</th>
+                <th>Type/Class</th>
+                <th>Issue Date</th>
+                <th>Expairation date</th>
+            </tr>
+            @for (var i = 0; i < 1; i++)
+            {
+                <tr>
+                    <td>
+                        @Html.TextBoxFor(m => m.ApplicantBackgroundHistory.ListApplicantLicenseHeald[i].ALH_State, new { @class = "form-control", @type = "date" })
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.ApplicantBackgroundHistory.ListApplicantLicenseHeald[i].ALH_LicenceNumber, new { @class = "form-control", @type = "text" })
+
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(c => c.ApplicantBackgroundHistory.ListApplicantLicenseHeald[i].ALH_LicenseType, new SelectList(
+                                               new List<Object>{
+                                                                                                                 new { value = 0 , text = "--Type--"  },
+                                                                                                                 new { value = "Licence" , text = "Licence"  },
+                                                                                                                 new { value = "Licence" , text = "Licence" },
+                                               },
+                                               "value",
+                                               "text", 0), new { @id = "ALH_LicenseType", @class = "form-control" })
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(m => m.ApplicantBackgroundHistory.ListApplicantLicenseHeald[i].ALH_IssueDate, new { @class = "form-control", @type = "text" })
+
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.ApplicantBackgroundHistory.ListApplicantLicenseHeald[i].ALH_ExpirationDate, new { @class = "form-control", @type = "date" })
+
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="colmn col-md-12 text-center">
+        <div class="form-group">
+            <label class="form-label">Previously Held licencs</label>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="colmn col-md-12 text-center">
+        <table>
+            @for (var i = 1; i < Model.ApplicantBackgroundHistory.ListApplicantLicenseHeald.Count(); i++)
+            {
+                <tr>
+                    <td>
+                        @Html.TextBoxFor(m => m.ApplicantBackgroundHistory.ListApplicantLicenseHeald[i].ALH_State, new { @class = "form-control", @type = "date" })
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.ApplicantBackgroundHistory.ListApplicantLicenseHeald[i].ALH_LicenceNumber, new { @class = "form-control", @type = "text" })
+
+                    </td>
+                    <td>
+                        @Html.DropDownListFor(c => c.ApplicantBackgroundHistory.ListApplicantLicenseHeald[i].ALH_LicenseType, new SelectList(
+                                               new List<Object>{
+                                                                                                                 new { value = 0 , text = "--Type--"  },
+                                                                                                                 new { value = "Licence" , text = "Licence"  },
+                                                                                                                 new { value = "Licence" , text = "Licence" },
+                                               },
+                                               "value",
+                                               "text", 0), new { @id = "ALH_LicenseType", @class = "form-control" })
+                    </td>
+
+                    <td>
+                        @Html.TextBoxFor(m => m.ApplicantBackgroundHistory.ListApplicantLicenseHeald[i].ALH_IssueDate, new { @class = "form-control", @type = "text" })
+
+                    </td>
+                    <td>
+                        @Html.TextBoxFor(m => m.ApplicantBackgroundHistory.ListApplicantLicenseHeald[i].ALH_ExpirationDate, new { @class = "form-control", @type = "date" })
+
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="colmn col-md-12 text-right">
+        <div class="form-group">
+            <button class="btn">Add more</button>
+        </div>
+    </div>
+</div>

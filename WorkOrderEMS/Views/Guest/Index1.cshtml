@@ -1,4 +1,6 @@
 ﻿@model WorkOrderEMS.Models.Employee.EmployeeVIewModel
+
+@*@model WorkOrderEMS.Models.CommonApplicantModel*@
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_GuestLayout.cshtml";
@@ -41,29 +43,36 @@
 
     #RenderPageId {
         background-image: url(https://eliteparkingofamerica.com/wp-content/uploads/2017/12/parking.gif) !important;
-        
     }
 
     label {
         margin-top: 3px;
     }
+
+    .mgr10 {
+        margin-top: 10px;
+    }
+
+    .mgr6 {
+        margin-top: 6px;
+    }
 </style>
 <script>
-	function EnableEdit(elm) {
-		var inputs = $('.basic-form :input');
-		if (elm.checked) {
-			inputs.each(function (i, elm) {
-				$(elm).removeAttr('disabled');
-			})
-			$("#hdnIsEditEnable").val(true);
-		}
-		else {
-			inputs.each(function (i, elm) {
-				$(elm).attr('disabled',true);
-			})
-			$("#hdnIsEditEnable").val(false);
-		}
-	}
+    function EnableEdit(elm) {
+        var inputs = $('.basic-form :input');
+        if (elm.checked) {
+            inputs.each(function (i, elm) {
+                $(elm).removeAttr('disabled');
+            })
+            $("#hdnIsEditEnable").val(true);
+        }
+        else {
+            inputs.each(function (i, elm) {
+                $(elm).attr('disabled', true);
+            })
+            $("#hdnIsEditEnable").val(false);
+        }
+    }
 </script>
 <link href="~/Content/eCounting/VendorWizard.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/CSS/custom.css" rel="stylesheet" />
@@ -71,6 +80,7 @@
 <script type="text/javascript" src="~/Scripts/BindDropDown/DropDownList.js"></script>
 <script src="~/Scripts/simple.money.format.js"></script>
 <script type="text/javascript" src="~/Scripts/common/Masking.js"></script>
+
 <style>
     .input-disabled {
         background-color: #EBEBE4;
@@ -92,347 +102,545 @@
                         <h4 class="card-title">On-Boarding/Personal Information</h4>
                     </div>
                     <div class="card-body">
-                        @*@using (Html.BeginForm("VendorManagementSetup", "VendorManagement", FormMethod.Post, new { enctype = "multipart/form-data", @id = "msform", @class = "step-form-horizontal", @style = "" }))
-                        {*@
-                        <form id = "msform" class = "step-form-horizontal">
-                            @*@Html.ValidationSummary(true)
-                            @Html.AntiForgeryToken()*@
-                            <!-- progressbar -->
-                            <div class="stepwizard">
-                                <div class="stepwizard-row setup-panel" id="progressbar">
-                                    <div class="stepwizard-step col">
-                                        <a href="#step-1" type="button" class="btn btn-circledata btn-success active">1</a>
-                                        <p><small>Personal Details</small></p>
-                                    </div>
-                                    <div class="stepwizard-step col">
-                                        <a href="#step-2" type="button" class="btn btn-circledata btn-default">2</a>
-                                        <p><small>Academic Details</small></p>
-                                    </div>
-                                    <div class="stepwizard-step col">
-                                        <a href="#step-3" type="button" class="btn btn-circledata btn-default">3</a>
-                                        <p><small>Employment History</small></p>
-                                    </div>
-                                    @*<div class="stepwizard-step col">
-                    <a href="#step-4" type="button" class="btn btn-circledata btn-default">4</a>
-                    <p><small>Add Files</small></p>
+                        <div id="page" class="animsition equal" style="z-index:0">
+                            <!--/ End Navbar -->
+                            <div id="page-2">
+                                <section id="form_tab_sec" class="section tab_sec">
+                                    <div class="container">
+                                        <div class="section-title">
+                                            <div class=" section-title-more">Online Employment Application - Dot Driving Reauirement</div>
+                                            <div>
+                                                <h1 class="section-title-heading">Personal Details</h1>
+                                            </div>
+                                        </div>
+                                        @using (Html.BeginForm("Index", "Guest", FormMethod.Post))
+                                        {
+                                            <div class="tab_pannel_sec panel-default">
+                                                <div class="tab_con">
+                                                    <ul class="nav nav-tabs">
+                                                        <li class="nav-item active">
+                                                            <a data-toggle="tab" href="#personal_detail" class="nav-link active"><span class="step_count">1</span><span class="class_name">Personal Detail</span></a>
+                                                        </li>
+                                                        <li class="nav-item"><a data-toggle="tab" href="#acadmic_detail" class="nav-link"><span class="step_count">2</span><span class="class_name">Academic Detail</span></a></li>
+                                                        <li class="nav-item"><a data-toggle="tab" href="#employment_history" class="nav-link"><span class="step_count">3</span><span class="class_name">Employee History</span></a></li>
+                                                        @*<li class="nav-item"><a data-toggle="tab" href="#shedule_avalibility" class="nav-link"><span class="step_count">4</span><span class="class_name">Schedule Avalibility</span></a></li>*@
+                                                    </ul>
+                                                    <div class="tab-content">
+                                                        <div id="personal_detail" class="tab-pane fade show active">
+                                                            <fieldset id="personaldetails">
+                                                                <div>
+                                                                    <div class="main_row">
+                                                                        <div class="row">
+                                                                            <div class="colmn col-md-4">
+                                                                                <div class="form-group">
+                                                                                    <select type="text" class="form-control">
+                                                                                        <option>Mr</option>
+                                                                                        <option>Ms</option>
+                                                                                        <option>Mrs</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="colmn col-md-8 d-flex align-item-center">
+                                                                                <div class="form-group">
+                                                                                    <label class="form-label">Please Provide an address for last three years of your residency.</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="colmn col-md-4">
+                                                                                <div class="form-group">
+                                                                                    @Html.TextBoxFor(x => x.FirstName, new { @class = "form-control" })
+                                                                                    @Html.ValidationMessageFor(model => model.FirstName)
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="colmn col-md-4">
+                                                                                <div class="form-group">
+                                                                                    @Html.TextBoxFor(x => x.MiddleName, new { @class = "form-control" })
+                                                                                    @Html.ValidationMessageFor(model => model.MiddleName)
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="colmn col-md-4">
+                                                                                <div class="form-group">
+                                                                                    @Html.TextBoxFor(x => x.LastName, new { @class = "form-control" })
+                                                                                    @Html.ValidationMessageFor(model => model.LastName)
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="row">
+                                                                            <div class="colmn col-md-6">
+                                                                                <div class="form-group">
+                                                                                    @Html.TextBoxFor(x => x.StreetAddress, new { @class = "form-control", @placeholder = "Street Addrss" })
+                                                                                    @Html.ValidationMessageFor(model => model.StreetAddress)
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="colmn col-md-3">
+                                                                                <div class="form-group">
+                                                                                    @Html.TextBoxFor(x => x.APIUnit, new { @class = "form-control", @placeholder = "APT/UNIT#:" })
+                                                                                    @Html.ValidationMessageFor(model => model.APIUnit)
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="colmn col-md-3">
+                                                                                <div class="form-group">
+                                                                                    @Html.TextBoxFor(x => x.DesiredSalary, new { @class = "form-control", @placeholder = "Desired salary" })
+                                                                                    @Html.ValidationMessageFor(model => model.DesiredSalary)
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="row">
+                                                                            <div class="colmn col-md-4">
+                                                                                <div class="form-group">
+                                                                                    @Html.TextBoxFor(model => model.City, new { @id = "City", @class = "form-control" })
+                                                                                    @Html.ValidationMessageFor(model => model.City)
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="colmn col-md-4">
+                                                                                <div class="form-group">
+                                                                                    @Html.TextBoxFor(model => model.State, new { @id = "State", @class = "form-control" })
+                                                                                    @Html.ValidationMessageFor(model => model.State)
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="colmn col-md-4">
+                                                                                <div class="form-group">
+                                                                                    @*<input type="text" class="form-control" placeholder="Zip">*@
+                                                                                    @Html.TextBoxFor(model => model.Zip, new { @id = "Zip", @class = "form-control" })
+                                                                                    @Html.ValidationMessageFor(model => model.Zip)
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="row">
+                                                                            <div class="colmn col-md-4">
+                                                                                <div class="form-group">
+                                                                                    @Html.TextBoxFor(model => model.PreferendName, new { @id = "PreferendName", @class = "form-control", @placeholder = "Prefered Name" })
+                                                                                    @Html.ValidationMessageFor(model => model.PreferendName)
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="colmn col-md-4">
+                                                                                <div class="form-group">
+                                                                                    @Html.TextBoxFor(model => model.SocialSecurityNumber, new { @id = "SocialSecurityNumber", @class = "form-control", @placeholder = "Social Security#:" })
+                                                                                    @Html.ValidationMessageFor(model => model.SocialSecurityNumber)
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="colmn col-md-4">
+                                                                                <div class="form-group yearsaddress">
+                                                                                    <label class="form-label">Years at address</label>
+                                                                                    @Html.TextBoxFor(model => model.YearsAtAddrss, new { @id = "YearsAtAddrss", @class = "form-control", @placeholder = "Social Security#:" })
+                                                                                    @Html.ValidationMessageFor(model => model.YearsAtAddrss)
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="row">
+                                                                            <div class="colmn col-md-12 text-right">
+                                                                                <div class="form-group">
+                                                                                    <button class="btn">Add more address</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                    <div class="main_row">
+
+                                                                        <div class="row">
+                                                                            <div class="colmn col-md-12 text-center">
+                                                                                <div class="form-group">
+                                                                                    <label class="form-label">Please Provide your Contact Info</label>
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="row">
+                                                                            <div class="colmn col-md-4">
+                                                                                <div class="form-group">
+                                                                                    @Html.DropDownListFor(c => c.ContactType, new SelectList(
+                                           new List<Object>{
+                                                                                                                                        new { value = 0 , text = "--Type--"  },
+                                                                                                                                        new { value = "Phone" , text = "Phone"  },
+                                                                                                                                        new { value = "Mobile" , text = "Mobile" },
+                                           },
+                                           "value",
+                                           "text", 0), new { @id = "ContactType", @class = "form-control input-rounded" })
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="colmn col-md-8 d-flex align-item-center">
+                                                                                <div class="form-group">
+                                                                                    @Html.TextBoxFor(model => model.Phone, new { @id = "Phone", @class = "form-control", @placeholder = "Phone" })
+                                                                                    @Html.ValidationMessageFor(model => model.Phone)
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="colmn col-md-12">
+                                                                                <div class="form-group">
+                                                                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Email" })
+                                                                                    @Html.ValidationMessageFor(model => model.Email)
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <div class="colmn col-md-12">
+                                                                                <div class="form-group conact_method">
+                                                                                    <label class="form-label">Perderred Method of contact</label>
+                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>Phone</span></label>
+                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>E-Mail</span></label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <div class="row">
+                                                                            <div class="colmn col-md-12 text-right">
+                                                                                <div class="form-group">
+                                                                                    <button class="btn">Add more Contacts</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+
+                                                                    <div class="main_row">
+
+                                                                        <div class="row">
+                                                                            <div class="colmn col-md-12 text-center">
+                                                                                <div class="form-group">
+                                                                                    <label class="form-label">Please fill out the additional information</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="row aditinal_top">
+                                                                            <div class="colmn col-md-4">
+                                                                                <div class="form-group conact_method">
+                                                                                    <label class="form-label">Eligible to work in US</label>
+                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>Yes</span></label>
+                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>No</span></label>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="colmn col-md-4 date_available">
+                                                                                <div class="form-group d-flex align-item-center">
+                                                                                    @Html.TextBoxFor(model => model.AvailableDate, new { @class = "form-control", @placeholder = "Date Avalible" })
+                                                                                    @Html.ValidationMessageFor(model => model.AvailableDate)
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="colmn col-md-4">
+                                                                                <div class="form-group">
+                                                                                    <label class="form-label">Are you 21 years of age</label>
+                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>Yes</span></label>
+                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>No</span></label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+
+                                                                        <div class="row">
+                                                                            <div class="colmn col-md-12 relative_sec ">
+                                                                                <div class="form-group">
+                                                                                    <label class="form-label">DO you have any friend, Relative or Aquantiances that work elite?</label>
+                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>Yes</span></label>
+                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>No</span></label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="colmn col-md-4 relative_sec ">
+                                                                                <div class="form-group pt-4">
+                                                                                    <label class="form-label">Prior Militory</label>
+                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>Yes</span></label>
+                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>No</span></label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="colmn col-md-8 relative_sec ">
+                                                                                <div class="form-group">
+                                                                                    <input type="text" class="form-control" placeholder="If yes, please identify who">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="colmn col-md-12">
+                                                                                <div class="form-group pt-4 ever_worked">
+                                                                                    <label class="form-label">Have you ever worked for Elite and/or any of its subsidairies</label>
+                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>Yes</span></label>
+                                                                                    <label class="form-label checkbox_label"><input type="checkbox"> <span>No</span></label>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="colmn col-md-12 date_departute">
+                                                                                <div class="form-group d-flex align-item-center">
+                                                                                    <label class="form-label">If Yes, Date of departure</label>
+                                                                                    @Html.TextBoxFor(model => model.DateOFDeparture, new { @class = "form-control", @placeholder = "Date of departure" })
+                                                                                    @Html.ValidationMessageFor(model => model.DateOFDeparture)
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="colmn col-md-12 reason_living ">
+                                                                                <div class="form-group">
+                                                                                    @Html.TextBoxFor(model => model.ReasonForlLeave, new { @class = "form-control", @placeholder = "Reason for leaving" })
+                                                                                    @Html.ValidationMessageFor(model => model.ReasonForlLeave)
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="btn_row">
+                                                                        <div class="row">
+                                                                            <div class="colmn col-md-12 d-flex space-between">
+                                                                                <button class="btn">Previous</button>
+                                                                                <button class="btn">Next</button>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </fieldset>
+                                                        </div>
+                                                        <div id="acadmic_detail" class="tab-pane fade">
+                                                            <fieldset id="academicdetails">
+                                                                @{ViewBag.myModelprefixName = "AplicantAcadmicDetails."; ViewBag.ActionSection = "academicdetails";}
+                                                                <div>
+                                                                    @Html.Partial("~/Views/Guest/PartialView/_AcademicDetailsApplicant.cshtml")
+                                                                </div>
+                                                            </fieldset>
+                                                        </div>
+                                                        <div id="employment_history" class="tab-pane fade">
+                                                            <fieldset id="employeehistory">
+                                                                @{ViewBag.myModelprefixName = "ApplicantBackgroundHistory."; ViewBag.ActionSection = "employeehistory";}
+                                                                <div>
+                                                                    @Html.Partial("~/Views/Guest/PartialView/_EmploymentHistory.cshtml")
+                                                                </div>
+                                                            </fieldset>
+                                                        </div>
+
+                                                            @*<div id="shedule_avalibility" class="tab-pane fade">
+                <div class="main_row">
+                    <div class="row mb-20">
+                        <div class="colmn col-md-12 text-center">
+                            <div class="form-group">
+                                <label class="form-label">Schedule Avalibility</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="colmn col-md-12 text-center">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th></th>
+                                        <th>Avalible start time</th>
+                                        <th>Avalible End time</th>
+                                        <th>Total Daily <br>Hours of Avalibility</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Sunday</td>
+                                        <td>
+                                            <input type="time" class="form-control" placeholder="city">
+                                        </td>
+                                        <td>
+                                            <input type="time" class="form-control" placeholder="city">
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Monday</td>
+                                        <td>
+                                            <input type="time" class="form-control" placeholder="city">
+                                        </td>
+                                        <td>
+                                            <input type="time" class="form-control" placeholder="city">
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tuesday</td>
+                                        <td>
+                                            <input type="time" class="form-control" placeholder="city">
+                                        </td>
+                                        <td>
+                                            <input type="time" class="form-control" placeholder="city">
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Wednesday</td>
+                                        <td>
+                                            <input type="time" class="form-control" placeholder="city">
+                                        </td>
+                                        <td>
+                                            <input type="time" class="form-control" placeholder="city">
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Thursday</td>
+                                        <td>
+                                            <input type="time" class="form-control" placeholder="city">
+                                        </td>
+                                        <td>
+                                            <input type="time" class="form-control" placeholder="city">
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Friday</td>
+                                        <td>
+                                            <input type="time" class="form-control" placeholder="city">
+                                        </td>
+                                        <td>
+                                            <input type="time" class="form-control" placeholder="city">
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Saturday</td>
+                                        <td>
+                                            <input type="time" class="form-control" placeholder="city">
+                                        </td>
+                                        <td>
+                                            <input type="time" class="form-control" placeholder="city">
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                <div class="stepwizard-step col">
-                    <a href="#step-5" type="button" class="btn btn-circledata btn-default">5</a>
-                    <p><small>Benifits</small></p>
+                <div class="main_row  authorise_row">
+                    <div class="row">
+                        <div class="colmn col-md-12">
+                            <div class="form-group">
+                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
+                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur</p>
+                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</p>
+                                <ul>
+                                    <li>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</li>
+                                    <li>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</li>
+                                    <li>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</li>
+                                </ul>
+                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="btn_row">
+                        <div class="row">
+                            <div class="colmn col-md-12 d-flex space-between">
+                                <button class="btn">Previous</button>
+
+                                <a data-toggle="tab" class="btn" href="#customer_decleration"><span class="class_name ">Next</span></a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="stepwizard-step col">
-                    <a href="#step-6" type="button" class="btn btn-circledata btn-default">6</a>
-                    <p><small>Declaration</small></p>
-                </div>*@
+            </div>*@
+
+
+
+                                                            @*<div id="customer_decleration" class="tab-pane fade">
+                <div class="authorise_row">
+                    <div class="main_row">
+                        <div class="row ">
+                            <div class="colmn col-md-12 text-center">
+                                <div class="form-group">
+                                    <label class="form-label">DRIVING TEST HOLD HARMLESS</label>
                                 </div>
                             </div>
-                      
-                            <!-- fieldsets -->
-                            @Html.HiddenFor(model => model.FirstName, new { @id = "StateAfterIsSame" })
-                            @Html.HiddenFor(model => model.FirstName, new { @id = "ProductList" })
+                        </div>
+                    </div>
 
-                            @Html.HiddenFor(model => model.FirstName, new { @id = "VendorId" })
+                    <div class="row">
+                        <div class="colmn col-md-12">
+                            <div class="form-group">
+                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
+                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur</p>
+                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</p>
 
-                            @Html.HiddenFor(model => model.FirstName, new { @id = "CompanyDocEdit" })
-                            @Html.HiddenFor(model => model.FirstName)
-                            @if (ViewBag.UpdateMode != false)
-                            {
-                            @Html.HiddenFor(model => model.FirstName, new { @id = "VendorTypeForEdit" })
-                            }
-                            <br />
-                            <fieldset id="OnBoardingSetUp">
-                                <div class="panel panel-primary setup-content">
-                                    <div class="basic-form">
-                                        <div class="panelData">
-                                            <div class="form-row">
-                                                <div class="form-group col-md-4">
-                                                    <label class="col-form-label" for="FirstName">First Name<span class="req">*</span></label>
-                                                    @Html.TextBoxFor(model => model.FirstName, new { @id = "FirstName", @class = "form-control input-rounded" })
-                                                    @Html.ValidationMessageFor(model => model.FirstName)
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label class="col-form-label" for="MiddleName">Middle Name<span class="req">*</span></label>
-                                                    @Html.TextBoxFor(model => model.MiddleName, new { @id = "MiddleName", @class = "form-control input-rounded" })
-                                                    @Html.ValidationMessageFor(model => model.MiddleName)
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label class="col-form-label" for="LastName">Last Name</label>
-                                                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control input-rounded" })
-                                                    <div class="errorspace">
-                                                        @Html.ValidationMessageFor(model => model.LastName)
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-4">
-                                                    <label class="col-form-label" for="StreetAddress">Street Address<span class="req">*</span></label>
-                                                    @Html.TextBoxFor(model => model.StreetAddress, new { @id = "StreetAddress", @class = "form-control input-rounded" })
-                                                    @Html.ValidationMessageFor(model => model.StreetAddress)
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label class="col-form-label" for="APIUnit">API/UNIT<span class="req">*</span></label>
-                                                    @Html.TextBoxFor(model => model.APIUnit, new { @id = "MiddleNAPIUnitame", @class = "form-control input-rounded" })
-                                                    @Html.ValidationMessageFor(model => model.APIUnit)
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label class="col-form-label" for="DesiredSalary">Desired Salary</label>
-                                                    @Html.TextBoxFor(model => model.DesiredSalary, new { @class = "form-control input-rounded" })
-                                                    <div class="errorspace">
-                                                        @Html.ValidationMessageFor(model => model.DesiredSalary)
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-4">
-                                                    <label class="col-form-label" for="State">State<span class="req">*</span></label>
-                                                    @Html.TextBoxFor(model => model.State, new { @id = "State", @class = "form-control input-rounded" })
-                                                    @Html.ValidationMessageFor(model => model.State)
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label class="col-form-label" for="VendorName">City<span class="req">*</span></label>
-                                                    @Html.TextBoxFor(model => model.City, new { @id = "City", @class = "form-control input-rounded" })
-                                                    @Html.ValidationMessageFor(model => model.City)
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label class="col-form-label" for="LastName">Zip</label>
-                                                    @Html.TextBoxFor(model => model.Zip, new { @class = "form-control input-rounded" })
-                                                    <div class="errorspace">
-                                                        @Html.ValidationMessageFor(model => model.Zip)
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-4">
-                                                    <label class="col-form-label" for="PreferendName">Preferred Name<span class="req">*</span></label>
-                                                    @Html.TextBoxFor(model => model.PreferendName, new { @id = "PreferendName", @class = "form-control input-rounded" })
-                                                    @Html.ValidationMessageFor(model => model.PreferendName)
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label class="col-form-label" for="SocialSecurityNumber">Social Security Number<span class="req">*</span></label>
-                                                    @Html.TextBoxFor(model => model.SocialSecurityNumber, new { @id = "SocialSecurityNumber", @class = "form-control input-rounded" })
-                                                    @Html.ValidationMessageFor(model => model.SocialSecurityNumber)
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label class="col-form-label" for="YearsAtAddrss">Years At Address</label>
-                                                    @Html.TextBoxFor(model => model.YearsAtAddrss, new { @class = "form-control input-rounded" })
-                                                    <div class="errorspace">
-                                                        @Html.ValidationMessageFor(model => model.YearsAtAddrss)
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br />
-                                        <div class="panelData">
-                                            <div class="form-row">
-                                                
-                                                <div class="form-group col-md-5"></div>
-                                                <div class="form-group col-md-4">
-                                                    <label class="col-form-label"><h3>Contact Info</h3></label>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                @*<label class="col-form-label" for="Phone">Type<span class="req">*</span></label>*@
-                                                <div class="form-group col-md-4">
-                                                    @Html.DropDownListFor(c => c.ContactType, new SelectList(
-                                      new List<Object>{
-                                                                                                        new { value = 0 , text = "--Type--"  },
-                                                                                                        new { value = "Phone" , text = "Phone"  },
-                                                                                                        new { value = "Mobile" , text = "Mobile" },
-                                      },
-                                      "value",
-                                      "text", 0), new { @id = "ContactType", @class = "form-control input-rounded" })
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label class="col-form-label" for="Phone">Phone<span class="req">*</span></label>
-                                                    @Html.TextBoxFor(model => model.Phone, new { @id = "Phone", @class = "form-control input-rounded" })
-                                                    @Html.ValidationMessageFor(model => model.Phone)
-                                                </div>
-                                                <div class="form-group col-md-4">
-                                                    <label class="col-form-label" for="Email">Email</label>
-                                                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control input-rounded" })
-                                                    <div class="errorspace">
-                                                        @Html.ValidationMessageFor(model => model.Email)
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-3">
-                                                    <label class="col-form-label" for="StreetAddress">Preferend Method Of Contact<span class="req">*</span></label>
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
-                                                        <label class="form-check-label">Phone</label>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
-                                                        <label class="form-check-label">Email</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <br />
-                                        <div class="panelData">
-                                            <div class="form-row">
+                            </div>
+                        </div>
+                    </div>
+                    <br><br>
+                    <div class="row">
+                        <div class="colmn col-md-12 text-right">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Provide Signature</button>
+                            </div>
+                        </div>
 
-                                                <div class="form-group col-md-5"></div>
-                                                <div class="form-group col-md-4">
-                                                    <label class="col-form-label"><h3>Additional Info</h3></label>
-                                                </div>
-                                            </div>
-                                            <br />
-                                            <div class="form-row">
-                                                <div class="form-group col-md-3">
-                                                    <label class="col-form-label" for="StreetAddress">Eligible to work in US<span class="req">*</span></label>
-                                                </div>
-                                                <div class="form-group col-md-1">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
-                                                        <label class="form-check-label">Yes</label>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group col-md-1">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
-                                                        <label class="form-check-label">No</label>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group col-md-3">
-                                                    @*<label class="col-form-label" for="AvailableDate">Date Available</label>*@
-                                                    @Html.TextBoxFor(model => model.AvailableDate, new { @class = "form-control input-rounded", @placeholder= "Date Available" })
-                                                    @Html.ValidationMessageFor(model => model.AvailableDate)
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <label class="col-form-label" for="StreetAddress">You are 21 year of age<span class="req">*</span></label>
-                                                </div>
-                                                <div class="form-group col-md-1">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
-                                                        <label class="form-check-label">Yes</label>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group col-md-1">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
-                                                        <label class="form-check-label">No</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-3">
-                                                    <label class="col-form-label" for="StreetAddress">DO YOU HAVE ANY FRIEND, RELATIVE AQUANTIANCES THAT WORK IN ELITE?</label>
-                                                </div>
-                                                <div class="form-group col-md-1">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
-                                                        <label class="form-check-label">Yes</label>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group col-md-1">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
-                                                        <label class="form-check-label">No</label>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group col-md-3">
-                                                    <label class="col-form-label" for="StreetAddress">PRIOR MILITARY?</label>
-                                                </div>
-                                                <div class="form-group col-md-1">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
-                                                        <label class="form-check-label">Yes</label>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group col-md-1">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
-                                                        <label class="form-check-label">No</label>
+                    </div>
+
+
+                    <br>
+                    <div class="row">
+                        <div class="colmn col-md-4">
+                            <input type="text" placeholder="Signature Here">
+                        </div>
+                        <div class="colmn col-md-4">
+                        </div>
+                        <div class="colmn col-md-4">
+                            <input type="text" placeholder="Print Applicant name here">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="colmn col-md-4">
+                        </div>
+                        <div class="colmn col-md-4">
+                        </div>
+                        <div class="colmn col-md-4">
+                            <input type="text" placeholder="Date Signed">
+                        </div>
+                    </div>
+
+                    <div class="btn_row">
+                        <div class="row">
+                            <div class="colmn col-md-12 d-flex space-between">
+                                <button class="btn">Previous</button>
+                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#thankyouModal">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+
+
+                                                            @*<div id="thankyou_message" class="tab-pane fade">
+                <div class="authorise_row">
+                    <div class="row">
+                        <div class="colmn col-md-12">
+                            <div class="form-group">
+                                <p> Congratulations </p>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>*@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-3">
-                                                    <label class="col-form-label">IF YES PLEASE IDENTFY WHO</label>
-                                                </div>
-                                                <div class="form-group col-md-9">
-                                                    @Html.TextBoxFor(model => model.WhoInElite, new { @class = "form-control input-rounded" })
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-3">
-                                                    <label class="col-form-label" for="StreetAddress">HAVE YOU EVER WORKED FOR ELITE?</label>
-                                                </div>
-                                                <div class="form-group col-md-1">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
-                                                        <label class="form-check-label">Yes</label>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group col-md-1">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" name="PreferendMethodOfContact" type="checkbox" data-value="Phone" />
-                                                        <label class="form-check-label">No</label>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group col-md-2">
-                                                    <label class="col-form-label" for="DateOFDeparture">IF YES DATE OF DEPARTURE</label>
-                                                </div>
-                                                <div class="form-group col-md-5">
-                                                @Html.TextBoxFor(model => model.DateOFDeparture, new { @class = "form-control input-rounded" })
-                                                <div class="errorspace">
-                                                    @Html.ValidationMessageFor(model => model.DateOFDeparture)
-                                                </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="form-group col-md-3">
-                                                    <label class="col-form-label">Reason for leave</label>
-                                                </div>
-                                                <div class="form-group col-md-9">
-                                                    @Html.TextBoxFor(model => model.ReasonForlLeave, new { @class = "form-control input-rounded" })
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-12 text-right mb-0">
-                                        <hr />
-                                        <a href="javascript:void(0)" id="LocationNext" class="btn btn-rounded btn-success next previousBtndata pull-right">Next <i class="fa fa-long-arrow-right"></i></a>
-                                        @*<button type="submit" onclick="return validateCustomFields(this);" class="btn btn-rounded btn-success pull-right m-l-10-btn">Save &amp; Update </button>*@
-                                        <input type="button" @*onclick="location.href='@Url.Action("CompanyList", "VendorManagement")'"*@ class="btn btn-rounded btn-secondary pull-right m-l-10-btn" formnovalidate="formnovalidate" value="Cancel" style="border-radius:25px;width:90px;" />
-                                    </div>
-                                    <div class="clearfix"></div>
-                                </div>
-                            </fieldset>
-                            <fieldset id="AcademicDetailsApplicant">
-                                @{ViewBag.myModelprefixName = "AcademicDetailsApplicantModel."; ViewBag.ActionSection = "AcademicDetailsApplicant";}
-                                <div id="divAcademicDetailsApplicant">
-                                    @Html.Partial("~/Views/Guest/PartialView/_AcademicDetailsApplicant.cshtml")
-                                </div>
-                                <div class="form-group col-md-12 text-right mb-0">
-                                    <a href="javascript:void(0)" id="" class="btn btn-rounded btn-success next previousBtndata pull-right">Next <i class="fa fa-long-arrow-right"></i></a>
-                                    <a href="javascript:void(0)" class="btn btn-secondary btn-rounded previous pull-left"><i class="fa fa-long-arrow-left"></i> Back</a>
-                                </div>
-                            </fieldset>
-                            <fieldset id="ExperianceDetailsApplicant">
-                                @{ViewBag.myModelprefixName = "ExperianceDetailsApplicantModel."; ViewBag.ActionSection = "ExperianceDetailsApplicant";}
-                                <div id="divExperianceDetailsApplicant">
-                                    @Html.Partial("~/Views/Guest/PartialView/_AcademicDetailsApplicant.cshtml")
-                                </div>
-                                <div class="form-group col-md-12 text-right mb-0">
-                                    <a href="javascript:void(0)" class="btn btn-rounded btn-secondary previous pull-left"><i class="fa fa-long-arrow-left"></i> Back </a>
-                                    <input id="SaveApplicantInfo" class="btn btn-rounded btn-success pull-right" style="cursor: pointer;width: 125px;" value="Save & Update"/>
-                                    <input type="button" onclick="callCancel();" class="btn btn-rounded btn-secondary bluebutton pull-right" style="cursor:pointer;" formnovalidate="formnovalidate" value="Cancel" />
-                                </div>
-                            </fieldset>
-                        </form>
+                                        }
+                                        <!--/ .container -->
+                                </section>
+
+                            </div>
+
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+<script src="~/Scripts/bootstrap.js"></script>
 <script src="~/Scripts/ePeople/ApplicantFunctionality.js"></script>
 <script src="~/Scripts/ePeople/CustomMultistepWizardApplicant.js"></script>
 <script src="~/Content/NewAdminContent/VENDOR/jquery-steps/build/jquery.steps.min.js"></script>

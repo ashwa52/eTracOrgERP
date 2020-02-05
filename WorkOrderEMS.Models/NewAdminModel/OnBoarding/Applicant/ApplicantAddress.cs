@@ -49,12 +49,33 @@ namespace WorkOrderEMS.Models
         public long AAD_Id { get; set; }
         public string AAD_EducationType { get; set; }
         public string AAD_InstituteName { get; set; }
+        public string AAD_InstituteAddress { get; set; }
+
         public Nullable<DateTime> AAD_AttendedFrom { get; set; }
         public Nullable<DateTime> AAD_AttendedTo { get; set; }
         public string AAD_City { get; set; }
         public string AAD_State { get; set; }
         public int AAD_Zip { get; set; }
         public char AAD_IsActive { get; set; }
+        public string AAD_Degree { get; set; }
+        public char AAD_IsGraduated { get; set; }
+
+        public string AAD_SchoolName { get; set; }
+        public string AAD_SchoolAddress { get; set; }
+
+        public string AAD_University { get; set; }
+        public string AAD_SchoolCity { get; set; }
+
+        public string AAD_SchoolState { get; set; }
+        public string AAD_SchoolZip { get; set; }
+        public Nullable<DateTime> AAD_SchoolAttendedFrom { get; set; }
+        public Nullable<DateTime> AAD_SchoolAttendedTo { get; set; }
+        public char AAD_SchoolIsGraduated { get; set; }
+
+        public string AAD_SchoolDegree { get; set; }
+
+
+
     }
     public class ApplicantBackgroundHistory
     {
@@ -72,6 +93,16 @@ namespace WorkOrderEMS.Models
         public char ABH_SafetySensitiveFunction { get; set; }
         public Nullable<DateTime> ABH_Date { get; set; }
         public char ABH_IsActive { get; set; }
+        public char ABH_OperatedCommercialMotor { get; set; }
+        public string ABH_Salary { get; set; }
+        public string ABH_PositionHeld { get; set; }
+        public Nullable<DateTime> ABH_FromMO { get; set; }
+        public Nullable<DateTime> ABH_ToMO { get; set; }
+
+        public ApplicantAccidentRecord ApplicantAccidentRecord { get; set; }
+        public List<ApplicantTrafficConvictions> ListAppTrafficConvictions { get; set; }
+        public List<ApplicantLicenseHeald> ListApplicantLicenseHeald { get; set; }
+
     }
 
     public class ApplicantPositionTitle

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using WorkOrderEMS.BusinessLogic;
-using WorkOrderEMS.Data.Interfaces;
 using WorkOrderEMS.Models;
 using WorkOrderEMS.Models.Employee;
 
@@ -32,24 +28,44 @@ namespace WorkOrderEMS.Controllers.Guest
             EmployeeVIewModel model = new EmployeeVIewModel();
             ViewBag.StateList = _ICommonMethod.GetStateByCountryId(1);
             model = _IGuestUserRepository.GetEmployee(ObjLoginModel.UserId);
+            model.AplicantAcadmicDetails = new AplicantAcadmicDetails();
+            model.ApplicantBackgroundHistory = new ApplicantBackgroundHistory();
+            model.ApplicantBackgroundHistory.ApplicantAccidentRecord = new ApplicantAccidentRecord();
+            model.ApplicantBackgroundHistory.ListAppTrafficConvictions = new List<ApplicantTrafficConvictions>();
+            ApplicantTrafficConvictions obj = new ApplicantTrafficConvictions();
+            ApplicantTrafficConvictions obj2 = new ApplicantTrafficConvictions();
+            ApplicantTrafficConvictions obj3 = new ApplicantTrafficConvictions();
+            model.ApplicantBackgroundHistory.ListAppTrafficConvictions.Add(obj);
+            model.ApplicantBackgroundHistory.ListAppTrafficConvictions.Add(obj2);
+            model.ApplicantBackgroundHistory.ListAppTrafficConvictions.Add(obj3);
+
+            model.ApplicantBackgroundHistory.ListApplicantLicenseHeald = new List<ApplicantLicenseHeald>();
+            ApplicantLicenseHeald obj4 = new ApplicantLicenseHeald();
+            ApplicantLicenseHeald obj5 = new ApplicantLicenseHeald();
+            ApplicantLicenseHeald obj6 = new ApplicantLicenseHeald();
+            model.ApplicantBackgroundHistory.ListApplicantLicenseHeald.Add(obj4);
+            model.ApplicantBackgroundHistory.ListApplicantLicenseHeald.Add(obj5);
+            model.ApplicantBackgroundHistory.ListApplicantLicenseHeald.Add(obj6);
+
+
             return View("~/Views/Guest/Index1.cshtml", model);
         }
         [HttpPost]
-        public ActionResult Index(EmployeeVIewModel model)
+        public ActionResult Index(EmployeeVIewModel EmployeeVIewModel)
         {
             ViewBag.StateList = _ICommonMethod.GetStateByCountryId(1);
             if (ModelState.IsValid)
             {
-                var isSaveSuccess = _IGuestUserRepository.UpdateApplicantInfo(model);
+                var isSaveSuccess = true;
                 if (isSaveSuccess)
                     return RedirectToAction("PersonalFile");
                 else
                 {
                     ViewBag.message = "Something went wrong!!!";
-                    return View(model);
+                    return View();
                 }
             }
-            return View(model);
+            return View();
         }
         [HttpGet]
         public ActionResult PersonalFile(bool? isSaved)
