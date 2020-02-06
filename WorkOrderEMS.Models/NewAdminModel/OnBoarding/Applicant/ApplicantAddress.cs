@@ -50,7 +50,6 @@ namespace WorkOrderEMS.Models
         public string AAD_EducationType { get; set; }
         public string AAD_InstituteName { get; set; }
         public string AAD_InstituteAddress { get; set; }
-
         public Nullable<DateTime> AAD_AttendedFrom { get; set; }
         public Nullable<DateTime> AAD_AttendedTo { get; set; }
         public string AAD_City { get; set; }
@@ -74,7 +73,7 @@ namespace WorkOrderEMS.Models
 
         public string AAD_SchoolDegree { get; set; }
 
-
+        public AplicantAcadmicDetails() {   }
 
     }
     public class ApplicantBackgroundHistory

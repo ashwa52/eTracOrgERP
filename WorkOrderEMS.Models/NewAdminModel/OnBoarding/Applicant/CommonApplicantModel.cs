@@ -23,6 +23,7 @@ namespace WorkOrderEMS.Models
         public List<ApplicantVehiclesOperated> ApplicantVehiclesOperated { get; set; }
         public List<ApplicantLicenseHeald> ApplicantLicenseHeald { get; set; }
         public List<ApplicantSchecduleAvaliblity> ApplicantSchecduleAvaliblity { get; set; }
+
     }
     public class ApplicantPersonalInfo
     {

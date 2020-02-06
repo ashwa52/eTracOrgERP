@@ -153,12 +153,21 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<Applicant> Applicants { get; set; }
         public virtual DbSet<ApplicantLoginAccess> ApplicantLoginAccesses { get; set; }
         public virtual DbSet<ApplicantPersonalInfo> ApplicantPersonalInfoes { get; set; }
-        public virtual DbSet<InterviewQuestionChild> InterviewQuestionChilds { get; set; }
-        public virtual DbSet<InterviewQuestionMaster> InterviewQuestionMasters { get; set; }
-        public virtual DbSet<InterviewAnswer> InterviewAnswers { get; set; }
         public virtual DbSet<InterviewProposalTime> InterviewProposalTimes { get; set; }
         public virtual DbSet<SlotTime> SlotTimes { get; set; }
         public virtual DbSet<BookSlotTime> BookSlotTimes { get; set; }
+        public virtual DbSet<AplicantAcadmicDetail> AplicantAcadmicDetails { get; set; }
+        public virtual DbSet<ApplicantAccidentRecord> ApplicantAccidentRecords { get; set; }
+        public virtual DbSet<ApplicantAdditionalInfo> ApplicantAdditionalInfoes { get; set; }
+        public virtual DbSet<ApplicantAddress> ApplicantAddresses { get; set; }
+        public virtual DbSet<ApplicantBackgroundHistory> ApplicantBackgroundHistories { get; set; }
+        public virtual DbSet<ApplicantContactInfo> ApplicantContactInfoes { get; set; }
+        public virtual DbSet<ApplicantLicenseHeald> ApplicantLicenseHealds { get; set; }
+        public virtual DbSet<ApplicantPositionTitle> ApplicantPositionTitles { get; set; }
+        public virtual DbSet<ApplicantSchecduleAvaliblity> ApplicantSchecduleAvaliblities { get; set; }
+        public virtual DbSet<ApplicantTrafficConviction> ApplicantTrafficConvictions { get; set; }
+        public virtual DbSet<ApplicantVehiclesOperated> ApplicantVehiclesOperateds { get; set; }
+        public virtual DbSet<Appointment> Appointments { get; set; }
     
         [DbFunction("workorderEMSEntities", "fn_Split")]
         public virtual IQueryable<fn_Split_Result> fn_Split(string sText, string sDelim)
@@ -6722,11 +6731,11 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetQuestionsForInterview_Result4>("spGetQuestionsForInterview", actionParameter, isExemptParameter, iQC_IQM_IdParameter);
         }
     
-        public virtual int spSetInterviewAnswer(Nullable<long> iNA_IQC_Id, Nullable<long> iNA_API_ApplicantId, string iNA_EMP_EmployeeID, string iNA_Answer, string iNA_Comments)
+        public virtual int spSetInterviewAnswer(Nullable<long> iNA_INQ_Id, Nullable<long> iNA_API_ApplicantId, string iNA_EMP_EmployeeID, string iNA_Answer, string iNA_Comments)
         {
-            var iNA_IQC_IdParameter = iNA_IQC_Id.HasValue ?
-                new ObjectParameter("INA_IQC_Id", iNA_IQC_Id) :
-                new ObjectParameter("INA_IQC_Id", typeof(long));
+            var iNA_INQ_IdParameter = iNA_INQ_Id.HasValue ?
+                new ObjectParameter("INA_INQ_Id", iNA_INQ_Id) :
+                new ObjectParameter("INA_INQ_Id", typeof(long));
     
             var iNA_API_ApplicantIdParameter = iNA_API_ApplicantId.HasValue ?
                 new ObjectParameter("INA_API_ApplicantId", iNA_API_ApplicantId) :
@@ -6744,7 +6753,7 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("INA_Comments", iNA_Comments) :
                 new ObjectParameter("INA_Comments", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetInterviewAnswer", iNA_IQC_IdParameter, iNA_API_ApplicantIdParameter, iNA_EMP_EmployeeIDParameter, iNA_AnswerParameter, iNA_CommentsParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetInterviewAnswer", iNA_INQ_IdParameter, iNA_API_ApplicantIdParameter, iNA_EMP_EmployeeIDParameter, iNA_AnswerParameter, iNA_CommentsParameter);
         }
     
         public virtual ObjectResult<spGetFreeSlote_Result> spGetFreeSlote(string employeeId, Nullable<System.DateTime> slotDate)
@@ -6832,6 +6841,24 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("IPT_IsActive", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetInterviewPanel", actionParameter, iPT_IdParameter, iPT_JPS_JobPostingIdParameter, iPT_EMP_EmployeeID_HMParameter, iPT_EMP_EmployeeID_SEParameter, iPT_EMP_EmployeeID_TEParameter, iPT_StatusParameter, iPT_IsActiveParameter);
+        }
+    
+        public virtual ObjectResult<spGetApplicantAllDetails_Result> spGetApplicantAllDetails(Nullable<long> aPT_ApplicantId)
+        {
+            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
+                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
+                new ObjectParameter("APT_ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantAllDetails_Result>("spGetApplicantAllDetails", aPT_ApplicantIdParameter);
+        }
+    
+        public virtual int spSetApplicantAllDetails(string action)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApplicantAllDetails", actionParameter);
         }
     }
 }
