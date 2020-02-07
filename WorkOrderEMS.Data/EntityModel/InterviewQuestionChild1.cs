@@ -12,16 +12,16 @@ namespace WorkOrderEMS.Data.EntityModel
     using System;
     using System.Collections.Generic;
     
-    public partial class InterviewAnswer
+    public partial class InterviewQuestionChild1
     {
-        public long INA_Id { get; set; }
-        public Nullable<long> INA_IQC_Id { get; set; }
-        public Nullable<long> INA_API_ApplicantId { get; set; }
-        public string INA_EMP_EmployeeId { get; set; }
-        public string INA_Answer { get; set; }
-        public string INA_Comments { get; set; }
-        public Nullable<System.DateTime> INA_Date { get; set; }
-        public string INA_IsActive { get; set; }
-        public Nullable<long> INA_INQ_Id { get; set; }
+        public long IQC_Id { get; set; }
+        public long IQC_IQM_Id { get; set; }
+        public string IQC_Question { get; set; }
+        public Nullable<int> IQC_ScoreYes { get; set; }
+        public Nullable<int> IQC_ScoreNo { get; set; }
+        public Nullable<System.DateTime> IQC_Date { get; set; }
+        public string IQC_IsActive { get; set; }
+    
+        public virtual InterviewQuestionMaster1 InterviewQuestionMaster { get; set; }
     }
 }

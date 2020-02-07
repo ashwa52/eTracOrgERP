@@ -77,7 +77,9 @@ namespace WorkOrderEMS.Controllers.Guest
         [HttpPost]
         public ActionResult Index(CommonApplicantModel CommonApplicantModel)
         {
+            ApplicantManager _IApplicantManager = new ApplicantManager();
             ViewBag.StateList = _ICommonMethod.GetStateByCountryId(1);
+            var getDetails = _IApplicantManager.SaveApplicantData(CommonApplicantModel);
             if (ModelState.IsValid)
             {
                 var isSaveSuccess = true;

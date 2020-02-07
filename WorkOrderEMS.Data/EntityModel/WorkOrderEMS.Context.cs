@@ -153,21 +153,15 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<Applicant> Applicants { get; set; }
         public virtual DbSet<ApplicantLoginAccess> ApplicantLoginAccesses { get; set; }
         public virtual DbSet<ApplicantPersonalInfo> ApplicantPersonalInfoes { get; set; }
+        public virtual DbSet<InterviewQuestionChild> InterviewQuestionChilds { get; set; }
+        public virtual DbSet<InterviewQuestionMaster> InterviewQuestionMasters { get; set; }
+        public virtual DbSet<InterviewAnswer> InterviewAnswers { get; set; }
         public virtual DbSet<InterviewProposalTime> InterviewProposalTimes { get; set; }
         public virtual DbSet<SlotTime> SlotTimes { get; set; }
         public virtual DbSet<BookSlotTime> BookSlotTimes { get; set; }
-        public virtual DbSet<AplicantAcadmicDetail> AplicantAcadmicDetails { get; set; }
-        public virtual DbSet<ApplicantAccidentRecord> ApplicantAccidentRecords { get; set; }
-        public virtual DbSet<ApplicantAdditionalInfo> ApplicantAdditionalInfoes { get; set; }
-        public virtual DbSet<ApplicantAddress> ApplicantAddresses { get; set; }
-        public virtual DbSet<ApplicantBackgroundHistory> ApplicantBackgroundHistories { get; set; }
-        public virtual DbSet<ApplicantContactInfo> ApplicantContactInfoes { get; set; }
-        public virtual DbSet<ApplicantLicenseHeald> ApplicantLicenseHealds { get; set; }
-        public virtual DbSet<ApplicantPositionTitle> ApplicantPositionTitles { get; set; }
-        public virtual DbSet<ApplicantSchecduleAvaliblity> ApplicantSchecduleAvaliblities { get; set; }
-        public virtual DbSet<ApplicantTrafficConviction> ApplicantTrafficConvictions { get; set; }
-        public virtual DbSet<ApplicantVehiclesOperated> ApplicantVehiclesOperateds { get; set; }
-        public virtual DbSet<Appointment> Appointments { get; set; }
+        public virtual DbSet<ApplicantLoginAccess1> ApplicantLoginAccess1 { get; set; }
+        public virtual DbSet<InterviewQuestionChild1> InterviewQuestionChild1 { get; set; }
+        public virtual DbSet<InterviewQuestionMaster1> InterviewQuestionMaster1 { get; set; }
     
         [DbFunction("workorderEMSEntities", "fn_Split")]
         public virtual IQueryable<fn_Split_Result> fn_Split(string sText, string sDelim)
@@ -6841,15 +6835,6 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("IPT_IsActive", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetInterviewPanel", actionParameter, iPT_IdParameter, iPT_JPS_JobPostingIdParameter, iPT_EMP_EmployeeID_HMParameter, iPT_EMP_EmployeeID_SEParameter, iPT_EMP_EmployeeID_TEParameter, iPT_StatusParameter, iPT_IsActiveParameter);
-        }
-    
-        public virtual ObjectResult<spGetApplicantAllDetails_Result> spGetApplicantAllDetails(Nullable<long> aPT_ApplicantId)
-        {
-            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
-                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
-                new ObjectParameter("APT_ApplicantId", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantAllDetails_Result>("spGetApplicantAllDetails", aPT_ApplicantIdParameter);
         }
     
         public virtual int spSetApplicantAllDetails(string action)

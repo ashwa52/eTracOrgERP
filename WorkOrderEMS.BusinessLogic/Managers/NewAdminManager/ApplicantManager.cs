@@ -594,11 +594,13 @@ namespace WorkOrderEMS.BusinessLogic
                     System.Data.DataTable ApplicantContactInfoTable = Obj.ApplicantContactInfo.ToDataTable();
                     System.Data.DataTable ApplicantAdditionalInfoTable = Obj.ApplicantAdditionalInfo.ToDataTable();
                     System.Data.DataTable ApplicantBackgroundHistoryTable = Obj.ApplicantBackgroundHistory.ToDataTable();
+                    Obj.ApplicantPositionTitle=new List<ApplicantPositionTitle>();
                     System.Data.DataTable ApplicantPositionTitleTable = Obj.ApplicantPositionTitle.ToDataTable();
                     System.Data.DataTable ApplicantAccidentRecordTable = Obj.ApplicantAccidentRecord.ToDataTable();
                     System.Data.DataTable ApplicantTrafficConvictionsTable = Obj.ApplicantTrafficConvictions.ToDataTable();
                     System.Data.DataTable ApplicantVehiclesOperatedTable = Obj.ApplicantVehiclesOperated.ToDataTable();
                     System.Data.DataTable ApplicantLicenseHealdTable = Obj.ApplicantLicenseHeald.ToDataTable();
+                    Obj.ApplicantSchecduleAvaliblity= new List<ApplicantSchecduleAvaliblity>();
                     System.Data.DataTable ApplicantSchecduleAvaliblityTable = Obj.ApplicantSchecduleAvaliblity.ToDataTable();
                     var Action = new SqlParameter("@Action", SqlDbType.Char);
                     Action.Value = "I";
@@ -664,10 +666,15 @@ namespace WorkOrderEMS.BusinessLogic
                     UT_ApplicantSchecduleAvaliblity.Value = ApplicantSchecduleAvaliblityTable;
                     UT_ApplicantSchecduleAvaliblity.TypeName = "[dbo].[UT_ApplicantSchecduleAvaliblity]";
 
-                    context.Database.ExecuteSqlCommand("exec [dbo].[spSetApplicantAllDetails] @Action, @UT_ApplicantPersonalInfo", Action, UT_ApplicantPersonalInfo, 
+                    context.Database.ExecuteSqlCommand("exec [dbo].[spSetApplicantAllDetails] @Action,@UT_ApplicantPersonalInfo," +
+                        "@UT_ApplicantAddress, @UT_ApplicantContactInfo, @UT_ApplicantAdditionalInfo," +
+                        "@UT_AplicantAcadmicDetails, @UT_ApplicantBackgroundHistory," +
+                        "@UT_ApplicantPositionTitle," +
+                        "@UT_ApplicantTrafficConvictions, @UT_ApplicantVehiclesOperated," +
+                        "@UT_ApplicantLicenseHeald, @UT_ApplicantSchecduleAvaliblity", Action, UT_ApplicantPersonalInfo, 
                         UT_ApplicantAddress, UT_ApplicantContactInfo, UT_ApplicantAdditionalInfo, 
                         UT_AplicantAcadmicDetails, UT_ApplicantBackgroundHistory, 
-                        UT_ApplicantPositionTitle, UT_ApplicantAccidentRecord, 
+                        UT_ApplicantPositionTitle, 
                         UT_ApplicantTrafficConvictions, UT_ApplicantVehiclesOperated, 
                         UT_ApplicantLicenseHeald, UT_ApplicantSchecduleAvaliblity);
                     Flag = true;
