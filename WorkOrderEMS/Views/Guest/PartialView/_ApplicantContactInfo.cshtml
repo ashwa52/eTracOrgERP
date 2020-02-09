@@ -48,6 +48,8 @@ new List<Object>{
                 <label class="form-label">Perderred Method of contact</label>
                 <label class="form-label checkbox_label">
                     @Html.RadioButtonFor(model => model.ApplicantContactInfo[i].ACI_PrefredContactMethod, "Phone", new { @class = "form-label checkbox_label" }) Phone
+                </label>
+                <label class="form-label checkbox_label">
                     @Html.RadioButtonFor(model => model.ApplicantContactInfo[i].ACI_PrefredContactMethod, "Email", new { @class = "form-label checkbox_label" }) Email
                 </label>
             </div>

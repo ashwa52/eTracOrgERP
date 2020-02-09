@@ -22,6 +22,5 @@ namespace WorkOrderEMS.Data.EntityModel
         public string INA_Comments { get; set; }
         public Nullable<System.DateTime> INA_Date { get; set; }
         public string INA_IsActive { get; set; }
-        public Nullable<long> INA_INQ_Id { get; set; }
     }
 }

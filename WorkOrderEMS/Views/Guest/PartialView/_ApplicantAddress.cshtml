@@ -2,66 +2,67 @@
 @{
     Layout = null;
 }
+<div class="main_row">
+    @for (var i = 0; i < Model.ApplicantAddress.Count(); i++)
+    {
+        <div class="row">
+            <div class="colmn col-md-6">
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.ApplicantAddress[i].APA_StreetAddress, new { @class = "form-control", @placeholder = "Street Addrss" })
+                    @Html.ValidationMessageFor(x => x.ApplicantAddress[i].APA_StreetAddress)
+                </div>
+            </div>
+            <div class="colmn col-md-3">
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.ApplicantAddress[i].APA_Apartment, new { @class = "form-control", @placeholder = "APT/UNIT#:" })
+                    @Html.ValidationMessageFor(x => x.ApplicantAddress[i].APA_Apartment)
+                </div>
+            </div>
+            <div class="colmn col-md-3">
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.ApplicantAddress[i].APA_City, new { @class = "form-control", @placeholder = "City" })
+                    @Html.ValidationMessageFor(x => x.ApplicantAddress[i].APA_City)
+                </div>
+            </div>
+        </div>
 
-@for (var i = 0; i < Model.ApplicantAddress.Count(); i++)
-{
-    <div class="row">
-        <div class="colmn col-md-6">
-            <div class="form-group">
-                @Html.TextBoxFor(x => x.ApplicantAddress[i].APA_StreetAddress, new { @class = "form-control", @placeholder = "Street Addrss" })
-                @Html.ValidationMessageFor(x => x.ApplicantAddress[i].APA_StreetAddress)
+        <div class="row">
+            <div class="colmn col-md-4">
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.ApplicantAddress[i].APA_State, new { @placeholder = "State", @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.ApplicantAddress[i].APA_State)
+                </div>
+            </div>
+            <div class="colmn col-md-4">
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.ApplicantAddress[i].APA_Zip, new { @placeholder = "ZIP", @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.ApplicantAddress[i].APA_Zip)
+                </div>
+            </div>
+            <div class="colmn col-md-4">
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.ApplicantAddress[i].APA_YearsAddressFrom, new { @placeholder = "Years Address From", @class = "form-control" })
+                    @Html.ValidationMessageFor(x => x.ApplicantAddress[i].APA_YearsAddressFrom)
+                </div>
             </div>
         </div>
-        <div class="colmn col-md-3">
-            <div class="form-group">
-                @Html.TextBoxFor(x => x.ApplicantAddress[i].APA_Apartment, new { @class = "form-control", @placeholder = "APT/UNIT#:" })
-                @Html.ValidationMessageFor(x => x.ApplicantAddress[i].APA_Apartment)
+
+        <div class="row">
+            <div class="colmn col-md-4">
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.ApplicantAddress[i].APA_YearsAddressTo, new { @class = "form-control", @placeholder = "Years Address From" })
+                    @Html.ValidationMessageFor(x => x.ApplicantAddress[i].APA_YearsAddressTo)
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="colmn col-md-12 text-right">
+                <div class="form-group">
+                    <button class="btn">Add more address</button>
+                </div>
             </div>
         </div>
-        <div class="colmn col-md-3">
-            <div class="form-group">
-                @Html.TextBoxFor(x => x.ApplicantAddress[i].APA_City, new { @class = "form-control", @placeholder = "City" })
-                @Html.ValidationMessageFor(x => x.ApplicantAddress[i].APA_City)
-            </div>
-        </div>
+    }
     </div>
-
-    <div class="row">
-        <div class="colmn col-md-4">
-            <div class="form-group">
-                @Html.TextBoxFor(x => x.ApplicantAddress[i].APA_State, new { @placeholder = "State", @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.ApplicantAddress[i].APA_State)
-            </div>
-        </div>
-        <div class="colmn col-md-4">
-            <div class="form-group">
-                @Html.TextBoxFor(x => x.ApplicantAddress[i].APA_Zip, new { @placeholder = "ZIP", @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.ApplicantAddress[i].APA_Zip)
-            </div>
-        </div>
-        <div class="colmn col-md-4">
-            <div class="form-group">
-                @Html.TextBoxFor(x => x.ApplicantAddress[i].APA_YearsAddressFrom, new { @placeholder = "Years Address From", @class = "form-control" })
-                @Html.ValidationMessageFor(x => x.ApplicantAddress[i].APA_YearsAddressFrom)
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="colmn col-md-4">
-            <div class="form-group">
-                @Html.TextBoxFor(x => x.ApplicantAddress[i].APA_YearsAddressTo, new {  @class = "form-control", @placeholder = "Years Address From" })
-                @Html.ValidationMessageFor(x => x.ApplicantAddress[i].APA_YearsAddressTo)
-            </div>
-        </div>
-
-    </div>
-
-    <div class="row">
-        <div class="colmn col-md-12 text-right">
-            <div class="form-group">
-                <button class="btn">Add more address</button>
-            </div>
-        </div>
-    </div>
-}

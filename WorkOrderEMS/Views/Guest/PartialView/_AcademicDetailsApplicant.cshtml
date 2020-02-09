@@ -13,24 +13,6 @@
         <div class="row">
             <div class="colmn col-md-2">
                 <div class="form-group">
-                    <label class="form-label mt-10"></label>
-                </div>
-            </div>
-            <div class="colmn col-md-5">
-                <div class="form-group">
-                    <label class="form-label mt-10">Name</label>
-                </div>
-            </div>
-            <div class="colmn col-md-5">
-                <div class="form-group">
-                    <label class="form-label mt-10">Address</label>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="colmn col-md-2">
-                <div class="form-group">
                     <label class="form-label mt-10">High School</label>
                 </div>
             </div>
@@ -83,10 +65,14 @@
                 </div>
             </div>
             <div class="colmn col-md-5">
-                <div class="form-group pt-4 checkbox_group">
+                <div class="form-group checkbox_group">
                     <label class="form-label">Graduated</label>
-                    @Html.RadioButtonFor(model => model.AplicantAcadmicDetails[i].AAD_IsGraduated, true, new { @class = "form-label checkbox_label" }) Yes
-                    @Html.RadioButtonFor(model => model.AplicantAcadmicDetails[i].AAD_IsGraduated, false, new { @class = "form-label checkbox_label" }) No
+                    <label class="form-label">
+                        @Html.RadioButtonFor(model => model.AplicantAcadmicDetails[i].AAD_IsGraduated, true, new { @class = "form-label checkbox_label" }) Yes
+                    </label>
+                    <label class="form-label">
+                        @Html.RadioButtonFor(model => model.AplicantAcadmicDetails[i].AAD_IsGraduated, false, new { @class = "form-label checkbox_label" }) No
+                    </label>
                 </div>
             </div>
         </div>
@@ -132,7 +118,8 @@
             </div>
             <div class="colmn col-md-5">
                 <div class="form-group">
-                    <label class="form-label mt-10">Address</label>
+                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolAddress, new { @class = "form-control", @placeholder = "School Address" })
+                    @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolAddress)
                 </div>
             </div>
         </div>
@@ -143,12 +130,7 @@
                     <label class="form-label mt-10">University</label>
                 </div>
             </div>
-            <div class="colmn col-md-5">
-                <div class="form-group">
-                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolAddress, new { @class = "form-control", @placeholder = "School Address" })
-                    @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolAddress)
-                </div>
-            </div>
+
             <div class="colmn col-md-5">
                 <div class="form-group">
                     @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_University, new { @class = "form-control", @placeholder = "University" })
@@ -192,10 +174,14 @@
                 </div>
             </div>
             <div class="colmn col-md-5">
-                <div class="form-group pt-4 checkbox_group">
+                <div class="form-group checkbox_group">
                     <label class="form-label">Graduated</label>
-                    @Html.RadioButtonFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolIsGraduated, true, new { @class = "form-label checkbox_label" }) Yes
-                    @Html.RadioButtonFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolIsGraduated, false, new { @class = "form-label checkbox_label" }) No
+                    <label class="form-label">
+                        @Html.RadioButtonFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolIsGraduated, true, new { @class = "form-label checkbox_label" }) Yes
+                    </label>
+                    <label class="form-label">
+                        @Html.RadioButtonFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolIsGraduated, false, new { @class = "form-label checkbox_label" }) No
+                    </label>
                 </div>
             </div>
         </div>
@@ -203,13 +189,14 @@
         <div class="row">
             <div class="colmn col-md-2">
                 <div class="form-group">
-                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolAttendedFrom, new { @class = "form-control", @placeholder = "School Attended From" })
-                    @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolAttendedFrom)
-                </div>
+                    <label class="form-label mt-10">Date attended to</label>
+  </div>
             </div>
             <div class="colmn col-md-4">
                 <div class="form-group">
-                    <input type="date" class="form-control">
+                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolAttendedFrom, new { @class = "form-control", @placeholder = "School Attended From",@type="date" })
+                    @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolAttendedFrom)
+
                 </div>
             </div>
             <div class="colmn col-md-2">
@@ -219,7 +206,7 @@
             </div>
             <div class="colmn col-md-4">
                 <div class="form-group">
-                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolAttendedTo, new { @class = "form-control", @placeholder = "School Attended To" })
+                    @Html.TextBoxFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolAttendedTo, new { @class = "form-control", @placeholder = "School Attended To",@type="date" })
                     @Html.ValidationMessageFor(model => model.AplicantAcadmicDetails[i].AAD_SchoolAttendedTo)
                 </div>
             </div>

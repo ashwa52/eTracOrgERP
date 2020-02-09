@@ -27,12 +27,21 @@ namespace WorkOrderEMS.Controllers.Guest
             var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
             CommonApplicantModel model = new CommonApplicantModel();
             ViewBag.StateList = _ICommonMethod.GetStateByCountryId(1);
-            //model = _IGuestUserRepository.GetEmployee(ObjLoginModel.UserId);
+            var employee = _IGuestUserRepository.GetEmployee(ObjLoginModel.UserId);
             model.ApplicantPersonalInfo = new List<ApplicantPersonalInfo>();
             ApplicantPersonalInfo a1 = new ApplicantPersonalInfo();
+            a1.ApplicantId = employee.ApplicantId;
+            a1.FirstName = employee.FirstName;
+            a1.LastName = employee.LastName;
+            a1.SSN = employee.SocialSecurityNumber;
             model.ApplicantPersonalInfo.Add(a1);
             model.ApplicantAddress = new List<ApplicantAddress>();
             ApplicantAddress a2 = new ApplicantAddress();
+            a2.APA_StreetAddress = employee.Address;
+            a2.APA_City = employee.City;
+            a2.APA_Apartment = employee.APIUnit;
+            a2.APA_State = employee.State;
+            a2.APA_YearsAddressFrom = employee.YearsAtAddrss;
             model.ApplicantAddress.Add(a2);
 
             model.AplicantAcadmicDetails = new List<AplicantAcadmicDetails>();
@@ -41,12 +50,14 @@ namespace WorkOrderEMS.Controllers.Guest
             model.ApplicantBackgroundHistory = new List<ApplicantBackgroundHistory>();
             ApplicantBackgroundHistory abh1 = new ApplicantBackgroundHistory();
             model.ApplicantBackgroundHistory.Add(abh1);
-            model.ApplicantAccidentRecord = new List<ApplicantAccidentRecord>();
-            ApplicantAccidentRecord aar1 = new ApplicantAccidentRecord();
-            model.ApplicantAccidentRecord.Add(aar1);
+            //model.ApplicantAccidentRecord = new List<ApplicantAccidentRecord>();
+            //ApplicantAccidentRecord aar1 = new ApplicantAccidentRecord();
+            //model.ApplicantAccidentRecord.Add(aar1);
 
             model.ApplicantContactInfo = new List<ApplicantContactInfo>();
             ApplicantContactInfo c1 = new ApplicantContactInfo();
+            c1.ACI_eMail = employee.Email;
+            c1.ACI_PhoneNo = employee.Phone.Value;
             model.ApplicantContactInfo.Add(c1);
             model.ApplicantTrafficConvictions = new List<ApplicantTrafficConvictions>();
             ApplicantTrafficConvictions obj = new ApplicantTrafficConvictions();

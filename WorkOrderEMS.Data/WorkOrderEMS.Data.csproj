@@ -157,9 +157,6 @@
     <Compile Include="EntityModel\ApplicantLoginAccess.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="EntityModel\ApplicantLoginAccess1.cs">
-      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
-    </Compile>
     <Compile Include="EntityModel\ApplicantPersonalInfo.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
@@ -349,13 +346,7 @@
     <Compile Include="EntityModel\InterviewQuestionChild.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
-    <Compile Include="EntityModel\InterviewQuestionChild1.cs">
-      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
-    </Compile>
     <Compile Include="EntityModel\InterviewQuestionMaster.cs">
-      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
-    </Compile>
-    <Compile Include="EntityModel\InterviewQuestionMaster1.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\InterviewSchedule.cs">

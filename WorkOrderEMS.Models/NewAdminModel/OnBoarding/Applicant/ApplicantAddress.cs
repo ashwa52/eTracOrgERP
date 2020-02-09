@@ -23,7 +23,7 @@ namespace WorkOrderEMS.Models
     }
     public class ApplicantContactInfo
     {
-        public long ACI_PhoneNo { get; set; }
+        public long? ACI_PhoneNo { get; set; }
         public string ACI_eMail { get; set; }
         public string ACI_PrefredContactMethod { get; set; }
         public Nullable<DateTime> ACI_Date { get; set; }
@@ -121,8 +121,6 @@ namespace WorkOrderEMS.Models
         public string AAR_Discription { get; set; }
         public int AAR_NumberOfFatalities { get; set; }
         public int AAR_NumberOfInjuries { get; set; }
-        public Nullable<DateTime> AAR_Date { get; set; }
-
         public char AAR_IsActive { get; set; }
     }
     public class ApplicantTrafficConvictions

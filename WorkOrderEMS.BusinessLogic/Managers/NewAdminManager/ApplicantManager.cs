@@ -586,7 +586,7 @@ namespace WorkOrderEMS.BusinessLogic
                     if (Obj.ApplicantPersonalInfo != null)
                     {
                         //var Date = new SqlParameter("@Date", System.Data.SqlDbType.DateTime2);
-                        Obj.ApplicantPersonalInfo[0].API_Action = 'I';
+                        Obj.ApplicantPersonalInfo[0].API_Action = 'U';
                     }
                     System.Data.DataTable ApplicantPersonalInfoTable = Obj.ApplicantPersonalInfo.ToDataTable();
                     System.Data.DataTable AplicantAcadmicDetailsTable = Obj.AplicantAcadmicDetails.ToDataTable();
@@ -594,16 +594,16 @@ namespace WorkOrderEMS.BusinessLogic
                     System.Data.DataTable ApplicantContactInfoTable = Obj.ApplicantContactInfo.ToDataTable();
                     System.Data.DataTable ApplicantAdditionalInfoTable = Obj.ApplicantAdditionalInfo.ToDataTable();
                     System.Data.DataTable ApplicantBackgroundHistoryTable = Obj.ApplicantBackgroundHistory.ToDataTable();
-                    Obj.ApplicantPositionTitle=new List<ApplicantPositionTitle>();
+                    Obj.ApplicantPositionTitle = new List<ApplicantPositionTitle>();
                     System.Data.DataTable ApplicantPositionTitleTable = Obj.ApplicantPositionTitle.ToDataTable();
-                    System.Data.DataTable ApplicantAccidentRecordTable = Obj.ApplicantAccidentRecord.ToDataTable();
+                    //System.Data.DataTable ApplicantAccidentRecordTable = Obj.ApplicantAccidentRecord.ToDataTable();
                     System.Data.DataTable ApplicantTrafficConvictionsTable = Obj.ApplicantTrafficConvictions.ToDataTable();
                     System.Data.DataTable ApplicantVehiclesOperatedTable = Obj.ApplicantVehiclesOperated.ToDataTable();
                     System.Data.DataTable ApplicantLicenseHealdTable = Obj.ApplicantLicenseHeald.ToDataTable();
-                    Obj.ApplicantSchecduleAvaliblity= new List<ApplicantSchecduleAvaliblity>();
+                    Obj.ApplicantSchecduleAvaliblity = new List<ApplicantSchecduleAvaliblity>();
                     System.Data.DataTable ApplicantSchecduleAvaliblityTable = Obj.ApplicantSchecduleAvaliblity.ToDataTable();
                     var Action = new SqlParameter("@Action", SqlDbType.Char);
-                    Action.Value = "I";
+                    Action.Value = "U";
                     //var ACB_BillAmount = new SqlParameter("@ACB_BillAmount", SqlDbType.Decimal);
                     //ACB_BillAmount.Value = Obj.ApplicantId;
                     var UT_ApplicantPersonalInfo = new SqlParameter("@UT_ApplicantPersonalInfo", SqlDbType.Structured);
@@ -613,7 +613,7 @@ namespace WorkOrderEMS.BusinessLogic
                     var UT_AplicantAcadmicDetails = new SqlParameter("@UT_AplicantAcadmicDetails", SqlDbType.Structured);
                     var UT_ApplicantBackgroundHistory = new SqlParameter("@UT_ApplicantBackgroundHistory", SqlDbType.Structured);
                     var UT_ApplicantPositionTitle = new SqlParameter("@UT_ApplicantPositionTitle", SqlDbType.Structured);
-                    var UT_ApplicantAccidentRecord = new SqlParameter("@UT_ApplicantAccidentRecord", SqlDbType.Structured);
+                    //var UT_ApplicantAccidentRecord = new SqlParameter("@UT_ApplicantAccidentRecord", SqlDbType.Structured);
                     var UT_ApplicantTrafficConvictions = new SqlParameter("@UT_ApplicantTrafficConvictions", SqlDbType.Structured);
                     var UT_ApplicantVehiclesOperated = new SqlParameter("@UT_ApplicantVehiclesOperated", SqlDbType.Structured);
                     var UT_ApplicantLicenseHeald = new SqlParameter("@UT_ApplicantLicenseHeald", SqlDbType.Structured);
@@ -647,8 +647,8 @@ namespace WorkOrderEMS.BusinessLogic
                     UT_ApplicantPositionTitle.TypeName = "[dbo].[UT_ApplicantPositionTitle]";
 
                     //info for ApplicantAccidentRecordTable
-                    UT_ApplicantAccidentRecord.Value = ApplicantAccidentRecordTable;
-                    UT_ApplicantAccidentRecord.TypeName = "[dbo].[UT_ApplicantAccidentRecord]";
+                    //UT_ApplicantAccidentRecord.Value = ApplicantAccidentRecordTable;
+                    //UT_ApplicantAccidentRecord.TypeName = "[dbo].[UT_ApplicantAccidentRecord]";
 
                     //info for ApplicantTrafficConvictionsTable
                     UT_ApplicantTrafficConvictions.Value = ApplicantTrafficConvictionsTable;
@@ -666,18 +666,42 @@ namespace WorkOrderEMS.BusinessLogic
                     UT_ApplicantSchecduleAvaliblity.Value = ApplicantSchecduleAvaliblityTable;
                     UT_ApplicantSchecduleAvaliblity.TypeName = "[dbo].[UT_ApplicantSchecduleAvaliblity]";
 
-                    context.Database.ExecuteSqlCommand("exec [dbo].[spSetApplicantAllDetails] @Action,@UT_ApplicantPersonalInfo," +
-                        "@UT_ApplicantAddress, @UT_ApplicantContactInfo, @UT_ApplicantAdditionalInfo," +
-                        "@UT_AplicantAcadmicDetails, @UT_ApplicantBackgroundHistory," +
-                        "@UT_ApplicantPositionTitle," +
-                        "@UT_ApplicantTrafficConvictions, @UT_ApplicantVehiclesOperated," +
-                        "@UT_ApplicantLicenseHeald, @UT_ApplicantSchecduleAvaliblity", Action, UT_ApplicantPersonalInfo, 
-                        UT_ApplicantAddress, UT_ApplicantContactInfo, UT_ApplicantAdditionalInfo, 
-                        UT_AplicantAcadmicDetails, UT_ApplicantBackgroundHistory, 
-                        UT_ApplicantPositionTitle, 
-                        UT_ApplicantTrafficConvictions, UT_ApplicantVehiclesOperated, 
-                        UT_ApplicantLicenseHeald, UT_ApplicantSchecduleAvaliblity);
-                    Flag = true;
+                    //context.Database.ExecuteSqlCommand("exec [dbo].[spSetApplicantAllDetails] @Action,@UT_ApplicantPersonalInfo," +
+                    //    "@UT_ApplicantAddress, @UT_ApplicantContactInfo, @UT_ApplicantAdditionalInfo," +
+                    //    "@UT_AplicantAcadmicDetails, @UT_ApplicantBackgroundHistory," +
+                    //    "@UT_ApplicantPositionTitle" +
+                    //    "@UT_ApplicantTrafficConvictions, @UT_ApplicantVehiclesOperated," +
+                    //    "@UT_ApplicantLicenseHeald, @UT_ApplicantSchecduleAvaliblity", Action, UT_ApplicantPersonalInfo, 
+                    //    UT_ApplicantAddress, UT_ApplicantContactInfo, UT_ApplicantAdditionalInfo, 
+                    //    UT_AplicantAcadmicDetails, UT_ApplicantBackgroundHistory, 
+                    //    UT_ApplicantPositionTitle,
+                    //    UT_ApplicantTrafficConvictions, UT_ApplicantVehiclesOperated, 
+                    //    UT_ApplicantLicenseHeald, UT_ApplicantSchecduleAvaliblity);
+                    using (var conn = new SqlConnection(ConfigurationManager.AppSettings["SQLConnection"].ToString()))
+                    {
+                        using (var sproc = new SqlCommand("[dbo].[spSetApplicantAllDetails]", conn))
+                        {
+                            //var param = new SqlParameter("@GuidList", SqlDbType.Structured);
+                            //param.TypeName = "[dbo].[UdtGuidList]";
+                            //param.SqlValue = dt;
+                            sproc.Parameters.Add(Action);
+                            sproc.Parameters.Add(UT_ApplicantPersonalInfo);
+                            sproc.Parameters.Add(UT_ApplicantAddress);
+                            sproc.Parameters.Add(UT_ApplicantContactInfo);
+                            sproc.Parameters.Add(UT_ApplicantAdditionalInfo);
+                            sproc.Parameters.Add(UT_AplicantAcadmicDetails);
+                            sproc.Parameters.Add(UT_ApplicantBackgroundHistory);
+                            sproc.Parameters.Add(UT_ApplicantPositionTitle);
+                            sproc.Parameters.Add(UT_ApplicantTrafficConvictions);
+                            sproc.Parameters.Add(UT_ApplicantVehiclesOperated);
+                            sproc.Parameters.Add(UT_ApplicantLicenseHeald);
+                            sproc.Parameters.Add(UT_ApplicantSchecduleAvaliblity);
+                            if (conn.State != ConnectionState.Open)
+                                conn.Open();
+                            var reader = sproc.ExecuteReader();
+                        }
+                        Flag = true;
+                    }
                 }
             }
             catch (Exception ex)
