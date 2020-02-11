@@ -50,9 +50,9 @@ namespace WorkOrderEMS.Controllers.Guest
             model.ApplicantBackgroundHistory = new List<ApplicantBackgroundHistory>();
             ApplicantBackgroundHistory abh1 = new ApplicantBackgroundHistory();
             model.ApplicantBackgroundHistory.Add(abh1);
-            //model.ApplicantAccidentRecord = new List<ApplicantAccidentRecord>();
-            //ApplicantAccidentRecord aar1 = new ApplicantAccidentRecord();
-            //model.ApplicantAccidentRecord.Add(aar1);
+            model.ApplicantAccidentRecord = new List<ApplicantAccidentRecord>();
+            ApplicantAccidentRecord aar1 = new ApplicantAccidentRecord();
+            model.ApplicantAccidentRecord.Add(aar1);
 
             model.ApplicantContactInfo = new List<ApplicantContactInfo>();
             ApplicantContactInfo c1 = new ApplicantContactInfo();

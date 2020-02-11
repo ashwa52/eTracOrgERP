@@ -116,12 +116,17 @@ namespace WorkOrderEMS.Models
 
     public class ApplicantAccidentRecord
     {
+        public char AAR_Action { get; set; }
         public long AAR_Id { get; set; }
+        public long AAR_ApplicantId { get; set; }
         public Nullable<DateTime> AAR_AccidantDate { get; set; }
+        //public Nullable<DateTime> AAR_Date { get; set; }
         public string AAR_Discription { get; set; }
         public int AAR_NumberOfFatalities { get; set; }
         public int AAR_NumberOfInjuries { get; set; }
+        public Nullable<DateTime> AAR_Date { get; set; }
         public char AAR_IsActive { get; set; }
+
     }
     public class ApplicantTrafficConvictions
     {

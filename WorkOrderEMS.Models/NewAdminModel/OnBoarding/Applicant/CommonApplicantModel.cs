@@ -18,7 +18,7 @@ namespace WorkOrderEMS.Models
         public List<ApplicantBackgroundHistory> ApplicantBackgroundHistory { get; set; }
         //Done till here//
         public List<ApplicantPositionTitle> ApplicantPositionTitle { get; set; }
-        //public List<ApplicantAccidentRecord> ApplicantAccidentRecord { get; set; }
+        public List<ApplicantAccidentRecord> ApplicantAccidentRecord { get; set; }
         public List<ApplicantTrafficConvictions> ApplicantTrafficConvictions { get; set; }
         public List<ApplicantVehiclesOperated> ApplicantVehiclesOperated { get; set; }
         public List<ApplicantLicenseHeald> ApplicantLicenseHeald { get; set; }
