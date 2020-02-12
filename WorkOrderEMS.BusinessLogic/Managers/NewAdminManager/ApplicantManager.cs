@@ -7,8 +7,6 @@ using System.Data.Entity.Core.Objects;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WorkOrderEMS.BusinessLogic.Interfaces;
 using WorkOrderEMS.Data.DataRepository;
 using WorkOrderEMS.Data.EntityModel;
@@ -45,11 +43,11 @@ namespace WorkOrderEMS.BusinessLogic
                         LoginId = a.ALA_LoginId,
                         UserId = a.ALA_UserId
                     }).FirstOrDefault();
-                    if(loginModel != null)
+                    if (loginModel != null)
                     {
                         loginData.Data = loginModel;
                         loginData.Message = CommonMessage.Successful();
-                        loginData.Response =  Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        loginData.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
                     }
                     else
                     {
@@ -308,8 +306,8 @@ namespace WorkOrderEMS.BusinessLogic
                 {
                     var password = Cryptography.GetEncryptedData(obj.Password, true);
                     //var UserId = new ObjectParameter("UserId", "UserId");
-                    var isChanged = _db.spSetApplicantCreateLoginAccess(obj.Email, password, obj.FName,obj.MName, obj.LName,obj.Email,obj.Question,obj.Answer).FirstOrDefault();
-                    
+                    var isChanged = _db.spSetApplicantCreateLoginAccess(obj.Email, password, obj.FName, obj.MName, obj.LName, obj.Email, obj.Question, obj.Answer).FirstOrDefault();
+
                     //var userIdData = isChanged
                     if (isChanged.Value > 0)
                     {
@@ -399,7 +397,7 @@ namespace WorkOrderEMS.BusinessLogic
                 {
                     var Availability = new ObjectParameter("Availability", "");
                     var isChanged = _db.spGetApplicantNewLoginCheckAvailability(obj.LoginId, Availability);
-                    if (Availability.Value.ToString() == "False")                    
+                    if (Availability.Value.ToString() == "False")
                     {
                         loginData.Message = CommonMessage.AlreadyExist();
                         loginData.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
@@ -434,7 +432,7 @@ namespace WorkOrderEMS.BusinessLogic
         public bool SaveAssets(AssetsAllocationModel model)
         {
             bool isSaved = false;
-            
+
             try
             {
 
@@ -445,33 +443,33 @@ namespace WorkOrderEMS.BusinessLogic
                     //var MiscAssets = model.IsMiscAssets == true ? "Misc" : null;
                     //var OfficePhone = model.IsOfficePhone == true ? "Office Phone" : null;
                     //var Printer = model.IsPrinterAssets == true ? "Printer" : null;
-                    if(model.IsComputerAssets == true && model.ComputerAssets != null)
+                    if (model.IsComputerAssets == true && model.ComputerAssets != null)
                     {
-                        var saveData = _db.spSetAssetAllocation(model.Action, model.AssetsId, model.EmployeeId, "Computer",model.ComputerAssets.AssetsName, model.ComputerAssets.AssetDescription, model.ComputerAssets.Make, model.ComputerAssets.Model,
-                            model.ComputerAssets.SerialNumber, model.ComputerAssets.Login, model.ComputerAssets.Password, null,null,null,null,"N");
+                        var saveData = _db.spSetAssetAllocation(model.Action, model.AssetsId, model.EmployeeId, "Computer", model.ComputerAssets.AssetsName, model.ComputerAssets.AssetDescription, model.ComputerAssets.Make, model.ComputerAssets.Model,
+                            model.ComputerAssets.SerialNumber, model.ComputerAssets.Login, model.ComputerAssets.Password, null, null, null, null, "N");
                     }
                     else if (model.IsPrinterAssets == true && model.PrinterAssets != null)
                     {
                         var saveData = _db.spSetAssetAllocation(model.Action, model.AssetsId, model.EmployeeId, "Printer", model.PrinterAssets.AssetsName,
                             model.PrinterAssets.AssetDescription, model.PrinterAssets.Make, model.PrinterAssets.Model, model.PrinterAssets.SerialNumber
-                            ,null,null,null,null,null,null,"N");
+                            , null, null, null, null, null, null, "N");
                     }
                     else if (model.IsCellPhoneAssets == true && model.CellPhoneAssets != null)
                     {
                         var saveData = _db.spSetAssetAllocation(model.Action, model.AssetsId, model.EmployeeId, "Cell Phone", model.CellPhoneAssets.AssetsName,
                             model.CellPhoneAssets.AssetDescription, model.CellPhoneAssets.Make, model.CellPhoneAssets.Model, model.CellPhoneAssets.SerialNumber,
-                            null,null,null,null,null,null,"N");
+                            null, null, null, null, null, null, "N");
                     }
                     else if (model.IsOfficePhone == true && model.OfficePhone != null)
                     {
                         var saveData = _db.spSetAssetAllocation(model.Action, model.AssetsId, model.EmployeeId, "Office Phone", model.OfficePhone.AssetsName, model.OfficePhone.AssetDescription,
-                            model.OfficePhone.Make, model.OfficePhone.Model, model.OfficePhone.SerialNumber,null, null, null,null,
-                            null,null,"N");
+                            model.OfficePhone.Make, model.OfficePhone.Model, model.OfficePhone.SerialNumber, null, null, null, null,
+                            null, null, "N");
                     }
                     else
                     {
                         var saveData = _db.spSetAssetAllocation(model.Action, model.AssetsId, model.EmployeeId, "Misc Assets", model.MiscAssets.AssetsName, model.MiscAssets.AssetDescription,
-                            model.MiscAssets.Make, model.MiscAssets.Model, model.MiscAssets.SerialNumber,null,null,null,null,null,null,"N");
+                            model.MiscAssets.Make, model.MiscAssets.Model, model.MiscAssets.SerialNumber, null, null, null, null, null, null, "N");
                     }
 
                     isSaved = true;
@@ -574,7 +572,7 @@ namespace WorkOrderEMS.BusinessLogic
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
-         public bool SaveApplicantData(CommonApplicantModel Obj)
+        public bool SaveApplicantData(CommonApplicantModel Obj)
         {
             bool Flag = false;
             try
@@ -582,27 +580,38 @@ namespace WorkOrderEMS.BusinessLogic
                 //// save using procedure with table value parameter 
                 using (var context = new workorderEMSEntities())
                 {
-                    //// convert source data to DataTable 
-                    if (Obj.ApplicantPersonalInfo != null)
-                    {
-                        //var Date = new SqlParameter("@Date", System.Data.SqlDbType.DateTime2);
-                        Obj.ApplicantPersonalInfo[0].API_Action = 'I';
-                    }
-
                     System.Data.DataTable ApplicantPersonalInfoTable = Obj.ApplicantPersonalInfo.ToDataTable();
                     System.Data.DataTable AplicantAcadmicDetailsTable = Obj.AplicantAcadmicDetails.ToDataTable();
                     System.Data.DataTable ApplicantAddressTable = Obj.ApplicantAddress.ToDataTable();
                     System.Data.DataTable ApplicantContactInfoTable = Obj.ApplicantContactInfo.ToDataTable();
                     System.Data.DataTable ApplicantAdditionalInfoTable = Obj.ApplicantAdditionalInfo.ToDataTable();
                     System.Data.DataTable ApplicantBackgroundHistoryTable = Obj.ApplicantBackgroundHistory.ToDataTable();
-                    Obj.ApplicantPositionTitle = new List<ApplicantPositionTitle>();
                     System.Data.DataTable ApplicantPositionTitleTable = Obj.ApplicantPositionTitle.ToDataTable();
                     System.Data.DataTable ApplicantAccidentRecordTable = Obj.ApplicantAccidentRecord.ToDataTable();
                     System.Data.DataTable ApplicantTrafficConvictionsTable = Obj.ApplicantTrafficConvictions.ToDataTable();
                     System.Data.DataTable ApplicantVehiclesOperatedTable = Obj.ApplicantVehiclesOperated.ToDataTable();
                     System.Data.DataTable ApplicantLicenseHealdTable = Obj.ApplicantLicenseHeald.ToDataTable();
-                    Obj.ApplicantSchecduleAvaliblity = new List<ApplicantSchecduleAvaliblity>();
-                    System.Data.DataTable ApplicantSchecduleAvaliblityTable = Obj.ApplicantSchecduleAvaliblity.ToDataTable();
+                    //Obj.ApplicantSchecduleAvaliblity = new List<ApplicantSchecduleAvaliblity>();
+                    //System.Data.DataTable ApplicantSchecduleAvaliblityTable = Obj.ApplicantSchecduleAvaliblity.ToDataTable();
+
+                    //// convert source data to DataTable 
+                    if (Obj.ApplicantPersonalInfo != null)
+                    {
+                        Obj.ApplicantPersonalInfo[0].API_Action = 'I';
+                        Obj.ApplicantAddress[0].APA_Action = 'I';
+                        Obj.ApplicantContactInfo[0].ACI_Action = 'I';
+                        Obj.ApplicantAdditionalInfo[0].AAI_Action = 'I';
+                        Obj.AplicantAcadmicDetails[0].AAD_Action = 'I';
+                        Obj.ApplicantBackgroundHistory[0].ABH_Action = 'I';
+                        Obj.ApplicantPositionTitle[0].APT_Action = 'I';
+                        Obj.ApplicantAccidentRecord[0].AAR_Action = 'I';
+                        Obj.ApplicantTrafficConvictions[0].ATC_Action = 'I';
+                        Obj.ApplicantVehiclesOperated[0].AVO_Action = 'I';
+                        Obj.ApplicantLicenseHeald[0].ALH_Action = 'I';
+                        //Obj.ApplicantSchecduleAvaliblity[0].ASA_Action = 'I';
+
+                    }
+
                     var Action = new SqlParameter("@Action", SqlDbType.Char);
                     Action.Value = "I";
                     //var ACB_BillAmount = new SqlParameter("@ACB_BillAmount", SqlDbType.Decimal);
@@ -618,7 +627,7 @@ namespace WorkOrderEMS.BusinessLogic
                     var UT_ApplicantTrafficConvictions = new SqlParameter("@UT_ApplicantTrafficConvictions", SqlDbType.Structured);
                     var UT_ApplicantVehiclesOperated = new SqlParameter("@UT_ApplicantVehiclesOperated", SqlDbType.Structured);
                     var UT_ApplicantLicenseHeald = new SqlParameter("@UT_ApplicantLicenseHeald", SqlDbType.Structured);
-                    var UT_ApplicantSchecduleAvaliblity = new SqlParameter("@UT_ApplicantSchecduleAvaliblity", SqlDbType.Structured);
+                    //var UT_ApplicantSchecduleAvaliblity = new SqlParameter("@UT_ApplicantSchecduleAvaliblity", SqlDbType.Structured);
                     // info for ApplicantPersonalInfoTable
                     UT_ApplicantPersonalInfo.Value = ApplicantPersonalInfoTable;
                     UT_ApplicantPersonalInfo.TypeName = "[dbo].[UT_ApplicantPersonalInfo]";
@@ -664,17 +673,20 @@ namespace WorkOrderEMS.BusinessLogic
                     UT_ApplicantLicenseHeald.TypeName = "[dbo].[UT_ApplicantLicenseHeald]";
 
                     //info for ApplicantLicenseHealdTable
-                    UT_ApplicantSchecduleAvaliblity.Value = ApplicantSchecduleAvaliblityTable;
-                    UT_ApplicantSchecduleAvaliblity.TypeName = "[dbo].[UT_ApplicantSchecduleAvaliblity]";
+                    //UT_ApplicantSchecduleAvaliblity.Value = ApplicantSchecduleAvaliblityTable;
+                    //UT_ApplicantSchecduleAvaliblity.TypeName = "[dbo].[UT_ApplicantSchecduleAvaliblity]";
 
-                    context.Database.ExecuteSqlCommand("exec [dbo].[spSetApplicantAllDetails] @Action, @UT_ApplicantPersonalInfo,@UT_ApplicantAddress,@UT_ApplicantContactInfo, @UT_ApplicantAdditionalInfo, @UT_AplicantAcadmicDetails, @UT_ApplicantBackgroundHistory, @UT_ApplicantPositionTitle, @UT_ApplicantAccidentRecord, @UT_ApplicantTrafficConvictions, @UT_ApplicantVehiclesOperated, @UT_ApplicantLicenseHeald, @UT_ApplicantSchecduleAvaliblity", 
-                        Action, UT_ApplicantPersonalInfo,
-                        UT_ApplicantAddress, UT_ApplicantContactInfo, UT_ApplicantAdditionalInfo,
-                        UT_AplicantAcadmicDetails, UT_ApplicantBackgroundHistory,
-                        UT_ApplicantPositionTitle, UT_ApplicantAccidentRecord,
-                        UT_ApplicantTrafficConvictions, UT_ApplicantVehiclesOperated,
-                        UT_ApplicantLicenseHeald, UT_ApplicantSchecduleAvaliblity
-                        );
+                    context.Database.ExecuteSqlCommand("exec [dbo].[spSetApplicantAllDetails] @Action, @UT_ApplicantPersonalInfo, @UT_ApplicantAddress,@UT_ApplicantContactInfo,@UT_ApplicantAdditionalInfo,@UT_AplicantAcadmicDetails,@UT_ApplicantBackgroundHistory,@UT_ApplicantPositionTitle,@UT_ApplicantAccidentRecord,@UT_ApplicantTrafficConvictions,@UT_ApplicantVehiclesOperated,@UT_ApplicantLicenseHeald",
+                                                                                                Action, UT_ApplicantPersonalInfo,UT_ApplicantAddress,UT_ApplicantContactInfo, UT_ApplicantAdditionalInfo, UT_AplicantAcadmicDetails, UT_ApplicantBackgroundHistory, UT_ApplicantPositionTitle, UT_ApplicantAccidentRecord, UT_ApplicantTrafficConvictions, UT_ApplicantVehiclesOperated, UT_ApplicantLicenseHeald
+                    );
+                    // context.Database.ExecuteSqlCommand("exec [dbo].[spSetApplicantAllDetails] @Action, @UT_ApplicantPersonalInfo,@UT_ApplicantAddress,@UT_ApplicantContactInfo, @UT_ApplicantAdditionalInfo, @UT_AplicantAcadmicDetails, @UT_ApplicantBackgroundHistory, @UT_ApplicantPositionTitle, @UT_ApplicantAccidentRecord, @UT_ApplicantTrafficConvictions, @UT_ApplicantVehiclesOperated, @UT_ApplicantLicenseHeald, @UT_ApplicantSchecduleAvaliblity",
+                    //Action, UT_ApplicantPersonalInfo,
+                    //UT_ApplicantAddress, UT_ApplicantContactInfo, UT_ApplicantAdditionalInfo,
+                    //UT_AplicantAcadmicDetails, UT_ApplicantBackgroundHistory,
+                    //UT_ApplicantPositionTitle, UT_ApplicantAccidentRecord,
+                    //UT_ApplicantTrafficConvictions, UT_ApplicantVehiclesOperated,
+                    //UT_ApplicantLicenseHeald, UT_ApplicantSchecduleAvaliblity
+                    //);
                     Flag = true;
                 }
             }

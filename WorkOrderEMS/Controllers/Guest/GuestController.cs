@@ -54,6 +54,10 @@ namespace WorkOrderEMS.Controllers.Guest
             ApplicantAccidentRecord aar1 = new ApplicantAccidentRecord();
             model.ApplicantAccidentRecord.Add(aar1);
 
+            model.ApplicantPositionTitle = new List<ApplicantPositionTitle>();
+            ApplicantPositionTitle pt1 = new ApplicantPositionTitle();
+            model.ApplicantPositionTitle.Add(pt1);
+
             model.ApplicantContactInfo = new List<ApplicantContactInfo>();
             ApplicantContactInfo c1 = new ApplicantContactInfo();
             c1.ACI_eMail = employee.Email;

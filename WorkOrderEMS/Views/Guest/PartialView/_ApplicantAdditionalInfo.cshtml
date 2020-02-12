@@ -19,10 +19,10 @@
             <div class="form-group conact_method">
                 <label class="form-label">Eligible to work in US</label>
                 <label class="form-label checkbox_label">
-                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_WorkEligibilityUS, true, new { @class = "form-label checkbox_label" }) Yes
+                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_WorkEligibilityUS, 'Y', new { @class = "form-label checkbox_label" }) Yes
                 </label>
                 <label class="form-label checkbox_label">
-                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_WorkEligibilityUS, false, new { @class = "form-label checkbox_label" }) No
+                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_WorkEligibilityUS, 'N', new { @class = "form-label checkbox_label" }) No
                 </label>
             </div>
         </div>
@@ -38,10 +38,10 @@
             <div class="form-group">
                 <label class="form-label">Are you 21 years of age</label>
                 <label class="form-label checkbox_label">
-                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_Age21Completed, true, new { @class = "form-label checkbox_label" }) Yes
+                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_Age21Completed, 'Y', new { @class = "form-label checkbox_label" }) Yes
                 </label>
                 <label class="form-label checkbox_label">
-                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_Age21Completed, false, new { @class = "form-label checkbox_label" }) No
+                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_Age21Completed, 'N', new { @class = "form-label checkbox_label" }) No
                 </label>
             </div>
         </div>
@@ -51,10 +51,10 @@
             <div class="form-group">
                 <label class="form-label">DO you have any friend, Relative or Aquantiances that work elite?</label>
                 <label class="form-label checkbox_label">
-                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_AnyRefOrEmployeeInELITE, true, new { @class = "form-label checkbox_label" }) Yes
+                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_AnyRefOrEmployeeInELITE, 'Y', new { @class = "form-label checkbox_label" }) Yes
                 </label>
                 <label class="form-label checkbox_label">
-                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_AnyRefOrEmployeeInELITE, false, new { @class = "form-label checkbox_label" }) No
+                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_AnyRefOrEmployeeInELITE, 'N', new { @class = "form-label checkbox_label" }) No
                 </label>
             </div>
         </div>
@@ -62,10 +62,10 @@
             <div class="form-group">
                 <label class="form-label">Prior Militory</label>
                 <label class="form-label checkbox_label">
-                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_PriorMilitaryService, true, new { @class = "form-label checkbox_label" }) Yes
+                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_PriorMilitaryService, 'Y', new { @class = "form-label checkbox_label" }) Yes
                 </label>
                 <label class="form-label checkbox_label">
-                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_PriorMilitaryService, false, new { @class = "form-label checkbox_label" }) No
+                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_PriorMilitaryService, 'N', new { @class = "form-label checkbox_label" }) No
                 </label>
                     </div>
         </div>
@@ -78,10 +78,10 @@
             <div class="form-group ever_worked">
                 <label class="form-label">Have you ever worked for Elite and/or any of its subsidairies</label>
                 <label class="form-label checkbox_label">
-                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_EverWorkForELITE, true, new { @class = "form-label checkbox_label" }) Yes
+                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_EverWorkForELITE, 'Y', new { @class = "form-label checkbox_label" }) Yes
                 </label>
                 <label class="form-label checkbox_label">
-                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_EverWorkForELITE, false, new { @class = "form-label checkbox_label" }) No
+                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_EverWorkForELITE, 'N', new { @class = "form-label checkbox_label" }) No
                 </label>
 </div>
         </div>

@@ -184,6 +184,12 @@
                                                                     @Html.Partial("~/Views/Guest/PartialView/_EmploymentHistory.cshtml")
                                                                 </div>
                                                             </fieldset>
+                                                            <fieldset id="positionheld">
+                                                                @{ViewBag.myModelprefixName = "ApplicantBackgroundHistory.ApplicantPositionTitle"; ViewBag.ActionSection = "positionheld";}
+                                                                <div>
+                                                                    @Html.Partial("~/Views/Guest/PartialView/_ApplicantPositionTitle.cshtml")
+                                                                </div>
+                                                            </fieldset>
                                                             <fieldset id="accidentrecord">
                                                                 @{ViewBag.myModelprefixName = "ApplicantBackgroundHistory.ApplicantAccidentRecord."; ViewBag.ActionSection = "accidentrecord";}
                                                                 <div class="main_row">

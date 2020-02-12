@@ -5,18 +5,18 @@
 }
 @for (var i = 0; i < Model.AplicantAcadmicDetails.Count(); i++)
 {
-    <div class="main_row">
+    @*<div class="main_row">
 
         <div class="row">
             <div class="colmn col-md-12">
                 <div class="form-group pt-4 checkbox_group">
                     <label class="form-label">Over the last 3 years have  you operated a commercial motor vheicle got hire?</label>
-                    @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory[i].ABH_OperatedCommercialMotor, true, new { @class = "form-label checkbox_label" }) Yes
-                    @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory[i].ABH_OperatedCommercialMotor, false, new { @class = "form-label checkbox_label" }) No
+                    @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory[i].ABH_OperatedCommercialMotor, 'Y', new { @class = "form-label checkbox_label" }) Yes
+                    @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory[i].ABH_OperatedCommercialMotor, 'N', new { @class = "form-label checkbox_label" }) No
                 </div>
             </div>
         </div>
-    </div>
+    </div>*@
 
     <div class="row">
         <div class="colmn col-md-12">
@@ -73,15 +73,15 @@
                     @Html.ValidationMessageFor(model => model.ApplicantBackgroundHistory[i].ABH_ZIPCode)
                 </div>
             </div>
-            <div class="colmn col-md-3">
+            @*<div class="colmn col-md-3">
                 <div class="form-group">
                     @Html.TextBoxFor(model => model.ApplicantBackgroundHistory[i].ABH_Salary, new { @class = "form-control", @placeholder = "Salary" })
                     @Html.ValidationMessageFor(model => model.ApplicantBackgroundHistory[i].ABH_Salary)
                 </div>
-            </div>
+            </div>*@
         </div>
 
-        <div class="row">
+        @*<div class="row">
             <div class="colmn col-md-3">
                 <div class="form-group">
                     @Html.TextBoxFor(model => model.ApplicantBackgroundHistory[i].ABH_PositionHeld, new { @class = "form-control", @placeholder = "Position held" })
@@ -91,8 +91,8 @@
             <div class="colmn col-md-3">
                 <div class="form-group pt-4 checkbox_group">
                     <label class="form-label">Still Employed</label>
-                    @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory[i].ABH_StillEmployed, true, new { @class = "form-label" }) Yes
-                    @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory[i].ABH_StillEmployed, false, new { @class = "form-label" }) No
+                    @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory[i].ABH_StillEmployed, 'Y', new { @class = "form-label" }) Yes
+                    @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory[i].ABH_StillEmployed, 'N', new { @class = "form-label" }) No
 
                 </div>
             </div>
@@ -118,7 +118,7 @@
                     @Html.ValidationMessageFor(model => model.ApplicantBackgroundHistory[i].ABH_ToMO)
                 </div>
             </div>
-        </div>
+        </div>*@
         <div class="row">
             <div class="colmn col-md-12">
                 <div class="form-group">
@@ -138,8 +138,8 @@
             </div>
             <div class="colmn col-md-3">
                 <div class="form-group pt-4 checkbox_group">
-                    @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory[i].ABH_SubToFedralMotor, true, new { @class = "form-label" }) Yes
-                    @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory[i].ABH_SubToFedralMotor, false, new { @class = "form-label" }) No
+                    @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory[i].ABH_SubToFedralMotor, 'Y', new { @class = "form-label" }) Yes
+                    @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory[i].ABH_SubToFedralMotor, 'N', new { @class = "form-label" }) No
                 </div>
             </div>
         </div>
@@ -151,8 +151,8 @@
             </div>
             <div class="colmn col-md-3">
                 <div class="form-group pt-4 checkbox_group">
-                    @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory[i].ABH_SafetySensitiveFunction, true, new { @class = "form-label" }) Yes
-                    @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory[i].ABH_SafetySensitiveFunction, false, new { @class = "form-label" }) No
+                    @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory[i].ABH_SafetySensitiveFunction, 'Y', new { @class = "form-label" }) Yes
+                    @Html.RadioButtonFor(model => model.ApplicantBackgroundHistory[i].ABH_SafetySensitiveFunction, 'N', new { @class = "form-label" }) No
                 </div>
             </div>
         </div>

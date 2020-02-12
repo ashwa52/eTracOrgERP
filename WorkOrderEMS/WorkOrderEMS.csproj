@@ -6890,6 +6890,7 @@
     <Content Include="Views\Guest\PartialView\_ApplicantContactInfo.cshtml" />
     <Content Include="Views\Guest\PartialView\_ApplicantAdditionalInfo.cshtml" />
     <Content Include="Views\Guest\PartialView\_ApplicantVehiclesOperated.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantPositionTitle.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

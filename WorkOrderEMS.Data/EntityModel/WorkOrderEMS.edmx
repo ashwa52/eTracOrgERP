@@ -5027,6 +5027,9 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="CLM_LocationId" Type="bigint" Mode="In" />
           <Parameter Name="CLM_CCM_CostCode" Type="bigint" Mode="In" />
         </Function>
+        <Function Name="spGetApplicantAllDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="APT_ApplicantId" Type="bigint" Mode="In" />
+        </Function>
         <Function Name="spGetApplicantInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
         </Function>
@@ -14533,6 +14536,9 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="ALA_UserId" Mode="InOut" Type="Int64" />
           </FunctionImport>
           <EntitySet Name="InterviewAnswers" EntityType="WorkOrderEMS.Data.EntityModel.InterviewAnswer" />
+          <FunctionImport Name="spGetApplicantAllDetails" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantAllDetails_Result)">
+            <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
+          </FunctionImport>
           <FunctionImport Name="spSetApplicantAllDetails">
             <Parameter Name="Action" Mode="In" Type="String" />
           </FunctionImport>
@@ -18556,6 +18562,97 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="INA_Date" Type="DateTime" Precision="3" />
           <Property Name="INA_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
+        <ComplexType Name="spGetApplicantAllDetails_Result">
+          <Property Type="Int64" Name="API_Id" Nullable="true" />
+          <Property Type="String" Name="API_FirstName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_MidName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_LastName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_Resume" Nullable="true" />
+          <Property Type="String" Name="API_SSN" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_DLNumber" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="API_DesireSalaryWages" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="API_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="Int64" Name="APA_Id" Nullable="true" />
+          <Property Type="String" Name="APA_StreetAddress" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="APA_Apartment" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="APA_City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="APA_State" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="APA_Zip" Nullable="true" />
+          <Property Type="DateTime" Name="APA_YearsAddressFrom" Nullable="true" />
+          <Property Type="DateTime" Name="APA_YearsAddressTo" Nullable="true" />
+          <Property Type="String" Name="APA_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="Int64" Name="ACI_Id" Nullable="true" />
+          <Property Type="Int64" Name="ACI_PhoneNo" Nullable="true" />
+          <Property Type="String" Name="ACI_eMail" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ACI_PrefredContactMethod" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="AAI_Id" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="AAI_WorkEligibilityUS" Nullable="true" MaxLength="1" />
+          <Property Type="DateTime" Name="AAI_AvailableDate" Nullable="true" />
+          <Property Type="String" Name="AAI_Age21Completed" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="AAI_AnyRefOrEmployeeInELITE" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="AAI_NameOfRefOrEmployeeInELITE" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="AAI_PriorMilitaryService" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="AAI_EverWorkForELITE" Nullable="true" MaxLength="1" />
+          <Property Type="DateTime" Name="AAI_DepartureDate" Nullable="true" />
+          <Property Type="String" Name="AAI_ReasonForLeaving" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="AAI_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="Int64" Name="AAD_Id" Nullable="true" />
+          <Property Type="String" Name="AAD_EducationType" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="AAD_InstituteName" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="AAD_AttendedFrom" Nullable="true" />
+          <Property Type="DateTime" Name="AAD_AttendedTo" Nullable="true" />
+          <Property Type="String" Name="AAD_City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="AAD_State" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="AAD_Zip" Nullable="true" />
+          <Property Type="String" Name="AAD_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="Int64" Name="ABH_Id" Nullable="true" />
+          <Property Type="String" Name="ABH_CompanyName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ABH_Address" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ABH_City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ABH_State" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="ABH_ZIPCode" Nullable="true" />
+          <Property Type="Int64" Name="ABH_Phone" Nullable="true" />
+          <Property Type="String" Name="ABH_StillEmployed" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="ABH_ReasonforLeaving" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ABH_ReasonForGAP" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="ABH_SubToFedralMotor" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="ABH_SafetySensitiveFunction" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="APT_Id" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="APT_PositionTitle" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="APT_Salary" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="DateTime" Name="APT_FromMoYr" Nullable="true" />
+          <Property Type="DateTime" Name="APT_ToMoYr" Nullable="true" />
+          <Property Type="Int64" Name="AAR_Id" Nullable="true" />
+          <Property Type="DateTime" Name="AAR_AccidantDate" Nullable="true" />
+          <Property Type="String" Name="AAR_Discription" Nullable="true" MaxLength="200" />
+          <Property Type="Int32" Name="AAR_NumberOfFatalities" Nullable="true" />
+          <Property Type="Int32" Name="AAR_NumberOfInjuries" Nullable="true" />
+          <Property Type="String" Name="AAR_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="Int64" Name="ATC_Id" Nullable="true" />
+          <Property Type="DateTime" Name="ATC_ConvictedDate" Nullable="true" />
+          <Property Type="String" Name="ATC_Violation" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="ATC_StateOfViolation" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ATC_AtFaultAccident" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="ATC_AtMovingViolation" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="ATC_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="Int64" Name="AVO_Id" Nullable="true" />
+          <Property Type="String" Name="AVO_DenideLicensePermit" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="AVO_DeniedLicensePermitExplanation" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="AVO_SuspendRevokeLicensePermit" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="AVO_SuspendRevokeLicensePermitExplanation" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="AVO_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="Int64" Name="ALH_Id" Nullable="true" />
+          <Property Type="String" Name="ALH_State" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ALH_LicenceNumber" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="ALH_LicenseType" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="ALH_IssueDate" Nullable="true" />
+          <Property Type="DateTime" Name="ALH_ExpirationDate" Nullable="true" />
+          <Property Type="String" Name="ALH_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="Int64" Name="ASA_Id" Nullable="true" />
+          <Property Type="Time" Name="ASA_AvaliableStartTime" Nullable="true" />
+          <Property Type="Time" Name="ASA_AvaliableEndTime" Nullable="true" />
+          <Property Type="String" Name="ASA_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -24568,6 +24665,101 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetApplicantAllDetails" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetApplicantAllDetails">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetApplicantAllDetails_Result">
+                <ScalarProperty Name="API_Id" ColumnName="API_Id" />
+                <ScalarProperty Name="API_FirstName" ColumnName="API_FirstName" />
+                <ScalarProperty Name="API_MidName" ColumnName="API_MidName" />
+                <ScalarProperty Name="API_LastName" ColumnName="API_LastName" />
+                <ScalarProperty Name="API_Resume" ColumnName="API_Resume" />
+                <ScalarProperty Name="API_SSN" ColumnName="API_SSN" />
+                <ScalarProperty Name="API_DLNumber" ColumnName="API_DLNumber" />
+                <ScalarProperty Name="API_DesireSalaryWages" ColumnName="API_DesireSalaryWages" />
+                <ScalarProperty Name="API_IsActive" ColumnName="API_IsActive" />
+                <ScalarProperty Name="APA_Id" ColumnName="APA_Id" />
+                <ScalarProperty Name="APA_StreetAddress" ColumnName="APA_StreetAddress" />
+                <ScalarProperty Name="APA_Apartment" ColumnName="APA_Apartment" />
+                <ScalarProperty Name="APA_City" ColumnName="APA_City" />
+                <ScalarProperty Name="APA_State" ColumnName="APA_State" />
+                <ScalarProperty Name="APA_Zip" ColumnName="APA_Zip" />
+                <ScalarProperty Name="APA_YearsAddressFrom" ColumnName="APA_YearsAddressFrom" />
+                <ScalarProperty Name="APA_YearsAddressTo" ColumnName="APA_YearsAddressTo" />
+                <ScalarProperty Name="APA_IsActive" ColumnName="APA_IsActive" />
+                <ScalarProperty Name="ACI_Id" ColumnName="ACI_Id" />
+                <ScalarProperty Name="ACI_PhoneNo" ColumnName="ACI_PhoneNo" />
+                <ScalarProperty Name="ACI_eMail" ColumnName="ACI_eMail" />
+                <ScalarProperty Name="ACI_PrefredContactMethod" ColumnName="ACI_PrefredContactMethod" />
+                <ScalarProperty Name="AAI_Id" ColumnName="AAI_Id" />
+                <ScalarProperty Name="AAI_WorkEligibilityUS" ColumnName="AAI_WorkEligibilityUS" />
+                <ScalarProperty Name="AAI_AvailableDate" ColumnName="AAI_AvailableDate" />
+                <ScalarProperty Name="AAI_Age21Completed" ColumnName="AAI_Age21Completed" />
+                <ScalarProperty Name="AAI_AnyRefOrEmployeeInELITE" ColumnName="AAI_AnyRefOrEmployeeInELITE" />
+                <ScalarProperty Name="AAI_NameOfRefOrEmployeeInELITE" ColumnName="AAI_NameOfRefOrEmployeeInELITE" />
+                <ScalarProperty Name="AAI_PriorMilitaryService" ColumnName="AAI_PriorMilitaryService" />
+                <ScalarProperty Name="AAI_EverWorkForELITE" ColumnName="AAI_EverWorkForELITE" />
+                <ScalarProperty Name="AAI_DepartureDate" ColumnName="AAI_DepartureDate" />
+                <ScalarProperty Name="AAI_ReasonForLeaving" ColumnName="AAI_ReasonForLeaving" />
+                <ScalarProperty Name="AAI_IsActive" ColumnName="AAI_IsActive" />
+                <ScalarProperty Name="AAD_Id" ColumnName="AAD_Id" />
+                <ScalarProperty Name="AAD_EducationType" ColumnName="AAD_EducationType" />
+                <ScalarProperty Name="AAD_InstituteName" ColumnName="AAD_InstituteName" />
+                <ScalarProperty Name="AAD_AttendedFrom" ColumnName="AAD_AttendedFrom" />
+                <ScalarProperty Name="AAD_AttendedTo" ColumnName="AAD_AttendedTo" />
+                <ScalarProperty Name="AAD_City" ColumnName="AAD_City" />
+                <ScalarProperty Name="AAD_State" ColumnName="AAD_State" />
+                <ScalarProperty Name="AAD_Zip" ColumnName="AAD_Zip" />
+                <ScalarProperty Name="AAD_IsActive" ColumnName="AAD_IsActive" />
+                <ScalarProperty Name="ABH_Id" ColumnName="ABH_Id" />
+                <ScalarProperty Name="ABH_CompanyName" ColumnName="ABH_CompanyName" />
+                <ScalarProperty Name="ABH_Address" ColumnName="ABH_Address" />
+                <ScalarProperty Name="ABH_City" ColumnName="ABH_City" />
+                <ScalarProperty Name="ABH_State" ColumnName="ABH_State" />
+                <ScalarProperty Name="ABH_ZIPCode" ColumnName="ABH_ZIPCode" />
+                <ScalarProperty Name="ABH_Phone" ColumnName="ABH_Phone" />
+                <ScalarProperty Name="ABH_StillEmployed" ColumnName="ABH_StillEmployed" />
+                <ScalarProperty Name="ABH_ReasonforLeaving" ColumnName="ABH_ReasonforLeaving" />
+                <ScalarProperty Name="ABH_ReasonForGAP" ColumnName="ABH_ReasonForGAP" />
+                <ScalarProperty Name="ABH_SubToFedralMotor" ColumnName="ABH_SubToFedralMotor" />
+                <ScalarProperty Name="ABH_SafetySensitiveFunction" ColumnName="ABH_SafetySensitiveFunction" />
+                <ScalarProperty Name="APT_Id" ColumnName="APT_Id" />
+                <ScalarProperty Name="APT_PositionTitle" ColumnName="APT_PositionTitle" />
+                <ScalarProperty Name="APT_Salary" ColumnName="APT_Salary" />
+                <ScalarProperty Name="APT_FromMoYr" ColumnName="APT_FromMoYr" />
+                <ScalarProperty Name="APT_ToMoYr" ColumnName="APT_ToMoYr" />
+                <ScalarProperty Name="AAR_Id" ColumnName="AAR_Id" />
+                <ScalarProperty Name="AAR_AccidantDate" ColumnName="AAR_AccidantDate" />
+                <ScalarProperty Name="AAR_Discription" ColumnName="AAR_Discription" />
+                <ScalarProperty Name="AAR_NumberOfFatalities" ColumnName="AAR_NumberOfFatalities" />
+                <ScalarProperty Name="AAR_NumberOfInjuries" ColumnName="AAR_NumberOfInjuries" />
+                <ScalarProperty Name="AAR_IsActive" ColumnName="AAR_IsActive" />
+                <ScalarProperty Name="ATC_Id" ColumnName="ATC_Id" />
+                <ScalarProperty Name="ATC_ConvictedDate" ColumnName="ATC_ConvictedDate" />
+                <ScalarProperty Name="ATC_Violation" ColumnName="ATC_Violation" />
+                <ScalarProperty Name="ATC_StateOfViolation" ColumnName="ATC_StateOfViolation" />
+                <ScalarProperty Name="ATC_AtFaultAccident" ColumnName="ATC_AtFaultAccident" />
+                <ScalarProperty Name="ATC_AtMovingViolation" ColumnName="ATC_AtMovingViolation" />
+                <ScalarProperty Name="ATC_IsActive" ColumnName="ATC_IsActive" />
+                <ScalarProperty Name="AVO_Id" ColumnName="AVO_Id" />
+                <ScalarProperty Name="AVO_DenideLicensePermit" ColumnName="AVO_DenideLicensePermit" />
+                <ScalarProperty Name="AVO_DeniedLicensePermitExplanation" ColumnName="AVO_DeniedLicensePermitExplanation" />
+                <ScalarProperty Name="AVO_SuspendRevokeLicensePermit" ColumnName="AVO_SuspendRevokeLicensePermit" />
+                <ScalarProperty Name="AVO_SuspendRevokeLicensePermitExplanation" ColumnName="AVO_SuspendRevokeLicensePermitExplanation" />
+                <ScalarProperty Name="AVO_IsActive" ColumnName="AVO_IsActive" />
+                <ScalarProperty Name="ALH_Id" ColumnName="ALH_Id" />
+                <ScalarProperty Name="ALH_State" ColumnName="ALH_State" />
+                <ScalarProperty Name="ALH_LicenceNumber" ColumnName="ALH_LicenceNumber" />
+                <ScalarProperty Name="ALH_LicenseType" ColumnName="ALH_LicenseType" />
+                <ScalarProperty Name="ALH_IssueDate" ColumnName="ALH_IssueDate" />
+                <ScalarProperty Name="ALH_ExpirationDate" ColumnName="ALH_ExpirationDate" />
+                <ScalarProperty Name="ALH_IsActive" ColumnName="ALH_IsActive" />
+                <ScalarProperty Name="ASA_Id" ColumnName="ASA_Id" />
+                <ScalarProperty Name="ASA_AvaliableStartTime" ColumnName="ASA_AvaliableStartTime" />
+                <ScalarProperty Name="ASA_AvaliableEndTime" ColumnName="ASA_AvaliableEndTime" />
+                <ScalarProperty Name="ASA_IsActive" ColumnName="ASA_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spSetApplicantAllDetails" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetApplicantAllDetails" />
         </EntityContainerMapping>
       </Mapping>

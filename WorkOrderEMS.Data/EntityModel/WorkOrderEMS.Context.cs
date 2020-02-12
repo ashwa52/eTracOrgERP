@@ -6847,6 +6847,15 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<long>>("spGetApplicantLogin1", aLA_LiginIdParameter, aLA_PasswordParameter, aLA_UserId);
         }
     
+        public virtual ObjectResult<spGetApplicantAllDetails_Result> spGetApplicantAllDetails(Nullable<long> aPT_ApplicantId)
+        {
+            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
+                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
+                new ObjectParameter("APT_ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantAllDetails_Result>("spGetApplicantAllDetails", aPT_ApplicantIdParameter);
+        }
+    
         public virtual int spSetApplicantAllDetails(string action)
         {
             var actionParameter = action != null ?
