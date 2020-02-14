@@ -676,8 +676,8 @@ namespace WorkOrderEMS.BusinessLogic
                     //UT_ApplicantSchecduleAvaliblity.Value = ApplicantSchecduleAvaliblityTable;
                     //UT_ApplicantSchecduleAvaliblity.TypeName = "[dbo].[UT_ApplicantSchecduleAvaliblity]";
 
-                    context.Database.ExecuteSqlCommand("exec [dbo].[spSetApplicantAllDetails] @Action, @UT_ApplicantPersonalInfo, @UT_ApplicantAddress,@UT_ApplicantContactInfo,@UT_ApplicantAdditionalInfo,@UT_AplicantAcadmicDetails,@UT_ApplicantBackgroundHistory,@UT_ApplicantPositionTitle,@UT_ApplicantAccidentRecord,@UT_ApplicantTrafficConvictions,@UT_ApplicantVehiclesOperated,@UT_ApplicantLicenseHeald",
-                                                                                                Action, UT_ApplicantPersonalInfo,UT_ApplicantAddress,UT_ApplicantContactInfo, UT_ApplicantAdditionalInfo, UT_AplicantAcadmicDetails, UT_ApplicantBackgroundHistory, UT_ApplicantPositionTitle, UT_ApplicantAccidentRecord, UT_ApplicantTrafficConvictions, UT_ApplicantVehiclesOperated, UT_ApplicantLicenseHeald
+                    var result=context.Database.ExecuteSqlCommand("exec [dbo].[spSetApplicantAllDetails] @Action, @UT_ApplicantPersonalInfo",
+                                                                                                Action, UT_ApplicantPersonalInfo
                     );
                     // context.Database.ExecuteSqlCommand("exec [dbo].[spSetApplicantAllDetails] @Action, @UT_ApplicantPersonalInfo,@UT_ApplicantAddress,@UT_ApplicantContactInfo, @UT_ApplicantAdditionalInfo, @UT_AplicantAcadmicDetails, @UT_ApplicantBackgroundHistory, @UT_ApplicantPositionTitle, @UT_ApplicantAccidentRecord, @UT_ApplicantTrafficConvictions, @UT_ApplicantVehiclesOperated, @UT_ApplicantLicenseHeald, @UT_ApplicantSchecduleAvaliblity",
                     //Action, UT_ApplicantPersonalInfo,

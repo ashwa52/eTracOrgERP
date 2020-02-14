@@ -14537,7 +14537,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           </FunctionImport>
           <EntitySet Name="InterviewAnswers" EntityType="WorkOrderEMS.Data.EntityModel.InterviewAnswer" />
           <FunctionImport Name="spGetApplicantAllDetails" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantAllDetails_Result)">
-            <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
+          <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="spSetApplicantAllDetails">
             <Parameter Name="Action" Mode="In" Type="String" />

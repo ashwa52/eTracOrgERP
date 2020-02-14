@@ -29,14 +29,14 @@ namespace WorkOrderEMS.Models
     {
         public char API_Action { get; set; }
         public long API_Id { get; set; }        
-        public long ApplicantId { get; set; }
-        public string FirstName { get; set; }
-        public string MiddleName { get; set; }
-        public string LastName { get; set; }
-        public string Resume { get; set; }
-        public string SSN { get; set; }
-        public string DL_Number { get; set; }      
-        public decimal DesireSalary { get; set; }
-        public char IsActive { get; set; }
+        public long API_APT_ApplicantId { get; set; }
+        public string API_FirstName { get; set; }
+        public string API_MiddleName { get; set; }
+        public string API_LastName { get; set; }
+        public string API_Resume { get; set; }
+        public string API_SSN { get; set; }
+        public string API_DLNumber { get; set; }      
+        public decimal API_DesireSalaryWages { get; set; }
+        public char API_IsActive { get; set; }
     }
 }
