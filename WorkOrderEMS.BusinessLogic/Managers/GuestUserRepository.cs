@@ -38,8 +38,23 @@ namespace WorkOrderEMS.BusinessLogic
                     Image = x.EMP_Photo,
                     Phone = x.EMP_Phone,
                     SocialSecurityNumber = x.EMP_SSN,
-                    Zip = x.EMA_Zip
+                    Zip = x.EMA_Zip,
+                    ApplicantId = x.EMP_API_ApplicantId.Value
                 }).FirstOrDefault(); ;
+        }
+
+        public CommonApplicantModel GetApplicantAllDetails(long userId)
+        {
+            CommonApplicantModel commonModel = new CommonApplicantModel();
+            var employee = GetEmployee(userId);
+            var _commonModel = objworkorderEMSEntities.spGetApplicantAllDetails(employee.ApplicantId).Select(x => new EmployeeVIewModel
+            {
+
+            }).FirstOrDefault();
+
+
+
+            return commonModel;
         }
         public bool UpdateApplicantInfo(EmployeeVIewModel onboardingDetailRequestModel)
         {

@@ -24,6 +24,21 @@ namespace WorkOrderEMS.Models
         public List<ApplicantLicenseHeald> ApplicantLicenseHeald { get; set; }
         public List<ApplicantSchecduleAvaliblity> ApplicantSchecduleAvaliblity { get; set; }
 
+       public CommonApplicantModel() {
+            ApplicantId = new long();
+            ApplicantPersonalInfo = new List<ApplicantPersonalInfo>();
+            ApplicantAddress = new List<ApplicantAddress>();
+            ApplicantContactInfo = new List<ApplicantContactInfo>();
+            ApplicantAdditionalInfo = new List<ApplicantAdditionalInfo>();
+            AplicantAcadmicDetails = new List<AplicantAcadmicDetails>();
+            ApplicantBackgroundHistory = new List<ApplicantBackgroundHistory>();
+            ApplicantPositionTitle = new List<ApplicantPositionTitle>();
+            ApplicantAccidentRecord = new List<ApplicantAccidentRecord>();
+            ApplicantTrafficConvictions = new List<ApplicantTrafficConvictions>();
+            ApplicantVehiclesOperated = new List<ApplicantVehiclesOperated>();
+            ApplicantLicenseHeald = new List<ApplicantLicenseHeald>();
+            ApplicantSchecduleAvaliblity = new List<ApplicantSchecduleAvaliblity>();
+        }
     }
     public class ApplicantPersonalInfo
     {

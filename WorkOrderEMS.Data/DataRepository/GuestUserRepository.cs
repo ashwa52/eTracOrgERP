@@ -21,8 +21,9 @@ namespace WorkOrderEMS.Data.DataRepository
         }
         public EmployeeVIewModel GetEmployee(long userId)
         {
+
             var employeeId = objworkorderEMSEntities.UserRegistrations.Where(x => x.UserId == userId).FirstOrDefault()?.EmployeeID;
-            return objworkorderEMSEntities.spGetEmployeePersonalInfo(employeeId).
+            EmployeeVIewModel employee =objworkorderEMSEntities.spGetEmployeePersonalInfo(employeeId).
                 Select(x => new EmployeeVIewModel
                 {
                     Address = x.EMA_Address,
@@ -40,8 +41,16 @@ namespace WorkOrderEMS.Data.DataRepository
                     Phone = x.EMP_Phone,
                     SocialSecurityNumber = x.EMP_SSN,
                     Zip = x.EMA_Zip,
-                    LicenseNumber = x.EMP_DrivingLicenseNumber
-                }).FirstOrDefault(); ;
+                    LicenseNumber = x.EMP_DrivingLicenseNumber,
+                    ApplicantId=x.EMP_API_ApplicantId.Value
+                    
+                }).FirstOrDefault();
+
+
+
+            //employee.ApplicantId = objworkorderEMSEntities.Employees.Where(x => x.EMP_EmployeeID == employee.EmpId).FirstOrDefault().EMP_API_ApplicantId.Value;
+
+            return employee;
         }
         public bool UpdateApplicantInfo(EmployeeVIewModel onboardingDetailRequestModel)
         {

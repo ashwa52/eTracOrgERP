@@ -28,6 +28,7 @@ namespace WorkOrderEMS.Controllers.Guest
             CommonApplicantModel model = new CommonApplicantModel();
             ViewBag.StateList = _ICommonMethod.GetStateByCountryId(1);
             var employee = _IGuestUserRepository.GetEmployee(ObjLoginModel.UserId);
+            var commonModel = _IGuestUserRepository.GetApplicantAllDetails(ObjLoginModel.UserId);
             model.ApplicantPersonalInfo = new List<ApplicantPersonalInfo>();
             ApplicantPersonalInfo a1 = new ApplicantPersonalInfo();
             a1.API_APT_ApplicantId = employee.ApplicantId;
@@ -98,7 +99,7 @@ namespace WorkOrderEMS.Controllers.Guest
 
             model.ApplicantVehiclesOperated = new List<ApplicantVehiclesOperated>();
             ApplicantVehiclesOperated vo = new ApplicantVehiclesOperated();
-            vo.AVO_APT_ApplicantId = employee.ApplicantId;
+            vo.AVO_APT_ApplicantId= employee.ApplicantId;
             model.ApplicantVehiclesOperated.Add(vo);
 
             return View("~/Views/Guest/Index1.cshtml", model);
