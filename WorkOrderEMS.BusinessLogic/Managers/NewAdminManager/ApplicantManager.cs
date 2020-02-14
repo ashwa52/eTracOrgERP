@@ -577,6 +577,22 @@ namespace WorkOrderEMS.BusinessLogic
             bool Flag = false;
             try
             {
+                if (Obj.ApplicantPersonalInfo != null)
+                {
+                    Obj.ApplicantPersonalInfo[0].API_Action = 'I';
+                    Obj.ApplicantAddress[0].APA_Action = 'I';
+                    Obj.ApplicantContactInfo[0].ACI_Action = 'I';
+                    Obj.ApplicantAdditionalInfo[0].AAI_Action = 'I';
+                    Obj.AplicantAcadmicDetails[0].AAD_Action = 'I';
+                    Obj.ApplicantBackgroundHistory[0].ABH_Action = 'I';
+                    Obj.ApplicantPositionTitle[0].APT_Action = 'I';
+                    Obj.ApplicantAccidentRecord[0].AAR_Action = 'I';
+                    Obj.ApplicantTrafficConvictions[0].ATC_Action = 'I';
+                    Obj.ApplicantVehiclesOperated[0].AVO_Action = 'I';
+                    Obj.ApplicantLicenseHeald[0].ALH_Action = 'I';
+                    //Obj.ApplicantSchecduleAvaliblity[0].ASA_Action = 'I';
+
+                }
                 //// save using procedure with table value parameter 
                 using (var context = new workorderEMSEntities())
                 {
@@ -595,22 +611,7 @@ namespace WorkOrderEMS.BusinessLogic
                     //System.Data.DataTable ApplicantSchecduleAvaliblityTable = Obj.ApplicantSchecduleAvaliblity.ToDataTable();
 
                     //// convert source data to DataTable 
-                    if (Obj.ApplicantPersonalInfo != null)
-                    {
-                        Obj.ApplicantPersonalInfo[0].API_Action = 'I';
-                        Obj.ApplicantAddress[0].APA_Action = 'I';
-                        Obj.ApplicantContactInfo[0].ACI_Action = 'I';
-                        Obj.ApplicantAdditionalInfo[0].AAI_Action = 'I';
-                        Obj.AplicantAcadmicDetails[0].AAD_Action = 'I';
-                        Obj.ApplicantBackgroundHistory[0].ABH_Action = 'I';
-                        Obj.ApplicantPositionTitle[0].APT_Action = 'I';
-                        Obj.ApplicantAccidentRecord[0].AAR_Action = 'I';
-                        Obj.ApplicantTrafficConvictions[0].ATC_Action = 'I';
-                        Obj.ApplicantVehiclesOperated[0].AVO_Action = 'I';
-                        Obj.ApplicantLicenseHeald[0].ALH_Action = 'I';
-                        //Obj.ApplicantSchecduleAvaliblity[0].ASA_Action = 'I';
 
-                    }
 
                     var Action = new SqlParameter("@Action", SqlDbType.Char);
                     Action.Value = "I";
@@ -676,9 +677,9 @@ namespace WorkOrderEMS.BusinessLogic
                     //UT_ApplicantSchecduleAvaliblity.Value = ApplicantSchecduleAvaliblityTable;
                     //UT_ApplicantSchecduleAvaliblity.TypeName = "[dbo].[UT_ApplicantSchecduleAvaliblity]";
 
-                    var result=context.Database.ExecuteSqlCommand("exec [dbo].[spSetApplicantAllDetails] @Action, @UT_ApplicantPersonalInfo",
-                                                                                                Action, UT_ApplicantPersonalInfo
-                    );
+                    context.Database.ExecuteSqlCommand("exec [dbo].[spSetApplicantAllDetails] @Action, @UT_ApplicantPersonalInfo,@UT_ApplicantAddress,@UT_ApplicantContactInfo, @UT_ApplicantAdditionalInfo, @UT_AplicantAcadmicDetails, @UT_ApplicantBackgroundHistory, @UT_ApplicantPositionTitle, @UT_ApplicantAccidentRecord, @UT_ApplicantTrafficConvictions, @UT_ApplicantVehiclesOperated, @UT_ApplicantLicenseHeald",
+                                                                                              Action, UT_ApplicantPersonalInfo,UT_ApplicantAddress, UT_ApplicantContactInfo, UT_ApplicantAdditionalInfo,UT_AplicantAcadmicDetails, UT_ApplicantBackgroundHistory,UT_ApplicantPositionTitle, UT_ApplicantAccidentRecord,UT_ApplicantTrafficConvictions, UT_ApplicantVehiclesOperated,UT_ApplicantLicenseHeald
+                        );
                     // context.Database.ExecuteSqlCommand("exec [dbo].[spSetApplicantAllDetails] @Action, @UT_ApplicantPersonalInfo,@UT_ApplicantAddress,@UT_ApplicantContactInfo, @UT_ApplicantAdditionalInfo, @UT_AplicantAcadmicDetails, @UT_ApplicantBackgroundHistory, @UT_ApplicantPositionTitle, @UT_ApplicantAccidentRecord, @UT_ApplicantTrafficConvictions, @UT_ApplicantVehiclesOperated, @UT_ApplicantLicenseHeald, @UT_ApplicantSchecduleAvaliblity",
                     //Action, UT_ApplicantPersonalInfo,
                     //UT_ApplicantAddress, UT_ApplicantContactInfo, UT_ApplicantAdditionalInfo,

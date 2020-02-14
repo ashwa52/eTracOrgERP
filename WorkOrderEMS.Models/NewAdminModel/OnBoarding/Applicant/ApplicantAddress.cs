@@ -85,7 +85,7 @@ namespace WorkOrderEMS.Models
     {
         public char ABH_Action { get; set; }
         public long ABH_Id { get; set; }
-        public long ABH_ApplicantId { get; set; }
+        public long ABH_APT_ApplicantId { get; set; }
         public string ABH_CompanyName { get; set; }
         public string ABH_Address { get; set; }
         public string ABH_City { get; set; }
@@ -111,7 +111,7 @@ namespace WorkOrderEMS.Models
     {
         public char APT_Action { get; set; }
         public long APT_Id { get; set; }
-        public long APT_ApplicantId { get; set; }
+        public long APT_APT_ApplicantId { get; set; }
 
         public string APT_PositionTitle { get; set; }
         public decimal APT_Salary { get; set; }
@@ -124,7 +124,7 @@ namespace WorkOrderEMS.Models
     {
         public char AAR_Action { get; set; }
         public long AAR_Id { get; set; }
-        public long AAR_ApplicantId { get; set; }
+        public long AAR_APT_ApplicantId { get; set; }
         public Nullable<DateTime> AAR_AccidantDate { get; set; }
         public string AAR_Discription { get; set; }
         public int AAR_NumberOfFatalities { get; set; }
@@ -138,7 +138,7 @@ namespace WorkOrderEMS.Models
     {
         public char ATC_Action { get; set; }
         public long ATC_Id { get; set; }
-        public long ATC_ApplicantId { get; set; }
+        public long ATC_APT_ApplicantId { get; set; }
         public Nullable<DateTime> ATC_ConvictedDate { get; set; }
         public string ATC_Violation { get; set; }
         public string ATC_StateOfViolation { get; set; }
@@ -150,7 +150,7 @@ namespace WorkOrderEMS.Models
     {
         public char AVO_Action { get; set; }
         public long AVO_Id { get; set; }
-        public long AVO_ApplicantId { get; set; }
+        public long AVO_APT_ApplicantId { get; set; }
         public char AVO_DenideLicensePermit { get; set; }
         public string AVO_DeniedLicensePermitExplanation { get; set; }
         public char AVO_SuspendRevokeLicensePermit { get; set; }
@@ -161,7 +161,7 @@ namespace WorkOrderEMS.Models
     {
         public char ALH_Action { get; set; }
         public long ALH_Id { get; set; }
-        public long ALH_ApplicantId { get; set; }
+        public long ALH_APT_ApplicantId { get; set; }
         public string ALH_State { get; set; }
         public string ALH_LicenceNumber { get; set; }
         public string ALH_LicenseType { get; set; }
@@ -173,7 +173,7 @@ namespace WorkOrderEMS.Models
     {
         public char ASA_Action { get; set; }
         public long ASA_Id { get; set; }
-        public long ASA_ApplicantId { get; set; }
+        public long ASA_APT_ApplicantId { get; set; }
         public DateTime ASA_AvaliableStartTime { get; set; }
         public DateTime ASA_AvaliableEndTime { get; set; }
         public char ASA_IsActive { get; set; }
