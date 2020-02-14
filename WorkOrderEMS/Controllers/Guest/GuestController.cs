@@ -30,10 +30,10 @@ namespace WorkOrderEMS.Controllers.Guest
             var employee = _IGuestUserRepository.GetEmployee(ObjLoginModel.UserId);
             model.ApplicantPersonalInfo = new List<ApplicantPersonalInfo>();
             ApplicantPersonalInfo a1 = new ApplicantPersonalInfo();
-            a1.ApplicantId = employee.ApplicantId;
-            a1.FirstName = employee.FirstName;
-            a1.LastName = employee.LastName;
-            a1.SSN = employee.SocialSecurityNumber;
+            a1.API_APT_ApplicantId = employee.ApplicantId;
+            a1.API_FirstName = employee.FirstName;
+            a1.API_LastName = employee.LastName;
+            a1.API_SSN = employee.SocialSecurityNumber;
             model.ApplicantPersonalInfo.Add(a1);
             model.ApplicantAddress = new List<ApplicantAddress>();
             ApplicantAddress a2 = new ApplicantAddress();
