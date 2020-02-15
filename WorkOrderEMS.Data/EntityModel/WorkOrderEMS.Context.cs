@@ -151,7 +151,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<LoginLog> LoginLogs { get; set; }
         public virtual DbSet<EmergencyContactForm> EmergencyContactForms { get; set; }
         public virtual DbSet<Applicant> Applicants { get; set; }
-        public virtual DbSet<ApplicantPersonalInfo> ApplicantPersonalInfoes { get; set; }
         public virtual DbSet<InterviewProposalTime> InterviewProposalTimes { get; set; }
         public virtual DbSet<SlotTime> SlotTimes { get; set; }
         public virtual DbSet<BookSlotTime> BookSlotTimes { get; set; }
@@ -159,6 +158,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<InterviewQuestionChild> InterviewQuestionChilds { get; set; }
         public virtual DbSet<InterviewQuestionMaster> InterviewQuestionMasters { get; set; }
         public virtual DbSet<InterviewAnswer> InterviewAnswers { get; set; }
+        public virtual DbSet<ApplicantPersonalInfo> ApplicantPersonalInfoes { get; set; }
     
         [DbFunction("workorderEMSEntities", "fn_Split")]
         public virtual IQueryable<fn_Split_Result> fn_Split(string sText, string sDelim)

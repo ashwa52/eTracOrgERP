@@ -25,5 +25,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<decimal> API_DesireSalaryWages { get; set; }
         public Nullable<System.DateTime> API_Date { get; set; }
         public string API_IsActive { get; set; }
+        public string API_Title { get; set; }
     }
 }

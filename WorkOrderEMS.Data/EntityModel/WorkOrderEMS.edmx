@@ -149,6 +149,7 @@
           <Property Name="API_DesireSalaryWages" Type="numeric" Precision="18" Scale="2" />
           <Property Name="API_Date" Type="datetime" />
           <Property Name="API_IsActive" Type="char" MaxLength="1" />
+          <Property Name="API_Title" Type="varchar" MaxLength="5" />
         </EntityType>
         <EntityType Name="Bill">
           <Key>
@@ -14483,7 +14484,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="ALA_Question" Mode="In" Type="String" />
             <Parameter Name="ALA_Answer" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="ApplicantPersonalInfoes" EntityType="WorkOrderEMS.Data.EntityModel.ApplicantPersonalInfo" />
           <FunctionImport Name="spGetQuestionsForInterview" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetQuestionsForInterview_Result4)">
             <Parameter Name="Action" Mode="In" Type="String" />
             <Parameter Name="IsExempt" Mode="In" Type="String" />
@@ -14536,8 +14536,9 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="ALA_UserId" Mode="InOut" Type="Int64" />
           </FunctionImport>
           <EntitySet Name="InterviewAnswers" EntityType="WorkOrderEMS.Data.EntityModel.InterviewAnswer" />
+          <EntitySet Name="ApplicantPersonalInfoes" EntityType="WorkOrderEMS.Data.EntityModel.ApplicantPersonalInfo" />
           <FunctionImport Name="spGetApplicantAllDetails" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantAllDetails_Result)">
-          <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
+            <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="spSetApplicantAllDetails">
             <Parameter Name="Action" Mode="In" Type="String" />
@@ -18414,22 +18415,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="APT_Date" Type="DateTime" Precision="3" />
           <Property Name="APT_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
-        <EntityType Name="ApplicantPersonalInfo">
-          <Key>
-            <PropertyRef Name="API_Id" />
-          </Key>
-          <Property Name="API_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="API_APT_ApplicantId" Type="Int64" />
-          <Property Name="API_FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="API_MidName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="API_LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="API_Resume" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="API_SSN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="API_DLNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="API_DesireSalaryWages" Type="Decimal" Precision="18" Scale="2" />
-          <Property Name="API_Date" Type="DateTime" Precision="3" />
-          <Property Name="API_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-        </EntityType>
         <ComplexType Name="spGetQuestionsForInterview_Result">
           <Property Type="Int64" Name="IQM_Id" Nullable="false" />
           <Property Type="String" Name="IQM_Question" Nullable="true" />
@@ -18562,6 +18547,23 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="INA_Date" Type="DateTime" Precision="3" />
           <Property Name="INA_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
+        <EntityType Name="ApplicantPersonalInfo">
+          <Key>
+            <PropertyRef Name="API_Id" />
+          </Key>
+          <Property Name="API_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="API_APT_ApplicantId" Type="Int64" />
+          <Property Name="API_FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_MidName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_Resume" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="API_SSN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_DLNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="API_DesireSalaryWages" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="API_Date" Type="DateTime" Precision="3" />
+          <Property Name="API_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="API_Title" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+        </EntityType>
         <ComplexType Name="spGetApplicantAllDetails_Result">
           <Property Type="Int64" Name="API_Id" Nullable="true" />
           <Property Type="String" Name="API_FirstName" Nullable="true" MaxLength="50" />
@@ -18652,6 +18654,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="Time" Name="ASA_AvaliableStartTime" Nullable="true" />
           <Property Type="Time" Name="ASA_AvaliableEndTime" Nullable="true" />
           <Property Type="String" Name="ASA_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="API_Title" Nullable="true" MaxLength="5" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -24535,23 +24538,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="ApplicantPersonalInfoes">
-            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.ApplicantPersonalInfo">
-              <MappingFragment StoreEntitySet="ApplicantPersonalInfo">
-                <ScalarProperty Name="API_IsActive" ColumnName="API_IsActive" />
-                <ScalarProperty Name="API_Date" ColumnName="API_Date" />
-                <ScalarProperty Name="API_DesireSalaryWages" ColumnName="API_DesireSalaryWages" />
-                <ScalarProperty Name="API_DLNumber" ColumnName="API_DLNumber" />
-                <ScalarProperty Name="API_SSN" ColumnName="API_SSN" />
-                <ScalarProperty Name="API_Resume" ColumnName="API_Resume" />
-                <ScalarProperty Name="API_LastName" ColumnName="API_LastName" />
-                <ScalarProperty Name="API_MidName" ColumnName="API_MidName" />
-                <ScalarProperty Name="API_FirstName" ColumnName="API_FirstName" />
-                <ScalarProperty Name="API_APT_ApplicantId" ColumnName="API_APT_ApplicantId" />
-                <ScalarProperty Name="API_Id" ColumnName="API_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spSetInterviewAnswer" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetInterviewAnswer" />
           <FunctionImportMapping FunctionImportName="spGetFreeSlote" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetFreeSlote">
             <ResultMapping>
@@ -24665,6 +24651,24 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="ApplicantPersonalInfoes">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.ApplicantPersonalInfo">
+              <MappingFragment StoreEntitySet="ApplicantPersonalInfo">
+                <ScalarProperty Name="API_Title" ColumnName="API_Title" />
+                <ScalarProperty Name="API_IsActive" ColumnName="API_IsActive" />
+                <ScalarProperty Name="API_Date" ColumnName="API_Date" />
+                <ScalarProperty Name="API_DesireSalaryWages" ColumnName="API_DesireSalaryWages" />
+                <ScalarProperty Name="API_DLNumber" ColumnName="API_DLNumber" />
+                <ScalarProperty Name="API_SSN" ColumnName="API_SSN" />
+                <ScalarProperty Name="API_Resume" ColumnName="API_Resume" />
+                <ScalarProperty Name="API_LastName" ColumnName="API_LastName" />
+                <ScalarProperty Name="API_MidName" ColumnName="API_MidName" />
+                <ScalarProperty Name="API_FirstName" ColumnName="API_FirstName" />
+                <ScalarProperty Name="API_APT_ApplicantId" ColumnName="API_APT_ApplicantId" />
+                <ScalarProperty Name="API_Id" ColumnName="API_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spGetApplicantAllDetails" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetApplicantAllDetails">
             <ResultMapping>
               <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetApplicantAllDetails_Result">
@@ -24757,6 +24761,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
                 <ScalarProperty Name="ASA_AvaliableStartTime" ColumnName="ASA_AvaliableStartTime" />
                 <ScalarProperty Name="ASA_AvaliableEndTime" ColumnName="ASA_AvaliableEndTime" />
                 <ScalarProperty Name="ASA_IsActive" ColumnName="ASA_IsActive" />
+                <ScalarProperty Name="API_Title" ColumnName="API_Title" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

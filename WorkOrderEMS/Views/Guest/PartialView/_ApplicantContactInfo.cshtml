@@ -12,6 +12,7 @@
 
     </div>
 </div>
+@Html.HiddenFor(x => x.ApplicantContactInfo[0].ACI_APT_ApplicantId)
 @for (var i = 0; i < Model.ApplicantContactInfo.Count(); i++)
 {
     <div class="row">
@@ -24,7 +25,7 @@ new List<Object>{
                                                                     new { value = "Mobile" , text = "Mobile" },
 },
 "value",
-"text", 0), new { @id = "ContactType", @class = "form-control input-rounded" })
+"text", 0), new { @id = "ContactType", @class = "form-control" })
             </div>
         </div>
         <div class="colmn col-md-8 d-flex align-item-center">
@@ -56,10 +57,10 @@ new List<Object>{
         </div>
     </div>
 }
-    <div class="row">
-        <div class="colmn col-md-12 text-right">
-            <div class="form-group">
-                <button class="btn">Add more Contacts</button>
-            </div>
+<div class="row">
+    <div class="colmn col-md-12 text-right">
+        <div class="form-group">
+            <button class="btn">Add more Contacts</button>
         </div>
     </div>
+</div>

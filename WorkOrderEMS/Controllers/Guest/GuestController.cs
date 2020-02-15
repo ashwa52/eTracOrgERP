@@ -29,6 +29,7 @@ namespace WorkOrderEMS.Controllers.Guest
             ViewBag.StateList = _ICommonMethod.GetStateByCountryId(1);
             var employee = _IGuestUserRepository.GetEmployee(ObjLoginModel.UserId);
             var commonModel = _IGuestUserRepository.GetApplicantAllDetails(ObjLoginModel.UserId);
+            model.ApplicantId = employee.ApplicantId;
             model.ApplicantPersonalInfo = new List<ApplicantPersonalInfo>();
             ApplicantPersonalInfo a1 = new ApplicantPersonalInfo();
             a1.API_APT_ApplicantId = employee.ApplicantId;
@@ -44,6 +45,7 @@ namespace WorkOrderEMS.Controllers.Guest
             a2.APA_Apartment = employee.APIUnit;
             a2.APA_State = employee.State;
             a2.APA_YearsAddressFrom = employee.YearsAtAddrss;
+            a2.APA_APT_ApplicantId = employee.ApplicantId;
             model.ApplicantAddress.Add(a2);
 
             model.AplicantAcadmicDetails = new List<AplicantAcadmicDetails>();

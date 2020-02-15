@@ -47,9 +47,9 @@ namespace WorkOrderEMS.BusinessLogic
         {
             CommonApplicantModel commonModel = new CommonApplicantModel();
             var employee = GetEmployee(userId);
-            var _commonModel = objworkorderEMSEntities.spGetApplicantAllDetails(employee.ApplicantId).Select(x => new EmployeeVIewModel
+            var _commonModel = objworkorderEMSEntities.spGetApplicantAllDetails(employee.ApplicantId).Select(x => new CommonApplicantModel
             {
-
+              
             }).FirstOrDefault();
 
 

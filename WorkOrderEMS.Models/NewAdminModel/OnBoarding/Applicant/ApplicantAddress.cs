@@ -142,8 +142,8 @@ namespace WorkOrderEMS.Models
         public Nullable<DateTime> ATC_ConvictedDate { get; set; }
         public string ATC_Violation { get; set; }
         public string ATC_StateOfViolation { get; set; }
-        public char ATC_AtFaultAccident { get; set; }
-        public char ATC_AtMovingViolation { get; set; }
+        public bool ATC_AtFaultAccident { get; set; }
+        public bool ATC_AtMovingViolation { get; set; }
         public char ATC_IsActive { get; set; }
     }
     public class ApplicantVehiclesOperated

@@ -20,6 +20,7 @@
                 </div>
             </div>
         </div>
+        @Html.HiddenFor(x => x.ApplicantPersonalInfo[0].API_APT_ApplicantId)
         @for (var i = 0; i < Model.ApplicantPersonalInfo.Count(); i++)
         {
             <div class="row">
@@ -65,10 +66,18 @@
                         @Html.ValidationMessageFor(x => x.ApplicantPersonalInfo[i].API_Resume)
                     </div>
                 </div>
-                <div class="colmn col-md-6">
+                @*<div class="colmn col-md-6">
                     <div class="form-group">
                         @Html.TextBoxFor(x => x.ApplicantPersonalInfo[i].API_DesireSalaryWages, new { @class = "form-control", @placeholder = "Desired Salary" })
                         @Html.ValidationMessageFor(x => x.ApplicantPersonalInfo[i].API_DesireSalaryWages)
+                    </div>
+                </div>*@
+                <div class="colmn col-md-6">
+                    <div class="form-group yearsaddress">
+                        <label class="form-label">Desired Salary</label>
+                        @Html.TextBoxFor(x => x.ApplicantPersonalInfo[i].API_DesireSalaryWages, new { @class = "form-control", @placeholder = "Desired Salary" })
+                        @Html.ValidationMessageFor(x => x.ApplicantPersonalInfo[i].API_DesireSalaryWages)
+
                     </div>
                 </div>
             </div>

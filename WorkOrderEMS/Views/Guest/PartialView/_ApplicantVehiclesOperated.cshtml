@@ -3,6 +3,7 @@
 @{
     Layout = null;
 }
+@Html.HiddenFor(x => x.ApplicantVehiclesOperated[0].AVO_APT_ApplicantId)
 <div class="main_row">
     @for (var i = 0; i < Model.ApplicantVehiclesOperated.Count(); i++)
     {
@@ -20,10 +21,13 @@
                 </div>
             </div>
             <div class="colmn col-md-3">
-                <div class="form-group pt-4 checkbox_group">
-                    @Html.RadioButtonFor(model => model.ApplicantVehiclesOperated[i].AVO_DenideLicensePermit, 'Y', new { @class = "form-label checkbox_label" }) Yes
-                    @Html.RadioButtonFor(model => model.ApplicantVehiclesOperated[i].AVO_DenideLicensePermit, 'N', new { @class = "form-label checkbox_label" }) No
-
+                <div class="form-group checkbox_group">
+                    <label class="form-label checkbox_label">
+                        @Html.RadioButtonFor(model => model.ApplicantVehiclesOperated[i].AVO_DenideLicensePermit, 'Y', new { @class = "form-label checkbox_label" }) Yes
+                    </label>
+                    <label class="form-label checkbox_label">
+                        @Html.RadioButtonFor(model => model.ApplicantVehiclesOperated[i].AVO_DenideLicensePermit, 'N', new { @class = "form-label checkbox_label" }) No
+                    </label>
                 </div>
             </div>
         </div>
@@ -44,10 +48,13 @@
                 </div>
             </div>
             <div class="colmn col-md-3">
-                <div class="form-group pt-4 checkbox_group">
-                    @Html.RadioButtonFor(model => model.ApplicantVehiclesOperated[i].AVO_SuspendRevokeLicensePermit, 'Y', new { @class = "form-label checkbox_label" }) Yes
-                    @Html.RadioButtonFor(model => model.ApplicantVehiclesOperated[i].AVO_SuspendRevokeLicensePermit, 'N', new { @class = "form-label checkbox_label" }) No
-
+                <div class="form-group checkbox_group">
+                    <label class="form-label checkbox_label">
+                        @Html.RadioButtonFor(model => model.ApplicantVehiclesOperated[i].AVO_SuspendRevokeLicensePermit, 'Y', new { @class = "form-label checkbox_label" }) Yes
+                    </label>
+                    <label class="form-label checkbox_label">
+                        @Html.RadioButtonFor(model => model.ApplicantVehiclesOperated[i].AVO_SuspendRevokeLicensePermit, 'N', new { @class = "form-label checkbox_label" }) No
+                    </label>
                 </div>
             </div>
         </div>
@@ -61,12 +68,12 @@
             </div>
         </div>
     }
-    <div class="btn_row">
-        <div class="row">
-            <div class="colmn col-md-12 d-flex space-between">
-                <button class="btn">Previous</button>
-                <button class="btn">Next</button>
-            </div>
+</div>
+<div class="btn_row">
+    <div class="row">
+        <div class="colmn col-md-12 d-flex space-between">
+            <button class="btn" onclick="AcademicDetails()" type="button">Previous</button>
+            @*<button type="submit" class="btn btn-info btn-lg" data-toggle="modal" data-target="#thankyouModal">Submit</button>*@
         </div>
     </div>
 </div>

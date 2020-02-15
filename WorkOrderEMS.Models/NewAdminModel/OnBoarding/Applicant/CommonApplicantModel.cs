@@ -53,5 +53,7 @@ namespace WorkOrderEMS.Models
         public string API_DLNumber { get; set; }      
         public decimal API_DesireSalaryWages { get; set; }
         public char API_IsActive { get; set; }
+
+        public string API_Title { get; set; }
     }
 }

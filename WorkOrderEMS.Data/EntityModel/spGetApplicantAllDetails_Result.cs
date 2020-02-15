@@ -102,5 +102,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<System.TimeSpan> ASA_AvaliableStartTime { get; set; }
         public Nullable<System.TimeSpan> ASA_AvaliableEndTime { get; set; }
         public string ASA_IsActive { get; set; }
+        public string API_Title { get; set; }
     }
 }
