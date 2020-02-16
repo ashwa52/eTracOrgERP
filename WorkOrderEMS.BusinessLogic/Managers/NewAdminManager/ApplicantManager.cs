@@ -593,6 +593,24 @@ namespace WorkOrderEMS.BusinessLogic
                     //Obj.ApplicantSchecduleAvaliblity[0].ASA_Action = 'I';
 
                 }
+                List<ATC> ListATC = new List<ATC>();
+
+                for(int i=0; i<Obj.ApplicantTrafficConvictions.Count;i++)
+                { 
+                ATC atc = new ATC();
+                    atc.ATC_Action = Obj.ApplicantTrafficConvictions[i].ATC_Action;
+                    atc.ATC_APT_ApplicantId = Obj.ApplicantTrafficConvictions[i].ATC_APT_ApplicantId;
+                    atc.ATC_AtFaultAccident = Obj.ApplicantTrafficConvictions[i].ATC_AtFaultAccident==true?'Y':'N';
+                    atc.ATC_AtMovingViolation = Obj.ApplicantTrafficConvictions[i].ATC_AtMovingViolation == true ? 'Y' : 'N';
+                    atc.ATC_ConvictedDate = Obj.ApplicantTrafficConvictions[i].ATC_ConvictedDate;
+                    atc.ATC_Id = Obj.ApplicantTrafficConvictions[i].ATC_Id;
+                    atc.ATC_IsActive = Obj.ApplicantTrafficConvictions[i].ATC_IsActive;
+                    atc.ATC_StateOfViolation = Obj.ApplicantTrafficConvictions[i].ATC_StateOfViolation;
+                    atc.ATC_Violation = Obj.ApplicantTrafficConvictions[i].ATC_Violation;
+                    ListATC.Add(atc);
+
+                }
+
                 //// save using procedure with table value parameter 
                 using (var context = new workorderEMSEntities())
                 {
@@ -604,7 +622,7 @@ namespace WorkOrderEMS.BusinessLogic
                     System.Data.DataTable ApplicantBackgroundHistoryTable = Obj.ApplicantBackgroundHistory.ToDataTable();
                     System.Data.DataTable ApplicantPositionTitleTable = Obj.ApplicantPositionTitle.ToDataTable();
                     System.Data.DataTable ApplicantAccidentRecordTable = Obj.ApplicantAccidentRecord.ToDataTable();
-                    System.Data.DataTable ApplicantTrafficConvictionsTable = Obj.ApplicantTrafficConvictions.ToDataTable();
+                    System.Data.DataTable ApplicantTrafficConvictionsTable = ListATC.ToDataTable();
                     System.Data.DataTable ApplicantVehiclesOperatedTable = Obj.ApplicantVehiclesOperated.ToDataTable();
                     System.Data.DataTable ApplicantLicenseHealdTable = Obj.ApplicantLicenseHeald.ToDataTable();
                     //Obj.ApplicantSchecduleAvaliblity = new List<ApplicantSchecduleAvaliblity>();
@@ -680,14 +698,6 @@ namespace WorkOrderEMS.BusinessLogic
                     context.Database.ExecuteSqlCommand("exec [dbo].[spSetApplicantAllDetails] @Action, @UT_ApplicantPersonalInfo,@UT_ApplicantAddress,@UT_ApplicantContactInfo, @UT_ApplicantAdditionalInfo, @UT_AplicantAcadmicDetails, @UT_ApplicantBackgroundHistory, @UT_ApplicantPositionTitle, @UT_ApplicantAccidentRecord, @UT_ApplicantTrafficConvictions, @UT_ApplicantVehiclesOperated, @UT_ApplicantLicenseHeald",
                                                                                               Action, UT_ApplicantPersonalInfo,UT_ApplicantAddress, UT_ApplicantContactInfo, UT_ApplicantAdditionalInfo,UT_AplicantAcadmicDetails, UT_ApplicantBackgroundHistory,UT_ApplicantPositionTitle, UT_ApplicantAccidentRecord,UT_ApplicantTrafficConvictions, UT_ApplicantVehiclesOperated,UT_ApplicantLicenseHeald
                         );
-                    // context.Database.ExecuteSqlCommand("exec [dbo].[spSetApplicantAllDetails] @Action, @UT_ApplicantPersonalInfo,@UT_ApplicantAddress,@UT_ApplicantContactInfo, @UT_ApplicantAdditionalInfo, @UT_AplicantAcadmicDetails, @UT_ApplicantBackgroundHistory, @UT_ApplicantPositionTitle, @UT_ApplicantAccidentRecord, @UT_ApplicantTrafficConvictions, @UT_ApplicantVehiclesOperated, @UT_ApplicantLicenseHeald, @UT_ApplicantSchecduleAvaliblity",
-                    //Action, UT_ApplicantPersonalInfo,
-                    //UT_ApplicantAddress, UT_ApplicantContactInfo, UT_ApplicantAdditionalInfo,
-                    //UT_AplicantAcadmicDetails, UT_ApplicantBackgroundHistory,
-                    //UT_ApplicantPositionTitle, UT_ApplicantAccidentRecord,
-                    //UT_ApplicantTrafficConvictions, UT_ApplicantVehiclesOperated,
-                    //UT_ApplicantLicenseHeald, UT_ApplicantSchecduleAvaliblity
-                    //);
                     Flag = true;
                 }
             }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,12 +12,19 @@ namespace WorkOrderEMS.Models
         public char APA_Action { get; set; }
         public long APA_Id { get; set; }
         public long APA_APT_ApplicantId { get; set; }
+        [Required]
         public string APA_StreetAddress { get; set; }
+        [Required]
         public string APA_Apartment { get; set; }
+        [Required]
         public string APA_City { get; set; }
+        [Required]
         public string APA_State { get; set; }
+        [Required]
         public int APA_Zip { get; set; }
+        [Required]
         public Nullable<DateTime> APA_YearsAddressFrom { get; set; }
+        [Required]
         public Nullable<DateTime> APA_YearsAddressTo { get; set; }
         public char APA_IsActive { get; set; }
 
@@ -144,6 +152,19 @@ namespace WorkOrderEMS.Models
         public string ATC_StateOfViolation { get; set; }
         public bool ATC_AtFaultAccident { get; set; }
         public bool ATC_AtMovingViolation { get; set; }
+        public char ATC_IsActive { get; set; }
+    }
+
+    public class ATC
+    {
+        public char ATC_Action { get; set; }
+        public long ATC_Id { get; set; }
+        public long ATC_APT_ApplicantId { get; set; }
+        public Nullable<DateTime> ATC_ConvictedDate { get; set; }
+        public string ATC_Violation { get; set; }
+        public string ATC_StateOfViolation { get; set; }
+        public char ATC_AtFaultAccident { get; set; }
+        public char ATC_AtMovingViolation { get; set; }
         public char ATC_IsActive { get; set; }
     }
     public class ApplicantVehiclesOperated

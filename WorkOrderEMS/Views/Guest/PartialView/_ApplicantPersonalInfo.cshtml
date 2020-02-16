@@ -3,83 +3,88 @@
 @{
     Layout = null;
 }
-    <div class="main_row">
+<div class="main_row">
+    <div class="row">
+        <div class="colmn col-md-4">
+            <div class="form-group">
+                @Html.DropDownListFor(c => c.ApplicantPersonalInfo[0].API_Title, new SelectList(
+new List<Object>{
+                                                                    new { value = 0 , text = "--Type--"  },
+                                                                    new { value = "Mr" , text = "Mr"  },
+                                                                    new { value = "Ms" , text = "Ms" },
+                                                                    new { value = "Mrs" , text = "Mrs" },
+},
+"value",
+"text", 0), new { @id = "ContactType", @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="colmn col-md-8 d-flex align-item-center">
+            <div class="form-group">
+                <label class="form-label">Please Provide an address for last three years of your residency.</label>
+            </div>
+        </div>
+    </div>
+    @Html.HiddenFor(x => x.ApplicantPersonalInfo[0].API_APT_ApplicantId)
+    @for (var i = 0; i < Model.ApplicantPersonalInfo.Count(); i++)
+    {
         <div class="row">
             <div class="colmn col-md-4">
                 <div class="form-group">
-                    <select type="text" class="form-control">
-                        <option>Mr</option>
-                        <option>Ms</option>
-                        <option>Mrs</option>
-                    </select>
+                    @Html.TextBoxFor(x => x.ApplicantPersonalInfo[i].API_FirstName, new { @class = "form-control", @placeholder = "First Name" })
+                    @Html.ValidationMessageFor(x => x.ApplicantPersonalInfo[i].API_FirstName)
                 </div>
             </div>
-            <div class="colmn col-md-8 d-flex align-item-center">
+            <div class="colmn col-md-4">
                 <div class="form-group">
-                    <label class="form-label">Please Provide an address for last three years of your residency.</label>
+                    @Html.TextBoxFor(x => x.ApplicantPersonalInfo[i].API_MiddleName, new { @class = "form-control", @placeholder = "Middle Name" })
+                    @Html.ValidationMessageFor(x => x.ApplicantPersonalInfo[i].API_MiddleName)
+                </div>
+            </div>
+            <div class="colmn col-md-4">
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.ApplicantPersonalInfo[i].API_LastName, new { @class = "form-control", @placeholder = "Last Name" })
+                    @Html.ValidationMessageFor(x => x.ApplicantPersonalInfo[i].API_LastName)
+
                 </div>
             </div>
         </div>
-        @Html.HiddenFor(x => x.ApplicantPersonalInfo[0].API_APT_ApplicantId)
-        @for (var i = 0; i < Model.ApplicantPersonalInfo.Count(); i++)
-        {
-            <div class="row">
-                <div class="colmn col-md-4">
-                    <div class="form-group">
-                        @Html.TextBoxFor(x => x.ApplicantPersonalInfo[i].API_FirstName, new { @class = "form-control",@placeholder="First Name" })
-                        @Html.ValidationMessageFor(x => x.ApplicantPersonalInfo[i].API_FirstName)
-                    </div>
-                </div>
-                <div class="colmn col-md-4">
-                    <div class="form-group">
-                        @Html.TextBoxFor(x => x.ApplicantPersonalInfo[i].API_MiddleName, new { @class = "form-control",@placeholder="Middle Name"  })
-                        @Html.ValidationMessageFor(x => x.ApplicantPersonalInfo[i].API_MiddleName)
-                    </div>
-                </div>
-                <div class="colmn col-md-4">
-                    <div class="form-group">
-                        @Html.TextBoxFor(x => x.ApplicantPersonalInfo[i].API_LastName, new { @class = "form-control",@placeholder="Last Name"  })
-                        @Html.ValidationMessageFor(x => x.ApplicantPersonalInfo[i].API_LastName)
-
-                    </div>
+        <div class="row">
+            <div class="colmn col-md-6">
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.ApplicantPersonalInfo[i].API_SSN, new { @class = "form-control", @placeholder = "SSN" })
+                    @Html.ValidationMessageFor(x => x.ApplicantPersonalInfo[i].API_SSN)
                 </div>
             </div>
-            <div class="row">
-                <div class="colmn col-md-6">
-                    <div class="form-group">
-                        @Html.TextBoxFor(x => x.ApplicantPersonalInfo[i].API_SSN, new { @class = "form-control",@placeholder="SSN"  })
-                        @Html.ValidationMessageFor(x => x.ApplicantPersonalInfo[i].API_SSN)
-                    </div>
-                </div>
-                <div class="colmn col-md-6">
-                    <div class="form-group">
-                        @Html.TextBoxFor(x => x.ApplicantPersonalInfo[i].API_DLNumber, new { @class = "form-control",@placeholder="DL Number"  })
-                        @Html.ValidationMessageFor(x => x.ApplicantPersonalInfo[i].API_DLNumber)
+            <div class="colmn col-md-6">
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.ApplicantPersonalInfo[i].API_DLNumber, new { @class = "form-control", @placeholder = "DL Number" })
+                    @Html.ValidationMessageFor(x => x.ApplicantPersonalInfo[i].API_DLNumber)
 
-                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="colmn col-md-6">
-                    <div class="form-group">
-                        @Html.TextBoxFor(x => x.ApplicantPersonalInfo[i].API_Resume, new { @class = "form-control", @placeholder = "Resume" })
-                        @Html.ValidationMessageFor(x => x.ApplicantPersonalInfo[i].API_Resume)
-                    </div>
+        </div>
+        <div class="row">
+            <div class="colmn col-md-6">
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.ApplicantPersonalInfo[i].API_Resume, new { @class = "form-control", @placeholder = "Resume" })
+                    @Html.ValidationMessageFor(x => x.ApplicantPersonalInfo[i].API_Resume)
                 </div>
-                @*<div class="colmn col-md-6">
+            </div>
+            @*<div class="colmn col-md-6">
                     <div class="form-group">
                         @Html.TextBoxFor(x => x.ApplicantPersonalInfo[i].API_DesireSalaryWages, new { @class = "form-control", @placeholder = "Desired Salary" })
                         @Html.ValidationMessageFor(x => x.ApplicantPersonalInfo[i].API_DesireSalaryWages)
                     </div>
                 </div>*@
-                <div class="colmn col-md-6">
-                    <div class="form-group yearsaddress">
-                        <label class="form-label">Desired Salary</label>
-                        @Html.TextBoxFor(x => x.ApplicantPersonalInfo[i].API_DesireSalaryWages, new { @class = "form-control", @placeholder = "Desired Salary" })
-                        @Html.ValidationMessageFor(x => x.ApplicantPersonalInfo[i].API_DesireSalaryWages)
+            <div class="colmn col-md-6">
+                <div class="form-group yearsaddress">
+                    <label class="form-label">Desired Salary</label>
+                    @Html.TextBoxFor(x => x.ApplicantPersonalInfo[i].API_DesireSalaryWages, new { @class = "form-control", @placeholder = "Desired Salary" })
+                    @Html.ValidationMessageFor(x => x.ApplicantPersonalInfo[i].API_DesireSalaryWages)
 
-                    </div>
                 </div>
             </div>
-        }
-    </div>
+        </div>
+    }
+</div>

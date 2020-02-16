@@ -37,21 +37,20 @@
             </td>
             <td>
                 <div class="form-group pt-4 checkbox_group">
-                    @*@Html.CheckBox(model=>model.ApplicantTrafficConvictions[i].ATC_AtFaultAccident, new { @class = "form-control"})*@
                         @{
                             string name = "ApplicantTrafficConvictions_" + i + "__ATC_AtFaultAccident";
-                        <label class="col-sm-2 col-form-label" for="Address2">At Fault Accident</label>
-                            <div class="col-sm-4">
-                                @Html.CheckBoxFor(model => model.ApplicantTrafficConvictions[i].ATC_AtFaultAccident, new { @id = name, @class = "form-control" })
+                        <label class="col-form-label" for="Address2">At Fault Accident</label>
+                            <div class="">
+                                @Html.CheckBoxFor(model => model.ApplicantTrafficConvictions[i].ATC_AtFaultAccident, new { @id = name })
                                 <div class="errorspace">
                                 </div>
                             </div>
                         }
                     @{
                         string name1 = "ApplicantTrafficConvictions_" + i + "__ATC_AtMovingViolation";
-                        <label class="col-sm-2 col-form-label" for="Address2">At Moving Violation</label>
-                        <div class="col-sm-4">
-                            @Html.CheckBoxFor(model => model.ApplicantTrafficConvictions[i].ATC_AtMovingViolation, new { @id = name1, @class = "form-control" })
+                        <label class="col-form-label" for="Address2">At Moving Violation</label>
+                        <div class="">
+                            @Html.CheckBoxFor(model => model.ApplicantTrafficConvictions[i].ATC_AtMovingViolation, new { @id = name1 })
                             <div class="errorspace">
                             </div>
                         </div>

@@ -113,8 +113,11 @@
                                                 <h1 class="section-title-heading">Personal Details</h1>
                                             </div>
                                         </div>
-                                        @using (Html.BeginForm("Index", "Guest", FormMethod.Post))
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(false)
+                                        @using (Html.BeginForm())
                                         {
+
                                             <div class="tab_pannel_sec panel-default">
                                                 <div class="tab_con">
                                                     <ul class="nav nav-tabs" id="myTab">
@@ -232,213 +235,213 @@
                                                         </div>
 
                                                         @*<div id="shedule_avalibility" class="tab-pane fade">
-                <div class="main_row">
-                    <div class="row mb-20">
-                        <div class="colmn col-md-12 text-center">
-                            <div class="form-group">
-                                <label class="form-label">Schedule Avalibility</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="colmn col-md-12 text-center">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <th></th>
-                                        <th>Avalible start time</th>
-                                        <th>Avalible End time</th>
-                                        <th>Total Daily <br>Hours of Avalibility</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Sunday</td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Monday</td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Tuesday</td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Wednesday</td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Thursday</td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Friday</td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Saturday</td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td>
-                                            <input type="time" class="form-control" placeholder="city">
-                                        </td>
-                                        <td></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="main_row  authorise_row">
-                    <div class="row">
-                        <div class="colmn col-md-12">
-                            <div class="form-group">
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur</p>
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</p>
-                                <ul>
-                                    <li>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</li>
-                                    <li>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</li>
-                                    <li>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</li>
-                                </ul>
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</p>
-                            </div>
-                        </div>
-                    </div>
+                                                                <div class="main_row">
+                                                                    <div class="row mb-20">
+                                                                        <div class="colmn col-md-12 text-center">
+                                                                            <div class="form-group">
+                                                                                <label class="form-label">Schedule Avalibility</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-12 text-center">
+                                                                            <table>
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <th></th>
+                                                                                        <th>Avalible start time</th>
+                                                                                        <th>Avalible End time</th>
+                                                                                        <th>Total Daily <br>Hours of Avalibility</th>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Sunday</td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Monday</td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Tuesday</td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Wednesday</td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Thursday</td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Friday</td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Saturday</td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="main_row  authorise_row">
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-12">
+                                                                            <div class="form-group">
+                                                                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
+                                                                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur</p>
+                                                                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</p>
+                                                                                <ul>
+                                                                                    <li>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</li>
+                                                                                    <li>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</li>
+                                                                                    <li>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</li>
+                                                                                </ul>
+                                                                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
 
 
 
-                    <div class="btn_row">
-                        <div class="row">
-                            <div class="colmn col-md-12 d-flex space-between">
-                                <button class="btn">Previous</button>
+                                                                    <div class="btn_row">
+                                                                        <div class="row">
+                                                                            <div class="colmn col-md-12 d-flex space-between">
+                                                                                <button class="btn">Previous</button>
 
-                                <a data-toggle="tab" class="btn" href="#customer_decleration"><span class="class_name ">Next</span></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>*@
+                                                                                <a data-toggle="tab" class="btn" href="#customer_decleration"><span class="class_name ">Next</span></a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>*@
 
 
 
                                                         @*<div id="customer_decleration" class="tab-pane fade">
-                <div class="authorise_row">
-                    <div class="main_row">
-                        <div class="row ">
-                            <div class="colmn col-md-12 text-center">
-                                <div class="form-group">
-                                    <label class="form-label">DRIVING TEST HOLD HARMLESS</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                                                <div class="authorise_row">
+                                                                    <div class="main_row">
+                                                                        <div class="row ">
+                                                                            <div class="colmn col-md-12 text-center">
+                                                                                <div class="form-group">
+                                                                                    <label class="form-label">DRIVING TEST HOLD HARMLESS</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
 
-                    <div class="row">
-                        <div class="colmn col-md-12">
-                            <div class="form-group">
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur</p>
-                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</p>
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-12">
+                                                                            <div class="form-group">
+                                                                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
+                                                                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur</p>
+                                                                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</p>
 
-                            </div>
-                        </div>
-                    </div>
-                    <br><br>
-                    <div class="row">
-                        <div class="colmn col-md-12 text-right">
-                            <div class="form-group">
-                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Provide Signature</button>
-                            </div>
-                        </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <br><br>
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-12 text-right">
+                                                                            <div class="form-group">
+                                                                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Provide Signature</button>
+                                                                            </div>
+                                                                        </div>
 
-                    </div>
+                                                                    </div>
 
 
-                    <br>
-                    <div class="row">
-                        <div class="colmn col-md-4">
-                            <input type="text" placeholder="Signature Here">
-                        </div>
-                        <div class="colmn col-md-4">
-                        </div>
-                        <div class="colmn col-md-4">
-                            <input type="text" placeholder="Print Applicant name here">
-                        </div>
-                    </div>
+                                                                    <br>
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-4">
+                                                                            <input type="text" placeholder="Signature Here">
+                                                                        </div>
+                                                                        <div class="colmn col-md-4">
+                                                                        </div>
+                                                                        <div class="colmn col-md-4">
+                                                                            <input type="text" placeholder="Print Applicant name here">
+                                                                        </div>
+                                                                    </div>
 
-                    <div class="row">
-                        <div class="colmn col-md-4">
-                        </div>
-                        <div class="colmn col-md-4">
-                        </div>
-                        <div class="colmn col-md-4">
-                            <input type="text" placeholder="Date Signed">
-                        </div>
-                    </div>
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-4">
+                                                                        </div>
+                                                                        <div class="colmn col-md-4">
+                                                                        </div>
+                                                                        <div class="colmn col-md-4">
+                                                                            <input type="text" placeholder="Date Signed">
+                                                                        </div>
+                                                                    </div>
 
-                    <div class="btn_row">
-                        <div class="row">
-                            <div class="colmn col-md-12 d-flex space-between">
-                                <button class="btn">Previous</button>
-                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#thankyouModal">Submit</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>*@
+                                                                    <div class="btn_row">
+                                                                        <div class="row">
+                                                                            <div class="colmn col-md-12 d-flex space-between">
+                                                                                <button class="btn">Previous</button>
+                                                                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#thankyouModal">Submit</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>*@
 
 
                                                         @*<div id="thankyou_message" class="tab-pane fade">
-                <div class="authorise_row">
-                    <div class="row">
-                        <div class="colmn col-md-12">
-                            <div class="form-group">
-                                <p> Congratulations </p>
-                            </div>
-                        </div>
-                    </div>
+                                                                <div class="authorise_row">
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-12">
+                                                                            <div class="form-group">
+                                                                                <p> Congratulations </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
 
 
 
-                </div>
-            </div>*@
+                                                                </div>
+                                                            </div>*@
                                                     </div>
                                                 </div>
                                             </div>
@@ -463,5 +466,6 @@
 <script src="~/Scripts/ePeople/ApplicantFunctionality.js"></script>
 <script src="~/Scripts/ePeople/CustomMultistepWizardApplicant.js"></script>
 <script src="~/Content/NewAdminContent/VENDOR/jquery-steps/build/jquery.steps.min.js"></script>
-
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <script src="~/Scripts/NewAdminJS/plugins-init/jquery-steps-init.js"></script>
