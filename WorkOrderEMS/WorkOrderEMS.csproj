@@ -6891,6 +6891,8 @@
     <Content Include="Views\Guest\PartialView\_ApplicantAdditionalInfo.cshtml" />
     <Content Include="Views\Guest\PartialView\_ApplicantVehiclesOperated.cshtml" />
     <Content Include="Views\Guest\PartialView\_ApplicantPositionTitle.cshtml" />
+      <Content Include="Views\NewAdmin\MySchedules.cshtml" />
+    <Content Include="Views\NewAdmin\SelfAssessmentView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6899,6 +6901,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="Areas\AdminSection\Models\AdminSectionModel\" />
     <Folder Include="Areas\AdminSection\Views\SendEmailTemplate\" />
     <Folder Include="Content\AdminDocs\PDFForm\" />

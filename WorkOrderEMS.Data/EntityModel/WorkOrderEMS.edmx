@@ -230,6 +230,21 @@
           <Property Name="BLM_Date" Type="date" Nullable="false" />
           <Property Name="BLM_IsActive" Type="char" MaxLength="1" />
         </EntityType>
+        <EntityType Name="ChangeExpectation">
+          <Key>
+            <PropertyRef Name="CHE_Id" />
+          </Key>
+          <Property Name="CHE_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CHE_EMP_EmployeeId" Type="varchar" MaxLength="20" />
+          <Property Name="CHE_EMP_EmployeeIdManager" Type="varchar" MaxLength="20" />
+          <Property Name="CHE_ASQ_Id" Type="bigint" />
+          <Property Name="CHE_QuestionType" Type="varchar" MaxLength="30" />
+          <Property Name="CHE_FinencialYear" Type="varchar" MaxLength="10" />
+          <Property Name="CHE_FinQuarter" Type="varchar" MaxLength="10" />
+          <Property Name="CHE_ASQ_Question" Type="varchar(max)" />
+          <Property Name="CHE_Date" Type="datetime" />
+          <Property Name="CHE_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
         <EntityType Name="Citizenship">
           <Key>
             <PropertyRef Name="CTZ_Id" />
@@ -5089,6 +5104,10 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         <Function Name="spGetBudgetLocationMapping" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="BLM_LocationId" Type="bigint" Mode="In" />
         </Function>
+        <Function Name="spGetChangeExpectationQuestionQCQM" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
+          <Parameter Name="CHE_QuestionType" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spGetChequeBookDetailsbyType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="CompanyId" Type="bigint" Mode="In" />
           <Parameter Name="AccountId" Type="bigint" Mode="In" />
@@ -5372,6 +5391,9 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="CLM_CCM_CostCode" Type="bigint" Mode="In" />
         </Function>
         <Function Name="spGetTaxDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetUserAssessmentInfo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spGetUserOverrideUsertype" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UOU_UserId" Type="bigint" Mode="In" />
         </Function>
@@ -5637,6 +5659,18 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="BLM_LocationId" Type="bigint" Mode="In" />
           <Parameter Name="BLM_BudgetAmount" Type="numeric" Mode="In" />
           <Parameter Name="BLM_BudgetYear" Type="int" Mode="In" />
+        </Function>
+        <Function Name="spSetChangeExpectation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Action" Type="char" Mode="In" />
+          <Parameter Name="CHE_Id" Type="bigint" Mode="In" />
+          <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
+          <Parameter Name="EmployeeIdManager" Type="varchar" Mode="In" />
+          <Parameter Name="ASQ_Id" Type="bigint" Mode="In" />
+          <Parameter Name="CHE_QuestionType" Type="varchar" Mode="In" />
+          <Parameter Name="CHE_FinencialYear" Type="varchar" Mode="In" />
+          <Parameter Name="CHE_FinQuarter" Type="varchar" Mode="In" />
+          <Parameter Name="CHE_ASQ_Question" Type="varchar(max)" Mode="In" />
+          <Parameter Name="CHE_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetChequeBook" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="OC_Id" Type="bigint" Mode="In" />
@@ -6487,6 +6521,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="BookSlotTime" EntityType="Self.BookSlotTime" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BudgetCostCodeMapping" EntityType="Self.BudgetCostCodeMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BudgetLocationMapping" EntityType="Self.BudgetLocationMapping" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ChangeExpectation" EntityType="Self.ChangeExpectation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Citizenship" EntityType="Self.Citizenship" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CompanyAccountDetail" EntityType="Self.CompanyAccountDetail" Schema="dbo" store:Type="Tables" />
@@ -14020,10 +14055,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <FunctionImport Name="spGetAssessmentList" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetAssessmentList_Result)">
           <Parameter Name="EmployeeId" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spGetAssessmentQuestion316191" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetAssessmentQuestion316191_Result)">
-            <Parameter Name="EmployeeID" Mode="In" Type="String" />
-            <Parameter Name="AssessmentType" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="spGetAssessmentQuestionQCQM" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetAssessmentQuestionQCQM_Result)">
             <Parameter Name="EmployeeID" Mode="In" Type="String" />
             <Parameter Name="AssessmentType" Mode="In" Type="String" />
@@ -14538,10 +14569,34 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="InterviewAnswers" EntityType="WorkOrderEMS.Data.EntityModel.InterviewAnswer" />
           <EntitySet Name="ApplicantPersonalInfoes" EntityType="WorkOrderEMS.Data.EntityModel.ApplicantPersonalInfo" />
           <FunctionImport Name="spGetApplicantAllDetails" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantAllDetails_Result)">
-            <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
+          <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="spSetApplicantAllDetails">
+          <Parameter Name="Action" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="ChangeExpectations" EntityType="WorkOrderEMS.Data.EntityModel.ChangeExpectation" />
+          <FunctionImport Name="spGetChangeExpectationQuestionQCQM" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetChangeExpectationQuestionQCQM_Result)">
+            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="CHE_QuestionType" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetUserAssessmentInfo" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetUserAssessmentInfo_Result)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetChangeExpectation">
             <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="CHE_Id" Mode="In" Type="Int64" />
+            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="EmployeeIdManager" Mode="In" Type="String" />
+            <Parameter Name="ASQ_Id" Mode="In" Type="Int64" />
+            <Parameter Name="CHE_QuestionType" Mode="In" Type="String" />
+            <Parameter Name="CHE_FinencialYear" Mode="In" Type="String" />
+            <Parameter Name="CHE_FinQuarter" Mode="In" Type="String" />
+            <Parameter Name="CHE_ASQ_Question" Mode="In" Type="String" />
+            <Parameter Name="CHE_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetAssessmentQuestion316191" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetAssessmentQuestion316191_Result)">
+            <Parameter Name="EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="AssessmentType" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Proc_GetAllWorkAssignedToEmployee_Result">
@@ -17233,18 +17288,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="Int32" Name="FinYear" Nullable="true" />
           <Property Type="String" Name="EEL_IsActive" Nullable="true" MaxLength="1" />
         </ComplexType>
-        <ComplexType Name="spGetAssessmentQuestion316191_Result">
-          <Property Type="Int64" Name="SAR_Id" Nullable="true" />
-          <Property Type="String" Name="SAR_EMP_EmployeeId" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="SAR_EMP_EmployeeIdManager" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="SAR_QuestionType" Nullable="true" MaxLength="30" />
-          <Property Type="Int64" Name="ASQ_Id" Nullable="false" />
-          <Property Type="String" Name="ASQ_Question" Nullable="true" />
-          <Property Type="String" Name="SAR_AnswerSelf" Nullable="true" MaxLength="1" />
-          <Property Type="String" Name="SAR_AnswerManager" Nullable="true" MaxLength="1" />
-          <Property Type="String" Name="SAR_Comments" Nullable="true" />
-          <Property Type="String" Name="SAR_IsActive" Nullable="true" MaxLength="1" />
-        </ComplexType>
         <ComplexType Name="spGetAssessmentQuestionQCQM_Result">
           <Property Type="Int64" Name="EEL_Id" Nullable="true" />
           <Property Type="String" Name="EEL_EMP_EmployeeId" Nullable="true" MaxLength="20" />
@@ -18655,6 +18698,54 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="Time" Name="ASA_AvaliableEndTime" Nullable="true" />
           <Property Type="String" Name="ASA_IsActive" Nullable="true" MaxLength="1" />
           <Property Type="String" Name="API_Title" Nullable="true" MaxLength="5" />
+        </ComplexType>
+        <EntityType Name="ChangeExpectation">
+          <Key>
+            <PropertyRef Name="CHE_Id" />
+          </Key>
+          <Property Name="CHE_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CHE_EMP_EmployeeId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CHE_EMP_EmployeeIdManager" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CHE_ASQ_Id" Type="Int64" />
+          <Property Name="CHE_QuestionType" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CHE_FinencialYear" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CHE_FinQuarter" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CHE_ASQ_Question" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CHE_Date" Type="DateTime" Precision="3" />
+          <Property Name="CHE_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="spGetChangeExpectationQuestionQCQM_Result">
+          <Property Type="Int64" Name="CHE_Id" Nullable="false" />
+          <Property Type="String" Name="ASQ_QuestionType" Nullable="true" MaxLength="30" />
+          <Property Type="Int64" Name="ASQ_Id" Nullable="true" />
+          <Property Type="String" Name="ASQ_Question" Nullable="true" />
+          <Property Type="String" Name="ASQ_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetUserAssessmentInfo_Result">
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EMP_Photo" Nullable="true" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+          <Property Type="String" Name="VST_Level" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="AssessmentType" Nullable="false" MaxLength="2" />
+          <Property Type="String" Name="DepartmentName" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
+          <Property Type="DateTime" Name="EMP_DateOfJoining" Nullable="true" />
+          <Property Type="String" Name="Expectation" Nullable="true" MaxLength="2" />
+          <Property Type="Int32" Name="FinYear" Nullable="true" />
+          <Property Type="String" Name="EEL_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetAssessmentQuestion316191_Result">
+          <Property Type="Int64" Name="SAR_Id" Nullable="true" />
+          <Property Type="String" Name="SAR_EMP_EmployeeId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="SAR_EMP_EmployeeIdManager" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="SAR_QuestionType" Nullable="true" MaxLength="30" />
+          <Property Type="Int64" Name="ASQ_Id" Nullable="false" />
+          <Property Type="String" Name="ASQ_Question" Nullable="true" />
+          <Property Type="String" Name="SAR_AnswerSelf" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="SAR_AnswerManager" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="SAR_Comments" Nullable="true" />
+          <Property Type="String" Name="SAR_IsActive" Nullable="true" MaxLength="1" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -23425,22 +23516,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetAssessmentQuestion316191" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetAssessmentQuestion316191">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetAssessmentQuestion316191_Result">
-                <ScalarProperty Name="SAR_Id" ColumnName="SAR_Id" />
-                <ScalarProperty Name="SAR_EMP_EmployeeId" ColumnName="SAR_EMP_EmployeeId" />
-                <ScalarProperty Name="SAR_EMP_EmployeeIdManager" ColumnName="SAR_EMP_EmployeeIdManager" />
-                <ScalarProperty Name="SAR_QuestionType" ColumnName="SAR_QuestionType" />
-                <ScalarProperty Name="ASQ_Id" ColumnName="ASQ_Id" />
-                <ScalarProperty Name="ASQ_Question" ColumnName="ASQ_Question" />
-                <ScalarProperty Name="SAR_AnswerSelf" ColumnName="SAR_AnswerSelf" />
-                <ScalarProperty Name="SAR_AnswerManager" ColumnName="SAR_AnswerManager" />
-                <ScalarProperty Name="SAR_Comments" ColumnName="SAR_Comments" />
-                <ScalarProperty Name="SAR_IsActive" ColumnName="SAR_IsActive" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spGetAssessmentQuestionQCQM" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetAssessmentQuestionQCQM">
             <ResultMapping>
               <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetAssessmentQuestionQCQM_Result">
@@ -24766,6 +24841,68 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spSetApplicantAllDetails" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetApplicantAllDetails" />
+          <EntitySetMapping Name="ChangeExpectations">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.ChangeExpectation">
+              <MappingFragment StoreEntitySet="ChangeExpectation">
+                <ScalarProperty Name="CHE_IsActive" ColumnName="CHE_IsActive" />
+                <ScalarProperty Name="CHE_Date" ColumnName="CHE_Date" />
+                <ScalarProperty Name="CHE_ASQ_Question" ColumnName="CHE_ASQ_Question" />
+                <ScalarProperty Name="CHE_FinQuarter" ColumnName="CHE_FinQuarter" />
+                <ScalarProperty Name="CHE_FinencialYear" ColumnName="CHE_FinencialYear" />
+                <ScalarProperty Name="CHE_QuestionType" ColumnName="CHE_QuestionType" />
+                <ScalarProperty Name="CHE_ASQ_Id" ColumnName="CHE_ASQ_Id" />
+                <ScalarProperty Name="CHE_EMP_EmployeeIdManager" ColumnName="CHE_EMP_EmployeeIdManager" />
+                <ScalarProperty Name="CHE_EMP_EmployeeId" ColumnName="CHE_EMP_EmployeeId" />
+                <ScalarProperty Name="CHE_Id" ColumnName="CHE_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetChangeExpectationQuestionQCQM" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetChangeExpectationQuestionQCQM">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetChangeExpectationQuestionQCQM_Result">
+                <ScalarProperty Name="CHE_Id" ColumnName="CHE_Id" />
+                <ScalarProperty Name="ASQ_QuestionType" ColumnName="ASQ_QuestionType" />
+                <ScalarProperty Name="ASQ_Id" ColumnName="ASQ_Id" />
+                <ScalarProperty Name="ASQ_Question" ColumnName="ASQ_Question" />
+                <ScalarProperty Name="ASQ_IsActive" ColumnName="ASQ_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetUserAssessmentInfo" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetUserAssessmentInfo">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetUserAssessmentInfo_Result">
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="VST_Level" ColumnName="VST_Level" />
+                <ScalarProperty Name="AssessmentType" ColumnName="AssessmentType" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
+                <ScalarProperty Name="Expectation" ColumnName="Expectation" />
+                <ScalarProperty Name="FinYear" ColumnName="FinYear" />
+                <ScalarProperty Name="EEL_IsActive" ColumnName="EEL_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetChangeExpectation" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetChangeExpectation" />
+          <FunctionImportMapping FunctionImportName="spGetAssessmentQuestion316191" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetAssessmentQuestion316191">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetAssessmentQuestion316191_Result">
+                <ScalarProperty Name="SAR_Id" ColumnName="SAR_Id" />
+                <ScalarProperty Name="SAR_EMP_EmployeeId" ColumnName="SAR_EMP_EmployeeId" />
+                <ScalarProperty Name="SAR_EMP_EmployeeIdManager" ColumnName="SAR_EMP_EmployeeIdManager" />
+                <ScalarProperty Name="SAR_QuestionType" ColumnName="SAR_QuestionType" />
+                <ScalarProperty Name="ASQ_Id" ColumnName="ASQ_Id" />
+                <ScalarProperty Name="ASQ_Question" ColumnName="ASQ_Question" />
+                <ScalarProperty Name="SAR_AnswerSelf" ColumnName="SAR_AnswerSelf" />
+                <ScalarProperty Name="SAR_AnswerManager" ColumnName="SAR_AnswerManager" />
+                <ScalarProperty Name="SAR_Comments" ColumnName="SAR_Comments" />
+                <ScalarProperty Name="SAR_IsActive" ColumnName="SAR_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

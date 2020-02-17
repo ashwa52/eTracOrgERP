@@ -73,8 +73,7 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
                     ManagerPhoto = x.ManagerPhoto,
                     ManagerName = x.ManagerName,
                     EmployeePhoto = x.EmployeePhoto,
-                    //PRMeetingDateTime = x.PRMeetingDateTime.HasValue ? new DateTimeOffset(x.PRMeetingDateTime.Value, TimeSpan.FromHours(0)).ToLocalTime().DateTime : (DateTime?)null
-                    PRMeetingDateTime = x.PRMeetingDateTime
+                    PRMeetingDateTime = x.PRMeetingDateTime.HasValue?new DateTimeOffset(x.PRMeetingDateTime.Value, TimeSpan.FromHours(0)).ToLocalTime().DateTime: (DateTime?)null
                 }).ToList();
             }
             catch (Exception ex)

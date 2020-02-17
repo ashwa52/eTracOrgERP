@@ -321,6 +321,7 @@
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCostCode_CostCode" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.InterviewAnswer" Width="1.5" PointX="20.375" PointY="4.75" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.ApplicantPersonalInfo" Width="1.5" PointX="18.375" PointY="20.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.ChangeExpectation" Width="1.5" PointX="20.375" PointY="20.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
