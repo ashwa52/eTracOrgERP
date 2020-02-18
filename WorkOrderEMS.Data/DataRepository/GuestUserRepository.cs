@@ -21,6 +21,7 @@ namespace WorkOrderEMS.Data.DataRepository
         }
         public EmployeeVIewModel GetEmployee(long userId)
         {
+
             var employeeId = objworkorderEMSEntities.UserRegistrations.Where(x => x.UserId == userId).FirstOrDefault()?.EmployeeID;
              
                 var getDetailsOfApplicant = objworkorderEMSEntities.spGetApplicantAllDetails(userId).//spGetEmployeePersonalInfo(employeeId).

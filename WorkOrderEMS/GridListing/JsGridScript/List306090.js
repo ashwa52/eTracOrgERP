@@ -447,16 +447,19 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                                     $('#profileArea').show();
                                                     $('#profileArea').html(data);
                                                 }
-                                                if (item.PRMeetingStatus == "MEETINGNOTFOUND"){
-                                                //if (result == "MEETINGNOTFOUND") {
+                                                if (result == "MEETINGNOTFOUND") {
                                                     $("#selfAssessmentTable :input").attr("disabled", true);
                                                     $("#labelAddCalendar").html('Please complete the meeting before submitting the Evaluation <span title="Setup meeting"><i onclick=showMeetingPopUp() class="fa fa-calendar-check-o fa-2x" style="margin-left:6px; margin-top:4px;"></i ></span>');
                                                     $("#MeetingNotDoneModal").modal('show');
-                                                } else if (item.PRMeetingStatus == "MEETINGNOTCOMPLETED") {
-                                                    //$("#selfAssessmentTable :input").attr("disabled", true);
-                                                    //$("#labelAddCalendar").html('Meeting is scheduled but not completed');
-                                                    //$("#MeetingNotDoneModal").modal('show');
+                                                } else if (result == "MEETINGNOTCOMPLETED") {
+                                                    $("#selfAssessmentTable :input").attr("disabled", true);
+                                                    $("#labelAddCalendar").html('Meeting is scheduled but not completed');
+                                                    $("#MeetingNotDoneModal").modal('show');
                                                 }
+
+
+
+
                                             }
                                         });
                                     }
@@ -466,7 +469,6 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                 }
                             });
                         }).append($evaluationText);
-                    debugger
                     if (item.Status == "Expectations Submitted" || item.Status == "Evaluation Submitted" && item.PRMeetingStatus != "MEETINGCOMPLETED") {
                         return $("<div>").attr({ class: "btn-toolbar" }).append($evaluationTextButton).append($customTextButton).append($customMeetingButton).append($customPiPButton).append($evaluationTextButton);
                     } else if (item.Status == "Expectations Submitted" || item.Status == "Evaluation Submitted" && item.PRMeetingStatus == "MEETINGCOMPLETED" || item.PRMeetingStatus == "MEETINGNOTCOMPLETED") {
@@ -732,4 +734,30 @@ function showMeetingPopUp() {
     $("#MeetingNotDoneModal").modal('hide');
     $("#SetUpMeetingModal").modal('show');
 
+}
+function SelfAssessment() {
+    $.ajax({
+        type: "GET",
+        url: '../NewAdmin/GetManagerAssessmentDetails/',
+        error: function (xhr, status, error) {
+        },
+        success: function (item) {
+
+            $.ajax({
+                type: "POST",
+                data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation, 'Department': item.DepartmentName, 'LocationName': item.LocationName },
+                url: '../NewAdmin/SelfAssessmentView/',
+                error: function (xhr, status, error) {
+                },
+                success: function (result) {
+
+                    if (result != null) {
+                        $("#gridArea").hide();
+                        $('#profileArea').show();
+                        $('#profileArea').html(result);
+                    }
+                }
+            });
+        }
+    });
 }

@@ -73,8 +73,7 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
                     ManagerPhoto = x.ManagerPhoto,
                     ManagerName = x.ManagerName,
                     EmployeePhoto = x.EmployeePhoto,
-                    //PRMeetingDateTime = x.PRMeetingDateTime.HasValue ? new DateTimeOffset(x.PRMeetingDateTime.Value, TimeSpan.FromHours(0)).ToLocalTime().DateTime : (DateTime?)null
-                    PRMeetingDateTime = x.PRMeetingDateTime
+                    PRMeetingDateTime = x.PRMeetingDateTime.HasValue?new DateTimeOffset(x.PRMeetingDateTime.Value, TimeSpan.FromHours(0)).ToLocalTime().DateTime: (DateTime?)null
                 }).ToList();
             }
             catch (Exception ex)
@@ -100,7 +99,7 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
                                meta => meta.BST_SLT_Id,   // Select the foreign key (the second part of the "on" clause)
                                (post, meta) => new { Post = post, Meta = meta }) // selection
                               .Where(postAndMeta => postAndMeta.Meta.BST_Date >= fromDate && EntityFunctions.AddMinutes(postAndMeta.Meta.BST_Date, 60) <= toDate && postAndMeta.Meta.BST_EMP_EmployeeID == UserId);
-                              
+
                     foreach (var item in rslt)
                     {
                         EventModel rec = new EventModel();
@@ -111,7 +110,7 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
                         rec.start = Convert.ToDateTime(item.Meta.BST_SlotDate.ToShortDateString() + " " + item.Post.SLT_fromTime).ToString("s"); // "s" is a preset format that outputs as: "2009-02-27T12:12:22"
                         //rec.start = item.Meta.BST_SlotDate.ToString("s"); // "s" is a preset format that outputs as: "2009-02-27T12:12:22"
                         rec.end = item.Meta.BST_SlotDate.AddMinutes(60).ToString("s"); // field AppointmentLength is in minutes
-                        rec.title = string.IsNullOrEmpty(item.Meta.BST_IsActive)?"Title:"+ rec.start.ToString() :"Title: " +item.Meta.BST_IsActive;
+                        rec.title = string.IsNullOrEmpty(item.Meta.BST_IsActive) ? "Title:" + rec.start.ToString() : "Title: " + item.Meta.BST_IsActive;
                         //rec.title = string.IsNullOrEmpty(item.Meta.BST_Title) ? "Title:" + rec.start.ToString() : "Title: " + item.Meta.BST_Title;
                         //rec.StatusString = Enums.GetName<AppointmentStatus>((AppointmentStatus)item.StatusENUM);
                         //rec.StatusColor = Enums.GetEnumDescription<AppointmentStatus>(rec.StatusString);
@@ -133,7 +132,7 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
         public bool CreateNewEvent(string Title, string NewEventDate, string NewEventTime, string NewEventDuration, string JobId, string ApplicantName, string ApplicantEmail, long ManagerId, string selectedManagers)
         {
             bool result = false;
-           // Appointment obj = new Appointment();
+            // Appointment obj = new Appointment();
 
             try
             {
@@ -172,8 +171,9 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
                         objworkorderEMSEntities.spSetInterviewPanel("I", null, Convert.ToInt64(JobId), mgr1, mgr2, mgr3, 1, "Y");
                         result = true;
                     }
-                    else { 
-                        objworkorderEMSEntities.spSetInterviewPanel("I", null, Convert.ToInt64(JobId), ManagerId, null, null, 1,"Y");
+                    else
+                    {
+                        objworkorderEMSEntities.spSetInterviewPanel("I", null, Convert.ToInt64(JobId), ManagerId, null, null, 1, "Y");
                     }
                 }
             }
@@ -183,6 +183,7 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
             }
             return result;
         }
+
         public bool UpdateEvent(int id, string NewEventStart, string NewEventEnd)
         {
             bool result = false;
@@ -220,6 +221,29 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
                               (post, meta) => new { Post = post, Meta = meta }) // selection
                              .Where(postAndMeta => postAndMeta.Meta.BST_EMP_EmployeeID == UserId);
 
+
+
+                    //var myList = objworkorderEMSEntities.SlotTimes
+                    //                        .Join(
+                    //                        objworkorderEMSEntities.BookSlotTimes,
+                    //                        st => st.SLT_Id,
+                    //                        bst => bst.BST_SLT_Id,
+                    //                        (st, bst) => new { SlotTime = st, BookedSlotTime = bst })
+                    //                        .Join(
+                    //                        objworkorderEMSEntities.InterviewProposalTimes.Where(dsi => dsi.IPT_JPS_JobPostingId>0),
+                    //                        cs => cs.BookedSlotTime.job,
+                    //                        dsi => dsi.Sector_code,
+                    //                        (cs, dsi) => new { cs.Company, cs.Sector, IndustryCode = dsi.Industry_code })
+                    //                        .Select(c => new
+                    //                        {
+                    //                            c.Company.Equity_cusip,
+                    //                            c.Company.Company_name,
+                    //                            c.Company.Primary_exchange,
+                    //                            c.Company.Sector_code,
+                    //                            c.Sector.Description,
+                    //                            c.IndustryCode
+                    //                        });
+
                     foreach (var item in rslt)
                     {
                         EventModel rec = new EventModel();
@@ -230,8 +254,7 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
                         rec.start = Convert.ToDateTime(item.Meta.BST_SlotDate.ToShortDateString() + " " + item.Post.SLT_fromTime).ToString("s"); // "s" is a preset format that outputs as: "2009-02-27T12:12:22"
                         //rec.start = item.Meta.BST_SlotDate.ToString("s"); // "s" is a preset format that outputs as: "2009-02-27T12:12:22"
                         rec.end = Convert.ToDateTime(item.Meta.BST_SlotDate.ToShortDateString() + " " + item.Post.SLT_ToTime).ToString("s"); // field AppointmentLength is in minutes
-                        rec.title = string.IsNullOrEmpty(item.Meta.BST_IsActive) ? "Title:" + rec.start.ToString() : "Title: " + item.Meta.BST_IsActive;
-                        //rec.title = string.IsNullOrEmpty(item.Meta.BST_Title) ? "Title:" + rec.start.ToString() : "Title: " + item.Meta.BST_Title;
+                        rec.title = string.IsNullOrEmpty(item.Meta.BST_Title) ? "Title:" + rec.start.ToString() : "Title: " + item.Meta.BST_Title;
                         //rec.StatusString = Enums.GetName<AppointmentStatus>((AppointmentStatus)item.StatusENUM);
                         //rec.StatusColor = Enums.GetEnumDescription<AppointmentStatus>(rec.StatusString);
                         rec.StatusString = "#FF8000:BOOKED";
@@ -267,6 +290,5 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
                 throw;
             }
         }
-
     }
 }

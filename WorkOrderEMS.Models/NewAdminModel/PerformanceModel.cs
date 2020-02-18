@@ -66,18 +66,21 @@ namespace WorkOrderEMS.Models.NewAdminModel
         public string EEL_AnswerManager { get; set; }
         public string EEL_EMP_EmployeeId { get; set; }
         public string EEL_EMP_EmployeeIdManager { get; set; }
-        public long? EEL_Id { get; set; }
+        public Nullable<long> EEL_Id { get; set; }
         public string EEL_IsActive { get; set; }
         public string EEL_Comments { get; set; }
 
         public string EEL_FinencialYear { get; set; }
 
         public string EEL_FinQuarter { get; set; }
-
         public string ASQ_QuestionType { get; set; }
         public decimal? EEL_ScoreSelf { get; set; }
         public string LocationName { get; set; }
         public string Department { get; set; }
+        public string CHE_IsActive { get; set; }
+        public string CHE_ASQ_Question { get; set; }
+        public long  CHE_Id { get; set; }
+
     }
 
     public class SetupMeeting { 

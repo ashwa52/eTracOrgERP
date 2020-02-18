@@ -7,8 +7,6 @@ using System.Data.Entity.Core.Objects;
 using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WorkOrderEMS.BusinessLogic.Interfaces;
 using WorkOrderEMS.Data.DataRepository;
 using WorkOrderEMS.Data.EntityModel;
@@ -580,15 +578,43 @@ namespace WorkOrderEMS.BusinessLogic
             bool Flag = false;
             try
             {
+                if (Obj.ApplicantPersonalInfo != null)
+                {
+                    Obj.ApplicantPersonalInfo[0].API_Action = 'I';
+                    Obj.ApplicantAddress[0].APA_Action = 'I';
+                    Obj.ApplicantContactInfo[0].ACI_Action = 'I';
+                    Obj.ApplicantAdditionalInfo[0].AAI_Action = 'I';
+                    Obj.AplicantAcadmicDetails[0].AAD_Action = 'I';
+                    Obj.ApplicantBackgroundHistory[0].ABH_Action = 'I';
+                    Obj.ApplicantPositionTitle[0].APT_Action = 'I';
+                    Obj.ApplicantAccidentRecord[0].AAR_Action = 'I';
+                    Obj.ApplicantTrafficConvictions[0].ATC_Action = 'I';
+                    Obj.ApplicantVehiclesOperated[0].AVO_Action = 'I';
+                    Obj.ApplicantLicenseHeald[0].ALH_Action = 'I';
+                    //Obj.ApplicantSchecduleAvaliblity[0].ASA_Action = 'I';
+
+                }
+                List<ATC> ListATC = new List<ATC>();
+
+                for(int i=0; i<Obj.ApplicantTrafficConvictions.Count;i++)
+                { 
+                ATC atc = new ATC();
+                    atc.ATC_Action = Obj.ApplicantTrafficConvictions[i].ATC_Action;
+                    atc.ATC_APT_ApplicantId = Obj.ApplicantTrafficConvictions[i].ATC_APT_ApplicantId;
+                    atc.ATC_AtFaultAccident = Obj.ApplicantTrafficConvictions[i].ATC_AtFaultAccident==true?'Y':'N';
+                    atc.ATC_AtMovingViolation = Obj.ApplicantTrafficConvictions[i].ATC_AtMovingViolation == true ? 'Y' : 'N';
+                    atc.ATC_ConvictedDate = Obj.ApplicantTrafficConvictions[i].ATC_ConvictedDate;
+                    atc.ATC_Id = Obj.ApplicantTrafficConvictions[i].ATC_Id;
+                    atc.ATC_IsActive = Obj.ApplicantTrafficConvictions[i].ATC_IsActive;
+                    atc.ATC_StateOfViolation = Obj.ApplicantTrafficConvictions[i].ATC_StateOfViolation;
+                    atc.ATC_Violation = Obj.ApplicantTrafficConvictions[i].ATC_Violation;
+                    ListATC.Add(atc);
+
+                }
+
                 //// save using procedure with table value parameter 
                 using (var context = new workorderEMSEntities())
                 {
-                    //// convert source data to DataTable 
-                    if (Obj.ApplicantPersonalInfo != null)
-                    {
-                        //var Date = new SqlParameter("@Date", System.Data.SqlDbType.DateTime2);
-                        Obj.ApplicantPersonalInfo[0].API_Action = 'I';
-                    }
                     System.Data.DataTable ApplicantPersonalInfoTable = Obj.ApplicantPersonalInfo.ToDataTable();
                     System.Data.DataTable AplicantAcadmicDetailsTable = Obj.AplicantAcadmicDetails.ToDataTable();
                     System.Data.DataTable ApplicantAddressTable = Obj.ApplicantAddress.ToDataTable();
@@ -597,10 +623,15 @@ namespace WorkOrderEMS.BusinessLogic
                     System.Data.DataTable ApplicantBackgroundHistoryTable = Obj.ApplicantBackgroundHistory.ToDataTable();
                     System.Data.DataTable ApplicantPositionTitleTable = Obj.ApplicantPositionTitle.ToDataTable();
                     System.Data.DataTable ApplicantAccidentRecordTable = Obj.ApplicantAccidentRecord.ToDataTable();
-                    System.Data.DataTable ApplicantTrafficConvictionsTable = Obj.ApplicantTrafficConvictions.ToDataTable();
+                    System.Data.DataTable ApplicantTrafficConvictionsTable = ListATC.ToDataTable();
                     System.Data.DataTable ApplicantVehiclesOperatedTable = Obj.ApplicantVehiclesOperated.ToDataTable();
                     System.Data.DataTable ApplicantLicenseHealdTable = Obj.ApplicantLicenseHeald.ToDataTable();
-                    System.Data.DataTable ApplicantSchecduleAvaliblityTable = Obj.ApplicantSchecduleAvaliblity.ToDataTable();
+                    //Obj.ApplicantSchecduleAvaliblity = new List<ApplicantSchecduleAvaliblity>();
+                    //System.Data.DataTable ApplicantSchecduleAvaliblityTable = Obj.ApplicantSchecduleAvaliblity.ToDataTable();
+
+                    //// convert source data to DataTable 
+
+
                     var Action = new SqlParameter("@Action", SqlDbType.Char);
                     Action.Value = "I";
                     //var ACB_BillAmount = new SqlParameter("@ACB_BillAmount", SqlDbType.Decimal);
@@ -616,7 +647,7 @@ namespace WorkOrderEMS.BusinessLogic
                     var UT_ApplicantTrafficConvictions = new SqlParameter("@UT_ApplicantTrafficConvictions", SqlDbType.Structured);
                     var UT_ApplicantVehiclesOperated = new SqlParameter("@UT_ApplicantVehiclesOperated", SqlDbType.Structured);
                     var UT_ApplicantLicenseHeald = new SqlParameter("@UT_ApplicantLicenseHeald", SqlDbType.Structured);
-                    var UT_ApplicantSchecduleAvaliblity = new SqlParameter("@UT_ApplicantSchecduleAvaliblity", SqlDbType.Structured);
+                    //var UT_ApplicantSchecduleAvaliblity = new SqlParameter("@UT_ApplicantSchecduleAvaliblity", SqlDbType.Structured);
                     // info for ApplicantPersonalInfoTable
                     UT_ApplicantPersonalInfo.Value = ApplicantPersonalInfoTable;
                     UT_ApplicantPersonalInfo.TypeName = "[dbo].[UT_ApplicantPersonalInfo]";
@@ -662,8 +693,8 @@ namespace WorkOrderEMS.BusinessLogic
                     UT_ApplicantLicenseHeald.TypeName = "[dbo].[UT_ApplicantLicenseHeald]";
 
                     //info for ApplicantLicenseHealdTable
-                    UT_ApplicantSchecduleAvaliblity.Value = ApplicantSchecduleAvaliblityTable;
-                    UT_ApplicantSchecduleAvaliblity.TypeName = "[dbo].[UT_ApplicantSchecduleAvaliblity]";
+                    //UT_ApplicantSchecduleAvaliblity.Value = ApplicantSchecduleAvaliblityTable;
+                    //UT_ApplicantSchecduleAvaliblity.TypeName = "[dbo].[UT_ApplicantSchecduleAvaliblity]";
 
                     context.Database.ExecuteSqlCommand("exec [dbo].[spSetApplicantAllDetails] @Action, @UT_ApplicantPersonalInfo,@UT_ApplicantAddress,@UT_ApplicantContactInfo, @UT_ApplicantAdditionalInfo, @UT_AplicantAcadmicDetails, @UT_ApplicantBackgroundHistory, @UT_ApplicantPositionTitle, @UT_ApplicantAccidentRecord, @UT_ApplicantTrafficConvictions, @UT_ApplicantVehiclesOperated, @UT_ApplicantLicenseHeald, @UT_ApplicantSchecduleAvaliblity",
                         Action, UT_ApplicantPersonalInfo,

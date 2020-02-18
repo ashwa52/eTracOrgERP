@@ -6881,7 +6881,20 @@
     <Content Include="Views\Guest\PartialView\_ExperianceDetailsApplicant.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\OnBoarding\_CheckForDOT.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\OnBoarding\_ViewAnswerQuestion.cshtml" />
-    <Content Include="Views\Guest\PartialView\_CommonModals.cshtml" />
+    <Content Include="Views\Guest\PartialView\_EmploymentHistory.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantInfomation.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantAccidentRecord.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantTrafficConvictions.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantLicenseHeald.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantPersonalInfo.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantAddress.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantContactInfo.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantAdditionalInfo.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantVehiclesOperated.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantPositionTitle.cshtml" />
+      <Content Include="Views\NewAdmin\MySchedules.cshtml" />
+    <Content Include="Views\NewAdmin\SelfAssessmentView.cshtml" />
+	<Content Include="Views\Guest\PartialView\_CommonModals.cshtml" />
     <Content Include="Views\Guest\PartialView\_BackGroundCheckForm.cshtml" />
     <Content Include="Views\Guest\PartialView\_UploadDocuments.cshtml" />
     <None Include="Web.Debug.config">
@@ -6892,6 +6905,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="Areas\AdminSection\Models\AdminSectionModel\" />
     <Folder Include="Areas\AdminSection\Views\SendEmailTemplate\" />
     <Folder Include="Content\AdminDocs\PDFForm\" />
