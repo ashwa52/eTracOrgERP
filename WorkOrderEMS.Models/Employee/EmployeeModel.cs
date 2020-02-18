@@ -9,6 +9,7 @@ namespace WorkOrderEMS.Models.Employee
 {
 	public class EmployeeVIewModel
 	{
+        public long UserId { get; set; }
         public long ApplicantId { get; set; }
         public string Action { get; set; }
         public string EmpId { get; set; }

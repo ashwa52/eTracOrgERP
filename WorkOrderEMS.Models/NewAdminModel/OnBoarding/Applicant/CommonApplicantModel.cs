@@ -27,7 +27,7 @@ namespace WorkOrderEMS.Models
     {
         public char API_Action { get; set; }
         public long API_Id { get; set; }        
-        public long ApplicantId { get; set; }
+        public long API_APT_ApplicantId { get; set; }                            
         public string FirstName { get; set; }
         public string MiddleName { get; set; }
         public string LastName { get; set; }
@@ -35,6 +35,7 @@ namespace WorkOrderEMS.Models
         public string SSN { get; set; }
         public string DL_Number { get; set; }      
         public decimal DesireSalary { get; set; }
+        //public Nullable<DateTime> API_Date { get; set; }
         public char IsActive { get; set; }
     }
 }

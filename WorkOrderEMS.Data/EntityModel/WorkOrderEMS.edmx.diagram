@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="2d5990e73e4e48b6b77f55289512351d" Name="Diagram1" ZoomLevel="63">
+      <Diagram DiagramId="2d5990e73e4e48b6b77f55289512351d" Name="Diagram1" ZoomLevel="54">
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.AccountCategory" Width="1.5" PointX="5.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.AddressMaster" Width="1.5" PointX="21.75" PointY="124.375" IsExpanded="true" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.AdminEmployeeMapping" Width="1.5" PointX="18.75" PointY="126.875" IsExpanded="true" />
@@ -321,6 +321,8 @@
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.InterviewProposalTime" Width="1.5" PointX="20.375" PointY="12.75" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.SlotTime" Width="1.5" PointX="20.375" PointY="17.75" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.BookSlotTime" Width="1.5" PointX="20.375" PointY="8.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.ApplicantContactInfo" Width="1.5" PointX="20.375" PointY="20.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.JobPosting" Width="1.5" PointX="3.375" PointY="21.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

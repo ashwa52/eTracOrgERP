@@ -38,6 +38,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         private readonly IQRCSetup _IQRCSetup;
         private readonly IePeopleManager _IePeopleManager;
         private readonly IApplicantManager _IApplicantManager;
+        private readonly IGuestUser _IGuestUserRepository;
         private readonly string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private readonly string WorkRequestImagepath = ConfigurationManager.AppSettings["WorkRequestImage"];
         private readonly string ProfilePicPath = ConfigurationManager.AppSettings["ProfilePicPath"];
@@ -46,7 +47,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
 
 
         DBUtilities DB = new DBUtilities();
-        public NewAdminController(IDepartment _IDepartment, IGlobalAdmin _GlobalAdminManager, ICommonMethod _ICommonMethod, IQRCSetup _IQRCSetup, IePeopleManager _IePeopleManager, IApplicantManager _IApplicantManager)
+        public NewAdminController(IDepartment _IDepartment, IGlobalAdmin _GlobalAdminManager, ICommonMethod _ICommonMethod, IQRCSetup _IQRCSetup, IePeopleManager _IePeopleManager, IApplicantManager _IApplicantManager, IGuestUser _IGuestUserRepository)
         {
             this._IDepartment = _IDepartment;
             this._GlobalAdminManager = _GlobalAdminManager;
@@ -54,6 +55,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             this._IQRCSetup = _IQRCSetup;
             this._IePeopleManager = _IePeopleManager;
             this._IApplicantManager = _IApplicantManager;
+            this._IGuestUserRepository = _IGuestUserRepository;
         }
         public ActionResult Index()
         {
@@ -1298,16 +1300,18 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             {
                 if (model != null)
                 {
-                    if (model.ApplicantId == 0)
-                    {
-                    //    model.Action = "I";
-                    //    isSaved = _IApplicantManager.SaveAssets(model);
+                    //if (model.ApplicantId == 0)
+                    //{
+                    ////    model.Action = "I";
+                    ////    isSaved = _IApplicantManager.SaveAssets(model);
                     //}
                     //else
                     //{
-                    //    model.Action = "U";
-                    //    isSaved = _IApplicantManager.SaveAssets(model);
-                    }
+                        returnModel = _IGuestUserRepository.GetW4Form(ObjLoginModel.UserId);
+                        //    model.Action = "U";
+                        //    isSaved = _IApplicantManager.SaveAssets(model);
+
+                    //}
                 }
             }
             catch (Exception ex)

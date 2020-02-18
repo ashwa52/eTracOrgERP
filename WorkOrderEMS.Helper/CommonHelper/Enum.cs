@@ -663,7 +663,17 @@ namespace WorkOrderEMS.Helper
         [StringValue("InsuranceVander")]
         VendorType = 3,
     }
-
+    public enum POType
+    {
+        [StringValue("NormalPO")]
+        NormalPO = 1,
+    }
+    public enum FileType
+    {
+        [StringValue("FileTypeSSNLicense")]
+        FileType = 2,
+    }
+   
     public enum POReccuringStaus
     {
         Pending,
@@ -674,6 +684,17 @@ namespace WorkOrderEMS.Helper
         public const string L = "LocationTransfer";
         public const string S = "EmployeeStatus";
         public const string D = "Demotion";
+    }
+    public static class ApplicantStatus
+    {
+        public const string F = "BackgroundCheck";
+        public const string S = "Sent For Background Check";
+        public const string Y = "Background Check Pass";
+        public const string N = "Background Check Fail";
+    }
+    public static class VendorName
+    {
+        public const string BackgroundCheck = "Accredited Employment Screenin";       
     }
     /// <summary>
     /// Created By : Ashwajit Bansod

@@ -3887,13 +3887,13 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 return null;
             }
         }
-        public List<JobPosting> GetJobPostong(long userId)
+        public List<WorkOrderEMS.Models.NewAdminModel.JobPosting> GetJobPostong(long userId)
         {
-            var lst = new List<JobPosting>();
+            var lst = new List<WorkOrderEMS.Models.NewAdminModel.JobPosting>();
             using (workorderEMSEntities context = new workorderEMSEntities())
             {
                 var hiringManagerId = context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
-                return context.spGetJobPosting(hiringManagerId).Select(x => new JobPosting
+                return context.spGetJobPosting(hiringManagerId).Select(x => new WorkOrderEMS.Models.NewAdminModel.JobPosting
                 {
                     Applicant = x.ApplicantCount,
                     DatePosted = x.JobPostingDate,

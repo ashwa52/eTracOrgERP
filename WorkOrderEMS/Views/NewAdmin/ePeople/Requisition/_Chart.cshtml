@@ -153,10 +153,23 @@
                         data.SeatingName = listData[i].SeatingName;
                         data.JobDescription = listData[i].JobDescription;
                         data.DepartmentName = listData[i].DepartmentName;
-
+                        //data.photo1 = "https://cdn.balkan.app/shared/1.jpg";
+                        //data.photo2 = "https://cdn.balkan.app/shared/1.jpg";
+                        //data.photo3 = "https://cdn.balkan.app/shared/1.jpg";
+                        //data.photo4 = "https://cdn.balkan.app/shared/1.jpg";
                         tabledata.push(data);
                     }
-
+                    //var chart = new OrgChart(document.getElementById("tree"), {
+                    //    nodeBinding: {
+                    //        field_0: "name",
+                    //        img_0: "photo1",
+                    //        img_1: "photo2",
+                    //    },    
+                    //});
+                    //OrgChart.templates.ana.img_0 = '<image preserveAspectRatio="xMidYMid slice" xlink:href="{val}" x="20" y="-30" width="50" height="50"></image>';
+                    //OrgChart.templates.ana.img_1 = '<image preserveAspectRatio="xMidYMid slice" xlink:href="{val}" x="150" y="-30" width="50" height="50"></image>';
+                    //OrgChart.templates.ana.img_2 = '<image preserveAspectRatio="xMidYMid slice" xlink:href="{val}" x="300" y="-30" width="50" height="50"></image>';
+                    //OrgChart.templates.ana.img_3 = '<image preserveAspectRatio="xMidYMid slice" xlink:href="{val}" x="490" y="-30" width="50" height="50"></image>';
                     var chart = new OrgChart(peopleElement, {
 
                         scaleInitial: BALKANGraph.match.boundary,
@@ -175,6 +188,10 @@
                             field_0: "SeatingName",
                             field_1: "JobDescription",
                             field_2: "DepartmentName",
+                            //img_0: "photo1",
+                            //img_1: "photo2",
+                            //img_2: "photo3",
+                            //img_3: "photo4",
                             //field_2: "DepartmentName"
                             //img_0: "img"
                         },

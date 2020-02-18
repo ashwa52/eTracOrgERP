@@ -164,7 +164,7 @@ namespace WorkOrderEMS.BusinessLogic
                     var data = GetDirectDepositeDataByEmployeeId(EmployeeId);
                     if (data != null)
                         return Context.spSetDirectDepositForm("U", EmployeeId, model.Account1.EmployeeBankName, model.Account1.AccountType,
-                            model.Account1.Account, model.Account1.BankRouting, model.Account1.DepositeAmount, model.Account2.EmployeeBankName, model.Account2.AccountType, model.Account2.Account
+                            model.Account1.Account, model.Account1.BankRouting, model.Account1.DepositeAmount.HasValue ? model.Account1.DepositeAmount.Value : 0, model.Account2.EmployeeBankName, model.Account2.AccountType, model.Account2.Account
                             , model.Account2.BankRouting, model.VoidCheck, "Y") > 0 ? true : false;
 
                     var add =  Context.spSetDirectDepositForm("I", EmployeeId, model.Account1.EmployeeBankName, model.Account1.AccountType,
@@ -326,7 +326,23 @@ namespace WorkOrderEMS.BusinessLogic
                         HomeEmail = x.ECF_HomeEmail,
                         HomePhone = x.ECF_HomePhone,
                         EmpId = x.ECF_EMP_EmployeeID,
-                        EcfId = x.ECF_Id
+                        EcfId = x.ECF_Id,
+                        FirstName = x.ECF_FirstName,
+                        MiddleName = x.ECF_MiddleName,
+                        LastName = x.ECF_LastName,
+                        Address = x.ECF_Address,
+                        Citizenship = x.ECF_Citizenship,
+                        ConactInfo = x.ECF_EmergencyContactName,
+                        DOB = x.ECF_BirthDate,
+                        EcfDate = x.ECF_Date,
+                        EmergencyContactName = x.ECF_EmergencyContactName,
+                        Gender = x.ECF_Gender,
+                        HomeAddress = x.ECF_HomeAddress,
+                        License = x.ECF_DriverLicense,
+                        Mobile = x.ECF_Mobile,
+                        RelationShip = x.ECF_Relationship,
+                        SSN = x.ECF_SSN,
+                        IsActive = x.ECF_IsActive
                     }).FirstOrDefault();
                     return name;
                 }
@@ -336,27 +352,35 @@ namespace WorkOrderEMS.BusinessLogic
                 throw ex;
             }
         }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 13-Feb-2020
+        /// Created For : To save and Update Emeregency contact form
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="model"></param>
         public void SetEmergencyForm(long userId, EmergencyContectForm model)
         {
-
             try
             {
-                
-                //using (workorderEMSEntities Context = new workorderEMSEntities())
-                //{
+                using (workorderEMSEntities Context = new workorderEMSEntities())
+                {
 
-                //    var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
-                //    var isexist = GetEmergencyForm(userId);
-                //    if (ReferenceEquals(isexist, null))
-                //    {
-                //        Context.spSetEmergencyContactForm("I", model.EcfId, empid, model.NickName, model.HomePhone, model.HomeEmail, model.EcfDate, model.IsActive);
-                //    }
-                //    else
-                //    {
-                //        Context.spSetEmergencyContactForm("U", model.EcfId, empid, model.NickName, model.HomePhone, model.HomeEmail, model.EcfDate, model.IsActive);
-                //    }
-
-                //}
+                    var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
+                    var isexist = GetEmergencyForm(userId);
+                    if (ReferenceEquals(isexist, null))
+                    {
+                        Context.spSetEmergencyContactForm("I", model.EcfId, empid, model.NickName, model.HomePhone,model.Address, model.HomeEmail,model.FirstName,
+                            model.MiddleName, model.LastName, model.Address, model.Gender, model.Citizenship, model.DOB, model.License, model.EmergencyContactName, model.Mobile
+                            ,model.HomePhone, model.SSN, model.RelationShip, model.IsActive);
+                    }
+                    else
+                    {
+                        Context.spSetEmergencyContactForm("U", model.EcfId, empid, model.NickName, model.HomePhone, model.Address, model.HomeEmail, model.FirstName,
+                            model.MiddleName, model.LastName, model.Address, model.Gender, model.Citizenship, model.DOB, model.License, model.EmergencyContactName, model.Mobile
+                            , model.HomePhone, model.SSN, model.RelationShip, model.IsActive);
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -546,9 +570,7 @@ namespace WorkOrderEMS.BusinessLogic
                     else
                     {
                         Context.spSetW4Form("U", isexist.W4FId, empid, model.SSN, GetMaritalStatusAsString(model.MeritalStatus), model.NameDiffer == true ? "Y" : "N", model.TotalAllowence, model.AdditionalAmount, model.ClaimExemption, model.EmployeerNameAndAddress, model.FirstEmployeementDate, model.EIN, model.IsActive);
-
                     }
-
                 }
             }
             catch (Exception ex)
@@ -604,7 +626,7 @@ namespace WorkOrderEMS.BusinessLogic
                     var data = GetDirectDepositeDataByEmployeeId(EmployeeId);
                     if (data != null)
                         //Context.spSetEmergencyContactForm()
-                        return Context.spSetEmergencyContactForm("U", model.ECF_Id, EmployeeId, model.ECF_NickName, model.ECF_HomePhone,
+                    return Context.spSetEmergencyContactForm("U", model.ECF_Id, EmployeeId, model.ECF_NickName, model.ECF_HomePhone,
                             model.ECF_HomeAddress, model.ECF_HomeEmail, model.ECF_FirstName, model.ECF_MiddleName, model.ECF_LastName,
                             model.ECF_Address, model.ECF_Gender, model.ECF_Citizenship, model.ECF_BirthDate, model.ECF_DriverLicense,
                             model.ECF_EmergencyContactName, model.ECF_Mobile, model.ECF_PhoneNumber, model.ECF_SSN, model.ECF_Relationship,"Y") > 0 ? true : false;

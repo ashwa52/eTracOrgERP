@@ -134,5 +134,72 @@ namespace WorkOrderEMS.Helper
             }
             return returnData;
         }
+
+        public async Task<string> TestingE_Verify(string URL)
+        {
+            string returnString = "";
+            // Call asynchronous network methods in a try/catch block to handle exceptions.
+            try
+            {
+                HttpClient client = new HttpClient();
+                client.CancelPendingRequests();
+                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Ssl3 | System.Net.SecurityProtocolType.Tls | System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;
+                var header = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes("AMIS1739:Elite76!!")));///username:password for auth
+                client.DefaultRequestHeaders.Authorization = header;
+
+                var result = await client.GetAsync("https://stage-everify.uscis.gov/api/v30/health", HttpCompletionOption.ResponseHeadersRead)
+                             .ConfigureAwait(false);
+                string responseBody = await result.Content.ReadAsStringAsync();
+                if (result.IsSuccessStatusCode == true)
+                {
+                    returnString = responseBody;
+                }
+                else
+                {
+                    returnString = "false";
+                }
+            }
+            catch (HttpRequestException e)
+            {
+                throw;
+            }
+            return returnString;
+        }
+
+        public string LoginE_Verify(string PostData, string url)
+        {
+            string returnData = "";
+            try
+            {
+                using (HttpClient objClint = new HttpClient())
+                {
+                    System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Ssl3 | System.Net.SecurityProtocolType.Tls | System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;
+                    objClint.BaseAddress = new Uri("https://stage-everify.uscis.gov/api/v30");
+                    //var header = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes("AMIS1739:Elite76!!")));///username:password for auth
+                    //objClint.DefaultRequestHeaders.Authorization = header;
+                    //objClint.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", "dkpEaHRJSzJiempBUlVNOC9QN3JlUT09");
+                    #region Demo Code
+                    //string message = JsonConvert.SerializeObject(dynamicJson);
+                    //HttpContent c = new StringContent(PostData, Encoding.UTF8, "application/json");
+                    var stringContent = new StringContent(PostData, Encoding.UTF8, "application/json");
+                    // var response = objClint.PostAsync(url, c).Result;
+                    var response = objClint.PostAsync("/authentication/login", stringContent).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        returnData = response.Content.ReadAsStringAsync().Result;
+                    }
+                    else
+                    {
+                        var result = response.Content.ReadAsStringAsync().Result;
+                    }
+                    #endregion Demo Code
+                }
+            }
+            catch (Exception Ex)
+            {
+
+            }
+            return returnData;
+        }
     }
 }

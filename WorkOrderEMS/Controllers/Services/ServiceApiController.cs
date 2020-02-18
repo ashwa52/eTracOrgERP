@@ -5580,7 +5580,7 @@ namespace WorkOrderEMS.Controllers.Services
         [HttpPost]
         public IHttpActionResult GetFileList(eTracLoginModel obj)
         {
-            var ObjServiceResponseModel = new ServiceResponseModel<List<FileType>>();
+            var ObjServiceResponseModel = new ServiceResponseModel<List<Data.EntityModel.FileType>>();
             var model = new CommonFormModel();
             var _FillableFormRepository = new FillableFormRepository();
             try

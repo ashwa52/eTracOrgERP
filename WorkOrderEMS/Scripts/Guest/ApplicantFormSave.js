@@ -1,4 +1,6 @@
-﻿function OpenForm(formname, elm) {
+﻿
+var details = [];
+function OpenForm(formname, elm) {
     var geturl = '';
     var isLocked = false;
     $(elm).find('i').each(function (i, ielm) {
@@ -55,62 +57,117 @@ function SubmitForm(element, formName) {
     debugger
     var url = '';
     var data = '';
-    var isSubmit = confirm('Are you sure you want to submit');
+    var isDirectDepositeSaved = false;
+    var isContactSaved = false;
+    var isBackgroundCheck = false;
+    //var isSubmit = confirm('Are you sure you want to submit');
     debugger
-    if (isSubmit) {
+    //if (isSubmit) {
         debugger
         switch (formName.id) {
             case 'depositeForm':
                 url = '/Guest/_DirectDepositeForm';
                 data = $('#depositeForm').serialize();
+                isDirectDepositeSaved = true;
+                isContactSaved = false;
+                isBackgroundCheck = false;
                 break;
             case 'employeeHandbook':
                 url = '/Guest/_EmployeeHandbook';
                 data = $('#employeeHandbook').serialize();
+                isDirectDepositeSaved = false;
+                isContactSaved = false;
+                isBackgroundCheck = false;
                 break;
             case 'photoreleaseform':
                 url = '/Guest/_photoreleaseform';
                 data = $('#photoreleaseform').serialize();
+                isDirectDepositeSaved = false;
+                isContactSaved = false;
+                isBackgroundCheck = false;
                 break;
             case 'emergencycontactform':
                 url = '/Guest/_emergencyContactForm';
                 data = $('#emergencycontactform').serialize();
+                isDirectDepositeSaved = false;
+                isContactSaved = false;
+                isBackgroundCheck = false;
                 break;
             case 'confidentialityagreementform':
                 url = '/Guest/_ConfidentialityAgreementForm';
                 data = $('#confidentialityagreementform').serialize();
+                isDirectDepositeSaved = false;
+                isContactSaved = false;
+                isBackgroundCheck = false;
                 break;
             case 'educationverificationform':
                 url = '/Guest/_EducationVarificationForm';
                 data = $('#educationverificationform').serialize();
+                isDirectDepositeSaved = false;
+                isContactSaved = false;
+                isBackgroundCheck = false;
                 break;
             case 'w4form':
                 url = '/Guest/_W4Form';
                 data = $('#w4form').serialize();
+                isDirectDepositeSaved = false;
+                isContactSaved = false;
+                isBackgroundCheck = false;
                 break;
             case 'I9Form':
                 debugger
                 url = '/Guest/_I9Form';
                 data = $('#I9Form').serialize();
+                isDirectDepositeSaved = false;
+                isContactSaved = false;
+                isBackgroundCheck = false;
                 break;
+            case 'ContactSavedForm':
+                debugger
+                url = '/Guest/_ContactSavedForm';
+                data = $('#ContactSavedForm').serialize();
+                isDirectDepositeSaved = false;
+                isBackgroundCheck = false;
+                isContactSaved = true;
+                //element.preventDefault();
+                break;
+            case 'BackGroundCheckForm':
+                debugger
+                url = '/Guest/_BackGroundCheckForm';
+                data = $('#BackGroundCheckForm').serialize();
+                isDirectDepositeSaved = false;
+                isContactSaved = false;
+                isBackgroundCheck = true;
+                //element.preventDefault();
+                break;
+                
         }
-        PostForm(url, data, function (successResponse) {
-            if (successResponse == true) {
-                LockItem(formName.id);
-                $("#formModel").modal('hide');
-                location.href = '/Guest/PersonalFile';
-            }
-            else {
+        if (isContactSaved == false) {
+            PostForm(url, data, isDirectDepositeSaved,isBackgroundCheck, function (successResponse) {
+                if (successResponse == true) {
+                    LockItem(formName.id);
+                    $("#formModel").modal('hide');
+                    location.href = '/Guest/PersonalFile';
+                }
+                else {
 
-                $("#formid").html(successResponse);
-                $("#formModel").modal('show');
-                $(element).prop('checked', false);
-            }
-        }, function (errorResponse) {
-            alert('Something went wrong!!!!');
-            $("#formModel").modal('hide');
-        });
-    }
+                    $("#formid").html(successResponse);
+                    $("#formModel").modal('show');
+                    $(element).prop('checked', false);
+                }
+            }, function (errorResponse) {
+                alert('Something went wrong!!!!');
+                $("#formModel").modal('hide');
+            });
+        }
+        else {
+            debugger
+            SaveContact(data, details, url, function (errorCallback) {
+                alert('Something went wrong!!!!');
+                $("#formModel").modal('hide');
+            });
+        }
+    //}
 
     //if (isSubmit) {
     //	$.ajax({
@@ -131,7 +188,18 @@ function SubmitForm(element, formName) {
     //	});
     //}
 }
-function PostForm(url, data, successCallback, errorCallback) {
+$(".isCheckedContact").click(function () {
+    debugger
+    $_this = this;
+    if ($_this.checked == true) {
+        var getVal = $($_this).attr("value");
+        details.push({  ContactId: getVal,IsChecked:"Y" });
+    } else {
+        var getVal = $($_this).attr("value");
+        details.push({  ContactId: getVal,IsChecked:"N" });
+        }
+})
+function PostForm(url, data,isDirectDepositeSaved,isBackgroundCheck, successCallback, errorCallback) {
     debugger
     $.ajax({
         type: "POST",
@@ -139,13 +207,66 @@ function PostForm(url, data, successCallback, errorCallback) {
         data: data,
         //success: successCallback,
         success:function (Data) {
-                debugger
-                var url = "../Guest/_W4Form";
+            debugger
+            var base_url = window.location.origin;
+            if (isDirectDepositeSaved == true) {
+                
+                $.ajax({
+                    type: "GET",
+                    url: base_url + "/Guest/_ContactInfo",
+                    success: function (data) {
+                        debugger
+                        $("#openConatctModal").html(data);
+                        //$('#myModelForContactDetails').modal('show', { backdrop: 'static', keyboard: false });
+                        $("#myModelForContactDetails").modal("show");
+                    },
+                    error: function () {
+
+                    }
+                });
+                isDirectDepositeSaved = false;
+            }
+            else if (isBackgroundCheck == true) {
+                //$.ajax({
+                //    type: "GET",
+                //    url: base_url + "/Guest/_ContactInfo",
+                //    success: function (data) {
+                //        debugger
+                        //$("#openModalForDocument").html(data);
+                        $('#myModalToAddDocumentUpload').modal('show', { backdrop: 'static', keyboard: false });
+                        //$("#myModalToAddDocumentUpload").modal("show");
+                //    },
+                //    error: function () 
+                //    }
+                //});
+            }
+            else {
+                //var url = "../Guest/_W4Form";
                 $("#RenderPageId").html(Data);
+            }
         },
         error: errorCallback
     });
 }
+function SaveContact(data, details, url, errorCallback) {
+    debugger
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: { model: data, lstModel: details },
+        success: function (Data) {
+            debugger
+            //$('#myModelForContactDetails').modal('hide', { backdrop: '', keyboard: true });
+            
+            $('#myModelForContactDetails').modal('hide');          
+            $("#RenderPageId").html(Data);
+            $('.fade').removeClass('modal-backdrop');
+            $('.fade').removeClass('show');
+        },
+        error: errorCallback
+    });
+}
+
 function GetForm(url, successCallback, errorCallback) {
     $.ajax({
         type: "GET",
@@ -287,3 +408,69 @@ function SetFormStatus() {
         }
     });
 }
+
+//////=========================Next From Background check============================//////
+//=========================================================================================
+$("#AddSignatureForBackground").click(function () {
+
+})
+$("#UploadDocApplicant").click(function () {
+    debugger
+    var url = window.location.origin;
+    var fileUploadLicense = $("#myLicensefileUpload").get(0);   
+    var filesLicense = fileUploadLicense.files;    
+    // Create FormData object  
+    var fileDataLicense = new FormData();
+    // Looping over all files and add it to FormData object  
+    for (var i = 0; i < filesLicense.length; i++) {
+        fileDataLicense.append(filesLicense[i].name, filesLicense[i]);
+    }   
+    $.ajax({
+        url: url + '/Guest/UploadFilesApplicant',
+        type: "POST",
+        contentType: false, // Not to set any content header  
+        processData: false, // Not to process data  
+        data:   fileData ,
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
+        success: function (result) {
+            debugger
+            var fileUploadSSN = $("#mySSNfileUpload").get(0);
+            var filesSSN = fileUploadSSN.files;
+            var fileDataSSN = new FormData();
+            for (var i = 0; i < filesSSN.length; i++) {
+                fileDataSSN.append(filesSSN[i].name, filesSSN[i]);
+            }
+            $.ajax({
+                url: url + '/Guest/UploadFilesApplicant',
+                type: "POST",
+                contentType: false, // Not to set any content header  
+                processData: false, // Not to process data  
+                data: fileData,
+                beforeSend: function () {
+                    new fn_showMaskloader('Please wait...');
+                },
+                success: function (result) {
+                    debugger
+                },
+                error: function (err) {
+
+                },
+                complete: function () {
+                    fn_hideMaskloader();
+                }
+            });
+            $("#myModalToAddDocumentUpload").modal('hide');
+            //alert(result);
+        },
+        error: function (err) {
+            alert(err.statusText);
+        },
+        complete: function () {
+            fn_hideMaskloader();
+        }
+    });
+});
+///============================End Code======================================================
+//===========================================================================================

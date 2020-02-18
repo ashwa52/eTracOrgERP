@@ -387,8 +387,14 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             objPermissionDetailsRepository = new PermissionDetailsRepository();
             try
             {
-                //var ApplicantAPI = new ApplicantAPI();
-                //var tt = ApplicantAPI.Configuration("");
+                //var ApplicantAPI = new RecruiteeAPI();
+                //var getCVList = new Login() {
+                //    password = "Elite76!!",
+                //    username = "AMIS1739"
+                //};
+                ////var tt = ApplicantAPI.Configuration("");
+                //string message = Newtonsoft.Json.JsonConvert.SerializeObject(getCVList);
+                //var getLogin = ApplicantAPI.LoginE_Verify(message,null);
                 string mypassword = Cryptography.GetEncryptedData(loginViewModel.Password, true); 
                  //string mypassword23 = Cryptography.GetDecryptedData("RUNPkrIID3Q=", true); 
 

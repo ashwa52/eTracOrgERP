@@ -24,7 +24,7 @@ $(function () {
         { name: 'Description', width: 40, sortable: false }],
        // { name: 'IsActive', width: 20, sortable: true }],
         //{ name: 'act', index: 'act', width: 30, sortable: false }],
-        rownum: 10,
+        rownum: 20,
         rowList: [10, 20, 30],
         scrollOffset: 0,
         pager: '#divCostCodeListPager',

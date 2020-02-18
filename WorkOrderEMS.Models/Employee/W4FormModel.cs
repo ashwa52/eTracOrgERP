@@ -9,7 +9,8 @@ namespace WorkOrderEMS.Models.Employee
 {
 	public class W4FormModel
 	{
-		public long? W4FId { get; set; }
+        public long ApplicantId { get; set; }
+        public long? W4FId { get; set; }
 		[Required(ErrorMessage ="*")]
 		public string FirstName { get; set; }
 		public string MiddleName { get; set; }

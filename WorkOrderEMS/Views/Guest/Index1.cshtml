@@ -71,6 +71,7 @@
 <script type="text/javascript" src="~/Scripts/BindDropDown/DropDownList.js"></script>
 <script src="~/Scripts/simple.money.format.js"></script>
 <script type="text/javascript" src="~/Scripts/common/Masking.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/MaskLoaderNew.js"></script>
 <style>
     .input-disabled {
         background-color: #EBEBE4;
@@ -98,6 +99,7 @@
                             @*@Html.ValidationSummary(true)
                             @Html.AntiForgeryToken()*@
                             <!-- progressbar -->
+
                             <div class="stepwizard">
                                 <div class="stepwizard-row setup-panel" id="progressbar">
                                     <div class="stepwizard-step col">
@@ -135,6 +137,7 @@
 
                             @Html.HiddenFor(model => model.FirstName, new { @id = "CompanyDocEdit" })
                             @Html.HiddenFor(model => model.FirstName)
+                            @Html.HiddenFor(model => model.ApplicantId)
                             @if (ViewBag.UpdateMode != false)
                             {
                             @Html.HiddenFor(model => model.FirstName, new { @id = "VendorTypeForEdit" })
@@ -433,6 +436,7 @@
         </div>
     </div>
 </div>
+@*<div id="openModalForDocument"></div>*@
 <script src="~/Scripts/ePeople/ApplicantFunctionality.js"></script>
 <script src="~/Scripts/ePeople/CustomMultistepWizardApplicant.js"></script>
 <script src="~/Content/NewAdminContent/VENDOR/jquery-steps/build/jquery.steps.min.js"></script>

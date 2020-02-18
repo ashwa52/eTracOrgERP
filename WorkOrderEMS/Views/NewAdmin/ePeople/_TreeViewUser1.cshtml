@@ -11,7 +11,7 @@
 </style>
 <link href="~/Content/NewAdminContent/CSS/NewTreeUserView.css" rel="stylesheet" />
 <div class="pg-orgchart">
-    <div class="org-chart">
+    <div class="org-chart" id="imgstones">
         <ul>
             @if (Model.Count() > 0 && Model != null)
             {
@@ -44,8 +44,10 @@
     </div>
 </div>
 <script src="~/Scripts/NewAdminJS/UserTreeFunctionality.js"></script>
+
 <script>
-    $(document).ready(function(){
+    $(document).ready(function () {
+
         var base_url = window.location.origin;
         var EmpId = '@ViewBag.UserIdFirstTime';
     $.ajax({

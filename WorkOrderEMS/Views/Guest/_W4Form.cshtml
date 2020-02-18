@@ -80,7 +80,7 @@
         height: 127px;
         position: absolute;
         left: 20%;
-        margin: 27px 0px 0px 0px;
+        margin: -35px 0px 0px 0px;
     }
 
     .vertical1 {
@@ -88,7 +88,7 @@
         height: 126px;
         position: absolute;
         left: 19%;
-        margin: -116px 0px 0px 750px;
+        margin: -110px 0px 0px 756px;
     }
 
     table {
@@ -120,20 +120,20 @@
 </style>
 @using (Html.BeginForm("_W4Form", "Guest", FormMethod.Post, new { id = "w4form" }))
 {
-    <div style="margin:200px 30px 0px 30px;">
+    @Html.HiddenFor(x => x.ApplicantId)
+    <div style="margin:83px 30px 0px 30px;">
         <hr class="new1" />
         <div>
             <div class="row">
                 <div class="column">
-
                     <div>
-                        <h2>Form W-4 (2019)</h2><hr class="new2">
+                        <h2>Form W-4 (2020)</h2><hr class="new2">
                         <b>Future developments.</b> For the latest information about any future developments related to Form W-4, such as legislation enacted after it was published, go to www.irs.gov/FormW4.
                         <br /><b>Purpose.</b> Complete Form W-4 so that your employer can withhold the correct federal income tax from your pay. Consider completing a new Form W-4 each year and when your personal or financial situation changes.
-                        <br /><b>Exemption from withholding.</b> You may claim exemption from withholding for 2019 if <b>both</b> of the following apply.
+                        <br /><b>Exemption from withholding.</b> You may claim exemption from withholding for 2020 if <b>both</b> of the following apply.
                         <ul>
-                            <li>For 2018 you had a right to a refund of <b>all</b> federal income tax withheld because you had no tax liability, <b>and</b></li>
-                            <li>For 2019 you expect a refund of <b>all</b> federal income tax withheld because you expect to have <b>no</b> tax liability.</li>
+                            <li>For 2019 you had a right to a refund of <b>all</b> federal income tax withheld because you had no tax liability, <b>and</b></li>
+                            <li>For 2020 you expect a refund of <b>all</b> federal income tax withheld because you expect to have <b>no</b> tax liability.</li>
                         </ul>
                         If you’re exempt, complete <b>only</b> lines 1, 2, 3, 4, and 7 and sign the form to validate it. Your exemption for 2019 expires February 17, 2020. See Pub. 505, Tax Withholding and Estimated Tax, to learn more about whether you qualify for exemption from withholding.
                         <h2>General Instructions</h2>
@@ -142,7 +142,6 @@
                     </div>
                 </div>
                 <div class="column">
-
                     <div>
                         using this calculator if you have a more complicated tax situation, such as if you have a working spouse, more than one job, or a large amount of nonwage income not subject to withholding outside of your job. After your Form W-4 takes effect, you can also use this calculator to see how the amount of tax you’re having withheld compares to your projected total tax for 2019. If you use the calculator, you don’t need to complete any of the worksheets for Form W-4.<br />
                         Note that if you have too much tax withheld, you will receive a refund when you file your tax return. If you have too little tax withheld, you will owe tax when you file your tax return, and you might owe a penalty.<br />
@@ -152,7 +151,6 @@
                     </div>
                 </div>
                 <div class="column">
-
                     <div>
                         <h2>Specific Instructions</h2>
                         <b>Personal Allowances Worksheet</b><br />
@@ -179,25 +177,20 @@
                 </div>
             </div>
         </div>
-
         <div class="container" style="color:#000">
             <div class="column-left">
                 Form <span style="font-weight:bold;">W-4</span><br />
                 Department of the Treasury Internal Revenue Service
-
             </div>
             <div class="vertical"></div>
             <div class="column-center">
                 <h3> Employee’s Withholding Allowance Certificate</h3>
                 <b>► Whether you're entitled to claim a certain number of allowances or exemption from withholding is subject to review by the IRS. Your employer may be required to send a copy of this form to the IRS.</b>
-
             </div>
             <div class="vertical1"></div>
             <div class="column-right">
                 OMB No. 1545-0074<br />
-
                 <span>20<span style="font-weight:bold">19</span>
-
             </div>
         </div>  <hr class="new4">
         <div class="top" style="color:#000">
@@ -210,7 +203,7 @@
                 <tr>
                     <td colspan="50" style="padding-bottom: 48px;">Home address (number and street or rural route) </td>
                     <td colspan="50">
-                        3. @Html.CheckBoxFor(x => x.MeritalStatus.Single, new { @style = "height: 18px;width: 31px;" })) Single @Html.CheckBoxFor(x => x.MeritalStatus.Married, new { @style = "height: 18px;width: 31px;" }))  Married @Html.CheckBoxFor(x => x.MeritalStatus.PartiallyMarried, new { @style = "height: 18px;width: 31px;" })) Married, but withhold at higher Single rate<br />
+                        3. @Html.CheckBoxFor(x => x.MeritalStatus.Single, new { @style = "height: 18px;width: 31px;" }) Single @Html.CheckBoxFor(x => x.MeritalStatus.Married, new { @style = "height: 18px;width: 31px;" })  Married @Html.CheckBoxFor(x => x.MeritalStatus.PartiallyMarried, new { @style = "height: 18px;width: 31px;" }) Married, but withhold at higher Single rate<br />
                         <b>Note:</b> If married filing separately, check “Married, but withhold at higher Single rate.”
                     </td>
                 </tr>
@@ -218,7 +211,7 @@
                     <td colspan="50" style="padding-bottom: 48px;">City or town, state, and ZIP code </td>
                     <td colspan="50">
                         4. lf your last name differs from that shown on your social security card, check here.<br /> You must call 800-772-1213 for a replacement card.
-                        ►@Html.CheckBoxFor(x => x.NameDiffer, new { @style = "height: 18px;width: 31px;" }))
+                        ►@Html.CheckBoxFor(x => x.NameDiffer, new { @style = "height: 18px;width: 31px;" })
                     </td>
                 </tr>
                 <tr>
@@ -253,7 +246,6 @@
         </div>
     </div>
     <p> @Html.CheckBoxFor(x => x.IsSave, new { @style = "height: 18px;width: 31px;" })    i hereby declare that the above information is true to the best of my knowledge <span style="cursor:pointer;" onclick="SubmitForm(this, w4form)" title="Go to next I-9"><a><i class="fa fa-long-arrow-right" style="font-size: 40px;color: steelblue;margin-left: 967px;"></i></a></span> </p>
-
     @*<p> @Html.CheckBoxFor(x => x.IsSave, new { @style = "height: 18px;width: 31px;", onchange = "SubmitForm(this,w4form)" })    i hereby declare that the above information is true to the best of my knowledge <span style="cursor:pointer;" title="Go to next I-9"><a><i class="fa fa-long-arrow-right" style="font-size: 40px;color: steelblue;margin-left: 967px;"></i></a></span> </p>*@
 }
 <script src="~/Scripts/Guest/ApplicantFormSave.js"></script>

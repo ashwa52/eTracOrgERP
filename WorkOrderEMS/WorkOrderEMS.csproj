@@ -1593,6 +1593,7 @@
     <Content Include="Content\NewAdminContent\CSS\FilesUICss.css" />
     <Content Include="Content\NewAdminContent\CSS\GetOrgForRequision.css" />
     <Content Include="Content\NewAdminContent\CSS\MultstepWizardNew.css" />
+    <Content Include="Content\NewAdminContent\CSS\MyGuestStyle.css" />
     <Content Include="Content\NewAdminContent\CSS\NewTreeUserView.css" />
     <Content Include="Content\NewAdminContent\CSS\NewTreeVSC.css" />
     <Content Include="Content\NewAdminContent\CSS\perfect-scrollbar.css" />
@@ -6880,6 +6881,9 @@
     <Content Include="Views\Guest\PartialView\_ExperianceDetailsApplicant.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\OnBoarding\_CheckForDOT.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\OnBoarding\_ViewAnswerQuestion.cshtml" />
+    <Content Include="Views\Guest\PartialView\_CommonModals.cshtml" />
+    <Content Include="Views\Guest\PartialView\_BackGroundCheckForm.cshtml" />
+    <Content Include="Views\Guest\PartialView\_UploadDocuments.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6891,6 +6895,7 @@
     <Folder Include="Areas\AdminSection\Models\AdminSectionModel\" />
     <Folder Include="Areas\AdminSection\Views\SendEmailTemplate\" />
     <Folder Include="Content\AdminDocs\PDFForm\" />
+    <Folder Include="Content\ApplicantFiles\UploadDocument\" />
     <Folder Include="Content\DARDisclaimer\" />
     <Folder Include="Content\eCountingDocs\BankAccountDocs\" />
     <Folder Include="Content\eCountingDocs\BillDocs\" />

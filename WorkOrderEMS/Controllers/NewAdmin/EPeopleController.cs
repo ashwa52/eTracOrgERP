@@ -101,8 +101,8 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             var lstChart = new List<AddChartModel>();
             var _manager = new VehicleSeatingChartManager();
             lstChart = _manager.ListVehicleSeatingChart(0);
-            return View("~/Views/NewAdmin/ePeople/NewViewForEMP/_NewTreeView.cshtml");
-            //return PartialView("~/Views/NewAdmin/ePeople/Requisition/_Chart.cshtml");
+            //return View("~/Views/NewAdmin/ePeople/NewViewForEMP/_NewTreeView.cshtml");
+            return PartialView("~/Views/NewAdmin/ePeople/Requisition/_Chart.cshtml");
         }
         /// <summary>
         /// Created BY : Ashwajit Bansod

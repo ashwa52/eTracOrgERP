@@ -14,6 +14,8 @@ using WorkOrderEMS.Data.DataRepository;
 using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
+using WorkOrderEMS.Models.Employee;
+using WorkOrderEMS.Models.NewAdminModel;
 
 namespace WorkOrderEMS.BusinessLogic
 {
@@ -45,11 +47,11 @@ namespace WorkOrderEMS.BusinessLogic
                         LoginId = a.ALA_LoginId,
                         UserId = a.ALA_UserId
                     }).FirstOrDefault();
-                    if(loginModel != null)
+                    if (loginModel != null)
                     {
                         loginData.Data = loginModel;
                         loginData.Message = CommonMessage.Successful();
-                        loginData.Response =  Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        loginData.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
                     }
                     else
                     {
@@ -186,7 +188,6 @@ namespace WorkOrderEMS.BusinessLogic
                         loginData.Message = CommonMessage.NoRecordMessage();
                         loginData.Response = Convert.ToInt32(ServiceResponse.NoRecord, CultureInfo.CurrentCulture);
                     }
-
                 }
                 else
                 {
@@ -308,8 +309,8 @@ namespace WorkOrderEMS.BusinessLogic
                 {
                     var password = Cryptography.GetEncryptedData(obj.Password, true);
                     //var UserId = new ObjectParameter("UserId", "UserId");
-                    var isChanged = _db.spSetApplicantCreateLoginAccess(obj.Email, password, obj.FName,obj.MName, obj.LName,obj.Email,obj.Question,obj.Answer).FirstOrDefault();
-                    
+                    var isChanged = _db.spSetApplicantCreateLoginAccess(obj.Email, password, obj.FName, obj.MName, obj.LName, obj.Email, obj.Question, obj.Answer).FirstOrDefault();
+
                     //var userIdData = isChanged
                     if (isChanged.Value > 0)
                     {
@@ -399,7 +400,7 @@ namespace WorkOrderEMS.BusinessLogic
                 {
                     var Availability = new ObjectParameter("Availability", "");
                     var isChanged = _db.spGetApplicantNewLoginCheckAvailability(obj.LoginId, Availability);
-                    if (Availability.Value.ToString() == "False")                    
+                    if (Availability.Value.ToString() == "False")
                     {
                         loginData.Message = CommonMessage.AlreadyExist();
                         loginData.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
@@ -434,7 +435,7 @@ namespace WorkOrderEMS.BusinessLogic
         public bool SaveAssets(AssetsAllocationModel model)
         {
             bool isSaved = false;
-            
+
             try
             {
 
@@ -445,33 +446,33 @@ namespace WorkOrderEMS.BusinessLogic
                     //var MiscAssets = model.IsMiscAssets == true ? "Misc" : null;
                     //var OfficePhone = model.IsOfficePhone == true ? "Office Phone" : null;
                     //var Printer = model.IsPrinterAssets == true ? "Printer" : null;
-                    if(model.IsComputerAssets == true && model.ComputerAssets != null)
+                    if (model.IsComputerAssets == true && model.ComputerAssets != null)
                     {
-                        var saveData = _db.spSetAssetAllocation(model.Action, model.AssetsId, model.EmployeeId, "Computer",model.ComputerAssets.AssetsName, model.ComputerAssets.AssetDescription, model.ComputerAssets.Make, model.ComputerAssets.Model,
-                            model.ComputerAssets.SerialNumber, model.ComputerAssets.Login, model.ComputerAssets.Password, null,null,null,null,"N");
+                        var saveData = _db.spSetAssetAllocation(model.Action, model.AssetsId, model.EmployeeId, "Computer", model.ComputerAssets.AssetsName, model.ComputerAssets.AssetDescription, model.ComputerAssets.Make, model.ComputerAssets.Model,
+                            model.ComputerAssets.SerialNumber, model.ComputerAssets.Login, model.ComputerAssets.Password, null, null, null, null, "N");
                     }
                     else if (model.IsPrinterAssets == true && model.PrinterAssets != null)
                     {
                         var saveData = _db.spSetAssetAllocation(model.Action, model.AssetsId, model.EmployeeId, "Printer", model.PrinterAssets.AssetsName,
                             model.PrinterAssets.AssetDescription, model.PrinterAssets.Make, model.PrinterAssets.Model, model.PrinterAssets.SerialNumber
-                            ,null,null,null,null,null,null,"N");
+                            , null, null, null, null, null, null, "N");
                     }
                     else if (model.IsCellPhoneAssets == true && model.CellPhoneAssets != null)
                     {
                         var saveData = _db.spSetAssetAllocation(model.Action, model.AssetsId, model.EmployeeId, "Cell Phone", model.CellPhoneAssets.AssetsName,
                             model.CellPhoneAssets.AssetDescription, model.CellPhoneAssets.Make, model.CellPhoneAssets.Model, model.CellPhoneAssets.SerialNumber,
-                            null,null,null,null,null,null,"N");
+                            null, null, null, null, null, null, "N");
                     }
                     else if (model.IsOfficePhone == true && model.OfficePhone != null)
                     {
                         var saveData = _db.spSetAssetAllocation(model.Action, model.AssetsId, model.EmployeeId, "Office Phone", model.OfficePhone.AssetsName, model.OfficePhone.AssetDescription,
-                            model.OfficePhone.Make, model.OfficePhone.Model, model.OfficePhone.SerialNumber,null, null, null,null,
-                            null,null,"N");
+                            model.OfficePhone.Make, model.OfficePhone.Model, model.OfficePhone.SerialNumber, null, null, null, null,
+                            null, null, "N");
                     }
                     else
                     {
                         var saveData = _db.spSetAssetAllocation(model.Action, model.AssetsId, model.EmployeeId, "Misc Assets", model.MiscAssets.AssetsName, model.MiscAssets.AssetDescription,
-                            model.MiscAssets.Make, model.MiscAssets.Model, model.MiscAssets.SerialNumber,null,null,null,null,null,null,"N");
+                            model.MiscAssets.Make, model.MiscAssets.Model, model.MiscAssets.SerialNumber, null, null, null, null, null, null, "N");
                     }
 
                     isSaved = true;
@@ -664,12 +665,14 @@ namespace WorkOrderEMS.BusinessLogic
                     UT_ApplicantSchecduleAvaliblity.Value = ApplicantSchecduleAvaliblityTable;
                     UT_ApplicantSchecduleAvaliblity.TypeName = "[dbo].[UT_ApplicantSchecduleAvaliblity]";
 
-                    context.Database.ExecuteSqlCommand("exec [dbo].[spSetApplicantAllDetails] @Action, @UT_ApplicantPersonalInfo", Action, UT_ApplicantPersonalInfo, 
-                        UT_ApplicantAddress, UT_ApplicantContactInfo, UT_ApplicantAdditionalInfo, 
-                        UT_AplicantAcadmicDetails, UT_ApplicantBackgroundHistory, 
-                        UT_ApplicantPositionTitle, UT_ApplicantAccidentRecord, 
-                        UT_ApplicantTrafficConvictions, UT_ApplicantVehiclesOperated, 
-                        UT_ApplicantLicenseHeald, UT_ApplicantSchecduleAvaliblity);
+                    context.Database.ExecuteSqlCommand("exec [dbo].[spSetApplicantAllDetails] @Action, @UT_ApplicantPersonalInfo,@UT_ApplicantAddress,@UT_ApplicantContactInfo, @UT_ApplicantAdditionalInfo, @UT_AplicantAcadmicDetails, @UT_ApplicantBackgroundHistory, @UT_ApplicantPositionTitle, @UT_ApplicantAccidentRecord, @UT_ApplicantTrafficConvictions, @UT_ApplicantVehiclesOperated, @UT_ApplicantLicenseHeald, @UT_ApplicantSchecduleAvaliblity",
+                        Action, UT_ApplicantPersonalInfo,
+                        UT_ApplicantAddress, UT_ApplicantContactInfo, UT_ApplicantAdditionalInfo,
+                        UT_AplicantAcadmicDetails, UT_ApplicantBackgroundHistory,
+                        UT_ApplicantPositionTitle, UT_ApplicantAccidentRecord,
+                        UT_ApplicantTrafficConvictions, UT_ApplicantVehiclesOperated,
+                        UT_ApplicantLicenseHeald, UT_ApplicantSchecduleAvaliblity
+                        );
                     Flag = true;
                 }
             }
@@ -680,6 +683,410 @@ namespace WorkOrderEMS.BusinessLogic
             }
             return Flag;
         }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 12-Fb-2020
+        /// Created For : TO update Contact Details
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public bool UpdateContactDetailsApplicant(ContactListModel model, List<ContactModel> lstModel)
+        {
+            bool isSaved = false;
+            try
+            {
+                foreach (var item in lstModel)
+                {
+                    if (item.ContactId > 0)
+                    {
+                        var getDetails = _db.ApplicantContactInfoes.Where(x => x.ACI_Id == item.ContactId).FirstOrDefault();
+                        var updateData = _db.spSetApplicantContactInfo("U", getDetails.ACI_Id, getDetails.ACI_APT_ApplicantId, getDetails.ACI_PhoneNo, getDetails.ACI_eMail, getDetails.ACI_PrefredContactMethod, "C");
+                    }
+                }
+                //var getDetails = _db.ApplicantContactInfoes.Where(x => x.ACI_Id == item.ContactId).FirstOrDefault();
+                if (model != null && model.ContactModelData != null && model.ContactModelData.ContactNo != null)
+                {
+                    var update = _db.spSetApplicantContactInfo("I", null, model.ContactModelData.ACI_APT_ApplicantId, model.ContactModelData.ContactNo, model.ContactModelData.EmailId, "Mobile", "C");
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool UpdateContactDetailsApplicant(ContactListModel model)", "Exception While updating contact details.", model);
+                throw;
+            }
+            return isSaved;
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 12-Feb 2020
+        /// Creatd For : To get list of applicnt contact by applicant id
+        /// </summary>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
+        public ContactListModel GetContactListByApplicantId(long ApplicantId)
+        {
+            var lst = new ContactListModel();
+            var data = new ContactModel();
+            try
+            {
+                var getDetails = _db.spGetApplicantContactInfo(ApplicantId).Select(x => new ContactModel() {
+                    ContactId = x.ACI_Id,
+                    ContactNo = x.ACI_PhoneNo,
+                    EmailId = x.ACI_eMail,
+                    IsChecked = x.ACI_IsActive,
+                    ACI_APT_ApplicantId = x.ACI_APT_ApplicantId
+                }).ToList();
+                lst.ContactModel = getDetails;
+                data.ACI_APT_ApplicantId = ApplicantId;
+                lst.ContactModelData = data;
+                return lst;
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public ContactListModel GetContactListByApplicantId(long ApplicantId)", "Exception While getting the list of contact details.", ApplicantId);
+                throw;
+            }
+            //return isSaved;
+        }
+
         #endregion Save Applicant
+        #region Background Check
+        public EmployeeVIewModel GetApplicantByApplicantId(long ApplicantId)
+        {
+            var lst = new EmployeeVIewModel();
+            try
+            {
+                var getDetails = _db.spGetApplicantAllDetails(ApplicantId).Select(x => new EmployeeVIewModel()
+                {
+                    FirstName = x.API_FirstName,
+                    MiddleName = x.API_MidName,
+                    LastName = x.API_LastName,
+                    City = x.AAD_City,
+                    State = x.AAD_State,
+                    Zip = x.AAD_Zip,
+                    StreetAddress = x.APA_StreetAddress,
+                    SocialSecurityNumber = x.API_SSN,
+                    Phone = x.ACI_PhoneNo,
+                    LicenseNumber = x.ALH_LicenceNumber,
+                    //Dob = x
+                }).FirstOrDefault();
+                return lst;
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public ContactListModel GetContactListByApplicantId(long ApplicantId)", "Exception While getting the list of contact details.", ApplicantId);
+                throw;
+            }
+            //return getDetails;
+            //return isSaved;
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 13-Feb-2020
+        /// Created For : To send applicant details for background check and create a normal PO 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public bool SendApplicantInfoForBackgrounddCheck(EmployeeVIewModel model)
+        {
+            bool isSentForBackground = false;
+            try
+            {
+                if (model != null && model.ApplicantId > 0)
+                {
+                    var sentForBackgroudCheck = _db.spSetApplicantStatus(model.ApplicantId, ApplicantStatus.F, ApplicantStatus.S);
+                    #region Create PO
+                    var poNum = _db.spGetPONumber().FirstOrDefault();
+                    var poNumber = "PO" + poNum.ToString();
+                    var POType = Convert.ToInt64(Helper.POType.NormalPO);
+                    var company = _db.Companies.Where(x => x.CMP_NameLegal == VendorName.BackgroundCheck).FirstOrDefault();
+                    var getHRDetail = _db.JobPostings.Join(_db.Applicants, jp => jp.JPS_JobPostingId, ap => ap.APT_JobPostingId, (jp, ap) => new { jp, ap }).
+                                      Where(x => x.ap.APT_ApplicantId == model.ApplicantId).FirstOrDefault();
+                    var saveNormalPO = _db.spSetPODetail("I", poNum, getHRDetail.jp.JPS_LocationId,
+                                                                         POType, company.CMP_Id, null,
+                                                                          null, null, null, model.UserId, model.UserId, "Y", null
+                                                                          , null, null, company.CompanyQBKs.FirstOrDefault().QBK_RefId, null);
+
+                    if (getHRDetail != null)
+                    {
+                        var userData = _db.UserRegistrations.Where(x => x.EmployeeID == getHRDetail.jp.JPS_HiringManagerID
+                                                                        && x.IsDeleted == false).FirstOrDefault();
+
+                        isSentForBackground = true;
+                        #endregion End PO
+
+                        #region Email
+                        var objEmailLogRepository = new EmailLogRepository();
+                        var objEmailReturn = new List<EmailToManagerModel>();
+                        var objListEmailog = new List<EmailLog>();
+                        var objTemplateModel = new TemplateModel();
+                        if (userData != null)
+                        {
+                            var locationData = _db.LocationMasters.Where(x => x.LocationId == getHRDetail.jp.JPS_LocationId && x.IsDeleted == false).FirstOrDefault();
+                            bool IsSent = false;
+                            var objEmailHelper = new EmailHelper();
+                            objEmailHelper.emailid = userData.UserEmail;
+                            objEmailHelper.ManagerName = userData.FirstName + " "+ userData.LastName;
+                            objEmailHelper.LocationName = locationData.LocationName;
+                            objEmailHelper.UserName = model.FirstName + " " + model.LastName;
+                            objEmailHelper.PONumber = poNumber;
+                            //objEmailHelper.InfractionStatus = obj.Status;
+                            objEmailHelper.MailType = "POAPPROVEDREJECT";
+                            objEmailHelper.SentBy = userData.UserId;
+                            objEmailHelper.LocationID = getHRDetail.jp.JPS_LocationId;
+                            objEmailHelper.TimeAttempted = DateTime.UtcNow.ToMobileClientTimeZone(objTemplateModel.TimeZoneName, objTemplateModel.TimeZoneOffset, objTemplateModel.IsTimeZoneinDaylight, false).ToString();
+                            IsSent = objEmailHelper.SendEmailWithTemplate();
+                            //Will use this when we need this
+                            //var objNotify = new NotificationDetailModel();
+                            //var _ICommonMethod = new CommonMethodManager();
+                            //objNotify.CreatedBy = objPOTypeDataModel.UserId;
+                            //objNotify.CreatedDate = DateTime.UtcNow;
+                            //objNotify.AssignTo = getRuleData.UserId;
+                            //objNotify.POID = PONumber;
+                            //var saveDataForNotification = _ICommonMethod.SaveNotificationDetail(objNotify);
+
+                            //if (getRuleData.DeviceId != null)
+                            //{
+                            //    objEmailHelper.IsWorkable = true;
+                            //    // objEmailHelper.LogPOId = 
+                            //    string message = PushNotificationMessages.POCreate(objPOTypeDataModel.PONumber, objEmailHelper.UserName, objEmailHelper.LocationName);
+                            //    PushNotificationFCM.FCMAndroid(message, getRuleData.DeviceId, objEmailHelper);
+                            //}
+                            //Push Notification
+                            /// string message = PushNotificationMessages.eFleetIncidentForServiceReported(objeFleetVehicleIncidentModel.LocationName, objeFleetVehicleIncidentModel.QRCodeID, objeFleetVehicleIncidentModel.VehicleNumber);
+                            //PushNotification.GCMAndroid(message, item.DeviceId, objEmailHelper);
+                            if (IsSent == true)
+                            {
+                                var objEmailog = new EmailLog();
+                                try
+                                {
+                                    objEmailog.CreatedBy = userData.UserId;
+                                    objEmailog.CreatedDate = DateTime.UtcNow;
+                                    objEmailog.DeletedBy = null;
+                                    objEmailog.DeletedOn = null;
+                                    objEmailog.LocationId = getHRDetail.jp.JPS_LocationId;
+                                    objEmailog.ModifiedBy = null;
+                                    objEmailog.ModifiedOn = null;
+                                    objEmailog.SentBy = userData.UserId;
+                                    objEmailog.SentEmail = userData.UserEmail;
+                                    objEmailog.Subject = objEmailHelper.Subject;
+                                    objEmailog.SentTo = userData.UserId;
+                                    objListEmailog.Add(objEmailog);
+                                }
+                                catch (Exception)
+                                {
+                                    throw;
+                                }
+                            }
+                            using (var context = new workorderEMSEntities())
+                            {
+                                context.EmailLogs.AddRange(objListEmailog);
+                                context.SaveChanges();
+                            }
+                        }
+                        #endregion Email
+                    }
+                    #endregion Create PO
+                    //    return isSentForBackground;
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SendApplicantInfoForBackgrounddCheck(EmployeeVIewModel model)", "Exception While sending Applicant info for background check.", model);
+                throw;
+            }
+            //return getDetails;
+            //return isSaved;
+            return isSentForBackground;
+        }
+        /// <summary>
+        /// Created By  :Ashwajity Bansod
+        /// Created Date : 17-Feb-2020
+        /// Created For : To get I9 Info by Applicant Id
+        /// </summary>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
+        public I9FormModel GetI9FormData(long ApplicantId, long UserId)
+        {
+            var _modelI9 = new I9FormModel();
+            try
+            {
+                if(ApplicantId > 0 && UserId  > 0)
+                {
+                    var getApplicantDetails = _db.UserRegistrations.Where(x => x.UserId == UserId && x.IsDeleted == false).FirstOrDefault().EmployeeID;
+                    _modelI9 = _db.spGetI9Form(getApplicantDetails).Select(x => new I9FormModel() {
+                        EMA_Address = x.EMA_Address,
+                        EMA_City = x.EMA_City,
+                        EMA_State = x.EMA_State,
+                        EMA_Zip  = x.EMA_Zip,
+                        EMP_FirstName = x.EMP_FirstName,
+                        EMP_LastName = x.EMP_LastName,
+                        EMP_MiddleName = x.EMP_MiddleName,
+                        I9F_Date = x.I9F_Date,
+                        I9F_EMP_EmployeeId = x.I9F_EMP_EmployeeId,
+                        I9F_Id = x.I9F_Id,
+                        I9F_IsActive = x.I9F_IsActive,
+                        I9F_Sec1_Address = x.I9F_Sec1_Address,
+                        I9F_Sec1_AlienAuthorizedToWorkDate = x.I9F_Sec1_AlienAuthorizedToWorkDate,
+                        I9F_Sec1_AlienRegistrationNum_USCIS = x.I9F_Sec1_AlienRegistrationNum_USCIS,
+                        I9F_Sec1_AptNumber = x.I9F_Sec1_AptNumber,
+                        I9F_Sec1_CitizenOfUS = x.I9F_Sec1_CitizenOfUS,
+                        I9F_Sec1_City = x.I9F_Sec1_City,
+                        I9F_Sec1_dateOfBirth = x.I9F_Sec1_dateOfBirth,
+                        I9F_Sec1_DateOfEmployeeSign = x.I9F_Sec1_DateOfEmployeeSign,
+                        I9F_Sec1_DateOfPreparerOrTranslatorSign = x.I9F_Sec1_DateOfPreparerOrTranslatorSign,
+                        I9F_Sec1_Email = x.I9F_Sec1_Email,
+                        I9F_Sec1_EmployeeTelephoneNumber = x.I9F_Sec1_EmployeeTelephoneNumber,
+                        I9F_Sec1_FirstName =x.I9F_Sec1_FirstName,
+                        I9F_Sec1_ForeignPassportIssuanceCountry =x.I9F_Sec1_ForeignPassportIssuanceCountry,
+                        I9F_Sec1_ForeignPassportNumber = x.I9F_Sec1_ForeignPassportNumber,
+                        I9F_Sec1_I94AdmissionNumber = x.I9F_Sec1_I94AdmissionNumber,
+                        I9F_Sec1_LastName = x.I9F_Sec1_LastName,
+                        I9F_Sec1_MiddleInitiaL =x.I9F_Sec1_MiddleInitial,
+                        I9F_Sec1_NonCitizenOfUS = x.I9F_Sec1_NonCitizenOfUS,
+                        I9F_Sec1_OtherLastName = x.I9F_Sec1_OtherLastName,
+                        I9F_Sec1_PreparerAndTranslator = x.I9F_Sec1_PreparerAndTranslator,
+                        I9F_Sec1_QRCodeSec1 =x.I9F_Sec1_QRCodeSec1,
+                        I9F_Sec1_SignatureOfEmployee =x.I9F_Sec1_SignatureOfEmployee,
+                        I9F_Sec1_SignatureOfPreparerOrTranslator =x.I9F_Sec1_SignatureOfPreparerOrTranslator,
+                        I9F_Sec1_SSN =x.I9F_Sec1_SSN,
+                        I9F_Sec1_State =x.I9F_Sec1_State,
+                        I9F_Sec1_ZipCode =x.I9F_Sec1_ZipCode,
+                        I9F_Sec2_AdditionalInformation =x.I9F_Sec2_AdditionalInformation,
+                        //I9F_Sec2_A_FirstName =x.I9F_Sec2_FirstNameOfEmployerOrAuthorized,
+                        //I9F_Sec2_A_LastName = x.laa
+                        //I9F_Sec2_A_MiddleInitial = x.
+                        //I9F_Sec2_B_DateOfReHire =x.
+                        I9F_Sec2_CitizenshipImmigrationStatus = x.I9F_Sec2_CitizenshipImmigrationStatus,
+                        //I9F_Sec2_C_DateOfEmployerOrAuthorizedSign = x.I9F_Sec2_DateOfEmployerOrAuthorizedSign,
+                        //I9F_Sec2_C_DocumentNumber = x.
+                        //I9F_Sec2_C_DocumentTitle =x.
+                        //I9F_Sec2_C_ExpirationDate =  
+                        //I9F_Sec2_C_NameOfEmployerOrAuthorized =
+                        I9F_Sec2_EmployeesFirstDayOfEmployment = x.I9F_Sec2_EmployeesFirstDayOfEmployment,
+                        I9F_Sec2_DateOfEmployerOrAuthorizedSign = x.I9F_Sec2_DateOfEmployerOrAuthorizedSign,
+                        //I9F_Sec2_C_SignatureOfEmployerOrAuthorized = 
+                        I9F_Sec2_EmployersBusinessOrgnization_Address = x.I9F_Sec2_EmployersBusinessOrgnization_Address,
+                        I9F_Sec2_EmployersBusinessOrgnization_City = x.I9F_Sec2_EmployersBusinessOrgnization_City,
+                        I9F_Sec2_EmployersBusinessOrgnization_Name = x.I9F_Sec2_EmployersBusinessOrgnization_Name,
+                        I9F_Sec2_EmployersBusinessOrgnization_State = x.I9F_Sec2_EmployersBusinessOrgnization_State,
+                        I9F_Sec2_EmployersBusinessOrgnization_ZipCode = x.I9F_Sec2_EmployersBusinessOrgnization_ZipCode,
+                        I9F_Sec2_FirstNameOfEmployerOrAuthorized = x.I9F_Sec2_FirstNameOfEmployerOrAuthorized,
+                        I9F_Sec2_LastNameOfEmployerOrAuthorized = x.I9F_Sec2_LastNameOfEmployerOrAuthorized,
+                        I9F_Sec2_ListA_DocumentNumber1 =x.I9F_Sec2_ListA_DocumentNumber1,
+                        I9F_Sec2_ListA_DocumentNumber2 = x.I9F_Sec2_ListA_DocumentNumber2,
+                        I9F_Sec2_ListA_DocumentNumber3 =x.I9F_Sec2_ListA_DocumentNumber3,
+                        I9F_Sec2_ListA_DocumentTitle1 = x. I9F_Sec2_ListA_DocumentTitle1,
+                        I9F_Sec2_ListA_DocumentTitle2 = x.I9F_Sec2_ListA_DocumentTitle2,
+                        I9F_Sec2_ListA_DocumentTitle3 = x.I9F_Sec2_ListA_DocumentTitle3,
+                        I9F_Sec2_ListA_ExpirationDate1 = x.I9F_Sec2_ListA_ExpirationDate1,
+                        I9F_Sec2_ListA_ExpirationDate2 = x.I9F_Sec2_ListA_ExpirationDate2,
+                        I9F_Sec2_ListA_ExpirationDate3 = x.I9F_Sec2_ListA_ExpirationDate3,
+                        I9F_Sec2_ListA_IssuingAuthority1 = x.I9F_Sec2_ListA_IssuingAuthority1,
+                        I9F_Sec2_ListA_IssuingAuthority2 = x.I9F_Sec2_ListA_IssuingAuthority2,
+                        I9F_Sec2_ListA_IssuingAuthority3  =x.I9F_Sec2_ListA_IssuingAuthority3,
+                        I9F_Sec2_ListB_DocumentNumber =x.I9F_Sec2_ListB_DocumentNumber,
+                        I9F_Sec2_ListB_DocumentTitle = x.I9F_Sec2_ListB_DocumentTitle,
+                        I9F_Sec2_ListB_ExpirationDate = x.I9F_Sec2_ListB_ExpirationDate,
+                        I9F_Sec2_ListB_IssuingAuthority = x.I9F_Sec2_ListB_IssuingAuthority,
+                        I9F_Sec2_ListC_DocumentNumber = x.I9F_Sec2_ListC_DocumentNumber,
+                        I9F_Sec2_ListC_DocumentTitle = x.I9F_Sec2_ListC_DocumentTitle,
+                        I9F_Sec2_ListC_ExpirationDate = x.I9F_Sec2_ListC_ExpirationDate,
+                        I9F_Sec2_ListC_IssuingAuthority  =x.I9F_Sec2_ListC_IssuingAuthority,
+                        I9F_Sec2_QRCodeSec2AndSec3 = x.I9F_Sec2_QRCodeSec2AndSec3,
+                        I9F_Sec2_SignatureOfEmployerOrAuthorized = x.I9F_Sec2_SignatureOfEmployerOrAuthorized,
+                        I9F_Sec2_TitleOfEmployerOrOthrizedRepresentative = x.I9F_Sec2_TitleOfEmployerOrOthrizedRepresentative,
+                        I9F_Sec3_A_FirstName = x.I9F_Sec3_A_FirstName,
+                        I9F_Sec3_A_LastName = x.I9F_Sec3_A_LastName,
+                        I9F_Sec3_A_MiddleInitial = x.I9F_Sec3_A_MiddleInitial,
+                        I9F_Sec3_B_DateOfReHire = x.I9F_Sec3_B_DateOfReHire,
+                        I9F_Sec3_C_DateOfEmployerOrAuthorizedSign = x.I9F_Sec3_C_DateOfEmployerOrAuthorizedSign,
+                        I9F_Sec3_C_DocumentNumber = x.I9F_Sec3_C_DocumentNumber,
+                        I9F_Sec3_C_DocumentTitle =x.I9F_Sec3_C_DocumentTitle,
+                        I9F_Sec3_C_ExpirationDate = x.I9F_Sec3_C_ExpirationDate,
+                        I9F_Sec3_C_NameOfEmployerOrAuthorized = x.I9F_Sec3_C_NameOfEmployerOrAuthorized,
+                        I9F_Sec3_C_SignatureOfEmployerOrAuthorized = x.I9F_Sec3_C_SignatureOfEmployerOrAuthorized,
+                        I9F_Sec2_MiddleInitialOfEmployerOrAuthorized = x.I9F_Sec2_MiddleInitialOfEmployerOrAuthorized,
+                        //I9F_Sec2_C_SignatureOfEmployerOrAuthorized =x.
+                        
+                    }).FirstOrDefault();
+                    if (_modelI9 == null)
+                        return new I9FormModel();
+                }
+            }
+            catch(Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public I9FormModel GetI9FormData(long ApplicantId)", "Exception While getting the I9 details.", ApplicantId);
+                throw;
+            }
+            return _modelI9;
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 17-Feb-2020
+        /// Created For : To save I9 form details
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <param name="ApplicantId"></param>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public bool SetI9Form(long UserId, long ApplicantId, I9FormModel model)
+        {
+            var isSaved = false;
+            try
+            {
+                var action = model.I9F_Id == null ? "I" : "U";
+                if (UserId > 0 && ApplicantId > 0 && model != null && model.I9F_Id == null)
+                {
+                    var save = _db.spSetI9Form(action, model.I9F_Id, model.I9F_EMP_EmployeeId, model.I9F_Sec1_SSN, model.I9F_Sec1_CitizenOfUS, model.I9F_Sec1_NonCitizenOfUS,
+                               model.I9F_Sec1_AlienRegistrationNum_USCIS, model.I9F_Sec1_AlienAuthorizedToWorkDate, model.I9F_Sec1_I94AdmissionNumber, model.I9F_Sec1_ForeignPassportNumber,
+                               model.I9F_Sec1_ForeignPassportIssuanceCountry, model.I9F_Sec1_SignatureOfEmployee, model.I9F_Sec1_DateOfEmployeeSign, model.I9F_Sec1_QRCodeSec1,
+                               model.I9F_Sec1_PreparerAndTranslator, model.I9F_Sec1_SignatureOfPreparerOrTranslator, model.I9F_Sec1_DateOfPreparerOrTranslatorSign, model.I9F_Sec1_FirstName,
+                               model.I9F_Sec1_MiddleInitiaL, model.I9F_Sec1_LastName, model.I9F_Sec1_OtherLastName, model.I9F_Sec1_dateOfBirth, model.I9F_Sec1_Address,
+                               model.I9F_Sec1_AptNumber, model.I9F_Sec1_City, model.I9F_Sec1_State, model.I9F_Sec1_ZipCode, model.I9F_Sec1_Email, model.I9F_Sec1_EmployeeTelephoneNumber, model.I9F_Sec2_ListA_DocumentTitle1,
+                               model.I9F_Sec2_ListA_IssuingAuthority1,model.I9F_Sec2_ListA_DocumentNumber1,model.I9F_Sec2_ListA_ExpirationDate1, model.I9F_Sec2_ListA_DocumentTitle2,
+                               model.I9F_Sec2_ListA_IssuingAuthority2, model.I9F_Sec2_ListA_DocumentNumber2, model.I9F_Sec2_ListA_ExpirationDate2, model.I9F_Sec2_ListA_DocumentTitle3,
+                               model.I9F_Sec2_ListA_IssuingAuthority3, model.I9F_Sec2_ListA_DocumentNumber3,model.I9F_Sec2_ListA_ExpirationDate3,model.I9F_Sec2_ListB_DocumentTitle,
+                               model.I9F_Sec2_ListB_IssuingAuthority,model.I9F_Sec2_ListB_DocumentNumber,model.I9F_Sec2_ListB_ExpirationDate, model.I9F_Sec2_ListC_DocumentTitle,
+                               model.I9F_Sec2_ListC_IssuingAuthority, model.I9F_Sec2_ListC_DocumentNumber, model.I9F_Sec2_ListC_ExpirationDate, model.I9F_Sec2_AdditionalInformation,
+                               model.I9F_Sec2_QRCodeSec2AndSec3, model.I9F_Sec2_EmployeesFirstDayOfEmployment, model.I9F_Sec2_SignatureOfEmployerOrAuthorized, model.I9F_Sec2_DateOfEmployerOrAuthorizedSign,
+                               model.I9F_Sec2_LastNameOfEmployerOrAuthorized, model.I9F_Sec2_FirstNameOfEmployerOrAuthorized, model.I9F_Sec2_MiddleInitialOfEmployerOrAuthorized,
+                               model.I9F_Sec2_EmployersBusinessOrgnization_Name, model.I9F_Sec2_EmployersBusinessOrgnization_Address, model.I9F_Sec2_EmployersBusinessOrgnization_City,
+                               model.I9F_Sec2_EmployersBusinessOrgnization_State, model.I9F_Sec2_EmployersBusinessOrgnization_ZipCode, model.I9F_Sec2_TitleOfEmployerOrOthrizedRepresentative,
+                               model.I9F_Sec2_CitizenshipImmigrationStatus, model.I9F_Sec3_A_LastName, model.I9F_Sec3_A_FirstName, model.I9F_Sec3_A_MiddleInitial, model.I9F_Sec3_B_DateOfReHire,
+                               model.I9F_Sec3_C_DocumentTitle, model.I9F_Sec3_C_DocumentNumber, model.I9F_Sec3_C_ExpirationDate,model.I9F_Sec3_C_SignatureOfEmployerOrAuthorized,
+                               model.I9F_Sec3_C_DateOfEmployerOrAuthorizedSign,model.I9F_Sec3_C_NameOfEmployerOrAuthorized,model.I9F_Date,"Y");
+                }
+                else
+                {
+                    _db.spSetI9Form(action, model.I9F_Id, model.I9F_EMP_EmployeeId, model.I9F_Sec1_SSN, model.I9F_Sec1_CitizenOfUS, model.I9F_Sec1_NonCitizenOfUS,
+                               model.I9F_Sec1_AlienRegistrationNum_USCIS, model.I9F_Sec1_AlienAuthorizedToWorkDate, model.I9F_Sec1_I94AdmissionNumber, model.I9F_Sec1_ForeignPassportNumber,
+                               model.I9F_Sec1_ForeignPassportIssuanceCountry, model.I9F_Sec1_SignatureOfEmployee, model.I9F_Sec1_DateOfEmployeeSign, model.I9F_Sec1_QRCodeSec1,
+                               model.I9F_Sec1_PreparerAndTranslator, model.I9F_Sec1_SignatureOfPreparerOrTranslator, model.I9F_Sec1_DateOfPreparerOrTranslatorSign, model.I9F_Sec1_FirstName,
+                               model.I9F_Sec1_MiddleInitiaL, model.I9F_Sec1_LastName, model.I9F_Sec1_OtherLastName, model.I9F_Sec1_dateOfBirth, model.I9F_Sec1_Address,
+                               model.I9F_Sec1_AptNumber, model.I9F_Sec1_City, model.I9F_Sec1_State, model.I9F_Sec1_ZipCode, model.I9F_Sec1_Email, model.I9F_Sec1_EmployeeTelephoneNumber, model.I9F_Sec2_ListA_DocumentTitle1,
+                               model.I9F_Sec2_ListA_IssuingAuthority1, model.I9F_Sec2_ListA_DocumentNumber1, model.I9F_Sec2_ListA_ExpirationDate1, model.I9F_Sec2_ListA_DocumentTitle2,
+                               model.I9F_Sec2_ListA_IssuingAuthority2, model.I9F_Sec2_ListA_DocumentNumber2, model.I9F_Sec2_ListA_ExpirationDate2, model.I9F_Sec2_ListA_DocumentTitle3,
+                               model.I9F_Sec2_ListA_IssuingAuthority3, model.I9F_Sec2_ListA_DocumentNumber3, model.I9F_Sec2_ListA_ExpirationDate3, model.I9F_Sec2_ListB_DocumentTitle,
+                               model.I9F_Sec2_ListB_IssuingAuthority, model.I9F_Sec2_ListB_DocumentNumber, model.I9F_Sec2_ListB_ExpirationDate, model.I9F_Sec2_ListC_DocumentTitle,
+                               model.I9F_Sec2_ListC_IssuingAuthority, model.I9F_Sec2_ListC_DocumentNumber, model.I9F_Sec2_ListC_ExpirationDate, model.I9F_Sec2_AdditionalInformation,
+                               model.I9F_Sec2_QRCodeSec2AndSec3, model.I9F_Sec2_EmployeesFirstDayOfEmployment, model.I9F_Sec2_SignatureOfEmployerOrAuthorized, model.I9F_Sec2_DateOfEmployerOrAuthorizedSign,
+                               model.I9F_Sec2_LastNameOfEmployerOrAuthorized, model.I9F_Sec2_FirstNameOfEmployerOrAuthorized, model.I9F_Sec2_MiddleInitialOfEmployerOrAuthorized,
+                               model.I9F_Sec2_EmployersBusinessOrgnization_Name, model.I9F_Sec2_EmployersBusinessOrgnization_Address, model.I9F_Sec2_EmployersBusinessOrgnization_City,
+                               model.I9F_Sec2_EmployersBusinessOrgnization_State, model.I9F_Sec2_EmployersBusinessOrgnization_ZipCode, model.I9F_Sec2_TitleOfEmployerOrOthrizedRepresentative,
+                               model.I9F_Sec2_CitizenshipImmigrationStatus, model.I9F_Sec3_A_LastName, model.I9F_Sec3_A_FirstName, model.I9F_Sec3_A_MiddleInitial, model.I9F_Sec3_B_DateOfReHire,
+                               model.I9F_Sec3_C_DocumentTitle, model.I9F_Sec3_C_DocumentNumber, model.I9F_Sec3_C_ExpirationDate, model.I9F_Sec3_C_SignatureOfEmployerOrAuthorized,
+                               model.I9F_Sec3_C_DateOfEmployerOrAuthorizedSign, model.I9F_Sec3_C_NameOfEmployerOrAuthorized, model.I9F_Date, "Y");
+                }
+                isSaved = true;
+            }
+            catch(Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SetI9Form(long UserId, long ApplicanId, I9FormModel model)", "Exception While saving  I9 details.", model);
+                throw;
+            }
+            return isSaved;
+
+        }
     }
 }

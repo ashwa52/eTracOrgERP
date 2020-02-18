@@ -22,7 +22,7 @@ $(function () {
         { name: 'Description', width: 40, sortable: false },
         { name: 'IsActive', width: 20, sortable: true },
         { name: 'act', index: 'act', width: 30, sortable: false }],
-        rownum: 10,
+        //rownum: 10,
         rowList: [10, 20, 30],
         scrollOffset: 0,
         pager: '#divCostCodeListPager',
@@ -32,10 +32,11 @@ $(function () {
         loadonce: false,
         multiSort: true,
         rownumbers: true,
+        paging: true,
         emptyrecords: "No records to display",
         shrinkToFit: true,
         sortorder: 'asc',
-        caption: "List of Cost Code",
+       // caption: "List of Cost Code",
         gridComplete: function () {
 
             var ids = jQuery("#tbl_CostCodeList").jqGrid('getDataIDs');
@@ -47,6 +48,7 @@ $(function () {
                 qrc = '<a href="javascript:void(0)" class="qrc" title="Detail" data-value="' + cl + '" id="QRCGenerate" style=" float: left;margin-right: 10px;cursor:pointer;"><span class="glyphicon glyphicon-list-alt texthover-bluelight"></span><span class="tooltips">Detail</span></a></div>';
                 jQuery("#tbl_DriverList").jqGrid('setRowData', ids[i], { act: be + de + qrc }); ///+ qrc 
             }
+            $("#divCostCodeListPager").show();
             if ($("#tbl_CostCodeList").getGridParam("records") <= 20) {
                 $("#divCostCodeListPager").hide();
             }

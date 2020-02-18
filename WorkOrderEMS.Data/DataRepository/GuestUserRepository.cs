@@ -22,26 +22,29 @@ namespace WorkOrderEMS.Data.DataRepository
         public EmployeeVIewModel GetEmployee(long userId)
         {
             var employeeId = objworkorderEMSEntities.UserRegistrations.Where(x => x.UserId == userId).FirstOrDefault()?.EmployeeID;
-            return objworkorderEMSEntities.spGetEmployeePersonalInfo(employeeId).
+             
+                var getDetailsOfApplicant = objworkorderEMSEntities.spGetApplicantAllDetails(userId).//spGetEmployeePersonalInfo(employeeId).
                 Select(x => new EmployeeVIewModel
                 {
-                    Address = x.EMA_Address,
-                    City = x.EMA_City,
-                    State = x.EMA_State,
-                    Cityzenship = x.CTZ_Citizenship,
-                    DlNumber = x.EMP_DrivingLicenseNumber,
-                    Dob = x.EMP_DateOfBirth,
-                    Email = x.EMP_Email,
-                    EmpId = x.EMP_EmployeeID,
-                    FirstName = x.EMP_FirstName,
-                    LastName = x.EMP_LastName,
-                    MiddleName = x.EMP_MiddleName,
-                    Image = x.EMP_Photo,
-                    Phone = x.EMP_Phone,
-                    SocialSecurityNumber = x.EMP_SSN,
-                    Zip = x.EMA_Zip,
-                    LicenseNumber = x.EMP_DrivingLicenseNumber
-                }).FirstOrDefault(); ;
+                    Address = x.ABH_Address,
+                    City = x.ABH_City,
+                    State = x.AAD_State,
+                    //Cityzenship = x.c,
+                    DlNumber = x.API_DLNumber,
+                    //Dob = x.Da,
+                    //Email = x.E,
+                    EmpId = x.ABH_StillEmployed,
+                    FirstName = x.API_FirstName,
+                    LastName = x.API_LastName,
+                    MiddleName = x.API_MidName,
+                    //Image = x.Ph,
+                    Phone = x.ABH_Phone,
+                    SocialSecurityNumber = x.API_SSN,
+                    Zip = x.AAD_Zip,
+                    LicenseNumber = x.ALH_LicenceNumber,
+                    ApplicantId = Convert.ToInt64(x.APT_Id)
+                }).FirstOrDefault();
+            return getDetailsOfApplicant;
         }
         public bool UpdateApplicantInfo(EmployeeVIewModel onboardingDetailRequestModel)
         {

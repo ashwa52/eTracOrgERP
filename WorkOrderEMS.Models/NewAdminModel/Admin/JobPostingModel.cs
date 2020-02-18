@@ -11,6 +11,7 @@ namespace WorkOrderEMS.Models
         public long JobPostingId { get; set; }
         public AddChartModel AddChartModel { get; set; }
         public string Location { get; set; }
+        public long? LocationId { get; set; }
         public string Education { get; set; }
         public string EmployeeStatus { get; set; }
         public string State { get; set; }

@@ -159,6 +159,8 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<InterviewProposalTime> InterviewProposalTimes { get; set; }
         public virtual DbSet<SlotTime> SlotTimes { get; set; }
         public virtual DbSet<BookSlotTime> BookSlotTimes { get; set; }
+        public virtual DbSet<ApplicantContactInfo> ApplicantContactInfoes { get; set; }
+        public virtual DbSet<JobPosting> JobPostings { get; set; }
     
         [DbFunction("workorderEMSEntities", "fn_Split")]
         public virtual IQueryable<fn_Split_Result> fn_Split(string sText, string sDelim)
@@ -5405,35 +5407,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentList306090_Result1>("spGetAssessmentList306090", employeeIdParameter);
         }
     
-        public virtual int spSetJobPosting(string action, Nullable<long> jPS_JobPostingIdRecruitee, Nullable<long> jPS_JobTitleID, string jPS_HiringManagerID, Nullable<int> jPS_NumberOfPost, string jPS_IsActive)
-        {
-            var actionParameter = action != null ?
-                new ObjectParameter("Action", action) :
-                new ObjectParameter("Action", typeof(string));
-    
-            var jPS_JobPostingIdRecruiteeParameter = jPS_JobPostingIdRecruitee.HasValue ?
-                new ObjectParameter("JPS_JobPostingIdRecruitee", jPS_JobPostingIdRecruitee) :
-                new ObjectParameter("JPS_JobPostingIdRecruitee", typeof(long));
-    
-            var jPS_JobTitleIDParameter = jPS_JobTitleID.HasValue ?
-                new ObjectParameter("JPS_JobTitleID", jPS_JobTitleID) :
-                new ObjectParameter("JPS_JobTitleID", typeof(long));
-    
-            var jPS_HiringManagerIDParameter = jPS_HiringManagerID != null ?
-                new ObjectParameter("JPS_HiringManagerID", jPS_HiringManagerID) :
-                new ObjectParameter("JPS_HiringManagerID", typeof(string));
-    
-            var jPS_NumberOfPostParameter = jPS_NumberOfPost.HasValue ?
-                new ObjectParameter("JPS_NumberOfPost", jPS_NumberOfPost) :
-                new ObjectParameter("JPS_NumberOfPost", typeof(int));
-    
-            var jPS_IsActiveParameter = jPS_IsActive != null ?
-                new ObjectParameter("JPS_IsActive", jPS_IsActive) :
-                new ObjectParameter("JPS_IsActive", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetJobPosting", actionParameter, jPS_JobPostingIdRecruiteeParameter, jPS_JobTitleIDParameter, jPS_HiringManagerIDParameter, jPS_NumberOfPostParameter, jPS_IsActiveParameter);
-        }
-    
         public virtual ObjectResult<spGetHiringManager_Result> spGetHiringManager(Nullable<long> vST_Id)
         {
             var vST_IdParameter = vST_Id.HasValue ?
@@ -5660,15 +5633,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetForrmStatus_Result>("spGetForrmStatus", employeeIdParameter);
         }
     
-        public virtual ObjectResult<spGetI9Form_Result> spGetI9Form(string employeeId)
-        {
-            var employeeIdParameter = employeeId != null ?
-                new ObjectParameter("EmployeeId", employeeId) :
-                new ObjectParameter("EmployeeId", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetI9Form_Result>("spGetI9Form", employeeIdParameter);
-        }
-    
         public virtual ObjectResult<spGetHiringGraph_Result> spGetHiringGraph(string jPS_HiringManagerID, Nullable<long> jPS_JobPostingId)
         {
             var jPS_HiringManagerIDParameter = jPS_HiringManagerID != null ?
@@ -5796,15 +5760,6 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("IsExempt", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetInterviewQuestion_Result1>("spGetInterviewQuestion", isExemptParameter);
-        }
-    
-        public virtual ObjectResult<spGetJobPosting_Result4> spGetJobPosting(string jPS_HiringManagerID)
-        {
-            var jPS_HiringManagerIDParameter = jPS_HiringManagerID != null ?
-                new ObjectParameter("JPS_HiringManagerID", jPS_HiringManagerID) :
-                new ObjectParameter("JPS_HiringManagerID", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetJobPosting_Result4>("spGetJobPosting", jPS_HiringManagerIDParameter);
         }
     
         public virtual ObjectResult<spGetJobTitle_Result2> spGetJobTitle(Nullable<long> jBT_VST_Id)
@@ -6527,95 +6482,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetAssetAllocation", actionParameter, aTA_IdParameter, aTA_EMP_EmployeeIdParameter, aTA_TypeParameter, aTA_AssetNameParameter, aTA_AssetDescriptionParameter, aTA_MakeParameter, aTA_ModelParameter, aTA_SerialNumberParameter, aTA_LoginParameter, aTA_PasswordParameter, aTA_AssignDateParameter, aTA_ReturnAcceptByParameter, aTA_ReturnDateParameter, aTA_ReturnStatusParameter, aTA_IsActiveParameter);
         }
     
-        public virtual int spSetEmergencyContactForm(string eCFAction, Nullable<long> eCF_Id, string eCF_EMP_EmployeeID, string eCF_NickName, Nullable<long> eCF_HomePhone, string eCF_HomeAddress, string eCF_HomeEmail, string eCF_FirstName, string eCF_MiddleName, string eCF_LastName, string eCF_Address, string eCF_Gender, string eCF_Citizenship, Nullable<System.DateTime> eCF_BirthDate, string eCF_DriverLicense, string eCF_EmergencyContactName, Nullable<long> eCF_Mobile, Nullable<long> eCF_PhoneNumber, string eCF_SSN, string eCF_Relationship, string eCF_IsActive)
-        {
-            var eCFActionParameter = eCFAction != null ?
-                new ObjectParameter("ECFAction", eCFAction) :
-                new ObjectParameter("ECFAction", typeof(string));
-    
-            var eCF_IdParameter = eCF_Id.HasValue ?
-                new ObjectParameter("ECF_Id", eCF_Id) :
-                new ObjectParameter("ECF_Id", typeof(long));
-    
-            var eCF_EMP_EmployeeIDParameter = eCF_EMP_EmployeeID != null ?
-                new ObjectParameter("ECF_EMP_EmployeeID", eCF_EMP_EmployeeID) :
-                new ObjectParameter("ECF_EMP_EmployeeID", typeof(string));
-    
-            var eCF_NickNameParameter = eCF_NickName != null ?
-                new ObjectParameter("ECF_NickName", eCF_NickName) :
-                new ObjectParameter("ECF_NickName", typeof(string));
-    
-            var eCF_HomePhoneParameter = eCF_HomePhone.HasValue ?
-                new ObjectParameter("ECF_HomePhone", eCF_HomePhone) :
-                new ObjectParameter("ECF_HomePhone", typeof(long));
-    
-            var eCF_HomeAddressParameter = eCF_HomeAddress != null ?
-                new ObjectParameter("ECF_HomeAddress", eCF_HomeAddress) :
-                new ObjectParameter("ECF_HomeAddress", typeof(string));
-    
-            var eCF_HomeEmailParameter = eCF_HomeEmail != null ?
-                new ObjectParameter("ECF_HomeEmail", eCF_HomeEmail) :
-                new ObjectParameter("ECF_HomeEmail", typeof(string));
-    
-            var eCF_FirstNameParameter = eCF_FirstName != null ?
-                new ObjectParameter("ECF_FirstName", eCF_FirstName) :
-                new ObjectParameter("ECF_FirstName", typeof(string));
-    
-            var eCF_MiddleNameParameter = eCF_MiddleName != null ?
-                new ObjectParameter("ECF_MiddleName", eCF_MiddleName) :
-                new ObjectParameter("ECF_MiddleName", typeof(string));
-    
-            var eCF_LastNameParameter = eCF_LastName != null ?
-                new ObjectParameter("ECF_LastName", eCF_LastName) :
-                new ObjectParameter("ECF_LastName", typeof(string));
-    
-            var eCF_AddressParameter = eCF_Address != null ?
-                new ObjectParameter("ECF_Address", eCF_Address) :
-                new ObjectParameter("ECF_Address", typeof(string));
-    
-            var eCF_GenderParameter = eCF_Gender != null ?
-                new ObjectParameter("ECF_Gender", eCF_Gender) :
-                new ObjectParameter("ECF_Gender", typeof(string));
-    
-            var eCF_CitizenshipParameter = eCF_Citizenship != null ?
-                new ObjectParameter("ECF_Citizenship", eCF_Citizenship) :
-                new ObjectParameter("ECF_Citizenship", typeof(string));
-    
-            var eCF_BirthDateParameter = eCF_BirthDate.HasValue ?
-                new ObjectParameter("ECF_BirthDate", eCF_BirthDate) :
-                new ObjectParameter("ECF_BirthDate", typeof(System.DateTime));
-    
-            var eCF_DriverLicenseParameter = eCF_DriverLicense != null ?
-                new ObjectParameter("ECF_DriverLicense", eCF_DriverLicense) :
-                new ObjectParameter("ECF_DriverLicense", typeof(string));
-    
-            var eCF_EmergencyContactNameParameter = eCF_EmergencyContactName != null ?
-                new ObjectParameter("ECF_EmergencyContactName", eCF_EmergencyContactName) :
-                new ObjectParameter("ECF_EmergencyContactName", typeof(string));
-    
-            var eCF_MobileParameter = eCF_Mobile.HasValue ?
-                new ObjectParameter("ECF_Mobile", eCF_Mobile) :
-                new ObjectParameter("ECF_Mobile", typeof(long));
-    
-            var eCF_PhoneNumberParameter = eCF_PhoneNumber.HasValue ?
-                new ObjectParameter("ECF_PhoneNumber", eCF_PhoneNumber) :
-                new ObjectParameter("ECF_PhoneNumber", typeof(long));
-    
-            var eCF_SSNParameter = eCF_SSN != null ?
-                new ObjectParameter("ECF_SSN", eCF_SSN) :
-                new ObjectParameter("ECF_SSN", typeof(string));
-    
-            var eCF_RelationshipParameter = eCF_Relationship != null ?
-                new ObjectParameter("ECF_Relationship", eCF_Relationship) :
-                new ObjectParameter("ECF_Relationship", typeof(string));
-    
-            var eCF_IsActiveParameter = eCF_IsActive != null ?
-                new ObjectParameter("ECF_IsActive", eCF_IsActive) :
-                new ObjectParameter("ECF_IsActive", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetEmergencyContactForm", eCFActionParameter, eCF_IdParameter, eCF_EMP_EmployeeIDParameter, eCF_NickNameParameter, eCF_HomePhoneParameter, eCF_HomeAddressParameter, eCF_HomeEmailParameter, eCF_FirstNameParameter, eCF_MiddleNameParameter, eCF_LastNameParameter, eCF_AddressParameter, eCF_GenderParameter, eCF_CitizenshipParameter, eCF_BirthDateParameter, eCF_DriverLicenseParameter, eCF_EmergencyContactNameParameter, eCF_MobileParameter, eCF_PhoneNumberParameter, eCF_SSNParameter, eCF_RelationshipParameter, eCF_IsActiveParameter);
-        }
-    
         public virtual ObjectResult<Nullable<long>> spGetApplicantLogin(string aLA_LiginId, string aLA_Password, ObjectParameter aLA_UserId)
         {
             var aLA_LiginIdParameter = aLA_LiginId != null ?
@@ -6832,6 +6698,506 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("IPT_IsActive", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetInterviewPanel", actionParameter, iPT_IdParameter, iPT_JPS_JobPostingIdParameter, iPT_EMP_EmployeeID_HMParameter, iPT_EMP_EmployeeID_SEParameter, iPT_EMP_EmployeeID_TEParameter, iPT_StatusParameter, iPT_IsActiveParameter);
+        }
+    
+        public virtual ObjectResult<spGetApplicantAllDetails_Result> spGetApplicantAllDetails(Nullable<long> aPT_ApplicantId)
+        {
+            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
+                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
+                new ObjectParameter("APT_ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantAllDetails_Result>("spGetApplicantAllDetails", aPT_ApplicantIdParameter);
+        }
+    
+        public virtual int spSetEmergencyContactForm(string eCFAction, Nullable<long> eCF_Id, string eCF_EMP_EmployeeID, string eCF_NickName, Nullable<long> eCF_HomePhone, string eCF_HomeAddress, string eCF_HomeEmail, string eCF_FirstName, string eCF_MiddleName, string eCF_LastName, string eCF_Address, string eCF_Gender, string eCF_Citizenship, Nullable<System.DateTime> eCF_BirthDate, string eCF_DriverLicense, string eCF_EmergencyContactName, Nullable<long> eCF_Mobile, Nullable<long> eCF_PhoneNumber, string eCF_SSN, string eCF_Relationship, string eCF_IsActive)
+        {
+            var eCFActionParameter = eCFAction != null ?
+                new ObjectParameter("ECFAction", eCFAction) :
+                new ObjectParameter("ECFAction", typeof(string));
+    
+            var eCF_IdParameter = eCF_Id.HasValue ?
+                new ObjectParameter("ECF_Id", eCF_Id) :
+                new ObjectParameter("ECF_Id", typeof(long));
+    
+            var eCF_EMP_EmployeeIDParameter = eCF_EMP_EmployeeID != null ?
+                new ObjectParameter("ECF_EMP_EmployeeID", eCF_EMP_EmployeeID) :
+                new ObjectParameter("ECF_EMP_EmployeeID", typeof(string));
+    
+            var eCF_NickNameParameter = eCF_NickName != null ?
+                new ObjectParameter("ECF_NickName", eCF_NickName) :
+                new ObjectParameter("ECF_NickName", typeof(string));
+    
+            var eCF_HomePhoneParameter = eCF_HomePhone.HasValue ?
+                new ObjectParameter("ECF_HomePhone", eCF_HomePhone) :
+                new ObjectParameter("ECF_HomePhone", typeof(long));
+    
+            var eCF_HomeAddressParameter = eCF_HomeAddress != null ?
+                new ObjectParameter("ECF_HomeAddress", eCF_HomeAddress) :
+                new ObjectParameter("ECF_HomeAddress", typeof(string));
+    
+            var eCF_HomeEmailParameter = eCF_HomeEmail != null ?
+                new ObjectParameter("ECF_HomeEmail", eCF_HomeEmail) :
+                new ObjectParameter("ECF_HomeEmail", typeof(string));
+    
+            var eCF_FirstNameParameter = eCF_FirstName != null ?
+                new ObjectParameter("ECF_FirstName", eCF_FirstName) :
+                new ObjectParameter("ECF_FirstName", typeof(string));
+    
+            var eCF_MiddleNameParameter = eCF_MiddleName != null ?
+                new ObjectParameter("ECF_MiddleName", eCF_MiddleName) :
+                new ObjectParameter("ECF_MiddleName", typeof(string));
+    
+            var eCF_LastNameParameter = eCF_LastName != null ?
+                new ObjectParameter("ECF_LastName", eCF_LastName) :
+                new ObjectParameter("ECF_LastName", typeof(string));
+    
+            var eCF_AddressParameter = eCF_Address != null ?
+                new ObjectParameter("ECF_Address", eCF_Address) :
+                new ObjectParameter("ECF_Address", typeof(string));
+    
+            var eCF_GenderParameter = eCF_Gender != null ?
+                new ObjectParameter("ECF_Gender", eCF_Gender) :
+                new ObjectParameter("ECF_Gender", typeof(string));
+    
+            var eCF_CitizenshipParameter = eCF_Citizenship != null ?
+                new ObjectParameter("ECF_Citizenship", eCF_Citizenship) :
+                new ObjectParameter("ECF_Citizenship", typeof(string));
+    
+            var eCF_BirthDateParameter = eCF_BirthDate.HasValue ?
+                new ObjectParameter("ECF_BirthDate", eCF_BirthDate) :
+                new ObjectParameter("ECF_BirthDate", typeof(System.DateTime));
+    
+            var eCF_DriverLicenseParameter = eCF_DriverLicense != null ?
+                new ObjectParameter("ECF_DriverLicense", eCF_DriverLicense) :
+                new ObjectParameter("ECF_DriverLicense", typeof(string));
+    
+            var eCF_EmergencyContactNameParameter = eCF_EmergencyContactName != null ?
+                new ObjectParameter("ECF_EmergencyContactName", eCF_EmergencyContactName) :
+                new ObjectParameter("ECF_EmergencyContactName", typeof(string));
+    
+            var eCF_MobileParameter = eCF_Mobile.HasValue ?
+                new ObjectParameter("ECF_Mobile", eCF_Mobile) :
+                new ObjectParameter("ECF_Mobile", typeof(long));
+    
+            var eCF_PhoneNumberParameter = eCF_PhoneNumber.HasValue ?
+                new ObjectParameter("ECF_PhoneNumber", eCF_PhoneNumber) :
+                new ObjectParameter("ECF_PhoneNumber", typeof(long));
+    
+            var eCF_SSNParameter = eCF_SSN != null ?
+                new ObjectParameter("ECF_SSN", eCF_SSN) :
+                new ObjectParameter("ECF_SSN", typeof(string));
+    
+            var eCF_RelationshipParameter = eCF_Relationship != null ?
+                new ObjectParameter("ECF_Relationship", eCF_Relationship) :
+                new ObjectParameter("ECF_Relationship", typeof(string));
+    
+            var eCF_IsActiveParameter = eCF_IsActive != null ?
+                new ObjectParameter("ECF_IsActive", eCF_IsActive) :
+                new ObjectParameter("ECF_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetEmergencyContactForm", eCFActionParameter, eCF_IdParameter, eCF_EMP_EmployeeIDParameter, eCF_NickNameParameter, eCF_HomePhoneParameter, eCF_HomeAddressParameter, eCF_HomeEmailParameter, eCF_FirstNameParameter, eCF_MiddleNameParameter, eCF_LastNameParameter, eCF_AddressParameter, eCF_GenderParameter, eCF_CitizenshipParameter, eCF_BirthDateParameter, eCF_DriverLicenseParameter, eCF_EmergencyContactNameParameter, eCF_MobileParameter, eCF_PhoneNumberParameter, eCF_SSNParameter, eCF_RelationshipParameter, eCF_IsActiveParameter);
+        }
+    
+        public virtual int spSetApplicantContactInfo(string aCI_Action, Nullable<long> aCI_Id, Nullable<long> aCI_APT_ApplicantId, Nullable<long> aCI_PhoneNo, string aCI_eMail, string aCI_PrefredContactMethod, string aCI_IsActive)
+        {
+            var aCI_ActionParameter = aCI_Action != null ?
+                new ObjectParameter("ACI_Action", aCI_Action) :
+                new ObjectParameter("ACI_Action", typeof(string));
+    
+            var aCI_IdParameter = aCI_Id.HasValue ?
+                new ObjectParameter("ACI_Id", aCI_Id) :
+                new ObjectParameter("ACI_Id", typeof(long));
+    
+            var aCI_APT_ApplicantIdParameter = aCI_APT_ApplicantId.HasValue ?
+                new ObjectParameter("ACI_APT_ApplicantId", aCI_APT_ApplicantId) :
+                new ObjectParameter("ACI_APT_ApplicantId", typeof(long));
+    
+            var aCI_PhoneNoParameter = aCI_PhoneNo.HasValue ?
+                new ObjectParameter("ACI_PhoneNo", aCI_PhoneNo) :
+                new ObjectParameter("ACI_PhoneNo", typeof(long));
+    
+            var aCI_eMailParameter = aCI_eMail != null ?
+                new ObjectParameter("ACI_eMail", aCI_eMail) :
+                new ObjectParameter("ACI_eMail", typeof(string));
+    
+            var aCI_PrefredContactMethodParameter = aCI_PrefredContactMethod != null ?
+                new ObjectParameter("ACI_PrefredContactMethod", aCI_PrefredContactMethod) :
+                new ObjectParameter("ACI_PrefredContactMethod", typeof(string));
+    
+            var aCI_IsActiveParameter = aCI_IsActive != null ?
+                new ObjectParameter("ACI_IsActive", aCI_IsActive) :
+                new ObjectParameter("ACI_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApplicantContactInfo", aCI_ActionParameter, aCI_IdParameter, aCI_APT_ApplicantIdParameter, aCI_PhoneNoParameter, aCI_eMailParameter, aCI_PrefredContactMethodParameter, aCI_IsActiveParameter);
+        }
+    
+        public virtual ObjectResult<spGetApplicantContactInfo_Result2> spGetApplicantContactInfo(Nullable<long> applicantId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("ApplicantId", applicantId) :
+                new ObjectParameter("ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantContactInfo_Result2>("spGetApplicantContactInfo", applicantIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetJobPosting_Result5> spGetJobPosting(string jPS_HiringManagerID)
+        {
+            var jPS_HiringManagerIDParameter = jPS_HiringManagerID != null ?
+                new ObjectParameter("JPS_HiringManagerID", jPS_HiringManagerID) :
+                new ObjectParameter("JPS_HiringManagerID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetJobPosting_Result5>("spGetJobPosting", jPS_HiringManagerIDParameter);
+        }
+    
+        public virtual int spSetJobPosting(string action, Nullable<long> jPS_JobPostingIdRecruitee, Nullable<long> jPS_JobTitleID, string jPS_HiringManagerID, Nullable<long> jPS_LocationId, Nullable<int> jPS_NumberOfPost, string jPS_IsActive)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var jPS_JobPostingIdRecruiteeParameter = jPS_JobPostingIdRecruitee.HasValue ?
+                new ObjectParameter("JPS_JobPostingIdRecruitee", jPS_JobPostingIdRecruitee) :
+                new ObjectParameter("JPS_JobPostingIdRecruitee", typeof(long));
+    
+            var jPS_JobTitleIDParameter = jPS_JobTitleID.HasValue ?
+                new ObjectParameter("JPS_JobTitleID", jPS_JobTitleID) :
+                new ObjectParameter("JPS_JobTitleID", typeof(long));
+    
+            var jPS_HiringManagerIDParameter = jPS_HiringManagerID != null ?
+                new ObjectParameter("JPS_HiringManagerID", jPS_HiringManagerID) :
+                new ObjectParameter("JPS_HiringManagerID", typeof(string));
+    
+            var jPS_LocationIdParameter = jPS_LocationId.HasValue ?
+                new ObjectParameter("JPS_LocationId", jPS_LocationId) :
+                new ObjectParameter("JPS_LocationId", typeof(long));
+    
+            var jPS_NumberOfPostParameter = jPS_NumberOfPost.HasValue ?
+                new ObjectParameter("JPS_NumberOfPost", jPS_NumberOfPost) :
+                new ObjectParameter("JPS_NumberOfPost", typeof(int));
+    
+            var jPS_IsActiveParameter = jPS_IsActive != null ?
+                new ObjectParameter("JPS_IsActive", jPS_IsActive) :
+                new ObjectParameter("JPS_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetJobPosting", actionParameter, jPS_JobPostingIdRecruiteeParameter, jPS_JobTitleIDParameter, jPS_HiringManagerIDParameter, jPS_LocationIdParameter, jPS_NumberOfPostParameter, jPS_IsActiveParameter);
+        }
+    
+        public virtual ObjectResult<spGetI9Form_Result1> spGetI9Form(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetI9Form_Result1>("spGetI9Form", employeeIdParameter);
+        }
+    
+        public virtual int spSetI9Form(string i9FAction, Nullable<long> i9F_Id, string i9F_EMP_EmployeeId, string i9F_Sec1_SSN, string i9F_Sec1_CitizenOfUS, string i9F_Sec1_NonCitizenOfUS, string i9F_Sec1_AlienRegistrationNum_USCIS, Nullable<System.DateTime> i9F_Sec1_AlienAuthorizedToWorkDate, string i9F_Sec1_I94AdmissionNumber, string i9F_Sec1_ForeignPassportNumber, string i9F_Sec1_ForeignPassportIssuanceCountry, string i9F_Sec1_SignatureOfEmployee, Nullable<System.DateTime> i9F_Sec1_DateOfEmployeeSign, string i9F_Sec1_QRCodeSec1, string i9F_Sec1_PreparerAndTranslator, string i9F_Sec1_SignatureOfPreparerOrTranslator, Nullable<System.DateTime> i9F_Sec1_DateOfPreparerOrTranslatorSign, string i9F_Sec1_FirstName, string i9F_Sec1_MiddleInitial, string i9F_Sec1_LastName, string i9F_Sec1_OtherLastName, Nullable<System.DateTime> i9F_Sec1_dateOfBirth, string i9F_Sec1_Address, string i9F_Sec1_AptNumber, string i9F_Sec1_City, string i9F_Sec1_State, Nullable<int> i9F_Sec1_ZipCode, string i9F_Sec1_Email, Nullable<long> i9F_Sec1_EmployeeTelephoneNumber, string i9F_Sec2_ListA_DocumentTitle1, string i9F_Sec2_ListA_IssuingAuthority1, string i9F_Sec2_ListA_DocumentNumber1, Nullable<System.DateTime> i9F_Sec2_ListA_ExpirationDate1, string i9F_Sec2_ListA_DocumentTitle2, string i9F_Sec2_ListA_IssuingAuthority2, string i9F_Sec2_ListA_DocumentNumber2, Nullable<System.DateTime> i9F_Sec2_ListA_ExpirationDate2, string i9F_Sec2_ListA_DocumentTitle3, string i9F_Sec2_ListA_IssuingAuthority3, string i9F_Sec2_ListA_DocumentNumber3, Nullable<System.DateTime> i9F_Sec2_ListA_ExpirationDate3, string i9F_Sec2_ListB_DocumentTitle, string i9F_Sec2_ListB_IssuingAuthority, string i9F_Sec2_ListB_DocumentNumber, Nullable<System.DateTime> i9F_Sec2_ListB_ExpirationDate, string i9F_Sec2_ListC_DocumentTitle, string i9F_Sec2_ListC_IssuingAuthority, string i9F_Sec2_ListC_DocumentNumber, Nullable<System.DateTime> i9F_Sec2_ListC_ExpirationDate, string i9F_Sec2_AdditionalInformation, string i9F_Sec2_QRCodeSec2AndSec3, Nullable<System.DateTime> i9F_Sec2_EmployeesFirstDayOfEmployment, string i9F_Sec2_SignatureOfEmployerOrAuthorized, Nullable<System.DateTime> i9F_Sec2_DateOfEmployerOrAuthorizedSign, string i9F_Sec2_LastNameOfEmployerOrAuthorized, string i9F_Sec2_FirstNameOfEmployerOrAuthorized, string i9F_Sec2_MiddleInitialOfEmployerOrAuthorized, string i9F_Sec2_EmployersBusinessOrgnization_Name, string i9F_Sec2_EmployersBusinessOrgnization_Address, string i9F_Sec2_EmployersBusinessOrgnization_City, string i9F_Sec2_EmployersBusinessOrgnization_State, Nullable<int> i9F_Sec2_EmployersBusinessOrgnization_ZipCode, string i9F_Sec2_TitleOfEmployerOrOthrizedRepresentative, string i9F_Sec2_CitizenshipImmigrationStatus, string i9F_Sec3_A_LastName, string i9F_Sec3_A_FirstName, string i9F_Sec3_A_MiddleInitial, Nullable<System.DateTime> i9F_Sec3_B_DateOfReHire, string i9F_Sec3_C_DocumentTitle, string i9F_Sec3_C_DocumentNumber, Nullable<System.DateTime> i9F_Sec3_C_ExpirationDate, string i9F_Sec3_C_SignatureOfEmployerOrAuthorized, Nullable<System.DateTime> i9F_Sec3_C_DateOfEmployerOrAuthorizedSign, string i9F_Sec3_C_NameOfEmployerOrAuthorized, Nullable<System.DateTime> i9F_Date, string i9F_IsActive)
+        {
+            var i9FActionParameter = i9FAction != null ?
+                new ObjectParameter("I9FAction", i9FAction) :
+                new ObjectParameter("I9FAction", typeof(string));
+    
+            var i9F_IdParameter = i9F_Id.HasValue ?
+                new ObjectParameter("I9F_Id", i9F_Id) :
+                new ObjectParameter("I9F_Id", typeof(long));
+    
+            var i9F_EMP_EmployeeIdParameter = i9F_EMP_EmployeeId != null ?
+                new ObjectParameter("I9F_EMP_EmployeeId", i9F_EMP_EmployeeId) :
+                new ObjectParameter("I9F_EMP_EmployeeId", typeof(string));
+    
+            var i9F_Sec1_SSNParameter = i9F_Sec1_SSN != null ?
+                new ObjectParameter("I9F_Sec1_SSN", i9F_Sec1_SSN) :
+                new ObjectParameter("I9F_Sec1_SSN", typeof(string));
+    
+            var i9F_Sec1_CitizenOfUSParameter = i9F_Sec1_CitizenOfUS != null ?
+                new ObjectParameter("I9F_Sec1_CitizenOfUS", i9F_Sec1_CitizenOfUS) :
+                new ObjectParameter("I9F_Sec1_CitizenOfUS", typeof(string));
+    
+            var i9F_Sec1_NonCitizenOfUSParameter = i9F_Sec1_NonCitizenOfUS != null ?
+                new ObjectParameter("I9F_Sec1_NonCitizenOfUS", i9F_Sec1_NonCitizenOfUS) :
+                new ObjectParameter("I9F_Sec1_NonCitizenOfUS", typeof(string));
+    
+            var i9F_Sec1_AlienRegistrationNum_USCISParameter = i9F_Sec1_AlienRegistrationNum_USCIS != null ?
+                new ObjectParameter("I9F_Sec1_AlienRegistrationNum_USCIS", i9F_Sec1_AlienRegistrationNum_USCIS) :
+                new ObjectParameter("I9F_Sec1_AlienRegistrationNum_USCIS", typeof(string));
+    
+            var i9F_Sec1_AlienAuthorizedToWorkDateParameter = i9F_Sec1_AlienAuthorizedToWorkDate.HasValue ?
+                new ObjectParameter("I9F_Sec1_AlienAuthorizedToWorkDate", i9F_Sec1_AlienAuthorizedToWorkDate) :
+                new ObjectParameter("I9F_Sec1_AlienAuthorizedToWorkDate", typeof(System.DateTime));
+    
+            var i9F_Sec1_I94AdmissionNumberParameter = i9F_Sec1_I94AdmissionNumber != null ?
+                new ObjectParameter("I9F_Sec1_I94AdmissionNumber", i9F_Sec1_I94AdmissionNumber) :
+                new ObjectParameter("I9F_Sec1_I94AdmissionNumber", typeof(string));
+    
+            var i9F_Sec1_ForeignPassportNumberParameter = i9F_Sec1_ForeignPassportNumber != null ?
+                new ObjectParameter("I9F_Sec1_ForeignPassportNumber", i9F_Sec1_ForeignPassportNumber) :
+                new ObjectParameter("I9F_Sec1_ForeignPassportNumber", typeof(string));
+    
+            var i9F_Sec1_ForeignPassportIssuanceCountryParameter = i9F_Sec1_ForeignPassportIssuanceCountry != null ?
+                new ObjectParameter("I9F_Sec1_ForeignPassportIssuanceCountry", i9F_Sec1_ForeignPassportIssuanceCountry) :
+                new ObjectParameter("I9F_Sec1_ForeignPassportIssuanceCountry", typeof(string));
+    
+            var i9F_Sec1_SignatureOfEmployeeParameter = i9F_Sec1_SignatureOfEmployee != null ?
+                new ObjectParameter("I9F_Sec1_SignatureOfEmployee", i9F_Sec1_SignatureOfEmployee) :
+                new ObjectParameter("I9F_Sec1_SignatureOfEmployee", typeof(string));
+    
+            var i9F_Sec1_DateOfEmployeeSignParameter = i9F_Sec1_DateOfEmployeeSign.HasValue ?
+                new ObjectParameter("I9F_Sec1_DateOfEmployeeSign", i9F_Sec1_DateOfEmployeeSign) :
+                new ObjectParameter("I9F_Sec1_DateOfEmployeeSign", typeof(System.DateTime));
+    
+            var i9F_Sec1_QRCodeSec1Parameter = i9F_Sec1_QRCodeSec1 != null ?
+                new ObjectParameter("I9F_Sec1_QRCodeSec1", i9F_Sec1_QRCodeSec1) :
+                new ObjectParameter("I9F_Sec1_QRCodeSec1", typeof(string));
+    
+            var i9F_Sec1_PreparerAndTranslatorParameter = i9F_Sec1_PreparerAndTranslator != null ?
+                new ObjectParameter("I9F_Sec1_PreparerAndTranslator", i9F_Sec1_PreparerAndTranslator) :
+                new ObjectParameter("I9F_Sec1_PreparerAndTranslator", typeof(string));
+    
+            var i9F_Sec1_SignatureOfPreparerOrTranslatorParameter = i9F_Sec1_SignatureOfPreparerOrTranslator != null ?
+                new ObjectParameter("I9F_Sec1_SignatureOfPreparerOrTranslator", i9F_Sec1_SignatureOfPreparerOrTranslator) :
+                new ObjectParameter("I9F_Sec1_SignatureOfPreparerOrTranslator", typeof(string));
+    
+            var i9F_Sec1_DateOfPreparerOrTranslatorSignParameter = i9F_Sec1_DateOfPreparerOrTranslatorSign.HasValue ?
+                new ObjectParameter("I9F_Sec1_DateOfPreparerOrTranslatorSign", i9F_Sec1_DateOfPreparerOrTranslatorSign) :
+                new ObjectParameter("I9F_Sec1_DateOfPreparerOrTranslatorSign", typeof(System.DateTime));
+    
+            var i9F_Sec1_FirstNameParameter = i9F_Sec1_FirstName != null ?
+                new ObjectParameter("I9F_Sec1_FirstName", i9F_Sec1_FirstName) :
+                new ObjectParameter("I9F_Sec1_FirstName", typeof(string));
+    
+            var i9F_Sec1_MiddleInitialParameter = i9F_Sec1_MiddleInitial != null ?
+                new ObjectParameter("I9F_Sec1_MiddleInitial", i9F_Sec1_MiddleInitial) :
+                new ObjectParameter("I9F_Sec1_MiddleInitial", typeof(string));
+    
+            var i9F_Sec1_LastNameParameter = i9F_Sec1_LastName != null ?
+                new ObjectParameter("I9F_Sec1_LastName", i9F_Sec1_LastName) :
+                new ObjectParameter("I9F_Sec1_LastName", typeof(string));
+    
+            var i9F_Sec1_OtherLastNameParameter = i9F_Sec1_OtherLastName != null ?
+                new ObjectParameter("I9F_Sec1_OtherLastName", i9F_Sec1_OtherLastName) :
+                new ObjectParameter("I9F_Sec1_OtherLastName", typeof(string));
+    
+            var i9F_Sec1_dateOfBirthParameter = i9F_Sec1_dateOfBirth.HasValue ?
+                new ObjectParameter("I9F_Sec1_dateOfBirth", i9F_Sec1_dateOfBirth) :
+                new ObjectParameter("I9F_Sec1_dateOfBirth", typeof(System.DateTime));
+    
+            var i9F_Sec1_AddressParameter = i9F_Sec1_Address != null ?
+                new ObjectParameter("I9F_Sec1_Address", i9F_Sec1_Address) :
+                new ObjectParameter("I9F_Sec1_Address", typeof(string));
+    
+            var i9F_Sec1_AptNumberParameter = i9F_Sec1_AptNumber != null ?
+                new ObjectParameter("I9F_Sec1_AptNumber", i9F_Sec1_AptNumber) :
+                new ObjectParameter("I9F_Sec1_AptNumber", typeof(string));
+    
+            var i9F_Sec1_CityParameter = i9F_Sec1_City != null ?
+                new ObjectParameter("I9F_Sec1_City", i9F_Sec1_City) :
+                new ObjectParameter("I9F_Sec1_City", typeof(string));
+    
+            var i9F_Sec1_StateParameter = i9F_Sec1_State != null ?
+                new ObjectParameter("I9F_Sec1_State", i9F_Sec1_State) :
+                new ObjectParameter("I9F_Sec1_State", typeof(string));
+    
+            var i9F_Sec1_ZipCodeParameter = i9F_Sec1_ZipCode.HasValue ?
+                new ObjectParameter("I9F_Sec1_ZipCode", i9F_Sec1_ZipCode) :
+                new ObjectParameter("I9F_Sec1_ZipCode", typeof(int));
+    
+            var i9F_Sec1_EmailParameter = i9F_Sec1_Email != null ?
+                new ObjectParameter("I9F_Sec1_Email", i9F_Sec1_Email) :
+                new ObjectParameter("I9F_Sec1_Email", typeof(string));
+    
+            var i9F_Sec1_EmployeeTelephoneNumberParameter = i9F_Sec1_EmployeeTelephoneNumber.HasValue ?
+                new ObjectParameter("I9F_Sec1_EmployeeTelephoneNumber", i9F_Sec1_EmployeeTelephoneNumber) :
+                new ObjectParameter("I9F_Sec1_EmployeeTelephoneNumber", typeof(long));
+    
+            var i9F_Sec2_ListA_DocumentTitle1Parameter = i9F_Sec2_ListA_DocumentTitle1 != null ?
+                new ObjectParameter("I9F_Sec2_ListA_DocumentTitle1", i9F_Sec2_ListA_DocumentTitle1) :
+                new ObjectParameter("I9F_Sec2_ListA_DocumentTitle1", typeof(string));
+    
+            var i9F_Sec2_ListA_IssuingAuthority1Parameter = i9F_Sec2_ListA_IssuingAuthority1 != null ?
+                new ObjectParameter("I9F_Sec2_ListA_IssuingAuthority1", i9F_Sec2_ListA_IssuingAuthority1) :
+                new ObjectParameter("I9F_Sec2_ListA_IssuingAuthority1", typeof(string));
+    
+            var i9F_Sec2_ListA_DocumentNumber1Parameter = i9F_Sec2_ListA_DocumentNumber1 != null ?
+                new ObjectParameter("I9F_Sec2_ListA_DocumentNumber1", i9F_Sec2_ListA_DocumentNumber1) :
+                new ObjectParameter("I9F_Sec2_ListA_DocumentNumber1", typeof(string));
+    
+            var i9F_Sec2_ListA_ExpirationDate1Parameter = i9F_Sec2_ListA_ExpirationDate1.HasValue ?
+                new ObjectParameter("I9F_Sec2_ListA_ExpirationDate1", i9F_Sec2_ListA_ExpirationDate1) :
+                new ObjectParameter("I9F_Sec2_ListA_ExpirationDate1", typeof(System.DateTime));
+    
+            var i9F_Sec2_ListA_DocumentTitle2Parameter = i9F_Sec2_ListA_DocumentTitle2 != null ?
+                new ObjectParameter("I9F_Sec2_ListA_DocumentTitle2", i9F_Sec2_ListA_DocumentTitle2) :
+                new ObjectParameter("I9F_Sec2_ListA_DocumentTitle2", typeof(string));
+    
+            var i9F_Sec2_ListA_IssuingAuthority2Parameter = i9F_Sec2_ListA_IssuingAuthority2 != null ?
+                new ObjectParameter("I9F_Sec2_ListA_IssuingAuthority2", i9F_Sec2_ListA_IssuingAuthority2) :
+                new ObjectParameter("I9F_Sec2_ListA_IssuingAuthority2", typeof(string));
+    
+            var i9F_Sec2_ListA_DocumentNumber2Parameter = i9F_Sec2_ListA_DocumentNumber2 != null ?
+                new ObjectParameter("I9F_Sec2_ListA_DocumentNumber2", i9F_Sec2_ListA_DocumentNumber2) :
+                new ObjectParameter("I9F_Sec2_ListA_DocumentNumber2", typeof(string));
+    
+            var i9F_Sec2_ListA_ExpirationDate2Parameter = i9F_Sec2_ListA_ExpirationDate2.HasValue ?
+                new ObjectParameter("I9F_Sec2_ListA_ExpirationDate2", i9F_Sec2_ListA_ExpirationDate2) :
+                new ObjectParameter("I9F_Sec2_ListA_ExpirationDate2", typeof(System.DateTime));
+    
+            var i9F_Sec2_ListA_DocumentTitle3Parameter = i9F_Sec2_ListA_DocumentTitle3 != null ?
+                new ObjectParameter("I9F_Sec2_ListA_DocumentTitle3", i9F_Sec2_ListA_DocumentTitle3) :
+                new ObjectParameter("I9F_Sec2_ListA_DocumentTitle3", typeof(string));
+    
+            var i9F_Sec2_ListA_IssuingAuthority3Parameter = i9F_Sec2_ListA_IssuingAuthority3 != null ?
+                new ObjectParameter("I9F_Sec2_ListA_IssuingAuthority3", i9F_Sec2_ListA_IssuingAuthority3) :
+                new ObjectParameter("I9F_Sec2_ListA_IssuingAuthority3", typeof(string));
+    
+            var i9F_Sec2_ListA_DocumentNumber3Parameter = i9F_Sec2_ListA_DocumentNumber3 != null ?
+                new ObjectParameter("I9F_Sec2_ListA_DocumentNumber3", i9F_Sec2_ListA_DocumentNumber3) :
+                new ObjectParameter("I9F_Sec2_ListA_DocumentNumber3", typeof(string));
+    
+            var i9F_Sec2_ListA_ExpirationDate3Parameter = i9F_Sec2_ListA_ExpirationDate3.HasValue ?
+                new ObjectParameter("I9F_Sec2_ListA_ExpirationDate3", i9F_Sec2_ListA_ExpirationDate3) :
+                new ObjectParameter("I9F_Sec2_ListA_ExpirationDate3", typeof(System.DateTime));
+    
+            var i9F_Sec2_ListB_DocumentTitleParameter = i9F_Sec2_ListB_DocumentTitle != null ?
+                new ObjectParameter("I9F_Sec2_ListB_DocumentTitle", i9F_Sec2_ListB_DocumentTitle) :
+                new ObjectParameter("I9F_Sec2_ListB_DocumentTitle", typeof(string));
+    
+            var i9F_Sec2_ListB_IssuingAuthorityParameter = i9F_Sec2_ListB_IssuingAuthority != null ?
+                new ObjectParameter("I9F_Sec2_ListB_IssuingAuthority", i9F_Sec2_ListB_IssuingAuthority) :
+                new ObjectParameter("I9F_Sec2_ListB_IssuingAuthority", typeof(string));
+    
+            var i9F_Sec2_ListB_DocumentNumberParameter = i9F_Sec2_ListB_DocumentNumber != null ?
+                new ObjectParameter("I9F_Sec2_ListB_DocumentNumber", i9F_Sec2_ListB_DocumentNumber) :
+                new ObjectParameter("I9F_Sec2_ListB_DocumentNumber", typeof(string));
+    
+            var i9F_Sec2_ListB_ExpirationDateParameter = i9F_Sec2_ListB_ExpirationDate.HasValue ?
+                new ObjectParameter("I9F_Sec2_ListB_ExpirationDate", i9F_Sec2_ListB_ExpirationDate) :
+                new ObjectParameter("I9F_Sec2_ListB_ExpirationDate", typeof(System.DateTime));
+    
+            var i9F_Sec2_ListC_DocumentTitleParameter = i9F_Sec2_ListC_DocumentTitle != null ?
+                new ObjectParameter("I9F_Sec2_ListC_DocumentTitle", i9F_Sec2_ListC_DocumentTitle) :
+                new ObjectParameter("I9F_Sec2_ListC_DocumentTitle", typeof(string));
+    
+            var i9F_Sec2_ListC_IssuingAuthorityParameter = i9F_Sec2_ListC_IssuingAuthority != null ?
+                new ObjectParameter("I9F_Sec2_ListC_IssuingAuthority", i9F_Sec2_ListC_IssuingAuthority) :
+                new ObjectParameter("I9F_Sec2_ListC_IssuingAuthority", typeof(string));
+    
+            var i9F_Sec2_ListC_DocumentNumberParameter = i9F_Sec2_ListC_DocumentNumber != null ?
+                new ObjectParameter("I9F_Sec2_ListC_DocumentNumber", i9F_Sec2_ListC_DocumentNumber) :
+                new ObjectParameter("I9F_Sec2_ListC_DocumentNumber", typeof(string));
+    
+            var i9F_Sec2_ListC_ExpirationDateParameter = i9F_Sec2_ListC_ExpirationDate.HasValue ?
+                new ObjectParameter("I9F_Sec2_ListC_ExpirationDate", i9F_Sec2_ListC_ExpirationDate) :
+                new ObjectParameter("I9F_Sec2_ListC_ExpirationDate", typeof(System.DateTime));
+    
+            var i9F_Sec2_AdditionalInformationParameter = i9F_Sec2_AdditionalInformation != null ?
+                new ObjectParameter("I9F_Sec2_AdditionalInformation", i9F_Sec2_AdditionalInformation) :
+                new ObjectParameter("I9F_Sec2_AdditionalInformation", typeof(string));
+    
+            var i9F_Sec2_QRCodeSec2AndSec3Parameter = i9F_Sec2_QRCodeSec2AndSec3 != null ?
+                new ObjectParameter("I9F_Sec2_QRCodeSec2AndSec3", i9F_Sec2_QRCodeSec2AndSec3) :
+                new ObjectParameter("I9F_Sec2_QRCodeSec2AndSec3", typeof(string));
+    
+            var i9F_Sec2_EmployeesFirstDayOfEmploymentParameter = i9F_Sec2_EmployeesFirstDayOfEmployment.HasValue ?
+                new ObjectParameter("I9F_Sec2_EmployeesFirstDayOfEmployment", i9F_Sec2_EmployeesFirstDayOfEmployment) :
+                new ObjectParameter("I9F_Sec2_EmployeesFirstDayOfEmployment", typeof(System.DateTime));
+    
+            var i9F_Sec2_SignatureOfEmployerOrAuthorizedParameter = i9F_Sec2_SignatureOfEmployerOrAuthorized != null ?
+                new ObjectParameter("I9F_Sec2_SignatureOfEmployerOrAuthorized", i9F_Sec2_SignatureOfEmployerOrAuthorized) :
+                new ObjectParameter("I9F_Sec2_SignatureOfEmployerOrAuthorized", typeof(string));
+    
+            var i9F_Sec2_DateOfEmployerOrAuthorizedSignParameter = i9F_Sec2_DateOfEmployerOrAuthorizedSign.HasValue ?
+                new ObjectParameter("I9F_Sec2_DateOfEmployerOrAuthorizedSign", i9F_Sec2_DateOfEmployerOrAuthorizedSign) :
+                new ObjectParameter("I9F_Sec2_DateOfEmployerOrAuthorizedSign", typeof(System.DateTime));
+    
+            var i9F_Sec2_LastNameOfEmployerOrAuthorizedParameter = i9F_Sec2_LastNameOfEmployerOrAuthorized != null ?
+                new ObjectParameter("I9F_Sec2_LastNameOfEmployerOrAuthorized", i9F_Sec2_LastNameOfEmployerOrAuthorized) :
+                new ObjectParameter("I9F_Sec2_LastNameOfEmployerOrAuthorized", typeof(string));
+    
+            var i9F_Sec2_FirstNameOfEmployerOrAuthorizedParameter = i9F_Sec2_FirstNameOfEmployerOrAuthorized != null ?
+                new ObjectParameter("I9F_Sec2_FirstNameOfEmployerOrAuthorized", i9F_Sec2_FirstNameOfEmployerOrAuthorized) :
+                new ObjectParameter("I9F_Sec2_FirstNameOfEmployerOrAuthorized", typeof(string));
+    
+            var i9F_Sec2_MiddleInitialOfEmployerOrAuthorizedParameter = i9F_Sec2_MiddleInitialOfEmployerOrAuthorized != null ?
+                new ObjectParameter("I9F_Sec2_MiddleInitialOfEmployerOrAuthorized", i9F_Sec2_MiddleInitialOfEmployerOrAuthorized) :
+                new ObjectParameter("I9F_Sec2_MiddleInitialOfEmployerOrAuthorized", typeof(string));
+    
+            var i9F_Sec2_EmployersBusinessOrgnization_NameParameter = i9F_Sec2_EmployersBusinessOrgnization_Name != null ?
+                new ObjectParameter("I9F_Sec2_EmployersBusinessOrgnization_Name", i9F_Sec2_EmployersBusinessOrgnization_Name) :
+                new ObjectParameter("I9F_Sec2_EmployersBusinessOrgnization_Name", typeof(string));
+    
+            var i9F_Sec2_EmployersBusinessOrgnization_AddressParameter = i9F_Sec2_EmployersBusinessOrgnization_Address != null ?
+                new ObjectParameter("I9F_Sec2_EmployersBusinessOrgnization_Address", i9F_Sec2_EmployersBusinessOrgnization_Address) :
+                new ObjectParameter("I9F_Sec2_EmployersBusinessOrgnization_Address", typeof(string));
+    
+            var i9F_Sec2_EmployersBusinessOrgnization_CityParameter = i9F_Sec2_EmployersBusinessOrgnization_City != null ?
+                new ObjectParameter("I9F_Sec2_EmployersBusinessOrgnization_City", i9F_Sec2_EmployersBusinessOrgnization_City) :
+                new ObjectParameter("I9F_Sec2_EmployersBusinessOrgnization_City", typeof(string));
+    
+            var i9F_Sec2_EmployersBusinessOrgnization_StateParameter = i9F_Sec2_EmployersBusinessOrgnization_State != null ?
+                new ObjectParameter("I9F_Sec2_EmployersBusinessOrgnization_State", i9F_Sec2_EmployersBusinessOrgnization_State) :
+                new ObjectParameter("I9F_Sec2_EmployersBusinessOrgnization_State", typeof(string));
+    
+            var i9F_Sec2_EmployersBusinessOrgnization_ZipCodeParameter = i9F_Sec2_EmployersBusinessOrgnization_ZipCode.HasValue ?
+                new ObjectParameter("I9F_Sec2_EmployersBusinessOrgnization_ZipCode", i9F_Sec2_EmployersBusinessOrgnization_ZipCode) :
+                new ObjectParameter("I9F_Sec2_EmployersBusinessOrgnization_ZipCode", typeof(int));
+    
+            var i9F_Sec2_TitleOfEmployerOrOthrizedRepresentativeParameter = i9F_Sec2_TitleOfEmployerOrOthrizedRepresentative != null ?
+                new ObjectParameter("I9F_Sec2_TitleOfEmployerOrOthrizedRepresentative", i9F_Sec2_TitleOfEmployerOrOthrizedRepresentative) :
+                new ObjectParameter("I9F_Sec2_TitleOfEmployerOrOthrizedRepresentative", typeof(string));
+    
+            var i9F_Sec2_CitizenshipImmigrationStatusParameter = i9F_Sec2_CitizenshipImmigrationStatus != null ?
+                new ObjectParameter("I9F_Sec2_CitizenshipImmigrationStatus", i9F_Sec2_CitizenshipImmigrationStatus) :
+                new ObjectParameter("I9F_Sec2_CitizenshipImmigrationStatus", typeof(string));
+    
+            var i9F_Sec3_A_LastNameParameter = i9F_Sec3_A_LastName != null ?
+                new ObjectParameter("I9F_Sec3_A_LastName", i9F_Sec3_A_LastName) :
+                new ObjectParameter("I9F_Sec3_A_LastName", typeof(string));
+    
+            var i9F_Sec3_A_FirstNameParameter = i9F_Sec3_A_FirstName != null ?
+                new ObjectParameter("I9F_Sec3_A_FirstName", i9F_Sec3_A_FirstName) :
+                new ObjectParameter("I9F_Sec3_A_FirstName", typeof(string));
+    
+            var i9F_Sec3_A_MiddleInitialParameter = i9F_Sec3_A_MiddleInitial != null ?
+                new ObjectParameter("I9F_Sec3_A_MiddleInitial", i9F_Sec3_A_MiddleInitial) :
+                new ObjectParameter("I9F_Sec3_A_MiddleInitial", typeof(string));
+    
+            var i9F_Sec3_B_DateOfReHireParameter = i9F_Sec3_B_DateOfReHire.HasValue ?
+                new ObjectParameter("I9F_Sec3_B_DateOfReHire", i9F_Sec3_B_DateOfReHire) :
+                new ObjectParameter("I9F_Sec3_B_DateOfReHire", typeof(System.DateTime));
+    
+            var i9F_Sec3_C_DocumentTitleParameter = i9F_Sec3_C_DocumentTitle != null ?
+                new ObjectParameter("I9F_Sec3_C_DocumentTitle", i9F_Sec3_C_DocumentTitle) :
+                new ObjectParameter("I9F_Sec3_C_DocumentTitle", typeof(string));
+    
+            var i9F_Sec3_C_DocumentNumberParameter = i9F_Sec3_C_DocumentNumber != null ?
+                new ObjectParameter("I9F_Sec3_C_DocumentNumber", i9F_Sec3_C_DocumentNumber) :
+                new ObjectParameter("I9F_Sec3_C_DocumentNumber", typeof(string));
+    
+            var i9F_Sec3_C_ExpirationDateParameter = i9F_Sec3_C_ExpirationDate.HasValue ?
+                new ObjectParameter("I9F_Sec3_C_ExpirationDate", i9F_Sec3_C_ExpirationDate) :
+                new ObjectParameter("I9F_Sec3_C_ExpirationDate", typeof(System.DateTime));
+    
+            var i9F_Sec3_C_SignatureOfEmployerOrAuthorizedParameter = i9F_Sec3_C_SignatureOfEmployerOrAuthorized != null ?
+                new ObjectParameter("I9F_Sec3_C_SignatureOfEmployerOrAuthorized", i9F_Sec3_C_SignatureOfEmployerOrAuthorized) :
+                new ObjectParameter("I9F_Sec3_C_SignatureOfEmployerOrAuthorized", typeof(string));
+    
+            var i9F_Sec3_C_DateOfEmployerOrAuthorizedSignParameter = i9F_Sec3_C_DateOfEmployerOrAuthorizedSign.HasValue ?
+                new ObjectParameter("I9F_Sec3_C_DateOfEmployerOrAuthorizedSign", i9F_Sec3_C_DateOfEmployerOrAuthorizedSign) :
+                new ObjectParameter("I9F_Sec3_C_DateOfEmployerOrAuthorizedSign", typeof(System.DateTime));
+    
+            var i9F_Sec3_C_NameOfEmployerOrAuthorizedParameter = i9F_Sec3_C_NameOfEmployerOrAuthorized != null ?
+                new ObjectParameter("I9F_Sec3_C_NameOfEmployerOrAuthorized", i9F_Sec3_C_NameOfEmployerOrAuthorized) :
+                new ObjectParameter("I9F_Sec3_C_NameOfEmployerOrAuthorized", typeof(string));
+    
+            var i9F_DateParameter = i9F_Date.HasValue ?
+                new ObjectParameter("I9F_Date", i9F_Date) :
+                new ObjectParameter("I9F_Date", typeof(System.DateTime));
+    
+            var i9F_IsActiveParameter = i9F_IsActive != null ?
+                new ObjectParameter("I9F_IsActive", i9F_IsActive) :
+                new ObjectParameter("I9F_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetI9Form", i9FActionParameter, i9F_IdParameter, i9F_EMP_EmployeeIdParameter, i9F_Sec1_SSNParameter, i9F_Sec1_CitizenOfUSParameter, i9F_Sec1_NonCitizenOfUSParameter, i9F_Sec1_AlienRegistrationNum_USCISParameter, i9F_Sec1_AlienAuthorizedToWorkDateParameter, i9F_Sec1_I94AdmissionNumberParameter, i9F_Sec1_ForeignPassportNumberParameter, i9F_Sec1_ForeignPassportIssuanceCountryParameter, i9F_Sec1_SignatureOfEmployeeParameter, i9F_Sec1_DateOfEmployeeSignParameter, i9F_Sec1_QRCodeSec1Parameter, i9F_Sec1_PreparerAndTranslatorParameter, i9F_Sec1_SignatureOfPreparerOrTranslatorParameter, i9F_Sec1_DateOfPreparerOrTranslatorSignParameter, i9F_Sec1_FirstNameParameter, i9F_Sec1_MiddleInitialParameter, i9F_Sec1_LastNameParameter, i9F_Sec1_OtherLastNameParameter, i9F_Sec1_dateOfBirthParameter, i9F_Sec1_AddressParameter, i9F_Sec1_AptNumberParameter, i9F_Sec1_CityParameter, i9F_Sec1_StateParameter, i9F_Sec1_ZipCodeParameter, i9F_Sec1_EmailParameter, i9F_Sec1_EmployeeTelephoneNumberParameter, i9F_Sec2_ListA_DocumentTitle1Parameter, i9F_Sec2_ListA_IssuingAuthority1Parameter, i9F_Sec2_ListA_DocumentNumber1Parameter, i9F_Sec2_ListA_ExpirationDate1Parameter, i9F_Sec2_ListA_DocumentTitle2Parameter, i9F_Sec2_ListA_IssuingAuthority2Parameter, i9F_Sec2_ListA_DocumentNumber2Parameter, i9F_Sec2_ListA_ExpirationDate2Parameter, i9F_Sec2_ListA_DocumentTitle3Parameter, i9F_Sec2_ListA_IssuingAuthority3Parameter, i9F_Sec2_ListA_DocumentNumber3Parameter, i9F_Sec2_ListA_ExpirationDate3Parameter, i9F_Sec2_ListB_DocumentTitleParameter, i9F_Sec2_ListB_IssuingAuthorityParameter, i9F_Sec2_ListB_DocumentNumberParameter, i9F_Sec2_ListB_ExpirationDateParameter, i9F_Sec2_ListC_DocumentTitleParameter, i9F_Sec2_ListC_IssuingAuthorityParameter, i9F_Sec2_ListC_DocumentNumberParameter, i9F_Sec2_ListC_ExpirationDateParameter, i9F_Sec2_AdditionalInformationParameter, i9F_Sec2_QRCodeSec2AndSec3Parameter, i9F_Sec2_EmployeesFirstDayOfEmploymentParameter, i9F_Sec2_SignatureOfEmployerOrAuthorizedParameter, i9F_Sec2_DateOfEmployerOrAuthorizedSignParameter, i9F_Sec2_LastNameOfEmployerOrAuthorizedParameter, i9F_Sec2_FirstNameOfEmployerOrAuthorizedParameter, i9F_Sec2_MiddleInitialOfEmployerOrAuthorizedParameter, i9F_Sec2_EmployersBusinessOrgnization_NameParameter, i9F_Sec2_EmployersBusinessOrgnization_AddressParameter, i9F_Sec2_EmployersBusinessOrgnization_CityParameter, i9F_Sec2_EmployersBusinessOrgnization_StateParameter, i9F_Sec2_EmployersBusinessOrgnization_ZipCodeParameter, i9F_Sec2_TitleOfEmployerOrOthrizedRepresentativeParameter, i9F_Sec2_CitizenshipImmigrationStatusParameter, i9F_Sec3_A_LastNameParameter, i9F_Sec3_A_FirstNameParameter, i9F_Sec3_A_MiddleInitialParameter, i9F_Sec3_B_DateOfReHireParameter, i9F_Sec3_C_DocumentTitleParameter, i9F_Sec3_C_DocumentNumberParameter, i9F_Sec3_C_ExpirationDateParameter, i9F_Sec3_C_SignatureOfEmployerOrAuthorizedParameter, i9F_Sec3_C_DateOfEmployerOrAuthorizedSignParameter, i9F_Sec3_C_NameOfEmployerOrAuthorizedParameter, i9F_DateParameter, i9F_IsActiveParameter);
         }
     }
 }

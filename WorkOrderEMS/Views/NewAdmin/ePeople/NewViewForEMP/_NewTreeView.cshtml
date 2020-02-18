@@ -17,6 +17,7 @@
                     <div style="height: 45px;background:#0aa0cd;">
                         <div class="form-group row" style="margin-left:10px;margin-top:6px;">
                             <a id="BackToEmployeeGrid" title="Back to Employee List" style="cursor:pointer;"><i class="fa fa-long-arrow-left fa-2x" style="color:white;"></i></a>
+                            <a class="font-button plus">A+</a> <a class="font-button minus">A-</a>
                         </div>
                     </div>
                     <div class="card-body">                       
@@ -482,6 +483,23 @@
 </div>
 @*<script src="~/Content/NewAdminContent/JQUERY/GetOrgForRequisition.js"></script>*@
 <script src="~/Areas/AdminSection/Content/JQUERY/JobPostingJs.js"></script>
+<script type="text/javascript">
+        $(function () {
+            $(".font-button").bind("click", function () {
+                debugger
+                var size = parseInt($('#imgstones').css("width"));
+                if ($(this).hasClass("plus")) {
+                    size = size + 2;
+                } else {
+                    size = size - 2;
+                    if (size <= 10) {
+                        size = 10;
+                    }
+                }
+                $('#imgstones').css("font-size", size);
+            });
+        });
+</script>
 <script>
     $(document).ready(function(){
         var moveLeft = 20;

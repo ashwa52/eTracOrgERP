@@ -134,4 +134,9 @@ namespace WorkOrderEMS.Models
         public string Answer { get; set; }
         #endregion Other Login Data
     }
+    public class Login
+    {
+        public string username { get; set; }
+        public string password { get; set; }
+    }
 }

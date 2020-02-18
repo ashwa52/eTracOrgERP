@@ -38,10 +38,10 @@ namespace WorkOrderEMS.Models.Employee
 		[Required(ErrorMessage = "*")]
 		[DataType(DataType.PhoneNumber)]
 		[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid phone number")]
-		public long Mobile { get; set; }
+		public long? Mobile { get; set; }
 		[Required(ErrorMessage = "*")]
 		[DataType(DataType.Date), DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
-		public string DOB { get; set; }
+		public Nullable<DateTime> DOB { get; set; }
 		[Required(ErrorMessage = "*")]
 		public string SSN { get; set; }
 		[Required(ErrorMessage = "*")]
@@ -53,7 +53,7 @@ namespace WorkOrderEMS.Models.Employee
 		[Required(ErrorMessage = "*")]
 		public string Address { get; set; }
 		[Required(ErrorMessage = "*")]
-		public long ConactInfo { get; set; }
+		public string ConactInfo { get; set; }
 	}
 
 }

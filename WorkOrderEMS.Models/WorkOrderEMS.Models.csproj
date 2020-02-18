@@ -239,6 +239,7 @@
     <Compile Include="Employee\EmergencyContectForm.cs" />
     <Compile Include="Employee\EmployeeHandbookModel.cs" />
     <Compile Include="Employee\EmployeeModel.cs" />
+    <Compile Include="Employee\I9FormModel.cs" />
     <Compile Include="Employee\InterviewAnswerModel.cs" />
     <Compile Include="Employee\InterviewersModel.cs" />
     <Compile Include="Employee\PersonalFileModel.cs" />
@@ -283,6 +284,7 @@
     <Compile Include="NewAdminModel\MyOpeningModel.cs" />
     <Compile Include="NewAdminModel\OnboardingDetailRequestModel.cs" />
     <Compile Include="NewAdminModel\OnBoarding\Applicant\ApplicantAddress.cs" />
+    <Compile Include="NewAdminModel\OnBoarding\Applicant\CommanPopUpModel.cs" />
     <Compile Include="NewAdminModel\OnBoarding\Applicant\CommonApplicantModel.cs" />
     <Compile Include="NewAdminModel\OnBoarding\Applicant\InterviewQuestionAnswerModel.cs" />
     <Compile Include="NewAdminModel\OnBoarding\AssetsAllocationModel.cs" />
