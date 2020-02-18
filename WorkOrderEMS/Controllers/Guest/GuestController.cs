@@ -187,12 +187,9 @@ namespace WorkOrderEMS.Controllers.Guest
         //    if (ModelState.IsValid)
         //    {
         //        var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-
-
         //        _IGuestUserRepository.SetW4Form(objloginmodel.UserId, model);
         //        return Json(true, JsonRequestBehavior.AllowGet);
         //    }
-
         //    return PartialView("_W4Form", model);
         //}
 
