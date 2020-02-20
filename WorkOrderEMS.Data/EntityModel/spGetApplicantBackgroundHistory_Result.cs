@@ -10,9 +10,8 @@
 namespace WorkOrderEMS.Data.EntityModel
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class ApplicantBackgroundHistory
+    public partial class spGetApplicantBackgroundHistory_Result
     {
         public long ABH_Id { get; set; }
         public Nullable<long> ABH_APT_ApplicantId { get; set; }

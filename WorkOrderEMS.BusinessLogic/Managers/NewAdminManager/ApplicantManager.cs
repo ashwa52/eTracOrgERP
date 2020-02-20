@@ -627,7 +627,7 @@ namespace WorkOrderEMS.BusinessLogic
                     System.Data.DataTable ApplicantVehiclesOperatedTable = Obj.ApplicantVehiclesOperated.ToDataTable();
                     System.Data.DataTable ApplicantLicenseHealdTable = Obj.ApplicantLicenseHeald.ToDataTable();
                     //Obj.ApplicantSchecduleAvaliblity = new List<ApplicantSchecduleAvaliblity>();
-                    //System.Data.DataTable ApplicantSchecduleAvaliblityTable = Obj.ApplicantSchecduleAvaliblity.ToDataTable();
+                    System.Data.DataTable ApplicantSchecduleAvaliblityTable = Obj.ApplicantSchecduleAvaliblity.ToDataTable();
 
                     //// convert source data to DataTable 
 
@@ -647,7 +647,7 @@ namespace WorkOrderEMS.BusinessLogic
                     var UT_ApplicantTrafficConvictions = new SqlParameter("@UT_ApplicantTrafficConvictions", SqlDbType.Structured);
                     var UT_ApplicantVehiclesOperated = new SqlParameter("@UT_ApplicantVehiclesOperated", SqlDbType.Structured);
                     var UT_ApplicantLicenseHeald = new SqlParameter("@UT_ApplicantLicenseHeald", SqlDbType.Structured);
-                    //var UT_ApplicantSchecduleAvaliblity = new SqlParameter("@UT_ApplicantSchecduleAvaliblity", SqlDbType.Structured);
+                    var UT_ApplicantSchecduleAvaliblity = new SqlParameter("@UT_ApplicantSchecduleAvaliblity", SqlDbType.Structured);
                     // info for ApplicantPersonalInfoTable
                     UT_ApplicantPersonalInfo.Value = ApplicantPersonalInfoTable;
                     UT_ApplicantPersonalInfo.TypeName = "[dbo].[UT_ApplicantPersonalInfo]";
@@ -692,9 +692,9 @@ namespace WorkOrderEMS.BusinessLogic
                     UT_ApplicantLicenseHeald.Value = ApplicantLicenseHealdTable;
                     UT_ApplicantLicenseHeald.TypeName = "[dbo].[UT_ApplicantLicenseHeald]";
 
-                    //info for ApplicantLicenseHealdTable
-                    //UT_ApplicantSchecduleAvaliblity.Value = ApplicantSchecduleAvaliblityTable;
-                    //UT_ApplicantSchecduleAvaliblity.TypeName = "[dbo].[UT_ApplicantSchecduleAvaliblity]";
+                   // info for ApplicantLicenseHealdTable
+                    UT_ApplicantSchecduleAvaliblity.Value = ApplicantSchecduleAvaliblityTable;
+                    UT_ApplicantSchecduleAvaliblity.TypeName = "[dbo].[UT_ApplicantSchecduleAvaliblity]";
 
                     context.Database.ExecuteSqlCommand("exec [dbo].[spSetApplicantAllDetails] @Action, @UT_ApplicantPersonalInfo,@UT_ApplicantAddress,@UT_ApplicantContactInfo, @UT_ApplicantAdditionalInfo, @UT_AplicantAcadmicDetails, @UT_ApplicantBackgroundHistory, @UT_ApplicantPositionTitle, @UT_ApplicantAccidentRecord, @UT_ApplicantTrafficConvictions, @UT_ApplicantVehiclesOperated, @UT_ApplicantLicenseHeald, @UT_ApplicantSchecduleAvaliblity",
                         Action, UT_ApplicantPersonalInfo,
@@ -782,30 +782,71 @@ namespace WorkOrderEMS.BusinessLogic
 
         #endregion Save Applicant
         #region Background Check
-        public EmployeeVIewModel GetApplicantByApplicantId(long ApplicantId)
+        /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created For : To get applicant details for background check
+        /// Created Date : 20-Feb-2020
+        /// </summary>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
+        public BackgroundCheckForm GetApplicantByApplicantId(long ApplicantId)
         {
-            var lst = new EmployeeVIewModel();
+            var lst = new BackgroundCheckForm();
             try
             {
-                var getDetails = _db.spGetApplicantAllDetails(ApplicantId).Select(x => new EmployeeVIewModel()
-                {
-                    FirstName = x.API_FirstName,
-                    MiddleName = x.API_MidName,
-                    LastName = x.API_LastName,
-                    City = x.AAD_City,
-                    State = x.AAD_State,
-                    Zip = x.AAD_Zip,
-                    StreetAddress = x.APA_StreetAddress,
-                    SocialSecurityNumber = x.API_SSN,
-                    Phone = x.ACI_PhoneNo,
-                    LicenseNumber = x.ALH_LicenceNumber,
-                    //Dob = x
+                var getApplicantDetails = _db.spGetApplicantPersonalInfo(ApplicantId).Select(x =>
+                new Models.ApplicantPersonalInfo() {
+                    API_APT_ApplicantId = x.API_APT_ApplicantId,
+                    API_DesireSalaryWages = x.API_DesireSalaryWages,
+                    API_DLNumber = x.API_DLNumber,
+                    API_FirstName = x.API_FirstName,
+                    API_Id  = x.API_Id,
+                    API_IsActive = x.API_IsActive,
+                    API_LastName = x.API_LastName,
+                   API_MiddleName = x.API_MidName,
+                   API_SSN = x.API_SSN
                 }).FirstOrDefault();
+                if (getApplicantDetails != null)
+                {
+                    lst.ApplicantPersonalInfo = getApplicantDetails;
+                }
+                var getAddressInfo = _db.spGetApplicantAddress(ApplicantId).Select(x =>
+                new Models.ApplicantAddress()
+                {
+                    APA_Apartment = x.APA_Apartment,
+                    APA_APT_ApplicantId = x.APA_APT_ApplicantId,
+                    APA_City = x.APA_City,
+                    APA_Id = x.APA_Id,
+                    APA_IsActive = x.APA_IsActive,
+                    APA_State  = x.APA_State,
+                    APA_StreetAddress = x.APA_StreetAddress,
+                    APA_YearsAddressFrom = x.APA_YearsAddressFrom,
+                    APA_YearsAddressTo = x.APA_YearsAddressTo,
+                    APA_Zip = x.APA_Zip
+                }).ToList();
+                if(getAddressInfo != null)
+                {
+                    lst.ApplicantAddress = getAddressInfo;
+                }
+                //var getDetails = _db.spGetApplicantAllDetails(ApplicantId).Select(x => new EmployeeVIewModel()
+                //{
+                //    FirstName = x.API_FirstName,
+                //    MiddleName = x.API_MidName,
+                //    LastName = x.API_LastName,
+                //    City = x.AAD_City,
+                //    State = x.AAD_State,
+                //    Zip = x.AAD_Zip,
+                //    StreetAddress = x.APA_StreetAddress,
+                //    SocialSecurityNumber = x.API_SSN,
+                //    Phone = x.ACI_PhoneNo,
+                //    LicenseNumber = x.ALH_LicenceNumber,
+                //    //Dob = x
+                //}).FirstOrDefault();
                 return lst;
             }
             catch (Exception ex)
             {
-                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public ContactListModel GetContactListByApplicantId(long ApplicantId)", "Exception While getting the list of contact details.", ApplicantId);
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public BackgroundCheckForm GetApplicantByApplicantId(long ApplicantId)", "Exception While getting the details of applicant for background check.", ApplicantId);
                 throw;
             }
             //return getDetails;
@@ -1119,5 +1160,77 @@ namespace WorkOrderEMS.BusinessLogic
             return isSaved;
 
         }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 18-Feb-2020
+        /// Created For : To get signature by applicant id.
+        /// </summary>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
+        public Desclaimer GetSignature(long ApplicantId)
+        {
+            var signature = new Desclaimer();
+            try
+            {
+               if(ApplicantId > 0)
+                {
+                    signature = _db.spGetApplicantSignature(ApplicantId).Select(x =>
+                    new Desclaimer() {
+                        ApplicantId  = x.ASG_APT_ApplicantId,
+                        ASG_Date = x.ASG_Date,
+                        EmployeeId  =x.ASG_EMP_EmployeeId,
+                        Signature = x.ASG_Signature,
+                        Sing_Id = x.ASG_Id,
+                        IsActive = x.ASG_IsActive
+                    }).FirstOrDefault();
+                    if(signature != null)
+                    {
+                       
+                        return signature;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public string GetSignature(long ApplicantId)", "Exception While getting signature.", ApplicantId);
+                throw;
+            }
+        }
+        /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created Date : 19-Feb-2020
+        /// Created For : To save desclaimer data of applicant
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public bool SaveDesclaimerData(Desclaimer obj)
+        {
+            bool isSaved = false;
+            try
+            {
+                if (obj != null)
+                {
+                    string Action = "I";
+                    var save = _db.spSetApplicantSignature(Action, obj.Sing_Id, obj.ApplicantId, obj.EmployeeId, obj.Signature, "Y");
+                    isSaved = save > 0 ? true : false;
+                    return isSaved;
+                }
+                else
+                    return false;
+            }
+            catch(Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SaveDesclaimerData(Desclaimer obj)", "Exception While saving desclaimer data.", obj);
+                throw;
+            }
+        }        
     }
 }

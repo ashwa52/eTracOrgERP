@@ -11,12 +11,13 @@ namespace WorkOrderEMS.Data.EntityModel
 {
     using System;
     
-    public partial class spGetChangeExpectationQuestionQCQM_Result
+    public partial class spGetApplicantContactInfo_Result3
     {
-        public long CHE_Id { get; set; }
-        public string ASQ_QuestionType { get; set; }
-        public Nullable<long> ASQ_Id { get; set; }
-        public string ASQ_Question { get; set; }
-        public string ASQ_IsActive { get; set; }
+        public long ACI_Id { get; set; }
+        public Nullable<long> ACI_APT_ApplicantId { get; set; }
+        public Nullable<long> ACI_PhoneNo { get; set; }
+        public string ACI_eMail { get; set; }
+        public string ACI_PrefredContactMethod { get; set; }
+        public string ACI_IsActive { get; set; }
     }
 }

@@ -10,9 +10,8 @@
 namespace WorkOrderEMS.Data.EntityModel
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class ApplicantAccidentRecord
+    public partial class spGetApplicantAccidentRecord_Result
     {
         public long AAR_Id { get; set; }
         public Nullable<long> AAR_APT_ApplicantId { get; set; }

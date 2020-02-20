@@ -54,16 +54,17 @@ function closeModel() {
     $("#formModel").modal('hide');
 }
 function SubmitForm(element, formName) {
-    debugger
+    
     var url = '';
     var data = '';
     var isDirectDepositeSaved = false;
     var isContactSaved = false;
     var isBackgroundCheck = false;
+    var isBenifitSectionPopUpOpen = false;
     //var isSubmit = confirm('Are you sure you want to submit');
-    debugger
+    
     //if (isSubmit) {
-        debugger
+        
         switch (formName.id) {
             case 'depositeForm':
                 url = '/Guest/_DirectDepositeForm';
@@ -71,6 +72,7 @@ function SubmitForm(element, formName) {
                 isDirectDepositeSaved = true;
                 isContactSaved = false;
                 isBackgroundCheck = false;
+                isBenifitSectionPopUpOpen = false
                 break;
             case 'employeeHandbook':
                 url = '/Guest/_EmployeeHandbook';
@@ -78,6 +80,7 @@ function SubmitForm(element, formName) {
                 isDirectDepositeSaved = false;
                 isContactSaved = false;
                 isBackgroundCheck = false;
+                isBenifitSectionPopUpOpen = false
                 break;
             case 'photoreleaseform':
                 url = '/Guest/_photoreleaseform';
@@ -85,6 +88,7 @@ function SubmitForm(element, formName) {
                 isDirectDepositeSaved = false;
                 isContactSaved = false;
                 isBackgroundCheck = false;
+                isBenifitSectionPopUpOpen = false
                 break;
             case 'emergencycontactform':
                 url = '/Guest/_emergencyContactForm';
@@ -92,6 +96,7 @@ function SubmitForm(element, formName) {
                 isDirectDepositeSaved = false;
                 isContactSaved = false;
                 isBackgroundCheck = false;
+                isBenifitSectionPopUpOpen = false
                 break;
             case 'confidentialityagreementform':
                 url = '/Guest/_ConfidentialityAgreementForm';
@@ -99,6 +104,7 @@ function SubmitForm(element, formName) {
                 isDirectDepositeSaved = false;
                 isContactSaved = false;
                 isBackgroundCheck = false;
+                isBenifitSectionPopUpOpen = false
                 break;
             case 'educationverificationform':
                 url = '/Guest/_EducationVarificationForm';
@@ -106,6 +112,7 @@ function SubmitForm(element, formName) {
                 isDirectDepositeSaved = false;
                 isContactSaved = false;
                 isBackgroundCheck = false;
+                isBenifitSectionPopUpOpen = false
                 break;
             case 'w4form':
                 url = '/Guest/_W4Form';
@@ -113,37 +120,58 @@ function SubmitForm(element, formName) {
                 isDirectDepositeSaved = false;
                 isContactSaved = false;
                 isBackgroundCheck = false;
+                isBenifitSectionPopUpOpen = false
                 break;
             case 'I9Form':
-                debugger
+                
                 url = '/Guest/_I9Form';
                 data = $('#I9Form').serialize();
                 isDirectDepositeSaved = false;
                 isContactSaved = false;
                 isBackgroundCheck = false;
+                isBenifitSectionPopUpOpen = false
                 break;
             case 'ContactSavedForm':
-                debugger
+                
                 url = '/Guest/_ContactSavedForm';
                 data = $('#ContactSavedForm').serialize();
                 isDirectDepositeSaved = false;
                 isBackgroundCheck = false;
                 isContactSaved = true;
+                isBenifitSectionPopUpOpen = false
                 //element.preventDefault();
                 break;
-            case 'BackGroundCheckForm':
-                debugger
+            case 'BackGroundCheckForm':                
                 url = '/Guest/_BackGroundCheckForm';
                 data = $('#BackGroundCheckForm').serialize();
                 isDirectDepositeSaved = false;
                 isContactSaved = false;
                 isBackgroundCheck = true;
+                isBenifitSectionPopUpOpen = false
+                //element.preventDefault();
+                break;
+            case 'SaveBenifit':
+                url = '/Guest/BenifitSection';
+                data = $('#SaveBenifit').serialize();
+                isDirectDepositeSaved = false;
+                isContactSaved = false;
+                isBackgroundCheck = false;
+                isBenifitSectionPopUpOpen = true;
+                //element.preventDefault();
+                break;
+            case 'selfIdentificationForm':
+                url = '/Guest/BenifitSection';
+                data = $('#selfIdentificationForm').serialize();
+                isDirectDepositeSaved = false;
+                isContactSaved = false;
+                isBackgroundCheck = false;
+                isBenifitSectionPopUpOpen = false;
                 //element.preventDefault();
                 break;
                 
         }
         if (isContactSaved == false) {
-            PostForm(url, data, isDirectDepositeSaved,isBackgroundCheck, function (successResponse) {
+            PostForm(url, data, isDirectDepositeSaved,isBackgroundCheck,isBenifitSectionPopUpOpen, function (successResponse) {
                 if (successResponse == true) {
                     LockItem(formName.id);
                     $("#formModel").modal('hide');
@@ -161,7 +189,7 @@ function SubmitForm(element, formName) {
             });
         }
         else {
-            debugger
+            
             SaveContact(data, details, url, function (errorCallback) {
                 alert('Something went wrong!!!!');
                 $("#formModel").modal('hide');
@@ -189,25 +217,29 @@ function SubmitForm(element, formName) {
     //}
 }
 $(".isCheckedContact").click(function () {
-    debugger
+    
     $_this = this;
+    var getVal;
     if ($_this.checked == true) {
-        var getVal = $($_this).attr("value");
+         getVal = $($_this).attr("value");
         details.push({  ContactId: getVal,IsChecked:"Y" });
     } else {
-        var getVal = $($_this).attr("value");
+         getVal = $($_this).attr("value");
         details.push({  ContactId: getVal,IsChecked:"N" });
         }
 })
-function PostForm(url, data,isDirectDepositeSaved,isBackgroundCheck, successCallback, errorCallback) {
-    debugger
+function PostForm(url, data,isDirectDepositeSaved,isBackgroundCheck,isBenifitSectionPopUpOpen, successCallback, errorCallback) {
+    
     $.ajax({
         type: "POST",
         url: url,
         data: data,
         //success: successCallback,
+        beforeSend: function () {
+                new fn_showMaskloader('Please wait...');
+            },
         success:function (Data) {
-            debugger
+            
             var base_url = window.location.origin;
             if (isDirectDepositeSaved == true) {
                 
@@ -215,7 +247,7 @@ function PostForm(url, data,isDirectDepositeSaved,isBackgroundCheck, successCall
                     type: "GET",
                     url: base_url + "/Guest/_ContactInfo",
                     success: function (data) {
-                        debugger
+                        
                         $("#openConatctModal").html(data);
                         //$('#myModelForContactDetails').modal('show', { backdrop: 'static', keyboard: false });
                         $("#myModelForContactDetails").modal("show");
@@ -231,7 +263,7 @@ function PostForm(url, data,isDirectDepositeSaved,isBackgroundCheck, successCall
                 //    type: "GET",
                 //    url: base_url + "/Guest/_ContactInfo",
                 //    success: function (data) {
-                //        debugger
+                //        
                         //$("#openModalForDocument").html(data);
                         $('#myModalToAddDocumentUpload').modal('show', { backdrop: 'static', keyboard: false });
                         //$("#myModalToAddDocumentUpload").modal("show");
@@ -240,22 +272,32 @@ function PostForm(url, data,isDirectDepositeSaved,isBackgroundCheck, successCall
                 //    }
                 //});
             }
+            else if (isBenifitSectionPopUpOpen == true) {
+                //$("#RenderPageId").html(Data);
+                $("#myModelForDesclaimerEEO").modal('show');
+            }
             else {
                 //var url = "../Guest/_W4Form";
                 $("#RenderPageId").html(Data);
             }
         },
-        error: errorCallback
+        error: errorCallback,
+        complete: function () {
+            fn_hideMaskloader();
+        }
     });
 }
 function SaveContact(data, details, url, errorCallback) {
-    debugger
+    
     $.ajax({
         type: "POST",
         url: url,
         data: { model: data, lstModel: details },
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
         success: function (Data) {
-            debugger
+            
             //$('#myModelForContactDetails').modal('hide', { backdrop: '', keyboard: true });
             
             $('#myModelForContactDetails').modal('hide');          
@@ -263,7 +305,10 @@ function SaveContact(data, details, url, errorCallback) {
             $('.fade').removeClass('modal-backdrop');
             $('.fade').removeClass('show');
         },
-        error: errorCallback
+        error: errorCallback,
+        complete: function () {
+            fn_hideMaskloader();
+        }
     });
 }
 
@@ -285,7 +330,7 @@ function LockItem(formId) {
             var elm = $("#directdepositeicn").find('.lock i').first();
             elm.removeClass('fa-unlock');
             elm.addClass('fa-lock');
-            var elm = $("#directdepositeicn").find('.bluesky').first();
+            elm = $("#directdepositeicn").find('.bluesky').first();
             elm.removeClass('bluesky');
             elm.addClass('grn-icn');
             break;
@@ -293,7 +338,7 @@ function LockItem(formId) {
             var elm = $("#employeehandbookicn").find('.lock i').first();
             elm.removeClass('fa-unlock');
             elm.addClass('fa-lock');
-            var elm = $("#employeehandbookicn").find('.bluesky').first();
+            elm = $("#employeehandbookicn").find('.bluesky').first();
             elm.removeClass('bluesky');
             elm.addClass('grn-icn');
             break;
@@ -301,7 +346,7 @@ function LockItem(formId) {
             var elm = $("#photoreleaseicn").find('.lock i').first();
             elm.removeClass('fa-unlock');
             elm.addClass('fa-lock');
-            var elm = $("#photoreleaseicn").find('.bluesky').first();
+            elm = $("#photoreleaseicn").find('.bluesky').first();
             elm.removeClass('bluesky');
             elm.addClass('grn-icn');
             break;
@@ -309,7 +354,7 @@ function LockItem(formId) {
             var elm = $("#emergencycontactformicn").find('.lock i').first();
             elm.removeClass('fa-unlock');
             elm.addClass('fa-lock');
-            var elm = $("#emergencycontactformicn").find('.bluesky').first();
+             elm = $("#emergencycontactformicn").find('.bluesky').first();
             elm.removeClass('bluesky');
             elm.addClass('grn-icn');
             break;
@@ -325,7 +370,7 @@ function LockItem(formId) {
             var elm = $("#educationverificationformicn").find('.lock i').first();
             elm.removeClass('fa-unlock');
             elm.addClass('fa-lock');
-            var elm = $("#educationverificationformicn").find('.bluesky').first();
+             elm = $("#educationverificationformicn").find('.bluesky').first();
             elm.removeClass('bluesky');
             elm.addClass('grn-icn');
             break;
@@ -333,7 +378,7 @@ function LockItem(formId) {
             var elm = $("#w4formicn").find('.lock i').first();
             elm.removeClass('fa-unlock');
             elm.addClass('fa-lock');
-            var elm = $("#w4formicn").find('.bluesky').first();
+             elm = $("#w4formicn").find('.bluesky').first();
             elm.removeClass('bluesky');
             elm.addClass('grn-icn');
             break;
@@ -361,7 +406,7 @@ function SetFormStatus() {
         url: '/Guest/GetFormsStatus',
         method: 'GET',
         success: function (response) {
-            debugger;
+            
             if (response.W4Status == 'Y') {
                 $("#w4formicn").removeClass('blink');
                 $($("#w4formicn").find('.bluesky')[0]).removeClass('bluesky').addClass('grn-icn');
@@ -411,22 +456,75 @@ function SetFormStatus() {
 
 //////=========================Next From Background check============================//////
 //=========================================================================================
-$("#AddSignatureForBackground").click(function () {
+var signatureName="" ; 
+$("#AddSignature").click(function (e) {
+    
+    var url = window.location.origin;
+    $.ajax({
+        url: url + '/Guest/GetSignature',
+        type: "POST",      
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
+        success: function (result) {
+            
+            if(result != null && result != false){
+                //$("#myModalForSignatureApplicant").modal('show');
+                $("#openItForSignature").attr("src",result.imagePath);
+                $("#ShowHideSignatureSpan,#AddSignature").hide();
+                $("#openItForSignature").show();
+                signatureName = name;
+            }
+        },
+        error: function (err) {
 
+        },
+        complete: function () {
+            fn_hideMaskloader();
+        }        
+    });    
 })
+$('.savesignaturInfo').click(function(){
+    var url = window.location.origin;
+    $_this = this;
+    var isUpdate = $($_this).attr("is-update");
+    $.ajax({
+        url: url + '/Guest/SaveSignature?isUpdate='+isUpdate,
+        type: "POST",      
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
+        success: function (result) {
+            
+            if(result != null && result != false){
+                $("#myModalForSignatureApplicant").modal('show');
+                $("#openItForSignature").attr("src",result.imagePath);
+                $("#ShowHideSignatureSpan").hide();
+                $("#openItForSignature").show();
+                signatureName = name;
+            }
+        },
+        error: function (err) {
+
+        },
+        complete: function () {
+            fn_hideMaskloader();
+        }        
+    });  
+});
 $("#UploadDocApplicant").click(function () {
-    debugger
+    
     var url = window.location.origin;
     var fileUploadLicense = $("#myLicensefileUpload").get(0);   
     var filesLicense = fileUploadLicense.files;    
     // Create FormData object  
-    var fileDataLicense = new FormData();
+    var fileData = new FormData();
     // Looping over all files and add it to FormData object  
     for (var i = 0; i < filesLicense.length; i++) {
-        fileDataLicense.append(filesLicense[i].name, filesLicense[i]);
+        fileData.append(filesLicense[i].name, filesLicense[i]);
     }   
     $.ajax({
-        url: url + '/Guest/UploadFilesApplicant',
+        url: url + '/Guest/UploadFilesApplicant?isLicense='+true,
         type: "POST",
         contentType: false, // Not to set any content header  
         processData: false, // Not to process data  
@@ -435,15 +533,15 @@ $("#UploadDocApplicant").click(function () {
             new fn_showMaskloader('Please wait...');
         },
         success: function (result) {
-            debugger
+            
             var fileUploadSSN = $("#mySSNfileUpload").get(0);
             var filesSSN = fileUploadSSN.files;
-            var fileDataSSN = new FormData();
+            fileData = new FormData();
             for (var i = 0; i < filesSSN.length; i++) {
-                fileDataSSN.append(filesSSN[i].name, filesSSN[i]);
+                fileData.append(filesSSN[i].name, filesSSN[i]);
             }
             $.ajax({
-                url: url + '/Guest/UploadFilesApplicant',
+                url: url + '/Guest/UploadFilesApplicant?isLicense='+false,
                 type: "POST",
                 contentType: false, // Not to set any content header  
                 processData: false, // Not to process data  
@@ -452,7 +550,7 @@ $("#UploadDocApplicant").click(function () {
                     new fn_showMaskloader('Please wait...');
                 },
                 success: function (result) {
-                    debugger
+                    $("#RenderPageId").html(result);
                 },
                 error: function (err) {
 
@@ -472,5 +570,32 @@ $("#UploadDocApplicant").click(function () {
         }
     });
 });
+
+function GotoNextForm(istrue) {
+    debugger
+    var url = window.location.origin;
+    if (istrue) {
+         url +=  '/Guest/SelfIdentificationForm';
+    } else {
+        url += '/Guest/ApplicantFunFacts';
+    }
+    $.ajax({
+        url: url,
+        type: "POST",
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
+        success: function (result) {
+            $("#RenderPageId").html(Data);
+        },
+        error: function (err) {
+        },
+        complete: function () {
+            fn_hideMaskloader();
+        }
+    });
+}
+
+//$("#").
 ///============================End Code======================================================
 //===========================================================================================

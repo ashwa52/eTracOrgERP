@@ -10,16 +10,15 @@
 namespace WorkOrderEMS.Data.EntityModel
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class ApplicantSchecduleAvaliblity
+    public partial class spGetApplicantSchecduleAvaliblity_Result
     {
         public long ASA_Id { get; set; }
-        public long ASA_APT_ApplicantId { get; set; }
-        public string ASA_EMP_EmployeeId { get; set; }
+        public Nullable<long> ASA_APT_ApplicantId { get; set; }
         public Nullable<System.TimeSpan> ASA_AvaliableStartTime { get; set; }
         public Nullable<System.TimeSpan> ASA_AvaliableEndTime { get; set; }
         public Nullable<System.DateTime> ASA_Date { get; set; }
         public string ASA_IsActive { get; set; }
+        public string ASA_WeekDay { get; set; }
     }
 }

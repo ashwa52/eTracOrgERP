@@ -53,8 +53,9 @@
                             }
                         }
                     }
-                    <button class="btn btn-primary pull-right" style="border-radius:100px;width:23%;background: green;" id="ClickToAddMoreContact">Add More</button>
+                    <span class="btn btn-primary pull-right" style="border-radius:100px;width:23%;background: green;" id="ClickToAddMoreContact">Add More</span>
                     <br />
+                     <br />
                     @if(Model != null && Model.ContactModelData != null) { 
 
                     @Html.HiddenFor(model => model.ContactModelData.ACI_APT_ApplicantId)
@@ -99,9 +100,9 @@
 <script src="~/Scripts/Guest/ApplicantFormSave.js"></script>
 <script>
     $(document).ready(function () {
-        $("#ClickToAddMoreContact").click(function () {
-            debugger
+        $("#ClickToAddMoreContact").click(function (e) {           
             $("#openNextContactForm").show();
+            e.stopPropagation();
         });
     })
 </script>

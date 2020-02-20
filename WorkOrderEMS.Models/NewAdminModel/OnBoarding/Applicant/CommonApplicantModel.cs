@@ -75,7 +75,7 @@ namespace WorkOrderEMS.Models
     {
         public char API_Action { get; set; }
         public long API_Id { get; set; }        
-        public long API_APT_ApplicantId { get; set; }
+        public long? API_APT_ApplicantId { get; set; }
         [Required]
         public string API_FirstName { get; set; }
         [Required]
@@ -88,8 +88,23 @@ namespace WorkOrderEMS.Models
         [Required]
         public string API_DLNumber { get; set; }    
         [Required]
-        public decimal API_DesireSalaryWages { get; set; }
-        public char API_IsActive { get; set; }
+        public decimal? API_DesireSalaryWages { get; set; }
+        public string API_IsActive { get; set; }
         public string API_Title { get; set; }
+    }
+
+    public class Desclaimer
+    {
+        public long? ApplicantId { get; set; }
+        public string Signature { get; set; }
+        public string EmployeeId { get; set; }
+        public string IsActive { get; set; }
+        public Nullable<DateTime> ASG_Date { get; set; }
+        public long? Sing_Id { get; set; }
+    }
+    public class BackgroundCheckForm
+    {
+        public ApplicantPersonalInfo ApplicantPersonalInfo { get; set; }
+        public List<ApplicantAddress> ApplicantAddress { get; set; }
     }
 }

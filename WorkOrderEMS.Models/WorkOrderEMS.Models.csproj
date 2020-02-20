@@ -284,6 +284,7 @@
     <Compile Include="NewAdminModel\MyOpeningModel.cs" />
     <Compile Include="NewAdminModel\OnboardingDetailRequestModel.cs" />
     <Compile Include="NewAdminModel\OnBoarding\Applicant\ApplicantAddress.cs" />
+    <Compile Include="NewAdminModel\OnBoarding\Applicant\BenifitSectionModel.cs" />
     <Compile Include="NewAdminModel\OnBoarding\Applicant\CommanPopUpModel.cs" />
     <Compile Include="NewAdminModel\OnBoarding\Applicant\CommonApplicantModel.cs" />
     <Compile Include="NewAdminModel\OnBoarding\Applicant\InterviewQuestionAnswerModel.cs" />

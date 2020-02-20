@@ -63,6 +63,7 @@ namespace WorkOrderEMS.Controllers.Services
         private string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private string EmeregencyImagePath = ConfigurationManager.AppSettings["POEmeregencyImage"];
         private string MiscellaneousImagePath = ConfigurationManager.AppSettings["MiscellaneousImage"];
+        private string ApplicantSignature = ConfigurationManager.AppSettings["ApplicantSignature"];
         //private readonly IEfleetPM _IEfleetPM;
         public ServiceApiController()
         {
@@ -5976,6 +5977,80 @@ namespace WorkOrderEMS.Controllers.Services
                         ObjServiceResponseModel.Message = CommonMessage.FailureMessage();
                         ObjServiceResponseModel.Data = null;
                     }                                           
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.NoRecord, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.WrongParameterMessage();
+                    return Ok(ObjServiceResponseModel);
+                }
+                return Ok(ObjServiceResponseModel);
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+
+        /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created Date  :19-Feb-2020
+        /// Created For : To save desclaimer data(signature) of applicant
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult SaveDesclaimer(Desclaimer obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<string>();
+            try
+            {
+                string ImagePath = string.Empty;
+                string ImageUniqueName = string.Empty;
+                string url = string.Empty;
+                string ImageURL = string.Empty;
+                if (obj != null)
+                {
+                    
+                    if (obj.Signature != null)
+                    {
+                        ImagePath = HttpContext.Current.Server.MapPath(ConfigurationManager.AppSettings["ApplicantSignature"].ToString());
+                        ImageUniqueName = DateTime.Now.ToString("yyyyMMddHHmm") + obj.EmployeeId + "_" + obj.ApplicantId;
+                        url = HostingPrefix + ApplicantSignature.Replace("~", "") + ImageUniqueName + ".jpg";
+                        ImageURL = ImageUniqueName + ".jpg";
+                        if (!Directory.Exists(ImagePath))
+                        {
+                            Directory.CreateDirectory(ImagePath);
+                        }
+                        var ImageLocation = ImagePath + ImageURL;
+                        //Save the image to directory
+                        using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(obj.Signature)))
+                        {
+                            using (Bitmap bm2 = new Bitmap(ms))
+                            {
+                                //bm2.Save("SavingPath" + "ImageName.jpg");
+                                bm2.Save(ImageLocation);
+                                obj.Signature = ImageURL;
+                                //imgupload.ImageUrl = ImageLocation;
+                            }
+                        }
+                    }
+                    var getDetails = _IApplicantManager.SaveDesclaimerData(obj);
+                    if (getDetails == true)
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.SaveSuccessMessage();
+                        //ObjServiceResponseModel.Data = result;
+                    }
+                    else
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.FailureMessage();
+                        ObjServiceResponseModel.Data = null;
+                    }
                 }
                 else
                 {

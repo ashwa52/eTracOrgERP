@@ -10,9 +10,8 @@
 namespace WorkOrderEMS.Data.EntityModel
 {
     using System;
-    using System.Collections.Generic;
     
-    public partial class ApplicantAdditionalInfo
+    public partial class spGetApplicantAdditionalInfo_Result
     {
         public long AAI_Id { get; set; }
         public Nullable<long> AAI_APT_ApplicantId { get; set; }

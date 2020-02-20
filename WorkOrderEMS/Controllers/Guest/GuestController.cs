@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -23,6 +25,8 @@ namespace WorkOrderEMS.Controllers.Guest
         private readonly IGuestUser _IGuestUserRepository;
         private readonly IApplicantManager _IApplicantManager;
         private readonly IFillableFormManager _IFillableFormManager;
+        private string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
+        private string ApplicantSignature = ConfigurationManager.AppSettings["ApplicantSignature"];
         public GuestController(ICommonMethod _ICommonMethod, IGlobalAdmin _IGlobalAdmin, ICompanyAdmin _ICompanyAdmin, IGuestUser _GuestUserRepository, IApplicantManager _IApplicantManager, IFillableFormManager _IFillableFormManager)
         {
             this._IGlobalAdmin = _IGlobalAdmin;
@@ -42,8 +46,8 @@ namespace WorkOrderEMS.Controllers.Guest
             var employee = _IGuestUserRepository.GetEmployee(ObjLoginModel.UserId);
             var commonModel = _IGuestUserRepository.GetApplicantAllDetails(ObjLoginModel.UserId);
             model.ApplicantId = employee.ApplicantId;
-            model.ApplicantPersonalInfo = new List<ApplicantPersonalInfo>();
-            ApplicantPersonalInfo a1 = new ApplicantPersonalInfo();
+            model.ApplicantPersonalInfo = new List<Models.ApplicantPersonalInfo>();
+            Models.ApplicantPersonalInfo a1 = new Models.ApplicantPersonalInfo();
             a1.API_APT_ApplicantId = employee.ApplicantId;
             a1.API_FirstName = employee.FirstName;
             a1.API_LastName = employee.LastName;
@@ -62,31 +66,31 @@ namespace WorkOrderEMS.Controllers.Guest
 
             model.AplicantAcadmicDetails = new List<AplicantAcadmicDetails>();
             AplicantAcadmicDetails aad1 = new AplicantAcadmicDetails();
-            aad1.AAD_APT_ApplicantId= employee.ApplicantId;
+            aad1.AAD_APT_ApplicantId = employee.ApplicantId;
             model.AplicantAcadmicDetails.Add(aad1);
             model.ApplicantBackgroundHistory = new List<ApplicantBackgroundHistory>();
             ApplicantBackgroundHistory abh1 = new ApplicantBackgroundHistory();
-            abh1.ABH_APT_ApplicantId= employee.ApplicantId;
+            abh1.ABH_ApplicantId = employee.ApplicantId;
             model.ApplicantBackgroundHistory.Add(abh1);
             model.ApplicantAccidentRecord = new List<ApplicantAccidentRecord>();
             ApplicantAccidentRecord aar1 = new ApplicantAccidentRecord();
-            aar1.AAR_APT_ApplicantId= employee.ApplicantId;
+            aar1.AAR_ApplicantId = employee.ApplicantId;
             model.ApplicantAccidentRecord.Add(aar1);
 
             model.ApplicantPositionTitle = new List<ApplicantPositionTitle>();
             ApplicantPositionTitle pt1 = new ApplicantPositionTitle();
-            pt1.APT_APT_ApplicantId= employee.ApplicantId;
+            pt1.APT_ApplicantId = employee.ApplicantId;
             model.ApplicantPositionTitle.Add(pt1);
 
-            model.ApplicantContactInfo = new List<ApplicantContactInfo>();
-            ApplicantContactInfo c1 = new ApplicantContactInfo();
-            c1.ACI_APT_ApplicantId= employee.ApplicantId;
+            model.ApplicantContactInfo = new List<Models.ApplicantContactInfo>();
+            var c1 = new Models.ApplicantContactInfo();
+            c1.ACI_APT_ApplicantId = employee.ApplicantId;
             c1.ACI_eMail = employee.Email;
             c1.ACI_PhoneNo = employee.Phone.Value;
             model.ApplicantContactInfo.Add(c1);
             model.ApplicantTrafficConvictions = new List<ApplicantTrafficConvictions>();
             ApplicantTrafficConvictions obj = new ApplicantTrafficConvictions();
-            obj.ATC_APT_ApplicantId= employee.ApplicantId;
+            obj.ATC_APT_ApplicantId = employee.ApplicantId;
             ApplicantTrafficConvictions obj2 = new ApplicantTrafficConvictions();
             obj2.ATC_APT_ApplicantId = employee.ApplicantId;
             ApplicantTrafficConvictions obj3 = new ApplicantTrafficConvictions();
@@ -97,25 +101,25 @@ namespace WorkOrderEMS.Controllers.Guest
 
             model.ApplicantLicenseHeald = new List<ApplicantLicenseHeald>();
             ApplicantLicenseHeald obj4 = new ApplicantLicenseHeald();
-            obj4.ALH_APT_ApplicantId = employee.ApplicantId;
+            obj4.ALH_ApplicantId = employee.ApplicantId;
             ApplicantLicenseHeald obj5 = new ApplicantLicenseHeald();
-            obj5.ALH_APT_ApplicantId = employee.ApplicantId;
+            obj5.ALH_ApplicantId = employee.ApplicantId;
             ApplicantLicenseHeald obj6 = new ApplicantLicenseHeald();
-            obj6.ALH_APT_ApplicantId = employee.ApplicantId;
+            obj6.ALH_ApplicantId = employee.ApplicantId;
             model.ApplicantLicenseHeald.Add(obj4);
             model.ApplicantLicenseHeald.Add(obj5);
             model.ApplicantLicenseHeald.Add(obj6);
 
             model.ApplicantAdditionalInfo = new List<ApplicantAdditionalInfo>();
             ApplicantAdditionalInfo ad1 = new ApplicantAdditionalInfo();
-            ad1.AAI_APT_ApplicantId = employee.ApplicantId;
+            ad1.AAI_ApplicantId = employee.ApplicantId;
             model.ApplicantAdditionalInfo.Add(ad1);
 
             model.ApplicantVehiclesOperated = new List<ApplicantVehiclesOperated>();
             ApplicantVehiclesOperated vo = new ApplicantVehiclesOperated();
-            vo.AVO_APT_ApplicantId= employee.ApplicantId;
+            vo.AVO_ApplicantId = employee.ApplicantId;
             model.ApplicantVehiclesOperated.Add(vo);
-            Session["ApplicantId"] = 2; model.ApplicantId = 2;
+            Session["ApplicantId"] = employee.ApplicantId; model.ApplicantId = employee.ApplicantId;
             return View("~/Views/Guest/Index1.cshtml", model);
         }
         [HttpPost]
@@ -128,7 +132,7 @@ namespace WorkOrderEMS.Controllers.Guest
             {
                 var isSaveSuccess = true;
                 if (isSaveSuccess)
-                    return RedirectToAction("PersonalFile");
+                    return RedirectToAction("_W4Form");
                 else
                 {
                     ViewBag.message = "Something went wrong!!!";
@@ -140,7 +144,6 @@ namespace WorkOrderEMS.Controllers.Guest
         [HttpGet]
         public ActionResult PersonalFile(bool? isSaved)
         {
-
             return View();
         }
         [Route("welcome")]
@@ -209,16 +212,16 @@ namespace WorkOrderEMS.Controllers.Guest
             {
                 if (Session["eTrac"] != null)
                 {
-                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);                        
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
                 }
             }
             var applicantId = Convert.ToInt64(Session["ApplicantId"]);
-            if(applicantId > 0)
+            if (applicantId > 0)
             {
-                 getI9Info = _IApplicantManager.GetI9FormData(applicantId, ObjLoginModel.UserId);
+                getI9Info = _IApplicantManager.GetI9FormData(applicantId, ObjLoginModel.UserId);
 
                 return PartialView("_I9Form", getI9Info); ;
-            }           
+            }
             return PartialView("_I9Form", getI9Info);
         }
         /// <summary>
@@ -305,71 +308,71 @@ namespace WorkOrderEMS.Controllers.Guest
             return PartialView("_photoreleaseform", model);
         }
 
-		[HttpGet]
-		public PartialViewResult _EducationVarificationForm()
-		{
-			EducationVarificationModel model = new EducationVarificationModel();
-			var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-			model = _IGuestUserRepository.GetEducationVerificationForm(objloginmodel.UserId);
-			return PartialView("_EducationVarificationForm",model);
-		}
-		[HttpPost]
-		public ActionResult _EducationVarificationForm(EducationVarificationModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-				_IGuestUserRepository.SetEducationVerificationForm(objloginmodel.UserId, model);
-				return Json(true, JsonRequestBehavior.AllowGet);
-			}
-			model.IsSave = false;
-			return PartialView("_EducationVarificationForm",model);
-		}
-		[HttpGet]
-		public PartialViewResult _ConfidentialityAgreementForm()
-		{
-			return PartialView("_ConfidentialityAgreementForm");
-		}
-		[HttpPost]
-		public ActionResult _ConfidentialityAgreementForm(ConfidenialityAgreementModel model)
-		{
-			if (ModelState.IsValid)
-			{
-				var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-				_IGuestUserRepository.SetConfidenialityAgreementForm(objloginmodel.UserId, model);
-				return Json(true, JsonRequestBehavior.AllowGet);
-			}
-			return PartialView("_ConfidentialityAgreementForm", model);
-		}
-		[HttpGet]
-		public PartialViewResult _CreditCardAuthorizationForm()
-		{
-			return PartialView("_CreditCardAuthorizationForm");
-		}
-		[HttpGet]
-		public PartialViewResult _PreviousEmployeement()
-		{
-			return PartialView("_PreviousEmployeement");
-		}
-		[HttpGet]
-		public PartialViewResult _emergencyContactForm()
-		{
-			var model = new EmergencyContectForm();
-			var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-			model = _IGuestUserRepository.GetEmergencyForm(objloginmodel.UserId);
-			return PartialView("_emergencyContactForm", model);
-		}
-		//[HttpPost]
-		//public ActionResult _emergencyContactForm(EmergencyContectForm model)
-		//{
-		//	if (ModelState.IsValid)
-		//	{
-		//		var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-		//		_IGuestUserRepository.SetEmergencyForm(objloginmodel.UserId, model);
-		//		return Json(true, JsonRequestBehavior.AllowGet);
-		//	}
-		//	return PartialView("_emergencyContactForm", model);
-		//}
+        [HttpGet]
+        public PartialViewResult _EducationVarificationForm()
+        {
+            EducationVarificationModel model = new EducationVarificationModel();
+            var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+            model = _IGuestUserRepository.GetEducationVerificationForm(objloginmodel.UserId);
+            return PartialView("_EducationVarificationForm", model);
+        }
+        [HttpPost]
+        public ActionResult _EducationVarificationForm(EducationVarificationModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+                _IGuestUserRepository.SetEducationVerificationForm(objloginmodel.UserId, model);
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            model.IsSave = false;
+            return PartialView("_EducationVarificationForm", model);
+        }
+        [HttpGet]
+        public PartialViewResult _ConfidentialityAgreementForm()
+        {
+            return PartialView("_ConfidentialityAgreementForm");
+        }
+        [HttpPost]
+        public ActionResult _ConfidentialityAgreementForm(ConfidenialityAgreementModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+                _IGuestUserRepository.SetConfidenialityAgreementForm(objloginmodel.UserId, model);
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            return PartialView("_ConfidentialityAgreementForm", model);
+        }
+        [HttpGet]
+        public PartialViewResult _CreditCardAuthorizationForm()
+        {
+            return PartialView("_CreditCardAuthorizationForm");
+        }
+        [HttpGet]
+        public PartialViewResult _PreviousEmployeement()
+        {
+            return PartialView("_PreviousEmployeement");
+        }
+        [HttpGet]
+        public PartialViewResult _emergencyContactForm()
+        {
+            var model = new EmergencyContectForm();
+            var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+            model = _IGuestUserRepository.GetEmergencyForm(objloginmodel.UserId);
+            return PartialView("_emergencyContactForm", model);
+        }
+        //[HttpPost]
+        //public ActionResult _emergencyContactForm(EmergencyContectForm model)
+        //{
+        //	if (ModelState.IsValid)
+        //	{
+        //		var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+        //		_IGuestUserRepository.SetEmergencyForm(objloginmodel.UserId, model);
+        //		return Json(true, JsonRequestBehavior.AllowGet);
+        //	}
+        //	return PartialView("_emergencyContactForm", model);
+        //}
         [HttpPost]
         public ActionResult _emergencyContactForm(EmergencyContectForm model)
         {
@@ -385,12 +388,12 @@ namespace WorkOrderEMS.Controllers.Guest
             //return PartialView("_directDepositeForm", _model);
         }
         [HttpGet]
-		public ActionResult GetFormsStatus()
-		{			
-				var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-				var data=_IGuestUserRepository.GetFormsStatus(objloginmodel.UserId);
-				return Json(data, JsonRequestBehavior.AllowGet);
-		}
+        public ActionResult GetFormsStatus()
+        {
+            var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+            var data = _IGuestUserRepository.GetFormsStatus(objloginmodel.UserId);
+            return Json(data, JsonRequestBehavior.AllowGet);
+        }
         /// <summary>
         /// Created By : Ashwajit Bansod
         /// Created Date : 12-Feb-2020
@@ -412,14 +415,14 @@ namespace WorkOrderEMS.Controllers.Guest
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult _ContactSavedForm(ContactListModel model,List<ContactModel> lstModel)
+        public ActionResult _ContactSavedForm(ContactListModel model, List<ContactModel> lstModel)
         {
             try
             {
                 var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-                if(lstModel.Count() > 0)
+                if (lstModel.Count() > 0)
                 {
-                   var updateContact =  _IApplicantManager.UpdateContactDetailsApplicant(model, lstModel);
+                    var updateContact = _IApplicantManager.UpdateContactDetailsApplicant(model, lstModel);
                     if (updateContact)
                     {
                         return RedirectToAction("_BackGroundCheckForm");
@@ -430,11 +433,11 @@ namespace WorkOrderEMS.Controllers.Guest
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return Json(false, JsonRequestBehavior.AllowGet);
             }
-            return  RedirectToAction("_BackGroundCheckForm");
+            return RedirectToAction("_BackGroundCheckForm");
         }
         /// <summary>
         /// Created By : Ashwajit Bansod
@@ -445,9 +448,18 @@ namespace WorkOrderEMS.Controllers.Guest
         [HttpGet]
         public PartialViewResult _BackGroundCheckForm()
         {
-            var getApplicantId = Convert.ToInt64(Session["ApplicantId"]);
-            var getApplicantContact = _IApplicantManager.GetApplicantByApplicantId(getApplicantId);
-            return PartialView("PartialView/_BackGroundCheckForm", getApplicantContact);
+            var getApplicant = new BackgroundCheckForm();
+            try
+            {
+                var getApplicantId = Convert.ToInt64(Session["ApplicantId"]);
+                getApplicant = _IApplicantManager.GetApplicantByApplicantId(getApplicantId);
+                return PartialView("PartialView/_BackGroundCheckForm", getApplicant);
+            }
+
+            catch (Exception ex)
+            {
+                return PartialView("PartialView/_BackGroundCheckForm", getApplicant);
+            }
         }
 
         /// <summary>
@@ -486,9 +498,9 @@ namespace WorkOrderEMS.Controllers.Guest
         /// <param name="filesLicense"></param>
         /// <param name="filesSSN"></param>
         /// <returns></returns>
-        public ActionResult UploadFilesApplicant()
+        public ActionResult UploadFilesApplicant(bool isLicense)
         {
-            var Obj = new UploadedFiles() ;
+            var Obj = new UploadedFiles();
             var _db = new workorderEMSEntities();
             eTracLoginModel ObjLoginModel = null;
             HttpFileCollectionBase files = Request.Files;
@@ -496,12 +508,8 @@ namespace WorkOrderEMS.Controllers.Guest
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
             }
-            //if(isLicense == true)
-            //{
-
-            //}
             if (files.Count > 0)
-            {             
+            {
                 try
                 {
                     //  Get all files from Request object  
@@ -536,7 +544,11 @@ namespace WorkOrderEMS.Controllers.Guest
                         }
                     }
                     // Returns message that successfully uploaded  
-                    return Json("File Uploaded Successfully!");
+                    if (isLicense == false)
+                    {
+                        return RedirectToAction("BenifitSection");
+                    }
+                    else { return Json("File Uploaded Successfully!"); }
                 }
                 catch (Exception ex)
                 {
@@ -547,6 +559,170 @@ namespace WorkOrderEMS.Controllers.Guest
             {
                 return Json("No files selected.");
             }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 18-Feb-2020
+        /// Created For : To get signature by applicant Id
+        /// </summary>
+        /// <returns></returns>
+        public JsonResult GetSignature()
+        {
+            var getSignature = new Desclaimer();
+            var url = string.Empty;
+            try
+            {
+                var signature = string.Empty;
+                var getApplicantId = Convert.ToInt64(Session["ApplicantId"]);
+                if (getApplicantId > 0)
+                {
+                    getSignature = _IApplicantManager.GetSignature(getApplicantId);
+                    if (getSignature != null)
+                    {
+                        url = HostingPrefix + ApplicantSignature.Replace("~", "") + getSignature.Signature + ".jpg";
+                        return Json(new { name = getSignature.Signature, imagePath = url }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(false, JsonRequestBehavior.AllowGet);
+                    }
+                }
+                return Json(new { name = getSignature.Signature, imagePath = url }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 19-Feb-2020
+        /// Created For :  To save and update signature by using update condition.
+        /// </summary>
+        /// <param name="isUpdate"></param>
+        /// <returns></returns>
+        public JsonResult SaveSignature(bool isUpdate)
+        {
+            var Obj = new Desclaimer();
+            var _db = new workorderEMSEntities();
+            var getApplicantId = Convert.ToInt64(Session["ApplicantId"]);
+            eTracLoginModel ObjLoginModel = null;
+            if (isUpdate == true)
+            {
+                HttpFileCollectionBase files = Request.Files;
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                }
+                if (files.Count > 0)
+                {
+                    try
+                    {
+                        //  Get all files from Request object  
+                        for (int i = 0; i < files.Count; i++)
+                        {
+                            HttpPostedFileBase file = files[i];
+                            string fname;
+                            // Checking for Internet Explorer  
+                            if (Request.Browser.Browser.ToUpper() == "IE" || Request.Browser.Browser.ToUpper() == "INTERNETEXPLORER")
+                            {
+                                string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                                fname = testfiles[testfiles.Length - 1];
+                            }
+                            else
+                            {
+                                fname = file.FileName;
+                            }
+
+                            var getUser = _db.UserRegistrations.Where(x => x.UserId == ObjLoginModel.UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
+                            if (getUser != null)
+                            {
+                                if (fname != null)
+                                {
+                                    string FName = ObjLoginModel.UserId + "_" + DateTime.Now.Ticks.ToString() + "_" + fname;
+                                    CommonHelper.StaticUploadImage(file, Server.MapPath(ConfigurationManager.AppSettings["ApplicantSignature"]), FName);
+                                    Obj.Signature = FName;
+                                    Obj.Signature = fname;
+                                    Obj.EmployeeId = getUser.EmployeeID;
+                                    var IsSaved = _IApplicantManager.SaveDesclaimerData(Obj);
+                                }
+                            }
+                        }
+                        // Returns message that successfully uploaded  
+                        return Json("File Uploaded Successfully!");
+                    }
+                    catch (Exception ex)
+                    {
+                        return Json("Error occurred. Error details: " + ex.Message);
+                    }
+                }
+                else
+                {
+                    return Json("No files selected.");
+                }
+            }
+            else
+            {
+
+                var getDetails = _IApplicantManager.GetSignature(getApplicantId);
+                if (getDetails != null)
+                {
+                    Obj.ApplicantId = getDetails.ApplicantId;
+                    Obj.ASG_Date = getDetails.ASG_Date;
+                    Obj.EmployeeId = getDetails.EmployeeId;
+                    Obj.IsActive = getDetails.IsActive;
+                    Obj.Sing_Id = getDetails.Sing_Id;
+                    Obj.Signature = getDetails.Signature;
+                    var set = _IApplicantManager.SaveDesclaimerData(Obj);
+                }
+                return Json("Signature is added successfully.");
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 19-Feb-2020
+        /// Created For  : To return partial view of Benifi section
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public PartialViewResult BenifitSection()
+        {
+            var getApplicantId = Convert.ToInt64(Session["ApplicantId"]);
+            //var getApplicantContact = _IApplicantManager.GetApplicantByApplicantId(getApplicantId);
+            return PartialView("PartialView/_BenifitSectionFloridaBlue");
+        }
+        /// <summary>
+        /// Created by  :Ashwajit Bansod
+        /// Created Date : 20-Feb-2020
+        /// Created For : To save Benifits from florida blue
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult BenifitSection(BenifitSectionModel obj)
+        {
+            return  Json(true,JsonRequestBehavior.AllowGet);
+            //return RedirectToAction("SelfIdentificationForm");
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 20-Feb-2020
+        /// Created For : To open self identification form if applciant want to make there data confedential
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult SelfIdentificationForm()
+        {
+            var getApplicantId = Convert.ToInt64(Session["ApplicantId"]);
+            //var getApplicantContact = _IApplicantManager.GetApplicantByApplicantId(getApplicantId);
+            return PartialView("PartialView/_SelfIdentificationForm");
+        }
+        [HttpGet]
+        public ActionResult ApplicantFunFacts()
+        {
+            var getApplicantId = Convert.ToInt64(Session["ApplicantId"]);
+            //var getApplicantContact = _IApplicantManager.GetApplicantByApplicantId(getApplicantId);
+            return PartialView("PartialView/_SelfIdentificationForm");
         }
     }
 }

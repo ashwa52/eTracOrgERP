@@ -766,17 +766,16 @@ namespace WorkOrderEMS.Data
                     if (type == "Expectation")
                     {
                         AssessmentType = AssessmentType == "QC" ? "CORP" : "MGMT";
-                        QuestionList = _workorderEMSEntities.spGetChangeExpectationQuestionQCQM(Id, AssessmentType).Select(t =>
-
-                         new GWCQUestionModel()
-                         {
-                             CHE_Id = t.CHE_Id,
-                             EmployeeId = Id,
-                             QuestionType = t.ASQ_QuestionType,
-                             QuestionId = t.ASQ_Id ?? 0,
-                             Question = t.ASQ_Question,
-                             SAM_IsActive = t.ASQ_IsActive
-                         }).ToList();
+                        //QuestionList = _workorderEMSEntities.spGetChangeExpectationQuestionQCQM(Id, AssessmentType).Select(t =>
+                        // new GWCQUestionModel()
+                        // {
+                        //     CHE_Id = t.CHE_Id,
+                        //     EmployeeId = Id,
+                        //     QuestionType = t.ASQ_QuestionType,
+                        //     QuestionId = t.ASQ_Id ?? 0,
+                        //     Question = t.ASQ_Question,
+                        //     SAM_IsActive = t.ASQ_IsActive
+                        // }).ToList();
                     }
                     else
                     {
@@ -1050,23 +1049,22 @@ namespace WorkOrderEMS.Data
             PerformanceModel ManagerDetails = new PerformanceModel();
             try
             {
-                ManagerDetails = _workorderEMSEntities.spGetUserAssessmentInfo(userId).Select(t =>
-
-                new PerformanceModel()
-                {
-                    EMP_EmployeeID = t.EMP_EmployeeID,
-                    EmployeeName = t.EmployeeName,
-                    EMP_Photo = t.EMP_Photo,
-                    DepartmentName = t.DepartmentName,
-                    JBT_JobTitle = t.JBT_JobTitle,
-                    LocationName = t.LocationName,
-                    EMP_DateOfJoining = t.EMP_DateOfJoining,
-                    Expectation = t.Expectation,
-                    Status = t.EEL_IsActive,
-                    VST_Level = t.VST_Level,
-                    FinYear = t.FinYear.Value,
-                    AssessmentType = t.AssessmentType
-                }).FirstOrDefault();
+                //ManagerDetails = _workorderEMSEntities.spGetUserAssessmentInfo(userId).Select(t =>
+                //new PerformanceModel()
+                //{
+                //    EMP_EmployeeID = t.EMP_EmployeeID,
+                //    EmployeeName = t.EmployeeName,
+                //    EMP_Photo = t.EMP_Photo,
+                //    DepartmentName = t.DepartmentName,
+                //    JBT_JobTitle = t.JBT_JobTitle,
+                //    LocationName = t.LocationName,
+                //    EMP_DateOfJoining = t.EMP_DateOfJoining,
+                //    Expectation = t.Expectation,
+                //    Status = t.EEL_IsActive,
+                //    VST_Level = t.VST_Level,
+                //    FinYear = t.FinYear.Value,
+                //    AssessmentType = t.AssessmentType
+                //}).FirstOrDefault();
                 return ManagerDetails;
             }
             catch (Exception)

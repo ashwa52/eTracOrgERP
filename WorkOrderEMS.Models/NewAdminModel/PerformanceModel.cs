@@ -32,7 +32,7 @@ namespace WorkOrderEMS.Models.NewAdminModel
     }
     public class GWCQUestionModel
     {
-        public long QuestionId { get; set; }
+        public long? QuestionId { get; set; }
         public string AssessmentType{ get; set; }
         public string QuestionType{ get; set; }
         public string Question{ get; set; }

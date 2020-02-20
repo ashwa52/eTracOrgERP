@@ -538,7 +538,6 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
         [HttpPost]
         public ActionResult userAssessmentView(string Id, string Assesment, string Name, string Image, string JobTitle, string Department, string LocationName)
-
         {
             eTracLoginModel ObjLoginModel = null;
             string Employee_Id = string.Empty;
@@ -1288,7 +1287,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
 
         [HttpPost]
-        public ActionResult SaveApplicant(EmployeeVIewModel model)
+        public ActionResult SaveApplicant(CommonApplicantModel model)
         {
             eTracLoginModel ObjLoginModel = null;
             bool isSaved = false;
