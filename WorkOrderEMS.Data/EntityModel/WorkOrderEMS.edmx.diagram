@@ -312,15 +312,16 @@
         <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_TrackEmployeeStatus_UserRegistrations" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.EmergencyContactForm" Width="1.5" PointX="18.375" PointY="13.75" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.Applicant" Width="1.5" PointX="7.75" PointY="7.75" />
-        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.ApplicantLoginAccess" Width="1.5" PointX="0.75" PointY="19.75" />
-        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.ApplicantPersonalInfo" Width="1.5" PointX="18.375" PointY="19.75" />
-        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.InterviewQuestionChild" Width="1.5" PointX="22.625" PointY="1" />
-        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.InterviewQuestionMaster" Width="1.5" PointX="20.375" PointY="1.125" />
-        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCostCode_CostCode" />
-        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.InterviewAnswer" Width="1.5" PointX="20.375" PointY="4.75" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.InterviewProposalTime" Width="1.5" PointX="20.375" PointY="12.75" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.SlotTime" Width="1.5" PointX="20.375" PointY="17.75" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.BookSlotTime" Width="1.5" PointX="20.375" PointY="8.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.ApplicantLoginAccess" Width="1.5" PointX="0.75" PointY="19.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.InterviewQuestionChild" Width="1.5" PointX="23" PointY="1" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.InterviewQuestionMaster" Width="1.5" PointX="20.75" PointY="1.125" />
+        <AssociationConnector Association="WorkOrderEMS.Data.EntityModel.FK_LogCostCode_CostCode" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.InterviewAnswer" Width="1.5" PointX="20.375" PointY="4.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.ApplicantPersonalInfo" Width="1.5" PointX="18.375" PointY="20.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.ChangeExpectation" Width="1.5" PointX="20.375" PointY="20.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

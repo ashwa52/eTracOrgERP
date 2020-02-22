@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkOrderEMS.Models;
 using WorkOrderEMS.Models.Employee;
 
 namespace WorkOrderEMS.BusinessLogic
@@ -28,5 +29,6 @@ namespace WorkOrderEMS.BusinessLogic
 		void SetW4Form(long userId, W4FormModel model);
 		W4FormModel GetW4Form(long userId);
 		PersonalFileModel GetFormsStatus(long userId);
+		CommonApplicantModel GetApplicantAllDetails(long userId);
 	}
 }

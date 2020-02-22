@@ -736,7 +736,7 @@ namespace WorkOrderEMS.Data
             { throw; }
         }
 
-        public List<GWCQUestionModel> GetGWCQuestions(string Id, string AssessmentType)
+        public List<GWCQUestionModel> GetGWCQuestions(string Id, string AssessmentType, string type)
         {
             try
             {
@@ -756,55 +756,72 @@ namespace WorkOrderEMS.Data
                          SelfAssessmentId = t.SAM_Id ?? 0,
                          Answer = t.SAM_Answer,
                          SAM_IsActive = t.SAM_IsActive
-                         
+
 
                      }).ToList();
                 }
                 else if (AssessmentType == "QC" || AssessmentType == "QM")
+
                 {
-                    QuestionList = _workorderEMSEntities.spGetAssessmentQuestionQCQM(Id, AssessmentType).Select(t =>
+                    if (type == "Expectation")
+                    {
+                        AssessmentType = AssessmentType == "QC" ? "CORP" : "MGMT";
+                        QuestionList = _workorderEMSEntities.spGetChangeExpectationQuestionQCQM(Id, AssessmentType).Select(t =>
 
-                     new GWCQUestionModel()
-                     {
-                         SelfAssessmentId = t.EEL_Id,
-                         EmployeeId = Id,
-                         SAR_EMP_EmployeeIdManager = t.EEL_EMP_EmployeeIdManager,
-                         QuestionType = t.ASQ_QuestionType,
-                         QuestionId = t.ASQ_Id,
-                         Question = t.ASQ_Question,
-                         Answer = t.EEL_AnswerSelf,
-                         EEL_AnswerManager=t.EEL_AnswerManager,
-                         //SAR_AnswerManager = t.EEL_AnswerManager,
-                         EEL_Comments = t.EEL_Comments,
-                         SAM_IsActive = t.EEL_IsActive,
-                         EEL_FinencialYear=t.EEL_FinencialYear,
-                         EEL_FinQuarter=t.EEL_FinQuarter,
-                         EEL_ScoreSelf=t.EEL_ScoreSelf
+                         new GWCQUestionModel()
+                         {
+                             CHE_Id = t.CHE_Id,
+                             EmployeeId = Id,
+                             QuestionType = t.ASQ_QuestionType,
+                             QuestionId = t.ASQ_Id ?? 0,
+                             Question = t.ASQ_Question,
+                             SAM_IsActive = t.ASQ_IsActive
+                         }).ToList();
+                    }
+                    else
+                    {
+                        QuestionList = _workorderEMSEntities.spGetAssessmentQuestionQCQM(Id, AssessmentType).Select(t =>
 
-                     }).ToList();
+                          new GWCQUestionModel()
+                          {
+                              SelfAssessmentId = t.EEL_Id,
+                              EmployeeId = Id,
+                              SAR_EMP_EmployeeIdManager = t.EEL_EMP_EmployeeIdManager,
+                              QuestionType = t.ASQ_QuestionType,
+                              QuestionId = t.ASQ_Id,
+                              Question = t.ASQ_Question,
+                              Answer = t.EEL_AnswerSelf,
+                              EEL_AnswerManager = t.EEL_AnswerManager,
+                              //SAR_AnswerManager = t.EEL_AnswerManager,
+                              EEL_Comments = t.EEL_Comments,
+                              SAM_IsActive = t.EEL_IsActive,
+                              EEL_FinencialYear = t.EEL_FinencialYear,
+                              EEL_FinQuarter = t.EEL_FinQuarter,
+                              EEL_ScoreSelf = t.EEL_ScoreSelf
+
+                          }).ToList();
+                    }
+
                 }
                 else
                 {
-
                     QuestionList = _workorderEMSEntities.spGetAssessmentQuestion316191(Id, AssessmentType).Select(t =>
 
         new GWCQUestionModel()
         {
-                 SAR_Id=t.SAR_Id,
-                SAR_EMP_EmployeeId=t.SAR_EMP_EmployeeId,
-                SAR_EMP_EmployeeIdManager=t.SAR_EMP_EmployeeIdManager,
-                  SAR_QuestionType=t.SAR_QuestionType,
-                  ASQ_Id=t.ASQ_Id,
-                  ASQ_Question=t.ASQ_Question,
-                  SAR_AnswerSelf=t.SAR_AnswerSelf,
-                  SAR_AnswerManager=t.SAR_AnswerManager,
-                  SAR_Comments=t.SAR_Comments,
-            SAR_IsActive=t.SAR_IsActive
+            SAR_Id = t.SAR_Id,
+            SAR_EMP_EmployeeId = t.SAR_EMP_EmployeeId,
+            SAR_EMP_EmployeeIdManager = t.SAR_EMP_EmployeeIdManager,
+            SAR_QuestionType = t.SAR_QuestionType,
+            ASQ_Id = t.ASQ_Id,
+            ASQ_Question = t.ASQ_Question,
+            SAR_AnswerSelf = t.SAR_AnswerSelf,
+            SAR_AnswerManager = t.SAR_AnswerManager,
+            SAR_Comments = t.SAR_Comments,
+            SAR_IsActive = t.SAR_IsActive
         }).ToList();
                 }
                 return QuestionList;
-
-
             }
             catch (Exception)
             { throw; }
@@ -963,12 +980,10 @@ namespace WorkOrderEMS.Data
                     FinYear = t.FinYear.Value,
                     AssessmentType = t.AssessmentType,
                     PRMeetingStatus = t.PRMeetingStatus,
-                    //PRMeetingDateTime = t.PRMeetingDateTime.HasValue ? new DateTimeOffset(t.PRMeetingDateTime.Value, TimeSpan.FromHours(0)).ToLocalTime().DateTime : (DateTime?)null,
-                    //MeetingDate = t.PRMeetingDateTime.HasValue ? new DateTimeOffset(t.PRMeetingDateTime.Value, TimeSpan.FromHours(0)).ToLocalTime().DateTime.ToShortDateString() : "",
-                    //MeetingTime = t.PRMeetingDateTime.HasValue ? new DateTimeOffset(t.PRMeetingDateTime.Value, TimeSpan.FromHours(0)).ToLocalTime().DateTime.ToShortTimeString() : ""
-                    PRMeetingDateTime = t.PRMeetingDateTime,
-                    MeetingDate = t.PRMeetingDateTime.HasValue ? t.PRMeetingDateTime.Value.ToShortDateString() : "",
-                    MeetingTime = t.PRMeetingDateTime.HasValue ? t.PRMeetingDateTime.Value.ToShortTimeString() : ""
+                    //PRMeetingDateTime=t.PRMeetingDateTime,
+                    PRMeetingDateTime = t.PRMeetingDateTime.HasValue ? new DateTimeOffset(t.PRMeetingDateTime.Value, TimeSpan.FromHours(0)).ToLocalTime().DateTime : (DateTime?)null,
+                    MeetingDate = t.PRMeetingDateTime.HasValue ? new DateTimeOffset(t.PRMeetingDateTime.Value, TimeSpan.FromHours(0)).ToLocalTime().DateTime.ToShortDateString() : "",
+                    MeetingTime = t.PRMeetingDateTime.HasValue ? new DateTimeOffset(t.PRMeetingDateTime.Value, TimeSpan.FromHours(0)).ToLocalTime().DateTime.ToShortTimeString() : ""
 
 
                 }).ToList();
@@ -1006,7 +1021,8 @@ namespace WorkOrderEMS.Data
             { throw; }
         }
 
-        public string GetUserEmail(string userid) {
+        public string GetUserEmail(string userid)
+        {
             string UserEmail = string.Empty;
 
             try
@@ -1023,7 +1039,89 @@ namespace WorkOrderEMS.Data
             }
             return UserEmail;
         }
+        /// <summary>Get Manager Assessment Details</summary>
+        /// <Modified By>mayur sahu</Modified> 
+        /// <CreatedFor>To Get Manager Assessment Details</CreatedFor>
+        /// <CreatedOn>05-Dec-2019</CreatedOn>
+        /// </summary>
+        /// <returns>PerformanceModel</returns>
+        public PerformanceModel GetManagerAssessmentDetails(string userId)
+        {
+            PerformanceModel ManagerDetails = new PerformanceModel();
+            try
+            {
+                ManagerDetails = _workorderEMSEntities.spGetUserAssessmentInfo(userId).Select(t =>
 
+                new PerformanceModel()
+                {
+                    EMP_EmployeeID = t.EMP_EmployeeID,
+                    EmployeeName = t.EmployeeName,
+                    EMP_Photo = t.EMP_Photo,
+                    DepartmentName = t.DepartmentName,
+                    JBT_JobTitle = t.JBT_JobTitle,
+                    LocationName = t.LocationName,
+                    EMP_DateOfJoining = t.EMP_DateOfJoining,
+                    Expectation = t.Expectation,
+                    Status = t.EEL_IsActive,
+                    VST_Level = t.VST_Level,
+                    FinYear = t.FinYear.Value,
+                    AssessmentType = t.AssessmentType
+                }).FirstOrDefault();
+                return ManagerDetails;
+            }
+            catch (Exception)
+            { throw; }
+        }
+        public bool saveChangedExpectations(List<GWCQUestionModel> data, string action, string Manager)
+        {
+            try
+            {
+                var list = data.GroupBy(x => x.ASQ_Id).Select(x => x.First());
+                if (data.Count() > 0)
+                {
+                    foreach (var i in list)
+                    {
+                        _workorderEMSEntities.spSetChangeExpectation(i.CHE_Id == 0 ? "I" : "U", i.CHE_Id, i.EmployeeId, Manager, i.ASQ_Id, i.QuestionType, i.EEL_FinencialYear, i.EEL_FinQuarter, i.CHE_ASQ_Question, action);
+                    }
+                }
+                return true;
+            }
+            catch (Exception)
+            { throw; }
+        }
+        public List<GWCQUestionModel> GetSelfAssessmentView(string Id, string AssessmentType)
+        {
+            try
+            {
+                List<GWCQUestionModel> QuestionList = new List<GWCQUestionModel>();
+                if (AssessmentType == "QC" || AssessmentType == "QM")
+                {
 
+                    QuestionList = _workorderEMSEntities.spGetAssessmentQuestionQCQM(Id, AssessmentType).Select(t =>
+
+                          new GWCQUestionModel()
+                          {
+                              SelfAssessmentId = t.EEL_Id,
+                              EmployeeId = Id,
+                              SAR_EMP_EmployeeIdManager = t.EEL_EMP_EmployeeIdManager,
+                              QuestionType = t.ASQ_QuestionType,
+                              QuestionId = t.ASQ_Id,
+                              Question = t.ASQ_Question,
+                              Answer = t.EEL_AnswerSelf,
+                              EEL_AnswerManager = t.EEL_AnswerManager,
+                              //SAR_AnswerManager = t.EEL_AnswerManager,
+                              EEL_Comments = t.EEL_Comments,
+                              SAM_IsActive = t.EEL_IsActive,
+                              EEL_FinencialYear = t.EEL_FinencialYear,
+                              EEL_FinQuarter = t.EEL_FinQuarter,
+                              EEL_ScoreSelf = t.EEL_ScoreSelf
+
+                          }).ToList();
+                }
+                return QuestionList;
+            }
+            catch (Exception)
+            { throw; }
+        }
     }
 }

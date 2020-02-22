@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using WorkOrderEMS.BusinessLogic;
-using WorkOrderEMS.Data.Interfaces;
 using WorkOrderEMS.Models;
 using WorkOrderEMS.Models.Employee;
 
@@ -29,27 +25,105 @@ namespace WorkOrderEMS.Controllers.Guest
         public ActionResult Index()
         {
             var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-            EmployeeVIewModel model = new EmployeeVIewModel();
+            CommonApplicantModel model = new CommonApplicantModel();
             ViewBag.StateList = _ICommonMethod.GetStateByCountryId(1);
-            model = _IGuestUserRepository.GetEmployee(ObjLoginModel.UserId);
+            var employee = _IGuestUserRepository.GetEmployee(ObjLoginModel.UserId);
+            var commonModel = _IGuestUserRepository.GetApplicantAllDetails(ObjLoginModel.UserId);
+            model.ApplicantId = employee.ApplicantId;
+            model.ApplicantPersonalInfo = new List<ApplicantPersonalInfo>();
+            ApplicantPersonalInfo a1 = new ApplicantPersonalInfo();
+            a1.API_APT_ApplicantId = employee.ApplicantId;
+            a1.API_FirstName = employee.FirstName;
+            a1.API_LastName = employee.LastName;
+            a1.API_SSN = employee.SocialSecurityNumber;
+            model.ApplicantPersonalInfo.Add(a1);
+            model.ApplicantAddress = new List<ApplicantAddress>();
+            ApplicantAddress a2 = new ApplicantAddress();
+            a2.APA_APT_ApplicantId = employee.ApplicantId;
+            a2.APA_StreetAddress = employee.Address;
+            a2.APA_City = employee.City;
+            a2.APA_Apartment = employee.APIUnit;
+            a2.APA_State = employee.State;
+            a2.APA_YearsAddressFrom = employee.YearsAtAddrss;
+            a2.APA_APT_ApplicantId = employee.ApplicantId;
+            model.ApplicantAddress.Add(a2);
+
+            model.AplicantAcadmicDetails = new List<AplicantAcadmicDetails>();
+            AplicantAcadmicDetails aad1 = new AplicantAcadmicDetails();
+            aad1.AAD_APT_ApplicantId= employee.ApplicantId;
+            model.AplicantAcadmicDetails.Add(aad1);
+            model.ApplicantBackgroundHistory = new List<ApplicantBackgroundHistory>();
+            ApplicantBackgroundHistory abh1 = new ApplicantBackgroundHistory();
+            abh1.ABH_APT_ApplicantId= employee.ApplicantId;
+            model.ApplicantBackgroundHistory.Add(abh1);
+            model.ApplicantAccidentRecord = new List<ApplicantAccidentRecord>();
+            ApplicantAccidentRecord aar1 = new ApplicantAccidentRecord();
+            aar1.AAR_APT_ApplicantId= employee.ApplicantId;
+            model.ApplicantAccidentRecord.Add(aar1);
+
+            model.ApplicantPositionTitle = new List<ApplicantPositionTitle>();
+            ApplicantPositionTitle pt1 = new ApplicantPositionTitle();
+            pt1.APT_APT_ApplicantId= employee.ApplicantId;
+            model.ApplicantPositionTitle.Add(pt1);
+
+            model.ApplicantContactInfo = new List<ApplicantContactInfo>();
+            ApplicantContactInfo c1 = new ApplicantContactInfo();
+            c1.ACI_APT_ApplicantId= employee.ApplicantId;
+            c1.ACI_eMail = employee.Email;
+            c1.ACI_PhoneNo = employee.Phone.Value;
+            model.ApplicantContactInfo.Add(c1);
+            model.ApplicantTrafficConvictions = new List<ApplicantTrafficConvictions>();
+            ApplicantTrafficConvictions obj = new ApplicantTrafficConvictions();
+            obj.ATC_APT_ApplicantId= employee.ApplicantId;
+            ApplicantTrafficConvictions obj2 = new ApplicantTrafficConvictions();
+            obj2.ATC_APT_ApplicantId = employee.ApplicantId;
+            ApplicantTrafficConvictions obj3 = new ApplicantTrafficConvictions();
+            obj3.ATC_APT_ApplicantId = employee.ApplicantId;
+            model.ApplicantTrafficConvictions.Add(obj);
+            model.ApplicantTrafficConvictions.Add(obj2);
+            model.ApplicantTrafficConvictions.Add(obj3);
+
+            model.ApplicantLicenseHeald = new List<ApplicantLicenseHeald>();
+            ApplicantLicenseHeald obj4 = new ApplicantLicenseHeald();
+            obj4.ALH_APT_ApplicantId = employee.ApplicantId;
+            ApplicantLicenseHeald obj5 = new ApplicantLicenseHeald();
+            obj5.ALH_APT_ApplicantId = employee.ApplicantId;
+            ApplicantLicenseHeald obj6 = new ApplicantLicenseHeald();
+            obj6.ALH_APT_ApplicantId = employee.ApplicantId;
+            model.ApplicantLicenseHeald.Add(obj4);
+            model.ApplicantLicenseHeald.Add(obj5);
+            model.ApplicantLicenseHeald.Add(obj6);
+
+            model.ApplicantAdditionalInfo = new List<ApplicantAdditionalInfo>();
+            ApplicantAdditionalInfo ad1 = new ApplicantAdditionalInfo();
+            ad1.AAI_APT_ApplicantId = employee.ApplicantId;
+            model.ApplicantAdditionalInfo.Add(ad1);
+
+            model.ApplicantVehiclesOperated = new List<ApplicantVehiclesOperated>();
+            ApplicantVehiclesOperated vo = new ApplicantVehiclesOperated();
+            vo.AVO_APT_ApplicantId= employee.ApplicantId;
+            model.ApplicantVehiclesOperated.Add(vo);
+
             return View("~/Views/Guest/Index1.cshtml", model);
         }
         [HttpPost]
-        public ActionResult Index(EmployeeVIewModel model)
+        public ActionResult Index(CommonApplicantModel CommonApplicantModel)
         {
+            ApplicantManager _IApplicantManager = new ApplicantManager();
             ViewBag.StateList = _ICommonMethod.GetStateByCountryId(1);
+            var getDetails = _IApplicantManager.SaveApplicantData(CommonApplicantModel);
             if (ModelState.IsValid)
             {
-                var isSaveSuccess = _IGuestUserRepository.UpdateApplicantInfo(model);
+                var isSaveSuccess = true;
                 if (isSaveSuccess)
                     return RedirectToAction("PersonalFile");
                 else
                 {
                     ViewBag.message = "Something went wrong!!!";
-                    return View(model);
+                    return View();
                 }
             }
-            return View(model);
+            return View();
         }
         [HttpGet]
         public ActionResult PersonalFile(bool? isSaved)

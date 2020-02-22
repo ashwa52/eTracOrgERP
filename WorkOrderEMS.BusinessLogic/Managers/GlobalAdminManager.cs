@@ -4110,9 +4110,11 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 using (workorderEMSEntities context = new workorderEMSEntities())
                 {
                     //var lst = context.spGetQuestionsForInterview("Y", "M", 0).ToList();
-                    var lst = context.InterviewQuestionMasters.Where(x => x.IQM_Exempt == "Y").ToList();
-                    return lst;
+                    //var lst = context.InterviewQuestionMasters.Where(x => x.IQM_Exempt == "Y").ToList();
+                    //return lst;
                     //return context.spGetInterviewQuestion("Y").ToList();
+                    List<InterviewQuestionMaster> lst = new List<InterviewQuestionMaster>();
+                    return lst;
                 }
             }
             catch (Exception ex)
@@ -4138,16 +4140,18 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     //        IQM_Id = x.IQM_Id,
                     //        IQM_Question = x.IQM_Question
                     //    }).ToList();
-                    var childeQuestioncontext = context.InterviewQuestionChilds.Where(x => x.IQC_IQM_Id == num && x.IQC_IsActive == "Y").
-                       Select(x => new ChildrenQuestionModel()
-                       {
-                           IQM_Id = x.IQC_Id,
-                           IQM_Question = x.IQC_Question,
-                           IQM_ScoreNo = x.IQC_ScoreNo,
-                           IQM_ScoreYes = x.IQC_ScoreYes
-                       }).ToList();
-                    return childeQuestioncontext;
+                    //var childeQuestioncontext = context.InterviewQuestionChilds.Where(x => x.IQC_IQM_Id == num && x.IQC_IsActive == "Y").
+                    //   Select(x => new ChildrenQuestionModel()
+                    //   {
+                    //       IQM_Id = x.IQC_Id,
+                    //       IQM_Question = x.IQC_Question,
+                    //       IQM_ScoreNo = x.IQC_ScoreNo,
+                    //       IQM_ScoreYes = x.IQC_ScoreYes
+                    //   }).ToList();
+                    //return childeQuestioncontext;
                     //return context.spGetInterviewQuestion("Y").ToList();
+                    List<ChildrenQuestionModel> lst = new List<ChildrenQuestionModel>();
+                    return lst;
                 }
             }
             catch (Exception ex)
@@ -4228,36 +4232,36 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     var getApplicantDetails = context.ApplicantInfoes.Where(x => x.API_ApplicantId == Applicant).FirstOrDefault();
                     if (getApplicantDetails != null)
                     {
-                        childeQuestioncontext.ApplicantImage = getApplicantDetails.API_Photo;
-                        childeQuestioncontext.ApplicantName = getApplicantDetails.API_FirstName+" "+ getApplicantDetails.API_LastName;
-                        //will add Exempt non exempt dynamically
-                        var masterQuestion = context.InterviewQuestionMasters.Where(x => x.IQM_Exempt == "Y").ToList();
+                        //childeQuestioncontext.ApplicantImage = getApplicantDetails.API_Photo;
+                        //childeQuestioncontext.ApplicantName = getApplicantDetails.API_FirstName+" "+ getApplicantDetails.API_LastName;
+                        ////will add Exempt non exempt dynamically
+                        //var masterQuestion = context.InterviewQuestionMasters.Where(x => x.IQM_Exempt == "Y").ToList();
                         
-                        foreach (var item in masterQuestion)
-                        {
-                            Child = new ListAnswerModel();
-                            var data = context.InterviewQuestionChilds.Join(context.InterviewAnswers, q => q.IQC_Id, u => u.INA_IQC_Id, (q, u) => new { q, u }).
-                            Where(x => x.q.IQC_IQM_Id == item.IQM_Id).Select(a => new ChildQuestionAnswerModel(){
-                            IQM_Answer = a.u.INA_Answer == "Y"?"Yes":"No",
-                            IQM_Comment = a.u.INA_Comments,
-                            IQM_Question = a.q.IQC_Question,
-                            IQM_Id = a.u.INA_IQC_Id
-                            }).ToList();
-                            Child.IQM_Id = item.IQM_Id;
-                            Child.IQM_Question = item.IQM_Question;
-                            Child.ListAnswerMainModel = data;
-                            Child1.Add(Child);
+                        //foreach (var item in masterQuestion)
+                        //{
+                        //    Child = new ListAnswerModel();
+                        //    var data = context.InterviewQuestionChilds.Join(context.InterviewAnswers, q => q.IQC_Id, u => u.INA_IQC_Id, (q, u) => new { q, u }).
+                        //    Where(x => x.q.IQC_IQM_Id == item.IQM_Id).Select(a => new ChildQuestionAnswerModel(){
+                        //    IQM_Answer = a.u.INA_Answer == "Y"?"Yes":"No",
+                        //    IQM_Comment = a.u.INA_Comments,
+                        //    IQM_Question = a.q.IQC_Question,
+                        //    IQM_Id = a.u.INA_IQC_Id
+                        //    }).ToList();
+                        //    Child.IQM_Id = item.IQM_Id;
+                        //    Child.IQM_Question = item.IQM_Question;
+                        //    Child.ListAnswerMainModel = data;
+                        //    Child1.Add(Child);
 
-                            //childeQuestioncontext.ListAnswerModel = context.InterviewAnswers.Where(x => x.INA_API_ApplicantId == Applicant && x.INA_IsActive == "Y").
-                            //Select(x => new ListAnswerModel()
-                            //{
-                            //    IQM_Question = context.InterviewQuestionChilds.Where(a => a.IQC_Id == x.INA_IQC_Id).FirstOrDefault().IQC_Question,
-                            //    IQM_Answer = x.INA_Answer,
-                            //    IQM_Comment = x.INA_Comments,
-                            //    IQM_Id = x.INA_IQC_Id
-                            //}).ToList();
-                        }
-                        childeQuestioncontext.ListAnswerModel = Child1;
+                        //    //childeQuestioncontext.ListAnswerModel = context.InterviewAnswers.Where(x => x.INA_API_ApplicantId == Applicant && x.INA_IsActive == "Y").
+                        //    //Select(x => new ListAnswerModel()
+                        //    //{
+                        //    //    IQM_Question = context.InterviewQuestionChilds.Where(a => a.IQC_Id == x.INA_IQC_Id).FirstOrDefault().IQC_Question,
+                        //    //    IQM_Answer = x.INA_Answer,
+                        //    //    IQM_Comment = x.INA_Comments,
+                        //    //    IQM_Id = x.INA_IQC_Id
+                        //    //}).ToList();
+                        //}
+                        //childeQuestioncontext.ListAnswerModel = Child1;
                     }
 
                     return childeQuestioncontext;
@@ -4371,14 +4375,14 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
 
         }
-
-        public List<GWCQUestionModel> GetGWCQuestions(string Id, string AssessmetType)
+        ///
+        public List<GWCQUestionModel> GetGWCQuestions(string Id, string AssessmetType, string type)
         {
             ObjUserRepository = new UserRepository();
             try
             {
 
-                return ObjUserRepository.GetGWCQuestions(Id, AssessmetType);
+                return ObjUserRepository.GetGWCQuestions(Id, AssessmetType, type);
             }
             catch (Exception)
             {
@@ -4530,9 +4534,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 //var obj = ObjPerformanceRepository.GetMeetingDetail(Id, FinYear, FinQuarter);
                 if (obj != null)
                 {
-                    var dt = Convert.ToDateTime(obj.RMS_InterviewDateTime);
-                    result = (DateTime.Now > dt && obj.RMS_IsActive == "Y") ? "MEETINGNOTCOMPLETED" : (DateTime.Now > dt && obj.RMS_IsActive == "C") ? "MEETINGCOMPLETED" : "MEETINGNOTFOUND";
-                    //result = (DateTime.Now > obj.RMS_InterviewDateTime) ? "MEETINGCOMPLETED" : "MEETINGNOTCOMPLETED";
+                    result = (DateTime.UtcNow > obj.RMS_InterviewDateTime) ? "MEETINGCOMPLETED" : "MEETINGNOTCOMPLETED";
                 }
 
             }
@@ -4798,6 +4800,53 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         //    }
         //    return listEmails;
         //}
+		 public PerformanceModel GetManagerAssessmentDetails(string userId)
+        {
+            ObjUserRepository = new UserRepository();
+            PerformanceModel model = new PerformanceModel();
+            try
+            {
+                model= ObjUserRepository.GetManagerAssessmentDetails(userId);
+                if (model != null)
+                {
+                    model.EMP_Photo = (model.EMP_Photo == null || model.EMP_Photo.Trim() == "") ? HostingPrefix + ConstantImagesForClient.Replace("~", "") : HostingPrefix + ProfileImagePath.Replace("~", "") + model.EMP_Photo;
+
+                    
+                }
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return model;
+        }
+        public bool saveChangedExpectations(List<GWCQUestionModel> data, string action,string Manager)
+        {
+
+            ObjUserRepository = new UserRepository();
+            try
+            {
+                return ObjUserRepository.saveChangedExpectations(data, action, Manager);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public List<GWCQUestionModel> GetSelfAssessmentView(string Id, string AssessmetType)
+        {
+            ObjUserRepository = new UserRepository();
+            try
+            {
+                return ObjUserRepository.GetSelfAssessmentView(Id, AssessmetType);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
     public class loc
     {

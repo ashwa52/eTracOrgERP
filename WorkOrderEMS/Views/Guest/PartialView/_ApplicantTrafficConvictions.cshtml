@@ -1,0 +1,72 @@
+﻿@model WorkOrderEMS.Models.CommonApplicantModel
+
+@{
+    Layout = null;
+}
+
+<div class="row mb-20">
+    <div class="colmn col-md-12 text-center">
+        <div class="form-group">
+            <label class="form-label">Traffic convictions and forefeitures for the past 3 years (Other then parking vaolations)</label>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="colmn col-md-12 text-center">
+        <table>
+            <tr>
+                <th>Dates Convicted<br> (Month/Year)</th>
+                <th>Vaiolation</th>
+                <th>State of Vaiolation</th>
+                <th>Panalties Assessed<br> (select all Panalties that apply)</th>
+            </tr>
+
+            @for (int i = 0; i < Model.ApplicantTrafficConvictions.Count(); i++)
+            {
+        <tr>
+            @Html.HiddenFor(x => x.ApplicantTrafficConvictions[i].ATC_APT_ApplicantId)
+            <td>
+                @Html.TextBoxFor(m => m.ApplicantTrafficConvictions[i].ATC_ConvictedDate, new { @class = "form-control", @type = "date" })
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.ApplicantTrafficConvictions[i].ATC_Violation, new { @class = "form-control", @type = "text" })
+            </td>
+            <td>
+                @Html.TextBoxFor(m => m.ApplicantTrafficConvictions[i].ATC_StateOfViolation, new { @class = "form-control", @type = "text" })
+
+            </td>
+            <td>
+                <div class="form-group pt-4 checkbox_group">
+                        @{
+                            string name = "ApplicantTrafficConvictions_" + i + "__ATC_AtFaultAccident";
+                        <label class="col-form-label" for="Address2">At Fault Accident</label>
+                            <div class="">
+                                @Html.CheckBoxFor(model => model.ApplicantTrafficConvictions[i].ATC_AtFaultAccident, new { @id = name })
+                                <div class="errorspace">
+                                </div>
+                            </div>
+                        }
+                    @{
+                        string name1 = "ApplicantTrafficConvictions_" + i + "__ATC_AtMovingViolation";
+                        <label class="col-form-label" for="Address2">At Moving Violation</label>
+                        <div class="">
+                            @Html.CheckBoxFor(model => model.ApplicantTrafficConvictions[i].ATC_AtMovingViolation, new { @id = name1 })
+                            <div class="errorspace">
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </td>
+        </tr>
+            }
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="colmn col-md-12 text-right">
+        <div class="form-group">
+            <button class="btn">Add more</button>
+        </div>
+    </div>
+</div>
