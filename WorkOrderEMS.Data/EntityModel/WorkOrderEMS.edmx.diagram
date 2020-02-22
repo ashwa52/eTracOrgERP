@@ -322,6 +322,7 @@
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.InterviewAnswer" Width="1.5" PointX="20.375" PointY="4.75" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.ApplicantPersonalInfo" Width="1.5" PointX="18.375" PointY="20.75" />
         <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.ChangeExpectation" Width="1.5" PointX="20.375" PointY="20.75" />
+        <EntityTypeShape EntityType="WorkOrderEMS.Data.EntityModel.Review_MeetingSchedule" Width="1.5" PointX="3.375" PointY="21.75" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

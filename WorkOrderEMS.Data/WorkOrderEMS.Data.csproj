@@ -517,6 +517,9 @@
     <Compile Include="EntityModel\QuestionAnswer.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityModel\Review_MeetingSchedule.cs">
+      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\Rule.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>

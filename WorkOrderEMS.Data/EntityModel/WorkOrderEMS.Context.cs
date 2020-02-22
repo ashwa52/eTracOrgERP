@@ -160,6 +160,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<InterviewAnswer> InterviewAnswers { get; set; }
         public virtual DbSet<ApplicantPersonalInfo> ApplicantPersonalInfoes { get; set; }
         public virtual DbSet<ChangeExpectation> ChangeExpectations { get; set; }
+        public virtual DbSet<Review_MeetingSchedule> Review_MeetingSchedule { get; set; }
     
         [DbFunction("workorderEMSEntities", "fn_Split")]
         public virtual IQueryable<fn_Split_Result> fn_Split(string sText, string sDelim)
@@ -6381,11 +6382,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spGetIsTremination", employeeIdParameter, isTermination);
         }
     
-        public virtual ObjectResult<spGetReviewMeetingList_Result> spGetReviewMeetingList()
-        {
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetReviewMeetingList_Result>("spGetReviewMeetingList");
-        }
-    
         public virtual ObjectResult<spGetEvaluationList_Result1> spGetEvaluationList(string employeeId)
         {
             var employeeIdParameter = employeeId != null ?
@@ -6931,6 +6927,11 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("AssessmentType", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentQuestion316191_Result>("spGetAssessmentQuestion316191", employeeIDParameter, assessmentTypeParameter);
+        }
+    
+        public virtual ObjectResult<spGetReviewMeetingList_Result> spGetReviewMeetingList()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetReviewMeetingList_Result>("spGetReviewMeetingList");
         }
     }
 }

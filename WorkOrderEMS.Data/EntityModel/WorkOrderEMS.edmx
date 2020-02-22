@@ -2055,6 +2055,18 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="QNA_Application" Type="char" MaxLength="3" />
           <Property Name="QNA_IsActive" Type="char" MaxLength="1" />
         </EntityType>
+        <EntityType Name="Review_MeetingSchedule">
+          <Key>
+            <PropertyRef Name="RMS_Id" />
+          </Key>
+          <Property Name="RMS_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RMS_EMP_EmployeeId" Type="varchar" MaxLength="20" />
+          <Property Name="RMS_FinencialYear" Type="varchar" MaxLength="10" />
+          <Property Name="RMS_FinQuarter" Type="varchar" MaxLength="10" />
+          <Property Name="RMS_InterviewDateTime" Type="datetime" />
+          <Property Name="RMS_Date" Type="datetime" />
+          <Property Name="RMS_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
         <EntityType Name="Rule">
           <Key>
             <PropertyRef Name="RUL_Id" />
@@ -6622,6 +6634,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="QRCMasterLog" EntityType="Self.QRCMasterLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QRCScanLog" EntityType="Self.QRCScanLog" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="QuestionAnswer" EntityType="Self.QuestionAnswer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Review_MeetingSchedule" EntityType="Self.Review_MeetingSchedule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rule" EntityType="Self.Rule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ServiceMaster" EntityType="Self.ServiceMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SlotTime" EntityType="Self.SlotTime" Schema="dbo" store:Type="Tables" />
@@ -14408,7 +14421,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="EmployeeId" Mode="In" Type="String" />
             <Parameter Name="IsTermination" Mode="InOut" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spGetReviewMeetingList" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetReviewMeetingList_Result)" />
           <FunctionImport Name="spGetEvaluationList" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetEvaluationList_Result1)">
           <Parameter Name="EmployeeId" Mode="In" Type="String" />
           </FunctionImport>
@@ -14598,6 +14610,8 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="EmployeeID" Mode="In" Type="String" />
             <Parameter Name="AssessmentType" Mode="In" Type="String" />
           </FunctionImport>
+          <EntitySet Name="Review_MeetingSchedule" EntityType="WorkOrderEMS.Data.EntityModel.Review_MeetingSchedule" />
+          <FunctionImport Name="spGetReviewMeetingList" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetReviewMeetingList_Result)" />
         </EntityContainer>
         <ComplexType Name="Proc_GetAllWorkAssignedToEmployee_Result">
           <Property Type="Int64" Name="RN" Nullable="true" />
@@ -18269,15 +18283,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="String" Name="EMP_EmploymentStatus" Nullable="true" MaxLength="10" />
           <Property Type="String" Name="EMP_IsExempt" Nullable="true" MaxLength="1" />
         </ComplexType>
-        <ComplexType Name="spGetReviewMeetingList_Result">
-          <Property Type="String" Name="EMP_ManagerId" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="ManagerPhoto" Nullable="true" />
-          <Property Type="String" Name="ManagerName" Nullable="true" MaxLength="94" />
-          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
-          <Property Type="String" Name="EmployeePhoto" Nullable="true" />
-          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
-          <Property Type="DateTime" Name="PRMeetingDateTime" Nullable="true" Precision="23" />
-        </ComplexType>
         <ComplexType Name="spGetEvaluationList_Result1">
           <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
           <Property Type="String" Name="EMP_Photo" Nullable="true" />
@@ -18746,6 +18751,27 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="String" Name="SAR_AnswerManager" Nullable="true" MaxLength="1" />
           <Property Type="String" Name="SAR_Comments" Nullable="true" />
           <Property Type="String" Name="SAR_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <EntityType Name="Review_MeetingSchedule">
+          <Key>
+            <PropertyRef Name="RMS_Id" />
+          </Key>
+          <Property Name="RMS_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RMS_EMP_EmployeeId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="RMS_FinencialYear" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="RMS_FinQuarter" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="RMS_InterviewDateTime" Type="DateTime" Precision="3" />
+          <Property Name="RMS_Date" Type="DateTime" Precision="3" />
+          <Property Name="RMS_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="spGetReviewMeetingList_Result">
+          <Property Type="String" Name="EMP_ManagerId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ManagerPhoto" Nullable="true" />
+          <Property Type="String" Name="ManagerName" Nullable="true" MaxLength="94" />
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EmployeePhoto" Nullable="true" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+          <Property Type="DateTime" Name="PRMeetingDateTime" Nullable="true" Precision="23" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -24477,19 +24503,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spGetIsTremination" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetIsTremination" />
-          <FunctionImportMapping FunctionImportName="spGetReviewMeetingList" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetReviewMeetingList">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetReviewMeetingList_Result">
-                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
-                <ScalarProperty Name="ManagerPhoto" ColumnName="ManagerPhoto" />
-                <ScalarProperty Name="ManagerName" ColumnName="ManagerName" />
-                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
-                <ScalarProperty Name="EmployeePhoto" ColumnName="EmployeePhoto" />
-                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-                <ScalarProperty Name="PRMeetingDateTime" ColumnName="PRMeetingDateTime" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spGetEvaluationList" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetEvaluationList">
             <ResultMapping>
               <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetEvaluationList_Result1">
@@ -24900,6 +24913,32 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
                 <ScalarProperty Name="SAR_AnswerManager" ColumnName="SAR_AnswerManager" />
                 <ScalarProperty Name="SAR_Comments" ColumnName="SAR_Comments" />
                 <ScalarProperty Name="SAR_IsActive" ColumnName="SAR_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Review_MeetingSchedule">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.Review_MeetingSchedule">
+              <MappingFragment StoreEntitySet="Review_MeetingSchedule">
+                <ScalarProperty Name="RMS_IsActive" ColumnName="RMS_IsActive" />
+                <ScalarProperty Name="RMS_Date" ColumnName="RMS_Date" />
+                <ScalarProperty Name="RMS_InterviewDateTime" ColumnName="RMS_InterviewDateTime" />
+                <ScalarProperty Name="RMS_FinQuarter" ColumnName="RMS_FinQuarter" />
+                <ScalarProperty Name="RMS_FinencialYear" ColumnName="RMS_FinencialYear" />
+                <ScalarProperty Name="RMS_EMP_EmployeeId" ColumnName="RMS_EMP_EmployeeId" />
+                <ScalarProperty Name="RMS_Id" ColumnName="RMS_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetReviewMeetingList" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetReviewMeetingList">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetReviewMeetingList_Result">
+                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
+                <ScalarProperty Name="ManagerPhoto" ColumnName="ManagerPhoto" />
+                <ScalarProperty Name="ManagerName" ColumnName="ManagerName" />
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EmployeePhoto" ColumnName="EmployeePhoto" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="PRMeetingDateTime" ColumnName="PRMeetingDateTime" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
