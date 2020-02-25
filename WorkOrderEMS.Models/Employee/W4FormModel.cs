@@ -41,6 +41,7 @@ namespace WorkOrderEMS.Models.Employee
         public Nullable<System.DateTime> w4F_9 { get; set; }
         public string w4F_10 { get; set; }
         public string EmployeeMaritalStatus { get; set; }
+        public bool IsSignature { get; set; }
     }
 	public class MeritalStatus
 	{

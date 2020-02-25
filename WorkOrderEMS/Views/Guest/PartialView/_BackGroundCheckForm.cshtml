@@ -1,4 +1,4 @@
-﻿@model WorkOrderEMS.Models.Employee.EmployeeVIewModel
+﻿@model WorkOrderEMS.Models.BackgroundCheckForm
 @{
     Layout = null;
 }
@@ -24,9 +24,9 @@
         <div class="form-group">
             <label for="name" class="BGtext" id="BGMGtop">Name:</label>
             <span>
-                @Html.TextBoxFor(model => model.FirstName, null, new { @class = "BoxLayout BGBoxLInput" })
-                @Html.TextBoxFor(model => model.MiddleName, null, new { @class = "BoxLayout BGBoxLInput" })
-                @Html.TextBoxFor(model => model.LastName, null, new { @class = "BoxLayout BGBoxLInput" })
+                @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_FirstName, null, new { @class = "BoxLayout BGBoxLInput" })
+                @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_MiddleName, null, new { @class = "BoxLayout BGBoxLInput" })
+                @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_LastName, null, new { @class = "BoxLayout BGBoxLInput" })
                 @*<input type="text" class="BoxLayout BGBoxLInput" name="name" value="">
                     <input type="text" class="BoxLayout BGBoxLInput" name="name" value="">
                     <input type="text" class="BoxLayout BGBoxLInput" name="name" value="">*@
@@ -46,132 +46,65 @@
 
         <div class="form-group BGMGbottom">
             <label for="name" class="BGtext" id="">Former Names(s) and Dates Used:</label>
-            @Html.TextBoxFor(model => model.FirstName, null, new { @class = "BoxLayout", @id = "BGBoxL4" })
+            @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_FirstName, null, new { @class = "BoxLayout", @id = "BGBoxL4" })
             @*<input type="text" class="BoxLayout" id="BGBoxL4" name="name" value="">*@
         </div>
-
-        <div class="form-group">
-            <label for="name" class="BGtext" id="">Current Address Since:</label>
-            <span>
-                @Html.TextBoxFor(model => model.StreetAddress, null, new { @class = "BoxLayout BGBoxLInput" })
-                @Html.TextBoxFor(model => model.City, null, new { @class = "BoxLayout BGBoxLInput" })
-                @Html.TextBoxFor(model => model.State, null, new { @class = "BoxLayout BGBoxLInput" })
-                @Html.TextBoxFor(model => model.Zip, null, new { @class = "BoxLayout BGBoxLInput" })
-                @*<input type="text" class="BoxLayout BGBoxLInput" name="name" value="">
-                    <input type="text" class="BoxLayout BGBoxLInput" name="name" value="">
-                    <input type="text" class="BoxLayout BGBoxLInput" name="name" value="">
-                    <input type="text" class="BoxLayout BGBoxLInput" name="name" value="">*@
-            </span>
-        </div>
-
-        <div class="row ROWalign1 BGMTop">
-            <div class="col">
-                <p></p>
-            </div>
-            <div class="col">
-                <p class="BGtextp">(Mo/Yr)</p>
-            </div>
-            <div class="col">
-                <p class="BGtextp">(Street)</p>
-            </div>
-            <div class="col">
-                <p class="BGtextp">(City)</p>
-            </div>
-            <div class="col">
-                <p class="BGtextp">(Zip/State)</p>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="name" class="BGtext" id="">Previous Address From:</label>
-            <span>
-                @Html.TextBoxFor(model => model.StreetAddress, null, new { @class = "BoxLayout BGBoxLInput" })
-                @Html.TextBoxFor(model => model.City, null, new { @class = "BoxLayout BGBoxLInput" })
-                @Html.TextBoxFor(model => model.State, null, new { @class = "BoxLayout BGBoxLInput" })
-                @Html.TextBoxFor(model => model.Zip, null, new { @class = "BoxLayout BGBoxLInput" })
-                @*<input type="text" class="BoxLayout BGBoxLInput" name="name" value="">
-                    <input type="text" class="BoxLayout BGBoxLInput" name="name" value="">
-                    <input type="text" class="BoxLayout BGBoxLInput" name="name" value="">
-                    <input type="text" class="BoxLayout BGBoxLInput" name="name" value="">*@
-            </span>
-        </div>
-
-        <div class="row ROWalign1 BGMTop">
-            <div class="col">
-                <p class="BGtextp"></p>
-            </div>
-            <div class="col">
-                <p class="BGtextp">(Mo/Yr)</p>
-            </div>
-            <div class="col">
-                <p class="BGtextp">(Street)</p>
-            </div>
-            <div class="col">
-                <p class="BGtextp">(City)</p>
-            </div>
-            <div class="col">
-                <p class="BGtextp">(Zip/State)</p>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="name" class="BGtext" id="">Previous Address From:</label>
-            <span>
-                @Html.TextBoxFor(model => model.StreetAddress, null, new { @class = "BoxLayout BGBoxLInput" })
-                @Html.TextBoxFor(model => model.City, null, new { @class = "BoxLayout BGBoxLInput" })
-                @Html.TextBoxFor(model => model.State, null, new { @class = "BoxLayout BGBoxLInput" })
-                @Html.TextBoxFor(model => model.Zip, null, new { @class = "BoxLayout BGBoxLInput" })
-                @*<input type="text" class="BoxLayout BGBoxLInput" name="name" value="">
-                    <input type="text" class="BoxLayout BGBoxLInput" name="name" value="">
-                    <input type="text" class="BoxLayout BGBoxLInput" name="name" value="">
-                    <input type="text" class="BoxLayout BGBoxLInput" name="name" value="">*@
-            </span>
-        </div>
-
-        <div class="row ROWalign1 BGMTop">
-            <div class="col">
-                <p class="BGtextp"></p>
-            </div>
-            <div class="col">
-                <p class="BGtextp">(Mo/Yr)</p>
-            </div>
-            <div class="col">
-                <p class="BGtextp">(Street)</p>
-            </div>
-            <div class="col">
-                <p class="BGtextp">(City)</p>
-            </div>
-            <div class="col">
-                <p class="BGtextp">(Zip/State)</p>
-            </div>
-        </div>
-
-        <div class="row BGMGbottom">
-            <div class="col">
-                <div class="form-inline">
-                    <label for="lastname" class="BGtext">Social Security Number:</label>
-                    @Html.TextBoxFor(model => model.SocialSecurityNumber, null, new { @class = "BoxLayout", @id = "BGBoxL7" })
-                    @*<input type="text" class="BoxLayout" id="BGBoxL7" name="middlename">*@
+        if (Model != null && Model.ApplicantAddress.Count() > 0)
+        {
+            foreach (var item in Model.ApplicantAddress)
+            {
+                <div class="form-group">
+                    <label for="name" class="BGtext" id="">Current Address Since:</label>
+                    <span>
+                        @Html.TextBoxFor(model => item.APA_StreetAddress, null, new { @class = "BoxLayout BGBoxLInput" })
+                        @Html.TextBoxFor(model => item.APA_City, null, new { @class = "BoxLayout BGBoxLInput" })
+                        @Html.TextBoxFor(model => item.APA_State, null, new { @class = "BoxLayout BGBoxLInput" })
+                        @Html.TextBoxFor(model => item.APA_Zip, null, new { @class = "BoxLayout BGBoxLInput" })
+                    </span>
                 </div>
-            </div>
-            <div class="col">
-                <div class="form-inline">
-                    <label for="firstname" class="BGtext">Date of Birth:</label>
-                    @Html.TextBoxFor(model => model.Dob, null, new { @class = "BoxLayout", @id = "BGBoxL8" })
-                    @*<input type="text" class="BoxLayout" id="BGBoxL8" name="ssn">*@
+                <div class="row ROWalign1 BGMTop">
+                    <div class="col">
+                        <p></p>
+                    </div>
+                    <div class="col">
+                        <p class="BGtextp">(Mo/Yr)</p>
+                    </div>
+                    <div class="col">
+                        <p class="BGtextp">(Street)</p>
+                    </div>
+                    <div class="col">
+                        <p class="BGtextp">(City)</p>
+                    </div>
+                    <div class="col">
+                        <p class="BGtextp">(Zip/State)</p>
+                    </div>
                 </div>
-            </div>
-        </div>
-
+            }
+        }
+                <div class="row BGMGbottom">
+                    <div class="col">
+                        <div class="form-inline">
+                            <label for="lastname" class="BGtext">Social Security Number:</label>
+                            @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_SSN, null, new { @class = "BoxLayout", @id = "BGBoxL7" })
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-inline">
+                            <label for="firstname" class="BGtext">Date of Birth:</label>
+                            @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_IsActive, null, new { @class = "BoxLayout", @id = "BGBoxL8" })
+                        </div>
+                    </div>
+                </div>
+           
         <div class="form-group BGMGbottom">
             <label for="name" class="BGtext" id="">Telephone Number:</label>
-            @Html.TextBoxFor(model => model.Phone, null, new { @class = "BoxLayout", @id = "BGBoxL9" })
+            @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_Id, null, new { @class = "BoxLayout", @id = "BGBoxL9" })
             @*<input type="text" class="BoxLayout" id="BGBoxL9" name="name" value="">*@
         </div>
 
         <div class="form-group BGMGbottom">
             <label for="name" class="BGtext" id="">DriversLicense Number/State:</label>
-            @Html.TextBoxFor(model => model.LicenseNumber, null, new { @class = "BoxLayout", @id = "BGBoxL10" })
+            @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_DLNumber, null, new { @class = "BoxLayout", @id = "BGBoxL10" })
             @*<input type="text" class="BoxLayout" id="BGBoxL10" name="name" value="">*@
         </div>
 
@@ -233,7 +166,7 @@
     </span>
 </div>
 <div id="openModalForDocument">
-    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalToAddDocumentUpload">
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" data-keyboard="false" data-backdrop="static" role="dialog" aria-hidden="true" id="myModalToAddDocumentUpload">
         <div class="modal-dialog modal-lg" style="width:620px;">
             <div class="modal-content">
                 <div class="modal-header" style="display: inherit;">
@@ -321,6 +254,7 @@
      var strDate = dt.getFullYear() + "/" + (dt.getMonth() + 1) + "/" + dt.getDate();
      $("#BGBoxL12").val(strDate);
      $('body').css('overflow-y', 'auto');
+     $('body').css('padding-right', '0px');
 
 </script>
 <script src="~/Scripts/ePeople/ApplicantFunctionality.js"></script>

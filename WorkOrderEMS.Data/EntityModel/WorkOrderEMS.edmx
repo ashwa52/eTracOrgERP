@@ -5235,6 +5235,9 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         <Function Name="spGetEducationVerificationForm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="spGetEEO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EEO_EMP_EmployeeID" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spGeteFormTrack" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ApprovarId" Type="bigint" Mode="In" />
         </Function>
@@ -6004,6 +6007,18 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="EVF_AttendedFrom" Type="date" Mode="In" />
           <Parameter Name="EVF_AttendedTo" Type="date" Mode="In" />
           <Parameter Name="DDF_IsActive" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetEEO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Action" Type="char" Mode="In" />
+          <Parameter Name="EEO_Id" Type="bigint" Mode="In" />
+          <Parameter Name="EEO_EMP_EmployeeID" Type="varchar" Mode="In" />
+          <Parameter Name="EEO_Gender" Type="varchar" Mode="In" />
+          <Parameter Name="EEO_Race" Type="varchar" Mode="In" />
+          <Parameter Name="EEO_VeteranStatus" Type="varchar" Mode="In" />
+          <Parameter Name="EEO_VeteranDateOfDischarge" Type="datetime" Mode="In" />
+          <Parameter Name="EEO_DisabilityDisclose" Type="char" Mode="In" />
+          <Parameter Name="EEO_IsActive" Type="char" Mode="In" />
+          <Parameter Name="EEO_DisabilityDiscloseDiscription" Type="varchar(max)" Mode="In" />
         </Function>
         <Function Name="spSeteformTrack" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EFTAction" Type="char" Mode="In" />
@@ -14851,40 +14866,55 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="ASG_IsActive" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetAplicantAcadmicDetails" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetAplicantAcadmicDetails_Result)">
-            <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
+          <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="spGetApplicantAccidentRecord" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantAccidentRecord_Result)">
-            <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
+          <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="spGetApplicantAdditionalInfo" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantAdditionalInfo_Result)">
-            <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
+          <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="spGetApplicantAddress" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantAddress_Result)">
-            <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
+          <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="spGetApplicantBackgroundHistory" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantBackgroundHistory_Result)">
-            <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
+          <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="spGetApplicantContactInfo" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantContactInfo_Result3)">
-            <Parameter Name="ApplicantId" Mode="In" Type="Int64" />
+          <Parameter Name="ApplicantId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="spGetApplicantLicenseHeald" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantLicenseHeald_Result)">
-            <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
+          <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="spGetApplicantPersonalInfo" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantPersonalInfo_Result)">
-            <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
+          <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="spGetApplicantPositionTitle" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantPositionTitle_Result)">
-            <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
+          <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="spGetApplicantSchecduleAvaliblity" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantSchecduleAvaliblity_Result)">
-            <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
+          <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="spGetApplicantTrafficConvictions" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantTrafficConvictions_Result)">
-            <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
+          <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="spGetApplicantVehiclesOperated" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantVehiclesOperated_Result)">
-            <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
+          <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spGetEEO" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetEEO_Result1)">
+          <Parameter Name="EEO_EMP_EmployeeID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetEEO">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="EEO_Id" Mode="In" Type="Int64" />
+            <Parameter Name="EEO_EMP_EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="EEO_Gender" Mode="In" Type="String" />
+            <Parameter Name="EEO_Race" Mode="In" Type="String" />
+            <Parameter Name="EEO_VeteranStatus" Mode="In" Type="String" />
+            <Parameter Name="EEO_VeteranDateOfDischarge" Mode="In" Type="DateTime" />
+            <Parameter Name="EEO_DisabilityDisclose" Mode="In" Type="String" />
+            <Parameter Name="EEO_IsActive" Mode="In" Type="String" />
+            <Parameter Name="EEO_DisabilityDiscloseDiscription" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Proc_GetAllWorkAssignedToEmployee_Result">
@@ -19309,6 +19339,26 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="String" Name="AVO_SuspendRevokeLicensePermitExplanation" Nullable="true" MaxLength="200" />
           <Property Type="DateTime" Name="AVO_Date" Nullable="true" Precision="23" />
           <Property Type="String" Name="AVO_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetEEO_Result">
+          <Property Type="Int64" Name="EEO_Id" Nullable="false" />
+          <Property Type="String" Name="EEO_EMP_EmployeeID" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="EEO_Gender" Nullable="true" MaxLength="12" />
+          <Property Type="String" Name="EEO_Race" Nullable="true" MaxLength="5" />
+          <Property Type="String" Name="EEO_VeteranStatus" Nullable="true" MaxLength="5" />
+          <Property Type="DateTime" Name="EEO_VeteranDateOfDischarge" Nullable="true" Precision="23" />
+          <Property Type="String" Name="EEO_DisabilityDisclose" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="EEO_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetEEO_Result1">
+          <Property Type="Int64" Name="EEO_Id" Nullable="false" />
+          <Property Type="String" Name="EEO_EMP_EmployeeID" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="EEO_Gender" Nullable="true" MaxLength="12" />
+          <Property Type="String" Name="EEO_Race" Nullable="true" MaxLength="5" />
+          <Property Type="String" Name="EEO_VeteranStatus" Nullable="true" MaxLength="5" />
+          <Property Type="DateTime" Name="EEO_VeteranDateOfDischarge" Nullable="true" Precision="23" />
+          <Property Type="String" Name="EEO_DisabilityDisclose" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="EEO_IsActive" Nullable="true" MaxLength="1" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -25674,6 +25724,21 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetEEO" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetEEO">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetEEO_Result1">
+                <ScalarProperty Name="EEO_Id" ColumnName="EEO_Id" />
+                <ScalarProperty Name="EEO_EMP_EmployeeID" ColumnName="EEO_EMP_EmployeeID" />
+                <ScalarProperty Name="EEO_Gender" ColumnName="EEO_Gender" />
+                <ScalarProperty Name="EEO_Race" ColumnName="EEO_Race" />
+                <ScalarProperty Name="EEO_VeteranStatus" ColumnName="EEO_VeteranStatus" />
+                <ScalarProperty Name="EEO_VeteranDateOfDischarge" ColumnName="EEO_VeteranDateOfDischarge" />
+                <ScalarProperty Name="EEO_DisabilityDisclose" ColumnName="EEO_DisabilityDisclose" />
+                <ScalarProperty Name="EEO_IsActive" ColumnName="EEO_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetEEO" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetEEO" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

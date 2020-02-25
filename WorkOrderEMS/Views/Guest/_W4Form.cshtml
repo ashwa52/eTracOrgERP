@@ -233,8 +233,22 @@
                 </tr>
                 <tr>
                     <td colspan="100">
-                        Under penalties of perjury, I declare that I have examined this certificate and, to the best of my knowledge and belief, it is true, correct, and complete.<br />
-                        <b>Employee’s signature</b><br /><span style="margin-right: 720px;">(This form is not valid unless you sign it.) ►</span> <span style="font-weight:bold;margin-left:800px;">Date ►</span>
+                        Under penalties of perjury, I declare that I have examined this certificate and, to the best of my knowledge and belief, it is true, correct, and complete.<br />                        
+                        <b>Employee’s signature</b> 
+                        @if (ViewBag.IsSignature == true) {
+                            <img id="openItForSignature" style="display:none;width:163px;height:47px;" />
+                                <span id="ShowHideSignatureSpan">
+                                      <input type="text" class="BoxLayout" id="BGBoxL11" name="middlename" />
+                                </span>
+                                <span>
+                                    <span class="btn btn-success" style="border-radius:100px;width:8%;" id="AddSignature">
+                                        Add Signature
+                                    </span>
+                                </span>
+                        }
+                        (This form is not valid unless you sign it.) ►
+                                    <span style="font-weight:bold;margin-left:800px;">Date ►</span>
+
                     </td>
                 </tr>
                 <tr>

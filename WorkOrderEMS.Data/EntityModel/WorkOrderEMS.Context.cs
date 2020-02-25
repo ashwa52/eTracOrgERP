@@ -7381,5 +7381,59 @@ namespace WorkOrderEMS.Data.EntityModel
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantVehiclesOperated_Result>("spGetApplicantVehiclesOperated", aPT_ApplicantIdParameter);
         }
+    
+        public virtual ObjectResult<spGetEEO_Result1> spGetEEO(string eEO_EMP_EmployeeID)
+        {
+            var eEO_EMP_EmployeeIDParameter = eEO_EMP_EmployeeID != null ?
+                new ObjectParameter("EEO_EMP_EmployeeID", eEO_EMP_EmployeeID) :
+                new ObjectParameter("EEO_EMP_EmployeeID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEEO_Result1>("spGetEEO", eEO_EMP_EmployeeIDParameter);
+        }
+    
+        public virtual int spSetEEO(string action, Nullable<long> eEO_Id, string eEO_EMP_EmployeeID, string eEO_Gender, string eEO_Race, string eEO_VeteranStatus, Nullable<System.DateTime> eEO_VeteranDateOfDischarge, string eEO_DisabilityDisclose, string eEO_IsActive, string eEO_DisabilityDiscloseDiscription)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var eEO_IdParameter = eEO_Id.HasValue ?
+                new ObjectParameter("EEO_Id", eEO_Id) :
+                new ObjectParameter("EEO_Id", typeof(long));
+    
+            var eEO_EMP_EmployeeIDParameter = eEO_EMP_EmployeeID != null ?
+                new ObjectParameter("EEO_EMP_EmployeeID", eEO_EMP_EmployeeID) :
+                new ObjectParameter("EEO_EMP_EmployeeID", typeof(string));
+    
+            var eEO_GenderParameter = eEO_Gender != null ?
+                new ObjectParameter("EEO_Gender", eEO_Gender) :
+                new ObjectParameter("EEO_Gender", typeof(string));
+    
+            var eEO_RaceParameter = eEO_Race != null ?
+                new ObjectParameter("EEO_Race", eEO_Race) :
+                new ObjectParameter("EEO_Race", typeof(string));
+    
+            var eEO_VeteranStatusParameter = eEO_VeteranStatus != null ?
+                new ObjectParameter("EEO_VeteranStatus", eEO_VeteranStatus) :
+                new ObjectParameter("EEO_VeteranStatus", typeof(string));
+    
+            var eEO_VeteranDateOfDischargeParameter = eEO_VeteranDateOfDischarge.HasValue ?
+                new ObjectParameter("EEO_VeteranDateOfDischarge", eEO_VeteranDateOfDischarge) :
+                new ObjectParameter("EEO_VeteranDateOfDischarge", typeof(System.DateTime));
+    
+            var eEO_DisabilityDiscloseParameter = eEO_DisabilityDisclose != null ?
+                new ObjectParameter("EEO_DisabilityDisclose", eEO_DisabilityDisclose) :
+                new ObjectParameter("EEO_DisabilityDisclose", typeof(string));
+    
+            var eEO_IsActiveParameter = eEO_IsActive != null ?
+                new ObjectParameter("EEO_IsActive", eEO_IsActive) :
+                new ObjectParameter("EEO_IsActive", typeof(string));
+    
+            var eEO_DisabilityDiscloseDiscriptionParameter = eEO_DisabilityDiscloseDiscription != null ?
+                new ObjectParameter("EEO_DisabilityDiscloseDiscription", eEO_DisabilityDiscloseDiscription) :
+                new ObjectParameter("EEO_DisabilityDiscloseDiscription", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetEEO", actionParameter, eEO_IdParameter, eEO_EMP_EmployeeIDParameter, eEO_GenderParameter, eEO_RaceParameter, eEO_VeteranStatusParameter, eEO_VeteranDateOfDischargeParameter, eEO_DisabilityDiscloseParameter, eEO_IsActiveParameter, eEO_DisabilityDiscloseDiscriptionParameter);
+        }
     }
 }

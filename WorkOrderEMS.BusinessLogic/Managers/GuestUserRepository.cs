@@ -173,11 +173,9 @@ namespace WorkOrderEMS.BusinessLogic
                     var EmployeeId = objworkorderEMSEntities.UserRegistrations.Where(x => x.UserId == UserId).FirstOrDefault()?.EmployeeID;
                     var data = GetDirectDepositeDataByEmployeeId(EmployeeId);
                     if (data != null)
-                        //will uncomment after solving this issue
-                        //return Context.spSetDirectDepositForm("U", EmployeeId, model.Account1.EmployeeBankName, model.Account1.AccountType,
-                        //    model.Account1.Account, model.Account1.BankRouting, model.Account1.DepositeAmount.HasValue ? model.Account1.DepositeAmount.Value : 0, model.Account2.EmployeeBankName, model.Account2.AccountType, model.Account2.Account
-                        //    , model.Account2.BankRouting, model.VoidCheck, "Y") > 0 ? true : false;
-                        return true;
+                        return Context.spSetDirectDepositForm("U", EmployeeId, model.Account1.EmployeeBankName, model.Account1.AccountType,
+                            model.Account1.Account, model.Account1.BankRouting, model.Account1.DepositeAmount.HasValue ? model.Account1.DepositeAmount.Value : 0, model.Account2.EmployeeBankName, model.Account2.AccountType, model.Account2.Account
+                            , model.Account2.BankRouting, model.VoidCheck, "Y") > 0 ? true : false;
                     var add =  Context.spSetDirectDepositForm("I", EmployeeId, model.Account1.EmployeeBankName, model.Account1.AccountType,
                             model.Account1.Account, model.Account1.BankRouting, model.Account1.DepositeAmount.HasValue ? model.Account1.DepositeAmount.Value : 0, model.Account2.EmployeeBankName, model.Account2.AccountType, model.Account2.Account
                             , model.Account2.BankRouting, model.VoidCheck, "Y");// > 0 ? true : false;

@@ -104,6 +104,7 @@ namespace WorkOrderEMS.Models
     }
     public class BackgroundCheckForm
     {
+        public long UserId { get; set; }
         public ApplicantPersonalInfo ApplicantPersonalInfo { get; set; }
         public List<ApplicantAddress> ApplicantAddress { get; set; }
     }

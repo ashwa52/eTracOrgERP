@@ -170,12 +170,8 @@ namespace WorkOrderEMS.Controllers.Guest
             if (model != null)
             {
                 var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-                _IGuestUserRepository.SetDirectDepositeFormData(model, ObjLoginModel.UserId);
-                //if(ObjLoginModel != null)
-                //{
-                //    var details = 
-                //}
-                return Json(true, JsonRequestBehavior.AllowGet);
+                var save = _IGuestUserRepository.SetDirectDepositeFormData(model, ObjLoginModel.UserId);
+                return Json(save, JsonRequestBehavior.AllowGet);
                 //return PartialView("PartialView/_CommonModals", new ContactListModel());
             }
             ViewBag.NotSaved = true;
@@ -219,7 +215,7 @@ namespace WorkOrderEMS.Controllers.Guest
             if (applicantId > 0)
             {
                 getI9Info = _IApplicantManager.GetI9FormData(applicantId, ObjLoginModel.UserId);
-
+                //getI9Info.IsSignature = isSignature;
                 return PartialView("_I9Form", getI9Info); ;
             }
             return PartialView("_I9Form", getI9Info);
@@ -256,7 +252,7 @@ namespace WorkOrderEMS.Controllers.Guest
             W4FormModel model = new W4FormModel();
             var objloginmodel = (eTracLoginModel)(Session["etrac"]);
             model = _IGuestUserRepository.GetW4Form(objloginmodel.UserId);
-
+            ViewBag.IsSignature = false;//To filup form no need to display signature button so we make it hide
             return PartialView("_W4Form", model);
         }
         //[HttpPost]
@@ -278,10 +274,10 @@ namespace WorkOrderEMS.Controllers.Guest
             {
                 var objloginmodel = (eTracLoginModel)(Session["etrac"]);
                 _IGuestUserRepository.SetW4Form(objloginmodel.UserId, model);
-                return RedirectToAction("_I9Form");
+                return RedirectToAction("_I9Form", model.IsSignature);
                 //return Json(true, JsonRequestBehavior.AllowGet);
             }
-            return RedirectToAction("_I9Form");
+            return RedirectToAction("_I9Form",model.IsSignature);
             //return PartialView("_I9Form", model);
         }
         [HttpGet]
@@ -379,8 +375,15 @@ namespace WorkOrderEMS.Controllers.Guest
             var _model = new DirectDepositeFormModel();
             if (model != null)
             {
-                var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-                _IGuestUserRepository.SetEmergencyForm(objloginmodel.UserId, model);
+                eTracLoginModel ObjLoginModel = null;
+                if (Session != null)
+                {
+                    if (Session["eTrac"] != null)
+                    {
+                        ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                    }
+                }
+                _IGuestUserRepository.SetEmergencyForm(ObjLoginModel.UserId, model);
                 //return Json(true, JsonRequestBehavior.AllowGet);
                 return RedirectToAction("_directDepositeForm");
             }
@@ -419,7 +422,14 @@ namespace WorkOrderEMS.Controllers.Guest
         {
             try
             {
-                var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+                eTracLoginModel ObjLoginModel = null;
+                if (Session != null)
+                {
+                    if (Session["eTrac"] != null)
+                    {
+                        ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                    }
+                }
                 if (lstModel.Count() > 0)
                 {
                     var updateContact = _IApplicantManager.UpdateContactDetailsApplicant(model, lstModel);
@@ -470,17 +480,28 @@ namespace WorkOrderEMS.Controllers.Guest
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        public PartialViewResult _BackGroundCheckForm(EmployeeVIewModel model)
+        public ActionResult _BackGroundCheckForm(BackgroundCheckForm model)
         {
             var _model = new ContactListModel();
             try
             {
+                eTracLoginModel ObjLoginModel = null;
+                if (Session != null)
+                {
+                    if (Session["eTrac"] != null)
+                    {
+                        ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                    }
+                }
                 var getApplicantId = Convert.ToInt64(Session["ApplicantId"]);
+                model.ApplicantPersonalInfo.API_APT_ApplicantId = getApplicantId;
+                model.UserId = ObjLoginModel.UserId;
                 var sendForBackgroundCheck = _IApplicantManager.SendApplicantInfoForBackgrounddCheck(model);
                 var getApplicantContact = _IApplicantManager.GetApplicantByApplicantId(getApplicantId);
                 if (sendForBackgroundCheck == true)
                 {
-                    return PartialView("PartialView/_UploadDocuments", _model);
+                    //return PartialView("PartialView/_UploadDocuments", _model);
+                    return Json(true, JsonRequestBehavior.AllowGet);
                     //return PartialView("PartialView/_UploadDocuments");
                 }
             }
@@ -502,7 +523,9 @@ namespace WorkOrderEMS.Controllers.Guest
         {
             var Obj = new UploadedFiles();
             var _db = new workorderEMSEntities();
+
             eTracLoginModel ObjLoginModel = null;
+            //Serves as the base class for classes that provide access to files that were uploaded by a client.
             HttpFileCollectionBase files = Request.Files;
             if (Session["eTrac"] != null)
             {
@@ -701,6 +724,14 @@ namespace WorkOrderEMS.Controllers.Guest
         [HttpPost]
         public ActionResult BenifitSection(BenifitSectionModel obj)
         {
+            eTracLoginModel ObjLoginModel = null;
+            if (Session != null)
+            {
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                }
+            }
             return  Json(true,JsonRequestBehavior.AllowGet);
             //return RedirectToAction("SelfIdentificationForm");
         }
@@ -717,12 +748,93 @@ namespace WorkOrderEMS.Controllers.Guest
             //var getApplicantContact = _IApplicantManager.GetApplicantByApplicantId(getApplicantId);
             return PartialView("PartialView/_SelfIdentificationForm");
         }
+        /// <summary>
+        /// Created by : Ashwajit Bansod
+        /// Created Date : 21-Feb-2020
+        /// Created For : TO save self identification form of applicant
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult SaveSelfIdentificationForm(SelfIdentificationModel obj)
+        {
+            try
+            {
+                eTracLoginModel ObjLoginModel = null;
+                if (Session != null)
+                {
+                    if (Session["eTrac"] != null)
+                    {
+                        ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                        obj.EmployeeId = ObjLoginModel.EmployeeID;
+                        var getApplicantId = Convert.ToInt64(Session["ApplicantId"]);
+                    }
+                }
+                if (obj != null)
+                {
+                    var isSaved = _IApplicantManager.SaveSelfIdentification(obj);
+                    if(isSaved)
+                        return RedirectToAction("ApplicantFunFacts");
+                    else
+                        return Json(false, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch(Exception ex)
+            {
+                return Json(false,JsonRequestBehavior.AllowGet); //RedirectToAction("ApplicantFunFacts");
+            }
+            return RedirectToAction("ApplicantFunFacts");
+        }
         [HttpGet]
         public ActionResult ApplicantFunFacts()
         {
             var getApplicantId = Convert.ToInt64(Session["ApplicantId"]);
             //var getApplicantContact = _IApplicantManager.GetApplicantByApplicantId(getApplicantId);
-            return PartialView("PartialView/_SelfIdentificationForm");
+            return PartialView("PartialView/_ApplicantFunFact");
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 21-Feb-2020
+        /// Created For : to save fun fact questions and anwers
+        /// </summary>
+        /// <param name="Obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ApplicantFunFact(ApplicantFunFactModel Obj)
+        {
+            try
+            {
+                W4FormModel model = new W4FormModel();
+                eTracLoginModel ObjLoginModel = null;
+                if (Session != null)
+                {
+                    if (Session["eTrac"] != null)
+                    {
+                        ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                        Obj.Employee_Id = ObjLoginModel.EmployeeID;
+                        Obj.Applicant_Id = Convert.ToInt64(Session["ApplicantId"]);
+                    }
+                }
+                if (Obj != null)
+                {
+                    var isSaved = _IApplicantManager.SaveApplicantFunFacts(Obj);
+                    if (isSaved)
+                    {
+                        var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+                        model = _IGuestUserRepository.GetW4Form(objloginmodel.UserId);
+                        ViewBag.IsSignature = true;//To filup form no need to display signature button so we make it hide
+                       // ViewBag.IsSignature = 
+                        return PartialView("_W4Form", model);                        
+                    }
+                    else
+                        return Json(false, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet); //RedirectToAction("ApplicantFunFacts");
+            }
+            return RedirectToAction("ApplicantFunFacts");
         }
     }
 }

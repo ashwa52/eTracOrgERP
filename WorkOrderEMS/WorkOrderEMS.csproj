@@ -6895,10 +6895,10 @@
     <Content Include="Views\NewAdmin\SelfAssessmentView.cshtml" />
     <Content Include="Views\Guest\PartialView\_CommonModals.cshtml" />
     <Content Include="Views\Guest\PartialView\_BackGroundCheckForm.cshtml" />
-    <Content Include="Views\Guest\PartialView\_UploadDocuments.cshtml" />
     <Content Include="Views\Guest\PartialView\_BenifitSectionFloridaBlue.cshtml" />
     <Content Include="Views\Guest\PartialView\_SelfIdentificationForm.cshtml" />
     <Content Include="Views\Guest\PartialView\_DesclaimerEEO.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantFunFact.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6910,6 +6910,7 @@
     <Folder Include="Areas\AdminSection\Models\AdminSectionModel\" />
     <Folder Include="Areas\AdminSection\Views\SendEmailTemplate\" />
     <Folder Include="Content\AdminDocs\PDFForm\" />
+    <Folder Include="Content\ApplicantFiles\PDFUpload\" />
     <Folder Include="Content\ApplicantFiles\Signature\" />
     <Folder Include="Content\ApplicantFiles\UploadDocument\" />
     <Folder Include="Content\DARDisclaimer\" />

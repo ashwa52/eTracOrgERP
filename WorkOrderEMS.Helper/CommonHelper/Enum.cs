@@ -722,5 +722,17 @@ namespace WorkOrderEMS.Helper
         QuestionId_23 = 23,
         MasterId_6 = 6,
         QuestionId_26 = 26,
+        MasterId = 11,
+        QuestionId_45 = 45,
+        QuestionId_46 = 46,
+        QuestionId_47 = 47,
+        QuestionId_48 = 48,
+
+    }
+    public static class SelfIdentification
+    {
+        public const string HL = "Hispanic or Latino";
+        public const string S = "EmployeeStatus";
+        public const string D = "Demotion";
     }
 }

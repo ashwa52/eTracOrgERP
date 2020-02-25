@@ -591,7 +591,7 @@ namespace WorkOrderEMS.BusinessLogic
                     Obj.ApplicantTrafficConvictions[0].ATC_Action = 'I';
                     Obj.ApplicantVehiclesOperated[0].AVO_Action = 'I';
                     Obj.ApplicantLicenseHeald[0].ALH_Action = 'I';
-                    //Obj.ApplicantSchecduleAvaliblity[0].ASA_Action = 'I';
+                    Obj.ApplicantSchecduleAvaliblity[0].ASA_Action = 'I';
 
                 }
                 List<ATC> ListATC = new List<ATC>();
@@ -859,21 +859,21 @@ namespace WorkOrderEMS.BusinessLogic
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public bool SendApplicantInfoForBackgrounddCheck(EmployeeVIewModel model)
+        public bool SendApplicantInfoForBackgrounddCheck(BackgroundCheckForm model)
         {
             bool isSentForBackground = false;
             try
             {
-                if (model != null && model.ApplicantId > 0)
+                if (model != null && model.ApplicantPersonalInfo.API_APT_ApplicantId > 0)
                 {
-                    var sentForBackgroudCheck = _db.spSetApplicantStatus(model.ApplicantId, ApplicantStatus.F, ApplicantStatus.S);
+                    var sentForBackgroudCheck = _db.spSetApplicantStatus(model.ApplicantPersonalInfo.API_APT_ApplicantId, ApplicantStatus.F, ApplicantStatus.S);
                     #region Create PO
                     var poNum = _db.spGetPONumber().FirstOrDefault();
                     var poNumber = "PO" + poNum.ToString();
                     var POType = Convert.ToInt64(Helper.POType.NormalPO);
                     var company = _db.Companies.Where(x => x.CMP_NameLegal == VendorName.BackgroundCheck).FirstOrDefault();
                     var getHRDetail = _db.JobPostings.Join(_db.Applicants, jp => jp.JPS_JobPostingId, ap => ap.APT_JobPostingId, (jp, ap) => new { jp, ap }).
-                                      Where(x => x.ap.APT_ApplicantId == model.ApplicantId).FirstOrDefault();
+                                      Where(x => x.ap.APT_ApplicantId == model.ApplicantPersonalInfo.API_APT_ApplicantId).FirstOrDefault();
                     var saveNormalPO = _db.spSetPODetail("I", poNum, getHRDetail.jp.JPS_LocationId,
                                                                          POType, company.CMP_Id, null,
                                                                           null, null, null, model.UserId, model.UserId, "Y", null
@@ -900,7 +900,7 @@ namespace WorkOrderEMS.BusinessLogic
                             objEmailHelper.emailid = userData.UserEmail;
                             objEmailHelper.ManagerName = userData.FirstName + " "+ userData.LastName;
                             objEmailHelper.LocationName = locationData.LocationName;
-                            objEmailHelper.UserName = model.FirstName + " " + model.LastName;
+                            objEmailHelper.UserName = model.ApplicantPersonalInfo.API_FirstName + " " + model.ApplicantPersonalInfo.API_LastName;
                             objEmailHelper.PONumber = poNumber;
                             //objEmailHelper.InfractionStatus = obj.Status;
                             objEmailHelper.MailType = "POAPPROVEDREJECT";
@@ -1231,6 +1231,111 @@ namespace WorkOrderEMS.BusinessLogic
                 Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SaveDesclaimerData(Desclaimer obj)", "Exception While saving desclaimer data.", obj);
                 throw;
             }
-        }        
+        }
+        /// <summary>
+        /// Created by : Ashwajit Bansod
+        /// Created Date : 21-Feb-2020
+        /// Created For : TO save self identification form of applicant
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public bool SaveSelfIdentification(SelfIdentificationModel obj)
+        {
+            bool isSaved = false;
+            try
+            {
+                if (obj != null)
+                {
+                    string Action = obj.Self_Id == null?"I":"U";
+                    var save = _db.spSetEEO(Action,obj.Self_Id, obj.EmployeeId, obj.Gender, obj.Race_Ethnicity,
+                                            obj.VeteranStatus, obj.DateOfDischarge, obj.Disability,"Y", obj.Description);
+                    isSaved = save > 0 ? true : false;
+                    return isSaved;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SaveDesclaimerData(Desclaimer obj)", "Exception While saving desclaimer data.", obj);
+                throw;
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created For : TO get self identifiation form details
+        /// Created For : 21-Feb-2020
+        /// </summary>
+        /// <param name="EmployeeId"></param>
+        /// <returns></returns>
+        public SelfIdentificationModel GetSelfIdentification(string EmployeeId)
+        {
+            var lst = new SelfIdentificationModel();
+            try
+            {
+                if(EmployeeId != null)
+                {
+                    lst = _db.spGetEEO(EmployeeId).Select(x => new SelfIdentificationModel() {
+                        DateOfDischarge = x.EEO_VeteranDateOfDischarge,
+                        Disability = x.EEO_DisabilityDisclose,
+                        EmployeeId = x.EEO_EMP_EmployeeID,
+                        //FirstName = x.f
+                    }).FirstOrDefault();
+                    if (lst != null)
+                        return lst;
+                    else
+                        return null;
+                }
+            }
+            catch(Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public SelfIdentificationModel GetSelfIdentification(string EmployeeId)", "Exception While getting the details of self identification.", EmployeeId);
+                throw;
+            }
+            return lst;
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 21-Feb-2020
+        /// Created For : To save applicant fun facts of applicant.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public bool SaveApplicantFunFacts(ApplicantFunFactModel obj)
+        {
+            bool isSaved = false;
+            int save = 0;
+            int i = 0;
+            try
+            {
+                if (obj != null)
+                {
+                    var getMasterId = Convert.ToInt64(InterviewQuestionsId.MasterId);
+                    var getQuestionsIdForFunFacts = _db.InterviewQuestionChilds.Where(x => x.IQC_IQM_Id == getMasterId).ToList();
+                    for(i = 0;i< getQuestionsIdForFunFacts.Count();i++)
+                    {
+                        string Answer = string.Empty;
+                        if (getQuestionsIdForFunFacts[i].IQC_Id == Convert.ToInt64(InterviewQuestionsId.QuestionId_45))
+                            Answer = obj.Answer_Que1;
+                        else if (getQuestionsIdForFunFacts[i].IQC_Id == Convert.ToInt64(InterviewQuestionsId.QuestionId_46))
+                            Answer = obj.Answer_Que2;
+                        else if (getQuestionsIdForFunFacts[i].IQC_Id == Convert.ToInt64(InterviewQuestionsId.QuestionId_47))
+                            Answer = obj.Answer_Que3;
+                        else 
+                            Answer = obj.Answer_Que4;
+                        save = _db.spSetInterviewAnswer(getQuestionsIdForFunFacts[i].IQC_IQM_Id, obj.Applicant_Id, obj.Employee_Id, null, Answer);
+                    }                   
+                    isSaved = save > 0 ? true : false;
+                    return isSaved;
+                }
+                else
+                    return false;
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SaveApplicantFunFacts(ApplicantFunFactModel obj)", "Exception While saving .", obj);
+                throw;
+            }
+        }
     }
 }

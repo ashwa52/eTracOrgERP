@@ -2,18 +2,18 @@
 @{
     Layout = null;
 }
-<div class="modal fade" tabindex="-1" role="dialog" @*data-keyboard="false" data-backdrop="static"*@ id="myModelForContactDetails">
+<div class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" id="myModelForContactDetails">
     <div class="modal-dialog" style="width:882px;">
         <div class="modal-content">
             <div class="modal-header" style="display: inherit;color:white">
-                Conform Contact Details</h5>
+                <h5>Conform Contact Details</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
             </div>
 
             <div class="modal-body" style="margin-left: 2px;">
-                <p>Please checked below contact option if you need to add more please click below button</p>
+                <p style="margin-left:2px;">Please checked below contact option if you need to add more please click below button</p>
                 <form id="ContactSavedForm">
                     @Html.HiddenFor(m => m.ContactModel, new { @id = "ContactModelList" })
                     @if (Model != null)

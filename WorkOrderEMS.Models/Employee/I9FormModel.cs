@@ -120,5 +120,6 @@ namespace WorkOrderEMS.Models
         public string I9F_Sec3_C_NameOfEmployerOrAuthorized { get; set; }
 
         public bool IsSave { get; set; }
+        public bool  IsSignature { get; set; }
     }
 }

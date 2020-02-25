@@ -160,8 +160,17 @@ function SubmitForm(element, formName) {
                 //element.preventDefault();
                 break;
             case 'selfIdentificationForm':
-                url = '/Guest/BenifitSection';
+                url = '/Guest/SaveSelfIdentificationForm';
                 data = $('#selfIdentificationForm').serialize();
+                isDirectDepositeSaved = false;
+                isContactSaved = false;
+                isBackgroundCheck = false;
+                isBenifitSectionPopUpOpen = false;
+                //element.preventDefault();
+                break;
+            case 'ApplicantFunFactForm':
+                url = '/Guest/ApplicantFunFact';
+                data = $('#ApplicantFunFactForm').serialize();
                 isDirectDepositeSaved = false;
                 isContactSaved = false;
                 isBackgroundCheck = false;
@@ -246,8 +255,7 @@ function PostForm(url, data,isDirectDepositeSaved,isBackgroundCheck,isBenifitSec
                 $.ajax({
                     type: "GET",
                     url: base_url + "/Guest/_ContactInfo",
-                    success: function (data) {
-                        
+                    success: function (data) {                       
                         $("#openConatctModal").html(data);
                         //$('#myModelForContactDetails').modal('show', { backdrop: 'static', keyboard: false });
                         $("#myModelForContactDetails").modal("show");
@@ -513,11 +521,13 @@ $('.savesignaturInfo').click(function(){
     });  
 });
 $("#UploadDocApplicant").click(function () {
-    
+    debugger
     var url = window.location.origin;
+    //get(0) its return the first element of jquery object(jquery object is also an array), first file to be upload
     var fileUploadLicense = $("#myLicensefileUpload").get(0);   
     var filesLicense = fileUploadLicense.files;    
     // Create FormData object  
+    // FormData interface enables appending File objects to XHR-requests (Ajax-requests).
     var fileData = new FormData();
     // Looping over all files and add it to FormData object  
     for (var i = 0; i < filesLicense.length; i++) {
@@ -551,6 +561,9 @@ $("#UploadDocApplicant").click(function () {
                 },
                 success: function (result) {
                     $("#RenderPageId").html(result);
+                    $("#myModalToAddDocumentUpload").hide();
+                    $('.fade').removeClass('modal-backdrop');
+                    $('.fade').removeClass('show');
                 },
                 error: function (err) {
 
@@ -581,12 +594,15 @@ function GotoNextForm(istrue) {
     }
     $.ajax({
         url: url,
-        type: "POST",
+        type: "GET",
         beforeSend: function () {
             new fn_showMaskloader('Please wait...');
         },
         success: function (result) {
-            $("#RenderPageId").html(Data);
+            $("#RenderPageId").html(result);
+            $("#myModelForDesclaimerEEO").hide();
+            $('.fade').removeClass('modal-backdrop');
+            $('.fade').removeClass('show');
         },
         error: function (err) {
         },

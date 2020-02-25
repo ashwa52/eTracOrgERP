@@ -288,6 +288,7 @@
     <Compile Include="NewAdminModel\OnBoarding\Applicant\CommanPopUpModel.cs" />
     <Compile Include="NewAdminModel\OnBoarding\Applicant\CommonApplicantModel.cs" />
     <Compile Include="NewAdminModel\OnBoarding\Applicant\InterviewQuestionAnswerModel.cs" />
+    <Compile Include="NewAdminModel\OnBoarding\Applicant\SelfIdentificationModel.cs" />
     <Compile Include="NewAdminModel\OnBoarding\AssetsAllocationModel.cs" />
     <Compile Include="NewAdminModel\OnBoarding\OfferModel.cs" />
     <Compile Include="NewAdminModel\PerformanceModel.cs" />

@@ -23,10 +23,13 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
         bool UpdateContactDetailsApplicant(ContactListModel model, List<ContactModel> lstModel);
         ContactListModel GetContactListByApplicantId(long ApplicantId);
         BackgroundCheckForm GetApplicantByApplicantId(long ApplicantId);
-        bool SendApplicantInfoForBackgrounddCheck(EmployeeVIewModel model);
+        bool SendApplicantInfoForBackgrounddCheck(BackgroundCheckForm model);
         I9FormModel GetI9FormData(long ApplicantId, long UserId);
         bool SetI9Form(long UserId, long ApplicantId, I9FormModel model);
         Desclaimer GetSignature(long ApplicantId);
         bool SaveDesclaimerData(Desclaimer obj);
+        bool SaveSelfIdentification(SelfIdentificationModel obj);
+        SelfIdentificationModel GetSelfIdentification(string EmployeeId);
+        bool SaveApplicantFunFacts(ApplicantFunFactModel obj);
     }
 }

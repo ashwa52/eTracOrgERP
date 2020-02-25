@@ -1,12 +1,12 @@
 ﻿$(document).ready(function () {
     $("#SaveApplicantInfo").click(function () {
         debugger
-
-        //dataObject = $("#msform").serialize();
+        var url = window.location.origin;
+        dataObject = $("#msform").serialize();
         $.ajax({
             type: "POST",
-            url: '../NewAdmin/SaveApplicant',
-            //data: dataObject,//{ objWorkRequestAssignmentModel: dataObject, fileData: file },
+            url: url+'/NewAdmin/SaveApplicant',
+            data: dataObject,//{ objWorkRequestAssignmentModel: dataObject, fileData: file },
             //beforeSend: function () {
             //    new fn_showMaskloader('Please wait...');
             //},
