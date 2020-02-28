@@ -26,6 +26,7 @@ namespace WorkOrderEMS.Models
         public string I9F_Sec1_ForeignPassportNumber { get; set; }
         public string I9F_Sec1_ForeignPassportIssuanceCountry { get; set; }
         public string I9F_Sec1_SignatureOfEmployee { get; set; }
+        public string SignatureImageBase { get; set; }
         public Nullable<System.DateTime> I9F_Sec1_DateOfEmployeeSign { get; set; }
         public string I9F_Sec1_QRCodeSec1 { get; set; }
         public string I9F_Sec1_PreparerAndTranslator { get; set; }

@@ -280,6 +280,7 @@
     <Compile Include="NewAdminModel\FormsModel\EducationFormModel.cs" />
     <Compile Include="NewAdminModel\FormsModel\EmergencyContactFormModel.cs" />
     <Compile Include="NewAdminModel\FormsModel\FormTypeListModel.cs" />
+    <Compile Include="NewAdminModel\FormsModel\RateOfPayModel.cs" />
     <Compile Include="NewAdminModel\MultiparClass.cs" />
     <Compile Include="NewAdminModel\MyOpeningModel.cs" />
     <Compile Include="NewAdminModel\OnboardingDetailRequestModel.cs" />

@@ -51,6 +51,7 @@
 
     hr.new3 {
         border-top: 1px dashed black;
+        margin-top: 12px;
     }
 
     hr.new4 {
@@ -60,13 +61,13 @@
     .column-left {
         float: left;
         width: 15.333%;
-        margin-top: 36px;
+        margin-top: 0px;
     }
 
     .column-right {
         float: right;
         width: 15.333%;
-        margin-top: 36px;
+        margin-top: 0px;
     }
 
     .column-center {
@@ -80,7 +81,7 @@
         height: 127px;
         position: absolute;
         left: 20%;
-        margin: -35px 0px 0px 0px;
+        margin: -35px 0px 0px 172px;
     }
 
     .vertical1 {
@@ -88,7 +89,7 @@
         height: 126px;
         position: absolute;
         left: 19%;
-        margin: -110px 0px 0px 756px;
+        margin: -108px 0px 0px 919px;
     }
 
     table {
@@ -233,21 +234,22 @@
                 </tr>
                 <tr>
                     <td colspan="100">
-                        Under penalties of perjury, I declare that I have examined this certificate and, to the best of my knowledge and belief, it is true, correct, and complete.<br />                        
-                        <b>Employee’s signature</b> 
-                        @if (ViewBag.IsSignature == true) {
+                        Under penalties of perjury, I declare that I have examined this certificate and, to the best of my knowledge and belief, it is true, correct, and complete.<br />
+                        <b>Employee’s signature</b>
+                        @if (ViewBag.IsSignature == true)
+                        {
                             <img id="openItForSignature" style="display:none;width:163px;height:47px;" />
-                                <span id="ShowHideSignatureSpan">
-                                      <input type="text" class="BoxLayout" id="BGBoxL11" name="middlename" />
+                            <span id="ShowHideSignatureSpan">
+                                <input type="text" class="BoxLayout" id="BGBoxL11" name="middlename" />
+                            </span>
+                            <span>
+                                <span class="btn btn-success" style="border-radius:100px;width:8%;" id="AddSignature">
+                                    Add Signature
                                 </span>
-                                <span>
-                                    <span class="btn btn-success" style="border-radius:100px;width:8%;" id="AddSignature">
-                                        Add Signature
-                                    </span>
-                                </span>
+                            </span>
                         }
                         (This form is not valid unless you sign it.) ►
-                                    <span style="font-weight:bold;margin-left:800px;">Date ►</span>
+                        <span style="font-weight:bold;margin-left:800px;">Date ►</span>
 
                     </td>
                 </tr>

@@ -10,6 +10,7 @@ function OpenForm(formname, elm) {
     if (isLocked) {
         return;
     }
+
     switch (formname) {
         case 'directdeposite':
             geturl = '/Guest/_DirectDepositeForm';
@@ -54,7 +55,7 @@ function closeModel() {
     $("#formModel").modal('hide');
 }
 function SubmitForm(element, formName) {
-    
+    debugger
     var url = '';
     var data = '';
     var isDirectDepositeSaved = false;
@@ -64,7 +65,9 @@ function SubmitForm(element, formName) {
     //var isSubmit = confirm('Are you sure you want to submit');
     
     //if (isSubmit) {
-        
+    if (formName.id == undefined || formName.id == null) {
+        formName.id = formName[0].id;
+    }
         switch (formName.id) {
             case 'depositeForm':
                 url = '/Guest/_DirectDepositeForm';
@@ -177,6 +180,15 @@ function SubmitForm(element, formName) {
                 isBenifitSectionPopUpOpen = false;
                 //element.preventDefault();
                 break;
+            case 'RateOfPay':
+                url = '/Guest/_RateOfPay';
+                data = $('#RateOfPay').serialize();
+                isDirectDepositeSaved = false;
+                isContactSaved = false;
+                isBackgroundCheck = false;
+                isBenifitSectionPopUpOpen = false;
+                //element.preventDefault();
+                break;
                 
         }
         if (isContactSaved == false) {
@@ -243,13 +255,13 @@ function PostForm(url, data,isDirectDepositeSaved,isBackgroundCheck,isBenifitSec
         type: "POST",
         url: url,
         data: data,
-        //success: successCallback,
         beforeSend: function () {
                 new fn_showMaskloader('Please wait...');
             },
         success:function (Data) {
-            
+            debugger
             var base_url = window.location.origin;
+            //this is to open popup when direct deposite form save so will not open anything jsut open contact info popup
             if (isDirectDepositeSaved == true) {
                 
                 $.ajax({
@@ -257,35 +269,38 @@ function PostForm(url, data,isDirectDepositeSaved,isBackgroundCheck,isBenifitSec
                     url: base_url + "/Guest/_ContactInfo",
                     success: function (data) {                       
                         $("#openConatctModal").html(data);
-                        //$('#myModelForContactDetails').modal('show', { backdrop: 'static', keyboard: false });
                         $("#myModelForContactDetails").modal("show");
                     },
                     error: function () {
-
                     }
                 });
                 isDirectDepositeSaved = false;
             }
-            else if (isBackgroundCheck == true) {
-                //$.ajax({
-                //    type: "GET",
-                //    url: base_url + "/Guest/_ContactInfo",
-                //    success: function (data) {
-                //        
-                        //$("#openModalForDocument").html(data);
+                //once backgroud save the open popup for document saved
+            else if (isBackgroundCheck == true && Data == true) {
                         $('#myModalToAddDocumentUpload').modal('show', { backdrop: 'static', keyboard: false });
-                        //$("#myModalToAddDocumentUpload").modal("show");
-                //    },
-                //    error: function () 
-                //    }
-                //});
             }
+                //afetr finished all the process all the form need to sign by the employee so after signed background form need to redirect to education verification form
+            else if (isBackgroundCheck == true && Data == false) {
+                debugger
+                $.ajax({
+                    type: "GET",
+                    url: base_url + "/Guest/_EducationVarificationForm",
+                    success: function (data) {
+                        debugger
+                        $("#RenderPageId").html(data);
+                    },
+                    error: function (err) {
+                        alert(err)
+                    }
+                });
+                isBackgroundCheck = false;
+            }
+                //once benifit saved then open popup to show disclamer of benifit
             else if (isBenifitSectionPopUpOpen == true) {
-                //$("#RenderPageId").html(Data);
                 $("#myModelForDesclaimerEEO").modal('show');
             }
             else {
-                //var url = "../Guest/_W4Form";
                 $("#RenderPageId").html(Data);
             }
         },
@@ -305,9 +320,6 @@ function SaveContact(data, details, url, errorCallback) {
             new fn_showMaskloader('Please wait...');
         },
         success: function (Data) {
-            
-            //$('#myModelForContactDetails').modal('hide', { backdrop: '', keyboard: true });
-            
             $('#myModelForContactDetails').modal('hide');          
             $("#RenderPageId").html(Data);
             $('.fade').removeClass('modal-backdrop');

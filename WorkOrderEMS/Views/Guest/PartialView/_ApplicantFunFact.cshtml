@@ -6,71 +6,75 @@
     }
 </style>
 <div id="ApplicantFunFactDiv" style="margin-top:80px;">
-    <div class="row">
-        <center><h2>Employee Fun Facts</h2></center>
-    </div>
     <br /><br />
-          <div style="padding-left:200px;">
-              <form id="ApplicantFunFactForm">
-                  <div class="row">
-                      <div class="colmn col-md-12">
-                          <label class="colorCode"> 1.	If you were a car, what make and model would you be? And why?</label>
-                      </div>
-                  </div>
-                  <div class="row">
-                      <div class="colmn col-md-9">
-                          <div class="form-group">
-                              @Html.TextAreaFor(x => x.Answer_Que1, new { @class = "form-control", @placeholder = "Comment", @rows = "5" })
-                              @Html.ValidationMessageFor(x => x.Answer_Que1)
-                          </div>
-                      </div>
-                  </div>
-                  <br />
-                  <div class="row">
-                      <div class="colmn col-md-12">
-                          <label class="colorCode"> 2.	If you could visit anywhere in the world you’ve never been, where would you go?</label>
-                      </div>
-                  </div>
-                  <div class="row">
-                      <div class="colmn col-md-9">
-                          <div class="form-group">
-                              @Html.TextAreaFor(x => x.Answer_Que2, new { @class = "form-control", @placeholder = "Comment" , @rows = "5" })
-                              @Html.ValidationMessageFor(x => x.Answer_Que2)
-                          </div>
-                      </div>
-                  </div>
-                  <br />
-                  <div class="row">
-                      <div class="colmn col-md-12">
-                          <label class="colorCode">  3.	What was your favorite subject in school?</label>
-                      </div>
-                  </div>
-                  <div class="row">
-                      <div class="colmn col-md-9">
-                          <div class="form-group">
-                              @Html.TextAreaFor(x => x.Answer_Que3, new { @class = "form-control", @placeholder = "Comment", @rows = "5" })
-                              @Html.ValidationMessageFor(x => x.Answer_Que3)
-                          </div>
-                      </div>
-                  </div>
-                  <br />
-                  <div class="row">
-                      <div class="colmn col-md-12">
-                          <label class="colorCode">  4.	What famous person had the most influence on you growing up?</label>
-                      </div>
-                  </div>
-                  <div class="row">
-                      <div class="colmn col-md-9">
-                          <div class="form-group">
-                              @Html.TextAreaFor(x => x.Answer_Que4, new { @class = "form-control", @placeholder = "Comment", @rows = "5" })
-                              @Html.ValidationMessageFor(x => x.Answer_Que4)
-                          </div>
-                      </div>
-                  </div>
-              </form>
-              <span class="btn btn-success pull-right" style="cursor:pointer;" onclick="SubmitForm(this, ApplicantFunFactForm)" title="Save & Go for Sign Document">
-                  Save & Go for Signature                 
-              </span>
-          </div>   
+    <span style="font-size: 33px; color: darkblue;margin-left:600px;">Employee Fun Facts</span>
+    <br /><br /><br />
+    <div style="padding-left:200px;">
+        <form id="ApplicantFunFactForm">
+            <div class="row">
+                <div class="colmn col-md-12">
+                    <label class="colorCode"> 1.	If you were a car, what make and model would you be? And why?</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="colmn col-md-9">
+                    <div class="form-group">
+                        @Html.TextAreaFor(x => x.Answer_Que1, new { @class = "form-control", @placeholder = "Comment", @rows = "5" })
+                        @Html.ValidationMessageFor(x => x.Answer_Que1)
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="colmn col-md-12">
+                    <label class="colorCode"> 2.	If you could visit anywhere in the world you’ve never been, where would you go?</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="colmn col-md-9">
+                    <div class="form-group">
+                        @Html.TextAreaFor(x => x.Answer_Que2, new { @class = "form-control", @placeholder = "Comment", @rows = "5" })
+                        @Html.ValidationMessageFor(x => x.Answer_Que2)
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="colmn col-md-12">
+                    <label class="colorCode">  3.	What was your favorite subject in school?</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="colmn col-md-9">
+                    <div class="form-group">
+                        @Html.TextAreaFor(x => x.Answer_Que3, new { @class = "form-control", @placeholder = "Comment", @rows = "5" })
+                        @Html.ValidationMessageFor(x => x.Answer_Que3)
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="colmn col-md-12">
+                    <label class="colorCode">  4.	What famous person had the most influence on you growing up?</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="colmn col-md-9">
+                    <div class="form-group">
+                        @Html.TextAreaFor(x => x.Answer_Que4, new { @class = "form-control", @placeholder = "Comment", @rows = "5" })
+                        @Html.ValidationMessageFor(x => x.Answer_Que4)
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row" style="margin-left: 62%;">
+                <span class="btn btn-success" style="cursor:pointer;" onclick="SubmitForm(this, ApplicantFunFactForm)" title="Save & Go for Sign Document">
+                    Save & Go for Signature
+                </span>
+            </div>
+            <br /> <br />
+        </form>
+        
+    </div>
 </div>
 

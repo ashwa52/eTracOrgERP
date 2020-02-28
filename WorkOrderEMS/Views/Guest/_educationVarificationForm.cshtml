@@ -92,10 +92,18 @@
 		I hereby state that the information on this form is true and complete. In the event of employment, I understand that false, misleading or omitted information given in application
 		documents or employment interviews may result in dismissal. I agree that the above information is true.
 	</p>
-	<p><input type="text" style="width:634px;" class="text-line" /><br />Signature</p>
-	<p><input type="text" style="width:290px;" class="text-line" /><br />Date</p>
+    <span>
+        <input type="text" style="width:634px;" class="text-line" /><img id="openItForSignature" style="display:none;width:163px;height:47px;" />      
+        <span>
+            <span class="btn btn-success" style="border-radius:100px;width:8%;" id="AddSignature">
+                Add Signature
+            </span>
+        </span><br />Signature
+    </span>
+	<p><input type="text" style="width:290px;" id="ShowHideSignatureSpan" class="text-line" /><br />Date</p>
 	<p><b><center>AllStar Backgrounds – <a href="mailto: info@allstarbackgrounds.com">info@allstarbackgrounds.com</a> – Ph 800-570-0546 Fax 888-502-1299</center></b></p>
-	<p> @Html.CheckBoxFor(x => x.IsSave, new { @style = "height: 18px;width: 31px;", onchange = "SubmitForm(this,educationverificationform)" })    i hereby declare that the above information is true to the best of my knowledge </p>
+	<span> @Html.CheckBoxFor(x => x.IsSave, new { @style = "height: 18px;width: 31px;"})    i hereby declare that the above information is true to the best of my knowledge <span style="cursor:pointer;" onclick="SubmitForm(this, educationverificationform)" title="Go to next Rate of pay"><a><i class="fa fa-long-arrow-right" style="font-size: 40px;color: steelblue;margin-left: 967px;"></i></a></span></span>
 
 </div>
 }
+<script src="~/Scripts/Guest/ApplicantFormSave.js"></script>

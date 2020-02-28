@@ -60,11 +60,11 @@
     }
 
     .MFdist {
-        margin-right: 70px;
+        margin-right: 60px;
     }
 
     .FMdist {
-        margin-left: 70px;
+        margin-left: 10px;
     }
 
     .Topdist {
@@ -76,7 +76,7 @@
     }
 
     .CHECKdist {
-        margin-bottom: 4px;
+        margin-bottom: 2%;
     }
 
     .MOVright {
@@ -85,209 +85,229 @@
     }
 
     .distCHECK {
-        margin-bottom: 15px;
+        margin-bottom: 2%;
     }
 
     .NEWdist {
-        margin-bottom: 4px;
+        margin-bottom: 2%;
     }
+
     body {
         padding-right: 0px;
     }
 </style>
-    <div class="container" style="margin-top:79px;">
-        <h3 class="text-center">New Employee Self-Identification Form</h3>
-        <p class="text-center">
-            Federal laws and regulations require us to report on our workforce by race, gender, and veteran status and to offer the opportunity for
-            self-identification as to disabilities. Please assist us by completing this form. YOU ARE NOT REQUIRED TO PROVIDE THIS
-            INFORMATION. Data which you provide shall be kept strictly confidential, except that (i) supervisors and managers may be
-            informed regarding restrictions on the work or duties of disabled individuals and/or disabled veterans; (ii) first aid and safety
-            personnel may be informed, to the extent appropriate, if the condition might require emergency treatment; and (iii) governmental
-            officials reviewing the Company's complaince status shall be informed.
-        </p>
-        <form id="selfIdentificationForm">
-            <div class="container">
-                <div class="row OuterBox">
-                    <div class="col">
-                        <div class="form-inline">
-                            <label for="lastname" id="MGtop">Last Name:  </label>
-                            @Html.TextBoxFor(x => x.LastName,null,new { @class = "BoxLayout", @style= "width:86%;", @placeholder= "Last Name" })
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-inline">
-                            <label for="firstname" id="MGtop">First Name:  </label>
-                            @Html.TextBoxFor(x => x.FirstName, null, new { @class = "BoxLayout", @style = "width:86%;",@placeholder= "First Name" })
-                        </div>
+<div class="container" style="margin-top:79px;">
+    <h3 class="text-center">New Employee Self-Identification Form</h3>
+    <p class="text-center">
+        Federal laws and regulations require us to report on our workforce by race, gender, and veteran status and to offer the opportunity for
+        self-identification as to disabilities. Please assist us by completing this form. YOU ARE NOT REQUIRED TO PROVIDE THIS
+        INFORMATION. Data which you provide shall be kept strictly confidential, except that (i) supervisors and managers may be
+        informed regarding restrictions on the work or duties of disabled individuals and/or disabled veterans; (ii) first aid and safety
+        personnel may be informed, to the extent appropriate, if the condition might require emergency treatment; and (iii) governmental
+        officials reviewing the Company's complaince status shall be informed.
+    </p>
+    <form id="selfIdentificationForm">
+        <div class="container">
+            <div class="row OuterBox">
+                <div class="col">
+                    <div class="form-inline">
+                        <label for="lastname" id="MGtop">Last Name:  </label>
+                        @Html.TextBoxFor(x => x.LastName, null, new { @class = "BoxLayout", @style = "width:85%;", @placeholder = "Last Name" })
                     </div>
                 </div>
-                <div class="row OuterBox1">
-                    <div class="col">
-                        <div class="form-inline">
-                            <label for="lastname" id="MGtop">Middle Initial:</label>
-                            @Html.TextBoxFor(x => x.MidleName, null, new { @class = "BoxLayout", @style = "width: 86%;", @placeholder = "Middle Initial" })
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-inline">
-                            <label for="firstname" id="MGtop">(Optional) Social Security Number:</label>
-                            @Html.TextBoxFor(x => x.MidleName, null, new { @class = "BoxLayout", @style = "width: 86%;", @placeholder = "(Optional) Social Security Number:" })
-                        </div>
+                <div class="col">
+                    <div class="form-inline">
+                        <label for="firstname" id="MGtop">First Name:  </label>
+                        @Html.TextBoxFor(x => x.FirstName, null, new { @class = "BoxLayout", @style = "width:85%;", @placeholder = "First Name" })
                     </div>
                 </div>
             </div>
-            <p><b>Gender: Please place a check next to the appropriate category.</b></p>
-            <div class="container text-center BOTdist">
-                <div class="form-check-inline MFdist ">
-                    <label class="form-check-label" for="male">
-                        @Html.RadioButtonFor(model => model.Gender, "Male", new {@style= "margin-right: 12px;width:22px;height:22px;", @class= "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>MALE</span>                        
-                    </label>
-                </div>
-                <div class="form-check-inline FMdist">
-                    <label class="form-check-label" for="female">
-                        @Html.RadioButtonFor(model => model.Gender, "Female", new { @style = "margin-right: 12px;width:22px;height:22px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>FEMALE</span>
-                    </label>
-                </div>
-            </div>
-            <p><b>Race/Ethnicity: Please check one.</b></p>
-            <div class="container MOVright">
-                <div class="row CHECKdist">
-                    <div class="col">
-                        <label class="form-check-label" for="ckeckbox1">
-                            @Html.RadioButtonFor(model => model.Race_Ethnicity, "HL", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span> Hispanic or Latino</span>
-                            @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox1">*@
-                        </label>
-                    </div>
-                    <div class="col">
-                        <label class="form-check-label" for="ckeckbox2">
-                            @Html.RadioButtonFor(model => model.Race_Ethnicity, "W", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp;&nbsp;&nbsp;<span>White (Not Hispanic or Latino)</span>
-                            @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox2">White (Not Hispanic or Latino)*@
-                        </label>
+            <div class="row OuterBox1">
+                <div class="col">
+                    <div class="form-inline">
+                        <label for="lastname" id="MGtop">Middle Initial:</label>
+                        @Html.TextBoxFor(x => x.MidleName, null, new { @class = "BoxLayout", @style = "width: 83%;", @placeholder = "Middle Initial" })
                     </div>
                 </div>
-                <div class="row CHECKdist">
-                    <div class="col">
-                        <label class="form-check-label" for="ckeckbox3">
-                            @Html.RadioButtonFor(model => model.Race_Ethnicity, "BAA", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>Black or African American (Not Hispanic or Latino)</span>
-                            @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox3">Black or African American (Not Hispanic or Latino)*@
-                        </label>
-                    </div>
-                    <div class="col">
-                        <label class="form-check-label" for="ckeckbox4">
-                            @Html.RadioButtonFor(model => model.Race_Ethnicity, "A", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>Asian (Not Hispanic or Latino)</span>
-                            @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox4">Asian (Not Hispanic or Latino)*@
-                        </label>
-                    </div>
-                </div>
-                <div class="row CHECKdist">
-                    <div class="col">
-                        <label class="form-check-label" for="ckeckbox5">
-                            @Html.RadioButtonFor(model => model.Race_Ethnicity, "NHOPI", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>Native Hawaiian or Other Pacific Islander (Not Hispanic or Latino)</span>
-                            @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox5">Native Hawaiian or Other Pacific Islander (Not Hispanic or Latino)*@
-                        </label>
-                    </div>
-                </div>
-                <div class="row CHECKdist">
-                    <div class="col">
-                        <label class="form-check-label" for="ckeckbox6">
-                            @Html.RadioButtonFor(model => model.Race_Ethnicity, "AIAN", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>American Indian or Alaska Native (Not Hispanic or Latino)</span>
-                            @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox6">American Indian or Alaska Native (Not Hispanic or Latino)*@
-                        </label>
-                    </div>
-                    <div class="col">
-                        <label class="form-check-label" for="ckeckbox7"></label>
-                        @Html.RadioButtonFor(model => model.Race_Ethnicity, "AIAN", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>Two or More Races (Not Hispanic or Latino)</span>
-                        @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox7">Two or More Races (Not Hispanic or Latino)*@
+                <div class="col">
+                    <div class="form-inline">
+                        <label for="firstname" id="MGtop">(Optional) Social Security Number:</label>
+                        @Html.TextBoxFor(x => x.MidleName, null, new { @class = "BoxLayout", @style = "width: 58.8%;", @placeholder = "(Optional) Social Security Number:" })
                     </div>
                 </div>
             </div>
-            <p><b>Veteran Status: Check all that apply.</b></p>
-            <div class="container MOVright">
+        </div>
+        <p><b>Gender: Please place a check next to the appropriate category.</b></p>
+        <div class="container text-center BOTdist">
+            <div class="form-check-inline MFdist ">
+                <label class="form-check-label" for="male"><span>MALE&nbsp; &nbsp; &nbsp;</span></label>
+                @Html.RadioButtonFor(model => model.Gender, "Male", new { @style = "margin-right: 12px;width:22px;height:22px;", @class = "form-check-input largercheckbox" })
 
-                <div class="distCHECK">
-                    <label class="form-check-label" for="ckeckbox8">
-                        @Html.RadioButtonFor(model => model.VeteranStatus, "DV", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>I am a disabled veteran.</span>
-                        @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox8">I am a disabled veteran.*@
+            </div>
+            <div class="form-check-inline FMdist">
+                <label class="form-check-label" for="female"><span>FEMALE&nbsp; &nbsp; &nbsp;</span></label>
+                @Html.RadioButtonFor(model => model.Gender, "Female", new { @style = "margin-right: 12px;width:22px;height:22px;", @class = "form-check-input largercheckbox" })
+
+            </div>
+        </div>
+        <p><b>Race/Ethnicity: Please check one.</b></p>
+        <div class="container MOVright">
+            <div class="row CHECKdist">
+                <div class="col">
+                    <label class="form-check-label" for="ckeckbox1">
+                        @Html.RadioButtonFor(model => model.Race_Ethnicity, "HL", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span> Hispanic or Latino</span>
+                        @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox1">*@
                     </label>
                 </div>
-                <div class="row distCHECK">
-                    <div class="col">
-                        <label class="form-check-label" for="ckeckbox9">
-                            @Html.RadioButtonFor(model => model.VeteranStatus, "RSV", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>I am a recently separated veteran.</span>
-                            @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox9">I am a recently separated veteran.*@
-                        </label>
-
-                    </div>
-                    <div class="col form-inline">
-                        <label for="dod" id="MGtop">Date of discharge (MM/DD/YY)</label>
-                        <input type="text" class="form-control BoxLayout" name="dod">
-                    </div>
-
-                </div>
-                <div class="distCHECK">
-                    <label class="form-check-label" for="ckeckbox10">
-                        @Html.RadioButtonFor(model => model.VeteranStatus, "DWV", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>I served on active duty during a war or in a campaign or expedition for which a campaign badge has been authorized.</span>
-                        @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox10">*@
+                <div class="col">
+                    <label class="form-check-label" for="ckeckbox2">
+                        @Html.RadioButtonFor(model => model.Race_Ethnicity, "W", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp;&nbsp;&nbsp;<span>White (Not Hispanic or Latino)</span>
+                        @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox2">White (Not Hispanic or Latino)*@
                     </label>
                 </div>
-                <div class="distCHECK">
-                    <label class="form-check-label" for="ckeckbox11">
-                        @Html.RadioButtonFor(model => model.VeteranStatus, "MOV", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>I participated in a United States military operation for which an Armed Forces Service Medal was awarded, while serving on
-                        active duty in the Armed Forces, pursuant to Executive Order No. 12985 (61 Fed. Reg. 1209).</span>
-                        @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox11">*@
+            </div>
+            <div class="row CHECKdist">
+                <div class="col">
+                    <label class="form-check-label" for="ckeckbox3">
+                        @Html.RadioButtonFor(model => model.Race_Ethnicity, "BAA", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>Black or African American (Not Hispanic or Latino)</span>
+                        @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox3">Black or African American (Not Hispanic or Latino)*@
+                    </label>
+                </div>
+                <div class="col">
+                    <label class="form-check-label" for="ckeckbox4">
+                        @Html.RadioButtonFor(model => model.Race_Ethnicity, "A", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>Asian (Not Hispanic or Latino)</span>
+                        @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox4">Asian (Not Hispanic or Latino)*@
+                    </label>
+                </div>
+            </div>
+            <div class="row CHECKdist">
+                <div class="col">
+                    <label class="form-check-label" for="ckeckbox5">
+                        @Html.RadioButtonFor(model => model.Race_Ethnicity, "NHOPI", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>Native Hawaiian or Other Pacific Islander (Not Hispanic or Latino)</span>
+                        @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox5">Native Hawaiian or Other Pacific Islander (Not Hispanic or Latino)*@
+                    </label>
+                </div>
+                <div class="col" style="margin-right: 4px;">
+                    <label class="form-check-label" for="ckeckbox7"></label>
+                    @Html.RadioButtonFor(model => model.Race_Ethnicity, "AIAN", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>Two or More Races (Not Hispanic or Latino)</span>
+                    @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox7">Two or More Races (Not Hispanic or Latino)*@
+                </div>
+            </div>
+            <div class="row CHECKdist">
+                <div class="col">
+                    <label class="form-check-label" for="ckeckbox6">
+                        @Html.RadioButtonFor(model => model.Race_Ethnicity, "AIAN", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>American Indian or Alaska Native (Not Hispanic or Latino)</span>
+                        @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox6">American Indian or Alaska Native (Not Hispanic or Latino)*@
                     </label>
                 </div>
 
             </div>
-            <p><b>Disability</b></p>
-            <div class="container MOVright">
+        </div>
+        <p><b>Veteran Status: Check all that apply.</b></p>
+        <div class="container MOVright">
 
-                <div class="NEWdist">
-                    <label class="form-check-label" for="ckeckbox12">
-                        @Html.RadioButtonFor(model => model.Disability, "Y", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>I am an individual with a disability.*</span>
-                        <input type="checkbox" class="form-check-input largercheckbox" name="checkbox12">
-                    </label>
-                </div>
-                <div class="NEWdist">
-                    <label class="form-check-label" for="ckeckbox13">
-                        @Html.RadioButtonFor(model => model.Disability, "N", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>I have received the form and decline to provide the requested information</span>
-                        @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox13">*@
-                    </label>
-                </div>
-                <div class="NEWdist">
-                    @Html.TextBoxFor(model => model.Description, null, new { @class= "form-control  BoxLayout", @id = "BoxWidth", @disabled = "disabled" })
-                    @*<input type="text" class="form-control  BoxLayout" id="BoxWidth" name="dod">*@
-                </div>
-                <div class="NEWdist">
-                    <p id="TSize">* Categories consistent with 41 C.F.R. ยง60-300 & Form VETS-100A</p>
-                </div>
-                <div class="NEWdist">
-                    <p id="TSize">If you need a definition of these terms, please see below.</p>
-                </div>
+            <div class="distCHECK">
+                <label class="form-check-label" for="ckeckbox8">
+                    @Html.RadioButtonFor(model => model.VeteranStatus, "DV", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>I am a disabled veteran.</span>
+                    @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox8">I am a disabled veteran.*@
+                </label>
             </div>
-            <div class="container">
-                <h6>SELF-IDENTIFICATION FORM DEFINITIONS</h6>
-                <ol type="1">
-                    <li>
-                        The term "Disabled Veteran" means
-                        <ol type="A">
-                            <li>
-                                a veteran who is entitled to compensation (or who but for the receipt of military retired pay would be entitled to
-                                compensation) under laws administered by the Department of Veterans Affairs for a disability; or
-                            </li>
-                            <li>a person who was discharged or released from active duty because of a service-connected disability.</li>
+            <div class="row distCHECK">
+                <div class="col">
+                    <label class="form-check-label" for="ckeckbox9">
+                        @Html.RadioButtonFor(model => model.VeteranStatus, "RSV", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>I am a recently separated veteran.</span>
+                        @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox9">I am a recently separated veteran.*@
+                    </label>
 
-                        </ol>
-                    </li>
-                    <li>
-                        The term "Recently Separated Veteran" applies to any veteran during the three -year period beginning on the date of discharge or
-                        release from active duty.
-                    </li>
-                    <li>An "individual with a disability" means any person who (i) has a physical or mental impairement which substantailly limits one or more of such person's major life activities; (ii) has a record of such impairement; or (iii) is regarded as having  such impairement.</li>
-                </ol>
+                </div>
+                <div class="col form-inline">
+                    <label for="dod" id="MGtop">Date of discharge (MM/DD/YY)</label>
+                    <input type="text" class="form-control BoxLayout" name="dod">
+                </div>
+
             </div>
-        </form>
-    </div>
-    <span style="cursor:pointer;" onclick="SubmitForm(this, selfIdentificationForm)" title="Submit"><a><i class="fa fa-long-arrow-right" style="font-size: 40px;color: steelblue;margin-left: 967px;"></i></a></span>
+            <div class="distCHECK">
+                <label class="form-check-label" for="ckeckbox10">
+                    @Html.RadioButtonFor(model => model.VeteranStatus, "DWV", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>I served on active duty during a war or in a campaign or expedition for which a campaign badge has been authorized.</span>
+                    @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox10">*@
+                </label>
+            </div>
+            <div class="distCHECK">
+                <label class="form-check-label" for="ckeckbox11">
+                    @Html.RadioButtonFor(model => model.VeteranStatus, "MOV", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox" })&nbsp; &nbsp; &nbsp;<span>
+                        I participated in a United States military operation for which an Armed Forces Service Medal was awarded, while serving on
+                        active duty in the Armed Forces, pursuant to Executive Order No. 12985 (61 Fed. Reg. 1209).
+                    </span>
+                    @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox11">*@
+                </label>
+            </div>
 
-    
+        </div>
+        <p><b>Disability</b></p>
+        <div class="container MOVright">
+
+            <div class="NEWdist">
+                <label class="form-check-label" for="ckeckbox12">
+                    @Html.RadioButtonFor(model => model.Disability, "Y", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox onchangeDisability" })&nbsp; &nbsp; &nbsp;<span>I am an individual with a disability.*</span>
+                    @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox12">*@
+                </label>
+            </div>
+            <div class="NEWdist">
+                <label class="form-check-label" for="ckeckbox13">
+                    @Html.RadioButtonFor(model => model.Disability, "N", new { @style = "width:22px;height:22px;margin-top: -1px;", @class = "form-check-input largercheckbox onchangeDisability" })&nbsp; &nbsp; &nbsp;<span>I have received the form and decline to provide the requested information</span>
+                    @*<input type="checkbox" class="form-check-input largercheckbox" name="checkbox13">*@
+                </label>
+            </div>
+            <div class="NEWdist">
+                @Html.TextBoxFor(model => model.Description, null, new { @class = "form-control  BoxLayout TextBoxForDisability", @id = "BoxWidth", @disabled = "disabled" })
+                @*<input type="text" class="form-control  BoxLayout" id="BoxWidth" name="dod">*@
+            </div>
+            <div class="NEWdist">
+                <p id="TSize">* Categories consistent with 41 C.F.R. ยง60-300 & Form VETS-100A</p>
+            </div>
+            <div class="NEWdist">
+                <p id="TSize">If you need a definition of these terms, please see below.</p>
+            </div>
+        </div>
+        <div class="container">
+            <h6>SELF-IDENTIFICATION FORM DEFINITIONS</h6>
+            <ol type="1">
+                <li>
+                    The term "Disabled Veteran" means
+                    <ol type="A">
+                        <li>
+                            a veteran who is entitled to compensation (or who but for the receipt of military retired pay would be entitled to
+                            compensation) under laws administered by the Department of Veterans Affairs for a disability; or
+                        </li>
+                        <li>a person who was discharged or released from active duty because of a service-connected disability.</li>
+
+                    </ol>
+                </li>
+                <li>
+                    The term "Recently Separated Veteran" applies to any veteran during the three -year period beginning on the date of discharge or
+                    release from active duty.
+                </li>
+                <li>An "individual with a disability" means any person who (i) has a physical or mental impairement which substantailly limits one or more of such person's major life activities; (ii) has a record of such impairement; or (iii) is regarded as having  such impairement.</li>
+            </ol>
+        </div>
+    </form>
+</div>
+<span style="cursor:pointer;" onclick="SubmitForm(this, selfIdentificationForm)" title="Submit"><a><i class="fa fa-long-arrow-right" style="font-size: 40px;color: steelblue;margin-left: 967px;"></i></a></span>
+
+<script>
+        $(document).ready(function () {
+            $('.onchangeDisability').change(function () {
+                debugger
+                $_this = this;
+                var getVal = $(".onchangeDisability:checked").val();
+                if (getVal == 'Y') {
+                    $("#TextBoxForDisability").attr({ style: "cursor:not-allowed;" })//css("cursor","not-allowed")
+                    $("#TextBoxForDisability").prop("disabled", true);
+                }
+                else {
+                    $("#TextBoxForDisability").css("cursor", "context-menu");
+                    $("#TextBoxForDisability").removeAttr("disabled");
+                }
+            })
+        })
+</script>

@@ -394,8 +394,6 @@ namespace WorkOrderEMS.Controllers.Login
             { throw ex; }
         }
 
-
-
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]

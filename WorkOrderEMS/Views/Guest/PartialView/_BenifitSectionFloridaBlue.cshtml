@@ -1,4 +1,4 @@
-﻿<div style="margin: 97px;">
+﻿<div style="margin: 83px; padding:0px 0 0 44px">
     <form id="SaveBenifit">
         <input type="checkbox" />Benifit 1<br /><br />
         <input type="checkbox" />Benifit 2<br /><br />
@@ -21,7 +21,7 @@
                     </button>*@
             </div>
             <div class="modal-body" id="ScrollDesclaimer" style="margin-left: 2px;margin-left: 2px;overflow-y: scroll;height: 300px;">
-                <div class="container"  style="border: 1px solid;">
+                <div class="container" style="border: 1px solid;">
                     <div class="text-center">
                         <h6>EEO Applicant Section</h6>
                         <h5>AN INITIAL PROMPT SHOULD MAKE THE BELOW STATEMENT:</h5>
@@ -49,16 +49,16 @@
                     </div>
                 </div>
             </div>
-            <div class="modal-footer" style="background: white;">               
-                    <button type="button" id="DesclaimerYes" class="btn btn-success IsHide" style="border-radius:100px;width:23%;background: green;display:none;" onclick="GotoNextForm(true)">Yes</button>
-                    <button type="button" id="DesclaimerNo" class="btn btn-primary IsHide" style="border-radius:100px;width:23%;display:none;" onclick="GotoNextForm(false)">No</button>                
+            <div class="modal-footer" style="background: white;">
+                <button type="button" id="DesclaimerYes" class="btn btn-success IsHide" style="border-radius:100px;width:23%;background: green;display:none;" onclick="GotoNextForm(true)">Yes</button>
+                <button type="button" id="DesclaimerNo" class="btn btn-primary IsHide" style="border-radius:100px;width:23%;display:none;" onclick="GotoNextForm(false)">No</button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    $(document).ready(function () { 
+    $(document).ready(function () {
         $("#ScrollDesclaimer").scroll(function () {
             $(".IsHide").show();
         })

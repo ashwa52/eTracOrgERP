@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WorkOrderEMS.BusinessLogic;
@@ -38,6 +40,7 @@ namespace WorkOrderEMS.Controllers.Guest
         }
         //
         // GET: /Guest/
+      
         public ActionResult Index()
         {
             var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
@@ -216,6 +219,7 @@ namespace WorkOrderEMS.Controllers.Guest
             {
                 getI9Info = _IApplicantManager.GetI9FormData(applicantId, ObjLoginModel.UserId);
                 //getI9Info.IsSignature = isSignature;
+                //if(Convert.ToBoolean(Session["IsSignature"]) == )
                 return PartialView("_I9Form", getI9Info); ;
             }
             return PartialView("_I9Form", getI9Info);
@@ -235,12 +239,25 @@ namespace WorkOrderEMS.Controllers.Guest
             if (ModelState.IsValid)
             {
                 var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-                var saved = _IApplicantManager.SetI9Form(objloginmodel.UserId, applicantId, model);
-                if (saved)
-                    return RedirectToAction("_emergencyContactForm");
+                
+                if(model != null)
+                {                   
+                    var saved = _IApplicantManager.SetI9Form(objloginmodel.UserId, applicantId, model);
+                    if (saved)
+                        if (Convert.ToBoolean(Session["IsSignature"]) == true)
+                        {
+                            string viewName = "_I9Form";
+                            string path = Session["ApplicantId"] + model.I9F_Sec1_FirstName + "_I9Form";
+                            HtmlConvertToPdf(viewName, model, path);                        
+                            return RedirectToAction("_BackGroundCheckForm");
+                        }
+                        else
+                            return RedirectToAction("_emergencyContactForm");
+                    else
+                        return RedirectToAction("_I9Form");
+                }  
                 else
-                    return RedirectToAction("_I9Form");
-                //return Json(true, JsonRequestBehavior.AllowGet);
+                return Json(true, JsonRequestBehavior.AllowGet);
             }
             return RedirectToAction("_emergencyContactForm");
             //return PartialView("_emergencyContactForm", _model);
@@ -252,7 +269,8 @@ namespace WorkOrderEMS.Controllers.Guest
             W4FormModel model = new W4FormModel();
             var objloginmodel = (eTracLoginModel)(Session["etrac"]);
             model = _IGuestUserRepository.GetW4Form(objloginmodel.UserId);
-            ViewBag.IsSignature = false;//To filup form no need to display signature button so we make it hide
+            Session["IsSignature"] = false;
+            //ViewBag.IsSignature = false;//To filup form no need to display signature button so we make it hide
             return PartialView("_W4Form", model);
         }
         //[HttpPost]
@@ -272,6 +290,12 @@ namespace WorkOrderEMS.Controllers.Guest
         {
             if (model != null)
             {
+                string viewName = "_W4Form";
+                string path = Session["ApplicantId"] + model.FirstName + "_W4Form";
+                if (Convert.ToBoolean(Session["IsSignature"]) == true)
+                {
+                    var getpdf = HtmlConvertToPdf(viewName, model, path);
+                }
                 var objloginmodel = (eTracLoginModel)(Session["etrac"]);
                 _IGuestUserRepository.SetW4Form(objloginmodel.UserId, model);
                 return RedirectToAction("_I9Form", model.IsSignature);
@@ -298,19 +322,21 @@ namespace WorkOrderEMS.Controllers.Guest
 
 
                 _IGuestUserRepository.SetPhotoRelease(objloginmodel.UserId, model);
-                return Json(true, JsonRequestBehavior.AllowGet);
+                return RedirectToAction("ThankYou");
             }
             ViewBag.notsaved = true;
-            return PartialView("_photoreleaseform", model);
+            return RedirectToAction("_PhotoReleaseForm");
         }
-
         [HttpGet]
         public PartialViewResult _EducationVarificationForm()
         {
             EducationVarificationModel model = new EducationVarificationModel();
             var objloginmodel = (eTracLoginModel)(Session["etrac"]);
             model = _IGuestUserRepository.GetEducationVerificationForm(objloginmodel.UserId);
-            return PartialView("_EducationVarificationForm", model);
+            if(model != null)
+                return PartialView("_EducationVarificationForm", model);
+            else
+                return PartialView("_EducationVarificationForm", new EducationVarificationModel());
         }
         [HttpPost]
         public ActionResult _EducationVarificationForm(EducationVarificationModel model)
@@ -319,10 +345,10 @@ namespace WorkOrderEMS.Controllers.Guest
             {
                 var objloginmodel = (eTracLoginModel)(Session["etrac"]);
                 _IGuestUserRepository.SetEducationVerificationForm(objloginmodel.UserId, model);
-                return Json(true, JsonRequestBehavior.AllowGet);
+                return RedirectToAction("_RateOfPay");
             }
             model.IsSave = false;
-            return PartialView("_EducationVarificationForm", model);
+            return RedirectToAction("_EducationVarificationForm");
         }
         [HttpGet]
         public PartialViewResult _ConfidentialityAgreementForm()
@@ -336,9 +362,9 @@ namespace WorkOrderEMS.Controllers.Guest
             {
                 var objloginmodel = (eTracLoginModel)(Session["etrac"]);
                 _IGuestUserRepository.SetConfidenialityAgreementForm(objloginmodel.UserId, model);
-                return Json(true, JsonRequestBehavior.AllowGet);
+                return RedirectToAction("_PhotoReleaseForm");
             }
-            return PartialView("_ConfidentialityAgreementForm", model);
+            return RedirectToAction("_ConfidentialityAgreementForm");
         }
         [HttpGet]
         public PartialViewResult _CreditCardAuthorizationForm()
@@ -494,20 +520,33 @@ namespace WorkOrderEMS.Controllers.Guest
                     }
                 }
                 var getApplicantId = Convert.ToInt64(Session["ApplicantId"]);
-                model.ApplicantPersonalInfo.API_APT_ApplicantId = getApplicantId;
-                model.UserId = ObjLoginModel.UserId;
-                var sendForBackgroundCheck = _IApplicantManager.SendApplicantInfoForBackgrounddCheck(model);
-                var getApplicantContact = _IApplicantManager.GetApplicantByApplicantId(getApplicantId);
-                if (sendForBackgroundCheck == true)
+                if (model != null)
                 {
-                    //return PartialView("PartialView/_UploadDocuments", _model);
-                    return Json(true, JsonRequestBehavior.AllowGet);
-                    //return PartialView("PartialView/_UploadDocuments");
+                    if (Convert.ToBoolean(Session["IsSignature"]) == false)
+                    {
+                        model.ApplicantPersonalInfo.API_APT_ApplicantId = getApplicantId;
+                        model.UserId = ObjLoginModel.UserId;
+                        var sendForBackgroundCheck = _IApplicantManager.SendApplicantInfoForBackgrounddCheck(model);
+                        var getApplicantContact = _IApplicantManager.GetApplicantByApplicantId(getApplicantId);
+                        if (sendForBackgroundCheck == true)
+                        {
+                            //return PartialView("PartialView/_UploadDocuments", _model);
+                            //if (Convert.ToBoolean(Session["IsSignature"]) == true)
+                            //    return Json(false, JsonRequestBehavior.AllowGet);
+                            //else
+                                return Json(true, JsonRequestBehavior.AllowGet);
+                            //return PartialView("PartialView/_UploadDocuments");
+                        }
+                    }
+                    else
+                    {
+                        return Json(false, JsonRequestBehavior.AllowGet);
+                    }
                 }
             }
             catch (Exception ex)
             {
-
+                return Json(true, JsonRequestBehavior.AllowGet);
             }
             return PartialView("PartialView/_CommonModals");
         }
@@ -766,7 +805,7 @@ namespace WorkOrderEMS.Controllers.Guest
                     if (Session["eTrac"] != null)
                     {
                         ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-                        obj.EmployeeId = ObjLoginModel.EmployeeID;
+                        obj.EmployeeId = ObjLoginModel.UserName;
                         var getApplicantId = Convert.ToInt64(Session["ApplicantId"]);
                     }
                 }
@@ -811,7 +850,7 @@ namespace WorkOrderEMS.Controllers.Guest
                     if (Session["eTrac"] != null)
                     {
                         ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-                        Obj.Employee_Id = ObjLoginModel.EmployeeID;
+                        Obj.Employee_Id = ObjLoginModel.UserName;
                         Obj.Applicant_Id = Convert.ToInt64(Session["ApplicantId"]);
                     }
                 }
@@ -822,7 +861,7 @@ namespace WorkOrderEMS.Controllers.Guest
                     {
                         var objloginmodel = (eTracLoginModel)(Session["etrac"]);
                         model = _IGuestUserRepository.GetW4Form(objloginmodel.UserId);
-                        ViewBag.IsSignature = true;//To filup form no need to display signature button so we make it hide
+                        Session["IsSignature"] = true;//To filup form no need to display signature button so we make it hide
                        // ViewBag.IsSignature = 
                         return PartialView("_W4Form", model);                        
                     }
@@ -835,6 +874,58 @@ namespace WorkOrderEMS.Controllers.Guest
                 return Json(false, JsonRequestBehavior.AllowGet); //RedirectToAction("ApplicantFunFacts");
             }
             return RedirectToAction("ApplicantFunFacts");
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 26-Feb-2020
+        /// Created For : To get rate of pay info of applicant by userid
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public PartialViewResult _RateOfPay()
+        {
+            var model = new RateOfPayModel();
+            var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+            //model = _IGuestUserRepository.GetRateOfPayInfo(objloginmodel.UserId);
+            return PartialView("_RateOfPay", model);
+        }
+        [HttpPost]
+        public ActionResult _RateOfPay(RateOfPayModel model)
+        {
+            var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+            //model = _IGuestUserRepository.GetRateOfPayInfo(objloginmodel.UserId);
+            return RedirectToAction("_ConfidentialityAgreementForm");
+        }
+        /// <summary>
+        /// Created By : Deepak Panda
+        /// Created Date : 26-Feb-2020
+        /// Created For : To Convert Html view to Pdf
+        /// </summary>
+        [NonAction]
+        public async Task<bool> HtmlConvertToPdf(string viewName, object model, string path)
+        {
+            bool status = false;
+            try
+            {
+                var pdf = new Rotativa.ViewAsPdf(viewName, model)
+                {
+                    FileName = path,
+                    CustomSwitches = "--page-offset 0 --footer-center [page] --footer-font-size 8"
+                };
+                byte[] pdfData =  pdf.BuildFile(ControllerContext);
+                var root = Server.MapPath("~/Pdf/");
+                var fullPath = Path.Combine(root, pdf.FileName);
+                fullPath = Path.GetFullPath(fullPath);
+                using (var fileStream = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
+                {
+                     fileStream.Write(pdfData, 0, pdfData.Length);
+                }
+                return status = true;
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
         }
     }
 }

@@ -24,9 +24,9 @@
         <div class="form-group">
             <label for="name" class="BGtext" id="BGMGtop">Name:</label>
             <span>
-                @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_FirstName, null, new { @class = "BoxLayout BGBoxLInput" })
-                @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_MiddleName, null, new { @class = "BoxLayout BGBoxLInput" })
-                @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_LastName, null, new { @class = "BoxLayout BGBoxLInput" })
+                @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_FirstName, null, new { @class = "BoxLayout BGBoxLInput Box_Width" })
+                @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_MiddleName, null, new { @class = "BoxLayout BGBoxLInput Box_Width" })
+                @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_LastName, null, new { @class = "BoxLayout BGBoxLInput Box_Width" })
                 @*<input type="text" class="BoxLayout BGBoxLInput" name="name" value="">
                     <input type="text" class="BoxLayout BGBoxLInput" name="name" value="">
                     <input type="text" class="BoxLayout BGBoxLInput" name="name" value="">*@
@@ -81,21 +81,21 @@
                 </div>
             }
         }
-                <div class="row BGMGbottom">
-                    <div class="col">
-                        <div class="form-inline">
-                            <label for="lastname" class="BGtext">Social Security Number:</label>
-                            @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_SSN, null, new { @class = "BoxLayout", @id = "BGBoxL7" })
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div class="form-inline">
-                            <label for="firstname" class="BGtext">Date of Birth:</label>
-                            @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_IsActive, null, new { @class = "BoxLayout", @id = "BGBoxL8" })
-                        </div>
-                    </div>
+        <div class="row BGMGbottom">
+            <div class="col">
+                <div class="form-inline">
+                    <label for="lastname" class="BGtext">Social Security Number:</label>
+                    @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_SSN, null, new { @class = "BoxLayout", @id = "BGBoxL7" })
                 </div>
-           
+            </div>
+            <div class="col">
+                <div class="form-inline">
+                    <label for="firstname" class="BGtext">Date of Birth:</label>
+                    @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_IsActive, null, new { @class = "BoxLayout", @id = "BGBoxL8" })
+                </div>
+            </div>
+        </div>
+
         <div class="form-group BGMGbottom">
             <label for="name" class="BGtext" id="">Telephone Number:</label>
             @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_Id, null, new { @class = "BoxLayout", @id = "BGBoxL9" })
@@ -141,7 +141,7 @@
         </div>
 
         <div class="row BGMGbottom2">
-            <div class="col-lg-8 col-md-6">
+            <div class="col-lg-6 col-md-6">
                 <div class="form-inline">
                     <label for="lastname" class="BGtext">Signature:</label>
                     <img id="openItForSignature" style="display:none;width:163px;height:47px;" />
@@ -152,7 +152,7 @@
 
                 </div>
             </div>
-            <div class="col-lg-4 col-md-6">
+            <div class="col-lg-6 col-md-6  DatePadding">
                 <div class="form-inline">
                     <label for="firstname" class="BGtext">Date:</label>
                     <input type="text" class="BoxLayout" id="BGBoxL12" name="ssn">
@@ -162,7 +162,7 @@
     }
 
     <span style="cursor:pointer;" id="btnNext" onclick="SubmitForm(this, BackGroundCheckForm)" title="Send For Backgroud check">
-        <a><i class="fa fa-long-arrow-right" style="font-size: 40px;color: steelblue;margin-left: 600px;margin-bottom:0px"></i></a>
+        <a><i class="fa fa-long-arrow-right" style="font-size: 40px;color: steelblue;margin-left: 874px;margin-bottom:0px"></i></a>
     </span>
 </div>
 <div id="openModalForDocument">
@@ -258,7 +258,8 @@
 
 </script>
 <script src="~/Scripts/ePeople/ApplicantFunctionality.js"></script>
-<script src="https://cdn.rawgit.com/mobomo/sketch.js/master/lib/sketch.min.js" type="text/javascript"></script>
+<script src="~/Scripts/Guest/SketchSignature.js"></script>
+@*<script src="https://cdn.rawgit.com/mobomo/sketch.js/master/lib/sketch.min.js" type="text/javascript"></script>*@
 <script src="~/Scripts/Guest/ApplicantFormSave.js"></script>
 <script>
     $("#myLicensefileUpload").change(function () {

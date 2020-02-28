@@ -308,7 +308,6 @@ namespace WorkOrderEMS.BusinessLogic
                     var password = Cryptography.GetEncryptedData(obj.Password, true);
                     //var UserId = new ObjectParameter("UserId", "UserId");
                     var isChanged = _db.spSetApplicantCreateLoginAccess(obj.Email, password, obj.FName, obj.MName, obj.LName, obj.Email, obj.Question, obj.Answer).FirstOrDefault();
-
                     //var userIdData = isChanged
                     if (isChanged.Value > 0)
                     {
@@ -376,7 +375,8 @@ namespace WorkOrderEMS.BusinessLogic
             }
             catch (Exception ex)
             {
-
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public ServiceResponseModel<string> SignUpApplicant(eTracLoginModel obj)", "Exception While signup applicant.", obj);
+                throw;
             }
             return loginData;
         }
@@ -419,7 +419,8 @@ namespace WorkOrderEMS.BusinessLogic
             }
             catch (Exception ex)
             {
-
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public ServiceResponseModel<string> CheckLoginId(eTracLoginModel obj)", "Exception While checking login id.", obj);
+                throw;
             }
             return loginData;
         }

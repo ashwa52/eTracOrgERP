@@ -198,6 +198,9 @@
     <Reference Include="Quartz, Version=3.0.7.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
       <HintPath>..\packages\Quartz.3.0.7\lib\net452\Quartz.dll</HintPath>
     </Reference>
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.7.4-rc\lib\net45\Rotativa.dll</HintPath>
+    </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\packages\structuremap.3.1.4.143\lib\net40\StructureMap.dll</HintPath>
     </Reference>
@@ -5290,6 +5293,10 @@
     <Content Include="MailTemplate\VehicleDamage.html" />
     <Content Include="MailTemplate\VehicleMileageTemplate.html" />
     <Content Include="MailTemplate\WorkOrderRequestTemplate.html" />
+    <Content Include="Rotativa\help-wkhtmltoimage.txt" />
+    <Content Include="Rotativa\help-wkhtmltopdf.txt" />
+    <Content Include="Rotativa\wkhtmltoimage.exe" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\1.9.1-js\jquery-ui-1.9.2.min.js" />
     <Content Include="Scripts\BindDropDown\DropDownList.js" />
     <Content Include="Scripts\bootstrap-checkbox.js" />
@@ -5968,6 +5975,7 @@
     <Content Include="Content\NewAdminContent\AnimatedChart\SCSS\_vertical.scss" />
     <Content Include="Areas\AdminSection\Views\OrgChart\_AddJobPosting.cshtml" />
     <Content Include="Areas\AdminSection\Views\OrgChart\_JobTitilView.cshtml" />
+    <Content Include="App_Browsers\qt.browser" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\eTrac - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\eTrac - Web Deploy.pubxml" />
@@ -6024,6 +6032,7 @@
     <Content Include="Scripts\FileUpload\jquery.iframe-transport.js" />
     <Content Include="Scripts\Guest\ApplicantFormSave.js" />
     <Content Include="Scripts\Guest\GuestUser.js" />
+    <Content Include="Scripts\Guest\SketchSignature.js" />
     <Content Include="Scripts\ImageUpload\FileUpload.js" />
     <Content Include="Scripts\iwc-all.min.js" />
     <Content Include="Scripts\iwc-signalr.js" />
@@ -6899,6 +6908,7 @@
     <Content Include="Views\Guest\PartialView\_SelfIdentificationForm.cshtml" />
     <Content Include="Views\Guest\PartialView\_DesclaimerEEO.cshtml" />
     <Content Include="Views\Guest\PartialView\_ApplicantFunFact.cshtml" />
+    <Content Include="Views\Guest\_RateOfPay.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6944,6 +6954,7 @@
     <Folder Include="Content\ProjectDocs\VendorAckForm\" />
     <Folder Include="Content\ProjectDocs\VendorW9Form\" />
     <Folder Include="obj\" />
+    <Folder Include="Pdf\" />
     <Folder Include="ReportPDF\FullPageReport\eFleet\" />
     <Folder Include="Views\DebitMemo\" />
     <Folder Include="Views\NewAdmin\ePeople\EditEmployeeForm\" />

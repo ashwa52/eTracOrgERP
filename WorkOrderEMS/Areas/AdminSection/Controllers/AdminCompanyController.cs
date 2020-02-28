@@ -125,6 +125,7 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
                         string AccessToken = CallbackController.AccessToken.ToString();// Session["access_token"].ToString();
                         var principal = User as ClaimsPrincipal;
                         var cmp_Data = new CompanyInfo();
+                       //companyi
                         OAuth2RequestValidator oauthValidator = new OAuth2RequestValidator(AccessToken);
 
                         // Create a ServiceContext with Auth tokens and realmId
