@@ -4107,13 +4107,18 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         {
             try
             {
+                var lst = new List<InterviewQuestionMaster>();
                 using (workorderEMSEntities context = new workorderEMSEntities())
                 {
-                    //var lst = context.spGetQuestionsForInterview("Y", "M", 0).ToList();
+                     lst = context.spGetQuestionsForInterview("Y", "M", 0).Select(x => new InterviewQuestionMaster()
+                    {
+                        IQM_Question = x.IQM_Question,
+                        IQM_Id = x.IQM_Id
+                    }).ToList();
                     //var lst = context.InterviewQuestionMasters.Where(x => x.IQM_Exempt == "Y").ToList();
                     //return lst;
                     //return context.spGetInterviewQuestion("Y").ToList();
-                    List<InterviewQuestionMaster> lst = new List<InterviewQuestionMaster>();
+                    
                     return lst;
                 }
             }
@@ -4133,13 +4138,15 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         {
             try
             {
+                var lst = new List<ChildrenQuestionModel>();
                 using (workorderEMSEntities context = new workorderEMSEntities())
                 {
-                    //var childeQuestioncontext = context.spGetQuestionsForInterview("Y", "C", num).
-                    //    Select(x => new ChildrenQuestionModel() {
-                    //        IQM_Id = x.IQM_Id,
-                    //        IQM_Question = x.IQM_Question
-                    //    }).ToList();
+                    lst = context.spGetQuestionsForInterview("Y", "C", num).
+                    Select(x => new ChildrenQuestionModel()
+                    {
+                        IQM_Id = x.IQM_Id,
+                        IQM_Question = x.IQM_Question
+                    }).ToList();
                     //var childeQuestioncontext = context.InterviewQuestionChilds.Where(x => x.IQC_IQM_Id == num && x.IQC_IsActive == "Y").
                     //   Select(x => new ChildrenQuestionModel()
                     //   {
@@ -4149,8 +4156,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     //       IQM_ScoreYes = x.IQC_ScoreYes
                     //   }).ToList();
                     //return childeQuestioncontext;
-                    //return context.spGetInterviewQuestion("Y").ToList();
-                    List<ChildrenQuestionModel> lst = new List<ChildrenQuestionModel>();
+                    //return context.spGetInterviewQuestion("Y").ToList();                   
                     return lst;
                 }
             }

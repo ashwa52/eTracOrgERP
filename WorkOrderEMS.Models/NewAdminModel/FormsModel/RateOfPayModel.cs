@@ -25,5 +25,8 @@ namespace WorkOrderEMS.Models
         public string ApprovedBy { get; set; }
         public Nullable<DateTime> ApprovedDate { get; set; }
         public bool IsSave { get; set; }
+        public string IsExempt { get; set; }
+        public string EmployeeSignatureName { get; set; }
+        public string SignatureBase { get; set; }
     }
 }

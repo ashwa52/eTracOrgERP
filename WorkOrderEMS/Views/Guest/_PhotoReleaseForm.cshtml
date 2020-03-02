@@ -55,6 +55,7 @@
 	@using (Html.BeginForm("_photoreleaseform", "Guest", FormMethod.Post, new { id = "photoreleaseform" }))
 	{
     <div>
+        @Html.HiddenFor(x => x.PRFId)
         <p>
             I,  @Html.TextBoxFor(x => x.Name, new { @class = "text-line" }) give Elite Parking Services of America, Inc. (Elite) the right to take photographic and/or video images of myself as I perform the duties assigned to
             me as an employee of Elite.

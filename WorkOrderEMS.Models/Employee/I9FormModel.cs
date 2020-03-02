@@ -122,5 +122,7 @@ namespace WorkOrderEMS.Models
 
         public bool IsSave { get; set; }
         public bool  IsSignature { get; set; }
+        public string EmployeeSignatureName { get; set; }
+        //public string EmployeeSignatureTranslatorImage { get; set; }
     }
 }

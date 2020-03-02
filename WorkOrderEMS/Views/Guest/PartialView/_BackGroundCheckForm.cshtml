@@ -24,9 +24,9 @@
         <div class="form-group">
             <label for="name" class="BGtext" id="BGMGtop">Name:</label>
             <span>
-                @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_FirstName, null, new { @class = "BoxLayout BGBoxLInput Box_Width" })
-                @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_MiddleName, null, new { @class = "BoxLayout BGBoxLInput Box_Width" })
-                @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_LastName, null, new { @class = "BoxLayout BGBoxLInput Box_Width" })
+                @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_FirstName, null, new { @class = "BoxLayout BGBoxLInput col-md-3" })
+                @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_MiddleName, null, new { @class = "BoxLayout BGBoxLInput col-md-3" })
+                @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_LastName, null, new { @class = "BoxLayout BGBoxLInput col-md-4" })
                 @*<input type="text" class="BoxLayout BGBoxLInput" name="name" value="">
                     <input type="text" class="BoxLayout BGBoxLInput" name="name" value="">
                     <input type="text" class="BoxLayout BGBoxLInput" name="name" value="">*@
@@ -46,7 +46,7 @@
 
         <div class="form-group BGMGbottom">
             <label for="name" class="BGtext" id="">Former Names(s) and Dates Used:</label>
-            @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_FirstName, null, new { @class = "BoxLayout", @id = "BGBoxL4" })
+            @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_FirstName, null, new { @class = "BoxLayout col-md-11", })
             @*<input type="text" class="BoxLayout" id="BGBoxL4" name="name" value="">*@
         </div>
         if (Model != null && Model.ApplicantAddress.Count() > 0)
@@ -85,26 +85,26 @@
             <div class="col">
                 <div class="form-inline">
                     <label for="lastname" class="BGtext">Social Security Number:</label>
-                    @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_SSN, null, new { @class = "BoxLayout", @id = "BGBoxL7" })
+                    @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_SSN, null, new { @class = "BoxLayout col-md-10"})
                 </div>
             </div>
             <div class="col">
                 <div class="form-inline">
                     <label for="firstname" class="BGtext">Date of Birth:</label>
-                    @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_IsActive, null, new { @class = "BoxLayout", @id = "BGBoxL8" })
+                    @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_IsActive, null, new { @class = "BoxLayout col-md-10"})
                 </div>
             </div>
         </div>
 
         <div class="form-group BGMGbottom">
             <label for="name" class="BGtext" id="">Telephone Number:</label>
-            @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_Id, null, new { @class = "BoxLayout", @id = "BGBoxL9" })
+            @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_Id, null, new { @class = "BoxLayout col-md-11" })
             @*<input type="text" class="BoxLayout" id="BGBoxL9" name="name" value="">*@
         </div>
 
         <div class="form-group BGMGbottom">
             <label for="name" class="BGtext" id="">DriversLicense Number/State:</label>
-            @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_DLNumber, null, new { @class = "BoxLayout", @id = "BGBoxL10" })
+            @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_DLNumber, null, new { @class = "BoxLayout col-md-11" })
             @*<input type="text" class="BoxLayout" id="BGBoxL10" name="name" value="">*@
         </div>
 
@@ -148,7 +148,7 @@
                     <span id="ShowHideSignatureSpan">
                         <input type="text" class="BoxLayout" id="BGBoxL11" name="middlename">
                     </span>
-                    <span class="btn btn-success" style="border-radius:100px;width:21%;" id="AddSignature">Add Signature</span>
+                    <span class="btn btn-success" style="border-radius:100px;width:26%;" id="AddSignature">Add Signature</span>
 
                 </div>
             </div>
@@ -236,15 +236,9 @@
                     </div>
                 </div>
             </div>
-
-            <br /><br />
-            <div class="panel-footer">
-                <div class="text-right">
-                    @*<button type="button" class="btn btn-default bluebutton text-right" onclick="return PrintDivForVehicleDetails('DivVehicleDetailsIndex');" data-dismiss="modal">Print Details</button>*@
-                    <button data-dismiss="modal" class="btn btn-default savesignaturInfo" is-update="false" id="btnCancelqwe">Yes</button>
-                    <input type="button" class="btn btn-primary savesignaturInfo" id="btnSave" is-update="true" data-tool="eraser" value="No" />
-                </div>
-            </div>
+            <div class="modal-footer" style="background: white;">
+                <input type="button" class="btn btn-primary savesignaturInfo" id="btnSave" is-update="true" data-tool="eraser" value="No" />
+            </div>            
         </div>
     </div>
 </div>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using WorkOrderEMS.BusinessLogic;
 using WorkOrderEMS.BusinessLogic.Interfaces;
+using WorkOrderEMS.Data.DataRepository;
 using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Data.Interfaces;
 using WorkOrderEMS.Helper;
@@ -218,7 +220,7 @@ namespace WorkOrderEMS.Controllers.Guest
             if (applicantId > 0)
             {
                 getI9Info = _IApplicantManager.GetI9FormData(applicantId, ObjLoginModel.UserId);
-                //getI9Info.IsSignature = isSignature;
+                getI9Info.IsSignature = false;
                 //if(Convert.ToBoolean(Session["IsSignature"]) == )
                 return PartialView("_I9Form", getI9Info); ;
             }
@@ -239,17 +241,50 @@ namespace WorkOrderEMS.Controllers.Guest
             if (ModelState.IsValid)
             {
                 var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-                
-                if(model != null)
-                {                   
+                string ImagePath = string.Empty;
+                string ImageUniqueName = string.Empty;
+                string url = string.Empty;
+                string ImageURL = string.Empty;
+                if (model != null)
+                {
+                    if (model.SignatureImageBase != null)
+                    {
+                        ImagePath = Server.MapPath(ConfigurationManager.AppSettings["ApplicantSignature"].ToString());
+                        ImageUniqueName = DateTime.Now.ToString("yyyyMMddHHmm") + model.I9F_Sec1_PreparerAndTranslator + "_" + applicantId;
+                        url = HostingPrefix + ApplicantSignature.Replace("~", "") + ImageUniqueName + ".jpg";
+                        ImageURL = ImageUniqueName + ".jpg";
+                        if (!Directory.Exists(ImagePath))
+                        {
+                            Directory.CreateDirectory(ImagePath);
+                        }
+                        var ImageLocation = ImagePath + ImageURL;
+                        //Save the image to directory
+                        using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(model.SignatureImageBase)))
+                        {
+                            using (Bitmap bm2 = new Bitmap(ms))
+                            {
+                                //bm2.Save("SavingPath" + "ImageName.jpg");
+                                bm2.Save(ImageLocation);
+                                model.SignatureImageBase = ImageURL;
+                                //imgupload.ImageUrl = ImageLocation;
+                            }
+                        }
+                    }
                     var saved = _IApplicantManager.SetI9Form(objloginmodel.UserId, applicantId, model);
                     if (saved)
-                        if (Convert.ToBoolean(Session["IsSignature"]) == true)
+                        if (model.IsSignature == true)
                         {
+                            var getApplicant = new BackgroundCheckForm();
+                            var _FillableFormRepository = new FillableFormRepository();
+                            //getApplicant = _IApplicantManager.GetApplicantByApplicantId(applicantId);
+                            var employeeId = objloginmodel.UserName;
+                            #region PDF
                             string viewName = "_I9Form";
-                            string path = Session["ApplicantId"] + model.I9F_Sec1_FirstName + "_I9Form";
-                            HtmlConvertToPdf(viewName, model, path);                        
-                            return RedirectToAction("_BackGroundCheckForm");
+                            string path = applicantId + model.I9F_Sec1_FirstName + "_I9Form";
+                            var getDetails = _FillableFormRepository.GetFileList().Where(x => x.FLT_FileType == "Yellow" && x.FLT_Id == Convert.ToInt64(FileTypeId.I9)).FirstOrDefault();
+                            var getpdf = HtmlConvertToPdf(viewName, model, path, getDetails.FLT_Id, employeeId);
+                            #endregion PDF
+                            return RedirectToAction("_EducationVarificationForm");                          
                         }
                         else
                             return RedirectToAction("_emergencyContactForm");
@@ -257,7 +292,7 @@ namespace WorkOrderEMS.Controllers.Guest
                         return RedirectToAction("_I9Form");
                 }  
                 else
-                return Json(true, JsonRequestBehavior.AllowGet);
+                    return RedirectToAction("_I9Form");
             }
             return RedirectToAction("_emergencyContactForm");
             //return PartialView("_emergencyContactForm", _model);
@@ -270,6 +305,7 @@ namespace WorkOrderEMS.Controllers.Guest
             var objloginmodel = (eTracLoginModel)(Session["etrac"]);
             model = _IGuestUserRepository.GetW4Form(objloginmodel.UserId);
             Session["IsSignature"] = false;
+            model.IsSignature = false;
             //ViewBag.IsSignature = false;//To filup form no need to display signature button so we make it hide
             return PartialView("_W4Form", model);
         }
@@ -288,18 +324,27 @@ namespace WorkOrderEMS.Controllers.Guest
         [HttpPost]
         public ActionResult _W4Form(W4FormModel model)
         {
+            var _FillableFormRepository = new FillableFormRepository();
+            var getI9Info = new I9FormModel();
+            var objloginmodel = (eTracLoginModel)(Session["etrac"]);
             if (model != null)
             {
                 string viewName = "_W4Form";
                 string path = Session["ApplicantId"] + model.FirstName + "_W4Form";
-                if (Convert.ToBoolean(Session["IsSignature"]) == true)
-                {
-                    var getpdf = HtmlConvertToPdf(viewName, model, path);
-                }
-                var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+                var employeeId = objloginmodel.UserName;
                 _IGuestUserRepository.SetW4Form(objloginmodel.UserId, model);
-                return RedirectToAction("_I9Form", model.IsSignature);
-                //return Json(true, JsonRequestBehavior.AllowGet);
+                if (model.IsSignature == true)
+                {
+                    //19 id is for W-4 form id
+                    var getDetails = _FillableFormRepository.GetFileList().Where(x => x.FLT_FileType == "Yellow" && x.FLT_Id == Convert.ToInt64(FileTypeId.W4)).FirstOrDefault();
+                    var getpdf = HtmlConvertToPdf(viewName, model, path, getDetails.FLT_Id, employeeId);
+                    var applicantId = Convert.ToInt64(Session["ApplicantId"]);          
+                    getI9Info = _IApplicantManager.GetI9FormData(applicantId, objloginmodel.UserId);
+                    getI9Info.IsSignature = true;
+                    return PartialView("_I9Form", getI9Info);
+                }
+                else
+                    return RedirectToAction("_I9Form");
             }
             return RedirectToAction("_I9Form",model.IsSignature);
             //return PartialView("_I9Form", model);
@@ -319,8 +364,15 @@ namespace WorkOrderEMS.Controllers.Guest
             if (ModelState.IsValid)
             {
                 var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-
-
+                #region PDF
+                var applicantId = Convert.ToInt64(Session["ApplicantId"]);
+                string viewName = "_PhotoReleaseForm";
+                var employeeId = objloginmodel.UserName;
+                string path = applicantId + model.Name + viewName+".pdf";
+                var _FillableFormRepository = new FillableFormRepository();
+                var getDetails = _FillableFormRepository.GetFileList().Where(x => x.FLT_FileType == "Yellow" && x.FLT_Id == Convert.ToInt64(FileTypeId.W4)).FirstOrDefault();
+                var getpdf = HtmlConvertToPdf(viewName, model, path, getDetails.FLT_Id, employeeId);
+                #endregion PDF
                 _IGuestUserRepository.SetPhotoRelease(objloginmodel.UserId, model);
                 return RedirectToAction("ThankYou");
             }
@@ -341,14 +393,25 @@ namespace WorkOrderEMS.Controllers.Guest
         [HttpPost]
         public ActionResult _EducationVarificationForm(EducationVarificationModel model)
         {
-            if (ModelState.IsValid)
+            if (model != null)
             {
                 var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+                #region PDF
+                var applicantId = Convert.ToInt64(Session["ApplicantId"]);
+                string viewName = "_EducationVarificationForm";
+                var employeeId = objloginmodel.UserName;
+                string path = applicantId + model.Name + viewName + ".pdf";
+                var _FillableFormRepository = new FillableFormRepository();
+                var getDetails = _FillableFormRepository.GetFileList().Where(x => x.FLT_FileType == "Yellow" && x.FLT_Id == Convert.ToInt64(FileTypeId.W4)).FirstOrDefault();
+                var getpdf = HtmlConvertToPdf(viewName, model, path, getDetails.FLT_Id, employeeId);
+                #endregion PDF
                 _IGuestUserRepository.SetEducationVerificationForm(objloginmodel.UserId, model);
                 return RedirectToAction("_RateOfPay");
             }
-            model.IsSave = false;
-            return RedirectToAction("_EducationVarificationForm");
+            else
+            {
+                return RedirectToAction("_EducationVarificationForm");
+            }
         }
         [HttpGet]
         public PartialViewResult _ConfidentialityAgreementForm()
@@ -358,12 +421,22 @@ namespace WorkOrderEMS.Controllers.Guest
         [HttpPost]
         public ActionResult _ConfidentialityAgreementForm(ConfidenialityAgreementModel model)
         {
-            if (ModelState.IsValid)
+            if (model != null)
             {
                 var objloginmodel = (eTracLoginModel)(Session["etrac"]);
+                #region PDF
+                var applicantId = Convert.ToInt64(Session["ApplicantId"]);
+                string viewName = "_EducationVarificationForm";
+                var employeeId = objloginmodel.UserName;
+                string path = applicantId + model.Name + viewName + ".pdf";
+                var _FillableFormRepository = new FillableFormRepository();
+                var getDetails = _FillableFormRepository.GetFileList().Where(x => x.FLT_FileType == "Yellow" && x.FLT_Id == Convert.ToInt64(FileTypeId.W4)).FirstOrDefault();
+                var getpdf = HtmlConvertToPdf(viewName, model, path, getDetails.FLT_Id, employeeId);
+                #endregion PDF
                 _IGuestUserRepository.SetConfidenialityAgreementForm(objloginmodel.UserId, model);
                 return RedirectToAction("_PhotoReleaseForm");
             }
+            else
             return RedirectToAction("_ConfidentialityAgreementForm");
         }
         [HttpGet]
@@ -489,6 +562,7 @@ namespace WorkOrderEMS.Controllers.Guest
             {
                 var getApplicantId = Convert.ToInt64(Session["ApplicantId"]);
                 getApplicant = _IApplicantManager.GetApplicantByApplicantId(getApplicantId);
+                getApplicant.IsSignature = false;
                 return PartialView("PartialView/_BackGroundCheckForm", getApplicant);
             }
 
@@ -522,9 +596,16 @@ namespace WorkOrderEMS.Controllers.Guest
                 var getApplicantId = Convert.ToInt64(Session["ApplicantId"]);
                 if (model != null)
                 {
-                    if (Convert.ToBoolean(Session["IsSignature"]) == false)
-                    {
-                        model.ApplicantPersonalInfo.API_APT_ApplicantId = getApplicantId;
+                    #region PDF
+                    var applicantId = Convert.ToInt64(Session["ApplicantId"]);
+                    string viewName = "_BackGroundCheckForm";
+                    var employeeId = ObjLoginModel.UserName;
+                    string path = applicantId + model.ApplicantPersonalInfo.API_FirstName + viewName + ".pdf";
+                    var _FillableFormRepository = new FillableFormRepository();
+                    var getDetails = _FillableFormRepository.GetFileList().Where(x => x.FLT_FileType == "Yellow" && x.FLT_Id == Convert.ToInt64(FileTypeId.W4)).FirstOrDefault();
+                    var getpdf = HtmlConvertToPdf(viewName, model, path, getDetails.FLT_Id, employeeId);
+                    #endregion PDF
+                    model.ApplicantPersonalInfo.API_APT_ApplicantId = getApplicantId;
                         model.UserId = ObjLoginModel.UserId;
                         var sendForBackgroundCheck = _IApplicantManager.SendApplicantInfoForBackgrounddCheck(model);
                         var getApplicantContact = _IApplicantManager.GetApplicantByApplicantId(getApplicantId);
@@ -537,11 +618,11 @@ namespace WorkOrderEMS.Controllers.Guest
                                 return Json(true, JsonRequestBehavior.AllowGet);
                             //return PartialView("PartialView/_UploadDocuments");
                         }
-                    }
-                    else
-                    {
-                        return Json(false, JsonRequestBehavior.AllowGet);
-                    }
+                    //}
+                    //else
+                    //{
+                    //    return Json(false, JsonRequestBehavior.AllowGet);
+                    //}
                 }
             }
             catch (Exception ex)
@@ -862,7 +943,7 @@ namespace WorkOrderEMS.Controllers.Guest
                         var objloginmodel = (eTracLoginModel)(Session["etrac"]);
                         model = _IGuestUserRepository.GetW4Form(objloginmodel.UserId);
                         Session["IsSignature"] = true;//To filup form no need to display signature button so we make it hide
-                       // ViewBag.IsSignature = 
+                        model.IsSignature = true;
                         return PartialView("_W4Form", model);                        
                     }
                     else
@@ -886,14 +967,49 @@ namespace WorkOrderEMS.Controllers.Guest
         {
             var model = new RateOfPayModel();
             var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-            //model = _IGuestUserRepository.GetRateOfPayInfo(objloginmodel.UserId);
+            var Applicant_Id = Convert.ToInt64(Session["ApplicantId"]);
+            var employeeId = objloginmodel.UserName;
+            model = _IApplicantManager.GetRateOfPayInfo(Applicant_Id, employeeId);
+            if(model != null)
             return PartialView("_RateOfPay", model);
+            else
+                return PartialView("_RateOfPay", new RateOfPayModel());
         }
         [HttpPost]
         public ActionResult _RateOfPay(RateOfPayModel model)
         {
             var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-            //model = _IGuestUserRepository.GetRateOfPayInfo(objloginmodel.UserId);
+            string ImagePath = string.Empty;
+            string ImageUniqueName = string.Empty;
+            string url = string.Empty;
+            string ImageURL = string.Empty;
+            if (model != null)
+            {
+                if (model.SignatureBase != null)
+                {
+                    ImagePath = Server.MapPath(ConfigurationManager.AppSettings["ApplicantSignature"].ToString());
+                    ImageUniqueName = DateTime.Now.ToString("yyyyMMddHHmm") + model.ManagerName + "_" + Convert.ToInt64(Session["ApplicantId"]);
+                    url = HostingPrefix + ApplicantSignature.Replace("~", "") + ImageUniqueName + ".jpg";
+                    ImageURL = ImageUniqueName + ".jpg";
+                    if (!Directory.Exists(ImagePath))
+                    {
+                        Directory.CreateDirectory(ImagePath);
+                    }
+                    var ImageLocation = ImagePath + ImageURL;
+                    //Save the image to directory
+                    using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(model.SignatureBase)))
+                    {
+                        using (Bitmap bm2 = new Bitmap(ms))
+                        {
+                            //bm2.Save("SavingPath" + "ImageName.jpg");
+                            bm2.Save(ImageLocation);
+                            model.SignatureBase = ImageURL;
+                            //imgupload.ImageUrl = ImageLocation;
+                        }
+                    }
+                }
+            }
+            // model = _IGuestUserRepository.SetRateOfPayInfo(employeeId);
             return RedirectToAction("_ConfidentialityAgreementForm");
         }
         /// <summary>
@@ -902,7 +1018,7 @@ namespace WorkOrderEMS.Controllers.Guest
         /// Created For : To Convert Html view to Pdf
         /// </summary>
         [NonAction]
-        public async Task<bool> HtmlConvertToPdf(string viewName, object model, string path)
+        public async Task<bool> HtmlConvertToPdf(string viewName, object model, string path,long FileId,string EmployeeId)
         {
             bool status = false;
             try
@@ -913,12 +1029,22 @@ namespace WorkOrderEMS.Controllers.Guest
                     CustomSwitches = "--page-offset 0 --footer-center [page] --footer-font-size 8"
                 };
                 byte[] pdfData =  pdf.BuildFile(ControllerContext);
-                var root = Server.MapPath("~/Pdf/");
+                var root = Server.MapPath("~/FilesRGY/");
                 var fullPath = Path.Combine(root, pdf.FileName);
                 fullPath = Path.GetFullPath(fullPath);
                 using (var fileStream = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
                 {
                      fileStream.Write(pdfData, 0, pdfData.Length);
+                }
+                if (path != null)
+                {
+                    var Obj = new UploadedFiles();
+                    Obj.FileName = path;
+                    Obj.FileId = FileId;
+                    Obj.FileEmployeeId = EmployeeId;
+                    string LoginEmployeeId = EmployeeId;
+                    Obj.AttachedFileName = path;
+                    var IsSaved = _IFillableFormManager.SaveFile(Obj, LoginEmployeeId);
                 }
                 return status = true;
             }

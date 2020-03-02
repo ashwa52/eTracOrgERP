@@ -18,35 +18,41 @@
 
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<title>eTrac</title>
-	<!-- Favicon icon -->
-	<link rel="icon" href="~/Images/logo.png" type="image/gif" sizes="16x16">
-	<script src="~/Scripts/jquery-3.2.1.min.js"></script>
-	<link href="~/Content/NewAdminContent/VENDOR/owl-carousel/css/owl.theme.default.min.css" rel="stylesheet" />
-	<link href="~/Content/NewAdminContent/VENDOR/owl-carousel/css/owl.carousel.min.css" rel="stylesheet" />
-	<link href="~/Content/NewAdminContent/VENDOR/jqvmap/css/jqvmap.min.css" rel="stylesheet" />
-	<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
-	<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
-	<link href="~/Content/NewAdminContent/CSS/style.css" rel="stylesheet" />
-	@RenderSection("scripts", required: false)
-	<style>
-		.content-body {
-			margin-left: 0;
-			margin: 4px 38px 0px 38px;
-		}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>eTrac</title>
+    <!-- Favicon icon -->
+    <link rel="icon" href="~/Images/logo.png" type="image/gif" sizes="16x16">
+    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+    <link href="~/Content/NewAdminContent/VENDOR/owl-carousel/css/owl.theme.default.min.css" rel="stylesheet" />
+    <link href="~/Content/NewAdminContent/VENDOR/owl-carousel/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/Content/NewAdminContent/VENDOR/jqvmap/css/jqvmap.min.css" rel="stylesheet" />
+    <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+    <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+    <link href="~/Content/NewAdminContent/VENDOR/toastr/css/toastr.min.css" rel="stylesheet" />
+    <link href="~/Content/NewAdminContent/CSS/style.css" rel="stylesheet" />
+    @RenderSection("scripts", required: false)
+    <style>
+        .content-body {
+            margin-left: 0;
+            margin: 4px 38px 0px 38px;
+        }
+
         .drpLocation {
             display: none;
         }
+
         .showAdmin {
             display: none;
         }
-        #RenderPageId{
-            background-color:white;
+
+        #RenderPageId {
+            background-color: white;
         }
-	</style>
+    </style>
 </head>
 <body>
     <div class="nav-header">
@@ -94,6 +100,7 @@
     <script src="~/Content/NewAdminContent/VENDOR/jquery.counterup/jquery.counterup.min.js"></script>
     <script src="~/Scripts/NewAdminJS/dashboard/dashboard-1.js"></script>
     @*<script src="~/Scripts/Guest/GuestUser.js"></script>*@
+    <script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
     <script src="~/Scripts/Guest/ApplicantFormSave.js"></script>
     <script src="~/Scripts/Guest/SketchSignature.js"></script>
 </body>

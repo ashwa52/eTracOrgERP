@@ -516,20 +516,21 @@
                 <tbody>
                     <tr>
                         <td colspan="50">
+                            @Html.HiddenFor(x => x.IsSignature)
                             <p>Signature of Employee</p>
                                 <span id="ShowHideSignatureSpan" class="ShowHideSignatureSpan">
                                     @Html.TextBoxFor(x => x.I9F_Sec1_SignatureOfEmployee, new { @class = "text-line", @style = "width:200px;" })
                                       @*<input type="text" class="BoxLayout" id="BGBoxL11" name="middlename" />*@
                                 </span>
-                            @if (Convert.ToBoolean(Session["IsSignature"]) == true) {                           
+                            @if (Model.IsSignature == true) {                           
                                  <img id="openItForSignature" class="openItForSignature" style="display:none;width:163px;height:47px;" />
                                 <span>
                                     <span class="btn btn-success" style="border-radius:100px;width:14%;" id="AddSignature">
                                         Add Signature
                                     </span>
                                 </span>
-                                @Html.HiddenFor(model => model.SignatureImageBase)
-                             }
+                                 @Html.HiddenFor(x => x.EmployeeSignatureName, new { @id="getSignName"})
+                            }
                         </td>
                         <td colspan="50">
                             <p>Today's Date <i>(mm/dd/yyyy)</i></p>
@@ -552,9 +553,6 @@
 
                 </tbody>
             </table>
-
-
-
             <p><b style="color:black;">I attest, under penalty of perjury, that I have assisted in the completion of Section 1 of this form and that to the best of my knowledge the information is true and correct.</b></p>
 
             <table colspan="100%">
@@ -563,19 +561,20 @@
                         <td colspan="50%" style="padding-bottom: 33px;">
                             Signature of Preparer or Translator
                             <br />
-                            @if (Convert.ToBoolean(Session["IsSignature"]) == true) {                           
-                                 <img id="openForTranslator" class="openItForSignature" style="display:none;width:163px;height:47px;" />
-                                <span>
-                                    <span class="btn btn-success" style="border-radius:100px;width:14%;" id="AddSignatureTranslator">
-                                        Add Signature
-                                    </span>
-                                </span>
-                                @Html.HiddenFor(model => model.SignatureImageBase)
-                             }
+                           
                                 <span id="ShowHideSignatureTranslatorSpan" class="ShowHideSignatureSpan">
                                     @Html.TextBoxFor(x => x.I9F_Sec1_SignatureOfPreparerOrTranslator, new { @class = "text-line", @style = "width:350px;" })
                                     @Html.ValidationMessageFor(x => x.I9F_Sec1_SignatureOfPreparerOrTranslator, "", new { @style = "color:red;" })
-                                </span>                          
+                                </span>
+                             @if (Model.IsSignature == true) {                           
+                                 <img id="openForTranslator" class="openItForSignature" style="display:none;width:163px;height:47px;" />
+                                <span>
+                                    <span class="btn btn-success" style="border-radius:100px;width:22%;" id="AddSignatureTranslator">
+                                        Add Signature
+                                    </span>
+                                </span>
+                                @Html.HiddenFor(model => model.SignatureImageBase,new { @id= "SignatureImageBase" })
+                             }
                         </td>
                         <td colspan="50%" style="padding-bottom: 33px;">
                             <p>Today's Date <i>(mm/dd/yyyy)</i></p>
@@ -1457,15 +1456,13 @@
     <div class="modal-dialog" style="width:40%">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">X</span></button>
                 <h4 class="modal-title" id="myModalLabel">Add Signature</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">X</span></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="margin-left:0px;">
                 <div id="divDetailPreview" class="">
-                    <div class="row">
+                    <div>
                         <div class="" id="DivSignatureDetailsIndexApplicant">
-
-                            <br />
                             <div class="form-group">
                                 <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
                                     <div class="tools">
@@ -1481,41 +1478,13 @@
                     </div>
                 </div>
             </div>
-
-            <br /><br />
-            <div class="panel-footer">
-                <div class="text-right">
-                    @*<button type="button" class="btn btn-default bluebutton text-right" onclick="return PrintDivForVehicleDetails('DivVehicleDetailsIndex');" data-dismiss="modal">Print Details</button>*@
-                    <button data-dismiss="modal" class="btn btn-default" id="btnCancelqwe">Close</button>
-                    <input type="button" class="btn btn-primary" id="btnSaveTranslator" data-dismiss="modal" value="Save as Image" />
-                </div>
-            </div>
+            <div class="modal-footer" style="background: white;">
+                <input type="button" class="btn btn-primary" id="btnSaveTranslator" data-dismiss="modal" value="Save as Image" />
+            </div>           
         </div>
     </div>
 </div>
 <script src="~/Scripts/Guest/ApplicantFormSave.js"></script>
+<script src="~/Scripts/Guest/SketchSignature.js"></script>
 
-<script>
-   
-    $(function () {
-        debugger
-        $('#colors_sketchApplicant').sketch();
-        $(".tools a").eq(0).attr("style", "color:#000");
-        $(".tools a").click(function () {
-            $(".tools a").removeAttr("style");
-            $(this).attr("style", "color:#000");
-        });
-        $("#AddSignatureTranslator").click(function () {
-            $("#myModalForSignature").modal('show');
-        })
-        $("#btnSaveTranslator").bind("click", function () {
-            debugger
-            var base64 = $('#colors_sketchApplicant')[0].toDataURL();
-            $("#openForTranslator").attr("src", base64);
-            $("#openForTranslator").show();
-            $("#ShowHideSignatureTranslatorSpan").hide();
-                $("#SignatureImageBase").val(base64);
-        });
-    });
-</script>
 

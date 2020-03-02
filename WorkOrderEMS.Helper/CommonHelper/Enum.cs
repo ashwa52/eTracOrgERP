@@ -673,7 +673,7 @@ namespace WorkOrderEMS.Helper
         [StringValue("FileTypeSSNLicense")]
         FileType = 2,
     }
-   
+
     public enum POReccuringStaus
     {
         Pending,
@@ -694,7 +694,7 @@ namespace WorkOrderEMS.Helper
     }
     public static class VendorName
     {
-        public const string BackgroundCheck = "Accredited Employment Screenin";       
+        public const string BackgroundCheck = "Accredited Employment Screenin";
     }
     /// <summary>
     /// Created By : Ashwajit Bansod
@@ -734,5 +734,10 @@ namespace WorkOrderEMS.Helper
         public const string HL = "Hispanic or Latino";
         public const string S = "EmployeeStatus";
         public const string D = "Demotion";
+    }
+    public enum FileTypeId
+    {
+        I9 = 17,
+        W4 = 19
     }
 }

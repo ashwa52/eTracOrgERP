@@ -80,7 +80,7 @@
         border-left: 2px solid black;
         height: 127px;
         position: absolute;
-        left: 20%;
+        left: 16%;
         margin: -35px 0px 0px 172px;
     }
 
@@ -88,7 +88,7 @@
         border-left: 2px solid black;
         height: 126px;
         position: absolute;
-        left: 19%;
+        left: 15%;
         margin: -108px 0px 0px 919px;
     }
 
@@ -122,6 +122,7 @@
 @using (Html.BeginForm("_W4Form", "Guest", FormMethod.Post, new { id = "w4form" }))
 {
     @Html.HiddenFor(x => x.ApplicantId)
+    @Html.HiddenFor(x => x.EmployeeSignatureName, new { @id="getSignName"})
     <div style="margin:83px 30px 0px 30px;">
         <hr class="new1" />
         <div>
@@ -236,7 +237,8 @@
                     <td colspan="100">
                         Under penalties of perjury, I declare that I have examined this certificate and, to the best of my knowledge and belief, it is true, correct, and complete.<br />
                         <b>Employee’s signature</b>
-                        @if (ViewBag.IsSignature == true)
+                        @Html.HiddenFor(x => x.IsSignature)
+                        @if (Model.IsSignature == true)
                         {
                             <img id="openItForSignature" style="display:none;width:163px;height:47px;" />
                             <span id="ShowHideSignatureSpan">
@@ -248,6 +250,9 @@
                                 </span>
                             </span>
                         }
+                        else {  <span id="ShowHideSignatureSpan">
+                                <input type="text" class="BoxLayout" id="BGBoxL11" name="middlename" />
+                            </span>}
                         (This form is not valid unless you sign it.) ►
                         <span style="font-weight:bold;margin-left:800px;">Date ►</span>
 

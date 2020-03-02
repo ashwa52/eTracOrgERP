@@ -5966,10 +5966,40 @@ namespace WorkOrderEMS.Controllers.Services
                     var getDetails = _IApplicantManager.SaveApplicantData(obj);
                     if (getDetails == true)
                     {
-                     
+                        string ImagePath = string.Empty;
+                        string ImageUniqueName = string.Empty;
+                        string url = string.Empty;
+                        string ImageURL = string.Empty;
+                        if (obj != null)
+                        {
+                            if (obj.Desclaimer.Signature != null)
+                            {
+                                ImagePath = HttpContext.Current.Server.MapPath(ConfigurationManager.AppSettings["ApplicantSignature"].ToString());
+                                ImageUniqueName = DateTime.Now.ToString("yyyyMMddHHmm") + obj.Desclaimer.EmployeeId + "_" + obj.ApplicantId;
+                                url = HostingPrefix + ApplicantSignature.Replace("~", "") + ImageUniqueName + ".jpg";
+                                ImageURL = ImageUniqueName + ".jpg";
+                                if (!Directory.Exists(ImagePath))
+                                {
+                                    Directory.CreateDirectory(ImagePath);
+                                }
+                                var ImageLocation = ImagePath + ImageURL;
+                                //Save the image to directory
+                                using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(obj.Desclaimer.Signature)))
+                                {
+                                    using (Bitmap bm2 = new Bitmap(ms))
+                                    {
+                                        //bm2.Save("SavingPath" + "ImageName.jpg");
+                                        bm2.Save(ImageLocation);
+                                        obj.Desclaimer.Signature = ImageURL;
+                                        //imgupload.ImageUrl = ImageLocation;
+                                    }
+                                }
+                                var getDetailsDesclaimer = _IApplicantManager.SaveDesclaimerData(obj.Desclaimer);
+                            }
                             ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
                             ObjServiceResponseModel.Message = CommonMessage.UserSaveSuccessMessage();
                             //ObjServiceResponseModel.Data = result;
+                        }
                     }
                     else
                     {
@@ -6069,7 +6099,43 @@ namespace WorkOrderEMS.Controllers.Services
             }
         }
         #endregion Applicant Portal Wordpress
-
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 01-March-2020
+        /// Created For : To get all job posting list with id
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult GetJobList(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<List<JobPostingDropDownModel>>();
+            try
+            {
+                var getDetails = _IApplicantManager.GetListJobPosting(obj);
+                if (getDetails.Count() > 0)
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.Successful();
+                    ObjServiceResponseModel.Data = getDetails;
+                    return Ok(ObjServiceResponseModel);
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.FailureMessage();
+                    ObjServiceResponseModel.Data = getDetails;
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
         #endregion New Employee App
     }
 

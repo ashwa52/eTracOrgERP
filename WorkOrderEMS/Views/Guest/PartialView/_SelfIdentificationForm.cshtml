@@ -96,8 +96,10 @@
         padding-right: 0px;
     }
 </style>
+<br /><br />
 <div class="container" style="margin-top:79px;">
     <h3 class="text-center">New Employee Self-Identification Form</h3>
+    <br />
     <p class="text-center">
         Federal laws and regulations require us to report on our workforce by race, gender, and veteran status and to offer the opportunity for
         self-identification as to disabilities. Please assist us by completing this form. YOU ARE NOT REQUIRED TO PROVIDE THIS
@@ -222,7 +224,7 @@
                 </div>
                 <div class="col form-inline">
                     <label for="dod" id="MGtop">Date of discharge (MM/DD/YY)</label>
-                    <input type="text" class="form-control BoxLayout" name="dod">
+                    @Html.TextBoxFor(model => model.DateOfDischarge, new { @class= "form-control BoxLayout",@id= "DateOfDischarge" })
                 </div>
 
             </div>
@@ -295,18 +297,19 @@
 <span style="cursor:pointer;" onclick="SubmitForm(this, selfIdentificationForm)" title="Submit"><a><i class="fa fa-long-arrow-right" style="font-size: 40px;color: steelblue;margin-left: 967px;"></i></a></span>
 
 <script>
-        $(document).ready(function () {
+    $(document).ready(function () {
+        $("#DateOfDischarge").datepicker();
             $('.onchangeDisability').change(function () {
                 debugger
                 $_this = this;
                 var getVal = $(".onchangeDisability:checked").val();
                 if (getVal == 'Y') {
-                    $("#TextBoxForDisability").attr({ style: "cursor:not-allowed;" })//css("cursor","not-allowed")
-                    $("#TextBoxForDisability").prop("disabled", true);
+                    $(".TextBoxForDisability").attr({ style: "cursor:not-allowed;" })//css("cursor","not-allowed")
+                    $(".TextBoxForDisability").prop("disabled", true);
                 }
                 else {
-                    $("#TextBoxForDisability").css("cursor", "context-menu");
-                    $("#TextBoxForDisability").removeAttr("disabled");
+                    $(".TextBoxForDisability").css("cursor", "context-menu");
+                    $(".TextBoxForDisability").removeAttr("disabled");
                 }
             })
         })

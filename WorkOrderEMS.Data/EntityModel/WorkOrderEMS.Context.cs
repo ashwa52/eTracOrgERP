@@ -7435,5 +7435,14 @@ namespace WorkOrderEMS.Data.EntityModel
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetEEO", actionParameter, eEO_IdParameter, eEO_EMP_EmployeeIDParameter, eEO_GenderParameter, eEO_RaceParameter, eEO_VeteranStatusParameter, eEO_VeteranDateOfDischargeParameter, eEO_DisabilityDiscloseParameter, eEO_IsActiveParameter, eEO_DisabilityDiscloseDiscriptionParameter);
         }
+    
+        public virtual ObjectResult<spGetFormRateOfPay_Result3> spGetFormRateOfPay(Nullable<long> applicantId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("ApplicantId", applicantId) :
+                new ObjectParameter("ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetFormRateOfPay_Result3>("spGetFormRateOfPay", applicantIdParameter);
+        }
     }
 }

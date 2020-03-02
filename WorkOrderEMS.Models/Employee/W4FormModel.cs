@@ -42,6 +42,7 @@ namespace WorkOrderEMS.Models.Employee
         public string w4F_10 { get; set; }
         public string EmployeeMaritalStatus { get; set; }
         public bool IsSignature { get; set; }
+        public string EmployeeSignatureName { get; set; }
     }
 	public class MeritalStatus
 	{

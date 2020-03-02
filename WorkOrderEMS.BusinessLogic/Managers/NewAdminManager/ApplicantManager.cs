@@ -43,7 +43,8 @@ namespace WorkOrderEMS.BusinessLogic
                         Email = a.ALA_eMailId,
                         MName = a.ALA_MidName,
                         LoginId = a.ALA_LoginId,
-                        UserId = a.ALA_UserId
+                        UserId = a.ALA_UserId,
+                        //EmployeeID = a.e
                     }).FirstOrDefault();
                     if (loginModel != null)
                     {
@@ -301,6 +302,7 @@ namespace WorkOrderEMS.BusinessLogic
         {
             var loginModel = new eTracLoginModel();
             var loginData = new ServiceResponseModel<string>();
+            var _applicant = new Applicant();
             try
             {
                 if (obj.FName != null && obj.Email != null)
@@ -308,6 +310,13 @@ namespace WorkOrderEMS.BusinessLogic
                     var password = Cryptography.GetEncryptedData(obj.Password, true);
                     //var UserId = new ObjectParameter("UserId", "UserId");
                     var isChanged = _db.spSetApplicantCreateLoginAccess(obj.Email, password, obj.FName, obj.MName, obj.LName, obj.Email, obj.Question, obj.Answer).FirstOrDefault();
+                    _applicant.APT_ALA_UserId = isChanged;
+                    _applicant.APT_Date = DateTime.Now;
+                    _applicant.APT_JobPostingId  = 2;
+                    _applicant.APT_Status = "Y";
+                    _applicant.APT_IsActive = "Y";
+                    var saveApplicant = _db.Applicants.Add(_applicant);
+                    _db.SaveChanges();
                     //var userIdData = isChanged
                     if (isChanged.Value > 0)
                     {
@@ -1220,7 +1229,7 @@ namespace WorkOrderEMS.BusinessLogic
                 if (obj != null)
                 {
                     string Action = "I";
-                    var save = _db.spSetApplicantSignature(Action, obj.Sing_Id, obj.ApplicantId, obj.EmployeeId, obj.Signature, "Y");
+                    var save = _db.spSetApplicantSignature(Action, obj.Sing_Id, obj.ApplicantId, null, obj.Signature, "Y");
                     isSaved = save > 0 ? true : false;
                     return isSaved;
                 }
@@ -1337,6 +1346,66 @@ namespace WorkOrderEMS.BusinessLogic
                 Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SaveApplicantFunFacts(ApplicantFunFactModel obj)", "Exception While saving .", obj);
                 throw;
             }
+        }
+        /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created Date : 28-Feb-2020
+        /// Created For : To get the details of rate of pay
+        /// </summary>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
+        public RateOfPayModel GetRateOfPayInfo(long ApplicantId, string employeeId)
+        {
+            var _model = new RateOfPayModel();
+            try
+            {
+                if(ApplicantId != null)
+                {
+                    _model = _db.spGetFormRateOfPay(ApplicantId).Select(x => new RateOfPayModel()
+                    {
+                        EmployeeName = x.EmployeeName,
+                        EmployeeNumber = employeeId,
+                        ManagerName = x.HiringManager,
+                        JobTitle = x.JBT_JobTitle,
+                        RateOfPay = x.VST_RateOfPay,
+                        Operations = x.Operation,
+                        JobStatus = x.VST_EmploymentStatus,
+                        Location = x.LocationName,
+                        TypeOfPayChange = x.TypeOfPayChange,
+                        IsExempt = x.VST_IsExempt
+                    }).FirstOrDefault() ;
+                }
+                return _model;
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public RateOfPayModel GetRateOfPayInfo(string ApplicantId)", "Exception While getting the details of rate of pay .", ApplicantId);
+                throw;
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 01-March-2020
+        /// Created For : 
+        /// </summary>
+        /// <returns></returns>
+        public List<JobPostingDropDownModel> GetListJobPosting(eTracLoginModel obj)
+        {
+            var lst = new List<JobPostingDropDownModel>();
+            try
+            {
+                lst = _db.JobPostings.Select(x => new JobPostingDropDownModel() {
+                    JobPostingId = x.JPS_JobPostingId,
+                    JobTitle = x.JPS_JobTitle,
+                    //JobDescription = x.
+                }).ToList();
+            }
+            catch(Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<JobPostingModel> GetListJobPosting(eTracLoginModel obj)", "Exception While getting the list of jobs.", obj);
+                throw;
+            }
+            return lst;
         }
     }
 }

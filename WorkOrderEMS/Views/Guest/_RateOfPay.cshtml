@@ -21,23 +21,23 @@
     }
 
     .formFourth {
-        margin-left: 31%;
+        margin-left: 30%;
     }
 
     .formFifth {
-        margin-left: 33%;
+        margin-left: 32.5%;
     }
 
     .formSixth {
-        margin-left: 34%;
+        margin-left: 33%;
     }
 
     .formSeventh {
-        margin-left: 31%;
+        margin-left: 30.5%;
     }
 
     .formEight {
-        margin-left: 23%;
+        margin-left: 22.5%;
     }
 
     .formBorder {
@@ -91,125 +91,159 @@
 </style>
 <div class="container PADlerigrop">
     <div class="text-center">
-        <img id="imgWidth" src="eparking.jpg" alt="Elite Parking">
+        <img id="imgWidth" src="~/Images/FormImages/image-form.jpg" alt="Elite Parking">
     </div>
     <div class="text-center headerText">
         <h3><u>Rate of Pay</u></h3>
     </div>
-    @Html.BeginForm("_RateOfPay", "Guest", FormMethod.Post, new { id = "RateOfPay" }))
-    {
-    @*<form id="RateOfPay">*@
-    <div>
-        <label for="Employee Name">Employee Name:</label>
-        @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-group formBorder formFirst" })
-    </div>
-    <div>
-        <label for="Employee Number">Employee Number:</label>
-        @Html.TextBoxFor(model => model.EmployeeNumber, new { @class = "form-group formBorder formSecond" })
-    </div>
-    <div>
-        <label for="Employee Name">Manager Name:</label>
-        @Html.TextBoxFor(model => model.ManagerName, new { @class = "form-group formBorder formThird" })
-    </div>
-    <div>
-        <label for="Employee Name">Operations:</label>
-        @Html.TextBoxFor(model => model.Operations, new { @class = "form-group formBorder formFourth" })
-    </div>
-    <div>
-        <label for="Employee Name">Location:</label>
-        @Html.TextBoxFor(model => model.Location, new { @class = "form-group formBorder formFifth" })
-    </div>
-    <div>
-        <label for="Employee Name">Job Title:</label>
-        @Html.TextBoxFor(model => model.JobTitle, new { @class = "form-group formBorder formSixth" })
-    </div>
-    <div>
-        <label for="Employee Name">Rate of Pay:</label>
-        @Html.TextBoxFor(model => model.RateOfPay, new { @class = "form-group formBorder formSeventh" })
-    </div>
-    <div>
-        <label for="Employee Name">Type of Pay Change:</label>
-        @Html.TextBoxFor(model => model.TypeOfPayChange, new { @class = "form-group formBorder formEight", @placeholder = "New Hire" })
-    </div>
-    <div class="topMar">
-        <div class="row">
-            <div class="col">
-                @Html.RadioButtonFor(x => x.JobStatus, "Male", new { @checked = "checked", @class = "radioButtonCss" })
-                @*<input type="radio" name="exempt" value="">*@
-                <label for="Exempt">Exempt(Salary)</label>
+    <form id="RateOfPay">
+        @Html.HiddenFor(x => x.EmployeeSignatureName, new { @id = "getSignName" })
+        <div>
+            <label for="Employee Name">Employee Name:</label>
+            @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-group formBorder formFirst" })
+        </div>
+        <div>
+            <label for="Employee Number">Employee Number:</label>
+            @Html.TextBoxFor(model => model.EmployeeNumber, new { @class = "form-group formBorder formSecond" })
+        </div>
+        <div>
+            <label for="Employee Name">Manager Name:</label>
+            @Html.TextBoxFor(model => model.ManagerName, new { @class = "form-group formBorder formThird" })
+        </div>
+        <div>
+            <label for="Employee Name">Operations:</label>
+            @Html.TextBoxFor(model => model.Operations, new { @class = "form-group formBorder formFourth" })
+        </div>
+        <div>
+            <label for="Employee Name">Location:</label>
+            @Html.TextBoxFor(model => model.Location, new { @class = "form-group formBorder formFifth" })
+        </div>
+        <div>
+            <label for="Employee Name">Job Title:</label>
+            @Html.TextBoxFor(model => model.JobTitle, new { @class = "form-group formBorder formSixth" })
+        </div>
+        <div>
+            <label for="Employee Name">Rate of Pay:</label>
+            @Html.TextBoxFor(model => model.RateOfPay, new { @class = "form-group formBorder formSeventh" })
+        </div>
+        <div>
+            <label for="Employee Name">Type of Pay Change:</label>
+            @Html.TextBoxFor(model => model.TypeOfPayChange, new { @class = "form-group formBorder formEight", @placeholder = "New Hire" })
+        </div>
+        <div class="topMar">
+            <div class="row">
+                <div class="col">
+                    @Html.RadioButtonFor(x => x.JobStatus, "Male", new { @checked = "checked", @class = "radioButtonCss" })
+                    @*<input type="radio" name="exempt" value="">*@
+                    <label for="Exempt">Exempt(Salary)</label>
+                </div>
+                <div class="col">
+                    @Html.RadioButtonFor(x => x.JobStatus, "Male", new { @class = "radioButtonCss" })
+                    <label for="ft">FT (32+ Hrs)</label>
+                </div>
             </div>
-            <div class="col">
-                @Html.RadioButtonFor(x => x.JobStatus, "Male", new { @class = "radioButtonCss" })
-                <label for="ft">FT (32+ Hrs)</label>
+            <div class="row">
+                <div class="col">
+                    @Html.RadioButtonFor(x => x.JobStatus, "Male", new { @class = "radioButtonCss" })
+                    <label for="NExempt">Non-Exempt(Hourly)</label>
+                </div>
+                <div class="col">
+                    @Html.RadioButtonFor(x => x.JobStatus, "Male", new { @class = "radioButtonCss" })
+                    <label for="ft">PT (<32 Hrs)</label>
+                </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row topMar1">
             <div class="col">
-                @Html.RadioButtonFor(x => x.JobStatus, "Male", new { @class = "radioButtonCss" })
-                <label for="NExempt">Non-Exempt(Hourly)</label>
-            </div>
-            <div class="col">
-                @Html.RadioButtonFor(x => x.JobStatus, "Male", new { @class = "radioButtonCss" })
-                <label for="ft">PT (<32 Hrs)</label>
-            </div>
-        </div>
-    </div>
-    <div class="row topMar1">
-        <div class="col">
-            <img id="openItForSignature" style="display:none;width:163px;height:47px;" />
-            <span id="ShowHideSignatureSpan">
-                @Html.TextBoxFor(model => model.Emp_Signature, new { @class = "formBorder1" })
-            </span>
-            <span>
-                <span class="btn btn-success" style="border-radius:100px;width:8%;" id="AddSignature">
-                    Add Signature
+                <img id="openItForSignature" style="display:none;width:163px;height:47px;" />
+                <span id="ShowHideSignatureSpan">
+                    @Html.TextBoxFor(model => model.Emp_Signature, new { @class = "formBorder1" })
                 </span>
-            </span>
-            <label for="employeesignature">Employee Signature</label>
-        </div>
-        <div class="col">
-            @Html.TextBoxFor(model => model.Emp_Date, new { @class = "formBorder1" })
-            <label for="Date">Date</label>
-        </div>
-    </div>
-    <div class="row topMar1">
-        <div class="col">
-            <img id="openItForSignature" style="display:none;width:163px;height:47px;" />
-            <span id="ShowHideSignatureSpan">
-                @Html.TextBoxFor(model => model.Man_Signature, new { @class = "formBorder1" })
-            </span>
-            <span>
-                <span class="btn btn-success" style="border-radius:100px;width:8%;" id="AddSignatureManager">
-                    Add Signature
+                <span>
+                    <span class="btn btn-success" style="border-radius:100px;width:35%;" id="AddSignature">
+                        Add Signature
+                    </span>
                 </span>
-            </span>
-            <label for="msSignature">Manager/Superviser Signature</label>
+                <br />
+                <label for="employeesignature">Employee Signature</label>
+            </div>
+            <div class="col">
+                @Html.TextBoxFor(model => model.Emp_Date, new { @class = "formBorder1" })
+                <label for="Date">Date</label>
+            </div>
         </div>
-        <div class="col">
-            @Html.TextBoxFor(model => model.Man_Date, new { @class = "formBorder1" })
-            <label for="Date">Date</label>
+        <div class="row topMar1">
+            <div class="col">
+                <img id="openItForSignatureManager" style="display:none;width:163px;height:47px;" />
+                <span id="ShowHideSignatureSpanMan">
+                    @Html.TextBoxFor(model => model.Man_Signature, new { @class = "formBorder1" })
+                </span>
+                <span>
+                    <span class="btn btn-success" style="border-radius:100px;width:35%;" id="AddSignatureManager">
+                        Add Signature
+                    </span>
+                </span>
+                <br />
+                @Html.HiddenFor(model => model.SignatureBase, new { @id = "SignatureImageBase" })
+                <label for="msSignature">Manager/Superviser Signature</label>
+            </div>
+            <div class="col">
+                @Html.TextBoxFor(model => model.Man_Date, new { @class = "formBorder1" })
+                <label for="Date">Date</label>
+            </div>
         </div>
-    </div>
-    <div class="topMar1">
-        <hr>
-        <p>Approved by:</p>
-    </div>
-    <div class="row topMar2">
-        <div class="col">
-            @Html.TextBoxFor(model => model.ApprovedBy, new { @class = "formBorder1" })
-            <label for="directorOfculture">Director of Culture</label>
+        <div class="topMar1">
+            <hr>
+            <p>Approved by:</p>
         </div>
-        <div class="col">
-            @Html.TextBoxFor(model => model.ApprovedDate, new { @class = "formBorder1" })
-            <label for="Date">Date</label>
+        <div class="row topMar2">
+            <div class="col">
+                @Html.TextBoxFor(model => model.ApprovedBy, new { @class = "formBorder1" })
+                <label for="directorOfculture">Director of Culture</label>
+            </div>
+            <div class="col">
+                @Html.TextBoxFor(model => model.ApprovedDate, new { @class = "formBorder1" })
+                <label for="Date">Date</label>
+            </div>
         </div>
-    </div>
-    <div class="text-center botMar">
-        <p class="textSize">*Do not present to Employee for signature without approval by Director of Culture</p>
-    </div>
-    @*</form>*@
-    }
-    @*}*@
+        <div class="text-center botMar">
+            <p class="textSize">*Do not present to Employee for signature without approval by Director of Culture</p>
+        </div>
+    </form>
 </div>
 <span> @Html.CheckBoxFor(x => x.IsSave, new { @style = "height: 18px;width: 31px;" })    i hereby declare that the above information is true to the best of my knowledge <span style="cursor:pointer;" onclick="SubmitForm(this, RateOfPay)" title="Go to next I-9"><a><i class="fa fa-long-arrow-right" style="font-size: 40px;color: steelblue;margin-left: 967px;"></i></a></span> </span>
 <script src="~/Scripts/Guest/ApplicantFormSave.js"></script>
+<script src="~/Scripts/Guest/SketchSignature.js"></script>
+
+<div class="modal fade preview" id="myModalForSignatureManager" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:40%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">Add Signature</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">X</span></button>
+            </div>
+            <div class="modal-body" style="margin-left:0px;">
+                <div id="divDetailPreview" class="">
+                    <div class="row">
+                        <div>
+                            <div class="form-group">
+                                <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
+                                    <div class="tools">
+                                        <a href="#colors_sketch" data-tool="marker">Marker</a> &nbsp;&nbsp;<a href="#colors_sketch" data-tool="eraser">
+                                            Eraser
+                                        </a>
+                                    </div>
+                                    <br />
+                                    <canvas id="colors_sketchManager" width="500" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background: white;">
+                <input type="button" class="btn btn-primary" id="btnSaveManager" data-dismiss="modal" value="Save as Image" />
+            </div>
+        </div>
+    </div>
+</div>

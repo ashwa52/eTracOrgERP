@@ -281,21 +281,21 @@ function PostForm(url, data,isDirectDepositeSaved,isBackgroundCheck,isBenifitSec
                         $('#myModalToAddDocumentUpload').modal('show', { backdrop: 'static', keyboard: false });
             }
                 //afetr finished all the process all the form need to sign by the employee so after signed background form need to redirect to education verification form
-            else if (isBackgroundCheck == true && Data == false) {
-                debugger
-                $.ajax({
-                    type: "GET",
-                    url: base_url + "/Guest/_EducationVarificationForm",
-                    success: function (data) {
-                        debugger
-                        $("#RenderPageId").html(data);
-                    },
-                    error: function (err) {
-                        alert(err)
-                    }
-                });
-                isBackgroundCheck = false;
-            }
+            //else if (isBackgroundCheck == true && Data == false) {
+            //    debugger
+            //    $.ajax({
+            //        type: "GET",
+            //        url: base_url + "/Guest/_EducationVarificationForm",
+            //        success: function (data) {
+            //            debugger
+            //            $("#RenderPageId").html(data);
+            //        },
+            //        error: function (err) {
+            //            alert(err)
+            //        }
+            //    });
+                //isBackgroundCheck = false;
+            //}
                 //once benifit saved then open popup to show disclamer of benifit
             else if (isBenifitSectionPopUpOpen == true) {
                 $("#myModelForDesclaimerEEO").modal('show');
@@ -486,18 +486,17 @@ $("#AddSignature").click(function (e) {
         beforeSend: function () {
             new fn_showMaskloader('Please wait...');
         },
-        success: function (result) {
-            
+        success: function (result) {            
             if(result != null && result != false){
                 //$("#myModalForSignatureApplicant").modal('show');
-                $("#openItForSignature").attr("src",result.imagePath);
+                $("#openItForSignature").attr("src", result.imagePath);
+                $("#getSignName").val(result.name);
                 $("#ShowHideSignatureSpan,#AddSignature").hide();
                 $("#openItForSignature").show();
                 signatureName = name;
             }
         },
         error: function (err) {
-
         },
         complete: function () {
             fn_hideMaskloader();
@@ -623,6 +622,52 @@ function GotoNextForm(istrue) {
         }
     });
 }
+
+
+$("#AddSignatureTranslator").click(function () {
+    debugger
+    $("#myModalForSignatureApplicant").modal('show');
+})
+
+$(function () {
+    debugger
+    $('#colors_sketchApplicant').sketch();
+    $(".tools a").eq(0).attr("style", "color:#000");
+    $(".tools a").click(function () {
+        $(".tools a").removeAttr("style");
+        $(this).attr("style", "color:#000");
+    });
+    $("#btnSaveTranslator").bind("click", function () {
+        debugger
+        var base64 = $('#colors_sketchApplicant')[0].toDataURL();
+        $("#openForTranslator").attr("src", base64);
+        $("#openForTranslator").show();
+        $("#ShowHideSignatureTranslatorSpan, #AddSignatureTranslator").hide();
+        $("#SignatureImageBase").val(base64);
+    });
+});
+$("#AddSignatureManager").click(function () {
+    debugger
+    $("#myModalForSignatureManager").modal('show');
+})
+
+$(function () {
+    debugger
+    $('#colors_sketchManager').sketch();
+    $(".tools a").eq(0).attr("style", "color:#000");
+    $(".tools a").click(function () {
+        $(".tools a").removeAttr("style");
+        $(this).attr("style", "color:#000");
+    });
+    $("#btnSaveManager").bind("click", function () {
+        debugger
+        var base64 = $('#colors_sketchApplicant')[0].toDataURL();
+        $("#openItForSignatureManager").attr("src", base64);
+        $("#openItForSignatureManager").show();
+        $("#ShowHideSignatureSpanMan, #AddSignatureManager").hide();
+        $("#SignatureImageBase").val(base64);
+    });
+});
 
 //$("#").
 ///============================End Code======================================================

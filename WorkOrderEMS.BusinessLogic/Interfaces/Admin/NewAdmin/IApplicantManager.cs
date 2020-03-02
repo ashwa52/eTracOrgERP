@@ -31,5 +31,7 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
         bool SaveSelfIdentification(SelfIdentificationModel obj);
         SelfIdentificationModel GetSelfIdentification(string EmployeeId);
         bool SaveApplicantFunFacts(ApplicantFunFactModel obj);
+        RateOfPayModel GetRateOfPayInfo(long ApplicantId, string employeeId);
+        List<JobPostingDropDownModel> GetListJobPosting(eTracLoginModel obj);
     }
 }

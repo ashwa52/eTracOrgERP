@@ -24,8 +24,9 @@ namespace WorkOrderEMS.Models
         public List<ApplicantVehiclesOperated> ApplicantVehiclesOperated { get; set; }
         public List<ApplicantLicenseHeald> ApplicantLicenseHeald { get; set; }
         public List<ApplicantSchecduleAvaliblity> ApplicantSchecduleAvaliblity { get; set; }
+        public Desclaimer Desclaimer { get; set; }
 
-       public CommonApplicantModel() {
+        public CommonApplicantModel() {
             ApplicantId = new long();
             ApplicantPersonalInfo = new List<ApplicantPersonalInfo>();
             ApplicantPersonalInfo a = new ApplicantPersonalInfo();
@@ -105,6 +106,7 @@ namespace WorkOrderEMS.Models
     public class BackgroundCheckForm
     {
         public long UserId { get; set; }
+        public bool IsSignature { get; set; }
         public ApplicantPersonalInfo ApplicantPersonalInfo { get; set; }
         public List<ApplicantAddress> ApplicantAddress { get; set; }
     }

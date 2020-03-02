@@ -375,7 +375,7 @@
         $("#drp_MasterLocation1").val(@locationId).attr("selected", "selected");
         //On Click menu add partial view
         $("#menu li a").click(function (e) {
-
+            debugger
                 //new fn_showMaskloader('Please wait...');
 
             e.preventDefault(); // prevent default link button redirect behaviour
@@ -383,8 +383,19 @@
             var dashValue = $(this).attr("data-oldDash");
             if (dashValue == "Yes") {
                 window.location.href = url;
-            }else{
-              $('#RenderPageId').load(url);
+            } else {
+                $('#RenderPageId').load(url);
+                //$.ajax({
+                //    type: "GET",
+                //    url: url,
+                //    //data: { LocationID: LocationID, LocationName: LocationName },
+                //    success: function (Data) {
+                //        $('#RenderPageId').html(Data);
+                //    },
+                //    error: function () {
+                //    }
+                //})
+
         }
         });
         $("#drp_MasterLocation1").change(function () {

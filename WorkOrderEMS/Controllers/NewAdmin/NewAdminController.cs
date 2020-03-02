@@ -867,7 +867,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
             }
-            return PartialView("~/Views/NewAdmin/ePeople/_HiringOnBoardingDashboard.cshtml");
+            return View("~/Views/NewAdmin/ePeople/_HiringOnBoardingDashboard.cshtml");
         }
         [HttpGet]
         public ActionResult MyOpenings(long PostingId)

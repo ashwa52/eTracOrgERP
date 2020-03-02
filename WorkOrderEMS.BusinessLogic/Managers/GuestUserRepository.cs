@@ -275,13 +275,10 @@ namespace WorkOrderEMS.BusinessLogic
         }
         public string GetPhotoRelease(long userId)
         {
-
             try
             {
-
                 using (workorderEMSEntities Context = new workorderEMSEntities())
                 {
-
                     var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
                     string name = Context.spGetPhotoReleaseForm(empid).FirstOrDefault();
                     return name;
@@ -398,20 +395,18 @@ namespace WorkOrderEMS.BusinessLogic
         }
         public ConfidenialityAgreementModel GetConfidenialityAgreementForm(long userId)
         {
-
             try
             {
-
                 using (workorderEMSEntities Context = new workorderEMSEntities())
                 {
-
                     var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
                     var name = Context.spGetConfidentialityAgreement(empid).Select(x => new ConfidenialityAgreementModel
                     {
                         Email = x.EMP_Email,
                         EmpAddress = x.EmpAddress,
                         EmpId = x.CDA_EMP_EmployeeID,
-                        EmployeeName = x.EmployeeName
+                        EmployeeName = x.EmployeeName,
+                        //CafId = x.
                     }).FirstOrDefault();
                     return name;
                 }
@@ -450,17 +445,13 @@ namespace WorkOrderEMS.BusinessLogic
         }
         public EducationVarificationModel GetEducationVerificationForm(long userId)
         {
-
             try
             {
-
                 using (workorderEMSEntities Context = new workorderEMSEntities())
                 {
-
                     var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
                     var name = Context.spGetEducationVerificationForm(empid).Select(x => new EducationVarificationModel
                     {
-
                         EmpId = empid,
                         HighSchool = new Education
                         {
