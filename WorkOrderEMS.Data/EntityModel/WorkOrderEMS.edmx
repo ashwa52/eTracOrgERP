@@ -14665,11 +14665,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="ALA_Answer" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="ApplicantPersonalInfoes" EntityType="WorkOrderEMS.Data.EntityModel.ApplicantPersonalInfo" />
-          <FunctionImport Name="spGetQuestionsForInterview" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetQuestionsForInterview_Result4)">
-            <Parameter Name="Action" Mode="In" Type="String" />
-            <Parameter Name="IsExempt" Mode="In" Type="String" />
-            <Parameter Name="IQC_IQM_Id" Mode="In" Type="Int64" />
-          </FunctionImport>
           <EntitySet Name="InterviewQuestionChilds" EntityType="WorkOrderEMS.Data.EntityModel.InterviewQuestionChild" />
           <EntitySet Name="InterviewQuestionMasters" EntityType="WorkOrderEMS.Data.EntityModel.InterviewQuestionMaster" />
           <AssociationSet Name="FK_LogCostCode_CostCode" Association="WorkOrderEMS.Data.EntityModel.FK_LogCostCode_CostCode">
@@ -14920,7 +14915,12 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="EEO_DisabilityDiscloseDiscription" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetFormRateOfPay" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetFormRateOfPay_Result3)">
-            <Parameter Name="ApplicantId" Mode="In" Type="Int64" />
+          <Parameter Name="ApplicantId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spGetQuestionsForInterview" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetQuestionsForInterview_Result5)">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="IsExempt" Mode="In" Type="String" />
+            <Parameter Name="IQC_IQM_Id" Mode="In" Type="Int64" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Proc_GetAllWorkAssignedToEmployee_Result">
@@ -19407,6 +19407,10 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="String" Name="VST_IsExempt" Nullable="true" MaxLength="1" />
           <Property Type="Decimal" Name="VST_RateOfPay" Nullable="true" Precision="18" Scale="2" />
           <Property Type="String" Name="TypeOfPayChange" Nullable="false" MaxLength="8" />
+        </ComplexType>
+        <ComplexType Name="spGetQuestionsForInterview_Result5">
+          <Property Type="Int64" Name="IQM_Id" Nullable="false" />
+          <Property Type="String" Name="IQM_Question" Nullable="true" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -25213,14 +25217,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spGetQuestionsForInterview" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetQuestionsForInterview">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetQuestionsForInterview_Result4">
-                <ScalarProperty Name="IQM_Id" ColumnName="IQM_Id" />
-                <ScalarProperty Name="IQM_Question" ColumnName="IQM_Question" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <EntitySetMapping Name="InterviewQuestionChilds">
             <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.InterviewQuestionChild">
               <MappingFragment StoreEntitySet="InterviewQuestionChild">
@@ -25799,6 +25795,14 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
                 <ScalarProperty Name="VST_IsExempt" ColumnName="VST_IsExempt" />
                 <ScalarProperty Name="VST_RateOfPay" ColumnName="VST_RateOfPay" />
                 <ScalarProperty Name="TypeOfPayChange" ColumnName="TypeOfPayChange" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetQuestionsForInterview" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetQuestionsForInterview">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetQuestionsForInterview_Result5">
+                <ScalarProperty Name="IQM_Id" ColumnName="IQM_Id" />
+                <ScalarProperty Name="IQM_Question" ColumnName="IQM_Question" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

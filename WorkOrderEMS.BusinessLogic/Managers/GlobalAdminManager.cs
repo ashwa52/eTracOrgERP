@@ -4105,22 +4105,21 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         public List<InterviewQuestionMaster> GetInterviewQuestions(string isExempt)
         //public List<spGetQuestionsForInterview_Result4> GetInterviewQuestions(string isExempt)
         {
+            workorderEMSEntities context = new workorderEMSEntities();
             try
             {
                 var lst = new List<InterviewQuestionMaster>();
-                using (workorderEMSEntities context = new workorderEMSEntities())
+                //Will change this , got some error while directly adding select using Lambda
+               var tt = context.InterviewQuestionMasters.ToList();//
+                lst = tt.Where(x => x.IQM_Exempt == isExempt).Select(x => new InterviewQuestionMaster()//("Y", "M", null).ToList();//.Select(x => new InterviewQuestionMaster()
                 {
-                     lst = context.spGetQuestionsForInterview("Y", "M", 0).Select(x => new InterviewQuestionMaster()
-                    {
-                        IQM_Question = x.IQM_Question,
-                        IQM_Id = x.IQM_Id
-                    }).ToList();
-                    //var lst = context.InterviewQuestionMasters.Where(x => x.IQM_Exempt == "Y").ToList();
-                    //return lst;
-                    //return context.spGetInterviewQuestion("Y").ToList();
-                    
-                    return lst;
-                }
+                    IQM_Question = x.IQM_Question,
+                    IQM_Id = x.IQM_Id
+                }).ToList();
+               // var lst = context.InterviewQuestionMasters.Where(x => x.IQM_Exempt == "Y").ToList();
+                return lst;
+                //return context.spGetInterviewQuestion("Y").ToList();
+                //return lst;
             }
             catch (Exception ex)
             {
@@ -4141,20 +4140,22 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 var lst = new List<ChildrenQuestionModel>();
                 using (workorderEMSEntities context = new workorderEMSEntities())
                 {
-                    lst = context.spGetQuestionsForInterview("Y", "C", num).
-                    Select(x => new ChildrenQuestionModel()
-                    {
-                        IQM_Id = x.IQM_Id,
-                        IQM_Question = x.IQM_Question
-                    }).ToList();
-                    //var childeQuestioncontext = context.InterviewQuestionChilds.Where(x => x.IQC_IQM_Id == num && x.IQC_IsActive == "Y").
-                    //   Select(x => new ChildrenQuestionModel()
-                    //   {
-                    //       IQM_Id = x.IQC_Id,
-                    //       IQM_Question = x.IQC_Question,
-                    //       IQM_ScoreNo = x.IQC_ScoreNo,
-                    //       IQM_ScoreYes = x.IQC_ScoreYes
-                    //   }).ToList();
+                    //lst = context.spGetQuestionsForInterview("Y", "C", num).
+                    //Select(x => new ChildrenQuestionModel()
+                    //{
+                    //    IQM_Id = x.IQM_Id,
+                    //    IQM_Question = x.IQM_Question
+                    //}).ToList();
+                    //Will change this , got some error while directly adding select using Lambda
+                    var get = context.InterviewQuestionChilds.ToList();
+                    lst = get.Where(x => x.IQC_IQM_Id == num && x.IQC_IsActive == "Y").
+                       Select(x => new ChildrenQuestionModel()
+                       {
+                           IQM_Id = x.IQC_Id,
+                           IQM_Question = x.IQC_Question,
+                           IQM_ScoreNo = x.IQC_ScoreNo,
+                           IQM_ScoreYes = x.IQC_ScoreYes
+                       }).ToList();
                     //return childeQuestioncontext;
                     //return context.spGetInterviewQuestion("Y").ToList();                   
                     return lst;
@@ -4180,8 +4181,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         MasterId = item.masterId;
                         if (item.Comment != null) {
                             comment = item.Comment.Replace("undefined", "");
-                        }
-                        
+                        }                        
                         var res = context.spSetInterviewAnswer(item.questionId, model.ApplicantId, EmpId, item.Answer, comment);// item.Comment);
                         if (res > 0)
                             isSaved = true;
@@ -4238,36 +4238,37 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     var getApplicantDetails = context.ApplicantInfoes.Where(x => x.API_ApplicantId == Applicant).FirstOrDefault();
                     if (getApplicantDetails != null)
                     {
-                        //childeQuestioncontext.ApplicantImage = getApplicantDetails.API_Photo;
-                        //childeQuestioncontext.ApplicantName = getApplicantDetails.API_FirstName+" "+ getApplicantDetails.API_LastName;
-                        ////will add Exempt non exempt dynamically
-                        //var masterQuestion = context.InterviewQuestionMasters.Where(x => x.IQM_Exempt == "Y").ToList();
-                        
-                        //foreach (var item in masterQuestion)
-                        //{
-                        //    Child = new ListAnswerModel();
-                        //    var data = context.InterviewQuestionChilds.Join(context.InterviewAnswers, q => q.IQC_Id, u => u.INA_IQC_Id, (q, u) => new { q, u }).
-                        //    Where(x => x.q.IQC_IQM_Id == item.IQM_Id).Select(a => new ChildQuestionAnswerModel(){
-                        //    IQM_Answer = a.u.INA_Answer == "Y"?"Yes":"No",
-                        //    IQM_Comment = a.u.INA_Comments,
-                        //    IQM_Question = a.q.IQC_Question,
-                        //    IQM_Id = a.u.INA_IQC_Id
-                        //    }).ToList();
-                        //    Child.IQM_Id = item.IQM_Id;
-                        //    Child.IQM_Question = item.IQM_Question;
-                        //    Child.ListAnswerMainModel = data;
-                        //    Child1.Add(Child);
+                        childeQuestioncontext.ApplicantImage = getApplicantDetails.API_Photo;
+                        childeQuestioncontext.ApplicantName = getApplicantDetails.API_FirstName + " " + getApplicantDetails.API_LastName;
+                        //will add Exempt non exempt dynamically
+                        var masterQuestion = context.InterviewQuestionMasters.Where(x => x.IQM_Exempt == "Y").ToList();
 
-                        //    //childeQuestioncontext.ListAnswerModel = context.InterviewAnswers.Where(x => x.INA_API_ApplicantId == Applicant && x.INA_IsActive == "Y").
-                        //    //Select(x => new ListAnswerModel()
-                        //    //{
-                        //    //    IQM_Question = context.InterviewQuestionChilds.Where(a => a.IQC_Id == x.INA_IQC_Id).FirstOrDefault().IQC_Question,
-                        //    //    IQM_Answer = x.INA_Answer,
-                        //    //    IQM_Comment = x.INA_Comments,
-                        //    //    IQM_Id = x.INA_IQC_Id
-                        //    //}).ToList();
-                        //}
-                        //childeQuestioncontext.ListAnswerModel = Child1;
+                        foreach (var item in masterQuestion)
+                        {
+                            Child = new ListAnswerModel();
+                            var data = context.InterviewQuestionChilds.Join(context.InterviewAnswers, q => q.IQC_Id, u => u.INA_IQC_Id, (q, u) => new { q, u }).
+                            Where(x => x.q.IQC_IQM_Id == item.IQM_Id).Select(a => new ChildQuestionAnswerModel()
+                            {
+                                IQM_Answer = a.u.INA_Answer == "Y" ? "Yes" : "No",
+                                IQM_Comment = a.u.INA_Comments,
+                                IQM_Question = a.q.IQC_Question,
+                                IQM_Id = a.u.INA_IQC_Id
+                            }).ToList();
+                            Child.IQM_Id = item.IQM_Id;
+                            Child.IQM_Question = item.IQM_Question;
+                            Child.ListAnswerMainModel = data;
+                            Child1.Add(Child);
+
+                            //childeQuestioncontext.ListAnswerModel = context.InterviewAnswers.Where(x => x.INA_API_ApplicantId == Applicant && x.INA_IsActive == "Y").
+                            //Select(x => new ListAnswerModel()
+                            //{
+                            //    IQM_Question = context.InterviewQuestionChilds.Where(a => a.IQC_Id == x.INA_IQC_Id).FirstOrDefault().IQC_Question,
+                            //    IQM_Answer = x.INA_Answer,
+                            //    IQM_Comment = x.INA_Comments,
+                            //    IQM_Id = x.INA_IQC_Id
+                            //}).ToList();
+                        }
+                        childeQuestioncontext.ListAnswerModel = Child1;
                     }
 
                     return childeQuestioncontext;

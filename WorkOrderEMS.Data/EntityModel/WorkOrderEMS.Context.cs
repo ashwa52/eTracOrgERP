@@ -6558,23 +6558,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<long>>("spSetApplicantCreateLoginAccess", aLA_LoginIdParameter, aLA_PasswordParameter, aLA_FirstNameParameter, aLA_MidNameParameter, aLA_LastNameParameter, aLA_eMailIdParameter, aLA_QuestionParameter, aLA_AnswerParameter);
         }
     
-        public virtual ObjectResult<spGetQuestionsForInterview_Result4> spGetQuestionsForInterview(string action, string isExempt, Nullable<long> iQC_IQM_Id)
-        {
-            var actionParameter = action != null ?
-                new ObjectParameter("Action", action) :
-                new ObjectParameter("Action", typeof(string));
-    
-            var isExemptParameter = isExempt != null ?
-                new ObjectParameter("IsExempt", isExempt) :
-                new ObjectParameter("IsExempt", typeof(string));
-    
-            var iQC_IQM_IdParameter = iQC_IQM_Id.HasValue ?
-                new ObjectParameter("IQC_IQM_Id", iQC_IQM_Id) :
-                new ObjectParameter("IQC_IQM_Id", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetQuestionsForInterview_Result4>("spGetQuestionsForInterview", actionParameter, isExemptParameter, iQC_IQM_IdParameter);
-        }
-    
         public virtual int spSetInterviewAnswer(Nullable<long> iNA_IQC_Id, Nullable<long> iNA_API_ApplicantId, string iNA_EMP_EmployeeID, string iNA_Answer, string iNA_Comments)
         {
             var iNA_IQC_IdParameter = iNA_IQC_Id.HasValue ?
@@ -7443,6 +7426,23 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("ApplicantId", typeof(long));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetFormRateOfPay_Result3>("spGetFormRateOfPay", applicantIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetQuestionsForInterview_Result5> spGetQuestionsForInterview(string action, string isExempt, Nullable<long> iQC_IQM_Id)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var isExemptParameter = isExempt != null ?
+                new ObjectParameter("IsExempt", isExempt) :
+                new ObjectParameter("IsExempt", typeof(string));
+    
+            var iQC_IQM_IdParameter = iQC_IQM_Id.HasValue ?
+                new ObjectParameter("IQC_IQM_Id", iQC_IQM_Id) :
+                new ObjectParameter("IQC_IQM_Id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetQuestionsForInterview_Result5>("spGetQuestionsForInterview", actionParameter, isExemptParameter, iQC_IQM_IdParameter);
         }
     }
 }

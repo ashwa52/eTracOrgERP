@@ -45,6 +45,7 @@ namespace WorkOrderEMS.Models
         public string JobTitleCountDesc { get; set; }
         //public string[] JDSplitedString { get; set; }
         //public long? MyProperty { get; set; }
+        public string VST_Level { get; set; }
     }
 
     public class BindDropDownList

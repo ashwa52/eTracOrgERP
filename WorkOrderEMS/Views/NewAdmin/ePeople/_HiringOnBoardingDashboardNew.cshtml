@@ -1,4 +1,5 @@
-﻿@{
+﻿
+@{
     //Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
     Layout = null;
 
@@ -253,7 +254,6 @@
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />
 <link href="~/Content/Dashboard/plugins/fullcalendar/fullcalendar.css" rel="stylesheet" />
-
 <style>
     .addWhite {
         color: white;
@@ -488,7 +488,6 @@
             </div>*@
     </div>
 </div>
-@*@Html.Partial("~/Views/NewAdmin/ePeople/_HiringOnBoarding.cshtml")*@
 
 <div class="modal fade  bd-example-modal-lg" @*data-backdrop="false" *@ id="ModalProfilePreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg">
@@ -540,302 +539,46 @@
 </div>
 
 <div id="popupEventForm" class="modal hide" style="display: none;">
-        <div class="modal-header"><h3>Add new event</h3></div>
-        <div class="modal-body">
-            <form id="EventForm" class="well">
-                <input type="hidden" id="eventID">
-                <label>Event title</label>
-                <input type="text" id="eventTitle" placeholder="Title here"><br />
-                <label>Scheduled date</label>
-                <input type="text" id="eventDate"><br />
-                <label>Scheduled time</label>
-                <input type="text" id="eventTime"><br />
-                <label>Appointment length (minutes)</label>
-                <input type="text" id="eventDuration" placeholder="15"><br />
-            </form>
-        </div>
+    <div class="modal-header"><h3>Add new event</h3></div>
+    <div class="modal-body">
+        <form id="EventForm" class="well">
+            <input type="hidden" id="eventID">
+            <label>Event title</label>
+            <input type="text" id="eventTitle" placeholder="Title here"><br />
+            <label>Scheduled date</label>
+            <input type="text" id="eventDate"><br />
+            <label>Scheduled time</label>
+            <input type="text" id="eventTime"><br />
+            <label>Appointment length (minutes)</label>
+            <input type="text" id="eventDuration" placeholder="15"><br />
+        </form>
     </div>
-    <!--**********************************
-        Content body end
-    ***********************************-->
-    <script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
-    <script src="~/GridListing/JsGridScript/ListOnBoarding.js"></script>
-    <script src="~/GridListing/JsGridScript/ListMyOpening.js"></script>
-    <script src="~/GridListing/JsGridScript/ListEmployeeManagement.js"></script>
-    <script src="~/Content/Dashboard/plugins/fullcalendar/mySchedule.js"></script>
-    <script src="~/Scripts/moment.min.js"></script>
-    <script src="~/Content/Dashboard/plugins/fullcalendar/fullcalendar.min.js"></script>
-    <script src="~/Scripts/NewAdminJS/AssetsAndOffer.js"></script>
-    <script>
-        var chartDAR = AmCharts.makeChart("eTimediv", {
-            "theme": "none",
-            "type": "serial",
-            "startDuration": 7,
-            "dataProvider": [{
-                "Cost Code": "Travel",
-                "Budget": 4334,
-                "color": "#1740AE"
-            }, {
-                "Cost Code": "Marketing",
-                "Budget": 4000,
-                "color": "#758DCB"
-            }, {
-                "Cost Code": "Other Travel",
-                "Budget": 3466,
-                "color": "#86E2E8"
-            }],
-            "valueAxes": [{
-                "position": "left",
-                "axisAlpha": 0,
-                "gridAlpha": 0
-            }],
-            "graphs": [{
-                "balloonText": "[[category]]: <b>[[value]]</b>",
-                "colorField": "color",
-                "fillAlphas": 0.85,
-                "lineAlpha": 0.1,
-                "type": "column",
-                "topRadius": 1,
-                "valueField": "Budget"
-            }],
-            "depth3D": 40,
-            "angle": 30,
-            "chartCursor": {
-                "categoryBalloonEnabled": false,
-                "cursorAlpha": 0,
-                "zoomable": false
-            },
-            "categoryField": "Cost Code",
-            "categoryAxis": {
-                "gridPosition": "start",
-                "axisAlpha": 1,
-                "gridAlpha": 0,
-                "labelRotation": 20,
-            },
-            "export": {
-                "enabled": true
-            }
+</div>
 
-        }, 0);
-     </script>
-    <script>
-       $(document).ready(function () {
-           $("#showHideHiringOnBoardingDashboard").show();
-           getApplicantInfo();
-           $.ajax({
-               type: "GET",
-               url: "@Url.Action("GetDashboardHeadCount", "GlobalAdmin")",
-               data: {},
-           contentType: "application/json; charset=utf-8",
-           dataType: "json",
-           success: function (jsondata) {
-               //successFuncPie(response);
-               if (jsondata != null && jsondata != "" && jsondata.dataJson.trim() != "") {
-                   var dataJSON = JSON.parse(jsondata.dataJson);
-                   dataJSON.CountPanel[0].AdminCount;
-                   am4core.ready(function () {
-                       am4core.useTheme(am4themes_animated);
-                       var chartQRC = am4core.create("QRCCount", am4charts.PieChart);
-                       chartQRC.data = [{
-                           "UserType": "Administrator",
-                           "Count": 20
-                       }, {
-                           "UserType": "Manager",
-                           "Count": 5//dataJSON.CountPanel[0].EmpCount
-                       }, {
-                           "UserType": "Employee",
-                           "Count": 3//dataJSON.CountPanel[0].ManagerCount
-                       }];
-                       debugger;
-                       // Add and configure Series
-                       var pieSeries = chartQRC.series.push(new am4charts.PieSeries());
-                       pieSeries.dataFields.value = "Count";
-                       pieSeries.innerRadius = am4core.percent(50);
-                       pieSeries.ticks.template.disabled = true;
-                       pieSeries.labels.template.disabled = true;
+<script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
+<script src="~/GridListing/JsGridScript/ListOnBoarding.js"></script>
+<script src="~/GridListing/JsGridScript/ListMyOpening.js"></script>
+<script src="~/GridListing/JsGridScript/ListEmployeeManagement.js"></script>
+<script src="~/Content/Dashboard/plugins/fullcalendar/mySchedule.js"></script>
+<script src="~/Scripts/moment.min.js"></script>
+<script src="~/Content/Dashboard/plugins/fullcalendar/fullcalendar.min.js"></script>
+<script src="~/Scripts/NewAdminJS/AssetsAndOffer.js"></script>
+<link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />
+<script>
 
-                       var rgm = new am4core.RadialGradientModifier();
-                       rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
-                       pieSeries.slices.template.fillModifier = rgm;
-                       pieSeries.slices.template.strokeModifier = rgm;
-                       pieSeries.slices.template.strokeOpacity = 0.4;
-                       pieSeries.slices.template.strokeWidth = 0;
+    $("#HiringOnBoard").click(function () {
+        $("#hiringOnBordingDiv").show();
+        $("#EmployeeManagementDiv").hide();
+        $('html,body').animate({
+            scrollTop: $("#hiringOnBordingDiv").offset().top
+        }, 'slow');
+    });
 
-                       chartQRC.legend = new am4charts.Legend();
-                       chartQRC.legend.position = "right";
-                       chartQRC.legend.disabled = true
-
-                   }); // end am4core.ready()
-               }
-           }
-       });
-       });
-    </script>
-        @*am4core.ready(function () {
-
-            // Themes begin
-            am4core.useTheme(am4themes_material);
-            am4core.useTheme(am4themes_animated);
-            // Themes end
-
-            // Create chart instance
-            var chart = am4core.create("EmployeePieChart", am4charts.PieChart);
-
-            // Add data
-            chart.data = [{
-                "User Type": "Administrator",
-                "Count": 2//dataJSON.CountPanel[0].ManagerCount
-            }, {
-                "User Type": "Manager",
-                "Count": 4
-            }, {
-                "User Type": "Employee",
-                "Count": 12//dataJSON.CountPanel[0].EmpCount
-            }];
-
-            // Add and configure Series
-            var pieSeries = chart.series.push(new am4charts.PieSeries());
-            pieSeries.dataFields.value = "Count";
-            pieSeries.dataFields.category = "User Type";
-            pieSeries.innerRadius = am4core.percent(50);
-            pieSeries.ticks.template.disabled = true;
-            pieSeries.labels.template.disabled = true;
-
-            var rgm = new am4core.RadialGradientModifier();
-            rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, - 0.5);
-            pieSeries.slices.template.fillModifier = rgm;
-            pieSeries.slices.template.strokeModifier = rgm;
-            pieSeries.slices.template.strokeOpacity = 0.4;
-            pieSeries.slices.template.strokeWidth = 0;
-
-            chart.legend = new am4charts.Legend();
-            chart.legend.position = "right";
-
-        }); // end am4core.ready()
-    </script>
-    <script>
-        var chartDAR = AmCharts.makeChart("eTimediv", {
-            "theme": "none",
-            "type": "serial",
-            "startDuration": 7,
-            "dataProvider": [{
-                "Cost Code": "Travel",
-                "Budget": 4334,
-                "color": "#1740AE"
-            }, {
-                "Cost Code": "Marketing",
-                "Budget": 4000,
-                "color": "#758DCB"
-            }, {
-                "Cost Code": "Other Travel",
-                "Budget": 3466,
-                "color": "#86E2E8"
-            }],
-            "valueAxes": [{
-                "position": "left",
-                "axisAlpha": 0,
-                "gridAlpha": 0
-            }],
-            "graphs": [{
-                "balloonText": "[[category]]: <b>[[value]]</b>",
-                "colorField": "color",
-                "fillAlphas": 0.85,
-                "lineAlpha": 0.1,
-                "type": "column",
-                "topRadius": 1,
-                "valueField": "Budget"
-            }],
-            "depth3D": 40,
-            "angle": 30,
-            "chartCursor": {
-                "categoryBalloonEnabled": false,
-                "cursorAlpha": 0,
-                "zoomable": false
-            },
-            "categoryField": "Cost Code",
-            "categoryAxis": {
-                "gridPosition": "start",
-                "axisAlpha": 1,
-                "gridAlpha": 0,
-                "labelRotation": 20,
-            },
-            "export": {
-                "enabled": true
-            }
-
-        }, 0);
-    </script>
-
-    <script>
-        $(document).ready(function () {
-            $("#showHideHiringOnBoardingDashboard").show();
-            getApplicantInfo();
-            $.ajax({
-                type: "GET",
-                url: "@Url.Action("GetDashboardHeadCount", "GlobalAdmin")",
-                data: {},
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (jsondata) {
-            //successFuncPie(response);
-            if (jsondata != null && jsondata != "" && jsondata.dataJson.trim() != "") {
-                var dataJSON = JSON.parse(jsondata.dataJson);
-                dataJSON.CountPanel[0].AdminCount;
-                am4core.ready(function () {
-                    am4core.useTheme(am4themes_animated);
-                    var chartQRC = am4core.create("QRCCount", am4charts.PieChart);
-                    chartQRC.data = [{
-                        "UserType": "Administrator",
-                        "Count": 20
-                    }, {
-                        "UserType": "Manager",
-                        "Count": 5//dataJSON.CountPanel[0].EmpCount
-                    }, {
-                        "UserType": "Employee",
-                        "Count": 3//dataJSON.CountPanel[0].ManagerCount
-                        }];
-                    debugger;
-                    // Add and configure Series
-                    var pieSeries = chartQRC.series.push(new am4charts.PieSeries());
-                    pieSeries.dataFields.value = "Count";
-                    pieSeries.innerRadius = am4core.percent(50);
-                    pieSeries.ticks.template.disabled = true;
-                    pieSeries.labels.template.disabled = true;
-
-                    var rgm = new am4core.RadialGradientModifier();
-                    rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
-                    pieSeries.slices.template.fillModifier = rgm;
-                    pieSeries.slices.template.strokeModifier = rgm;
-                    pieSeries.slices.template.strokeOpacity = 0.4;
-                    pieSeries.slices.template.strokeWidth = 0;
-
-                    chartQRC.legend = new am4charts.Legend();
-                    chartQRC.legend.position = "right";
-                    chartQRC.legend.disabled = true
-
-                }); // end am4core.ready()
-            }
-        }
-            });
-
-            $("#HiringOnBoard").click(function () {
-                $("#hiringOnBordingDiv").show();
-                $("#EmployeeManagementDiv").hide();
-                $('html,body').animate({
-                    scrollTop: $("#hiringOnBordingDiv").offset().top
-                }, 'slow');
-            });
-
-            $("#EmplooyeeManagement").click(function () {
-                $("#EmployeeManagementDiv").show();
-                $("#hiringOnBordingDiv").hide();
-                $('html,body').animate({
-                    scrollTop: $("#EmployeeManagementDiv").offset().top
-                }, 'slow');
-            });
-
-
-
-     });
-    </script>
-    <link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />
+    $("#EmplooyeeManagement").click(function () {
+        $("#EmployeeManagementDiv").show();
+        $("#hiringOnBordingDiv").hide();
+        $('html,body').animate({
+            scrollTop: $("#EmployeeManagementDiv").offset().top
+        }, 'slow');
+    });
+</script>

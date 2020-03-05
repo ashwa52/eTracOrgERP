@@ -1,6 +1,7 @@
 ﻿var HOBurl = '../HirinngOnBoarding/GetHiringOnBoardingList';
 var base_url = window.location.origin;
 var clients;
+var apt_id = 0;
 var JobPostingId = 0;
 var $_LocationId = $("#drp_MasterLocation1 option:selected").val();
 var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_RequestedBy = 0;//= $("#drp_MasterLocation option:selected").val();
@@ -68,6 +69,7 @@ function myOpenings(PostingId) {
 			//},
              {
                  title: "Action", width: 70, css: "text-center", itemTemplate: function (value, item) {
+                     debugger
                      var $iconAssessment, $iconBackground;
                      var $iconFirst = $("<i>").attr({ class: "fa fa-exclamation-triangle whiteR" });
                      var $iconSecond = $("<i>").attr({ class: "fa fa-gg-circle whiteB" }).attr({ style: "color:red;font-size:22px;margin-left:8px;" });
@@ -150,11 +152,11 @@ function myOpenings(PostingId) {
                               });
                           }).append($iconBackground);
 
-                     var $customRecruiteeButton = $("<span>")
-                          .attr({ title: jsGrid.fields.control.prototype.ScheduleEmployeeTooltip })
-                          .attr({ id: "btn-Recruitee-" + item.ApplicantId }).click(function (e) {
-                              window.location.href = "https://app.recruitee.com/#/settings/scheduler";
-                          }).append($iconGoTORecruitee);
+                     //var $customRecruiteeButton = $("<span>")
+                     //     .attr({ title: jsGrid.fields.control.prototype.ScheduleEmployeeTooltip })
+                     //     .attr({ id: "btn-Recruitee-" + item.ApplicantId }).click(function (e) {
+                     //         window.location.href = "https://app.recruitee.com/#/settings/scheduler";
+                     //     }).append($iconGoTORecruitee);
 
                      var $customAssetsButton = $("<span>")
                          .attr({ title: jsGrid.fields.control.prototype.AssetsButtonTooltip })
@@ -212,7 +214,7 @@ function myOpenings(PostingId) {
                               });
                           }).append($iconSendOffer);
                      
-                     return $("<div>").attr({ class: "btn-toolbar" }).append($customFirstButton).append($customSecondButton).append($customDiamondButton).append($customAssessmentButton).append($customBackgroundButton).append($customRecruiteeButton).append($customAssetsButton).append($customOfferButton);
+                     return $("<div>").attr({ class: "btn-toolbar" }).append($customFirstButton).append($customSecondButton).append($customDiamondButton).append($customAssessmentButton).append($customBackgroundButton).append($customAssetsButton).append($customOfferButton);//append($customRecruiteeButton)
                  }
              }
         ]
@@ -449,6 +451,7 @@ function TakeInterview(item) {
     });
 }
 function GetInterviewers(elm, applicantId) {
+    apt_id = applicantId;
     $(elm).removeClass("btnNotSelected");
     $(elm).addClass("btnSelected");
     $(elm.parentElement).find('button').each(function (index, element) {
@@ -480,7 +483,7 @@ function GetInterviewQuestions() {
 function GetTypeInterview() {
     $("#interviewArea").empty();
     $.ajax({
-        url: base_url + '/NewAdmin/CheckForTypeInterview',
+        url: base_url + '/NewAdmin/CheckForTypeInterview?id=' + apt_id,
         method: 'GET',
         //data: { id: id },
         success: function (innerResponse) {
@@ -501,10 +504,10 @@ function Getquestions(id) {
         }
     });
 }
-function CheckeForInterviewType(type) {
+function CheckeForInterviewType(type, isExempt) {
     if (type == "Interview") {
         $.ajax({
-            url: base_url + '/NewAdmin/GetInterviewQuestionView',
+            url: base_url + '/NewAdmin/GetInterviewQuestionView?isExempt=' + isExempt,
             method: 'GET',
             success: function (response) {
                 Getquestions(null);
@@ -728,6 +731,7 @@ function RecordNo(isFinal) {
 }
 function SaveAndNext() {
     var formObject = $("#getQuestionAnswerData").serialize();
+    debugger
     //var dataObjetc = JSON.stringify(formObject)
     var myJSON = JSON.stringify(AnswerArr);
     var INA_INQ_Id = $("#q_id").val();
@@ -789,76 +793,76 @@ function SaveAndNext() {
     //====================End Question 6================================
     for (i = 0; i < AnswerArr.length; i++) {
         if (AnswerArr[i].questionId == Comment1_id) {
-            if (Comment1 != null && Comment1 != undefined) {
+            if (Comment1 != null && Comment1 != undefined && Comment1 != "") {
                 AnswerArr[i].Comment += Comment1 + "|";
             }
-            if (Comment12 != null && Comment12 != undefined) {
+            if (Comment12 != null && Comment12 != undefined && Comment12 != "") {
                 AnswerArr[i].Comment += Comment12 + "|";
             }
         }
         if (AnswerArr[i].questionId == Comment2_id) {
-            if (Comment2 != null && Comment2 != undefined) {
+            if (Comment2 != null && Comment2 != undefined && Comment2 != "") {
                 AnswerArr[i].Comment = Comment2;
             }
         }
         if (AnswerArr[i].questionId == Comment3_id) {
-            if (Comment3 != null && Comment3 != undefined) {
+            if (Comment3 != null && Comment3 != undefined && Comment3 != "") {
                 AnswerArr[i].Comment += Comment3 + "|";
             }           
-            if (Comment31 != null && Comment31 != undefined) {
+            if (Comment31 != null && Comment31 != undefined && Comment31 != "") {
                 AnswerArr[i].Comment += Comment31 + "|";
             }
-            if (Comment31 != null && Comment31 != undefined) {
+            if (Comment31 != null && Comment31 != undefined && Comment31 != "") {
                 AnswerArr[i].Comment += Comment32 + "|";
             }           
         }
         if (AnswerArr[i].questionId == Comment24_id) {
-            if (Comment24 != null && Comment24 != undefined) {
+            if (Comment24 != null && Comment24 != undefined && Comment24 != "") {
                 AnswerArr[i].Comment += Comment24 ;
             }
         }
         //==============Que 3
         if (AnswerArr[i].questionId == Comment37_1_id) {
-            if (Comment37_1 != null && Comment37_1 != undefined) {
+            if (Comment37_1 != null && Comment37_1 != undefined && Comment37_1 != "") {
                 AnswerArr[i].Comment += Comment37_1 +"|";
             }
-            if (Comment37_2 != null && Comment37_2 != undefined) {
+            if (Comment37_2 != null && Comment37_2 != undefined && Comment37_2 != "") {
                 AnswerArr[i].Comment += Comment37_2 + "|";
             }
-            if (Comment37_3 != null && Comment37_3 != undefined) {
+            if (Comment37_3 != null && Comment37_3 != undefined && Comment37_3 != "") {
                 AnswerArr[i].Comment += Comment37_3 + "|";
             }
         }
         if (AnswerArr[i].questionId == Comment38_1_id) {
-            if (Comment38_1 != null && Comment38_1 != undefined) {
+            if (Comment38_1 != null && Comment38_1 != undefined && Comment38_1 != "") {
                 AnswerArr[i].Comment += Comment38_1 + "|";
             }
-            if (Comment38_2 != null && Comment38_2 != undefined) {
+            if (Comment38_2 != null && Comment38_2 != undefined && Comment38_2 != "") {
                 AnswerArr[i].Comment += Comment38_2;
             }
         }
         if (AnswerArr[i].questionId == Comment310_1_id) {
-            if (Comment310_1 != null && Comment310_1 != undefined) {
+            if (Comment310_1 != null && Comment310_1 != undefined && Comment310_1 != "") {
                 AnswerArr[i].Comment += Comment310_1 ;
             }           
         }
         if (AnswerArr[i].questionId == Comment311_1_id) {
-            if (Comment311_1 != null && Comment311_1 != undefined) {
+            if (Comment311_1 != null && Comment311_1 != undefined && Comment311_1 != "") {
                 AnswerArr[i].Comment += Comment311_1;
             }
         }
         //=============End Que 3
         //================Que 4
         if (AnswerArr[i].questionId == Comment412_1_id) {
-            if (Comment412_1 != null && Comment412_1 != undefined) {
+            if (Comment412_1 != null && Comment412_1 != undefined && Comment412_1 != "") {
                 AnswerArr[i].Comment += Comment412_1 +"|";
             }
-            if (Comment412_2 != null && Comment412_2 != undefined) {
+            if (Comment412_2 != null && Comment412_2 != undefined && Comment412_2 != "") {
                 AnswerArr[i].Comment += Comment412_2 ;
             }            
         }
         if (AnswerArr[i].questionId == Comment413_1_id) {
-            if (Comment413_1 != null && Comment413_1 != undefined) {
+            if (Comment413_1 != null && Comment413_1 != undefined && Comment413_1 != "") {
                 AnswerArr[i].Comment += Comment413_1 ;
             }        
         }

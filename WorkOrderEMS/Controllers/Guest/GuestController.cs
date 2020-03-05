@@ -245,6 +245,7 @@ namespace WorkOrderEMS.Controllers.Guest
                 string ImageUniqueName = string.Empty;
                 string url = string.Empty;
                 string ImageURL = string.Empty;
+                var signDataTranslator = string.Empty;
                 if (model != null)
                 {
                     if (model.SignatureImageBase != null)
@@ -258,6 +259,10 @@ namespace WorkOrderEMS.Controllers.Guest
                             Directory.CreateDirectory(ImagePath);
                         }
                         var ImageLocation = ImagePath + ImageURL;
+                        //bcz memory stream cannot read this string so replace the unwanted data from string
+                            signDataTranslator = model.SignatureImageBase.Replace("data:image/jpeg;base64,", "");
+                            signDataTranslator = model.SignatureImageBase.Replace("data:image/jpg;base64,", "");
+                            signDataTranslator = model.SignatureImageBase.Replace("data:image/png;base64,", "");
                         //Save the image to directory
                         using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(model.SignatureImageBase)))
                         {
@@ -265,7 +270,7 @@ namespace WorkOrderEMS.Controllers.Guest
                             {
                                 //bm2.Save("SavingPath" + "ImageName.jpg");
                                 bm2.Save(ImageLocation);
-                                model.SignatureImageBase = ImageURL;
+                                model.I9F_Sec1_SignatureOfPreparerOrTranslator = ImageURL;
                                 //imgupload.ImageUrl = ImageLocation;
                             }
                         }
@@ -280,7 +285,7 @@ namespace WorkOrderEMS.Controllers.Guest
                             var employeeId = objloginmodel.UserName;
                             #region PDF
                             string viewName = "_I9Form";
-                            string path = applicantId + model.I9F_Sec1_FirstName + "_I9Form";
+                            string path = applicantId + model.I9F_Sec1_FirstName + viewName+".pdf";
                             var getDetails = _FillableFormRepository.GetFileList().Where(x => x.FLT_FileType == "Yellow" && x.FLT_Id == Convert.ToInt64(FileTypeId.I9)).FirstOrDefault();
                             var getpdf = HtmlConvertToPdf(viewName, model, path, getDetails.FLT_Id, employeeId);
                             #endregion PDF
@@ -330,7 +335,7 @@ namespace WorkOrderEMS.Controllers.Guest
             if (model != null)
             {
                 string viewName = "_W4Form";
-                string path = Session["ApplicantId"] + model.FirstName + "_W4Form";
+                string path = Session["ApplicantId"] + model.FirstName + viewName+".pdf";
                 var employeeId = objloginmodel.UserName;
                 _IGuestUserRepository.SetW4Form(objloginmodel.UserId, model);
                 if (model.IsSignature == true)

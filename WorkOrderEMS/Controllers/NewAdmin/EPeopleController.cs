@@ -88,22 +88,44 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
 
         #region Employee Management
+
+        [HttpPost]
+        public JsonResult GetEmpChartData()
+        {
+            var lstChart = new List<AddChartModel>();
+            var _manager = new VehicleSeatingChartManager();
+            lstChart = _manager.ListVehicleSeatingChart(1);
+            return Json(lstChart, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult ChartDetailsViewDemo(string Id)
+        {
+            Session["EmployeeId"] = Id;
+            var id = Cryptography.GetDecryptedData(Id, true);
+            long _UserId = 0;
+            long.TryParse(id, out _UserId);
+            if (_UserId > 0)
+            {
+                ViewBag.userId = _UserId.ToString();
+            }
+            return View("~/Views/NewAdmin/ePeople/NewViewForEMP/EmployeeChartList.cshtml");
+        }
+
         public ActionResult ChartDetailsView(string Id)
         {//D:\Project\eTrac\eTracOrgERP\WorkOrderEMS\Views\NewAdmin\ePeople\_VSCPointingChartDemo.cshtml
             //return PartialView("~/Views/NewAdmin/ePeople/_VSCPointingChart.cshtml");
             Session["EmployeeId"] = Id;
             return PartialView("~/Views/NewAdmin/ePeople/_VSCPointingChartDemo.cshtml");
         }
-        public ActionResult ChartDetailsViewDemo(string Id)
-        {//D:\Project\eTrac\eTracOrgERP\WorkOrderEMS\Views\NewAdmin\ePeople\_VSCPointingChartDemo.cshtml
-            //return PartialView("~/Views/NewAdmin/ePeople/_VSCPointingChart.cshtml");
-            Session["EmployeeId"] = Id;
-            var lstChart = new List<AddChartModel>();
-            var _manager = new VehicleSeatingChartManager();
-            lstChart = _manager.ListVehicleSeatingChart(0);
-            //return View("~/Views/NewAdmin/ePeople/NewViewForEMP/_NewTreeView.cshtml");
-            return PartialView("~/Views/NewAdmin/ePeople/Requisition/_Chart.cshtml");
-        }
+        //public ActionResult ChartDetailsViewDemo(string Id)
+        //{//D:\Project\eTrac\eTracOrgERP\WorkOrderEMS\Views\NewAdmin\ePeople\_VSCPointingChartDemo.cshtml
+        //    //return PartialView("~/Views/NewAdmin/ePeople/_VSCPointingChart.cshtml");
+        //    Session["EmployeeId"] = Id;
+        //    var lstChart = new List<AddChartModel>();
+        //    var _manager = new VehicleSeatingChartManager();
+        //    lstChart = _manager.ListVehicleSeatingChart(0);
+        //    //return View("~/Views/NewAdmin/ePeople/NewViewForEMP/_NewTreeView.cshtml");
+        //    return PartialView("~/Views/NewAdmin/ePeople/Requisition/_Chart.cshtml");
+        //}
         /// <summary>
         /// Created BY : Ashwajit Bansod
         /// Created Date : 12-OCT-2019

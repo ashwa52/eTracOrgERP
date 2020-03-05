@@ -6027,6 +6027,8 @@
     <Content Include="Scripts\eFleet\PassengerTracking.js" />
     <Content Include="Scripts\ePeople\ApplicantFunctionality.js" />
     <Content Include="Scripts\ePeople\CustomMultistepWizardApplicant.js" />
+    <Content Include="Scripts\ePeople\Google_Jquery.js" />
+    <Content Include="Scripts\ePeople\Google_Org_Chart_Api.js" />
     <Content Include="Scripts\FileUpload\jquery.fileupload-ui.js" />
     <Content Include="Scripts\FileUpload\jquery.fileupload.js" />
     <Content Include="Scripts\FileUpload\jquery.iframe-transport.js" />
@@ -6909,6 +6911,8 @@
     <Content Include="Views\Guest\PartialView\_DesclaimerEEO.cshtml" />
     <Content Include="Views\Guest\PartialView\_ApplicantFunFact.cshtml" />
     <Content Include="Views\Guest\_RateOfPay.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_HiringOnBoardingDashboardNew.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\NewViewForEMP\EmployeeChartList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

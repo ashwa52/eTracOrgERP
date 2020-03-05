@@ -5956,7 +5956,7 @@ namespace WorkOrderEMS.Controllers.Services
         /// <param name="obj"></param>
         /// <returns></returns>
         [HttpPost]
-        public IHttpActionResult SaveApplicant(CommonApplicantModel obj)
+        public IHttpActionResult  SaveApplicant(CommonApplicantModel obj)
         {
             var ObjServiceResponseModel = new ServiceResponseModel<string>();
             try

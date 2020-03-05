@@ -858,6 +858,8 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
+
+        [HttpGet]
         public ActionResult HiringOnBoardingDashboard()
         {
             eTracLoginModel ObjLoginModel = null;
@@ -867,7 +869,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
             }
-            return View("~/Views/NewAdmin/ePeople/_HiringOnBoardingDashboard.cshtml");
+            return PartialView("~/Views/NewAdmin/ePeople/_HiringOnBoardingDashboardNew.cshtml");
         }
         [HttpGet]
         public ActionResult MyOpenings(long PostingId)
@@ -921,17 +923,26 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         public PartialViewResult GetInterviewQuestionView(string isExempt)
         {
             //var questions = _GlobalAdminManager.GetInterviewQuestions().Where(x => x.INQ_Id == 1).ToList();
-            var questions = _GlobalAdminManager.GetInterviewQuestions("Y").ToList();//.Where(x => x.INQ_Id == 1).ToList();
+            var questions = _GlobalAdminManager.GetInterviewQuestions(isExempt).ToList();//.Where(x => x.INQ_Id == 1).ToList();
             Session["eTrac_questions"] = questions;
             return PartialView("ePeople/_questionsview");
         }
         [HttpGet]
-        public PartialViewResult CheckForTypeInterview()
+        public PartialViewResult CheckForTypeInterview(long id)
         {
+            if(id > 0)
+            {
+                var getDataForIsExempt = _IApplicantManager.GetRateOfPayInfo(id, null);
+                return PartialView("ePeople/OnBoarding/_CheckForDOT", getDataForIsExempt);
+            }
+            else
+            {
+                return PartialView("ePeople/OnBoarding/_CheckForDOT");
+            }
             //var questions = _GlobalAdminManager.GetInterviewQuestions().Where(x => x.INQ_Id == 1).ToList();
             // var questions = _GlobalAdminManager.GetInterviewQuestions("Y").ToList();//.Where(x => x.INQ_Id == 1).ToList();
             //Session["eTrac_questions"] = questions;
-            return PartialView("ePeople/OnBoarding/_CheckForDOT");
+            
         }
 
         [HttpPost]

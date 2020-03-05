@@ -132,6 +132,8 @@ namespace WorkOrderEMS.Models
         public string Question { get; set; }
         [DataMember]
         public string Answer { get; set; }
+        [DataMember]
+        public long? ApplicantId { get; set; }
         #endregion Other Login Data
     }
     public class Login

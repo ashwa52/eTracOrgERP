@@ -36,15 +36,15 @@ namespace WorkOrderEMS.BusinessLogic
                 if (obj.LoginId != null && obj.Password != null)
                 {
                     var password = Cryptography.GetEncryptedData(obj.Password, true);
-                    loginModel = _db.ApplicantLoginAccesses.Where(x => x.ALA_LoginId == obj.LoginId && x.ALA_Password == password).Select(a => new eTracLoginModel()
+                    loginModel = _db.ApplicantLoginAccesses.Join(_db.Applicants,ala => ala.ALA_UserId,ap => ap.APT_ALA_UserId,(ala,ap) => new { ala, ap }).Where(x => x.ala.ALA_LoginId == obj.LoginId && x.ala.ALA_Password == password).Select(a => new eTracLoginModel()
                     {
-                        FName = a.ALA_FirstName,
-                        LName = a.ALA_LastName,
-                        Email = a.ALA_eMailId,
-                        MName = a.ALA_MidName,
-                        LoginId = a.ALA_LoginId,
-                        UserId = a.ALA_UserId,
-                        //EmployeeID = a.e
+                        FName = a.ala.ALA_FirstName,
+                        LName = a.ala.ALA_LastName,
+                        Email = a.ala.ALA_eMailId,
+                        MName = a.ala.ALA_MidName,
+                        LoginId = a.ala.ALA_LoginId,
+                        UserId = a.ala.ALA_UserId,
+                        ApplicantId = a.ap.APT_ApplicantId
                     }).FirstOrDefault();
                     if (loginModel != null)
                     {
