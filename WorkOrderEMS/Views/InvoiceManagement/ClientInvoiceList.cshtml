@@ -1,0 +1,799 @@
+﻿@model WorkOrderEMS.Models.ClientInvoiceDataModel
+@using WorkOrderEMS.Service;
+@{
+    ViewBag.Title = "Client Invoice List";
+
+    var isRefresh = ViewBag.IsPageRefresh;
+    if (isRefresh == true)
+    {
+        Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = null;
+    }
+    long locationId = 0;
+    long userType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserProfile = "";
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+    }
+    ARService ARS = new ARService();
+    var InvoiceStatusList = ARS.GetGlobalCodes(0, "InvoiceStatus");
+
+
+}
+@section scripts{
+    <script type="text/javascript">
+    var $_locationId = '@locationId';
+    var $_userTypeId = '@userType';
+    var $_VendorStatus = "false";
+    </script>
+}
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/c3/css/c3.min.css" rel="stylesheet" />
+
+<style>
+    #chartdiv, #EmployeeCount1 {
+        width: 100%;
+        height: 250px;
+    }
+
+    .package {
+        margin-top: 0px !important;
+        display: inline-flex;
+        justify-items: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    label .req {
+        margin: 2px;
+        color: #ed2f35;
+    }
+
+    .form-control {
+        border: 1px solid #a0b3b0 !important;
+    }
+
+    .jsgrid-grid-body {
+        height: 100% !important;
+    }
+
+    .headerSize {
+        height: 36px;
+    }
+
+    .GridTotal {
+        padding: 15px !important;
+        text-align: right !important;
+    }
+
+    .divHover:hover {
+        background-color: #D3D3D3;
+        border-color: #c9e2b3;
+    }
+</style>
+<br />
+<div class="content-body" style="min-height: 920px;">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card aos-init aos-animate" data-aos="fade-up">
+                    <div class="card-header headerSize">
+                        <h4 class="card-title" style="color:white;"><strong>Client Invoice List</strong></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="panel panel-primary setup-content">
+                            <div class="basic-form">
+                                <div class="row">
+                                    <div class="form-group col-md-6" data-aos="fade-up">
+                                        <h4 class="card-title">Invoice Status</h4>
+                                        <div class="chart">
+                                            <canvas id="InvoiceStatuses"></canvas>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row col-md-6">
+                                        <label class="col-sm-3 col-form-label">Type</label>
+                                        <div class="col-sm-9">
+                                            @*@Html.RadioButton("InvoiceTypeRadio", "true", new { @class = "radio rbtn", data_title = "Invoice", @checked = true })*@
+                                            <input type="radio" name="TypeFilter" value="Invoice" checked data-title="Invoice" />
+                                            <span class="radio_span">
+                                                &nbsp;Invoice &nbsp;&nbsp;
+                                            </span>
+                                            @* @Html.RadioButton("InvoiceTypeRadio", "false", new { @style = "margin-left:20%;", @class = "radio rbtn", data_title = "Invoice Credit" })*@
+                                            <input type="radio" name="TypeFilter" value="CreditMemo" style="margin-left:20%" data-title="Invoice Credit" />
+                                            <span class="radio_span">
+                                                &nbsp;Invoice Credit
+                                            </span>
+                                            @Html.Hidden("InvoiceTypeRadioValue")
+                                        </div>
+                                        @*<label class="col-sm-3 col-form-label" for="FirstName">Location</label>
+                                            <div class="col-sm-9">
+                                                @if (Session != null)
+                                                {
+                                                    if (Session["eTrac_UserLocations"] != null)
+                                                    {
+                                                        @Html.DropDownList("ClientLocationCodeSearchParams", new SelectList((List<WorkOrderEMS.Models.UserLocations>)Session["eTrac_UserLocations"], "LocationId", "LocationName"), "--Select Location--", new { @class = "form-control input-rounded required required2", @onchange = "doSearch()" })
+                                                    }
+                                                }
+                                                <div class="errorspace">
+                                                    @Html.ValidationMessage("ClientLocationCode1")
+                                                </div>
+                                            </div>*@
+                                        <label class="col-sm-3 col-form-label">Search</label>
+                                        <div class="col-sm-9">
+                                            @Html.TextBox("SearchText", "", new { @class = "form-control input-rounded", @placeholder = "Search", onkeyup = "doSearch()" })
+                                            @Html.ValidationMessage("SearchText")
+                                        </div>
+                                        <label class="col-sm-3 col-form-label" for="ClientPointOfContactName">Date Range</label>
+                                        <div class="col-sm-9">
+
+                                            @Html.TextBox("DateRangeFilter", "", new { @class = "form-control input-daterange-datepicker-new input-rounded", @placeholder = "Date Range", @onchange = "doSearch()" })
+                                            @Html.Hidden("StartDate")
+                                            @Html.Hidden("EndDate")
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header" style="height: 45px;">
+                        <div class="card-header headerSize" style="height:45px;width:100%;padding:0px;">
+                            <div class="basic-form">
+                                <div class="form-group mb-0">
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            <a href="javascript:void(0)"><span><i id="CreateInvoice" class="mdi mdi-plus" style="vertical-align:bottom;    line-height: 31px; color:white;font-size:50px;"></i></span></a>
+                                        </div>
+                                        <div class="col-md-5">
+                                            @Html.DropDownListFor(c => c.InvoiceType, new List<SelectListItem>()
+                                                                            {   new SelectListItem(){Value = "",Text = "--Select Invoice Type--"},
+                                                                                new SelectListItem(){Value = "1",Text = "Automatic"},
+                                                                                new SelectListItem(){Value = "2",Text = "Manual"}
+                                                                            }
+                                       , new
+                                            {
+                                                @class = "form-control input-rounded required required2",
+                                           @style = "width: 200px",
+                                                @onchange = "doSearch()"
+                                            })
+                                        </div>
+                                        <div class="col-md-4">
+                                            @*<select id="CustomerType" style="width: 260px;" class="form-control input-rounded" onchange="doSearch()">
+                                                    <option selected value="All">Invoice Status</option>
+                                                    <option value="C">Company</option>
+                                                    <option value="I">Individual</option>
+                                                </select>*@
+                                            @Html.DropDownList("InvoiceStatusForSearch", new SelectList(InvoiceStatusList, "CodeName", "Description"), "--Select Invoice Status--", new
+                                            {
+                                                @class = "form-control input-rounded required required2",
+                                           @style = "width: 260px",
+                                                @onchange = "doSearch()"
+                                            })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="jsGrid-basic" class="jsgrid" style="position: relative; height: 400px; width: 100%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal bs-example-modal-lg fade preview" id="myModalForAddEditCreateInvoice" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow:scroll">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content" style="width: 916px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Create Invoice</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
+            </div>
+
+            <div class="modal-body" style="margin-left:0px">
+                <div id="divCreateInvoice" class="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal bs-example-modal-lg fade preview" id="myModalForGetInvoiceDateForCreditMemo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow:scroll">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content" style="width: 916px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Create Credit Invoice</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
+            </div>
+
+            <div class="modal-body" style="margin-left:0px">
+                <div id="divInvoiceData" class="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal bs-example-modal-lg fade preview" id="myModalForCreateCreditMemo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow:scroll">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content" style="width: 916px;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Create Credit Invoice</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
+            </div>
+
+            <div class="modal-body" style="margin-left:0px">
+                <div id="divCreditInvoiceMemo" class="">
+                    @*@Html.Partial("~/Views/NewAdmin/ePeople/_AddVSCForRequisition.cshtml")*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal bs-example-modal-lg fade preview" id="myModalForApproveDeny" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow:scroll">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Client Invoice</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Comment<span class="req">*</span></label>
+                    <div class="col-sm-10">
+
+                        @Html.TextBoxFor(model => model.Comment, new { @class = "form-control", @id = "CommentCustomer", @placeholder = "Comment", @style = "border-radios:0px;" })
+                        <span id="spn_valcomment" style="color:red"></span>
+                        @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Click Approve button to Approve Client Invoice or Deny button to Deny Client Invoice.</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary bluebutton text-right" style="border-radius:25px;width:90px;" onclick="return AppproveInvoice();" id="btnApproveInvoice">Approve</button>
+                <button data-dismiss="modal" class="btn btn-danger" style="border-radius: 25px; width: 90px;" id="btnDeny">Deny</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal bs-example-modal-lg fade preview" id="ModalForPaymentReminder" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow:scroll">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Payment Reminder</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Are you sure you want to send payment remainder to the customer ?</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary bluebutton" style="border-radius:25px;width:140px;" onclick="return SendPaymentReminder();" id="btnSend">Send</button>
+                <button data-dismiss="modal" class="btn btn-danger" style="border-radius:25px;width:90px;" id="btnSubmissionDeny">Deny</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal bs-example-modal-lg fade preview" id="myModalForSubmission" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow:scroll">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Client Invoice</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label>Click Submission button to Submit Client Invoice.</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary bluebutton" style="border-radius:25px;width:140px;" onclick="return SubmissionInvoice();" id="btnSubmission">Submit to Client</button>
+                <button data-dismiss="modal" class="btn btn-danger" style="border-radius:25px;width:90px;" id="btnSubmissionDeny">Deny</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal bs-example-modal-lg fade preview" id="myModalForGetUnApprovedCustomerDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow:scroll">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Invoice Details</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div id="divVendorDetailPreview" class="">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Client Location</label>
+                                <div id="lblclientlocationName" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Client comapany Name</label>
+                                <div id="lblclientcompanyName" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Contract Type</label>
+                                <div id="lblCustomerType" class="form-control-static"></div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Invoice Payment Terms</label>
+                                <div id="lblInvoicePaymentTerms" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Client Point of Contact Name</label>
+                                <div id="lblClientPointofContactName" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Position Title</label>
+                                <div id="lblPositionTitle" class="form-control-static"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label id="LblInvoiceNumberHeader">Invoice Number</label>
+                                <label id="LblDraftNumberHeader">Draft Number</label>
+                                <div id="lblInvoiceNumber" class="form-control-static"></div>
+                                <div id="lblDraftNumber" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Invoice Date</label>
+                                <div id="lblInvoiceDate" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Invoice Payment Due Date</label>
+                                <div id="lblInvoicePaymentDueDate" class="form-control-static"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Location Code</label>
+                                <div id="lblLocationCode" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Location Address</label>
+                                <div id="lblLocationAddress" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Reason for Off. Schedule Invoice</label>
+                                <div id="lblReasonforOffSchedule" class="form-control-static"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="background-color:#0792bc;width:94%">
+                            <center><p style="color:white;margin:8px 0!important;"><b>Invoice Item Details</b></p></center>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <table id="tblInvoiceDetails" class="table" cellpadding="1" cellspacing="1" border="1" style="width:94%"></table>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div style="background-color:#0792bc;width:94%">
+                            <center><p style="color:white;margin:8px 0!important;"><b>Processed Payments</b></p></center>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Invoice Total</label>
+                                <div id="lblInvoiceTotal" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Client Total Paid Amount</label>
+                                <div id="lblTotalPaidAmount" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Invoice Balance</label>
+                                <div id="lblInvoiceBalance" class="form-control-static"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Payment Date</label>
+                                <div id="lblPaymentDate" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Payment Due Date</label>
+                                <div id="lblInvoiceDueDate" class="form-control-static"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div style="background-color:#0792bc;width:94%">
+                            <center><p style="color:white;margin:8px 0!important;"><b>Credit Justification Notes</b></p></center>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="form-group">
+                            <div id="lblInvoiceComment" class="form-control-static"></div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div style="background-color:#0792bc;width:94%">
+                            <center><p style="color:white;margin:8px 0!important;"><b>Modification Information</b></p></center>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Date & Time Created</label>
+                                <div id="lblInvoiceCreateDate" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Created By</label>
+                                <div id="lblInvoiceCreateBy" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Date & Time Last Sent To Client</label>
+                                <div id="lblDateLastSentToclient" class="form-control-static"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Date & Time Last Modified</label>
+                                <div id="lblInvoiceModifiedDate" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Modified By</label>
+                                <div id="lblInvoiceModifiedBy" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label>Auto Or Manually Processed</label>
+                                <div id="lblInvoiceTypeProcess" class="form-control-static"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div style="background-color:#0792bc;width:94%">
+                            <center><p style="color:white;margin:8px 0!important;"><b>Attached Documents</b></p></center>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <table id="tblInvoiceDocuments" class="table" cellpadding="1" cellspacing="1" border="1" style="width:94%"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-danger" style="border-radius:25px;width:90px;" id="btnCancel">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal bs-example-modal-lg fade preview" id="myModelApproveRejectCustomer" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow:scroll">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Reject Customer</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Comment<span class="req">*</span></label>
+                    <div class="col-sm-4">
+                        @*
+                                @Html.TextBoxFor(model => model.Comment, new { @class = "form-control", @id = "CommentCustomer", @placeholder = "Comment", @style = "border-radios:0px;" })
+                            @*<span id="spn_valcomment" style="color:red"></span>
+                                            @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+                        *@
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary  bluebutton" onclick="RejectCustomerAfterComment();" style="border-radius:25px;width:90px;" data-dismiss="modal">Ok</button>
+                <button data-dismiss="modal" class="btn btn-secondary" style="border-radius:25px;width:90px;" id="btnCancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal bs-example-modal-lg fade preview" id="myModalForCancel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="overflow:scroll">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Reject Customer</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+                    <label class="col-sm-2 col-form-label">Comment<span class="req">*</span></label>
+                    <div class="col-sm-4">
+
+                        @Html.TextBoxFor(model => model.Comment, new { @class = "form-control", @id = "CancelComment", @placeholder = "Comment", @style = "border-radios:0px;" })
+                        <span id="spn_valcomment" style="color:red"></span>
+                        @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" style="border-radius:25px;width:140px;" onclick="CancelInvoice();" id="btnCancleInvoice">Cancel Invoice</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/NewAdminJS/plugins-init/bs-daterange-picker-init.js"></script>
+<script src="~/GridListing/JqGridScript/ListInvoice.js"></script>
+<script type="text/javascript">
+    $("input[name='TypeFilter'").change(function () {
+        if ($(this).data('title') == "Invoice") {
+            var a = '/InvoiceManagement/ClientInvoiceList/';
+            $('#RenderPageId').load(a);
+            //PageRedirect("ClientInvoiceList", "InvoiceManagement");
+        }
+        else {
+            var b = '/InvoiceManagement/ClientCreditInvoiceList/';
+            $('#RenderPageId').load(b);
+            //PageRedirect("ClientCreditInvoiceList", "InvoiceManagement");
+        }
+    });
+
+    $("#DateRangeFilter").on("change", function () {
+        var datevalue = $(this).val();
+        $("#StartDate").val(datevalue.split('-')[0])
+        $("#EndDate").val(datevalue.split('-')[1])
+    });
+     function GetInvoiceChartData() {
+                $.ajax({
+                    type: "GET",
+                    url: $_HostPrefix + 'InvoiceManagement/GetDashboardForInvoiceStatusCount/?LocationId=' + $_locationId,
+                    datatype: 'json',
+                    success: function (data) {
+                        var nk = document.getElementById("InvoiceStatuses");
+
+                        // nk.height = 50
+                        new Chart(nk, {
+                            type: 'doughnut',
+                            data: {
+                                defaultFontFamily: 'Poppins',
+                                datasets: [{
+                                    data: [data.model.Pending_Approval, data.model.Pending_Submission, data.model.Pending_Payment, data.model.Paid, data.model.Cancelled, data.model.Draft],
+                                    borderWidth: 0,
+                                    backgroundColor: [
+                                        'rgba(128,0,0)',
+                                        'rgba(70,130,180)',
+                                        'rgba(240,128,128)',
+                                        'rgba(255,165,0)',
+                                        'rgba(128,128,0)',
+                                        'rgba(102,205,170)',
+                                    ],
+                                    hoverBackgroundColor: [
+                                        'rgba(128,0,0)',
+                                        'rgba(70,130,180)',
+                                        'rgba(240,128,128)',
+                                        'rgba(255,165,0)',
+                                        'rgba(128,128,0)',
+                                        'rgba(102,205,170)',
+                                    ]
+                                }],
+                                labels: [
+                                    "Pending Approval  " + data.model.Pending_Approval,
+                                    "Pending Submission " + data.model.Pending_Submission,
+                                    "Pending Payment  " + data.model.Pending_Payment,
+                                    "Paid  " + data.model.Paid,
+                                    "Cancelled  " + data.model.Cancelled,
+                                    "Draft  " + data.model.Draft
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                cutoutPercentage: 80,
+                                legend: {
+                                    display: true,
+                                    position: "left",
+                                },
+                            }
+                        });
+                    }
+                });
+            }
+    $("#drp_MasterLocation1").change(function () {
+        GetInvoiceChartData();
+    });
+
+    $(document).ready(function () {
+        GetInvoiceChartData();
+        @*$.ajax({
+            type: "GET",
+            url: "@Url.Action("GetDashboardForInvoiceStatusCount", "InvoiceManagement")",
+            async:false,
+            data: {},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (dataJSON) {
+                console.log(dataJSON);
+                if (dataJSON != null) {
+                    am4core.ready(function () {
+                        am4core.useTheme(am4themes_animated);
+                        var chart = am4core.create("InvoiceStatuses", am4charts.PieChart);
+
+                        chart.data = [
+                            {
+                                "User": "Pending Approval",
+                                "Count": dataJSON.model.Pending_Approval,
+                            }
+                            , {
+                                "User": "Pending Submission",
+                                "Count": dataJSON.model.Pending_Submission,
+                            }
+                            , {
+                                "User": "Pending Payment",
+                                "Count": dataJSON.model.Pending_Payment,
+                            }
+                            , {
+                                "User": "Paid",
+                                "Count": dataJSON.model.Paid,
+                            }
+                            , {
+                                "User": "Cancelled",
+                                "Count": dataJSON.model.Cancelled,
+                            }, {
+                                "User": "Draft",
+                                "Count": dataJSON.model.Draft,
+                            }
+                        ];
+                        var pieSeries = chart.series.push(new am4charts.PieSeries());
+                        pieSeries.dataFields.value = "Count";
+                        pieSeries.dataFields.category = "User";
+                        pieSeries.innerRadius = am4core.percent(50);
+                        pieSeries.ticks.template.disabled = true;
+                        pieSeries.labels.template.disabled = true;
+
+                        var rgm = new am4core.RadialGradientModifier();
+                        rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
+                        pieSeries.slices.template.fillModifier = rgm;
+                        pieSeries.slices.template.strokeModifier = rgm;
+                        pieSeries.slices.template.strokeOpacity = 0.4;
+                        pieSeries.slices.template.strokeWidth = 0;
+
+                        chart.legend = new am4charts.Legend();
+                        chart.legend.position = "left";
+
+                        var markerTemplate = chart.legend.markers.template;
+                        markerTemplate.width = 8;
+                        markerTemplate.height = 8;
+                    });
+                }
+                //} catch (err) {
+                //    console.log(err);
+                //    alert(err.fileName + " Line No. " + err.lineNumber + " Col No. " + err.columnNumber);
+                //}
+            }
+        })*@
+    });
+
+
+</script>

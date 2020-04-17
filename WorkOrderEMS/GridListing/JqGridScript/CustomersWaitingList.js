@@ -1,9 +1,10 @@
 ﻿var UnApprovedCompanyurl = '/CustomerManagement/GetAllCustomerList';
 var AddCustomer = '/CustomerManagement/CustomerManagementSetup/';
 var veiwCustomerDetails = '/CustomerManagement/GetAllCustomerDataToView/';
+var ListCustomer = '/CustomerManagement/ListCustomers/';
 
 var LocationId; var CustomerId;
-
+var base_url = window.location.origin;
 $(function () {
     var act;
     $("#jsGrid-basic").jsGrid({
@@ -17,7 +18,7 @@ $(function () {
         autoload: true,
         pageSize: 10,
         pageButtonCount: 5,
-
+        pageIndex: 1,
         controller: {
             loadData: function (filter) {
                 return $.ajax({
@@ -158,7 +159,7 @@ function doSearch(ev) {
         autoload: true,
         pageSize: 10,
         pageButtonCount: 5,
-
+        pageIndex: 1,
         controller: {
             loadData: function (filter) {
                 return $.ajax({
@@ -198,11 +199,35 @@ function doSearch(ev) {
 function filter(args) {
 }
 
-$("#AddCustomer").on("click", function (event) {
-    window.location.href = AddCustomer;
+//$("#AddCustomer").on("click", function (event) {
+//    window.location.href = AddCustomer;
+//});
+$("#lstCust").on("click", function (event) {
+    //window.location.href = AddCustomer;
+    $('#RenderPageId').load(ListCustomer);
 });
-
-
+$(document).ready(function () {
+    $("#AddCustomer").click(function () {
+        $.ajax({
+            type: "GET",
+            url: base_url + '/CustomerManagement/CustomerManagementSetup/',
+            beforeSend: function () {
+                new fn_showMaskloader('Please wait...');
+            },
+            contentType: "application/json; charset=utf-8",
+            error: function (xhr, status, error) {
+            },
+            success: function (result) {
+                console.log(result);
+                $("#divOpenRquisitionForm").html(result);
+                $("#myModalForRequisitionAction").modal("show");
+            },
+            complete: function () {
+                fn_hideMaskloader();
+            }
+        });
+    });
+});
 $("#ViewUnApprovedVendorData").on("click", function (event) {
     CustomerId = $(this).attr("vid");
     var rowData = jQuery("#tbl_AllUnApprovedList").getRowData(CustomerId);

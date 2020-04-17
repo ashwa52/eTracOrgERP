@@ -1,0 +1,192 @@
+﻿@model WorkOrderEMS.Models.ItemServiceModel
+@{
+    var isRefresh = ViewBag.IsPageRefresh;
+    if (isRefresh == true)
+    {
+        Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = null;
+    }
+    long locationId = 0;
+    long userType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserProfile = "";
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+    }
+}
+<style>
+    .error {
+        color: red;
+    }
+</style>
+@section scripts{
+    <script type="text/javascript">
+    var $_locationId = '@locationId';
+    var $_userTypeId = '@userType';
+    var $_VendorStatus = "false";
+    </script>
+}
+<div class="content-body">
+    <div class="container-fluid" style="margin-top:20px;">
+        <!-- row -->
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card aos-init" data-aos="fade-up">
+                    <div class="card-header headerSize" style="height: 45px;">
+                        <h4 class="card-title" style="color:white;"><strong><i class="fa fa-sticky-note"></i> @ViewBag.Title</strong></h4>
+                    </div>
+                    <div class="card-body">
+
+                        <form action="@Url.Action("ItemSubmit", "InvoiceManagement")" method="post" id="step-form-horizontal" class="step-form-horizontal">
+                            @Html.ValidationSummary(true)
+                            @Html.HiddenFor(model => model.Id)
+                            <section>
+                                <div class="basic-form">
+                                    <div class="row">
+                                        @Html.LabelFor(model => model.ItemCode, new { @class = "col-sm-2 col-form-label" })
+                                        <div class="col-sm-4 form-group">
+                                            @Html.TextBoxFor(model => model.ItemCode, new { @Placeholder = "Item Code", @class = "form-control input-rounded required" })
+                                        </div>
+                                        @Html.LabelFor(model => model.ItemDescription, new { @class = "col-sm-1 col-form-label" })
+                                        <div class="col-sm-4 form-group">
+                                            @Html.TextBoxFor(model => model.ItemDescription, new { @Placeholder = "Item Description", @class = "form-control input-rounded required" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
+                                <div class="basic-form">
+                                    <div class="form-group row">
+                                        @Html.LabelFor(model => model.CategoryType, new { @class = "col-sm-2 col-form-label" })
+                                        <div class="col-sm-4">
+                                            @Html.DropDownListFor(model => model.CategoryType, new SelectList(ViewBag.ITEMCATEGORY, "GlobalCodeId", "CodeName"), "Select Category Type", new { @class = "form-control input-rounded required requiredselect" })
+                                        </div>
+                                        @Html.LabelFor(model => model.RevenueCode, new { @class = "col-sm-1 col-form-label" })
+                                        <div class="col-sm-4">
+                                            @Html.DropDownListFor(model => model.RevenueCode, new SelectList(ViewBag.REVENUETYPE, "GlobalCodeId", "CodeName"), "Select Revenue Code", new { @class = "form-control input-rounded required requiredselect" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
+                                <div class="basic-form">
+                                    <div class="form-group row">
+                                        @Html.LabelFor(model => model.ExpenseType, new { @class = "col-sm-2 col-form-label" })
+                                        <div class="col-sm-4">
+                                            @Html.DropDownListFor(model => model.ExpenseType, new SelectList(ViewBag.EXPENCETYPE, "GlobalCodeId", "CodeName"), "Select Expense Type", new { @class = "form-control input-rounded required requiredselect" })
+                                        </div>
+                                        @Html.LabelFor(model => model.ItemUnit, new { @class = "col-sm-1 col-form-label" })
+                                        <div class="col-sm-4">
+                                            @Html.DropDownListFor(model => model.ItemUnit, new SelectList(ViewBag.ITEMUNITTYPE, "GlobalCodeId", "CodeName"), "Select Item Unit", new { @class = "form-control input-rounded required requiredselect" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
+                                <div class="basic-form">
+                                    <div class="form-group row">
+                                        @Html.LabelFor(model => model.ItemRate, new { @class = "col-sm-2 col-form-label" })
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.ItemRate, new { @Placeholder = "Item Rate", @class = "form-control input-rounded required", @onkeypress = "javascript:return validFloat(event,this.getAttribute('id'))" })
+                                        </div>
+                                        @Html.LabelFor(model => model.TaxPercentage, new { @class = "col-sm-1 col-form-label" })
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.TaxPercentage, new { @Placeholder = "Tax Percentage", @class = "form-control input-rounded required", @onkeypress = "javascript:return validFloat(event,this.getAttribute('id'))", @maxlength = "3", @maxvalue = "100" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
+                                <div class="basic-form">
+                                    <div class="form-group row">
+                                        @Html.LabelFor(model => model.SpecialNote, new { @class = "col-sm-2 col-form-label" })
+                                        <div class="col-sm-4">
+                                            @Html.TextAreaFor(model => model.SpecialNote, new { @Placeholder = "Special Note", @class = "form-control input-rounded required", @maxlength = "500" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
+                                <button type="button" id="btnback" class="btn btn-success center nextBtndata" style="margin-left: 10px;"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp; Back To List</button>
+                                <button type="button" id="btnsave" class="btn btn-success center nextBtndata" style="margin-left: 10px;">Submit&nbsp;&nbsp; <i class="fa fa-check"></i></button>
+                            </section>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function validFloat(e, txtid) {
+        var code;
+        var tb = document.getElementById(txtid);
+        var txt = tb.value;
+        if (!e) var e = window.event;
+        if (e.keyCode)
+            code = e.keyCode;
+        else if (e.which)
+            code = e.which;
+        else
+            return true;
+        if (code == 13 || code == 8 || code == 9)
+            return true;
+        if (code == 46)
+            if (txt.indexOf('.') != -1)
+                code = 0;
+        if ((code < 46 || code > 57) || code == 47) {
+            code = 0;
+            return false;
+        }
+    }
+    $("#btnback").on("click", function (event) {
+        event.preventDefault();
+        var addNewUrl = "/InvoiceManagement/ItemList";
+        $('#RenderPageId').load(addNewUrl);
+    });
+    $("#btnsave").on("click", function (event) {
+        //$("#step-form-horizontal").submit();
+        //var addNewUrl = "/InvoiceManagement/ItemList";
+        //$('#RenderPageId').load(addNewUrl);
+
+        if (!$("#step-form-horizontal").valid()) {
+            return false;
+        }
+        else {
+
+            $.ajax({
+                type: 'POST',
+                url: '/InvoiceManagement/ItemSubmit',
+                data: $("#step-form-horizontal").serialize(),
+                success: function (data) {
+                    var addNewUrl = "/InvoiceManagement/ItemList";
+                    $('#RenderPageId').load(addNewUrl);
+                }
+            });
+        }
+    });
+    $("#ItemCode").blur(function (event) {
+        if ($(this).val() != "") {
+            $.ajax({
+                type: 'POST',
+                url: '/InvoiceManagement/CheckItemCode?ItemCode=' + $(this).val()+'&Id='+$("#Id").val(),
+                datatype: 'json',
+                contentType: "application/json",
+                success: function (data) {
+                    if (data == "0") {
+                        $("#ItemCode").val("");
+                        $("#ItemCode").focus();
+                    }
+                }
+            });
+        }
+    });
+</script>

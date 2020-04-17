@@ -1,0 +1,110 @@
+﻿@model WorkOrderEMS.Models.CreditMemoItemDetails
+@using WorkOrderEMS.Helpers;
+@using WorkOrderEMS.Data.Classes;
+@using WorkOrderEMS.BusinessLogic;
+@using WorkOrderEMS.Service;
+@using WorkOrderEMS.Models;
+@{
+    //ICommonMethod _ICommonMethod;
+    //long CountryId = 1;
+    //ViewBag.StateList = _ICommonMethod.GetStateByCountryId(CountryId);
+
+    ARService ARS = new ARService();
+    List<ItemServiceModel> ItemList = DataRowToObject.CreateListFromTable<ItemServiceModel>(ARS.GetItemMasterDetails(0));
+}
+<div class="row editorRow_@Model.SrNo divHover">
+    @Html.Hidden("hdnblnk", Model.SrNo, new { @class = "iHidden" })
+    @using (Html.BeginCollectionItem("InvoiceItemDetailsList", Model.SrNo.ToString()))
+    {
+        <div class="row">
+            <div class="col-md-3">
+                <label class="col-sm-12 col-form-label" for="ItemNo"> Item No.</label>
+                <div class="col-sm-12">
+                    @Html.DropDownListFor(model => model.ItemNo, new SelectList(ItemList, "Id", "ItemCode"), "--Select Item--", new { @class = "form-control input-rounded required Invoiceitem", @disabled = true })
+                    <div class="errorspace">
+                        @Html.ValidationMessageFor(model => model.ItemNo)
+                        @Html.HiddenFor(c => c.Id)
+                        @Html.HiddenFor(c => c.ItemNo)
+                        @Html.HiddenFor(c => c.ItemUnitCost)
+                        @Html.HiddenFor(c => c.TaxAmount)
+                        @Html.HiddenFor(c => c.TaxPercentage)
+                        @Html.HiddenFor(c => c.ItemType)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <label class="col-sm-12 col-form-label" for="VendorName"> Qty</label>
+                <div class="col-sm-12">
+                    @Html.TextBoxFor(c => c.ItemQty, new { @class = "form-control input-rounded ", @placeholder = "Qty", @onkeypress = "javascript:return validInt(event);", @min = 1, @readonly = true })
+                    <div class="errorspace">
+                        @Html.ValidationMessageFor(model => model.ItemQty)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="col-sm-12 col-form-label" for="ItemDescription">Description</label>
+                <div class="col-sm-12">
+                    @Html.TextBoxFor(c => c.ItemDescription, new { @class = "form-control input-rounded ", @placeholder = "Item Description", @readonly = true })
+                    <div class="errorspace">
+                        @Html.ValidationMessageFor(model => model.ItemDescription)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3" style="width:10%">
+                <label class="col-sm-12 col-form-label" for="TotalCost"> Total Invoice</label>
+                <div class="col-sm-12">
+                    @Html.TextBoxFor(c => c.TotalCost, new { @class = "form-control input-rounded clsInvoiceTotal", @placeholder = "Total Cost", @readonly = true })
+                    @Html.HiddenFor(c => c.SubTotal, new { @class = "clsItemSubTotal" })
+                    <div class="errorspace">
+                        @Html.ValidationMessageFor(c => c.TotalCost)
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-3" style="width:10%">
+                <label class="col-sm-12 col-form-label" for="TotalCost"> Credit Amount</label>
+                <div class="col-sm-12">
+                    @Html.TextBoxFor(c => c.CreditAmt, new { @class = "form-control input-rounded clsCreditTotal", @placeholder = "Credit Amount",min=1, max = Model.TotalCost })
+                    <div class="errorspace">
+                        @Html.ValidationMessageFor(c => c.CreditAmt)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3" style="width:10%">
+                <label class="col-sm-12 col-form-label" for="TotalCost">Revenue Account</label>
+                <div class="col-sm-12">
+                    @Html.TextBoxFor(c => c.RevenueAccountDesc, new { @class = "form-control input-rounded clsItemTotal", @placeholder = "Revenue Account", @readonly = true })
+                    <div class="errorspace">
+                        @Html.ValidationMessageFor(c => c.RevenueAccount)
+                        @Html.HiddenFor(c => c.RevenueAccount)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3" style="width:10%">
+                <label class="col-sm-12 col-form-label" for="TotalCost">Credit Reason</label>
+                <div class="col-sm-12">
+                    @Html.DropDownListFor(c => c.CreditReason, new List<SelectListItem>()
+                                                                            {   new SelectListItem(){Value = "",Text = "--Select Reason--"},
+                                                                                new SelectListItem(){Value = "1",Text = "Over Billing"},
+                                                                                new SelectListItem(){Value = "2",Text = "Courtesy Client Adjustment"},
+                                                                                new SelectListItem(){Value = "3",Text = "Other"}
+}, new
+                        {
+                            @class = "form-control input-rounded required required2",
+                            @style = "width: 200px",
+                            @onchange = "doSearch()"
+                        })
+                    <div class="errorspace">
+                        @Html.ValidationMessageFor(c => c.RevenueAccount)
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <br />
+</div>
+
+<hr />
+

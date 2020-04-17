@@ -17,6 +17,10 @@ using WorkOrderEMS.Data.Classes;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
 using WorkOrderEMS.Models.Employee;
+using System.Xml;
+using System.Xml.Serialization;
+using Newtonsoft.Json;
+using System.Net.Mail;
 
 namespace WorkOrderEMS.Controllers.NewAdmin
 {
@@ -34,6 +38,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         private readonly string ProfilePicPath = System.Configuration.ConfigurationManager.AppSettings["ProfilePicPath"];
         private readonly string ConstantImages = ConfigurationManager.AppSettings["ConstantImages"];
         private readonly string FilePath = ConfigurationManager.AppSettings["FilesUploadRedYellowGreen"];
+        DBUtilities DBUtilitie = new DBUtilities();
         public EPeopleController(IePeopleManager _IePeopleManager, IAdminDashboard _IAdminDashboard, IGuestUserRepository _IGuestUserRepository, ICommonMethod _ICommonMethod, IDepartment _IDepartment, IGuestUser _IGuestUser, IFillableFormManager _IFillableFormManager)
         {
             this._IePeopleManager = _IePeopleManager;
@@ -46,7 +51,6 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         public ActionResult Index()
         {
             return View("~/Views/NewAdmin/ePeople/_EmployeeManagement.cshtml");
-            //return View("~/Views/NewAdmin/ePeople/EmployeeManagement.cshtml");
         }
         /// <summary>
         /// Created By  :Ashwajit bansod
@@ -1388,118 +1392,213 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
         #endregion Job Post
 
-        #region Holiday Master
-        /// <summary>
-        /// Created By : Tushar Goyani
-        /// Created Date : 20-Oct-2019
-        /// Created For : To Manage Holiday Master
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        public ActionResult HolidayMaster()
+        #region Leave Setup
+
+        public ActionResult LeaveTypeList()
         {
-            eTracLoginModel ObjLoginModel = null;
-            if (Session["eTrac"] != null)
-            {
-                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-            }
             return View();
         }
 
-        public ActionResult HolidayMasterAddEdit(int Id)
+        public ActionResult LeaveType(int TypeId)
         {
-            HolidayManagment Holiday = new HolidayManagment();
-            try
+            Tbl_LeaveType_Setup ISM = new Tbl_LeaveType_Setup();
+            ISM.LeaveYear = System.DateTime.Now.Year.ToString();
+            ViewBag.Title = "Add Leave Type";
+            if (TypeId > 0)
             {
-                if (Id > 0)
-                {
-                    DataTable dt = new DataTable();
-                    string SQRY = "EXEC USP_Get_Holiday_Management_Edit '" + Id + "'";
-                    dt = DBUtilities.GetDTResponse(SQRY);
-                    if (dt != null)
-                    {
-                        List<HolidayManagment> HolidayList = new List<HolidayManagment>();
-                        HolidayList = DataRowToObject.CreateListFromTable<HolidayManagment>(dt);
-                        Holiday = HolidayList.Where(c => c.Id == Id).FirstOrDefault();
-                    }
-                }
+                ISM = Get_LeaveTypeList(TypeId.ToString(), "").FirstOrDefault();
+                ViewBag.Title = "Edit Leave Type";
             }
-            catch (Exception ex) { }
-
-            return View("HolidayMasterAddEdit", Holiday);
+            else
+            {
+                ISM.IsActive = true;
+            }
+            return View("LeaveType", ISM);
         }
 
         [HttpGet]
-        public JsonResult GetListHolidayJSGrid(string Search)
+        public JsonResult GetAllLeaveTypeList(string _search, string LeaveType, string flagApproved = null, string CustomerType = null, string sidx = null, string UserType = null)
         {
             try
             {
-                string SQRY = "EXEC USP_Get_Holiday_Management '" + Search + "'";
+                var AllItemList = new List<Tbl_LeaveType_Setup>();
+                AllItemList = Get_LeaveTypeList(LeaveType, string.IsNullOrEmpty(_search) == true ? "" : _search).Select(a => new Tbl_LeaveType_Setup()
+                {
+                    TypeId = a.TypeId,
+                    LeaveDesc = a.LeaveDesc,
+                    LeaveCount = a.LeaveCount,
+                    LeaveYear = a.LeaveYear,
+                    IsActive = a.IsActive,
+                    IsCarryForward = a.IsCarryForward,
+                    EntryBy = a.EntryBy,
+                    //BasicStatus = a.BasicStatus,
+                    //VehicleStatus = a.VehicleStatus,
+
+                }).OrderByDescending(x => x.TypeId).ToList();
+                return Json(AllItemList.ToList(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+        }
+        [HttpPost]
+        public string LeaveTypeSubmit(Tbl_LeaveType_Setup LTS)
+        {
+            var status = "";
+            DataTable Dt = new DataTable();
+            try
+            {
+                eTracLoginModel objLoginSession = new eTracLoginModel();
+                objLoginSession = (eTracLoginModel)Session["eTrac"];
+                LTS.EntryBy = objLoginSession.UserId.ToString();
+                XmlDocument xml = new XmlDocument();
+                XmlSerializer xmlSerializer = new XmlSerializer(LTS.GetType());
+                using (MemoryStream xmlStream = new MemoryStream())
+                {
+                    xmlSerializer.Serialize(xmlStream, LTS);
+                    xmlStream.Position = 0;
+                    xml.Load(xmlStream);
+                }
+                Dt = InsertUpdateLeaveType(xml.InnerXml, LTS.TypeId);
+                status = "1";
+            }
+            catch (Exception ex)
+            {
+                status = "0";
+                throw;
+            }
+
+            return status;
+        }
+        public List<Tbl_LeaveType_Setup> Get_LeaveTypeList(string LeaveType, string search = null)
+        {
+            string QueryString = "EXEC USP_Get_LeaveTypeList '" + LeaveType + "','" + search + "'";
+            DataTable dataTable = DBUtilitie.GetDTResponse(QueryString);
+            List<Tbl_LeaveType_Setup> ItemList = DataRowToObject.CreateListFromTable<Tbl_LeaveType_Setup>(dataTable);
+            return ItemList;
+        }
+
+        public DataTable InsertUpdateLeaveType(string xml, int TypeId)
+        {
+            string QueryString = "exec Usp_InsertUpdateLeaveType '" + xml + "','" + TypeId + "'";
+            return DBUtilities.GetDTResponse(QueryString);
+        }
+
+        #endregion
+
+        #region Holiday Master
+
+        [HttpGet]
+        public ActionResult HolidayMaster()
+        {
+            try
+            {
+                eTracLoginModel ObjLoginModel = null;
+                var details = new LocationDetailsModel();
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                }
+                ViewBag.IsPageRefresh = false;
+                return View("~/Views/EPeople/_HolidayMasterDashboard.cshtml");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet]
+        public JsonResult GetListOfHolidayForJSGrid(long locationId, int Typ)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            long UserId = 0;
+
+            if (Session != null)
+            {
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                    UserId = ObjLoginModel.UserId;
+                }
+            }
+            try
+            {
+                string SQRY = "";
+                if (Typ == 0)
+                {
+                    SQRY = "EXEC USP_Get_Holiday_List";
+                }
+                if (Typ == 1)
+                {
+                    SQRY = "select HolidayName,CONVERT(varchar(50),HolidayDate,106) as HolidayDates,LocationName from Tbl_HRMS_Holiday LEFT OUTER JOIN LocationMaster on location = LocationId WHERE HolidayType=1";
+                }
+                if (Typ == 2)
+                {
+                    SQRY = "select HolidayName,CONVERT(varchar(50),HolidayDate,106) as HolidayDates,LocationName from Tbl_HRMS_Holiday LEFT OUTER JOIN LocationMaster on location = LocationId WHERE HolidayType=2";
+                }
                 DataTable DT = DBUtilities.GetDTResponse(SQRY);
                 List<HolidayManagment> ITAdministratorList = DataRowToObject.CreateListFromTable<HolidayManagment>(DT);
-                foreach (var items in ITAdministratorList)
-                {
-                    items.HolidayDateString = items.HolidayDate.ToString("dd MMM yyyy", CultureInfo.InvariantCulture);
-                }
+
                 return Json(ITAdministratorList, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
-            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
         }
 
-        public ActionResult HolidayManagmentSubmit(HolidayManagment Holiday)
+        public ActionResult OpenGeneralHoliday()
         {
-            string UserId;
+            return PartialView("~/Views/NewAdmin/ePeople/_AddOpenGeneralHoliday.cshtml");
+        }
+
+        [HttpPost]
+        public ActionResult AddHoliday(HolidayManagment Obj)
+        {
             eTracLoginModel ObjLoginModel = null;
-            if (Session["eTrac"] != null)
+            if (Session != null)
             {
-                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-                UserId = Convert.ToString(ObjLoginModel.UserId);
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                    Obj.CreatedBy = Convert.ToInt32(ObjLoginModel.UserId);
+                    Obj.Location = Convert.ToInt32(ObjLoginModel.LocationID);
+                }
             }
             try
             {
-                string SQRY = "EXEC INSERT_HOLIDAY_MANAGEMENT '" + Holiday.Id + "','" + Holiday.HolidayDate + "','" + Holiday.HolidayName + "','" + Holiday.Description + "','" + Holiday.IsActive + "','" + Convert.ToString(ObjLoginModel.UserId) + "'";
-                DataTable DT = DBUtilities.GetDTResponse(SQRY);
+                DataTable Dt = new DataTable();
+                XmlDocument xmlPTDET = new XmlDocument();
+                XmlSerializer xmlSerializer = new XmlSerializer(Obj.GetType());
+                using (MemoryStream xmlStream = new MemoryStream())
+                {
+                    xmlSerializer.Serialize(xmlStream, Obj);
+                    xmlStream.Position = 0;
+                    xmlPTDET.Load(xmlStream);
+                }
+
+                Dt = InsertGeneralHolidays(xmlPTDET.InnerXml);
+
             }
             catch (Exception ex)
             {
-                ViewBag.StrError = ex;
-
+                //ViewBag.Message = ex.Message; ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger;
             }
-            return View("HolidayMaster");
+            var newModel = new HolidayManagment();
+            return Json(new { Message = ViewBag.Message, AlertMessageClass = ViewBag.AlertMessageClass }, JsonRequestBehavior.AllowGet);
         }
-
-        public ActionResult HolidayMasterAddDelete(int Id)
+        public DataTable InsertGeneralHolidays(string xmlPTDET)
         {
-            HolidayManagment Holiday = new HolidayManagment();
-            try
-            {
-                if (Id > 0)
-                {
-                    DataTable dt = new DataTable();
-                    string SQRY = "EXEC USP_Get_Holiday_Management_Delete '" + Id + "'";
-                    dt = DBUtilities.GetDTResponse(SQRY);
-                    if (dt != null)
-                    {
-                        List<HolidayManagment> HolidayList = new List<HolidayManagment>();
-                        HolidayList = DataRowToObject.CreateListFromTable<HolidayManagment>(dt);
-                        Holiday = HolidayList.Where(c => c.Id == Id).FirstOrDefault();
-                    }
-                }
-            }
-            catch (Exception ex) { ViewBag.StrError = ex; }
-            return RedirectToAction("HolidayMaster", "EPeople");
+            string QueryString = "exec Usp_Insert_Holiday '" + xmlPTDET + "'";
+            return DBUtilitie.GetDTResponse(QueryString);
         }
 
         #endregion Holiday Master
 
         #region Leave Management
-        /// <summary>
-        /// Created By : Tushar Goyani
-        /// Created Date : 20-Oct-2019
-        /// Created For : To Manage Leave
-        /// </summary>
-        /// <returns></returns>
+
         [HttpGet]
         public ActionResult LeaveManagement()
         {
@@ -1507,15 +1606,44 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             if (Session["eTrac"] != null)
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                ViewBag.UserType = ObjLoginModel.UserType;
             }
+            ViewBag.IsPageRefresh = false;
+            ViewBag.IsPageEdit = true;
             return View();
         }
 
+        [HttpGet]
+        public JsonResult GetLeaveManagementchartData()
+        {
+            string UserId;
+            try
+            {
+                eTracLoginModel ObjLoginModel = null;
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                    UserId = Convert.ToString(ObjLoginModel.UserId);
+                }
+                string SQRY = "EXEC USP_Get_Leave_Management_chart_Data '" + Convert.ToString(ObjLoginModel.UserId) + "'";
+                DataTable DT = DBUtilities.GetDTResponse(SQRY);
+                List<LeaveManagementchartData> ITAdministratorList = DataRowToObject.CreateListFromTable<LeaveManagementchartData>(DT);
+
+                return Json(ITAdministratorList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+        }
         public ActionResult LeaveManagementAddEdit(int Id)
         {
             Tbl_Employee_Leave_Management Leave = new Tbl_Employee_Leave_Management();
             try
             {
+                DataTable dt1 = new DataTable();
+                string SQRY1 = "SELECT LeaveDesc,TypeId FROM Tbl_LeaveType_Setup where IsActive=1 ";
+                dt1 = DBUtilities.GetDTResponse(SQRY1);
+                Leave.ListLTSM = DataRowToObject.CreateListFromTable<LeaveManagementchartData>(dt1);
+
                 if (Id > 0)
                 {
                     DataTable dt = new DataTable();
@@ -1526,20 +1654,33 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                         List<Tbl_Employee_Leave_Management> LeaveList = new List<Tbl_Employee_Leave_Management>();
                         LeaveList = DataRowToObject.CreateListFromTable<Tbl_Employee_Leave_Management>(dt);
                         Leave = LeaveList.Where(c => c.Id == Id).FirstOrDefault();
+                        //ViewBag.IsPageRefresh = true;
+                        Leave.ListLTSM = DataRowToObject.CreateListFromTable<LeaveManagementchartData>(dt1);
                     }
+                }
+                else
+                {
+                    //ViewBag.IsPageRefresh = false;
                 }
             }
             catch (Exception ex) { }
-
             return View("LeaveManagementAddEdit", Leave);
         }
-
         [HttpGet]
         public JsonResult GetListLeaveManagementJSGrid(string Search)
         {
+            string UserId;
             try
             {
-                string SQRY = "EXEC USP_Get_Leave_Management '" + Search + "'";
+
+                eTracLoginModel ObjLoginModel = null;
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                    UserId = Convert.ToString(ObjLoginModel.UserId);
+                    ViewBag.UserType = ObjLoginModel.UserType;
+                }
+                string SQRY = "EXEC USP_Get_Leave_Management '" + Search + "','" + Convert.ToString(ObjLoginModel.UserId) + "'";
                 DataTable DT = DBUtilities.GetDTResponse(SQRY);
                 List<Tbl_Employee_Leave_Management> ITAdministratorList = DataRowToObject.CreateListFromTable<Tbl_Employee_Leave_Management>(DT);
                 foreach (var items in ITAdministratorList)
@@ -1564,20 +1705,49 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
             try
             {
-                string SQRY = "EXEC INSERT_LEAVE_MANAGEMENT '" + Leave.Id + "','" + Leave.FromDate + "','" + Leave.ToDate + "','" + Leave.EmployeeId + "','" + Leave.LeaveReason + "','" + Leave.LeaveType + "','" + Convert.ToString(ObjLoginModel.UserId) + "'";
+                string SQRY = "EXEC INSERT_LEAVE_MANAGEMENT '" + Leave.Id + "','" + Leave.FromDate + "','" + Leave.ToDate + "','" + Convert.ToString(ObjLoginModel.UserId) + "','" + Leave.LeaveReason + "','" + Leave.LeaveType + "','" + Convert.ToString(ObjLoginModel.UserId) + "'";
                 DataTable DT = DBUtilities.GetDTResponse(SQRY);
+                try
+                {
+                    MailMessage mail = new MailMessage();
+                    SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+
+                    mail.From = new MailAddress("harshalgibbs0507@gmail.com");
+                    mail.To.Add("harshalgibbs0507@gmail.com");
+                    mail.Subject = "Leave Request";
+                    mail.IsBodyHtml = true;
+                    string htmlString = @"<html>
+                      <body>
+                      <p>Dear sir,</p>
+                      <p>Thank you for your letter of yesterday inviting me to come for an interview on Friday afternoon, 5th July, at 2:30.
+                              I shall be happy to be there as requested and will bring my diploma and other papers with me.</p>
+                      <p>Sincerely,<br>--" + Convert.ToString(ObjLoginModel.UserName) + "</br></p></body></html>";
+                    mail.Body = htmlString;
+
+                    SmtpServer.Port = 587;
+                    SmtpServer.Credentials = new System.Net.NetworkCredential("harshalgibbs0507@gmail.com", "A9558767095");
+                    SmtpServer.EnableSsl = true;
+
+                    SmtpServer.Send(mail);
+
+                }
+                catch (Exception ex)
+                {
+                    ViewBag.StrError = ex;
+                }
             }
             catch (Exception ex)
             {
                 ViewBag.StrError = ex;
 
             }
+
             return View("LeaveManagement");
         }
 
         public ActionResult LeavemanagementDelete(int Id)
         {
-            Tbl_Employee_Leave_Management Holiday = new Tbl_Employee_Leave_Management();
+            Tbl_Employee_Leave_Management Leave = new Tbl_Employee_Leave_Management();
             try
             {
                 if (Id > 0)
@@ -1587,9 +1757,9 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                     dt = DBUtilities.GetDTResponse(SQRY);
                     //if (dt != null)
                     //{
-                    //    //List<Tbl_Employee_Leave_Management> HolidayList = new List<Tbl_Employee_Leave_Management>();
-                    //    //HolidayList = DataRowToObject.CreateListFromTable<Tbl_Employee_Leave_Management>(dt);
-                    //    //Holiday = HolidayList.Where(c => c.Id == Id).FirstOrDefault();
+                    //    //List<Tbl_Employee_Leave_Management> LeaveList = new List<Tbl_Employee_Leave_Management>();
+                    //    //LeaveList = DataRowToObject.CreateListFromTable<Tbl_Employee_Leave_Management>(dt);
+                    //    //Leave = LeaveList.Where(c => c.Id == Id).FirstOrDefault();
                     //}
                 }
             }
@@ -1599,7 +1769,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
 
         public ActionResult LeavemanagementApproved(int Id)
         {
-            Tbl_Employee_Leave_Management Holiday = new Tbl_Employee_Leave_Management();
+            Tbl_Employee_Leave_Management Leave = new Tbl_Employee_Leave_Management();
             eTracLoginModel ObjLoginModel = null;
             if (Session["eTrac"] != null)
             {
@@ -1614,19 +1784,19 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                     dt = DBUtilities.GetDTResponse(SQRY);
                     //if (dt != null)
                     //{
-                    //    List<Tbl_Employee_Leave_Management> HolidayList = new List<Tbl_Employee_Leave_Management>();
-                    //    HolidayList = DataRowToObject.CreateListFromTable<Tbl_Employee_Leave_Management>(dt);
-                    //    Holiday = HolidayList.Where(c => c.Id == Id).FirstOrDefault();
+                    //    List<Tbl_Employee_Leave_Management> LeaveList = new List<Tbl_Employee_Leave_Management>();
+                    //    LeaveList = DataRowToObject.CreateListFromTable<Tbl_Employee_Leave_Management>(dt);
+                    //    Leave = LeaveList.Where(c => c.Id == Id).FirstOrDefault();
                     //}
                 }
             }
             catch (Exception ex) { ViewBag.StrError = ex; }
-            return RedirectToAction("LeaveManagement", "EPeople");
+            return RedirectToAction("GetListLeaveManagementJSGridForAdmin", "EPeople");
         }
 
-        public ActionResult LeavemanagementRejected(int Id, string RejectReason)
+        public string LeavemanagementRejected(int Id, string RejectReason)
         {
-            Tbl_Employee_Leave_Management Holiday = new Tbl_Employee_Leave_Management();
+            Tbl_Employee_Leave_Management Leave = new Tbl_Employee_Leave_Management();
             eTracLoginModel ObjLoginModel = null;
             if (Session["eTrac"] != null)
             {
@@ -1642,18 +1812,168 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 }
             }
             catch (Exception ex) { ViewBag.StrError = ex; }
-            return RedirectToAction("LeaveManagement", "EPeople");
+            return "";
+        }
+
+        [HttpGet]
+        public ActionResult GetListLeaveManagementJSGridForAdmin()
+        {
+            try
+            {
+                eTracLoginModel ObjLoginModel = null;
+                var details = new LocationDetailsModel();
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                }
+                //ViewBag.IsPageRefresh = false;
+                return View("_LeaveManagementForAdmin");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        [HttpGet]
+        public JsonResult GetListLeaveManagementForAdmin(string Search)
+        {
+            string UserId;
+            try
+            {
+
+                eTracLoginModel ObjLoginModel = null;
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                    UserId = Convert.ToString(ObjLoginModel.UserId);
+                    ViewBag.UserType = ObjLoginModel.UserType;
+                }
+                string SQRY = "EXEC USP_Get_Leave_Management_ForAdmin '" + Search + "','" + ObjLoginModel.UserType + "'";
+                DataTable DT = DBUtilities.GetDTResponse(SQRY);
+                List<Tbl_Employee_Leave_Management> ITAdministratorList = DataRowToObject.CreateListFromTable<Tbl_Employee_Leave_Management>(DT);
+
+                foreach (var items in ITAdministratorList)
+                {
+                    items.FromDateString = items.FromDate.ToString("dd MMM yyyy", CultureInfo.InvariantCulture);
+                    items.ToDateString = items.ToDate.ToString("dd MMM yyyy", CultureInfo.InvariantCulture);
+                }
+                return Json(ITAdministratorList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+        }
+
+        [HttpGet]
+        public JsonResult GetSameDayEmpLeaveDetails(int Id)
+        {
+            try
+            {
+                eTracLoginModel ObjLoginModel = null;
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                    ViewBag.UserType = ObjLoginModel.UserType;
+                }
+                string SQRY = "SELECT Id,(FirstName+' '+LastName) as EmployeeName,LeaveReason,LeaveDay,a.FromDate,a.ToDate	from Tbl_Employee_Leave_Management a LEFT OUTER JOIN UserRegistrations b ON b.UserId = a.EmployeeId WHERE a.Id = '" + Id + "'";
+                DataTable DT = DBUtilities.GetDTResponse(SQRY);
+                List<Tbl_Employee_Leave_Management> LeaveDetailstList = DataRowToObject.CreateListFromTable<Tbl_Employee_Leave_Management>(DT);
+                foreach (var items in LeaveDetailstList)
+                {
+                    items.FromDateString = items.FromDate.ToString("dd MMM yyyy", CultureInfo.InvariantCulture);
+                    items.ToDateString = items.ToDate.ToString("dd MMM yyyy", CultureInfo.InvariantCulture);
+                }
+                return Json(LeaveDetailstList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+        }
+
+        [HttpGet]
+        public JsonResult GetListSameDayApplyForLeave(string FromDate, string ToDate)
+        {
+            string UserId;
+            try
+            {
+
+                eTracLoginModel ObjLoginModel = null;
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                    UserId = Convert.ToString(ObjLoginModel.UserId);
+                    ViewBag.UserType = ObjLoginModel.UserType;
+                }
+                string SQRY = "EXEC USP_Get_Same_Day_Apply_For_Leave_Detail '" + ObjLoginModel.UserType + "','" + FromDate + "','" + ToDate + "' ";
+                DataTable DT = DBUtilities.GetDTResponse(SQRY);
+                List<Tbl_Employee_Leave_Management> ITAdministratorList = DataRowToObject.CreateListFromTable<Tbl_Employee_Leave_Management>(DT);
+                foreach (var items in ITAdministratorList)
+                {
+                    items.FromDateString = items.FromDate.ToString("dd MMM yyyy", CultureInfo.InvariantCulture);
+                    items.ToDateString = items.ToDate.ToString("dd MMM yyyy", CultureInfo.InvariantCulture);
+                }
+                return Json(ITAdministratorList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+        }
+
+        [HttpGet]
+        public JsonResult GetListTodayLeave()
+        {
+            try
+            {
+                eTracLoginModel ObjLoginModel = null;
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                    ViewBag.UserType = ObjLoginModel.UserType;
+                }
+                string SQRY = "EXEC USP_Get_Same_Day_Apply_For_Leave_Detail '" + ObjLoginModel.UserType + "','" + DateTime.Now.ToString("dd MMM yyyy", CultureInfo.InvariantCulture) + "','" + DateTime.Now.ToString("dd MMM yyyy", CultureInfo.InvariantCulture) + "'";
+                DataTable DT = DBUtilities.GetDTResponse(SQRY);
+                List<Tbl_Employee_Leave_Management> ITAdministratorList = DataRowToObject.CreateListFromTable<Tbl_Employee_Leave_Management>(DT);
+                foreach (var items in ITAdministratorList)
+                {
+                    items.FromDateString = items.FromDate.ToString("dd MMM yyyy", CultureInfo.InvariantCulture);
+                    items.ToDateString = items.ToDate.ToString("dd MMM yyyy", CultureInfo.InvariantCulture);
+                }
+                ITAdministratorList = ITAdministratorList.Where(x => x.FromDateString == DateTime.Now.ToString("dd MMM yyyy", CultureInfo.InvariantCulture) && x.Status == "Approved").ToList();
+                return Json(ITAdministratorList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public JsonResult GetLeaveHistoryDetails(int Id)
+        {
+            try
+            {
+                eTracLoginModel ObjLoginModel = null;
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                    ViewBag.UserType = ObjLoginModel.UserType;
+                }
+                string SQRY = "USP_Get_Leave_History_Details '" + Id + "'";
+                DataTable DT = DBUtilities.GetDTResponse(SQRY);
+                List<Tbl_Employee_Leave_Management> LeaveDetailstList = DataRowToObject.CreateListFromTable<Tbl_Employee_Leave_Management>(DT);
+                foreach (var items in LeaveDetailstList)
+                {
+                    items.FromDateString = items.FromDate.ToString("dd MMM yyyy", CultureInfo.InvariantCulture);
+                    items.ToDateString = items.ToDate.ToString("dd MMM yyyy", CultureInfo.InvariantCulture);
+                }
+                return Json(LeaveDetailstList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
         }
 
         #endregion Leave Management
 
         #region Employee Attendance Management
-        /// <summary>
-        /// Created By : Tushar Goyani
-        /// Created Date : 20-Oct-2019
-        /// Created For : To Manage Employee Attendance
-        /// </summary>
-        /// <returns></returns>
+
         [HttpGet]
         public ActionResult WebEmployeeAttendance()
         {
@@ -1663,15 +1983,34 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
                 string SQRY = "EXEC Get_Employee_Attendance_ClockIn_Out '" + Convert.ToString(ObjLoginModel.UserId) + "'";
                 DataTable DT = DBUtilities.GetDTResponse(SQRY);
-                if (DT.Rows.Count > 0)
+                try
                 {
-                    ViewBag.Count = DT.Rows[0]["Count"].ToString();
-                    ViewBag.LoginTime = DT.Rows[0]["LoginTime"].ToString();
+                    if (DT.Rows.Count > 0)
+                    {
+                        ViewBag.Count = DT.Rows[0]["Count"].ToString();
+                        ViewBag.BRCount = DT.Rows[0]["BRCount"].ToString();
+
+                        if (DT.Rows[0]["FirstInTime"] != DBNull.Value)
+                        {
+                            ViewBag.FirstInTime = Convert.ToDateTime(DT.Rows[0]["FirstInTime"]).ToString("hh:mm tt");
+                            TimeSpan diff = System.DateTime.Now - Convert.ToDateTime(DT.Rows[0]["FirstInTime"].ToString());
+                            string comm = ":";
+                            ViewBag.logouttime = string.Concat(diff.Hours, comm, diff.Minutes);
+                        } 
+                    }
+                    else
+                    {
+                        ViewBag.Count = 0;
+                    }
                 }
-                else
-                {
-                    ViewBag.Count = 0;
-                }
+                catch (Exception ex) { }
+
+
+                SQRY = "EXEC USP_AttendanceDashBorad N'" + Convert.ToString(ObjLoginModel.UserId) + "'  ";
+                DT = DBUtilities.GetDTResponse(SQRY);
+                ViewBag.IsPageRefresh = false;
+                ViewBag.AttendanceDashBoradModel = DataRowToObject.CreateListFromTable<AttendanceDashBoradModel>(DT);
+
             }
             return View();
         }
@@ -1699,8 +2038,8 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             return View("HolidayMasterAddEdit", Holiday);
         }
 
-        [HttpGet]
-        public ActionResult WebEmployeeAttendanceClockIn()
+        [HttpPost]
+        public ActionResult WebEmployeeAttendanceClockIn(int AttendanceType)
         {
             string UserId;
             eTracLoginModel ObjLoginModel = null;
@@ -1711,7 +2050,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
             try
             {
-                string SQRY = "EXEC INSERT_Employee_Attendance_ClockIn '" + Convert.ToString(ObjLoginModel.UserId) + "'";
+                string SQRY = "EXEC INSERT_Employee_Attendance_ClockIn '" + Convert.ToString(ObjLoginModel.UserId) + "','" + AttendanceType + "'";
                 DataTable DT = DBUtilities.GetDTResponse(SQRY);
             }
             catch (Exception ex)
@@ -1721,8 +2060,8 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
             return RedirectToAction("WebEmployeeAttendance", "EPeople");
         }
-
-        public ActionResult WebEmployeeAttendanceClockOut()
+        [HttpPost]
+        public ActionResult WebEmployeeAttendanceClockOut(int AttendanceType)
         {
             string UserId;
             eTracLoginModel ObjLoginModel = null;
@@ -1733,7 +2072,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
             try
             {
-                string SQRY = "EXEC INSERT_Employee_Attendance_ClockOut '" + Convert.ToString(ObjLoginModel.UserId) + "'";
+                string SQRY = "EXEC INSERT_Employee_Attendance_ClockOut '" + Convert.ToString(ObjLoginModel.UserId) + "','" + AttendanceType + "'";
                 DataTable DT = DBUtilities.GetDTResponse(SQRY);
             }
             catch (Exception ex)
@@ -1745,6 +2084,416 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
 
         #endregion Employee Attendance Management
+
+        #region Location Seats
+
+        [HttpGet]
+        public ActionResult LocationSeats()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            ViewBag.IsPageRefresh = false;
+            return View();
+        }
+
+        [HttpGet]
+        public JsonResult GetListLocationSeatJSGrid(string Search)
+        {
+            string UserId;
+            try
+            {
+                eTracLoginModel ObjLoginModel = null;
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                    UserId = Convert.ToString(ObjLoginModel.UserId);
+                }
+                string SQRY = "EXEC USP_GetSeatLocations '" + Search + "' ";
+                DataTable DT = DBUtilities.GetDTResponse(SQRY);
+                List<tbl_LocationSeats> LocationSeatList = DataRowToObject.CreateListFromTable<tbl_LocationSeats>(DT);
+                return Json(LocationSeatList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+        }
+
+        public ActionResult LocationSeatSubmit(tbl_LocationSeats Seat)
+        {
+            string UserId;
+            eTracLoginModel ObjLoginModel = null;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                UserId = Convert.ToString(ObjLoginModel.UserId);
+            }
+            try
+            {
+                string SQRY = "EXEC INSERT_LocationSeat '" + Seat.SeatId + "','" + Seat.LocationSeatName + "','" + Seat.Colour + "','" + Seat.IsActive + "','" + Convert.ToString(ObjLoginModel.UserId) + "'";
+                DataTable DT = DBUtilities.GetDTResponse(SQRY);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.StrError = ex;
+
+            }
+
+            return View("LocationSeats");
+        }
+
+        public JsonResult CheckDuplicateLocationSeat(string LocationSeat)
+        {
+            string Count = "";
+            try
+            {
+                string SQRY = "EXEC USP_Check_LocationSeat_Duplicate '" + LocationSeat + "'";
+                DataTable DT = DBUtilities.GetDTResponse(SQRY);
+                List<tbl_LocationSeats> ShiftCodeList = DataRowToObject.CreateListFromTable<tbl_LocationSeats>(DT);
+                Count = ShiftCodeList.Count.ToString();
+                return Json(Count, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(Count, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        public ActionResult LocationSeatsDelete(int SeatId)
+        {
+            try
+            {
+                eTracLoginModel ObjLoginModel = null;
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                }
+                if (SeatId > 0)
+                {
+                    DataTable dt = new DataTable();
+                    string SQRY = "delete from tbl_LocationSeats where SeatId='" + SeatId + "'";
+                    dt = DBUtilities.GetDTResponse(SQRY);
+                }
+            }
+            catch (Exception ex) { ViewBag.StrError = ex; }
+            return RedirectToAction("LocationSeats", "EPeople");
+        }
+
+        [HttpGet]
+        public JsonResult LocationSeatsEdit(int SeatId)
+        {
+            try
+            {
+                string SQRY = "SELECT SeatId,LocationSeatName,Colour,IsActive FROM tbl_LocationSeats where SeatId='" + SeatId + "'";
+                DataTable DT = DBUtilities.GetDTResponse(SQRY);
+                List<tbl_LocationSeats> LocationSeatList = DataRowToObject.CreateListFromTable<tbl_LocationSeats>(DT);
+                return Json(LocationSeatList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+        }
+
+        #endregion
+
+        #region Schedule
+        public ActionResult CoverageMapFormate()
+        {
+            return View();
+        }
+        [HttpGet]
+        public JsonResult CoverageMapFormateDetails()
+        {
+            long locationId = 0;
+            WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+            string loginUserName = "", loginUserEmail = "", loginUserProfile = "";
+            if (ObjLogin != null)
+            {
+                locationId = ObjLogin.LocationID;
+            }
+            string SQRY = "EXEC USP_GetScheduleLocation '" + locationId + "'";
+            DataSet DS = DBUtilities.GetDSResponse(SQRY);
+            List<tbl_Staffing_Addition_Details> LocationSeatList = DataRowToObject.CreateListFromTable<tbl_Staffing_Addition_Details>(DS.Tables[0]);
+            var LocationList = (from e in LocationSeatList
+                                select new
+                                {
+                                    id = e.Id.ToString() + "," + e.EventId.ToString(),
+                                    title = e.EmployeeId,
+                                    start = e.FromDateTime.ToString("MM/dd/yyyy") + " " + e.FromDateTime.TimeOfDay.ToString(),
+                                    end = e.ToDateTime.ToString("MM/dd/yyyy") + " " + e.ToDateTime.TimeOfDay.ToString(),
+                                    backgroundColor = e.EventColor
+                                }).Distinct().ToList();
+            return Json(LocationList, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ScheduleLocation(string id, string start, string end)
+        {
+            long locationId = 0;
+            eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+            if (ObjLogin != null)
+            {
+                locationId = ObjLogin.LocationID;
+            }
+            VMtbl_Staffing_Addition VMSA = new VMtbl_Staffing_Addition();
+            VMSA.TSAM = new tbl_Staffing_Addition();
+            VMSA.listTSADM = new List<tbl_Staffing_Addition_Details>();
+            VMSA.ListLS = GetSeatLocations("");
+            VMSA.TSAM.UserLocation = locationId;
+            try
+            {
+                if (String.IsNullOrEmpty(id))
+                {
+                    ViewBag.Start = start;
+                    ViewBag.End = end;
+                }
+                else
+                {
+                    string SQRY = "EXEC USP_GetScheduleLocation '" + locationId + "','" + id.Split(',')[1] + "'";
+                    DataSet DS = DBUtilities.GetDSResponse(SQRY);
+                    VMSA.TSAM = DataRowToObject.CreateListFromTable<tbl_Staffing_Addition>(DS.Tables[0]).FirstOrDefault();
+                    VMSA.listTSADM = DataRowToObject.CreateListFromTable<tbl_Staffing_Addition_Details>(DS.Tables[1]);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return View(VMSA);
+        }
+        public ActionResult AddLocationSeatHeadDetails(int id, long Location, string fromtime, string endtime)
+        {
+            tbl_Staffing_Addition_Details objCVD = new tbl_Staffing_Addition_Details
+            {
+                Id = id,
+                Location = Location,
+                FromDateTime = fromtime == "" ? System.DateTime.Now : Convert.ToDateTime(fromtime),
+                ToDateTime = endtime == "" ? System.DateTime.Now : Convert.ToDateTime(endtime)
+            };
+            return PartialView("_LocationSeatHeadDetails", objCVD);
+        }
+        [HttpPost]
+        public ActionResult ScheduleLocationSubmit(VMtbl_Staffing_Addition VMSA, List<tbl_Staffing_Addition_Details> LocationSeatHeadDetailsList)
+        {
+            var status = "";
+            DataTable Dt = new DataTable();
+            try
+            {
+                eTracLoginModel objLoginSession = new eTracLoginModel();
+                objLoginSession = (eTracLoginModel)Session["eTrac"];
+                VMSA.TSAM.EntryBy = objLoginSession.UserId.ToString();
+                XmlDocument xml = new XmlDocument();
+                XmlSerializer xmlSerializer = new XmlSerializer(VMSA.TSAM.GetType());
+                using (MemoryStream xmlStream = new MemoryStream())
+                {
+                    xmlSerializer.Serialize(xmlStream, VMSA.TSAM);
+                    xmlStream.Position = 0;
+                    xml.Load(xmlStream);
+                }
+                string xmlDet = "<ArrayOfTbl_Staffing_Addition_Details>";
+                foreach (var item in LocationSeatHeadDetailsList)
+                {
+                    xmlDet = xmlDet + "<tbl_Staffing_Addition_Details>";
+                    xmlDet = xmlDet + "<EventId>" + item.EventId + "</EventId>";
+                    xmlDet = xmlDet + "<EmployeeId>" + item.EmployeeId + "</EmployeeId>";
+                    xmlDet = xmlDet + "<FromDateTime>" + item.FromDateTime + "</FromDateTime>";
+                    xmlDet = xmlDet + "<ToDateTime>" + item.ToDateTime + "</ToDateTime>";
+                    xmlDet = xmlDet + "<EntryBy>" + objLoginSession.UserId.ToString() + "</EntryBy>";
+                    xmlDet = xmlDet + "</tbl_Staffing_Addition_Details>";
+                }
+                xmlDet = xmlDet + "</ArrayOfTbl_Staffing_Addition_Details>";
+
+                Dt = InsertUpdateScheduleLocation(xml.InnerXml, xmlDet, VMSA.TSAM.EventId);
+            }
+            catch (Exception ex)
+            {
+
+                throw;
+            }
+            return View("CoverageMapFormate");
+        }
+        public JsonResult GetScheduleEmployee(string EmployeeId)
+        {
+            long locationId = 0;
+            WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+            string loginUserName = "", loginUserEmail = "", loginUserProfile = "";
+            if (ObjLogin != null)
+            {
+                locationId = ObjLogin.LocationID;
+            }
+            string SQRY = "EXEC USP_GetScheduleEmployeeList N'" + locationId + "','" + EmployeeId + "'";
+            DataSet DS = DBUtilities.GetDSResponse(SQRY);
+            tbl_Staffing_Addition_Details LocationSeat = DataRowToObject.CreateListFromTable<tbl_Staffing_Addition_Details>(DS.Tables[0]).FirstOrDefault();
+            var LocationSeatTime = new
+            {
+
+                start = LocationSeat.FromDateTime.ToString("yyyy-MM-dd hh:mm:ss"),
+                end = LocationSeat.ToDateTime.ToString("yyyy-MM-dd hh:mm:ss")
+
+            };
+            return Json(LocationSeatTime, JsonRequestBehavior.AllowGet);
+        }
+        public List<tbl_LocationSeats> GetSeatLocations(string Search)
+        {
+            string SQRY = "EXEC USP_GetSeatLocations '" + Search + "'";
+            DataTable DT = DBUtilities.GetDTResponse(SQRY);
+            List<tbl_LocationSeats> LocationSeatList = DataRowToObject.CreateListFromTable<tbl_LocationSeats>(DT);
+            return LocationSeatList;
+        }
+        public DataTable InsertUpdateScheduleLocation(string xml, string xmlDet, long EventId)
+        {
+            string SQRY = "EXEC USP_InsertUpdateScheduleLocation '" + xml + "','" + xmlDet + "','" + EventId + "'";
+            return DBUtilities.GetDTResponse(SQRY);
+        }
+
+        public JsonResult UpdateEmployeeSchedule(string id, string title, DateTime start, DateTime end)
+        {
+            eTracLoginModel objLoginSession = new eTracLoginModel();
+            objLoginSession = (eTracLoginModel)Session["eTrac"];
+            string xmlDet = "<tbl_Staffing_Addition_Details>";
+            xmlDet = xmlDet + "<Id>" + id.Split(',')[0] + "</Id>";
+            xmlDet = xmlDet + "<EventId>" + id.Split(',')[1] + "</EventId>";
+            xmlDet = xmlDet + "<EmployeeId>" + title + "</EmployeeId>";
+            xmlDet = xmlDet + "<FromTime>" + start.ToString() + "</FromTime>";
+            xmlDet = xmlDet + "<ToTime>" + end.ToString() + "</ToTime>";
+            xmlDet = xmlDet + "<EntryBy>" + objLoginSession.UserId.ToString() + "</EntryBy>";
+            xmlDet = xmlDet + "<FromDateTime>" + start + "</FromDateTime>";
+            xmlDet = xmlDet + "<ToDateTime>" + end + "</ToDateTime>";
+            xmlDet = xmlDet + "</tbl_Staffing_Addition_Details>";
+            string SQRY = "EXEC USP_UpdateEmployeeSchedule '" + id.Split(',')[0] + "','" + xmlDet + "'";
+            DataTable Dt = DBUtilities.GetDTResponse(SQRY);
+            var jsonObj = new
+            {
+                Status = Dt.Rows[0]["Status"].ToString(),
+                Message = Dt.Rows[0]["Message"].ToString()
+            };
+            return Json(jsonObj, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
+
+        #region Location wise Shift list
+        public ActionResult ListEmpShift()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            return View();
+        }
+
+        [HttpGet]
+        public JsonResult GetListEmpWiseShift(string txtSearch)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            long UserId = 0;
+            long locationId = 0;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                if (ObjLoginModel != null)
+                {
+                    locationId = ObjLoginModel.LocationID;
+                }
+                UserId = ObjLoginModel.UserId;
+            }
+
+            try
+            {
+                string SQRY = "EXEC SP_GetShiftwiseEmpList '" + locationId + "' ";
+                DataTable DT = DBUtilities.GetDTResponse(SQRY);
+                List<UserModel> LocationSeatList = DataRowToObject.CreateListFromTable<UserModel>(DT);
+                return Json(LocationSeatList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(ex.Message, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public ActionResult EmpWiseShiftDelete(int UserId)
+        {
+            Tbl_Employee_Leave_Management Leave = new Tbl_Employee_Leave_Management();
+            try
+            {
+                if (UserId > 0)
+                {
+                    //DataTable dt = new DataTable();
+                    //string SQRY = "EXEC USP_Get_Leave_Management_Delete '" + Id + "'";
+                    //dt = DBUtilities.GetDTResponse(SQRY);
+                }
+            }
+            catch (Exception ex) { ViewBag.StrError = ex; }
+            return RedirectToAction("ListEmpShift", "EPeople");
+        }
+
+
+        #endregion
+
+        #region Schedule Overview
+
+        public ActionResult ScheduleOverview()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            ScheduleOverview VMSA = new ScheduleOverview();
+            try
+            {
+                VMSA.ListLS = GetSeatLocations("");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            ViewBag.IsPageRefresh = false;
+            return View(VMSA);
+        }
+        [HttpGet]
+        public JsonResult GetListScheduleOverview(string Search)
+        {
+            string UserId;
+            try
+            {
+                eTracLoginModel ObjLoginModel = null;
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                    UserId = Convert.ToString(ObjLoginModel.UserId);
+                }
+                string SQRY = "EXEC USP_GetScheduleOverview '" + Search + "' ";
+                DataTable DT = DBUtilities.GetDTResponse(SQRY);
+                List<ScheduleOverview> ScheduleOverviewList = DataRowToObject.CreateListFromTable<ScheduleOverview>(DT);
+                return Json(ScheduleOverviewList, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+        }
+        #endregion
+
+        #region Auto Schedule
+        public ActionResult AutoSchedule()
+        {
+            long locationId = 0;
+            eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+            if (ObjLogin != null)
+            {
+                locationId = ObjLogin.LocationID;
+            }
+            VMtbl_Staffing_Addition VMSA = new VMtbl_Staffing_Addition();
+            try
+            {
+                VMSA.TSAM = new tbl_Staffing_Addition();
+                VMSA.TSAM.UserLocation = locationId;
+                VMSA.ListLS = GetSeatLocations("");
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            return View(VMSA);
+        }
+        #endregion
 
         #region GRAPH COUNT
 

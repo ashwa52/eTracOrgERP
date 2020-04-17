@@ -192,7 +192,9 @@
     <Compile Include="eCounting\BillNumber.cs" />
     <Compile Include="eCounting\Bill\BillFacilityModel.cs" />
     <Compile Include="eCounting\CompanyFacility\CompanyFacilityModel.cs" />
+    <Compile Include="eCounting\CreditMemoDataModel.cs" />
     <Compile Include="eCounting\CustomerAllViewDataModel.cs" />
+    <Compile Include="eCounting\ClientInvoiceDataModel.cs" />
     <Compile Include="eCounting\CustomerSetupManagementModel.cs" />
     <Compile Include="eCounting\DebitMemo\DebitMemoModel.cs" />
     <Compile Include="eCounting\DOTAllViewDataModel.cs" />
@@ -248,6 +250,7 @@
     <Compile Include="Emp_ManApp\EmployeeManagerModel.cs" />
     <Compile Include="eTime\Employee_AttendanceModel.cs" />
     <Compile Include="eTime\Employee_PunchTimeRequestModel.cs" />
+    <Compile Include="eTime\eTimeAPIModels.cs" />
     <Compile Include="GlobalSettings\Invoices.cs" />
     <Compile Include="GlobalSettings\BankAccount.cs" />
     <Compile Include="GlobalSettings\ARRules.cs" />

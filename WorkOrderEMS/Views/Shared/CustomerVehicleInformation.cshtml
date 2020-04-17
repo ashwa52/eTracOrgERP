@@ -1,4 +1,5 @@
 ﻿@model WorkOrderEMS.Models.CustomerSetupManagementModel
+
 @*@model dynamic*@
 @{
     long UserType = 0; bool GloblaAdminUser, ITAdminUser, OnlyAdminUser, ManagerUser, EmployeeUser, ClientUser;
@@ -155,48 +156,53 @@
 <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.maskedinput-1.3.min.js")"></script>
 <div class="panel panel-primary setup-content" id="myContractDetails">
     <div class="basic-form">
-        <div class="form-group row">
-            <table id="tblSubItem" class="table table-striped table-bordered table-hover">
-                <tbody id="containerTblSubItem">
-                    @foreach (var item in Model.CustomerVehicleModel.CustomerVehicleDetails)
-                    {
-                        Html.RenderPartial("_CustomerVehicleDetails", item);
-                    }
-                </tbody>
-            </table>
-            <div class="col-md-12 pull-right">
-                <a id="btnAddRows" class="btn btn-lg right">
-                    <i class="fa fa-plus"></i> Add More Vehicle
-                </a>
+        <div class="card-body">
+            <div id="tblSubItem">
+                @*<table id="tblSubItem" class="table table-striped table-bordered table-hover">
+            <tbody id="containerTblSubItem">*@
+                @foreach (var item in Model.CustomerVehicleModel.CustomerVehicleDetails)
+                {
+                    Html.RenderPartial("_CustomerVehicleDetails", item);
+                }
+                @*</tbody>
+            </table>*@
+
+                @*<div class="col-md-12 pull-right">
+                    <a id="btnAddRows" class="btn btn-lg right">
+                        <i class="fa fa-plus"></i> Add More Vehicle
+                    </a>
+                    <a id="btnRemoveRows" class="btn btn-lg right">
+                        <i class="fa fa-minus"></i> Remove Vehicle
+                    </a>*@
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">  Would you like to schedule an appoint to retrieve monthly parking pass - <span class="req">*</span></label>
+                <div class="col-sm-4">
+                    @Html.RadioButtonFor(model => model.IsMonthlyAppointmentSchedule, "true", new { @class = "radio rbtn", data_title = "Yes" })<span class="radio_span">
+                        &nbsp;Yes &nbsp;&nbsp;
+                    </span>
+                    @Html.RadioButtonFor(model => model.IsMonthlyAppointmentSchedule, "false", new { @style = "margin-left:20%;", @class = "radio rbtn", data_title = "No" })<span class="radio_span">
+                        &nbsp;No
+                    </span>
+                    @Html.ValidationMessageFor(model => model.IsMonthlyAppointmentSchedule)
+                </div>
+            </div>
+            <div class="form-group row clsScheduleAppointment" style="display:none;">
+                <label class="col-sm-2 col-form-label" for="ScheduleAppointDate">Select Date<span class="req">*</span></label>
+                <div class="col-sm-4">
+                    @Html.TextBox("ScheduleAppointDate", Model.ScheduleAppointDate.ToString("MM/dd/yyyy"), new { @Placeholder = "Schedule Appoint Date", @class = "form-control-sm input-rounded", @maxlength = "10" })
+                    @Html.ValidationMessageFor(model => model.ScheduleAppointDate)
+                </div>
+            </div>
+            <div class="form-group row clsScheduleAppointment" style="display:none;">
+                <label class="col-sm-2 col-form-label" for="ScheduleAppointTime">Select Time<span class="req">*</span></label>
+                <div class="col-sm-4">
+                    @Html.TextBoxFor(model => model.ScheduleAppointTime, null, new { @id = "ScheduleAppointTime", @onkeydown = "return false;", @class = "form-control-sm clockpicker input-rounded" })
+                    @Html.ValidationMessageFor(model => model.ScheduleAppointTime)
+                </div>
             </div>
         </div>
-        <div class="form-group row">
-            <label class="col-sm-2 col-form-label">  Would you like to schedule an appoint to retrieve monthly parking pass - <span class="req">*</span></label>
-            <div class="col-sm-4">
-                @Html.RadioButtonFor(model => model.IsMonthlyAppointmentSchedule, "true", new { @class = "radio rbtn", data_title = "Yes" })<span class="radio_span">
-                    &nbsp;Yes &nbsp;&nbsp;
-                </span>
-                @Html.RadioButtonFor(model => model.IsMonthlyAppointmentSchedule, "false", new { @style = "margin-left:20%;", @class = "radio rbtn", data_title = "No" })<span class="radio_span">
-                    &nbsp;No
-                </span>
-                @Html.ValidationMessageFor(model => model.IsMonthlyAppointmentSchedule)
-            </div>
-        </div>
-        <div class="form-group row clsScheduleAppointment" style="display:none;">
-            <label class="col-sm-2 col-form-label" for="ScheduleAppointDate">Select Date<span class="req">*</span></label>
-            <div class="col-sm-4">
-                @Html.TextBox("ScheduleAppointDate", Model.ScheduleAppointDate.ToString("MM/dd/yyyy"), new { @Placeholder = "Schedule Appoint Date", @class = "form-control-sm input-rounded", @maxlength = "10" })
-                @Html.ValidationMessageFor(model => model.ScheduleAppointDate)
-            </div>
-        </div>
-        <div class="form-group row clsScheduleAppointment" style="display:none;">
-            <label class="col-sm-2 col-form-label" for="ScheduleAppointTime">Select Time<span class="req">*</span></label>
-            <div class="col-sm-4">
-                @Html.TextBoxFor(model => model.ScheduleAppointTime, null, new { @id = "ScheduleAppointTime", @onkeydown = "return false;", @class = "form-control-sm clockpicker input-rounded" })
-                @Html.ValidationMessageFor(model => model.ScheduleAppointTime)
-            </div>
-        </div>
-    </div>
 </div>
 
 <script>
@@ -205,36 +211,104 @@
 <script>
     $(document).ready(function () {
         var itemIndex = $("#tblSubItem input.iHidden").length + 1;
-        $("input[type='radio']").change(function () {
-            if ($(this).val() == "true") {
-                $(".clsScheduleAppointment").show();
-                $("#ScheduleAppointDate").addClass('required');
-                $("#ScheduleAppointTime").addClass('required');
-            }
-            else if ($(this).val() == "false") {
-                bootbox.confirm("Are you sure, this will help ensure a member of management is available?", function (result) {
+
+        //$("input[type='radio']").change(function () {
+        //    if ($(this).val() == "true") {
+        //        $(".clsScheduleAppointment").show();
+        //        $("#ScheduleAppointDate").addClass('required');
+        //        $("#ScheduleAppointTime").addClass('required');
+        //    }
+        //    else if ($(this).val() == "false") {
+        //        ;
+        //        bootbox.confirm("Are you sure, this will help ensure a member of management is available?", function (result) {
+        //            if (result) {
+        //                $(".clsScheduleAppointment").hide();
+        //                $("#ScheduleAppointDate").val('');
+        //                $("#ScheduleAppointTime").val('');
+        //                $("#ScheduleAppointDate").removeClass('required');
+        //                $("#ScheduleAppointTime").removeClass('required');
+        //            } else {
+        //                $('input:radio[name=IsMonthlyAppointmentSchedule][value=true]').prop('checked', true);
+        //            }
+        //        });
+        //    }
+        //});
+        $('#IsMonthlyAppointmentSchedule[value="true"]').click(function () {
+            $(".clsScheduleAppointment").show();
+            $("#ScheduleAppointDate").addClass('required');
+            $("#ScheduleAppointTime").addClass('required');
+        });
+        $('#IsMonthlyAppointmentSchedule[value="false"]').click(function () {
+                      bootbox.confirm("Are you sure, this will help ensure a member of management is available?", function (result) {
                     if (result) {
                         $(".clsScheduleAppointment").hide();
+                        $("#ScheduleAppointDate").val('');
+                        $("#ScheduleAppointTime").val('');
                         $("#ScheduleAppointDate").removeClass('required');
                         $("#ScheduleAppointTime").removeClass('required');
                     } else {
                         $('input:radio[name=IsMonthlyAppointmentSchedule][value=true]').prop('checked', true);
                     }
                 });
-            }
         });
         $('#ScheduleAppointDate').datepicker({
             format: "mm/dd/yyyy",
         });
 
-        $("#btnAddRows").click(function () {
+        //$("#btnAddRows").click(function () {
+        //    setTimeout(function () {
+        //        itemIndex = itemIndex + 1;
+        //        AddVehicleList(itemIndex);
+        //    }, 350);
+        //});
+
+        //var AddVehicleList = function (itemIndex) {
+        //    var StrURL = $_HostPrefix + '/CustomerManagement/AddVehicleList?id=' + itemIndex;
+        //    $.ajax({
+        //        url: StrURL,
+        //        cache: false,
+        //        data: {},
+        //        type: 'POST',
+        //        success: function (html) {
+        //            $("#containerTblSubItem").append(html);
+        //        },
+        //        error: function (jqXHR, exception) {
+        //            //TosterNotification("error", errorResult(jqXHR, exception), "Error");
+        //        }
+        //    });
+        //}
+        //$("#btnRemoveRows").click(function () {
+        //    setTimeout(function () {
+        //        itemIndex = itemIndex + 1;
+        //        $("#containerTblSubItem").remove()
+        //    }, 350);
+        //});
+
+         $(".btnAddrows").click(function () {
             setTimeout(function () {
                 itemIndex = itemIndex + 1;
-                AddVehicleList(itemIndex);
+                AddInvoiceItemList(itemIndex);
             }, 350);
         });
+        $(".deleteRow").on("click", function () {
+            id = $(this).data('id');
+            $(".editorRow_" + id).remove();
+            $('.btnAddrows').each(function () {
+                $(this).hide();
+            });
+        $('.Add_' + $("#tblSubItem input.iHidden").last().val()).show();
+            //itemIndex = itemIndex - 1;
+            return false;
+        });
 
-        var AddVehicleList = function (itemIndex) {
+        $(document).ready(function () {
+        $('.btnAddrows').each(function () {
+            $(this).hide();
+        });
+        $('.Add_' + $("#tblSubItem input.iHidden").last().val()).show();
+        });
+
+        var AddInvoiceItemList = function (itemIndex) {
             var StrURL = $_HostPrefix + '/CustomerManagement/AddVehicleList?id=' + itemIndex;
             $.ajax({
                 url: StrURL,
@@ -242,12 +316,35 @@
                 data: {},
                 type: 'POST',
                 success: function (html) {
-                    $("#containerTblSubItem").append(html);
+                    $("#tblSubItem").append(html);
+                    $('.btnAddrows').each(function () {
+                        $(this).hide();
+                    });
+                    $('.Add_' + itemIndex).show();
+
+                    $("#btnAddrows_" + itemIndex).click(function () {
+                        console.log(itemIndex)
+                        setTimeout(function () {
+                            itemIndex = itemIndex + 1;
+                            AddInvoiceItemList(itemIndex);
+                        }, 350);
+                    });
+
+                    $("#btnDeleterow_" + itemIndex).click(function () {
+                        id = $(this).data('id');
+                        $(".editorRow_" + id).remove();
+                        $('.btnAddrows').each(function () {
+                            $(this).hide();
+                        });
+                        $('.Add_' + $("#tblSubItem input.iHidden").last().val()).show();
+                        return false;
+                    });
                 },
                 error: function (jqXHR, exception) {
                     //TosterNotification("error", errorResult(jqXHR, exception), "Error");
                 }
             });
         }
+
     });
 </script>

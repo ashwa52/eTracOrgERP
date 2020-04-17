@@ -89,13 +89,14 @@
         <link href="@Url.Content("~/Content/JqGridCSS/ui.jqgrid.css")" rel="stylesheet" />
         <link href="@Url.Content("~/Content/JqGridCSS/DilogPopup.css")" rel="stylesheet" />*@
     <link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
-    <link href="@Url.Content("~/Content/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
     <!-- daterange picker -->
     <link rel="stylesheet" href="@Url.Content("~/Content/Dashboard/plugins/daterangepicker/daterangepicker-bs3.css")" />
     <!-- Bootstrap Color Picker -->
     <link rel="stylesheet" href="@Url.Content("~/Content/Dashboard/plugins/colorpicker/bootstrap-colorpicker.min.css")" />
     <!-- Bootstrap time Picker -->
     <link rel="stylesheet" href="@Url.Content("~/Content/Dashboard/plugins/timepicker/bootstrap-timepicker.min.css")" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.2/fullcalendar.min.css" rel="stylesheet" />
+    <link href="~/Scripts/Bootstrap-DateTimePicker/css/datetimepicker.css" rel="stylesheet" />
     @RenderSection("scripts", required: false)
     <style>
         #loader-wrapper {
@@ -149,6 +150,13 @@
                 -webkit-animation: spin 1.5s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
                 animation: spin 1.5s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
             }
+
+        .modal-body-popup {
+            position: relative;
+            flex: 1 1 auto;
+            padding: 1rem;
+            margin-left: 0px;
+        }
     </style>
     <!--File Upload-->
     <script type="text/javascript" src="@Url.Content("~/Scripts/1.9.1-js/jquery-ui-1.9.2.min.js")"></script>
@@ -263,6 +271,9 @@
         {
             @Html.Partial("_NewSideMenu")
         }
+        <div id="loader-wrapper" style="display:none;">
+            <div id="loader"></div>
+        </div>
         @*<a href="~/Views/Shared/_NewSideMenu.cshtml">~/Views/Shared/_NewSideMenu.cshtml</a>*@
         <!--**********************************
             Content body start
@@ -302,8 +313,43 @@
         </div>
 
     </div>
-
+    <!--Start Choose Requisition Action-->
+    <div class="modal fade bd-example-modal-lg ActionPaymentReceive" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForPaymentReceiveAction" style="overflow:scroll;">
+        <div class="modal-dialog modal-lg" style="max-width: 1100px;">
+            <div class="modal-content" style="width:1150px">
+                <div class="modal-header" style="display: inherit;">
+                    <h4 style="color:white;">Receive Payment</h4>
+                    @*<h4 class="card-title" style="color:white;"><strong>Create Manual Client Invoice</strong></h4>*@
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body-popup">
+                    <div id="divOpenPaymentReceiveForm" class="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End Choose Requisition Action-->
     <!--End Modal connect to quickbook-->
+    <!--Choose Requisition Action-->
+    <div class="modal fade bd-example-modal-lg ActionRequisition" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForRequisitionAction" style="overflow:scroll;">
+        <div class="modal-dialog modal-lg" style="max-width: 1021px;">
+            <div class="modal-content" style="width:1000px">
+                <div class="modal-header" style="display: inherit;">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body-popup">
+                    <div id="divOpenRquisitionForm" class="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Add VSC-->
     <!--**********************************
         Main wrapper end
     ***********************************-->
@@ -368,8 +414,9 @@
     <script type="text/javascript" src="@Url.Content("~/Scripts/BootStrap-Multiselect/JS/bootstrap-confirmation.js")"></script>
     <script type="text/javascript" src="@Url.Content("~/Scripts/BootStrap-Multiselect/JS/bootbox.js")"></script>
     <script src="~/Content/NewAdminContent/JQUERY/MaskLoaderNew.js"></script>
-    
-   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
+    <script src="~/Scripts/Bootstrap-DateTimePicker/js/bootstrap-datetimepicker.min.js"></script>
 </body>
 </html>
 
@@ -379,7 +426,7 @@
         $("#drp_MasterLocation1").val(@locationId).attr("selected", "selected");
         //On Click menu add partial view
         $("#menu li a").click(function (e) {
-            debugger
+
                 //new fn_showMaskloader('Please wait...');
 
             e.preventDefault(); // prevent default link button redirect behaviour
@@ -387,19 +434,8 @@
             var dashValue = $(this).attr("data-oldDash");
             if (dashValue == "Yes") {
                 window.location.href = url;
-            } else {
-                $('#RenderPageId').load(url);
-                //$.ajax({
-                //    type: "GET",
-                //    url: url,
-                //    //data: { LocationID: LocationID, LocationName: LocationName },
-                //    success: function (Data) {
-                //        $('#RenderPageId').html(Data);
-                //    },
-                //    error: function () {
-                //    }
-                //})
-
+            }else{
+              $('#RenderPageId').load(url);
         }
         });
         $("#drp_MasterLocation1").change(function () {
@@ -407,7 +443,8 @@
             var LocationName = $("#drp_MasterLocation1 option:selected").text();
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("SetUserSelectedLocation", "Login")',
+                //url: '@Url.Action("SetUserSelectedLocation", "Login")',
+                url: '/Login/SetUserSelectedLocation',
                 data: { LocationID: LocationID, LocationName: LocationName },
                 success: function (Data) {
                     $('.jsgrid').jsGrid("loadData");
@@ -436,7 +473,7 @@
 
             if ($_AuthorizeURL == null || $_AuthorizeURL == "")
             {
-                $("#ConnectToQuickBookModal").modal('show');
+                $("#ConnectToQuickBookModal").modal('hide');
             }
             else {
                 @*if (@ViewBag.QuickBookMessage != null) {*@
@@ -489,6 +526,14 @@
                     $ele.css("top", top);
                 }
                 $ele.animate({ top: (parseInt(top) - 60) }, 2000, 'linear', function () { doScroll($(this)) });
-            }</script>
+    }
+     function isNumberKey(evt)
+     {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+            return true;
+      }
+</script>
 
 @RenderSection("scriptsbottom", required: false)

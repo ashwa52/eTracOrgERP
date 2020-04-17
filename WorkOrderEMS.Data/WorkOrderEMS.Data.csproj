@@ -1336,6 +1336,9 @@
     <Compile Include="EntityModel\VendorType.cs">
       <DependentUpon>WorkOrderEMS.tt</DependentUpon>
     </Compile>
+    <Compile Include="EntityModel\VW_USERTYPE.cs">
+      <DependentUpon>WorkOrderEMS.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\WorkOrderEMS.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

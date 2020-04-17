@@ -1,0 +1,123 @@
+﻿@model List<WorkOrderEMS.Models.tbl_Staffing_Addition_Details>
+@{
+    ViewBag.Title = "Coverage Map Formate";
+
+    var isRefresh = ViewBag.IsPageRefresh;
+    if (isRefresh == true)
+    {
+        Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = null;
+    }
+}
+<style type="text/css">
+    .fc-AddButton-button, .fc-AutoScheduleButton-button {
+        border-radius: 20px !important;
+        margin: 5px !important;
+    }
+</style>
+<div class="content-body">
+    <div class="container-fluid" style="margin-top:20px;">
+        <!-- row -->
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card aos-init" data-aos="fade-up">
+                    <div class="card-header headerSize" style="height: 45px;">
+                        <h4 class="card-title" style="color:white;"><strong><i class="fa fa-sticky-note"></i> @ViewBag.Title</strong></h4>
+                    </div>
+                    <div class="card-body">
+                        <div id='calendar'></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        var GetAllEvent = function () {
+
+            $.ajax({
+                type: "GET",
+                url: "/EPeople/CoverageMapFormateDetails",
+                datatype: 'json',
+                success: function (result) {
+                    $('#calendar').fullCalendar('destroy');
+                    $('#calendar').fullCalendar({
+                        weekends: true,
+                        editable: true,
+                        selectable: true,
+                        defaultView: 'agendaWeek',
+                        customButtons: {
+                            //AddButton: {
+                            //    text: 'Add',
+                            //    click: function () {
+                            //        event.preventDefault();
+                            //        var addNewUrl = "/EPeople/ScheduleLocation?start&end";
+                            //        $('#RenderPageId').load(addNewUrl);
+                            //    },
+                            //},
+                            AutoScheduleButton: {
+                                text: 'Auto Schedule',
+                                click: function () {
+                                    event.preventDefault();
+                                    var addNewUrl = "/EPeople/AutoSchedule";
+                                    $('#RenderPageId').load(addNewUrl);
+                                },
+                            }
+                        }
+                        , header: {
+                            left: 'AddButton,AutoScheduleButton',
+                            center: 'title',
+                            right: 'today prev,next'
+                        },
+                        //dayClick: function (date, jsEvent, view) {
+
+                        //    // change the day's background color just for fun
+                        //    $(this).css('background-color', 'red');
+
+                        //},
+                        events: result,
+                        eventClick: function (event, jsEvent, view) {
+                            var addNewUrl = "/EPeople/ScheduleLocation?id=" + event.id + "&start=" + event.start.format() + "&end=" + event.end.format();
+                            $('#RenderPageId').load(addNewUrl);
+                        },
+                        eventDrop: function (event, jsEvent, view) {
+                            $.ajax({
+                                type: "GET",
+                                url: "/EPeople/UpdateEmployeeSchedule?id=" + event.id + "&title=" + event.title + "&start=" + event.start.toISOString() + "&end=" + event.end.toISOString(),
+                                datatype: 'json',
+                                success: function (result) {
+                                }
+                            });
+                        },
+                        eventResize: function (event, jsEvent, view) {
+                            $.ajax({
+                                type: "GET",
+                                url: "/EPeople/UpdateEmployeeSchedule?id=" + event.id + "&title=" + event.title + "&start=" + event.start.toISOString() + "&end=" + event.end.toISOString(),
+                                datatype: 'json',
+                                success: function (result) {
+                                }
+                            });
+                        },
+                        select: function (start, end) {
+                            event.preventDefault();
+                            var addNewUrl = "/EPeople/ScheduleLocation?start=" + start.format() + "&end=" + end.format();
+                            $('#RenderPageId').load(addNewUrl);
+                        }
+                    });
+                }
+            });
+        }
+
+        GetAllEvent();
+        $("#drp_MasterLocation1").change(function () {
+            GetAllEvent();
+        });
+    });
+
+</script>

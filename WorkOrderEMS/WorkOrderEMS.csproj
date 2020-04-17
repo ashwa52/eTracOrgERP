@@ -199,7 +199,8 @@
       <HintPath>..\packages\Quartz.3.0.7\lib\net452\Quartz.dll</HintPath>
     </Reference>
     <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Rotativa.1.7.4-rc\lib\net45\Rotativa.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Rotativa.1.7.3\lib\net461\Rotativa.dll</HintPath>
     </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\packages\structuremap.3.1.4.143\lib\net40\StructureMap.dll</HintPath>
@@ -387,6 +388,7 @@
     <Compile Include="Controllers\Account\AccountSectionController.cs" />
     <Compile Include="Controllers\Administrator\AdministratorController.cs" />
     <Compile Include="Controllers\Administrator\BaseController.cs" />
+    <Compile Include="Controllers\API\ETimeAPIController.cs" />
     <Compile Include="Controllers\Client\ClientController.cs" />
     <Compile Include="Controllers\Client\NewClientController.cs" />
     <Compile Include="Controllers\Common\CommonController.cs" />
@@ -396,6 +398,7 @@
     <Compile Include="Controllers\Common\SchedularForPO.cs" />
     <Compile Include="Controllers\DAR\DARController.cs" />
     <Compile Include="Controllers\eCounting\BillController.cs" />
+    <Compile Include="Controllers\eCounting\InvoiceManagementController.cs" />
     <Compile Include="Controllers\eCounting\CustomerManagementController.cs" />
     <Compile Include="Controllers\eCounting\DebitMemoController.cs" />
     <Compile Include="Controllers\eCounting\DOTmanagement.cs" />
@@ -547,6 +550,7 @@
     <Content Include="Content\Blink.css" />
     <Content Include="Content\bootstrap-datepicker3.css" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
+    <Content Include="Content\bootstrap-datetimepicker.min.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\common\admin.css" />
@@ -1449,6 +1453,9 @@
     <Content Include="Content\dataTables.jqueryui.css" />
     <Content Include="Content\dataTables.jqueryuiReport.css" />
     <Content Include="Content\datepicker.css" />
+    <Content Include="Content\datetimepicker.css" />
+    <Content Include="Content\eCountingDocs\InvoiceDocs\4_637131458365819385_2019-12-28_1553.png" />
+    <Content Include="Content\eCountingDocs\InvoiceDocs\4_637153808574307944_InvoiceSubmission.jpg" />
     <Content Include="Content\eCounting\VendorMultiStepWizard.css" />
     <Content Include="Content\eCounting\VendorWizard.css" />
     <Content Include="Content\eFleetDocs\AttachmentMaintenance\FileNotFound.png" />
@@ -5144,6 +5151,8 @@
     <Content Include="GridListing\JqGridScript\CompanyList\ListInsurance.js" />
     <Content Include="GridListing\JqGridScript\CompanyList\ListLicense.js" />
     <Content Include="GridListing\JqGridScript\CustomersList.js" />
+    <Content Include="GridListing\JqGridScript\ListCreditInvoice.js" />
+    <Content Include="GridListing\JqGridScript\ListInvoice.js" />
     <Content Include="GridListing\JqGridScript\CustomersWaitingList.js" />
     <Content Include="GridListing\JqGridScript\LeaveManagementJS.js" />
     <Content Include="GridListing\JqGridScript\ListAllHolidayJS.js" />
@@ -5161,6 +5170,7 @@
     <Content Include="GridListing\JqGridScript\ListeFleetVehicleIncident.js" />
     <Content Include="GridListing\JqGridScript\ListEmail.js" />
     <Content Include="GridListing\JqGridScript\ListFueling.js" />
+    <Content Include="GridListing\JqGridScript\ListItem.js" />
     <Content Include="GridListing\JqGridScript\ListLocation.js" />
     <Content Include="GridListing\JqGridScript\ListNewVendorFacility.js" />
     <Content Include="GridListing\JqGridScript\ListOfBudgetAfterSavingTransferAmoutForCostCode.js" />
@@ -5190,6 +5200,7 @@
     <Content Include="GridListing\JqGridScript\WorkOrderWeekHistory.js" />
     <Content Include="GridListing\JqGridScript\WorkRequestAssignment.js" />
     <Content Include="GridListing\JqGridScript\WorkRequestList.js" />
+    <Content Include="GridListing\JsGridScript\EmpShiftList.js" />
     <Content Include="GridListing\JsGridScript\EmployeeStatusChangeList.js" />
     <Content Include="GridListing\JsGridScript\ListAllocatedBudget.js" />
     <Content Include="GridListing\JsGridScript\ListAllShiftJS.js" />
@@ -5200,6 +5211,7 @@
     <Content Include="GridListing\JsGridScript\ListEmployeeForAttendance.js" />
     <Content Include="GridListing\JsGridScript\ListEmployeeManagement.js" />
     <Content Include="GridListing\JsGridScript\ListLocation.js" />
+    <Content Include="GridListing\JsGridScript\ListHoliday.js" />
     <Content Include="GridListing\JsGridScript\ListMyOpening.js" />
     <Content Include="GridListing\JsGridScript\ListOnBoarding.js" />
     <Content Include="GridListing\JsGridScript\ListQRCList.js" />
@@ -5211,6 +5223,7 @@
     <Content Include="Images\bg.png" />
     <Content Include="Images\buy11.png" />
     <Content Include="Images\CarLogo.png" />
+    <Content Include="Images\CreditCard.jpg" />
     <Content Include="Images\Credit_Card.png" />
     <Content Include="Images\delete.png" />
     <Content Include="Images\DIRECT-DEPOSIT.jpg" />
@@ -5264,6 +5277,8 @@
     <Content Include="MailTemplate\CreateVendorTemplate.html" />
     <Content Include="MailTemplate\DailyAPTrendInCountTemplate.html" />
     <Content Include="MailTemplate\EPeople\EmployeeHired.html" />
+    <Content Include="MailTemplate\InvoicePaymentReminder.html" />
+    <Content Include="MailTemplate\InvoiceSubmissionTemplate.html" />
     <Content Include="MailTemplate\POSendForApprovalTemplate.html" />
     <Content Include="MailTemplate\CellphoneButtonsTemplate.html" />
     <Content Include="MailTemplate\CellphoneFunctionalTemplate.html" />
@@ -5976,6 +5991,7 @@
     <Content Include="Areas\AdminSection\Views\OrgChart\_AddJobPosting.cshtml" />
     <Content Include="Areas\AdminSection\Views\OrgChart\_JobTitilView.cshtml" />
     <Content Include="App_Browsers\qt.browser" />
+    <Content Include="Documents\random.pdf" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\eTrac - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\eTrac - Web Deploy.pubxml" />
@@ -6022,6 +6038,7 @@
     <Content Include="Scripts\DurationFlipbox\jquery.mousewheel.min.js" />
     <Content Include="Scripts\DurationFlipbox\jtsage-datebox-4.1.1.bootstrap.min.css" />
     <Content Include="Scripts\DurationFlipbox\jtsage-datebox-4.1.1.bootstrap.min.js" />
+    <Content Include="Scripts\eCounting\CustomerMultiStepWizard.js" />
     <Content Include="Scripts\eCounting\VendorMultiStepWizard.js" />
     <Content Include="Scripts\eFleetVehicle\reg.js" />
     <Content Include="Scripts\eFleet\PassengerTracking.js" />
@@ -6046,6 +6063,7 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.8.3.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
     <Content Include="Scripts\jquery-easing\jquery.easing.min.js" />
     <Content Include="Scripts\Jquery-TimePicker\jquery-ui-timepicker-addon.js" />
@@ -6877,6 +6895,31 @@
     <Content Include="Views\Shared\_CustomerRecapDetails.cshtml" />
     <Content Include="Views\Shared\_CustomerVehicleDetails.cshtml" />
     <Content Include="Views\NewAdmin\QEvaluationView.cshtml" />
+    <Content Include="Views\InvoiceManagement\ClientInvoiceList.cshtml" />
+    <Content Include="Views\InvoiceManagement\CreateClientInvoice.cshtml" />
+    <Content Include="Views\InvoiceManagement\_InvoiceItemDetails.cshtml" />
+    <Content Include="Views\InvoiceManagement\Item.cshtml" />
+    <Content Include="Views\InvoiceManagement\ItemList.cshtml" />
+    <Content Include="Views\InvoiceManagement\ReceivePaymentClientInvoice.cshtml" />
+    <Content Include="Views\InvoiceManagement\_InvoiceItemDetailsForView.cshtml" />
+    <Content Include="Views\InvoiceManagement\InvoiceDashboard.cshtml" />
+    <Content Include="Views\InvoiceManagement\CreateCreditInvoice.cshtml" />
+    <Content Include="Views\InvoiceManagement\GetCreateCreditInvoice.cshtml" />
+    <Content Include="Views\InvoiceManagement\_CreditMemoInvoiceItemDetails.cshtml" />
+    <Content Include="Views\InvoiceManagement\_CreditMemoInvoiceItemDetailsStep2.cshtml" />
+    <Content Include="Views\InvoiceManagement\ClientCreditInvoiceList.cshtml" />
+    <Content Include="Views\EPeople\CoverageMapFormate.cshtml" />
+    <Content Include="Views\EPeople\LeaveType.cshtml" />
+    <Content Include="Views\EPeople\LeaveTypeList.cshtml" />
+    <Content Include="Views\EPeople\ListEmpShift.cshtml" />
+    <Content Include="Views\EPeople\LocationSeats.cshtml" />
+    <Content Include="Views\EPeople\ScheduleLocation.cshtml" />
+    <Content Include="Views\EPeople\ScheduleOverview.cshtml" />
+    <Content Include="Views\EPeople\_HolidayMasterDashboard.cshtml" />
+    <Content Include="Views\EPeople\_LeaveManagementForAdmin.cshtml" />
+    <Content Include="Views\EPeople\_LocationSeatHeadDetails.cshtml" />
+    <Content Include="Views\EPeople\AutoSchedule.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_AddOpenGeneralHoliday.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\StatusChaneForm\_LocationTransfer.cshtml" />
     <Content Include="Views\GetMailData\GetAssessmentStatus.cshtml" />
     <Content Include="Views\Customer\Scripts\jquery-1.10.2.min.map" />
@@ -6913,6 +6956,7 @@
     <Content Include="Views\Guest\_RateOfPay.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\_HiringOnBoardingDashboardNew.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\NewViewForEMP\EmployeeChartList.cshtml" />
+    <Content Include="Views\InvoiceManagement\CreditInvoicePDF.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6932,6 +6976,7 @@
     <Folder Include="Content\eCountingDocs\BillDocs\" />
     <Folder Include="Content\eCountingDocs\CompanyDocs\" />
     <Folder Include="Content\eCountingDocs\ContractDocs\" />
+    <Folder Include="Content\eCountingDocs\CreditInvoiceTempPdf\" />
     <Folder Include="Content\eCountingDocs\EmergencyDocs\" />
     <Folder Include="Content\eCountingDocs\ImageFacility\" />
     <Folder Include="Content\eCountingDocs\LicenseAndInsurance\" />
@@ -6969,7 +7014,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>

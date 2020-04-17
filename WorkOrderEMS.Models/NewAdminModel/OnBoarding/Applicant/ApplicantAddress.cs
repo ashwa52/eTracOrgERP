@@ -164,6 +164,7 @@ namespace WorkOrderEMS.Models
         public char ALH_IsActive { get; set; }
 
     }
+    /*
     public class ApplicantSchecduleAvaliblity
     {
         public char ASA_Action { get; set; }
@@ -175,4 +176,5 @@ namespace WorkOrderEMS.Models
         public char ASA_IsActive { get; set; }
 
     }
+    */
 }

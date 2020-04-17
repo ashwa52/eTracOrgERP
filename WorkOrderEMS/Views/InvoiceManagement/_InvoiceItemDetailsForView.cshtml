@@ -1,0 +1,87 @@
+﻿@model WorkOrderEMS.Models.InvoiceItemDetails
+@using WorkOrderEMS.Helpers;
+@using WorkOrderEMS.Data.Classes;
+@using WorkOrderEMS.BusinessLogic;
+@using WorkOrderEMS.Service;
+@using WorkOrderEMS.Models;
+@{
+    
+    ARService ARS = new ARService();
+    List<ItemServiceModel> ItemList = DataRowToObject.CreateListFromTable<ItemServiceModel>(ARS.GetItemMasterDetails(0));
+}
+<tr class="editorRow">
+    @Html.Hidden("hdnblnk", Model.SrNo, new { @class = "iHidden" })
+    @using (Html.BeginCollectionItem("InvoiceItemDetailsList", Model.SrNo.ToString()))
+    {
+    <td style="width:12%">
+        @*<div class="form-group row">*@
+        <label class="col-sm-12 col-form-label" for="ItemNo"> Item No.</label>
+        <div class="col-sm-12">
+            @*@Html.DropDownListFor(model => model.ItemNo, new SelectList(ItemList, "Id", "ItemCode"), "--Select Item--", new { @class = "form-control input-rounded" })*@
+            @Html.DisplayFor(c => c.ItemNoDesc, new { @class = "" })
+            @*@Html.HiddenFor(model => model.ID)*@
+        </div>
+    </td>
+        <td style="width:15%">
+            <label class="col-sm-12 col-form-label" for="ItemDescription">Description</label>
+            <div class="col-sm-12">
+                @*@Html.TextBoxFor(c => c.ItemDescription, new { @class = "form-control input-rounded ", @placeholder = "Item Description" })*@
+                @Html.DisplayFor(c => c.ItemDescription, new { @class = ""})
+            </div>
+        </td>
+        <td style="width:10%">
+            <label class="col-sm-12 col-form-label" for="ItemType">Item Type</label>
+            <div class="col-sm-12">
+                @Html.HiddenFor(c => c.ItemType)
+                @*@Html.TextBoxFor(c => c.ItemTypeDesc, new { @class = "form-control input-rounded", @placeholder = "Item Type" })*@
+                @Html.DisplayFor(c => c.ItemTypeDesc, new { @class = "" })
+            </div>
+        </td>
+        <td style="width:12%">
+            <label class="col-sm-12 col-form-label" for="RevenueAccount"> Revenue A/C</label>
+            <div class="col-sm-12">
+                @Html.HiddenFor(c => c.RevenueAccount)
+                @*@Html.TextBoxFor(model => model.RevenueAccountDesc, new { @class = "form-control input-rounded ", @placeholder = "Revenue Account" })*@
+                @Html.DisplayFor(c => c.RevenueAccountDesc, new { @class = "" })
+            </div>
+        </td>
+        <td style="width:9%">
+            <label class="col-sm-12 col-form-label" for="VendorName"> Qty</label>
+            <div class="col-sm-12">
+                @*@Html.TextBoxFor(c => c.ItemQty, new { @class = "form-control input-rounded ", @placeholder = "Qty", @onkeypress = "javascript:return validInt(event);" })*@
+                @Html.DisplayFor(c => c.ItemQty, new { @class = "" })
+            </div>
+        </td>
+        <td style="width:9%">
+            <label class="col-sm-12 col-form-label" for="ItemUnitCost"> Unit Cost</label>
+            <div class="col-sm-12">
+                @*@Html.TextBoxFor(c => c.ItemUnitCost, new { @class = "form-control input-rounded", @placeholder = "Unit Cost", @onkeypress = "javascript:return validFloat(event,this);" })*@
+                @Html.DisplayFor(c => c.ItemUnitCost, new { @class = "" })
+            </div>
+        </td>
+        <td style="width:9%">
+            <label class="col-sm-12 col-form-label" for="TaxPercentage"> Tax (%)</label>
+            <div class="col-sm-12">
+                @*@Html.TextBoxFor(c => c.TaxPercentage, new { @class = "form-control input-rounded", @placeholder = "Tax (%)", @onkeypress = "javascript:return validFloat(event,this);" })*@
+                @Html.DisplayFor(c => c.TaxPercentage, new { @class = "" })
+            </div>
+        </td>
+        <td style="width:10%">
+            <label class="col-sm-12 col-form-label" for="TaxAmount"> Tax Amount</label>
+            <div class="col-sm-12">
+                @*@Html.TextBoxFor(c => c.TaxAmount, new { @class = "form-control input-rounded clsItemTaxAmt", @placeholder = "Tax Amount", @onkeypress = "javascript:return validFloat(event,this);" })*@
+                @Html.DisplayFor(c => c.TaxAmount, new { @class = "" })
+            </div>
+
+        </td>
+        <td style="width:10%">
+            <label class="col-sm-12 col-form-label" for="TotalCost"> Total Cost</label>
+            <div class="col-sm-12">
+                @Html.HiddenFor(c => c.SubTotal, new { @class = "clsItemSubTotal" })
+                @*@Html.TextBoxFor(c => c.TotalCost, new { @class = "form-control input-rounded clsItemTotal", @placeholder = "Total Cost" })*@
+                @Html.DisplayFor(c => c.TotalCost, new { @class = "" })
+            </div>
+        </td>
+    }
+</tr>
+

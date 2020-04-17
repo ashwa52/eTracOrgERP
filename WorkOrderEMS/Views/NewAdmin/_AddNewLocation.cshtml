@@ -249,7 +249,7 @@
                                 </div>
                                 @*<i class="fa fa-long-arrow-right nextBtndata pull-right" style="font-size: 33px;color:#0aa0cd;cursor: pointer;"></i>*@
                                 <button type="button" class="btn btn-success pull-right nextBtndata" style="margin-left: 10px;"><i class="fa fa-arrow-right"></i></button>
-                                <button type="button" class="btn btn-success pull-right" id="SendToLoationList"><i class="fa fa-arrow-left"></i>&nbsp;Back to List</button>
+                                <button type="button" class="btn btn-success pull-right SendToLoationList" @*id="SendToLoationList"*@><i class="fa fa-arrow-left"></i>&nbsp;Back to List</button>
                             </div>
                             <div class="panel panel-primary setup-content" id="step-2">
                                 <div class="basic-form" id="step-2">
@@ -352,13 +352,14 @@
                                     <div class="form-group row">
                                         @Html.Label("Monthly Intercompany Managment Fee", new { @class = "col-sm-2 col-form-label" })
                                         <div class="col-sm-4">
-                                            @Html.TextBoxFor(model => model.ContractDetailsModel.IntercompanyMgmFee, null, new { @Placeholder = "Intercompany Managment Fee", @class = "form-control input-rounded" })
-                                            @Html.ValidationMessageFor(model => model.ContractDetailsModel.IntercompanyMgmFee)
+                                            @Html.TextBoxFor(model => model.ContractDetailsModel.InterCompanyMgmFee, null, new { @Placeholder = "Intercompany Managment Fee", @class = "form-control input-rounded" })
+                                            @Html.ValidationMessageFor(model => model.ContractDetailsModel.InterCompanyMgmFee)
                                         </div>
                                         @Html.Label("Monthly Intercompany Invoicing", new { @class = "col-sm-2 col-form-label" })
                                         <div class="col-sm-4">
-                                            @Html.TextBoxFor(model => model.ContractDetailsModel.IntercompanyInvoicing, null, new { @Placeholder = "Inetercompany Invoicing", @id = "IntercompanyInvoicing", @class = "form-control input-rounded" })
-                                            @Html.ValidationMessageFor(model => model.ContractDetailsModel.IntercompanyInvoicing)
+                                            @Html.TextBox("ContractDetailsModel.InterCompanyInvoicing", Convert.ToDateTime(Model.ContractDetailsModel.InterCompanyInvoicing).ToString("MM/dd/yyyy"), new { @Placeholder = "Inetercompany Invoicing", @id = "IntercompanyInvoicing", @class = "form-control input-rounded" })
+                                            @*@Html.TextBoxFor(model => model.ContractDetailsModel.InterCompanyInvoicing, null, new { @Placeholder = "Inetercompany Invoicing", @id = "IntercompanyInvoicing", @class = "form-control input-rounded" })*@
+                                            @Html.ValidationMessageFor(model => model.ContractDetailsModel.InterCompanyInvoicing)
                                         </div>
                                     </div>
                                     <div class="form-group row">
@@ -367,11 +368,11 @@
                                             @*<input id="radio1" type="radio" name="radio"><label for="radio1" class="radio">Radio 1</label>
                                                 <input id="radio2" type="radio" name="radio"><label for="radio2" class="radio">Radio 2</label>
                                                 <input id="radio3" type="radio" name="radio"><label for="radio3" class="radio">Radio 3</label>*@
-                                            @Html.RadioButtonFor(model => model.ContractDetailsModel.AdditonalYears, true, new { @class = "AddYears", @id = "radio1" })<label for="radio1" class="radio">Yes</label>&nbsp; &nbsp;
+                                            @Html.RadioButtonFor(model => model.ContractDetailsModel.AdditionalYears, true, new { @class = "AddYears", @id = "radio1" })<label for="radio1" class="radio">Yes</label>&nbsp; &nbsp;
                                         </div>
                                         <div class="col-sm-2">
-                                            @Html.RadioButtonFor(model => model.ContractDetailsModel.AdditonalYears, false, new { @class = "AddYears", @id = "radio2" })<label for="radio2" class="radio">No</label>
-                                            @Html.ValidationMessageFor(model => model.ContractDetailsModel.AdditonalYears)
+                                            @Html.RadioButtonFor(model => model.ContractDetailsModel.AdditionalYears, false, new { @class = "AddYears", @id = "radio2" })<label for="radio2" class="radio">No</label>
+                                            @Html.ValidationMessageFor(model => model.ContractDetailsModel.AdditionalYears)
                                         </div>
                                         @Html.Label("Years", new { @class = "col-sm-2 col-form-label YearsDiv", @style = "display:none;" })
                                         <div class="col-sm-4">
@@ -413,7 +414,7 @@
                                 @*<a href="#step-1" class="btn btn-success pull-right nextBtndata" style="margin-left: 10px;">
                                         <i class="fa fa-arrow-left"></i>
                                     </a>*@
-                                <button type="button" class="btn btn-success pull-right" id="SendToLoationList"><i class="fa fa-arrow-left"></i>&nbsp;Back to List</button>
+                                <button type="button" class="btn btn-success pull-right SendToLoationList" @*id="SendToLoationList"*@><i class="fa fa-arrow-left"></i>&nbsp;Back to List</button>
                             </div>
                             <div class="panel panel-primary setup-content" id="step-3">
                                 <div class="basic-form" id="step-3">
@@ -503,6 +504,10 @@
         //Edit location loca
         if('@ViewBag.UpdateMode' == 'True')
         {
+            $('#ContractStartDate,#ReportingDate,#ClientInvoicingDate,#AutomaticBillingDate').datepicker({
+                format: "mm/dd/yyyy",
+            });
+            
             //Add Services for edoting
             var $_ServiceID = '@ViewBag.ServicesID';
             var Arr = $_ServiceID.split(',');
@@ -511,9 +516,9 @@
             }
             $("#ddlServices").multiselect('rebuild');
 
-            var $_ContractHolderId = @ViewBag.ContractHolderId;
-            var $_OperatingHolderId = @ViewBag.OperatingHolderId;
-            var $_ReportingTypeId = "@ViewBag.ReportingTypeId";
+            var $_ContractHolderId = '@ViewBag.ContractHolderId';
+            var $_OperatingHolderId = '@ViewBag.OperatingHolderId';
+            var $_ReportingTypeId = '@ViewBag.ReportingTypeId';
             var $_Years = "@ViewBag.Years";
             if($_ContractHolderId != null && $_ContractHolderId != "")
             {
@@ -535,7 +540,12 @@
             else{
                 $(".YearsDiv").hide();
             }
-
+            if ('@ViewBag.AdditionalYears' == "True") {
+                $(".YearsDiv").show();
+            }
+            else {
+                $(".YearsDiv").hide();
+            }
         }
         //Not In Use But will use
         $(".submitLocationData").show();
@@ -545,10 +555,8 @@
         $(".actions a[href$='#previous']").html("<i class='fa fa-long-arrow-left' aria-hidden='true' style='font-size: 33px;'></i>");
         $(".actions a[href$='#finish']").html("<input type='submit' class='btn btn-secondary submitLocationData btn-rounded' value='Submit'>");
     });
-
-
-
 </script>
+
 <script>
     $(document).ready(function () {
         //While change open pop up to match both contract holder or Operating company
@@ -596,9 +604,6 @@
             format: "mm/dd/yyyy",
             startDate: new Date()
         });
-
-
-
         //$("#ContractStartDate").change(function () {
         //    $("#datetimepicker").datepicker("destroy");
         //    $('#ContractEndDatepicker').datepicker({
@@ -672,7 +677,7 @@
                     $item.addClass('btn-success');
                     allWells.hide();
                     $target.show();
-                    $target.find('input:eq(0)').focus();
+                   // $target.find('input:eq(0)').focus();
                 }
             }
         });
@@ -742,8 +747,10 @@
         }
     });
 
-    $('#SendToLoationList').click(function () {
+    $('.SendToLoationList').click(function () {
             var addNewUrl = "@Url.Action("ListLocation", "GlobalAdmin")";
             $('#RenderPageId').load(addNewUrl);
-        })
+    })
+
+
 </script>

@@ -1,0 +1,542 @@
+﻿@model WorkOrderEMS.Models.Tbl_Employee_Leave_Management
+@using WorkOrderEMS.Models
+@{
+    var isRefresh = ViewBag.IsPageRefresh;
+    if (isRefresh == true)
+    {
+        Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = null;
+    }
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+    long loginUserType = 0;
+    long locationId = 0;
+    if (ObjLogin != null)
+    {
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+        loginUserType = ObjLogin.UserRoleId;
+        //loginUserContactNo = ObjLogin.ContactNo;
+        locationId = ObjLogin.LocationID;
+    }
+}
+<style>
+    .jsgrid-table .jsgrid-header-row > .jsgrid-header-cell {
+        background-color: #0aa0cd;
+        color: white;
+    }
+</style>
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/c3/css/c3.min.css" rel="stylesheet" />
+<div id="preloader"></div>
+<div class="content-body">
+    <div class="container-fluid">
+        <br />
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card aos-init" data-aos="fade-up">
+                    <div class="card-header" style="height: 45px;">
+                        <div class="card-header headerSize" style="height:45px;width:100%;padding:0px;">
+                            @Html.HiddenFor(model => model.IdHid)
+                            <input id="SearchText" class="inputSearch form-control input-rounded" placeholder="Serach By Employee or Leave" style="width: 260px;" onkeyup="doSearch()" type="text">
+                            <button type="button" id="btnback" class="btn btn-success center" style="background-color:forestgreen;border-radius:18px;margin-left: 10px;width:160px;color:white;"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp; Back To List</button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="tbl_AllLeaveList" class="jsGrid" style="position: relative; height: 500px; width: 100%;">
+                        </div>
+                        <div id="LeaveManagementAddEdit"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 otherempdetails">
+                <div class="card aos-init" data-aos="fade-up">
+                    <div class="card-header" style="height: 45px;">
+                        <div class="card-header headerSize" style="height:45px;width:100%;padding:0px;">
+                            @*@Html.HiddenFor(model => model.IdHid)*@
+                            <h4 style="color:white;margin-top: 10px;">Leave Applied On Same Day</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="panel panel-primary setup-content">
+                            <div class="basic-form">
+                                <div class="form-group row ">
+                                    <label class="col-sm-3 col-form-label">Employee Name</label>
+                                    <div class="col-sm-3">
+                                        <label id="EmployeeName" style="margin-top: 6px;"></label>
+                                        @Html.HiddenFor(model => model.FromDateString)
+                                        @Html.HiddenFor(model => model.ToDateString)
+                                        @Html.HiddenFor(model => model.Id)
+                                    </div>
+                                    <label class="col-sm-3 col-form-label">Leave Days</label>
+                                    <div class="col-sm-1">
+                                        <label id="LeaveDay" style="margin-top: 6px;"></label>
+                                    </div>
+                                </div>
+                                <div class="form-group row ">
+                                    <label class="col-sm-3 col-form-label">Leave Reason</label>
+                                    <div class="col-sm-8">
+                                        <label id="LeaveReason" style="margin-top: 6px;"></label>
+                                    </div>
+                                </div>
+                                <div class="card aos-init" data-aos="fade-up">
+                                    <div id="tbl_SameLeaveList" class="jsGrid" style="position: relative; height: 250px; width: 100%;">
+                                    </div>
+                                    <div class="card aos-init" data-aos="fade-up" style="margin-top: -10px;">
+                                        <div class="card-header" style="height: 45px;">
+                                            <div class="card-header headerSize" style="height:45px;width:100%;padding:0px;">
+                                                <h4 style="color:white;margin-top: 10px;">Today On Leaved</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+
+                                        <div class="row" id="divTodayLeave">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 LeaveHistorydetails">
+                <div class="card aos-init" data-aos="fade-up">
+                    <div class="card-header" style="height: 45px;">
+                        <div class="card-header headerSize" style="height:45px;width:100%;padding:0px;">
+                            <h4 style="color:white;margin-top: 10px;">Leave History</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="panel panel-primary setup-content">
+                            <div class="basic-form">
+                                <h3>Employee Name : <label id="EmployeeNameTxt" style="margin-top: 6px;"></label> </h3>
+
+                                <div class="card aos-init" data-aos="fade-up">
+                                    <div id="tbl_LeaveHistoryList" class="jsGrid" style="position: relative; height: 250px; width: 100%;">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade " tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-hidden="true" id="myModalForAssignEmployeeData">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Leave Rejected</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="divDetailPreviewAssignData" class="">
+                    <div class="form-group row ShowNormalPO">
+                        <label class="col-sm-2 col-form-label">Reject Reason<span class="req">*</span></label>
+                        <div class="col-sm-10">
+                            @Html.ValidationSummary(true)
+                            @Html.HiddenFor(model => model.Id)
+                            @Html.TextAreaFor(model => model.RejectReason, new { @class = "form-control input-rounded required" })
+                            @Html.HiddenFor(model => model.RejectReason)
+                            <div class="errorspace">
+                                @Html.ValidationMessageFor(model => model.RejectReason)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background: white;">
+                <button type="button" class="btn btn-secondary" id="closeAssign" style="border-radius:100px;" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary Submit" id="SaveLeaveRejected" style="border-radius:100px;">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
+<script src="~/Content/NewAdminContent/VENDOR/d3/d3.min.js"></script>
+<script src="~/Content/NewAdminContent/VENDOR/c3/js/c3.min.js"></script>
+<script src="~/Scripts/NewAdminJS/plugins-init/c3-init.js"></script>
+<script src="~/Content/NewAdminContent/VENDOR/raphael/raphael.min.js"></script>
+<script>
+    var HOBurl = '../ePeople/GetListLeaveManagementForAdmin';
+    var clients;
+    var $_LocationId = $("#drp_MasterLocation1 option:selected").val();
+    var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_RequestedBy = 0;//= $("#drp_MasterLocation option:selected").val();
+    $(".otherempdetails").hide();
+    $(".LeaveHistorydetails").hide();
+
+    (function ($) {
+        'use strict'
+        var data;
+        var act;
+        $("#tbl_AllLeaveList").jsGrid({
+            width: "100%",
+            height: "500px",
+            filtering: true,
+            inserting: true,
+            editing: true,
+            sorting: true,
+            paging: true,
+            autoload: true,
+            pageSize: 10,
+            pageButtonCount: 5,
+            loadMessage: "Please, wait...",
+            controller: {
+                loadData: function (filter) {
+                    return $.ajax({
+                        type: "GET",
+                        url: HOBurl,
+                        datatype: 'json',
+                        contentType: "application/json"
+                    });
+                }
+            },
+            onRefreshed: function (args) {
+                $(".jsgrid-insert-row").hide();
+                $(".jsgrid-filter-row").hide();
+                $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
+            },
+            fields: [
+                { name: 'Id', width: 5, title: "Id", visible: false },
+                { name: 'EmployeeId', width: 5, title: "Employee Id", visible: false },
+                {
+                    name: "EmployeeName", title: "Employee Name", width: 50, css: "text-center", itemTemplate: function (value, item) {
+                        var $customEditButton = $("<span>" + item.EmployeeName + "</span>")
+                            .attr({ id: "btn-edit-" + item.EmployeeId }).attr({ style: "color:#0aa0cd;text-decoration: underline;" }).click(function (e) {
+                                LeaveHistory(item.EmployeeId)
+                            });
+                        return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton);
+                    }
+                },
+                { name: 'FromDateString', width: 40, title: "From Date" },
+                { name: 'ToDateString', width: 40, title: "To Date" },
+                { name: 'LeaveType', width: 40, title: "Leave Type" },
+                //{
+                //    name: "IsApproved", title: "Approved", width: 40, css: "text-center", itemTemplate: function (value, item) {
+                //        if (item.IsApproved == false && item.IsRejected == false) {
+                //            var $EditLink = $("<a>").attr({ href: "../ePeople/LeavemanagementApproved/" + item.Id });
+                //            var $DiagramView = $EditLink.append($("<i>").attr({ class: "fa fa-thumbs-up fa-2x" }).attr({ style: "color:green; margin-left:50px;" }));
+                //            return $("<div>").attr({ class: "btn-toolbar" }).append($DiagramView);
+                //        }
+                //    }
+                //},
+                //{
+                //    name: "IsRejected", title: "Rejected", width: 35, css: "text-center", itemTemplate: function (value, item) {
+                //        if (item.IsRejected == false && item.IsApproved == false) {
+                //            return "<a><input class=\"jsgrid-button jsgrid-delete-button\" type=\"button\" data-toggle=\"modal\" title=\"Edit\" data-target=\"#myModalForAssignEmployeeData\" data-id=\"" + item.Id + "\" style=\"cursor:pointer;outline:none;\" onclick=\"OnClickValues(" + item.Id + ")\"></a>";
+                //        }
+                //    },
+                //    width: "30px",
+                //    sortable: false,
+                //},
+                {
+                    name: "View", title: "View", width: 40, css: "text-center", itemTemplate: function (value, item) {
+                        var $iconPencilForEdit = $("<i>").attr({ class: "fa fa-eye fa-2x" }).attr({ style: "margin-left:35px;" });
+                        var $customEditButton = $("<span style='padding: 0 20px 0 0;'>")
+                            .attr({ title: "View" })
+                            .attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                                EditItem(item.Id)
+                            }).append($iconPencilForEdit);
+                        $("#IdHid").val(item.Id);
+                        return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton);
+                    }
+                }
+            ]
+        });
+    })(jQuery);
+
+    function doSearch(ev) {
+        var act;
+        $("#tbl_AllLeaveList").jsGrid({
+            width: "100%",
+            height: "400px",
+            filtering: true,
+            inserting: true,
+            editing: true,
+            sorting: true,
+            paging: true,
+            autoload: true,
+            pageSize: 10,
+            pageButtonCount: 5,
+            loadMessage: "Please, wait...",
+            controller: {
+                loadData: function (filter) {
+                    return $.ajax({
+                        type: "GET",
+                        url: HOBurl + '?Search=' + $("#SearchText").val(),
+                        datatype: 'json',
+                        contentType: "application/json"
+                    });
+                }
+            },
+            onRefreshed: function (args) {
+                $(".jsgrid-insert-row").hide();
+                $(".jsgrid-filter-row").hide();
+                $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
+            },
+            fields: [
+                { name: 'Id', width: 40, title: "Id", visible: false },
+                { name: 'EmployeeId', width: 40, title: "Employee Id", visible: false },
+                {
+                    name: "EmployeeName", title: "Employee Name", width: 50, css: "text-center", itemTemplate: function (value, item) {
+                        var $customEditButton = $("<span>" + item.EmployeeName + "</span>")
+                            .attr({ id: "btn-edit-" + item.EmployeeId }).attr({ style: "color:#0aa0cd;text-decoration: underline;" }).click(function (e) {
+                                LeaveHistory(item.EmployeeId)
+                            });
+                        return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton);
+                    }
+                },
+                { name: 'FromDateString', width: 40, title: "From Date" },
+                { name: 'ToDateString', width: 40, title: "To Date" },
+                { name: 'LeaveType', width: 40, title: "Leave Type" },
+                {
+                    name: "View", title: "View", width: 40, css: "text-center", itemTemplate: function (value, item) {
+                        var $iconPencilForEdit = $("<i>").attr({ class: "fa fa-eye fa-2x" }).attr({ style: "margin-left:35px;" });
+                        var $customEditButton = $("<span style='padding: 0 20px 0 0;'>")
+                            .attr({ title: "View" })
+                            .attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                                EditItem(item.Id)
+                            }).append($iconPencilForEdit);
+                        $("#IdHid").val(item.Id);
+                        return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton);
+                    }
+                }
+            ]
+        });
+    }
+
+    $(".Submit").on("click", function () {
+        ADDISOREP();
+        $('#myModalForAssignEmployeeData').modal('toggle');
+        event.preventDefault();
+        var addNewUrl = "/EPeople/GetListLeaveManagementJSGridForAdmin";
+        $('#RenderPageId').load(addNewUrl);
+    })
+
+    function ADDISOREP() {
+        var url = "/ePeople/LeavemanagementRejected?Id=" + $("#IdHid").val() + "&RejectReason=" + $("#RejectReason").val();
+        $.ajax({
+            url: url,
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                event.preventDefault();
+                var addNewUrl = "/EPeople/GetListLeaveManagementJSGridForAdmin";
+                $('#RenderPageId').load(addNewUrl);
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+    }
+
+    function EditItem(Id) {
+        var EditUrl = "/EPeople/GetSameDayEmpLeaveDetails?Id=" + Id;
+        var SameUrl = '../ePeople/GetListSameDayApplyForLeave';
+
+        $(".otherempdetails").show();
+        $(".LeaveHistorydetails").hide();
+        $.ajax({
+            url: EditUrl,
+            cache: false,
+            type: "GET",
+            success: function (data) {
+                $("#Id").val(JSON.stringify(data[0]['Id']).replace(/\"/g, ""));
+                $("#EmployeeName").text(JSON.stringify(data[0]['EmployeeName']).replace(/\"/g, ""));
+                $("#LeaveDay").text(JSON.stringify(data[0]['LeaveDay']).replace(/\"/g, ""));
+                $("#LeaveReason").text(JSON.stringify(data[0]['LeaveReason']).replace(/\"/g, ""));
+                $("#FromDateString").val(JSON.stringify(data[0]['FromDateString']).replace(/\"/g, ""));
+                $("#ToDateString").val(JSON.stringify(data[0]['ToDateString']).replace(/\"/g, ""));
+
+                (function ($) {
+                    'use strict'
+                    var data;
+                    var act;
+                    $("#tbl_SameLeaveList").jsGrid({
+                        width: "100%",
+                        height: "250px",
+                        filtering: true,
+                        inserting: true,
+                        editing: true,
+                        sorting: true,
+                        paging: true,
+                        autoload: true,
+                        pageSize: 10,
+                        pageButtonCount: 5,
+                        loadMessage: "Please, wait...",
+                        controller: {
+                            loadData: function (filter) {
+                                return $.ajax({
+                                    type: "GET",
+                                    url: SameUrl + '?FromDate=' + $("#FromDateString").val() + '&ToDate=' + $("#ToDateString").val(),
+                                    datatype: 'json',
+                                    contentType: "application/json"
+                                });
+                            }
+                        },
+                        onRefreshed: function (args) {
+                            $(".jsgrid-insert-row").hide();
+                            $(".jsgrid-filter-row").hide();
+                            $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
+                        },
+                        fields: [
+                            { name: 'Id', width: 10, title: "Id", visible: false },
+                            { name: 'EmployeeName', width: 50, title: "Employee Name" },
+                            { name: 'FromDateString', width: 30, title: "From Date" },
+                            { name: 'ToDateString', width: 30, title: "To Date" },
+                            {
+                                name: 'Status', width: 30, title: "Status", itemTemplate: function (value, item) {
+                                    if (item.Status == "Rejected") {
+                                        return "<div style='color:red'><b>" + value + "</b></div>";
+                                    }
+                                    if (item.Status == "Approved") {
+                                        return "<div style='color:green'><b>" + value + "</b></div>";
+                                    }
+                                    return value;
+                                }
+                            },
+                            {
+                                name: "IsApproved", title: "Approved", width: 25, css: "text-center", itemTemplate: function (value, item) {
+                                    if (item.IsApproved == false && item.IsRejected == false) {
+                                        var $iconPencilForEdit = $("<i>").attr({ class: "fa fa-thumbs-up fa-2x" }).attr({ style: "color:green; margin-left:35px;" });
+                                        var $customEditButton = $("<span style='padding: 0 5px 0 0;'>")
+                                            .attr({ title: "Approved" })
+                                            .attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                                                ApprovedItem(item.Id)
+                                            }).append($iconPencilForEdit);
+                                        //var $EditLink = $("<a>").attr({ href: "../ePeople/LeavemanagementApproved/" + item.Id });
+                                        //var $DiagramView = $EditLink.append($("<i>").attr({ class: "fa fa-thumbs-up fa-2x" }).attr({ style: "color:green; margin-left:35px;" }));
+                                        if (item.Status == "Pendding" && item.Id == $("#IdHid").val()) {
+                                            return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton);
+                                        }
+                                        return false;
+                                    }
+                                }
+                            },
+                            {
+                                name: "IsRejected", title: "Rejected", width: 25, css: "text-center", itemTemplate: function (value, item) {
+                                    if (item.IsRejected == false && item.IsApproved == false) {
+                                        if (item.Status == "Pendding" && item.Id == $("#IdHid").val()) {
+                                            return "<a><input class=\"jsgrid-button jsgrid-delete-button\" type=\"button\" data-toggle=\"modal\" title=\"Reject\" data-target=\"#myModalForAssignEmployeeData\" data-id=\"" + item.Id + "\" style=\"cursor:pointer;outline:none;\" onclick=\"OnClickValues(" + item.Id + ")\"></a>";
+                                        }
+                                        return false;
+                                    }
+                                }, width: "25px", sortable: false,
+                            }
+                        ]
+                    });
+                })(jQuery);
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+    }
+
+    function LeaveHistory(Id) {
+        $(".otherempdetails").hide();
+        $(".LeaveHistorydetails").show();
+        var HistoryUrl = "../ePeople/GetLeaveHistoryDetails?Id=" + Id;
+        (function ($) {
+            'use strict'
+            var data;
+            var act;
+            $("#tbl_LeaveHistoryList").jsGrid({
+                width: "100%",
+                height: "250px",
+                filtering: true,
+                inserting: true,
+                editing: true,
+                sorting: true,
+                paging: true,
+                autoload: true,
+                pageSize: 10,
+                pageButtonCount: 5,
+                loadMessage: "Please, wait...",
+                controller: {
+                    loadData: function (filter) {
+                        return $.ajax({
+                            type: "GET",
+                            url: HistoryUrl,
+                            datatype: 'json',
+                            contentType: "application/json",
+                            success: function (data) {
+                                $("#EmployeeNameTxt").text(JSON.stringify(data[0]['EmployeeName']).replace(/\"/g, ""));
+                            }
+                        });
+                    }
+                },
+                onRefreshed: function (args) {
+                    $(".jsgrid-insert-row").hide();
+                    $(".jsgrid-filter-row").hide();
+                    $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
+                },
+                fields: [
+                    { name: 'Id', width: 10, title: "Id", visible: false },
+                    { name: 'FromDateString', width: 30, title: "From Date" },
+                    { name: 'ToDateString', width: 30, title: "To Date" },
+                    { name: 'LeaveDay', width: 20, title: "Leave Day" },
+                    { name: 'LeaveType', width: 30, title: "Leave Type" },
+                    {
+                        name: 'Status', width: 30, title: "Status", itemTemplate: function (value, item) {
+                            if (item.Status == "Rejected") {
+                                return "<div style='color:red'><b>" + value + "</b></div>";
+                            }
+                            if (item.Status == "Approved") {
+                                return "<div style='color:green'><b>" + value + "</b></div>";
+                            }
+                            return value;
+                        }
+                    }
+                ]
+            });
+        })(jQuery);
+    }
+
+    function ApprovedItem(Id) {
+        event.preventDefault();
+        var addNewUrl = "/EPeople/LeavemanagementApproved?Id=" + Id;
+        $('#RenderPageId').load(addNewUrl);
+    }
+
+    $("#btnback").on("click", function (event) {
+        event.preventDefault();
+        var addNewUrl = "/EPeople/LeaveManagement";
+        $('#RenderPageId').load(addNewUrl);
+    });
+
+    var UrlTodayLeave = '../ePeople/GetListTodayLeave';
+    $.ajax({
+        url: UrlTodayLeave,
+        cache: false,
+        type: "GET",
+        success: function (data) {
+            $.each(data, function (key, value) {
+                var HTML = '<div class="col-md-2"> <img src = "../Content/Images/ProfilePic/no-profile-pic.jpg" alt="" style="height:60px;width:60px;border-radius:50px;margin-left: 30px;" />'
+                    + '<div class="card" data-aos="fade-up"><div class="circle" style="height:30px;width:115px;text-align:center;"><span style="color:#0aa0cd;text-align:center;font-size:16px;">' + value.EmployeeName + '</span></div>'
+                    + '</div></div> '
+                $("#divTodayLeave").append(HTML);
+            });
+        },
+        error: function (reponse) {
+            alert("error : " + reponse);
+        }
+    });
+
+</script>

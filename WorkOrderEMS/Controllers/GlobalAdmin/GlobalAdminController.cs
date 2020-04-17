@@ -1178,8 +1178,6 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
         {
             try
             {
-
-
                 if (TempData != null && TempData["exceptionRaisedWhileUpdating"] != null && TempData["exceptionRaisedWhileUpdating"].ToString().Length > 0)
                 {
                     ViewBag.Message = TempData["exceptionRaisedWhileUpdating"].ToString();
@@ -1221,7 +1219,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                         UserEmail = x.UserEmail,
                     });
 
-                }
+                }         
 
                 //ViewBag.AdministratorList = _IGlobalAdmin.GetAllITAdministratorList(objLoginSession.UserId, objLoginSession.LocationID, 1, 1000, "Name", "asc", "", (UserType.Administrator).ToString(), out Totalrecords);
 
@@ -1239,11 +1237,10 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 ViewBag.ContractHolderId = _LocationMasterModel.ContractDetailsModel.ContractHolder;
                 ViewBag.ReportingTypeId = _LocationMasterModel.ContractDetailsModel.ReportingType;
                 ViewBag.Years = _LocationMasterModel.ContractDetailsModel.Years;
-
                 ViewBag.PaymentTerms = _IVendorManagement.PaymentTermList();
                 _LocationMasterModel.LocationRuleMappingModel = GetNewLocationDetailsRuleMappingModel(locid).First();
                 _LocationMasterModel.ContractDetailsModel = GetNewLocationDetailsContractDetails(locid).First();
-
+                ViewBag.AdditionalYears = _LocationMasterModel.ContractDetailsModel.AdditonalYears;
                 return PartialView("~/Views/NewAdmin/_AddNewLocation.cshtml", _LocationMasterModel);
                 //return View("LocationSetup", _LocationMasterModel);
             }
@@ -1482,8 +1479,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                     #region QuickBook Department
                     //if (Session["realmId"] != null)
                     //{
-                    if (ObjLocationMasterModel.LocationId == 0)
-                    {
+                    if (ObjLocationMasterModel.LocationId == 0) {
                         string realmId = CallbackController.RealMId.ToString();//Session["realmId"].ToString();
                         try
                         {

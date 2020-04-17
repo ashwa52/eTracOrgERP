@@ -4,7 +4,7 @@ var editCustomer = '/CustomerManagement/EditCustomer/';
 var veiwCustomerDetails = '/CustomerManagement/GetAllCustomerDataToView/';
 
 var LocationId; var CustomerId;
-
+var base_url = window.location.origin;
 $(function () {
     var act;
     $("#jsGrid-basic").jsGrid({
@@ -18,6 +18,7 @@ $(function () {
         autoload: true,
         pageSize: 10,
         pageButtonCount: 5,
+        pageIndex: 1,
         controller: {
             loadData: function (filter) {
                 return $.ajax({
@@ -47,8 +48,9 @@ $(function () {
                     var $customEditButton = $("<span style='padding: 0 5px 0 0;'>")
                         .attr({ title: "Edit" })
                         .attr({ id: "btn-edit-" + item.Id }).click(function (e) {
-                            new fn_showMaskloader('Please wait...');
-                            window.location.href = editCustomer + '?id=' + item.id;
+                            //new fn_showMaskloader('Please wait...');
+                            // window.location.href = editCustomer + '?id=' + item.id;
+                            EditDetails(item.id);
                         }).append($iconPencilForEdit);
 
                     var $customButtonForView = $("<span style='padding: 0 5px 0 0;'>")
@@ -181,7 +183,7 @@ function doSearch(ev) {
         autoload: true,
         pageSize: 10,
         pageButtonCount: 5,
-
+        pageIndex: 1,
         controller: {
             loadData: function (filter) {
                 return $.ajax({
@@ -211,8 +213,9 @@ function doSearch(ev) {
                     var $customEditButton = $("<span style='padding: 0 5px 0 0;'>")
                         .attr({ title: "Edit" })
                         .attr({ id: "btn-edit-" + item.Id }).click(function (e) {
-                            new fn_showMaskloader('Please wait...');
-                            window.location.href = editCustomer + '?id=' + item.id;
+                            //new fn_showMaskloader('Please wait...');
+                            // window.location.href = editCustomer + '?id=' + item.id;
+                            EditDetails(item.id);
                         }).append($iconPencilForEdit);
 
                     var $customButtonForView = $("<span style='padding: 0 5px 0 0;'>")
@@ -242,11 +245,32 @@ function doSearch(ev) {
 }
 function filter(args) {
 }
-
-$(".EditRecord").on("click", function (event) {
-    var id = $(this).attr("eid");
-    window.location.href = editCustomer + '?id=' + id;
-});
+//function EditDetails(Id) {
+//    var addNewUrl = "/CustomerManagement/editCustomer?id=" + Id;
+//    $('#RenderPageId').load(addNewUrl);
+//}
+function EditDetails(Id) {
+    var addNewUrl = "/CustomerManagement/editCustomer?id=" + Id;
+    $.ajax({
+        
+        type: "GET",
+        url: base_url + addNewUrl ,
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
+        contentType: "application/json; charset=utf-8",
+        error: function (xhr, status, error) {
+        },
+        success: function (result) {
+            console.log(result);
+            $("#divOpenRquisitionForm").html(result);
+            $("#myModalForRequisitionAction").modal("show");
+        },
+        complete: function () {
+            fn_hideMaskloader();
+        }
+    });
+}
 
 $("#AddCustomer").on("click", function (event) {
     window.location.href = AddCustomer;
