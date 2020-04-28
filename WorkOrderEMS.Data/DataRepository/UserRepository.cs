@@ -724,10 +724,6 @@ namespace WorkOrderEMS.Data
                     EMP_DateOfJoining = t.EMP_DateOfJoining,
                     Assesment = t.Assesment,
                     Status = t.SAM_IsActive,
-             
-
-
-
                 }).ToList();
                 totalRecords = Convert.ToInt32(totalRecord.Value);
                 return ListOf306090Records;
@@ -756,8 +752,6 @@ namespace WorkOrderEMS.Data
                          SelfAssessmentId = t.SAM_Id ?? 0,
                          Answer = t.SAM_Answer,
                          SAM_IsActive = t.SAM_IsActive
-
-
                      }).ToList();
                 }
                 else if (AssessmentType == "QC" || AssessmentType == "QM")
@@ -911,9 +905,6 @@ namespace WorkOrderEMS.Data
                     VST_Level=t.VST_Level,
                     FinYear=t.FinYear.Value,
                     AssessmentType=t.AssessmentType
-
-
-
                 }).ToList();
                 totalRecords = Convert.ToInt32(totalRecord.Value);
                 return ListOf306090Records;
@@ -961,9 +952,7 @@ namespace WorkOrderEMS.Data
             List<PerformanceModel> ListOf306090Records = new List<PerformanceModel>();
             try
             {
-                //lstVerifiedMnagaer = _workorderEMSEntities.spGetAssessmentList306090(userId, pageIndex, sortColumnName, sortOrderBy, numberOfRows, textSearch, locationId, useType, totalRecord).Select(t =>
                 ListOf306090Records = _workorderEMSEntities.spGetEvaluationList(userId).Select(t =>
-
                 new PerformanceModel()
                 {
                     EMP_EmployeeID = t.EMP_EmployeeID,

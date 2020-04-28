@@ -15,7 +15,7 @@ namespace WorkOrderEMS.Data.EntityModel
     public partial class BookSlotTime
     {
         public long BST_Id { get; set; }
-        public long BST_EMP_EmployeeID { get; set; }
+        public string BST_EMP_EmployeeID { get; set; }
         public System.DateTime BST_SlotDate { get; set; }
         public long BST_SLT_Id { get; set; }
         public string BST_Status { get; set; }

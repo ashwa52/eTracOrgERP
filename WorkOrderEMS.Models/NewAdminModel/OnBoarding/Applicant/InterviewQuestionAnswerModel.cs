@@ -33,12 +33,15 @@ namespace WorkOrderEMS.Models.NewAdminModel
         public string ApplicantImage { get; set; }
         public string ApplicantName { get; set; }
         public List<ListAnswerModel> ListAnswerModel { get; set; }
+        public bool IsShortlisted { get; set; }
+        public long ApplicantId { get; set; }
     }
     public class ListAnswerModel
     {
         public List<ChildQuestionAnswerModel> ListAnswerMainModel { get; set; }
         public string IQM_Question { get; set; }
         public long IQM_Id { get; set; }
+       
     }
     public class ChildQuestionAnswerModel
     {

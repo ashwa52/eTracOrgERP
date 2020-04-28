@@ -8,6 +8,7 @@ using System.Data.SqlClient;
 using System.Globalization;
 using System.Linq;
 using WorkOrderEMS.BusinessLogic.Interfaces;
+using WorkOrderEMS.BusinessLogic.Managers;
 using WorkOrderEMS.Data.DataRepository;
 using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Helper;
@@ -68,7 +69,8 @@ namespace WorkOrderEMS.BusinessLogic
             }
             catch (Exception ex)
             {
-
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public ServiceResponseModel<eTracLoginModel> ValidateApplicant(eTracLoginModel obj)", "Exception While validate applicant.", obj);
+                throw;
             }
             return loginData;
         }
@@ -92,11 +94,14 @@ namespace WorkOrderEMS.BusinessLogic
                     //if(isSaved > 0)
                     //{
                     #region Email
-                    var objEmailLogRepository = new EmailLogRepository();
-                    var objEmailReturn = new List<EmailToManagerModel>();
                     var objListEmailog = new List<EmailLog>();
                     var objTemplateModel = new TemplateModel();
-                    var userData = _db.ApplicantLoginAccesses.Where(x => x.ALA_LoginId == obj.LoginId).FirstOrDefault();
+                    if (obj.NewPassword != null)
+                    {
+                        var password = Cryptography.GetEncryptedData(obj.NewPassword, true);
+                        //var isSaved = _db.spSetApplicantForgotPassword(obj.LoginId, password);
+                    }
+                    var userData = _db.ApplicantLoginAccesses.Where(x => x.ALA_eMailId == obj.Email).FirstOrDefault();
                     if (userData != null)
                     {
                         bool IsSent = false;
@@ -104,6 +109,7 @@ namespace WorkOrderEMS.BusinessLogic
                         objEmailHelper.emailid = userData.ALA_eMailId;
                         objEmailHelper.RegistrationLink = ConfigurationManager.AppSettings["hostingprefix"];
                         objEmailHelper.Name = userData.ALA_FirstName + " " + userData.ALA_LastName;
+                        objEmailHelper.NewPassword = obj.NewPassword;
                         objEmailHelper.MailType = "FORGOTPASSWORDAPPLICANT";
                         objEmailHelper.TimeAttempted = DateTime.UtcNow.ToMobileClientTimeZone(objTemplateModel.TimeZoneName, objTemplateModel.TimeZoneOffset, objTemplateModel.IsTimeZoneinDaylight, false).ToString();
                         IsSent = objEmailHelper.SendEmailWithTemplate();
@@ -157,7 +163,8 @@ namespace WorkOrderEMS.BusinessLogic
             }
             catch (Exception ex)
             {
-
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public ServiceResponseModel<eTracLoginModel> ForgotPassword(eTracLoginModel obj)", "Exception While forgot password.", obj);
+                throw;
             }
             return loginData;
         }
@@ -197,7 +204,8 @@ namespace WorkOrderEMS.BusinessLogic
             }
             catch (Exception ex)
             {
-
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public ServiceResponseModel<eTracLoginModel> SetForgotPassword(eTracLoginModel obj)", "Exception While set a password.", obj);
+                throw;
             }
             return loginData;
         }
@@ -286,7 +294,8 @@ namespace WorkOrderEMS.BusinessLogic
             }
             catch (Exception ex)
             {
-
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public ServiceResponseModel<string> ChangePassword(eTracLoginModel obj)", "Exception While change password.", obj);
+                throw;
             }
             return loginData;
         }
@@ -303,22 +312,18 @@ namespace WorkOrderEMS.BusinessLogic
             var loginModel = new eTracLoginModel();
             var loginData = new ServiceResponseModel<string>();
             var _applicant = new Applicant();
+            var _common = new Common_B();
             try
             {
                 if (obj.FName != null && obj.Email != null)
                 {
                     var password = Cryptography.GetEncryptedData(obj.Password, true);
-                    //var UserId = new ObjectParameter("UserId", "UserId");
-                    var isChanged = _db.spSetApplicantCreateLoginAccess(obj.Email, password, obj.FName, obj.MName, obj.LName, obj.Email, obj.Question, obj.Answer).FirstOrDefault();
-                    _applicant.APT_ALA_UserId = isChanged;
-                    _applicant.APT_Date = DateTime.Now;
-                    _applicant.APT_JobPostingId  = 2;
-                    _applicant.APT_Status = "Y";
-                    _applicant.APT_IsActive = "Y";
-                    var saveApplicant = _db.Applicants.Add(_applicant);
-                    _db.SaveChanges();
-                    //var userIdData = isChanged
-                    if (isChanged.Value > 0)
+                    var ApplicantId = new ObjectParameter("APT_ApplicantId", typeof(int));
+                    var isChanged = _db.spSetApplicantCreateLoginAccess(obj.Email, password, obj.FName, obj.MName, obj.LName, obj.Email, obj.Question, obj.Answer,obj.ApplicantPhoto).FirstOrDefault();
+                    var saveApply = _db.spSetApplicantJobApply("I", isChanged, obj.JobPostingId,obj.DateOFJoining, "Y", ApplicantId);
+                    var getApplicant = _db.Applicants.Where(x => x.APT_ALA_UserId == isChanged).FirstOrDefault();
+                    //_common.SaveApplicantStatus(getApplicant.APT_ApplicantId, ApplicantStatus.A, "Y");
+                    if (isChanged > 0)
                     {
                         #region Email
                         var objEmailLogRepository = new EmailLogRepository();
@@ -335,6 +340,7 @@ namespace WorkOrderEMS.BusinessLogic
                             objEmailHelper.RegistrationLink = ConfigurationManager.AppSettings["hostingprefix"];
                             objEmailHelper.Name = userData.ALA_FirstName + " " + userData.ALA_LastName;
                             objEmailHelper.MailType = "SIGNUPAPPLICANT";
+                            objEmailHelper.Password = obj.Password;
                             objEmailHelper.TimeAttempted = DateTime.UtcNow.ToMobileClientTimeZone(objTemplateModel.TimeZoneName, objTemplateModel.TimeZoneOffset, objTemplateModel.IsTimeZoneinDaylight, false).ToString();
                             IsSent = objEmailHelper.SendEmailWithTemplate();
                             if (IsSent == true)
@@ -459,25 +465,25 @@ namespace WorkOrderEMS.BusinessLogic
                         var saveData = _db.spSetAssetAllocation(model.Action, model.AssetsId, model.EmployeeId, "Computer", model.ComputerAssets.AssetsName, model.ComputerAssets.AssetDescription, model.ComputerAssets.Make, model.ComputerAssets.Model,
                             model.ComputerAssets.SerialNumber, model.ComputerAssets.Login, model.ComputerAssets.Password, null, null, null, null, "N");
                     }
-                    else if (model.IsPrinterAssets == true && model.PrinterAssets != null)
+                    if (model.IsPrinterAssets == true && model.PrinterAssets != null)
                     {
                         var saveData = _db.spSetAssetAllocation(model.Action, model.AssetsId, model.EmployeeId, "Printer", model.PrinterAssets.AssetsName,
                             model.PrinterAssets.AssetDescription, model.PrinterAssets.Make, model.PrinterAssets.Model, model.PrinterAssets.SerialNumber
                             , null, null, null, null, null, null, "N");
                     }
-                    else if (model.IsCellPhoneAssets == true && model.CellPhoneAssets != null)
+                    if (model.IsCellPhoneAssets == true && model.CellPhoneAssets != null)
                     {
                         var saveData = _db.spSetAssetAllocation(model.Action, model.AssetsId, model.EmployeeId, "Cell Phone", model.CellPhoneAssets.AssetsName,
                             model.CellPhoneAssets.AssetDescription, model.CellPhoneAssets.Make, model.CellPhoneAssets.Model, model.CellPhoneAssets.SerialNumber,
                             null, null, null, null, null, null, "N");
                     }
-                    else if (model.IsOfficePhone == true && model.OfficePhone != null)
+                     if (model.IsOfficePhone == true && model.OfficePhone != null)
                     {
                         var saveData = _db.spSetAssetAllocation(model.Action, model.AssetsId, model.EmployeeId, "Office Phone", model.OfficePhone.AssetsName, model.OfficePhone.AssetDescription,
                             model.OfficePhone.Make, model.OfficePhone.Model, model.OfficePhone.SerialNumber, null, null, null, null,
                             null, null, "N");
                     }
-                    else
+                    if(model.IsMiscAssets == true && model.MiscAssets != null)
                     {
                         var saveData = _db.spSetAssetAllocation(model.Action, model.AssetsId, model.EmployeeId, "Misc Assets", model.MiscAssets.AssetsName, model.MiscAssets.AssetDescription,
                             model.MiscAssets.Make, model.MiscAssets.Model, model.MiscAssets.SerialNumber, null, null, null, null, null, null, "N");
@@ -511,21 +517,31 @@ namespace WorkOrderEMS.BusinessLogic
             {
                 if (model != null)
                 {
-                    var getData = _db.spSetApplicantStatus(model.ApplicantId, "I", "S");
+                    var getData = _db.spSetApplicantStatus(model.ApplicantId, ApplicantStatus.Offer, ApplicantIsActiveStatus.Sent);
+                    var getApplicant = _db.Applicants.Where(x => x.APT_ApplicantId == model.ApplicantId).FirstOrDefault();
+                    //_common.SaveApplicantStatus(getApplicant.APT_ApplicantId, ApplicantStatus.A, "Y");
                     #region Email
-                    var objEmailLogRepository = new EmailLogRepository();
-                    var objEmailReturn = new List<EmailToManagerModel>();
                     var objListEmailog = new List<EmailLog>();
                     var objTemplateModel = new TemplateModel();
+                    var userData = _db.ApplicantLoginAccesses.Join(_db.Applicants, ala => ala.ALA_UserId, ap => ap.APT_ALA_UserId, (ala, ap) => new { ala, ap }).Where(x => x.ap.APT_ApplicantId == model.ApplicantId).Select(a => new eTracLoginModel()
+                    {
+                        FName = a.ala.ALA_FirstName,
+                        LName = a.ala.ALA_LastName,
+                        Email = a.ala.ALA_eMailId,
+                        MName = a.ala.ALA_MidName,
+                        LoginId = a.ala.ALA_LoginId,
+                        UserId = a.ala.ALA_UserId,
+                        ApplicantId = a.ap.APT_ApplicantId
+                    }).FirstOrDefault();
                     var getEMPData = _db.Employees.Where(x => x.EMP_Id == model.ApplicantId).FirstOrDefault();
-                    var userData = _db.spGetEmployeePersonalInfo(getEMPData.EMP_EmployeeID).FirstOrDefault();
+                    //var userData = _db.spGetEmployeePersonalInfo(getEMPData.EMP_EmployeeID).FirstOrDefault();
                     if (userData != null)
                     {
                         bool IsSent = false;
                         var objEmailHelper = new EmailHelper();
-                        objEmailHelper.emailid = userData.EMP_Email;
-                        objEmailHelper.RegistrationLink = ConfigurationManager.AppSettings["hostingprefix"];
-                        objEmailHelper.Name = userData.EMP_FirstName + " " + userData.EMP_LastName;
+                        objEmailHelper.emailid = userData.Email;
+                        objEmailHelper.RegistrationLink = ConfigurationManager.AppSettings["hostingprefix"] + "/GetMailData/GetApplicantInfo?ApplicantId=" + model.ApplicantId.ToString();
+                        objEmailHelper.Name = userData.FName + " " + userData.LName;
                         objEmailHelper.MailType = "SENDOFFER";
                         objEmailHelper.SentBy = model.UserId;
                         objEmailHelper.TimeAttempted = DateTime.UtcNow.ToMobileClientTimeZone(objTemplateModel.TimeZoneName, objTemplateModel.TimeZoneOffset, objTemplateModel.IsTimeZoneinDaylight, false).ToString();
@@ -539,13 +555,11 @@ namespace WorkOrderEMS.BusinessLogic
                                 objEmailog.CreatedDate = DateTime.UtcNow;
                                 objEmailog.DeletedBy = null;
                                 objEmailog.DeletedOn = null;
-                                //objEmailog.LocationId = location;
                                 objEmailog.ModifiedBy = null;
                                 objEmailog.ModifiedOn = null;
                                 objEmailog.SentBy = model.UserId;
-                                objEmailog.SentEmail = userData.EMP_Email;
+                                objEmailog.SentEmail = userData.Email;
                                 objEmailog.Subject = objEmailHelper.Subject;
-                                //objEmailog.SentTo = userData.E;
                                 objListEmailog.Add(objEmailog);
                             }
                             catch (Exception)
@@ -790,6 +804,38 @@ namespace WorkOrderEMS.BusinessLogic
             //return isSaved;
         }
 
+        /// <summary>
+        /// Created by: Ashwajit Bansod
+        /// Created Date : 01-04-2020
+        /// Created For : To save certificate of applicant with details
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public bool SaveAcadmicertificate(AcadmicCertification obj)
+        {
+            bool isSaved = false;
+            try
+            {
+                if (obj != null && obj.ACD_APT_ApplicantId > 0)
+                {
+                    using (workorderEMSEntities context = new workorderEMSEntities()) {
+                        var save = context.spSetAplicantCertificationDetails("I", null, obj.ACD_APT_ApplicantId, obj.ACD_CertificationName,
+                                        obj.ACD_CertificationEarnedYear, obj.ACD_CertifyingAgency, obj.ACD_CertificateAttached,
+                                        obj.ACD_Address, obj.ACD_City, obj.ACD_State, obj.ACD_Zip, "Y");
+                    }
+                        isSaved = true;               
+                }
+                else
+                    isSaved = false;
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SaveAcadmicertificate(AcadmicCertification obj)", "Exception While saving applicant ertification.", obj);
+                throw;
+            }
+            return isSaved;
+        }
+
         #endregion Save Applicant
         #region Background Check
         /// <summary>
@@ -876,7 +922,7 @@ namespace WorkOrderEMS.BusinessLogic
             {
                 if (model != null && model.ApplicantPersonalInfo.API_APT_ApplicantId > 0)
                 {
-                    var sentForBackgroudCheck = _db.spSetApplicantStatus(model.ApplicantPersonalInfo.API_APT_ApplicantId, ApplicantStatus.F, ApplicantStatus.S);
+                    var sentForBackgroudCheck = _db.spSetApplicantStatus(model.ApplicantPersonalInfo.API_APT_ApplicantId, ApplicantStatus.BackgroundCheck, ApplicantIsActiveStatus.Sent);
                     #region Create PO
                     var poNum = _db.spGetPONumber().FirstOrDefault();
                     var poNumber = "PO" + poNum.ToString();
@@ -896,7 +942,11 @@ namespace WorkOrderEMS.BusinessLogic
 
                         isSentForBackground = true;
                         #endregion End PO
-
+                        #region Background Screening
+                        var client = new CommonHTTPClient();
+                        var getSerialize = ConvertBackgroundDataJsonSerializer(model, userData);                                              
+                        var saveBackgroundScreening = client.SendDataForBackGroundScreening(APIName.BackGroudScreeningPostLink, getSerialize);
+                        #endregion Background Screening
                         #region Email
                         var objEmailLogRepository = new EmailLogRepository();
                         var objEmailReturn = new List<EmailToManagerModel>();
@@ -1090,6 +1140,7 @@ namespace WorkOrderEMS.BusinessLogic
                         I9F_Sec3_C_SignatureOfEmployerOrAuthorized = x.I9F_Sec3_C_SignatureOfEmployerOrAuthorized,
                         I9F_Sec2_MiddleInitialOfEmployerOrAuthorized = x.I9F_Sec2_MiddleInitialOfEmployerOrAuthorized,
                         //I9F_Sec2_C_SignatureOfEmployerOrAuthorized =x.
+                        Case_Number = x.I9F_CaseNumber
                         
                     }).FirstOrDefault();
                     if (_modelI9 == null)
@@ -1115,11 +1166,46 @@ namespace WorkOrderEMS.BusinessLogic
         public bool SetI9Form(long UserId, long ApplicantId, I9FormModel model)
         {
             var isSaved = false;
+            var postData = new CommonHTTPClient();
+            var _modelAPI = new PostI9FormDataInput();
+            var objCommon = new CommonMethodManager();
+            var submitCase = new SubmitCase();
             try
             {
                 var action = model.I9F_Id == null ? "I" : "U";
+                var getDetails = _db.spGetApplicantAllDetails(ApplicantId).FirstOrDefault();
+                var getManagerDetails = _db.Employees.Where(x => x.EMP_EmployeeID == getDetails.HiringManagerEmployeeId).FirstOrDefault();
                 if (UserId > 0 && ApplicantId > 0 && model != null && model.I9F_Id == null)
                 {
+                    #region I9 API
+                    _modelAPI.alien_number = model.I9F_Sec1_AlienRegistrationNum_USCIS;
+                    _modelAPI.case_creator_email_address = getManagerDetails.EMP_Email;
+                    _modelAPI.case_creator_name = getDetails.HiringManagerName;
+                    _modelAPI.case_creator_phone_number = getManagerDetails.EMP_Phone.ToString();
+                    _modelAPI.citizenship_status_code = "US_CITIZEN";//model.I9F_Sec2_CitizenshipImmigrationStatus;
+                    _modelAPI.client_company_id = null;
+                    _modelAPI.client_software_version = "30";
+                    _modelAPI.date_of_birth = model.I9F_Sec1_dateOfBirth == null || model.I9F_Sec1_dateOfBirth.ToString() == "" ? DateTime.Now.ToString("yyyy-MM-dd") :  model.I9F_Sec1_dateOfBirth.Value.ToString("yyyy-MM-dd");
+                    _modelAPI.date_of_hire = model.I9F_Sec3_B_DateOfReHire == null || model.I9F_Sec3_B_DateOfReHire.ToString() == "" ? DateTime.Now.ToString("yyyy-MM-dd"): model.I9F_Sec3_B_DateOfReHire.Value.ToString("yyyy-MM-dd");
+                    _modelAPI.document_a_type_code = "US_PASSPORT";
+                    _modelAPI.document_bc_number =  model.I9F_Sec2_ListA_DocumentNumber1;
+                    _modelAPI.document_b_type_code = model.I9F_Sec2_ListB_DocumentTitle;
+                    _modelAPI.document_c_type_code = model.I9F_Sec2_ListC_DocumentTitle;
+                    _modelAPI.document_sub_type_code = null;
+                    _modelAPI.duplicate_continue_reason = null;
+                    _modelAPI.employee_email_address = model.I9F_Sec1_Email;
+                    _modelAPI.employer_case_id = null;
+                    _modelAPI.expiration_date = model.I9F_Sec3_C_ExpirationDate == null || model.I9F_Sec3_C_ExpirationDate.ToString() == "" ? DateTime.Now.ToString("yyyy-MM-dd") : model.I9F_Sec3_C_ExpirationDate.ToString("yyyy-MM-dd");
+                    _modelAPI.us_passport_number = model.I9F_Sec1_ForeignPassportNumber;// model.I9F_Sec1_ForeignPassportNumber;
+                    _modelAPI.us_state_code = model.I9F_Sec1_State;
+                    _modelAPI.visa_number = null;
+                    _modelAPI.no_expiration_date = false;
+                    _modelAPI.ssn = model.I9F_Sec1_SSN;//model.I9F_Sec1_SSN;
+                    _modelAPI.reason_for_delay_code = "TECHNICAL_PROBLEMS";
+                    var getSerializeString = objCommon.GetJsoSerializeDataForAPI(APIName.I9PostDataCase, _modelAPI);
+                    var saveAPI = postData.I9PostCase(getSerializeString, "", model.RefreshTokenI9);
+                    var getOutputData = Newtonsoft.Json.JsonConvert.DeserializeObject<GetI9FormDataOutput>(saveAPI); 
+                    #endregion I9 API
                     var save = _db.spSetI9Form(action, model.I9F_Id, model.I9F_EMP_EmployeeId, model.I9F_Sec1_SSN, model.I9F_Sec1_CitizenOfUS, model.I9F_Sec1_NonCitizenOfUS,
                                model.I9F_Sec1_AlienRegistrationNum_USCIS, model.I9F_Sec1_AlienAuthorizedToWorkDate, model.I9F_Sec1_I94AdmissionNumber, model.I9F_Sec1_ForeignPassportNumber,
                                model.I9F_Sec1_ForeignPassportIssuanceCountry, model.I9F_Sec1_SignatureOfEmployee, model.I9F_Sec1_DateOfEmployeeSign, model.I9F_Sec1_QRCodeSec1,
@@ -1137,7 +1223,8 @@ namespace WorkOrderEMS.BusinessLogic
                                model.I9F_Sec2_EmployersBusinessOrgnization_State, model.I9F_Sec2_EmployersBusinessOrgnization_ZipCode, model.I9F_Sec2_TitleOfEmployerOrOthrizedRepresentative,
                                model.I9F_Sec2_CitizenshipImmigrationStatus, model.I9F_Sec3_A_LastName, model.I9F_Sec3_A_FirstName, model.I9F_Sec3_A_MiddleInitial, model.I9F_Sec3_B_DateOfReHire,
                                model.I9F_Sec3_C_DocumentTitle, model.I9F_Sec3_C_DocumentNumber, model.I9F_Sec3_C_ExpirationDate,model.I9F_Sec3_C_SignatureOfEmployerOrAuthorized,
-                               model.I9F_Sec3_C_DateOfEmployerOrAuthorizedSign,model.I9F_Sec3_C_NameOfEmployerOrAuthorized,model.I9F_Date,"Y");
+                               model.I9F_Sec3_C_DateOfEmployerOrAuthorizedSign,model.I9F_Sec3_C_NameOfEmployerOrAuthorized,model.I9F_Date,"Y", getOutputData.case_number);
+                    
                 }
                 else
                 {
@@ -1158,7 +1245,11 @@ namespace WorkOrderEMS.BusinessLogic
                                model.I9F_Sec2_EmployersBusinessOrgnization_State, model.I9F_Sec2_EmployersBusinessOrgnization_ZipCode, model.I9F_Sec2_TitleOfEmployerOrOthrizedRepresentative,
                                model.I9F_Sec2_CitizenshipImmigrationStatus, model.I9F_Sec3_A_LastName, model.I9F_Sec3_A_FirstName, model.I9F_Sec3_A_MiddleInitial, model.I9F_Sec3_B_DateOfReHire,
                                model.I9F_Sec3_C_DocumentTitle, model.I9F_Sec3_C_DocumentNumber, model.I9F_Sec3_C_ExpirationDate, model.I9F_Sec3_C_SignatureOfEmployerOrAuthorized,
-                               model.I9F_Sec3_C_DateOfEmployerOrAuthorizedSign, model.I9F_Sec3_C_NameOfEmployerOrAuthorized, model.I9F_Date, "Y");
+                               model.I9F_Sec3_C_DateOfEmployerOrAuthorizedSign, model.I9F_Sec3_C_NameOfEmployerOrAuthorized, model.I9F_Date, "Y", model.Case_Number);
+                    #region API
+                    var saveAPI = postData.I9PostCase("", APIName.I9CaseSubmit + model.Case_Number+ "/submit", model.RefreshTokenI9);
+                    var getOutputData = Newtonsoft.Json.JsonConvert.DeserializeObject<SubmitCase>(saveAPI);
+                    #endregion API
                 }
                 isSaved = true;
             }
@@ -1394,10 +1485,18 @@ namespace WorkOrderEMS.BusinessLogic
             var lst = new List<JobPostingDropDownModel>();
             try
             {
-                lst = _db.JobPostings.Select(x => new JobPostingDropDownModel() {
+                lst = _db.spGetJobPosting(null).Select(x => new JobPostingDropDownModel()
+                {
                     JobPostingId = x.JPS_JobPostingId,
-                    JobTitle = x.JPS_JobTitle,
-                    //JobDescription = x.
+                    JobTitle = x.JobTitle,
+                    JobDescription = x.VST_JobDescription,
+                    LocationName = x.LocationName,
+                    PositionCount = x.PositionCount,
+                    Status = x.Status,
+                    JobPostingDate = x.JobPostingDate,
+                    IsExempt = x.VST_IsExempt,
+                    DOT_Status = x.JPS_DrivingType
+                    //JobDescription = x.jo
                 }).ToList();
             }
             catch(Exception ex)
@@ -1406,6 +1505,301 @@ namespace WorkOrderEMS.BusinessLogic
                 throw;
             }
             return lst;
+        }
+
+        #region Oriantation
+        /// <summary>
+        /// Created By  :Ashwajit bansod
+        /// Created Date : 11-March-2020
+        /// Created For : To save employee oriantation withh date and time
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public bool SaveOriantation (OriantationModel model)
+        {
+            var isSaved = false;
+            try
+            {
+                var Action = model.OTN_ID == null ? "I" : "U";
+                _db.spSetOrientation(Action, model.OTN_ID, model.OTN_EMP_EmployeeID, model.OTN_LocationId,
+                                                  model.ONT_OrientationDate, model.ONT_Orientationtime, model.ONT_IsActive);
+                 isSaved = true;
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SaveOriantation (OriantationModel model)", "Exception While saving oriantation of employee.", model);               
+                isSaved = false;
+                throw;
+            }
+            return isSaved;
+        }
+        #endregion Oriantation
+
+        #region Offer Letter
+        /// <summary>
+        /// Created by : Ashwajit Bansod
+        /// Created Date : 14-March-2020
+        /// Created for : to get offer details of applicant to send offer
+        /// </summary>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
+        public OfferModel GetOfferDetailsOfApplicant(long ApplicantId)
+        {
+            var lst = new OfferModel();
+            try
+            {
+                lst = _db.spGetOfferLetter(ApplicantId).Select(x => new OfferModel()
+                {
+                    DesireSalaryWages = x.API_DesireSalaryWages,
+                    DueDate = x.OFL_OfferLetterDueDate,
+                     Email= x.ACI_eMail,
+                    FirstName = x.API_FirstName,
+                    LastName = x.API_LastName,
+                    MiddleName = x.API_MidName,
+                    LocationName = x.LocationName,
+                    HMName = x.HiringManagerName,
+                    IsExempt = x.VST_IsExempt,
+                    PhoneNumber = x.ACI_PhoneNo,
+                    ApplicantId = ApplicantId,
+                    OfferAmount = x.OFL_OfferAmount,
+                    StartDate = x.APT_DateOfJoining,
+                    Title = x.JBT_JobTitle,
+                    HMPosition = x.HiringManagerPosition,
+                    VST_RateOfPay = x.VST_RateOfPay
+                }).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<OfferModel> GetOfferDetailsOfApplicant(long AplicantId)", "Exception While getting the details of applicant.", ApplicantId);
+                throw;
+            }
+            return lst;
+        }
+        #endregion Offer Letter
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 17-March-2020
+        /// Created For : To screened or reject applicant as per detail 
+        /// </summary>
+        /// <param name="ApplicantId"></param>
+        /// <param name="IsScreened"></param>
+        /// <returns></returns>
+        public bool SaveScreenRejectStatusApplicant(long ApplicantId, bool IsScreened)
+        {
+            var status = IsScreened == true ? ApplicantStatus.Screened : ApplicantStatus.Reject;
+            return _db.spSetApplicantStatus(ApplicantId, status, ApplicantIsActiveStatus.Pass) > 0 ? true : false;
+        }
+       
+        public EmployeeVIewModel GetApplicantAllDetails(long ApplicantId)
+        {
+            return  _db.spGetApplicantAllDetails(ApplicantId).Select(x => new EmployeeVIewModel()
+            {
+                FirstName = x.API_FirstName,
+                MiddleName = x.API_MidName,
+                LastName = x.API_LastName,
+                HiringManager = x.HiringManagerEmployeeId
+                //Dob = x
+            }).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 14-04-2020
+        /// Created For : To add all details to background screening model and convert into json serialize
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public string ConvertBackgroundDataJsonSerializer(BackgroundCheckForm model,UserRegistration user)
+        {
+            string result = string.Empty;
+            string zipcode = string.Empty;
+            //models obj
+            var objCommon = new CommonMethodManager();
+            var objBackground = new BackgroundScreeningAPIModel();
+            var objCountyCivilLowerSearch = new CountyCivilLowerSearch();
+            var objcountyCivilUpperSearches = new CountyCivilUpperSearch();
+            var objcountyCriminalSearches = new CountyCriminalSearch();
+            var drugScreenings = new DrugScreening();
+            var objeducationVerifications = new EducationVerification();
+            var objemploymentVerifications = new EmploymentVerification();
+            var objfederalBankruptcySearches = new FederalBankruptcySearch();
+            var objfederalCriminalSearches = new FederalCriminalSearch();
+            var objfederalCivilSearches = new FederalCivilSearch();
+            var objmotorVehicleRecordSearches = new MotorVehicleRecordSearch();
+            var objpositionLocation = new PositionLocation();
+            var objpositionStartingPay = new PositionStartingPay();
+            var objsexOffenderSearches = new SexOffenderSearch();
+            var objstateCriminalSearches = new StateCriminalSearch();
+            var objsubjectAdmittedCriminalHistory = new SubjectAdmittedCriminalHistory();
+            var objsubjectIndividualAliases = new SubjectIndividualAlias();
+            var objsubjectPreviousLocations = new SubjectPreviousLocation();
+            var objworkersCompensationSearches = new WorkersCompensationSearch();
+            var data = _db.ApplicantLoginAccesses.Join(_db.Applicants, q => q.ALA_UserId, u => u.APT_ALA_UserId, (q, u) => new { q, u }).
+                                       Where(x => x.u.APT_ApplicantId == model.ApplicantPersonalInfo.API_APT_ApplicantId).FirstOrDefault();
+            var contact = _db.spGetApplicantContactInfo(model.ApplicantPersonalInfo.API_APT_ApplicantId).Take(1).FirstOrDefault();
+            objBackground.collectAdditionalInfo = true;
+            objBackground.comment = null;// model.ApplicantPersonalInfo.
+            objCountyCivilLowerSearch.county =  "Pasco";
+            objCountyCivilLowerSearch.region = "FL";
+            objBackground.countyCivilLowerSearches.Add(objCountyCivilLowerSearch);
+            objcountyCivilUpperSearches.county = "Pasco";
+            objcountyCivilUpperSearches.region = "FL";
+            objBackground.countyCivilUpperSearches.Add(objcountyCivilUpperSearches);
+            objcountyCriminalSearches.county = "Pasco";
+            objcountyCriminalSearches.region = "FL";
+            objBackground.countyCriminalSearches.Add(objcountyCriminalSearches);
+            objBackground.customScreeningId = Convert.ToInt64(model.ApplicantPersonalInfo.API_APT_ApplicantId);
+            objBackground.customSubjectId = Convert.ToInt64(model.ApplicantPersonalInfo.API_APT_ApplicantId);
+            objBackground.disableDuplicateChecking = true;
+            drugScreenings.testType = "Screening";
+            objBackground.drugScreenings.Add(drugScreenings);
+            var getEducationDetails = _db.spGetAplicantAcadmicDetails(model.ApplicantPersonalInfo.API_APT_ApplicantId).ToList();
+            foreach (var item in getEducationDetails)
+            {
+                objeducationVerifications.address = item.AAD_City+","+item.AAD_State;
+                objeducationVerifications.courseOfStudy = item.AAD_EducationType;
+                objeducationVerifications.degree = item.AAD_EducationType;
+                objeducationVerifications.fromDate = item.AAD_AttendedFrom.ToString("yyyy-MM-dd");
+                objeducationVerifications.graduated = true;
+                objeducationVerifications.municipality = item.AAD_City;
+                objeducationVerifications.organization = item.AAD_InstituteName;
+                objeducationVerifications.phone  = contact.ACI_PhoneNo.ToString();
+                objeducationVerifications.postalCode = item.AAD_Zip.ToString();
+                objeducationVerifications.region = "FL";
+                objeducationVerifications.toDate = item.AAD_AttendedTo.ToString("yyyy-MM-dd");
+                objeducationVerifications.studentName = model.ApplicantPersonalInfo.API_FirstName + " " + model.ApplicantPersonalInfo.API_LastName;
+                objBackground.educationVerifications.Add(objeducationVerifications);
+            }
+            var getBackgroundDetails = _db.spGetApplicantBackgroundHistory(model.ApplicantPersonalInfo.API_APT_ApplicantId).ToList();
+            foreach (var item in getBackgroundDetails)
+            {
+                objemploymentVerifications.address = item.ABH_Address;
+                objemploymentVerifications.contactName = item.ABH_CompanyName;
+                objemploymentVerifications.contactTelephone = item.ABH_Phone.ToString();
+                objemploymentVerifications.employer = item.ABH_CompanyName;
+                objemploymentVerifications.fromDate = item.ABH_Date.ToString("yyyy-MM-dd");
+                objemploymentVerifications.toDate = item.ABH_Date.ToString("yyyy-MM-dd");
+                objemploymentVerifications.isCurrentEmployer = item.ABH_StillEmployed == "Y"?true:false;
+                objemploymentVerifications.municipality = item.ABH_City;
+                objemploymentVerifications.permissionToContact = true;
+                objemploymentVerifications.positionTitle = "";
+                objemploymentVerifications.postalCode = item.ABH_ZIPCode.ToString();
+                objemploymentVerifications.reasonForLeaving = item.ABH_ReasonforLeaving;
+                objemploymentVerifications.region = "FL";
+                objemploymentVerifications.remunerationInterval = "Hourly";
+                objemploymentVerifications.remunerationValue = 0;
+                objBackground.employmentVerifications.Add(objemploymentVerifications);
+            }
+            objfederalBankruptcySearches.county = "Pasco";
+            objfederalBankruptcySearches.postalCode = model.ApplicantAddress[0].APA_Zip.ToString();
+            objfederalBankruptcySearches.region = "FL";
+            objBackground.federalBankruptcySearches.Add(objfederalBankruptcySearches);
+
+            objfederalCivilSearches.region = "FL";
+            objfederalCivilSearches.county = "Pasco";
+            objBackground.federalCivilSearches.Add(objfederalCivilSearches);
+
+            objfederalCriminalSearches.county = "Pasco";
+            objfederalCriminalSearches.region = "FL";
+            objfederalCriminalSearches.postalCode = model.ApplicantAddress[0].APA_Zip.ToString();
+            objBackground.federalCriminalSearches.Add(objfederalCriminalSearches);
+
+            objmotorVehicleRecordSearches.region = "FL";
+            objmotorVehicleRecordSearches.countryCode = "US";
+            objmotorVehicleRecordSearches.licenseIdentifier = model.ApplicantPersonalInfo.API_DLNumber;
+            objBackground.motorVehicleRecordSearches.Add(objmotorVehicleRecordSearches);
+
+            objBackground.packageId = "AAVPP";
+            //var getPositionDetails = _db.spGetApplicantPositionTitle(model.ApplicantPersonalInfo.API_APT_ApplicantId).ToList();
+            //foreach (var item in getPositionDetails)
+            //{
+
+            //}
+            objpositionLocation.address = model.ApplicantAddress[0].APA_StreetAddress;
+            objpositionLocation.countryCode = "US";
+            objpositionLocation.municipality = model.ApplicantAddress[0].APA_City;
+            objpositionLocation.postalCode = model.ApplicantAddress[0].APA_Zip.ToString();
+            objBackground.positionLocation = objpositionLocation;
+
+            objpositionStartingPay.currencyId = "USD";
+            objpositionStartingPay.value = 0;
+            objpositionStartingPay.interval = "Hourly";
+            objBackground.positionStartingPay = objpositionStartingPay;
+
+            objBackground.processAddressInsight = true;
+            objBackground.processAdverseAction = true;
+            objBackground.processBusinessCreditCheck = true;
+            objBackground.processCreditCheck = true;
+            objBackground.processFacisScreening = true;
+            objBackground.processGlobalInsight = true;
+            objBackground.processGsaScreening = true;
+            objBackground.processNationalCriminalInsight = true;
+            objBackground.processOfacScreening = true;
+            objBackground.processSocialSecurityTrace = true;
+            objBackground.referenceId = null;
+            objBackground.requesterEmail = user.UserEmail;
+            objBackground.requesterName = user.FirstName + " " + user.LastName;
+
+            objsexOffenderSearches.region = "FL";
+            objBackground.sexOffenderSearches.Add(objsexOffenderSearches);
+
+            objstateCriminalSearches.region = "FL";
+            objBackground.stateCriminalSearches.Add(objstateCriminalSearches);
+
+            objsubjectAdmittedCriminalHistory.caseNumber = null;
+            objsubjectAdmittedCriminalHistory.charge = null;
+            objsubjectAdmittedCriminalHistory.date = DateTime.Now.ToString("yyyy-MM-dd");
+            objsubjectAdmittedCriminalHistory.disposition = null;
+            objsubjectAdmittedCriminalHistory.finalLevel = null;
+            objsubjectAdmittedCriminalHistory.jurisdiction = null;
+            objsubjectAdmittedCriminalHistory.notes = null;
+            objsubjectAdmittedCriminalHistory.sentence = null;
+            objBackground.subjectAdmittedCriminalHistory.Add(objsubjectAdmittedCriminalHistory);
+
+            var getAdditionalInfo = _db.spGetApplicantAdditionalInfo(model.ApplicantPersonalInfo.API_APT_ApplicantId).FirstOrDefault();
+            objBackground.subjectCurrentAddressAddressLine = model.ApplicantAddress[0].APA_StreetAddress;
+            objBackground.subjectCurrentAddressCountryCode = "US";
+            objBackground.subjectCurrentAddressMunicipality = model.ApplicantAddress[0].APA_City;
+            objBackground.subjectCurrentAddressPostalCode = model.ApplicantAddress[0].APA_Zip.ToString();
+            objBackground.subjectCurrentAddressRegion = "FL";
+            objBackground.subjectCurrentAddressStartDate = data.u.APT_DateOfJoining.ToString("yyyy-MM-dd");
+            //dob add later
+            objBackground.subjectDateOfBirth = "1994-04-22";//getAdditionalInfo.AAI_AvailableDate.ToString("yyyy-MM-dd");
+            objBackground.subjectEmail = data.q.ALA_eMailId;
+            objBackground.subjectFamilyName = model.ApplicantPersonalInfo.API_LastName;
+            objBackground.subjectFederalEmployerIdentificationNumber = model.ApplicantPersonalInfo.API_SSN;
+            //add later
+            objBackground.subjectGender = "Male";
+            objBackground.subjectGivenName = model.ApplicantPersonalInfo.API_FirstName + " " + model.ApplicantPersonalInfo.API_LastName;
+
+            objsubjectIndividualAliases.familyName = model.ApplicantPersonalInfo.API_LastName;
+            objsubjectIndividualAliases.givenName = model.ApplicantPersonalInfo.API_FirstName + " " + model.ApplicantPersonalInfo.API_LastName;
+            objBackground.subjectIndividualAliases.Add(objsubjectIndividualAliases);
+
+            objBackground.subjectMiddleName = model.ApplicantPersonalInfo.API_MiddleName;
+            objBackground.subjectOrganizationName = getBackgroundDetails[0].ABH_CompanyName;
+
+            foreach (var item in model.ApplicantAddress)
+            {
+                objsubjectPreviousLocations.address = item.APA_StreetAddress;
+                objsubjectPreviousLocations.countryCode = "US";
+                objsubjectPreviousLocations.endDate = item.APA_YearsAddressTo.ToString("yyyy-MM-dd");
+                objsubjectPreviousLocations.municipality = item.APA_City;
+                objsubjectPreviousLocations.postalCode = item.APA_Zip.ToString();
+                objsubjectPreviousLocations.region = "FL";
+                objsubjectPreviousLocations.startDate = item.APA_YearsAddressFrom.ToString("yyyy-MM-dd");
+                objBackground.subjectPreviousLocations.Add(objsubjectPreviousLocations);
+            }
+
+            objBackground.subjectSocialSecurityNumber = model.ApplicantPersonalInfo.API_SSN;
+            objBackground.subjectTelephoneNumber = contact.ACI_PhoneNo.ToString();
+            objBackground.userDefinedField2 = null;
+            objBackground.userDefinedField3 = null;
+
+            objworkersCompensationSearches.region = "FL";
+            objBackground.workersCompensationSearches.Add(objworkersCompensationSearches);
+            return result = objCommon.GetJsoSerializeDataForAPI(APIName.I9AuthenticationAPI, objBackground);
         }
     }
 }

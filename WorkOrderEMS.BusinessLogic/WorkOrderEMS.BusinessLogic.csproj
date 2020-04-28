@@ -244,6 +244,7 @@
     <Compile Include="Managers\BudgetLocationManager.cs" />
     <Compile Include="Managers\ClientManager.cs" />
     <Compile Include="Managers\Common.cs" />
+    <Compile Include="Managers\CommonAPIJsonConvertToClass.cs" />
     <Compile Include="Managers\CommonApproval.cs" />
     <Compile Include="Managers\CommonMethodAdmin.cs" />
     <Compile Include="Managers\CommonMethodManager.cs" />

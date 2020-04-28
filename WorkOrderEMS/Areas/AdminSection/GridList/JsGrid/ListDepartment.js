@@ -135,7 +135,7 @@ $(document).ready(function () {
         $("#myModalForDepartment").modal("show");
     })
     $("#BackToAdmin").click(function(){
-        debugger
+        
         var url = "../AdminSection/AdminDashboard/Index";// @Url.Action("Index", "AdminDashboard", new { area = "AdminSection" });
         window.location.href = url;
     });

@@ -624,5 +624,17 @@ namespace WorkOrderEMS.Helper
         {
             return "Password reset mail sent to your mail id please check and add new password.";
         }
+        public static string SaveOrientation()
+        {
+            return "Orientation for the employee has been scheduled succesfully.";
+        }
+        public static string ApplicantReject()
+        {
+            return "Applicant Rejected";
+        }
+        public static string ApplicantScreened()
+        {
+            return "Applicant screened succesfully.";
+        }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,12 +12,19 @@ namespace WorkOrderEMS.Models
         public char APA_Action { get; set; }
         public long APA_Id { get; set; }
         public long? APA_APT_ApplicantId { get; set; }
+        [DisplayName("Street Address")]
         public string APA_StreetAddress { get; set; }
+        [DisplayName("Apartment")]
         public string APA_Apartment { get; set; }
+        [DisplayName("City")]
         public string APA_City { get; set; }
+        [DisplayName("State")]
         public string APA_State { get; set; }
+        [DisplayName("Zip")]
         public int? APA_Zip { get; set; }
+        [DisplayName("Years Address From")]
         public Nullable<DateTime> APA_YearsAddressFrom { get; set; }
+        [DisplayName("Years Address To")]
         public Nullable<DateTime> APA_YearsAddressTo { get; set; }
         public string APA_IsActive { get; set; }
 
@@ -26,8 +34,11 @@ namespace WorkOrderEMS.Models
         public char ACI_Action { get; set; }
         public long ACI_Id { get; set; }
         public long ACI_APT_ApplicantId { get; set; }
+        [DisplayName("Phone No")]
         public long ACI_PhoneNo { get; set; }
+        [DisplayName("eMail")]
         public string ACI_eMail { get; set; }
+        [DisplayName("Prefred Contact Method")]
         public string ACI_PrefredContactMethod { get; set; }
         //public Nullable<DateTime> ACI_Date { get; set; }
         public string ACI_IsActive { get; set; }
@@ -38,14 +49,23 @@ namespace WorkOrderEMS.Models
         public char AAI_Action { get; set; }
         public long AAI_Id { get; set; }
         public long AAI_ApplicantId { get; set; }
+        [DisplayName("Work Eligibility US")]
         public char AAI_WorkEligibilityUS { get; set; }
+        [DisplayName("Available Date")]
         public Nullable<DateTime> AAI_AvailableDate { get; set; }
+        [DisplayName("Age 21 Completed")]
         public char AAI_Age21Completed { get; set; }
+        [DisplayName("Any Ref Or Employee In ELITE")]
         public char AAI_AnyRefOrEmployeeInELITE { get; set; }
+        [DisplayName("Name Of Ref Or Employee In ELITE")]
         public string AAI_NameOfRefOrEmployeeInELITE { get; set; }
+        [DisplayName("Prior Military Service")]
         public char AAI_PriorMilitaryService { get; set; }
+        [DisplayName("Ever Work For ELITE")]
         public char AAI_EverWorkForELITE { get; set; }
+        [DisplayName("Departure Date")]
         public Nullable<DateTime> AAI_DepartureDate { get; set; }
+        [DisplayName("Reason For Leaving")]
         public string AAI_ReasonForLeaving { get; set; }
         //public Nullable<DateTime> AAI_Date { get; set; }
         public string AAI_IsActive { get; set; }
@@ -92,6 +112,7 @@ namespace WorkOrderEMS.Models
         public char APT_Action { get; set; }
         public long APT_Id { get; set; }
         public long APT_ApplicantId { get; set; }
+        public string APT_CompanyName { get; set; }
         public string APT_PositionTitle { get; set; }
         public decimal APT_Salary { get; set; }
         public Nullable<DateTime> APT_FromMoYr { get; set; }
@@ -174,5 +195,18 @@ namespace WorkOrderEMS.Models
         public Nullable<DateTime> ASA_AvaliableEndTime { get; set; }
         public char ASA_IsActive { get; set; }
 
+    }
+    public class AcadmicCertification
+    {
+        public long ACD_APT_ApplicantId { get; set; }
+        public string ACD_CertificationName { get; set; }
+        public Nullable<DateTime> ACD_CertificationEarnedYear { get; set; }
+        public string ACD_CertifyingAgency { get; set; }
+        public string ACD_CertificateAttached { get; set; }
+        public string ACD_Address { get; set; }
+        public string ACD_City { get; set; }
+        public string ACD_State { get; set; }
+        public int? ACD_Zip { get; set; }
+        public string ACD_CertificateFileName { get; set; }
     }
 }

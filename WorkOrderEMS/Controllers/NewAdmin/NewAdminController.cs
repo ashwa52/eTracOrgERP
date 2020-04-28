@@ -58,8 +58,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             this._IGuestUserRepository = _IGuestUserRepository;
         }
         public ActionResult Index()
-        {
-
+        { 
             //if(Session["eTrac"]==null)
             //{
             //  string usedd=  HttpContext.User.Identity.Name;
@@ -70,7 +69,6 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             // }
             return View("~/Views/Shared/_NewDashboard.cshtml");
         }
-
 
         public ActionResult ListLocation()
         {
@@ -93,10 +91,11 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         /// <param name="UserType"></param>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult GetListLocation(string _search, long? UserId, int? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
+        public JsonResult GetListLocation()
         {
             eTracLoginModel ObjLoginModel = null;
             GlobalAdminManager _GlobalAdminManager = new GlobalAdminManager();
+            string _search = string.Empty; long? UserId; int? locationId = null; int? rows = 20; int? page = 1; int? TotalRecords = 10; string sord = null; string txtSearch = null; string sidx = null; string UserType = null;
             if (Session["eTrac"] != null)
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
@@ -317,6 +316,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
             }
             return PartialView("~/Views/NewAdmin/DAR/_DARDashboard.cshtml");
+            //return View("~/Views/NewAdmin/DAR/DARDashboard.cshtml");
         }
         /// <summary>
         /// Created By  :Ashwajit Bansod
@@ -335,6 +335,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
             }
             return PartialView("~/Views/NewAdmin/_Reports.cshtml");
+
         }
         /// <summary>
         /// Created BY : Ashwajit Bansod
@@ -638,7 +639,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
             try
             {
-                result = _GlobalAdminManager.saveSelfAssessment(data, "D");
+                result = _GlobalAdminManager.saveSelfAssessment(data, "D", ObjLoginModel.UserName);
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
@@ -657,7 +658,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
             try
             {
-                result = _GlobalAdminManager.saveSelfAssessment(data, "S");
+                result = _GlobalAdminManager.saveSelfAssessment(data, "S", ObjLoginModel.UserName);
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
@@ -702,7 +703,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
             try
             {
-                result = _GlobalAdminManager.saveEvaluation(data, "D");
+                result = _GlobalAdminManager.saveEvaluation(data, "D", ObjLoginModel.UserName);
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
@@ -721,7 +722,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
             try
             {
-                result = _GlobalAdminManager.saveEvaluation(data, "S");
+                result = _GlobalAdminManager.saveEvaluation(data, "S", ObjLoginModel.UserName);
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
@@ -1005,9 +1006,40 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             else
             {
                 var getLst = _GlobalAdminManager.GetInterviewAnswerByApplicantId(Applicant);
+                getLst.IsShortlisted = false;
+                Session["IsInterviewDone"] = true;
                 return PartialView("~/Views/NewAdmin/ePeople/OnBoarding/_ViewAnswerQuestion.cshtml", getLst);
             }
             return PartialView("~/Views/NewAdmin/ePeople/_questions.cshtml", null);
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 17-March-2020
+        /// Created For : To screened or reject applicant as per detail
+        /// </summary>
+        /// <param name="ApplicantId"></param>
+        /// <param name="IsScreened"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult ScreenedRejectApplicant(long ApplicantId, bool IsScreened)
+        {
+            string Message = string.Empty;
+            try
+            {
+                if (ApplicantId > 0)
+                {
+                    var isSaved = _IApplicantManager.SaveScreenRejectStatusApplicant(ApplicantId, IsScreened);
+                    if (isSaved)
+                        Message = CommonMessage.ApplicantScreened();
+                    else
+                        Message = CommonMessage.ApplicantReject();
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(ex, JsonRequestBehavior.AllowGet);
+            }
+            return Json(Message, JsonRequestBehavior.AllowGet);
         }
 
         //[HttpPost]
@@ -1115,6 +1147,21 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             var res = _GlobalAdminManager.CheckIfAllRespondedForQuestion(ApplicantId, QusId);
             return Json(res, JsonRequestBehavior.AllowGet);
         }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 26-MArch-2020
+        /// Created For : To get the answer details of applicant
+        /// </summary>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GetApplicantInterviewAnswerDetails(int ApplicantId)
+        {
+            var getLst = _GlobalAdminManager.GetInterviewAnswerByApplicantId(ApplicantId);
+            Session["IsInterviewDone"] = true;
+            getLst.IsShortlisted = true;
+            return PartialView("~/Views/NewAdmin/ePeople/OnBoarding/_ViewAnswerQuestion.cshtml", getLst);
+        }
 
         /// <summary>
         /// Method to  validate the duplicate employee id ie alternativeemail in db col.
@@ -1209,7 +1256,8 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             {
 
             }
-            return PartialView("~/Views/NewAdmin/ePeople/_HiringOnBoardingDashboard.cshtml");
+            //return Json(status, JsonRequestBehavior.AllowGet);
+            return PartialView("~/Views/NewAdmin/ePeople/_HiringOnBoardingDashboardNew.cshtml");
         }
 
         [HttpPost]
@@ -1259,10 +1307,11 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         }
 
         [HttpPost]
-        public PartialViewResult ShwoOfferLetter(long ApplicantId)
+        public PartialViewResult ShowOfferLetter(long ApplicantId)
         {
             var model = new OfferModel();
             model.ApplicantId = ApplicantId;
+            model = _IApplicantManager.GetOfferDetailsOfApplicant(ApplicantId);
             return PartialView("~/Views/NewAdmin/ePeople/OnBoarding/_OfferLetter.cshtml", model);
         }
         /// <summary>
@@ -1302,7 +1351,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         {
             eTracLoginModel ObjLoginModel = null;
             bool isSaved = false;
-            W4FormModel returnModel = null;
+            W4FormModel returnModel = new W4FormModel();
             if (Session["eTrac"] != null)
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
@@ -1318,9 +1367,22 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                     //}
                     //else
                     //{
-                        returnModel = _IGuestUserRepository.GetW4Form(ObjLoginModel.UserId);
-                        //    model.Action = "U";
-                        //    isSaved = _IApplicantManager.SaveAssets(model);
+                    //Comment For Testing
+                    var obj = _IGuestUserRepository.GetW4Form(ObjLoginModel.UserId);
+                    if (obj != null)
+                    {
+                        obj.IsSignature = false;
+                        return PartialView("~/Views/Guest/_W4Form.cshtml", obj);
+                    }
+                    else
+                    {
+                        returnModel.IsSignature = false;
+                        return PartialView("~/Views/Guest/_W4Form.cshtml", new W4FormModel());
+                    }
+                    //End 
+
+                    //    model.Action = "U";
+                    //    isSaved = _IApplicantManager.SaveAssets(model);
 
                     //}
                 }
@@ -1329,6 +1391,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             {
                 return PartialView("~/Views/Guest/Index1.cshtml", returnModel);
             }
+            //return RedirectToAction("BenifitSection", "Guest");
             return PartialView("~/Views/Guest/_W4Form.cshtml", returnModel);
         }
         #endregion Applicant
@@ -1538,17 +1601,13 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         {
             eTracLoginModel ObjLoginModel = null;
             var _workorderems = new workorderEMSEntities();
-            var data = new List<spGetJobPosting_ForCompanyOpening_Result>();
+            var data = new List<spGetJobPosting_ForCompanyOpening_Result1>();
             if (Session["eTrac"] != null)
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
             }
             var getEMPID = _workorderems.UserRegistrations.Where(x => x.UserId == ObjLoginModel.UserId).FirstOrDefault().EmployeeID;
-            if(getEMPID != null)
-            {
-
-            }
-             data = _GlobalAdminManager.GetJobPostingForCompanyOpening(getEMPID);
+            data = _GlobalAdminManager.GetJobPostingForCompanyOpening(getEMPID);
             return Json(data, JsonRequestBehavior.AllowGet);
         }
         /// <summary>
@@ -1686,7 +1745,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
             try
             {
-                result = _GlobalAdminManager.GetMyEvents(ObjLoginModel.UserId, start, end);
+                result = _GlobalAdminManager.GetMyEvents(ObjLoginModel.UserName, start, end);
                 var eventList = from e in result
                                 select new
                                 {
@@ -1723,7 +1782,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
             try
             {
-                return _GlobalAdminManager.CreateNewEvent(Title, NewEventDate, NewEventTime, NewEventDuration, JobId, ApplicantName, ApplicantEmail, ObjLoginModel.UserId, selectedManagers);
+                return _GlobalAdminManager.CreateNewEvent(Title, NewEventDate, NewEventTime, NewEventDuration, JobId, ApplicantName, ApplicantEmail, ObjLoginModel.UserName, selectedManagers);
             }
             catch (Exception)
             {
@@ -1745,7 +1804,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
             try
             {
-                result = _GlobalAdminManager.GetBookedSlots(ObjLoginModel.UserId).OrderByDescending(x=>x.start).ToList();
+                result = _GlobalAdminManager.GetBookedSlots(ObjLoginModel.UserName).OrderByDescending(x=>x.start).ToList();
                 var eventList = from e in result
                                 select new 
                                 {
@@ -1765,6 +1824,32 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        //public ActionResult GetManagerList()
+        //{
+        //    eTracLoginModel ObjLoginModel = null;
+        //    List<ManagerModel> result = new List<ManagerModel>();
+        //    if (Session["eTrac"] != null)
+        //    {
+        //        ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+        //    }
+        //    try
+        //    {
+        //        result = _ICommonMethod.GetManagerList();
+        //        var eventList = from e in result
+        //                        select new
+        //                        {
+        //                            label=e.UserName,
+        //                            value=e.UserID.ToString()
+        //                        };
+        //        var rows = eventList.ToArray();
+        //        return Json(rows, JsonRequestBehavior.AllowGet);
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return Json(null, JsonRequestBehavior.AllowGet);
+        //    }
+        //}
+        [HttpGet]
         public ActionResult GetManagerList()
         {
             eTracLoginModel ObjLoginModel = null;
@@ -1779,10 +1864,10 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 var eventList = from e in result
                                 select new
                                 {
-                                    label=e.UserName,
-                                    value=e.UserID.ToString()
+                                    label = e.UserName,
+                                    value = e.UserEmail//.Split('@')[0]
                                 };
-                var rows = eventList.ToArray();
+                var rows = eventList.Where(x => x.value.ToLower() != ObjLoginModel.UserName.ToLower()).ToArray();
                 return Json(rows, JsonRequestBehavior.AllowGet);
             }
             catch (Exception)
@@ -1790,7 +1875,50 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 return Json(null, JsonRequestBehavior.AllowGet);
             }
         }
-
+        [HttpPost]
+        public ActionResult GetManagerListForApplicant()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            List<ManagerModel> result = new List<ManagerModel>();
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                result = _ICommonMethod.GetManagerList();
+                var eventList = from e in result
+                                select new
+                                {
+                                    label = e.UserName,
+                                    value = e.UserEmail//.Split('@')[0]
+                                };
+                var rows = eventList.Where(x => x.value != ObjLoginModel.UserName.ToLower()).ToArray();
+                return Json(rows.ToArray(), JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(null, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public ActionResult UpdateInterviewPanel(string selectedManagers, string JobId,string JobTitle)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            bool result = false;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            }
+            try
+            {
+                result = _GlobalAdminManager.UpdateInterviewPanel(selectedManagers, ObjLoginModel.UserName, JobId, JobTitle);
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
         public JsonResult GetSlotTimings(string date) {
             eTracLoginModel ObjLoginModel = null;
             if (Session["eTrac"] != null)
@@ -1816,19 +1944,19 @@ namespace WorkOrderEMS.Controllers.NewAdmin
 
 
         #endregion
-		public ActionResult MySchedules() {
-            try
-            {
+		//public ActionResult MySchedules() {
+  //          try
+  //          {
 
-            }
-            catch (Exception)
-            {
+  //          }
+  //          catch (Exception)
+  //          {
 
-                throw;
-            }
-            return View();
+  //              throw;
+  //          }
+  //          return View();
         
-        }
+  //      }
         [HttpGet]
         public ActionResult GetManagerAssessmentDetails()
         {

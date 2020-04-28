@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
 namespace WorkOrderEMS.Models
@@ -134,11 +135,23 @@ namespace WorkOrderEMS.Models
         public string Answer { get; set; }
         [DataMember]
         public long? ApplicantId { get; set; }
+        [DataMember]
+        public long? JobPostingId { get; set; }
+        [DataMember]
+        public string ApplicantPhoto { get; set; }
+        [DataMember]
+        public Nullable<DateTime> DateOFJoining { get; set; }
+
+        [DataMember]
+        public string RefreshI9Token { get; set; }
+        [DataMember]
+        public long I9CompanyId { get; set; }
         #endregion Other Login Data
     }
     public class Login
     {
         public string username { get; set; }
         public string password { get; set; }
+
     }
 }

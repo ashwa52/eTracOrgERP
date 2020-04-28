@@ -133,4 +133,38 @@ function EditUserInfo($_this) {
     });
 }
 
+function EmployeeOrientation($_this) {
+    debugger
+    var getEmpId = $($_this).attr("data-empId");
+    $("#GetEmployeeIdForOrientation").html(getEmpId);
+    //var origin_Url = window.location.origin;
+    $("#myModalToAddEmployeeOrietation").modal('show');
+}
+$("#SaveOrientation").click(function () {
+    debugger
+    var origin_Url = window.location.origin;
+    $("#OTN_EMP_EmployeeID").val($("#GetEmployeeIdForOrientation").text());
+    var dataOrientation = $("#SaveOrientationForm").serialize();
+    $.ajax({
+        type: "POST",
+        url: origin_Url + '/EPeople/SaveOriantation', //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
+        data: dataOrientation,
+        success: function (result) {
+            $("#GetEmployeeIdForOrientation").html("");
+            $("#ONT_OrientationDate").val('');
+            $("#ONT_Orientationtime").val('');
+            $("#myModalToAddEmployeeOrietation").modal('hide');
+            if (result.isSaved == true) {
+                toastr.success(result.message);
+
+            }
+            else { toastr.error(result.message); }
+
+        },
+        error: function (err) {
+            alert(err);
+        }
+    });
+})
+
 

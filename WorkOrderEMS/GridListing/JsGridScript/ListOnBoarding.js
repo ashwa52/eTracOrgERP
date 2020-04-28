@@ -184,7 +184,7 @@ function getApplicantInfo() {
                                 .attr({ title: jsGrid.fields.control.prototype.deleteButtonTooltip })
                                 .attr({ id: "btn-delete-" + item.Id }).click(function (e) {
                                     API_id = item.API_ApplicantId;
-                                    $("#myModalToShowLocation").modal("show");                                   
+                                    $("#myModalForAddEmployee").modal("show");
                                     e.stopPropagation();
                                 }).append($iconTrash);
 

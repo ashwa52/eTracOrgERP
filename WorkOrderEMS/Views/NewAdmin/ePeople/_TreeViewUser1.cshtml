@@ -9,6 +9,8 @@
         
     }
 </style>
+<link href="~/Content/NewAdminContent/CSS/clockPicker.css" rel="stylesheet" />
+@*<link href="@Url.Content("~/Content/bootstrap-datetimepicker.min.css")" rel="stylesheet" />*@
 <link href="~/Content/NewAdminContent/CSS/NewTreeUserView.css" rel="stylesheet" />
 <div class="pg-orgchart">
     <div class="org-chart" id="imgstones">
@@ -28,10 +30,14 @@
                             <div class="role">@item.JobTitle</div>
                         </div>
                         <div class="IconsData" style="margin-top:14px;">
-                            <i class= "fa fa-folder-open TreeUserIcons AddFilesClass" onclick="AddFileData(this)" data-id="@EmpIdFirst" id="AddFiles" title="Add Files" style="color:yellow;"></i>
-                            <i class= "fa fa-user TreeUserIcons EditUserInfoClass" onclick="EditUserInfo(this)" data-id="@EmpIdFirst" id="EditUserInfo" title="Edit user Info" style="color:black;"></i>
-                            <i class= "fa fa-file TreeUserIcons AddAssessmentClass" onclick="AddAssessment(this)" data-id="@EmpIdFirst" id="AddAssessment" title="Assessment" style="color:#2c7506;"></i>
-                            <i class= "fa fa-file-text TreeUserIcons EmployeeStatusChangeClass" onclick="EmployeeStatusChange(this)" data-id="@EmpIdFirst" id="EmployeeStatusChange" title="Status Change" style="color:#d03f3f;"></i>
+                            <i class="fa fa-folder-open TreeUserIcons AddFilesClass" onclick="AddFileData(this)" data-id="@EmpIdFirst" id="AddFiles" title="Add Files" style="color:yellow;"></i>
+                            <i class="fa fa-user TreeUserIcons EditUserInfoClass" onclick="EditUserInfo(this)" data-id="@EmpIdFirst" id="EditUserInfo" title="Edit user Info" style="color:black;"></i>
+                            <i class="fa fa-file TreeUserIcons AddAssessmentClass" onclick="AddAssessment(this)" data-id="@EmpIdFirst" id="AddAssessment" title="Assessment" style="color:#2c7506;"></i>
+                            <i class="fa fa-file-text TreeUserIcons EmployeeStatusChangeClass" onclick="EmployeeStatusChange(this)" data-id="@EmpIdFirst" id="EmployeeStatusChange" title="Status Change" style="color:#d03f3f;"></i>
+                            @if (item.IsOrientation == Convert.ToString(WorkOrderEMS.Helper.ActiveStatus.N))
+                            {
+                            <i class="fa fa-calendar-times-o TreeUserIcons EmployeeSOrientationClass" onclick="EmployeeOrientation(this)" data-id="@EmpIdFirst" data-empId="@item.EmployeeId" id="EmployeeStatusChange" title="Orientation" style="color:orangered;"></i>
+                            }
                         </div>
                         @*<a class="manager" href="#">Mike Dinardo</a>*@
                     </div>
@@ -43,10 +49,13 @@
         </ul>
     </div>
 </div>
-<script src="~/Scripts/NewAdminJS/UserTreeFunctionality.js"></script>
+
+@*<script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>*@
+<script src="~/Content/NewAdminContent/JQUERY/clockPicker.js"></script>
 
 <script>
     $(document).ready(function () {
+        $('.clockpicker').clockpicker();
 
         var base_url = window.location.origin;
         var EmpId = '@ViewBag.UserIdFirstTime';
@@ -58,7 +67,7 @@
             debugger
               var addnextChart = '<ul>';
               for (var i = 0; i < result.length; i++) {
-                  addnextChart += '<li> <div class="user nextRoot" userId="' + result[i].UserId + '" id="NextLevel_' + result[i].EmployeeId + '" style="cursor:pointer;"><div onclick="GetNextTree(this)"><img src="' + result[i].ProfilePhoto + '" class="img-responsive" /><div class="name">' + result[i].EmployeeName + '</div><div class="role">' + result[i].JobTitle + '</div> </div><div class="IconsData" style="margin-top:14px;"><i class= "fa fa-folder-open TreeUserIcons AddFilesClass" onclick="AddFileData(this)" id="AddFiles_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:yellow;"></i><i class= "fa fa-user TreeUserIcons EditUserInfoClass" onclick="EditUserInfo(this)" id="EditUserInfo_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:black;"></i><i class= "fa fa-file TreeUserIcons AddAssessmentClass" onclick="AddAssessment(this)" id="AddAssessment_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:#2c7506;"></i><i class= "fa fa-file-text TreeUserIcons EmployeeStatusChangeClass" onclick="EmployeeStatusChange(this)" id="EmployeeStatusChange_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:#d03f3f;"></i></div></div></li>';
+                  addnextChart += '<li> <div class="user nextRoot" userId="' + result[i].UserId + '" id="NextLevel_' + result[i].EmployeeId + '" style="cursor:pointer;"><div onclick="GetNextTree(this)"><img src="' + result[i].ProfilePhoto + '" class="img-responsive" /><div class="name">' + result[i].EmployeeName + '</div><div class="role">' + result[i].JobTitle + '</div> </div><div class="IconsData" style="margin-top:14px;"><i class= "fa fa-folder-open TreeUserIcons AddFilesClass" onclick="AddFileData(this)" id="AddFiles_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:yellow;"></i><i class= "fa fa-user TreeUserIcons EditUserInfoClass" onclick="EditUserInfo(this)" id="EditUserInfo_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:black;"></i><i class= "fa fa-file TreeUserIcons AddAssessmentClass" onclick="AddAssessment(this)" id="AddAssessment_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:#2c7506;"></i><i class= "fa fa-file-text TreeUserIcons EmployeeStatusChangeClass" onclick="EmployeeStatusChange(this)" id="EmployeeStatusChange_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:#d03f3f;"></i><i class="fa fa-calendar-times-o TreeUserIcons EmployeeSOrientationClass" onclick="EmployeeOrientation(this)" data-id="'+result[i].UserId+'" data-empId="'+result[i].EmployeeId+'" id="EmployeeStatusChange" title="Orientation" style="color:orangered;"></i></div></div></li>';
               }
                 addnextChart += '</ul>';
                 $(".firstRoot").after(addnextChart);
@@ -110,7 +119,7 @@
                         if (result.length > 0) {
                             var addnextChart = '<ul>';
                             for (var i = 0; i < result.length; i++) {
-                                addnextChart += '<li><div class="user nextRoot" style="cursor:pointer;" userId="' + result[i].UserId + '" id="NextLevel_' + result[i].EmployeeId + '"><div onclick="GetNextTree(this)" ><img src="' + result[i].ProfilePhoto + '" class="img-responsive" /><div class="name">' + result[i].EmployeeName + '</div><div class="role">' + result[i].JobTitle + '</div> </div><div class="IconsData" style="margin-top:14px;"><i class= "fa fa-folder-open TreeUserIcons AddFilesClass" onclick="AddFileData(this)" id="AddFiles_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:yellow;"></i><i class= "fa fa-user TreeUserIcons EditUserInfoClass" onclick="EditUserInfo(this)" id="EditUserInfo_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:black;"></i><i class= "fa fa-file TreeUserIcons AddAssessmentClass" onclick="AddAssessment(this)" id="AddAssessment_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:#2c7506;"></i><i class= "fa fa-file-text TreeUserIcons EmployeeStatusChangeClass" onclick="EmployeeStatusChange(this)" id="EmployeeStatusChange_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:#d03f3f;"></i></div></div></li>';
+                                addnextChart += '<li><div class="user nextRoot" style="cursor:pointer;" userId="' + result[i].UserId + '" id="NextLevel_' + result[i].EmployeeId + '"><div onclick="GetNextTree(this)" ><img src="' + result[i].ProfilePhoto + '" class="img-responsive" /><div class="name">' + result[i].EmployeeName + '</div><div class="role">' + result[i].JobTitle + '</div> </div><div class="IconsData" style="margin-top:14px;"><i class= "fa fa-folder-open TreeUserIcons AddFilesClass" onclick="AddFileData(this)" id="AddFiles_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:yellow;"></i><i class= "fa fa-user TreeUserIcons EditUserInfoClass" onclick="EditUserInfo(this)" id="EditUserInfo_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:black;"></i><i class= "fa fa-file TreeUserIcons AddAssessmentClass" onclick="AddAssessment(this)" id="AddAssessment_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:#2c7506;"></i><i class= "fa fa-file-text TreeUserIcons EmployeeStatusChangeClass" onclick="EmployeeStatusChange(this)" id="EmployeeStatusChange_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:#d03f3f;"></i><i class="fa fa-calendar-times-o TreeUserIcons EmployeeSOrientationClass" onclick="EmployeeOrientation(this)" data-id="' + result[i].UserId + '" data-empId="' + result[i].EmployeeId + '" id="EmployeeStatusChange" title="Orientation" style="color:orangered;"></i></div></div></li>';
                                 //addnextChart += '<li><div class="user nextRoot" style="cursor:pointer;"><div onclick="GetNextTree(this)" userId="' + result[i].UserId + '" id="NextLevel_' + result[i].EmployeeId + '"><img src="' + result[i].ProfilePhoto + '" class="img-responsive" /><div class="name">' + result[i].EmployeeName + '</div><div class="role">' + result[i].JobTitle + '</div></div> <div class="IconsData" style="margin-top:14px;"><i class= "fa fa-folder-open TreeUserIcons AddFilesClass" onclick="AddFileData(this)" id="AddFiles_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:yellow;"></i><i class= "fa fa-user TreeUserIcons EditUserInfoClass" onclick="EditUserInfo(this)" id="EditUserInfo_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:black;"></i><i class= "fa fa-file TreeUserIcons AddAssessmentClass" onclick="AddAssessment(this)" id="AddAssessment_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:#2c7506;"></i><i class= "fa fa-file-text TreeUserIcons EmployeeStatusChangeClass" onclick="EmployeeStatusChange(this)" id="EmployeeStatusChange_' + result[i].UserId + '" data-id="' + result[i].UserId + '" style="color:#d03f3f;"></i></div></div></li>';
                             }
                             addnextChart += '</ul>';

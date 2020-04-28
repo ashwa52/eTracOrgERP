@@ -1,5 +1,6 @@
 ﻿@{
-    Layout = null;// 
+    Layout = null;
+
     //Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
     string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
     WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
@@ -33,6 +34,8 @@
 <link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/VENDOR/toastr/css/toastr.min.css" rel="stylesheet" />
 <link href="@Url.Content("~/Content/NewAdminContent/CSS/RadioButtonCSS.css")" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/CSS/clockPicker.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
 @*<link href="~/Areas/AdminSection/Content/CSS/GetOrg.css" rel="stylesheet" />*@
 <style>
     .addWhite {
@@ -570,11 +573,71 @@
                 </button>
             </div>
             <div class="modal-body" style="margin-left: 2px;">
-                @Html.TextBox("CommentBox",null,new { @id="rejectComment", @placeholder="Add Reject Comment", @class= "form-control input-rounded" })
+                @Html.TextBox("CommentBox", null, new { @id = "rejectComment", @placeholder = "Add Reject Comment", @class = "form-control input-rounded" })
             </div>
             <div class="modal-footer" style="background: white;">
                 <button type="button" id="AddComment" class="btn btn-success" style="border-radius:100px;width:23%;background: green;">Save</button>
                 <button type="button" class="btn btn-primary closeClass" style="border-radius:100px;width:23%;" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" id="myModalToAddEmployeeOrietation">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header" style="display: inherit;">
+                <h5 class="modal-title">Employee Orientation</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="margin-left: 2px;">
+                <form id="SaveOrientationForm">
+                    @Html.Hidden("OTN_EMP_EmployeeID", new { @id = "OTN_EMP_EmployeeID" })
+                    <div id="divOriantation">
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <label>Employee Id : </label>
+                            </div>
+                            <div class="col-sm-8">
+                                <label id="GetEmployeeIdForOrientation"></label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <label>Location: </label>
+                            </div>
+                            <div class="col-sm-8">
+                                @Html.DropDownList("OTN_LocationId", new SelectList((List<WorkOrderEMS.Models.UserLocations>)Session["eTrac_UserLocations"], "LocationId", "LocationName"), null, new { @class = "form-control input-rounded", @id = "drp_MasterLocationForOrientation" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <label>Orientation Date: </label>
+                            </div>
+                            <div class="col-sm-8">
+                                @Html.TextBox("ONT_OrientationDate", null, new { @id = "ONT_OrientationDate", @class = "form-control input-rounded required" })
+                                @Html.ValidationMessage("ONT_OrientationDate")
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <label>Orientation Time: </label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" id="ONT_Orientationtime" class="form-control input-rounded required clockpicker">
+                                <span class="pull-left text-info" style="color:gray;"><i>(HH:MM i.e 00:30)</i></span>
+                                @*@Html.TextBox("ONT_Orientationtime", null, new { @id = "ONT_Orientationtime", @class = "ONT_Orientationtime form-control input-rounded required" })
+                                    @Html.ValidationMessage("ONT_Orientationtime")*@
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="background: white;">
+                <button type="button" class="btn btn-success" id="SaveOrientation" style="border-radius:100px;width:21%;">Save</button>
+                <button type="button" class="btn btn-primary" style="border-radius:100px;width:21%;" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -595,9 +658,19 @@
 <script src="~/GridListing/JsGridScript/ListRequisitionData.js"></script>
 <script src="~/GridListing/JsGridScript/EmployeeStatusChangeList.js"></script>
 <script type="text/javascript" src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+<script src="~/Content/NewAdminContent/JQUERY/clockPicker.js"></script>
+
+@*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>*@
+@*<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>*@
+
 <script>
     $(document).ready(function () {
         var base_url = window.location.origin;
+        $('#ONT_OrientationDate').datepicker({
+            format: "yyyy/mm/dd",
+        });
+        $('.clockpicker').clockpicker();
         $("#SaveEditInfo").click(function () {
             debugger
             var dataObject = $("#SaveEditableUserInfo").serialize();

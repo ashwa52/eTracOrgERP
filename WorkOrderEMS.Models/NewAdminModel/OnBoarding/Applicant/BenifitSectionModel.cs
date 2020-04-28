@@ -8,6 +8,12 @@ namespace WorkOrderEMS.Models
 {
     public class BenifitSectionModel
     {
-        public string BenifitSection { get; set; }
+        public string ApplicantId { get; set; }
+        public List<BenifitList> BenifitList { get; set; }
+    }
+    public class BenifitList
+    {
+        public string Code { get; set; }
+        public string CodeName { get; set; }
     }
 }

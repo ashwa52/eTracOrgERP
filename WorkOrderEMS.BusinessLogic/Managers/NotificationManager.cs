@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkOrderEMS.Data.DataRepository;
 using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
@@ -15,6 +16,8 @@ namespace WorkOrderEMS.BusinessLogic
     {
         private string ProfileImagePath = ConfigurationManager.AppSettings["ProfilePicPath"];
         private string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
+        workorderEMSEntities Context = new workorderEMSEntities();
+        private string ApplicantProfilePic = ConfigurationManager.AppSettings["ApplicantSignature"];
         public List<EmailHelper> GetUnseenList(NotificationDetailModel objDetails)
         {
             var _db = new workorderEMSEntities();
@@ -472,5 +475,160 @@ namespace WorkOrderEMS.BusinessLogic
                 throw;
             }
         }
+
+        #region New Notification
+        public List<NotificationDetailModel> GetNotification(long userId, string Username)
+        {
+            
+            var _model = new List<NotificationDetailModel>();
+            try
+            {
+                if (userId > 0)
+                {
+                    var data = Context.Notifications.Where(x => x.NTF_AssignTo == Username || x.NTF_CreatedBy == Username).Select(x => new NotificationDetailModel()
+                    {
+                        NotificationId = x.NTF_Id,
+                        AssignToUser = x.NTF_AssignTo,
+                        CreatedByUser = x.NTF_CreatedBy,
+                        IsRead = x.NTF_IsRead,
+                        SubModule = x.NTF_Submodule,
+                        Priority = x.NFT_Severity,
+                        AssignToIsWorkable = x.NTF_AssignToIsWorkable,
+                        CreatedByIsWorkable = x.NTF_CreatedByIsWorkable,
+                        Details = x.NTF_Details,
+                        SubModuleId1 = x.NTF_SubmoduleId
+                    }).ToList();
+                    foreach (var item in data)
+                    {
+                        if (item.SubModule == ModuleSubModule.OnBoarding && item.SubModuleId1 != null)
+                        {
+                            var offerAcceptRejectData = Context.ApplicantLoginAccesses.Join(Context.Applicants, q => q.ALA_UserId, u => u.APT_ALA_UserId, (q, u) => new { q, u }).
+                                       Where(x => x.u.APT_ApplicantId == item.SubModuleId).FirstOrDefault();
+                            if(offerAcceptRejectData != null)
+                            {
+                                item.OfferAcceptRejectCounterStatus = offerAcceptRejectData.u.APT_IsActive;//== ApplicantIsActiveStatus.OfferAccepted
+                                item.ApplicantStatus = offerAcceptRejectData.u.APT_Status;
+                                item.Photo = offerAcceptRejectData.q.ALA_Photo == null? HostingPrefix + "/Content/Images/ProjectLogo/no-profile-pic.jpg" : HostingPrefix + ApplicantProfilePic.Replace("~", "") + offerAcceptRejectData.q.ALA_Photo;
+                            }
+                            _model.Add(item);
+                        }
+                        else if(item.SubModule == ModuleSubModule.EvaluationComplete ||  item.SubModule == ModuleSubModule.EvaluationStart || item.SubModule == ModuleSubModule.AssessmentStart && item.SubModuleId1 != null)
+                        {
+                            var getEMPDetails = Context.Employees.Where(x => x.EMP_EmployeeID == item.AssignToUser &&
+                                                                      x.EMP_IsActive == "Y").FirstOrDefault();
+                            if(getEMPDetails != null)
+                            {
+                                item.Photo = getEMPDetails.EMP_Photo == null ? HostingPrefix + "/Content/Images/ProjectLogo/no-profile-pic.jpg" : HostingPrefix + ApplicantProfilePic.Replace("~", "") + getEMPDetails.EMP_Photo;
+                                _model.Add(item);
+                            }
+                        }
+                    }
+                }
+                else
+                    return null;
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<NotificationDetailModel> GetNotification(long userId)", "Exception while getting the list of notification", userId);
+            }
+            return _model;
+        }
+        
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 03-04-2020
+        /// Created For : To make notification readable
+        /// </summary>
+        /// <param name="NotificationId"></param>
+        /// <returns></returns>
+        public bool ReadNotificationById(long NotificationId)
+        {
+            bool isRead = false;
+            var repository = new NotificationRepository();
+            try
+            {
+                if (NotificationId > 0)
+                {
+                    var getData = Context.Notifications.Where(x => x.NTF_Id == NotificationId && x.NTF_IsRead == false).FirstOrDefault();
+                    if(getData != null)
+                    {
+                        getData.NTF_IsRead = true;
+                        repository.Update(getData);
+                        repository.SaveChanges();
+                    }
+                    
+                    isRead = true;
+                }
+                else
+                    isRead = false;
+            }
+            catch(Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool ReadNotificationById(long NotificationId)", "Exception while making notification readable", NotificationId);
+                throw;
+            }
+            return isRead;
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created For : To get applicant details by Applicant id
+        /// Created Date : 03-04-2020
+        /// </summary>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
+        public ApplicantDetails GetApplicantDetails(long ApplicantId)
+        {
+            var ApplicantDetails = new ApplicantDetails();
+            try
+            {
+                if(ApplicantId > 0)
+                {
+                    ApplicantDetails = Context.spGetApplicantAllDetails(ApplicantId).
+                        Select(x => new ApplicantDetails()
+                        {
+                            ApplicantName = x.API_FirstName +" "+x.API_LastName,
+                            JobTitle = x.JBT_JobTitle,
+                            LocationName = x.LocationName,
+                            
+                        }).FirstOrDefault();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch(Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public ApplicantDetails GetApplicantDetails(long ApplicantId)", "Exception while getting the details of applicant", ApplicantId);
+                throw;
+            }
+            return ApplicantDetails;
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 04-04-2020
+        /// Created For  : To save notification
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public bool SaveNotification(NotificationDetailModel obj)
+        {
+            bool isSaved = false;
+            try
+            {
+                if(obj != null)
+                {
+                    var saveNotification = Context.spSetNotification("I", null, obj.Message,
+                                                            obj.Module, obj.SubModule, obj.SubModuleId1, obj.CreatedByUser, obj.AssignToUser, obj.AssignToIsWorkable, obj.CreatedByIsWorkable, obj.Priority, null, false, "Y");
+                }
+            }
+            catch(Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SaveNotification(NotificationDetailModel obj)", "Exception while saving the notification details", obj);
+                throw;
+            }
+            return isSaved;
+        }
+        #endregion New Notification
     }
 }

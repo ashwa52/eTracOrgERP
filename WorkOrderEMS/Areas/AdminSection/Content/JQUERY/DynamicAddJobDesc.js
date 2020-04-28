@@ -37,8 +37,7 @@ $(document).ready(function () {
         $('#routeDiv').append('<div class="form-group row dymanicAdd d' + divID + '"><div class="col-sm-11 getJobDesc"><input type="text" class="form-control input-rounded required" placeholder="Job Description" value="" /></div><div class="col-sm-1"><a class="addrows minusSign" id=d' + divID + '><i class="fa fa-minus-circle addColorPlusMinus fa-2x" style="cursor:pointer;" aria-hidden="true"></i></a></div></div>');
         $('#routeDiv').append('<script>jQuery("a.minusSign#d' + divID + '").click(function (){$("div.d' + divID + '").remove();  });</script>');
     });
-    $('.addjobtitlerows').click(function (e) {
-        debugger
+    $('.addjobtitlerows').click(function (e) {       
         var divID = $('#jobTitleDiv div.dymanicAdd').length;
         $('#jobTitleDiv').append('<div class="form-group row dymanicAdd d' + divID + '"><div class="col-sm-8 getJobTitleDesc"><input type="text" class="form-control input-rounded required" placeholder="Job Title" value="" style="width: 441px;" /></div><div class="col-sm-3 getJobCount"><input type="text" class="form-control input-rounded required" placeholder="Job Count" value="" style="width: 130px;" /></div><div class="col-sm-1"><a class="addjobtitlerows minusSign" id=d' + divID + '><i class="fa fa-minus-circle addColorPlusMinus fa-2x" style="cursor:pointer;margin-left: 30px;" aria-hidden="true"></i></a></div></div>');
         $('#jobTitleDiv').append('<script>jQuery("a.minusSign#d' + divID + '").click(function (){$("div.d' + divID + '").remove();  });</script>');
@@ -61,7 +60,6 @@ $(document).ready(function () {
     });
     ///To save Form Data 
     $('#SaveVSC').click(function (e) {
-        debugger
         createAddJobDescArray();
         var content = tinymce.activeEditor.getContent({ format: 'raw' });
         $('#RolesAndResponsibility').val(content);
@@ -90,10 +88,8 @@ $(document).ready(function () {
 
     ///This is use to add job description seperated by line
     function createAddJobDescArray() {
-        debugger
         JobDescFormat = $('#JobDescription').val() + '|';
         $("#routeDiv div.dymanicAdd .getJobDesc").each(function () {
-            debugger
             var myObjJson = {};
             $this = $(this)
             var job = $this.find("input").val();
@@ -104,7 +100,6 @@ $(document).ready(function () {
 
     //This is to save Job Title for Chart
     $('#SaveJobTitle').click(function (e) {
-        debugger
         createAddJobTitleArray();
         var getId = $("#parentIdForJobTitle").val();
         var dataJobTitleObject = $("#SaveJobTitleForm").serialize();
@@ -114,7 +109,6 @@ $(document).ready(function () {
             data: dataJobTitleObject,
 
             success: function (Data) {
-                debugger
                 $("#jobTitleDiv").html("");
                 $("#parentIdForJobTitle").val("");
                 $("#JobTitle").val("");
@@ -126,7 +120,6 @@ $(document).ready(function () {
         });
     })
     function createAddJobTitleArray() {
-        debugger
         JobTitleFormat = $('#JobTitle').val() + '|';
         JobTitleCountFormat = $("#JobCount").val() + '|';
         $("#jobTitleDiv div.dymanicAdd .getJobTitleDesc").each(function () {
@@ -138,7 +131,6 @@ $(document).ready(function () {
         $('#JobTitleDesc').val(JobTitleFormat);
 
         $(".getJobCount").each(function () {
-            debugger
             var myObjJson = {};
             $this = $(this)
             var jobTitleCount = $this.find("input").val();

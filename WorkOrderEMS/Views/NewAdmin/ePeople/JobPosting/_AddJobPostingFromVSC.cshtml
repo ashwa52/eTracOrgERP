@@ -62,12 +62,12 @@
                 </div>
                 <div class="col-sm-6">
                     @Html.DropDownListFor(x => x.JobType, new List<SelectListItem>
-                                                                                                        {
-                                                                                                 new SelectListItem() {Text = "--Select Job Type--", Value="0"},
-                                                                                                             new SelectListItem() {Text = "FT", Value="FT"},
-                                                                                                             new SelectListItem() {Text = "PT", Value="PT"},
-                                                                                                             new SelectListItem() {Text = "TEMP", Value="TEMP"}
-                                                                                                        }, new { @class = "form-control input-rounded requiredselect", @id = "JobTypeJobPosting" })
+                           {
+                             new SelectListItem() {Text = "--Select Job Type--", Value="0"},
+                             new SelectListItem() {Text = "FT", Value="FT"},
+                             new SelectListItem() {Text = "PT", Value="PT"},
+                             new SelectListItem() {Text = "TEMP", Value="TEMP"}
+                           }, new { @class = "form-control input-rounded requiredselect", @id = "JobTypeJobPosting" })
 
                 </div>
             </div>
@@ -82,23 +82,23 @@
             <div class="form-group row">
                 <div class="col-sm-6">
                     @if (ViewBag.GetHiringManagerList != null)
-            {
-                @Html.DropDownListFor(model => model.HiringManager, new SelectList(ViewBag.GetHiringManagerList, "HiringManager", "HiringManagerName"), "--Select Hiring Manager--", new { @id = "HiringManager", @class = "form-control input-rounded" })
-    }
-    else
-    {
-        <select id="HiringManager"><option value="-1">@ViewBag.GetHiringManagerList</option></select>
-}
+                    {
+                      @Html.DropDownListFor(model => model.HiringManager, new SelectList(ViewBag.GetHiringManagerList, "HiringManager", "HiringManagerName"), "--Select Hiring Manager--", new { @id = "HiringManager", @class = "form-control input-rounded" })
+                    }
+                    else
+                    {
+                      <select id="HiringManager"><option value="-1">@ViewBag.GetHiringManagerList</option></select>
+                    }
                 </div>
                 <div class="col-sm-6">
                     @if (ViewBag.JobTitle != null)
-            {
-                @Html.DropDownListFor(model => model.AddChartModel.JobTitleId, new SelectList(ViewBag.JobTitle, "Id", "JobTitleLabel"), "--Select Job Title--", new { @id = "JobTitleId", @class = "form-control input-rounded" })
-    }
-    else
-    {
-        <select id="JobTitleId"><option value="-1">@ViewBag.JobTitle</option></select>
-}
+                    {
+                       @Html.DropDownListFor(model => model.AddChartModel.JobTitleId, new SelectList(ViewBag.JobTitle, "Id", "JobTitleLabel"), "--Select Job Title--", new { @id = "JobTitleId", @class = "form-control input-rounded" })
+                    }
+                    else
+                    {
+                      <select id="JobTitleId"><option value="-1">@ViewBag.JobTitle</option></select>
+                    }
                 </div>
             </div>
             <div class="form-group row">
@@ -109,10 +109,25 @@
                     @Html.TextBoxFor(model => model.City, new { @Placeholder = "City", @id = "City", @class = "form-control input-rounded required" })
                 </div>
             </div>
-            <div class="form-group row">                
+            <div class="form-group row">
                 <div class="col-sm-6">
                     @Html.TextBoxFor(model => model.zipCode, new { @Placeholder = "ZipCode", @id = "ZipCode", @class = "form-control input-rounded required" })
                 </div>
+                <div class="col-sm-6">
+                    @Html.DropDownListFor(model=>model.LocationId, new SelectList((List<WorkOrderEMS.Models.UserLocations>)Session["eTrac_UserLocations"], "LocationId", "LocationName"), "--Select Location--", new { @class = "form-control input-rounded", @id = "JobPostingLocation" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    @Html.DropDownListFor(x => x.DOT_Status, new List<SelectListItem>
+                   {
+                     new SelectListItem() {Text = "--Select DOT--", Value=""},
+                     new SelectListItem() {Text = "DOT Driver", Value="DOT Driver"},
+                     new SelectListItem() {Text = "Non Driver", Value="Non Driver"},
+                     new SelectListItem() {Text = "Driver", Value="Driver"}
+                   }, new { @class = "form-control input-rounded requiredselect", @id = "DOT", @style="display:none;" })
+                </div>                
             </div>
         </div>
     </form>
@@ -147,6 +162,16 @@
                     }
                 });
             }
+        });
+
+        $("#JobTitleId").change(function () {
+            debugger
+            var selectedText = $(this).find("option:selected").text();
+            if (selectedText == "Parking Attendant" || selectedText == "Shuttle Driver" || selectedText == "Valet Parker") {
+                $("#DOT").show();
+            }
+            else 
+                $("#DOT").hide();
         });
     });
 

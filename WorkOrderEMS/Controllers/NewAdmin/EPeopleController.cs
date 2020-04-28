@@ -30,11 +30,12 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         private readonly IGuestUser _IGuestUser;
         private readonly IDepartment _IDepartment;
         private readonly IFillableFormManager _IFillableFormManager;
+        private readonly IApplicantManager _IApplicantManager;
         private readonly string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private readonly string ProfilePicPath = System.Configuration.ConfigurationManager.AppSettings["ProfilePicPath"];
         private readonly string ConstantImages = ConfigurationManager.AppSettings["ConstantImages"];
         private readonly string FilePath = ConfigurationManager.AppSettings["FilesUploadRedYellowGreen"];
-        public EPeopleController(IePeopleManager _IePeopleManager, IAdminDashboard _IAdminDashboard, IGuestUserRepository _IGuestUserRepository, ICommonMethod _ICommonMethod, IDepartment _IDepartment, IGuestUser _IGuestUser, IFillableFormManager _IFillableFormManager)
+        public EPeopleController(IePeopleManager _IePeopleManager, IAdminDashboard _IAdminDashboard, IGuestUserRepository _IGuestUserRepository, ICommonMethod _ICommonMethod, IDepartment _IDepartment, IGuestUser _IGuestUser, IFillableFormManager _IFillableFormManager, IApplicantManager _IApplicantManager)
         {
             this._IePeopleManager = _IePeopleManager;
             this._IGuestUserRepository = _IGuestUserRepository;
@@ -42,6 +43,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             this._IDepartment = _IDepartment;
             this._IGuestUser = _IGuestUser;
             this._IFillableFormManager = _IFillableFormManager;
+            this._IApplicantManager = _IApplicantManager;
         }
         public ActionResult Index()
         {
@@ -107,7 +109,8 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             {
                 ViewBag.userId = _UserId.ToString();
             }
-            return View("~/Views/NewAdmin/ePeople/NewViewForEMP/EmployeeChartList.cshtml");
+            return PartialView("~/Views/NewAdmin/ePeople/Requisition/_Chart.cshtml");
+            //return View("~/Views/NewAdmin/ePeople/NewViewForEMP/EmployeeChartList.cshtml");
         }
 
         public ActionResult ChartDetailsView(string Id)
@@ -226,7 +229,14 @@ namespace WorkOrderEMS.Controllers.NewAdmin
                 return PartialView("~/Views/NewAdmin/ePeople/_TreeViewUser1.cshtml", data);
             }
         }
-
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 04-Oct-2019
+        /// Created For : To get List of User by manager id
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="LocationId"></param>
+        /// <returns></returns>
         [HttpPost]
         public JsonResult GetUserTreeViewListById(string Id, long? LocationId)
         {
@@ -856,6 +866,45 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             return Json(new { Message = ViewBag.Message, AlertMessageClass = ViewBag.AlertMessageClass }, JsonRequestBehavior.AllowGet);
         }
         #endregion Requisition
+
+        #region Oriantation
+        /// <summary>
+        /// Created By  :Ashwajit bansod
+        /// Created Date : 11-March-2020
+        /// Created For : To save employee oriantation withh date and time
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult SaveOriantation(OriantationModel model)
+        {
+            bool isSaveSuccess = false;
+            string message = string.Empty;
+            try
+            {
+                isSaveSuccess = _IApplicantManager.SaveOriantation(model);
+                if (isSaveSuccess)
+                {
+                    message = CommonMessage.SaveOrientation();
+                    return Json(new { isSaved = isSaveSuccess, message = message }, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    message = CommonMessage.FailureMessage();
+                    return Json(new { isSaved = isSaveSuccess, message = message }, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch (Exception ex)
+            {
+                return Json(new { isSaved = isSaveSuccess, message = ex }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        //public ActionResult GetOfferLater()
+        //{
+        //    return View("~/Views/NewAdmin/ePeople/OnBoarding/_OfferLetter.cshtml");
+        //}
+        #endregion Oriantation
 
         #region Status Change
         /// <summary>

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace WorkOrderEMS.Models.Employee
 {
@@ -72,6 +73,10 @@ namespace WorkOrderEMS.Models.Employee
         public string ReasonForlLeave { get; set; }
         public AplicantAcadmicDetails AplicantAcadmicDetails {get;set;}
         public ApplicantBackgroundHistory ApplicantBackgroundHistory { get; set; }
+        public int AssessmentMark { get; set; }
+        public string Assessment { get; set; }
+        public HttpPostedFileBase AssessmentFile { get; set; }
+        public string HiringManager { get; set; }
 
-   }
+    }
 }

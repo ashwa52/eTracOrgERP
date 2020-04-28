@@ -28,6 +28,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         private string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private string ImagePathSignature = ConfigurationManager.AppSettings["UserSignature"];
 
+
         CommonRepository objCommonRepository = new CommonRepository();
 
         GlobalAdminManager ObjGlobalAdminManager = new GlobalAdminManager();
@@ -1779,7 +1780,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 lstManagerList = _workorderems.UserRegistrations.Where(x => x.IsDeleted == false && x.IsEmailVerify == true).Select(a => new ManagerModel()
                 {
                     UserName = a.FirstName + " " + a.LastName,
-                    UserID = a.UserId
+                    UserEmail = a.EmployeeID
                 }).ToList();
             }
             catch (Exception ex)
@@ -2778,6 +2779,37 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 throw;
             }
             return ListSlotTime;
+        }
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 06-04-2020
+        /// Created For : To convert get object and conver into string in json format
+        /// </summary>
+        /// <param name="APIName"></param>
+        /// <returns></returns>
+        public string GetJsoSerializeDataForAPI(string apiNameInput,object obj)
+        {
+            string outputData = string.Empty;
+            switch (apiNameInput)
+            {
+                case APIName.I9AuthenticationAPI:
+                    var authModel = new I9Authentication();
+                    authModel.username = ConfigurationManager.AppSettings["I9UserName"];
+                    authModel.password = ConfigurationManager.AppSettings["I9Password"];
+                    outputData = Newtonsoft.Json.JsonConvert.SerializeObject(authModel);
+                    break;
+                case APIName.I9PostDataCase:
+                    outputData = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+                    break;
+                case APIName.I9CaseSubmit:
+                    outputData = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+                    break;
+                //case APIName.FloridaBlueAuthentication:
+                //    outputData = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+                //    break;
+            }           
+            return outputData;
         }
     }
 }

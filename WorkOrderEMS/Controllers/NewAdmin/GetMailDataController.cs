@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using WorkOrderEMS.BusinessLogic;
+using WorkOrderEMS.BusinessLogic.Managers;
 using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Data.Interfaces;
+using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models.Employee;
 
 namespace WorkOrderEMS.Controllers
@@ -20,15 +22,15 @@ namespace WorkOrderEMS.Controllers
             string str = "";
             var details = new EmployeeVIewModel();
             var _workorderems = new workorderEMSEntities();
-            var getEMPData = _workorderems.ApplicantInfoes.Where(x => x.API_ApplicantId == ApplicantId).FirstOrDefault();
+            var getEMPData = _workorderems.spGetApplicantAllDetails(ApplicantId).FirstOrDefault();
             if(getEMPData != null)
             {
                 details.ApplicantId = ApplicantId;
                 details.FirstName = getEMPData.API_FirstName + " " + getEMPData.API_LastName;
-                details.Image = (getEMPData.API_Photo == "null" || getEMPData.API_Photo == null) ? ConfigurationManager.AppSettings["hostingPrefix"] + Convert.ToString(ConfigurationManager.AppSettings["ProfilePicPath"]).Replace("~", "") + "no-profile-pic.jpg" :  getEMPData.API_Photo;
-                details.Phone = getEMPData.API_PhoneNumber;
-                details.Email = getEMPData.API_Email;
-                details.City = getEMPData.API_City;
+                details.Image = (getEMPData.ALA_Photo == "" || getEMPData.ALA_Photo == null) ? ConfigurationManager.AppSettings["hostingPrefix"] + Convert.ToString(ConfigurationManager.AppSettings["ProfilePicPath"]).Replace("~", "") + "no-profile-pic.jpg" :  getEMPData.ALA_Photo;
+                details.Phone = getEMPData.ACI_PhoneNo;
+                details.Email = getEMPData.ACI_eMail;
+                //details.City = getEMPData.ci;
                 details.ActionValue = "Assessment";
                 details.Status = Status;
             }
@@ -48,15 +50,14 @@ namespace WorkOrderEMS.Controllers
             string str = "";
             var details = new EmployeeVIewModel();
             var _workorderems = new workorderEMSEntities();
-            var getEMPData = _workorderems.ApplicantInfoes.Where(x => x.API_ApplicantId == ApplicantId).FirstOrDefault();
+            var getEMPData = _workorderems.spGetApplicantAllDetails(ApplicantId).FirstOrDefault();
             if (getEMPData != null)
             {
                 details.ApplicantId = ApplicantId;
-                details.FirstName = getEMPData.API_FirstName;
-                details.Image = (getEMPData.API_Photo == "null" || getEMPData.API_Photo == null) ? ConfigurationManager.AppSettings["hostingPrefix"] + Convert.ToString(ConfigurationManager.AppSettings["ProfilePicPath"]).Replace("~","") + "no-profile-pic.jpg" :  getEMPData.API_Photo;
-                details.Phone = getEMPData.API_PhoneNumber;
-                details.Email = getEMPData.API_Email;
-                details.City = getEMPData.API_City;
+                details.FirstName = getEMPData.API_FirstName + " " + getEMPData.API_LastName;
+                details.Image = (getEMPData.ALA_Photo == "null" || getEMPData.ALA_Photo == null) ? ConfigurationManager.AppSettings["hostingPrefix"] + Convert.ToString(ConfigurationManager.AppSettings["ProfilePicPath"]).Replace("~", "") + "no-profile-pic.jpg" : getEMPData.ALA_Photo;
+                details.Phone = getEMPData.ACI_PhoneNo;
+                details.Email = getEMPData.ACI_eMail;
                 details.Status = Status;
                 details.ActionValue = "Background";
             }
@@ -90,8 +91,81 @@ namespace WorkOrderEMS.Controllers
             {
                 return View("~/Views/Login/Index.cshtml");
             }
-            return View("~/Views/Login/Index.cshtml");
+            return View("~/Views/Guest/ThankYou.cshtml");
             //return Json(false, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public ActionResult GetApplicantInfo(long ApplicantId)
+        {
+            string str = "";
+            var details = new EmployeeVIewModel();
+            var _workorderems = new workorderEMSEntities();
+            var getEMPData = _workorderems.spGetApplicantAllDetails(ApplicantId).FirstOrDefault();
+            if (getEMPData != null)
+            {
+                details.ApplicantId = ApplicantId;
+                details.FirstName = getEMPData.API_FirstName + " " + getEMPData.API_LastName;
+                details.Image = (getEMPData.ALA_Photo == "null" || getEMPData.ALA_Photo == null) ? ConfigurationManager.AppSettings["hostingPrefix"] + Convert.ToString(ConfigurationManager.AppSettings["ProfilePicPath"]).Replace("~", "") + "no-profile-pic.jpg" : getEMPData.ALA_Photo;
+                details.Phone = getEMPData.ACI_PhoneNo;
+                details.Email = getEMPData.ACI_eMail;
+                //details.Status = getEMPData.sta
+                details.ActionValue = "Offer";
+            }
+            return View("GetAssessmentStatus",details);
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 20-March-2020
+        /// Created For : TO make applicant ready for  onboarding
+        /// </summary>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult LoginForOnboarding(long ApplicantId)
+        {
+            var _workorderems = new workorderEMSEntities();
+            var common_B = new Common_B();
+            if(ApplicantId > 0)
+            {
+                common_B.SaveApplicantStatus(ApplicantId, ApplicantStatus.Onboarding, ApplicantIsActiveStatus.Onboarding);
+                return RedirectToAction("Index", "Login");
+            }
+            return RedirectToAction("Index", "Login");
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 21-arch-2020
+        /// Created For : To accept or reject Interview time
+        /// </summary>
+        /// <param name="IPT_Id"></param>
+        /// <param name="Status"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult AcceptRejectInterviewTime(long IPT_Id, string Status)
+        {
+            var _IePeopleManager = new ePeopleManager();
+            var _workorderems = new workorderEMSEntities();
+            var common_B = new Common_B();
+            try
+            {
+                if (IPT_Id > 0 && Status != null)
+                {
+                    _IePeopleManager.ScheduleInterviewOfApplicant(IPT_Id, Status);
+                    //common_B.SaveApplicantStatus(ApplicantId, ApplicantStatus.I, ApplicantIsActiveStatus.I);
+                    return View("~/Views/Error/_ThankYou.cshtml");
+                }
+                else
+                {
+                    ViewBag.Error = CommonMessage.WrongParameterMessage();
+                    return View("~/Views/Error/_Error.cshtml");
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex;
+                return View("~/Views/Error/_Error.cshtml");
+            }
         }
     }
 }

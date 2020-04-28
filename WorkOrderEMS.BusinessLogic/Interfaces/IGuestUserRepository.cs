@@ -30,5 +30,7 @@ namespace WorkOrderEMS.BusinessLogic
 		W4FormModel GetW4Form(long userId);
 		PersonalFileModel GetFormsStatus(long userId);
 		CommonApplicantModel GetApplicantAllDetails(long userId);
-	}
+        CommonApplicantModel GetApplicantAllDetailsToView(long Applicant);
+
+    }
 }

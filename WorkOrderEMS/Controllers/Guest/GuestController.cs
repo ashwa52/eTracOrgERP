@@ -29,6 +29,7 @@ namespace WorkOrderEMS.Controllers.Guest
         private readonly IGuestUser _IGuestUserRepository;
         private readonly IApplicantManager _IApplicantManager;
         private readonly IFillableFormManager _IFillableFormManager;
+        private readonly string RefreshI9Token;
         private string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private string ApplicantSignature = ConfigurationManager.AppSettings["ApplicantSignature"];
         public GuestController(ICommonMethod _ICommonMethod, IGlobalAdmin _IGlobalAdmin, ICompanyAdmin _ICompanyAdmin, IGuestUser _GuestUserRepository, IApplicantManager _IApplicantManager, IFillableFormManager _IFillableFormManager)
@@ -49,83 +50,85 @@ namespace WorkOrderEMS.Controllers.Guest
             CommonApplicantModel model = new CommonApplicantModel();
             ViewBag.StateList = _ICommonMethod.GetStateByCountryId(1);
             var employee = _IGuestUserRepository.GetEmployee(ObjLoginModel.UserId);
-            var commonModel = _IGuestUserRepository.GetApplicantAllDetails(ObjLoginModel.UserId);
-            model.ApplicantId = employee.ApplicantId;
-            model.ApplicantPersonalInfo = new List<Models.ApplicantPersonalInfo>();
-            Models.ApplicantPersonalInfo a1 = new Models.ApplicantPersonalInfo();
-            a1.API_APT_ApplicantId = employee.ApplicantId;
-            a1.API_FirstName = employee.FirstName;
-            a1.API_LastName = employee.LastName;
-            a1.API_SSN = employee.SocialSecurityNumber;
-            model.ApplicantPersonalInfo.Add(a1);
-            model.ApplicantAddress = new List<ApplicantAddress>();
-            ApplicantAddress a2 = new ApplicantAddress();
-            a2.APA_APT_ApplicantId = employee.ApplicantId;
-            a2.APA_StreetAddress = employee.Address;
-            a2.APA_City = employee.City;
-            a2.APA_Apartment = employee.APIUnit;
-            a2.APA_State = employee.State;
-            a2.APA_YearsAddressFrom = employee.YearsAtAddrss;
-            a2.APA_APT_ApplicantId = employee.ApplicantId;
-            model.ApplicantAddress.Add(a2);
+            var commonModel = _IGuestUserRepository.GetApplicantAllDetailsToView(employee.ApplicantId);
+            //var commonModel = _IGuestUserRepository.GetApplicantAllDetailsToView(ApplicantId);
+            //commonModel.ApplicantId = ApplicantId;
+            commonModel.ApplicantId = employee.ApplicantId;
+            //model.ApplicantPersonalInfo = new List<Models.ApplicantPersonalInfo>();
+            //Models.ApplicantPersonalInfo a1 = new Models.ApplicantPersonalInfo();
+            //a1.API_APT_ApplicantId = employee.ApplicantId;
+            //a1.API_FirstName = employee.FirstName;
+            //a1.API_LastName = employee.LastName;
+            //a1.API_SSN = employee.SocialSecurityNumber;
+            //model.ApplicantPersonalInfo.Add(a1);
+            //model.ApplicantAddress = new List<ApplicantAddress>();
+            //ApplicantAddress a2 = new ApplicantAddress();
+            //a2.APA_APT_ApplicantId = employee.ApplicantId;
+            //a2.APA_StreetAddress = employee.Address;
+            //a2.APA_City = employee.City;
+            //a2.APA_Apartment = employee.APIUnit;
+            //a2.APA_State = employee.State;
+            //a2.APA_YearsAddressFrom = employee.YearsAtAddrss;
+            //a2.APA_APT_ApplicantId = employee.ApplicantId;
+            //model.ApplicantAddress.Add(a2);
 
-            model.AplicantAcadmicDetails = new List<AplicantAcadmicDetails>();
-            AplicantAcadmicDetails aad1 = new AplicantAcadmicDetails();
-            aad1.AAD_APT_ApplicantId = employee.ApplicantId;
-            model.AplicantAcadmicDetails.Add(aad1);
-            model.ApplicantBackgroundHistory = new List<ApplicantBackgroundHistory>();
-            ApplicantBackgroundHistory abh1 = new ApplicantBackgroundHistory();
-            abh1.ABH_ApplicantId = employee.ApplicantId;
-            model.ApplicantBackgroundHistory.Add(abh1);
-            model.ApplicantAccidentRecord = new List<ApplicantAccidentRecord>();
-            ApplicantAccidentRecord aar1 = new ApplicantAccidentRecord();
-            aar1.AAR_ApplicantId = employee.ApplicantId;
-            model.ApplicantAccidentRecord.Add(aar1);
+            //model.AplicantAcadmicDetails = new List<AplicantAcadmicDetails>();
+            //AplicantAcadmicDetails aad1 = new AplicantAcadmicDetails();
+            //aad1.AAD_APT_ApplicantId = employee.ApplicantId;
+            //model.AplicantAcadmicDetails.Add(aad1);
+            //model.ApplicantBackgroundHistory = new List<ApplicantBackgroundHistory>();
+            //ApplicantBackgroundHistory abh1 = new ApplicantBackgroundHistory();
+            //abh1.ABH_ApplicantId = employee.ApplicantId;
+            //model.ApplicantBackgroundHistory.Add(abh1);
+            //model.ApplicantAccidentRecord = new List<ApplicantAccidentRecord>();
+            //ApplicantAccidentRecord aar1 = new ApplicantAccidentRecord();
+            //aar1.AAR_ApplicantId = employee.ApplicantId;
+            //model.ApplicantAccidentRecord.Add(aar1);
 
-            model.ApplicantPositionTitle = new List<ApplicantPositionTitle>();
-            ApplicantPositionTitle pt1 = new ApplicantPositionTitle();
-            pt1.APT_ApplicantId = employee.ApplicantId;
-            model.ApplicantPositionTitle.Add(pt1);
+            //model.ApplicantPositionTitle = new List<ApplicantPositionTitle>();
+            //ApplicantPositionTitle pt1 = new ApplicantPositionTitle();
+            //pt1.APT_ApplicantId = employee.ApplicantId;
+            //model.ApplicantPositionTitle.Add(pt1);
 
-            model.ApplicantContactInfo = new List<Models.ApplicantContactInfo>();
-            var c1 = new Models.ApplicantContactInfo();
-            c1.ACI_APT_ApplicantId = employee.ApplicantId;
-            c1.ACI_eMail = employee.Email;
-            c1.ACI_PhoneNo = employee.Phone.Value;
-            model.ApplicantContactInfo.Add(c1);
-            model.ApplicantTrafficConvictions = new List<ApplicantTrafficConvictions>();
-            ApplicantTrafficConvictions obj = new ApplicantTrafficConvictions();
-            obj.ATC_APT_ApplicantId = employee.ApplicantId;
-            ApplicantTrafficConvictions obj2 = new ApplicantTrafficConvictions();
-            obj2.ATC_APT_ApplicantId = employee.ApplicantId;
-            ApplicantTrafficConvictions obj3 = new ApplicantTrafficConvictions();
-            obj3.ATC_APT_ApplicantId = employee.ApplicantId;
-            model.ApplicantTrafficConvictions.Add(obj);
-            model.ApplicantTrafficConvictions.Add(obj2);
-            model.ApplicantTrafficConvictions.Add(obj3);
+            //model.ApplicantContactInfo = new List<Models.ApplicantContactInfo>();
+            //var c1 = new Models.ApplicantContactInfo();
+            //c1.ACI_APT_ApplicantId = employee.ApplicantId;
+            //c1.ACI_eMail = employee.Email;
+            //c1.ACI_PhoneNo = Convert.ToInt64(employee.Phone);
+            //model.ApplicantContactInfo.Add(c1);
+            //model.ApplicantTrafficConvictions = new List<ApplicantTrafficConvictions>();
+            //ApplicantTrafficConvictions obj = new ApplicantTrafficConvictions();
+            //obj.ATC_APT_ApplicantId = employee.ApplicantId;
+            //ApplicantTrafficConvictions obj2 = new ApplicantTrafficConvictions();
+            //obj2.ATC_APT_ApplicantId = employee.ApplicantId;
+            //ApplicantTrafficConvictions obj3 = new ApplicantTrafficConvictions();
+            //obj3.ATC_APT_ApplicantId = employee.ApplicantId;
+            //model.ApplicantTrafficConvictions.Add(obj);
+            //model.ApplicantTrafficConvictions.Add(obj2);
+            //model.ApplicantTrafficConvictions.Add(obj3);
 
-            model.ApplicantLicenseHeald = new List<ApplicantLicenseHeald>();
-            ApplicantLicenseHeald obj4 = new ApplicantLicenseHeald();
-            obj4.ALH_ApplicantId = employee.ApplicantId;
-            ApplicantLicenseHeald obj5 = new ApplicantLicenseHeald();
-            obj5.ALH_ApplicantId = employee.ApplicantId;
-            ApplicantLicenseHeald obj6 = new ApplicantLicenseHeald();
-            obj6.ALH_ApplicantId = employee.ApplicantId;
-            model.ApplicantLicenseHeald.Add(obj4);
-            model.ApplicantLicenseHeald.Add(obj5);
-            model.ApplicantLicenseHeald.Add(obj6);
+            //model.ApplicantLicenseHeald = new List<ApplicantLicenseHeald>();
+            //ApplicantLicenseHeald obj4 = new ApplicantLicenseHeald();
+            //obj4.ALH_ApplicantId = employee.ApplicantId;
+            //ApplicantLicenseHeald obj5 = new ApplicantLicenseHeald();
+            //obj5.ALH_ApplicantId = employee.ApplicantId;
+            //ApplicantLicenseHeald obj6 = new ApplicantLicenseHeald();
+            //obj6.ALH_ApplicantId = employee.ApplicantId;
+            //model.ApplicantLicenseHeald.Add(obj4);
+            //model.ApplicantLicenseHeald.Add(obj5);
+            //model.ApplicantLicenseHeald.Add(obj6);
 
-            model.ApplicantAdditionalInfo = new List<ApplicantAdditionalInfo>();
-            ApplicantAdditionalInfo ad1 = new ApplicantAdditionalInfo();
-            ad1.AAI_ApplicantId = employee.ApplicantId;
-            model.ApplicantAdditionalInfo.Add(ad1);
+            //model.ApplicantAdditionalInfo = new List<ApplicantAdditionalInfo>();
+            //ApplicantAdditionalInfo ad1 = new ApplicantAdditionalInfo();
+            //ad1.AAI_ApplicantId = employee.ApplicantId;
+            //model.ApplicantAdditionalInfo.Add(ad1);
 
-            model.ApplicantVehiclesOperated = new List<ApplicantVehiclesOperated>();
-            ApplicantVehiclesOperated vo = new ApplicantVehiclesOperated();
-            vo.AVO_ApplicantId = employee.ApplicantId;
-            model.ApplicantVehiclesOperated.Add(vo);
-            Session["ApplicantId"] = employee.ApplicantId; model.ApplicantId = employee.ApplicantId;
-            return View("~/Views/Guest/Index1.cshtml", model);
+            //model.ApplicantVehiclesOperated = new List<ApplicantVehiclesOperated>();
+            //ApplicantVehiclesOperated vo = new ApplicantVehiclesOperated();
+            //vo.AVO_ApplicantId = employee.ApplicantId;
+            //model.ApplicantVehiclesOperated.Add(vo);
+            Session["ApplicantId"] = employee.ApplicantId; commonModel.ApplicantId = employee.ApplicantId;
+            return View("~/Views/Guest/Index1.cshtml", commonModel);
         }
         [HttpPost]
         public ActionResult Index(CommonApplicantModel CommonApplicantModel)
@@ -159,6 +162,25 @@ namespace WorkOrderEMS.Controllers.Guest
         }
         public ActionResult ThankYou()
         {
+            var NotificationModel = new NotificationDetailModel();
+            var manager = new NotificationManager();
+            var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            var applicantId = Convert.ToInt64(Session["ApplicantId"]);
+            if (applicantId > 0)
+            {
+                var getDetails = _IApplicantManager.GetApplicantAllDetails(applicantId);
+                string message = DarMessage.OnboardingComplete(ObjLoginModel.FName + " " + ObjLoginModel.LName);
+                NotificationModel.Message = message;
+                NotificationModel.CreatedByUser = ObjLoginModel.UserName;
+                NotificationModel.CreatedByIsWorkable = false;
+                NotificationModel.AssignToUser = getDetails.HiringManager;
+                NotificationModel.AssignToIsWorkable = true;
+                NotificationModel.Priority = Priority.Medium;
+                NotificationModel.Module = ModuleSubModule.ePeople;
+                NotificationModel.SubModule = ModuleSubModule.OnBoardingComplete;
+                NotificationModel.SubModuleId = applicantId;
+                var save = manager.SaveNotification(NotificationModel);
+            }
             return View();
         }
         [HttpGet]
@@ -275,6 +297,8 @@ namespace WorkOrderEMS.Controllers.Guest
                             }
                         }
                     }
+                    model.RefreshTokenI9 = objloginmodel.RefreshI9Token;
+                    model.I9CompanyId = objloginmodel.I9CompanyId;
                     var saved = _IApplicantManager.SetI9Form(objloginmodel.UserId, applicantId, model);
                     if (saved)
                         if (model.IsSignature == true)
@@ -308,11 +332,19 @@ namespace WorkOrderEMS.Controllers.Guest
         {
             W4FormModel model = new W4FormModel();
             var objloginmodel = (eTracLoginModel)(Session["etrac"]);
-            model = _IGuestUserRepository.GetW4Form(objloginmodel.UserId);
+            var objmodel = _IGuestUserRepository.GetW4Form(objloginmodel.UserId);
             Session["IsSignature"] = false;
-            model.IsSignature = false;
-            //ViewBag.IsSignature = false;//To filup form no need to display signature button so we make it hide
-            return PartialView("_W4Form", model);
+            if (objmodel != null)
+            {
+                objmodel.IsSignature = false;
+                //ViewBag.IsSignature = false;//To filup form no need to display signature button so we make it hide
+                return PartialView("_W4Form", objmodel);
+            }
+            else
+            {
+                model.IsSignature = false;
+                return PartialView("_W4Form", model);
+            }
         }
         //[HttpPost]
         //public ActionResult _W4Form(W4FormModel model)
@@ -334,7 +366,7 @@ namespace WorkOrderEMS.Controllers.Guest
             var objloginmodel = (eTracLoginModel)(Session["etrac"]);
             if (model != null)
             {
-                string viewName = "_W4Form";
+                string viewName = "FormPDF/_W4FormPDF";
                 string path = Session["ApplicantId"] + model.FirstName + viewName+".pdf";
                 var employeeId = objloginmodel.UserName;
                 _IGuestUserRepository.SetW4Form(objloginmodel.UserId, model);
@@ -344,9 +376,17 @@ namespace WorkOrderEMS.Controllers.Guest
                     var getDetails = _FillableFormRepository.GetFileList().Where(x => x.FLT_FileType == "Yellow" && x.FLT_Id == Convert.ToInt64(FileTypeId.W4)).FirstOrDefault();
                     var getpdf = HtmlConvertToPdf(viewName, model, path, getDetails.FLT_Id, employeeId);
                     var applicantId = Convert.ToInt64(Session["ApplicantId"]);          
-                    getI9Info = _IApplicantManager.GetI9FormData(applicantId, objloginmodel.UserId);
-                    getI9Info.IsSignature = true;
-                    return PartialView("_I9Form", getI9Info);
+                    var ObjgetI9Info = _IApplicantManager.GetI9FormData(applicantId, objloginmodel.UserId);
+                    if (ObjgetI9Info != null)
+                    {
+                        ObjgetI9Info.IsSignature = true;
+                        return PartialView("_I9Form", ObjgetI9Info);
+                    }
+                    else
+                    {
+                        getI9Info.IsSignature = true;
+                        return PartialView("_I9Form", getI9Info);
+                    }
                 }
                 else
                     return RedirectToAction("_I9Form");
@@ -835,9 +875,10 @@ namespace WorkOrderEMS.Controllers.Guest
         [HttpGet]
         public PartialViewResult BenifitSection()
         {
+            var lst = new ePeopleManager();
             var getApplicantId = Convert.ToInt64(Session["ApplicantId"]);
-            //var getApplicantContact = _IApplicantManager.GetApplicantByApplicantId(getApplicantId);
-            return PartialView("PartialView/_BenifitSectionFloridaBlue");
+            var getApplicantContact = lst.GetBenifitList(getApplicantId);
+            return PartialView("PartialView/_BenifitSectionFloridaBlue", getApplicantContact);
         }
         /// <summary>
         /// Created by  :Ashwajit Bansod
@@ -1018,11 +1059,28 @@ namespace WorkOrderEMS.Controllers.Guest
             return RedirectToAction("_ConfidentialityAgreementForm");
         }
         /// <summary>
+        /// Created By : Ashwajit bansod
+        /// Created Date : 17-03-2020
+        /// Created For : To get applicant all details
+        /// </summary>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GetApplicantDetails(long ApplicantId)
+        {
+            var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+            ViewBag.StateList = _ICommonMethod.GetStateByCountryId(1);
+            //var employee = _IGuestUserRepository.GetEmployee(ObjLoginModel.UserId);
+            var commonModel =  _IGuestUserRepository.GetApplicantAllDetailsToView(ApplicantId);
+            commonModel.ApplicantId = ApplicantId;
+            Session["ApplicantId"] = ApplicantId; 
+            return PartialView("~/Views/NewAdmin/ePeople/OnBoarding/_ViewApplicantDetails.cshtml", commonModel);
+        }
+        /// <summary>
         /// Created By : Deepak Panda
         /// Created Date : 26-Feb-2020
         /// Created For : To Convert Html view to Pdf
         /// </summary>
-        [NonAction]
         public async Task<bool> HtmlConvertToPdf(string viewName, object model, string path,long FileId,string EmployeeId)
         {
             bool status = false;

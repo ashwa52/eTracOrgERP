@@ -490,6 +490,7 @@ $("#AddSignature").click(function (e) {
             if(result != null && result != false){
                 //$("#myModalForSignatureApplicant").modal('show');
                 $("#openItForSignature").attr("src", result.imagePath);
+                $(".Emp_Sign").val(result.imagePath);
                 $("#getSignName").val(result.name);
                 $("#ShowHideSignatureSpan,#AddSignature").hide();
                 $("#openItForSignature").show();

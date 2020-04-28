@@ -17,9 +17,9 @@ namespace WorkOrderEMS.Data.EntityModel
         public long IPT_Id { get; set; }
         public long IPT_JPS_JobPostingId { get; set; }
         public Nullable<long> IPT_APT_ApplicantId { get; set; }
-        public long IPT_EMP_EmployeeID_HM { get; set; }
-        public Nullable<long> IPT_EMP_EmployeeID_SE { get; set; }
-        public Nullable<long> IPT_EMP_EmployeeID_TE { get; set; }
+        public string IPT_EMP_EmployeeID_HM { get; set; }
+        public string IPT_EMP_EmployeeID_SE { get; set; }
+        public string IPT_EMP_EmployeeID_TE { get; set; }
         public Nullable<long> IPT_BST_Id_HM { get; set; }
         public Nullable<long> IPT_BST_Id_SE { get; set; }
         public Nullable<long> IPT_BST_Id_TE { get; set; }

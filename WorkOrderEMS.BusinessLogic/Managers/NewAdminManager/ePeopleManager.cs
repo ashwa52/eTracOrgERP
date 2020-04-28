@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkOrderEMS.BusinessLogic.Managers;
 using WorkOrderEMS.Data;
 using WorkOrderEMS.Data.DataRepository;
 using WorkOrderEMS.Data.EntityModel;
@@ -16,6 +17,7 @@ namespace WorkOrderEMS.BusinessLogic
     public class ePeopleManager : IePeopleManager
     {
         ePeopleRepository _ePeopleRepository = new ePeopleRepository();
+        
         workorderEMSEntities objworkorderEMSEntities = new workorderEMSEntities();
         private readonly string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private readonly string ProfilePicPath = System.Configuration.ConfigurationManager.AppSettings["ProfilePicPath"];
@@ -143,7 +145,8 @@ namespace WorkOrderEMS.BusinessLogic
                             LocationId = x.EMP_LocationId,
                             JobTitleId = x.EMP_JobTitleId,
                             UserId = Cryptography.GetEncryptedData(x.UserId.ToString(), true),
-                            ProfilePhoto = x.EMP_Photo == null ? HostingPrefix + ProfilePicPath.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + x.EMP_Photo
+                            ProfilePhoto = x.EMP_Photo == null ? HostingPrefix + ProfilePicPath.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + x.EMP_Photo,
+                            IsOrientation = x.OrientationStatus
                         }).ToList();
                     }
                 }
@@ -1117,25 +1120,129 @@ namespace WorkOrderEMS.BusinessLogic
             return isSend;
         }
         #endregion Status Change
-
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created For : To Make assessmennt , offer accept or active or deny, send mail when offer is accepted or counter
+        /// Created Date : 20-03-2020
+        /// </summary>
+        /// <param name="IsActive"></param>
+        /// <param name="ActionVal"></param>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
         public bool ClearedOrNot(string IsActive, string ActionVal, long ApplicantId)
         {
             bool isCleared = false;
             var ePeopleRepository = new ePeopleRepository();
+            var _ICommonMethod = new CommonMethodManager();
+            string employeeID = string.Empty;
             string Status = string.Empty;
             try
             {
                 if (IsActive != null && ActionVal != null && ApplicantId > 0)
                 {
-                    if(ActionVal == "Background")
+                    if (ActionVal == "Assessment")
                     {
-                        Status = "F";
+                        if(IsActive == "Y")
+                        Status = IsActive == "Y" ? ApplicantStatus.Hired : ApplicantIsActiveStatus.Pass;
+                        else
+                            Status = IsActive == "N" ? ApplicantStatus.Assessment : ApplicantIsActiveStatus.Fail;
+                        var isSaved = ePeopleRepository.SendForAssessment(Status, IsActive, ApplicantId);
+                        var getApplicantDetails = objworkorderEMSEntities.spGetApplicantAllDetails(ApplicantId).FirstOrDefault();
+                        string message = DarMessage.AssessmentClearReject(getApplicantDetails.JBT_JobTitle);
+                        var saveNotification = objworkorderEMSEntities.spSetNotification("I", null, message,
+                                                        "ePeople", ModuleSubModule.AssessmentStatus, ApplicantId.ToString(), getApplicantDetails.HiringManagerEmployeeId, getApplicantDetails.HiringManagerEmployeeId, true, false, Priority.Medium, null, false, "Y");
                     }
-                    else
+                    else if (ActionVal == "Offer")
                     {
-                        Status = "E";
+                        var isSaved = ePeopleRepository.SendForAssessment(ApplicantStatus.Offer, IsActive, ApplicantId);
+                        
+                        #region Email
+                        var getEMPData = objworkorderEMSEntities.spGetApplicantAllDetails(ApplicantId).FirstOrDefault();
+                        var getLocationCode = objworkorderEMSEntities.LocationMasters.Where(x => x.LocationId == getEMPData.LocationId).FirstOrDefault().Address2.Substring(0,3).ToUpper();
+                        var getLastEmp_Id = objworkorderEMSEntities.Employees.OrderByDescending(x => x.EMP_Id).FirstOrDefault().EMP_Id;
+                        if (getEMPData != null && getLocationCode != null && getLastEmp_Id > 0)
+                        {
+                            if (IsActive == ApplicantIsActiveStatus.OfferAccepted)
+                            {
+                                //Make Employee by last Id and Location code
+                                var value = getLastEmp_Id + 1;
+                                employeeID = getLocationCode + "000" + value;
+                                var saveEployee = objworkorderEMSEntities.spSetEmployee("I", null, employeeID, ApplicantId, getEMPData.API_FirstName, getEMPData.API_MidName,
+                                                                          getEMPData.API_LastName, getEMPData.ACI_eMail, getEMPData.ACI_PhoneNo, null, null,null, getEMPData.ALA_Photo, null, 9,
+                                                                          null, getEMPData.HiringManagerEmployeeId, getEMPData.APT_DateOfJoining, getEMPData.LocationId,
+                                                                          getEMPData.UserId, DateTime.Now, "Y", Convert.ToInt64(UserType.GuestUser), null, null, null, null, null);
+                                
+                            }
+                            string applicantName = getEMPData.API_FirstName + getEMPData.API_LastName;
+                            string message = IsActive == ApplicantIsActiveStatus.OfferAccepted ? DarMessage.AddAssetsForHiredApplicant(applicantName, getEMPData.HiringManagerName, getEMPData.LocationName) : IsActive == "C" ? DarMessage.OfferCouterByAppicant(applicantName, getEMPData.JBT_JobTitle, getEMPData.LocationName) : DarMessage.OfferRejectByAppicant(applicantName, getEMPData.JBT_JobTitle, getEMPData.LocationName);
+                            var saveNotification = objworkorderEMSEntities.spSetNotification("I", null, message,
+                                                        "ePeople", ModuleSubModule.OnBoarding, ApplicantId.ToString(), getEMPData.HiringManagerEmployeeId, getEMPData.HiringManagerEmployeeId, true, false, "H", null, false, "Y");
+                            if (ApplicantId > 0 && IsActive == ApplicantIsActiveStatus.OfferAccepted)
+                            {
+                                //var objEmailLogRepository = new EmailLogRepository();
+                                var objEmailReturn = new List<EmailToManagerModel>();
+                                var objListEmailog = new List<EmailLog>();
+                                var objTemplateModel = new TemplateModel();
+                                if (getEMPData != null)
+                                {
+                                    bool IsSent = false;
+                                    var objEmailHelper = new EmailHelper();
+                                    objEmailHelper.emailid = getEMPData.ACI_eMail;
+                                    objEmailHelper.Name = getEMPData.API_FirstName + " "+ getEMPData.API_LastName;
+                                    //By Default password will be this will change it if requirment changes
+                                    objEmailHelper.Password = "Elite@123";
+                                    objEmailHelper.UserName = employeeID;
+                                    objEmailHelper.emailid = getEMPData.ACI_eMail;
+                                    objEmailHelper.JobTitle = getEMPData.JBT_JobTitle;
+                                    //objEmailHelper.AcceptAssessmentLink = HostingPrefix + "api/ServiceApi/GetAssessmentList?ApplicantId="+ ApplicantId+"&";
+                                    objEmailHelper.AcceptAssessmentLink = HostingPrefix + "GetMailData/LoginForOnboarding?ApplicantId=" + ApplicantId;
+                                    objEmailHelper.MailType = IsActive == ApplicantIsActiveStatus.OfferAccepted ? "OFFERACCEPTED": IsActive == "C"?"OFFERCOUNTER":"OFFERREJECTED";
+                                    objEmailHelper.Subject = IsActive == ApplicantIsActiveStatus.OfferAccepted ? "eTrac : Thanks for accepting offer letter": IsActive == "C"? "eTrac : Thanks for Countering offer" :"eTrac : Offer Rejected";
+                                    objEmailHelper.SentBy = Convert.ToInt64(getEMPData.UserId);
+                                    objEmailHelper.TimeAttempted = DateTime.UtcNow.ToMobileClientTimeZone(objTemplateModel.TimeZoneName, objTemplateModel.TimeZoneOffset, objTemplateModel.IsTimeZoneinDaylight, false).ToString();
+                                    IsSent = objEmailHelper.SendEmailWithTemplate();
+                                    if (IsSent == true)
+                                    {
+                                        var objEmailog = new EmailLog();
+                                        try
+                                        {
+                                            objEmailog.CreatedBy = Convert.ToInt64(getEMPData.UserId);
+                                            objEmailog.CreatedDate = DateTime.UtcNow;
+                                            objEmailog.DeletedBy = null;
+                                            objEmailog.DeletedOn = null;
+                                            objEmailog.LocationId = getEMPData.LocationId;
+                                            objEmailog.ModifiedBy = null;
+                                            objEmailog.ModifiedOn = null;
+                                            objEmailog.SentBy = getEMPData.UserId;
+                                            objEmailog.SentEmail = getEMPData.ACI_eMail;
+                                            objEmailog.Subject = objEmailHelper.Subject;
+                                            objEmailog.SentTo = ApplicantId;
+                                            objListEmailog.Add(objEmailog);
+                                        }
+                                        catch (Exception)
+                                        {
+                                            throw;
+                                        }
+                                    }
+                                    using (var context = new workorderEMSEntities())
+                                    {
+                                        context.EmailLogs.AddRange(objListEmailog);
+                                        context.SaveChanges();
+                                    }
+                                    #endregion Email
+                                }
+                            }
+                        }
                     }
-                    var isSaved = ePeopleRepository.SendForAssessment(Status, IsActive, ApplicantId);
+                    //if(ActionVal == "Background")
+                    //{
+                    //    Status = "F";
+                    //}
+                    //else
+                    //{
+                    //    Status = "E";
+                    //}
+                    
                     isCleared = true;
                 }
             }
@@ -1145,6 +1252,60 @@ namespace WorkOrderEMS.BusinessLogic
                 throw;
             }
             return isCleared;
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 21-March-2020
+        /// Created For : To schedule interview for applicant
+        /// </summary>
+        /// <param name="IPT_Id"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public void ScheduleInterviewOfApplicant(long IPT_Id, string status)
+        {
+            var common_B = new Common_B();
+            if (IPT_Id > 0 && status != null)
+            {
+                objworkorderEMSEntities.spSetScheduleInterview_ForMailFromApplicant(IPT_Id, status);
+                var getDetails = objworkorderEMSEntities.InterviewProposalTimes.Where(x => x.IPT_Id == IPT_Id).
+                    Select(a => new ApplicantDetails()
+                    {
+                        JobId = a.IPT_JPS_JobPostingId,
+                        ApplicantId = a.IPT_APT_ApplicantId,
+                        HiringManagerId = a.IPT_EMP_EmployeeID_HM,
+                        IPT_Id = a.IPT_Id
+                    }).FirstOrDefault();
+                var getJobDetails = objworkorderEMSEntities.spGetMyOpening(getDetails.JobId).FirstOrDefault().JBT_JobTitle;
+                var message = status == "Y"?  DarMessage.InterviewAcceptByApplicant(getJobDetails,status == "Y"?"Accept":"Reject"): DarMessage.InterviewDenyByApplicant(getJobDetails);
+                var saveNotification = objworkorderEMSEntities.spSetNotification("I", null, message,
+                                                        "ePeople", ModuleSubModule.InterviewerAcceptDeny, getDetails.IPT_Id.ToString(), getDetails.HiringManagerId, getDetails.HiringManagerId, true, false, Priority.Medium, null, false, "Y");
+            }
+        }
+
+        /// <summary>
+        /// Created y  :Ashwajit Bansod
+        /// Created Date : 11-04-2020
+        /// Created For : get benifit list
+        /// </summary>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
+        public BenefitList GetBenifitList(long ApplicantId)
+        {
+            var clientUrl = new Helper.CommonHTTPClient();
+            var convertedClass = new CommonAPIJsonConvertToClass<object>();
+            if (ApplicantId > 0)
+            {
+                var objCommon = new CommonMethodManager();              
+                //var getStringLogin = objCommon.GetJsoSerializeDataForAPI(APIName.FloridaBlueAuthentication, null);                
+                var getOutputData = clientUrl.FloridaBlueAuthentication(APIName.FloridaBlueAuthenticationLink);
+                var getClassData = Newtonsoft.Json.JsonConvert.DeserializeObject<FloridaBlueAuthentication>(getOutputData);
+                //Florida blue benefit list
+                var getListData = clientUrl.FloridaBluePost(APIName.FloridaBlueGetLink, getClassData.access_token);
+                var getListDataModel = Newtonsoft.Json.JsonConvert.DeserializeObject<BenefitList>(getListData);
+                return getListDataModel;
+            }
+            else
+                return new BenefitList();
         }
     }
 }

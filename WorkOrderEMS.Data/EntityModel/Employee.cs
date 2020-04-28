@@ -27,7 +27,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string EMP_SSN { get; set; }
         public string EMP_Photo { get; set; }
         public string EMP_MilitaryService { get; set; }
-        public string EMP_Gender { get; set; }
+        public Nullable<long> EMP_Gender { get; set; }
         public Nullable<long> EMP_JobTitleId { get; set; }
         public string EMP_ManagerId { get; set; }
         public Nullable<System.DateTime> EMP_DateOfJoining { get; set; }

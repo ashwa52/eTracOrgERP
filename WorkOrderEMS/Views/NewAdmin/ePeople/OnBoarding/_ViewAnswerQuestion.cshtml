@@ -89,6 +89,8 @@
                                           }
                                       }
                                   }
+                                  @if (Model.IsShortlisted == false)
+                                  {
                                   <tr align="center">
                                      <td>    
                                          <center>
@@ -96,6 +98,18 @@
                                          </center>
                                      </td>
                                   </tr>
+                                  }
+                                  else
+                                  {
+                                      <tr align="center">
+                                     <td>    
+                                         <center>
+                                                <button id="submit"value="D" class="btn btn-success" applicantid="@Model.ApplicantId" onclick="ToAcceptRejectAfterInterview(this)" style="width: 18%; font-size: 20px;">Shortlisted</button>
+                                                <button id="submit" value="C" class="btn btn-success" applicantid="@Model.ApplicantId" onclick="ToAcceptRejectAfterInterview(this)" style="width: 18%; font-size: 20px;">Reject</button>
+                                         </center>
+                                     </td>
+                                  </tr>
+                                  }
                               </table>
                         </div>
                     </div>

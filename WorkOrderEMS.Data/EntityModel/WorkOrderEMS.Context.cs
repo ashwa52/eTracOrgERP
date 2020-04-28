@@ -147,7 +147,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<UserOverrideUsertype> UserOverrideUsertypes { get; set; }
         public virtual DbSet<UserVehicleSeatingMap> UserVehicleSeatingMaps { get; set; }
         public virtual DbSet<VehicleSeatingSubModuleMapping> VehicleSeatingSubModuleMappings { get; set; }
-        public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<LoginLog> LoginLogs { get; set; }
         public virtual DbSet<EmergencyContactForm> EmergencyContactForms { get; set; }
         public virtual DbSet<Applicant> Applicants { get; set; }
@@ -156,11 +155,14 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<InterviewQuestionChild> InterviewQuestionChilds { get; set; }
         public virtual DbSet<InterviewQuestionMaster> InterviewQuestionMasters { get; set; }
         public virtual DbSet<InterviewAnswer> InterviewAnswers { get; set; }
-        public virtual DbSet<InterviewProposalTime> InterviewProposalTimes { get; set; }
         public virtual DbSet<SlotTime> SlotTimes { get; set; }
-        public virtual DbSet<BookSlotTime> BookSlotTimes { get; set; }
         public virtual DbSet<ApplicantContactInfo> ApplicantContactInfoes { get; set; }
+        public virtual DbSet<OfferLetter> OfferLetters { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<BookSlotTime> BookSlotTimes { get; set; }
+        public virtual DbSet<InterviewProposalTime> InterviewProposalTimes { get; set; }
         public virtual DbSet<JobPosting> JobPostings { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
     
         [DbFunction("workorderEMSEntities", "fn_Split")]
         public virtual IQueryable<fn_Split_Result> fn_Split(string sText, string sDelim)
@@ -5385,15 +5387,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetSelfAssessment306090Submmit", employeeIdParameter, assessmentTypeParameter);
         }
     
-        public virtual ObjectResult<spGetAssessmentList306090_Result1> spGetAssessmentList306090(string employeeId)
-        {
-            var employeeIdParameter = employeeId != null ?
-                new ObjectParameter("EmployeeId", employeeId) :
-                new ObjectParameter("EmployeeId", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentList306090_Result1>("spGetAssessmentList306090", employeeIdParameter);
-        }
-    
         public virtual ObjectResult<spGetHiringManager_Result> spGetHiringManager(Nullable<long> vST_Id)
         {
             var vST_IdParameter = vST_Id.HasValue ?
@@ -5585,15 +5578,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetSelfAssessmentQuarterly", actionParameter, employeeIDParameter, employeeIdManagerParameter, aSQ_QuestionTypeParameter, aSQ_IdParameter, eEL_IdParameter, eEL_FinencialYearParameter, eEL_FinQuarterParameter, eEL_AnswerSelfParameter, eEL_IsActiveParameter, eEL_CommentsParameter);
         }
     
-        public virtual ObjectResult<spGetOrgnizationUserView_Result2> spGetOrgnizationUserView(string employeeId)
-        {
-            var employeeIdParameter = employeeId != null ?
-                new ObjectParameter("EmployeeId", employeeId) :
-                new ObjectParameter("EmployeeId", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetOrgnizationUserView_Result2>("spGetOrgnizationUserView", employeeIdParameter);
-        }
-    
         public virtual int spSetUserVerify(string employeeId, Nullable<long> locationId, Nullable<long> createdBy)
         {
             var employeeIdParameter = employeeId != null ?
@@ -5633,15 +5617,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetHiringGraph_Result>("spGetHiringGraph", jPS_HiringManagerIDParameter, jPS_JobPostingIdParameter);
         }
     
-        public virtual ObjectResult<spGetJobPosting_ForCompanyOpening_Result> spGetJobPosting_ForCompanyOpening(string jPS_HiringManagerID)
-        {
-            var jPS_HiringManagerIDParameter = jPS_HiringManagerID != null ?
-                new ObjectParameter("JPS_HiringManagerID", jPS_HiringManagerID) :
-                new ObjectParameter("JPS_HiringManagerID", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetJobPosting_ForCompanyOpening_Result>("spGetJobPosting_ForCompanyOpening", jPS_HiringManagerIDParameter);
-        }
-    
         public virtual ObjectResult<spGetJobPostingDetails_ForCompanyOpening_Result> spGetJobPostingDetails_ForCompanyOpening(Nullable<long> jPS_JobPostingId)
         {
             var jPS_JobPostingIdParameter = jPS_JobPostingId.HasValue ?
@@ -5658,15 +5633,6 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("EmployeeId", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantInfo_Result2>("spGetApplicantInfo", employeeIdParameter);
-        }
-    
-        public virtual ObjectResult<spGetApplicantInfoForMyInterview_Result3> spGetApplicantInfoForMyInterview(string employeeId)
-        {
-            var employeeIdParameter = employeeId != null ?
-                new ObjectParameter("EmployeeId", employeeId) :
-                new ObjectParameter("EmployeeId", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantInfoForMyInterview_Result3>("spGetApplicantInfoForMyInterview", employeeIdParameter);
         }
     
         public virtual ObjectResult<spGetAssessmentQuestion_Result4> spGetAssessmentQuestion(string employeeID, string assessmentType)
@@ -5722,15 +5688,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEmployeeManagementList_Result2>("spGetEmployeeManagementList", employeeIdParameter);
         }
     
-        public virtual ObjectResult<spGetEmployeePersonalInfo_Result2> spGetEmployeePersonalInfo(string employeeId)
-        {
-            var employeeIdParameter = employeeId != null ?
-                new ObjectParameter("EmployeeId", employeeId) :
-                new ObjectParameter("EmployeeId", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEmployeePersonalInfo_Result2>("spGetEmployeePersonalInfo", employeeIdParameter);
-        }
-    
         public virtual ObjectResult<spGetInterviewerList_Result1> spGetInterviewerList(Nullable<long> applicantId)
         {
             var applicantIdParameter = applicantId.HasValue ?
@@ -5769,15 +5726,6 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("SMD_MDL_Id", typeof(long));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetModuleTree_Result1>("spGetModuleTree", actionParameter, sMD_MDL_IdParameter);
-        }
-    
-        public virtual ObjectResult<spGetMyOpening_Result3> spGetMyOpening(Nullable<long> jPS_JobPostingId)
-        {
-            var jPS_JobPostingIdParameter = jPS_JobPostingId.HasValue ?
-                new ObjectParameter("JPS_JobPostingId", jPS_JobPostingId) :
-                new ObjectParameter("JPS_JobPostingId", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetMyOpening_Result3>("spGetMyOpening", jPS_JobPostingIdParameter);
         }
     
         public virtual ObjectResult<spGetRequisitionList_Result2> spGetRequisitionList()
@@ -6300,23 +6248,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetEmployeeStatusChangeApproval", eSC_IdParameter, approvedByParameter, approvalStatusParameter, approvalCommentParameter);
         }
     
-        public virtual int spSetApplicantStatus(Nullable<long> applicantId, string aPI_ApplicantStatus, string aPI_IsActive)
-        {
-            var applicantIdParameter = applicantId.HasValue ?
-                new ObjectParameter("ApplicantId", applicantId) :
-                new ObjectParameter("ApplicantId", typeof(long));
-    
-            var aPI_ApplicantStatusParameter = aPI_ApplicantStatus != null ?
-                new ObjectParameter("API_ApplicantStatus", aPI_ApplicantStatus) :
-                new ObjectParameter("API_ApplicantStatus", typeof(string));
-    
-            var aPI_IsActiveParameter = aPI_IsActive != null ?
-                new ObjectParameter("API_IsActive", aPI_IsActive) :
-                new ObjectParameter("API_IsActive", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApplicantStatus", applicantIdParameter, aPI_ApplicantStatusParameter, aPI_IsActiveParameter);
-        }
-    
         public virtual ObjectResult<spGetOrgnizationCommonview_Result1> spGetOrgnizationCommonview(string employeeId)
         {
             var employeeIdParameter = employeeId != null ?
@@ -6521,43 +6452,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApplicantForgotPassword", loginIDParameter, newPasswordParameter);
         }
     
-        public virtual ObjectResult<Nullable<long>> spSetApplicantCreateLoginAccess(string aLA_LoginId, string aLA_Password, string aLA_FirstName, string aLA_MidName, string aLA_LastName, string aLA_eMailId, string aLA_Question, string aLA_Answer)
-        {
-            var aLA_LoginIdParameter = aLA_LoginId != null ?
-                new ObjectParameter("ALA_LoginId", aLA_LoginId) :
-                new ObjectParameter("ALA_LoginId", typeof(string));
-    
-            var aLA_PasswordParameter = aLA_Password != null ?
-                new ObjectParameter("ALA_Password", aLA_Password) :
-                new ObjectParameter("ALA_Password", typeof(string));
-    
-            var aLA_FirstNameParameter = aLA_FirstName != null ?
-                new ObjectParameter("ALA_FirstName", aLA_FirstName) :
-                new ObjectParameter("ALA_FirstName", typeof(string));
-    
-            var aLA_MidNameParameter = aLA_MidName != null ?
-                new ObjectParameter("ALA_MidName", aLA_MidName) :
-                new ObjectParameter("ALA_MidName", typeof(string));
-    
-            var aLA_LastNameParameter = aLA_LastName != null ?
-                new ObjectParameter("ALA_LastName", aLA_LastName) :
-                new ObjectParameter("ALA_LastName", typeof(string));
-    
-            var aLA_eMailIdParameter = aLA_eMailId != null ?
-                new ObjectParameter("ALA_eMailId", aLA_eMailId) :
-                new ObjectParameter("ALA_eMailId", typeof(string));
-    
-            var aLA_QuestionParameter = aLA_Question != null ?
-                new ObjectParameter("ALA_Question", aLA_Question) :
-                new ObjectParameter("ALA_Question", typeof(string));
-    
-            var aLA_AnswerParameter = aLA_Answer != null ?
-                new ObjectParameter("ALA_Answer", aLA_Answer) :
-                new ObjectParameter("ALA_Answer", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<long>>("spSetApplicantCreateLoginAccess", aLA_LoginIdParameter, aLA_PasswordParameter, aLA_FirstNameParameter, aLA_MidNameParameter, aLA_LastNameParameter, aLA_eMailIdParameter, aLA_QuestionParameter, aLA_AnswerParameter);
-        }
-    
         public virtual int spSetInterviewAnswer(Nullable<long> iNA_IQC_Id, Nullable<long> iNA_API_ApplicantId, string iNA_EMP_EmployeeID, string iNA_Answer, string iNA_Comments)
         {
             var iNA_IQC_IdParameter = iNA_IQC_Id.HasValue ?
@@ -6594,89 +6488,6 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("SlotDate", typeof(System.DateTime));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetFreeSlote_Result>("spGetFreeSlote", employeeIdParameter, slotDateParameter);
-        }
-    
-        public virtual int spSetBookSlotTime(string action, Nullable<long> bST_Id, string bST_Title, Nullable<long> bST_EMP_EmployeeID, Nullable<System.DateTime> bST_SlotDate, Nullable<long> bST_SLT_Id, Nullable<long> bST_Status, string bST_IsActive)
-        {
-            var actionParameter = action != null ?
-                new ObjectParameter("Action", action) :
-                new ObjectParameter("Action", typeof(string));
-    
-            var bST_IdParameter = bST_Id.HasValue ?
-                new ObjectParameter("BST_Id", bST_Id) :
-                new ObjectParameter("BST_Id", typeof(long));
-    
-            var bST_TitleParameter = bST_Title != null ?
-                new ObjectParameter("BST_Title", bST_Title) :
-                new ObjectParameter("BST_Title", typeof(string));
-    
-            var bST_EMP_EmployeeIDParameter = bST_EMP_EmployeeID.HasValue ?
-                new ObjectParameter("BST_EMP_EmployeeID", bST_EMP_EmployeeID) :
-                new ObjectParameter("BST_EMP_EmployeeID", typeof(long));
-    
-            var bST_SlotDateParameter = bST_SlotDate.HasValue ?
-                new ObjectParameter("BST_SlotDate", bST_SlotDate) :
-                new ObjectParameter("BST_SlotDate", typeof(System.DateTime));
-    
-            var bST_SLT_IdParameter = bST_SLT_Id.HasValue ?
-                new ObjectParameter("BST_SLT_Id", bST_SLT_Id) :
-                new ObjectParameter("BST_SLT_Id", typeof(long));
-    
-            var bST_StatusParameter = bST_Status.HasValue ?
-                new ObjectParameter("BST_Status", bST_Status) :
-                new ObjectParameter("BST_Status", typeof(long));
-    
-            var bST_IsActiveParameter = bST_IsActive != null ?
-                new ObjectParameter("BST_IsActive", bST_IsActive) :
-                new ObjectParameter("BST_IsActive", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetBookSlotTime", actionParameter, bST_IdParameter, bST_TitleParameter, bST_EMP_EmployeeIDParameter, bST_SlotDateParameter, bST_SLT_IdParameter, bST_StatusParameter, bST_IsActiveParameter);
-        }
-    
-        public virtual int spSetInterviewPanel(string action, Nullable<long> iPT_Id, Nullable<long> iPT_JPS_JobPostingId, Nullable<long> iPT_EMP_EmployeeID_HM, Nullable<long> iPT_EMP_EmployeeID_SE, Nullable<long> iPT_EMP_EmployeeID_TE, Nullable<long> iPT_Status, string iPT_IsActive)
-        {
-            var actionParameter = action != null ?
-                new ObjectParameter("Action", action) :
-                new ObjectParameter("Action", typeof(string));
-    
-            var iPT_IdParameter = iPT_Id.HasValue ?
-                new ObjectParameter("IPT_Id", iPT_Id) :
-                new ObjectParameter("IPT_Id", typeof(long));
-    
-            var iPT_JPS_JobPostingIdParameter = iPT_JPS_JobPostingId.HasValue ?
-                new ObjectParameter("IPT_JPS_JobPostingId", iPT_JPS_JobPostingId) :
-                new ObjectParameter("IPT_JPS_JobPostingId", typeof(long));
-    
-            var iPT_EMP_EmployeeID_HMParameter = iPT_EMP_EmployeeID_HM.HasValue ?
-                new ObjectParameter("IPT_EMP_EmployeeID_HM", iPT_EMP_EmployeeID_HM) :
-                new ObjectParameter("IPT_EMP_EmployeeID_HM", typeof(long));
-    
-            var iPT_EMP_EmployeeID_SEParameter = iPT_EMP_EmployeeID_SE.HasValue ?
-                new ObjectParameter("IPT_EMP_EmployeeID_SE", iPT_EMP_EmployeeID_SE) :
-                new ObjectParameter("IPT_EMP_EmployeeID_SE", typeof(long));
-    
-            var iPT_EMP_EmployeeID_TEParameter = iPT_EMP_EmployeeID_TE.HasValue ?
-                new ObjectParameter("IPT_EMP_EmployeeID_TE", iPT_EMP_EmployeeID_TE) :
-                new ObjectParameter("IPT_EMP_EmployeeID_TE", typeof(long));
-    
-            var iPT_StatusParameter = iPT_Status.HasValue ?
-                new ObjectParameter("IPT_Status", iPT_Status) :
-                new ObjectParameter("IPT_Status", typeof(long));
-    
-            var iPT_IsActiveParameter = iPT_IsActive != null ?
-                new ObjectParameter("IPT_IsActive", iPT_IsActive) :
-                new ObjectParameter("IPT_IsActive", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetInterviewPanel", actionParameter, iPT_IdParameter, iPT_JPS_JobPostingIdParameter, iPT_EMP_EmployeeID_HMParameter, iPT_EMP_EmployeeID_SEParameter, iPT_EMP_EmployeeID_TEParameter, iPT_StatusParameter, iPT_IsActiveParameter);
-        }
-    
-        public virtual ObjectResult<spGetApplicantAllDetails_Result> spGetApplicantAllDetails(Nullable<long> aPT_ApplicantId)
-        {
-            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
-                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
-                new ObjectParameter("APT_ApplicantId", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantAllDetails_Result>("spGetApplicantAllDetails", aPT_ApplicantIdParameter);
         }
     
         public virtual int spSetEmergencyContactForm(string eCFAction, Nullable<long> eCF_Id, string eCF_EMP_EmployeeID, string eCF_NickName, Nullable<long> eCF_HomePhone, string eCF_HomeAddress, string eCF_HomeEmail, string eCF_FirstName, string eCF_MiddleName, string eCF_LastName, string eCF_Address, string eCF_Gender, string eCF_Citizenship, Nullable<System.DateTime> eCF_BirthDate, string eCF_DriverLicense, string eCF_EmergencyContactName, Nullable<long> eCF_Mobile, Nullable<long> eCF_PhoneNumber, string eCF_SSN, string eCF_Relationship, string eCF_IsActive)
@@ -6801,16 +6612,7 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApplicantContactInfo", aCI_ActionParameter, aCI_IdParameter, aCI_APT_ApplicantIdParameter, aCI_PhoneNoParameter, aCI_eMailParameter, aCI_PrefredContactMethodParameter, aCI_IsActiveParameter);
         }
     
-        public virtual ObjectResult<spGetJobPosting_Result5> spGetJobPosting(string jPS_HiringManagerID)
-        {
-            var jPS_HiringManagerIDParameter = jPS_HiringManagerID != null ?
-                new ObjectParameter("JPS_HiringManagerID", jPS_HiringManagerID) :
-                new ObjectParameter("JPS_HiringManagerID", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetJobPosting_Result5>("spGetJobPosting", jPS_HiringManagerIDParameter);
-        }
-    
-        public virtual int spSetJobPosting(string action, Nullable<long> jPS_JobPostingIdRecruitee, Nullable<long> jPS_JobTitleID, string jPS_HiringManagerID, Nullable<long> jPS_LocationId, Nullable<int> jPS_NumberOfPost, string jPS_IsActive)
+        public virtual int spSetJobPosting(string action, Nullable<long> jPS_JobPostingIdRecruitee, Nullable<long> jPS_JobTitleID, string jPS_HiringManagerID, Nullable<long> jPS_LocationId, Nullable<int> jPS_NumberOfPost, string jPS_DrivingType, string jPS_IsActive)
         {
             var actionParameter = action != null ?
                 new ObjectParameter("Action", action) :
@@ -6836,23 +6638,664 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("JPS_NumberOfPost", jPS_NumberOfPost) :
                 new ObjectParameter("JPS_NumberOfPost", typeof(int));
     
+            var jPS_DrivingTypeParameter = jPS_DrivingType != null ?
+                new ObjectParameter("JPS_DrivingType", jPS_DrivingType) :
+                new ObjectParameter("JPS_DrivingType", typeof(string));
+    
             var jPS_IsActiveParameter = jPS_IsActive != null ?
                 new ObjectParameter("JPS_IsActive", jPS_IsActive) :
                 new ObjectParameter("JPS_IsActive", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetJobPosting", actionParameter, jPS_JobPostingIdRecruiteeParameter, jPS_JobTitleIDParameter, jPS_HiringManagerIDParameter, jPS_LocationIdParameter, jPS_NumberOfPostParameter, jPS_IsActiveParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetJobPosting", actionParameter, jPS_JobPostingIdRecruiteeParameter, jPS_JobTitleIDParameter, jPS_HiringManagerIDParameter, jPS_LocationIdParameter, jPS_NumberOfPostParameter, jPS_DrivingTypeParameter, jPS_IsActiveParameter);
         }
     
-        public virtual ObjectResult<spGetI9Form_Result1> spGetI9Form(string employeeId)
+        public virtual ObjectResult<spGetAssessmentQuestionQCQM_Result1> spGetAssessmentQuestionQCQM(string employeeID, string assessmentType)
+        {
+            var employeeIDParameter = employeeID != null ?
+                new ObjectParameter("EmployeeID", employeeID) :
+                new ObjectParameter("EmployeeID", typeof(string));
+    
+            var assessmentTypeParameter = assessmentType != null ?
+                new ObjectParameter("AssessmentType", assessmentType) :
+                new ObjectParameter("AssessmentType", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentQuestionQCQM_Result1>("spGetAssessmentQuestionQCQM", employeeIDParameter, assessmentTypeParameter);
+        }
+    
+        public virtual int spSetChangeExpectation(string action, Nullable<long> cHE_Id, string employeeID, string employeeIdManager, Nullable<long> aSQ_Id, string cHE_QuestionType, string cHE_FinencialYear, string cHE_FinQuarter, string cHE_ASQ_Question, string cHE_IsActive)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var cHE_IdParameter = cHE_Id.HasValue ?
+                new ObjectParameter("CHE_Id", cHE_Id) :
+                new ObjectParameter("CHE_Id", typeof(long));
+    
+            var employeeIDParameter = employeeID != null ?
+                new ObjectParameter("EmployeeID", employeeID) :
+                new ObjectParameter("EmployeeID", typeof(string));
+    
+            var employeeIdManagerParameter = employeeIdManager != null ?
+                new ObjectParameter("EmployeeIdManager", employeeIdManager) :
+                new ObjectParameter("EmployeeIdManager", typeof(string));
+    
+            var aSQ_IdParameter = aSQ_Id.HasValue ?
+                new ObjectParameter("ASQ_Id", aSQ_Id) :
+                new ObjectParameter("ASQ_Id", typeof(long));
+    
+            var cHE_QuestionTypeParameter = cHE_QuestionType != null ?
+                new ObjectParameter("CHE_QuestionType", cHE_QuestionType) :
+                new ObjectParameter("CHE_QuestionType", typeof(string));
+    
+            var cHE_FinencialYearParameter = cHE_FinencialYear != null ?
+                new ObjectParameter("CHE_FinencialYear", cHE_FinencialYear) :
+                new ObjectParameter("CHE_FinencialYear", typeof(string));
+    
+            var cHE_FinQuarterParameter = cHE_FinQuarter != null ?
+                new ObjectParameter("CHE_FinQuarter", cHE_FinQuarter) :
+                new ObjectParameter("CHE_FinQuarter", typeof(string));
+    
+            var cHE_ASQ_QuestionParameter = cHE_ASQ_Question != null ?
+                new ObjectParameter("CHE_ASQ_Question", cHE_ASQ_Question) :
+                new ObjectParameter("CHE_ASQ_Question", typeof(string));
+    
+            var cHE_IsActiveParameter = cHE_IsActive != null ?
+                new ObjectParameter("CHE_IsActive", cHE_IsActive) :
+                new ObjectParameter("CHE_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetChangeExpectation", actionParameter, cHE_IdParameter, employeeIDParameter, employeeIdManagerParameter, aSQ_IdParameter, cHE_QuestionTypeParameter, cHE_FinencialYearParameter, cHE_FinQuarterParameter, cHE_ASQ_QuestionParameter, cHE_IsActiveParameter);
+        }
+    
+        public virtual ObjectResult<spGetApplicantSignature_Result> spGetApplicantSignature(Nullable<long> aPT_ApplicantId)
+        {
+            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
+                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
+                new ObjectParameter("APT_ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantSignature_Result>("spGetApplicantSignature", aPT_ApplicantIdParameter);
+        }
+    
+        public virtual int spSetApplicantSignature(string action, Nullable<long> aSG_Id, Nullable<long> aSG_APT_ApplicantId, string aSG_EMP_EmployeeId, string aSG_Signature, string aSG_IsActive)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var aSG_IdParameter = aSG_Id.HasValue ?
+                new ObjectParameter("ASG_Id", aSG_Id) :
+                new ObjectParameter("ASG_Id", typeof(long));
+    
+            var aSG_APT_ApplicantIdParameter = aSG_APT_ApplicantId.HasValue ?
+                new ObjectParameter("ASG_APT_ApplicantId", aSG_APT_ApplicantId) :
+                new ObjectParameter("ASG_APT_ApplicantId", typeof(long));
+    
+            var aSG_EMP_EmployeeIdParameter = aSG_EMP_EmployeeId != null ?
+                new ObjectParameter("ASG_EMP_EmployeeId", aSG_EMP_EmployeeId) :
+                new ObjectParameter("ASG_EMP_EmployeeId", typeof(string));
+    
+            var aSG_SignatureParameter = aSG_Signature != null ?
+                new ObjectParameter("ASG_Signature", aSG_Signature) :
+                new ObjectParameter("ASG_Signature", typeof(string));
+    
+            var aSG_IsActiveParameter = aSG_IsActive != null ?
+                new ObjectParameter("ASG_IsActive", aSG_IsActive) :
+                new ObjectParameter("ASG_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApplicantSignature", actionParameter, aSG_IdParameter, aSG_APT_ApplicantIdParameter, aSG_EMP_EmployeeIdParameter, aSG_SignatureParameter, aSG_IsActiveParameter);
+        }
+    
+        public virtual ObjectResult<spGetAplicantAcadmicDetails_Result> spGetAplicantAcadmicDetails(Nullable<long> aPT_ApplicantId)
+        {
+            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
+                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
+                new ObjectParameter("APT_ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAplicantAcadmicDetails_Result>("spGetAplicantAcadmicDetails", aPT_ApplicantIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetApplicantAccidentRecord_Result> spGetApplicantAccidentRecord(Nullable<long> aPT_ApplicantId)
+        {
+            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
+                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
+                new ObjectParameter("APT_ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantAccidentRecord_Result>("spGetApplicantAccidentRecord", aPT_ApplicantIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetApplicantAdditionalInfo_Result> spGetApplicantAdditionalInfo(Nullable<long> aPT_ApplicantId)
+        {
+            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
+                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
+                new ObjectParameter("APT_ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantAdditionalInfo_Result>("spGetApplicantAdditionalInfo", aPT_ApplicantIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetApplicantAddress_Result> spGetApplicantAddress(Nullable<long> aPT_ApplicantId)
+        {
+            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
+                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
+                new ObjectParameter("APT_ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantAddress_Result>("spGetApplicantAddress", aPT_ApplicantIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetApplicantBackgroundHistory_Result> spGetApplicantBackgroundHistory(Nullable<long> aPT_ApplicantId)
+        {
+            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
+                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
+                new ObjectParameter("APT_ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantBackgroundHistory_Result>("spGetApplicantBackgroundHistory", aPT_ApplicantIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetApplicantContactInfo_Result3> spGetApplicantContactInfo(Nullable<long> applicantId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("ApplicantId", applicantId) :
+                new ObjectParameter("ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantContactInfo_Result3>("spGetApplicantContactInfo", applicantIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetApplicantLicenseHeald_Result> spGetApplicantLicenseHeald(Nullable<long> aPT_ApplicantId)
+        {
+            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
+                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
+                new ObjectParameter("APT_ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantLicenseHeald_Result>("spGetApplicantLicenseHeald", aPT_ApplicantIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetApplicantPersonalInfo_Result> spGetApplicantPersonalInfo(Nullable<long> aPT_ApplicantId)
+        {
+            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
+                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
+                new ObjectParameter("APT_ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantPersonalInfo_Result>("spGetApplicantPersonalInfo", aPT_ApplicantIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetApplicantPositionTitle_Result> spGetApplicantPositionTitle(Nullable<long> aPT_ApplicantId)
+        {
+            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
+                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
+                new ObjectParameter("APT_ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantPositionTitle_Result>("spGetApplicantPositionTitle", aPT_ApplicantIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetApplicantSchecduleAvaliblity_Result> spGetApplicantSchecduleAvaliblity(Nullable<long> aPT_ApplicantId)
+        {
+            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
+                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
+                new ObjectParameter("APT_ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantSchecduleAvaliblity_Result>("spGetApplicantSchecduleAvaliblity", aPT_ApplicantIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetApplicantTrafficConvictions_Result> spGetApplicantTrafficConvictions(Nullable<long> aPT_ApplicantId)
+        {
+            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
+                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
+                new ObjectParameter("APT_ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantTrafficConvictions_Result>("spGetApplicantTrafficConvictions", aPT_ApplicantIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetApplicantVehiclesOperated_Result> spGetApplicantVehiclesOperated(Nullable<long> aPT_ApplicantId)
+        {
+            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
+                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
+                new ObjectParameter("APT_ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantVehiclesOperated_Result>("spGetApplicantVehiclesOperated", aPT_ApplicantIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetEEO_Result1> spGetEEO(string eEO_EMP_EmployeeID)
+        {
+            var eEO_EMP_EmployeeIDParameter = eEO_EMP_EmployeeID != null ?
+                new ObjectParameter("EEO_EMP_EmployeeID", eEO_EMP_EmployeeID) :
+                new ObjectParameter("EEO_EMP_EmployeeID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEEO_Result1>("spGetEEO", eEO_EMP_EmployeeIDParameter);
+        }
+    
+        public virtual int spSetEEO(string action, Nullable<long> eEO_Id, string eEO_EMP_EmployeeID, string eEO_Gender, string eEO_Race, string eEO_VeteranStatus, Nullable<System.DateTime> eEO_VeteranDateOfDischarge, string eEO_DisabilityDisclose, string eEO_IsActive, string eEO_DisabilityDiscloseDiscription)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var eEO_IdParameter = eEO_Id.HasValue ?
+                new ObjectParameter("EEO_Id", eEO_Id) :
+                new ObjectParameter("EEO_Id", typeof(long));
+    
+            var eEO_EMP_EmployeeIDParameter = eEO_EMP_EmployeeID != null ?
+                new ObjectParameter("EEO_EMP_EmployeeID", eEO_EMP_EmployeeID) :
+                new ObjectParameter("EEO_EMP_EmployeeID", typeof(string));
+    
+            var eEO_GenderParameter = eEO_Gender != null ?
+                new ObjectParameter("EEO_Gender", eEO_Gender) :
+                new ObjectParameter("EEO_Gender", typeof(string));
+    
+            var eEO_RaceParameter = eEO_Race != null ?
+                new ObjectParameter("EEO_Race", eEO_Race) :
+                new ObjectParameter("EEO_Race", typeof(string));
+    
+            var eEO_VeteranStatusParameter = eEO_VeteranStatus != null ?
+                new ObjectParameter("EEO_VeteranStatus", eEO_VeteranStatus) :
+                new ObjectParameter("EEO_VeteranStatus", typeof(string));
+    
+            var eEO_VeteranDateOfDischargeParameter = eEO_VeteranDateOfDischarge.HasValue ?
+                new ObjectParameter("EEO_VeteranDateOfDischarge", eEO_VeteranDateOfDischarge) :
+                new ObjectParameter("EEO_VeteranDateOfDischarge", typeof(System.DateTime));
+    
+            var eEO_DisabilityDiscloseParameter = eEO_DisabilityDisclose != null ?
+                new ObjectParameter("EEO_DisabilityDisclose", eEO_DisabilityDisclose) :
+                new ObjectParameter("EEO_DisabilityDisclose", typeof(string));
+    
+            var eEO_IsActiveParameter = eEO_IsActive != null ?
+                new ObjectParameter("EEO_IsActive", eEO_IsActive) :
+                new ObjectParameter("EEO_IsActive", typeof(string));
+    
+            var eEO_DisabilityDiscloseDiscriptionParameter = eEO_DisabilityDiscloseDiscription != null ?
+                new ObjectParameter("EEO_DisabilityDiscloseDiscription", eEO_DisabilityDiscloseDiscription) :
+                new ObjectParameter("EEO_DisabilityDiscloseDiscription", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetEEO", actionParameter, eEO_IdParameter, eEO_EMP_EmployeeIDParameter, eEO_GenderParameter, eEO_RaceParameter, eEO_VeteranStatusParameter, eEO_VeteranDateOfDischargeParameter, eEO_DisabilityDiscloseParameter, eEO_IsActiveParameter, eEO_DisabilityDiscloseDiscriptionParameter);
+        }
+    
+        public virtual ObjectResult<spGetFormRateOfPay_Result3> spGetFormRateOfPay(Nullable<long> applicantId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("ApplicantId", applicantId) :
+                new ObjectParameter("ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetFormRateOfPay_Result3>("spGetFormRateOfPay", applicantIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetQuestionsForInterview_Result5> spGetQuestionsForInterview(string action, string isExempt, Nullable<long> iQC_IQM_Id)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var isExemptParameter = isExempt != null ?
+                new ObjectParameter("IsExempt", isExempt) :
+                new ObjectParameter("IsExempt", typeof(string));
+    
+            var iQC_IQM_IdParameter = iQC_IQM_Id.HasValue ?
+                new ObjectParameter("IQC_IQM_Id", iQC_IQM_Id) :
+                new ObjectParameter("IQC_IQM_Id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetQuestionsForInterview_Result5>("spGetQuestionsForInterview", actionParameter, isExemptParameter, iQC_IQM_IdParameter);
+        }
+    
+        public virtual int spSetApplicantJobApply(string action, Nullable<long> aPT_ALA_UserId, Nullable<long> aPT_JobPostingId, Nullable<System.DateTime> aPT_DateOfJoining, string aPT_IsActive, ObjectParameter aPT_ApplicantId)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var aPT_ALA_UserIdParameter = aPT_ALA_UserId.HasValue ?
+                new ObjectParameter("APT_ALA_UserId", aPT_ALA_UserId) :
+                new ObjectParameter("APT_ALA_UserId", typeof(long));
+    
+            var aPT_JobPostingIdParameter = aPT_JobPostingId.HasValue ?
+                new ObjectParameter("APT_JobPostingId", aPT_JobPostingId) :
+                new ObjectParameter("APT_JobPostingId", typeof(long));
+    
+            var aPT_DateOfJoiningParameter = aPT_DateOfJoining.HasValue ?
+                new ObjectParameter("APT_DateOfJoining", aPT_DateOfJoining) :
+                new ObjectParameter("APT_DateOfJoining", typeof(System.DateTime));
+    
+            var aPT_IsActiveParameter = aPT_IsActive != null ?
+                new ObjectParameter("APT_IsActive", aPT_IsActive) :
+                new ObjectParameter("APT_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApplicantJobApply", actionParameter, aPT_ALA_UserIdParameter, aPT_JobPostingIdParameter, aPT_DateOfJoiningParameter, aPT_IsActiveParameter, aPT_ApplicantId);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> spSetApplicantCreateLoginAccess(string aLA_LoginId, string aLA_Password, string aLA_FirstName, string aLA_MidName, string aLA_LastName, string aLA_eMailId, string aLA_Question, string aLA_Answer, string aLA_Photo)
+        {
+            var aLA_LoginIdParameter = aLA_LoginId != null ?
+                new ObjectParameter("ALA_LoginId", aLA_LoginId) :
+                new ObjectParameter("ALA_LoginId", typeof(string));
+    
+            var aLA_PasswordParameter = aLA_Password != null ?
+                new ObjectParameter("ALA_Password", aLA_Password) :
+                new ObjectParameter("ALA_Password", typeof(string));
+    
+            var aLA_FirstNameParameter = aLA_FirstName != null ?
+                new ObjectParameter("ALA_FirstName", aLA_FirstName) :
+                new ObjectParameter("ALA_FirstName", typeof(string));
+    
+            var aLA_MidNameParameter = aLA_MidName != null ?
+                new ObjectParameter("ALA_MidName", aLA_MidName) :
+                new ObjectParameter("ALA_MidName", typeof(string));
+    
+            var aLA_LastNameParameter = aLA_LastName != null ?
+                new ObjectParameter("ALA_LastName", aLA_LastName) :
+                new ObjectParameter("ALA_LastName", typeof(string));
+    
+            var aLA_eMailIdParameter = aLA_eMailId != null ?
+                new ObjectParameter("ALA_eMailId", aLA_eMailId) :
+                new ObjectParameter("ALA_eMailId", typeof(string));
+    
+            var aLA_QuestionParameter = aLA_Question != null ?
+                new ObjectParameter("ALA_Question", aLA_Question) :
+                new ObjectParameter("ALA_Question", typeof(string));
+    
+            var aLA_AnswerParameter = aLA_Answer != null ?
+                new ObjectParameter("ALA_Answer", aLA_Answer) :
+                new ObjectParameter("ALA_Answer", typeof(string));
+    
+            var aLA_PhotoParameter = aLA_Photo != null ?
+                new ObjectParameter("ALA_Photo", aLA_Photo) :
+                new ObjectParameter("ALA_Photo", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("spSetApplicantCreateLoginAccess", aLA_LoginIdParameter, aLA_PasswordParameter, aLA_FirstNameParameter, aLA_MidNameParameter, aLA_LastNameParameter, aLA_eMailIdParameter, aLA_QuestionParameter, aLA_AnswerParameter, aLA_PhotoParameter);
+        }
+    
+        public virtual ObjectResult<spGetMyOpening_Result4> spGetMyOpening(Nullable<long> jPS_JobPostingId)
+        {
+            var jPS_JobPostingIdParameter = jPS_JobPostingId.HasValue ?
+                new ObjectParameter("JPS_JobPostingId", jPS_JobPostingId) :
+                new ObjectParameter("JPS_JobPostingId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetMyOpening_Result4>("spGetMyOpening", jPS_JobPostingIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetApplicantInfoForMyInterview_Result4> spGetApplicantInfoForMyInterview(string employeeId)
         {
             var employeeIdParameter = employeeId != null ?
                 new ObjectParameter("EmployeeId", employeeId) :
                 new ObjectParameter("EmployeeId", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetI9Form_Result1>("spGetI9Form", employeeIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantInfoForMyInterview_Result4>("spGetApplicantInfoForMyInterview", employeeIdParameter);
         }
     
-        public virtual int spSetI9Form(string i9FAction, Nullable<long> i9F_Id, string i9F_EMP_EmployeeId, string i9F_Sec1_SSN, string i9F_Sec1_CitizenOfUS, string i9F_Sec1_NonCitizenOfUS, string i9F_Sec1_AlienRegistrationNum_USCIS, Nullable<System.DateTime> i9F_Sec1_AlienAuthorizedToWorkDate, string i9F_Sec1_I94AdmissionNumber, string i9F_Sec1_ForeignPassportNumber, string i9F_Sec1_ForeignPassportIssuanceCountry, string i9F_Sec1_SignatureOfEmployee, Nullable<System.DateTime> i9F_Sec1_DateOfEmployeeSign, string i9F_Sec1_QRCodeSec1, string i9F_Sec1_PreparerAndTranslator, string i9F_Sec1_SignatureOfPreparerOrTranslator, Nullable<System.DateTime> i9F_Sec1_DateOfPreparerOrTranslatorSign, string i9F_Sec1_FirstName, string i9F_Sec1_MiddleInitial, string i9F_Sec1_LastName, string i9F_Sec1_OtherLastName, Nullable<System.DateTime> i9F_Sec1_dateOfBirth, string i9F_Sec1_Address, string i9F_Sec1_AptNumber, string i9F_Sec1_City, string i9F_Sec1_State, Nullable<int> i9F_Sec1_ZipCode, string i9F_Sec1_Email, Nullable<long> i9F_Sec1_EmployeeTelephoneNumber, string i9F_Sec2_ListA_DocumentTitle1, string i9F_Sec2_ListA_IssuingAuthority1, string i9F_Sec2_ListA_DocumentNumber1, Nullable<System.DateTime> i9F_Sec2_ListA_ExpirationDate1, string i9F_Sec2_ListA_DocumentTitle2, string i9F_Sec2_ListA_IssuingAuthority2, string i9F_Sec2_ListA_DocumentNumber2, Nullable<System.DateTime> i9F_Sec2_ListA_ExpirationDate2, string i9F_Sec2_ListA_DocumentTitle3, string i9F_Sec2_ListA_IssuingAuthority3, string i9F_Sec2_ListA_DocumentNumber3, Nullable<System.DateTime> i9F_Sec2_ListA_ExpirationDate3, string i9F_Sec2_ListB_DocumentTitle, string i9F_Sec2_ListB_IssuingAuthority, string i9F_Sec2_ListB_DocumentNumber, Nullable<System.DateTime> i9F_Sec2_ListB_ExpirationDate, string i9F_Sec2_ListC_DocumentTitle, string i9F_Sec2_ListC_IssuingAuthority, string i9F_Sec2_ListC_DocumentNumber, Nullable<System.DateTime> i9F_Sec2_ListC_ExpirationDate, string i9F_Sec2_AdditionalInformation, string i9F_Sec2_QRCodeSec2AndSec3, Nullable<System.DateTime> i9F_Sec2_EmployeesFirstDayOfEmployment, string i9F_Sec2_SignatureOfEmployerOrAuthorized, Nullable<System.DateTime> i9F_Sec2_DateOfEmployerOrAuthorizedSign, string i9F_Sec2_LastNameOfEmployerOrAuthorized, string i9F_Sec2_FirstNameOfEmployerOrAuthorized, string i9F_Sec2_MiddleInitialOfEmployerOrAuthorized, string i9F_Sec2_EmployersBusinessOrgnization_Name, string i9F_Sec2_EmployersBusinessOrgnization_Address, string i9F_Sec2_EmployersBusinessOrgnization_City, string i9F_Sec2_EmployersBusinessOrgnization_State, Nullable<int> i9F_Sec2_EmployersBusinessOrgnization_ZipCode, string i9F_Sec2_TitleOfEmployerOrOthrizedRepresentative, string i9F_Sec2_CitizenshipImmigrationStatus, string i9F_Sec3_A_LastName, string i9F_Sec3_A_FirstName, string i9F_Sec3_A_MiddleInitial, Nullable<System.DateTime> i9F_Sec3_B_DateOfReHire, string i9F_Sec3_C_DocumentTitle, string i9F_Sec3_C_DocumentNumber, Nullable<System.DateTime> i9F_Sec3_C_ExpirationDate, string i9F_Sec3_C_SignatureOfEmployerOrAuthorized, Nullable<System.DateTime> i9F_Sec3_C_DateOfEmployerOrAuthorizedSign, string i9F_Sec3_C_NameOfEmployerOrAuthorized, Nullable<System.DateTime> i9F_Date, string i9F_IsActive)
+        public virtual ObjectResult<spGetJobPosting_ForCompanyOpening_Result1> spGetJobPosting_ForCompanyOpening(string jPS_HiringManagerID)
+        {
+            var jPS_HiringManagerIDParameter = jPS_HiringManagerID != null ?
+                new ObjectParameter("JPS_HiringManagerID", jPS_HiringManagerID) :
+                new ObjectParameter("JPS_HiringManagerID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetJobPosting_ForCompanyOpening_Result1>("spGetJobPosting_ForCompanyOpening", jPS_HiringManagerIDParameter);
+        }
+    
+        public virtual int spSetApplicantStatus(Nullable<long> applicantId, string aPT_Status, string aPT_IsActive)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("ApplicantId", applicantId) :
+                new ObjectParameter("ApplicantId", typeof(long));
+    
+            var aPT_StatusParameter = aPT_Status != null ?
+                new ObjectParameter("APT_Status", aPT_Status) :
+                new ObjectParameter("APT_Status", typeof(string));
+    
+            var aPT_IsActiveParameter = aPT_IsActive != null ?
+                new ObjectParameter("APT_IsActive", aPT_IsActive) :
+                new ObjectParameter("APT_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApplicantStatus", applicantIdParameter, aPT_StatusParameter, aPT_IsActiveParameter);
+        }
+    
+        public virtual ObjectResult<spGetOrientation_Result> spGetOrientation(string oTN_EMP_EmployeeID)
+        {
+            var oTN_EMP_EmployeeIDParameter = oTN_EMP_EmployeeID != null ?
+                new ObjectParameter("OTN_EMP_EmployeeID", oTN_EMP_EmployeeID) :
+                new ObjectParameter("OTN_EMP_EmployeeID", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetOrientation_Result>("spGetOrientation", oTN_EMP_EmployeeIDParameter);
+        }
+    
+        public virtual int spSetOrientation(string action, Nullable<long> oTN_Id, string oTN_EMP_EmployeeID, Nullable<long> oTN_LocationId, Nullable<System.DateTime> oNT_OrientationDate, Nullable<System.TimeSpan> oNT_Orientationtime, string oNT_IsActive)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var oTN_IdParameter = oTN_Id.HasValue ?
+                new ObjectParameter("OTN_Id", oTN_Id) :
+                new ObjectParameter("OTN_Id", typeof(long));
+    
+            var oTN_EMP_EmployeeIDParameter = oTN_EMP_EmployeeID != null ?
+                new ObjectParameter("OTN_EMP_EmployeeID", oTN_EMP_EmployeeID) :
+                new ObjectParameter("OTN_EMP_EmployeeID", typeof(string));
+    
+            var oTN_LocationIdParameter = oTN_LocationId.HasValue ?
+                new ObjectParameter("OTN_LocationId", oTN_LocationId) :
+                new ObjectParameter("OTN_LocationId", typeof(long));
+    
+            var oNT_OrientationDateParameter = oNT_OrientationDate.HasValue ?
+                new ObjectParameter("ONT_OrientationDate", oNT_OrientationDate) :
+                new ObjectParameter("ONT_OrientationDate", typeof(System.DateTime));
+    
+            var oNT_OrientationtimeParameter = oNT_Orientationtime.HasValue ?
+                new ObjectParameter("ONT_Orientationtime", oNT_Orientationtime) :
+                new ObjectParameter("ONT_Orientationtime", typeof(System.TimeSpan));
+    
+            var oNT_IsActiveParameter = oNT_IsActive != null ?
+                new ObjectParameter("ONT_IsActive", oNT_IsActive) :
+                new ObjectParameter("ONT_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetOrientation", actionParameter, oTN_IdParameter, oTN_EMP_EmployeeIDParameter, oTN_LocationIdParameter, oNT_OrientationDateParameter, oNT_OrientationtimeParameter, oNT_IsActiveParameter);
+        }
+    
+        public virtual ObjectResult<spGetOrgnizationUserView_Result5> spGetOrgnizationUserView(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetOrgnizationUserView_Result5>("spGetOrgnizationUserView", employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetOfferLetter_Result> spGetOfferLetter(Nullable<long> applicantId)
+        {
+            var applicantIdParameter = applicantId.HasValue ?
+                new ObjectParameter("ApplicantId", applicantId) :
+                new ObjectParameter("ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetOfferLetter_Result>("spGetOfferLetter", applicantIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetNotification_Result> spGetNotification(string nTF_Module, string nTF_Submodule, Nullable<long> nTF_SubmoduleId, string nTF_CreatedBy, string nTF_AssignTo)
+        {
+            var nTF_ModuleParameter = nTF_Module != null ?
+                new ObjectParameter("NTF_Module", nTF_Module) :
+                new ObjectParameter("NTF_Module", typeof(string));
+    
+            var nTF_SubmoduleParameter = nTF_Submodule != null ?
+                new ObjectParameter("NTF_Submodule", nTF_Submodule) :
+                new ObjectParameter("NTF_Submodule", typeof(string));
+    
+            var nTF_SubmoduleIdParameter = nTF_SubmoduleId.HasValue ?
+                new ObjectParameter("NTF_SubmoduleId", nTF_SubmoduleId) :
+                new ObjectParameter("NTF_SubmoduleId", typeof(long));
+    
+            var nTF_CreatedByParameter = nTF_CreatedBy != null ?
+                new ObjectParameter("NTF_CreatedBy", nTF_CreatedBy) :
+                new ObjectParameter("NTF_CreatedBy", typeof(string));
+    
+            var nTF_AssignToParameter = nTF_AssignTo != null ?
+                new ObjectParameter("NTF_AssignTo", nTF_AssignTo) :
+                new ObjectParameter("NTF_AssignTo", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetNotification_Result>("spGetNotification", nTF_ModuleParameter, nTF_SubmoduleParameter, nTF_SubmoduleIdParameter, nTF_CreatedByParameter, nTF_AssignToParameter);
+        }
+    
+        public virtual int spSetApplicantAllDetails(string action)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApplicantAllDetails", actionParameter);
+        }
+    
+        public virtual ObjectResult<spGetApplicantAllDetails_Result2> spGetApplicantAllDetails(Nullable<long> aPT_ApplicantId)
+        {
+            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
+                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
+                new ObjectParameter("APT_ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantAllDetails_Result2>("spGetApplicantAllDetails", aPT_ApplicantIdParameter);
+        }
+    
+        public virtual int spSetScheduleInterview_ForMailFromApplicant(Nullable<long> iPT_Id, string iPT_Status)
+        {
+            var iPT_IdParameter = iPT_Id.HasValue ?
+                new ObjectParameter("IPT_Id", iPT_Id) :
+                new ObjectParameter("IPT_Id", typeof(long));
+    
+            var iPT_StatusParameter = iPT_Status != null ?
+                new ObjectParameter("IPT_Status", iPT_Status) :
+                new ObjectParameter("IPT_Status", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetScheduleInterview_ForMailFromApplicant", iPT_IdParameter, iPT_StatusParameter);
+        }
+    
+        public virtual int spSetInterviewPanel(string action, Nullable<long> iPT_Id, Nullable<long> iPT_JPS_JobPostingId, string iPT_EMP_EmployeeID_HM, string iPT_EMP_EmployeeID_SE, string iPT_EMP_EmployeeID_TE, string iPT_Status, string iPT_IsActive)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var iPT_IdParameter = iPT_Id.HasValue ?
+                new ObjectParameter("IPT_Id", iPT_Id) :
+                new ObjectParameter("IPT_Id", typeof(long));
+    
+            var iPT_JPS_JobPostingIdParameter = iPT_JPS_JobPostingId.HasValue ?
+                new ObjectParameter("IPT_JPS_JobPostingId", iPT_JPS_JobPostingId) :
+                new ObjectParameter("IPT_JPS_JobPostingId", typeof(long));
+    
+            var iPT_EMP_EmployeeID_HMParameter = iPT_EMP_EmployeeID_HM != null ?
+                new ObjectParameter("IPT_EMP_EmployeeID_HM", iPT_EMP_EmployeeID_HM) :
+                new ObjectParameter("IPT_EMP_EmployeeID_HM", typeof(string));
+    
+            var iPT_EMP_EmployeeID_SEParameter = iPT_EMP_EmployeeID_SE != null ?
+                new ObjectParameter("IPT_EMP_EmployeeID_SE", iPT_EMP_EmployeeID_SE) :
+                new ObjectParameter("IPT_EMP_EmployeeID_SE", typeof(string));
+    
+            var iPT_EMP_EmployeeID_TEParameter = iPT_EMP_EmployeeID_TE != null ?
+                new ObjectParameter("IPT_EMP_EmployeeID_TE", iPT_EMP_EmployeeID_TE) :
+                new ObjectParameter("IPT_EMP_EmployeeID_TE", typeof(string));
+    
+            var iPT_StatusParameter = iPT_Status != null ?
+                new ObjectParameter("IPT_Status", iPT_Status) :
+                new ObjectParameter("IPT_Status", typeof(string));
+    
+            var iPT_IsActiveParameter = iPT_IsActive != null ?
+                new ObjectParameter("IPT_IsActive", iPT_IsActive) :
+                new ObjectParameter("IPT_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetInterviewPanel", actionParameter, iPT_IdParameter, iPT_JPS_JobPostingIdParameter, iPT_EMP_EmployeeID_HMParameter, iPT_EMP_EmployeeID_SEParameter, iPT_EMP_EmployeeID_TEParameter, iPT_StatusParameter, iPT_IsActiveParameter);
+        }
+    
+        public virtual ObjectResult<spGetEmployeePersonalInfo_Result3> spGetEmployeePersonalInfo(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEmployeePersonalInfo_Result3>("spGetEmployeePersonalInfo", employeeIdParameter);
+        }
+    
+        public virtual int spSetBookSlotTime(string action, Nullable<long> bST_Id, string bST_EMP_EmployeeID, Nullable<System.DateTime> bST_SlotDate, Nullable<long> bST_SLT_Id, string bST_Title, Nullable<long> bST_Status, string bST_IsActive)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var bST_IdParameter = bST_Id.HasValue ?
+                new ObjectParameter("BST_Id", bST_Id) :
+                new ObjectParameter("BST_Id", typeof(long));
+    
+            var bST_EMP_EmployeeIDParameter = bST_EMP_EmployeeID != null ?
+                new ObjectParameter("BST_EMP_EmployeeID", bST_EMP_EmployeeID) :
+                new ObjectParameter("BST_EMP_EmployeeID", typeof(string));
+    
+            var bST_SlotDateParameter = bST_SlotDate.HasValue ?
+                new ObjectParameter("BST_SlotDate", bST_SlotDate) :
+                new ObjectParameter("BST_SlotDate", typeof(System.DateTime));
+    
+            var bST_SLT_IdParameter = bST_SLT_Id.HasValue ?
+                new ObjectParameter("BST_SLT_Id", bST_SLT_Id) :
+                new ObjectParameter("BST_SLT_Id", typeof(long));
+    
+            var bST_TitleParameter = bST_Title != null ?
+                new ObjectParameter("BST_Title", bST_Title) :
+                new ObjectParameter("BST_Title", typeof(string));
+    
+            var bST_StatusParameter = bST_Status.HasValue ?
+                new ObjectParameter("BST_Status", bST_Status) :
+                new ObjectParameter("BST_Status", typeof(long));
+    
+            var bST_IsActiveParameter = bST_IsActive != null ?
+                new ObjectParameter("BST_IsActive", bST_IsActive) :
+                new ObjectParameter("BST_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetBookSlotTime", actionParameter, bST_IdParameter, bST_EMP_EmployeeIDParameter, bST_SlotDateParameter, bST_SLT_IdParameter, bST_TitleParameter, bST_StatusParameter, bST_IsActiveParameter);
+        }
+    
+        public virtual int spSetAplicantCertificationDetails(string action, Nullable<long> aCD_Id, Nullable<long> aCD_APT_ApplicantId, string aCD_CertificationName, Nullable<System.DateTime> aCD_CertificationEarnedYear, string aCD_CertifyingAgency, string aCD_CertificateAttached, string aCD_Address, string aCD_City, string aCD_State, Nullable<int> aCD_Zip, string aCD_IsActive)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var aCD_IdParameter = aCD_Id.HasValue ?
+                new ObjectParameter("ACD_Id", aCD_Id) :
+                new ObjectParameter("ACD_Id", typeof(long));
+    
+            var aCD_APT_ApplicantIdParameter = aCD_APT_ApplicantId.HasValue ?
+                new ObjectParameter("ACD_APT_ApplicantId", aCD_APT_ApplicantId) :
+                new ObjectParameter("ACD_APT_ApplicantId", typeof(long));
+    
+            var aCD_CertificationNameParameter = aCD_CertificationName != null ?
+                new ObjectParameter("ACD_CertificationName", aCD_CertificationName) :
+                new ObjectParameter("ACD_CertificationName", typeof(string));
+    
+            var aCD_CertificationEarnedYearParameter = aCD_CertificationEarnedYear.HasValue ?
+                new ObjectParameter("ACD_CertificationEarnedYear", aCD_CertificationEarnedYear) :
+                new ObjectParameter("ACD_CertificationEarnedYear", typeof(System.DateTime));
+    
+            var aCD_CertifyingAgencyParameter = aCD_CertifyingAgency != null ?
+                new ObjectParameter("ACD_CertifyingAgency", aCD_CertifyingAgency) :
+                new ObjectParameter("ACD_CertifyingAgency", typeof(string));
+    
+            var aCD_CertificateAttachedParameter = aCD_CertificateAttached != null ?
+                new ObjectParameter("ACD_CertificateAttached", aCD_CertificateAttached) :
+                new ObjectParameter("ACD_CertificateAttached", typeof(string));
+    
+            var aCD_AddressParameter = aCD_Address != null ?
+                new ObjectParameter("ACD_Address", aCD_Address) :
+                new ObjectParameter("ACD_Address", typeof(string));
+    
+            var aCD_CityParameter = aCD_City != null ?
+                new ObjectParameter("ACD_City", aCD_City) :
+                new ObjectParameter("ACD_City", typeof(string));
+    
+            var aCD_StateParameter = aCD_State != null ?
+                new ObjectParameter("ACD_State", aCD_State) :
+                new ObjectParameter("ACD_State", typeof(string));
+    
+            var aCD_ZipParameter = aCD_Zip.HasValue ?
+                new ObjectParameter("ACD_Zip", aCD_Zip) :
+                new ObjectParameter("ACD_Zip", typeof(int));
+    
+            var aCD_IsActiveParameter = aCD_IsActive != null ?
+                new ObjectParameter("ACD_IsActive", aCD_IsActive) :
+                new ObjectParameter("ACD_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetAplicantCertificationDetails", actionParameter, aCD_IdParameter, aCD_APT_ApplicantIdParameter, aCD_CertificationNameParameter, aCD_CertificationEarnedYearParameter, aCD_CertifyingAgencyParameter, aCD_CertificateAttachedParameter, aCD_AddressParameter, aCD_CityParameter, aCD_StateParameter, aCD_ZipParameter, aCD_IsActiveParameter);
+        }
+    
+        public virtual int spSetI9Form(string i9FAction, Nullable<long> i9F_Id, string i9F_EMP_EmployeeId, string i9F_Sec1_SSN, string i9F_Sec1_CitizenOfUS, string i9F_Sec1_NonCitizenOfUS, string i9F_Sec1_AlienRegistrationNum_USCIS, Nullable<System.DateTime> i9F_Sec1_AlienAuthorizedToWorkDate, string i9F_Sec1_I94AdmissionNumber, string i9F_Sec1_ForeignPassportNumber, string i9F_Sec1_ForeignPassportIssuanceCountry, string i9F_Sec1_SignatureOfEmployee, Nullable<System.DateTime> i9F_Sec1_DateOfEmployeeSign, string i9F_Sec1_QRCodeSec1, string i9F_Sec1_PreparerAndTranslator, string i9F_Sec1_SignatureOfPreparerOrTranslator, Nullable<System.DateTime> i9F_Sec1_DateOfPreparerOrTranslatorSign, string i9F_Sec1_FirstName, string i9F_Sec1_MiddleInitial, string i9F_Sec1_LastName, string i9F_Sec1_OtherLastName, Nullable<System.DateTime> i9F_Sec1_dateOfBirth, string i9F_Sec1_Address, string i9F_Sec1_AptNumber, string i9F_Sec1_City, string i9F_Sec1_State, Nullable<int> i9F_Sec1_ZipCode, string i9F_Sec1_Email, Nullable<long> i9F_Sec1_EmployeeTelephoneNumber, string i9F_Sec2_ListA_DocumentTitle1, string i9F_Sec2_ListA_IssuingAuthority1, string i9F_Sec2_ListA_DocumentNumber1, Nullable<System.DateTime> i9F_Sec2_ListA_ExpirationDate1, string i9F_Sec2_ListA_DocumentTitle2, string i9F_Sec2_ListA_IssuingAuthority2, string i9F_Sec2_ListA_DocumentNumber2, Nullable<System.DateTime> i9F_Sec2_ListA_ExpirationDate2, string i9F_Sec2_ListA_DocumentTitle3, string i9F_Sec2_ListA_IssuingAuthority3, string i9F_Sec2_ListA_DocumentNumber3, Nullable<System.DateTime> i9F_Sec2_ListA_ExpirationDate3, string i9F_Sec2_ListB_DocumentTitle, string i9F_Sec2_ListB_IssuingAuthority, string i9F_Sec2_ListB_DocumentNumber, Nullable<System.DateTime> i9F_Sec2_ListB_ExpirationDate, string i9F_Sec2_ListC_DocumentTitle, string i9F_Sec2_ListC_IssuingAuthority, string i9F_Sec2_ListC_DocumentNumber, Nullable<System.DateTime> i9F_Sec2_ListC_ExpirationDate, string i9F_Sec2_AdditionalInformation, string i9F_Sec2_QRCodeSec2AndSec3, Nullable<System.DateTime> i9F_Sec2_EmployeesFirstDayOfEmployment, string i9F_Sec2_SignatureOfEmployerOrAuthorized, Nullable<System.DateTime> i9F_Sec2_DateOfEmployerOrAuthorizedSign, string i9F_Sec2_LastNameOfEmployerOrAuthorized, string i9F_Sec2_FirstNameOfEmployerOrAuthorized, string i9F_Sec2_MiddleInitialOfEmployerOrAuthorized, string i9F_Sec2_EmployersBusinessOrgnization_Name, string i9F_Sec2_EmployersBusinessOrgnization_Address, string i9F_Sec2_EmployersBusinessOrgnization_City, string i9F_Sec2_EmployersBusinessOrgnization_State, Nullable<int> i9F_Sec2_EmployersBusinessOrgnization_ZipCode, string i9F_Sec2_TitleOfEmployerOrOthrizedRepresentative, string i9F_Sec2_CitizenshipImmigrationStatus, string i9F_Sec3_A_LastName, string i9F_Sec3_A_FirstName, string i9F_Sec3_A_MiddleInitial, Nullable<System.DateTime> i9F_Sec3_B_DateOfReHire, string i9F_Sec3_C_DocumentTitle, string i9F_Sec3_C_DocumentNumber, Nullable<System.DateTime> i9F_Sec3_C_ExpirationDate, string i9F_Sec3_C_SignatureOfEmployerOrAuthorized, Nullable<System.DateTime> i9F_Sec3_C_DateOfEmployerOrAuthorizedSign, string i9F_Sec3_C_NameOfEmployerOrAuthorized, Nullable<System.DateTime> i9F_Date, string i9F_IsActive, string i9F_CaseNumber)
         {
             var i9FActionParameter = i9FAction != null ?
                 new ObjectParameter("I9FAction", i9FAction) :
@@ -7158,291 +7601,99 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("I9F_IsActive", i9F_IsActive) :
                 new ObjectParameter("I9F_IsActive", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetI9Form", i9FActionParameter, i9F_IdParameter, i9F_EMP_EmployeeIdParameter, i9F_Sec1_SSNParameter, i9F_Sec1_CitizenOfUSParameter, i9F_Sec1_NonCitizenOfUSParameter, i9F_Sec1_AlienRegistrationNum_USCISParameter, i9F_Sec1_AlienAuthorizedToWorkDateParameter, i9F_Sec1_I94AdmissionNumberParameter, i9F_Sec1_ForeignPassportNumberParameter, i9F_Sec1_ForeignPassportIssuanceCountryParameter, i9F_Sec1_SignatureOfEmployeeParameter, i9F_Sec1_DateOfEmployeeSignParameter, i9F_Sec1_QRCodeSec1Parameter, i9F_Sec1_PreparerAndTranslatorParameter, i9F_Sec1_SignatureOfPreparerOrTranslatorParameter, i9F_Sec1_DateOfPreparerOrTranslatorSignParameter, i9F_Sec1_FirstNameParameter, i9F_Sec1_MiddleInitialParameter, i9F_Sec1_LastNameParameter, i9F_Sec1_OtherLastNameParameter, i9F_Sec1_dateOfBirthParameter, i9F_Sec1_AddressParameter, i9F_Sec1_AptNumberParameter, i9F_Sec1_CityParameter, i9F_Sec1_StateParameter, i9F_Sec1_ZipCodeParameter, i9F_Sec1_EmailParameter, i9F_Sec1_EmployeeTelephoneNumberParameter, i9F_Sec2_ListA_DocumentTitle1Parameter, i9F_Sec2_ListA_IssuingAuthority1Parameter, i9F_Sec2_ListA_DocumentNumber1Parameter, i9F_Sec2_ListA_ExpirationDate1Parameter, i9F_Sec2_ListA_DocumentTitle2Parameter, i9F_Sec2_ListA_IssuingAuthority2Parameter, i9F_Sec2_ListA_DocumentNumber2Parameter, i9F_Sec2_ListA_ExpirationDate2Parameter, i9F_Sec2_ListA_DocumentTitle3Parameter, i9F_Sec2_ListA_IssuingAuthority3Parameter, i9F_Sec2_ListA_DocumentNumber3Parameter, i9F_Sec2_ListA_ExpirationDate3Parameter, i9F_Sec2_ListB_DocumentTitleParameter, i9F_Sec2_ListB_IssuingAuthorityParameter, i9F_Sec2_ListB_DocumentNumberParameter, i9F_Sec2_ListB_ExpirationDateParameter, i9F_Sec2_ListC_DocumentTitleParameter, i9F_Sec2_ListC_IssuingAuthorityParameter, i9F_Sec2_ListC_DocumentNumberParameter, i9F_Sec2_ListC_ExpirationDateParameter, i9F_Sec2_AdditionalInformationParameter, i9F_Sec2_QRCodeSec2AndSec3Parameter, i9F_Sec2_EmployeesFirstDayOfEmploymentParameter, i9F_Sec2_SignatureOfEmployerOrAuthorizedParameter, i9F_Sec2_DateOfEmployerOrAuthorizedSignParameter, i9F_Sec2_LastNameOfEmployerOrAuthorizedParameter, i9F_Sec2_FirstNameOfEmployerOrAuthorizedParameter, i9F_Sec2_MiddleInitialOfEmployerOrAuthorizedParameter, i9F_Sec2_EmployersBusinessOrgnization_NameParameter, i9F_Sec2_EmployersBusinessOrgnization_AddressParameter, i9F_Sec2_EmployersBusinessOrgnization_CityParameter, i9F_Sec2_EmployersBusinessOrgnization_StateParameter, i9F_Sec2_EmployersBusinessOrgnization_ZipCodeParameter, i9F_Sec2_TitleOfEmployerOrOthrizedRepresentativeParameter, i9F_Sec2_CitizenshipImmigrationStatusParameter, i9F_Sec3_A_LastNameParameter, i9F_Sec3_A_FirstNameParameter, i9F_Sec3_A_MiddleInitialParameter, i9F_Sec3_B_DateOfReHireParameter, i9F_Sec3_C_DocumentTitleParameter, i9F_Sec3_C_DocumentNumberParameter, i9F_Sec3_C_ExpirationDateParameter, i9F_Sec3_C_SignatureOfEmployerOrAuthorizedParameter, i9F_Sec3_C_DateOfEmployerOrAuthorizedSignParameter, i9F_Sec3_C_NameOfEmployerOrAuthorizedParameter, i9F_DateParameter, i9F_IsActiveParameter);
+            var i9F_CaseNumberParameter = i9F_CaseNumber != null ?
+                new ObjectParameter("I9F_CaseNumber", i9F_CaseNumber) :
+                new ObjectParameter("I9F_CaseNumber", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetI9Form", i9FActionParameter, i9F_IdParameter, i9F_EMP_EmployeeIdParameter, i9F_Sec1_SSNParameter, i9F_Sec1_CitizenOfUSParameter, i9F_Sec1_NonCitizenOfUSParameter, i9F_Sec1_AlienRegistrationNum_USCISParameter, i9F_Sec1_AlienAuthorizedToWorkDateParameter, i9F_Sec1_I94AdmissionNumberParameter, i9F_Sec1_ForeignPassportNumberParameter, i9F_Sec1_ForeignPassportIssuanceCountryParameter, i9F_Sec1_SignatureOfEmployeeParameter, i9F_Sec1_DateOfEmployeeSignParameter, i9F_Sec1_QRCodeSec1Parameter, i9F_Sec1_PreparerAndTranslatorParameter, i9F_Sec1_SignatureOfPreparerOrTranslatorParameter, i9F_Sec1_DateOfPreparerOrTranslatorSignParameter, i9F_Sec1_FirstNameParameter, i9F_Sec1_MiddleInitialParameter, i9F_Sec1_LastNameParameter, i9F_Sec1_OtherLastNameParameter, i9F_Sec1_dateOfBirthParameter, i9F_Sec1_AddressParameter, i9F_Sec1_AptNumberParameter, i9F_Sec1_CityParameter, i9F_Sec1_StateParameter, i9F_Sec1_ZipCodeParameter, i9F_Sec1_EmailParameter, i9F_Sec1_EmployeeTelephoneNumberParameter, i9F_Sec2_ListA_DocumentTitle1Parameter, i9F_Sec2_ListA_IssuingAuthority1Parameter, i9F_Sec2_ListA_DocumentNumber1Parameter, i9F_Sec2_ListA_ExpirationDate1Parameter, i9F_Sec2_ListA_DocumentTitle2Parameter, i9F_Sec2_ListA_IssuingAuthority2Parameter, i9F_Sec2_ListA_DocumentNumber2Parameter, i9F_Sec2_ListA_ExpirationDate2Parameter, i9F_Sec2_ListA_DocumentTitle3Parameter, i9F_Sec2_ListA_IssuingAuthority3Parameter, i9F_Sec2_ListA_DocumentNumber3Parameter, i9F_Sec2_ListA_ExpirationDate3Parameter, i9F_Sec2_ListB_DocumentTitleParameter, i9F_Sec2_ListB_IssuingAuthorityParameter, i9F_Sec2_ListB_DocumentNumberParameter, i9F_Sec2_ListB_ExpirationDateParameter, i9F_Sec2_ListC_DocumentTitleParameter, i9F_Sec2_ListC_IssuingAuthorityParameter, i9F_Sec2_ListC_DocumentNumberParameter, i9F_Sec2_ListC_ExpirationDateParameter, i9F_Sec2_AdditionalInformationParameter, i9F_Sec2_QRCodeSec2AndSec3Parameter, i9F_Sec2_EmployeesFirstDayOfEmploymentParameter, i9F_Sec2_SignatureOfEmployerOrAuthorizedParameter, i9F_Sec2_DateOfEmployerOrAuthorizedSignParameter, i9F_Sec2_LastNameOfEmployerOrAuthorizedParameter, i9F_Sec2_FirstNameOfEmployerOrAuthorizedParameter, i9F_Sec2_MiddleInitialOfEmployerOrAuthorizedParameter, i9F_Sec2_EmployersBusinessOrgnization_NameParameter, i9F_Sec2_EmployersBusinessOrgnization_AddressParameter, i9F_Sec2_EmployersBusinessOrgnization_CityParameter, i9F_Sec2_EmployersBusinessOrgnization_StateParameter, i9F_Sec2_EmployersBusinessOrgnization_ZipCodeParameter, i9F_Sec2_TitleOfEmployerOrOthrizedRepresentativeParameter, i9F_Sec2_CitizenshipImmigrationStatusParameter, i9F_Sec3_A_LastNameParameter, i9F_Sec3_A_FirstNameParameter, i9F_Sec3_A_MiddleInitialParameter, i9F_Sec3_B_DateOfReHireParameter, i9F_Sec3_C_DocumentTitleParameter, i9F_Sec3_C_DocumentNumberParameter, i9F_Sec3_C_ExpirationDateParameter, i9F_Sec3_C_SignatureOfEmployerOrAuthorizedParameter, i9F_Sec3_C_DateOfEmployerOrAuthorizedSignParameter, i9F_Sec3_C_NameOfEmployerOrAuthorizedParameter, i9F_DateParameter, i9F_IsActiveParameter, i9F_CaseNumberParameter);
         }
     
-        public virtual ObjectResult<spGetAssessmentQuestionQCQM_Result1> spGetAssessmentQuestionQCQM(string employeeID, string assessmentType)
+        public virtual ObjectResult<spGetI9Form_Result2> spGetI9Form(string employeeId)
         {
-            var employeeIDParameter = employeeID != null ?
-                new ObjectParameter("EmployeeID", employeeID) :
-                new ObjectParameter("EmployeeID", typeof(string));
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
     
-            var assessmentTypeParameter = assessmentType != null ?
-                new ObjectParameter("AssessmentType", assessmentType) :
-                new ObjectParameter("AssessmentType", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentQuestionQCQM_Result1>("spGetAssessmentQuestionQCQM", employeeIDParameter, assessmentTypeParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetI9Form_Result2>("spGetI9Form", employeeIdParameter);
         }
     
-        public virtual int spSetChangeExpectation(string action, Nullable<long> cHE_Id, string employeeID, string employeeIdManager, Nullable<long> aSQ_Id, string cHE_QuestionType, string cHE_FinencialYear, string cHE_FinQuarter, string cHE_ASQ_Question, string cHE_IsActive)
+        public virtual ObjectResult<spGetJobPosting_Result8> spGetJobPosting(string jPS_HiringManagerID)
         {
-            var actionParameter = action != null ?
-                new ObjectParameter("Action", action) :
-                new ObjectParameter("Action", typeof(string));
+            var jPS_HiringManagerIDParameter = jPS_HiringManagerID != null ?
+                new ObjectParameter("JPS_HiringManagerID", jPS_HiringManagerID) :
+                new ObjectParameter("JPS_HiringManagerID", typeof(string));
     
-            var cHE_IdParameter = cHE_Id.HasValue ?
-                new ObjectParameter("CHE_Id", cHE_Id) :
-                new ObjectParameter("CHE_Id", typeof(long));
-    
-            var employeeIDParameter = employeeID != null ?
-                new ObjectParameter("EmployeeID", employeeID) :
-                new ObjectParameter("EmployeeID", typeof(string));
-    
-            var employeeIdManagerParameter = employeeIdManager != null ?
-                new ObjectParameter("EmployeeIdManager", employeeIdManager) :
-                new ObjectParameter("EmployeeIdManager", typeof(string));
-    
-            var aSQ_IdParameter = aSQ_Id.HasValue ?
-                new ObjectParameter("ASQ_Id", aSQ_Id) :
-                new ObjectParameter("ASQ_Id", typeof(long));
-    
-            var cHE_QuestionTypeParameter = cHE_QuestionType != null ?
-                new ObjectParameter("CHE_QuestionType", cHE_QuestionType) :
-                new ObjectParameter("CHE_QuestionType", typeof(string));
-    
-            var cHE_FinencialYearParameter = cHE_FinencialYear != null ?
-                new ObjectParameter("CHE_FinencialYear", cHE_FinencialYear) :
-                new ObjectParameter("CHE_FinencialYear", typeof(string));
-    
-            var cHE_FinQuarterParameter = cHE_FinQuarter != null ?
-                new ObjectParameter("CHE_FinQuarter", cHE_FinQuarter) :
-                new ObjectParameter("CHE_FinQuarter", typeof(string));
-    
-            var cHE_ASQ_QuestionParameter = cHE_ASQ_Question != null ?
-                new ObjectParameter("CHE_ASQ_Question", cHE_ASQ_Question) :
-                new ObjectParameter("CHE_ASQ_Question", typeof(string));
-    
-            var cHE_IsActiveParameter = cHE_IsActive != null ?
-                new ObjectParameter("CHE_IsActive", cHE_IsActive) :
-                new ObjectParameter("CHE_IsActive", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetChangeExpectation", actionParameter, cHE_IdParameter, employeeIDParameter, employeeIdManagerParameter, aSQ_IdParameter, cHE_QuestionTypeParameter, cHE_FinencialYearParameter, cHE_FinQuarterParameter, cHE_ASQ_QuestionParameter, cHE_IsActiveParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetJobPosting_Result8>("spGetJobPosting", jPS_HiringManagerIDParameter);
         }
     
-        public virtual ObjectResult<spGetApplicantSignature_Result> spGetApplicantSignature(Nullable<long> aPT_ApplicantId)
+        public virtual ObjectResult<spGetAssessmentList306090_Result2> spGetAssessmentList306090(string employeeId)
         {
-            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
-                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
-                new ObjectParameter("APT_ApplicantId", typeof(long));
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantSignature_Result>("spGetApplicantSignature", aPT_ApplicantIdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssessmentList306090_Result2>("spGetAssessmentList306090", employeeIdParameter);
         }
     
-        public virtual int spSetApplicantSignature(string action, Nullable<long> aSG_Id, Nullable<long> aSG_APT_ApplicantId, string aSG_EMP_EmployeeId, string aSG_Signature, string aSG_IsActive)
+        public virtual int spSetNotification(string action, Nullable<long> nTF_Id, string nTF_Details, string nTF_Module, string nTF_Submodule, string nTF_SubmoduleId, string nTF_CreatedBy, string nTF_AssignTo, Nullable<bool> nTF_AssignToIsWorkable, Nullable<bool> nTF_CreatedByIsWorkable, string nFT_Severity, Nullable<System.DateTime> nTF_DeletedDate, Nullable<bool> nTF_IsRead, string nTF_IsActive)
         {
             var actionParameter = action != null ?
                 new ObjectParameter("Action", action) :
                 new ObjectParameter("Action", typeof(string));
     
-            var aSG_IdParameter = aSG_Id.HasValue ?
-                new ObjectParameter("ASG_Id", aSG_Id) :
-                new ObjectParameter("ASG_Id", typeof(long));
+            var nTF_IdParameter = nTF_Id.HasValue ?
+                new ObjectParameter("NTF_Id", nTF_Id) :
+                new ObjectParameter("NTF_Id", typeof(long));
     
-            var aSG_APT_ApplicantIdParameter = aSG_APT_ApplicantId.HasValue ?
-                new ObjectParameter("ASG_APT_ApplicantId", aSG_APT_ApplicantId) :
-                new ObjectParameter("ASG_APT_ApplicantId", typeof(long));
+            var nTF_DetailsParameter = nTF_Details != null ?
+                new ObjectParameter("NTF_Details", nTF_Details) :
+                new ObjectParameter("NTF_Details", typeof(string));
     
-            var aSG_EMP_EmployeeIdParameter = aSG_EMP_EmployeeId != null ?
-                new ObjectParameter("ASG_EMP_EmployeeId", aSG_EMP_EmployeeId) :
-                new ObjectParameter("ASG_EMP_EmployeeId", typeof(string));
+            var nTF_ModuleParameter = nTF_Module != null ?
+                new ObjectParameter("NTF_Module", nTF_Module) :
+                new ObjectParameter("NTF_Module", typeof(string));
     
-            var aSG_SignatureParameter = aSG_Signature != null ?
-                new ObjectParameter("ASG_Signature", aSG_Signature) :
-                new ObjectParameter("ASG_Signature", typeof(string));
+            var nTF_SubmoduleParameter = nTF_Submodule != null ?
+                new ObjectParameter("NTF_Submodule", nTF_Submodule) :
+                new ObjectParameter("NTF_Submodule", typeof(string));
     
-            var aSG_IsActiveParameter = aSG_IsActive != null ?
-                new ObjectParameter("ASG_IsActive", aSG_IsActive) :
-                new ObjectParameter("ASG_IsActive", typeof(string));
+            var nTF_SubmoduleIdParameter = nTF_SubmoduleId != null ?
+                new ObjectParameter("NTF_SubmoduleId", nTF_SubmoduleId) :
+                new ObjectParameter("NTF_SubmoduleId", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApplicantSignature", actionParameter, aSG_IdParameter, aSG_APT_ApplicantIdParameter, aSG_EMP_EmployeeIdParameter, aSG_SignatureParameter, aSG_IsActiveParameter);
-        }
+            var nTF_CreatedByParameter = nTF_CreatedBy != null ?
+                new ObjectParameter("NTF_CreatedBy", nTF_CreatedBy) :
+                new ObjectParameter("NTF_CreatedBy", typeof(string));
     
-        public virtual ObjectResult<spGetAplicantAcadmicDetails_Result> spGetAplicantAcadmicDetails(Nullable<long> aPT_ApplicantId)
-        {
-            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
-                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
-                new ObjectParameter("APT_ApplicantId", typeof(long));
+            var nTF_AssignToParameter = nTF_AssignTo != null ?
+                new ObjectParameter("NTF_AssignTo", nTF_AssignTo) :
+                new ObjectParameter("NTF_AssignTo", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAplicantAcadmicDetails_Result>("spGetAplicantAcadmicDetails", aPT_ApplicantIdParameter);
-        }
+            var nTF_AssignToIsWorkableParameter = nTF_AssignToIsWorkable.HasValue ?
+                new ObjectParameter("NTF_AssignToIsWorkable", nTF_AssignToIsWorkable) :
+                new ObjectParameter("NTF_AssignToIsWorkable", typeof(bool));
     
-        public virtual ObjectResult<spGetApplicantAccidentRecord_Result> spGetApplicantAccidentRecord(Nullable<long> aPT_ApplicantId)
-        {
-            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
-                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
-                new ObjectParameter("APT_ApplicantId", typeof(long));
+            var nTF_CreatedByIsWorkableParameter = nTF_CreatedByIsWorkable.HasValue ?
+                new ObjectParameter("NTF_CreatedByIsWorkable", nTF_CreatedByIsWorkable) :
+                new ObjectParameter("NTF_CreatedByIsWorkable", typeof(bool));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantAccidentRecord_Result>("spGetApplicantAccidentRecord", aPT_ApplicantIdParameter);
-        }
+            var nFT_SeverityParameter = nFT_Severity != null ?
+                new ObjectParameter("NFT_Severity", nFT_Severity) :
+                new ObjectParameter("NFT_Severity", typeof(string));
     
-        public virtual ObjectResult<spGetApplicantAdditionalInfo_Result> spGetApplicantAdditionalInfo(Nullable<long> aPT_ApplicantId)
-        {
-            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
-                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
-                new ObjectParameter("APT_ApplicantId", typeof(long));
+            var nTF_DeletedDateParameter = nTF_DeletedDate.HasValue ?
+                new ObjectParameter("NTF_DeletedDate", nTF_DeletedDate) :
+                new ObjectParameter("NTF_DeletedDate", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantAdditionalInfo_Result>("spGetApplicantAdditionalInfo", aPT_ApplicantIdParameter);
-        }
+            var nTF_IsReadParameter = nTF_IsRead.HasValue ?
+                new ObjectParameter("NTF_IsRead", nTF_IsRead) :
+                new ObjectParameter("NTF_IsRead", typeof(bool));
     
-        public virtual ObjectResult<spGetApplicantAddress_Result> spGetApplicantAddress(Nullable<long> aPT_ApplicantId)
-        {
-            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
-                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
-                new ObjectParameter("APT_ApplicantId", typeof(long));
+            var nTF_IsActiveParameter = nTF_IsActive != null ?
+                new ObjectParameter("NTF_IsActive", nTF_IsActive) :
+                new ObjectParameter("NTF_IsActive", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantAddress_Result>("spGetApplicantAddress", aPT_ApplicantIdParameter);
-        }
-    
-        public virtual ObjectResult<spGetApplicantBackgroundHistory_Result> spGetApplicantBackgroundHistory(Nullable<long> aPT_ApplicantId)
-        {
-            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
-                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
-                new ObjectParameter("APT_ApplicantId", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantBackgroundHistory_Result>("spGetApplicantBackgroundHistory", aPT_ApplicantIdParameter);
-        }
-    
-        public virtual ObjectResult<spGetApplicantContactInfo_Result3> spGetApplicantContactInfo(Nullable<long> applicantId)
-        {
-            var applicantIdParameter = applicantId.HasValue ?
-                new ObjectParameter("ApplicantId", applicantId) :
-                new ObjectParameter("ApplicantId", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantContactInfo_Result3>("spGetApplicantContactInfo", applicantIdParameter);
-        }
-    
-        public virtual ObjectResult<spGetApplicantLicenseHeald_Result> spGetApplicantLicenseHeald(Nullable<long> aPT_ApplicantId)
-        {
-            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
-                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
-                new ObjectParameter("APT_ApplicantId", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantLicenseHeald_Result>("spGetApplicantLicenseHeald", aPT_ApplicantIdParameter);
-        }
-    
-        public virtual ObjectResult<spGetApplicantPersonalInfo_Result> spGetApplicantPersonalInfo(Nullable<long> aPT_ApplicantId)
-        {
-            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
-                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
-                new ObjectParameter("APT_ApplicantId", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantPersonalInfo_Result>("spGetApplicantPersonalInfo", aPT_ApplicantIdParameter);
-        }
-    
-        public virtual ObjectResult<spGetApplicantPositionTitle_Result> spGetApplicantPositionTitle(Nullable<long> aPT_ApplicantId)
-        {
-            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
-                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
-                new ObjectParameter("APT_ApplicantId", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantPositionTitle_Result>("spGetApplicantPositionTitle", aPT_ApplicantIdParameter);
-        }
-    
-        public virtual ObjectResult<spGetApplicantSchecduleAvaliblity_Result> spGetApplicantSchecduleAvaliblity(Nullable<long> aPT_ApplicantId)
-        {
-            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
-                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
-                new ObjectParameter("APT_ApplicantId", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantSchecduleAvaliblity_Result>("spGetApplicantSchecduleAvaliblity", aPT_ApplicantIdParameter);
-        }
-    
-        public virtual ObjectResult<spGetApplicantTrafficConvictions_Result> spGetApplicantTrafficConvictions(Nullable<long> aPT_ApplicantId)
-        {
-            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
-                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
-                new ObjectParameter("APT_ApplicantId", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantTrafficConvictions_Result>("spGetApplicantTrafficConvictions", aPT_ApplicantIdParameter);
-        }
-    
-        public virtual ObjectResult<spGetApplicantVehiclesOperated_Result> spGetApplicantVehiclesOperated(Nullable<long> aPT_ApplicantId)
-        {
-            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
-                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
-                new ObjectParameter("APT_ApplicantId", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantVehiclesOperated_Result>("spGetApplicantVehiclesOperated", aPT_ApplicantIdParameter);
-        }
-    
-        public virtual ObjectResult<spGetEEO_Result1> spGetEEO(string eEO_EMP_EmployeeID)
-        {
-            var eEO_EMP_EmployeeIDParameter = eEO_EMP_EmployeeID != null ?
-                new ObjectParameter("EEO_EMP_EmployeeID", eEO_EMP_EmployeeID) :
-                new ObjectParameter("EEO_EMP_EmployeeID", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEEO_Result1>("spGetEEO", eEO_EMP_EmployeeIDParameter);
-        }
-    
-        public virtual int spSetEEO(string action, Nullable<long> eEO_Id, string eEO_EMP_EmployeeID, string eEO_Gender, string eEO_Race, string eEO_VeteranStatus, Nullable<System.DateTime> eEO_VeteranDateOfDischarge, string eEO_DisabilityDisclose, string eEO_IsActive, string eEO_DisabilityDiscloseDiscription)
-        {
-            var actionParameter = action != null ?
-                new ObjectParameter("Action", action) :
-                new ObjectParameter("Action", typeof(string));
-    
-            var eEO_IdParameter = eEO_Id.HasValue ?
-                new ObjectParameter("EEO_Id", eEO_Id) :
-                new ObjectParameter("EEO_Id", typeof(long));
-    
-            var eEO_EMP_EmployeeIDParameter = eEO_EMP_EmployeeID != null ?
-                new ObjectParameter("EEO_EMP_EmployeeID", eEO_EMP_EmployeeID) :
-                new ObjectParameter("EEO_EMP_EmployeeID", typeof(string));
-    
-            var eEO_GenderParameter = eEO_Gender != null ?
-                new ObjectParameter("EEO_Gender", eEO_Gender) :
-                new ObjectParameter("EEO_Gender", typeof(string));
-    
-            var eEO_RaceParameter = eEO_Race != null ?
-                new ObjectParameter("EEO_Race", eEO_Race) :
-                new ObjectParameter("EEO_Race", typeof(string));
-    
-            var eEO_VeteranStatusParameter = eEO_VeteranStatus != null ?
-                new ObjectParameter("EEO_VeteranStatus", eEO_VeteranStatus) :
-                new ObjectParameter("EEO_VeteranStatus", typeof(string));
-    
-            var eEO_VeteranDateOfDischargeParameter = eEO_VeteranDateOfDischarge.HasValue ?
-                new ObjectParameter("EEO_VeteranDateOfDischarge", eEO_VeteranDateOfDischarge) :
-                new ObjectParameter("EEO_VeteranDateOfDischarge", typeof(System.DateTime));
-    
-            var eEO_DisabilityDiscloseParameter = eEO_DisabilityDisclose != null ?
-                new ObjectParameter("EEO_DisabilityDisclose", eEO_DisabilityDisclose) :
-                new ObjectParameter("EEO_DisabilityDisclose", typeof(string));
-    
-            var eEO_IsActiveParameter = eEO_IsActive != null ?
-                new ObjectParameter("EEO_IsActive", eEO_IsActive) :
-                new ObjectParameter("EEO_IsActive", typeof(string));
-    
-            var eEO_DisabilityDiscloseDiscriptionParameter = eEO_DisabilityDiscloseDiscription != null ?
-                new ObjectParameter("EEO_DisabilityDiscloseDiscription", eEO_DisabilityDiscloseDiscription) :
-                new ObjectParameter("EEO_DisabilityDiscloseDiscription", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetEEO", actionParameter, eEO_IdParameter, eEO_EMP_EmployeeIDParameter, eEO_GenderParameter, eEO_RaceParameter, eEO_VeteranStatusParameter, eEO_VeteranDateOfDischargeParameter, eEO_DisabilityDiscloseParameter, eEO_IsActiveParameter, eEO_DisabilityDiscloseDiscriptionParameter);
-        }
-    
-        public virtual ObjectResult<spGetFormRateOfPay_Result3> spGetFormRateOfPay(Nullable<long> applicantId)
-        {
-            var applicantIdParameter = applicantId.HasValue ?
-                new ObjectParameter("ApplicantId", applicantId) :
-                new ObjectParameter("ApplicantId", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetFormRateOfPay_Result3>("spGetFormRateOfPay", applicantIdParameter);
-        }
-    
-        public virtual ObjectResult<spGetQuestionsForInterview_Result5> spGetQuestionsForInterview(string action, string isExempt, Nullable<long> iQC_IQM_Id)
-        {
-            var actionParameter = action != null ?
-                new ObjectParameter("Action", action) :
-                new ObjectParameter("Action", typeof(string));
-    
-            var isExemptParameter = isExempt != null ?
-                new ObjectParameter("IsExempt", isExempt) :
-                new ObjectParameter("IsExempt", typeof(string));
-    
-            var iQC_IQM_IdParameter = iQC_IQM_Id.HasValue ?
-                new ObjectParameter("IQC_IQM_Id", iQC_IQM_Id) :
-                new ObjectParameter("IQC_IQM_Id", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetQuestionsForInterview_Result5>("spGetQuestionsForInterview", actionParameter, isExemptParameter, iQC_IQM_IdParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetNotification", actionParameter, nTF_IdParameter, nTF_DetailsParameter, nTF_ModuleParameter, nTF_SubmoduleParameter, nTF_SubmoduleIdParameter, nTF_CreatedByParameter, nTF_AssignToParameter, nTF_AssignToIsWorkableParameter, nTF_CreatedByIsWorkableParameter, nFT_SeverityParameter, nTF_DeletedDateParameter, nTF_IsReadParameter, nTF_IsActiveParameter);
         }
     }
 }

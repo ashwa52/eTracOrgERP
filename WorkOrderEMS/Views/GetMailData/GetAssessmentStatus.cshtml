@@ -40,10 +40,32 @@
                                 <label>Email:@Model.Email</label>
                             </div>
                         </div>
+
+                        
+                        @if (Model.ActionValue == "Offer")
+                        {
+                        <div class="col-md-12">
+                            
+                            <input type="submit" class="btnRegister" data-actionvalue="@Model.ActionValue" data-isactive="C" id="OfferCountered" onclick="ClearedNotClear(this)" style="background-color:cornflowerblue;width:31%;" value="Offer Countered" />
+                            <input type="submit" class="btnRegister" data-actionvalue="@Model.ActionValue" data-isactive="A" id="OfferAccepted" onclick="ClearedNotClear(this)" style="width:31%;background: green;" value="Offer Accepted" />
+                            <input type="submit" class="btnRegister" data-actionvalue="@Model.ActionValue" data-isactive="D" id="OfferDeclined" onclick="ClearedNotClear(this)" style="background-color:red;width:31%;" value="Offer Declined" />
+                        </div>
+                        }
+                        else
+                        {
+                            <div class="col-md-6">
+                            <label>Marks : </label>
+                            @Html.TextBoxFor(model => model.AssessmentMark, new { @class = "form-control btn-rounded" })
+                        </div>
+                        <div class="col-md-6">
+                            <label>Attchment : </label>
+                            <input type="file" name="AssessmentFile" id="AssessmentFile"/>
+                        </div>
                         <div class="col-md-12">
                             <input type="submit" class="btnRegister" data-actionvalue="@Model.ActionValue" data-isactive="Y" id ="ClearedId" onclick="ClearedNotClear(this)" value="Cleared" />
                             <input type="submit" class="btnRegister" data-actionvalue="@Model.ActionValue" data-isactive="N" id ="NotClearedId" onclick="ClearedNotClear(this)" style="background-color:red;" value="Not Cleared" />
                         </div>
+                        }
                     </div>
                 </div>           
             </div>

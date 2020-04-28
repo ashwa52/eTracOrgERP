@@ -282,25 +282,26 @@ namespace WorkOrderEMS.BusinessLogic
         int GetScore(long ApplicantId);
         bool CheckIfAllRespondedForQuestion(long ApplicantId, long QusId);
         List<PerformanceModel> GetListOf306090ForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords);
-        bool saveSelfAssessment(List<GWCQUestionModel> data, string action);
-        bool saveEvaluation(List<GWCQUestionModel> data, string action);
+        bool saveSelfAssessment(List<GWCQUestionModel> data, string action, string UserName);
+        bool saveEvaluation(List<GWCQUestionModel> data, string action, string UserName);
+        //bool saveEvaluation(List<GWCQUestionModel> data, string action);
         List<PerformanceModel> GetListOfExpectationsForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords);
         bool saveExpectations(List<GWCQUestionModel> data, string action);
         List<PerformanceModel> GetListOfQEvaluationsForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords);
         bool VerifyEmployee(OnboardingDetailRequestModel onboardingDetailRequestModel);
         //List<spGetJobPostingDetails_ForCompanyOpening_Result> GetJobPostingDetailsForCompanyOpening(long JPS_JobPostingId);
         // BudgetDetails GetListBudgetDetails(long? LocationId, long? UserId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
-        List<spGetJobPosting_ForCompanyOpening_Result> GetJobPostingForCompanyOpening(string HiringManagerId);
+        List<spGetJobPosting_ForCompanyOpening_Result1> GetJobPostingForCompanyOpening(string HiringManagerId);
         bool saveQEvaluations(List<GWCQUestionModel> data, string action);
         bool SetupMeetingEmail(SetupMeeting objSetupMeeting);
         string GetMeetingDetail(string Id,string  FinYear, string FinQuarter);
         List<ReviewMeeting> GetMeetingList();
         bool SetInterviewAcceptCancel(string status, long ApplicantId, string IsActive);
         spGetHiringGraph_Result HiringGraphCount(long PostingId);
-        List<EventModel> GetMyEvents(long UserName, string start, string end);
-        string CreateNewEvent(string Title, string NewEventDate, string NewEventTime, string NewEventDuration, string JobId, string ApplicantName, string ApplicantEmail,long ManagerId,string selectedManagers);
+        List<EventModel> GetMyEvents(string UserName, string start, string end);
+        string CreateNewEvent(string Title, string NewEventDate, string NewEventTime, string NewEventDuration, string JobId, string ApplicantName, string ApplicantEmail,string ManagerId,string selectedManagers);
         bool UpdateEvent(int id, string NewEventStart, string NewEventEnd);
-        List<EventModel> GetBookedSlots(long userid);
+        List<EventModel> GetBookedSlots(string UserName);
         List<EventModel> GetOutlookMeetingDetails(string start, string end);
         List<ChildrenQuestionModel> GetInterviewChildQuestions(int num);
         AnswerModel GetInterviewAnswerByApplicantId(int Applicant);
@@ -310,5 +311,6 @@ namespace WorkOrderEMS.BusinessLogic
 
         List<GWCQUestionModel> GetSelfAssessmentView(string Id, string AssessmetType);
         List<GWCQUestionModel> GetGWCQuestions(string Id, string AssessmetType, string type);
+        bool UpdateInterviewPanel(string selectedManagers, string Manager, string JobId, string JobTitle);
     }
 }

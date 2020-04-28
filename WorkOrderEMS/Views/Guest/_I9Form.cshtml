@@ -218,6 +218,7 @@
         @*@Html.BeginForm("_I9Form", "Guest", FormMethod.Post, new { id = "I9Form" }))
             {*@
         @Html.HiddenFor(x => x.I9F_Id)
+        @Html.HiddenFor(x => x.Case_Number)
         <header>
             <div>
                 <div class="column left">
@@ -321,7 +322,7 @@
                         <td colspan="20" style="padding-bottom: 33px;" width:200px">
                             <p>Date of Birth <i>(mm/dd/yyyy)</i></p>
 
-                            @Html.TextBoxFor(x => x.I9F_Sec1_dateOfBirth, new { @class = "text-line", @style = "width:200px;" })
+                            @Html.TextBoxFor(x => x.I9F_Sec1_dateOfBirth, new { @class = "text-line datepicker", @style = "width:200px;" })
                             @Html.ValidationMessageFor(x => x.I9F_Sec1_dateOfBirth, "", new { @style = "color:red;" })
                         </td>
                         <td colspan="30" width:100px">
@@ -398,7 +399,7 @@
                         <td colspan="80">
                             <p><input type="checkbox"> <span style="position:absolute;left:70px;">4. An alien authorized to work until (expiration date, if applicable, mm/dd/yyyy): </span></p><br />
                             Some aliens may write "N/A" in the expiration date field. <i>(See instructions)</i><br />
-                            @Html.TextBoxFor(x => x.I9F_Sec1_AlienAuthorizedToWorkDate, new { @class = "text-line", @style = "width:400px;" })
+                            @Html.TextBoxFor(x => x.I9F_Sec1_AlienAuthorizedToWorkDate, new { @class = "text-line datepicker", @style = "width:400px;" })
                             @Html.ValidationMessageFor(x => x.I9F_Sec1_AlienAuthorizedToWorkDate, "", new { @style = "color:red;" })
                             <p>
                                 <i>
@@ -471,7 +472,7 @@
                             <b>2. </b>Form I-94 Admission Number:
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            @Html.TextBoxFor(x => x.I9F_Sec1_AlienAuthorizedToWorkDate, new { @class = "text-line", @style = "width:300px;" })
+                            @Html.TextBoxFor(x => x.I9F_Sec1_AlienAuthorizedToWorkDate, new { @class = "text-line datepicker", @style = "width:300px;" })
                             @Html.ValidationMessageFor(x => x.I9F_Sec1_AlienAuthorizedToWorkDate, "", new { @style = "color:red;" })
 
 
@@ -534,7 +535,7 @@
                         </td>
                         <td colspan="50">
                             <p>Today's Date <i>(mm/dd/yyyy)</i></p>
-                            @Html.TextBoxFor(x => x.I9F_Sec1_DateOfEmployeeSign, new { @class = "text-line", @style = "width:200px;" })
+                            @Html.TextBoxFor(x => x.I9F_Sec1_DateOfEmployeeSign, new { @class = "text-line datepicker", @style = "width:200px;" })
                             @Html.ValidationMessageFor(x => x.I9F_Sec1_DateOfEmployeeSign, "", new { @style = "color:red;" })
                         </td>
                     </tr>
@@ -579,7 +580,7 @@
                         <td colspan="50%" style="padding-bottom: 33px;">
                             <p>Today's Date <i>(mm/dd/yyyy)</i></p>
 
-                            @Html.TextBoxFor(x => x.I9F_Sec1_DateOfEmployeeSign, new { @class = "text-line", @style = "width:650px;" })
+                            @Html.TextBoxFor(x => x.I9F_Sec1_DateOfEmployeeSign, new { @class = "text-line datepicker", @style = "width:650px;" })
                             @Html.ValidationMessageFor(x => x.I9F_Sec1_DateOfEmployeeSign, "", new { @style = "color:red;" })
 
                         </td>
@@ -662,7 +663,7 @@
                     </h3>
                     <span style="color:black">
                         OMB No. 1615-0047<br />
-                        Expires 08/31/2019
+                        Expires 08/31/2020
                     </span>
 
                 </div>
@@ -810,7 +811,7 @@
                         <td colspan="25" style="padding-bottom: 33px;">
                             Expiration Date (if any)(mm/dd/yyyy)
                             <br />
-                            @Html.TextBoxFor(x => x.I9F_Sec2_ListA_ExpirationDate1, new { @class = "text-line", @style = "width:400px;" })
+                            @Html.TextBoxFor(x => x.I9F_Sec2_ListA_ExpirationDate1, new { @class = "text-line datepicker", @style = "width:400px;" })
                             @Html.ValidationMessageFor(x => x.I9F_Sec2_ListA_ExpirationDate1, "", new { @style = "color:red;" })
 
                         </td>
@@ -819,10 +820,10 @@
                             Expiration Date (if any)(mm/dd/yyyy)
                             <span style="margin-left: 10px;">Expiration Date (if any)(mm/dd/yyyy)</span>
                             <br />
-                            @Html.TextBoxFor(x => x.I9F_Sec2_ListA_ExpirationDate2, new { @class = "text-line", @style = "width:300px;" })
+                            @Html.TextBoxFor(x => x.I9F_Sec2_ListA_ExpirationDate2, new { @class = "text-line datepicker", @style = "width:300px;" })
                             @Html.ValidationMessageFor(x => x.I9F_Sec2_ListA_ExpirationDate2, "", new { @style = "color:red;" })
                             &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-                            @Html.TextBoxFor(x => x.I9F_Sec2_ListA_ExpirationDate3, new { @class = "text-line", @style = "width:300px;" })
+                            @Html.TextBoxFor(x => x.I9F_Sec2_ListA_ExpirationDate3, new { @class = "text-line datepicker", @style = "width:300px;" })
                             @Html.ValidationMessageFor(x => x.I9F_Sec2_ListA_ExpirationDate3, "", new { @style = "color:red;" })
 
                         </td>
@@ -868,7 +869,7 @@
                         <td style="padding-bottom: 33px;">
                             Expiration Date (if any)(mm/dd/yyyy)
                             <br />
-                            @Html.TextBoxFor(x => x.I9F_Sec2_ListB_ExpirationDate, new { @class = "text-line", @style = "width:490px;" })
+                            @Html.TextBoxFor(x => x.I9F_Sec2_ListB_ExpirationDate, new { @class = "text-line datepicker", @style = "width:490px;" })
                             @Html.ValidationMessageFor(x => x.I9F_Sec2_ListB_ExpirationDate, "", new { @style = "color:red;" })
                         </td>
                         <td style="border-bottom:1px solid white;"></td>
@@ -905,7 +906,7 @@
                         <td style="padding-bottom: 33px;">
                             Expiration Date (if any)(mm/dd/yyyy)
                             <br />
-                            @Html.TextBoxFor(x => x.I9F_Sec2_ListC_ExpirationDate, new { @class = "text-line", @style = "width:490px;" })
+                            @Html.TextBoxFor(x => x.I9F_Sec2_ListC_ExpirationDate, new { @class = "text-line datepicker", @style = "width:490px;" })
                             @Html.ValidationMessageFor(x => x.I9F_Sec2_ListC_ExpirationDate, "", new { @style = "color:red;" })
                         </td>
                         <td style="border-bottom:1px solid white;"></td>
@@ -969,7 +970,7 @@
                     employee is authorized to work in the United States.
             </p>
 
-            <p style="color:black">The employee's first day of employment (mm/dd/yyyy):<input type="text" style="width:382px;" class="text-line" />(See instructions for exemptions)</b></p>
+            <p style="color:black">The employee's first day of employment (mm/dd/yyyy):<input type="text" style="width:382px;" class="text-line datepicker" />(See instructions for exemptions)</b></p>
             <table colspan="100">
                 <tbody>
                     <tr>
@@ -1106,7 +1107,7 @@
                         <td colspan="20" style="padding-bottom: 33px;">
                             Date (mm/dd/yyyy)
                             <br />
-                            @Html.TextBoxFor(x => x.I9F_Sec3_B_DateOfReHire, new { @class = "text-line", @style = "width:200px;" })
+                            @Html.TextBoxFor(x => x.I9F_Sec3_B_DateOfReHire, new { @class = "text-line datepicker", @style = "width:200px;" })
                             @Html.ValidationMessageFor(x => x.I9F_Sec3_B_DateOfReHire, "", new { @style = "color:red;" })
 
                         </td>
@@ -1140,7 +1141,7 @@
                         <td colspan="10" style="padding-bottom: 33px;">
                             Expiration Date (if any) (mm/dd/yyyy)
                             <br />
-                            @Html.TextBoxFor(x => x.I9F_Sec3_C_ExpirationDate, new { @class = "text-line", @style = "width:400px;" })
+                            @Html.TextBoxFor(x => x.I9F_Sec3_C_ExpirationDate, new { @class = "text-line datepicker", @style = "width:400px;" })
                             @Html.ValidationMessageFor(x => x.I9F_Sec3_C_ExpirationDate, "", new { @style = "color:red;" })
 
                         </td>
@@ -1486,5 +1487,10 @@
 </div>
 <script src="~/Scripts/Guest/ApplicantFormSave.js"></script>
 <script src="~/Scripts/Guest/SketchSignature.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".datepicker").datepicker();
+    });
+</script>
 
 

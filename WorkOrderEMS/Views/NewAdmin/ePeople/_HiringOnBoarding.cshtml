@@ -12,39 +12,34 @@
 	<div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">On-Boarding/Generate New Employee</h5>
+                @*<h5 class="modal-title">On-Boarding/Generate New Employee</h5>*@
+                <h5 class="modal-title">Create New EmployeeID</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <div id="divDetailPreview" class="">
+                @*<div id="divDetailPreview" class="">
                     <div class="row">
                         <div class="" id="DivContractDetailsIndex">
                             <form id="SaveVCSChartForm1">
 
                                 <div class="basic-form" style="margin-right: 40px;">
                                     <div class="form-group row">
-                                        @*@Html.LabelFor(model => model.SeatingName, new { @class = "col-sm-2 col-form-label" })*@
                                         <div class="col-sm-4">
                                             <input type="text" id="onboardFirstName" class="form-control input-rounded" placeholder="First Name" />
                                             <input type="hidden" id="htn_applicationId" />
                                             <input type="hidden" id="job_title" />
                                             <input type="hidden" id="doj" />
-
-                                        </div>
-                                        @*@Html.LabelFor(model => model.Superior, new { @class = "col-sm-2 col-form-label" })*@
+                                        </div>                                       
                                         <div class="col-sm-4">
                                             <input type="text" id="onboardMiddleName" class="form-control input-rounded" placeholder="Middle Name" />
-
                                         </div>
                                         <div class="col-sm-4">
                                             <input type="text" id="onboardLastName" class="form-control input-rounded" placeholder="Last Name" />
-
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-                                        @*@Html.LabelFor(model => model.Department, new { @class = "col-sm-2 col-form-label" })*@
+                                    <div class="form-group row">                                        
                                         <div class="col-sm-6">
                                             <input type="text" id="onboardAddress1" class="form-control input-rounded" placeholder="Street Address1" />
                                         </div>
@@ -52,9 +47,7 @@
                                             <input type="text" id="onboardAddress2" class="form-control input-rounded" placeholder="Street Address2" />
                                         </div>
                                     </div>
-                                    <div class="form-group row">
-
-                                        @*@Html.LabelFor(model => model.JobDescription, new { @class = "col-sm-2 col-form-label" })*@
+                                    <div class="form-group row">                                       
                                         <div class="col-sm-6">
                                             <input type="text" id="onboardCity" class="form-control input-rounded" placeholder="City" />
                                         </div>
@@ -63,8 +56,6 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-
-                                        @*@Html.LabelFor(model => model.JobDescription, new { @class = "col-sm-2 col-form-label" })*@
                                         <div class="col-sm-6">
                                             <input type="text" id="onboardMobile" class="form-control input-rounded " placeholder="Mobile" />
                                         </div>
@@ -76,13 +67,7 @@
                             </form>
                         </div>
                     </div>
-                </div>
-                <br />
-                <br />
-                @*new textbox start*@
-
-                @*new taxtbox end*@
-
+                </div>*@
                 <div>
                     <div class="text-input">
                         <input type="text" id="empid" class="form-control input-rounded " style="width:40%;display:inline-block" placeholder="EmployeeID">

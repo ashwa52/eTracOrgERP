@@ -381,6 +381,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         public eTracLoginModel AuthenticateUser(eTracLoginModel loginViewModel)
         {
             //var clientUrl = new ApplicantAPI();
+            
             //var data = clientUrl.Configuration("https://api.availity.com/availity/v1/configurations");
             ObjUserRepository = new UserRepository();
             //objLocationServicesRepository = new LocationServicesRepository();
@@ -697,6 +698,20 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         case (Int64)(UserType.GuestUser):
                             eTracLoginModel locationDetailsHR = ObjUserRepository.GetLocationDetailsByUserIDForHR(authuser.UserId);
                             //obj_LocationMasterModel = GetClientUserLocation_First(authuser.UserId);
+                            #region API
+                            var objCommon = new CommonMethodManager();
+                            var convertedClass = new CommonAPIJsonConvertToClass<object>();
+                            var getStringLogin  = objCommon.GetJsoSerializeDataForAPI(APIName.I9AuthenticationAPI,null);
+                            var clientUrl = new Helper.CommonHTTPClient();              
+                            var getOutputData = clientUrl.I9PostData(getStringLogin, APIName.I9AuthenticationLink);
+                            var getClassData = Newtonsoft.Json.JsonConvert.DeserializeObject<LoginI9AuthenticationModel.RootObjectLoginI9>(getOutputData);
+                            //Refresh Token
+                            
+                            var getOutputDataRefreshToken = clientUrl.I9RefreshToken(getClassData.access_token, APIName.I9refreshTokenLink);
+                            var getClassDataRefreshToken = Newtonsoft.Json.JsonConvert.DeserializeObject<LoginI9AuthenticationModel.RootObjectRefreshToken>(getOutputDataRefreshToken);
+                            loginViewModel.RefreshI9Token = getClassDataRefreshToken.access_token;
+                            loginViewModel.I9CompanyId = getClassDataRefreshToken.user_info.agency_employer_id;
+                            #endregion API
                             if (obj_LocationMasterModel != null)
                             {
                                 loginViewModel.LocationID = locationDetailsHR.LocationID;
@@ -1427,5 +1442,6 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
 
         }
+        
     }
 }

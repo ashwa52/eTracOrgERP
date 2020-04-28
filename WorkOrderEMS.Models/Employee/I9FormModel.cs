@@ -124,5 +124,8 @@ namespace WorkOrderEMS.Models
         public bool  IsSignature { get; set; }
         public string EmployeeSignatureName { get; set; }
         //public string EmployeeSignatureTranslatorImage { get; set; }
+        public string RefreshTokenI9 { get; set; }
+        public long I9CompanyId { get; set; }
+        public string Case_Number { get; set; }
     }
 }

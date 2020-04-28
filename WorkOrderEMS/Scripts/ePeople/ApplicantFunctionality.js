@@ -13,8 +13,9 @@
             success: function (Data) {
                 debugger
                 var url = "../Guest/_W4Form";
-                //$('#RenderPageId').load(url);
-                $("#RenderPageId").html(Data);
+                //var url = "../Guest/BenifitSection";
+                $('#RenderPageId').load(url);
+                //$("#RenderPageId").html(Data);
                 //toastr.success(Data.Message);
             },
             error: function (err) {

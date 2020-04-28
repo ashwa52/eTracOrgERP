@@ -39,5 +39,7 @@ namespace WorkOrderEMS.BusinessLogic
         bool SendForAssessment(string Status, string IsActive, long ApplicantId, long UserId);
         bool ClearedOrNot(string IsActive, string ActionVal, long ApplicantId);
         bool SendForBackgroundCheck(string Status, string IsActive, long ApplicantId, long UserId);
+        void ScheduleInterviewOfApplicant(long IPT_Id, string status);
+        BenefitList GetBenifitList(long ApplicantId);
     }
 }

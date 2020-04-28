@@ -428,6 +428,7 @@
     <Compile Include="Controllers\NewAdmin\GetMailDataController.cs" />
     <Compile Include="Controllers\NewAdmin\GlobalSettingsController.cs" />
     <Compile Include="Controllers\NewAdmin\NewAdminController.cs" />
+    <Compile Include="Controllers\Notification\NotificationController.cs" />
     <Compile Include="Controllers\PDF\PDFDataController.cs" />
     <Compile Include="Controllers\QRCSetup\QRCSetupController.cs" />
     <Compile Include="Controllers\QuickBookData\App1Controller.cs" />
@@ -1251,6 +1252,8 @@
     <Content Include="Content\Dashboard\plugins\fullcalendar\fullcalendar.min.css" />
     <Content Include="Content\Dashboard\plugins\fullcalendar\fullcalendar.min.js" />
     <Content Include="Content\Dashboard\plugins\fullcalendar\fullcalendar.print.css" />
+    <Content Include="Content\Dashboard\plugins\fullcalendar\MultiselectManager.css" />
+    <Content Include="Content\Dashboard\plugins\fullcalendar\MultiselectManager.js" />
     <Content Include="Content\Dashboard\plugins\fullcalendar\mySchedule.js" />
     <Content Include="Content\Dashboard\plugins\iCheck\all.css" />
     <Content Include="Content\Dashboard\plugins\iCheck\flat\aero%402x.png" />
@@ -1599,6 +1602,7 @@
     <Content Include="Content\NewAdminContent\CSS\MyGuestStyle.css" />
     <Content Include="Content\NewAdminContent\CSS\NewTreeUserView.css" />
     <Content Include="Content\NewAdminContent\CSS\NewTreeVSC.css" />
+    <Content Include="Content\NewAdminContent\CSS\Notification.css" />
     <Content Include="Content\NewAdminContent\CSS\perfect-scrollbar.css" />
     <Content Include="Content\NewAdminContent\CSS\RadioButtonCSS.css" />
     <Content Include="Content\NewAdminContent\CSS\style.css" />
@@ -5221,6 +5225,7 @@
     <Content Include="Images\eTrac450-light.png" />
     <Content Include="Images\eTrac450.png" />
     <Content Include="Images\etracblur450.png" />
+    <Content Include="Images\floridablue.png" />
     <Content Include="Images\FormImages\I-9-stop.jpg" />
     <Content Include="Images\FormImages\I-9.jpg" />
     <Content Include="Images\FormImages\image-form.jpg" />
@@ -5252,6 +5257,9 @@
     <Content Include="IOSTimePicker.html" />
     <Content Include="MailTemplate\Applicant\ChangePassword.html" />
     <Content Include="MailTemplate\Applicant\ForgotPasswordApplicant.html" />
+    <Content Include="MailTemplate\Applicant\OffereLetterRejected.html" />
+    <Content Include="MailTemplate\Applicant\OfferLetterAccepted.html" />
+    <Content Include="MailTemplate\Applicant\OfferLetterCounter.html" />
     <Content Include="MailTemplate\Applicant\SignUpApplicant.html" />
     <Content Include="MailTemplate\EPeople\Backgroundcheck.html" />
     <Content Include="MailTemplate\EPeople\OfferLetter.html" />
@@ -6232,6 +6240,7 @@
     <Content Include="Scripts\NewAdminJS\WorkOrderHideShowFunctionality.js" />
     <Content Include="Scripts\NewTimePicker\jquery.timesetter.js" />
     <Content Include="Scripts\NewTimePicker\jquery.timesetter.min.css" />
+    <Content Include="Scripts\Notification\NotificationFunctionality.js" />
     <Content Include="Scripts\QRCode\generateEfleetQRCode.js" />
     <Content Include="Scripts\QRCode\generateQRC.js" />
     <Content Include="Scripts\QRCode\jquery.qrcode-0.9.5.js" />
@@ -6913,6 +6922,15 @@
     <Content Include="Views\Guest\_RateOfPay.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\_HiringOnBoardingDashboardNew.cshtml" />
     <Content Include="Views\NewAdmin\ePeople\NewViewForEMP\EmployeeChartList.cshtml" />
+    <Content Include="Views\NewAdmin\DAR\DARDashboard.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\OnBoarding\_ViewApplicantDetails.cshtml" />
+    <Content Include="Views\Error\_Error.cshtml" />
+    <Content Include="Views\Error\_ThankYou.cshtml" />
+    <Content Include="Views\Guest\FormPDF\_W4FormPDF.cshtml" />
+    <Content Include="Views\Guest\FormPDF\_I9FormPDF.cshtml" />
+    <Content Include="Views\Notification\_ApplicantDetailsWhenAcceptRejectCounterOffer.cshtml" />
+    <Content Include="Views\Notification\_NotificationList.cshtml" />
+    <Content Include="Views\Notification\_ApplicantDetails.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

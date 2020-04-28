@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkOrderEMS.Data.EntityModel;
+using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models.NewAdminModel;
 
 namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
@@ -73,7 +74,7 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
                     ManagerPhoto = x.ManagerPhoto,
                     ManagerName = x.ManagerName,
                     EmployeePhoto = x.EmployeePhoto,
-                    PRMeetingDateTime = x.PRMeetingDateTime.HasValue?new DateTimeOffset(x.PRMeetingDateTime.Value, TimeSpan.FromHours(0)).ToLocalTime().DateTime: (DateTime?)null
+                    PRMeetingDateTime = x.PRMeetingDateTime.HasValue ? new DateTimeOffset(x.PRMeetingDateTime.Value, TimeSpan.FromHours(0)).ToLocalTime().DateTime : (DateTime?)null
                 }).ToList();
             }
             catch (Exception ex)
@@ -82,7 +83,7 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
             }
         }
 
-        public List<EventModel> GetMyEvents(long UserId, string start, string end)
+        public List<EventModel> GetMyEvents(string UserName, string start, string end)
         {
             List<EventModel> result = new List<EventModel>();
             try
@@ -98,7 +99,7 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
                                post => post.SLT_Id,        // Select the primary key (the first part of the "on" clause in an sql "join" statement)
                                meta => meta.BST_SLT_Id,   // Select the foreign key (the second part of the "on" clause)
                                (post, meta) => new { Post = post, Meta = meta }) // selection
-                              .Where(postAndMeta => postAndMeta.Meta.BST_Date >= fromDate && EntityFunctions.AddMinutes(postAndMeta.Meta.BST_Date, 60) <= toDate && postAndMeta.Meta.BST_EMP_EmployeeID == UserId);
+                              .Where(postAndMeta => postAndMeta.Meta.BST_Date >= fromDate && EntityFunctions.AddMinutes(postAndMeta.Meta.BST_Date, 60) <= toDate && postAndMeta.Meta.BST_EMP_EmployeeID == UserName);
 
                     foreach (var item in rslt)
                     {
@@ -123,58 +124,57 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 throw;
             }
             return result;
         }
-        public bool CreateNewEvent(string Title, string NewEventDate, string NewEventTime, string NewEventDuration, string JobId, string ApplicantName, string ApplicantEmail, long ManagerId, string selectedManagers)
+        public bool CreateNewEvent(string Title, string NewEventDate, string NewEventTime, string NewEventDuration, string JobId, string ApplicantName, string ApplicantEmail, string ManagerId, string selectedManagers)
         {
             bool result = false;
             // Appointment obj = new Appointment();
-
             try
             {
                 using (objworkorderEMSEntities = new workorderEMSEntities())
                 {
-                    objworkorderEMSEntities.spSetBookSlotTime("I", null, Title, ManagerId, Convert.ToDateTime(NewEventDate), Convert.ToInt32(NewEventTime), 1, "Y");
-                    if (selectedManagers != "")
-                    {
-                        var mgrlist = selectedManagers.Split(',').Distinct().ToList();
-                        long? mgr1, mgr2, mgr3;
-                        try
-                        {
-                            mgr1 = ManagerId;
-                        }
-                        catch (Exception e)
-                        {
-                            mgr1 = null;
-                        }
-                        try
-                        {
-                            mgr2 = Convert.ToInt64(mgrlist[0]);
-                        }
-                        catch (Exception e)
-                        {
-                            mgr2 = null;
-                        }
-                        try
-                        {
-                            mgr3 = Convert.ToInt64(mgrlist[1]);
-                        }
-                        catch (Exception e)
-                        {
-                            mgr3 = null;
-                        }
+                    objworkorderEMSEntities.spSetBookSlotTime("I", null, ManagerId, Convert.ToDateTime(NewEventDate), Convert.ToInt64(NewEventTime),Title, 1, "Y");
+                    //if (selectedManagers != "")
+                    //{
+                    //    var mgrlist = selectedManagers.Split(',').Distinct().ToList();
+                    //    long? mgr1, mgr2, mgr3;
+                    //    try
+                    //    {
+                    //        mgr1 = ManagerId;
+                    //    }
+                    //    catch (Exception e)
+                    //    {
+                    //        mgr1 = null;
+                    //    }
+                    //    try
+                    //    {
+                    //        mgr2 = Convert.ToInt64(mgrlist[0]);
+                    //    }
+                    //    catch (Exception e)
+                    //    {
+                    //        mgr2 = null;
+                    //    }
+                    //    try
+                    //    {
+                    //        mgr3 = Convert.ToInt64(mgrlist[1]);
+                    //    }
+                    //    catch (Exception e)
+                    //    {
+                    //        mgr3 = null;
+                    //    }
 
-                        objworkorderEMSEntities.spSetInterviewPanel("I", null, Convert.ToInt64(JobId), mgr1, mgr2, mgr3, 1, "Y");
-                        result = true;
-                    }
-                    else
-                    {
-                        objworkorderEMSEntities.spSetInterviewPanel("I", null, Convert.ToInt64(JobId), ManagerId, null, null, 1, "Y");
-                    }
+                    //    objworkorderEMSEntities.spSetInterviewPanel("I", null, Convert.ToInt64(JobId), mgr1, mgr2, mgr3, 1, "Y");
+                    //    result = true;
+                    //}
+                    //else
+                    //{
+                    //    objworkorderEMSEntities.spSetInterviewPanel("I", null, Convert.ToInt64(JobId), ManagerId, null, null, 1, "Y");
+                    //}
                 }
             }
             catch (Exception e)
@@ -183,7 +183,53 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
             }
             return result;
         }
+        public bool UpdateInterviewPanel(string selectedManagers, string ManagerId, string JobId,string jobTitle)
+        {
+            bool result = false;
+            var IsExist = false;
+            var _JobId = Convert.ToInt64(JobId);
+            long IPT_Id = 0;
+            try
+            {
+                if (selectedManagers != "")
+                {
+                    var mgrlist = selectedManagers.Split(',').Distinct().ToList();
+                    string mgr1 = string.Empty, mgr2 = string.Empty, mgr3 = string.Empty;
+                    foreach (var item in mgrlist)
+                    {
+                        mgr1 = ManagerId;
+                        mgr2 = mgrlist.Count() == 1 ? item : string.Empty;
+                        mgr3 = mgrlist.Count() == 2 ? item : string.Empty;
+                        var message = DarMessage.SelectedAsInterviewer(jobTitle);
+                        var saveNotification = objworkorderEMSEntities.spSetNotification("I", null, message,
+                                                        "ePeople", ModuleSubModule.Interviewer, _JobId.ToString(), ManagerId, item, true, false, Priority.Medium, null, false, "Y");
+                    }
+                     
+                    //mgr2 = (mgrlist[0]) ?? string.Empty;
+                    //mgr3 = (mgrlist[1]) ?? string.Empty;
 
+                    using (workorderEMSEntities db = new workorderEMSEntities())
+                    {
+                        var obj = db.InterviewProposalTimes.Where(x => x.IPT_JPS_JobPostingId == _JobId && x.IPT_Status == "Y").ToList();
+                        IPT_Id = obj.Count() == 0 ? 0 : obj.FirstOrDefault().IPT_Id;
+                        //IPT_Id = obj.FirstOrDefault().IPT_Id;
+                        IsExist = obj.Count() > 0 ? true : false;
+                    }
+                    //objworkorderEMSEntities.spSetInterviewPanel("I", null, Convert.ToInt64(JobId), mgr1, mgr2,mgr3, 1, "Y");
+                    objworkorderEMSEntities.spSetInterviewPanel(IsExist ? "U" : "I", IPT_Id, _JobId, mgr1, mgr2, mgr3,"Y", "Y");
+                    result = true;
+                }
+                else
+                {
+                    objworkorderEMSEntities.spSetInterviewPanel(IsExist ? "U" : "I", IPT_Id, _JobId, ManagerId, null, null, "Y", "Y");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+        }
         public bool UpdateEvent(int id, string NewEventStart, string NewEventEnd)
         {
             bool result = false;
@@ -207,7 +253,7 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
             }
             return result;
         }
-        public List<EventModel> GetBookedSlots(long UserId)
+        public List<EventModel> GetBookedSlots(string UserName)
         {
             List<EventModel> result = new List<EventModel>();
             try
@@ -219,7 +265,7 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
                               post => post.SLT_Id,        // Select the primary key (the first part of the "on" clause in an sql "join" statement)
                               meta => meta.BST_SLT_Id,   // Select the foreign key (the second part of the "on" clause)
                               (post, meta) => new { Post = post, Meta = meta }) // selection
-                             .Where(postAndMeta => postAndMeta.Meta.BST_EMP_EmployeeID == UserId);
+                             .Where(postAndMeta => postAndMeta.Meta.BST_EMP_EmployeeID == UserName);
 
 
 

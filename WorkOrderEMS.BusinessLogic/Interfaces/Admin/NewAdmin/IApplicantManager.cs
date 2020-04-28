@@ -33,5 +33,10 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
         bool SaveApplicantFunFacts(ApplicantFunFactModel obj);
         RateOfPayModel GetRateOfPayInfo(long ApplicantId, string employeeId);
         List<JobPostingDropDownModel> GetListJobPosting(eTracLoginModel obj);
+        bool SaveOriantation(OriantationModel model);
+        OfferModel GetOfferDetailsOfApplicant(long ApplicantId);
+        bool SaveScreenRejectStatusApplicant(long ApplicantId, bool IsScreened);
+        bool SaveAcadmicertificate(AcadmicCertification obj);
+        EmployeeVIewModel GetApplicantAllDetails(long ApplicantId);
     }
 }

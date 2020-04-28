@@ -681,3 +681,19 @@ function SaveEmployeeStatus(data) {
     });
 }
 
+//Author : deepak , Desc : Open Job posting form
+function OpenJobPostingForm(id) {
+    var origin_Url = window.location.origin;
+    $.ajax({
+        type: "GET",
+        url: origin_Url + '/EPeople/OpenJobPostingForm?CSVChartId=' + id, //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
+        success: function (Data) {
+            debugger
+            $("#divOpenJobPostForm").html("");
+            $("#divOpenJobPostForm").html(Data)
+            $("#myModalToAddJobPost").modal('show');
+        },
+        error: function (err) {
+        }
+    });
+}

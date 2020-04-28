@@ -3,6 +3,9 @@ var base_url = window.location.origin;
 var clients;
 var apt_id = 0;
 var JobPostingId = 0;
+var isInterviewDone = false;
+let ManagerList;
+var JobTitle;
 var $_LocationId = $("#drp_MasterLocation1 option:selected").val();
 var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_RequestedBy = 0;//= $("#drp_MasterLocation option:selected").val();
 
@@ -70,18 +73,29 @@ function myOpenings(PostingId) {
              {
                  title: "Action", width: 70, css: "text-center", itemTemplate: function (value, item) {
                      debugger
-                     var $iconAssessment, $iconBackground;
+                     var $iconAssessment,$iconAddAssets, $iconBackground, $iconSendOffer, $iconDiamond,$iconIsInterviewDone;
                      var $iconFirst = $("<i>").attr({ class: "fa fa-exclamation-triangle whiteR" });
                      var $iconSecond = $("<i>").attr({ class: "fa fa-gg-circle whiteB" }).attr({ style: "color:red;font-size:22px;margin-left:8px;" });
                      //var $iconDiamond = $("<i>").attr({ class: "fa fa-diamond" }).attr({ style: "color:red;font-size:22px;margin-left:8px;" });
-                     var $iconDiamond = $("<i>").attr({ class: "fa fa-diamond whiteGr" }).attr({ style: "color:green;font-size:22px;margin-left:8px;" });
-                     var $iconAddAssets = $("<i>").attr({ class: "fa fa-gift" }).attr({ style: "color:#134007;font-size:22px;margin-left:8px;" });
-                     var $iconSendOffer = $("<i>").attr({ class: "fa fa-file-text" }).attr({ style: "color:darkcyan;font-size:22px;margin-left:8px;" });
-                     if (item.Status == "Shortlisted") {
+                     
+                     
+                     var $iconViewApplicant = $("<i>").attr({ class: "fa fa-list list-icon" }).attr({ style: "color:black;font-size:22px;margin-left:8px;" });
+                     
+                     if (item.Status == "IntervieweSchedule" || item.Status == "AssessmentPass" || item.Status == "Shortlisted") {
+                         $iconDiamond = $("<i>").attr({ class: "fa fa-diamond whiteGr" }).attr({ style: "color:green;font-size:22px;margin-left:8px;" });
+                     }
+                     if (item.Status == "IntervieweSchedule") {
+                         $iconIsInterviewDone = $("<i>").attr({ class: "fa fa-check-circle whiteGr" }).attr({ style: "color:green;font-size:22px;margin-left:8px;" });
+                     }
+                     if (item.Status == "AssessmentPass" || item.Status == "Shortlisted") {
                          $iconAssessment = $("<i>").attr({ class: "fa fa-buysellads whiteY" }).attr({ style: "color:red;font-size:22px;margin-left:8px;" });
                      }
-                     if (item.Status == "AssessmentPass" && item.IsActive == "Y") {
-                          $iconBackground = $("<i>").attr({ class: "fa fa-btc white" }).attr({ style: "color:green;font-size:22px;margin-left:8px;" });
+                     if (item.Status == "OfferAccepted") {
+                         $iconAddAssets = $("<i>").attr({ class: "fa fa-gift" }).attr({ style: "color:#134007;font-size:22px;margin-left:8px;" });
+                     }
+                     if (item.Status == "Hired") {
+                          //$iconBackground = $("<i>").attr({ class: "fa fa-btc white" }).attr({ style: "color:green;font-size:22px;margin-left:8px;" });
+                          $iconSendOffer = $("<i>").attr({ class: "fa fa-file-text" }).attr({ style: "color:darkcyan;font-size:22px;margin-left:8px;" });
                      }
                      //var $iconGoTORecruitee = $("<i>").attr({ class: "fa fa-clock-o fa-2x whiteS" }).attr({ style: "color:red;font-size:22px;margin-left:8px;" });
                      var $customFirstButton = $("<span>")
@@ -129,35 +143,38 @@ function myOpenings(PostingId) {
                      var $customBackgroundButton = $("<span>")
                           .attr({ title: jsGrid.fields.control.prototype.BackgroundEmployeeTooltip })
                           .attr({ id: "btn-Background-" + item.ApplicantId }).click(function (e) {
-                              $.ajax({
-                                  type: "POST",
-                                  url: base_url + '/NewAdmin/BackgroundStatusChange?Status=' + "F" + "&IsActive=" + "S" + "&ApplicantId=" + item.ApplicantId,
-                                  beforeSend: function () {
-                                      new fn_showMaskloader('Please wait...');
-                                  },
-                                  success: function (message) {
-                                      if (message != null) {
-                                          toastr.success(message);
-                                      }
-                                      else {
-                                          toastr.success(message);
-                                      }
-                                      $("#myModalForDemotionEmployee").modal("hide");
-                                  },
-                                  error: function (err) {
-                                  },
-                                  complete: function () {
-                                      fn_hideMaskloader();
-                                  }
-                              });
+                              API_id = item.ApplicantId;
+                              $("#myModalForAddEmployee").modal("show");
+                              //$("#myModalToShowLocation").modal("show");
+
+                              //$.ajax({
+                              //    type: "POST",
+                              //    url: base_url + '/NewAdmin/BackgroundStatusChange?Status=' + "F" + "&IsActive=" + "S" + "&ApplicantId=" + item.ApplicantId,
+                              //    beforeSend: function () {
+                              //        new fn_showMaskloader('Please wait...');
+                              //    },
+                              //    success: function (message) {
+                              //        if (message != null) {
+                              //            toastr.success(message);
+                              //        }
+                              //        else {
+                              //            toastr.success(message);
+                              //        }
+                              //        $("#myModalForDemotionEmployee").modal("hide");
+                              //    },
+                              //    error: function (err) {
+                              //    },
+                              //    complete: function () {
+                              //        fn_hideMaskloader();
+                              //    }
+                              //});
                           }).append($iconBackground);
 
-                     //var $customRecruiteeButton = $("<span>")
-                     //     .attr({ title: jsGrid.fields.control.prototype.ScheduleEmployeeTooltip })
-                     //     .attr({ id: "btn-Recruitee-" + item.ApplicantId }).click(function (e) {
-                     //         window.location.href = "https://app.recruitee.com/#/settings/scheduler";
-                     //     }).append($iconGoTORecruitee);
-
+                     var $customIsInterviewDone = $("<span>")
+                              .attr({ title: jsGrid.fields.control.prototype.HRChallengeEmployeeTooltip })
+                              .attr({ id: "btn-second-" + item.ApplicantId }).click(function (e) {
+                                  ShowInterviewAnswer(item.ApplicantId);
+                              }).append($iconIsInterviewDone);
                      var $customAssetsButton = $("<span>")
                          .attr({ title: jsGrid.fields.control.prototype.AssetsButtonTooltip })
                          .attr({ id: "btn-Assets-" + item.ApplicantId }).click(function (e) {                         
@@ -191,20 +208,21 @@ function myOpenings(PostingId) {
                           .attr({ id: "btn-offer-" + item.ApplicantId }).click(function (e) {
                               $.ajax({
                                   type: "POST",
-                                  url: base_url + '/NewAdmin/ShwoOfferLetter?ApplicantId=' + item.ApplicantId,
+                                  url: base_url + '/NewAdmin/ShowOfferLetter?ApplicantId=' + item.ApplicantId,
                                   beforeSend: function () {
                                       new fn_showMaskloader('Please wait...');
                                   },
                                   success: function (data) {
+                                      debugger
                                       if (data != null) {
-                                          $("#viewOfferData").html("");
-                                          $("#viewOfferData").html(data);
+                                          $("#viewOffer").html("");
+                                          $("#viewOffer").html(data);
 
                                       }
                                       else {
-                                          $("#viewOfferData").html("No assets to add....!");
+                                          $("#viewOffer").html("No assets to add....!");
                                       }
-                                      $("#ModalForOfferLtter").modal('show');
+                                      $("#ModalForOfferLetter").modal('show');
                                   },
                                   error: function (err) {
                                   },
@@ -213,8 +231,12 @@ function myOpenings(PostingId) {
                                   }
                               });
                           }).append($iconSendOffer);
-                     
-                     return $("<div>").attr({ class: "btn-toolbar" }).append($customFirstButton).append($customSecondButton).append($customDiamondButton).append($customAssessmentButton).append($customBackgroundButton).append($customAssetsButton).append($customOfferButton);//append($customRecruiteeButton)
+                     var $customViewApplicantButton = $("<span>")
+                         .attr({ title: jsGrid.fields.control.prototype.listButtonTooltip })
+                         .attr({ id: "btn-first-" + item.ApplicantId }).click(function (e) {
+                             ViewApplicantDetails(item.ApplicantId)
+                         }).append($iconViewApplicant);
+                     return $("<div>").attr({ class: "btn-toolbar" }).append($customFirstButton).append($customSecondButton).append($customDiamondButton).append($customAssessmentButton).append($customBackgroundButton).append($customAssetsButton).append($customOfferButton).append($customViewApplicantButton).append($customIsInterviewDone);
                  }
              }
         ]
@@ -228,6 +250,7 @@ function myOpenings(PostingId) {
 
 }
 function MyInterviews() {
+    $("#myinterview").show();
     $("#myinterviews").jsGrid({
         width: "100%",
         height: "300px",
@@ -277,6 +300,7 @@ function MyInterviews() {
 			{ title: "Status", width: 60, name: "Status" },
 			{
 			    title: '', width: 60, itemTemplate: function (value, item) {
+                    debugger
 			        return $("<div>")
 						.append($("<div>").addClass("action1 inline actionbox").append($("<a>").attr({ "onclick": "TakeInterview(" + JSON.stringify(item) + ")", "href": "#" }).append("<i>").attr({ "style": "color:darkblue" }).addClass("fa fa-diamond white")));
 			    }
@@ -350,11 +374,21 @@ function MyOpeningSummery() {
                            // getslots();
                             loadCalendar(item.Employee);
                         }).append($iconOpenCalendar);
-
+                    var $iconUpdatePanel = $("<i>").attr({ class: "fa fa-users fa-2x whiteS" }).attr({ style: "color:red;font-size:22px;margin-left:8px;" });
+                    var $customUpdatePanelButton = $("<span>")
+                        .attr({ title: jsGrid.fields.control.prototype.UpdatePanel })
+                        .attr({ id: "btn-Recruitee-" + item.Employee }).click(function (e) {
+                            e.stopPropagation();
+                            $("#JobId").val(item.JobPostingId);
+                            $("#myModalUpdatePanel").modal('show');
+                            //loadInterviewPanel();
+                            loadInterviewPanelList();
+                            JobTitle = item.JobTitle;
+                        }).append($iconUpdatePanel);
 			        return $("<div>").append($("<div id='detailDiv'>").addClass('text').text("asdadfaf")).append($("<div>").addClass("inlineDivdonut").append("<img src='Images/donut.png' class='donutC' onmouseover='GetSummeryDetail(this);' onmouseout='HideDetail(this)'>"))
 						.append($("<div>").append("<i>").addClass("fa fa-envelope-o fa-lg actionBtn"))
                         .append($("<div>").append("<i>").addClass("fa fa-trash fa-lg actionBtn"))
-                        .append($customOpenCalendarButton);
+                        .append($customOpenCalendarButton).append($customUpdatePanelButton);
 			    }
 			}
         ],
@@ -362,7 +396,7 @@ function MyOpeningSummery() {
             console.log(args.item);
             $("#MyOpeningSummery").hide();
             $("#btnBack").show();
-            //JobPostingId = args.item.JobPostingId;
+            JobPostingId = args.item.JobPostingId;
             myOpenings(args.item.JobPostingId);
         }
     });
@@ -620,6 +654,7 @@ function QuestionYes($_this, isFinal) {
     }
 function QuestionNo($_this, isFinal) {
     var questionId = $($_this).attr("questionId");
+   // $($_this).attr({ "style": "background-color:#0991A9" });
     var masterId = $($_this).attr("masterId");
     var isValChecked = false;
     if (isFinal == false) {
@@ -645,7 +680,8 @@ function QuestionNo($_this, isFinal) {
         }
         else {
             AnswerArr.push({ questionId: questionId, Answer: 'N', masterId: masterId })
-            $($_this).attr({ "style": "background-color:#0991A9" })
+            $($_this).attr({ "style": "background-color:#0991A9" });
+            //isFinal = false;
         }
         //AnswerArr.push({ questionId: questionId, Answer: 'N', masterId: masterId })
         $("#AnswerArr").val(AnswerArr);
@@ -945,7 +981,10 @@ function SaveAndNext() {
         });
 }
 function RedirectToApplicantGrid() {
-    var link = '@Url.Action("HiringOnBoardingDashboard", "NewAdmin")';
+    debugger
+    isInterviewDone = true;
+    $("#isScheduled").val("true");
+    var link = base_url + '/NewAdmin/HiringOnBoardingDashboard';
     $("#RenderPageId").load(link);
     toastr.success("Interview answer saved Successfully");
 }
@@ -1166,12 +1205,27 @@ function GoToRecruitee(item) {
         debugger
         var getAppId = $(data).attr("applicantid");
         var getVal = $("#ToAcceptRejectAfterInterview option:selected").val();
+        var getVal = $(data).attr("value");
         $.ajax({
             url: base_url + '/NewAdmin/InterviewAcceptCancel?status=' + getVal + "&ApplicantId=" + getAppId,
             method: 'POST',
+            beforeSend: function () {
+                new fn_showMaskloader('Please wait...');
+            },
             //data: { ApplicantId: ApplicantId, IsAvailable: IsAvailable, Comment: comment },
             success: function (response) {
-               
+                if (getVal == "D") {
+                    toastr.success("Applicant has been shortlisted...!");
+                } else {
+                    toastr.success("Applicant has been reject...!")
+                }
+                myOpenings(JobPostingId);
+                //$("#ListMyOpening").show()
+                //$("#ListMyOpening").jsGrid("l")
+                $('#RenderPageId').html(response);
+            },
+            complete: function () {
+                fn_hideMaskloader();
             }
         });
     }
@@ -1194,3 +1248,434 @@ function getslots(date) {
     });
 
 }
+
+
+function ViewApplicantDetails(ApplicantDetailsId) {
+    $.ajax({
+        url: base_url + '/Guest/GetApplicantDetails?ApplicantId=' + ApplicantDetailsId  ,
+        method: 'POST',
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
+        success: function (getData) {
+            
+            $("#ApplicantDetailsDiv").html('');
+            $("#ApplicantDetailsDiv").html(getData);
+            $("#myModalForGetApplicantDetails").modal('show');
+        },
+        complete: function () {
+            fn_hideMaskloader();
+        }
+    });
+}
+
+function AppproveRejectApplicant(isApproved) {
+    
+    var apt_id = $("#ApplicantIdForView").val();
+    $.ajax({
+        url: base_url + '/NewAdmin/ScreenedRejectApplicant?ApplicantId=' + apt_id + "&IsScreened=" + isApproved,
+        method: 'POST',
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
+        success: function (message) {
+
+            debugger
+            $("#myModalForGetApplicantDetails").modal('hide');
+            $("#ApplicantDetailsDiv").html('');
+           
+            myOpenings(JobPostingId);
+            toastr.success(message)
+        },
+        complete: function () {
+            fn_hideMaskloader();
+        }
+    });
+}
+//var selectedManagers = "";
+//var autocomplete;
+//function loadInterviewPanel() {
+//    selectedManagers = "";
+//    $("#inpManageName").html('');
+//    $("#inpManageName").html('<span class="autocomplete-select"></span>');
+//    $.ajax({
+//        type: 'GET',
+//        url: '/NewAdmin/GetManagerList/',
+//        success: function (response) {
+//            debugger
+//            if (response.length > 0) {
+//                ManagerList = response;
+//                autocomplete = new SelectPure(".autocomplete-select", {
+//                    options: ManagerList,
+//                    multiple: true,
+//                    autocomplete: true,
+//                    icon: "fa fa-times",
+//                    max: 3,
+//                    onChange: value => {
+//                        selectedManagers = autocomplete.value().toString();
+//                    },
+//                });
+//            }
+//        }
+//    });
+
+//}
+var selectedManagers = "";
+var autocomplete;
+function loadInterviewPanelList() {
+    debugger
+    selectedManagers = "";
+    $("#inpManageName").html('');
+    $("#inpManageName").html('<span class="autocomplete-select"></span>');
+    //$("#inpManageName").html('<select multiple id="e1" style="width:300px">');
+    $.ajax({
+        url: base_url + '/NewAdmin/GetManagerListForApplicant',
+        method: 'POST',
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
+        success: function (data) {
+            
+            debugger
+           
+            if (data.length > 0) {
+                ManagerList = data;
+                autocomplete = new SelectPure(".autocomplete-select", {
+                    options: data,
+                    multiple: true,
+                    autocomplete: true,
+                    icon: "fa fa-times",
+                    max: 3,
+                    onChange: value => {
+                        selectedManagers = autocomplete.value().toString();
+                    },
+                });
+                //$.each(data, function (index, item) {
+                //    debugger// item is now an object containing properties ID and Text
+                //    //for (var i = 0; i < response.length; i++) {
+                //    //    options += '<option value="' + response[i] + '">' + response[i] + '</option>';
+                //    //}
+                //    $("#e1").append($('<option></option>').text(item.UserName).val(item.UserID));
+                //});
+            }
+        },
+        complete: function () {
+            fn_hideMaskloader();
+        }
+    });
+}
+
+function ShowInterviewAnswer(ApplicantId) {
+    $.ajax({
+        type: "POST",
+        url: base_url + '/NewAdmin/GetApplicantInterviewAnswerDetails?ApplicantId='+ApplicantId,
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
+        success: function (result) {
+            $('#RenderPageId').html(result);
+        },
+        error: function (err) {
+        },
+        complete: function () {
+            fn_hideMaskloader();
+        }
+    });
+}
+function UpdateInterviewPanel() {
+
+    $.ajax({
+        type: 'POST',
+        url: "/NewAdmin/UpdateInterviewPanel",
+        data: { "selectedManagers": selectedManagers, "JobId": $("#JobId").val()   },
+        success: function (response) {
+            if (response == true) {
+                $("#DisplayMessage").show();
+            }
+            else {
+                $("#DisplayMessage").hide();
+            }
+            setTimeout(function () {
+                $("#DisplayMessage").hide();
+                $("#myModalUpdatePanel").modal('hide');
+
+            }, 2000);
+
+        }
+    });
+}
+//var SelectPure = function () { "use strict"; const e = { value: "data-value", disabled: "data-disabled", class: "class", type: "type" }; class t { constructor(e, t = {} s = {}) { return this._node = e instanceof HTMLElement ? e : document.createElement(e), this._config = { i18n: s }, this._setAttributes(t), t.textContent && this._setTextContent(t.textContent), this } get() { return this._node } append(e) { return this._node.appendChild(e), this } addClass(e) { return this._node.classList.add(e), this } removeClass(e) { return this._node.classList.remove(e), this } toggleClass(e) { return this._node.classList.toggle(e), this } addEventListener(e, t) { return this._node.addEventListener(e, t), this } removeEventListener(e, t) { return this._node.removeEventListener(e, t), this } setText(e) { return this._setTextContent(e), this } getHeight() { return window.getComputedStyle(this._node).height } setTop(e) { return this._node.style.top = `${e}px`, this } focus() { return this._node.focus(), this } setTextContent(e) { this._node.textContent = e } setAttributes(t) { for (const s in t) e[s] && t[s] && this._setAttribute(e[s], t[s]) } setAttribute(e, t) { this._node.setAttribute(e, t) } } var s = Object.assign || function (e) { for (var t = 1; t < arguments.length; t++) { var s = arguments[t]; for (var i in s) Object.prototype.hasOwnProperty.call(s, i) && (e[i] = s[i]) } return e }; const i = { select: "select-pure__select", dropdownShown: "select-pure__select--opened", multiselect: "select-pure__select--multiple", label: "select-pure__label", placeholder: "select-pure__placeholder", dropdown: "select-pure__options", option: "select-pure__option", autocompleteInput: "select-pure__autocomplete", selectedLabel: "select-pure__selected-label", selectedOption: "select-pure__option--selected", placeholderHidden: "select-pure__placeholder--hidden", optionHidden: "select-pure__option--hidden" }; return class { constructor(e, i) { this._config = s({}, i), this._state = { opened: !1 }, this._icons = [], this._boundHandleClick = this._handleClick.bind(this), this._boundUnselectOption = this._unselectOption.bind(this), this._boundSortOptions = this._sortOptions.bind(this), this._body = new t(document.body), this._create(e), this._config.value && this._setValue() } value() { return this._config.value } create(e) { const s = "string" == typeof e ? document.querySelector(e) : e; this._parent = new t(s), this._select = new t("div", { class: i.select }), this._label = new t("span", { class: i.label }), this._optionsWrapper = new t("div", { class: i.dropdown }), this._config.multiple && this._select.addClass(i.multiselect), this._options = this._generateOptions(), this._select.addEventListener("click", this._boundHandleClick), this._select.append(this._label.get()), this._select.append(this._optionsWrapper.get()), this._parent.append(this._select.get()), this._placeholder = new t("span", { class: i.placeholder, textContent: this._config.placeholder }), this._select.append(this._placeholder.get()) } generateOptions() { return this._config.autocomplete && (this._autocomplete = new t("input", { class: i.autocompleteInput, type: "text" }), this._autocomplete.addEventListener("input", this._boundSortOptions), this._optionsWrapper.append(this._autocomplete.get())), this._config.options.map(e => { const s = new t("div", { class: i.option, value: e.value, textContent: e.label, disabled: e.disabled }); return this._optionsWrapper.append(s.get()), s }) } handleClick(e) { if (e.stopPropagation(), e.target.className !== i.autocompleteInput) { if (this._state.opened) { const t = this._options.find(t => t.get() === e.target); return t && this._setValue(t.get().getAttribute("data-value"), !0), this._select.removeClass(i.dropdownShown), this._body.removeEventListener("click", this._boundHandleClick), this._select.addEventListener("click", this._boundHandleClick), void (this._state.opened = !1) } e.target.className !== this._config.icon && (this._select.addClass(i.dropdownShown), this._body.addEventListener("click", this._boundHandleClick), this._select.removeEventListener("click", this._boundHandleClick), this._state.opened = !0, this._autocomplete && this._autocomplete.focus()) } } setValue(e, t, s) { if (e && !s && (this._config.value = this._config.multiple ? [...this._config.value || [], e] : e), e && s && (this._config.value = e), this._options.forEach(e => { e.removeClass(i.selectedOption) }), this._placeholder.removeClass(i.placeholderHidden), this._config.multiple) { const e = this._config.value.map(e => { const t = this._config.options.find(t => t.value === e); return this._options.find(e => e.get().getAttribute("data-value") === t.value.toString()).addClass(i.selectedOption), t }); return e.length && this._placeholder.addClass(i.placeholderHidden), void this._selectOptions(e, t) } const n = this._config.value ? this._config.options.find(e => e.value.toString() === this._config.value) : this._config.options[0]; this._options.find(e => e.get().getAttribute("data-value") === n.value.toString()).addClass(i.selectedOption), this._placeholder.addClass(i.placeholderHidden), this._selectOption(n, t) } selectOption(e, t) { this._selectedOption = e, this._label.setText(e.label), this._config.onChange && t && this._config.onChange(e.value) } selectOptions(e, s) { this._label.setText(""), this._icons = e.map(e => { const s = new t("span", { class: i.selectedLabel, textContent: e.label }), n = new t(this._config.inlineIcon ? this._config.inlineIcon.cloneNode(!0) : "i", { class: this._config.icon, value: e.value }); return n.addEventListener("click", this._boundUnselectOption), s.append(n.get()), this._label.append(s.get()), n.get() }), s && this._optionsWrapper.setTop(Number(this._select.getHeight().split("px")[0]) + 5), this._config.onChange && s && this._config.onChange(this._config.value) } unselectOption(e) { const t = [...this._config.value], s = t.indexOf(e.target.getAttribute("data-value")); -1 !== s && t.splice(s, 1), this._setValue(t, !0, !0) } _sortOptions(e) { this._options.forEach(t => { t.get().textContent.toLowerCase().startsWith(e.target.value.toLowerCase()) ? t.removeClass(i.optionHidden) : t.addClass(i.optionHidden) }) } } }();
+//---Schedule slot----
+var eventObject = [];
+var autocomplete;
+var sourceFullView = { url: '/NewAdmin/GetMyEvents/' };
+var sourceSummaryView = { url: '/NewAdmin/GetMyEvents/' };
+var CalLoading = true;
+var selectedManagers = "";
+var arr=[];
+function loadCalendar(ApplicantId) {
+    $('#calendar').fullCalendar('destroy');
+    CalLoading = true;
+    $('#calendar').fullCalendar({
+        header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,agendaWeek,agendaDay'
+        },
+        defaultView: 'month',
+        editable: true,
+        allDaySlot: false,
+        selectable: true,
+        slotMinutes: 60,
+        events: '/NewAdmin/GetMyEvents/',
+
+        eventClick: function (calEvent, jsEvent, view) {
+            alert('You clicked on event id: ' + calEvent.id
+                + "\nSpecial ID: " + calEvent.someKey
+                + "\nAnd the title is: " + calEvent.title);
+
+        },
+
+        eventDrop: function (event, dayDelta, minuteDelta, allDay, revertFunc) {
+            if (confirm("Confirm move?")) {
+                UpdateEvent(event.id, event.start);
+            }
+            else {
+                revertFunc();
+            }
+        },
+
+        eventResize: function (event, dayDelta, minuteDelta, revertFunc) {
+
+            if (confirm("Confirm change appointment length?")) {
+                UpdateEvent(event.id, event.start, event.end);
+            }
+            else {
+                revertFunc();
+            }
+        },
+
+
+
+        dayClick: function (date, allDay, jsEvent, view) {
+           
+            getslots(date.format("DD-MMM-YYYY"));
+            $('#eventTitle').val("");
+            //$('#eventDate').val($.fullCalendar.formatDate(date, 'dd/MM/yyyy'));
+            //$('#eventTime').val($.fullCalendar.formatDate(date, 'HH:mm'));
+            $('#eventDate').val(date.format("MM/DD/YYYY"));
+            // $('#eventTime').val(moment(date).format('HH:MM'));
+
+            ShowEventPopup(date);
+        },
+
+        viewRender: function (view, element) {
+
+            if (!CalLoading) {
+                if (view.name == 'month') {
+                    $('#calendar').fullCalendar('removeEventSource', sourceFullView);
+                    $('#calendar').fullCalendar('removeEvents');
+                    $('#calendar').fullCalendar('addEventSource', sourceSummaryView);
+                }
+                else {
+                    $('#calendar').fullCalendar('removeEventSource', sourceSummaryView);
+                    $('#calendar').fullCalendar('removeEvents');
+                    $('#calendar').fullCalendar('addEventSource', sourceFullView);
+                }
+            }
+        }
+
+    });
+
+    CalLoading = false;
+    GetBookedSlots(ApplicantId);
+    $.ajax({
+        type: 'GET',
+        url: '/NewAdmin/GetManagerList/',
+        success: function (response) {
+            if (response.length > 0) {
+                ManagerList = response;
+                autocomplete = new SelectPure(".autocomplete-select", {
+                    options: ManagerList,
+                    multiple: true,
+                    autocomplete: true,
+                    icon: "fa fa-times",
+                    max: 3,
+                    onChange: value => {
+
+                        selectedManagers = autocomplete.value().toString();
+                       
+                    },
+                    
+                });
+
+            }
+
+        }
+    });
+
+}
+function loadInterviewPanel() {
+    selectedManagers = "";
+    $("#inpManageName").html('');
+    $("#inpManageName").html('<span class="autocomplete-select"></span>');
+    $.ajax({
+        type: 'GET',
+        url: '/NewAdmin/GetManagerList/',
+        success: function (response) {
+            debugger
+            if (response.length > 0) {
+                ManagerList = response;
+                autocomplete = new SelectPure(".autocomplete-select", {
+                    options: ManagerList,
+                    multiple: true,
+                    autocomplete: true,
+                    icon: "fa fa-times",
+                    max: 3,
+                    onChange: value => {
+                        selectedManagers = autocomplete.value().toString();
+                    },
+                });
+            }
+        }
+    });
+
+}
+function GetBookedSlots(ApplicantId) {
+    $.ajax({
+        type: 'GET',
+        url: '/NewAdmin/GetBookedSlots/',
+        data: { "ApplicantId": ApplicantId },
+        success: function (response) {
+            if (response.length > 0) {
+                $("#BookedSlots")
+                var $html = '<div id="UrgentWorkOrdersList"><ul class="list-group">';
+                $.each(response, function (index, value) {
+                    //$html += '<li class="list-group-item list-group-item-success"><label>Title: ' + value.title + '</label></br><label>' + value.startDate + '</label ></br >' + '<label>Start: ' + value.startTime + '</label></br>' + '<label>End: ' + value.end + '</label></br>';
+                    $html += '<div class="row notice info">';
+                    $html += '<div class="col-sm-12">';
+                    $html += ' <p>Title: ' + value.title + '</p>';
+                    $html += '</div>';
+                    $html += '<div class="col-sm-4">';
+                    $html += value.startDate + '</div>';
+                    $html += '<div class="col-sm-8">Start: ';
+                    $html += value.startTime + ' End: ' + value.end;
+                    $html += '</div>';
+                    $html += '</div>';
+                });
+                $html += '</ul></div>';
+                $("#BookedSlots").html($html);
+
+            }
+            else {
+            }
+        }
+    });
+}
+var SelectPure = function () { "use strict"; const e = { value: "data-value", disabled: "data-disabled", class: "class", type: "type" }; class t { constructor(e, t = {}, s = {}) { return this._node = e instanceof HTMLElement ? e : document.createElement(e), this._config = { i18n: s }, this._setAttributes(t), t.textContent && this._setTextContent(t.textContent), this } get() { return this._node } append(e) { return this._node.appendChild(e), this } addClass(e) { return this._node.classList.add(e), this } removeClass(e) { return this._node.classList.remove(e), this } toggleClass(e) { return this._node.classList.toggle(e), this } addEventListener(e, t) { return this._node.addEventListener(e, t), this } removeEventListener(e, t) { return this._node.removeEventListener(e, t), this } setText(e) { return this._setTextContent(e), this } getHeight() { return window.getComputedStyle(this._node).height } setTop(e) { return this._node.style.top = `${e}px`, this } focus() { return this._node.focus(), this } _setTextContent(e) { this._node.textContent = e } _setAttributes(t) { for (const s in t) e[s] && t[s] && this._setAttribute(e[s], t[s]) } _setAttribute(e, t) { this._node.setAttribute(e, t) } } var s = Object.assign || function (e) { for (var t = 1; t < arguments.length; t++) { var s = arguments[t]; for (var i in s) Object.prototype.hasOwnProperty.call(s, i) && (e[i] = s[i]) } return e }; const i = { select: "select-pure__select", dropdownShown: "select-pure__select--opened", multiselect: "select-pure__select--multiple", label: "select-pure__label", placeholder: "select-pure__placeholder", dropdown: "select-pure__options", option: "select-pure__option", autocompleteInput: "select-pure__autocomplete", selectedLabel: "select-pure__selected-label", selectedOption: "select-pure__option--selected", placeholderHidden: "select-pure__placeholder--hidden", optionHidden: "select-pure__option--hidden" }; return class { constructor(e, i) { this._config = s({}, i), this._state = { opened: !1 }, this._icons = [], this._boundHandleClick = this._handleClick.bind(this), this._boundUnselectOption = this._unselectOption.bind(this), this._boundSortOptions = this._sortOptions.bind(this), this._body = new t(document.body), this._create(e), this._config.value && this._setValue() } value() { return this._config.value } _create(e) { const s = "string" == typeof e ? document.querySelector(e) : e; this._parent = new t(s), this._select = new t("div", { class: i.select }), this._label = new t("span", { class: i.label }), this._optionsWrapper = new t("div", { class: i.dropdown }), this._config.multiple && this._select.addClass(i.multiselect), this._options = this._generateOptions(), this._select.addEventListener("click", this._boundHandleClick), this._select.append(this._label.get()), this._select.append(this._optionsWrapper.get()), this._parent.append(this._select.get()), this._placeholder = new t("span", { class: i.placeholder, textContent: this._config.placeholder }), this._select.append(this._placeholder.get()) } _generateOptions() { return this._config.autocomplete && (this._autocomplete = new t("input", { class: i.autocompleteInput, type: "text" }), this._autocomplete.addEventListener("input", this._boundSortOptions), this._optionsWrapper.append(this._autocomplete.get())), this._config.options.map(e => { const s = new t("div", { class: i.option, value: e.value, textContent: e.label, disabled: e.disabled }); return this._optionsWrapper.append(s.get()), s }) } _handleClick(e) { if (e.stopPropagation(), e.target.className !== i.autocompleteInput) { if (this._state.opened) { const t = this._options.find(t => t.get() === e.target); return t && this._setValue(t.get().getAttribute("data-value"), !0), this._select.removeClass(i.dropdownShown), this._body.removeEventListener("click", this._boundHandleClick), this._select.addEventListener("click", this._boundHandleClick), void (this._state.opened = !1) } e.target.className !== this._config.icon && (this._select.addClass(i.dropdownShown), this._body.addEventListener("click", this._boundHandleClick), this._select.removeEventListener("click", this._boundHandleClick), this._state.opened = !0, this._autocomplete && this._autocomplete.focus()) } } _setValue(e, t, s) { if (e && !s && (this._config.value = this._config.multiple ? [...this._config.value || [], e] : e), e && s && (this._config.value = e), this._options.forEach(e => { e.removeClass(i.selectedOption) }), this._placeholder.removeClass(i.placeholderHidden), this._config.multiple) { const e = this._config.value.map(e => { const t = this._config.options.find(t => t.value === e); return this._options.find(e => e.get().getAttribute("data-value") === t.value.toString()).addClass(i.selectedOption), t }); return e.length && this._placeholder.addClass(i.placeholderHidden), void this._selectOptions(e, t) } const n = this._config.value ? this._config.options.find(e => e.value.toString() === this._config.value) : this._config.options[0]; this._options.find(e => e.get().getAttribute("data-value") === n.value.toString()).addClass(i.selectedOption), this._placeholder.addClass(i.placeholderHidden), this._selectOption(n, t) } _selectOption(e, t) { this._selectedOption = e, this._label.setText(e.label), this._config.onChange && t && this._config.onChange(e.value) } _selectOptions(e, s) { this._label.setText(""), this._icons = e.map(e => { const s = new t("span", { class: i.selectedLabel, textContent: e.label }), n = new t(this._config.inlineIcon ? this._config.inlineIcon.cloneNode(!0) : "i", { class: this._config.icon, value: e.value }); return n.addEventListener("click", this._boundUnselectOption), s.append(n.get()), this._label.append(s.get()), n.get() }), s && this._optionsWrapper.setTop(Number(this._select.getHeight().split("px")[0]) + 5), this._config.onChange && s && this._config.onChange(this._config.value) } _unselectOption(e) { const t = [...this._config.value], s = t.indexOf(e.target.getAttribute("data-value")); -1 !== s && t.splice(s, 1), this._setValue(t, !0, !0) } _sortOptions(e) { this._options.forEach(t => { t.get().textContent.toLowerCase().startsWith(e.target.value.toLowerCase()) ? t.removeClass(i.optionHidden) : t.addClass(i.optionHidden) }) } } }();
+
+$('#btnPopupCancel').click(function () {
+    ClearPopupFormValues();
+    //$('#popupEventForm').hide();
+    $("#ModalScheduleInterview").modal('hide');
+});
+
+$('#btnPopupSave').click(function () {
+
+    //$('#popupEventForm').hide();
+    $("#ModalScheduleInterview").modal('hide');
+    var dataRow = {
+        'Title': $('#eventTitle').val(),
+        'NewEventDate': $('#eventDate').val(),
+        //'NewEventTime': $('#eventTime').val(),
+        'NewEventTime': $("#eventTime select option:selected").attr('id'),
+        'NewEventDuration': $('#eventDuration').val(),
+        'JobId': $("#JobId").val(),
+        //'ApplicantName': $("#lblApplicantName").text(),
+        //'ApplicantEmail': $("#lblApplicantEmail").text(),
+        'selectedManagers': selectedManagers
+    }
+
+    ClearPopupFormValues();
+
+    $.ajax({
+        type: 'POST',
+        url: "/NewAdmin/SaveEvent",
+        data: dataRow,
+        success: function (response) {
+            $('#calendar').fullCalendar('refetchEvents');
+            alert(response);
+            GetBookedSlots($("#lblApplicantId").text());
+
+        }
+    });
+});
+
+function ShowEventPopup(date) {
+    ClearPopupFormValues();
+    //$('#popupEventForm').show();
+    $("#ModalScheduleInterview").modal('show');
+    $('#eventTitle').focus();
+}
+
+function ClearPopupFormValues() {
+    $('#eventID').val("");
+    $('#eventTitle').val("");
+    $('#eventDateTime').val("");
+    $('#eventDuration').val("");
+}
+
+function UpdateEvent(EventID, EventStart, EventEnd) {
+
+    var dataRow = {
+        'ID': EventID,
+        'NewEventStart': EventStart,
+        'NewEventEnd': EventEnd
+    }
+
+    //$.ajax({
+    //    type: 'POST',
+    //    url: "/NewAdmin/UpdateEvent",
+    //    dataType: "json",
+    //    contentType: "application/json",
+    //    data: JSON.stringify(dataRow)
+    //});
+}
+//var SelectPure = function () { "use strict"; const e = { value: "data-value", disabled: "data-disabled", class: "class", type: "type" }; class t { constructor(e, t = {}, s = {}) { return this._node = e instanceof HTMLElement ? e : document.createElement(e), this._config = { i18n: s }, this._setAttributes(t), t.textContent && this._setTextContent(t.textContent), this } get() { return this._node } append(e) { return this._node.appendChild(e), this } addClass(e) { return this._node.classList.add(e), this } removeClass(e) { return this._node.classList.remove(e), this } toggleClass(e) { return this._node.classList.toggle(e), this } addEventListener(e, t) { return this._node.addEventListener(e, t), this } removeEventListener(e, t) { return this._node.removeEventListener(e, t), this } setText(e) { return this._setTextContent(e), this } getHeight() { return window.getComputedStyle(this._node).height } setTop(e) { return this._node.style.top = `${e}px`, this } focus() { return this._node.focus(), this } _setTextContent(e) { this._node.textContent = e } _setAttributes(t) { for (const s in t) e[s] && t[s] && this._setAttribute(e[s], t[s]) } _setAttribute(e, t) { this._node.setAttribute(e, t) } } var s = Object.assign || function (e) { for (var t = 1; t < arguments.length; t++) { var s = arguments[t]; for (var i in s) Object.prototype.hasOwnProperty.call(s, i) && (e[i] = s[i]) } return e }; const i = { select: "select-pure__select", dropdownShown: "select-pure__select--opened", multiselect: "select-pure__select--multiple", label: "select-pure__label", placeholder: "select-pure__placeholder", dropdown: "select-pure__options", option: "select-pure__option", autocompleteInput: "select-pure__autocomplete", selectedLabel: "select-pure__selected-label", selectedOption: "select-pure__option--selected", placeholderHidden: "select-pure__placeholder--hidden", optionHidden: "select-pure__option--hidden" }; return class { constructor(e, i) { this._config = s({}, i), this._state = { opened: !1 }, this._icons = [], this._boundHandleClick = this._handleClick.bind(this), this._boundUnselectOption = this._unselectOption.bind(this), this._boundSortOptions = this._sortOptions.bind(this), this._body = new t(document.body), this._create(e), this._config.value && this._setValue() } value() { return this._config.value } _create(e) { const s = "string" == typeof e ? document.querySelector(e) : e; this._parent = new t(s), this._select = new t("div", { class: i.select }), this._label = new t("span", { class: i.label }), this._optionsWrapper = new t("div", { class: i.dropdown }), this._config.multiple && this._select.addClass(i.multiselect), this._options = this._generateOptions(), this._select.addEventListener("click", this._boundHandleClick), this._select.append(this._label.get()), this._select.append(this._optionsWrapper.get()), this._parent.append(this._select.get()), this._placeholder = new t("span", { class: i.placeholder, textContent: this._config.placeholder }), this._select.append(this._placeholder.get()) } _generateOptions() { return this._config.autocomplete && (this._autocomplete = new t("input", { class: i.autocompleteInput, type: "text" }), this._autocomplete.addEventListener("input", this._boundSortOptions), this._optionsWrapper.append(this._autocomplete.get())), this._config.options.map(e => { const s = new t("div", { class: i.option, value: e.value, textContent: e.label, disabled: e.disabled }); return this._optionsWrapper.append(s.get()), s }) } _handleClick(e) { if (e.stopPropagation(), e.target.className !== i.autocompleteInput) { if (this._state.opened) { const t = this._options.find(t => t.get() === e.target); return t && this._setValue(t.get().getAttribute("data-value"), !0), this._select.removeClass(i.dropdownShown), this._body.removeEventListener("click", this._boundHandleClick), this._select.addEventListener("click", this._boundHandleClick), void (this._state.opened = !1) } e.target.className !== this._config.icon && (this._select.addClass(i.dropdownShown), this._body.addEventListener("click", this._boundHandleClick), this._select.removeEventListener("click", this._boundHandleClick), this._state.opened = !0, this._autocomplete && this._autocomplete.focus()) } } _setValue(e, t, s) { if (e && !s && (this._config.value = this._config.multiple ? [...this._config.value || [], e] : e), e && s && (this._config.value = e), this._options.forEach(e => { e.removeClass(i.selectedOption) }), this._placeholder.removeClass(i.placeholderHidden), this._config.multiple) { const e = this._config.value.map(e => { const t = this._config.options.find(t => t.value === e); return this._options.find(e => e.get().getAttribute("data-value") === t.value.toString()).addClass(i.selectedOption), t }); return e.length && this._placeholder.addClass(i.placeholderHidden), void this._selectOptions(e, t) } const n = this._config.value ? this._config.options.find(e => e.value.toString() === this._config.value) : this._config.options[0]; this._options.find(e => e.get().getAttribute("data-value") === n.value.toString()).addClass(i.selectedOption), this._placeholder.addClass(i.placeholderHidden), this._selectOption(n, t) } _selectOption(e, t) { this._selectedOption = e, this._label.setText(e.label), this._config.onChange && t && this._config.onChange(e.value) } _selectOptions(e, s) { this._label.setText(""), this._icons = e.map(e => { const s = new t("span", { class: i.selectedLabel, textContent: e.label }), n = new t(this._config.inlineIcon ? this._config.inlineIcon.cloneNode(!0) : "i", { class: this._config.icon, value: e.value }); return n.addEventListener("click", this._boundUnselectOption), s.append(n.get()), this._label.append(s.get()), n.get() }), s && this._optionsWrapper.setTop(Number(this._select.getHeight().split("px")[0]) + 5), this._config.onChange && s && this._config.onChange(this._config.value) } _unselectOption(e) { const t = [...this._config.value], s = t.indexOf(e.target.getAttribute("data-value")); -1 !== s && t.splice(s, 1), this._setValue(t, !0, !0) } _sortOptions(e) { this._options.forEach(t => { t.get().textContent.toLowerCase().startsWith(e.target.value.toLowerCase()) ? t.removeClass(i.optionHidden) : t.addClass(i.optionHidden) }) } } }();
+
+function ShowMyOpeningGrid() {
+    selectedManagers = "";
+    $('#calendar').fullCalendar('destroy');
+    CalLoading = true;
+    //$("#JobPostBackBtn").show();
+    $("#Scheduler").css('display', 'none');
+    $("#MyOpeningSummery").show();
+    //$("#inpManageName").html('');
+    //$("#inpManageName").html('<span class="autocomplete-select"></span>');
+    $("#lblApplicantId").text('');
+    $("#lblApplicantName").text('');
+    $("#lblApplicantEmail").text('');
+}
+function UpdateInterviewPanel() {
+
+    $.ajax({
+        type: 'POST',
+        url: "/NewAdmin/UpdateInterviewPanel",
+        data: { "selectedManagers": selectedManagers, "JobId": $("#JobId").val() ,"JobTitle":JobTitle  },
+        success: function (response) {
+            if (response == true) {
+                $("#DisplayMessage").show();
+            }
+            else {
+                $("#DisplayMessage").hide();
+            }
+            setTimeout(function () {
+                $("#DisplayMessage").hide();
+                $("#myModalUpdatePanel").modal('hide');
+
+            }, 2000);
+
+        }
+    });
+}
+//--End Schedule Interview

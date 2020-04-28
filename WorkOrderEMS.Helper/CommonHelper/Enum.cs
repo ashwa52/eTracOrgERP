@@ -687,10 +687,26 @@ namespace WorkOrderEMS.Helper
     }
     public static class ApplicantStatus
     {
-        public const string F = "BackgroundCheck";
-        public const string S = "Sent For Background Check";
-        public const string Y = "Background Check Pass";
-        public const string N = "Background Check Fail";
+        public const string BackgroundCheck = "F";       
+        public const string Screened = "S";
+        public const string Reject = "R";
+        public const string Applied = "A";
+        public const string Shortlisted = "D";
+        public const string Assessment = "E";
+        public const string Onboarding = "I";
+        public const string Offer = "O";
+        public const string Hired = "H";
+        public const string InterviewScheduled = "Hired";
+    }
+    public static class ApplicantIsActiveStatus
+    {
+        public const string Sent = "S";
+        public const string Pass = "Y";
+        public const string Fail = "N";
+        public const string OfferAccepted = "A";
+        public const string OfferRejected = "D";
+        public const string OfferCounter = "C";
+        public const string Onboarding = "I";
     }
     public static class VendorName
     {
@@ -739,5 +755,49 @@ namespace WorkOrderEMS.Helper
     {
         I9 = 17,
         W4 = 19
+    }
+    public static class ActiveStatus
+    {
+        public const string N = "N";
+        public const string Y = "Y";
+    }
+    public static class ModuleSubModule
+    {
+        //Epeople
+        public const string ePeople = "ePeople";
+        public const string OnBoarded = "OnBoarded";
+        public const string OnBoarding = "OnBoarding";
+        public const string Interviewer = "Interviewer";
+        public const string InterviewerAcceptDeny = "InterviewAcceptDeny";
+        public const string AssessmentStatus = "AssessmentStatus";
+        public const string OnBoardingComplete = "OnBoardingComplete";
+        public const string AssessmentStart = "AssessmentStart";
+
+        //Performance
+        public const string Performance = "Performance";
+        public const string EvaluationStart = "EvaluationStart";
+        public const string EvaluationComplete = "EvaluationComplete";
+    }
+    public static class Priority
+    {
+        public const string High = "H";
+        public const string Medium = "M";
+        public const string Low = "L";
+    }
+    public static class APIName
+    {
+        public const string I9AuthenticationAPI= "I9Authentication";
+        public const string I9AuthenticationLink = "/authentication/login";
+        public const string I9CaseAPI = "I9CaseAPI";
+        public const string I9CaseAPILink = "https://stage-everify.uscis.gov/api/v30/cases";
+        public const string I9refreshTokenLink = "/authentication/refresh";
+        public const string I9CaseSubmitLink = "https://stage-everify.uscis.gov/api/v30/cases/";
+        public const string I9refreshToken = "I9TokenRefresh";
+        public const string I9PostDataCase = "I9PostDataCase";
+        public const string I9CaseSubmit = "I9CaseSubmit";
+        public const string FloridaBlueAuthentication = "FloridaBlueAuthentication";
+        public const string FloridaBlueAuthenticationLink = "https://api.availity.com/availity/v1/token";
+        public const string FloridaBlueGetLink = "https://api.availity.com/availity/v1/configurations?type=270";
+        public const string BackGroudScreeningPostLink = "https://uat-api.applicantinsight.net/v1/api/Screenings";
     }
 }

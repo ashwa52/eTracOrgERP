@@ -51,6 +51,130 @@ namespace WorkOrderEMS.BusinessLogic
 
             return commonModel;
         }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// </summary>
+        /// <param name="Applicant"></param>
+        /// <returns></returns>
+        public CommonApplicantModel GetApplicantAllDetailsToView(long Applicant)
+        {
+            CommonApplicantModel commonModel = new CommonApplicantModel();
+            commonModel.ApplicantAddress = objworkorderEMSEntities.spGetApplicantAddress(Applicant).Select
+                (x => new ApplicantAddress() {
+                    APA_Apartment = x.APA_Apartment,
+                    APA_City  =x.APA_City,
+                    APA_State = x.APA_State,
+                    APA_StreetAddress = x.APA_StreetAddress,
+                    APA_YearsAddressFrom = x.APA_YearsAddressFrom,
+                    APA_YearsAddressTo = x.APA_YearsAddressTo,
+                    APA_Zip = x.APA_Zip
+                }).ToList();
+            commonModel.ApplicantPersonalInfo = objworkorderEMSEntities.spGetApplicantPersonalInfo(Applicant).Select
+                  (x => new WorkOrderEMS.Models.ApplicantPersonalInfo() {
+                      API_DesireSalaryWages = x.API_DesireSalaryWages,
+                      API_DLNumber = x.API_DLNumber,
+                      API_FirstName = x.API_FirstName,
+                      API_LastName = x.API_LastName,
+                      API_MiddleName = x.API_MidName,
+                      API_SSN = x.API_SSN,
+                      API_Title = x.API_Title,                     
+                  }).ToList();
+            commonModel.AplicantAcadmicDetails = objworkorderEMSEntities.spGetAplicantAcadmicDetails(Applicant).Select
+                  (x => new WorkOrderEMS.Models.AplicantAcadmicDetails(){
+                      AAD_AttendedFrom = x.AAD_AttendedFrom,
+                      AAD_AttendedTo = x.AAD_AttendedTo,
+                      AAD_City = x.AAD_City,
+                      AAD_EducationType = x.AAD_EducationType,
+                      AAD_InstituteName = x.AAD_InstituteName,
+                      AAD_State = x.AAD_State,
+                      AAD_Zip = Convert.ToInt32(x.AAD_Zip),                     
+                  }).ToList();
+            commonModel.ApplicantAccidentRecord = objworkorderEMSEntities.spGetApplicantAccidentRecord(Applicant).Select
+                  (x => new ApplicantAccidentRecord()
+                  {
+                    AAR_AccidantDate = x.AAR_AccidantDate,
+                    AAR_Discription = x.AAR_Discription,
+                    AAR_NumberOfFatalities = Convert.ToInt32(x.AAR_NumberOfFatalities),
+                    AAR_NumberOfInjuries = Convert.ToInt32(x.AAR_NumberOfInjuries)
+                  }).ToList();
+            commonModel.ApplicantAdditionalInfo = objworkorderEMSEntities.spGetApplicantAdditionalInfo(Applicant).Select
+                  (x => new ApplicantAdditionalInfo()
+                  {
+                    AAI_Age21Completed = Convert.ToChar(x.AAI_Age21Completed),
+                    AAI_AnyRefOrEmployeeInELITE = Convert.ToChar(x.AAI_AnyRefOrEmployeeInELITE),
+                    AAI_AvailableDate = x.AAI_AvailableDate,
+                    AAI_DepartureDate = x.AAI_DepartureDate,
+                    AAI_EverWorkForELITE = Convert.ToChar(x.AAI_EverWorkForELITE),
+                    AAI_NameOfRefOrEmployeeInELITE = x.AAI_NameOfRefOrEmployeeInELITE,
+                    AAI_PriorMilitaryService = Convert.ToChar(x.AAI_PriorMilitaryService),
+                    AAI_ReasonForLeaving = x.AAI_ReasonForLeaving,
+                    AAI_WorkEligibilityUS = Convert.ToChar(x.AAI_WorkEligibilityUS)
+                  }).ToList();
+            commonModel.ApplicantBackgroundHistory = objworkorderEMSEntities.spGetApplicantBackgroundHistory(Applicant).Select
+                  (x => new ApplicantBackgroundHistory()
+                  {
+                      ABH_Address = x.ABH_Address,
+                      ABH_City = x.ABH_City,
+                      ABH_CompanyName = x.ABH_CompanyName,
+                      ABH_Phone = Convert.ToInt64(x.ABH_Phone),
+                      ABH_ReasonForGAP = x.ABH_ReasonForGAP,
+                      ABH_ReasonforLeaving = x.ABH_ReasonforLeaving,
+                      ABH_SafetySensitiveFunction =Convert.ToChar(x.ABH_SafetySensitiveFunction),
+                      ABH_State = x.ABH_State,
+                      ABH_StillEmployed = Convert.ToChar(x.ABH_StillEmployed),
+                      ABH_SubToFedralMotor = Convert.ToChar(x.ABH_SubToFedralMotor),
+                      ABH_ZIPCode = Convert.ToInt32(x.ABH_ZIPCode)
+                  }).ToList();
+            commonModel.ApplicantContactInfo = objworkorderEMSEntities.spGetApplicantContactInfo(Applicant).Select
+                  (x => new WorkOrderEMS.Models.ApplicantContactInfo()
+                  {
+                      ACI_eMail = x.ACI_eMail,
+                      ACI_PhoneNo = Convert.ToInt64(x.ACI_PhoneNo),
+                      ACI_PrefredContactMethod = x.ACI_PrefredContactMethod
+                  }).ToList();
+            commonModel.ApplicantLicenseHeald  = objworkorderEMSEntities.spGetApplicantLicenseHeald(Applicant).Select
+                  (x => new ApplicantLicenseHeald()
+                  {
+                     ALH_ExpirationDate = x.ALH_ExpirationDate,
+                     ALH_IssueDate = x.ALH_IssueDate,
+                     ALH_LicenceNumber = x.ALH_LicenceNumber,
+                     ALH_LicenseType = x.ALH_LicenseType,
+                     ALH_State = x.ALH_State
+                  }).ToList();
+            commonModel.ApplicantPositionTitle = objworkorderEMSEntities.spGetApplicantPositionTitle(Applicant).Select
+                  (x => new ApplicantPositionTitle()
+                  {
+                      APT_FromMoYr  =x.APT_FromMoYr,
+                      APT_PositionTitle = x.APT_PositionTitle,
+                      APT_Salary = Convert.ToDecimal(x.APT_Salary),
+                      APT_ToMoYr = x.APT_ToMoYr
+                  }).ToList();
+            commonModel.ApplicantSchecduleAvaliblity = objworkorderEMSEntities.spGetApplicantSchecduleAvaliblity(Applicant).Select
+                 (x => new ApplicantSchecduleAvaliblity()
+                 {
+                     ASA_AvaliableEndTime = Convert.ToDateTime(x.ASA_AvaliableEndTime),
+                     ASA_AvaliableStartTime = Convert.ToDateTime(x.ASA_AvaliableStartTime),
+                     ASA_WeekDay = x.ASA_WeekDay
+                 }).ToList();
+            commonModel.ApplicantTrafficConvictions = objworkorderEMSEntities.spGetApplicantTrafficConvictions(Applicant).Select
+                 (x => new ApplicantTrafficConvictions()
+                 {
+                     ATC_AtFaultAccident = x.ATC_AtFaultAccident == "Y" ? true:false,
+                     ATC_AtMovingViolation = x.ATC_AtMovingViolation == "Y" ? true : false,
+                     ATC_ConvictedDate = x.ATC_ConvictedDate,
+                     ATC_StateOfViolation = x.ATC_StateOfViolation,
+                     ATC_Violation = x.ATC_Violation
+                 }).ToList();
+            commonModel.ApplicantVehiclesOperated = objworkorderEMSEntities.spGetApplicantVehiclesOperated(Applicant).Select
+                 (x => new ApplicantVehiclesOperated()
+                 {
+                     AVO_DenideLicensePermit = Convert.ToChar(x.AVO_DenideLicensePermit),
+                     AVO_DeniedLicensePermitExplanation = x.AVO_DeniedLicensePermitExplanation,
+                     AVO_SuspendRevokeLicensePermit = Convert.ToChar(x.AVO_SuspendRevokeLicensePermit),
+                     AVO_SuspendRevokeLicensePermitExplanation = x.AVO_SuspendRevokeLicensePermitExplanation
+                 }).ToList();
+            return commonModel;
+        }
         public bool UpdateApplicantInfo(EmployeeVIewModel onboardingDetailRequestModel)
         {
 
@@ -475,13 +599,10 @@ namespace WorkOrderEMS.BusinessLogic
         }
         public void SetEducationVerificationForm(long userId, EducationVarificationModel model)
         {
-
             try
             {
-
                 using (workorderEMSEntities Context = new workorderEMSEntities())
                 {
-
                     var empid = Context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
                     var isexist = GetEducationVerificationForm(userId);
                     if (ReferenceEquals(isexist, null))
@@ -491,7 +612,6 @@ namespace WorkOrderEMS.BusinessLogic
                     else
                     {
                         Context.spSetEducationVerificationForm("U", isexist.EvfId, empid, model.Certificate, model.HighSchool.SchoolName, "", model.HighSchool.City, model.HighSchool.State, model.HighSchool.AttendFrom, model.HighSchool.AttendTo, model.IsActive);
-
                     }
 
                 }

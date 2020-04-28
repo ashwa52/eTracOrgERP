@@ -131,7 +131,8 @@ namespace WorkOrderEMS.Controllers.Login
                     switch (objLoginSession.UserRoleId)
                     {
                         case ((Int64)(UserType.GlobalAdmin)):
-                            return RedirectToAction("Index", "GlobalAdmin");
+                            return RedirectToAction("Index", "NewAdmin");
+                            //return RedirectToAction("Index", "GlobalAdmin");
                             break;
                         case ((Int64)(UserType.ITAdministrator)):
 
@@ -219,12 +220,14 @@ namespace WorkOrderEMS.Controllers.Login
                     if (result.UserId > 0)
                     {
                         this.CreateAuthenticateFormsTicket(result);
-                        Common_B obj_Common_B = new Common_B();
+                        var _Notification = new NotificationManager();
+                        var obj_Common_B = new Common_B();
                         Session["eTrac_SelectedDasboardLocationID"] = result.LocationID;
                         Session["eTrac_UserRoles"] = this.Get_UserAssignedRoles();
                         Session["eTrac_DashboardWidget"] = this.GetUserDashboardWidget();
                         Session["eTrac_LocationServices"] = obj_Common_B.GetLocationServicesByLocationID(result.LocationID, result.UserRoleId);
-                        Session["eTrac_ProfileImage"] = result.ProfileImage; 
+                        Session["eTrac_ProfileImage"] = result.ProfileImage;
+                        //Session["NotificationList"] = _Notification.GetNotification(result.UserId, result.UserName);
                         CallbackController.UserRoleId = result.UserRoleId;
                         CallbackController.UserId = result.UserId;
                         HomeController.UserRoleId = result.UserRoleId;

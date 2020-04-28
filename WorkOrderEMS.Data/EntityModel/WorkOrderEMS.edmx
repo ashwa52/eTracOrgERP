@@ -80,6 +80,7 @@
           <Property Name="APT_Status" Type="char" MaxLength="1" />
           <Property Name="APT_Date" Type="datetime" />
           <Property Name="APT_IsActive" Type="char" MaxLength="1" />
+          <Property Name="APT_DateOfJoining" Type="date" />
         </EntityType>
         <EntityType Name="ApplicantContactInfo">
           <Key>
@@ -145,6 +146,7 @@
           <Property Name="ALA_Answer" Type="varchar" MaxLength="50" />
           <Property Name="ALA_Date" Type="datetime" />
           <Property Name="ALA_IsActive" Type="char" MaxLength="1" />
+          <Property Name="ALA_Photo" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="ApplicantPersonalInfo">
           <Key>
@@ -206,7 +208,7 @@
             <PropertyRef Name="BST_Id" />
           </Key>
           <Property Name="BST_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="BST_EMP_EmployeeID" Type="bigint" Nullable="false" />
+          <Property Name="BST_EMP_EmployeeID" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="BST_SlotDate" Type="date" Nullable="false" />
           <Property Name="BST_SLT_Id" Type="bigint" Nullable="false" />
           <Property Name="BST_Status" Type="char" MaxLength="1" />
@@ -943,7 +945,7 @@
           <Property Name="EMP_SSN" Type="varchar" MaxLength="50" />
           <Property Name="EMP_Photo" Type="nvarchar(max)" />
           <Property Name="EMP_MilitaryService" Type="char" MaxLength="1" />
-          <Property Name="EMP_Gender" Type="varchar" MaxLength="20" />
+          <Property Name="EMP_Gender" Type="bigint" />
           <Property Name="EMP_JobTitleId" Type="bigint" />
           <Property Name="EMP_ManagerId" Type="varchar" MaxLength="20" />
           <Property Name="EMP_DateOfJoining" Type="date" />
@@ -1109,9 +1111,9 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Name="IPT_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="IPT_JPS_JobPostingId" Type="bigint" Nullable="false" />
           <Property Name="IPT_APT_ApplicantId" Type="bigint" />
-          <Property Name="IPT_EMP_EmployeeID_HM" Type="bigint" Nullable="false" />
-          <Property Name="IPT_EMP_EmployeeID_SE" Type="bigint" />
-          <Property Name="IPT_EMP_EmployeeID_TE" Type="bigint" />
+          <Property Name="IPT_EMP_EmployeeID_HM" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="IPT_EMP_EmployeeID_SE" Type="varchar" MaxLength="20" />
+          <Property Name="IPT_EMP_EmployeeID_TE" Type="varchar" MaxLength="20" />
           <Property Name="IPT_BST_Id_HM" Type="bigint" />
           <Property Name="IPT_BST_Id_SE" Type="bigint" />
           <Property Name="IPT_BST_Id_TE" Type="bigint" />
@@ -1174,7 +1176,7 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
             <PropertyRef Name="JPS_JobPostingId" />
           </Key>
           <Property Name="JPS_JobPostingId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="JPS_JobPostingIdRecruitee" Type="bigint" Nullable="false" />
+          <Property Name="JPS_JobPostingIdRecruitee" Type="bigint" />
           <Property Name="JPS_JobTitleID" Type="bigint" Nullable="false" />
           <Property Name="JPS_HiringManagerID" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="JPS_JobTitle" Type="varchar" MaxLength="50" />
@@ -1184,6 +1186,7 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Name="JPS_Date" Type="datetime" />
           <Property Name="JPS_IsActive" Type="char" MaxLength="1" />
           <Property Name="JPS_LocationId" Type="bigint" />
+          <Property Name="JPS_DrivingType" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="JobTitle">
           <Key>
@@ -1772,6 +1775,25 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Name="MDL_Date" Type="datetime" />
           <Property Name="MDL_IsActive" Type="char" MaxLength="1" />
         </EntityType>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="NTF_Id" />
+          </Key>
+          <Property Name="NTF_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NTF_Details" Type="varchar(max)" Nullable="false" />
+          <Property Name="NTF_Module" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="NTF_Submodule" Type="varchar" MaxLength="20" />
+          <Property Name="NTF_SubmoduleId" Type="varchar" MaxLength="50" />
+          <Property Name="NTF_AssignTo" Type="varchar" MaxLength="20" />
+          <Property Name="NTF_AssignToIsWorkable" Type="bit" />
+          <Property Name="NTF_IsRead" Type="bit" />
+          <Property Name="NTF_DeletedDate" Type="date" />
+          <Property Name="NTF_CreatedBy" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="NTF_CreatedByIsWorkable" Type="bit" />
+          <Property Name="NFT_Severity" Type="char" MaxLength="1" />
+          <Property Name="NTF_CreatedDate" Type="datetime" />
+          <Property Name="NTF_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
         <EntityType Name="NotificationDetails">
           <Key>
             <PropertyRef Name="NID" />
@@ -1793,6 +1815,17 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Name="IsDeleted" Type="bit" Nullable="false" />
           <Property Name="DeletedBy" Type="bigint" />
           <Property Name="DeletedDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="OfferLetter">
+          <Key>
+            <PropertyRef Name="OFL_Id" />
+          </Key>
+          <Property Name="OFL_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="OFL_APT_ApplicantId" Type="bigint" Nullable="false" />
+          <Property Name="OFL_OfferLetterDueDate" Type="date" />
+          <Property Name="OFL_OfferAmount" Type="numeric" Precision="18" Scale="2" />
+          <Property Name="OFL_Date" Type="datetime" />
+          <Property Name="OFL_IsActive" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="PaymentMode">
           <Key>
@@ -4328,6 +4361,8 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <!--Errors Found During Generation:
+warning 6037: Foreign key constraint 'FK_TrackEmployeeStatus_LocationMaster' has been omitted from the storage model. Column 'LocationId' of table 'WorkOrderEMS.Data.EntityModel.Store.LoginLog' is a foreign key participating in multiple relationships. A one-to-one Entity Model will not validate since data inconsistency is possible.
         <Association Name="FK_TrackEmployeeStatus_LocationMaster">
           <End Role="LocationMaster" Type="Self.LocationMaster" Multiplicity="0..1" />
           <End Role="LoginLog" Type="Self.LoginLog" Multiplicity="*" />
@@ -4339,7 +4374,9 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               <PropertyRef Name="LocationId" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>
+        </Association>-->
+        <!--Errors Found During Generation:
+warning 6037: Foreign key constraint 'FK_TrackEmployeeStatus_UserRegistrations' has been omitted from the storage model. Column 'UserID' of table 'WorkOrderEMS.Data.EntityModel.Store.LoginLog' is a foreign key participating in multiple relationships. A one-to-one Entity Model will not validate since data inconsistency is possible.
         <Association Name="FK_TrackEmployeeStatus_UserRegistrations">
           <End Role="UserRegistrations" Type="Self.UserRegistrations" Multiplicity="1" />
           <End Role="LoginLog" Type="Self.LoginLog" Multiplicity="*" />
@@ -4351,7 +4388,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
-        </Association>
+        </Association>-->
         <Association Name="FK_User_GlobalCodes_Gender">
           <End Role="GlobalCodes" Type="Self.GlobalCodes" Multiplicity="0..1" />
           <End Role="UserRegistrations" Type="Self.UserRegistrations" Multiplicity="*" />
@@ -5348,6 +5385,16 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="ApplicantId" Type="bigint" Mode="In" />
           <Parameter Name="IsNext" Type="char" Mode="InOut" />
         </Function>
+        <Function Name="spGetNotification" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NTF_Module" Type="varchar" Mode="In" />
+          <Parameter Name="NTF_Submodule" Type="varchar" Mode="In" />
+          <Parameter Name="NTF_SubmoduleId" Type="bigint" Mode="In" />
+          <Parameter Name="NTF_CreatedBy" Type="varchar" Mode="In" />
+          <Parameter Name="NTF_AssignTo" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spGetOfferLetter" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ApplicantId" Type="bigint" Mode="In" />
+        </Function>
         <Function Name="spGetOrgnizationCommonview" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
         </Function>
@@ -5359,6 +5406,9 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         </Function>
         <Function Name="spGetOrgnizationUserView" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spGetOrientation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="OTN_EMP_EmployeeID" Type="varchar" Mode="In" />
         </Function>
         <Function Name="spGetPaymentMode" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetPaymentSummary" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -5499,6 +5549,23 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="EFM_eFormLink" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="EFM_IsActive" Type="char" Mode="In" />
         </Function>
+        <Function Name="spSetAplicantCertificationDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Action" Type="char" Mode="In" />
+          <Parameter Name="ACD_Id" Type="bigint" Mode="In" />
+          <Parameter Name="ACD_APT_ApplicantId" Type="bigint" Mode="In" />
+          <Parameter Name="ACD_CertificationName" Type="varchar" Mode="In" />
+          <Parameter Name="ACD_CertificationEarnedYear" Type="date" Mode="In" />
+          <Parameter Name="ACD_CertifyingAgency" Type="varchar" Mode="In" />
+          <Parameter Name="ACD_CertificateAttached" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="ACD_Address" Type="varchar" Mode="In" />
+          <Parameter Name="ACD_City" Type="varchar" Mode="In" />
+          <Parameter Name="ACD_State" Type="varchar" Mode="In" />
+          <Parameter Name="ACD_Zip" Type="int" Mode="In" />
+          <Parameter Name="ACD_IsActive" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetApplicantAllDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Action" Type="char" Mode="In" />
+        </Function>
         <Function Name="spSetApplicantChangePassword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LoginID" Type="varchar" Mode="In" />
           <Parameter Name="Password" Type="nvarchar(max)" Mode="In" />
@@ -5522,6 +5589,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="ALA_eMailId" Type="varchar" Mode="In" />
           <Parameter Name="ALA_Question" Type="varchar" Mode="In" />
           <Parameter Name="ALA_Answer" Type="varchar" Mode="In" />
+          <Parameter Name="ALA_Photo" Type="varchar(max)" Mode="In" />
         </Function>
         <Function Name="spSetApplicantForgotPassword" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LoginID" Type="varchar" Mode="In" />
@@ -5561,6 +5629,14 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="API_ApplicantStatus" Type="char" Mode="In" />
           <Parameter Name="API_IsActive" Type="char" Mode="In" />
         </Function>
+        <Function Name="spSetApplicantJobApply" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Action" Type="char" Mode="In" />
+          <Parameter Name="APT_ALA_UserId" Type="bigint" Mode="In" />
+          <Parameter Name="APT_JobPostingId" Type="bigint" Mode="In" />
+          <Parameter Name="APT_DateOfJoining" Type="date" Mode="In" />
+          <Parameter Name="APT_IsActive" Type="char" Mode="In" />
+          <Parameter Name="APT_ApplicantId" Type="bigint" Mode="InOut" />
+        </Function>
         <Function Name="spSetApplicantSignature" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Action" Type="char" Mode="In" />
           <Parameter Name="ASG_Id" Type="bigint" Mode="In" />
@@ -5571,8 +5647,8 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         </Function>
         <Function Name="spSetApplicantStatus" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ApplicantId" Type="bigint" Mode="In" />
-          <Parameter Name="API_ApplicantStatus" Type="char" Mode="In" />
-          <Parameter Name="API_IsActive" Type="char" Mode="In" />
+          <Parameter Name="APT_Status" Type="char" Mode="In" />
+          <Parameter Name="APT_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetApprovalForBill" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LBLL_Id" Type="bigint" Mode="In" />
@@ -5721,10 +5797,10 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         <Function Name="spSetBookSlotTime" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Action" Type="char" Mode="In" />
           <Parameter Name="BST_Id" Type="bigint" Mode="In" />
-          <Parameter Name="BST_Title" Type="nvarchar" Mode="In" />
-          <Parameter Name="BST_EMP_EmployeeID" Type="bigint" Mode="In" />
+          <Parameter Name="BST_EMP_EmployeeID" Type="varchar" Mode="In" />
           <Parameter Name="BST_SlotDate" Type="date" Mode="In" />
           <Parameter Name="BST_SLT_Id" Type="bigint" Mode="In" />
+          <Parameter Name="BST_Title" Type="varchar" Mode="In" />
           <Parameter Name="BST_Status" Type="bigint" Mode="In" />
           <Parameter Name="BST_IsActive" Type="char" Mode="In" />
         </Function>
@@ -6219,6 +6295,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="I9F_Sec3_C_NameOfEmployerOrAuthorized" Type="varchar" Mode="In" />
           <Parameter Name="I9F_Date" Type="datetime" Mode="In" />
           <Parameter Name="I9F_IsActive" Type="char" Mode="In" />
+          <Parameter Name="I9F_CaseNumber" Type="varchar" Mode="In" />
         </Function>
         <Function Name="spSetInsurance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="INSAction" Type="char" Mode="In" />
@@ -6249,10 +6326,10 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="Action" Type="char" Mode="In" />
           <Parameter Name="IPT_Id" Type="bigint" Mode="In" />
           <Parameter Name="IPT_JPS_JobPostingId" Type="bigint" Mode="In" />
-          <Parameter Name="IPT_EMP_EmployeeID_HM" Type="bigint" Mode="In" />
-          <Parameter Name="IPT_EMP_EmployeeID_SE" Type="bigint" Mode="In" />
-          <Parameter Name="IPT_EMP_EmployeeID_TE" Type="bigint" Mode="In" />
-          <Parameter Name="IPT_Status" Type="bigint" Mode="In" />
+          <Parameter Name="IPT_EMP_EmployeeID_HM" Type="varchar" Mode="In" />
+          <Parameter Name="IPT_EMP_EmployeeID_SE" Type="varchar" Mode="In" />
+          <Parameter Name="IPT_EMP_EmployeeID_TE" Type="varchar" Mode="In" />
+          <Parameter Name="IPT_Status" Type="char" Mode="In" />
           <Parameter Name="IPT_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetJobPosting" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -6262,6 +6339,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="JPS_HiringManagerID" Type="varchar" Mode="In" />
           <Parameter Name="JPS_LocationId" Type="bigint" Mode="In" />
           <Parameter Name="JPS_NumberOfPost" Type="int" Mode="In" />
+          <Parameter Name="JPS_DrivingType" Type="varchar" Mode="In" />
           <Parameter Name="JPS_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetJobTitle" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
@@ -6313,6 +6391,31 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="MDL_Id" Type="bigint" Mode="In" />
           <Parameter Name="MDL_ModuleName" Type="varchar" Mode="In" />
           <Parameter Name="MDL_IsActive" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetNotification" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Action" Type="char" Mode="In" />
+          <Parameter Name="NTF_Id" Type="bigint" Mode="In" />
+          <Parameter Name="NTF_Details" Type="varchar(max)" Mode="In" />
+          <Parameter Name="NTF_Module" Type="varchar" Mode="In" />
+          <Parameter Name="NTF_Submodule" Type="varchar" Mode="In" />
+          <Parameter Name="NTF_SubmoduleId" Type="varchar" Mode="In" />
+          <Parameter Name="NTF_CreatedBy" Type="varchar" Mode="In" />
+          <Parameter Name="NTF_AssignTo" Type="varchar" Mode="In" />
+          <Parameter Name="NTF_AssignToIsWorkable" Type="bit" Mode="In" />
+          <Parameter Name="NTF_CreatedByIsWorkable" Type="bit" Mode="In" />
+          <Parameter Name="NFT_Severity" Type="char" Mode="In" />
+          <Parameter Name="NTF_DeletedDate" Type="date" Mode="In" />
+          <Parameter Name="NTF_IsRead" Type="bit" Mode="In" />
+          <Parameter Name="NTF_IsActive" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetOrientation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Action" Type="char" Mode="In" />
+          <Parameter Name="OTN_Id" Type="bigint" Mode="In" />
+          <Parameter Name="OTN_EMP_EmployeeID" Type="varchar" Mode="In" />
+          <Parameter Name="OTN_LocationId" Type="bigint" Mode="In" />
+          <Parameter Name="ONT_OrientationDate" Type="date" Mode="In" />
+          <Parameter Name="ONT_Orientationtime" Type="time" Mode="In" />
+          <Parameter Name="ONT_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetPaymentStatusForBill" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LBLL_Id" Type="bigint" Mode="In" />
@@ -6460,6 +6563,10 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="RUL_ByPass_UserId" Type="bigint" Mode="In" />
           <Parameter Name="RUL_ByPassLevel" Type="nchar" Mode="In" />
           <Parameter Name="RUL_IsActive" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetScheduleInterview_ForMailFromApplicant" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IPT_Id" Type="bigint" Mode="In" />
+          <Parameter Name="IPT_Status" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetSelfAssessment306090" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Action" Type="char" Mode="In" />
@@ -6791,7 +6898,9 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="Miscellaneous" EntityType="Self.Miscellaneous" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MisNumber" EntityType="Self.MisNumber" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Module" EntityType="Self.Module" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Notification" EntityType="Self.Notification" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NotificationDetails" EntityType="Self.NotificationDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OfferLetter" EntityType="Self.OfferLetter" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PaymentMode" EntityType="Self.PaymentMode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PaymentTerm" EntityType="Self.PaymentTerm" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PermissionDetails" EntityType="Self.PermissionDetails" Schema="dbo" store:Type="Tables" />
@@ -7541,14 +7650,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <AssociationSet Name="FK_SubModule_Module" Association="Self.FK_SubModule_Module">
             <End Role="Module" EntitySet="Module" />
             <End Role="SubModule" EntitySet="SubModule" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TrackEmployeeStatus_LocationMaster" Association="Self.FK_TrackEmployeeStatus_LocationMaster">
-            <End Role="LocationMaster" EntitySet="LocationMaster" />
-            <End Role="LoginLog" EntitySet="LoginLog" />
-          </AssociationSet>
-          <AssociationSet Name="FK_TrackEmployeeStatus_UserRegistrations" Association="Self.FK_TrackEmployeeStatus_UserRegistrations">
-            <End Role="UserRegistrations" EntitySet="UserRegistrations" />
-            <End Role="LoginLog" EntitySet="LoginLog" />
           </AssociationSet>
           <AssociationSet Name="FK_User_GlobalCodes_Gender" Association="Self.FK_User_GlobalCodes_Gender">
             <End Role="GlobalCodes" EntitySet="GlobalCodes" />
@@ -14268,9 +14369,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="EmployeeId" Mode="In" Type="String" />
             <Parameter Name="AssessmentType" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spGetAssessmentList306090" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetAssessmentList306090_Result1)">
-          <Parameter Name="EmployeeId" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="spGetHiringManager" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetHiringManager_Result)">
           <Parameter Name="VST_Id" Mode="In" Type="Int64" />
           </FunctionImport>
@@ -14322,9 +14420,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="EEL_Comments" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="ApplicantInfoes" EntityType="WorkOrderEMS.Data.EntityModel.ApplicantInfo" />
-          <FunctionImport Name="spGetOrgnizationUserView" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetOrgnizationUserView_Result2)">
-          <Parameter Name="EmployeeId" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="spSetUserVerify">
             <Parameter Name="EmployeeId" Mode="In" Type="String" />
             <Parameter Name="LocationId" Mode="In" Type="Int64" />
@@ -14336,9 +14431,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <FunctionImport Name="spGetHiringGraph" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetHiringGraph_Result)">
             <Parameter Name="JPS_HiringManagerID" Mode="In" Type="String" />
             <Parameter Name="JPS_JobPostingId" Mode="In" Type="Int64" />
-          </FunctionImport>
-          <FunctionImport Name="spGetJobPosting_ForCompanyOpening" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetJobPosting_ForCompanyOpening_Result)">
-          <Parameter Name="JPS_HiringManagerID" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetJobPostingDetails_ForCompanyOpening" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetJobPostingDetails_ForCompanyOpening_Result)">
           <Parameter Name="JPS_JobPostingId" Mode="In" Type="Int64" />
@@ -14386,9 +14478,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <FunctionImport Name="spGetApplicantInfo" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantInfo_Result2)">
           <Parameter Name="EmployeeId" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spGetApplicantInfoForMyInterview" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantInfoForMyInterview_Result3)">
-          <Parameter Name="EmployeeId" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="spGetAssessmentQuestion" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetAssessmentQuestion_Result4)">
             <Parameter Name="EmployeeID" Mode="In" Type="String" />
             <Parameter Name="AssessmentType" Mode="In" Type="String" />
@@ -14406,9 +14495,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <FunctionImport Name="spGetEmployeeManagementList" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetEmployeeManagementList_Result2)">
           <Parameter Name="EmployeeId" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spGetEmployeePersonalInfo" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetEmployeePersonalInfo_Result2)">
-          <Parameter Name="EmployeeId" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="spGetInterviewerList" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetInterviewerList_Result1)">
           <Parameter Name="ApplicantId" Mode="In" Type="Int64" />
           </FunctionImport>
@@ -14421,9 +14507,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <FunctionImport Name="spGetModuleTree" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetModuleTree_Result1)">
             <Parameter Name="Action" Mode="In" Type="String" />
             <Parameter Name="SMD_MDL_Id" Mode="In" Type="Int64" />
-          </FunctionImport>
-          <FunctionImport Name="spGetMyOpening" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetMyOpening_Result3)">
-          <Parameter Name="JPS_JobPostingId" Mode="In" Type="Int64" />
           </FunctionImport>
           <FunctionImport Name="spGetRequisitionList" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetRequisitionList_Result2)" />
           <FunctionImport Name="spGetUserOverrideUsertype" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetUserOverrideUsertype_Result1)">
@@ -14566,12 +14649,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="ApprovalStatus" Mode="In" Type="String" />
             <Parameter Name="ApprovalComment" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="spSetApplicantStatus">
-            <Parameter Name="ApplicantId" Mode="In" Type="Int64" />
-            <Parameter Name="API_ApplicantStatus" Mode="In" Type="String" />
-            <Parameter Name="API_IsActive" Mode="In" Type="String" />
-          </FunctionImport>
-          <EntitySet Name="Employees" EntityType="WorkOrderEMS.Data.EntityModel.Employee" />
           <FunctionImport Name="spGetOrgnizationCommonview" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetOrgnizationCommonview_Result1)">
           <Parameter Name="EmployeeId" Mode="In" Type="String" />
           </FunctionImport>
@@ -14654,16 +14731,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="NewPassword" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="ApplicantLoginAccesses" EntityType="WorkOrderEMS.Data.EntityModel.ApplicantLoginAccess" />
-          <FunctionImport Name="spSetApplicantCreateLoginAccess" ReturnType="Collection(Int64)">
-            <Parameter Name="ALA_LoginId" Mode="In" Type="String" />
-            <Parameter Name="ALA_Password" Mode="In" Type="String" />
-            <Parameter Name="ALA_FirstName" Mode="In" Type="String" />
-            <Parameter Name="ALA_MidName" Mode="In" Type="String" />
-            <Parameter Name="ALA_LastName" Mode="In" Type="String" />
-            <Parameter Name="ALA_eMailId" Mode="In" Type="String" />
-            <Parameter Name="ALA_Question" Mode="In" Type="String" />
-            <Parameter Name="ALA_Answer" Mode="In" Type="String" />
-          </FunctionImport>
           <EntitySet Name="ApplicantPersonalInfoes" EntityType="WorkOrderEMS.Data.EntityModel.ApplicantPersonalInfo" />
           <EntitySet Name="InterviewQuestionChilds" EntityType="WorkOrderEMS.Data.EntityModel.InterviewQuestionChild" />
           <EntitySet Name="InterviewQuestionMasters" EntityType="WorkOrderEMS.Data.EntityModel.InterviewQuestionMaster" />
@@ -14683,32 +14750,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="EmployeeId" Mode="In" Type="String" />
             <Parameter Name="SlotDate" Mode="In" Type="DateTime" />
           </FunctionImport>
-          <FunctionImport Name="spSetBookSlotTime">
-            <Parameter Name="Action" Mode="In" Type="String" />
-            <Parameter Name="BST_Id" Mode="In" Type="Int64" />
-            <Parameter Name="BST_Title" Mode="In" Type="String" />
-            <Parameter Name="BST_EMP_EmployeeID" Mode="In" Type="Int64" />
-            <Parameter Name="BST_SlotDate" Mode="In" Type="DateTime" />
-            <Parameter Name="BST_SLT_Id" Mode="In" Type="Int64" />
-            <Parameter Name="BST_Status" Mode="In" Type="Int64" />
-            <Parameter Name="BST_IsActive" Mode="In" Type="String" />
-          </FunctionImport>
-          <EntitySet Name="InterviewProposalTimes" EntityType="WorkOrderEMS.Data.EntityModel.InterviewProposalTime" />
           <EntitySet Name="SlotTimes" EntityType="WorkOrderEMS.Data.EntityModel.SlotTime" />
-          <FunctionImport Name="spSetInterviewPanel">
-            <Parameter Name="Action" Mode="In" Type="String" />
-            <Parameter Name="IPT_Id" Mode="In" Type="Int64" />
-            <Parameter Name="IPT_JPS_JobPostingId" Mode="In" Type="Int64" />
-            <Parameter Name="IPT_EMP_EmployeeID_HM" Mode="In" Type="Int64" />
-            <Parameter Name="IPT_EMP_EmployeeID_SE" Mode="In" Type="Int64" />
-            <Parameter Name="IPT_EMP_EmployeeID_TE" Mode="In" Type="Int64" />
-            <Parameter Name="IPT_Status" Mode="In" Type="Int64" />
-            <Parameter Name="IPT_IsActive" Mode="In" Type="String" />
-          </FunctionImport>
-          <EntitySet Name="BookSlotTimes" EntityType="WorkOrderEMS.Data.EntityModel.BookSlotTime" />
-          <FunctionImport Name="spGetApplicantAllDetails" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantAllDetails_Result)">
-          <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
-          </FunctionImport>
           <FunctionImport Name="spSetEmergencyContactForm">
             <Parameter Name="ECFAction" Mode="In" Type="String" />
             <Parameter Name="ECF_Id" Mode="In" Type="Int64" />
@@ -14742,10 +14784,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="ACI_PrefredContactMethod" Mode="In" Type="String" />
             <Parameter Name="ACI_IsActive" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="JobPostings" EntityType="WorkOrderEMS.Data.EntityModel.JobPosting" />
-          <FunctionImport Name="spGetJobPosting" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetJobPosting_Result5)">
-          <Parameter Name="JPS_HiringManagerID" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="spSetJobPosting">
             <Parameter Name="Action" Mode="In" Type="String" />
             <Parameter Name="JPS_JobPostingIdRecruitee" Mode="In" Type="Int64" />
@@ -14753,88 +14791,8 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="JPS_HiringManagerID" Mode="In" Type="String" />
             <Parameter Name="JPS_LocationId" Mode="In" Type="Int64" />
             <Parameter Name="JPS_NumberOfPost" Mode="In" Type="Int32" />
+            <Parameter Name="JPS_DrivingType" Mode="In" Type="String" />
             <Parameter Name="JPS_IsActive" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="spGetI9Form" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetI9Form_Result1)">
-          <Parameter Name="EmployeeId" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="spSetI9Form">
-            <Parameter Name="I9FAction" Mode="In" Type="String" />
-            <Parameter Name="I9F_Id" Mode="In" Type="Int64" />
-            <Parameter Name="I9F_EMP_EmployeeId" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec1_SSN" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec1_CitizenOfUS" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec1_NonCitizenOfUS" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec1_AlienRegistrationNum_USCIS" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec1_AlienAuthorizedToWorkDate" Mode="In" Type="DateTime" />
-            <Parameter Name="I9F_Sec1_I94AdmissionNumber" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec1_ForeignPassportNumber" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec1_ForeignPassportIssuanceCountry" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec1_SignatureOfEmployee" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec1_DateOfEmployeeSign" Mode="In" Type="DateTime" />
-            <Parameter Name="I9F_Sec1_QRCodeSec1" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec1_PreparerAndTranslator" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec1_SignatureOfPreparerOrTranslator" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec1_DateOfPreparerOrTranslatorSign" Mode="In" Type="DateTime" />
-            <Parameter Name="I9F_Sec1_FirstName" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec1_MiddleInitial" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec1_LastName" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec1_OtherLastName" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec1_dateOfBirth" Mode="In" Type="DateTime" />
-            <Parameter Name="I9F_Sec1_Address" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec1_AptNumber" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec1_City" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec1_State" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec1_ZipCode" Mode="In" Type="Int32" />
-            <Parameter Name="I9F_Sec1_Email" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec1_EmployeeTelephoneNumber" Mode="In" Type="Int64" />
-            <Parameter Name="I9F_Sec2_ListA_DocumentTitle1" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_ListA_IssuingAuthority1" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_ListA_DocumentNumber1" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_ListA_ExpirationDate1" Mode="In" Type="DateTime" />
-            <Parameter Name="I9F_Sec2_ListA_DocumentTitle2" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_ListA_IssuingAuthority2" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_ListA_DocumentNumber2" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_ListA_ExpirationDate2" Mode="In" Type="DateTime" />
-            <Parameter Name="I9F_Sec2_ListA_DocumentTitle3" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_ListA_IssuingAuthority3" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_ListA_DocumentNumber3" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_ListA_ExpirationDate3" Mode="In" Type="DateTime" />
-            <Parameter Name="I9F_Sec2_ListB_DocumentTitle" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_ListB_IssuingAuthority" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_ListB_DocumentNumber" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_ListB_ExpirationDate" Mode="In" Type="DateTime" />
-            <Parameter Name="I9F_Sec2_ListC_DocumentTitle" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_ListC_IssuingAuthority" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_ListC_DocumentNumber" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_ListC_ExpirationDate" Mode="In" Type="DateTime" />
-            <Parameter Name="I9F_Sec2_AdditionalInformation" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_QRCodeSec2AndSec3" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_EmployeesFirstDayOfEmployment" Mode="In" Type="DateTime" />
-            <Parameter Name="I9F_Sec2_SignatureOfEmployerOrAuthorized" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_DateOfEmployerOrAuthorizedSign" Mode="In" Type="DateTime" />
-            <Parameter Name="I9F_Sec2_LastNameOfEmployerOrAuthorized" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_FirstNameOfEmployerOrAuthorized" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_MiddleInitialOfEmployerOrAuthorized" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_EmployersBusinessOrgnization_Name" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_EmployersBusinessOrgnization_Address" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_EmployersBusinessOrgnization_City" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_EmployersBusinessOrgnization_State" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_EmployersBusinessOrgnization_ZipCode" Mode="In" Type="Int32" />
-            <Parameter Name="I9F_Sec2_TitleOfEmployerOrOthrizedRepresentative" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec2_CitizenshipImmigrationStatus" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec3_A_LastName" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec3_A_FirstName" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec3_A_MiddleInitial" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec3_B_DateOfReHire" Mode="In" Type="DateTime" />
-            <Parameter Name="I9F_Sec3_C_DocumentTitle" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec3_C_DocumentNumber" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec3_C_ExpirationDate" Mode="In" Type="DateTime" />
-            <Parameter Name="I9F_Sec3_C_SignatureOfEmployerOrAuthorized" Mode="In" Type="String" />
-            <Parameter Name="I9F_Sec3_C_DateOfEmployerOrAuthorizedSign" Mode="In" Type="DateTime" />
-            <Parameter Name="I9F_Sec3_C_NameOfEmployerOrAuthorized" Mode="In" Type="String" />
-            <Parameter Name="I9F_Date" Mode="In" Type="DateTime" />
-            <Parameter Name="I9F_IsActive" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetAssessmentQuestionQCQM" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetAssessmentQuestionQCQM_Result1)">
             <Parameter Name="EmployeeID" Mode="In" Type="String" />
@@ -14921,6 +14879,221 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="Action" Mode="In" Type="String" />
             <Parameter Name="IsExempt" Mode="In" Type="String" />
             <Parameter Name="IQC_IQM_Id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spSetApplicantJobApply">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="APT_ALA_UserId" Mode="In" Type="Int64" />
+            <Parameter Name="APT_JobPostingId" Mode="In" Type="Int64" />
+            <Parameter Name="APT_DateOfJoining" Mode="In" Type="DateTime" />
+            <Parameter Name="APT_IsActive" Mode="In" Type="String" />
+            <Parameter Name="APT_ApplicantId" Mode="InOut" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spSetApplicantCreateLoginAccess" ReturnType="Collection(Int32)">
+            <Parameter Name="ALA_LoginId" Mode="In" Type="String" />
+            <Parameter Name="ALA_Password" Mode="In" Type="String" />
+            <Parameter Name="ALA_FirstName" Mode="In" Type="String" />
+            <Parameter Name="ALA_MidName" Mode="In" Type="String" />
+            <Parameter Name="ALA_LastName" Mode="In" Type="String" />
+            <Parameter Name="ALA_eMailId" Mode="In" Type="String" />
+            <Parameter Name="ALA_Question" Mode="In" Type="String" />
+            <Parameter Name="ALA_Answer" Mode="In" Type="String" />
+            <Parameter Name="ALA_Photo" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetMyOpening" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetMyOpening_Result4)">
+          <Parameter Name="JPS_JobPostingId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spGetApplicantInfoForMyInterview" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantInfoForMyInterview_Result4)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetJobPosting_ForCompanyOpening" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetJobPosting_ForCompanyOpening_Result1)">
+          <Parameter Name="JPS_HiringManagerID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetApplicantStatus">
+            <Parameter Name="ApplicantId" Mode="In" Type="Int64" />
+            <Parameter Name="APT_Status" Mode="In" Type="String" />
+            <Parameter Name="APT_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetOrientation" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetOrientation_Result)">
+          <Parameter Name="OTN_EMP_EmployeeID" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetOrientation">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="OTN_Id" Mode="In" Type="Int64" />
+            <Parameter Name="OTN_EMP_EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="OTN_LocationId" Mode="In" Type="Int64" />
+            <Parameter Name="ONT_OrientationDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ONT_Orientationtime" Mode="In" Type="Time" />
+            <Parameter Name="ONT_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetOrgnizationUserView" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetOrgnizationUserView_Result5)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetOfferLetter" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetOfferLetter_Result)">
+          <Parameter Name="ApplicantId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spGetNotification" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetNotification_Result)">
+            <Parameter Name="NTF_Module" Mode="In" Type="String" />
+            <Parameter Name="NTF_Submodule" Mode="In" Type="String" />
+            <Parameter Name="NTF_SubmoduleId" Mode="In" Type="Int64" />
+            <Parameter Name="NTF_CreatedBy" Mode="In" Type="String" />
+            <Parameter Name="NTF_AssignTo" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetApplicantAllDetails">
+          <Parameter Name="Action" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetApplicantAllDetails" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantAllDetails_Result2)">
+          <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spSetScheduleInterview_ForMailFromApplicant">
+            <Parameter Name="IPT_Id" Mode="In" Type="Int64" />
+            <Parameter Name="IPT_Status" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="OfferLetters" EntityType="WorkOrderEMS.Data.EntityModel.OfferLetter" />
+          <EntitySet Name="Employees" EntityType="WorkOrderEMS.Data.EntityModel.Employee" />
+          <FunctionImport Name="spSetInterviewPanel">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="IPT_Id" Mode="In" Type="Int64" />
+            <Parameter Name="IPT_JPS_JobPostingId" Mode="In" Type="Int64" />
+            <Parameter Name="IPT_EMP_EmployeeID_HM" Mode="In" Type="String" />
+            <Parameter Name="IPT_EMP_EmployeeID_SE" Mode="In" Type="String" />
+            <Parameter Name="IPT_EMP_EmployeeID_TE" Mode="In" Type="String" />
+            <Parameter Name="IPT_Status" Mode="In" Type="String" />
+            <Parameter Name="IPT_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetEmployeePersonalInfo" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetEmployeePersonalInfo_Result3)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetBookSlotTime">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="BST_Id" Mode="In" Type="Int64" />
+            <Parameter Name="BST_EMP_EmployeeID" Mode="In" Type="String" />
+            <Parameter Name="BST_SlotDate" Mode="In" Type="DateTime" />
+            <Parameter Name="BST_SLT_Id" Mode="In" Type="Int64" />
+            <Parameter Name="BST_Title" Mode="In" Type="String" />
+            <Parameter Name="BST_Status" Mode="In" Type="Int64" />
+            <Parameter Name="BST_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="BookSlotTimes" EntityType="WorkOrderEMS.Data.EntityModel.BookSlotTime" />
+          <FunctionImport Name="spSetAplicantCertificationDetails">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="ACD_Id" Mode="In" Type="Int64" />
+            <Parameter Name="ACD_APT_ApplicantId" Mode="In" Type="Int64" />
+            <Parameter Name="ACD_CertificationName" Mode="In" Type="String" />
+            <Parameter Name="ACD_CertificationEarnedYear" Mode="In" Type="DateTime" />
+            <Parameter Name="ACD_CertifyingAgency" Mode="In" Type="String" />
+            <Parameter Name="ACD_CertificateAttached" Mode="In" Type="String" />
+            <Parameter Name="ACD_Address" Mode="In" Type="String" />
+            <Parameter Name="ACD_City" Mode="In" Type="String" />
+            <Parameter Name="ACD_State" Mode="In" Type="String" />
+            <Parameter Name="ACD_Zip" Mode="In" Type="Int32" />
+            <Parameter Name="ACD_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="InterviewProposalTimes" EntityType="WorkOrderEMS.Data.EntityModel.InterviewProposalTime" />
+          <FunctionImport Name="spSetI9Form">
+            <Parameter Name="I9FAction" Mode="In" Type="String" />
+            <Parameter Name="I9F_Id" Mode="In" Type="Int64" />
+            <Parameter Name="I9F_EMP_EmployeeId" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec1_SSN" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec1_CitizenOfUS" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec1_NonCitizenOfUS" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec1_AlienRegistrationNum_USCIS" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec1_AlienAuthorizedToWorkDate" Mode="In" Type="DateTime" />
+            <Parameter Name="I9F_Sec1_I94AdmissionNumber" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec1_ForeignPassportNumber" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec1_ForeignPassportIssuanceCountry" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec1_SignatureOfEmployee" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec1_DateOfEmployeeSign" Mode="In" Type="DateTime" />
+            <Parameter Name="I9F_Sec1_QRCodeSec1" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec1_PreparerAndTranslator" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec1_SignatureOfPreparerOrTranslator" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec1_DateOfPreparerOrTranslatorSign" Mode="In" Type="DateTime" />
+            <Parameter Name="I9F_Sec1_FirstName" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec1_MiddleInitial" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec1_LastName" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec1_OtherLastName" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec1_dateOfBirth" Mode="In" Type="DateTime" />
+            <Parameter Name="I9F_Sec1_Address" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec1_AptNumber" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec1_City" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec1_State" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec1_ZipCode" Mode="In" Type="Int32" />
+            <Parameter Name="I9F_Sec1_Email" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec1_EmployeeTelephoneNumber" Mode="In" Type="Int64" />
+            <Parameter Name="I9F_Sec2_ListA_DocumentTitle1" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_ListA_IssuingAuthority1" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_ListA_DocumentNumber1" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_ListA_ExpirationDate1" Mode="In" Type="DateTime" />
+            <Parameter Name="I9F_Sec2_ListA_DocumentTitle2" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_ListA_IssuingAuthority2" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_ListA_DocumentNumber2" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_ListA_ExpirationDate2" Mode="In" Type="DateTime" />
+            <Parameter Name="I9F_Sec2_ListA_DocumentTitle3" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_ListA_IssuingAuthority3" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_ListA_DocumentNumber3" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_ListA_ExpirationDate3" Mode="In" Type="DateTime" />
+            <Parameter Name="I9F_Sec2_ListB_DocumentTitle" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_ListB_IssuingAuthority" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_ListB_DocumentNumber" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_ListB_ExpirationDate" Mode="In" Type="DateTime" />
+            <Parameter Name="I9F_Sec2_ListC_DocumentTitle" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_ListC_IssuingAuthority" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_ListC_DocumentNumber" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_ListC_ExpirationDate" Mode="In" Type="DateTime" />
+            <Parameter Name="I9F_Sec2_AdditionalInformation" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_QRCodeSec2AndSec3" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_EmployeesFirstDayOfEmployment" Mode="In" Type="DateTime" />
+            <Parameter Name="I9F_Sec2_SignatureOfEmployerOrAuthorized" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_DateOfEmployerOrAuthorizedSign" Mode="In" Type="DateTime" />
+            <Parameter Name="I9F_Sec2_LastNameOfEmployerOrAuthorized" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_FirstNameOfEmployerOrAuthorized" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_MiddleInitialOfEmployerOrAuthorized" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_EmployersBusinessOrgnization_Name" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_EmployersBusinessOrgnization_Address" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_EmployersBusinessOrgnization_City" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_EmployersBusinessOrgnization_State" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_EmployersBusinessOrgnization_ZipCode" Mode="In" Type="Int32" />
+            <Parameter Name="I9F_Sec2_TitleOfEmployerOrOthrizedRepresentative" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec2_CitizenshipImmigrationStatus" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec3_A_LastName" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec3_A_FirstName" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec3_A_MiddleInitial" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec3_B_DateOfReHire" Mode="In" Type="DateTime" />
+            <Parameter Name="I9F_Sec3_C_DocumentTitle" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec3_C_DocumentNumber" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec3_C_ExpirationDate" Mode="In" Type="DateTime" />
+            <Parameter Name="I9F_Sec3_C_SignatureOfEmployerOrAuthorized" Mode="In" Type="String" />
+            <Parameter Name="I9F_Sec3_C_DateOfEmployerOrAuthorizedSign" Mode="In" Type="DateTime" />
+            <Parameter Name="I9F_Sec3_C_NameOfEmployerOrAuthorized" Mode="In" Type="String" />
+            <Parameter Name="I9F_Date" Mode="In" Type="DateTime" />
+            <Parameter Name="I9F_IsActive" Mode="In" Type="String" />
+            <Parameter Name="I9F_CaseNumber" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetI9Form" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetI9Form_Result2)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetJobPosting" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetJobPosting_Result8)">
+          <Parameter Name="JPS_HiringManagerID" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="JobPostings" EntityType="WorkOrderEMS.Data.EntityModel.JobPosting" />
+          <FunctionImport Name="spGetAssessmentList306090" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetAssessmentList306090_Result2)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Notifications" EntityType="WorkOrderEMS.Data.EntityModel.Notification" />
+          <FunctionImport Name="spSetNotification">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="NTF_Id" Mode="In" Type="Int64" />
+            <Parameter Name="NTF_Details" Mode="In" Type="String" />
+            <Parameter Name="NTF_Module" Mode="In" Type="String" />
+            <Parameter Name="NTF_Submodule" Mode="In" Type="String" />
+            <Parameter Name="NTF_SubmoduleId" Mode="In" Type="String" />
+            <Parameter Name="NTF_CreatedBy" Mode="In" Type="String" />
+            <Parameter Name="NTF_AssignTo" Mode="In" Type="String" />
+            <Parameter Name="NTF_AssignToIsWorkable" Mode="In" Type="Boolean" />
+            <Parameter Name="NTF_CreatedByIsWorkable" Mode="In" Type="Boolean" />
+            <Parameter Name="NFT_Severity" Mode="In" Type="String" />
+            <Parameter Name="NTF_DeletedDate" Mode="In" Type="DateTime" />
+            <Parameter Name="NTF_IsRead" Mode="In" Type="Boolean" />
+            <Parameter Name="NTF_IsActive" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Proc_GetAllWorkAssignedToEmployee_Result">
@@ -18564,34 +18737,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="String" Name="ESC_ApprovalStatus" Nullable="true" MaxLength="1" />
           <Property Type="DateTime" Name="ESC_Date" Nullable="true" Precision="23" />
         </ComplexType>
-        <EntityType Name="Employee">
-          <Key>
-            <PropertyRef Name="EMP_Id" />
-          </Key>
-          <Property Name="EMP_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EMP_EmployeeID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_API_ApplicantId" Type="Int64" />
-          <Property Name="EMP_FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_MiddleName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_Phone" Type="Int64" />
-          <Property Name="EMP_DrivingLicenseNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_DateOfBirth" Type="DateTime" Precision="0" />
-          <Property Name="EMP_SSN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="EMP_MilitaryService" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="EMP_Gender" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_JobTitleId" Type="Int64" />
-          <Property Name="EMP_ManagerId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_DateOfJoining" Type="DateTime" Precision="0" />
-          <Property Name="EMP_LocationId" Type="Int64" />
-          <Property Name="EMP_EmploymentStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_IsExempt" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="EMP_IsCreatedBy" Type="Int64" />
-          <Property Name="EMP_IsCreatedOn" Type="DateTime" Precision="3" />
-          <Property Name="EMP_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-        </EntityType>
         <ComplexType Name="spGetOrgnizationCommonview_Result1">
           <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
           <Property Type="String" Name="EMP_Photo" Nullable="true" />
@@ -18793,6 +18938,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="APT_Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
           <Property Name="APT_Date" Type="DateTime" Precision="3" />
           <Property Name="APT_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="APT_DateOfJoining" Type="DateTime" Precision="0" />
         </EntityType>
         <EntityType Name="ApplicantLoginAccess">
           <Key>
@@ -18809,6 +18955,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="ALA_Answer" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="ALA_Date" Type="DateTime" Precision="3" />
           <Property Name="ALA_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="ALA_Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="ApplicantPersonalInfo">
           <Key>
@@ -18901,25 +19048,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="Time" Name="SLT_fromTime" Nullable="false" />
           <Property Type="Time" Name="SLT_ToTime" Nullable="false" />
         </ComplexType>
-        <EntityType Name="InterviewProposalTime">
-          <Key>
-            <PropertyRef Name="IPT_Id" />
-          </Key>
-          <Property Name="IPT_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="IPT_JPS_JobPostingId" Type="Int64" Nullable="false" />
-          <Property Name="IPT_APT_ApplicantId" Type="Int64" />
-          <Property Name="IPT_EMP_EmployeeID_HM" Type="Int64" Nullable="false" />
-          <Property Name="IPT_EMP_EmployeeID_SE" Type="Int64" />
-          <Property Name="IPT_EMP_EmployeeID_TE" Type="Int64" />
-          <Property Name="IPT_BST_Id_HM" Type="Int64" />
-          <Property Name="IPT_BST_Id_SE" Type="Int64" />
-          <Property Name="IPT_BST_Id_TE" Type="Int64" />
-          <Property Name="IPT_InterviewDateTime" Type="DateTime" Precision="3" />
-          <Property Name="IPT_Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="IPT_SentCount" Type="Int32" />
-          <Property Name="IPT_Date" Type="DateTime" Precision="3" />
-          <Property Name="IPT_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-        </EntityType>
         <EntityType Name="SlotTime">
           <Key>
             <PropertyRef Name="SLT_Id" />
@@ -18929,19 +19057,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="SLT_ToTime" Type="Time" Nullable="false" Precision="0" />
           <Property Name="SLT_Date" Type="DateTime" Precision="3" />
           <Property Name="SLT_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-        </EntityType>
-        <EntityType Name="BookSlotTime">
-          <Key>
-            <PropertyRef Name="BST_Id" />
-          </Key>
-          <Property Name="BST_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="BST_EMP_EmployeeID" Type="Int64" Nullable="false" />
-          <Property Name="BST_SlotDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="BST_SLT_Id" Type="Int64" Nullable="false" />
-          <Property Name="BST_Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="BST_Date" Type="DateTime" Precision="3" />
-          <Property Name="BST_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="BST_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <ComplexType Name="spGetApplicantAllDetails_Result">
           <Property Type="Int64" Name="API_Id" Nullable="true" />
@@ -19069,22 +19184,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="String" Name="ACI_PrefredContactMethod" Nullable="true" MaxLength="50" />
           <Property Type="String" Name="ACI_IsActive" Nullable="true" MaxLength="1" />
         </ComplexType>
-        <EntityType Name="JobPosting">
-          <Key>
-            <PropertyRef Name="JPS_JobPostingId" />
-          </Key>
-          <Property Name="JPS_JobPostingId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="JPS_JobPostingIdRecruitee" Type="Int64" Nullable="false" />
-          <Property Name="JPS_JobTitleID" Type="Int64" Nullable="false" />
-          <Property Name="JPS_HiringManagerID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="JPS_JobTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="JPS_HiringManager" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="JPS_NumberOfPost" Type="Int32" />
-          <Property Name="JPS_DateClose" Type="DateTime" Precision="3" />
-          <Property Name="JPS_Date" Type="DateTime" Precision="3" />
-          <Property Name="JPS_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="JPS_LocationId" Type="Int64" />
-        </EntityType>
         <ComplexType Name="spGetJobPosting_Result5">
           <Property Type="Int64" Name="JPS_JobPostingId" Nullable="false" />
           <Property Type="Int64" Name="JBT_Id" Nullable="true" />
@@ -19412,6 +19511,432 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="Int64" Name="IQM_Id" Nullable="false" />
           <Property Type="String" Name="IQM_Question" Nullable="true" />
         </ComplexType>
+        <ComplexType Name="spGetMyOpening_Result4">
+          <Property Type="Int64" Name="APT_ApplicantId" Nullable="false" />
+          <Property Type="String" Name="ApplicantName" Nullable="true" MaxLength="154" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="VST_IsExempt" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="APT_Status" Nullable="false" MaxLength="19" />
+          <Property Type="DateTime" Name="APT_DateOfJoining" Nullable="true" />
+          <Property Type="String" Name="ALA_Photo" Nullable="true" />
+          <Property Type="String" Name="ALA_eMailId" Nullable="true" MaxLength="50" />
+          <Property Type="Int64" Name="ACI_PhoneNo" Nullable="true" />
+          <Property Type="String" Name="ACI_PrefredContactMethod" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="API_DesireSalaryWages" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="JPS_HiringManagerID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="HiringManager" Nullable="true" MaxLength="403" />
+        </ComplexType>
+        <ComplexType Name="spGetApplicantInfoForMyInterview_Result4">
+          <Property Type="Int64" Name="APT_ApplicantId" Nullable="false" />
+          <Property Type="String" Name="ApplicantName" Nullable="true" MaxLength="154" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="VST_IsExempt" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="APT_Status" Nullable="true" MaxLength="19" />
+          <Property Type="DateTime" Name="APT_DateOfJoining" Nullable="true" />
+          <Property Type="String" Name="ALA_Photo" Nullable="true" />
+          <Property Type="String" Name="ALA_eMailId" Nullable="true" MaxLength="50" />
+          <Property Type="Int64" Name="ACI_PhoneNo" Nullable="true" />
+          <Property Type="String" Name="ACI_PrefredContactMethod" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="API_DesireSalaryWages" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="JPS_HiringManagerID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="HiringManager" Nullable="true" MaxLength="403" />
+        </ComplexType>
+        <ComplexType Name="spGetJobPosting_ForCompanyOpening_Result1">
+          <Property Type="Int64" Name="JPS_JobPostingId" Nullable="false" />
+          <Property Type="Int64" Name="JBT_Id" Nullable="true" />
+          <Property Type="String" Name="JPS_HiringManagerID" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="Int32" Name="PositionCount" Nullable="true" />
+          <Property Type="Int32" Name="ApplicantCount" Nullable="true" />
+          <Property Type="String" Name="JobPostingDate" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="Duration" Nullable="true" />
+          <Property Type="String" Name="Status" Nullable="false" MaxLength="6" />
+        </ComplexType>
+        <ComplexType Name="spGetOrientation_Result">
+          <Property Type="Int64" Name="OTN_Id" Nullable="false" />
+          <Property Type="String" Name="OTN_EMP_EmployeeID" Nullable="false" MaxLength="20" />
+          <Property Type="Int64" Name="OTN_LocationId" Nullable="true" />
+          <Property Type="DateTime" Name="ONT_OrientationDate" Nullable="true" />
+          <Property Type="Time" Name="ONT_Orientationtime" Nullable="true" />
+          <Property Type="DateTime" Name="ONT_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ONT_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetOrgnizationUserView_Result3">
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EMP_Photo" Nullable="true" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="Int64" Name="EMP_JobTitleId" Nullable="true" />
+          <Property Type="Int64" Name="EMP_LocationId" Nullable="true" />
+          <Property Type="String" Name="EMP_ManagerId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="OrientationStatus" Nullable="false" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetOrgnizationUserView_Result4">
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EMP_Photo" Nullable="true" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="Int64" Name="EMP_JobTitleId" Nullable="true" />
+          <Property Type="Int64" Name="EMP_LocationId" Nullable="true" />
+          <Property Type="Int64" Name="UserId" Nullable="true" />
+          <Property Type="String" Name="EMP_ManagerId" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <ComplexType Name="spGetOrgnizationUserView_Result5">
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EMP_Photo" Nullable="true" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="Int64" Name="EMP_JobTitleId" Nullable="true" />
+          <Property Type="Int64" Name="EMP_LocationId" Nullable="true" />
+          <Property Type="Int64" Name="UserId" Nullable="true" />
+          <Property Type="String" Name="EMP_ManagerId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="OrientationStatus" Nullable="false" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetOfferLetter_Result">
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="API_FirstName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_MidName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_LastName" Nullable="true" MaxLength="50" />
+          <Property Type="Int64" Name="ACI_PhoneNo" Nullable="true" />
+          <Property Type="String" Name="ACI_eMail" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="API_DesireSalaryWages" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="DateTime" Name="APT_DateOfJoining" Nullable="true" />
+          <Property Type="DateTime" Name="OFL_OfferLetterDueDate" Nullable="true" />
+          <Property Type="Decimal" Name="OFL_OfferAmount" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="HiringManagerName" Nullable="true" MaxLength="94" />
+          <Property Type="String" Name="HiringManagerPosition" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="VST_IsExempt" Nullable="true" MaxLength="1" />
+          <Property Type="Decimal" Name="VST_RateOfPay" Nullable="true" Precision="18" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="spGetJobPosting_Result6">
+          <Property Type="Int64" Name="JPS_JobPostingId" Nullable="false" />
+          <Property Type="Int64" Name="JBT_Id" Nullable="true" />
+          <Property Type="String" Name="JPS_HiringManagerID" Nullable="false" MaxLength="20" />
+          <Property Type="Int64" Name="JPS_LocationId" Nullable="true" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="VST_JobDescription" Nullable="true" />
+          <Property Type="Int32" Name="PositionCount" Nullable="true" />
+          <Property Type="Int32" Name="ApplicantCount" Nullable="true" />
+          <Property Type="String" Name="JobPostingDate" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="Duration" Nullable="true" />
+          <Property Type="String" Name="Status" Nullable="false" MaxLength="6" />
+        </ComplexType>
+        <ComplexType Name="spGetNotification_Result">
+          <Property Type="Int64" Name="NTF_Id" Nullable="false" />
+          <Property Type="String" Name="NTF_Details" Nullable="false" />
+          <Property Type="String" Name="NTF_Module" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="NTF_Submodule" Nullable="true" MaxLength="20" />
+          <Property Type="Int64" Name="NTF_SubmoduleId" Nullable="true" />
+          <Property Type="String" Name="NTF_AssignTo" Nullable="true" MaxLength="20" />
+          <Property Type="Boolean" Name="NTF_AssignToIsWorkable" Nullable="true" />
+          <Property Type="Boolean" Name="NTF_IsRead" Nullable="true" />
+          <Property Type="DateTime" Name="NTF_DeletedDate" Nullable="true" />
+          <Property Type="String" Name="NTF_CreatedBy" Nullable="false" MaxLength="20" />
+          <Property Type="Boolean" Name="NTF_CreatedByIsWorkable" Nullable="true" />
+          <Property Type="String" Name="NFT_Severity" Nullable="true" MaxLength="1" />
+          <Property Type="DateTime" Name="NTF_CreatedDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="NTF_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetApplicantAllDetails_Result1">
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="API_FirstName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_MidName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_LastName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ALA_Photo" Nullable="true" />
+          <Property Type="Int64" Name="ACI_PhoneNo" Nullable="true" />
+          <Property Type="String" Name="ACI_eMail" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="API_DesireSalaryWages" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="DateTime" Name="APT_DateOfJoining" Nullable="true" />
+          <Property Type="DateTime" Name="OFL_OfferLetterDueDate" Nullable="true" />
+          <Property Type="Decimal" Name="OFL_OfferAmount" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="HiringManagerName" Nullable="true" MaxLength="94" />
+          <Property Type="Int64" Name="LocationId" Nullable="true" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="VST_IsExempt" Nullable="true" MaxLength="1" />
+          <Property Type="Decimal" Name="VST_RateOfPay" Nullable="true" Precision="18" Scale="2" />
+        </ComplexType>
+        <ComplexType Name="spGetApplicantAllDetails_Result2">
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="API_FirstName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_MidName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_LastName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ALA_Photo" Nullable="true" />
+          <Property Type="Int64" Name="ACI_PhoneNo" Nullable="true" />
+          <Property Type="String" Name="ACI_eMail" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="API_DesireSalaryWages" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="DateTime" Name="APT_DateOfJoining" Nullable="true" />
+          <Property Type="DateTime" Name="OFL_OfferLetterDueDate" Nullable="true" />
+          <Property Type="Decimal" Name="OFL_OfferAmount" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="HiringManagerEmployeeId" Nullable="true" MaxLength="20" />
+          <Property Type="Int64" Name="UserId" Nullable="true" />
+          <Property Type="String" Name="HiringManagerName" Nullable="true" MaxLength="94" />
+          <Property Type="Int64" Name="LocationId" Nullable="true" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="VST_IsExempt" Nullable="true" MaxLength="1" />
+          <Property Type="Decimal" Name="VST_RateOfPay" Nullable="true" Precision="18" Scale="2" />
+        </ComplexType>
+        <EntityType Name="OfferLetter">
+          <Key>
+            <PropertyRef Name="OFL_Id" />
+          </Key>
+          <Property Name="OFL_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="OFL_APT_ApplicantId" Type="Int64" Nullable="false" />
+          <Property Name="OFL_OfferLetterDueDate" Type="DateTime" Precision="0" />
+          <Property Name="OFL_OfferAmount" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="OFL_Date" Type="DateTime" Precision="3" />
+          <Property Name="OFL_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EMP_Id" />
+          </Key>
+          <Property Name="EMP_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EMP_EmployeeID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_API_ApplicantId" Type="Int64" />
+          <Property Name="EMP_FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_MiddleName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_Phone" Type="Int64" />
+          <Property Name="EMP_DrivingLicenseNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_DateOfBirth" Type="DateTime" Precision="0" />
+          <Property Name="EMP_SSN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EMP_MilitaryService" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="EMP_Gender" Type="Int64" />
+          <Property Name="EMP_JobTitleId" Type="Int64" />
+          <Property Name="EMP_ManagerId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_DateOfJoining" Type="DateTime" Precision="0" />
+          <Property Name="EMP_LocationId" Type="Int64" />
+          <Property Name="EMP_EmploymentStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_IsExempt" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="EMP_IsCreatedBy" Type="Int64" />
+          <Property Name="EMP_IsCreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="EMP_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="spGetEmployeePersonalInfo_Result3">
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="Int64" Name="EMP_API_ApplicantId" Nullable="true" />
+          <Property Type="String" Name="EMP_FirstName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMP_MiddleName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMP_LastName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMP_Email" Nullable="true" MaxLength="50" />
+          <Property Type="Int64" Name="EMP_Phone" Nullable="true" />
+          <Property Type="String" Name="EMP_DrivingLicenseNumber" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="EMP_DateOfBirth" Nullable="true" />
+          <Property Type="String" Name="EMP_SSN" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EMP_Photo" Nullable="true" />
+          <Property Type="Int64" Name="EMP_Gender" Nullable="true" />
+          <Property Type="String" Name="EMP_MilitaryService" Nullable="true" MaxLength="1" />
+          <Property Type="Int64" Name="EMP_JobTitleId" Nullable="true" />
+          <Property Type="String" Name="EMP_ManagerId" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="EMP_DateOfJoining" Nullable="true" />
+          <Property Type="Int64" Name="EMP_LocationId" Nullable="true" />
+          <Property Type="String" Name="EMA_Address" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="EMA_City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EMA_State" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="EMA_Zip" Nullable="true" />
+          <Property Type="String" Name="CTZ_Citizenship" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <EntityType Name="BookSlotTime">
+          <Key>
+            <PropertyRef Name="BST_Id" />
+          </Key>
+          <Property Name="BST_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BST_EMP_EmployeeID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="BST_SlotDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="BST_SLT_Id" Type="Int64" Nullable="false" />
+          <Property Name="BST_Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="BST_Date" Type="DateTime" Precision="3" />
+          <Property Name="BST_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="BST_Title" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <ComplexType Name="spGetJobPosting_Result7">
+          <Property Type="Int64" Name="JPS_JobPostingId" Nullable="false" />
+          <Property Type="Int64" Name="JBT_Id" Nullable="true" />
+          <Property Type="String" Name="JPS_HiringManagerID" Nullable="false" MaxLength="20" />
+          <Property Type="Int64" Name="JPS_LocationId" Nullable="true" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="VST_JobDescription" Nullable="true" />
+          <Property Type="Int32" Name="PositionCount" Nullable="true" />
+          <Property Type="String" Name="VST_IsExempt" Nullable="true" MaxLength="1" />
+          <Property Type="Int32" Name="ApplicantCount" Nullable="true" />
+          <Property Type="String" Name="JobPostingDate" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="Duration" Nullable="true" />
+          <Property Type="String" Name="Status" Nullable="false" MaxLength="6" />
+        </ComplexType>
+        <EntityType Name="InterviewProposalTime">
+          <Key>
+            <PropertyRef Name="IPT_Id" />
+          </Key>
+          <Property Name="IPT_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IPT_JPS_JobPostingId" Type="Int64" Nullable="false" />
+          <Property Name="IPT_APT_ApplicantId" Type="Int64" />
+          <Property Name="IPT_EMP_EmployeeID_HM" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IPT_EMP_EmployeeID_SE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IPT_EMP_EmployeeID_TE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IPT_BST_Id_HM" Type="Int64" />
+          <Property Name="IPT_BST_Id_SE" Type="Int64" />
+          <Property Name="IPT_BST_Id_TE" Type="Int64" />
+          <Property Name="IPT_InterviewDateTime" Type="DateTime" Precision="3" />
+          <Property Name="IPT_Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="IPT_SentCount" Type="Int32" />
+          <Property Name="IPT_Date" Type="DateTime" Precision="3" />
+          <Property Name="IPT_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="spGetI9Form_Result2">
+          <Property Type="String" Name="EMP_FirstName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMP_MiddleName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMP_LastName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMA_Address" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="EMA_City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EMA_State" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="EMA_Zip" Nullable="true" />
+          <Property Type="Int64" Name="I9F_Id" Nullable="false" />
+          <Property Type="String" Name="I9F_EMP_EmployeeId" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="I9F_Sec1_SSN" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="I9F_Sec1_CitizenOfUS" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="I9F_Sec1_NonCitizenOfUS" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="I9F_Sec1_AlienRegistrationNum_USCIS" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="I9F_Sec1_AlienAuthorizedToWorkDate" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec1_I94AdmissionNumber" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="I9F_Sec1_ForeignPassportNumber" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="I9F_Sec1_ForeignPassportIssuanceCountry" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="I9F_Sec1_SignatureOfEmployee" Nullable="true" />
+          <Property Type="DateTime" Name="I9F_Sec1_DateOfEmployeeSign" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec1_QRCodeSec1" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec1_PreparerAndTranslator" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="I9F_Sec1_SignatureOfPreparerOrTranslator" Nullable="true" />
+          <Property Type="DateTime" Name="I9F_Sec1_DateOfPreparerOrTranslatorSign" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec1_FirstName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec1_MiddleInitial" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec1_LastName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec1_OtherLastName" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="I9F_Sec1_dateOfBirth" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec1_Address" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="I9F_Sec1_AptNumber" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="I9F_Sec1_City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="I9F_Sec1_State" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="I9F_Sec1_ZipCode" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec1_Email" Nullable="true" MaxLength="50" />
+          <Property Type="Int64" Name="I9F_Sec1_EmployeeTelephoneNumber" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_ListA_DocumentTitle1" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_ListA_IssuingAuthority1" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_ListA_DocumentNumber1" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="I9F_Sec2_ListA_ExpirationDate1" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_ListA_DocumentTitle2" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_ListA_IssuingAuthority2" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_ListA_DocumentNumber2" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="I9F_Sec2_ListA_ExpirationDate2" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_ListA_DocumentTitle3" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_ListA_IssuingAuthority3" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_ListA_DocumentNumber3" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="I9F_Sec2_ListA_ExpirationDate3" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_ListB_DocumentTitle" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_ListB_IssuingAuthority" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_ListB_DocumentNumber" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="I9F_Sec2_ListB_ExpirationDate" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_ListC_DocumentTitle" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_ListC_IssuingAuthority" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_ListC_DocumentNumber" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="I9F_Sec2_ListC_ExpirationDate" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_AdditionalInformation" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_QRCodeSec2AndSec3" Nullable="true" />
+          <Property Type="DateTime" Name="I9F_Sec2_EmployeesFirstDayOfEmployment" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_SignatureOfEmployerOrAuthorized" Nullable="true" />
+          <Property Type="DateTime" Name="I9F_Sec2_DateOfEmployerOrAuthorizedSign" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_LastNameOfEmployerOrAuthorized" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_FirstNameOfEmployerOrAuthorized" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_MiddleInitialOfEmployerOrAuthorized" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_EmployersBusinessOrgnization_Name" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec2_EmployersBusinessOrgnization_Address" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="I9F_Sec2_EmployersBusinessOrgnization_City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="I9F_Sec2_EmployersBusinessOrgnization_State" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="I9F_Sec2_EmployersBusinessOrgnization_ZipCode" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec2_TitleOfEmployerOrOthrizedRepresentative" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="I9F_Sec2_CitizenshipImmigrationStatus" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="I9F_Sec3_A_LastName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec3_A_FirstName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec3_A_MiddleInitial" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="I9F_Sec3_B_DateOfReHire" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec3_C_DocumentTitle" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="I9F_Sec3_C_DocumentNumber" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="I9F_Sec3_C_ExpirationDate" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec3_C_SignatureOfEmployerOrAuthorized" Nullable="true" />
+          <Property Type="DateTime" Name="I9F_Sec3_C_DateOfEmployerOrAuthorizedSign" Nullable="true" />
+          <Property Type="String" Name="I9F_Sec3_C_NameOfEmployerOrAuthorized" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="I9F_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="I9F_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="I9F_CaseNumber" Nullable="true" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="spGetJobPosting_Result8">
+          <Property Type="Int64" Name="JPS_JobPostingId" Nullable="false" />
+          <Property Type="Int64" Name="JBT_Id" Nullable="true" />
+          <Property Type="String" Name="JPS_HiringManagerID" Nullable="false" MaxLength="20" />
+          <Property Type="Int64" Name="JPS_LocationId" Nullable="true" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="VST_JobDescription" Nullable="true" />
+          <Property Type="Int32" Name="PositionCount" Nullable="true" />
+          <Property Type="String" Name="JPS_DrivingType" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="VST_IsExempt" Nullable="true" MaxLength="1" />
+          <Property Type="Int32" Name="ApplicantCount" Nullable="true" />
+          <Property Type="String" Name="JobPostingDate" Nullable="true" MaxLength="10" />
+          <Property Type="Int32" Name="Duration" Nullable="true" />
+          <Property Type="String" Name="Status" Nullable="false" MaxLength="6" />
+        </ComplexType>
+        <EntityType Name="JobPosting">
+          <Key>
+            <PropertyRef Name="JPS_JobPostingId" />
+          </Key>
+          <Property Name="JPS_JobPostingId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="JPS_JobPostingIdRecruitee" Type="Int64" />
+          <Property Name="JPS_JobTitleID" Type="Int64" Nullable="false" />
+          <Property Name="JPS_HiringManagerID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="JPS_JobTitle" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="JPS_HiringManager" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="JPS_NumberOfPost" Type="Int32" />
+          <Property Name="JPS_DateClose" Type="DateTime" Precision="3" />
+          <Property Name="JPS_Date" Type="DateTime" Precision="3" />
+          <Property Name="JPS_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="JPS_LocationId" Type="Int64" />
+          <Property Name="JPS_DrivingType" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="spGetAssessmentList306090_Result2">
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EMP_Photo" Nullable="true" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+          <Property Type="String" Name="VST_Level" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="DepartmentName" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
+          <Property Type="DateTime" Name="EMP_DateOfJoining" Nullable="true" />
+          <Property Type="Int32" Name="Assesment" Nullable="true" />
+          <Property Type="String" Name="SAM_IsActive" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="EMP_ManagerId" Nullable="true" MaxLength="20" />
+        </ComplexType>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="NTF_Id" />
+          </Key>
+          <Property Name="NTF_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NTF_Details" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="NTF_Module" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NTF_Submodule" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NTF_SubmoduleId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NTF_AssignTo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NTF_AssignToIsWorkable" Type="Boolean" />
+          <Property Name="NTF_IsRead" Type="Boolean" />
+          <Property Name="NTF_DeletedDate" Type="DateTime" Precision="0" />
+          <Property Name="NTF_CreatedBy" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NTF_CreatedByIsWorkable" Type="Boolean" />
+          <Property Name="NFT_Severity" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="NTF_CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="NTF_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -24200,22 +24725,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <FunctionImportMapping FunctionImportName="spSetEvaluationQuarterly" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetEvaluationQuarterly" />
           <FunctionImportMapping FunctionImportName="spSetReview306090" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetReview306090" />
           <FunctionImportMapping FunctionImportName="spSetSelfAssessment306090Submmit" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetSelfAssessment306090Submmit" />
-          <FunctionImportMapping FunctionImportName="spGetAssessmentList306090" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetAssessmentList306090">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetAssessmentList306090_Result1">
-                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
-                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
-                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-                <ScalarProperty Name="VST_Level" ColumnName="VST_Level" />
-                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
-                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
-                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
-                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
-                <ScalarProperty Name="Assesment" ColumnName="Assesment" />
-                <ScalarProperty Name="SAM_IsActive" ColumnName="SAM_IsActive" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spGetHiringManager" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetHiringManager">
             <ResultMapping>
               <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetHiringManager_Result">
@@ -24267,20 +24776,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spGetOrgnizationUserView" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetOrgnizationUserView">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetOrgnizationUserView_Result2">
-                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
-                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
-                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
-                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
-                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
-                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spSetUserVerify" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetUserVerify" />
           <FunctionImportMapping FunctionImportName="spGetForrmStatus" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetForrmStatus">
             <ResultMapping>
@@ -24313,21 +24808,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
                 <ScalarProperty Name="Hired" ColumnName="Hired" />
                 <ScalarProperty Name="Onboarded" ColumnName="Onboarded" />
                 <ScalarProperty Name="OnboardedDrop" ColumnName="OnboardedDrop" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetJobPosting_ForCompanyOpening" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetJobPosting_ForCompanyOpening">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetJobPosting_ForCompanyOpening_Result">
-                <ScalarProperty Name="JPS_JobPostingId" ColumnName="JPS_JobPostingId" />
-                <ScalarProperty Name="JBT_Id" ColumnName="JBT_Id" />
-                <ScalarProperty Name="JPS_HiringManagerID" ColumnName="JPS_HiringManagerID" />
-                <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
-                <ScalarProperty Name="PositionCount" ColumnName="PositionCount" />
-                <ScalarProperty Name="ApplicantCount" ColumnName="ApplicantCount" />
-                <ScalarProperty Name="JobPostingDate" ColumnName="JobPostingDate" />
-                <ScalarProperty Name="Duration" ColumnName="Duration" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -24512,49 +24992,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetApplicantInfoForMyInterview" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetApplicantInfoForMyInterview">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetApplicantInfoForMyInterview_Result3">
-                <ScalarProperty Name="API_ApplicantId" ColumnName="API_ApplicantId" />
-                <ScalarProperty Name="API_FirstName" ColumnName="API_FirstName" />
-                <ScalarProperty Name="API_MiddleName" ColumnName="API_MiddleName" />
-                <ScalarProperty Name="API_LastName" ColumnName="API_LastName" />
-                <ScalarProperty Name="API_HomeAddress" ColumnName="API_HomeAddress" />
-                <ScalarProperty Name="API_City" ColumnName="API_City" />
-                <ScalarProperty Name="API_State" ColumnName="API_State" />
-                <ScalarProperty Name="API_Zip" ColumnName="API_Zip" />
-                <ScalarProperty Name="API_Resume" ColumnName="API_Resume" />
-                <ScalarProperty Name="API_CoverLetter" ColumnName="API_CoverLetter" />
-                <ScalarProperty Name="API_PhoneNumber" ColumnName="API_PhoneNumber" />
-                <ScalarProperty Name="API_Email" ColumnName="API_Email" />
-                <ScalarProperty Name="API_DLNumber" ColumnName="API_DLNumber" />
-                <ScalarProperty Name="API_Photo" ColumnName="API_Photo" />
-                <ScalarProperty Name="API_Citizenship" ColumnName="API_Citizenship" />
-                <ScalarProperty Name="API_MilitaryService" ColumnName="API_MilitaryService" />
-                <ScalarProperty Name="API_Gender" ColumnName="API_Gender" />
-                <ScalarProperty Name="API_HighestEducation" ColumnName="API_HighestEducation" />
-                <ScalarProperty Name="API_AnyRefOrEmployeeInELITE" ColumnName="API_AnyRefOrEmployeeInELITE" />
-                <ScalarProperty Name="API_EverELITEWorkFrom" ColumnName="API_EverELITEWorkFrom" />
-                <ScalarProperty Name="API_EverELITEWorkTo" ColumnName="API_EverELITEWorkTo" />
-                <ScalarProperty Name="API_WorkEligibleInUS" ColumnName="API_WorkEligibleInUS" />
-                <ScalarProperty Name="JPS_JobPostingId" ColumnName="JPS_JobPostingId" />
-                <ScalarProperty Name="JobPostingDate" ColumnName="JobPostingDate" />
-                <ScalarProperty Name="VST_Id" ColumnName="VST_Id" />
-                <ScalarProperty Name="API_JobTitleID" ColumnName="API_JobTitleID" />
-                <ScalarProperty Name="API_HiringManagerId" ColumnName="API_HiringManagerId" />
-                <ScalarProperty Name="API_DateOfJoining" ColumnName="API_DateOfJoining" />
-                <ScalarProperty Name="API_DesireSalary" ColumnName="API_DesireSalary" />
-                <ScalarProperty Name="API_ApplicantStatus" ColumnName="API_ApplicantStatus" />
-                <ScalarProperty Name="API_IsActive" ColumnName="API_IsActive" />
-                <ScalarProperty Name="VST_Title" ColumnName="VST_Title" />
-                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
-                <ScalarProperty Name="HiringManager" ColumnName="HiringManager" />
-                <ScalarProperty Name="INS_EMP_InterviewerEmployeeId" ColumnName="INS_EMP_InterviewerEmployeeId" />
-                <ScalarProperty Name="INS_IsHiringManager" ColumnName="INS_IsHiringManager" />
-                <ScalarProperty Name="INS_InterviewDateTime" ColumnName="INS_InterviewDateTime" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spGetAssessmentQuestion" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetAssessmentQuestion">
             <ResultMapping>
               <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetAssessmentQuestion_Result4">
@@ -24636,34 +25073,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetEmployeePersonalInfo" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetEmployeePersonalInfo">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetEmployeePersonalInfo_Result2">
-                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
-                <ScalarProperty Name="EMP_API_ApplicantId" ColumnName="EMP_API_ApplicantId" />
-                <ScalarProperty Name="EMP_FirstName" ColumnName="EMP_FirstName" />
-                <ScalarProperty Name="EMP_MiddleName" ColumnName="EMP_MiddleName" />
-                <ScalarProperty Name="EMP_LastName" ColumnName="EMP_LastName" />
-                <ScalarProperty Name="EMP_Email" ColumnName="EMP_Email" />
-                <ScalarProperty Name="EMP_Phone" ColumnName="EMP_Phone" />
-                <ScalarProperty Name="EMP_DrivingLicenseNumber" ColumnName="EMP_DrivingLicenseNumber" />
-                <ScalarProperty Name="EMP_DateOfBirth" ColumnName="EMP_DateOfBirth" />
-                <ScalarProperty Name="EMP_SSN" ColumnName="EMP_SSN" />
-                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
-                <ScalarProperty Name="EMP_Gender" ColumnName="EMP_Gender" />
-                <ScalarProperty Name="EMP_MilitaryService" ColumnName="EMP_MilitaryService" />
-                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
-                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
-                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
-                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
-                <ScalarProperty Name="EMA_Address" ColumnName="EMA_Address" />
-                <ScalarProperty Name="EMA_City" ColumnName="EMA_City" />
-                <ScalarProperty Name="EMA_State" ColumnName="EMA_State" />
-                <ScalarProperty Name="EMA_Zip" ColumnName="EMA_Zip" />
-                <ScalarProperty Name="CTZ_Citizenship" ColumnName="CTZ_Citizenship" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spGetInterviewerList" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetInterviewerList">
             <ResultMapping>
               <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetInterviewerList_Result1">
@@ -24711,40 +25120,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
                 <ScalarProperty Name="MDL_Id" ColumnName="MDL_Id" />
                 <ScalarProperty Name="MDL_ModuleName" ColumnName="MDL_ModuleName" />
                 <ScalarProperty Name="MDL_IsActive" ColumnName="MDL_IsActive" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spGetMyOpening" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetMyOpening">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetMyOpening_Result3">
-                <ScalarProperty Name="API_ApplicantId" ColumnName="API_ApplicantId" />
-                <ScalarProperty Name="API_FirstName" ColumnName="API_FirstName" />
-                <ScalarProperty Name="API_MiddleName" ColumnName="API_MiddleName" />
-                <ScalarProperty Name="API_LastName" ColumnName="API_LastName" />
-                <ScalarProperty Name="API_HomeAddress" ColumnName="API_HomeAddress" />
-                <ScalarProperty Name="API_City" ColumnName="API_City" />
-                <ScalarProperty Name="API_State" ColumnName="API_State" />
-                <ScalarProperty Name="API_PhoneNumber" ColumnName="API_PhoneNumber" />
-                <ScalarProperty Name="API_Email" ColumnName="API_Email" />
-                <ScalarProperty Name="API_DLNumber" ColumnName="API_DLNumber" />
-                <ScalarProperty Name="API_Photo" ColumnName="API_Photo" />
-                <ScalarProperty Name="API_Citizenship" ColumnName="API_Citizenship" />
-                <ScalarProperty Name="API_Gender" ColumnName="API_Gender" />
-                <ScalarProperty Name="API_HighestEducation" ColumnName="API_HighestEducation" />
-                <ScalarProperty Name="API_AnyRefOrEmployeeInELITE" ColumnName="API_AnyRefOrEmployeeInELITE" />
-                <ScalarProperty Name="API_EverELITEWorkFrom" ColumnName="API_EverELITEWorkFrom" />
-                <ScalarProperty Name="API_EverELITEWorkTo" ColumnName="API_EverELITEWorkTo" />
-                <ScalarProperty Name="API_WorkEligibleInUS" ColumnName="API_WorkEligibleInUS" />
-                <ScalarProperty Name="JPS_JobPostingId" ColumnName="JPS_JobPostingId" />
-                <ScalarProperty Name="JobPostingDate" ColumnName="JobPostingDate" />
-                <ScalarProperty Name="API_JobTitleID" ColumnName="API_JobTitleID" />
-                <ScalarProperty Name="API_HiringManagerID" ColumnName="API_HiringManagerID" />
-                <ScalarProperty Name="API_DateOfJoining" ColumnName="API_DateOfJoining" />
-                <ScalarProperty Name="API_DesireSalary" ColumnName="API_DesireSalary" />
-                <ScalarProperty Name="API_ApplicantStatus" ColumnName="API_ApplicantStatus" />
-                <ScalarProperty Name="API_IsActive" ColumnName="API_IsActive" />
-                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
-                <ScalarProperty Name="HiringManager" ColumnName="HiringManager" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
@@ -24994,36 +25369,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spSetEmployeeStatusChange" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetEmployeeStatusChange" />
           <FunctionImportMapping FunctionImportName="spSetEmployeeStatusChangeApproval" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetEmployeeStatusChangeApproval" />
-          <FunctionImportMapping FunctionImportName="spSetApplicantStatus" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetApplicantStatus" />
-          <EntitySetMapping Name="Employees">
-            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.Employee">
-              <MappingFragment StoreEntitySet="Employee">
-                <ScalarProperty Name="EMP_IsActive" ColumnName="EMP_IsActive" />
-                <ScalarProperty Name="EMP_IsCreatedOn" ColumnName="EMP_IsCreatedOn" />
-                <ScalarProperty Name="EMP_IsCreatedBy" ColumnName="EMP_IsCreatedBy" />
-                <ScalarProperty Name="EMP_IsExempt" ColumnName="EMP_IsExempt" />
-                <ScalarProperty Name="EMP_EmploymentStatus" ColumnName="EMP_EmploymentStatus" />
-                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
-                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
-                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
-                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
-                <ScalarProperty Name="EMP_Gender" ColumnName="EMP_Gender" />
-                <ScalarProperty Name="EMP_MilitaryService" ColumnName="EMP_MilitaryService" />
-                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
-                <ScalarProperty Name="EMP_SSN" ColumnName="EMP_SSN" />
-                <ScalarProperty Name="EMP_DateOfBirth" ColumnName="EMP_DateOfBirth" />
-                <ScalarProperty Name="EMP_DrivingLicenseNumber" ColumnName="EMP_DrivingLicenseNumber" />
-                <ScalarProperty Name="EMP_Phone" ColumnName="EMP_Phone" />
-                <ScalarProperty Name="EMP_Email" ColumnName="EMP_Email" />
-                <ScalarProperty Name="EMP_LastName" ColumnName="EMP_LastName" />
-                <ScalarProperty Name="EMP_MiddleName" ColumnName="EMP_MiddleName" />
-                <ScalarProperty Name="EMP_FirstName" ColumnName="EMP_FirstName" />
-                <ScalarProperty Name="EMP_API_ApplicantId" ColumnName="EMP_API_ApplicantId" />
-                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
-                <ScalarProperty Name="EMP_Id" ColumnName="EMP_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spGetOrgnizationCommonview" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetOrgnizationCommonview">
             <ResultMapping>
               <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetOrgnizationCommonview_Result1">
@@ -25168,6 +25513,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySetMapping Name="Applicants">
             <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.Applicant">
               <MappingFragment StoreEntitySet="Applicant">
+                <ScalarProperty Name="APT_DateOfJoining" ColumnName="APT_DateOfJoining" />
                 <ScalarProperty Name="APT_IsActive" ColumnName="APT_IsActive" />
                 <ScalarProperty Name="APT_Date" ColumnName="APT_Date" />
                 <ScalarProperty Name="APT_Status" ColumnName="APT_Status" />
@@ -25184,6 +25530,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySetMapping Name="ApplicantLoginAccesses">
             <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.ApplicantLoginAccess">
               <MappingFragment StoreEntitySet="ApplicantLoginAccess">
+                <ScalarProperty Name="ALA_Photo" ColumnName="ALA_Photo" />
                 <ScalarProperty Name="ALA_IsActive" ColumnName="ALA_IsActive" />
                 <ScalarProperty Name="ALA_Date" ColumnName="ALA_Date" />
                 <ScalarProperty Name="ALA_Answer" ColumnName="ALA_Answer" />
@@ -25198,7 +25545,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spSetApplicantCreateLoginAccess" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetApplicantCreateLoginAccess" />
           <EntitySetMapping Name="ApplicantPersonalInfoes">
             <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.ApplicantPersonalInfo">
               <MappingFragment StoreEntitySet="ApplicantPersonalInfo">
@@ -25265,27 +25611,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spSetBookSlotTime" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetBookSlotTime" />
-          <EntitySetMapping Name="InterviewProposalTimes">
-            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.InterviewProposalTime">
-              <MappingFragment StoreEntitySet="InterviewProposalTime">
-                <ScalarProperty Name="IPT_IsActive" ColumnName="IPT_IsActive" />
-                <ScalarProperty Name="IPT_Date" ColumnName="IPT_Date" />
-                <ScalarProperty Name="IPT_SentCount" ColumnName="IPT_SentCount" />
-                <ScalarProperty Name="IPT_Status" ColumnName="IPT_Status" />
-                <ScalarProperty Name="IPT_InterviewDateTime" ColumnName="IPT_InterviewDateTime" />
-                <ScalarProperty Name="IPT_BST_Id_TE" ColumnName="IPT_BST_Id_TE" />
-                <ScalarProperty Name="IPT_BST_Id_SE" ColumnName="IPT_BST_Id_SE" />
-                <ScalarProperty Name="IPT_BST_Id_HM" ColumnName="IPT_BST_Id_HM" />
-                <ScalarProperty Name="IPT_EMP_EmployeeID_TE" ColumnName="IPT_EMP_EmployeeID_TE" />
-                <ScalarProperty Name="IPT_EMP_EmployeeID_SE" ColumnName="IPT_EMP_EmployeeID_SE" />
-                <ScalarProperty Name="IPT_EMP_EmployeeID_HM" ColumnName="IPT_EMP_EmployeeID_HM" />
-                <ScalarProperty Name="IPT_APT_ApplicantId" ColumnName="IPT_APT_ApplicantId" />
-                <ScalarProperty Name="IPT_JPS_JobPostingId" ColumnName="IPT_JPS_JobPostingId" />
-                <ScalarProperty Name="IPT_Id" ColumnName="IPT_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="SlotTimes">
             <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.SlotTime">
               <MappingFragment StoreEntitySet="SlotTime">
@@ -25297,116 +25622,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spSetInterviewPanel" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetInterviewPanel" />
-          <EntitySetMapping Name="BookSlotTimes">
-            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.BookSlotTime">
-              <MappingFragment StoreEntitySet="BookSlotTime">
-                <ScalarProperty Name="BST_Title" ColumnName="BST_Title" />
-                <ScalarProperty Name="BST_IsActive" ColumnName="BST_IsActive" />
-                <ScalarProperty Name="BST_Date" ColumnName="BST_Date" />
-                <ScalarProperty Name="BST_Status" ColumnName="BST_Status" />
-                <ScalarProperty Name="BST_SLT_Id" ColumnName="BST_SLT_Id" />
-                <ScalarProperty Name="BST_SlotDate" ColumnName="BST_SlotDate" />
-                <ScalarProperty Name="BST_EMP_EmployeeID" ColumnName="BST_EMP_EmployeeID" />
-                <ScalarProperty Name="BST_Id" ColumnName="BST_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spGetApplicantAllDetails" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetApplicantAllDetails">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetApplicantAllDetails_Result">
-                <ScalarProperty Name="API_Id" ColumnName="API_Id" />
-                <ScalarProperty Name="API_FirstName" ColumnName="API_FirstName" />
-                <ScalarProperty Name="API_MidName" ColumnName="API_MidName" />
-                <ScalarProperty Name="API_LastName" ColumnName="API_LastName" />
-                <ScalarProperty Name="API_Resume" ColumnName="API_Resume" />
-                <ScalarProperty Name="API_SSN" ColumnName="API_SSN" />
-                <ScalarProperty Name="API_DLNumber" ColumnName="API_DLNumber" />
-                <ScalarProperty Name="API_DesireSalaryWages" ColumnName="API_DesireSalaryWages" />
-                <ScalarProperty Name="API_IsActive" ColumnName="API_IsActive" />
-                <ScalarProperty Name="APA_Id" ColumnName="APA_Id" />
-                <ScalarProperty Name="APA_StreetAddress" ColumnName="APA_StreetAddress" />
-                <ScalarProperty Name="APA_Apartment" ColumnName="APA_Apartment" />
-                <ScalarProperty Name="APA_City" ColumnName="APA_City" />
-                <ScalarProperty Name="APA_State" ColumnName="APA_State" />
-                <ScalarProperty Name="APA_Zip" ColumnName="APA_Zip" />
-                <ScalarProperty Name="APA_YearsAddressFrom" ColumnName="APA_YearsAddressFrom" />
-                <ScalarProperty Name="APA_YearsAddressTo" ColumnName="APA_YearsAddressTo" />
-                <ScalarProperty Name="APA_IsActive" ColumnName="APA_IsActive" />
-                <ScalarProperty Name="ACI_Id" ColumnName="ACI_Id" />
-                <ScalarProperty Name="ACI_PhoneNo" ColumnName="ACI_PhoneNo" />
-                <ScalarProperty Name="ACI_eMail" ColumnName="ACI_eMail" />
-                <ScalarProperty Name="ACI_PrefredContactMethod" ColumnName="ACI_PrefredContactMethod" />
-                <ScalarProperty Name="AAI_Id" ColumnName="AAI_Id" />
-                <ScalarProperty Name="AAI_WorkEligibilityUS" ColumnName="AAI_WorkEligibilityUS" />
-                <ScalarProperty Name="AAI_AvailableDate" ColumnName="AAI_AvailableDate" />
-                <ScalarProperty Name="AAI_Age21Completed" ColumnName="AAI_Age21Completed" />
-                <ScalarProperty Name="AAI_AnyRefOrEmployeeInELITE" ColumnName="AAI_AnyRefOrEmployeeInELITE" />
-                <ScalarProperty Name="AAI_NameOfRefOrEmployeeInELITE" ColumnName="AAI_NameOfRefOrEmployeeInELITE" />
-                <ScalarProperty Name="AAI_PriorMilitaryService" ColumnName="AAI_PriorMilitaryService" />
-                <ScalarProperty Name="AAI_EverWorkForELITE" ColumnName="AAI_EverWorkForELITE" />
-                <ScalarProperty Name="AAI_DepartureDate" ColumnName="AAI_DepartureDate" />
-                <ScalarProperty Name="AAI_ReasonForLeaving" ColumnName="AAI_ReasonForLeaving" />
-                <ScalarProperty Name="AAI_IsActive" ColumnName="AAI_IsActive" />
-                <ScalarProperty Name="AAD_Id" ColumnName="AAD_Id" />
-                <ScalarProperty Name="AAD_EducationType" ColumnName="AAD_EducationType" />
-                <ScalarProperty Name="AAD_InstituteName" ColumnName="AAD_InstituteName" />
-                <ScalarProperty Name="AAD_AttendedFrom" ColumnName="AAD_AttendedFrom" />
-                <ScalarProperty Name="AAD_AttendedTo" ColumnName="AAD_AttendedTo" />
-                <ScalarProperty Name="AAD_City" ColumnName="AAD_City" />
-                <ScalarProperty Name="AAD_State" ColumnName="AAD_State" />
-                <ScalarProperty Name="AAD_Zip" ColumnName="AAD_Zip" />
-                <ScalarProperty Name="AAD_IsActive" ColumnName="AAD_IsActive" />
-                <ScalarProperty Name="ABH_Id" ColumnName="ABH_Id" />
-                <ScalarProperty Name="ABH_CompanyName" ColumnName="ABH_CompanyName" />
-                <ScalarProperty Name="ABH_Address" ColumnName="ABH_Address" />
-                <ScalarProperty Name="ABH_City" ColumnName="ABH_City" />
-                <ScalarProperty Name="ABH_State" ColumnName="ABH_State" />
-                <ScalarProperty Name="ABH_ZIPCode" ColumnName="ABH_ZIPCode" />
-                <ScalarProperty Name="ABH_Phone" ColumnName="ABH_Phone" />
-                <ScalarProperty Name="ABH_StillEmployed" ColumnName="ABH_StillEmployed" />
-                <ScalarProperty Name="ABH_ReasonforLeaving" ColumnName="ABH_ReasonforLeaving" />
-                <ScalarProperty Name="ABH_ReasonForGAP" ColumnName="ABH_ReasonForGAP" />
-                <ScalarProperty Name="ABH_SubToFedralMotor" ColumnName="ABH_SubToFedralMotor" />
-                <ScalarProperty Name="ABH_SafetySensitiveFunction" ColumnName="ABH_SafetySensitiveFunction" />
-                <ScalarProperty Name="APT_Id" ColumnName="APT_Id" />
-                <ScalarProperty Name="APT_PositionTitle" ColumnName="APT_PositionTitle" />
-                <ScalarProperty Name="APT_Salary" ColumnName="APT_Salary" />
-                <ScalarProperty Name="APT_FromMoYr" ColumnName="APT_FromMoYr" />
-                <ScalarProperty Name="APT_ToMoYr" ColumnName="APT_ToMoYr" />
-                <ScalarProperty Name="AAR_Id" ColumnName="AAR_Id" />
-                <ScalarProperty Name="AAR_AccidantDate" ColumnName="AAR_AccidantDate" />
-                <ScalarProperty Name="AAR_Discription" ColumnName="AAR_Discription" />
-                <ScalarProperty Name="AAR_NumberOfFatalities" ColumnName="AAR_NumberOfFatalities" />
-                <ScalarProperty Name="AAR_NumberOfInjuries" ColumnName="AAR_NumberOfInjuries" />
-                <ScalarProperty Name="AAR_IsActive" ColumnName="AAR_IsActive" />
-                <ScalarProperty Name="ATC_Id" ColumnName="ATC_Id" />
-                <ScalarProperty Name="ATC_ConvictedDate" ColumnName="ATC_ConvictedDate" />
-                <ScalarProperty Name="ATC_Violation" ColumnName="ATC_Violation" />
-                <ScalarProperty Name="ATC_StateOfViolation" ColumnName="ATC_StateOfViolation" />
-                <ScalarProperty Name="ATC_AtFaultAccident" ColumnName="ATC_AtFaultAccident" />
-                <ScalarProperty Name="ATC_AtMovingViolation" ColumnName="ATC_AtMovingViolation" />
-                <ScalarProperty Name="ATC_IsActive" ColumnName="ATC_IsActive" />
-                <ScalarProperty Name="AVO_Id" ColumnName="AVO_Id" />
-                <ScalarProperty Name="AVO_DenideLicensePermit" ColumnName="AVO_DenideLicensePermit" />
-                <ScalarProperty Name="AVO_DeniedLicensePermitExplanation" ColumnName="AVO_DeniedLicensePermitExplanation" />
-                <ScalarProperty Name="AVO_SuspendRevokeLicensePermit" ColumnName="AVO_SuspendRevokeLicensePermit" />
-                <ScalarProperty Name="AVO_SuspendRevokeLicensePermitExplanation" ColumnName="AVO_SuspendRevokeLicensePermitExplanation" />
-                <ScalarProperty Name="AVO_IsActive" ColumnName="AVO_IsActive" />
-                <ScalarProperty Name="ALH_Id" ColumnName="ALH_Id" />
-                <ScalarProperty Name="ALH_State" ColumnName="ALH_State" />
-                <ScalarProperty Name="ALH_LicenceNumber" ColumnName="ALH_LicenceNumber" />
-                <ScalarProperty Name="ALH_LicenseType" ColumnName="ALH_LicenseType" />
-                <ScalarProperty Name="ALH_IssueDate" ColumnName="ALH_IssueDate" />
-                <ScalarProperty Name="ALH_ExpirationDate" ColumnName="ALH_ExpirationDate" />
-                <ScalarProperty Name="ALH_IsActive" ColumnName="ALH_IsActive" />
-                <ScalarProperty Name="ASA_Id" ColumnName="ASA_Id" />
-                <ScalarProperty Name="ASA_AvaliableStartTime" ColumnName="ASA_AvaliableStartTime" />
-                <ScalarProperty Name="ASA_AvaliableEndTime" ColumnName="ASA_AvaliableEndTime" />
-                <ScalarProperty Name="ASA_IsActive" ColumnName="ASA_IsActive" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spSetEmergencyContactForm" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetEmergencyContactForm" />
           <EntitySetMapping Name="ApplicantContactInfoes">
             <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.ApplicantContactInfo">
@@ -25422,129 +25637,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spSetApplicantContactInfo" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetApplicantContactInfo" />
-          <EntitySetMapping Name="JobPostings">
-            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.JobPosting">
-              <MappingFragment StoreEntitySet="JobPosting">
-                <ScalarProperty Name="JPS_LocationId" ColumnName="JPS_LocationId" />
-                <ScalarProperty Name="JPS_IsActive" ColumnName="JPS_IsActive" />
-                <ScalarProperty Name="JPS_Date" ColumnName="JPS_Date" />
-                <ScalarProperty Name="JPS_DateClose" ColumnName="JPS_DateClose" />
-                <ScalarProperty Name="JPS_NumberOfPost" ColumnName="JPS_NumberOfPost" />
-                <ScalarProperty Name="JPS_HiringManager" ColumnName="JPS_HiringManager" />
-                <ScalarProperty Name="JPS_JobTitle" ColumnName="JPS_JobTitle" />
-                <ScalarProperty Name="JPS_HiringManagerID" ColumnName="JPS_HiringManagerID" />
-                <ScalarProperty Name="JPS_JobTitleID" ColumnName="JPS_JobTitleID" />
-                <ScalarProperty Name="JPS_JobPostingIdRecruitee" ColumnName="JPS_JobPostingIdRecruitee" />
-                <ScalarProperty Name="JPS_JobPostingId" ColumnName="JPS_JobPostingId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spGetJobPosting" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetJobPosting">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetJobPosting_Result5">
-                <ScalarProperty Name="JPS_JobPostingId" ColumnName="JPS_JobPostingId" />
-                <ScalarProperty Name="JBT_Id" ColumnName="JBT_Id" />
-                <ScalarProperty Name="JPS_HiringManagerID" ColumnName="JPS_HiringManagerID" />
-                <ScalarProperty Name="JPS_LocationId" ColumnName="JPS_LocationId" />
-                <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
-                <ScalarProperty Name="PositionCount" ColumnName="PositionCount" />
-                <ScalarProperty Name="ApplicantCount" ColumnName="ApplicantCount" />
-                <ScalarProperty Name="JobPostingDate" ColumnName="JobPostingDate" />
-                <ScalarProperty Name="Duration" ColumnName="Duration" />
-                <ScalarProperty Name="Status" ColumnName="Status" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spSetJobPosting" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetJobPosting" />
-          <FunctionImportMapping FunctionImportName="spGetI9Form" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetI9Form">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetI9Form_Result1">
-                <ScalarProperty Name="EMP_FirstName" ColumnName="EMP_FirstName" />
-                <ScalarProperty Name="EMP_MiddleName" ColumnName="EMP_MiddleName" />
-                <ScalarProperty Name="EMP_LastName" ColumnName="EMP_LastName" />
-                <ScalarProperty Name="EMA_Address" ColumnName="EMA_Address" />
-                <ScalarProperty Name="EMA_City" ColumnName="EMA_City" />
-                <ScalarProperty Name="EMA_State" ColumnName="EMA_State" />
-                <ScalarProperty Name="EMA_Zip" ColumnName="EMA_Zip" />
-                <ScalarProperty Name="I9F_Id" ColumnName="I9F_Id" />
-                <ScalarProperty Name="I9F_EMP_EmployeeId" ColumnName="I9F_EMP_EmployeeId" />
-                <ScalarProperty Name="I9F_Sec1_SSN" ColumnName="I9F_Sec1_SSN" />
-                <ScalarProperty Name="I9F_Sec1_CitizenOfUS" ColumnName="I9F_Sec1_CitizenOfUS" />
-                <ScalarProperty Name="I9F_Sec1_NonCitizenOfUS" ColumnName="I9F_Sec1_NonCitizenOfUS" />
-                <ScalarProperty Name="I9F_Sec1_AlienRegistrationNum_USCIS" ColumnName="I9F_Sec1_AlienRegistrationNum_USCIS" />
-                <ScalarProperty Name="I9F_Sec1_AlienAuthorizedToWorkDate" ColumnName="I9F_Sec1_AlienAuthorizedToWorkDate" />
-                <ScalarProperty Name="I9F_Sec1_I94AdmissionNumber" ColumnName="I9F_Sec1_I94AdmissionNumber" />
-                <ScalarProperty Name="I9F_Sec1_ForeignPassportNumber" ColumnName="I9F_Sec1_ForeignPassportNumber" />
-                <ScalarProperty Name="I9F_Sec1_ForeignPassportIssuanceCountry" ColumnName="I9F_Sec1_ForeignPassportIssuanceCountry" />
-                <ScalarProperty Name="I9F_Sec1_SignatureOfEmployee" ColumnName="I9F_Sec1_SignatureOfEmployee" />
-                <ScalarProperty Name="I9F_Sec1_DateOfEmployeeSign" ColumnName="I9F_Sec1_DateOfEmployeeSign" />
-                <ScalarProperty Name="I9F_Sec1_QRCodeSec1" ColumnName="I9F_Sec1_QRCodeSec1" />
-                <ScalarProperty Name="I9F_Sec1_PreparerAndTranslator" ColumnName="I9F_Sec1_PreparerAndTranslator" />
-                <ScalarProperty Name="I9F_Sec1_SignatureOfPreparerOrTranslator" ColumnName="I9F_Sec1_SignatureOfPreparerOrTranslator" />
-                <ScalarProperty Name="I9F_Sec1_DateOfPreparerOrTranslatorSign" ColumnName="I9F_Sec1_DateOfPreparerOrTranslatorSign" />
-                <ScalarProperty Name="I9F_Sec1_FirstName" ColumnName="I9F_Sec1_FirstName" />
-                <ScalarProperty Name="I9F_Sec1_MiddleInitial" ColumnName="I9F_Sec1_MiddleInitial" />
-                <ScalarProperty Name="I9F_Sec1_LastName" ColumnName="I9F_Sec1_LastName" />
-                <ScalarProperty Name="I9F_Sec1_OtherLastName" ColumnName="I9F_Sec1_OtherLastName" />
-                <ScalarProperty Name="I9F_Sec1_dateOfBirth" ColumnName="I9F_Sec1_dateOfBirth" />
-                <ScalarProperty Name="I9F_Sec1_Address" ColumnName="I9F_Sec1_Address" />
-                <ScalarProperty Name="I9F_Sec1_AptNumber" ColumnName="I9F_Sec1_AptNumber" />
-                <ScalarProperty Name="I9F_Sec1_City" ColumnName="I9F_Sec1_City" />
-                <ScalarProperty Name="I9F_Sec1_State" ColumnName="I9F_Sec1_State" />
-                <ScalarProperty Name="I9F_Sec1_ZipCode" ColumnName="I9F_Sec1_ZipCode" />
-                <ScalarProperty Name="I9F_Sec1_Email" ColumnName="I9F_Sec1_Email" />
-                <ScalarProperty Name="I9F_Sec1_EmployeeTelephoneNumber" ColumnName="I9F_Sec1_EmployeeTelephoneNumber" />
-                <ScalarProperty Name="I9F_Sec2_ListA_DocumentTitle1" ColumnName="I9F_Sec2_ListA_DocumentTitle1" />
-                <ScalarProperty Name="I9F_Sec2_ListA_IssuingAuthority1" ColumnName="I9F_Sec2_ListA_IssuingAuthority1" />
-                <ScalarProperty Name="I9F_Sec2_ListA_DocumentNumber1" ColumnName="I9F_Sec2_ListA_DocumentNumber1" />
-                <ScalarProperty Name="I9F_Sec2_ListA_ExpirationDate1" ColumnName="I9F_Sec2_ListA_ExpirationDate1" />
-                <ScalarProperty Name="I9F_Sec2_ListA_DocumentTitle2" ColumnName="I9F_Sec2_ListA_DocumentTitle2" />
-                <ScalarProperty Name="I9F_Sec2_ListA_IssuingAuthority2" ColumnName="I9F_Sec2_ListA_IssuingAuthority2" />
-                <ScalarProperty Name="I9F_Sec2_ListA_DocumentNumber2" ColumnName="I9F_Sec2_ListA_DocumentNumber2" />
-                <ScalarProperty Name="I9F_Sec2_ListA_ExpirationDate2" ColumnName="I9F_Sec2_ListA_ExpirationDate2" />
-                <ScalarProperty Name="I9F_Sec2_ListA_DocumentTitle3" ColumnName="I9F_Sec2_ListA_DocumentTitle3" />
-                <ScalarProperty Name="I9F_Sec2_ListA_IssuingAuthority3" ColumnName="I9F_Sec2_ListA_IssuingAuthority3" />
-                <ScalarProperty Name="I9F_Sec2_ListA_DocumentNumber3" ColumnName="I9F_Sec2_ListA_DocumentNumber3" />
-                <ScalarProperty Name="I9F_Sec2_ListA_ExpirationDate3" ColumnName="I9F_Sec2_ListA_ExpirationDate3" />
-                <ScalarProperty Name="I9F_Sec2_ListB_DocumentTitle" ColumnName="I9F_Sec2_ListB_DocumentTitle" />
-                <ScalarProperty Name="I9F_Sec2_ListB_IssuingAuthority" ColumnName="I9F_Sec2_ListB_IssuingAuthority" />
-                <ScalarProperty Name="I9F_Sec2_ListB_DocumentNumber" ColumnName="I9F_Sec2_ListB_DocumentNumber" />
-                <ScalarProperty Name="I9F_Sec2_ListB_ExpirationDate" ColumnName="I9F_Sec2_ListB_ExpirationDate" />
-                <ScalarProperty Name="I9F_Sec2_ListC_DocumentTitle" ColumnName="I9F_Sec2_ListC_DocumentTitle" />
-                <ScalarProperty Name="I9F_Sec2_ListC_IssuingAuthority" ColumnName="I9F_Sec2_ListC_IssuingAuthority" />
-                <ScalarProperty Name="I9F_Sec2_ListC_DocumentNumber" ColumnName="I9F_Sec2_ListC_DocumentNumber" />
-                <ScalarProperty Name="I9F_Sec2_ListC_ExpirationDate" ColumnName="I9F_Sec2_ListC_ExpirationDate" />
-                <ScalarProperty Name="I9F_Sec2_AdditionalInformation" ColumnName="I9F_Sec2_AdditionalInformation" />
-                <ScalarProperty Name="I9F_Sec2_QRCodeSec2AndSec3" ColumnName="I9F_Sec2_QRCodeSec2AndSec3" />
-                <ScalarProperty Name="I9F_Sec2_EmployeesFirstDayOfEmployment" ColumnName="I9F_Sec2_EmployeesFirstDayOfEmployment" />
-                <ScalarProperty Name="I9F_Sec2_SignatureOfEmployerOrAuthorized" ColumnName="I9F_Sec2_SignatureOfEmployerOrAuthorized" />
-                <ScalarProperty Name="I9F_Sec2_DateOfEmployerOrAuthorizedSign" ColumnName="I9F_Sec2_DateOfEmployerOrAuthorizedSign" />
-                <ScalarProperty Name="I9F_Sec2_LastNameOfEmployerOrAuthorized" ColumnName="I9F_Sec2_LastNameOfEmployerOrAuthorized" />
-                <ScalarProperty Name="I9F_Sec2_FirstNameOfEmployerOrAuthorized" ColumnName="I9F_Sec2_FirstNameOfEmployerOrAuthorized" />
-                <ScalarProperty Name="I9F_Sec2_MiddleInitialOfEmployerOrAuthorized" ColumnName="I9F_Sec2_MiddleInitialOfEmployerOrAuthorized" />
-                <ScalarProperty Name="I9F_Sec2_EmployersBusinessOrgnization_Name" ColumnName="I9F_Sec2_EmployersBusinessOrgnization_Name" />
-                <ScalarProperty Name="I9F_Sec2_EmployersBusinessOrgnization_Address" ColumnName="I9F_Sec2_EmployersBusinessOrgnization_Address" />
-                <ScalarProperty Name="I9F_Sec2_EmployersBusinessOrgnization_City" ColumnName="I9F_Sec2_EmployersBusinessOrgnization_City" />
-                <ScalarProperty Name="I9F_Sec2_EmployersBusinessOrgnization_State" ColumnName="I9F_Sec2_EmployersBusinessOrgnization_State" />
-                <ScalarProperty Name="I9F_Sec2_EmployersBusinessOrgnization_ZipCode" ColumnName="I9F_Sec2_EmployersBusinessOrgnization_ZipCode" />
-                <ScalarProperty Name="I9F_Sec2_TitleOfEmployerOrOthrizedRepresentative" ColumnName="I9F_Sec2_TitleOfEmployerOrOthrizedRepresentative" />
-                <ScalarProperty Name="I9F_Sec2_CitizenshipImmigrationStatus" ColumnName="I9F_Sec2_CitizenshipImmigrationStatus" />
-                <ScalarProperty Name="I9F_Sec3_A_LastName" ColumnName="I9F_Sec3_A_LastName" />
-                <ScalarProperty Name="I9F_Sec3_A_FirstName" ColumnName="I9F_Sec3_A_FirstName" />
-                <ScalarProperty Name="I9F_Sec3_A_MiddleInitial" ColumnName="I9F_Sec3_A_MiddleInitial" />
-                <ScalarProperty Name="I9F_Sec3_B_DateOfReHire" ColumnName="I9F_Sec3_B_DateOfReHire" />
-                <ScalarProperty Name="I9F_Sec3_C_DocumentTitle" ColumnName="I9F_Sec3_C_DocumentTitle" />
-                <ScalarProperty Name="I9F_Sec3_C_DocumentNumber" ColumnName="I9F_Sec3_C_DocumentNumber" />
-                <ScalarProperty Name="I9F_Sec3_C_ExpirationDate" ColumnName="I9F_Sec3_C_ExpirationDate" />
-                <ScalarProperty Name="I9F_Sec3_C_SignatureOfEmployerOrAuthorized" ColumnName="I9F_Sec3_C_SignatureOfEmployerOrAuthorized" />
-                <ScalarProperty Name="I9F_Sec3_C_DateOfEmployerOrAuthorizedSign" ColumnName="I9F_Sec3_C_DateOfEmployerOrAuthorizedSign" />
-                <ScalarProperty Name="I9F_Sec3_C_NameOfEmployerOrAuthorized" ColumnName="I9F_Sec3_C_NameOfEmployerOrAuthorized" />
-                <ScalarProperty Name="I9F_Date" ColumnName="I9F_Date" />
-                <ScalarProperty Name="I9F_IsActive" ColumnName="I9F_IsActive" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="spSetI9Form" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetI9Form" />
           <FunctionImportMapping FunctionImportName="spGetAssessmentQuestionQCQM" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetAssessmentQuestionQCQM">
             <ResultMapping>
               <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetAssessmentQuestionQCQM_Result1">
@@ -25806,6 +25899,430 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetApplicantJobApply" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetApplicantJobApply" />
+          <FunctionImportMapping FunctionImportName="spSetApplicantCreateLoginAccess" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetApplicantCreateLoginAccess" />
+          <FunctionImportMapping FunctionImportName="spGetMyOpening" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetMyOpening">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetMyOpening_Result4">
+                <ScalarProperty Name="APT_ApplicantId" ColumnName="APT_ApplicantId" />
+                <ScalarProperty Name="ApplicantName" ColumnName="ApplicantName" />
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="VST_IsExempt" ColumnName="VST_IsExempt" />
+                <ScalarProperty Name="APT_Status" ColumnName="APT_Status" />
+                <ScalarProperty Name="APT_DateOfJoining" ColumnName="APT_DateOfJoining" />
+                <ScalarProperty Name="ALA_Photo" ColumnName="ALA_Photo" />
+                <ScalarProperty Name="ALA_eMailId" ColumnName="ALA_eMailId" />
+                <ScalarProperty Name="ACI_PhoneNo" ColumnName="ACI_PhoneNo" />
+                <ScalarProperty Name="ACI_PrefredContactMethod" ColumnName="ACI_PrefredContactMethod" />
+                <ScalarProperty Name="API_DesireSalaryWages" ColumnName="API_DesireSalaryWages" />
+                <ScalarProperty Name="JPS_HiringManagerID" ColumnName="JPS_HiringManagerID" />
+                <ScalarProperty Name="HiringManager" ColumnName="HiringManager" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetApplicantInfoForMyInterview" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetApplicantInfoForMyInterview">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetApplicantInfoForMyInterview_Result4">
+                <ScalarProperty Name="APT_ApplicantId" ColumnName="APT_ApplicantId" />
+                <ScalarProperty Name="ApplicantName" ColumnName="ApplicantName" />
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="VST_IsExempt" ColumnName="VST_IsExempt" />
+                <ScalarProperty Name="APT_Status" ColumnName="APT_Status" />
+                <ScalarProperty Name="APT_DateOfJoining" ColumnName="APT_DateOfJoining" />
+                <ScalarProperty Name="ALA_Photo" ColumnName="ALA_Photo" />
+                <ScalarProperty Name="ALA_eMailId" ColumnName="ALA_eMailId" />
+                <ScalarProperty Name="ACI_PhoneNo" ColumnName="ACI_PhoneNo" />
+                <ScalarProperty Name="ACI_PrefredContactMethod" ColumnName="ACI_PrefredContactMethod" />
+                <ScalarProperty Name="API_DesireSalaryWages" ColumnName="API_DesireSalaryWages" />
+                <ScalarProperty Name="JPS_HiringManagerID" ColumnName="JPS_HiringManagerID" />
+                <ScalarProperty Name="HiringManager" ColumnName="HiringManager" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetJobPosting_ForCompanyOpening" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetJobPosting_ForCompanyOpening">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetJobPosting_ForCompanyOpening_Result1">
+                <ScalarProperty Name="JPS_JobPostingId" ColumnName="JPS_JobPostingId" />
+                <ScalarProperty Name="JBT_Id" ColumnName="JBT_Id" />
+                <ScalarProperty Name="JPS_HiringManagerID" ColumnName="JPS_HiringManagerID" />
+                <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
+                <ScalarProperty Name="PositionCount" ColumnName="PositionCount" />
+                <ScalarProperty Name="ApplicantCount" ColumnName="ApplicantCount" />
+                <ScalarProperty Name="JobPostingDate" ColumnName="JobPostingDate" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetApplicantStatus" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetApplicantStatus" />
+          <FunctionImportMapping FunctionImportName="spGetOrientation" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetOrientation">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetOrientation_Result">
+                <ScalarProperty Name="OTN_Id" ColumnName="OTN_Id" />
+                <ScalarProperty Name="OTN_EMP_EmployeeID" ColumnName="OTN_EMP_EmployeeID" />
+                <ScalarProperty Name="OTN_LocationId" ColumnName="OTN_LocationId" />
+                <ScalarProperty Name="ONT_OrientationDate" ColumnName="ONT_OrientationDate" />
+                <ScalarProperty Name="ONT_Orientationtime" ColumnName="ONT_Orientationtime" />
+                <ScalarProperty Name="ONT_Date" ColumnName="ONT_Date" />
+                <ScalarProperty Name="ONT_IsActive" ColumnName="ONT_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetOrientation" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetOrientation" />
+          <FunctionImportMapping FunctionImportName="spGetOrgnizationUserView" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetOrgnizationUserView">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetOrgnizationUserView_Result5">
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
+                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
+                <ScalarProperty Name="OrientationStatus" ColumnName="OrientationStatus" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetOfferLetter" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetOfferLetter">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetOfferLetter_Result">
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="API_FirstName" ColumnName="API_FirstName" />
+                <ScalarProperty Name="API_MidName" ColumnName="API_MidName" />
+                <ScalarProperty Name="API_LastName" ColumnName="API_LastName" />
+                <ScalarProperty Name="ACI_PhoneNo" ColumnName="ACI_PhoneNo" />
+                <ScalarProperty Name="ACI_eMail" ColumnName="ACI_eMail" />
+                <ScalarProperty Name="API_DesireSalaryWages" ColumnName="API_DesireSalaryWages" />
+                <ScalarProperty Name="APT_DateOfJoining" ColumnName="APT_DateOfJoining" />
+                <ScalarProperty Name="OFL_OfferLetterDueDate" ColumnName="OFL_OfferLetterDueDate" />
+                <ScalarProperty Name="OFL_OfferAmount" ColumnName="OFL_OfferAmount" />
+                <ScalarProperty Name="HiringManagerName" ColumnName="HiringManagerName" />
+                <ScalarProperty Name="HiringManagerPosition" ColumnName="HiringManagerPosition" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="VST_IsExempt" ColumnName="VST_IsExempt" />
+                <ScalarProperty Name="VST_RateOfPay" ColumnName="VST_RateOfPay" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetNotification" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetNotification">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetNotification_Result">
+                <ScalarProperty Name="NTF_Id" ColumnName="NTF_Id" />
+                <ScalarProperty Name="NTF_Details" ColumnName="NTF_Details" />
+                <ScalarProperty Name="NTF_Module" ColumnName="NTF_Module" />
+                <ScalarProperty Name="NTF_Submodule" ColumnName="NTF_Submodule" />
+                <ScalarProperty Name="NTF_SubmoduleId" ColumnName="NTF_SubmoduleId" />
+                <ScalarProperty Name="NTF_AssignTo" ColumnName="NTF_AssignTo" />
+                <ScalarProperty Name="NTF_AssignToIsWorkable" ColumnName="NTF_AssignToIsWorkable" />
+                <ScalarProperty Name="NTF_IsRead" ColumnName="NTF_IsRead" />
+                <ScalarProperty Name="NTF_DeletedDate" ColumnName="NTF_DeletedDate" />
+                <ScalarProperty Name="NTF_CreatedBy" ColumnName="NTF_CreatedBy" />
+                <ScalarProperty Name="NTF_CreatedByIsWorkable" ColumnName="NTF_CreatedByIsWorkable" />
+                <ScalarProperty Name="NFT_Severity" ColumnName="NFT_Severity" />
+                <ScalarProperty Name="NTF_CreatedDate" ColumnName="NTF_CreatedDate" />
+                <ScalarProperty Name="NTF_IsActive" ColumnName="NTF_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetApplicantAllDetails" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetApplicantAllDetails" />
+          <FunctionImportMapping FunctionImportName="spGetApplicantAllDetails" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetApplicantAllDetails">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetApplicantAllDetails_Result2">
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="API_FirstName" ColumnName="API_FirstName" />
+                <ScalarProperty Name="API_MidName" ColumnName="API_MidName" />
+                <ScalarProperty Name="API_LastName" ColumnName="API_LastName" />
+                <ScalarProperty Name="ALA_Photo" ColumnName="ALA_Photo" />
+                <ScalarProperty Name="ACI_PhoneNo" ColumnName="ACI_PhoneNo" />
+                <ScalarProperty Name="ACI_eMail" ColumnName="ACI_eMail" />
+                <ScalarProperty Name="API_DesireSalaryWages" ColumnName="API_DesireSalaryWages" />
+                <ScalarProperty Name="APT_DateOfJoining" ColumnName="APT_DateOfJoining" />
+                <ScalarProperty Name="OFL_OfferLetterDueDate" ColumnName="OFL_OfferLetterDueDate" />
+                <ScalarProperty Name="OFL_OfferAmount" ColumnName="OFL_OfferAmount" />
+                <ScalarProperty Name="HiringManagerEmployeeId" ColumnName="HiringManagerEmployeeId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="HiringManagerName" ColumnName="HiringManagerName" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="VST_IsExempt" ColumnName="VST_IsExempt" />
+                <ScalarProperty Name="VST_RateOfPay" ColumnName="VST_RateOfPay" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetScheduleInterview_ForMailFromApplicant" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetScheduleInterview_ForMailFromApplicant" />
+          <EntitySetMapping Name="OfferLetters">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.OfferLetter">
+              <MappingFragment StoreEntitySet="OfferLetter">
+                <ScalarProperty Name="OFL_IsActive" ColumnName="OFL_IsActive" />
+                <ScalarProperty Name="OFL_Date" ColumnName="OFL_Date" />
+                <ScalarProperty Name="OFL_OfferAmount" ColumnName="OFL_OfferAmount" />
+                <ScalarProperty Name="OFL_OfferLetterDueDate" ColumnName="OFL_OfferLetterDueDate" />
+                <ScalarProperty Name="OFL_APT_ApplicantId" ColumnName="OFL_APT_ApplicantId" />
+                <ScalarProperty Name="OFL_Id" ColumnName="OFL_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="EMP_IsActive" ColumnName="EMP_IsActive" />
+                <ScalarProperty Name="EMP_IsCreatedOn" ColumnName="EMP_IsCreatedOn" />
+                <ScalarProperty Name="EMP_IsCreatedBy" ColumnName="EMP_IsCreatedBy" />
+                <ScalarProperty Name="EMP_IsExempt" ColumnName="EMP_IsExempt" />
+                <ScalarProperty Name="EMP_EmploymentStatus" ColumnName="EMP_EmploymentStatus" />
+                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
+                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
+                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
+                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
+                <ScalarProperty Name="EMP_Gender" ColumnName="EMP_Gender" />
+                <ScalarProperty Name="EMP_MilitaryService" ColumnName="EMP_MilitaryService" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="EMP_SSN" ColumnName="EMP_SSN" />
+                <ScalarProperty Name="EMP_DateOfBirth" ColumnName="EMP_DateOfBirth" />
+                <ScalarProperty Name="EMP_DrivingLicenseNumber" ColumnName="EMP_DrivingLicenseNumber" />
+                <ScalarProperty Name="EMP_Phone" ColumnName="EMP_Phone" />
+                <ScalarProperty Name="EMP_Email" ColumnName="EMP_Email" />
+                <ScalarProperty Name="EMP_LastName" ColumnName="EMP_LastName" />
+                <ScalarProperty Name="EMP_MiddleName" ColumnName="EMP_MiddleName" />
+                <ScalarProperty Name="EMP_FirstName" ColumnName="EMP_FirstName" />
+                <ScalarProperty Name="EMP_API_ApplicantId" ColumnName="EMP_API_ApplicantId" />
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EMP_Id" ColumnName="EMP_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spSetInterviewPanel" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetInterviewPanel" />
+          <FunctionImportMapping FunctionImportName="spGetEmployeePersonalInfo" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetEmployeePersonalInfo">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetEmployeePersonalInfo_Result3">
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EMP_API_ApplicantId" ColumnName="EMP_API_ApplicantId" />
+                <ScalarProperty Name="EMP_FirstName" ColumnName="EMP_FirstName" />
+                <ScalarProperty Name="EMP_MiddleName" ColumnName="EMP_MiddleName" />
+                <ScalarProperty Name="EMP_LastName" ColumnName="EMP_LastName" />
+                <ScalarProperty Name="EMP_Email" ColumnName="EMP_Email" />
+                <ScalarProperty Name="EMP_Phone" ColumnName="EMP_Phone" />
+                <ScalarProperty Name="EMP_DrivingLicenseNumber" ColumnName="EMP_DrivingLicenseNumber" />
+                <ScalarProperty Name="EMP_DateOfBirth" ColumnName="EMP_DateOfBirth" />
+                <ScalarProperty Name="EMP_SSN" ColumnName="EMP_SSN" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="EMP_Gender" ColumnName="EMP_Gender" />
+                <ScalarProperty Name="EMP_MilitaryService" ColumnName="EMP_MilitaryService" />
+                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
+                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
+                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
+                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
+                <ScalarProperty Name="EMA_Address" ColumnName="EMA_Address" />
+                <ScalarProperty Name="EMA_City" ColumnName="EMA_City" />
+                <ScalarProperty Name="EMA_State" ColumnName="EMA_State" />
+                <ScalarProperty Name="EMA_Zip" ColumnName="EMA_Zip" />
+                <ScalarProperty Name="CTZ_Citizenship" ColumnName="CTZ_Citizenship" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetBookSlotTime" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetBookSlotTime" />
+          <EntitySetMapping Name="BookSlotTimes">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.BookSlotTime">
+              <MappingFragment StoreEntitySet="BookSlotTime">
+                <ScalarProperty Name="BST_Title" ColumnName="BST_Title" />
+                <ScalarProperty Name="BST_IsActive" ColumnName="BST_IsActive" />
+                <ScalarProperty Name="BST_Date" ColumnName="BST_Date" />
+                <ScalarProperty Name="BST_Status" ColumnName="BST_Status" />
+                <ScalarProperty Name="BST_SLT_Id" ColumnName="BST_SLT_Id" />
+                <ScalarProperty Name="BST_SlotDate" ColumnName="BST_SlotDate" />
+                <ScalarProperty Name="BST_EMP_EmployeeID" ColumnName="BST_EMP_EmployeeID" />
+                <ScalarProperty Name="BST_Id" ColumnName="BST_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spSetAplicantCertificationDetails" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetAplicantCertificationDetails" />
+          <EntitySetMapping Name="InterviewProposalTimes">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.InterviewProposalTime">
+              <MappingFragment StoreEntitySet="InterviewProposalTime">
+                <ScalarProperty Name="IPT_IsActive" ColumnName="IPT_IsActive" />
+                <ScalarProperty Name="IPT_Date" ColumnName="IPT_Date" />
+                <ScalarProperty Name="IPT_SentCount" ColumnName="IPT_SentCount" />
+                <ScalarProperty Name="IPT_Status" ColumnName="IPT_Status" />
+                <ScalarProperty Name="IPT_InterviewDateTime" ColumnName="IPT_InterviewDateTime" />
+                <ScalarProperty Name="IPT_BST_Id_TE" ColumnName="IPT_BST_Id_TE" />
+                <ScalarProperty Name="IPT_BST_Id_SE" ColumnName="IPT_BST_Id_SE" />
+                <ScalarProperty Name="IPT_BST_Id_HM" ColumnName="IPT_BST_Id_HM" />
+                <ScalarProperty Name="IPT_EMP_EmployeeID_TE" ColumnName="IPT_EMP_EmployeeID_TE" />
+                <ScalarProperty Name="IPT_EMP_EmployeeID_SE" ColumnName="IPT_EMP_EmployeeID_SE" />
+                <ScalarProperty Name="IPT_EMP_EmployeeID_HM" ColumnName="IPT_EMP_EmployeeID_HM" />
+                <ScalarProperty Name="IPT_APT_ApplicantId" ColumnName="IPT_APT_ApplicantId" />
+                <ScalarProperty Name="IPT_JPS_JobPostingId" ColumnName="IPT_JPS_JobPostingId" />
+                <ScalarProperty Name="IPT_Id" ColumnName="IPT_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spSetI9Form" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetI9Form" />
+          <FunctionImportMapping FunctionImportName="spGetI9Form" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetI9Form">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetI9Form_Result2">
+                <ScalarProperty Name="EMP_FirstName" ColumnName="EMP_FirstName" />
+                <ScalarProperty Name="EMP_MiddleName" ColumnName="EMP_MiddleName" />
+                <ScalarProperty Name="EMP_LastName" ColumnName="EMP_LastName" />
+                <ScalarProperty Name="EMA_Address" ColumnName="EMA_Address" />
+                <ScalarProperty Name="EMA_City" ColumnName="EMA_City" />
+                <ScalarProperty Name="EMA_State" ColumnName="EMA_State" />
+                <ScalarProperty Name="EMA_Zip" ColumnName="EMA_Zip" />
+                <ScalarProperty Name="I9F_Id" ColumnName="I9F_Id" />
+                <ScalarProperty Name="I9F_EMP_EmployeeId" ColumnName="I9F_EMP_EmployeeId" />
+                <ScalarProperty Name="I9F_Sec1_SSN" ColumnName="I9F_Sec1_SSN" />
+                <ScalarProperty Name="I9F_Sec1_CitizenOfUS" ColumnName="I9F_Sec1_CitizenOfUS" />
+                <ScalarProperty Name="I9F_Sec1_NonCitizenOfUS" ColumnName="I9F_Sec1_NonCitizenOfUS" />
+                <ScalarProperty Name="I9F_Sec1_AlienRegistrationNum_USCIS" ColumnName="I9F_Sec1_AlienRegistrationNum_USCIS" />
+                <ScalarProperty Name="I9F_Sec1_AlienAuthorizedToWorkDate" ColumnName="I9F_Sec1_AlienAuthorizedToWorkDate" />
+                <ScalarProperty Name="I9F_Sec1_I94AdmissionNumber" ColumnName="I9F_Sec1_I94AdmissionNumber" />
+                <ScalarProperty Name="I9F_Sec1_ForeignPassportNumber" ColumnName="I9F_Sec1_ForeignPassportNumber" />
+                <ScalarProperty Name="I9F_Sec1_ForeignPassportIssuanceCountry" ColumnName="I9F_Sec1_ForeignPassportIssuanceCountry" />
+                <ScalarProperty Name="I9F_Sec1_SignatureOfEmployee" ColumnName="I9F_Sec1_SignatureOfEmployee" />
+                <ScalarProperty Name="I9F_Sec1_DateOfEmployeeSign" ColumnName="I9F_Sec1_DateOfEmployeeSign" />
+                <ScalarProperty Name="I9F_Sec1_QRCodeSec1" ColumnName="I9F_Sec1_QRCodeSec1" />
+                <ScalarProperty Name="I9F_Sec1_PreparerAndTranslator" ColumnName="I9F_Sec1_PreparerAndTranslator" />
+                <ScalarProperty Name="I9F_Sec1_SignatureOfPreparerOrTranslator" ColumnName="I9F_Sec1_SignatureOfPreparerOrTranslator" />
+                <ScalarProperty Name="I9F_Sec1_DateOfPreparerOrTranslatorSign" ColumnName="I9F_Sec1_DateOfPreparerOrTranslatorSign" />
+                <ScalarProperty Name="I9F_Sec1_FirstName" ColumnName="I9F_Sec1_FirstName" />
+                <ScalarProperty Name="I9F_Sec1_MiddleInitial" ColumnName="I9F_Sec1_MiddleInitial" />
+                <ScalarProperty Name="I9F_Sec1_LastName" ColumnName="I9F_Sec1_LastName" />
+                <ScalarProperty Name="I9F_Sec1_OtherLastName" ColumnName="I9F_Sec1_OtherLastName" />
+                <ScalarProperty Name="I9F_Sec1_dateOfBirth" ColumnName="I9F_Sec1_dateOfBirth" />
+                <ScalarProperty Name="I9F_Sec1_Address" ColumnName="I9F_Sec1_Address" />
+                <ScalarProperty Name="I9F_Sec1_AptNumber" ColumnName="I9F_Sec1_AptNumber" />
+                <ScalarProperty Name="I9F_Sec1_City" ColumnName="I9F_Sec1_City" />
+                <ScalarProperty Name="I9F_Sec1_State" ColumnName="I9F_Sec1_State" />
+                <ScalarProperty Name="I9F_Sec1_ZipCode" ColumnName="I9F_Sec1_ZipCode" />
+                <ScalarProperty Name="I9F_Sec1_Email" ColumnName="I9F_Sec1_Email" />
+                <ScalarProperty Name="I9F_Sec1_EmployeeTelephoneNumber" ColumnName="I9F_Sec1_EmployeeTelephoneNumber" />
+                <ScalarProperty Name="I9F_Sec2_ListA_DocumentTitle1" ColumnName="I9F_Sec2_ListA_DocumentTitle1" />
+                <ScalarProperty Name="I9F_Sec2_ListA_IssuingAuthority1" ColumnName="I9F_Sec2_ListA_IssuingAuthority1" />
+                <ScalarProperty Name="I9F_Sec2_ListA_DocumentNumber1" ColumnName="I9F_Sec2_ListA_DocumentNumber1" />
+                <ScalarProperty Name="I9F_Sec2_ListA_ExpirationDate1" ColumnName="I9F_Sec2_ListA_ExpirationDate1" />
+                <ScalarProperty Name="I9F_Sec2_ListA_DocumentTitle2" ColumnName="I9F_Sec2_ListA_DocumentTitle2" />
+                <ScalarProperty Name="I9F_Sec2_ListA_IssuingAuthority2" ColumnName="I9F_Sec2_ListA_IssuingAuthority2" />
+                <ScalarProperty Name="I9F_Sec2_ListA_DocumentNumber2" ColumnName="I9F_Sec2_ListA_DocumentNumber2" />
+                <ScalarProperty Name="I9F_Sec2_ListA_ExpirationDate2" ColumnName="I9F_Sec2_ListA_ExpirationDate2" />
+                <ScalarProperty Name="I9F_Sec2_ListA_DocumentTitle3" ColumnName="I9F_Sec2_ListA_DocumentTitle3" />
+                <ScalarProperty Name="I9F_Sec2_ListA_IssuingAuthority3" ColumnName="I9F_Sec2_ListA_IssuingAuthority3" />
+                <ScalarProperty Name="I9F_Sec2_ListA_DocumentNumber3" ColumnName="I9F_Sec2_ListA_DocumentNumber3" />
+                <ScalarProperty Name="I9F_Sec2_ListA_ExpirationDate3" ColumnName="I9F_Sec2_ListA_ExpirationDate3" />
+                <ScalarProperty Name="I9F_Sec2_ListB_DocumentTitle" ColumnName="I9F_Sec2_ListB_DocumentTitle" />
+                <ScalarProperty Name="I9F_Sec2_ListB_IssuingAuthority" ColumnName="I9F_Sec2_ListB_IssuingAuthority" />
+                <ScalarProperty Name="I9F_Sec2_ListB_DocumentNumber" ColumnName="I9F_Sec2_ListB_DocumentNumber" />
+                <ScalarProperty Name="I9F_Sec2_ListB_ExpirationDate" ColumnName="I9F_Sec2_ListB_ExpirationDate" />
+                <ScalarProperty Name="I9F_Sec2_ListC_DocumentTitle" ColumnName="I9F_Sec2_ListC_DocumentTitle" />
+                <ScalarProperty Name="I9F_Sec2_ListC_IssuingAuthority" ColumnName="I9F_Sec2_ListC_IssuingAuthority" />
+                <ScalarProperty Name="I9F_Sec2_ListC_DocumentNumber" ColumnName="I9F_Sec2_ListC_DocumentNumber" />
+                <ScalarProperty Name="I9F_Sec2_ListC_ExpirationDate" ColumnName="I9F_Sec2_ListC_ExpirationDate" />
+                <ScalarProperty Name="I9F_Sec2_AdditionalInformation" ColumnName="I9F_Sec2_AdditionalInformation" />
+                <ScalarProperty Name="I9F_Sec2_QRCodeSec2AndSec3" ColumnName="I9F_Sec2_QRCodeSec2AndSec3" />
+                <ScalarProperty Name="I9F_Sec2_EmployeesFirstDayOfEmployment" ColumnName="I9F_Sec2_EmployeesFirstDayOfEmployment" />
+                <ScalarProperty Name="I9F_Sec2_SignatureOfEmployerOrAuthorized" ColumnName="I9F_Sec2_SignatureOfEmployerOrAuthorized" />
+                <ScalarProperty Name="I9F_Sec2_DateOfEmployerOrAuthorizedSign" ColumnName="I9F_Sec2_DateOfEmployerOrAuthorizedSign" />
+                <ScalarProperty Name="I9F_Sec2_LastNameOfEmployerOrAuthorized" ColumnName="I9F_Sec2_LastNameOfEmployerOrAuthorized" />
+                <ScalarProperty Name="I9F_Sec2_FirstNameOfEmployerOrAuthorized" ColumnName="I9F_Sec2_FirstNameOfEmployerOrAuthorized" />
+                <ScalarProperty Name="I9F_Sec2_MiddleInitialOfEmployerOrAuthorized" ColumnName="I9F_Sec2_MiddleInitialOfEmployerOrAuthorized" />
+                <ScalarProperty Name="I9F_Sec2_EmployersBusinessOrgnization_Name" ColumnName="I9F_Sec2_EmployersBusinessOrgnization_Name" />
+                <ScalarProperty Name="I9F_Sec2_EmployersBusinessOrgnization_Address" ColumnName="I9F_Sec2_EmployersBusinessOrgnization_Address" />
+                <ScalarProperty Name="I9F_Sec2_EmployersBusinessOrgnization_City" ColumnName="I9F_Sec2_EmployersBusinessOrgnization_City" />
+                <ScalarProperty Name="I9F_Sec2_EmployersBusinessOrgnization_State" ColumnName="I9F_Sec2_EmployersBusinessOrgnization_State" />
+                <ScalarProperty Name="I9F_Sec2_EmployersBusinessOrgnization_ZipCode" ColumnName="I9F_Sec2_EmployersBusinessOrgnization_ZipCode" />
+                <ScalarProperty Name="I9F_Sec2_TitleOfEmployerOrOthrizedRepresentative" ColumnName="I9F_Sec2_TitleOfEmployerOrOthrizedRepresentative" />
+                <ScalarProperty Name="I9F_Sec2_CitizenshipImmigrationStatus" ColumnName="I9F_Sec2_CitizenshipImmigrationStatus" />
+                <ScalarProperty Name="I9F_Sec3_A_LastName" ColumnName="I9F_Sec3_A_LastName" />
+                <ScalarProperty Name="I9F_Sec3_A_FirstName" ColumnName="I9F_Sec3_A_FirstName" />
+                <ScalarProperty Name="I9F_Sec3_A_MiddleInitial" ColumnName="I9F_Sec3_A_MiddleInitial" />
+                <ScalarProperty Name="I9F_Sec3_B_DateOfReHire" ColumnName="I9F_Sec3_B_DateOfReHire" />
+                <ScalarProperty Name="I9F_Sec3_C_DocumentTitle" ColumnName="I9F_Sec3_C_DocumentTitle" />
+                <ScalarProperty Name="I9F_Sec3_C_DocumentNumber" ColumnName="I9F_Sec3_C_DocumentNumber" />
+                <ScalarProperty Name="I9F_Sec3_C_ExpirationDate" ColumnName="I9F_Sec3_C_ExpirationDate" />
+                <ScalarProperty Name="I9F_Sec3_C_SignatureOfEmployerOrAuthorized" ColumnName="I9F_Sec3_C_SignatureOfEmployerOrAuthorized" />
+                <ScalarProperty Name="I9F_Sec3_C_DateOfEmployerOrAuthorizedSign" ColumnName="I9F_Sec3_C_DateOfEmployerOrAuthorizedSign" />
+                <ScalarProperty Name="I9F_Sec3_C_NameOfEmployerOrAuthorized" ColumnName="I9F_Sec3_C_NameOfEmployerOrAuthorized" />
+                <ScalarProperty Name="I9F_Date" ColumnName="I9F_Date" />
+                <ScalarProperty Name="I9F_IsActive" ColumnName="I9F_IsActive" />
+                <ScalarProperty Name="I9F_CaseNumber" ColumnName="I9F_CaseNumber" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetJobPosting" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetJobPosting">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetJobPosting_Result8">
+                <ScalarProperty Name="JPS_JobPostingId" ColumnName="JPS_JobPostingId" />
+                <ScalarProperty Name="JBT_Id" ColumnName="JBT_Id" />
+                <ScalarProperty Name="JPS_HiringManagerID" ColumnName="JPS_HiringManagerID" />
+                <ScalarProperty Name="JPS_LocationId" ColumnName="JPS_LocationId" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="JobTitle" ColumnName="JobTitle" />
+                <ScalarProperty Name="VST_JobDescription" ColumnName="VST_JobDescription" />
+                <ScalarProperty Name="PositionCount" ColumnName="PositionCount" />
+                <ScalarProperty Name="JPS_DrivingType" ColumnName="JPS_DrivingType" />
+                <ScalarProperty Name="VST_IsExempt" ColumnName="VST_IsExempt" />
+                <ScalarProperty Name="ApplicantCount" ColumnName="ApplicantCount" />
+                <ScalarProperty Name="JobPostingDate" ColumnName="JobPostingDate" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="JobPostings">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.JobPosting">
+              <MappingFragment StoreEntitySet="JobPosting">
+                <ScalarProperty Name="JPS_DrivingType" ColumnName="JPS_DrivingType" />
+                <ScalarProperty Name="JPS_LocationId" ColumnName="JPS_LocationId" />
+                <ScalarProperty Name="JPS_IsActive" ColumnName="JPS_IsActive" />
+                <ScalarProperty Name="JPS_Date" ColumnName="JPS_Date" />
+                <ScalarProperty Name="JPS_DateClose" ColumnName="JPS_DateClose" />
+                <ScalarProperty Name="JPS_NumberOfPost" ColumnName="JPS_NumberOfPost" />
+                <ScalarProperty Name="JPS_HiringManager" ColumnName="JPS_HiringManager" />
+                <ScalarProperty Name="JPS_JobTitle" ColumnName="JPS_JobTitle" />
+                <ScalarProperty Name="JPS_HiringManagerID" ColumnName="JPS_HiringManagerID" />
+                <ScalarProperty Name="JPS_JobTitleID" ColumnName="JPS_JobTitleID" />
+                <ScalarProperty Name="JPS_JobPostingIdRecruitee" ColumnName="JPS_JobPostingIdRecruitee" />
+                <ScalarProperty Name="JPS_JobPostingId" ColumnName="JPS_JobPostingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetAssessmentList306090" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetAssessmentList306090">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetAssessmentList306090_Result2">
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="VST_Level" ColumnName="VST_Level" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
+                <ScalarProperty Name="Assesment" ColumnName="Assesment" />
+                <ScalarProperty Name="SAM_IsActive" ColumnName="SAM_IsActive" />
+                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Notifications">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.Notification">
+              <MappingFragment StoreEntitySet="Notification">
+                <ScalarProperty Name="NTF_IsActive" ColumnName="NTF_IsActive" />
+                <ScalarProperty Name="NTF_CreatedDate" ColumnName="NTF_CreatedDate" />
+                <ScalarProperty Name="NFT_Severity" ColumnName="NFT_Severity" />
+                <ScalarProperty Name="NTF_CreatedByIsWorkable" ColumnName="NTF_CreatedByIsWorkable" />
+                <ScalarProperty Name="NTF_CreatedBy" ColumnName="NTF_CreatedBy" />
+                <ScalarProperty Name="NTF_DeletedDate" ColumnName="NTF_DeletedDate" />
+                <ScalarProperty Name="NTF_IsRead" ColumnName="NTF_IsRead" />
+                <ScalarProperty Name="NTF_AssignToIsWorkable" ColumnName="NTF_AssignToIsWorkable" />
+                <ScalarProperty Name="NTF_AssignTo" ColumnName="NTF_AssignTo" />
+                <ScalarProperty Name="NTF_SubmoduleId" ColumnName="NTF_SubmoduleId" />
+                <ScalarProperty Name="NTF_Submodule" ColumnName="NTF_Submodule" />
+                <ScalarProperty Name="NTF_Module" ColumnName="NTF_Module" />
+                <ScalarProperty Name="NTF_Details" ColumnName="NTF_Details" />
+                <ScalarProperty Name="NTF_Id" ColumnName="NTF_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spSetNotification" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetNotification" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
@@ -25821,7 +26338,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
       <DesignerInfoPropertySet>
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="true" />
-        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="False" />
         <DesignerProperty Name="UseLegacyProvider" Value="false" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
       </DesignerInfoPropertySet>

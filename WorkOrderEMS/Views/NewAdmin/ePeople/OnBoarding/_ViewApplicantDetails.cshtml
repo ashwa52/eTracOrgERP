@@ -1,0 +1,494 @@
+﻿@model WorkOrderEMS.Models.CommonApplicantModel
+
+@Html.HiddenFor(model => model.ApplicantId,new { @id="ApplicantIdForView"})
+<div id="divVendorDetailPreview" class="">
+    <div class="row">
+        <div class="col-sm-12">
+            <h4 class="card-title modal-heading">Applicant Personal Information</h4>
+            <hr />
+        </div>
+    </div>
+
+    <div class="row">
+        @*<form id="Testing" method="post" enctype="multipart/form-data">
+            <input type="text" name="CertificationName" />
+            <input type="text" name="Yr" />
+            <input type="file" id="fileDatas" multiple="multiple" />
+            <button id="FormTesting">Save</button>
+        </form>*@
+        @if (Model.ApplicantPersonalInfo.Count > 0)
+        {
+             <table class="table table-bordered" style="width: 95%;">
+                 <tr style="background-color:#0792bc; color:#fff;">
+                     <th>First Name</th>
+                     <th>Middle Name</th>
+                     <th>Last Name</th>
+                     <th>SSN</th>
+                     <th>Title</th>
+                     <th>Desire Salary Wages</th>
+                     <th>DL Number</th>
+                     <th>Title</th>
+                 </tr>
+            
+            @foreach (var item in Model.ApplicantPersonalInfo)
+            {
+                 <tr>
+                     <td>@item.API_FirstName</td>
+                     <td>@item.API_MiddleName</td>
+                     <td>@item.API_LastName</td>
+                     <td>@item.API_SSN</td>
+                     <td>@item.API_Title</td>
+                     <td>@item.API_DesireSalaryWages</td>
+                     <td>@item.API_DLNumber</td>
+                     <td>@item.API_Title</td>
+                 </tr>
+                @*<div class="col-sm-4">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <div class="form-control-static">@item.API_FirstName</div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Middle Name</label>
+                        <div class="form-control-static">@item.API_MiddleName</div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <div class="form-control-static">@item.API_LastName</div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>SSN</label>
+                        <div class="form-control-static">@item.API_SSN</div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <div class="form-control-static">@item.API_Title</div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Desire Salary Wages</label>
+                        <div class="form-control-static">@item.API_DesireSalaryWages</div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>DL Number</label>
+                        <div class="form-control-static">@item.API_DLNumber</div>
+                    </div>
+                </div>*@
+            }
+            </table>
+        }
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h4 class="card-title modal-heading">Applicant Address Details</h4>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        @if (Model.ApplicantAddress.Count() > 0)
+        {
+        <table class="table table-bordered" style="width: 95%;">
+            <tr style="background-color:#0792bc; color:#fff;">
+                <th>Apartment</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Street Address</th>
+                <th>Years Address From</th>
+                <th>Years Address To</th>
+            </tr>
+       
+            @foreach (var item in Model.ApplicantAddress)
+            {
+                <tr>
+                    <td>@item.APA_Apartment</td>
+                    <td>@item.APA_City</td>
+                    <td>@item.APA_State</td>
+                    <td>@item.APA_StreetAddress</td>
+                    <td>@item.APA_YearsAddressFrom</td>
+                    <td>@item.APA_YearsAddressTo</td>
+                </tr>              
+            }
+             </table>
+        }
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h4 class="card-title modal-heading">Applicant Contact Info</h4>
+            <hr />
+        </div>
+    </div>
+
+    <div class="row">
+        @if (Model.ApplicantContactInfo.Count() > 0)
+        {
+          <table class="table table-bordered" style="width: 95%;">
+              <tr style="background-color:#0792bc; color:#fff;">
+                <th>Email</th>
+                <th>Phone No</th>
+                <th>Prefred Contact Method</th>
+            </tr>
+            @foreach (var item in Model.ApplicantContactInfo)
+            {
+                 <tr>
+                    <td>@item.ACI_eMail</td>
+                    <td>@item.ACI_PhoneNo</td>
+                    <td>@item.ACI_PrefredContactMethod</td>
+                </tr>              
+            }
+         </table>
+        }
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h4 class="card-title modal-heading">Applicant Additional Info</h4>
+            <hr />
+        </div>
+
+    </div>
+
+    <div class="row">
+        @if (Model.ApplicantAdditionalInfo.Count() > 0)
+        {
+            <table class="table table-bordered" style="width: 95%;">
+                <tr style="background-color:#0792bc; color:#fff;">
+                    <th>Age 21 Completed</th>
+                    <th>Any Ref Or Employee In ELITE</th>
+                    <th>Available Date</th>
+                    <th>Departure Date</th>
+                    <th>Ever Work For ELITE</th>
+                    <th>Name Of Ref Or Employee In ELITE</th>
+                    <th>Prior Military Service</th>
+                    <th>Reason For Leaving</th>
+                    <th>Work Eligibility US</th>
+                </tr>
+            @foreach (var item in Model.ApplicantAdditionalInfo)
+            {
+                <tr>
+                    <td>@item.AAI_Age21Completed</td>
+                    <td>@item.AAI_AnyRefOrEmployeeInELITE</td>
+                    <td>@item.AAI_AvailableDate</td>
+                    <td>@item.AAI_DepartureDate</td>
+                    <td>@item.AAI_EverWorkForELITE</td>
+                    <td>@item.AAI_NameOfRefOrEmployeeInELITE</td>
+                    <td>@item.AAI_PriorMilitaryService</td>
+                    <td>@item.AAI_ReasonForLeaving</td>
+                    <td>@item.AAI_WorkEligibilityUS</td>
+                </tr>               
+            }
+          </table>
+        }
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h4 class="card-title modal-heading">Aplicant Acadmic Details</h4>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        @if (Model.AplicantAcadmicDetails.Count() > 0)
+        {
+             <table class="table table-bordered" style="width: 95%;">
+                <tr style="background-color:#0792bc; color:#fff;">
+                    <th>Education Type</th>
+                    <th>Institute Name</th>
+                    <th>Attended From</th>
+                    <th>Attended To</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>Zip</th>
+                </tr>
+            @foreach (var item in Model.AplicantAcadmicDetails)
+            {
+                 <tr>
+                    <td>@item.AAD_EducationType</td>
+                    <td>@item.AAD_InstituteName</td>
+                    <td>@item.AAD_AttendedFrom</td>
+                    <td>@item.AAD_AttendedTo</td>
+                    <td>@item.AAD_City</td>
+                    <td>@item.AAD_State</td>
+                    <td>@item.AAD_Zip</td>
+                </tr>
+               
+            }
+           </table>
+        }
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h4 class="card-title modal-heading">Applicant Background History</h4>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        @if (Model.ApplicantBackgroundHistory.Count() > 0)
+        {
+            <table class="table table-bordered" style="width: 95%;">
+                <tr style="background-color:#0792bc; color:#fff;">
+                    <th>Company Name</th>
+                    <th>Address</th>
+                    <th>City</th>
+                    <th>State</th>
+                    <th>ZIPCode</th>
+                    <th>Phone</th>
+                    <th>Still Employed</th>
+                    <th>Reason for Leaving</th>
+                    <th>Reason For GAP</th>
+                    <th>Sub To Fedral Motor</th>
+                    <th>Safety Sensitive Function</th>
+                </tr>
+            @foreach (var item in Model.ApplicantBackgroundHistory)
+            {
+                <tr>
+                    <td>@item.ABH_CompanyName</td>
+                    <td>@item.ABH_Address</td>
+                    <td>@item.ABH_City</td>
+                    <td>@item.ABH_State</td>
+                    <td>@item.ABH_ZIPCode</td>
+                    <td>@item.ABH_Phone</td>
+                    <td>@item.ABH_StillEmployed</td>
+                    <td>@item.ABH_ReasonforLeaving</td>
+                    <td>@item.ABH_ReasonForGAP</td>
+                    <td>@item.ABH_SubToFedralMotor</td>
+                    <td>@item.ABH_SafetySensitiveFunction</td>
+                </tr>
+                
+            }
+           </table>
+        }
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h4 class="card-title modal-heading">Applicant Position Title</h4>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        @if (Model.ApplicantPositionTitle.Count() > 0)
+        {
+            <table class="table table-bordered" style="width: 95%;">
+                <tr style="background-color:#0792bc; color:#fff;">
+                    <th>Company Name</th>
+                    <th>PositionTitle</th>
+                    <th>Salary</th>
+                    <th>State</th>
+                    <th>From MoYr</th>
+                    <th>ToMoYr</th>
+                </tr>
+            @foreach (var item in Model.ApplicantPositionTitle)
+            {
+                <tr>
+                    <td>@item.APT_CompanyName</td>
+                    <td>@item.APT_PositionTitle</td>
+                    <td>@item.APT_Salary</td>
+                    <td>@item.APT_FromMoYr</td>
+                    <td>@item.APT_ToMoYr</td>                   
+                </tr>
+               
+            }
+           </table>
+        }
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h4 class="card-title modal-heading">Applicant Accident Record</h4>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        @if (Model.ApplicantAccidentRecord.Count() > 0)
+        {
+        <table class="table table-bordered" style="width: 95%;">
+            <tr style="background-color:#0792bc; color:#fff;">
+                <th>Accidant Date</th>
+                <th>Discription</th>
+                <th>Number Of Fatalities</th>
+                <th>Number Of Injuries</th>
+            </tr>
+            @foreach (var item in Model.ApplicantAccidentRecord)
+            {
+                 <tr>
+                    <td>@item.AAR_AccidantDate</td>
+                    <td>@item.AAR_Discription</td>
+                    <td>@item.AAR_NumberOfFatalities</td>
+                    <td>@item.AAR_NumberOfInjuries</td>                   
+                </tr>
+            
+            }
+            </table>
+         }
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h4 class="card-title modal-heading">Applicant Traffic Convictions</h4>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        @if (Model.ApplicantTrafficConvictions.Count() > 0)
+        {
+            <table class="table table-bordered" style="width: 95%;">
+                <tr style="background-color:#0792bc; color:#fff;">
+                    <th>Convicted Date</th>
+                    <th>Violation</th>
+                    <th>State Of Violation</th>
+                    <th>At Fault Accident</th>
+                    <th>At Moving Violation</th>
+                </tr>
+            @foreach (var item in Model.ApplicantTrafficConvictions)
+            {
+                <tr>
+                    <td>@item.ATC_ConvictedDate</td>
+                    <td>@item.ATC_Violation</td>
+                    <td>@item.ATC_StateOfViolation</td>
+                    <td>@item.ATC_AtFaultAccident</td>  
+                    <td>@item.ATC_AtMovingViolation</td>  
+                </tr>
+                
+            }
+           </table>
+        }
+    </div>
+     <div class="row">
+        <div class="col-sm-12">
+            <h4 class="card-title modal-heading">Applicant Vehicles Operated</h4>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        @if (Model.ApplicantVehiclesOperated.Count() > 0)
+        {
+            <table class="table table-bordered" style="width: 95%;">
+                <tr style="background-color:#0792bc; color:#fff;">
+                    <th>Denide License Permit</th>
+                    <th>Denied License Permit Explanation</th>
+                    <th>Suspend Revoke License Permit</th>
+                    <th>Suspend Revoke License Permit Explanation</th>
+                </tr>
+            @foreach (var item in Model.ApplicantVehiclesOperated)
+            {
+                <tr>
+                    <td>@item.AVO_DenideLicensePermit</td>
+                    <td>@item.AVO_DeniedLicensePermitExplanation</td>
+                    <td>@item.AVO_SuspendRevokeLicensePermit</td>
+                    <td>@item.AVO_SuspendRevokeLicensePermitExplanation</td>  
+                </tr>
+                
+            }
+            </table>
+        }
+    </div>
+     <div class="row">
+        <div class="col-sm-12">
+            <h4 class="card-title modal-heading">Applicant License Heald</h4>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        @if (Model.ApplicantLicenseHeald.Count() > 0)
+        {
+            <table class="table table-bordered" style="width: 95%;">
+                <tr style="background-color:#0792bc; color:#fff;">
+                    <th>State</th>
+                    <th>Licence Number</th>
+                    <th>License Type</th>
+                    <th>Issue Date</th>
+                    <th>Expiration Date</th>
+                </tr>
+            @foreach (var item in Model.ApplicantLicenseHeald)
+            {
+                 <tr>
+                    <td>@item.ALH_State</td>
+                    <td>@item.ALH_LicenceNumber</td>
+                    <td>@item.ALH_LicenseType</td>
+                    <td>@item.ALH_IssueDate</td>
+                    <td>@item.ALH_ExpirationDate</td>
+                </tr>
+            }
+           </table>
+        }
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <h4 class="card-title modal-heading">Applicant Schecdule Avaliblity</h4>
+            <hr />
+        </div>
+    </div>
+    <div class="row">
+        @if (Model.ApplicantSchecduleAvaliblity.Count() > 0)
+        {
+            <table class="table table-bordered" style="width: 95%;">
+                <tr style="background-color:#0792bc; color:#fff;">
+                    <th>Week Day</th>
+                    <th>Avaliable Start Time</th>
+                    <th>Avaliable End Time</th>
+                </tr>
+            @foreach (var item in Model.ApplicantSchecduleAvaliblity)
+            {
+                <tr>
+                    <td>@item.ASA_WeekDay</td>
+                    <td>@item.ASA_AvaliableStartTime</td>
+                    <td>@item.ASA_AvaliableEndTime</td>
+                </tr>
+                
+            }
+            </table>
+        }
+    </div>
+</div>
+
+@*<script>
+    $(document).ready(function () {
+        $("#FormTesting").click(function () {
+            debugger
+            var fileUpload = $("#fileDatas").get(0);
+            var files = fileUpload.files;
+            var fileData = new FormData(); 
+            for (var i = 0; i < files.length; i++) {
+                fileData.append(files[i].name, files[i]);
+            }
+            //var dataObject = $("#Testing").serialize();
+            @*var data = "@Model.ApplicantAddress";
+            var as = data.serializeArray();
+            var formdata = $("#Testing").serializeArray();
+            var data = [];
+            $(formdata).each(function (index, obj) {
+                data.push({ "CertificationName": "dasds", "Yr": "errq" });
+                //data[obj.name] = obj.value;
+            });
+           
+            var tt = JSON.stringify(data); //(dataObject)
+            $.ajax({
+                url: "http://localhost:57572//api/ServiceApi/EducationCertificateApplicantUpload?dataObject=" + dataObject,
+                type: "POST",
+                contentType: false, // Not to set any content header  
+                processData: false, // Not to process data  
+                data: fileData,
+                beforeSend: function () {
+                    new fn_showMaskloader('Please wait...');
+                },
+                success: function (result) {
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                },
+                complete: function () {
+                    fn_hideMaskloader();
+                }
+            });
+        });
+    });
+</script>*@

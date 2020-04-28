@@ -19,17 +19,12 @@
         width: 250px;
     }
 
-
-
-
-
     .google-visualization-orgchart-table {
         border: 0;
         text-align: center;
         margin-left: 320px;
     }
-</style>
-<style>
+
     .showme {
         display: none;
     }
@@ -37,26 +32,25 @@
     .showhim:hover .showme {
         display: inline;
     }
+
+    table.google-visualization-orgchart-table {
+        border-collapse: separate;
+    }
 </style>
 
 <script>
 
     function btnRequistion_click(id) {
-        debugger;
         $("#myModalForRequisitionAction").modal("show");
     }
 
     function btnJobs_click(id) {
-        debugger;
-
-
           OpenJobPostingForm(id);
     }
 
 </script>
 <script>
  $("#BackToEmployeeGrid").click(function () {
-        debugger
             var addNewUrl = "@Url.Action("ePeopleDashboard", "NewAdmin")";
             $('#RenderPageId').load(addNewUrl);
         });
@@ -154,9 +148,10 @@
 
 
 
-
+<script src="~/Scripts/NewAdminJS/UserTreeFunctionality.js"></script>
 <script src="~/GridListing/JsGridScript/ListEmployeeManagement.js" type="text/javascript"></script>
-
+@*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>*@
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -170,8 +165,6 @@
             $.ajax({
                 type: "POST",
                 url: "../EPeople/GetEmpChartData",
-
-
                 success: function (empData) {
                    var chartData = new google.visualization.DataTable();
                     chartData.addColumn('string', 'Name');
@@ -217,6 +210,7 @@
         }
     });
 </script>
+
 
 
 

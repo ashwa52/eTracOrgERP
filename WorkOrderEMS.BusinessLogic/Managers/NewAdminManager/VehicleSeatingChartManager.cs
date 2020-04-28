@@ -416,34 +416,34 @@ namespace WorkOrderEMS.BusinessLogic
                 {
                     if (Obj.AddChartModel.Id > 0)
                     {                        
-                        var modelRecruitee = new RecruiteeAPI();
-                        var dynamicJson = new Models.NewAdminModel.RecruiteeModels.Candidate.Add.Root();
-                        string url = "/c/40359/offers/";
-                        dynamicJson.offer = new Models.NewAdminModel.RecruiteeModels.Candidate.Add.Offer
-                        {
-                            department = Obj.AddChartModel.DepartmentName,
-                            description = Obj.AddChartModel.RolesAndResponsibility,
-                            kind = "job",
-                            title = Obj.AddChartModel.SeatingName,
-                            position = Convert.ToInt32(Obj.NumberOfPost),
-                            status = "published",
-                            postal_code = Obj.zipCode,
-                            requirements = Obj.AddChartModel.SeatingName,
-                            remote = false,
-                            city = Obj.City,
-                            country_code = "1"
-                        };
+                        //var modelRecruitee = new RecruiteeAPI();
+                        //var dynamicJson = new Models.NewAdminModel.RecruiteeModels.Candidate.Add.Root();
+                        //string url = "/c/40359/offers/";
+                        //dynamicJson.offer = new Models.NewAdminModel.RecruiteeModels.Candidate.Add.Offer
+                        //{
+                        //    department = Obj.AddChartModel.DepartmentName,
+                        //    description = Obj.AddChartModel.RolesAndResponsibility,
+                        //    kind = "job",
+                        //    title = Obj.AddChartModel.SeatingName,
+                        //    position = Convert.ToInt32(Obj.NumberOfPost),
+                        //    status = "published",
+                        //    postal_code = Obj.zipCode,
+                        //    requirements = Obj.AddChartModel.SeatingName,
+                        //    remote = false,
+                        //    city = Obj.City,
+                        //    country_code = "1"
+                        //};
                         #region Demo Code
                         //string tt = JsonConvert.SerializeObject()
-                        string message = JsonConvert.SerializeObject(dynamicJson);
-                        var getString = modelRecruitee.POSTreq(message, url);
-                        var getSavedJobRecruitee = JsonConvert.DeserializeObject<Models.NewAdminModel.RootObject>(getString);
-                        if (getSavedJobRecruitee != null)
-                        {
-                            Obj.RecruiteeId = getSavedJobRecruitee.offer.id;
+                        //string message = JsonConvert.SerializeObject(dynamicJson);
+                        //var getString = modelRecruitee.POSTreq(message, url);
+                        //var getSavedJobRecruitee = JsonConvert.DeserializeObject<Models.NewAdminModel.RootObject>(getString);
+                        //if (getSavedJobRecruitee != null)
+                        //{
+                            //Obj.RecruiteeId = getSavedJobRecruitee.offer.id;
                             Obj.AddChartModel.Action = "I";
                             var saved = _VSCRepository.SaveJob(Obj);
-                        }
+                       // }
                         #endregion Demo Code
                     }
                     else

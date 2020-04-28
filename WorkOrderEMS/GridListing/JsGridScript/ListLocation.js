@@ -5,12 +5,12 @@ var clients;
     'use strict'
 
     //basic jsgrid table
-    $.ajax({
-        type: 'GET',
-        url: '/NewAdmin/GetListLocation',
-        datatype: 'json',
-        contentType: "application/json",
-        success: function (data) {
+    //$.ajax({
+    //    type: 'GET',
+    //    url: '/NewAdmin/GetListLocation',
+    //    datatype: 'json',
+    //    contentType: "application/json",
+    //    success: function (data) {
             //clients = data;
             //clients = data.rows;
             var act;
@@ -18,17 +18,33 @@ var clients;
                 width: "100%",
                 height: "400px",
                 inserting: true,
-                editing: true,
+                editing: true,//
                 sorting: true,
                 paging: true,
                 rownum: 10,
                 deleteConfirm: "Do you really want to delete client?",
                 loadMessage: "Please, wait...",
-                data: data,
+                controller: {
+                    loadData: function (filter) {
+                        return $.ajax({
+                            type: "GET",
+                            url: base_url + '/NewAdmin/GetListLocation',
+                            datatype: 'json',
+                            contentType: "application/json",
+                        });
+                    }
+                },
                 onRefreshed: function (args) {
                     $(".jsgrid-insert-row").hide();
+                    $(".jsgrid-filter-row").hide()
                     $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
+
                 },
+                //data: data,
+                //onRefreshed: function (args) {
+                //    $(".jsgrid-insert-row").hide();
+                //    $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
+                //},
                 fields: [
                     //{ name: "Id", visible: false },
                     { name: "Address", css: "text-center", validate: "required" },//visible: true
@@ -169,11 +185,11 @@ var clients;
                     //$("#label").text(text.join(", "))
                 }
             });
-        },
-        error: function (err, e, er) {
-        }
+    //    },
+    //    error: function (err, e, er) {
+    //    }
 
-    });
+    //});
 
 })(jQuery);
 $(document).ready(function () {

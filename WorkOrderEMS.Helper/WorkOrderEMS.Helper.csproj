@@ -75,6 +75,7 @@
   <ItemGroup>
     <Compile Include="CommonHelper\ApplicantAPI.cs" />
     <Compile Include="CommonHelper\CommonHelper.cs" />
+    <Compile Include="CommonHelper\CommonHTTPClient.cs" />
     <Compile Include="CommonHelper\CommonMessages.cs" />
     <Compile Include="CommonHelper\Constants.cs" />
     <Compile Include="CommonHelper\DARMessages.cs" />

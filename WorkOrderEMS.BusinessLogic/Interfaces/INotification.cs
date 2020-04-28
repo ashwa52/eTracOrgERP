@@ -11,5 +11,9 @@ namespace WorkOrderEMS.BusinessLogic
     public interface INotification
     {
         List<EmailHelper> GetEmaintanaceUnseenList(NotificationDetailModel objDetails);
+        List<NotificationDetailModel> GetNotification(long userId, string Username);
+        bool ReadNotificationById(long NotificationId);
+        ApplicantDetails GetApplicantDetails(long ApplicantId);
+        bool SaveNotification(NotificationDetailModel obj);
     }
 }

@@ -20,5 +20,6 @@ namespace WorkOrderEMS.Models
         public long? VSTId { get; set; }
         public string UserId { get; set; }
         public List<string> JobDescList { get; set; }
+        public string IsOrientation { get; set; }
     }
 }

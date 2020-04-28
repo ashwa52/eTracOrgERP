@@ -4,6 +4,7 @@ using System.Linq;
 using WorkOrderEMS.Data;
 using WorkOrderEMS.Data.DataRepository;
 using WorkOrderEMS.Data.EntityModel;
+using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
 
 namespace WorkOrderEMS.BusinessLogic.Managers
@@ -104,8 +105,25 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             return result;
 
         }
-    }
 
+        
+
+        /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created Date : 18-March-2020
+        /// Created For : To save applicant status
+        /// </summary>
+        /// <param name="ApplicantId"></param>
+        /// <param name="Status"></param>
+        /// <param name="IsActive"></param>
+        /// <returns></returns>
+        public int SaveApplicantStatus(long ApplicantId, string Status, string IsActive)
+        {
+            workorderEMSEntities _db = new workorderEMSEntities();
+            return _db.spSetApplicantStatus(ApplicantId, Status, IsActive);
+        }
+    }
+   
 
     public class SetGlobalPath
     {

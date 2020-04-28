@@ -15,7 +15,7 @@ namespace WorkOrderEMS.Models
         public long? POID { get; set; }
         public long? MiscellaneousID { get; set; }
         public long? BillID { get; set; }
-        public bool IsRead { get; set; }
+        public bool? IsRead { get; set; }
         public long ReadBy { get; set; }
         public DateTime ReadDate { get; set; }
         public long CreatedBy { get; set; }
@@ -30,5 +30,21 @@ namespace WorkOrderEMS.Models
         public bool? IsDamage { get; set; }
         public bool? IsCheckOut { get; set; }
         public long NotificationId { get; set; }
+        public string SubModule { get; set; }
+        public string SubModuleId1 { get; set; }
+        public long? SubModuleId { get; set; }
+        public string Priority { get; set; }
+        public bool? AssignToIsWorkable { get; set; }
+        public bool? CreatedByIsWorkable { get; set; }
+        public string CreatedByUser { get; set; }
+        public string AssignToUser { get; set; }
+        public string Photo { get; set; }
+        public string OfferAcceptRejectCounterStatus { get; set; }
+        public string ApplicantStatus { get; set; }
+        public string Details { get; set; }
+        public string Message { get; set; }
+        public long ApplicantId { get; set; }
+        public string Module { get; set; }
+        public string EmployeeStatus { get; set; }
     }
 }

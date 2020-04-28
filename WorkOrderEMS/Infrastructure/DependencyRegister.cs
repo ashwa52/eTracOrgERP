@@ -104,6 +104,7 @@ namespace WorkOrderEMS.Infrastructure
                 For<INewAdminRepository>().Use<NewAdminDataRepository>();
                 For<IDebitMemo>().Use<DebitMemoManager>();
                 For<IApplicantManager>().Use<ApplicantManager>();
+                For<INotification>().Use<NotificationManager>();
             }
         }
     }

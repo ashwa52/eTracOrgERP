@@ -3837,17 +3837,17 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 var myOpenings = (from x in Context.spGetMyOpening(PostingId)
                                   select new MyOpeningModel
                                   {
-                                      Email = x.API_Email,
-                                      FirstName = x.API_FirstName,
-                                      LastName = x.API_LastName,
-                                      PhoneNumber = x.API_PhoneNumber,
-                                      MiddleName = x.API_MiddleName,
-                                      Status = x.API_ApplicantStatus,
-                                      Image = x.API_Photo,
+                                      Email = x.ALA_eMailId,
+                                      FirstName = x.ApplicantName,
+                                      //LastName = x.API_LastName,
+                                      PhoneNumber = x.ACI_PhoneNo,
+                                      //MiddleName = x.API_MiddleName,
+                                      Status = x.APT_Status,
+                                      Image = x.ALA_Photo,
                                       JobTitle = x.JBT_JobTitle,
-                                      ApplicantId = x.API_ApplicantId,
-                                      DesireSalary = x.API_DesireSalary,
-                                      IsActive = x.API_IsActive
+                                      ApplicantId = x.APT_ApplicantId,
+                                      DesireSalary = x.API_DesireSalaryWages,
+                                      IsActive = "Y"
                                   }
                                 ).ToList();
                 return myOpenings;
@@ -3867,16 +3867,16 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     var myOpenings = (from x in Context.spGetApplicantInfoForMyInterview(empid)
                                       select new MyOpeningModel
                                       {
-                                          Email = x.API_Email,
-                                          FirstName = x.API_FirstName,
-                                          LastName = x.API_LastName,
-                                          PhoneNumber = x.API_PhoneNumber,
-                                          MiddleName = x.API_MiddleName,
-                                          Status = x.API_ApplicantStatus,
-                                          Image = x.API_Photo,
+                                          Email = x.ALA_eMailId,
+                                          FirstName = x.ApplicantName,
+                                         // LastName = x.API_LastName,
+                                          PhoneNumber = x.ACI_PhoneNo,
+                                          //MiddleName = x.API_MiddleName,
+                                          Status = x.APT_Status,
+                                          Image = x.ALA_Photo,
                                           JobTitle = x.JBT_JobTitle,
-                                          ApplicantId = x.API_ApplicantId,
-                                          JobTitleId = x.API_JobTitleID == null ? 0 : x.API_JobTitleID
+                                          ApplicantId = x.APT_ApplicantId,
+                                          //JobTitleId = x.id == null ? 0 : x.API_JobTitleID
                                       }
                                     ).ToList();
                     return myOpenings;
@@ -4228,6 +4228,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <returns></returns>
         public AnswerModel GetInterviewAnswerByApplicantId(int Applicant)
         {
+            var common_b = new Common_B();
             try
             {
                 var childeQuestioncontext = new AnswerModel();
@@ -4235,11 +4236,13 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 var Child1 = new List<ListAnswerModel>();
                 using (workorderEMSEntities context = new workorderEMSEntities())
                 {
-                    var getApplicantDetails = context.ApplicantInfoes.Where(x => x.API_ApplicantId == Applicant).FirstOrDefault();
+                    //var getApplicantDetails = context.ApplicantInfoes.Where(x => x.API_ApplicantId == Applicant).FirstOrDefault();
+                    var getApplicantDetails = context.ApplicantLoginAccesses.Join(context.Applicants, q => q.ALA_UserId, u => u.APT_ALA_UserId, (q, u) => new { q, u }).
+                        Where(x => x.u.APT_ApplicantId == Applicant).FirstOrDefault();
                     if (getApplicantDetails != null)
                     {
-                        childeQuestioncontext.ApplicantImage = getApplicantDetails.API_Photo;
-                        childeQuestioncontext.ApplicantName = getApplicantDetails.API_FirstName + " " + getApplicantDetails.API_LastName;
+                        childeQuestioncontext.ApplicantImage = getApplicantDetails.q.ALA_Photo;
+                        childeQuestioncontext.ApplicantName = getApplicantDetails.q.ALA_FirstName + " " + getApplicantDetails.q.ALA_LastName;
                         //will add Exempt non exempt dynamically
                         var masterQuestion = context.InterviewQuestionMasters.Where(x => x.IQM_Exempt == "Y").ToList();
 
@@ -4255,20 +4258,14 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                 IQM_Id = a.u.INA_IQC_Id
                             }).ToList();
                             Child.IQM_Id = item.IQM_Id;
+
                             Child.IQM_Question = item.IQM_Question;
                             Child.ListAnswerMainModel = data;
                             Child1.Add(Child);
-
-                            //childeQuestioncontext.ListAnswerModel = context.InterviewAnswers.Where(x => x.INA_API_ApplicantId == Applicant && x.INA_IsActive == "Y").
-                            //Select(x => new ListAnswerModel()
-                            //{
-                            //    IQM_Question = context.InterviewQuestionChilds.Where(a => a.IQC_Id == x.INA_IQC_Id).FirstOrDefault().IQC_Question,
-                            //    IQM_Answer = x.INA_Answer,
-                            //    IQM_Comment = x.INA_Comments,
-                            //    IQM_Id = x.INA_IQC_Id
-                            //}).ToList();
                         }
                         childeQuestioncontext.ListAnswerModel = Child1;
+                        childeQuestioncontext.ApplicantId = Applicant;
+                        //common_b.SaveApplicantStatus(Applicant,ApplicantStatus)
                     }
 
                     return childeQuestioncontext;
@@ -4397,13 +4394,30 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
 
         }
-        public bool saveSelfAssessment(List<GWCQUestionModel> data, string action)
+        public bool saveSelfAssessment(List<GWCQUestionModel> data, string action, string UserName)
         {
-
+            var EmployeeId = string.Empty;
+            var ManagerId = string.Empty;
             ObjUserRepository = new UserRepository();
             try
             {
-
+                if(action == "S")
+                {
+                    //EmployeeId = data.Count() > 0 ? data[0].EmployeeId : null;
+                    ManagerId = data.Count() > 0 ? data[0].EEL_EMP_EmployeeIdManager :null;
+                    var _notification = new NotificationManager();
+                    var detailsNotification = new NotificationDetailModel();
+                    detailsNotification.Message = DarMessage.EvaluationStartManager(data.Count() > 0 ? data[0].EmployeeName : null, data.Count() > 0 ? data[0].AssessmentType : null);
+                    detailsNotification.Module = ModuleSubModule.Performance;
+                    detailsNotification.SubModule = ModuleSubModule.EvaluationStart;
+                    detailsNotification.SubModuleId1 = ManagerId;
+                    detailsNotification.Priority = Priority.Medium;
+                    detailsNotification.CreatedByUser = UserName;
+                    detailsNotification.AssignToUser = ManagerId;
+                    detailsNotification.AssignToIsWorkable = true;
+                    detailsNotification.CreatedByIsWorkable = false;
+                    var saveEMP = _notification.SaveNotification(detailsNotification);
+                }
                 return ObjUserRepository.saveSelfAssessment(data, action);
             }
             catch (Exception)
@@ -4411,13 +4425,33 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 throw;
             }
         }
-        public bool saveEvaluation(List<GWCQUestionModel> data, string action)
+        public bool saveEvaluation(List<GWCQUestionModel> data, string action, string UserName)
         {
-
             ObjUserRepository = new UserRepository();
+            var _db = new workorderEMSEntities();
+            var EmployeeId = string.Empty;
+            var ManagerId = string.Empty;
             try
             {
-
+                if (action == "S")
+                {
+                    EmployeeId = data.Count() > 0 ? data[0].EmployeeId : null;
+                    ManagerId = data.Count() > 0 ? data[0].EEL_EMP_EmployeeIdManager : null;
+                    var getEmployeeDetails = _db.spGetOrgnizationCommonview(EmployeeId).FirstOrDefault();
+                    var _notification = new NotificationManager();
+                    var detailsNotification = new NotificationDetailModel();
+                    detailsNotification.Message = DarMessage.EvaluationCompleteByManager(data.Count() > 0 ? data[0].EmployeeName : null,
+                                                              getEmployeeDetails.EmployeeName, data.Count() > 0 ? data[0].AssessmentType : null);
+                    detailsNotification.Module = ModuleSubModule.Performance;
+                    detailsNotification.SubModule = ModuleSubModule.EvaluationComplete;
+                    detailsNotification.SubModuleId1 = ManagerId;
+                    detailsNotification.Priority = Priority.Medium;
+                    detailsNotification.CreatedByUser = UserName;
+                    detailsNotification.AssignToUser = EmployeeId;
+                    detailsNotification.AssignToIsWorkable = true;
+                    detailsNotification.CreatedByIsWorkable = false;
+                    var saveEMP = _notification.SaveNotification(detailsNotification);
+                }
                 return ObjUserRepository.saveEvaluation(data, action);
             }
             catch (Exception)
@@ -4582,7 +4616,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         //        throw ex;
         //    }
         //}
-        public List<spGetJobPosting_ForCompanyOpening_Result> GetJobPostingForCompanyOpening(string HiringManagerId)
+        public List<spGetJobPosting_ForCompanyOpening_Result1> GetJobPostingForCompanyOpening(string HiringManagerId)
         {
             try
             {
@@ -4617,14 +4651,14 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 throw ex;
             }
         }
-        public List<EventModel> GetMyEvents(long  UserId, string start, string end)
+        public List<EventModel> GetMyEvents(string  UserName, string start, string end)
         {
 
             PerformanceRepository repo = new PerformanceRepository();
             List<EventModel> list = new List<EventModel>();
             try
             {
-                list= repo.GetMyEvents(UserId, start, end);
+                list= repo.GetMyEvents(UserName, start, end);
                var outlooklist= GetOutlookMeetingDetails(start, end);
                 list.AddRange(outlooklist);
             }
@@ -4635,7 +4669,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             return list;
 
         }
-        public string CreateNewEvent(string Title, string NewEventDate, string NewEventTime, string NewEventDuration, string JobId, string ApplicantName, string ApplicantEmail, long ManagerId, string selectedManagers)
+        public string CreateNewEvent(string Title, string NewEventDate, string NewEventTime, string NewEventDuration, string JobId, string ApplicantName, string ApplicantEmail, string ManagerId, string selectedManagers)
         {
             PerformanceRepository repo = new PerformanceRepository();
             EmailHelper objEmailHelper = new EmailHelper();
@@ -4669,6 +4703,18 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
             return message;
         }
+        public bool UpdateInterviewPanel(string selectedManagers, string Manager, string JobId, string JobTitle)
+        {
+            PerformanceRepository repo = new PerformanceRepository();
+            try
+            {
+                return repo.UpdateInterviewPanel(selectedManagers, Manager, JobId,JobTitle);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         public bool UpdateEvent(int id, string NewEventStart, string NewEventEnd)
         {
             PerformanceRepository repo = new PerformanceRepository();
@@ -4682,12 +4728,12 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
         }
 
-        public List<EventModel> GetBookedSlots(long userid)
+        public List<EventModel> GetBookedSlots(string UserName)
         {
             PerformanceRepository repo = new PerformanceRepository();
             try
             {
-                return repo.GetBookedSlots(userid);
+                return repo.GetBookedSlots(UserName);
             }
             catch (Exception)
             {

@@ -103,7 +103,7 @@ $('#ActiveCostCode').live("click", function (event) {
             new fn_showmaskloader('please wait...');
         },
         success: function (data) {
-            debugger
+            
             jQuery("#tbl_SubCostCodeDetails").jqGrid('setGridParam', { url: $_HostPrefix + 'CostCode/GetListOfSubCostCode?id=' + activeMasterId, type: "GET", page: 1 }).trigger("reloadGrid");
             $('#tbl_SubCostCodeDetails').trigger('reloadGrid');
             GridReloadData(activeMasterId);
@@ -124,7 +124,7 @@ $('#ActiveCostCode').live("click", function (event) {
 
 function GridReloadData(rowid)
 {
-    debugger
+    
     $.ajax({
         //type: "post",
         url: $_HostPrefix + 'CostCode/GetListOfSubCostCode' + '?id=' + rowid,

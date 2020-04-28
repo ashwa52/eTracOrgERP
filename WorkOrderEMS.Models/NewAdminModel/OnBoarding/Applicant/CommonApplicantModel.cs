@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -24,6 +25,7 @@ namespace WorkOrderEMS.Models
         public List<ApplicantVehiclesOperated> ApplicantVehiclesOperated { get; set; }
         public List<ApplicantLicenseHeald> ApplicantLicenseHeald { get; set; }
         public List<ApplicantSchecduleAvaliblity> ApplicantSchecduleAvaliblity { get; set; }
+        public AcadmicCertification AcadmicCertification { get; set; }
         public Desclaimer Desclaimer { get; set; }
 
         public CommonApplicantModel() {
@@ -78,17 +80,29 @@ namespace WorkOrderEMS.Models
         public long API_Id { get; set; }        
         public long? API_APT_ApplicantId { get; set; }
         [Required]
+        [DisplayName("First Name")]
         public string API_FirstName { get; set; }
+        //public string FirstName { get; set; }
         [Required]
+        [DisplayName("Middle Name")]
         public string API_MiddleName { get; set; }
+        //public string MiddleName { get; set; }
         [Required]
+        [DisplayName("Last Name")]
         public string API_LastName { get; set; }
+        //public string LastName { get; set; }
+        //public string Resume { get; set; }
         public string API_Resume { get; set; }
         [Required]
+        [DisplayName("SSN")]
+        //public string SSN { get; set; }
         public string API_SSN { get; set; }
         [Required]
+        [DisplayName("DL Number")]
+        //public string DL_Number { get; set; }
         public string API_DLNumber { get; set; }    
         [Required]
+        //public decimal? DesireSalary { get; set; }
         public decimal? API_DesireSalaryWages { get; set; }
         public string API_IsActive { get; set; }
         public string API_Title { get; set; }

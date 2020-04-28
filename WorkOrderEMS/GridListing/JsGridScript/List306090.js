@@ -367,11 +367,9 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                     var $iconMeeting = $("<span>").append('<i class="fa fa-clock-o fa-2x " style="color:white;margin-left: 6px;margin-top: 4px;" ></i>');//.attr({ class: "fa fa-file-text fa-2x" }).attr({ style: "color:white;background-color:#32ACDA;margin-left:20px;border-radius:35px;width:35px;height:35px" });
                     var $iconPiP = $("<span>").append('<i class="fa fa-user-circle-o fa-2x " style="color:white;margin-left: 6px;margin-top: 4px;" ></i>');//.attr({ class: "fa fa-file-text fa-2x" }).attr({ style: "color:white;background-color:#32ACDA;margin-left:20px;border-radius:35px;width:35px;height:35px" });
                     var $iconMeetingComplete = $("<span>").append('<i class="fa fa-clock-o fa-2x " style="color:green;margin-left: 6px;margin-top: 4px;" ></i>');//.attr({ class: "fa fa-file-text fa-2x" }).attr({ style: "color:white;background-color:#32ACDA;margin-left:20px;border-radius:35px;width:35px;height:35px" });
-
                     var $customUserViewButton = $("<span style='background: #36CA7E; width: 35px; height: 35px;border-radius: 35px;margin-left:15px;'>")
                         .attr({ title: "Evaluation" })
                         .attr({ id: "btn-profile-" + item.id }).click(function (e) {
-
                             $.ajax({
                                 type: "POST",
                                 data: { 'Id': item.EMP_EmployeeID, 'Assesment': item.AssessmentType, 'Name': item.EmployeeName, 'Image': item.EMP_Photo, 'JobTitle': item.JBT_JobTitle, 'FinYear': item.FinYear, 'FinQuarter': item.Expectation, 'Department': item.DepartmentName, 'LocationName': item.LocationName },

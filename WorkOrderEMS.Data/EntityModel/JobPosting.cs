@@ -15,7 +15,7 @@ namespace WorkOrderEMS.Data.EntityModel
     public partial class JobPosting
     {
         public long JPS_JobPostingId { get; set; }
-        public long JPS_JobPostingIdRecruitee { get; set; }
+        public Nullable<long> JPS_JobPostingIdRecruitee { get; set; }
         public long JPS_JobTitleID { get; set; }
         public string JPS_HiringManagerID { get; set; }
         public string JPS_JobTitle { get; set; }
@@ -25,5 +25,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<System.DateTime> JPS_Date { get; set; }
         public string JPS_IsActive { get; set; }
         public Nullable<long> JPS_LocationId { get; set; }
+        public string JPS_DrivingType { get; set; }
     }
 }

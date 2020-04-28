@@ -6,6 +6,7 @@
     string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
     WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
     string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "", CurrentUser = "";
+    bool isScheduled = Convert.ToBoolean(Session["IsInterviewDone"]);
     long loginUserType = 0;
     long locationId = 0;
     long UserId = 0;
@@ -384,6 +385,8 @@
                                 <div class="tab-content">
                                     <div class="tab-pane fade show active" id="home1" role="tabpanel">
                                         <div class="pt-4">
+                                        
+                                            <input type="hidden" value="false" id="isScheduled" />
                                             <div id="ListOnBoarding"></div>
                                         </div>
                                     </div>
@@ -418,11 +421,11 @@
                                                             </li>
                                                         </ul>*@
                                                     <hr />
-                                                    <label>Select additional interviewers</label>
-                                                    <div id="inpManageName">
-                                                        <span class="autocomplete-select"></span>
-                                                    </div>
-                                                    <hr />
+                                                    @*<label>Select additional interviewers</label>
+                                                        <div id="inpManageName">
+                                                            <span class="autocomplete-select"></span>
+                                                        </div>
+                                                        <hr />*@
                                                     <h2>Booked Slots</h2>
                                                     <div id="BookedSlots">
                                                     </div>
@@ -453,11 +456,11 @@
                                                             </li>
                                                         </ul>*@
                                                     <hr />
-                                                    <label>Select additional interviewers</label>
-                                                    <div id="inpManageName">
-                                                        <span class="autocomplete-select"></span>
-                                                    </div>
-                                                    <hr />
+                                                    @*<label>Select additional interviewers</label>
+                                                        <div id="inpManageName">
+                                                            <span class="autocomplete-select"></span>
+                                                        </div>
+                                                        <hr />*@
                                                     <h2>Booked Slots</h2>
                                                     <div id="BookedSlots">
                                                     </div>
@@ -469,10 +472,11 @@
                                                 <div id="companyOpening"></div>
                                             </div>
                                         </div>
-                                        <div class="tab-pane fade" id="myinterview">
-                                            <div class="pt-4">
-                                                <div id="myinterviews"></div>
-                                            </div>
+
+                                    </div>
+                                    <div class="tab-pane fade" id="myinterview">
+                                        <div class="pt-4">
+                                            <div id="myinterviews"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -488,7 +492,7 @@
             </div>*@
     </div>
 </div>
-
+@Html.Partial("~/Views/NewAdmin/ePeople/_HiringOnBoarding.cshtml")
 <div class="modal fade  bd-example-modal-lg" @*data-backdrop="false" *@ id="ModalProfilePreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg">
         <div class="modal-content">
@@ -554,16 +558,91 @@
         </form>
     </div>
 </div>
+<div class="modal fade  bd-example-modal-lg" id="ModalForOfferLetter" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content" style="width:1582px;margin: -30px 0px -47px -382px;">
+            <div class="modal-body" style="margin-left: -157px;">
+                <div id="viewOffer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade  bd-example-modal-lg" @*data-backdrop="false"*@ id="ModalForAssetsAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content" style="width:1000px;">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Assets</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="viewAssetsData">
+                </div>
+            </div>
+            <div class="modal-footer" style="background: white;">
+                <button type="button" class="btn btn-success" id="SaveAssetsApplicant" style="border-radius:100px;">Add Assets</button>
+                <button type="button" class="btn btn-primary" id="CloseAssest" style="border-radius:100px;width:98px;" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal to view applicant all details-->
+<div class="modal bs-example-modal-lg fade preview" id="myModalForGetApplicantDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content" style="width: 120%;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Applicant Details</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="ApplicantDetailsDiv"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary bluebutton text-right" style="border-radius:25px;width:90px;" onclick="return AppproveRejectApplicant(true);" id="btnApproveData">Approve</button>
+                <button class="btn btn-danger" onclick="return AppproveRejectApplicant(false);" style="border-radius:25px;width:90px;" id="btnRejectPO">Reject</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal bs-example-modal-lg fade preview" id="myModalUpdatePanel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content" style="width: 120%;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Update Interview Panel</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <hr />
+                <label>Select additional interviewers</label>
+                <div id="inpManageName">
+                    <span class="autocomplete-select"></span>
+                </div>
+                <hr />
+                <span id="DisplayMessage" style="color:red; display:none">Interview panel has been saved successfully </span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary bluebutton text-right" style="border-radius:25px;width:90px;" onclick="return UpdateInterviewPanel();" id="btnApproveData">Update</button>
+                <button class="btn btn-danger" onclick="" style="border-radius:25px;width:90px;" id="btnRejectPO">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
 <script src="~/GridListing/JsGridScript/ListOnBoarding.js"></script>
 <script src="~/GridListing/JsGridScript/ListMyOpening.js"></script>
 <script src="~/GridListing/JsGridScript/ListEmployeeManagement.js"></script>
-<script src="~/Content/Dashboard/plugins/fullcalendar/mySchedule.js"></script>
 <script src="~/Scripts/moment.min.js"></script>
 <script src="~/Content/Dashboard/plugins/fullcalendar/fullcalendar.min.js"></script>
 <script src="~/Scripts/NewAdminJS/AssetsAndOffer.js"></script>
 <link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />
+<script src="~/Content/Dashboard/plugins/fullcalendar/mySchedule.js"></script>
 <script>
 
     $("#HiringOnBoard").click(function () {
