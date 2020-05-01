@@ -79,6 +79,7 @@ namespace WorkOrderEMS.Models
         public char API_Action { get; set; }
         public long API_Id { get; set; }        
         public long? API_APT_ApplicantId { get; set; }
+        public string API_Title { get; set; }
         [Required]
         [DisplayName("First Name")]
         public string API_FirstName { get; set; }
@@ -105,7 +106,7 @@ namespace WorkOrderEMS.Models
         //public decimal? DesireSalary { get; set; }
         public decimal? API_DesireSalaryWages { get; set; }
         public string API_IsActive { get; set; }
-        public string API_Title { get; set; }
+        
     }
 
     public class Desclaimer

@@ -80,8 +80,8 @@ function myOpenings(PostingId) {
                      
                      
                      var $iconViewApplicant = $("<i>").attr({ class: "fa fa-list list-icon" }).attr({ style: "color:black;font-size:22px;margin-left:8px;" });
-                     
-                     if (item.Status == "IntervieweSchedule" || item.Status == "AssessmentPass" || item.Status == "Shortlisted") {
+
+                     if (item.Status == "Screened" || item.Status == "IntervieweSchedule" || item.Status == "AssessmentPass" || item.Status == "Shortlisted") {
                          $iconDiamond = $("<i>").attr({ class: "fa fa-diamond whiteGr" }).attr({ style: "color:green;font-size:22px;margin-left:8px;" });
                      }
                      if (item.Status == "IntervieweSchedule") {

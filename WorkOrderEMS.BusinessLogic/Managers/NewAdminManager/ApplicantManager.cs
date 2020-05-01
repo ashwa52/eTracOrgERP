@@ -716,9 +716,19 @@ namespace WorkOrderEMS.BusinessLogic
                     UT_ApplicantLicenseHeald.Value = ApplicantLicenseHealdTable;
                     UT_ApplicantLicenseHeald.TypeName = "[dbo].[UT_ApplicantLicenseHeald]";
 
-                   // info for ApplicantLicenseHealdTable
+                    // info for ApplicantLicenseHealdTable
                     UT_ApplicantSchecduleAvaliblity.Value = ApplicantSchecduleAvaliblityTable;
                     UT_ApplicantSchecduleAvaliblity.TypeName = "[dbo].[UT_ApplicantSchecduleAvaliblity]";
+                
+                    //context.Database.ExecuteSqlCommand("exec [dbo].[spTestUT] @Action, @UT_ApplicantPersonalInfo",
+                    //    Action, UT_ApplicantPersonalInfo
+                        //,
+                        //UT_ApplicantAddress, UT_ApplicantContactInfo, UT_ApplicantAdditionalInfo,
+                        //UT_AplicantAcadmicDetails, UT_ApplicantBackgroundHistory,
+                        //UT_ApplicantPositionTitle, UT_ApplicantAccidentRecord,
+                        //UT_ApplicantTrafficConvictions, UT_ApplicantVehiclesOperated,
+                        //UT_ApplicantLicenseHeald, UT_ApplicantSchecduleAvaliblity
+                        //);
 
                     context.Database.ExecuteSqlCommand("exec [dbo].[spSetApplicantAllDetails] @Action, @UT_ApplicantPersonalInfo,@UT_ApplicantAddress,@UT_ApplicantContactInfo, @UT_ApplicantAdditionalInfo, @UT_AplicantAcadmicDetails, @UT_ApplicantBackgroundHistory, @UT_ApplicantPositionTitle, @UT_ApplicantAccidentRecord, @UT_ApplicantTrafficConvictions, @UT_ApplicantVehiclesOperated, @UT_ApplicantLicenseHeald, @UT_ApplicantSchecduleAvaliblity",
                         Action, UT_ApplicantPersonalInfo,
@@ -729,6 +739,7 @@ namespace WorkOrderEMS.BusinessLogic
                         UT_ApplicantLicenseHeald, UT_ApplicantSchecduleAvaliblity
                         );
                     Flag = true;
+
                 }
             }
             catch (Exception ex)
