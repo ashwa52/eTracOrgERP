@@ -11,7 +11,8 @@ namespace WorkOrderEMS.BusinessLogic
 	public interface IGuestUser
 	{
 		EmployeeVIewModel GetEmployee(long UserId);
-		bool UpdateApplicantInfo(EmployeeVIewModel onboardingDetailRequestModel);
+        EmployeeVIewModel GetEmployeeDetails(long userId);
+        bool UpdateApplicantInfo(EmployeeVIewModel onboardingDetailRequestModel);
 		DirectDepositeFormModel GetDirectDepositeDataByUserId(long UserId);
 		DirectDepositeFormModel GetDirectDepositeDataByEmployeeId(string EmployeeId);
 		bool SetDirectDepositeFormData(DirectDepositeFormModel model, long UserId);

@@ -774,6 +774,7 @@ namespace WorkOrderEMS.BusinessLogic
                 {
                     var update = _db.spSetApplicantContactInfo("I", null, model.ContactModelData.ACI_APT_ApplicantId, model.ContactModelData.ContactNo, model.ContactModelData.EmailId, "Mobile", "C");
                 }
+                isSaved = true;
             }
             catch (Exception ex)
             {
@@ -1189,32 +1190,37 @@ namespace WorkOrderEMS.BusinessLogic
                 if (UserId > 0 && ApplicantId > 0 && model != null && model.I9F_Id == null)
                 {
                     #region I9 API
-                    _modelAPI.alien_number = model.I9F_Sec1_AlienRegistrationNum_USCIS;
+                    _modelAPI.first_name = model.I9F_Sec1_FirstName;
+                    _modelAPI.middle_initial = model.I9F_Sec1_MiddleInitiaL;
+                    _modelAPI.last_name = model.I9F_Sec1_LastName;
+                    _modelAPI.phone_number = null;
+                    _modelAPI.alien_number = null;// model.I9F_Sec1_AlienRegistrationNum_USCIS;
                     _modelAPI.case_creator_email_address = getManagerDetails.EMP_Email;
                     _modelAPI.case_creator_name = getDetails.HiringManagerName;
-                    _modelAPI.case_creator_phone_number = getManagerDetails.EMP_Phone.ToString();
+                    _modelAPI.case_creator_phone_number = "1231231234";//getManagerDetails.EMP_Phone.ToString();
                     _modelAPI.citizenship_status_code = "US_CITIZEN";//model.I9F_Sec2_CitizenshipImmigrationStatus;
                     _modelAPI.client_company_id = null;
                     _modelAPI.client_software_version = "30";
                     _modelAPI.date_of_birth = model.I9F_Sec1_dateOfBirth == null || model.I9F_Sec1_dateOfBirth.ToString() == "" ? DateTime.Now.ToString("yyyy-MM-dd") :  model.I9F_Sec1_dateOfBirth.Value.ToString("yyyy-MM-dd");
                     _modelAPI.date_of_hire = model.I9F_Sec3_B_DateOfReHire == null || model.I9F_Sec3_B_DateOfReHire.ToString() == "" ? DateTime.Now.ToString("yyyy-MM-dd"): model.I9F_Sec3_B_DateOfReHire.Value.ToString("yyyy-MM-dd");
                     _modelAPI.document_a_type_code = "US_PASSPORT";
-                    _modelAPI.document_bc_number =  model.I9F_Sec2_ListA_DocumentNumber1;
-                    _modelAPI.document_b_type_code = model.I9F_Sec2_ListB_DocumentTitle;
-                    _modelAPI.document_c_type_code = model.I9F_Sec2_ListC_DocumentTitle;
+                    _modelAPI.document_bc_number = null;// model.I9F_Sec2_ListA_DocumentNumber1;
+                    _modelAPI.document_b_type_code = null;// model.I9F_Sec2_ListB_DocumentTitle;
+                    _modelAPI.document_c_type_code = null;// model.I9F_Sec2_ListC_DocumentTitle;
                     _modelAPI.document_sub_type_code = null;
-                    _modelAPI.duplicate_continue_reason = null;
-                    _modelAPI.employee_email_address = model.I9F_Sec1_Email;
+                    _modelAPI.duplicate_continue_reason = "Rswag test";
+                    _modelAPI.employee_email_address = null;//model.I9F_Sec1_Email;
                     _modelAPI.employer_case_id = null;
                     _modelAPI.expiration_date = model.I9F_Sec3_C_ExpirationDate == null || model.I9F_Sec3_C_ExpirationDate.ToString() == "" ? DateTime.Now.ToString("yyyy-MM-dd") : model.I9F_Sec3_C_ExpirationDate.ToString("yyyy-MM-dd");
-                    _modelAPI.us_passport_number = model.I9F_Sec1_ForeignPassportNumber;// model.I9F_Sec1_ForeignPassportNumber;
-                    _modelAPI.us_state_code = model.I9F_Sec1_State;
+                    _modelAPI.us_passport_number = "123456789";//model.I9F_Sec1_ForeignPassportNumber;// model.I9F_Sec1_ForeignPassportNumber;
+                    _modelAPI.us_state_code = null;//model.I9F_Sec1_State;
                     _modelAPI.visa_number = null;
                     _modelAPI.no_expiration_date = false;
-                    _modelAPI.ssn = model.I9F_Sec1_SSN;//model.I9F_Sec1_SSN;
+                    _modelAPI.ssn = "123-12-1234";//model.I9F_Sec1_SSN;//model.I9F_Sec1_SSN;
                     _modelAPI.reason_for_delay_code = "TECHNICAL_PROBLEMS";
                     var getSerializeString = objCommon.GetJsoSerializeDataForAPI(APIName.I9PostDataCase, _modelAPI);
                     var saveAPI = postData.I9PostCase(getSerializeString, "", model.RefreshTokenI9);
+                    
                     var getOutputData = Newtonsoft.Json.JsonConvert.DeserializeObject<GetI9FormDataOutput>(saveAPI); 
                     #endregion I9 API
                     var save = _db.spSetI9Form(action, model.I9F_Id, model.I9F_EMP_EmployeeId, model.I9F_Sec1_SSN, model.I9F_Sec1_CitizenOfUS, model.I9F_Sec1_NonCitizenOfUS,
@@ -1629,23 +1635,41 @@ namespace WorkOrderEMS.BusinessLogic
             var objCommon = new CommonMethodManager();
             var objBackground = new BackgroundScreeningAPIModel();
             var objCountyCivilLowerSearch = new CountyCivilLowerSearch();
+            var lstCountyCivilLowerSearch = new List<CountyCivilLowerSearch>();
             var objcountyCivilUpperSearches = new CountyCivilUpperSearch();
+            var lstcountyCivilUpperSearches = new List<CountyCivilUpperSearch>();
             var objcountyCriminalSearches = new CountyCriminalSearch();
+            var lstcountyCriminalSearches = new List<CountyCriminalSearch>();
             var drugScreenings = new DrugScreening();
+            var lstdrugScreenings = new List<DrugScreening>();
             var objeducationVerifications = new EducationVerification();
+            var lsteducationVerifications = new List<EducationVerification>();
             var objemploymentVerifications = new EmploymentVerification();
+            var lstemploymentVerifications = new List<EmploymentVerification>();
             var objfederalBankruptcySearches = new FederalBankruptcySearch();
+            var lstfederalBankruptcySearches = new List<FederalBankruptcySearch>();
             var objfederalCriminalSearches = new FederalCriminalSearch();
+            var lstfederalCriminalSearches = new List<FederalCriminalSearch>();
             var objfederalCivilSearches = new FederalCivilSearch();
+            var lstfederalCivilSearches = new List<FederalCivilSearch>();
             var objmotorVehicleRecordSearches = new MotorVehicleRecordSearch();
+            var lstmotorVehicleRecordSearches = new List<MotorVehicleRecordSearch>();
             var objpositionLocation = new PositionLocation();
+            var lstpositionLocation = new List<PositionLocation>();
             var objpositionStartingPay = new PositionStartingPay();
+            var lstpositionStartingPay = new List<PositionStartingPay>();
             var objsexOffenderSearches = new SexOffenderSearch();
+            var lstsexOffenderSearches = new List<SexOffenderSearch>();
             var objstateCriminalSearches = new StateCriminalSearch();
+            var lststateCriminalSearches = new List<StateCriminalSearch>();
             var objsubjectAdmittedCriminalHistory = new SubjectAdmittedCriminalHistory();
+            var lstsubjectAdmittedCriminalHistory = new List<SubjectAdmittedCriminalHistory>();
             var objsubjectIndividualAliases = new SubjectIndividualAlias();
+            var lstsubjectIndividualAliases = new List<SubjectIndividualAlias>();
             var objsubjectPreviousLocations = new SubjectPreviousLocation();
+            var lstsubjectPreviousLocations = new List<SubjectPreviousLocation>();
             var objworkersCompensationSearches = new WorkersCompensationSearch();
+            var lstworkersCompensationSearches = new List<WorkersCompensationSearch>();
             var data = _db.ApplicantLoginAccesses.Join(_db.Applicants, q => q.ALA_UserId, u => u.APT_ALA_UserId, (q, u) => new { q, u }).
                                        Where(x => x.u.APT_ApplicantId == model.ApplicantPersonalInfo.API_APT_ApplicantId).FirstOrDefault();
             var contact = _db.spGetApplicantContactInfo(model.ApplicantPersonalInfo.API_APT_ApplicantId).Take(1).FirstOrDefault();
@@ -1653,18 +1677,22 @@ namespace WorkOrderEMS.BusinessLogic
             objBackground.comment = null;// model.ApplicantPersonalInfo.
             objCountyCivilLowerSearch.county =  "Pasco";
             objCountyCivilLowerSearch.region = "FL";
-            objBackground.countyCivilLowerSearches.Add(objCountyCivilLowerSearch);
+            lstCountyCivilLowerSearch.Add(objCountyCivilLowerSearch);
+            objBackground.countyCivilLowerSearches = lstCountyCivilLowerSearch;
             objcountyCivilUpperSearches.county = "Pasco";
             objcountyCivilUpperSearches.region = "FL";
-            objBackground.countyCivilUpperSearches.Add(objcountyCivilUpperSearches);
+            lstcountyCivilUpperSearches.Add(objcountyCivilUpperSearches);
+            objBackground.countyCivilUpperSearches = lstcountyCivilUpperSearches;
             objcountyCriminalSearches.county = "Pasco";
             objcountyCriminalSearches.region = "FL";
-            objBackground.countyCriminalSearches.Add(objcountyCriminalSearches);
+            lstcountyCriminalSearches.Add(objcountyCriminalSearches);
+            objBackground.countyCriminalSearches = lstcountyCriminalSearches;
             objBackground.customScreeningId = Convert.ToInt64(model.ApplicantPersonalInfo.API_APT_ApplicantId);
             objBackground.customSubjectId = Convert.ToInt64(model.ApplicantPersonalInfo.API_APT_ApplicantId);
             objBackground.disableDuplicateChecking = true;
             drugScreenings.testType = "Screening";
-            objBackground.drugScreenings.Add(drugScreenings);
+            lstdrugScreenings.Add(drugScreenings);
+            objBackground.drugScreenings = lstdrugScreenings;
             var getEducationDetails = _db.spGetAplicantAcadmicDetails(model.ApplicantPersonalInfo.API_APT_ApplicantId).ToList();
             foreach (var item in getEducationDetails)
             {
@@ -1680,7 +1708,8 @@ namespace WorkOrderEMS.BusinessLogic
                 objeducationVerifications.region = "FL";
                 objeducationVerifications.toDate = item.AAD_AttendedTo.ToString("yyyy-MM-dd");
                 objeducationVerifications.studentName = model.ApplicantPersonalInfo.API_FirstName + " " + model.ApplicantPersonalInfo.API_LastName;
-                objBackground.educationVerifications.Add(objeducationVerifications);
+                lsteducationVerifications.Add(objeducationVerifications);
+                objBackground.educationVerifications = lsteducationVerifications;
             }
             var getBackgroundDetails = _db.spGetApplicantBackgroundHistory(model.ApplicantPersonalInfo.API_APT_ApplicantId).ToList();
             foreach (var item in getBackgroundDetails)
@@ -1700,26 +1729,31 @@ namespace WorkOrderEMS.BusinessLogic
                 objemploymentVerifications.region = "FL";
                 objemploymentVerifications.remunerationInterval = "Hourly";
                 objemploymentVerifications.remunerationValue = 0;
-                objBackground.employmentVerifications.Add(objemploymentVerifications);
+                lstemploymentVerifications.Add(objemploymentVerifications);
+                objBackground.employmentVerifications = lstemploymentVerifications;
             }
             objfederalBankruptcySearches.county = "Pasco";
-            objfederalBankruptcySearches.postalCode = model.ApplicantAddress[0].APA_Zip.ToString();
+            objfederalBankruptcySearches.postalCode =  model.ApplicantAddress[0].APA_Zip.ToString();
             objfederalBankruptcySearches.region = "FL";
-            objBackground.federalBankruptcySearches.Add(objfederalBankruptcySearches);
+            lstfederalBankruptcySearches.Add(objfederalBankruptcySearches);
+            objBackground.federalBankruptcySearches = lstfederalBankruptcySearches;
 
             objfederalCivilSearches.region = "FL";
             objfederalCivilSearches.county = "Pasco";
-            objBackground.federalCivilSearches.Add(objfederalCivilSearches);
+            lstfederalCivilSearches.Add(objfederalCivilSearches);
+            objBackground.federalCivilSearches = lstfederalCivilSearches;
 
             objfederalCriminalSearches.county = "Pasco";
             objfederalCriminalSearches.region = "FL";
             objfederalCriminalSearches.postalCode = model.ApplicantAddress[0].APA_Zip.ToString();
-            objBackground.federalCriminalSearches.Add(objfederalCriminalSearches);
+            lstfederalCriminalSearches.Add(objfederalCriminalSearches);
+            objBackground.federalCriminalSearches = lstfederalCriminalSearches;
 
             objmotorVehicleRecordSearches.region = "FL";
             objmotorVehicleRecordSearches.countryCode = "US";
             objmotorVehicleRecordSearches.licenseIdentifier = model.ApplicantPersonalInfo.API_DLNumber;
-            objBackground.motorVehicleRecordSearches.Add(objmotorVehicleRecordSearches);
+            lstmotorVehicleRecordSearches.Add(objmotorVehicleRecordSearches);
+            objBackground.motorVehicleRecordSearches = lstmotorVehicleRecordSearches;
 
             objBackground.packageId = "AAVPP";
             //var getPositionDetails = _db.spGetApplicantPositionTitle(model.ApplicantPersonalInfo.API_APT_ApplicantId).ToList();
@@ -1753,10 +1787,12 @@ namespace WorkOrderEMS.BusinessLogic
             objBackground.requesterName = user.FirstName + " " + user.LastName;
 
             objsexOffenderSearches.region = "FL";
-            objBackground.sexOffenderSearches.Add(objsexOffenderSearches);
+            lstsexOffenderSearches.Add(objsexOffenderSearches);
+            objBackground.sexOffenderSearches = lstsexOffenderSearches;
 
             objstateCriminalSearches.region = "FL";
-            objBackground.stateCriminalSearches.Add(objstateCriminalSearches);
+            lststateCriminalSearches.Add(objstateCriminalSearches); 
+            objBackground.stateCriminalSearches = lststateCriminalSearches;
 
             objsubjectAdmittedCriminalHistory.caseNumber = null;
             objsubjectAdmittedCriminalHistory.charge = null;
@@ -1766,7 +1802,8 @@ namespace WorkOrderEMS.BusinessLogic
             objsubjectAdmittedCriminalHistory.jurisdiction = null;
             objsubjectAdmittedCriminalHistory.notes = null;
             objsubjectAdmittedCriminalHistory.sentence = null;
-            objBackground.subjectAdmittedCriminalHistory.Add(objsubjectAdmittedCriminalHistory);
+            lstsubjectAdmittedCriminalHistory.Add(objsubjectAdmittedCriminalHistory);
+            objBackground.subjectAdmittedCriminalHistory = lstsubjectAdmittedCriminalHistory;
 
             var getAdditionalInfo = _db.spGetApplicantAdditionalInfo(model.ApplicantPersonalInfo.API_APT_ApplicantId).FirstOrDefault();
             objBackground.subjectCurrentAddressAddressLine = model.ApplicantAddress[0].APA_StreetAddress;
@@ -1786,7 +1823,8 @@ namespace WorkOrderEMS.BusinessLogic
 
             objsubjectIndividualAliases.familyName = model.ApplicantPersonalInfo.API_LastName;
             objsubjectIndividualAliases.givenName = model.ApplicantPersonalInfo.API_FirstName + " " + model.ApplicantPersonalInfo.API_LastName;
-            objBackground.subjectIndividualAliases.Add(objsubjectIndividualAliases);
+            lstsubjectIndividualAliases.Add(objsubjectIndividualAliases);
+            objBackground.subjectIndividualAliases = lstsubjectIndividualAliases;
 
             objBackground.subjectMiddleName = model.ApplicantPersonalInfo.API_MiddleName;
             objBackground.subjectOrganizationName = getBackgroundDetails[0].ABH_CompanyName;
@@ -1800,7 +1838,8 @@ namespace WorkOrderEMS.BusinessLogic
                 objsubjectPreviousLocations.postalCode = item.APA_Zip.ToString();
                 objsubjectPreviousLocations.region = "FL";
                 objsubjectPreviousLocations.startDate = item.APA_YearsAddressFrom.ToString("yyyy-MM-dd");
-                objBackground.subjectPreviousLocations.Add(objsubjectPreviousLocations);
+                lstsubjectPreviousLocations.Add(objsubjectPreviousLocations);
+                objBackground.subjectPreviousLocations = lstsubjectPreviousLocations;
             }
 
             objBackground.subjectSocialSecurityNumber = model.ApplicantPersonalInfo.API_SSN;
@@ -1809,8 +1848,9 @@ namespace WorkOrderEMS.BusinessLogic
             objBackground.userDefinedField3 = null;
 
             objworkersCompensationSearches.region = "FL";
-            objBackground.workersCompensationSearches.Add(objworkersCompensationSearches);
-            return result = objCommon.GetJsoSerializeDataForAPI(APIName.I9AuthenticationAPI, objBackground);
+            lstworkersCompensationSearches.Add(objworkersCompensationSearches);
+            objBackground.workersCompensationSearches = lstworkersCompensationSearches;
+            return result = objCommon.GetJsoSerializeDataForAPI(APIName.BackGroudScreening, objBackground);
         }
     }
 }

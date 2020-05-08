@@ -77,6 +77,6 @@ namespace WorkOrderEMS.Models.Employee
         public string Assessment { get; set; }
         public HttpPostedFileBase AssessmentFile { get; set; }
         public string HiringManager { get; set; }
-
+        public string EMP_Gender { get; set; }
     }
 }

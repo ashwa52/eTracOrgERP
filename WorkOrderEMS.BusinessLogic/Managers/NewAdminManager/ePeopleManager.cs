@@ -1147,10 +1147,10 @@ namespace WorkOrderEMS.BusinessLogic
                         else
                             Status = IsActive == "N" ? ApplicantStatus.Assessment : ApplicantIsActiveStatus.Fail;
                         var isSaved = ePeopleRepository.SendForAssessment(Status, IsActive, ApplicantId);
-                        var getApplicantDetails = objworkorderEMSEntities.spGetApplicantAllDetails(ApplicantId).FirstOrDefault();
-                        string message = DarMessage.AssessmentClearReject(getApplicantDetails.JBT_JobTitle);
+                        var getApplicantDetails =  objworkorderEMSEntities.spGetApplicantAllDetails(ApplicantId).FirstOrDefault();
+                        string message = IsActive == "N" ? DarMessage.AssessmentReject(getApplicantDetails.JBT_JobTitle) : DarMessage.AssessmentClear(getApplicantDetails.JBT_JobTitle);
                         var saveNotification = objworkorderEMSEntities.spSetNotification("I", null, message,
-                                                        "ePeople", ModuleSubModule.AssessmentStatus, ApplicantId.ToString(), getApplicantDetails.HiringManagerEmployeeId, getApplicantDetails.HiringManagerEmployeeId, true, false, Priority.Medium, null, false, "Y");
+                                                       ModuleSubModule.ePeople, ModuleSubModule.AssessmentStatus, ApplicantId.ToString(), getApplicantDetails.HiringManagerEmployeeId, getApplicantDetails.HiringManagerEmployeeId, true, false, Priority.Medium, null, false, "Y");
                     }
                     else if (ActionVal == "Offer")
                     {
@@ -1276,9 +1276,9 @@ namespace WorkOrderEMS.BusinessLogic
                         IPT_Id = a.IPT_Id
                     }).FirstOrDefault();
                 var getJobDetails = objworkorderEMSEntities.spGetMyOpening(getDetails.JobId).FirstOrDefault().JBT_JobTitle;
-                var message = status == "Y"?  DarMessage.InterviewAcceptByApplicant(getJobDetails,status == "Y"?"Accept":"Reject"): DarMessage.InterviewDenyByApplicant(getJobDetails);
+                var message = status == "A"?  DarMessage.InterviewAcceptByApplicant(getJobDetails,status == "A"?"Accept":"Reject"): DarMessage.InterviewDenyByApplicant(getJobDetails);
                 var saveNotification = objworkorderEMSEntities.spSetNotification("I", null, message,
-                                                        "ePeople", ModuleSubModule.InterviewerAcceptDeny, getDetails.IPT_Id.ToString(), getDetails.HiringManagerId, getDetails.HiringManagerId, true, false, Priority.Medium, null, false, "Y");
+                                                        ModuleSubModule.ePeople, ModuleSubModule.InterviewerAcceptDeny, getDetails.IPT_Id.ToString(), getDetails.HiringManagerId, getDetails.HiringManagerId, true, false, Priority.Medium, null, false, "Y");
             }
         }
 

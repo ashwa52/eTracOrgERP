@@ -205,6 +205,7 @@ namespace WorkOrderEMS.Helper
                     objClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + AccessToken);
                     #region Demo Code
                     var stringContent = new StringContent(PostData, Encoding.UTF8, "application/json");
+                    //var stringContent = new StringContent(PostData);
                     var response = objClient.PostAsync(url, stringContent).Result;
                     if (response.IsSuccessStatusCode)
                     {
@@ -316,11 +317,11 @@ namespace WorkOrderEMS.Helper
                 HttpClient client = new HttpClient();
                 client.CancelPendingRequests();
                 System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Ssl3 | System.Net.SecurityProtocolType.Tls | System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;
-                var header = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes(backUserName+":"+ backPassword)));///username:password for auth
+                var header = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes("eliteparws:Hq4VuK59m")));///username:password for auth
                 client.DefaultRequestHeaders.Authorization = header;
 
                 var stringContent = new StringContent(postData, Encoding.UTF8, "application/json");
-                var response = client.PostAsync(URL, stringContent).Result;
+                var response = client.PostAsync("https://uat-api.applicantinsight.net/v1/api/Screenings", stringContent).Result;
                 if (response.IsSuccessStatusCode == true)
                 {
                     returnString = response.Content.ReadAsStringAsync().Result;

@@ -2805,9 +2805,9 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 case APIName.I9CaseSubmit:
                     outputData = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
                     break;
-                //case APIName.FloridaBlueAuthentication:
-                //    outputData = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
-                //    break;
+                case APIName.BackGroudScreening:
+                    outputData = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+                    break;
             }           
             return outputData;
         }

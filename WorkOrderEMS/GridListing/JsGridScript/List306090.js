@@ -21,7 +21,6 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
         autoload: true,
         pageSize: 10,
         pageButtonCount: 5,
-
         loadMessage: "Please, wait...",
         controller: {
             loadData: function (filter) {
@@ -150,9 +149,12 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                         }).append($evaluationText);
                     if (item.Status == "Assessment Submitted") {
                         return $("<div>").attr({ class: "btn-toolbar", id: "Action_" + item.EMP_EmployeeID }).append($customUserViewButton).append($customTextButton).append($customTextButton).append($evaluationTextButton);
-                    } else {
+                    }
+                    
+                    else {
                         return $("<div>").attr({ class: "btn-toolbar", id: "Action_" + item.EMP_EmployeeID }).append($customUserViewButton).append($customTextButton).append($customTextButton)
                     }
+
                 }
             },
 

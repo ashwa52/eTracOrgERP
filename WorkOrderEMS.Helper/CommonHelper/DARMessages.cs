@@ -357,9 +357,13 @@ namespace WorkOrderEMS.Helper
         {
             return string.Format(CultureInfo.InvariantCulture, "Candidate Has been rejected for this {0} .", JobTitle);
         }
-        public static string AssessmentClearReject(string JobTitle)
+        public static string AssessmentReject(string JobTitle)
         {
             return string.Format(CultureInfo.InvariantCulture, "Candidate Has been rejected for this {0} .", JobTitle);
+        }
+        public static string AssessmentClear(string JobTitle)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "Candidate Has been selected for this {0} .", JobTitle);
         }
         public static string OnboardingComplete(string ApplicantName)
         {

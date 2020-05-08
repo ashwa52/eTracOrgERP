@@ -158,11 +158,11 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<SlotTime> SlotTimes { get; set; }
         public virtual DbSet<ApplicantContactInfo> ApplicantContactInfoes { get; set; }
         public virtual DbSet<OfferLetter> OfferLetters { get; set; }
-        public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<BookSlotTime> BookSlotTimes { get; set; }
         public virtual DbSet<InterviewProposalTime> InterviewProposalTimes { get; set; }
         public virtual DbSet<JobPosting> JobPostings { get; set; }
         public virtual DbSet<Notification> Notifications { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
     
         [DbFunction("workorderEMSEntities", "fn_Split")]
         public virtual IQueryable<fn_Split_Result> fn_Split(string sText, string sDelim)
@@ -7196,15 +7196,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetInterviewPanel", actionParameter, iPT_IdParameter, iPT_JPS_JobPostingIdParameter, iPT_EMP_EmployeeID_HMParameter, iPT_EMP_EmployeeID_SEParameter, iPT_EMP_EmployeeID_TEParameter, iPT_StatusParameter, iPT_IsActiveParameter);
         }
     
-        public virtual ObjectResult<spGetEmployeePersonalInfo_Result3> spGetEmployeePersonalInfo(string employeeId)
-        {
-            var employeeIdParameter = employeeId != null ?
-                new ObjectParameter("EmployeeId", employeeId) :
-                new ObjectParameter("EmployeeId", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEmployeePersonalInfo_Result3>("spGetEmployeePersonalInfo", employeeIdParameter);
-        }
-    
         public virtual int spSetBookSlotTime(string action, Nullable<long> bST_Id, string bST_EMP_EmployeeID, Nullable<System.DateTime> bST_SlotDate, Nullable<long> bST_SLT_Id, string bST_Title, Nullable<long> bST_Status, string bST_IsActive)
         {
             var actionParameter = action != null ?
@@ -7694,6 +7685,15 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("NTF_IsActive", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetNotification", actionParameter, nTF_IdParameter, nTF_DetailsParameter, nTF_ModuleParameter, nTF_SubmoduleParameter, nTF_SubmoduleIdParameter, nTF_CreatedByParameter, nTF_AssignToParameter, nTF_AssignToIsWorkableParameter, nTF_CreatedByIsWorkableParameter, nFT_SeverityParameter, nTF_DeletedDateParameter, nTF_IsReadParameter, nTF_IsActiveParameter);
+        }
+    
+        public virtual ObjectResult<spGetEmployeePersonalInfo_Result5> spGetEmployeePersonalInfo(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetEmployeePersonalInfo_Result5>("spGetEmployeePersonalInfo", employeeIdParameter);
         }
     }
 }

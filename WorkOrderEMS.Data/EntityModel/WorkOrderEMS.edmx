@@ -14949,7 +14949,6 @@ warning 6037: Foreign key constraint 'FK_TrackEmployeeStatus_UserRegistrations' 
             <Parameter Name="IPT_Status" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="OfferLetters" EntityType="WorkOrderEMS.Data.EntityModel.OfferLetter" />
-          <EntitySet Name="Employees" EntityType="WorkOrderEMS.Data.EntityModel.Employee" />
           <FunctionImport Name="spSetInterviewPanel">
             <Parameter Name="Action" Mode="In" Type="String" />
             <Parameter Name="IPT_Id" Mode="In" Type="Int64" />
@@ -14959,9 +14958,6 @@ warning 6037: Foreign key constraint 'FK_TrackEmployeeStatus_UserRegistrations' 
             <Parameter Name="IPT_EMP_EmployeeID_TE" Mode="In" Type="String" />
             <Parameter Name="IPT_Status" Mode="In" Type="String" />
             <Parameter Name="IPT_IsActive" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="spGetEmployeePersonalInfo" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetEmployeePersonalInfo_Result3)">
-          <Parameter Name="EmployeeId" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spSetBookSlotTime">
             <Parameter Name="Action" Mode="In" Type="String" />
@@ -15094,6 +15090,10 @@ warning 6037: Foreign key constraint 'FK_TrackEmployeeStatus_UserRegistrations' 
             <Parameter Name="NTF_DeletedDate" Mode="In" Type="DateTime" />
             <Parameter Name="NTF_IsRead" Mode="In" Type="Boolean" />
             <Parameter Name="NTF_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Employees" EntityType="WorkOrderEMS.Data.EntityModel.Employee" />
+          <FunctionImport Name="spGetEmployeePersonalInfo" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetEmployeePersonalInfo_Result5)">
+            <Parameter Name="EmployeeId" Mode="In" Type="String" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Proc_GetAllWorkAssignedToEmployee_Result">
@@ -19688,34 +19688,6 @@ warning 6037: Foreign key constraint 'FK_TrackEmployeeStatus_UserRegistrations' 
           <Property Name="OFL_Date" Type="DateTime" Precision="3" />
           <Property Name="OFL_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
-        <EntityType Name="Employee">
-          <Key>
-            <PropertyRef Name="EMP_Id" />
-          </Key>
-          <Property Name="EMP_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EMP_EmployeeID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_API_ApplicantId" Type="Int64" />
-          <Property Name="EMP_FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_MiddleName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_Phone" Type="Int64" />
-          <Property Name="EMP_DrivingLicenseNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_DateOfBirth" Type="DateTime" Precision="0" />
-          <Property Name="EMP_SSN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="EMP_MilitaryService" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="EMP_Gender" Type="Int64" />
-          <Property Name="EMP_JobTitleId" Type="Int64" />
-          <Property Name="EMP_ManagerId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_DateOfJoining" Type="DateTime" Precision="0" />
-          <Property Name="EMP_LocationId" Type="Int64" />
-          <Property Name="EMP_EmploymentStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <Property Name="EMP_IsExempt" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="EMP_IsCreatedBy" Type="Int64" />
-          <Property Name="EMP_IsCreatedOn" Type="DateTime" Precision="3" />
-          <Property Name="EMP_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-        </EntityType>
         <ComplexType Name="spGetEmployeePersonalInfo_Result3">
           <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
           <Property Type="Int64" Name="EMP_API_ApplicantId" Nullable="true" />
@@ -19937,6 +19909,82 @@ warning 6037: Foreign key constraint 'FK_TrackEmployeeStatus_UserRegistrations' 
           <Property Name="NTF_CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="NTF_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
+        <ComplexType Name="spGetEmployeePersonalInfo_Result4">
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="Int64" Name="EMP_API_ApplicantId" Nullable="true" />
+          <Property Type="String" Name="EMP_FirstName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMP_MiddleName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMP_LastName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMP_Email" Nullable="true" MaxLength="50" />
+          <Property Type="Int64" Name="EMP_Phone" Nullable="true" />
+          <Property Type="String" Name="EMP_DrivingLicenseNumber" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="EMP_DateOfBirth" Nullable="true" />
+          <Property Type="String" Name="EMP_SSN" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EMP_Photo" Nullable="true" />
+          <Property Type="Int64" Name="EMP_Gender" Nullable="true" />
+          <Property Type="String" Name="EMP_MilitaryService" Nullable="true" MaxLength="1" />
+          <Property Type="Int64" Name="EMP_JobTitleId" Nullable="true" />
+          <Property Type="String" Name="EMP_ManagerId" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="EMP_DateOfJoining" Nullable="true" />
+          <Property Type="Int64" Name="EMP_LocationId" Nullable="true" />
+          <Property Type="String" Name="EMA_Address" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="EMA_City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EMA_State" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="EMA_Zip" Nullable="true" />
+          <Property Type="String" Name="CTZ_Citizenship" Nullable="true" MaxLength="50" />
+        </ComplexType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EMP_Id" />
+          </Key>
+          <Property Name="EMP_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EMP_EmployeeID" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_API_ApplicantId" Type="Int64" />
+          <Property Name="EMP_FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_MiddleName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_Phone" Type="Int64" />
+          <Property Name="EMP_DrivingLicenseNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_DateOfBirth" Type="DateTime" Precision="0" />
+          <Property Name="EMP_SSN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EMP_MilitaryService" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="EMP_Gender" Type="Int64" />
+          <Property Name="EMP_JobTitleId" Type="Int64" />
+          <Property Name="EMP_ManagerId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_DateOfJoining" Type="DateTime" Precision="0" />
+          <Property Name="EMP_LocationId" Type="Int64" />
+          <Property Name="EMP_EmploymentStatus" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="EMP_IsExempt" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="EMP_IsCreatedBy" Type="Int64" />
+          <Property Name="EMP_IsCreatedOn" Type="DateTime" Precision="3" />
+          <Property Name="EMP_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="spGetEmployeePersonalInfo_Result5">
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="Int64" Name="EMP_API_ApplicantId" Nullable="true" />
+          <Property Type="String" Name="EMP_FirstName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMP_MiddleName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMP_LastName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="EMP_Email" Nullable="true" MaxLength="50" />
+          <Property Type="Int64" Name="EMP_Phone" Nullable="true" />
+          <Property Type="String" Name="EMP_DrivingLicenseNumber" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="EMP_DateOfBirth" Nullable="true" />
+          <Property Type="String" Name="EMP_SSN" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EMP_Photo" Nullable="true" />
+          <Property Type="Int64" Name="EMP_Gender" Nullable="true" />
+          <Property Type="String" Name="EMP_MilitaryService" Nullable="true" MaxLength="1" />
+          <Property Type="Int64" Name="EMP_JobTitleId" Nullable="true" />
+          <Property Type="String" Name="EMP_ManagerId" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="EMP_DateOfJoining" Nullable="true" />
+          <Property Type="Int64" Name="EMP_LocationId" Nullable="true" />
+          <Property Type="String" Name="EMA_Address" Nullable="true" MaxLength="100" />
+          <Property Type="String" Name="EMA_City" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EMA_State" Nullable="true" MaxLength="50" />
+          <Property Type="Int32" Name="EMA_Zip" Nullable="true" />
+          <Property Type="String" Name="CTZ_Citizenship" Nullable="true" MaxLength="50" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -26063,64 +26111,7 @@ warning 6037: Foreign key constraint 'FK_TrackEmployeeStatus_UserRegistrations' 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Employees">
-            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.Employee">
-              <MappingFragment StoreEntitySet="Employee">
-                <ScalarProperty Name="EMP_IsActive" ColumnName="EMP_IsActive" />
-                <ScalarProperty Name="EMP_IsCreatedOn" ColumnName="EMP_IsCreatedOn" />
-                <ScalarProperty Name="EMP_IsCreatedBy" ColumnName="EMP_IsCreatedBy" />
-                <ScalarProperty Name="EMP_IsExempt" ColumnName="EMP_IsExempt" />
-                <ScalarProperty Name="EMP_EmploymentStatus" ColumnName="EMP_EmploymentStatus" />
-                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
-                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
-                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
-                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
-                <ScalarProperty Name="EMP_Gender" ColumnName="EMP_Gender" />
-                <ScalarProperty Name="EMP_MilitaryService" ColumnName="EMP_MilitaryService" />
-                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
-                <ScalarProperty Name="EMP_SSN" ColumnName="EMP_SSN" />
-                <ScalarProperty Name="EMP_DateOfBirth" ColumnName="EMP_DateOfBirth" />
-                <ScalarProperty Name="EMP_DrivingLicenseNumber" ColumnName="EMP_DrivingLicenseNumber" />
-                <ScalarProperty Name="EMP_Phone" ColumnName="EMP_Phone" />
-                <ScalarProperty Name="EMP_Email" ColumnName="EMP_Email" />
-                <ScalarProperty Name="EMP_LastName" ColumnName="EMP_LastName" />
-                <ScalarProperty Name="EMP_MiddleName" ColumnName="EMP_MiddleName" />
-                <ScalarProperty Name="EMP_FirstName" ColumnName="EMP_FirstName" />
-                <ScalarProperty Name="EMP_API_ApplicantId" ColumnName="EMP_API_ApplicantId" />
-                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
-                <ScalarProperty Name="EMP_Id" ColumnName="EMP_Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spSetInterviewPanel" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetInterviewPanel" />
-          <FunctionImportMapping FunctionImportName="spGetEmployeePersonalInfo" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetEmployeePersonalInfo">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetEmployeePersonalInfo_Result3">
-                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
-                <ScalarProperty Name="EMP_API_ApplicantId" ColumnName="EMP_API_ApplicantId" />
-                <ScalarProperty Name="EMP_FirstName" ColumnName="EMP_FirstName" />
-                <ScalarProperty Name="EMP_MiddleName" ColumnName="EMP_MiddleName" />
-                <ScalarProperty Name="EMP_LastName" ColumnName="EMP_LastName" />
-                <ScalarProperty Name="EMP_Email" ColumnName="EMP_Email" />
-                <ScalarProperty Name="EMP_Phone" ColumnName="EMP_Phone" />
-                <ScalarProperty Name="EMP_DrivingLicenseNumber" ColumnName="EMP_DrivingLicenseNumber" />
-                <ScalarProperty Name="EMP_DateOfBirth" ColumnName="EMP_DateOfBirth" />
-                <ScalarProperty Name="EMP_SSN" ColumnName="EMP_SSN" />
-                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
-                <ScalarProperty Name="EMP_Gender" ColumnName="EMP_Gender" />
-                <ScalarProperty Name="EMP_MilitaryService" ColumnName="EMP_MilitaryService" />
-                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
-                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
-                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
-                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
-                <ScalarProperty Name="EMA_Address" ColumnName="EMA_Address" />
-                <ScalarProperty Name="EMA_City" ColumnName="EMA_City" />
-                <ScalarProperty Name="EMA_State" ColumnName="EMA_State" />
-                <ScalarProperty Name="EMA_Zip" ColumnName="EMA_Zip" />
-                <ScalarProperty Name="CTZ_Citizenship" ColumnName="CTZ_Citizenship" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spSetBookSlotTime" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetBookSlotTime" />
           <EntitySetMapping Name="BookSlotTimes">
             <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.BookSlotTime">
@@ -26323,6 +26314,63 @@ warning 6037: Foreign key constraint 'FK_TrackEmployeeStatus_UserRegistrations' 
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spSetNotification" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetNotification" />
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="EMP_IsActive" ColumnName="EMP_IsActive" />
+                <ScalarProperty Name="EMP_IsCreatedOn" ColumnName="EMP_IsCreatedOn" />
+                <ScalarProperty Name="EMP_IsCreatedBy" ColumnName="EMP_IsCreatedBy" />
+                <ScalarProperty Name="EMP_IsExempt" ColumnName="EMP_IsExempt" />
+                <ScalarProperty Name="EMP_EmploymentStatus" ColumnName="EMP_EmploymentStatus" />
+                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
+                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
+                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
+                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
+                <ScalarProperty Name="EMP_Gender" ColumnName="EMP_Gender" />
+                <ScalarProperty Name="EMP_MilitaryService" ColumnName="EMP_MilitaryService" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="EMP_SSN" ColumnName="EMP_SSN" />
+                <ScalarProperty Name="EMP_DateOfBirth" ColumnName="EMP_DateOfBirth" />
+                <ScalarProperty Name="EMP_DrivingLicenseNumber" ColumnName="EMP_DrivingLicenseNumber" />
+                <ScalarProperty Name="EMP_Phone" ColumnName="EMP_Phone" />
+                <ScalarProperty Name="EMP_Email" ColumnName="EMP_Email" />
+                <ScalarProperty Name="EMP_LastName" ColumnName="EMP_LastName" />
+                <ScalarProperty Name="EMP_MiddleName" ColumnName="EMP_MiddleName" />
+                <ScalarProperty Name="EMP_FirstName" ColumnName="EMP_FirstName" />
+                <ScalarProperty Name="EMP_API_ApplicantId" ColumnName="EMP_API_ApplicantId" />
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EMP_Id" ColumnName="EMP_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetEmployeePersonalInfo" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetEmployeePersonalInfo">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetEmployeePersonalInfo_Result5">
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EMP_API_ApplicantId" ColumnName="EMP_API_ApplicantId" />
+                <ScalarProperty Name="EMP_FirstName" ColumnName="EMP_FirstName" />
+                <ScalarProperty Name="EMP_MiddleName" ColumnName="EMP_MiddleName" />
+                <ScalarProperty Name="EMP_LastName" ColumnName="EMP_LastName" />
+                <ScalarProperty Name="EMP_Email" ColumnName="EMP_Email" />
+                <ScalarProperty Name="EMP_Phone" ColumnName="EMP_Phone" />
+                <ScalarProperty Name="EMP_DrivingLicenseNumber" ColumnName="EMP_DrivingLicenseNumber" />
+                <ScalarProperty Name="EMP_DateOfBirth" ColumnName="EMP_DateOfBirth" />
+                <ScalarProperty Name="EMP_SSN" ColumnName="EMP_SSN" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="EMP_Gender" ColumnName="EMP_Gender" />
+                <ScalarProperty Name="EMP_MilitaryService" ColumnName="EMP_MilitaryService" />
+                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
+                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
+                <ScalarProperty Name="EMP_DateOfJoining" ColumnName="EMP_DateOfJoining" />
+                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
+                <ScalarProperty Name="EMA_Address" ColumnName="EMA_Address" />
+                <ScalarProperty Name="EMA_City" ColumnName="EMA_City" />
+                <ScalarProperty Name="EMA_State" ColumnName="EMA_State" />
+                <ScalarProperty Name="EMA_Zip" ColumnName="EMA_Zip" />
+                <ScalarProperty Name="CTZ_Citizenship" ColumnName="CTZ_Citizenship" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

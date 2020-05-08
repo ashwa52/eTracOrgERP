@@ -710,7 +710,7 @@ namespace WorkOrderEMS.Helper
     }
     public static class VendorName
     {
-        public const string BackgroundCheck = "Accredited Employment Screenin";
+        public const string BackgroundCheck = "Employment Screening";
     }
     /// <summary>
     /// Created By : Ashwajit Bansod
@@ -799,5 +799,6 @@ namespace WorkOrderEMS.Helper
         public const string FloridaBlueAuthenticationLink = "https://api.availity.com/availity/v1/token";
         public const string FloridaBlueGetLink = "https://api.availity.com/availity/v1/configurations?type=270";
         public const string BackGroudScreeningPostLink = "https://uat-api.applicantinsight.net/v1/api/Screenings";
+        public const string BackGroudScreening = "BackGroudScreening";
     }
 }

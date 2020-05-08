@@ -198,8 +198,8 @@ namespace WorkOrderEMS.Data.DataRepository.NewAdminRepository
                     foreach (var item in mgrlist)
                     {
                         mgr1 = ManagerId;
-                        mgr2 = mgrlist.Count() == 1 ? item : string.Empty;
-                        mgr3 = mgrlist.Count() == 2 ? item : string.Empty;
+                        mgr2 = mgrlist.Count() == 1 ? item : null;
+                        mgr3 = mgrlist.Count() == 2 ? item : null;
                         var message = DarMessage.SelectedAsInterviewer(jobTitle);
                         var saveNotification = objworkorderEMSEntities.spSetNotification("I", null, message,
                                                         "ePeople", ModuleSubModule.Interviewer, _JobId.ToString(), ManagerId, item, true, false, Priority.Medium, null, false, "Y");

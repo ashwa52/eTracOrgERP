@@ -18,29 +18,74 @@ namespace WorkOrderEMS.BusinessLogic
         {
             objworkorderEMSEntities = new workorderEMSEntities();
         }
+
+        public EmployeeVIewModel GetEmployeeDetails(long userId)
+        {
+            var employeeId = objworkorderEMSEntities.UserRegistrations.Where(x => x.UserId == userId).FirstOrDefault()?.EmployeeID;
+            var tt = new EmployeeVIewModel();
+            try
+            {
+                tt = objworkorderEMSEntities.Employees.Where(x => x.EMP_EmployeeID == employeeId).
+                   Select(x => new EmployeeVIewModel
+                   {
+                       //Address = x.EMA_Address,
+                       //City = x.EMA_City,
+                       //State = x.EMA_State,
+                       //Cityzenship = x.CTZ_Citizenship,
+                       DlNumber = x.EMP_DrivingLicenseNumber,
+                       Dob = x.EMP_DateOfBirth,
+                       Email = x.EMP_Email,
+                       EmpId = x.EMP_EmployeeID,
+                       FirstName = x.EMP_FirstName,
+                       LastName = x.EMP_LastName,
+                       MiddleName = x.EMP_MiddleName,
+                       Image = x.EMP_Photo,
+                       Phone = x.EMP_Phone,
+                       SocialSecurityNumber = x.EMP_SSN,
+                       //Zip = x.EMA_Zip,
+                       //EMP_Gender = x.EMP_Gender.ToString(),
+                       ApplicantId = x.EMP_API_ApplicantId.Value
+                   }).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return tt;
+        }
         public EmployeeVIewModel GetEmployee(long userId)
         {
             var employeeId = objworkorderEMSEntities.UserRegistrations.Where(x => x.UserId == userId).FirstOrDefault()?.EmployeeID;
-            return objworkorderEMSEntities.spGetEmployeePersonalInfo(employeeId).
-                Select(x => new EmployeeVIewModel
-                {
-                    Address = x.EMA_Address,
-                    City = x.EMA_City,
-                    State = x.EMA_State,
-                    Cityzenship = x.CTZ_Citizenship,
-                    DlNumber = x.EMP_DrivingLicenseNumber,
-                    Dob = x.EMP_DateOfBirth,
-                    Email = x.EMP_Email,
-                    EmpId = x.EMP_EmployeeID,
-                    FirstName = x.EMP_FirstName,
-                    LastName = x.EMP_LastName,
-                    MiddleName = x.EMP_MiddleName,
-                    Image = x.EMP_Photo,
-                    Phone = x.EMP_Phone,
-                    SocialSecurityNumber = x.EMP_SSN,
-                    Zip = x.EMA_Zip,
-                    ApplicantId = x.EMP_API_ApplicantId.Value
-                }).FirstOrDefault(); ;
+            var tt = new EmployeeVIewModel();
+            try
+            {
+                tt = objworkorderEMSEntities.spGetEmployeePersonalInfo(employeeId).
+                   Select(x => new EmployeeVIewModel
+                   {
+                       Address = x.EMA_Address,
+                       City = x.EMA_City,
+                       State = x.EMA_State,
+                       Cityzenship = x.CTZ_Citizenship,
+                       DlNumber = x.EMP_DrivingLicenseNumber,
+                       Dob = x.EMP_DateOfBirth,
+                       Email = x.EMP_Email,
+                       EmpId = x.EMP_EmployeeID,
+                       FirstName = x.EMP_FirstName,
+                       LastName = x.EMP_LastName,
+                       MiddleName = x.EMP_MiddleName,
+                       Image = x.EMP_Photo,
+                       Phone = x.EMP_Phone,
+                       SocialSecurityNumber = x.EMP_SSN,
+                       Zip = x.EMA_Zip,
+                       EMP_Gender = x.EMP_Gender.ToString(),
+                       ApplicantId = Convert.ToInt64(x.EMP_API_ApplicantId)
+                   }).FirstOrDefault();
+            }
+            catch(Exception ex)
+            {
+
+            }
+            return tt;
         }
 
         public CommonApplicantModel GetApplicantAllDetails(long userId)

@@ -522,6 +522,14 @@ namespace WorkOrderEMS.BusinessLogic
                                 _model.Add(item);
                             }
                         }
+                        else if (item.SubModule == ModuleSubModule.InterviewerAcceptDeny && item.SubModuleId1 != null)
+                        {
+                            _model.Add(item);
+                        }
+                        else if (item.SubModule == ModuleSubModule.Interviewer && item.SubModuleId1 != null)
+                        {
+                            _model.Add(item);
+                        }
                     }
                 }
                 else

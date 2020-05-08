@@ -49,7 +49,7 @@ namespace WorkOrderEMS.Controllers.Guest
             var ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
             CommonApplicantModel model = new CommonApplicantModel();
             ViewBag.StateList = _ICommonMethod.GetStateByCountryId(1);
-            var employee = _IGuestUserRepository.GetEmployee(ObjLoginModel.UserId);
+            var employee = _IGuestUserRepository.GetEmployeeDetails(ObjLoginModel.UserId);
             var commonModel = _IGuestUserRepository.GetApplicantAllDetailsToView(employee.ApplicantId);
             //var commonModel = _IGuestUserRepository.GetApplicantAllDetailsToView(ApplicantId);
             //commonModel.ApplicantId = ApplicantId;
@@ -178,7 +178,7 @@ namespace WorkOrderEMS.Controllers.Guest
                 NotificationModel.Priority = Priority.Medium;
                 NotificationModel.Module = ModuleSubModule.ePeople;
                 NotificationModel.SubModule = ModuleSubModule.OnBoardingComplete;
-                NotificationModel.SubModuleId = applicantId;
+                NotificationModel.SubModuleId1 = applicantId.ToString();
                 var save = manager.SaveNotification(NotificationModel);
             }
             return View();
@@ -607,6 +607,7 @@ namespace WorkOrderEMS.Controllers.Guest
             {
                 var getApplicantId = Convert.ToInt64(Session["ApplicantId"]);
                 getApplicant = _IApplicantManager.GetApplicantByApplicantId(getApplicantId);
+                Session["ApplicantAddress"] = getApplicant.ApplicantAddress;
                 getApplicant.IsSignature = false;
                 return PartialView("PartialView/_BackGroundCheckForm", getApplicant);
             }
@@ -643,6 +644,8 @@ namespace WorkOrderEMS.Controllers.Guest
                 {
                     #region PDF
                     var applicantId = Convert.ToInt64(Session["ApplicantId"]);
+                    var address = (List<ApplicantAddress>)(Session["ApplicantAddress"]);
+                    model.ApplicantAddress = address;
                     string viewName = "_BackGroundCheckForm";
                     var employeeId = ObjLoginModel.UserName;
                     string path = applicantId + model.ApplicantPersonalInfo.API_FirstName + viewName + ".pdf";
