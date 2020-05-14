@@ -56,7 +56,7 @@
             </div>
             <div class="card-body">
                 <div class="row" style="overflow-y: scroll;">
-                    <div class="col-lg-12">
+                    <div class="col-lg-12" id="MenuAdminDashBord">
                         <div class="block blockWidth" style="width:11%;">
                             <div class="hovicon effect-8" title="Cost Code">
                                 <a href="@Url.Action("ListCostCode", "CostCode")"><i class="fa fa-cc moveicon" aria-hidden="true"></i></a>
@@ -101,7 +101,35 @@
                             <div class="hovicon effect-8" title="Add PDF Form">
                                 <a href="@Url.Action("Index", "PDFForm")"><i class="fa fa-file-pdf-o moveicon" aria-hidden="true"></i></a>
                             </div>
-                        </div>                       
+                        </div>
+
+                        <div class="block blockWidth" style="width:10%;">
+                            <div class="hovicon effect-8" title="Add Monthly Parker">
+                                <a href="~/CustomerManagement/ListWaitingCustomers" data-oldDash="No"><i class="fa fa-group moveicon" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div class="block blockWidth" style="width:10%;">
+                            <div class="hovicon effect-8" title="Client Invoice">
+                                <a href="~/InvoiceManagement/InvoiceDashboard" data-oldDash="No"><i class="fa fa-file-text moveicon" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div class="block blockWidth" style="width:10%;">
+                            <div class="hovicon effect-8" title="Holiday Management">
+                                <a href="~/EPeople/HolidayMaster" data-oldDash="No"><i class="fa fa-tree moveicon" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div class="block blockWidth" style="width:10%;">
+                            <div class="hovicon effect-8" title="Leave Setup ">
+                                <a href="~/EPeople/LeaveTypeList" data-oldDash="No"><i class="fa fa-umbrella moveicon" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div class="block blockWidth" style="width:10%;">
+                            <div class="hovicon effect-8" title="Location Seats ">
+                                <a href="~/EPeople/LocationSeats" data-oldDash="No"><i class="fa fa-location-arrow moveicon" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>

@@ -11,6 +11,17 @@
         locationId = ObjLogin.LocationID;
         userType = ObjLogin.UserRoleId;
     }
+
+    var isRefresh = ViewBag.IsPageRefresh;
+    if (isRefresh == true)
+    {
+        Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = null;
+    }
+
 }
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
