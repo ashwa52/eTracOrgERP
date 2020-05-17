@@ -1,11 +1,25 @@
 ﻿@model WorkOrderEMS.Models.Tbl_Employee_Leave_Management
 @{
     ViewBag.Title = "Leave Management";
-    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    var isRefresh = ViewBag.IsPageRefresh;
+    if (isRefresh == true)
+    {
+        Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    }
+    else
+    {
+        if ((ViewBag.IsPageEdit == true && isRefresh == true) || (ViewBag.IsPageEdit == null || isRefresh == null))
+        {
+            Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+        }
+        else
+        {
+            Layout = null;
+        }
+    }
     long locationId = 0;
     long userType = 0;
     WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
-
     if (ObjLogin != null)
     {
         locationId = ObjLogin.LocationID;
@@ -14,9 +28,14 @@
 }
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/material.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+
 <style>
-
-
     .package {
         margin-top: 0px !important;
         display: inline-flex;
@@ -24,7 +43,6 @@
         align-items: center;
         text-align: center;
     }
-
 
     .jsgrid-grid-body {
         height: 100% !important;
@@ -106,7 +124,7 @@
         bottom: 0;
         right: 185px;
         -moz-transition: all 0.3s ease-in 0s;
-        -webkit-transition: all 0.3s ease-in 0s;
+        -webkit-transition: all 0.3s ease-in 0s;  
         -o-transition: all 0.3s ease-in 0s;
         transition: all 0.3s ease-in 0s;
     }
@@ -122,18 +140,51 @@
     .form-control {
         border: 1px solid #a0b3b0 !important;
     }
+
+    .jsgrid-filter-row > .jsgrid-cell, .jsgrid-header-row > .jsgrid-header-cell, .jsgrid-insert-row > .jsgrid-cell {
+        background-color: #0aa0cd;
+        color: white;
+    }
+
+    .jsgrid-table .jsgrid-header-row > .jsgrid-header-cell {
+        color: white;
+    }
 </style>
-<div class="content-body" style="min-height: 920px;">
-    <!-- row -->
+<div class="content-body">
     <div class="container-fluid">
         <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3 aos-init aos-animate" data-aos="fade-up">
             <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
                 <div class="welcome-text">
-                    <H4>Add & Edit Leave Managment .</H4>
+                    <H4> Leave Managment </H4>
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row togglehide">
+            <div class="col-xl-9 col-xxl-9">
+                <div class="row" id="divcharts">
+                </div>
+            </div>
+            <div class="col-xl-3 col-xxl-3">
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-sm-12 col-xxl-12">
+                        <div class="card" data-aos="fade-up">
+                            <div class="card-header widthHeader ">
+                                <h4 class="card-title addWhite"><b>LEAVE ACTIONS</b></h4>
+                            </div>
+                            <div class="row">
+                                <div class="card-body">
+                                    <button type="button" id="CreateQRC" class="btn btn-primary glowbuttonActiveDeactive">Apply for Leave</button>
+                                </div>
+                                <div class="card-body">
+                                    <button type="button" id="LeaveAppRej" class="btn btn-primary">Leave Approval</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row togglehide1">
             <div class="col-lg-12">
                 <div class="card aos-init" data-aos="fade-up">
                     <div class="card-header" style="height: 45px;">
@@ -142,11 +193,9 @@
                                 <div class="form-group mb-0">
                                     <div class="row">
                                         <div class="col-md-1">
-                                            <a class="" href="@Url.Action("LeaveManagementAddEdit","EPeople", new { Id = 0})" style="vertical-align:bottom;line-height: 31px;color:white;font-size:50px;"><i class="mdi mdi-plus"></i></a>
-                                            @*<a><span><i id="AddCompany" class="mdi mdi-plus jsgrid-insert-mode-button" style="vertical-align:bottom;    line-height: 31px; color:white;font-size:50px;"></i></span></a>*@
                                             @Html.HiddenFor(model => model.IdHid)
                                         </div>
-                                        <div class="col-md-5" style="margin-left:18px;">
+                                        <div class="col-md-5">
                                             <input id="SearchText" class="inputSearch form-control input-rounded" placeholder="Serach By Employee or Leave" style="width: 260px;" onkeyup="doSearch()" type="text">
                                         </div>
                                     </div>
@@ -157,68 +206,175 @@
                     <div class="card-body">
                         <div id="tbl_AllLeaveList" class="jsGrid" style="position: relative; height: 400px; width: 100%;">
                         </div>
-                        <div id="LeaveManagementAddEdit"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<div class="modal fade " tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-hidden="true" id="myModalForAssignEmployeeData">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Leave Rejected</h5>
-                <button type="button" class="close" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div id="divDetailPreviewAssignData" class="">
-                    <div class="form-group row ShowNormalPO">
-                        <label class="col-sm-2 col-form-label">Reject Reason<span class="req">*</span></label>
-                        <div class="col-sm-10">
-                            @Html.ValidationSummary(true)
-                            @Html.HiddenFor(model => model.Id)
-
-                            @Html.TextAreaFor(model => model.RejectReason, new { @class = "form-control input-rounded required" })
-                            @Html.HiddenFor(model => model.RejectReason)
-                            <div class="errorspace">
-                                @Html.ValidationMessageFor(model => model.RejectReason)
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer" style="background: white;">
-                <button type="button" class="btn btn-secondary" id="closeAssign" style="border-radius:100px;" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary Submit" id="SaveLeaveRejected" style="border-radius:100px;">Save</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 <script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
 <script src="~/GridListing/JqGridScript/LeaveManagementJS.js"></script>
 <script>
     $(document).ready(function () {
-        $(".Submit").on("click", function () {
-            ADDISOREP();
-            $("#myModalForAssignEmployeeData").hide();
-        })
-        function ADDISOREP() {
-            var url = "/ePeople/LeavemanagementRejected?Id=" + $("#IdHid").val() + "&RejectReason=" + $("#RejectReason").val();
-            $.ajax({
-                url: url,
-                cache: false,
-                type: "POST",
-                success: function (data) {
-                    window.location.reload();
-                },
-                error: function (reponse) {
-                    alert("error : " + reponse);
-                }
-            });
-        }
-    });</script>
+        var url = '@Url.Action("GetLeaveManagementchartData", "EPeople")';
+        $.ajax({
+            url: url,
+            cache: false,
+            type: "GET",
+            success: function (data) {
+                $.each(data, function (key, value) {
+                    var chartid = value.LeaveDesc.replace(/ /g, '');
+                    var HTML = '<div class="col-xl-3 col-lg-3 col-sm-12 col-xxl-3"><div class="card" data-aos="fade-up"><div class="card-header widthHeader"><h4 class="card-title addWhite"><b>' + value.LeaveDesc+'</b></h4></div>'
+                        + '<div class="card-body"><canvas id="' + chartid + '"></canvas></div> <div style="text-align: center;"><b>Remaining Leave : ' + value.RemainingLeave + '</b></div><div style="text-align: center;"><b>Taken Leave : ' + value.TakenLeave +'<b></div></div></div> '
+                    $("#divcharts").append(HTML);
+                    var nk = document.getElementById(chartid);
+                    if (value.TypeId == 1) {
+                        new Chart(nk, {
+                            type: 'doughnut',
+                            data: {
+                                defaultFontFamily: 'Poppins',
+                                datasets: [{
+                                    data: [value.TakenLeave, value.RemainingLeave],
+                                    borderWidth: 0,
+                                    backgroundColor: [
+                                        'rgba(49,163,218,1)',
+                                        'rgba(49,163,218,0.5)',
+                                    ],
+                                    hoverBackgroundColor: [
+                                        'rgba(41,43,71, 0.5)',
+                                        'rgba(41,43,71, 0.5)',
+                                    ]
+                                }],
+                                labels: [
+                                    "Taken Leave",
+                                    "Remaining Leave"
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                cutoutPercentage: 80,
+                                legend: {
+                                    display: false,
+                                },
+                            }
+                        });
+                    }
+                    if (value.TypeId == 2) {
+                        new Chart(nk, {
+                            type: 'doughnut',
+                            data: {
+                                defaultFontFamily: 'Poppins',
+                                datasets: [{
+                                    data: [value.TakenLeave, value.RemainingLeave],
+                                    borderWidth: 0,
+                                    backgroundColor: [
+                                        'rgba(110,163,85,1)',
+                                        'rgba(110,163,85,0.5)',
+                                    ],
+                                    hoverBackgroundColor: [
+                                        'rgba(41,43,71, 0.5)',
+                                        'rgba(41,43,71, 0.5)',
+                                    ]
+                                }],
+                                labels: [
+                                    "Taken Leave",
+                                    "Remaining Leave"
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                cutoutPercentage: 80,
+                                legend: {
+                                    display: false,
+                                },
+                            }
+                        });
+                    }
+                    if (value.TypeId == 3) {
+                        new Chart(nk, {
+                            type: 'doughnut',
+                            data: {
+                                defaultFontFamily: 'Poppins',
+                                datasets: [{
+                                    data: [value.TakenLeave, value.RemainingLeave],
+                                    borderWidth: 0,
+                                    backgroundColor: [
+                                        'rgba(100,130,200,1)',
+                                        'rgba(100,130,200,0.5)',
+                                    ],
+                                    hoverBackgroundColor: [
+                                        'rgba(41,43,71, 0.5)',
+                                        'rgba(41,43,71, 0.5)',
+                                    ]
+                                }],
+                                labels: [
+                                    "Taken Leave",
+                                    "Remaining Leave"
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                cutoutPercentage: 80,
+                                legend: {
+                                    display: false,
+                                },
+                            }
+                        });
+                    }
+                    if (value.TypeId == 4) {
+                        new Chart(nk, {
+                            type: 'doughnut',
+                            data: {
+                                defaultFontFamily: 'Poppins',
+                                datasets: [{
+                                    data: [value.TakenLeave, value.RemainingLeave],
+                                    borderWidth: 0,
+                                    backgroundColor: [
+                                        'rgba(100,160,240,1)',
+                                        'rgba(100,160,240,0.5)',
+                                    ],
+                                    hoverBackgroundColor: [
+                                        'rgba(20,26,40, 0.5)',
+                                        'rgba(20,26,40, 0.5)',
+                                    ]
+                                }],
+                                labels: [
+                                    "Taken Leave",
+                                    "Remaining Leave"
+                                ]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                cutoutPercentage: 80,
+                                legend: {
+                                    display: false,
+                                },
+                            }
+                        });
+                    }
+                });
+            },
+            error: function (reponse) {
+                alert("error : " + reponse);
+            }
+        });
+
+        $("#CreateQRC").click(function () {
+            $(".togglehide").hide();
+            $(".togglehide1").hide();
+            event.preventDefault();
+            var url = '@Url.Action("LeaveManagementAddEdit", "EPeople", new { Id = 0 })';
+            $('#RenderPageId').load(url);
+        });
+
+        $("#LeaveAppRej").click(function () {
+            event.preventDefault();
+            var url = '@Url.Action("GetListLeaveManagementJSGridForAdmin", "EPeople")';
+            $('#RenderPageId').load(url);
+        });
+    });
+</script>

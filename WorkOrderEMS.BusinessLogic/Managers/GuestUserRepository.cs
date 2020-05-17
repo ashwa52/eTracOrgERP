@@ -105,7 +105,7 @@ namespace WorkOrderEMS.BusinessLogic
         {
             CommonApplicantModel commonModel = new CommonApplicantModel();
             commonModel.ApplicantAddress = objworkorderEMSEntities.spGetApplicantAddress(Applicant).Select
-                (x => new ApplicantAddress() {
+                (x => new WorkOrderEMS.Models.ApplicantAddress() {
                     APA_Apartment = x.APA_Apartment,
                     APA_City  =x.APA_City,
                     APA_State = x.APA_State,
@@ -135,7 +135,7 @@ namespace WorkOrderEMS.BusinessLogic
                       AAD_Zip = Convert.ToInt32(x.AAD_Zip),                     
                   }).ToList();
             commonModel.ApplicantAccidentRecord = objworkorderEMSEntities.spGetApplicantAccidentRecord(Applicant).Select
-                  (x => new ApplicantAccidentRecord()
+                  (x => new WorkOrderEMS.Models.ApplicantAccidentRecord()
                   {
                     AAR_AccidantDate = x.AAR_AccidantDate,
                     AAR_Discription = x.AAR_Discription,
@@ -143,7 +143,7 @@ namespace WorkOrderEMS.BusinessLogic
                     AAR_NumberOfInjuries = Convert.ToInt32(x.AAR_NumberOfInjuries)
                   }).ToList();
             commonModel.ApplicantAdditionalInfo = objworkorderEMSEntities.spGetApplicantAdditionalInfo(Applicant).Select
-                  (x => new ApplicantAdditionalInfo()
+                  (x => new WorkOrderEMS.Models.ApplicantAdditionalInfo()
                   {
                     AAI_Age21Completed = Convert.ToChar(x.AAI_Age21Completed),
                     AAI_AnyRefOrEmployeeInELITE = Convert.ToChar(x.AAI_AnyRefOrEmployeeInELITE),
@@ -156,7 +156,7 @@ namespace WorkOrderEMS.BusinessLogic
                     AAI_WorkEligibilityUS = Convert.ToChar(x.AAI_WorkEligibilityUS)
                   }).ToList();
             commonModel.ApplicantBackgroundHistory = objworkorderEMSEntities.spGetApplicantBackgroundHistory(Applicant).Select
-                  (x => new ApplicantBackgroundHistory()
+                  (x => new WorkOrderEMS.Models.ApplicantBackgroundHistory()
                   {
                       ABH_Address = x.ABH_Address,
                       ABH_City = x.ABH_City,
@@ -178,7 +178,7 @@ namespace WorkOrderEMS.BusinessLogic
                       ACI_PrefredContactMethod = x.ACI_PrefredContactMethod
                   }).ToList();
             commonModel.ApplicantLicenseHeald  = objworkorderEMSEntities.spGetApplicantLicenseHeald(Applicant).Select
-                  (x => new ApplicantLicenseHeald()
+                  (x => new WorkOrderEMS.Models.ApplicantLicenseHeald()
                   {
                      ALH_ExpirationDate = x.ALH_ExpirationDate,
                      ALH_IssueDate = x.ALH_IssueDate,
@@ -187,7 +187,7 @@ namespace WorkOrderEMS.BusinessLogic
                      ALH_State = x.ALH_State
                   }).ToList();
             commonModel.ApplicantPositionTitle = objworkorderEMSEntities.spGetApplicantPositionTitle(Applicant).Select
-                  (x => new ApplicantPositionTitle()
+                  (x => new WorkOrderEMS.Models.ApplicantPositionTitle()
                   {
                       APT_FromMoYr  =x.APT_FromMoYr,
                       APT_PositionTitle = x.APT_PositionTitle,
@@ -195,7 +195,7 @@ namespace WorkOrderEMS.BusinessLogic
                       APT_ToMoYr = x.APT_ToMoYr
                   }).ToList();
             commonModel.ApplicantSchecduleAvaliblity = objworkorderEMSEntities.spGetApplicantSchecduleAvaliblity(Applicant).Select
-                 (x => new ApplicantSchecduleAvaliblity()
+                 (x => new WorkOrderEMS.Models.ApplicantSchecduleAvaliblity()
                  {
                      ASA_AvaliableEndTime = Convert.ToDateTime(x.ASA_AvaliableEndTime),
                      ASA_AvaliableStartTime = Convert.ToDateTime(x.ASA_AvaliableStartTime),
@@ -211,7 +211,7 @@ namespace WorkOrderEMS.BusinessLogic
                      ATC_Violation = x.ATC_Violation
                  }).ToList();
             commonModel.ApplicantVehiclesOperated = objworkorderEMSEntities.spGetApplicantVehiclesOperated(Applicant).Select
-                 (x => new ApplicantVehiclesOperated()
+                 (x => new WorkOrderEMS.Models.ApplicantVehiclesOperated()
                  {
                      AVO_DenideLicensePermit = Convert.ToChar(x.AVO_DenideLicensePermit),
                      AVO_DeniedLicensePermitExplanation = x.AVO_DeniedLicensePermitExplanation,

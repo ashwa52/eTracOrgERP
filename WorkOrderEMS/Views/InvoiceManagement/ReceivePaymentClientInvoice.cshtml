@@ -1,0 +1,688 @@
+﻿@model WorkOrderEMS.Models.ClientInvoiceDataModel
+@{
+    ViewBag.Title = "Customer Management";
+
+    var isRefresh = ViewBag.IsPageRefresh;
+    if (isRefresh == true)
+    {
+        Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = null;
+    }
+
+    long locationId = 0;
+    long userType = 0;
+    string StateID = string.Empty, LocationTypeID = string.Empty;
+    string ServiceId = string.Empty;
+    string LocationIdData = string.Empty;
+    string backtolist = string.Empty;
+    if (ViewBag.UpdateMode != null && ViewBag.UpdateMode == true)
+    {
+        ViewBag.Title = "Update Customer"; LocationIdData = ViewBag.AllocatedLocation; //ServiceId = ViewBag.ServicesID;
+        backtolist = "ListCustomers";
+    }
+    else
+    {
+        backtolist = "ListWaitingCustomers";
+    }
+
+    if (Model.PaymentReceiveDate <= DateTime.MinValue || Model.PaymentReceiveDate == Convert.ToDateTime("01/01/1900"))
+    {
+        Model.PaymentReceiveDate = DateTime.Today;
+    }
+
+    if (Model.InvoiceDueDate <= DateTime.MinValue || Model.InvoiceDueDate == Convert.ToDateTime("01/01/1900"))
+    {
+        Model.InvoiceDueDate = DateTime.Today;
+    }
+
+    if (Model.DepositDate <= DateTime.MinValue || Model.DepositDate == Convert.ToDateTime("01/01/1900"))
+    {
+        Model.DepositDate = DateTime.Today;
+    }
+
+    if (Model.EstimatedDepositDate <= DateTime.MinValue || Model.EstimatedDepositDate == Convert.ToDateTime("01/01/1900"))
+    {
+        Model.EstimatedDepositDate = DateTime.Today;
+    }
+
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    string CompanyDocPath = System.Configuration.ConfigurationManager.AppSettings["CompanyDocuments"];
+    string url = Url.Action("CompanyList", "VendorManagement");
+}
+@section scripts{
+    <script type="text/javascript">
+        var $_locationId = '@locationId';
+        var $_userTypeId = '@userType';
+        var IsUpdate = '@ViewBag.UpdateMode';
+        //var $_LocationIdData = @ViewBag.AllocatedLocation;
+        var ServiceID;
+        var LocationIDs;
+
+    </script>
+}
+
+<style>
+
+    .form-control {
+        border: 1px solid #a0b3b0 !important;
+    }
+
+    label .req {
+        margin: 2px;
+        color: #ed2f35;
+    }
+
+    .form-control:hover, .form-control:focus, .form-control.active {
+        box-shadow: none;
+        background: #fff;
+        color: #454545;
+    }
+
+    .stepwizard {
+        display: table;
+        width: 100% !important;
+        position: relative;
+        margin-left: 0% !important;
+    }
+
+    .headerSize {
+        height: 36px;
+    }
+
+    .error {
+        color: red;
+    }
+
+    .stepwizard-step p {
+        margin-top: 0px;
+        color: #666;
+        font-size: 20px;
+        margin-left: -35px;
+    }
+
+    .stepwizard-row {
+        display: table-row;
+    }
+
+
+
+    .stepwizard-step button[disabled] {
+        /*opacity: 1 !important;
+    filter: alpha(opacity=100) !important;*/
+    }
+
+    .stepwizard .btn.disabled, .stepwizard .btn[disabled], .stepwizard fieldset[disabled] .btn {
+        opacity: 1 !important;
+        color: #bbb;
+    }
+
+    .stepwizard-row:before {
+        top: 14px;
+        bottom: 0;
+        position: absolute;
+        content: " ";
+        width: 100%;
+        height: 1px;
+        background-color: #ccc;
+        z-index: 0;
+    }
+
+    .stepwizard-step {
+        display: table-cell;
+        /*text-align: center;*/
+        position: relative;
+    }
+
+    .btn-circledata {
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        padding: 6px 0;
+        font-size: 12px;
+        line-height: 1.428571429;
+        border-radius: 15px;
+    }
+
+    .stepwizard-step {
+        width: 20%;
+        text-align: center;
+        font-size: 14px;
+    }
+
+        .stepwizard-step p {
+            font-size: 14px;
+            margin-left: 0;
+            text-align: center;
+        }
+
+    .multiselect-container .checkbox input {
+        margin-right: 8px;
+    }
+
+    .multiselect-container label.checkbox {
+        margin: 6px 0 0 !important;
+        padding: 0 0 0 30px;
+        width: 100%;
+    }
+
+    .multiselect-container input {
+        float: left;
+        margin-rop: 7px !important;
+    }
+
+    input[type="checkbox"]:after {
+        background: #0aa0cd;
+    }
+
+    /*.radio_span {
+        float: left;
+    }*/
+
+    .PendingBalance {
+        color: red;
+        font-weight: bold;
+        border-color: red !important;
+    }
+    .form-control-sm1 {
+        height: calc(1.5em + 0.5rem + 2px);
+        padding: 0.25rem 0.5rem;
+        font-size: 0.71094rem;
+        line-height: 1.5;
+        border-radius: 0.2rem;
+    }
+</style>
+
+<script type="text/javascript" src="~/Scripts/common/Common.js"></script>
+<script type="text/javascript" src="~/Scripts/BindDropDown/DropDownList.js"></script>
+<script src="~/Scripts/simple.money.format.js"></script>
+<script type="text/javascript" src="~/Scripts/common/Masking.js"></script>
+<style>
+
+    .input-disabled {
+        background-color: #EBEBE4;
+    }
+</style>
+<br />
+
+@using (Html.BeginForm("", "InvoiceManagement", FormMethod.Post, new { enctype = "multipart/form-data", @id = "msform1" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+    <!-- fieldsets -->
+    if (ViewBag.UpdateMode != false)
+    {
+        //@Html.HiddenFor(model => model.CustomerType, new { @id = "CustomerTypeForEdit" })
+        //@Html.HiddenFor(model => model.TCBD_ID)
+    }
+    @*<div class="content-body">*@
+    <div class="container-fluid">
+        <!-- row -->
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card aos-init aos-animate" data-aos="fade-up">
+                    @*<div class="card-header headerSize">
+                        <h4 class="card-title" style="color:white;"><strong>Create Manual Client Invoice</strong></h4>
+                    </div>*@
+                    <div class="card-body">
+
+                        <br />
+
+                        <div class="panel panel-primary setup-content">
+                            <div class="basic-form">
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label" for="FirstName">Client Company Name</label>
+                                    <div class="col-sm-3 col-form-label">
+                                        @Html.HiddenFor(model => model.ClientLocationCode)
+                                        @Html.HiddenFor(model => model.CompanyId)
+                                        @Html.DisplayFor(model => model.ClientCompanyName)
+
+                                    </div>
+                                    <label class="col-sm-3 col-form-label" for="ContractType">Contract Type</label>
+                                    <div class="col-sm-3 col-form-label">
+                                        @Html.DisplayFor(model => model.ContractTypeDesc)
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label" for="InvoicePaymentTerms">Invoice Payment Terms</label>
+                                    <div class="col-sm-3 col-form-label">
+                                        @Html.DisplayFor(model => model.InvoicePaymentTermsDesc)
+                                    </div>
+                                    <label class="col-sm-3 col-form-label" for="ClientPointOfContactName">Client Point of Contact Name</label>
+                                    <div class="col-sm-3 col-form-label">
+                                        @Html.DisplayFor(model => model.ClientPointOfContactName)
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label" for="PositionTitle">Position Title</label>
+                                    <div class="col-sm-3 col-form-label">
+                                        @Html.DisplayFor(model => model.PositionTitle)
+                                    </div>
+                                    <label class="col-sm-3 col-form-label" for="InvoiceNumber"> Invoice Number</label>
+                                    <div class="col-sm-3 col-form-label">
+                                        @Html.HiddenFor(model => model.Id)
+                                        @Html.DisplayFor(model => model.InvoiceNumber)
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label" for="Email">Invoice Date</label>
+                                    <div class="col-sm-3 col-form-label">
+                                        @Html.DisplayFor(model => model.InvoiceDateDisplay)
+                                    </div>
+                                    <label class="col-sm-3 col-form-label" for="InvoiceDueDate" id="lblAddress2City"> Invoice Payment Due Date</label>
+                                    <div class="col-sm-3 col-form-label">
+                                        @Html.DisplayFor(model => model.InvoiceDueDateDisplay)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label" for="LocationCode">Location Code</label>
+                                    <div class="col-sm-3 col-form-label">
+                                        @Html.DisplayFor(model => model.LocationCode)
+                                    </div>
+                                    <label class="col-sm-3 col-form-label" for="LocationAddress">Location Address</label>
+                                    <div class="col-sm-3 col-form-label">
+                                        @Html.DisplayFor(model => model.LocationAddress)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label" for="ReasonForOffScheduleInvoice"> Reason for Off. Schedule Invoice</label>
+                                    <div class="col-sm-4 col-form-label">
+                                        @Html.DisplayFor(model => model.ReasonForOffScheduleInvoiceDesc)
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="marbottom"></div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="divInvoiceItem">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card aos-init">
+                    <div class="card-header headerSize">
+                        <h4 class="card-title" style="color:white;"><strong>Invoice Details</strong></h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="tblInvoiceItem">
+                            <table id="tblSubItem" class="table table-striped table-bordered table-hover">
+                                <tbody id="containerTblSubItem">
+                                    @foreach (var item in Model.ListInvoiceItemDetails)
+                                    {
+                                        Html.RenderPartial("_InvoiceItemDetailsForView", item);
+                                    }
+                                </tbody>
+                            </table>
+                            <br />
+                            <div class="panel panel-primary setup-content">
+                                <div class="basic-form">
+                                    <div class="form-group row ">
+                                        <label class="col-sm-2 col-form-label" for="SubTotal">Subtotal</label>
+                                        <div class="col-sm-2 col-form-label">
+                                            @Html.DisplayFor(model => model.SubTotal)
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="TaxAmount">Tax</label>
+                                        <div class="col-sm-2 col-form-label">
+                                            @Html.DisplayFor(model => model.TaxAmount)
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" for="GrandTotal">Grand Total</label>
+                                        <div class="col-sm-2 col-form-label">
+                                            @Html.DisplayFor(model => model.GrandTotal)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="divPaymentProcess">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card aos-init">
+                    <div class="card-header headerSize">
+                        <h4 class="card-title" style="color:white;"><strong>Process Credit</strong></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="panel panel-primary setup-content">
+                            <div class="basic-form">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label" for="InvoiceDueDate"> Invoice Payment Due Date</label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBox("InvoiceDueDate", Model.InvoiceDueDate.ToString("MM/dd/yyyy"), new { @Placeholder = "Due Date", @class = "form-control input-rounded", @maxlength = "10", @readonly = true })
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.InvoiceDueDate)
+                                        </div>
+                                    </div>
+                                    <label class="col-sm-2 col-form-label" for="GrandTotal"> Invoice Total</label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(model => model.GrandTotal, new { @class = "form-control input-rounded", @placeholder = "Grand Total", @readonly = true })
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.GrandTotal)
+                                        </div>
+                                    </div>
+                                    <label class="col-sm-2 col-form-label" for="PendingAmount"> Pending Amount</label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(model => model.PendingAmount, new { @class = "form-control input-rounded", @placeholder = "Pending Total", @readonly = true })
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.PendingAmount)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label" for="PaymentMethod"> Payment Method<span class="req">*</span></label>
+                                    <div class="col-sm-2">
+                                        @Html.DropDownListFor(model => model.PaymentMethod, new SelectList(ViewBag.PaymentMethod, "GlobalCodeId", "Description"), "--Select Payment Method--", new { @class = "form-control input-rounded required" })
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.PaymentMethod)
+                                        </div>
+                                    </div>
+                                    <label class="col-sm-2 col-form-label" for="PaymentReceiveDate">Payment Receive Date<span class="req">*</span></label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBox("PaymentReceiveDate", Model.PaymentReceiveDate.ToString("MM/dd/yyyy"), new { @Placeholder = "Patment Receive Date", @class = "form-control input-rounded required", @maxlength = "10" })
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.InvoiceDueDate)
+                                        </div>
+                                    </div>
+                                    <label class="col-sm-2 col-form-label" for="ReferenceCheckNo">Ref./Check Number<span class="req">*</span></label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(model => model.ReferenceCheckNo, new { @class = "form-control input-rounded required", @placeholder = "Ref/Check No." })
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.ReferenceCheckNo)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label" for="PaymentAmount"> Payment Amount<span class="req">*</span></label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(model => model.PaymentAmount, new { @class = "form-control input-rounded required", @Value = Model.PendingAmount, @placeholder = "Payment Amount", @min = 1,@max = Model.PendingAmount, @onkeypress = "javascript:return validFloat(event,this.id);" })
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.PaymentAmount)
+                                        </div>
+                                    </div>
+                                    <label class="col-sm-2 col-form-label" for="RemainingBalance"> Remainig Balance</label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(model => model.BalanceAmount, new { @class = "form-control input-rounded", @placeholder = "Balance Amount", @max = Model.PendingAmount })
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.BalanceAmount)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="divContinue">
+                                <span class="w-100 text-right float-left">
+                                    <button type="button" class="btn btn-default bluebutton" onclick="return callCancel();" style="background-color:red;border-radius:18px;margin-left: 20px;width:160px;color:white;" value="Cancel" id="btnCancel">Cancel</button>
+                                    <button type="button" class="btn btn-default bluebutton nxt-btn" value="Continue" id="btnContinue" style="background-color:forestgreen;border-radius:18px;width:120px;color:white;">Continue</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="divDipositAccount" style="display:none">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card aos-init">
+                    <div class="card-header headerSize">
+                        <h4 class="card-title" style="color:white;"><strong>Diposit Account</strong></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="panel panel-primary setup-content">
+                            <div class="basic-form">
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label">  Check Deposit Status<span class="req">*</span></label>
+                                    <div class="col-sm-4">
+                                        @Html.RadioButtonFor(model => model.DepositStatus, "Yes", new { @class = "rbtn", @checked = "true" })<span class="">
+                                            &nbsp;Deposited &nbsp;
+                                        </span>
+                                        @Html.RadioButtonFor(model => model.DepositStatus, "No", new { @style = "margin-left:20%;", @class = "radio rbtn" })<span class="">
+                                            &nbsp;Not Deposited
+                                        </span>
+                                        @Html.ValidationMessageFor(model => model.DepositStatus)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label" for="DepositAccount">Deposit Account<span class="req">*</span></label>
+                                    <div class="col-sm-2">
+                                        @*@Html.DropDownListFor(model => model.DepositAccount, new SelectList(ViewBag.DepositAccount, "GlobalCodeId", "Description"), "--Select Deposit Account--", new { @class = "form-control input-rounded required" })*@
+                                        @Html.DropDownListFor(model => model.DepositAccount, new List<SelectListItem>()
+                                                                        {   new SelectListItem(){Value = "",Text = "--Select Deposit Account--"},
+                                                                            new SelectListItem(){Value = "Account1",Text = "Account 1 - 075451236540"},
+                                                                            new SelectListItem(){Value = "Account2",Text = "Account 2 - 075451236541"}
+                                                                        }, new { @class = "form-control input-rounded required" })
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.DepositAccount)
+                                        </div>
+                                    </div>
+                                    <label class="col-sm-2 col-form-label clsDepositDate" for="PaymentReceiveDate" id="lblDepositDate">Deposit Date<span class="req">*</span></label>
+                                    <div class="col-sm-2 clsDepositDate">
+                                        @Html.TextBox("DepositDate", Model.DepositDate.ToString("MM/dd/yyyy"), new { @Placeholder = "Deposit Date", @class = "form-control input-rounded clsDepositDate", @maxlength = "10" })
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.DepositDate)
+                                        </div>
+                                    </div>
+                                    <label class="col-sm-2 col-form-label clsEstimatedDepositDate" for="EstimatedDepositDate" id="lblEstimatedDepositDate">Est. Deposit Date<span class="req">*</span></label>
+                                    <div class="col-sm-2 clsEstimatedDepositDate">
+                                        @Html.TextBox("EstimatedDepositDate", Model.EstimatedDepositDate.ToString("MM/dd/yyyy"), new { @Placeholder = "Est. Deposit Date", @class = "form-control input-rounded clsEstimatedDepositDate", @maxlength = "10" })
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.EstimatedDepositDate)
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="divSubmit1" style="display:none;">
+            <span class="w-100 text-right float-left">
+                <button type="button" class="btn btn-default" onclick="return callCancel();" style="background-color:red;border-radius:18px;margin-left: 20px;width:160px;color:white;" value="Cancel" id="btnCancel">Cancel</button>
+                <button type="button" class="btn btn-default" value="ProcessPayment" id="btnProcessPayment" style="background-color:forestgreen;border-radius:18px;color:white;">Process Payment</button>
+            </span>
+        </div>
+
+    </div>
+    @*</div>*@
+}
+<script src="~/Content/NewAdminContent/VENDOR/jquery-steps/build/jquery.steps.min.js"></script>
+<script src="~/Scripts/NewAdminJS/plugins-init/jquery-steps-init.js"></script>
+<script type="text/javascript">
+
+    function validInt(event) {
+        if (event.keyCode == 13) {
+            return true;
+        }
+        if (event.keyCode < 48 || event.keyCode > 57) {
+            event.keyCode = 0;
+            return false;
+        }
+    }
+
+    function validFloat(e, txtid) {
+        var code;
+        var tb = document.getElementById(txtid);
+        var txt = tb.value;
+        if (!e) var e = window.event;
+        if (e.keyCode)
+            code = e.keyCode;
+        else if (e.which)
+            code = e.which;
+        else
+            return true;
+        if (code == 13 || code == 8 || code == 9)
+            return true;
+        if (code == 46)
+            if (txt.indexOf('.') != -1)
+                code = 0;
+        if ((code < 46 || code > 57) || code == 47) {
+            code = 0;
+            return false;
+        }
+    }
+</script>
+<script>
+    $(function () {
+
+        $('.clsEstimatedDepositDate').hide();
+
+        $('#PaymentReceiveDate').datepicker({
+            format: "mm/dd/yyyy",
+        });
+
+        $('#InvoiceDueDate').datepicker({
+            format: "mm/dd/yyyy",
+        });
+
+        $('#DepositDate').datepicker({
+            format: "mm/dd/yyyy",
+        });
+
+        $('#EstimatedDepositDate').datepicker({
+            format: "mm/dd/yyyy",
+        });
+
+        $("#btnProcessPayment").on("click", function (event) {
+            if (!$("#msform1").valid()) {
+                return false;
+            }
+            else {
+                fn_showMaskloader('Please wait...Loading');
+                var form = $('#msform1')[0];
+                var data = new FormData(form);
+                $.ajax({
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    url: '/InvoiceManagement/ReceivePaymentClientInvoiceSubmit',
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    timeout: 600000,
+                    success: function (data) {
+                        $("#divOpenPaymentReceiveForm").html('');
+                        $("#myModalForPaymentReceiveAction").modal("hide");
+                        var addNewUrl = "/InvoiceManagement/ClientInvoiceList";
+                        $('#RenderPageId').load(addNewUrl);
+                        fn_hideMaskloader();
+                    },
+                    error: function (e) {
+
+                    }
+                });
+            }
+        });
+
+        $("#btnContinue").on("click", function (event) {
+            if (!$("#msform1").valid()) {
+                return false;
+            } else {
+                $("#divDipositAccount").show(200);
+                $("#divSubmit1").show(200);
+                $("#divContinue").hide();
+            }
+        });
+
+        $("#PaymentMethod").change(function () {
+            if ($('#PaymentMethod').find('option:selected').text() == "Check") {
+                $("#ReferenceCheckNo").addClass('required');
+            } else {
+                $("#ReferenceCheckNo").removeClass('required');
+            }
+        });
+
+        if (IsUpdate == "True") {
+            $('label').addClass('active highlight');
+        }
+
+    });
+
+    $(document).ready(function () {
+        calculateBalanceAmt();
+
+        $('#DepositStatus[value="Yes"]').click(function () {
+            $('.clsDepositDate').show();
+            $('.clsEstimatedDepositDate').hide();
+            $("#DepositDate").addClass('required');
+            $("#EstimatedDepositDate").removeClass('required');
+        });
+        $('#DepositStatus[value="No"]').click(function () {
+            $('.clsDepositDate').hide();
+            $('.clsEstimatedDepositDate').show();
+            $("#EstimatedDepositDate").addClass('required');
+            $("#DepositDate").removeClass('required');
+        });
+
+    });
+
+    function callCancel() {
+        bootbox.confirm("Are you sure, All Information Previously Entered Will be Deleted ?", function (result) {
+            if (result) {
+                $("#divOpenPaymentReceiveForm").html('');
+                $("#myModalForPaymentReceiveAction").modal("hide");
+                var addNewUrl = "/InvoiceManagement/ClientInvoiceList";
+                $('#RenderPageId').load(addNewUrl);
+            }
+        });
+    }
+
+    var calculateBalanceAmt = function () {
+        $('#PaymentAmount').on("change", function () {
+            var currentid = $(this).attr('id');
+            var currentvalue = $("#" + currentid).val();
+            var pendamt = $('#PendingAmount').val();
+
+            if (pendamt == "")
+                pendamt = 0;
+
+            if (currentvalue == "")
+                currentvalue = 0;
+
+            var balanceamt = parseFloat(pendamt) - parseFloat(currentvalue);
+
+            if (parseFloat(balanceamt) > 0) {
+                $('#BalanceAmount').addClass("PendingBalance");
+            }
+            else {
+                $('#BalanceAmount').removeClass("PendingBalance");
+            }
+
+            $('#BalanceAmount').val(parseFloat(balanceamt).toFixed(2));
+        });
+
+        $('#BalanceAmount').on("change", function () {
+            var currentid = $(this).attr('id');
+            var currentvalue = $("#" + currentid).val();
+            var pendamt = $('#PendingAmount').val();
+
+            if (pendamt == "")
+                pendamt = 0;
+
+            if (currentvalue == "")
+                currentvalue = 0;
+
+            var balanceamt = parseFloat(pendamt) - parseFloat(currentvalue);
+
+            if (parseFloat(balanceamt) > 0) {
+                $('#BalanceAmount').addClass("PendingBalance");
+            }
+            else {
+                $('#BalanceAmount').removeClass("PendingBalance");
+            }
+
+            $('#PaymentAmount').val(parseFloat(balanceamt).toFixed(2));
+        });
+    }
+
+
+</script>

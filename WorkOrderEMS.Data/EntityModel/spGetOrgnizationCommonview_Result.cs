@@ -22,5 +22,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string LocationName { get; set; }
         public Nullable<long> EMP_JobTitleId { get; set; }
         public Nullable<long> EMP_LocationId { get; set; }
+        public string EMP_EmploymentStatus { get; set; }
+        public string EMP_IsExempt { get; set; }
     }
 }

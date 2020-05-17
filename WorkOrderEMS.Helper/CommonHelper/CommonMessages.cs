@@ -636,5 +636,9 @@ namespace WorkOrderEMS.Helper
         {
             return "Applicant screened succesfully.";
         }
+        //public static string ApplicantClear()
+        //{
+        //    return "Applicant screened succesfully.";
+        //}
     }
 }

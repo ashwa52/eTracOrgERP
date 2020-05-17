@@ -158,8 +158,6 @@ namespace WorkOrderEMS.Controllers
                             List<Account> accountData = querySvcAccount.ExecuteIdsQuery("SELECT * FROM Account MaxResults 1000").ToList();
                             // vendor.PrimaryPhone.FreeFormNumber =
 
-                            
-
                             //Mandatory Fields
                             vendor.GivenName = Obj.PointOfContact;
                             vendor.DisplayName = Obj.PointOfContact;

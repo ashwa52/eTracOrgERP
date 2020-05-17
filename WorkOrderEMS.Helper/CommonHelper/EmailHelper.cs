@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Web;
-
 
 namespace WorkOrderEMS.Helper
 {
@@ -249,10 +250,13 @@ namespace WorkOrderEMS.Helper
 
         public string LoginId { get; set; }
         public string NewPassword { get; set; }
-        //Added by Ashwajit Bansod to send Job Title in Mail to applicant
+		
+        #region InvoiceMailProperties
+        private const string TableRows = "[TableRows]";
+        private const string TableRows_Regex = @"\[TableRows]\{(?<Row>[^}]*)\}";
+        public DataSet DtInvoiceDetails { get; set; }
         public string JobTitle { get; set; }
-
-
+        #endregion
 
         public bool SendEmailWithTemplate(string[] attachedUrl = null)
         {
@@ -1238,8 +1242,116 @@ namespace WorkOrderEMS.Helper
                         strMailBody = strMailBody.Replace("##REGISTRATIONLINK", AcceptAssessmentLink);
                         strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
                         break;
-                   
+						
+                    case "InvoiceSubmissionTemplate":
 
+                        TemplatePath = ConfigurationManager.AppSettings["InvoiceSubmissionTemplate"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";
+                        Subject = "eTrac: Invoice Submission";
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+
+                        strMailBody = strMailBody.Replace("##ClientCompanyName", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["ClientCompanyName"]));
+                        strMailBody = strMailBody.Replace("##ContractType", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["ContractTypeDesc"]));
+                        strMailBody = strMailBody.Replace("##InvoiceNumber", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["InvoiceNumber"]));
+                        strMailBody = strMailBody.Replace("##InvoiceDate", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["InvoiceDateDisplay"]));
+                        strMailBody = strMailBody.Replace("##InvoiceDueDate", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["InvoiceDueDateDisplay"]));
+                        strMailBody = strMailBody.Replace("##ReasonForOffScheduleInvoice", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["ReasonForOffScheduleInvoiceDesc"]));
+                        strMailBody = strMailBody.Replace("##InvoiceSubTotal", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["SubTotal"]));
+                        strMailBody = strMailBody.Replace("##InvoiceTaxAmount", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["TaxAmount"]));
+                        strMailBody = strMailBody.Replace("##GrandTotal", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["GrandTotal"]));
+
+                        strMailBody = strMailBody.Replace("##Year", Year);
+                        strMailBody = strMailBody.Replace("##Logo", LogoPath);
+                        strMailBody = strMailBody.Replace("##MailHeading", strMailHeading);
+                        strMailBody = strMailBody.Replace("##ClientName", ClientName);
+                        strMailBody = strMailBody.Replace("##UserName", UserName);
+                        strMailBody = strMailBody.Replace("##LocationName", LocationName);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+
+                        int i = 1;
+                        string ListAtt = "";
+                        string TableRow = "";
+                        Match m = Regex.Match(strMailBody, TableRows_Regex);
+                        TableRow = m.Groups["Row"].Value;
+
+                        foreach (DataRow dr in DtInvoiceDetails.Tables[1].Rows)
+                        {
+                            string strNewRow = "";
+                            strNewRow = TableRow;
+
+                            strNewRow = strNewRow.Replace("##ItemNo", Convert.ToString(dr["ItemNoDesc"]));
+                            strNewRow = strNewRow.Replace("##Description", Convert.ToString(dr["ItemDescription"]));
+                            strNewRow = strNewRow.Replace("##ItemType", Convert.ToString(dr["ItemTypeDesc"].ToString()));
+                            strNewRow = strNewRow.Replace("##RevenueAC", Convert.ToString(dr["RevenueAccountDesc"]));
+                            strNewRow = strNewRow.Replace("##Qty", Convert.ToString(dr["ItemQty"]));
+                            strNewRow = strNewRow.Replace("##UnitCost", Convert.ToString(dr["ItemUnitCost"]));
+                            strNewRow = strNewRow.Replace("##TaxPercentage", Convert.ToString(dr["TaxPercentage"]));
+                            strNewRow = strNewRow.Replace("##TaxAmount", Convert.ToString(dr["TaxAmount"]));
+                            strNewRow = strNewRow.Replace("##TotalCost", Convert.ToString(dr["TotalCost"]));
+                            ListAtt += strNewRow;
+                            i++;
+                        }
+
+                        strMailBody = Regex.Replace(strMailBody, TableRows_Regex, ListAtt);
+
+
+                        break;
+
+                    case "InvoicePaymentReminderTemplate":
+
+                        TemplatePath = ConfigurationManager.AppSettings["InvoicePaymentReminder"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";
+                        Subject = "eTrac: Invoice Payment Reminder";
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+
+                        strMailBody = strMailBody.Replace("##ClientCompanyName", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["ClientCompanyName"]));
+                        strMailBody = strMailBody.Replace("##ContractType", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["ContractTypeDesc"]));
+                        strMailBody = strMailBody.Replace("##InvoiceNumber", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["InvoiceNumber"]));
+                        strMailBody = strMailBody.Replace("##InvoiceDate", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["InvoiceDateDisplay"]));
+                        strMailBody = strMailBody.Replace("##InvoiceDueDate", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["InvoiceDueDateDisplay"]));
+                        strMailBody = strMailBody.Replace("##ReasonForOffScheduleInvoice", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["ReasonForOffScheduleInvoiceDesc"]));
+                        strMailBody = strMailBody.Replace("##InvoiceSubTotal", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["SubTotal"]));
+                        strMailBody = strMailBody.Replace("##InvoiceTaxAmount", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["TaxAmount"]));
+                        strMailBody = strMailBody.Replace("##GrandTotal", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["GrandTotal"]));
+
+                        strMailBody = strMailBody.Replace("##Year", Year);
+                        strMailBody = strMailBody.Replace("##Logo", LogoPath);
+                        strMailBody = strMailBody.Replace("##MailHeading", strMailHeading);
+                        strMailBody = strMailBody.Replace("##ClientName", ClientName);
+                        strMailBody = strMailBody.Replace("##UserName", UserName);
+                        strMailBody = strMailBody.Replace("##LocationName", LocationName);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+
+                        int i1 = 1;
+                        string ListAtt1 = "";
+                        string TableRow1 = "";
+                        Match m1 = Regex.Match(strMailBody, TableRows_Regex);
+                        TableRow1 = m1.Groups["Row"].Value;
+
+                        foreach (DataRow dr in DtInvoiceDetails.Tables[1].Rows)
+                        {
+                            string strNewRow = "";
+                            strNewRow = TableRow1;
+
+                            strNewRow = strNewRow.Replace("##ItemNo", Convert.ToString(dr["ItemNoDesc"]));
+                            strNewRow = strNewRow.Replace("##Description", Convert.ToString(dr["ItemDescription"]));
+                            strNewRow = strNewRow.Replace("##ItemType", Convert.ToString(dr["ItemTypeDesc"].ToString()));
+                            strNewRow = strNewRow.Replace("##RevenueAC", Convert.ToString(dr["RevenueAccountDesc"]));
+                            strNewRow = strNewRow.Replace("##Qty", Convert.ToString(dr["ItemQty"]));
+                            strNewRow = strNewRow.Replace("##UnitCost", Convert.ToString(dr["ItemUnitCost"]));
+                            strNewRow = strNewRow.Replace("##TaxPercentage", Convert.ToString(dr["TaxPercentage"]));
+                            strNewRow = strNewRow.Replace("##TaxAmount", Convert.ToString(dr["TaxAmount"]));
+                            strNewRow = strNewRow.Replace("##TotalCost", Convert.ToString(dr["TotalCost"]));
+                            ListAtt1 += strNewRow;
+                            i1++;
+                        }
+
+                        strMailBody = Regex.Replace(strMailBody, TableRows_Regex, ListAtt1);
+
+
+                        break;
                 }
                 string body = System.Web.HttpUtility.HtmlDecode(strMailBody);
                 List<Attachment> tt = new List<Attachment>();
@@ -1314,9 +1426,8 @@ namespace WorkOrderEMS.Helper
                 SmtpServer.Credentials = new System.Net.NetworkCredential(smtpEmailAddress, smtpPassword);
                 SmtpServer.Port = Convert.ToInt32(ConfigurationManager.AppSettings["SMTP_DEFAULT_PORT"]);
                 mail.Priority = MailPriority.High;
-
+                
                 mail.From = new MailAddress(System.Configuration.ConfigurationManager.AppSettings["SMTP_DEFAULT_EMAIL"].ToString(), "eTrac");
-
                 mail.To.Add(emailId.Trim());
                 mail.Subject = subject;
                 mail.Body = body;

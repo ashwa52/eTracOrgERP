@@ -1,6 +1,6 @@
 ﻿@model WorkOrderEMS.Models.ApproveRejectVendorModel
 @{
-    ViewBag.Title = "Waiting Customers List";    
+    ViewBag.Title = "Waiting Customers List";
 
     var isRefresh = ViewBag.IsPageRefresh;
     if (isRefresh == true)
@@ -70,6 +70,8 @@
     .headerSize {
         height: 36px;
     }
+    
+    
 </style>
 <br />
 <div class="content-body" style="min-height: 920px;">
@@ -88,14 +90,14 @@
             <div class="col-lg-6">
             </div>
             <div class="col-lg-6">
-                <a href="@Url.Action("ListCustomers", "CustomerManagement")" data-oldDash="Yes">
-                    <div class="pricing_table_content mt-5" style="background-color: #3F8ADA;color:white;">
+                @*<a href="@Url.Action("ListCustomers", "CustomerManagement")" data-oldDash="Yes">*@
+                    <div class="pricing_table_content mt-5" id="lstCust" style="background-color: #3F8ADA;color:white;cursor: pointer;">
                         <p style="margin-top:-20px;font-size:20px;"><b> </b></p>
                         <div class="package" style="margin-top:-30px;"><i class="mdi mdi-account-check" style="color:white;font-size:30px;"></i>&nbsp;&nbsp;&nbsp;<b>Customer List</b></div>
                     </div>
-                </a>
+                @*</a>*@
             </div>
-        </div>        
+        </div>
         <br>
         <div class="row">
             <div class="col-lg-12">
@@ -422,6 +424,7 @@
         </div>
     </div>
 </div>
+
 
 <script src="~/GridListing/JqGridScript/CustomersWaitingList.js"></script>
 <script>

@@ -17,7 +17,7 @@ namespace WorkOrderEMS.Data.DataRepository
         /// Created For : TO get Superior Data 
         /// </summary>
         /// <returns></returns>
-        public List<spGetVehicleSeating_Result3> GetSuperiorList()
+        public List<spGetVehicleSeating_Result> GetSuperiorList()
         {
             try
             {
@@ -54,7 +54,7 @@ namespace WorkOrderEMS.Data.DataRepository
             return isSave;
         }
 
-        public List<spGetVehicleSeating_Result3> GetVSCList(long? LocationId)
+        public List<spGetVehicleSeating_Result> GetVSCList(long? LocationId)
         {
             try
             {
@@ -99,7 +99,7 @@ namespace WorkOrderEMS.Data.DataRepository
         /// </summary>
         /// <param name="CSVChartId"></param>
         /// <returns></returns>
-        public List<spGetJobTitle_Result2> GetJobTitleList(long CSVChartId)
+        public List<spGetJobTitle_Result> GetJobTitleList(long CSVChartId)
         {
             try
             {
@@ -112,7 +112,7 @@ namespace WorkOrderEMS.Data.DataRepository
 
             }
         }
-        public List<spGetVehicleSeating_Result3> GetChartDetails()
+        public List<spGetVehicleSeating_Result> GetChartDetails()
         {
             try
             {
@@ -150,7 +150,7 @@ namespace WorkOrderEMS.Data.DataRepository
         {
             try
             {
-                var data = objworkorderEMSEntities.spSetJobPosting(Obj.AddChartModel.Action, Obj.RecruiteeId, Obj.AddChartModel.JobTitleId, Obj.HiringManager, Obj.LocationId, Obj.NumberOfPost,Obj.DOT_Status,"Y");
+                var data = objworkorderEMSEntities.spSetJobPosting(Obj.AddChartModel.Action,null, Obj.RecruiteeId, Obj.AddChartModel.JobTitleId, Obj.HiringManager, Obj.LocationId, Obj.NumberOfPost,Obj.DOT_Status,"Y");
                 return data;
             }
             catch (Exception ex)

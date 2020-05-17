@@ -1,16 +1,26 @@
 ﻿@model WorkOrderEMS.Models.WebEmployeeAttendance
+
+@using WorkOrderEMS.Models
 @{
     ViewBag.Title = "Employee Attendance";
-    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    var isRefresh = ViewBag.IsPageRefresh;
+    if (isRefresh == false)
+    {
+        Layout = null;
+    }
+    else
+    {
+        Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    }
     long locationId = 0;
     long userType = 0;
     WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
-
     if (ObjLogin != null)
     {
         locationId = ObjLogin.LocationID;
         userType = ObjLogin.UserRoleId;
     }
+    List<AttendanceDashBoradModel> AttendanceList = (List<AttendanceDashBoradModel>)ViewBag.AttendanceDashBoradModel;
 }
 @section scripts{
     <script type="text/javascript">
@@ -29,7 +39,6 @@
 <link href="~/Content/NewAdminContent/VENDOR/c3/css/c3.min.css" rel="stylesheet" />
 
 <style>
-
     #chartdiv, #EmployeeCount1 {
         width: 100%;
         height: 250px;
@@ -60,47 +69,209 @@
         height: 36px;
     }
 </style>
-
-<div class="content-body" style="min-height: 920px;">
-    <!-- row -->
-    <div class="container-fluid">
-        <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3 aos-init aos-animate" data-aos="fade-up">
-            <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
-                <div class="welcome-text">
-                    <br /> <br />
+@using (Html.BeginForm("", "", FormMethod.Post, new { enctype = "multipart/form-data", @id = "DOT_form" }))
+{
+    <div class="content-body" style="min-height: 800px;">
+        <div class="container-fluid">
+            <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3 aos-init aos-animate" data-aos="fade-up">
+                <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
+                    <div class="welcome-text">
+                    </div>
                 </div>
             </div>
-
-        </div>
-        <div class="row justify-content-center">
-            @if (@ViewBag.Count == "0")
-            {
-            <div class="col-lg-6">
-                <a href="@Url.Action("WebEmployeeAttendanceClockIn", "EPeople")">
-                    <div class="pricing_table_content mt-5" style="background-color: #529F9D;color:white;">
-                        <p style="margin-top:-20px;font-size:20px;"><b> </b></p>
-                        <div class="package" style="margin-top:-30px;"><i class="fa fa-clock-o" style="color:yellow;font-size:30px;margin-left: -10px;"></i>&nbsp;&nbsp;&nbsp;<b>Clock In</b></div>
+            <div class="row">
+                @foreach (var ADM in AttendanceList)
+                {
+                    <div class="col-xl-3" style="text-align:center;">
+                        <div class="card" style="border: 2px solid darkgray; ">
+                            <h6 style="margin-top:10px;">Time Worked @ADM.ReportDateLabel</h6>
+                            <h4><b>@ADM.DisplayTotalTime</b></h4>
+                            <span>@ADM.DisplayLabel</span>
+                        </div>
                     </div>
-                </a>
+                }
             </div>
-            }
-            else
-            {
-            <div class="col-lg-6">
-                <a href="@Url.Action("WebEmployeeAttendanceClockOut", "EPeople")" data-oldDash="Yes">
-                    <div class="pricing_table_content mt-5" style="background-color: #3F8ADA;color:white;">
-                        <p style="margin-top:-20px;font-size:20px;"><b> </b></p>
-                        <div class="package" style="margin-top:-30px;"><i class="mdi mdi-account-check" style="color:white;font-size:30px;"></i>&nbsp;&nbsp;&nbsp;<b>clock Out</b></div>
+            <div class="row">
+                <div class="col-md-6 card" style="border: 2px solid darkgray;">
+                    <div class="card-block">
+                        <h3 class="card-title" style="text-align:center;margin-top:10px;"><b>Attendance</b></h3>
+                        <hr style="border-color:#529F9D" />
+                        <div style="text-align: center">
+                            <b><label id="lblworkstatus"></label></b>
+                            <h3>@System.DateTime.Now.ToString("hh:mm tt")</h3>
+                        </div>
+                        <br />
+                        <div class="row justify-content">
+                            <div class="col-lg-6 ">
+                                <div class="pricing_table_content mt-5" style="background-color: #529F9D;color:white; border-radius:50px; ">
+                                    <div class="package">
+                                        <i class="fa fa-clock-o" style="color:yellow;font-size:30px;"></i>
+                                        <button type="button" class="btn btn-default bluebutton nxt-btn" id="checkin" style="border-radius:18px;width:100px;color:white; "><b style="font-size:15px;">Clock In</b></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="pricing_table_content mt-5" style="background-color: darkred;color:white; border-radius:50px; ">
+                                    <div class="package">
+                                        <i class="mdi mdi-account-check" style="color:yellow;font-size:25px;"></i>
+                                        <button type="button" class="btn btn-default bluebutton nxt-btn" id="checkout" style="border-radius:18px;width:110px;color:white; "><b style="font-size:15px;">Clock Out</b></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row" style="text-align: center;">
+                            <div class="col-lg-6">
+                                <h3>Check In</h3>
+                                <h3>@ViewBag.FirstInTime</h3>
+                            </div>
+                            <div class="col-lg-6">
+                                <h3>Working</h3>
+                                <h3>@ViewBag.logouttime</h3>
+                            </div>
+                        </div>
                     </div>
-                </a>
+                </div>
+                <div class="col-md-6 card" style="border: 2px solid darkgray;">
+                    <div class="card-block">
+                        <h3 class="card-title" style="text-align:center;margin-top:10px;"><b>Break</b></h3>
+                        <hr style="border-color:red" />
+                        <div style="text-align: center">
+                            <b><label id="lblbreakstatus"></label></b>
+                            <h3>@System.DateTime.Now.ToString("hh:mm tt")</h3>
+                        </div>
+                        <br />
+                        <div class="row justify-content">
+                            <div class="col-lg-6">
+                                <div class="pricing_table_content mt-5" style="background-color: #529F9D;color:white; border-radius:50px; ">
+                                    <div class="package">
+                                        <button type="button" class="btn btn-default bluebutton nxt-btn" id="breakin" style="border-radius:18px;width:120px;color:white; "><b style="font-size:15px;">Start Break</b></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="pricing_table_content mt-5" style="background-color: darkred;color:white; border-radius:50px; ">
+                                    <div class="package">
+                                        <button type="button" class="btn btn-default bluebutton nxt-btn" id="breakout" style="border-radius:18px;width:120px;color:white; "><b style="font-size:15px;">End Break</b></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            }
         </div>
     </div>
-</div>
-
+}
 <script>
     $(document).ready(function () {
-       
-    });</script>
+
+        function breakoutfun() {
+            $.ajax({
+                type: 'POST',
+                url: '/EPeople/WebEmployeeAttendanceClockOut?AttendanceType=2',
+                data: $("#DOT_form").serialize(),
+                success: function (data) {
+                    var addNewUrl = "/EPeople/WebEmployeeAttendance";
+                    $('#RenderPageId').load(addNewUrl);
+                }
+            });
+        }
+
+        if (@ViewBag.Count == "0") {
+            $("#checkout").attr("disabled", true);
+            $("#lblworkstatus").text('Working...').css('color', 'green');
+            $("#breakin").attr("disabled", false);
+        }
+        else {
+            $("#checkin").attr("disabled", true);
+            $("#lblworkstatus").text('Not Working...').css('color', 'red');
+            $("#breakin").attr("disabled", true);
+        }
+
+        if (@ViewBag.Count > "0") {
+            $("#checkin").attr("disabled", true);
+            $("#lblworkstatus").text('Working...').css('color', 'green');
+            $("#breakin").attr("disabled", false);
+        }
+        else {
+            $("#checkin").attr("disabled", false);
+            $("#lblworkstatus").text('Not Working...').css('color', 'red');
+            $("#breakin").attr("disabled", true);
+        }
+
+        $("#checkin").on("click", function (event) {
+            $.ajax({
+                type: 'POST',
+                url: '/EPeople/WebEmployeeAttendanceClockIn?AttendanceType=1',
+                data: $("#DOT_form").serialize(),
+                success: function (data) {
+                    var addNewUrl = "/EPeople/WebEmployeeAttendance";
+                    $('#RenderPageId').load(addNewUrl);
+                }
+            });
+        });
+
+        $("#checkout").on("click", function (event) {
+            $.ajax({
+                type: 'POST',
+                url: '/EPeople/WebEmployeeAttendanceClockOut?AttendanceType=1',
+                data: $("#DOT_form").serialize(),
+                success: function (data) {
+                    breakoutfun();
+                    var addNewUrl = "/EPeople/WebEmployeeAttendance";
+                    $('#RenderPageId').load(addNewUrl);
+                }
+            });
+        });
+
+        //break
+        if (@ViewBag.BRCount == "0") {
+            $("#breakout").attr("disabled", true);
+            $("#lblbreakstatus").text('Working...').css('color', 'green');
+        }
+        else {
+            $("#breakin").attr("disabled", true);
+            $("#lblbreakstatus").text('On Break...').css('color', 'red');
+        }
+
+        if (@ViewBag.BRCount > "0") {
+            $("#breakin").attr("disabled", true);
+            $("#lblbreakstatus").text('On Break...').css('color', 'red');
+        }
+        else {
+            $("#breakout").attr("disabled", true);
+            $("#lblbreakstatus").text('Working...').css('color', 'green');
+        }
+
+        $("#breakin").on("click", function (event) {
+            $.ajax({
+                type: 'POST',
+                url: '/EPeople/WebEmployeeAttendanceClockIn?AttendanceType=2',
+                data: $("#DOT_form").serialize(),
+                success: function (data) {
+                    var addNewUrl = "/EPeople/WebEmployeeAttendance";
+                    $('#RenderPageId').load(addNewUrl);
+                }
+            });
+        });
+
+        $("#breakout").on("click", function (event) {
+            $.ajax({
+                type: 'POST',
+                url: '/EPeople/WebEmployeeAttendanceClockOut?AttendanceType=2',
+                data: $("#DOT_form").serialize(),
+                success: function (data) {
+                    var addNewUrl = "/EPeople/WebEmployeeAttendance";
+                    $('#RenderPageId').load(addNewUrl);
+                }
+            });
+        });
+
+        if (@ViewBag.BRCount == "0" && @ViewBag.Count == "0") {
+            $("#lblworkstatus").text('Not Working...').css('color', 'red');
+            $("#lblbreakstatus").text('Not Working...').css('color', 'red');
+        }
+
+});</script>
 

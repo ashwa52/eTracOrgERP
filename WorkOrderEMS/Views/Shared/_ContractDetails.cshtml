@@ -184,20 +184,19 @@
                     <div class="col-sm-8">
                         @if (ViewBag.CompanyHolder != null)
                         {
-                             <select name="@Html.Name(myModelprefix + "ContractHolder")"
-                                     id="@Html.Id("ContractHolder")" class="form-control">
-                                 <option>--Select Contract Holder--</option>
-                                 @foreach (var Ch in ViewBag.CompanyHolder)
-                                 {
-                                     <option value="@Ch.CompanyId" data-Type="@Ch.ContractTypeId" 
-                                             @*@if (Ch.UserId == Model.EmployeeName) { @: selected="selected"*@
-                                                           >
-                                         @Ch.CompanyName
-                                     </option>
-                                 }
-                             </select>
+                            <select name="@Html.Name(myModelprefix + "ContractHolder")"
+                                    id="@Html.Id("ContractHolder")" class="form-control">
+                                <option>--Select Contract Holder--</option>
+                                @foreach (var Ch in ViewBag.CompanyHolder)
+                                {
+                                    <option value="@Ch.CompanyId" data-Type="@Ch.ContractTypeId"
+                                            @*@if (Ch.UserId == Model.EmployeeName) { @: selected="selected"*@>
+                                        @Ch.CompanyName
+                                    </option>
+                                }
+                            </select>
                         }
-                             @*@Html.DropDownList(myModelprefix + "ContractHolder", new SelectList(ViewBag.CompanyHolder, "CompanyId", "CompanyName"), "--Select Contract Holder--", new { @class= "form-control", @id= "ContractHolder" })}*@                   
+                        @*@Html.DropDownList(myModelprefix + "ContractHolder", new SelectList(ViewBag.CompanyHolder, "CompanyId", "CompanyName"), "--Select Contract Holder--", new { @class= "form-control", @id= "ContractHolder" })}*@
                         else
                         {<select class="form-control required requiredselect nodisable" name="ContractDetailsModel.Contractholder" id="ddlContractHolder"><option value="">--Select--</option></select>}
                         @Html.ValidationMessage(myModelprefix + "ContractHolder")
@@ -208,18 +207,17 @@
                     <div class="col-sm-8">
                         @if (ViewBag.OperatingHolder != null)
                         {
-                             <select name="@Html.Name(myModelprefix + "OperatingHolder")"
-                                     id="@Html.Id("OperatingHolder")" class="form-control">
-                                 <option>--Select Operating Holder--</option>
-                                 @foreach (var Oh in ViewBag.OperatingHolder)
-                                 {
-                                     <option value="@Oh.CompanyId" data-Type="@Oh.ContractTypeId" 
-                                             @*@if (Ch.UserId == Model.EmployeeName) { @: selected="selected"*@
-                                                           >
-                                         @Oh.CompanyName
-                                     </option>
-                                 }
-                             </select>
+                            <select name="@Html.Name(myModelprefix + "OperatingHolder")"
+                                    id="@Html.Id("OperatingHolder")" class="form-control">
+                                <option>--Select Operating Holder--</option>
+                                @foreach (var Oh in ViewBag.OperatingHolder)
+                                {
+                                    <option value="@Oh.CompanyId" data-Type="@Oh.ContractTypeId"
+                                            @*@if (Ch.UserId == Model.EmployeeName) { @: selected="selected"*@>
+                                        @Oh.CompanyName
+                                    </option>
+                                }
+                            </select>
                         }
                         else
                         {<select class="form-control required requiredselect nodisable" name="ContractDetailsModel.OperatingHolder" id="ddlContractHolder"><option value="">--Select--</option></select>}
@@ -236,7 +234,7 @@
                 <div class="form-group col-lg-6 col-md-6 col-sm-12  col-xs-12">
                     @Html.Label("Contract End Date", new { @class = "col-sm-4 control-label star" })
                     <div class="col-sm-8">
-                        @Html.TextBox(myModelprefix + "ContractEndDate", null, new { @Placeholder = "Contract End Time", @class = "form-control", @id = "ContractEndDate", @onkeydown = "return false;" })
+                        @Html.TextBox(myModelprefix + "ContractEndDate", null, new { @Placeholder = "Contract End Time", @class = "form-control", @id = "ContractEndDate" })
                         @Html.ValidationMessage(myModelprefix + "ContractEndDate")
                     </div>
                 </div>
@@ -244,8 +242,8 @@
                     @Html.Label("Contract type", new { @class = "col-sm-4 control-label star" })
                     <div class="col-sm-8">
                         @if (ViewBag.ContractType != null)
-                        { 
-                            @Html.DropDownList(myModelprefix + "ContractType", new SelectList(ViewBag.ContractType, "ContractTypeId", "ContractType"), "--Select Contract Type--", new { @class= "form-control", @id= "ContractType" })}
+                        {
+                            @Html.DropDownList(myModelprefix + "ContractType", new SelectList(ViewBag.ContractType, "ContractTypeId", "ContractType"), "--Select Contract Type--", new { @class = "form-control", @id = "ContractType" })}
                         else
                         {<select class="form-control required requiredselect nodisable" name="ContractDetailsModel.ContractType" id="ContractDetailsModel.ContractType"><option value="">--Select--</option></select>}
                         @Html.ValidationMessage(myModelprefix + "ContractType")
@@ -256,17 +254,17 @@
                     <div class="col-sm-8">
                         @if (ViewBag.ClientInvoicingTerm != null)
                         {
-                            @Html.DropDownList(myModelprefix + "ClientInvoicingTerm", new SelectList(ViewBag.ClientInvoicingTerm, "ClientInvoicingId", "ClientInvoicingName"), "--Select Client Invoicing Term--", new { @class= "form-control", @id = "ClientInvoicingTerm" })}                           
+                            @Html.DropDownList(myModelprefix + "ClientInvoicingTerm", new SelectList(ViewBag.ClientInvoicingTerm, "ClientInvoicingId", "ClientInvoicingName"), "--Select Client Invoicing Term--", new { @class = "form-control", @id = "ClientInvoicingTerm" })}
                         else
                         {<select class="form-control required requiredselect nodisable" name="ContractDetailsModel.ClientInvoicingTerm" id="ClientInvoicingTerm"><option value="">--Select Client Invoicing Term--</option></select>}
-                         @Html.ValidationMessage(myModelprefix + "ClientInvoicingTerm")
+                        @Html.ValidationMessage(myModelprefix + "ClientInvoicingTerm")
                     </div>
-                   
+
                 </div>
                 <div class="form-group col-lg-6 col-md-6 col-sm-12  col-xs-12">
                     @Html.Label("Reporting Date", new { @class = "col-sm-4 control-label star" })
                     <div class="col-sm-8">
-                        @Html.TextBox(myModelprefix + "ReportingDate", null, new { @Placeholder = "Reporting Date", @class = "form-control", @Id= "ReportingDate", @onkeydown = "return false;" })
+                        @Html.TextBox(myModelprefix + "ReportingDate", null, new { @Placeholder = "Reporting Date", @class = "form-control", @Id = "ReportingDate", @onkeydown = "return false;" })
                         @Html.ValidationMessage(myModelprefix + "ReportingDate")
                     </div>
                 </div>
@@ -280,7 +278,7 @@
                 <div class="form-group col-lg-6 col-md-6 col-sm-12  col-xs-12">
                     @Html.Label("Monthly Intercompany Invoicing", new { @class = "col-sm-4 control-label star" })
                     <div class="col-sm-8">
-                        @Html.TextBox(myModelprefix + "IntercompanyInvoicing", null, new { @Placeholder = "Inetercompany Invoicing", @class = "form-control", @id= "IntercompanyInvoicing", @onkeydown = "return false;" })
+                        @Html.TextBox(myModelprefix + "IntercompanyInvoicing", null, new { @Placeholder = "Inetercompany Invoicing", @class = "form-control", @id = "IntercompanyInvoicing", @onkeydown = "return false;" })
                         @Html.ValidationMessage(myModelprefix + "IntercompanyInvoicing")
                     </div>
                 </div>
@@ -300,29 +298,29 @@
                         {<select class="form-control required requiredselect nodisable" name="ReportingType" id="ddlReportingType"><option value="">--Select--</option></select>}
                         @Html.ValidationMessage(myModelprefix + "ContractType")
                     </div>
-                </div>   
-                <div class="form-group col-lg-6 col-md-6 col-sm-12  col-xs-12" >
-                    <div class = "col-sm-4 control-label"></div>
-                    <div class="col-sm-8">                       
+                </div>
+                <div class="form-group col-lg-6 col-md-6 col-sm-12  col-xs-12">
+                    <div class="col-sm-4 control-label"></div>
+                    <div class="col-sm-8">
                     </div>
                 </div>
                 <div class="form-group col-lg-6 col-md-6 col-sm-12  col-xs-12">
                     @Html.Label("Additional Years", new { @class = "col-sm-4 control-label star" })
                     <div class="col-sm-8">
-                        @Html.RadioButton(myModelprefix + "AdditonalYears", true, new {@class="AddYears" })&nbsp;Yes &nbsp;
+                        @Html.RadioButton(myModelprefix + "AdditonalYears", true, new { @class = "AddYears" })&nbsp;Yes &nbsp;
                         @Html.RadioButton(myModelprefix + "AdditonalYears", false, new { @class = "AddYears" })&nbsp;No
                         @Html.ValidationMessage(myModelprefix + "AdditonalYears")
                         @*@Html.RadioButton(myModelprefix + "AdditonalYears", true)  &nbsp;Yes &nbsp; @Html.RadioButton(myModelprefix + "AdditonalYears", "0") &nbsp;No*@
                     </div>
                 </div>
                 <div id="YearsDiv" style="display:none">
-                <div class="form-group col-lg-6 col-md-6 col-sm-12  col-xs-12">
-                    @Html.Label("Years", new { @class = "col-sm-4 control-label star" })
-                    <div class="col-sm-8">
-                        @Html.TextBox(myModelprefix + "Years", null, new { @Placeholder = "Years", @class = "form-control Years", @id= "Years", @onkeydown = "return false;" })
-                        @Html.ValidationMessage(myModelprefix + "Years")
+                    <div class="form-group col-lg-6 col-md-6 col-sm-12  col-xs-12">
+                        @Html.Label("Years", new { @class = "col-sm-4 control-label star" })
+                        <div class="col-sm-8">
+                            @Html.TextBox(myModelprefix + "Years", null, new { @Placeholder = "Years", @class = "form-control Years", @id = "Years", @onkeydown = "return false;" })
+                            @Html.ValidationMessage(myModelprefix + "Years")
+                        </div>
                     </div>
-                </div>  
                 </div>
             </div>
         </div>
@@ -361,22 +359,22 @@
 <script>
     $(document).ready(function () {
         var contractVal;
-        $("#ContractHolder").change(function ()
-        {
-           contractVal = $("#ContractHolder option:selected").val();
-           var ContractType = $("#ContractHolder option:selected").attr('data-Type');
-           if(ContractType == 2)
-           {
-              $("#myModalForContract").modal('show');
-           }
-           else
-           {
-              $('#OperatingHolder').removeAttr('disabled');
-           }
+        $("#ContractHolder").change(function () {
+            contractVal = $("#ContractHolder option:selected").val();
+            var ContractType = $("#ContractHolder option:selected").attr('data-Type');
+            if (ContractType == 2) {
+                $("#myModalForContract").modal('show');
+            }
+            else {
+                $('#OperatingHolder').removeAttr('disabled');
+            }
         })
-        $('#ContractStartDate, #ContractEndDate, #IntercompanyInvoicing, #ReportingDate').datepicker({
+        $('#ContractEndDate, #IntercompanyInvoicing, #ReportingDate').datepicker({
             format: "mm/dd/yyyy",
             startDate: new Date()
+        });
+        $('#ContractStartDate').datepicker({
+            format: "mm/dd/yyyy",
         });
         $('#Years').datepicker({
             minViewMode: 2,
@@ -392,6 +390,7 @@
             $('#OperatingHolder').removeAttr('disabled');
         })
         $(".AddYears").change(function () {
+            debugger
             if ($(this).val() == "True") {
                 $("#YearsDiv").show();
             }
@@ -403,8 +402,15 @@
 </script>
 <script type="text/javascript">
 
-        if('@ViewBag.UpdateMode' == 'True')
-        {
+    if ('@ViewBag.UpdateMode' == 'True')
+    {
+            debugger
+            if ('@ViewBag.AdditionalYears' == "True") {
+                $("#YearsDiv").show();
+            }
+            else {
+                $("#YearsDiv").hide();
+            }
           var $_ContractHolderId = @ViewBag.ContractHolderId;
           var $_OperatingHolderId = @ViewBag.OperatingHolderId;
           var $_ReportingTypeId = "@ViewBag.ReportingTypeId";

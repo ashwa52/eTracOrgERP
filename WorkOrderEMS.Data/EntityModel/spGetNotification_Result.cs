@@ -17,7 +17,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string NTF_Details { get; set; }
         public string NTF_Module { get; set; }
         public string NTF_Submodule { get; set; }
-        public Nullable<long> NTF_SubmoduleId { get; set; }
+        public string NTF_SubmoduleId { get; set; }
         public string NTF_AssignTo { get; set; }
         public Nullable<bool> NTF_AssignToIsWorkable { get; set; }
         public Nullable<bool> NTF_IsRead { get; set; }

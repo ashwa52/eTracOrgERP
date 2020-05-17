@@ -14,6 +14,7 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class InterviewQuestionMaster
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public InterviewQuestionMaster()
         {
             this.InterviewQuestionChilds = new HashSet<InterviewQuestionChild>();
@@ -25,6 +26,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<System.DateTime> IQM_Date { get; set; }
         public string IQM_IsActive { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InterviewQuestionChild> InterviewQuestionChilds { get; set; }
     }
 }

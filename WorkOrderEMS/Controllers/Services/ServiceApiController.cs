@@ -6250,7 +6250,139 @@ namespace WorkOrderEMS.Controllers.Services
             }
             return ObjServiceResponseModel.Message;
         }
+        /// <summary>
+        /// Created By  :Ashwajit bansod
+        /// Created Date : 12-05-2020
+        /// Created For : To accept reject and couter offer by applicant from applicant portal.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult AceeptCounterRejectOffer(OfferAcceptRejectCounterModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<string>();
+            try
+            {
+                if (obj != null)
+                {
+                    var isSaved = _IePeopleManager.ClearedOrNot(obj.IsActive, obj.Action, obj.ApplicantId);
+                    if (isSaved == true)
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.Successful();
+                        ObjServiceResponseModel.Data = null;                        
+                    }
+                    else
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.FailureMessage();
+                        ObjServiceResponseModel.Data = null;                      
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+               
+            }
+            return Ok(ObjServiceResponseModel);
+        }
 
+        /// <summary>
+        /// Created by : Ashwajit Bansod
+        /// Created For : To get applicant Status
+        /// Created Date : 13-05-2020
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult ApplicantStatusDetails(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<string>();
+            try
+            {
+                var getStatus = _IePeopleManager.GetApplicantStatus(Convert.ToInt64(obj.ApplicantId));
+                if (getStatus != null)
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.Successful();
+                    ObjServiceResponseModel.Data = getStatus;
+                    return Ok(ObjServiceResponseModel);
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.FailureMessage();
+                    ObjServiceResponseModel.Data = getStatus;
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+
+        [HttpPost]
+        public async Task<string> UploadAllEmployeeFiles()
+        {
+            var _FillableFormRepository = new FillableFormRepository();
+            var ObjServiceResponseModel = new ServiceResponseModel<string>();
+            var Obj = new UploadedFiles();
+            string name = string.Empty;
+            bool isSave = false;
+            var ctx = HttpContext.Current;
+            var root = ctx.Server.MapPath("~/Content/ApplicantFiles/UploadDocument");
+            var provider = new MultipartFormDataStreamProvider(root);
+            try
+            {
+                await Request.Content.ReadAsMultipartAsync(provider);
+                var FileType = provider.FormData.GetValues("FileType")[0];
+                var Id = provider.FormData.GetValues("Id")[0];
+                if (FileType == "Resume") { 
+                    foreach (var file in provider.FileData)
+                    {
+                        name = file.Headers.ContentDisposition.FileName;
+                        name = name.Trim('"');
+                            name = Id + "_" + DateTime.Now.Ticks.ToString() + "_" + name;
+                            var localname = file.LocalFileName;
+                            var filepath = Path.Combine(root, name);
+                            File.Move(localname, filepath);
+                            isSave = _IApplicantManager.SaveResume(name, Convert.ToInt64(Id));
+                            //var getDetails = _FillableFormRepository.GetFileList().Where(x => x.FLT_FileType == "Yellow" && x.FLT_Id == Convert.ToInt64(FileTypeId.W4)).FirstOrDefault();
+                            //Obj.FileName = name;
+                            //Obj.FileId = Convert.ToInt64(getDetails.FLT_Id);
+                            //Obj.FileEmployeeId = EMPId;
+                            //string LoginEmployeeId = EMPId;
+                            //Obj.AttachedFileName = name;
+                            //_IFillableFormManager.SaveFile(Obj, LoginEmployeeId);                        
+                    }
+                }
+                if (isSave == true)
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.Successful();
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.FailureMessage();
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return ObjServiceResponseModel.Message;
+            }
+            return ObjServiceResponseModel.Message;
+        }
         //[HttpPost]
         //public async Task<string> UploadFile()
         //{

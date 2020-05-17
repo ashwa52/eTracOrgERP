@@ -38,5 +38,6 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
         bool SaveScreenRejectStatusApplicant(long ApplicantId, bool IsScreened);
         bool SaveAcadmicertificate(AcadmicCertification obj);
         EmployeeVIewModel GetApplicantAllDetails(long ApplicantId);
+        bool SaveResume(string FileName, long Id);
     }
 }

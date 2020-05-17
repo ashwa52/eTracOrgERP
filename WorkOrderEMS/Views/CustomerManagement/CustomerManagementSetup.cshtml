@@ -34,7 +34,7 @@
         Model.CustomerPaymentModel.CardExpirationDate = DateTime.Today;
     }
 
-    if (Model.ScheduleAppointDate <= DateTime.MinValue || Model.CustomerPaymentModel.CardExpirationDate == Convert.ToDateTime("01/01/1900"))
+    if (Model.ScheduleAppointDate <= DateTime.MinValue || Model.ScheduleAppointDate == Convert.ToDateTime("01/01/1900"))
     {
         Model.ScheduleAppointDate = DateTime.Today;
     }
@@ -184,569 +184,570 @@
     }
 </style>
 <br />
-<div class="content-body">
-    <div class="container-fluid">
-        <!-- row -->
-        <div class="row">
-            <div class="col-xl-12 col-xxl-12">
-                <div class="card aos-init aos-animate" data-aos="fade-up">
-                    <div class="card-header headerSize">
-                        <h4 class="card-title" style="color:white;"><strong>SetUp Customer</strong></h4>
-                        @*<h4 class="card-title" style="color:white;"><a href="@Url.Action(backtolist, "CustomerManagement")"><i class="fa fa-arrow-left" style="font-size: 20px;color: white;"></i>&nbsp;&nbsp;<strong style="color: white;">Back to List</strong></a></h4>*@
+@*<div class="content-body">
+    <div class="container-fluid">*@
+@*row*@
+@*<div class="row">
+    <div class="col-xl-12 col-xxl-12">*@
+<div class="card aos-init aos-animate" data-aos="fade-up">
+    <div class="card-header headerSize">
+        <h4 class="card-title" style="color:white;"><strong>SetUp Customer</strong></h4>
+        @*<h4 class="card-title" style="color:white;"><a href="@Url.Action(backtolist, "CustomerManagement")"><i class="fa fa-arrow-left" style="font-size: 20px;color: white;"></i>&nbsp;&nbsp;<strong style="color: white;">Back to List</strong></a></h4>*@
+    </div>
+    <div class="card-body">
+
+        @using (Html.BeginForm("CustomerManagementSetup", "CustomerManagement", FormMethod.Post, new { enctype = "multipart/form-data", @id = "msform", @class = "step-form-horizontal", @style = "" }))
+        {
+
+            @Html.ValidationSummary(true)
+            @Html.AntiForgeryToken()
+            <!-- progressbar -->
+            //if (ViewBag.UpdateMode == false)
+            //{
+            <div class="stepwizard">
+                <div class="stepwizard-row setup-panel" id="progressbar">
+                    @*if (ViewBag.UpdateMode == false)
+                        {*@
+                    <div class="stepwizard-step col-xs-2">
+                        <a href="#step-1" type="button" class="btn btn-circledata btn-default btn-success active">1</a>
+                        <p><small>Basic Information</small></p>
                     </div>
-                    <div class="card-body">
+                    <div class="stepwizard-step col-xs-2">
+                        <a href="#step-2" type="button" class="btn btn-circledata btn-default btn-default ">2</a>
+                        <p><small>Vehicle Information</small></p>
+                    </div>
+                    <div class="stepwizard-step col-xs-2">
+                        <a href="#step-3" type="button" class="btn btn-circledata btn-default btn-default ">3</a>
+                        <p><small>Payment Information </small></p>
+                    </div>
+                    <div class="stepwizard-step col-xs-2">
+                        <a href="#step-4" type="button" class="btn btn-circledata btn-default btn-default ">4</a>
+                        <p><small>Recap</small></p>
+                    </div>
+                    @*<div class="stepwizard-step col-xs-2">
+                            <a href="#step-5" type="button" class="btn btn-circledata btn-default btn-default ">5</a>
+                            <p><small> Complete</small></p>
+                        </div>*@
+                </div>
+            </div>
+            //}
+            <!-- fieldsets -->
+            @Html.HiddenFor(model => model.StateAfterIsSame, new { @id = "StateAfterIsSame" })
+            @Html.HiddenFor(model => model.CustomerId, new { @id = "CustomerId" })
+            @Html.HiddenFor(model => model.CompanyId)
+            if (ViewBag.UpdateMode != false)
+            {
+                @Html.HiddenFor(model => model.CustomerType, new { @id = "CustomerTypeForEdit" })
+                @Html.HiddenFor(model => model.TCBD_ID)
+            }
+            <br />
+            <fieldset id="CustomerSetUp">
+                <div class="panel panel-primary setup-content">
+                    <div class="basic-form">
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="FirstName">First Name<span class="req">*</span></label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control input-rounded required", @placeholder = "First Name" })
+                                @Html.ValidationMessageFor(model => model.FirstName)
+                            </div>
+                            <label class="col-sm-2 col-form-label" for="LastName">Last Name<span class="req">*</span></label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control input-rounded required", @placeholder = "Last Name" })
+                                @Html.ValidationMessageFor(model => model.LastName)
+                            </div>
+                        </div>
 
-                        @using (Html.BeginForm("CustomerManagementSetup", "CustomerManagement", FormMethod.Post, new { enctype = "multipart/form-data", @id = "msform", @class = "step-form-horizontal", @style = "" }))
-                        {
-
-                            @Html.ValidationSummary(true)
-                            @Html.AntiForgeryToken()
-                            <!-- progressbar -->
-                            //if (ViewBag.UpdateMode == false)
-                            //{
-                            <div class="stepwizard">
-                                <div class="stepwizard-row setup-panel" id="progressbar">
-                                    @*if (ViewBag.UpdateMode == false)
-                                        {*@
-                                    <div class="stepwizard-step col-xs-2">
-                                        <a href="#step-1" type="button" class="btn btn-circledata btn-default btn-success active">1</a>
-                                        <p><small>Basic Information</small></p>
-                                    </div>
-                                    <div class="stepwizard-step col-xs-2">
-                                        <a href="#step-2" type="button" class="btn btn-circledata btn-default btn-default ">2</a>
-                                        <p><small>Vehicle Information</small></p>
-                                    </div>
-                                    <div class="stepwizard-step col-xs-2">
-                                        <a href="#step-3" type="button" class="btn btn-circledata btn-default btn-default ">3</a>
-                                        <p><small>Payment Information </small></p>
-                                    </div>
-                                    <div class="stepwizard-step col-xs-2">
-                                        <a href="#step-4" type="button" class="btn btn-circledata btn-default btn-default ">4</a>
-                                        <p><small>Recap</small></p>
-                                    </div>
-                                    @*<div class="stepwizard-step col-xs-2">
-                                            <a href="#step-5" type="button" class="btn btn-circledata btn-default btn-default ">5</a>
-                                            <p><small> Complete</small></p>
-                                        </div>*@
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="Address1">Address<span class="req">*</span></label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(model => model.Address1, new { @id = "Address1", @class = "form-control input-rounded required", @placeholder = "Address", @pattern = "^[a-zA-Z0-9, -@]+$" })
+                                <div class="errorspace">
+                                    @Html.ValidationMessageFor(model => model.Address1)
                                 </div>
                             </div>
-                            //}
-                            <!-- fieldsets -->
-                            @Html.HiddenFor(model => model.StateAfterIsSame, new { @id = "StateAfterIsSame" })
-                            @Html.HiddenFor(model => model.CustomerId, new { @id = "CustomerId" })
-                            @Html.HiddenFor(model => model.CompanyId)
-                            if (ViewBag.UpdateMode != false)
-                            {
-                                @Html.HiddenFor(model => model.CustomerType, new { @id = "CustomerTypeForEdit" })
-                                @Html.HiddenFor(model => model.TCBD_ID)
-                            }
-                            <br />
-                            <fieldset id="CustomerSetUp">
-                                <div class="panel panel-primary setup-content">
-                                    <div class="basic-form">
-                                        <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label" for="FirstName">First Name<span class="req">*</span></label>
-                                            <div class="col-sm-4">
-                                                @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control input-rounded", @placeholder = "First Name" })
-                                                @Html.ValidationMessageFor(model => model.FirstName)
-                                            </div>
-                                            <label class="col-sm-2 col-form-label" for="LastName">Last Name<span class="req">*</span></label>
-                                            <div class="col-sm-4">
-                                                @Html.TextBoxFor(model => model.LastName, new { @class = "form-control input-rounded", @placeholder = "Last Name" })
-                                                @Html.ValidationMessageFor(model => model.LastName)
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label" for="Address1">Address<span class="req">*</span></label>
-                                            <div class="col-sm-4">
-                                                @Html.TextBoxFor(model => model.Address1, new { @id = "Address1", @class = "form-control input-rounded", @placeholder = "Address" })
-                                                <div class="errorspace">
-                                                    @Html.ValidationMessageFor(model => model.Address1)
-                                                </div>
-                                            </div>
-                                            <label class="col-sm-2 col-form-label" for="Address1City"> City<span class="req">*</span></label>
-                                            <div class="col-sm-4">
-                                                @Html.TextBoxFor(model => model.Address1City, new { @id = "Address1City", @class = "form-control input-rounded", @placeholder = "City" })
-                                                <div class="errorspace">
-                                                    @Html.ValidationMessageFor(model => model.Address1City)
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label" for="Address1State">State<span class="req">*</span></label>
-                                            <div class="col-sm-4">
-                                                @if (ViewBag.StateList != null)
-                                                {
-                                                    @Html.DropDownListFor(model => model.Address1State, new SelectList(ViewBag.StateList, "StateId", "StateName"), "--Select State--", new { @id = "Address1State", @class = "form-control input-rounded" })
-                                                }
-                                                else
-                                                {
-                                                    <select id="Address1State" class="form-control input-rounded"><option value="-1">@ViewBag.StateList</option></select>
-                                                }
-                                                <div class="errorspace">
-                                                    @Html.ValidationMessageFor(model => model.Address1State)
-                                                </div>
-                                            </div>
-                                            <label class="col-sm-2 col-form-label" for="ZipCode1"> Zip<span class="req">*</span></label>
-                                            <div class="col-sm-4">
-                                                @Html.TextBoxFor(model => model.ZipCode1, new { @class = "form-control input-rounded", @placeholder = "Zip" })
-                                                <div class="errorspace">
-                                                    @Html.ValidationMessageFor(model => model.ZipCode1)
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label" for="IsAddress2Same">Is your Mailing address is same as Home Address</label>
-                                            <div class="col-sm-4">
-                                                @Html.CheckBoxFor(model => model.IsAddress2Same, new { @class = "SameAddress", data_title = "Yes" })
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label" for="Address2">Mailing Address</label>
-                                            <div class="col-sm-4">
-                                                @Html.TextBoxFor(model => model.Address2, new { @id = "Address2", @class = "form-control input-rounded", @placeholder = "Mailing Address" })
-                                                <div class="errorspace">
-                                                    @Html.ValidationMessageFor(model => model.Address2)
-                                                </div>
-                                            </div>
-                                            <label class="col-sm-2 col-form-label" for="Address2City" id="lblAddress2City"> City</label>
-                                            <div class="col-sm-4">
-                                                @Html.TextBoxFor(model => model.Address2City, new { @id = "Address2City", @class = "form-control input-rounded", @placeholder = "Mailing City" })
-                                                <div class="errorspace">
-                                                    @Html.ValidationMessageFor(model => model.Address2City)
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label" for="Address2State">State</label>
-                                            <div class="col-sm-4">
-                                                @if (ViewBag.StateList != null)
-                                                {
-                                                    @Html.DropDownListFor(model => model.Address2State, new SelectList(ViewBag.StateList, "StateId", "StateName"), "--Select State--", new { @id = "Address2State", @class = "form-control input-rounded" })
-                                                }
-                                                else
-                                                {
-                                                    <select id="Address2State" , class="form-control input-rounded"><option value="-1">@ViewBag.StateList</option></select>
-                                                }
-                                                <div class="errorspace">
-                                                    @Html.ValidationMessageFor(model => model.Address2State)
-                                                </div>
-                                            </div>
-                                            <label class="col-sm-2 col-form-label" for="ZipCode2"> Zip</label>
-                                            <div class="col-sm-4">
-                                                @Html.TextBoxFor(model => model.ZipCode2, new { @class = "form-control input-rounded", @placeholder = "Zip" })
-                                                <div class="errorspace">
-                                                    @Html.ValidationMessageFor(model => model.ZipCode2)
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label" for="DLNo">Last 4 digit of DL#</label>
-                                            <div class="col-sm-4">
-                                                @Html.TextBoxFor(model => model.DLNo, new { @maxLength = "4", @class = "form-control input-rounded", @placeholder = "DL#" })
-                                                <div class="errorspace">
-                                                    @Html.ValidationMessageFor(model => model.DLNo)
-                                                </div>
-                                            </div>
-                                            <label class="col-sm-2 col-form-label" for="Email">E-mail<span class="req">*</span></label>
-                                            <div class="col-sm-4">
-                                                @Html.TextBoxFor(model => model.EmailId, new { @class = "form-control input-rounded", @placeholder = "Email Id" })
-                                                <div class="errorspace">
-                                                    @Html.ValidationMessageFor(model => model.EmailId)
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label" for="Phone1">Work Phone No.<span class="req">*</span></label>
-                                            <div class="col-sm-4">
-                                                @Html.TextBoxFor(model => model.Phone1, new { @maxLength = "15", @class = "form-control input-rounded", @placeholder = "Work Phone No." })
-                                                <div class="errorspace">
-                                                    @Html.ValidationMessageFor(model => model.Phone1)
-                                                </div>
-                                            </div>
-                                            <label class="col-sm-2 col-form-label" for="Phone2">Cell Phone No.</label>
-                                            <div class="col-sm-4">
-                                                @Html.TextBoxFor(model => model.Phone2, new { @maxLength = "15", @class = "form-control input-rounded", @placeholder = "Cell Phone No." })
-                                                <div class="errorspace">
-                                                    @Html.ValidationMessageFor(model => model.Phone2)
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label" for="MethodOfCommunication"> Preffered Method of Communication<span class="req">*</span></label>
-                                            <div class="col-sm-4">
-                                                @Html.DropDownListFor(model => model.MethodOfCommunication, new SelectList(ViewBag.PrefCommMethod, "GlobalCodeId", "CodeName"), "--Select Preffered Method of Communication--", new { @class = "form-control input-rounded" })
-                                                <div class="errorspace">
-                                                    @Html.ValidationMessageFor(model => model.MethodOfCommunication)
-                                                </div>
-                                            </div>
-                                            <label class="col-sm-2 col-form-label" for="ParkingFacilityLocation"> Choose Parking Facility/Location<span class="req">*</span></label>
-                                            <div class="col-sm-4">
-                                                @Html.DropDownListFor(model => model.ParkingFacilityLocation, new SelectList(ViewBag.LocationListData, "LocationId", "LocationName"), "--Select Location--", new { @class = "form-control input-rounded" })
-                                                <div class="errorspace">
-                                                    @Html.ValidationMessageFor(model => model.ParkingFacilityLocation)
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label" for="MonthlyPrice"> Monthly Price</label>
-                                            <div class="col-sm-4">
-                                                @Html.TextBoxFor(model => model.MonthlyPrice, new { @class = "form-control input-rounded", @placeholder = "Monthly Price" })
-                                                <div class="errorspace">
-                                                    @Html.ValidationMessageFor(model => model.MonthlyPrice)
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row clsCustCredentials">
-                                            <label class="col-sm-2 col-form-label" for="CustomerUserName"> Customer User Name<span class="req">*</span></label>
-                                            <div class="col-sm-4">
-                                                @Html.TextBoxFor(model => model.CustomerUserName, new { @class = "form-control input-rounded", @placeholder = "User Name", @autocomplete = "off" })
-                                                <div class="errorspace">
-                                                    @Html.ValidationMessageFor(model => model.CustomerUserName)
-                                                </div>
-                                            </div>
-                                            <label class="col-sm-2 col-form-label" for="CustomerPassword"> Customer Password<span class="req">*</span></label>
-                                            <div class="col-sm-4">
-                                                @Html.TextBoxFor(model => model.CustomerPassword, new { @class = "form-control input-rounded", @type = "password", @maxlength = "8", @minlength = "8", @placeholder = "Password", @autocomplete = "off" })
-                                                <div class="errorspace">
-                                                    @Html.ValidationMessageFor(model => model.CustomerPassword)
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row clsCustCredentials">
-                                            <label class="col-sm-2 col-form-label" for="SecurityQuestion"> Security Question<span class="req">*</span></label>
-                                            <div class="col-sm-4">
-                                                @Html.DropDownListFor(model => model.SecurityQuestion, new SelectList(ViewBag.SecurityQuestion, "GlobalCodeId", "CodeName"), "--Select Security Question--", new { @class = "form-control input-rounded" })
-                                                <div class="errorspace">
-                                                    @Html.ValidationMessageFor(model => model.SecurityQuestion)
-                                                </div>
-                                            </div>
-                                            <label class="col-sm-2 col-form-label" for="SecurityAnswer"> Security Answer<span class="req">*</span></label>
-                                            <div class="col-sm-4">
-                                                @Html.TextBoxFor(model => model.SecurityAnswer, new { @class = "form-control input-rounded", @placeholder = "Security Answer" })
-                                                <div class="errorspace">
-                                                    @Html.ValidationMessageFor(model => model.SecurityAnswer)
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label class="col-sm-2 col-form-label" for="IsAllowToSendText">Allow to send you text message regarding your account</label>
-                                            <div class="col-sm-4">
-                                                @Html.CheckBoxFor(model => model.IsAllowToSendText, new { @class = "myclass", data_title = "Yes" })
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="clearfix"></div>
+                            <label class="col-sm-2 col-form-label" for="Address1City"> City<span class="req">*</span></label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(model => model.Address1City, new { @id = "Address1City", @class = "form-control input-rounded required", @placeholder = "City", @pattern = "^[a-zA-Z0-9, -@]+$" })
+                                <div class="errorspace">
+                                    @Html.ValidationMessageFor(model => model.Address1City)
                                 </div>
-                                @if (ViewBag.UpdateMode == false)
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="Address1State">State<span class="req">*</span></label>
+                            <div class="col-sm-4">
+                                @if (ViewBag.StateList != null)
                                 {
-                                    @*<a href="javascript:void(0)" id="LocationNext" class="next fa fa-long-arrow-right previousBtndata pull-right" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>*@
-                                    <button type="button" class="btn btn-success pull-right next" id="LocationNext"><i class="fa fa-arrow-right"></i>&nbsp;Next</button>
-                                    <span class="pull-right next">&nbsp;&nbsp;</span>
-                                    <button type="button" class="btn btn-success pull-right" id="SendToLoationList"><i class="fa fa-arrow-left"></i>&nbsp;Back to List</button>
+                                    @Html.DropDownListFor(model => model.Address1State, new SelectList(ViewBag.StateList, "StateId", "StateName"), "--Select State--", new { @id = "Address1State", @class = "form-control input-rounded required" })
                                 }
                                 else
                                 {
-                                    @*<a href="javascript:void(0)" id="LocationNext" class="next fa fa-long-arrow-right previousBtndata pull-right" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>*@
-                                    <button type="button" class="btn btn-success pull-right next" id="LocationNext"><i class="fa fa-arrow-right"></i>&nbsp;Next</button>
-                                    <span class="pull-right next">&nbsp;&nbsp;</span>
-                                    <button type="button" class="btn btn-success pull-right" id="SendToLoationList"><i class="fa fa-arrow-left"></i>&nbsp;Back to List</button>
+                                    <select id="Address1State" class="form-control input-rounded"><option value="-1">@ViewBag.StateList</option></select>
                                 }
-                            </fieldset>
-
-                            <fieldset id="CustomerVehicleInformation">
-                                @{ViewBag.myModelprefixName = "CustomerVehicleModel."; ViewBag.ActionSection = "VendorInsurance";}
-                                <div id="divInsurance">
-                                    @Html.Partial("CustomerVehicleInformation", Model)
+                                <div class="errorspace">
+                                    @Html.ValidationMessageFor(model => model.Address1State)
                                 </div>
-                                @*<a href="javascript:void(0)" id="" class="next fa fa-long-arrow-right previousBtndata pull-right" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>*@
-                                @*<a href="javascript:void(0)" class="previous fa fa-long-arrow-left pull-left" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>*@
-                                <button type="button" class="btn btn-success pull-right next"><i class="fa fa-arrow-right"></i>&nbsp;Next</button>
-                                <span class="pull-right next">&nbsp;&nbsp;</span>
-                                <button type="button" class="btn btn-success pull-right" id="SendToLoationList"><i class="fa fa-arrow-left"></i>&nbsp;Back to List</button>
-                                <button type="button" class="btn btn-success pull-left previous"><i class="fa fa-arrow-left"></i>&nbsp;Previous</button>
-                            </fieldset>
-
-                            <fieldset id="CustomerPaymentDetails">
-                                @{ViewBag.myModelprefixName = "CustomerPaymentModel."; ViewBag.ActionSection = "VendorContract";}
-                                <div id="divVendorContract">
-                                    @Html.Partial("_CustomerPaymentDetails", Model)
+                            </div>
+                            <label class="col-sm-2 col-form-label" for="ZipCode1"> Zip<span class="req">*</span></label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(model => model.ZipCode1, new { @class = "form-control input-rounded required", @placeholder = "Zip", @minLength = "5", @pattern = "^[0-9]+$" })
+                                <div class="errorspace">
+                                    @Html.ValidationMessageFor(model => model.ZipCode1)
                                 </div>
-                                @*<a href="javascript:void(0)" id="" class="next nxt-btn fa fa-long-arrow-right previousBtndata pull-right" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>
-                                    <a href="javascript:void(0)" class="previous fa fa-long-arrow-left pull-left prev_btn" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>*@
-                                <button type="button" class="btn btn-success pull-right next"><i class="fa fa-arrow-right"></i>&nbsp;Next</button>
-                                <span class="pull-right next">&nbsp;&nbsp;</span>
-                                <button type="button" class="btn btn-success pull-right" id="SendToLoationList"><i class="fa fa-arrow-left"></i>&nbsp;Back to List</button>
-                                <button type="button" class="btn btn-success pull-left previous"><i class="fa fa-arrow-left"></i>&nbsp;Previous</button>
-                            </fieldset>
-
-                            <fieldset id="CustomerRecapDetails">
-                                @{ViewBag.myModelprefixName = "VendorAccountDetailsModel."; ViewBag.ActionSection = "VendorAccountDetail";}
-                                <div id="divFacility">
-                                    @*@Html.Partial("_CustomerRecapDetails", Model)*@
-                                    <div id="divCustomerRecapDetails" class="">
-                                        <div class="row">
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>First Name</label>
-                                                    <p class="form-control-static" data-display="FirstName"></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Last Name</label>
-                                                    <p class="form-control-static" data-display="LastName"></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Customer Type</label>
-                                                    <p class="form-control-static" data-display="LastName"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Address</label>
-                                                    <p class="form-control-static" data-display="Address1"></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>City</label>
-                                                    <p class="form-control-static" data-display="Address1City"></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>State</label>
-                                                    <p class="form-control-static" data-display="Address1State"></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Zip</label>
-                                                    <p class="form-control-static" data-display="ZipCode1"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Mailing Address</label>
-                                                    <p class="form-control-static" data-display="Address2"></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Mailing City</label>
-                                                    <p class="form-control-static" data-display="Address2City"></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Mailing State</label>
-                                                    <p class="form-control-static" data-display="Address2State"></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Mailing Zip</label>
-                                                    <p class="form-control-static" data-display="ZipCode2"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Last 4 Digit of DL #</label>
-                                                    <p class="form-control-static" data-display="DLNo"></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Email</label>
-                                                    <p class="form-control-static" data-display="EmailId"></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Work Phone No.</label>
-                                                    <p class="form-control-static" data-display="Phone1"></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Cell Phone No</label>
-                                                    <p class="form-control-static" data-display="Phone2"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Prefered Method of Comm.</label>
-                                                    <p class="form-control-static" data-display="MethodOfCommunication"></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Parking Facility/Location</label>
-                                                    <p class="form-control-static" data-display="ParkingFacilityLocation"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Monthly Price</label>
-                                                    <p class="form-control-static" data-display="MonthlyPrice"></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label>Allow to send you text message regarding your account</label>
-                                                    <p class="form-control-static" data-display="IsAllowToSendText"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div style="background-color:#0792bc;width:94%">
-                                                <center><p style="color:white;margin:8px 0!important;"><b>Payment Details</b></p></center>
-                                            </div>
-                                        </div>
-                                        <br />
-                                        <div class="row">
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Monthly Parking Paid for By</label>
-                                                    <p class="form-control-static" data-display="CustomerPaymentModel.IsMonthlyParkingPaidFor"></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Company Name</label>
-                                                    <p class="form-control-static" data-display="CustomerPaymentModel.CompanyName"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-9">
-                                                <div class="form-group">
-                                                    <label>Would you like to invocie sent directly to Company &amp; You</label>
-                                                    <p class="form-control-static" data-display="CustomerPaymentModel.IsSendDirectInvoiceToCompany"></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Company Email</label>
-                                                    <p class="form-control-static" data-display="CustomerPaymentModel.CompanyEmail"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Method of Payment</label>
-                                                    <p class="form-control-static" data-display="CustomerPaymentModel.PaymentMethod"></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Account Number</label>
-                                                    <p class="form-control-static" data-display="CustomerPaymentModel.BankAccountNo"></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Bank Name</label>
-                                                    <p class="form-control-static" data-display="CustomerPaymentModel.BankName"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>IFSC</label>
-                                                    <p class="form-control-static" data-display="CustomerPaymentModel.BankIFSC"></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Routing No.</label>
-                                                    <p class="form-control-static" data-display="CustomerPaymentModel.BankRoutingNo"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="row">
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Name as it appears on card</label>
-                                                    <p class="form-control-static" data-display="CustomerPaymentModel.CardFirstName"></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Address</label>
-                                                    <p class="form-control-static" data-display="CustomerPaymentModel.Address"></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Card Number</label>
-                                                    <p class="form-control-static" data-display="CustomerPaymentModel.CardNo"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Card Type</label>
-                                                    <p class="form-control-static" data-display="CustomerPaymentModel.CardType"></p>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-3">
-                                                <div class="form-group">
-                                                    <label>Expiration Date</label>
-                                                    <p class="form-control-static" data-display="CustomerPaymentModel.CardExpirationDate"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-12">
-                                                <div class="form-group">
-                                                    <label>Sign up for automatic Payments</label>
-                                                    <p class="form-control-static" data-display="CustomerPaymentModel.IsSignupForAutomaticPayment"></p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="IsAddress2Same">Is your Mailing address is same as Home Address</label>
+                            <div class="col-sm-4">
+                                @Html.CheckBoxFor(model => model.IsAddress2Same, new { @class = "SameAddress", data_title = "Yes" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="Address2">Mailing Address</label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(model => model.Address2, new { @id = "Address2", @class = "form-control input-rounded", @placeholder = "Mailing Address" })
+                                <div class="errorspace">
+                                    @Html.ValidationMessageFor(model => model.Address2)
                                 </div>
-                                <div class="clearfix"></div>
-                                @*<a href="javascript:void(0)" class="previous fa fa-long-arrow-left pull-left" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>*@
-                                <button type="button" class="btn btn-success pull-left previous"><i class="fa fa-arrow-left"></i>&nbsp;Previous</button>
-                                <button type="submit" id="Savebtndata" class="btn btn-success pull-right">Accept the Information </button>
-                                <span class="pull-right next">&nbsp;&nbsp;</span>
-                                <input type="button" onclick="callCancel();" class="btn btn-danger pull-right" formnovalidate="formnovalidate" value="Deny" />
-                            </fieldset>
-                        }
+                            </div>
+                            <label class="col-sm-2 col-form-label" for="Address2City" id="lblAddress2City"> City</label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(model => model.Address2City, new { @id = "Address2City", @class = "form-control input-rounded", @placeholder = "Mailing City" })
+                                <div class="errorspace">
+                                    @Html.ValidationMessageFor(model => model.Address2City)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="Address2State">State</label>
+                            <div class="col-sm-4">
+                                @if (ViewBag.StateList != null)
+                                {
+                                    @Html.DropDownListFor(model => model.Address2State, new SelectList(ViewBag.StateList, "StateId", "StateName"), "--Select State--", new { @id = "Address2State", @class = "form-control input-rounded" })
+                                }
+                                else
+                                {
+                                    <select id="Address2State" , class="form-control input-rounded"><option value="-1">@ViewBag.StateList</option></select>
+                                }
+                                <div class="errorspace">
+                                    @Html.ValidationMessageFor(model => model.Address2State)
+                                </div>
+                            </div>
+                            <label class="col-sm-2 col-form-label" for="ZipCode2"> Zip</label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(model => model.ZipCode2, new { @class = "form-control input-rounded", @placeholder = "Zip", @minLength = "5", @pattern = "^[0-9]+$" })
+                                <div class="errorspace">
+                                    @Html.ValidationMessageFor(model => model.ZipCode2)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="DLNo">Last 4 digit of DL#<span class="req">*</span></label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(model => model.DLNo, new { @maxLength = "4", @class = "form-control input-rounded required", @placeholder = "DL#"})
+                                <div class="errorspace">
+                                    @Html.ValidationMessageFor(model => model.DLNo)
+                                </div>
+                            </div>
+                            <label class="col-sm-2 col-form-label" for="Email">E-mail<span class="req">*</span></label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(model => model.EmailId, new { @class = "form-control input-rounded required email", @placeholder = "Email Id" })
+                                <div class="errorspace">
+                                    @Html.ValidationMessageFor(model => model.EmailId)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="Phone1">Work Phone No.<span class="req">*</span></label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(model => model.Phone1, new { @class = "form-control input-rounded required", @placeholder = "Work Phone No.", @minLength = "8", @maxLength = "12", @onkeypress = "return isNumberKey(event)" })
+                                <div class="errorspace">
+                                    @Html.ValidationMessageFor(model => model.Phone1)
+                                </div>
+                            </div>
+                            <label class="col-sm-2 col-form-label" for="Phone2">Cell Phone No.</label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(model => model.Phone2, new { @class = "form-control input-rounded", @placeholder = "Cell Phone No.", @minLength = "8", @maxLength = "12", @onkeypress = "return isNumberKey(event)" })
+                                <div class="errorspace">
+                                    @Html.ValidationMessageFor(model => model.Phone2)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="MethodOfCommunication"> Preffered Method of Communication<span class="req">*</span></label>
+                            <div class="col-sm-4">
+                                @Html.DropDownListFor(model => model.MethodOfCommunication, new SelectList(ViewBag.PrefCommMethod, "GlobalCodeId", "CodeName"), "--Select Preffered Method of Communication--", new { @class = "form-control input-rounded required" })
+                                <div class="errorspace">
+                                    @Html.ValidationMessageFor(model => model.MethodOfCommunication)
+                                </div>
+                            </div>
+                            <label class="col-sm-2 col-form-label" for="ParkingFacilityLocation"> Choose Parking Facility/Location<span class="req">*</span></label>
+                            <div class="col-sm-4">
+                                @Html.DropDownListFor(model => model.ParkingFacilityLocation, new SelectList(ViewBag.LocationListData, "LocationId", "LocationName"), "--Select Location--", new { @class = "form-control input-rounded required" })
+                                <div class="errorspace">
+                                    @Html.ValidationMessageFor(model => model.ParkingFacilityLocation)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="MonthlyPrice"> Monthly Price</label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(model => model.MonthlyPrice, new { @class = "form-control input-rounded", @placeholder = "Monthly Price" })
+                                <div class="errorspace">
+                                    @Html.ValidationMessageFor(model => model.MonthlyPrice)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row clsCustCredentials">
+                            <label class="col-sm-2 col-form-label" for="CustomerUserName"> Customer User Name<span class="req">*</span></label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(model => model.CustomerUserName, new { @maxLength = "10", @minLength = "6", @class = "form-control input-rounded required", @placeholder = "User Name", @autocomplete = "off" })
+                                <div class="errorspace">
+                                    @Html.ValidationMessageFor(model => model.CustomerUserName)
+                                </div>
+                            </div>
+                            <label class="col-sm-2 col-form-label" for="CustomerPassword"> Customer Password<span class="req">*</span></label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(model => model.CustomerPassword, new { @class = "form-control input-rounded required", @type = "password", @maxlength = "8", @minlength = "8", @placeholder = "Password", @autocomplete = "off" })
+                                <div class="errorspace">
+                                    @Html.ValidationMessageFor(model => model.CustomerPassword)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row clsCustCredentials">
+                            <label class="col-sm-2 col-form-label" for="SecurityQuestion"> Security Question<span class="req">*</span></label>
+                            <div class="col-sm-4">
+                                @Html.DropDownListFor(model => model.SecurityQuestion, new SelectList(ViewBag.SecurityQuestion, "GlobalCodeId", "CodeName"), "--Select Security Question--", new { @class = "form-control input-rounded required" })
+                                <div class="errorspace">
+                                    @Html.ValidationMessageFor(model => model.SecurityQuestion)
+                                </div>
+                            </div>
+                            <label class="col-sm-2 col-form-label" for="SecurityAnswer"> Security Answer<span class="req">*</span></label>
+                            <div class="col-sm-4">
+                                @Html.TextBoxFor(model => model.SecurityAnswer, new { @class = "form-control input-rounded required", @placeholder = "Security Answer" })
+                                <div class="errorspace">
+                                    @Html.ValidationMessageFor(model => model.SecurityAnswer)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label" for="IsAllowToSendText">Allow to send you text message regarding your account</label>
+                            <div class="col-sm-4">
+                                @Html.CheckBoxFor(model => model.IsAllowToSendText, new { @class = "myclass", data_title = "Yes" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                @if (ViewBag.UpdateMode == false)
+                {
+                    @*<a href="javascript:void(0)" id="LocationNext" class="next fa fa-long-arrow-right previousBtndata pull-right" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>*@
+                    <button type="button" class="btn btn-success pull-right next" id="LocationNext"><i class="fa fa-arrow-right"></i>&nbsp;Next</button>
+                    <span class="pull-right next">&nbsp;&nbsp;</span>
+                    <button type="button" class="btn btn-success pull-right SendToLoationList"><i class="fa fa-arrow-left"></i>&nbsp;Back to List</button>
+                }
+                else
+                {
+                    @*<a href="javascript:void(0)" id="LocationNext" class="next fa fa-long-arrow-right previousBtndata pull-right" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>*@
+                    <button type="button" class="btn btn-success pull-right next" id="LocationNext"><i class="fa fa-arrow-right"></i>&nbsp;Next</button>
+                    <span class="pull-right next">&nbsp;&nbsp;</span>
+                    <button type="button" class="btn btn-success pull-right SendToLoationList"><i class="fa fa-arrow-left"></i>&nbsp;Back to List</button>
+                }
+            </fieldset>
+
+            <fieldset id="CustomerVehicleInformation">
+                @{ViewBag.myModelprefixName = "CustomerVehicleModel."; ViewBag.ActionSection = "VendorInsurance";}
+                <div id="divInsurance">
+                    @Html.Partial("CustomerVehicleInformation", Model)
+                </div>
+                @*<a href="javascript:void(0)" id="" class="next fa fa-long-arrow-right previousBtndata pull-right" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>*@
+                @*<a href="javascript:void(0)" class="previous fa fa-long-arrow-left pull-left" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>*@
+                <button type="button" class="btn btn-success pull-right next"><i class="fa fa-arrow-right"></i>&nbsp;Next</button>
+                <span class="pull-right next">&nbsp;&nbsp;</span>
+                <button type="button" class="btn btn-success pull-right SendToLoationList"><i class="fa fa-arrow-left"></i>&nbsp;Back to List</button>
+                <button type="button" class="btn btn-success pull-left previous"><i class="fa fa-arrow-left"></i>&nbsp;Previous</button>
+            </fieldset>
+
+            <fieldset id="CustomerPaymentDetails">
+                @{ViewBag.myModelprefixName = "CustomerPaymentModel."; ViewBag.ActionSection = "VendorContract";}
+                <div id="divVendorContract">
+                    @Html.Partial("_CustomerPaymentDetails", Model)
+                </div>
+                @*<a href="javascript:void(0)" id="" class="next nxt-btn fa fa-long-arrow-right previousBtndata pull-right" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>
+                    <a href="javascript:void(0)" class="previous fa fa-long-arrow-left pull-left prev_btn" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>*@
+                <button type="button" class="btn btn-success pull-right next"><i class="fa fa-arrow-right"></i>&nbsp;Next</button>
+                <span class="pull-right next">&nbsp;&nbsp;</span>
+                <button type="button" class="btn btn-success pull-right SendToLoationList"><i class="fa fa-arrow-left"></i>&nbsp;Back to List</button>
+                <button type="button" class="btn btn-success pull-left previous"><i class="fa fa-arrow-left"></i>&nbsp;Previous</button>
+            </fieldset>
+
+            <fieldset id="CustomerRecapDetails">
+                @{ViewBag.myModelprefixName = "VendorAccountDetailsModel."; ViewBag.ActionSection = "VendorAccountDetail";}
+                <div id="divFacility">
+                    @*@Html.Partial("_CustomerRecapDetails", Model)*@
+                    <div id="divCustomerRecapDetails" class="">
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>First Name</label>
+                                    <p class="form-control-static" data-display="FirstName"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Last Name</label>
+                                    <p class="form-control-static" data-display="LastName"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Customer Type</label>
+                                    <p class="form-control-static" data-display="LastName"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Address</label>
+                                    <p class="form-control-static" data-display="Address1"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>City</label>
+                                    <p class="form-control-static" data-display="Address1City"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>State</label>
+                                    <p class="form-control-static" data-display="Address1State"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Zip</label>
+                                    <p class="form-control-static" data-display="ZipCode1"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Mailing Address</label>
+                                    <p class="form-control-static" data-display="Address2"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Mailing City</label>
+                                    <p class="form-control-static" data-display="Address2City"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Mailing State</label>
+                                    <p class="form-control-static" data-display="Address2State"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Mailing Zip</label>
+                                    <p class="form-control-static" data-display="ZipCode2"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Last 4 Digit of DL #</label>
+                                    <p class="form-control-static" data-display="DLNo"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <p class="form-control-static" data-display="EmailId"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Work Phone No.</label>
+                                    <p class="form-control-static" data-display="Phone1"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Cell Phone No</label>
+                                    <p class="form-control-static" data-display="Phone2"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Prefered Method of Comm.</label>
+                                    <p class="form-control-static" data-display="MethodOfCommunication"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Parking Facility/Location</label>
+                                    <p class="form-control-static" data-display="ParkingFacilityLocation"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Monthly Price</label>
+                                    <p class="form-control-static" data-display="MonthlyPrice"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                    <label>Allow to send you text message regarding your account</label>
+                                    <p class="form-control-static" data-display="IsAllowToSendText"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div style="background-color:#0792bc;width:100%">
+                                <center><p style="color:white;margin:8px 0!important;"><b>Payment Details</b></p></center>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Monthly Parking Paid for By</label>
+                                    <p class="form-control-static" data-display="CustomerPaymentModel.IsMonthlyParkingPaidFor"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Company Name</label>
+                                    <p class="form-control-static" data-display="CustomerPaymentModel.CompanyName"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-9">
+                                <div class="form-group">
+                                    <label>Would you like to invocie sent directly to Company &amp; You</label>
+                                    <p class="form-control-static" data-display="CustomerPaymentModel.IsSendDirectInvoiceToCompany"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Company Email</label>
+                                    <p class="form-control-static" data-display="CustomerPaymentModel.CompanyEmail"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Method of Payment</label>
+                                    <p class="form-control-static" data-display="CustomerPaymentModel.PaymentMethod"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Account Number</label>
+                                    <p class="form-control-static" data-display="CustomerPaymentModel.BankAccountNo"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Bank Name</label>
+                                    <p class="form-control-static" data-display="CustomerPaymentModel.BankName"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>IFSC</label>
+                                    <p class="form-control-static" data-display="CustomerPaymentModel.BankIFSC"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Routing No.</label>
+                                    <p class="form-control-static" data-display="CustomerPaymentModel.BankRoutingNo"></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Name as it appears on card</label>
+                                    <p class="form-control-static" data-display="CustomerPaymentModel.CardFirstName"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Address</label>
+                                    <p class="form-control-static" data-display="CustomerPaymentModel.Address"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Card Number</label>
+                                    <p class="form-control-static" data-display="CustomerPaymentModel.CardNo"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Card Type</label>
+                                    <p class="form-control-static" data-display="CustomerPaymentModel.CardType"></p>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="form-group">
+                                    <label>Expiration Date</label>
+                                    <p class="form-control-static" data-display="CustomerPaymentModel.CardExpirationDate"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="form-group">
+                                    <label>Sign up for automatic Payments</label>
+                                    <p class="form-control-static" data-display="CustomerPaymentModel.IsSignupForAutomaticPayment"></p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
+                <div class="clearfix"></div>
+                @*<a href="javascript:void(0)" class="previous fa fa-long-arrow-left pull-left" style="font-size: 33px;color:#0aa0cd; cursor: pointer;"></a>*@
+                <button type="button" class="btn btn-success pull-left previous"><i class="fa fa-arrow-left"></i>&nbsp;Previous</button>
+                <button type="submit" id="Savebtndata" class="btn btn-success pull-right">Accept the Information </button>
+                <span class="pull-right next">&nbsp;&nbsp;</span>
+                <input type="button" onclick="callCancel();" class="btn btn-danger pull-right" formnovalidate="formnovalidate" value="Deny" />
+            </fieldset>
+        }
     </div>
 </div>
+@*</div>
+            </div>
+        </div>
+    </div>*@
 <script src="~/Scripts/eCounting/CustomerMultiStepWizard.js"></script>
 <script src="~/Content/NewAdminContent/VENDOR/jquery-steps/build/jquery.steps.min.js"></script>
 <script src="~/Scripts/NewAdminJS/plugins-init/jquery-steps-init.js"></script>
+
 <script>
     $(function () {
 
         $("#Savebtndata").on("click", function (event) {
-            if (!$("#msform").valid()) {
+            if ($("#msform").valid()) {
                 return false;
             }
             fn_showMaskloader('Please wait...Loading');
@@ -764,13 +765,19 @@
         });
 
         $("#LocationNext").on("click", function (event) {
+
             $("#Address2State").removeAttr('disabled');
         });
-
-        $('#SendToLoationList').click(function () {
+        //$('.SendToLoationList').click(function () {
+        //    event.preventDefault();
+        //    $("#myModalForRequisitionAction").modal("hide");
+        //    var addNewUrl = '/CustomerManagement/ListWaitingCustomers/';
+        //    $('#RenderPageId').load(addNewUrl);
+        //})
+        $('.SendToLoationList').click(function () {
             var addNewUrl = "@Url.Action(@backtolist, "CustomerManagement")";
-            //$('#RenderPageId').load(addNewUrl);
-            window.location.href = addNewUrl;
+            $("#myModalForRequisitionAction").modal("hide");
+            $('#RenderPageId').load(addNewUrl);
         })
 
         $(".SameAddress").change(function () {
@@ -808,11 +815,11 @@
             //$("#lblAddress2").show();
         });
 
-        if (IsUpdate == "True")
+        if ('@ViewBag.UpdateMode' == 'True')
         {
             $('label').addClass('active highlight');
-            $('#Address2,#Address2City,#Address2State').css("background-color", "#EBEBE4");
-            $('#Address2,#Address2City').attr('readonly', true);
+            $('#Address2,#Address2City,#Address2State,#ZipCode2').css("background-color", "#EBEBE4");
+            $('#Address2,#Address2City,#ZipCode2').attr('readonly', true);
             $('#Address2State').attr('disabled', 'disabled');
             $('#CustomerId').val(@ViewBag.CustomerId);
             @*setTimeout(function () {
@@ -854,16 +861,6 @@
                 $("#CardNo").addClass('required');
                 $("#CardExpirationDate").addClass('required');
             }
-
-            //if ($("#CustomerPaymentModel_IsMonthlyParkingPaidFor").val() == 'C') {
-            if ($('input[id=CustomerPaymentModel_IsMonthlyParkingPaidFor]:checked').val() == 'C') {
-                $('.clsPaidForCompany').show();
-                $("#CompanyName").addClass('required');
-            } else {
-                $('.clsPaidForCompany').hide();
-                $("#CompanyName").removeClass('required');
-            }
-
             if ($('input[id=CustomerPaymentModel_IsSendDirectInvoiceToCompany]:checked').val() == 'true') {
                 $('.clsSendDirectToCompany').show();
                 $("#CompanyEmail").addClass('required');
@@ -871,6 +868,25 @@
                 $('.clsSendDirectToCompany').hide();
                 $("#CompanyEmail").removeClass('required');
             }
+            //if ($("#CustomerPaymentModel_IsMonthlyParkingPaidFor").val() == 'C') {
+            if ($('input[id=CustomerPaymentModel_IsMonthlyParkingPaidFor]:checked').val() == 'C') {
+                $('.clsPaidForCompany').show();
+                $("#CompanyName").addClass('required');
+                if ($('input[id=CustomerPaymentModel_IsSendDirectInvoiceToCompany]:checked').val() == 'true') {
+                $('.clsSendDirectToCompany').show();
+                $("#CompanyEmail").addClass('required');
+                }
+                else
+                    $('.clsSendDirectToCompany').hide();
+
+            } else {
+
+                $('.clsPaidForCompany').hide();
+                $("#CompanyName").removeClass('required');
+                $('.clsSendDirectToCompany').hide();
+                $("#CompanyEmail").removeClass('required');
+            }
+
             $('.clsCustCredentials').hide();
         }
     });
@@ -885,14 +901,52 @@
                     vars.push(hash[0]);
                     vars[hash[0]] = hash[1];
                 }
+                var addNewUrl123 = '/CustomerManagement/ListWaitingCustomer/';
                 var Loc = decodeURIComponent(vars.loc);
                 if (Loc == undefined || Loc == null || Loc == "undefined") {
-                    window.location.href = "/CustomerManagement/CustomerManagementSetup";
+                    $('#RenderPageId').load(addNewUrl123);
+                     $("#myModalForRequisitionAction").modal("hide");
                 }
                 else {
-                    window.location.href = "/CustomerManagement/CustomerManagementSetup";
+                    $('#RenderPageId').load(addNewUrl123);
+                     $("#myModalForRequisitionAction").modal("hide");
                 }
             }
         });
     }
+    $("#Savebtndata").on("click", function (event) {
+            if (!$("#msform").valid()) {
+                return false;
+            }
+            else {
+                fn_showMaskloader('Please wait...Loading');
+                var form = $('#msform')[0];
+                var data = new FormData(form);
+                $.ajax({
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    url: '/CustomerManagement/CustomerManagementSetup',
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    timeout: 600000,
+                    success: function (data) {
+                        $("#myModalForRequisitionAction").modal("hide");
+                        var addNewUrl;
+                        if ('@ViewBag.UpdateMode' == 'True') {
+                            addNewUrl = "/CustomerManagement/ListCustomers";
+                        }
+                        else {
+                            addNewUrl = "/CustomerManagement/ListWaitingCustomers";
+                        }
+                        $('#RenderPageId').load(addNewUrl);
+                        fn_hideMaskloader();
+                    },
+                    error: function (e) {
+
+                    }
+                });
+            }
+        });
 </script>

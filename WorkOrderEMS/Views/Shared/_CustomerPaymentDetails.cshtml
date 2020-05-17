@@ -113,7 +113,7 @@
         <div class="form-group row clsSendDirectToCompany" style="display:none;">
             <label class="col-sm-2 col-form-label" for="LicenseName"> Company Email<span class="req">*</span></label>
             <div class="col-sm-4">
-                @Html.TextBoxFor(model => model.CustomerPaymentModel.CompanyEmail, null, new { @id = "CompanyEmail", @class = "form-control input-rounded", @placeholder = "Company Email" })
+                @Html.TextBoxFor(model => model.CustomerPaymentModel.CompanyEmail, null, new { @id = "CompanyEmail", @class = "form-control input-rounded email", @placeholder = "Company Email" })
                 @Html.ValidationMessageFor(model => model.CustomerPaymentModel.CompanyEmail)
             </div>
         </div>
@@ -170,7 +170,7 @@
             </div>
         </div>
         <div class="form-group row clsCreditCard" style="display:none;">
-            <label class="col-sm-2 col-form-label" for="CardType"> Card Type</label>
+            <label class="col-sm-2 col-form-label" for="CardType"> Card Type<span class="req">*</span></label>
             <div class="col-sm-4">
                 @Html.DropDownListFor(model => model.CustomerPaymentModel.CardType, new SelectList(ViewBag.CardType, "GlobalCodeId", "CodeName"), "--Select Card Type--", new { @class = "form-control input-rounded" })
                 <div class="errorspace">
@@ -186,7 +186,7 @@
         <div class="form-group row clsCreditCard" style="display:none;">
             <label class="col-sm-2 col-form-label" for="CardExpirationDate">Expiration Date<span class="req">*</span></label>
             <div class="col-sm-4">
-                @Html.TextBox("CardExpirationDate", Model.CustomerPaymentModel.CardExpirationDate.ToString("MM/dd/yyyy"), new { @Placeholder = "Expiration Date", @class = "form-control-sm input-rounded", @maxlength = "10" })
+                @Html.TextBox("CustomerPaymentModel.CardExpirationDate",Model.CustomerPaymentModel.CardExpirationDate.ToString("MM/dd/yyyy"), new { @id="CardExpirationDate",@Placeholder = "Expiration Date", @class = "form-control-sm input-rounded", @maxlength = "10" })
                 @Html.ValidationMessageFor(model => model.CustomerPaymentModel.CardExpirationDate)
             </div>
         </div>
@@ -202,12 +202,20 @@
 <script>
     //$('#CostDuringPeriod,#AnnualValueOfAggriment,#MinimumBillAmount,#LateFine').simpleMoneyFormat();
     $(document).ready(function () {
-
         $('#CustomerPaymentModel_IsMonthlyParkingPaidFor[value="C"]').click(function () {
             $('.clsPaidForCompany').show();
             $("#CompanyName").addClass('required');
+            if ($('input[id=CustomerPaymentModel_IsSendDirectInvoiceToCompany]:checked').val() == 'true') {
+                $('.clsSendDirectToCompany').show();
+                $("#CompanyEmail").addClass('required');
+            }
+            else
+                $('.clsSendDirectToCompany').hide();
         });
         $('#CustomerPaymentModel_IsMonthlyParkingPaidFor[value="I"]').click(function () {
+            $("#CompanyEmail").val('');
+            $('.clsSendDirectToCompany').hide();
+            $("#CompanyName").val('')
             $('.clsPaidForCompany').hide();
             $("#CompanyName").removeClass('required');
         });
@@ -216,8 +224,19 @@
             $("#CompanyEmail").addClass('required');
         });
         $('#CustomerPaymentModel_IsSendDirectInvoiceToCompany[value="false"]').click(function () {
-            $('.clsSendDirectToCompany').hide();
-            $("#CompanyEmail").removeClass('required');
+            bootbox.confirm("Are you sure, this will help ensure a member of management is available?", function (result) {
+                    if (result) {
+                        $('.clsSendDirectToCompany').hide();
+                        $("#CompanyEmail").val('');
+                        $("#CompanyEmail").removeClass('required');
+                    } else {
+                        $('input:radio[id="CustomerPaymentModel_IsSendDirectInvoiceToCompany"][value=true]').prop('checked', true);
+                    }
+                });
+
+            //$('.clsSendDirectToCompany').hide();
+            //$("#CompanyEmail").val('');
+            //$("#CompanyEmail").removeClass('required');
         });
         $('#CustomerPaymentModel_PaymentMethod[value="BD"]').click(function () {
             $('.clsBankDraft').show();
@@ -226,6 +245,12 @@
             $("#BankName").addClass('required');
             $("#BankIFSC").addClass('required');
             $("#BankRoutingNo").addClass('required');
+
+            $("#CardFirstName").val('');
+            $("#Address").val('');
+            $("#CustomerPaymentModel_CardType").val('');
+            $("#CardNo").val('');
+            $("#CardExpirationDate").val('');
 
             $("#CardFirstName").removeClass('required');
             $("#Address").removeClass('required');
@@ -236,6 +261,11 @@
         $('#CustomerPaymentModel_PaymentMethod[value="CC"]').click(function () {
             $('.clsBankDraft').hide();
             $('.clsCreditCard').show();
+
+            $("#BankAccountNo").val('');
+            $("#BankName").val('');
+            $("#BankIFSC").val('');
+            $("#BankRoutingNo").val('');
 
             $("#BankAccountNo").removeClass('required');
             $("#BankName").removeClass('required');

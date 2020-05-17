@@ -1,0 +1,307 @@
+﻿@{
+
+
+    var isRefresh = ViewBag.IsPageRefresh;
+    if (isRefresh == true)
+    {
+        Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = null;
+    }
+
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+    long loginUserType = 0;
+    long locationId = 0;
+    if (ObjLogin != null)
+    {
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+        loginUserType = ObjLogin.UserRoleId;
+        //loginUserContactNo = ObjLogin.ContactNo;
+        locationId = ObjLogin.LocationID;
+    }
+}
+
+<style>
+
+    .jsgrid-table .jsgrid-header-row > .jsgrid-header-cell {
+        background-color: #0aa0cd;
+        color: white;
+    }
+</style>
+<!-- Resources -->
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/c3/css/c3.min.css" rel="stylesheet" />
+
+<div id="preloader"></div>
+<div class="content-body">
+    <div class="container-fluid">
+        <br />
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card" data-aos="fade-up">
+                    <div style="height: 45px;background:#0aa0cd;">
+                        <div class="form-group row" style="margin-top:6px;margin-left:10px;">
+                            <div class="col-sm-6">
+                                <h3 style="color: white;">Holiday Management</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="custom-tab-1">
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item WidthForTab">
+                                    <a class="nav-link active CenterText" data-toggle="tab" href="#EMPList" style="border-radius: 0px 0px 0px 0px;"><b>Holiday List</b></a>
+                                </li>
+                                <li class="nav-item WidthForTab" style="width:190px;">
+                                    <a class="nav-link CenterText" style="text-align: center; border-radius: 0px 0px 0px 0px;" data-toggle="tab" href="#ListRequisition"><b>Holiday Setup</b></a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="EMPList" role="tabpanel">
+                                    <div class="pt-4">
+                                        <div id="ListHolidayManagement"></div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="ListRequisition">
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <div class="card-header widthHeader ">
+                                                <h4 class="card-title addWhite" style="color: white;">General Holidays</h4>
+                                                <span id="ActionRequisition" style="cursor:pointer;" title="Add Holidays"><i class="fa fa-plus fa-2x" style="color:white;" aria-hidden="true"></i></span>
+                                            </div>
+                                            <br />
+                                            <div class="tab-pane fade show active" role="tabpanel">
+                                                <div id="GeneralHolidaysList"></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="card-header widthHeader ">
+                                                <h4 class="card-title addWhite" style="color: white;">Ristricted Holidays</h4>
+                                            </div>
+                                            <br />
+                                            <div class="tab-pane fade show active" role="tabpanel">
+                                                <div id="RistrictedHolidaysList"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForRequisitionVSCChart">
+    <div class="modal-dialog modal-lg" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header" style="display: inherit;">
+                <h5 class="modal-title">Holiday Management </h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="divOpenRquisitionForm" class="">
+                </div>
+                <div>
+                    <button type="button" class="btn btn-secondary pull-right" id="closeVSCRequisition" style="border-radius:100px;" data-dismiss="modal">Close</button>
+                    <input type="button" class="btn btn-primary pull-right" id="SendVSCForApproval" style="border-radius:100px;margin-right: 10px;" value="Send For Approval" />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
+<script src="~/Content/NewAdminContent/VENDOR/d3/d3.min.js"></script>
+<script src="~/Content/NewAdminContent/VENDOR/c3/js/c3.min.js"></script>
+<script src="~/Scripts/NewAdminJS/plugins-init/c3-init.js"></script>
+<script src="~/Content/NewAdminContent/VENDOR/raphael/raphael.min.js"></script>
+<script src="~/GridListing/JsGridScript/ListHoliday.js"></script>
+
+<script>
+    var base_url = window.location.origin;
+    $(document).ready(function () {
+        $('#main-wrapper').removeClass("menu-toggle");
+        $(".hamburger").show();
+        //$("ul li a").click(function (e) {
+        //    e.preventDefault(); // prevent default link button redirect behaviour
+        //    var url = $(this).attr("href");
+        //    $('#RenderPageId').load(url);
+        //});
+
+        $("#ActionRequisition").click(function () {
+            $.ajax({
+                type: "POST",
+                // data: { 'Id': item.id},
+                url: base_url + '/EPeople/OpenGeneralHoliday',
+                beforeSend: function () {
+                    new fn_showMaskloader('Please wait...');
+                },
+                contentType: "application/json; charset=utf-8",
+                error: function (xhr, status, error) {
+                },
+                success: function (result) {
+                    $("#divOpenRquisitionForm").html(result);
+                    $("#myModalForRequisitionVSCChart").modal("show");
+                },
+                complete: function () {
+                    fn_hideMaskloader();
+                }
+            });
+        });
+
+        $('#SendVSCForApproval').click(function (e) {
+
+            // createAddJobDescArray();
+            var dataObject = $("#SaveVCSChartFormForRequisition").serialize();
+
+            $.ajax({
+                type: "POST",
+                url: base_url + '/EPeople/AddHoliday',
+
+                data: dataObject,
+                beforeSend: function () {
+                    new fn_showMaskloader('Please wait...');
+                },
+                success: function (Data) {
+
+                    $("#myModalForRequisitionVSCChart").modal("hide");
+                    $("#GeneralHolidaysList").jsGrid("loadData");
+                    $("#RistrictedHolidaysList").jsGrid("loadData");
+                    $("#ListHolidayManagement").jsGrid("loadData");
+                    
+
+                    toastr.success(Data.Message);
+                },
+                error: function (err) {
+                },
+                complete: function () {
+                    fn_hideMaskloader();
+                }
+            });
+        })
+
+        $(".jsgrid-edit-button").click(function (event) {
+
+            this;
+            $(".jsgrid-insert-row").hide();
+            event.preventDefault();
+            var addNewUrl = "../GlobalSettings/NewARRule/0";
+            $('#RenderPageId').load(addNewUrl);
+        });
+
+        var HOBurl = '../EPeople/GetListOfHolidayForJSGrid';
+
+        (function ($) {
+            'use strict'
+            var data;
+            $("#GeneralHolidaysList").jsGrid({
+                width: "100%",
+                height: "350px",
+                filtering: true,
+                inserting: true,
+                editing: true,
+                sorting: true,
+                paging: true,
+                autoload: true,
+                pageSize: 10,
+                pageButtonCount: 5,
+                loadMessage: "Please, wait...",
+                controller: {
+                    loadData: function (filter) {
+                        return $.ajax({
+                            type: "GET",
+                            url: HOBurl + '?locationId=' + $_LocationId + '&Typ=1',
+                            datatype: 'json',
+                            contentType: "application/json",
+                        });
+                    }
+                },
+                onRefreshed: function (args) {
+                    $(".jsgrid-insert-row").hide();
+                    $(".jsgrid-filter-row").hide();
+                    $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
+
+                },
+                fields: [
+                    { name: 'HolidayName', width: 80, title: "Holiday Name", headercss: "", },
+                    { name: 'HolidayDates', width: 60, title: "Holiday Date" },
+                    { name: 'LocationName', width: 60, title: "Location" },
+                ],
+                rowClick: function (args) {
+
+                    var getData = args.item;
+                    var keys = Object.keys(getData);
+                    var text = [];
+                }
+            });
+
+
+        })(jQuery);
+
+        (function ($) {
+            'use strict'
+            var data;
+            $("#RistrictedHolidaysList").jsGrid({
+                width: "100%",
+                height: "350px",
+                filtering: true,
+                inserting: true,
+                editing: true,
+                sorting: true,
+                paging: true,
+                autoload: true,
+                pageSize: 10,
+                pageButtonCount: 5,
+                loadMessage: "Please, wait...",
+                controller: {
+                    loadData: function (filter) {
+                        return $.ajax({
+                            type: "GET",
+                            url: HOBurl + '?locationId=' + $_LocationId + '&Typ=2',
+                            datatype: 'json',
+                            contentType: "application/json",
+                        });
+                    }
+                },
+                onRefreshed: function (args) {
+                    $(".jsgrid-insert-row").hide();
+                    $(".jsgrid-filter-row").hide();
+                    $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
+
+                },
+                fields: [
+                    { name: 'HolidayName', width: 80, title: "Holiday Name" },
+                    { name: 'HolidayDates', width: 60, title: "Holiday Date" },
+                    { name: 'LocationName', width: 60, title: "Location" },
+                ],
+                rowClick: function (args) {
+
+                    var getData = args.item;
+                    var keys = Object.keys(getData);
+                    var text = [];
+                }
+            });
+
+        })(jQuery);
+
+
+    });</script>

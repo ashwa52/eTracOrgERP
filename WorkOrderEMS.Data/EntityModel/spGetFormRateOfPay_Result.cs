@@ -16,9 +16,11 @@ namespace WorkOrderEMS.Data.EntityModel
         public string JBT_JobTitle { get; set; }
         public string EmployeeName { get; set; }
         public string HiringManager { get; set; }
-        public string Column1 { get; set; }
+        public string Operation { get; set; }
+        public string LocationName { get; set; }
         public string VST_EmploymentStatus { get; set; }
         public string VST_IsExempt { get; set; }
         public Nullable<decimal> VST_RateOfPay { get; set; }
+        public string TypeOfPayChange { get; set; }
     }
 }

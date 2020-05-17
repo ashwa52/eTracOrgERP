@@ -644,7 +644,7 @@ namespace WorkOrderEMS.Controllers.Guest
                 {
                     #region PDF
                     var applicantId = Convert.ToInt64(Session["ApplicantId"]);
-                    var address = (List<ApplicantAddress>)(Session["ApplicantAddress"]);
+                    var address = (List<WorkOrderEMS.Models.ApplicantAddress>)(Session["ApplicantAddress"]);
                     model.ApplicantAddress = address;
                     string viewName = "_BackGroundCheckForm";
                     var employeeId = ObjLoginModel.UserName;

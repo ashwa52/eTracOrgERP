@@ -14,6 +14,7 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class SubModule
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public SubModule()
         {
             this.UserOverrideUsertypes = new HashSet<UserOverrideUsertype>();
@@ -27,7 +28,9 @@ namespace WorkOrderEMS.Data.EntityModel
         public string SMD_IsActive { get; set; }
     
         public virtual Module Module { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserOverrideUsertype> UserOverrideUsertypes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<VehicleSeatingSubModuleMapping> VehicleSeatingSubModuleMappings { get; set; }
     }
 }

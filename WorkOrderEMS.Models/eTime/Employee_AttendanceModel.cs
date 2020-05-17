@@ -32,5 +32,20 @@ namespace WorkOrderEMS.Models
         public string dyName { get; set; }
         public string DatumString { get; set; }
         public string Present { get; set; }
+        public int AttendanceType { get; set; }
+        public int ApprovalStatus { get; set; }
+        public string ARUser { get; set; }
+        
+    }
+
+    public class AttendanceDashBoradModel 
+    {
+        public DateTime? ReportDateFrom { get; set; }
+        public DateTime? ReportDateTo { get; set; }
+
+        public string ReportDateLabel { get; set; }
+        public string DisplayLabel { get; set; }
+        public int TotalSeconds { get; set; }
+        public string DisplayTotalTime { get; set; }
     }
 }

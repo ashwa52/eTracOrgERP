@@ -1,0 +1,248 @@
+﻿@model WorkOrderEMS.Models.CreditMemoDataModel
+@using WorkOrderEMS.Service;
+@{
+    Layout = null;
+}
+<style>
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .inv {
+        margin-left: 30px;
+        margin-right: 30px;
+        /*font-family: "Times New Roman", Times, serif !important;*/
+        font-family: 'Poppins', sans-serif;
+        /*font-family: Tahoma !important;
+        font-weight: normal;*/
+    }
+
+    .invh {
+        margin-left: 20px;
+        margin-right: 20px;
+        font-family: Tahoma !important;
+    }
+</style>
+
+<!DOCTYPE html>
+
+<html>
+<body style="border: groove;">
+    <div class="modal-body" id="Grid">
+        <div id="divVendorDetailPreview">
+            <div class="row invh">
+                <div style="background-color:#0792bc;width:100%;">
+                    <center><p style="color:white;margin:8px 0!important;padding:5px;"><b>Credit Invoice</b></p></center>
+                </div>
+            </div>
+            <br />
+            <div class="row inv">
+                <table class="table" style="width:100%;text-align: left;">
+                    <tr>
+                        <th>Client comapany Name</th>
+                        <th>Client Location</th>
+                        @if (Model.CreditMemoStatus == "0")
+                        {
+                            <th>Credit Memo Draft Number</th>
+                        }
+                        else
+                        {
+                            <th>Credit Memo Number</th>
+                        }
+                        
+                    </tr>
+                    <tr style="color:#a1a8c3;">
+                        <th>@Model.ClientCompanyName</th>
+                        <th>@Model.ClientLocationName</th>
+                        @if (Model.CreditMemoStatus == "0")
+                        {
+                            <th>@Model.DraftCreditMemoNumber</th>
+                        }
+                        else
+                        {
+                            <th>@Model.CreditMemoNumber</th>
+                        }
+                        
+                    </tr>
+                    <tr>
+                        <th>Employee Issuing Credit</th>
+                        <th>Client Point of Contact Name</th>
+                        <th>Position Title</th>
+                        
+                    </tr>
+                    <tr style="color:#a1a8c3;">
+                        <th>@Model.EntryByDisplay</th>
+                        <th>@Model.ClientPointOfContactName</th>
+                        <th>@Model.PositionTitle</th>
+                        
+                    </tr>
+                    <tr>
+                        <th>Invoice Number</th>
+                        <th>Invoice Date</th>
+                        <th>Credit Issued Date</th>
+                        
+                    </tr>
+                    <tr style="color:#a1a8c3;">
+                        <th>@Model.InvoiceNumber</th>
+                        <th>@Model.InvoiceDateDisplay</th>
+                        <th>@Model.CreditIssuedDateDisplay</th>
+                        
+                    </tr>
+                    <tr>
+                        <th>Location Code</th>
+                        <th>Location Address</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                    <tr style="color:#a1a8c3;">
+                        <th>@Model.LocationCode</th>
+                        <th>@Model.LocationAddress</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </table>
+            </div>
+            <div class="row invh">
+                <div style="background-color:#0792bc;width:100%;">
+                    <center><p style="color:white;margin:8px 0!important;padding:5px;"><b>Credit Memo Info</b></p></center>
+                </div>
+            </div>
+            <br />
+            <div class="row inv">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <table id="tblInvoiceDetails" style="width:100%;text-align: center;border:groove;border-color:black;border-width:thin;">
+                        <tr style="background-color:#0792bc;color:#a1a8c3;">
+                            <th>Item</th>
+                            <th>Item Type</th>
+                            <th>Revenue A/C</th>
+                            <th>Qty</th>
+                            <th>Unit Cost</th>
+                            <th>Total Cost</th>
+                            <th>Credit Amount</th>
+                            <th>Credit Reason</th>
+                        </tr>
+                        <tbody style="color:#a1a8c3;background-color:aliceblue;font-family:Tahoma !important">
+                            @foreach (var item in Model.ListInvoiceItemDetails)
+                            {
+                                <tr>
+                                    <td>@item.ItemDescription</td>
+                                    <td>@item.ItemTypeDesc</td>
+                                    <td>@item.RevenueAccountDesc</td>
+                                    <td>@item.ItemQty</td>
+                                    <td>@item.ItemUnitCost</td>
+                                    <td>@item.TotalCost</td>
+                                    <td>@item.CreditAmt</td>
+                                    <td>@item.CreditReasonDesc</td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot style="color:#a1a8c3;background-color:aliceblue;font-family:Tahoma !important">
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>Total :</td>
+                                <td>@Model.GrandTotal</td>
+                                <td>@Model.TotalCreditAmount</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+            <div class="row invh">
+                <div style="background-color: #0792bc;width: 100%">
+                    <center><p style="color:white;margin:8px 0!important;padding:5px;"><b>Credit Approval Chains</b></p></center>
+                </div>
+            </div>
+            <div class="row inv">
+                <table id="tblInvoiceDetails" class="table" style="width:100%;text-align: left;">
+                    <tr>
+                        <th>Approve/Reject By</th>
+                        <th>Received Date</th>
+                        <th>Response Date</th>
+                        <th>Status</th>
+                    </tr>
+                    <tr style="color:#a1a8c3;">
+                        <th>@Model.ApprovedByDisplay</th>
+                        <th>@Model.ApprovedOnDisplay</th>
+                        <th></th>
+                        <th>@Model.CreditMemoStatusDesc</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="row invh">
+                <div style="background-color:#0792bc;width:100%">
+                    <center><p style="color: white;margin: 8px 0 !important;padding:5px;"><b>Credit Justification Notes</b></p></center>
+                </div>
+            </div>
+            <br />
+            <div class="row inv">
+                <table id="tblInvoiceDetails" class="table" style="width:100%;text-align: left;">
+                    <tr style="color:#a1a8c3;">
+                        <th>@Model.Comment</th>
+                    </tr>
+                </table>
+            </div>
+            <div class="row invh">
+                <div style="background-color:#0792bc;width:100%">
+                    <center><p style="color:white;margin:8px 0!important;padding:5px;"><b>Modification Information</b></p></center>
+                </div>
+            </div>
+            <div class="row inv">
+                <table class="table" style="width:100%;text-align: left;">
+                    <tr>
+                        <th>Date &amp; Time Created</th>
+                        <th>Created By</th>
+                        <th>Date &amp; Time Last Sent To Client</th>
+                    </tr>
+                    <tr style="color: #a1a8c3;">
+                        <th>@Model.EntryOnDisplay</th>
+                        <th>@Model.EntryByDisplay</th>
+                        <th>@Model.InvoiceLastSenttoclientDate</th>
+                    </tr>
+                    <tr>
+                        <th>Date &amp; Time Last Modified</th>
+                        <th>Modified By</th>
+                        <th>Auto Or Manually Processed</th>
+                    </tr>
+                    <tr style="color:#a1a8c3;">
+                        <th>@Model.ModifiedOnDisplay</th>
+                        <th>@Model.ModifiedByDisplay</th>
+                        <th>@Model.CreditMemoTypeDesc</th>
+                    </tr>
+                </table>
+
+            </div>
+            <div class="row invh">
+                <div style="background-color:#0792bc;width:100%">
+                    <center><p style="color: white; margin: 8px 0 !important;padding:5px;"><b>Attached Documents</b></p></center>
+                </div>
+            </div>
+            <br />
+            <div class="row inv">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <table id="tblInvoiceDocuments" style="width:100%;text-align: center;border:groove;border-color:black;border-width:thin;">
+                        <tr style="background-color:#0792bc;color:#a1a8c3;">
+                            @*<th></th>*@
+                            <th>Document Name</th>
+                            <th>Modified Date</th>
+                            <th>Uploaded By</th>
+                        </tr>
+                        <tbody style="color:#a1a8c3;background-color:aliceblue;font-family:Tahoma !important">
+                            <tr>
+                                @*<td><a class="btn btn-secondary" style="border-radius:25px;width:90px;" href="' + $_hostingPrefix + 'Content\\eCountingDocs\\InvoiceDocs\\' +  @Model.InvoiceDocument + '" download>Download</a></td>*@
+                                <td>@Model.InvoiceDocument</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

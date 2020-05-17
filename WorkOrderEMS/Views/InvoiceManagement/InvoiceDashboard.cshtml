@@ -1,0 +1,129 @@
+﻿@model WorkOrderEMS.Models.ClientInvoiceDataModel
+@using WorkOrderEMS.Service;
+@{
+    ViewBag.Title = "Client Invoice List";
+
+    var isRefresh = ViewBag.IsPageRefresh;
+    if (isRefresh == true)
+    {
+        Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = null;
+    }
+    long locationId = 0;
+    long userType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserProfile = "";
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+    }
+    ARService ARS = new ARService();
+    var InvoiceStatusList = ARS.GetGlobalCodes(0, "InvoiceStatus");
+
+
+}
+@section scripts{
+    <script type="text/javascript">
+    var $_locationId = '@locationId';
+    var $_userTypeId = '@userType';
+    var $_VendorStatus = "false";
+    </script>
+}
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/c3/css/c3.min.css" rel="stylesheet" />
+
+<style>
+    
+    .package {
+        margin-top: 0px !important;
+        display: inline-flex;
+        justify-items: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    label .req {
+        margin: 2px;
+        color: #ed2f35;
+    }
+
+    .form-control {
+        border: 1px solid #a0b3b0 !important;
+    }
+
+    .jsgrid-grid-body {
+        height: 100% !important;
+    }
+
+    .headerSize {
+        height: 36px;
+    }
+
+</style>
+<br />
+<div class="content-body" style="min-height: 920px;">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card aos-init aos-animate" data-aos="fade-up">
+
+                    <div class="card-body" data-aos="fade-up">
+                        <div class="panel panel-primary setup-content">
+                            <div class="basic-form">
+                                <div class="row">
+                                    <div class="row justify-content-center">
+                                        <div class="col-lg-6">
+                                            <a style="cursor: pointer;" onClick="PageRedirect('ClientInvoiceList','InvoiceManagement')">
+                                                <div class="pricing_table_content mt-5" style="background-color: #3F8ADA;color:white" ;>
+                                                    <div class="package" style="margin-top: -30px;"><i class="fa fa-dollar" style="font-size:45px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Client Invoicing</b></div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="pricing_table_content mt-5" style="background-color: #ff5078;color:white;">
+                                                <div class="package" style="margin-top: -30px;"><i class="fa fa-ticket" style="color:white;font-size:45px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Ticket Management</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="pricing_table_content mt-5" style="background-color: #3f4e62;color:white;margin-top: 25px;">
+                                                <div class="package" style="margin-top:-30px;"><i class="fa fa-university" style="color:#fff;font-size:45px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Reconciliations</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="pricing_table_content mt-5" style="background-color: #529F9D;color:white;margin-top: 25px;">
+                                                <div class="package" style="margin-top:-30px;"><i class="fa fa-car" style="font-size:45px;margin-left: -10px;"></i>&nbsp;&nbsp;&nbsp;<b>Monthly Parker Management</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<script>
+    function PageRedirect(Method, Controller) {
+        var addNewUrl = "/" + Controller + "/" + Method;
+                $('#RenderPageId').load(addNewUrl);
+    }
+</script>

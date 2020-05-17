@@ -13,42 +13,18 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class spGetApplicantInfoForMyInterview_Result
     {
-        public long API_ApplicantId { get; set; }
-        public string API_FirstName { get; set; }
-        public string API_MiddleName { get; set; }
-        public string API_LastName { get; set; }
-        public string API_HomeAddress { get; set; }
-        public string API_City { get; set; }
-        public string API_State { get; set; }
-        public Nullable<int> API_Zip { get; set; }
-        public string API_Resume { get; set; }
-        public string API_CoverLetter { get; set; }
-        public long API_PhoneNumber { get; set; }
-        public string API_Email { get; set; }
-        public string API_DLNumber { get; set; }
-        public string API_Photo { get; set; }
-        public string API_Citizenship { get; set; }
-        public string API_MilitaryService { get; set; }
-        public string API_Gender { get; set; }
-        public string API_HighestEducation { get; set; }
-        public string API_AnyRefOrEmployeeInELITE { get; set; }
-        public Nullable<System.DateTime> API_EverELITEWorkFrom { get; set; }
-        public Nullable<System.DateTime> API_EverELITEWorkTo { get; set; }
-        public string API_WorkEligibleInUS { get; set; }
-        public Nullable<long> JPS_JobPostingId { get; set; }
-        public Nullable<System.DateTime> JobPostingDate { get; set; }
-        public Nullable<long> VST_Id { get; set; }
-        public long API_JobTitleID { get; set; }
-        public Nullable<long> API_HiringManagerId { get; set; }
-        public Nullable<System.DateTime> API_DateOfJoining { get; set; }
-        public Nullable<decimal> API_DesireSalary { get; set; }
-        public string API_ApplicantStatus { get; set; }
-        public string API_IsActive { get; set; }
-        public string VST_Title { get; set; }
+        public long APT_ApplicantId { get; set; }
+        public string ApplicantName { get; set; }
         public string JBT_JobTitle { get; set; }
+        public string VST_IsExempt { get; set; }
+        public string APT_Status { get; set; }
+        public Nullable<System.DateTime> APT_DateOfJoining { get; set; }
+        public string ALA_Photo { get; set; }
+        public string ALA_eMailId { get; set; }
+        public Nullable<long> ACI_PhoneNo { get; set; }
+        public string ACI_PrefredContactMethod { get; set; }
+        public Nullable<decimal> API_DesireSalaryWages { get; set; }
+        public string JPS_HiringManagerID { get; set; }
         public string HiringManager { get; set; }
-        public string INS_EMP_InterviewerEmployeeId { get; set; }
-        public string INS_IsHiringManager { get; set; }
-        public Nullable<System.DateTime> INS_InterviewDateTime { get; set; }
     }
 }

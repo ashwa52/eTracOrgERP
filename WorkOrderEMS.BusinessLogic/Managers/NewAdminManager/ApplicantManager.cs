@@ -122,7 +122,6 @@ namespace WorkOrderEMS.BusinessLogic
                                 objEmailog.CreatedDate = DateTime.UtcNow;
                                 objEmailog.DeletedBy = null;
                                 objEmailog.DeletedOn = null;
-                                //objEmailog.LocationId = location;
                                 objEmailog.ModifiedBy = null;
                                 objEmailog.ModifiedOn = null;
                                 objEmailog.SentBy = userData.ALA_UserId;
@@ -1512,8 +1511,9 @@ namespace WorkOrderEMS.BusinessLogic
                     Status = x.Status,
                     JobPostingDate = x.JobPostingDate,
                     IsExempt = x.VST_IsExempt,
-                    DOT_Status = x.JPS_DrivingType
+                    DOT_Status = x.JPS_DrivingType,
                     //JobDescription = x.jo
+                    RolesAndResponsibility = x.VST_RolesAndResponsiblities
                 }).ToList();
             }
             catch(Exception ex)
@@ -1631,226 +1631,267 @@ namespace WorkOrderEMS.BusinessLogic
         {
             string result = string.Empty;
             string zipcode = string.Empty;
-            //models obj
             var objCommon = new CommonMethodManager();
             var objBackground = new BackgroundScreeningAPIModel();
-            var objCountyCivilLowerSearch = new CountyCivilLowerSearch();
-            var lstCountyCivilLowerSearch = new List<CountyCivilLowerSearch>();
-            var objcountyCivilUpperSearches = new CountyCivilUpperSearch();
-            var lstcountyCivilUpperSearches = new List<CountyCivilUpperSearch>();
-            var objcountyCriminalSearches = new CountyCriminalSearch();
-            var lstcountyCriminalSearches = new List<CountyCriminalSearch>();
-            var drugScreenings = new DrugScreening();
-            var lstdrugScreenings = new List<DrugScreening>();
-            var objeducationVerifications = new EducationVerification();
-            var lsteducationVerifications = new List<EducationVerification>();
-            var objemploymentVerifications = new EmploymentVerification();
-            var lstemploymentVerifications = new List<EmploymentVerification>();
-            var objfederalBankruptcySearches = new FederalBankruptcySearch();
-            var lstfederalBankruptcySearches = new List<FederalBankruptcySearch>();
-            var objfederalCriminalSearches = new FederalCriminalSearch();
-            var lstfederalCriminalSearches = new List<FederalCriminalSearch>();
-            var objfederalCivilSearches = new FederalCivilSearch();
-            var lstfederalCivilSearches = new List<FederalCivilSearch>();
-            var objmotorVehicleRecordSearches = new MotorVehicleRecordSearch();
-            var lstmotorVehicleRecordSearches = new List<MotorVehicleRecordSearch>();
-            var objpositionLocation = new PositionLocation();
-            var lstpositionLocation = new List<PositionLocation>();
-            var objpositionStartingPay = new PositionStartingPay();
-            var lstpositionStartingPay = new List<PositionStartingPay>();
-            var objsexOffenderSearches = new SexOffenderSearch();
-            var lstsexOffenderSearches = new List<SexOffenderSearch>();
-            var objstateCriminalSearches = new StateCriminalSearch();
-            var lststateCriminalSearches = new List<StateCriminalSearch>();
-            var objsubjectAdmittedCriminalHistory = new SubjectAdmittedCriminalHistory();
-            var lstsubjectAdmittedCriminalHistory = new List<SubjectAdmittedCriminalHistory>();
-            var objsubjectIndividualAliases = new SubjectIndividualAlias();
-            var lstsubjectIndividualAliases = new List<SubjectIndividualAlias>();
-            var objsubjectPreviousLocations = new SubjectPreviousLocation();
-            var lstsubjectPreviousLocations = new List<SubjectPreviousLocation>();
-            var objworkersCompensationSearches = new WorkersCompensationSearch();
-            var lstworkersCompensationSearches = new List<WorkersCompensationSearch>();
-            var data = _db.ApplicantLoginAccesses.Join(_db.Applicants, q => q.ALA_UserId, u => u.APT_ALA_UserId, (q, u) => new { q, u }).
-                                       Where(x => x.u.APT_ApplicantId == model.ApplicantPersonalInfo.API_APT_ApplicantId).FirstOrDefault();
-            var contact = _db.spGetApplicantContactInfo(model.ApplicantPersonalInfo.API_APT_ApplicantId).Take(1).FirstOrDefault();
-            objBackground.collectAdditionalInfo = true;
-            objBackground.comment = null;// model.ApplicantPersonalInfo.
-            objCountyCivilLowerSearch.county =  "Pasco";
-            objCountyCivilLowerSearch.region = "FL";
-            lstCountyCivilLowerSearch.Add(objCountyCivilLowerSearch);
-            objBackground.countyCivilLowerSearches = lstCountyCivilLowerSearch;
-            objcountyCivilUpperSearches.county = "Pasco";
-            objcountyCivilUpperSearches.region = "FL";
-            lstcountyCivilUpperSearches.Add(objcountyCivilUpperSearches);
-            objBackground.countyCivilUpperSearches = lstcountyCivilUpperSearches;
-            objcountyCriminalSearches.county = "Pasco";
-            objcountyCriminalSearches.region = "FL";
-            lstcountyCriminalSearches.Add(objcountyCriminalSearches);
-            objBackground.countyCriminalSearches = lstcountyCriminalSearches;
-            objBackground.customScreeningId = Convert.ToInt64(model.ApplicantPersonalInfo.API_APT_ApplicantId);
-            objBackground.customSubjectId = Convert.ToInt64(model.ApplicantPersonalInfo.API_APT_ApplicantId);
-            objBackground.disableDuplicateChecking = true;
-            drugScreenings.testType = "Screening";
-            lstdrugScreenings.Add(drugScreenings);
-            objBackground.drugScreenings = lstdrugScreenings;
-            var getEducationDetails = _db.spGetAplicantAcadmicDetails(model.ApplicantPersonalInfo.API_APT_ApplicantId).ToList();
-            foreach (var item in getEducationDetails)
+            try
             {
-                objeducationVerifications.address = item.AAD_City+","+item.AAD_State;
-                objeducationVerifications.courseOfStudy = item.AAD_EducationType;
-                objeducationVerifications.degree = item.AAD_EducationType;
-                objeducationVerifications.fromDate = item.AAD_AttendedFrom.ToString("yyyy-MM-dd");
-                objeducationVerifications.graduated = true;
-                objeducationVerifications.municipality = item.AAD_City;
-                objeducationVerifications.organization = item.AAD_InstituteName;
-                objeducationVerifications.phone  = contact.ACI_PhoneNo.ToString();
-                objeducationVerifications.postalCode = item.AAD_Zip.ToString();
-                objeducationVerifications.region = "FL";
-                objeducationVerifications.toDate = item.AAD_AttendedTo.ToString("yyyy-MM-dd");
-                objeducationVerifications.studentName = model.ApplicantPersonalInfo.API_FirstName + " " + model.ApplicantPersonalInfo.API_LastName;
-                lsteducationVerifications.Add(objeducationVerifications);
-                objBackground.educationVerifications = lsteducationVerifications;
+                var objCountyCivilLowerSearch = new CountyCivilLowerSearch();
+                var lstCountyCivilLowerSearch = new List<CountyCivilLowerSearch>();
+                var objcountyCivilUpperSearches = new CountyCivilUpperSearch();
+                var lstcountyCivilUpperSearches = new List<CountyCivilUpperSearch>();
+                var objcountyCriminalSearches = new CountyCriminalSearch();
+                var lstcountyCriminalSearches = new List<CountyCriminalSearch>();
+                var drugScreenings = new DrugScreening();
+                var lstdrugScreenings = new List<DrugScreening>();
+                var objeducationVerifications = new EducationVerification();
+                var lsteducationVerifications = new List<EducationVerification>();
+                var objemploymentVerifications = new EmploymentVerification();
+                var lstemploymentVerifications = new List<EmploymentVerification>();
+                var objfederalBankruptcySearches = new FederalBankruptcySearch();
+                var lstfederalBankruptcySearches = new List<FederalBankruptcySearch>();
+                var objfederalCriminalSearches = new FederalCriminalSearch();
+                var lstfederalCriminalSearches = new List<FederalCriminalSearch>();
+                var objfederalCivilSearches = new FederalCivilSearch();
+                var lstfederalCivilSearches = new List<FederalCivilSearch>();
+                var objmotorVehicleRecordSearches = new MotorVehicleRecordSearch();
+                var lstmotorVehicleRecordSearches = new List<MotorVehicleRecordSearch>();
+                var objpositionLocation = new PositionLocation();
+                var lstpositionLocation = new List<PositionLocation>();
+                var objpositionStartingPay = new PositionStartingPay();
+                var lstpositionStartingPay = new List<PositionStartingPay>();
+                var objsexOffenderSearches = new SexOffenderSearch();
+                var lstsexOffenderSearches = new List<SexOffenderSearch>();
+                var objstateCriminalSearches = new StateCriminalSearch();
+                var lststateCriminalSearches = new List<StateCriminalSearch>();
+                var objsubjectAdmittedCriminalHistory = new SubjectAdmittedCriminalHistory();
+                var lstsubjectAdmittedCriminalHistory = new List<SubjectAdmittedCriminalHistory>();
+                var objsubjectIndividualAliases = new SubjectIndividualAlias();
+                var lstsubjectIndividualAliases = new List<SubjectIndividualAlias>();
+                var objsubjectPreviousLocations = new SubjectPreviousLocation();
+                var lstsubjectPreviousLocations = new List<SubjectPreviousLocation>();
+                var objworkersCompensationSearches = new WorkersCompensationSearch();
+                var lstworkersCompensationSearches = new List<WorkersCompensationSearch>();
+                var data = _db.ApplicantLoginAccesses.Join(_db.Applicants, q => q.ALA_UserId, u => u.APT_ALA_UserId, (q, u) => new { q, u }).
+                                           Where(x => x.u.APT_ApplicantId == model.ApplicantPersonalInfo.API_APT_ApplicantId).FirstOrDefault();
+                var contact = _db.spGetApplicantContactInfo(model.ApplicantPersonalInfo.API_APT_ApplicantId).Take(1).FirstOrDefault();
+                objBackground.collectAdditionalInfo = true;
+                objBackground.comment = null;// model.ApplicantPersonalInfo.
+                objCountyCivilLowerSearch.county = "Pasco";
+                objCountyCivilLowerSearch.region = "FL";
+                lstCountyCivilLowerSearch.Add(objCountyCivilLowerSearch);
+                objBackground.countyCivilLowerSearches = lstCountyCivilLowerSearch;
+                objcountyCivilUpperSearches.county = "Pasco";
+                objcountyCivilUpperSearches.region = "FL";
+                lstcountyCivilUpperSearches.Add(objcountyCivilUpperSearches);
+                objBackground.countyCivilUpperSearches = lstcountyCivilUpperSearches;
+                objcountyCriminalSearches.county = "Pasco";
+                objcountyCriminalSearches.region = "FL";
+                lstcountyCriminalSearches.Add(objcountyCriminalSearches);
+                objBackground.countyCriminalSearches = lstcountyCriminalSearches;
+                objBackground.customScreeningId = Convert.ToInt64(model.ApplicantPersonalInfo.API_APT_ApplicantId);
+                objBackground.customSubjectId = Convert.ToInt64(model.ApplicantPersonalInfo.API_APT_ApplicantId);
+                objBackground.disableDuplicateChecking = true;
+                drugScreenings.testType = "Screening";
+                lstdrugScreenings.Add(drugScreenings);
+                objBackground.drugScreenings = lstdrugScreenings;
+                var getEducationDetails = _db.spGetAplicantAcadmicDetails(model.ApplicantPersonalInfo.API_APT_ApplicantId).ToList();
+                foreach (var item in getEducationDetails)
+                {
+                    objeducationVerifications.address = item.AAD_City + "," + item.AAD_State;
+                    objeducationVerifications.courseOfStudy = item.AAD_EducationType;
+                    objeducationVerifications.degree = item.AAD_EducationType;
+                    objeducationVerifications.fromDate = item.AAD_AttendedFrom.ToString("yyyy-MM-dd");
+                    objeducationVerifications.graduated = true;
+                    objeducationVerifications.municipality = item.AAD_City;
+                    objeducationVerifications.organization = item.AAD_InstituteName;
+                    objeducationVerifications.phone = contact.ACI_PhoneNo.ToString();
+                    objeducationVerifications.postalCode = item.AAD_Zip.ToString();
+                    objeducationVerifications.region = "FL";
+                    objeducationVerifications.toDate = item.AAD_AttendedTo.ToString("yyyy-MM-dd");
+                    objeducationVerifications.studentName = model.ApplicantPersonalInfo.API_FirstName + " " + model.ApplicantPersonalInfo.API_LastName;
+                    lsteducationVerifications.Add(objeducationVerifications);
+                    objBackground.educationVerifications = lsteducationVerifications;
+                }
+                var getBackgroundDetails = _db.spGetApplicantBackgroundHistory(model.ApplicantPersonalInfo.API_APT_ApplicantId).ToList();
+                foreach (var item in getBackgroundDetails)
+                {
+                    objemploymentVerifications.address = item.ABH_Address;
+                    objemploymentVerifications.contactName = item.ABH_CompanyName;
+                    objemploymentVerifications.contactTelephone = item.ABH_Phone.ToString();
+                    objemploymentVerifications.employer = item.ABH_CompanyName;
+                    objemploymentVerifications.fromDate = item.ABH_Date.ToString("yyyy-MM-dd");
+                    objemploymentVerifications.toDate = item.ABH_Date.ToString("yyyy-MM-dd");
+                    objemploymentVerifications.isCurrentEmployer = item.ABH_StillEmployed == "Y" ? true : false;
+                    objemploymentVerifications.municipality = item.ABH_City;
+                    objemploymentVerifications.permissionToContact = true;
+                    objemploymentVerifications.positionTitle = "";
+                    objemploymentVerifications.postalCode = item.ABH_ZIPCode.ToString();
+                    objemploymentVerifications.reasonForLeaving = item.ABH_ReasonforLeaving;
+                    objemploymentVerifications.region = "FL";
+                    objemploymentVerifications.remunerationInterval = "Hourly";
+                    objemploymentVerifications.remunerationValue = 0;
+                    lstemploymentVerifications.Add(objemploymentVerifications);
+                    objBackground.employmentVerifications = lstemploymentVerifications;
+                }
+                objfederalBankruptcySearches.county = "Pasco";
+                objfederalBankruptcySearches.postalCode = model.ApplicantAddress[0].APA_Zip.ToString();
+                objfederalBankruptcySearches.region = "FL";
+                lstfederalBankruptcySearches.Add(objfederalBankruptcySearches);
+                objBackground.federalBankruptcySearches = lstfederalBankruptcySearches;
+
+                objfederalCivilSearches.region = "FL";
+                objfederalCivilSearches.county = "Pasco";
+                lstfederalCivilSearches.Add(objfederalCivilSearches);
+                objBackground.federalCivilSearches = lstfederalCivilSearches;
+
+                objfederalCriminalSearches.county = "Pasco";
+                objfederalCriminalSearches.region = "FL";
+                objfederalCriminalSearches.postalCode = model.ApplicantAddress[0].APA_Zip.ToString();
+                lstfederalCriminalSearches.Add(objfederalCriminalSearches);
+                objBackground.federalCriminalSearches = lstfederalCriminalSearches;
+
+                objmotorVehicleRecordSearches.region = "FL";
+                objmotorVehicleRecordSearches.countryCode = "US";
+                objmotorVehicleRecordSearches.licenseIdentifier = model.ApplicantPersonalInfo.API_DLNumber;
+                lstmotorVehicleRecordSearches.Add(objmotorVehicleRecordSearches);
+                objBackground.motorVehicleRecordSearches = lstmotorVehicleRecordSearches;
+
+                objBackground.packageId = "AAVPP";
+                //var getPositionDetails = _db.spGetApplicantPositionTitle(model.ApplicantPersonalInfo.API_APT_ApplicantId).ToList();
+                //foreach (var item in getPositionDetails)
+                //{
+
+                //}
+                objpositionLocation.address = model.ApplicantAddress[0].APA_StreetAddress;
+                objpositionLocation.countryCode = "US";
+                objpositionLocation.municipality = model.ApplicantAddress[0].APA_City;
+                objpositionLocation.postalCode = model.ApplicantAddress[0].APA_Zip.ToString();
+                objBackground.positionLocation = objpositionLocation;
+
+                objpositionStartingPay.currencyId = "USD";
+                objpositionStartingPay.value = 0;
+                objpositionStartingPay.interval = "Hourly";
+                objBackground.positionStartingPay = objpositionStartingPay;
+
+                objBackground.processAddressInsight = true;
+                objBackground.processAdverseAction = true;
+                objBackground.processBusinessCreditCheck = true;
+                objBackground.processCreditCheck = true;
+                objBackground.processFacisScreening = true;
+                objBackground.processGlobalInsight = true;
+                objBackground.processGsaScreening = true;
+                objBackground.processNationalCriminalInsight = true;
+                objBackground.processOfacScreening = true;
+                objBackground.processSocialSecurityTrace = true;
+                objBackground.referenceId = null;
+                objBackground.requesterEmail = user.UserEmail;
+                objBackground.requesterName = user.FirstName + " " + user.LastName;
+
+                objsexOffenderSearches.region = "FL";
+                lstsexOffenderSearches.Add(objsexOffenderSearches);
+                objBackground.sexOffenderSearches = lstsexOffenderSearches;
+
+                objstateCriminalSearches.region = "FL";
+                lststateCriminalSearches.Add(objstateCriminalSearches);
+                objBackground.stateCriminalSearches = lststateCriminalSearches;
+
+                objsubjectAdmittedCriminalHistory.caseNumber = null;
+                objsubjectAdmittedCriminalHistory.charge = null;
+                objsubjectAdmittedCriminalHistory.date = DateTime.Now.ToString("yyyy-MM-dd");
+                objsubjectAdmittedCriminalHistory.disposition = null;
+                objsubjectAdmittedCriminalHistory.finalLevel = null;
+                objsubjectAdmittedCriminalHistory.jurisdiction = null;
+                objsubjectAdmittedCriminalHistory.notes = null;
+                objsubjectAdmittedCriminalHistory.sentence = null;
+                lstsubjectAdmittedCriminalHistory.Add(objsubjectAdmittedCriminalHistory);
+                objBackground.subjectAdmittedCriminalHistory = lstsubjectAdmittedCriminalHistory;
+
+                var getAdditionalInfo = _db.spGetApplicantAdditionalInfo(model.ApplicantPersonalInfo.API_APT_ApplicantId).FirstOrDefault();
+                objBackground.subjectCurrentAddressAddressLine = model.ApplicantAddress[0].APA_StreetAddress;
+                objBackground.subjectCurrentAddressCountryCode = "US";
+                objBackground.subjectCurrentAddressMunicipality = model.ApplicantAddress[0].APA_City;
+                objBackground.subjectCurrentAddressPostalCode = model.ApplicantAddress[0].APA_Zip.ToString();
+                objBackground.subjectCurrentAddressRegion = "FL";
+                objBackground.subjectCurrentAddressStartDate = data.u.APT_DateOfJoining.ToString("yyyy-MM-dd");
+                //dob add later
+                objBackground.subjectDateOfBirth = "1994-04-22";//getAdditionalInfo.AAI_AvailableDate.ToString("yyyy-MM-dd");
+                objBackground.subjectEmail = data.q.ALA_eMailId;
+                objBackground.subjectFamilyName = model.ApplicantPersonalInfo.API_LastName;
+                objBackground.subjectFederalEmployerIdentificationNumber = model.ApplicantPersonalInfo.API_SSN;
+                //add later
+                objBackground.subjectGender = "Male";
+                objBackground.subjectGivenName = model.ApplicantPersonalInfo.API_FirstName + " " + model.ApplicantPersonalInfo.API_LastName;
+
+                objsubjectIndividualAliases.familyName = model.ApplicantPersonalInfo.API_LastName;
+                objsubjectIndividualAliases.givenName = model.ApplicantPersonalInfo.API_FirstName + " " + model.ApplicantPersonalInfo.API_LastName;
+                lstsubjectIndividualAliases.Add(objsubjectIndividualAliases);
+                objBackground.subjectIndividualAliases = lstsubjectIndividualAliases;
+
+                objBackground.subjectMiddleName = model.ApplicantPersonalInfo.API_MiddleName;
+                objBackground.subjectOrganizationName = getBackgroundDetails[0].ABH_CompanyName;
+
+                foreach (var item in model.ApplicantAddress)
+                {
+                    objsubjectPreviousLocations.address = item.APA_StreetAddress;
+                    objsubjectPreviousLocations.countryCode = "US";
+                    objsubjectPreviousLocations.endDate = item.APA_YearsAddressTo.ToString("yyyy-MM-dd");
+                    objsubjectPreviousLocations.municipality = item.APA_City;
+                    objsubjectPreviousLocations.postalCode = item.APA_Zip.ToString();
+                    objsubjectPreviousLocations.region = "FL";
+                    objsubjectPreviousLocations.startDate = item.APA_YearsAddressFrom.ToString("yyyy-MM-dd");
+                    lstsubjectPreviousLocations.Add(objsubjectPreviousLocations);
+                    objBackground.subjectPreviousLocations = lstsubjectPreviousLocations;
+                }
+
+                objBackground.subjectSocialSecurityNumber = model.ApplicantPersonalInfo.API_SSN;
+                objBackground.subjectTelephoneNumber = contact.ACI_PhoneNo.ToString();
+                objBackground.userDefinedField2 = null;
+                objBackground.userDefinedField3 = null;
+
+                objworkersCompensationSearches.region = "FL";
+                lstworkersCompensationSearches.Add(objworkersCompensationSearches);
+                objBackground.workersCompensationSearches = lstworkersCompensationSearches;
             }
-            var getBackgroundDetails = _db.spGetApplicantBackgroundHistory(model.ApplicantPersonalInfo.API_APT_ApplicantId).ToList();
-            foreach (var item in getBackgroundDetails)
+            catch(Exception ex)
             {
-                objemploymentVerifications.address = item.ABH_Address;
-                objemploymentVerifications.contactName = item.ABH_CompanyName;
-                objemploymentVerifications.contactTelephone = item.ABH_Phone.ToString();
-                objemploymentVerifications.employer = item.ABH_CompanyName;
-                objemploymentVerifications.fromDate = item.ABH_Date.ToString("yyyy-MM-dd");
-                objemploymentVerifications.toDate = item.ABH_Date.ToString("yyyy-MM-dd");
-                objemploymentVerifications.isCurrentEmployer = item.ABH_StillEmployed == "Y"?true:false;
-                objemploymentVerifications.municipality = item.ABH_City;
-                objemploymentVerifications.permissionToContact = true;
-                objemploymentVerifications.positionTitle = "";
-                objemploymentVerifications.postalCode = item.ABH_ZIPCode.ToString();
-                objemploymentVerifications.reasonForLeaving = item.ABH_ReasonforLeaving;
-                objemploymentVerifications.region = "FL";
-                objemploymentVerifications.remunerationInterval = "Hourly";
-                objemploymentVerifications.remunerationValue = 0;
-                lstemploymentVerifications.Add(objemploymentVerifications);
-                objBackground.employmentVerifications = lstemploymentVerifications;
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "string ConvertBackgroundDataJsonSerializer(BackgroundCheckForm model,UserRegistration user)", "Exception While converting applicant details while background check.", model);
             }
-            objfederalBankruptcySearches.county = "Pasco";
-            objfederalBankruptcySearches.postalCode =  model.ApplicantAddress[0].APA_Zip.ToString();
-            objfederalBankruptcySearches.region = "FL";
-            lstfederalBankruptcySearches.Add(objfederalBankruptcySearches);
-            objBackground.federalBankruptcySearches = lstfederalBankruptcySearches;
-
-            objfederalCivilSearches.region = "FL";
-            objfederalCivilSearches.county = "Pasco";
-            lstfederalCivilSearches.Add(objfederalCivilSearches);
-            objBackground.federalCivilSearches = lstfederalCivilSearches;
-
-            objfederalCriminalSearches.county = "Pasco";
-            objfederalCriminalSearches.region = "FL";
-            objfederalCriminalSearches.postalCode = model.ApplicantAddress[0].APA_Zip.ToString();
-            lstfederalCriminalSearches.Add(objfederalCriminalSearches);
-            objBackground.federalCriminalSearches = lstfederalCriminalSearches;
-
-            objmotorVehicleRecordSearches.region = "FL";
-            objmotorVehicleRecordSearches.countryCode = "US";
-            objmotorVehicleRecordSearches.licenseIdentifier = model.ApplicantPersonalInfo.API_DLNumber;
-            lstmotorVehicleRecordSearches.Add(objmotorVehicleRecordSearches);
-            objBackground.motorVehicleRecordSearches = lstmotorVehicleRecordSearches;
-
-            objBackground.packageId = "AAVPP";
-            //var getPositionDetails = _db.spGetApplicantPositionTitle(model.ApplicantPersonalInfo.API_APT_ApplicantId).ToList();
-            //foreach (var item in getPositionDetails)
-            //{
-
-            //}
-            objpositionLocation.address = model.ApplicantAddress[0].APA_StreetAddress;
-            objpositionLocation.countryCode = "US";
-            objpositionLocation.municipality = model.ApplicantAddress[0].APA_City;
-            objpositionLocation.postalCode = model.ApplicantAddress[0].APA_Zip.ToString();
-            objBackground.positionLocation = objpositionLocation;
-
-            objpositionStartingPay.currencyId = "USD";
-            objpositionStartingPay.value = 0;
-            objpositionStartingPay.interval = "Hourly";
-            objBackground.positionStartingPay = objpositionStartingPay;
-
-            objBackground.processAddressInsight = true;
-            objBackground.processAdverseAction = true;
-            objBackground.processBusinessCreditCheck = true;
-            objBackground.processCreditCheck = true;
-            objBackground.processFacisScreening = true;
-            objBackground.processGlobalInsight = true;
-            objBackground.processGsaScreening = true;
-            objBackground.processNationalCriminalInsight = true;
-            objBackground.processOfacScreening = true;
-            objBackground.processSocialSecurityTrace = true;
-            objBackground.referenceId = null;
-            objBackground.requesterEmail = user.UserEmail;
-            objBackground.requesterName = user.FirstName + " " + user.LastName;
-
-            objsexOffenderSearches.region = "FL";
-            lstsexOffenderSearches.Add(objsexOffenderSearches);
-            objBackground.sexOffenderSearches = lstsexOffenderSearches;
-
-            objstateCriminalSearches.region = "FL";
-            lststateCriminalSearches.Add(objstateCriminalSearches); 
-            objBackground.stateCriminalSearches = lststateCriminalSearches;
-
-            objsubjectAdmittedCriminalHistory.caseNumber = null;
-            objsubjectAdmittedCriminalHistory.charge = null;
-            objsubjectAdmittedCriminalHistory.date = DateTime.Now.ToString("yyyy-MM-dd");
-            objsubjectAdmittedCriminalHistory.disposition = null;
-            objsubjectAdmittedCriminalHistory.finalLevel = null;
-            objsubjectAdmittedCriminalHistory.jurisdiction = null;
-            objsubjectAdmittedCriminalHistory.notes = null;
-            objsubjectAdmittedCriminalHistory.sentence = null;
-            lstsubjectAdmittedCriminalHistory.Add(objsubjectAdmittedCriminalHistory);
-            objBackground.subjectAdmittedCriminalHistory = lstsubjectAdmittedCriminalHistory;
-
-            var getAdditionalInfo = _db.spGetApplicantAdditionalInfo(model.ApplicantPersonalInfo.API_APT_ApplicantId).FirstOrDefault();
-            objBackground.subjectCurrentAddressAddressLine = model.ApplicantAddress[0].APA_StreetAddress;
-            objBackground.subjectCurrentAddressCountryCode = "US";
-            objBackground.subjectCurrentAddressMunicipality = model.ApplicantAddress[0].APA_City;
-            objBackground.subjectCurrentAddressPostalCode = model.ApplicantAddress[0].APA_Zip.ToString();
-            objBackground.subjectCurrentAddressRegion = "FL";
-            objBackground.subjectCurrentAddressStartDate = data.u.APT_DateOfJoining.ToString("yyyy-MM-dd");
-            //dob add later
-            objBackground.subjectDateOfBirth = "1994-04-22";//getAdditionalInfo.AAI_AvailableDate.ToString("yyyy-MM-dd");
-            objBackground.subjectEmail = data.q.ALA_eMailId;
-            objBackground.subjectFamilyName = model.ApplicantPersonalInfo.API_LastName;
-            objBackground.subjectFederalEmployerIdentificationNumber = model.ApplicantPersonalInfo.API_SSN;
-            //add later
-            objBackground.subjectGender = "Male";
-            objBackground.subjectGivenName = model.ApplicantPersonalInfo.API_FirstName + " " + model.ApplicantPersonalInfo.API_LastName;
-
-            objsubjectIndividualAliases.familyName = model.ApplicantPersonalInfo.API_LastName;
-            objsubjectIndividualAliases.givenName = model.ApplicantPersonalInfo.API_FirstName + " " + model.ApplicantPersonalInfo.API_LastName;
-            lstsubjectIndividualAliases.Add(objsubjectIndividualAliases);
-            objBackground.subjectIndividualAliases = lstsubjectIndividualAliases;
-
-            objBackground.subjectMiddleName = model.ApplicantPersonalInfo.API_MiddleName;
-            objBackground.subjectOrganizationName = getBackgroundDetails[0].ABH_CompanyName;
-
-            foreach (var item in model.ApplicantAddress)
-            {
-                objsubjectPreviousLocations.address = item.APA_StreetAddress;
-                objsubjectPreviousLocations.countryCode = "US";
-                objsubjectPreviousLocations.endDate = item.APA_YearsAddressTo.ToString("yyyy-MM-dd");
-                objsubjectPreviousLocations.municipality = item.APA_City;
-                objsubjectPreviousLocations.postalCode = item.APA_Zip.ToString();
-                objsubjectPreviousLocations.region = "FL";
-                objsubjectPreviousLocations.startDate = item.APA_YearsAddressFrom.ToString("yyyy-MM-dd");
-                lstsubjectPreviousLocations.Add(objsubjectPreviousLocations);
-                objBackground.subjectPreviousLocations = lstsubjectPreviousLocations;
-            }
-
-            objBackground.subjectSocialSecurityNumber = model.ApplicantPersonalInfo.API_SSN;
-            objBackground.subjectTelephoneNumber = contact.ACI_PhoneNo.ToString();
-            objBackground.userDefinedField2 = null;
-            objBackground.userDefinedField3 = null;
-
-            objworkersCompensationSearches.region = "FL";
-            lstworkersCompensationSearches.Add(objworkersCompensationSearches);
-            objBackground.workersCompensationSearches = lstworkersCompensationSearches;
             return result = objCommon.GetJsoSerializeDataForAPI(APIName.BackGroudScreening, objBackground);
+        }
+
+        /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created Date : 13-05-2020
+        /// Created For : To save resume of applicant
+        /// </summary>
+        /// <param name="FileName"></param>
+        /// <param name="Id"></param>
+        /// <returns></returns>
+        public bool SaveResume(string FileName, long Id)
+        {
+            bool isSaved = false;
+            var _repo = new ApplicantRepository();
+            try
+            {
+                if(FileName != null && Id > 0)
+                {
+                    var getDetails = _db.ApplicantPersonalInfoes.Where(x => x.API_APT_ApplicantId == Id).FirstOrDefault();
+                    getDetails.API_Resume = FileName;
+                    _repo.Update(getDetails);
+                    _repo.SaveChanges();
+                  isSaved = true;
+                }
+                else
+                {
+                    isSaved = false;
+                }
+            }
+            catch(Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SaveResume(string FileName, long Id)", "Exception While saving resume of employee.", Id);
+                isSaved = false;
+            }
+            return isSaved;
         }
     }
 }

@@ -56,7 +56,7 @@ namespace WorkOrderEMS.Data
         /// </summary>
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
-        public spGetOrgnizationCommonview_Result1 GetUserSelfDetailsByUserId(string EmployeeId)
+        public spGetOrgnizationCommonview_Result GetUserSelfDetailsByUserId(string EmployeeId)
         {
             try
             {
@@ -95,7 +95,7 @@ namespace WorkOrderEMS.Data
         /// </summary>
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
-        public List<spGetOrgnizationUserView_Result5> UserTreeViewDetails(string EmployeeId)
+        public List<spGetOrgnizationUserView_Result> UserTreeViewDetails(string EmployeeId)
         {
             try
             {
@@ -115,7 +115,7 @@ namespace WorkOrderEMS.Data
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
         /// 
-        public List<spGetVehicleSeating_Result3> GetVSCDetails(long VSCId)
+        public List<spGetVehicleSeating_Result> GetVSCDetails(long VSCId)
         {
             try
             {
@@ -135,7 +135,7 @@ namespace WorkOrderEMS.Data
         /// <param name="LocationId"></param>
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
-        public List<spGetEmployeeManagementList_Result2> GetEmployeeManagementListData(long LocationId, string EmployeeId)
+        public List<spGetEmployeeManagementList_Result> GetEmployeeManagementListData(long LocationId, string EmployeeId)
         {
             try
             {
@@ -174,7 +174,7 @@ namespace WorkOrderEMS.Data
         /// Created For : To get all requisition list
         /// </summary>
         /// <returns></returns>
-        public List<spGetRequisitionList_Result2> GetRequisitionlist()
+        public List<spGetRequisitionList_Result> GetRequisitionlist()
         {
             try
             {
@@ -213,7 +213,7 @@ namespace WorkOrderEMS.Data
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public List<spGetJobTitle_Result2> GetJobTitleCount(long? Id)
+        public List<spGetJobTitle_Result> GetJobTitleCount(long? Id)
         {
             try
             {
@@ -261,9 +261,9 @@ namespace WorkOrderEMS.Data
         //    }
         //}
 
-        public List<spGetFileUpload_Result2> GetUploadFilesListTesting(string EmployeeId)
+        public List<spGetFileUpload_Result> GetUploadFilesListTesting(string EmployeeId)
         {
-            var lst = new List<spGetFileUpload_Result2>();
+            var lst = new List<spGetFileUpload_Result>();
             try
             {
                 lst =  objworkorderEMSEntities.spGetFileUpload(EmployeeId).ToList();

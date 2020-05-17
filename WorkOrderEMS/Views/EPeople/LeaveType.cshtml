@@ -1,0 +1,174 @@
+﻿@model WorkOrderEMS.Models.Tbl_LeaveType_Setup
+@{
+    var isRefresh = ViewBag.IsPageRefresh;
+    if (isRefresh == true)
+    {
+        Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = null;
+    }
+    long locationId = 0;
+    long userType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserProfile = "";
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+    }
+}
+<style>
+    .error {
+        color: red;
+    }
+    .chk{
+        margin-top: 10px !important;
+    }
+    .nextBtndata{
+        border-radius:25px;
+        background-color:#0aa0cd;
+    }
+</style>
+@section scripts{
+    <script type="text/javascript">
+    var $_locationId = '@locationId';
+    var $_userTypeId = '@userType';
+    var $_VendorStatus = "false";
+    </script>
+}
+<div class="content-body">
+    <div class="container-fluid" style="margin-top:20px;">
+        <!-- row -->
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card aos-init" data-aos="fade-up">
+                    <div class="card-header headerSize" style="height: 45px;">
+                        <h4 class="card-title" style="color:white;"><strong><i class="fa fa-sticky-note"></i> @ViewBag.Title</strong></h4>
+                    </div>
+                    <div class="card-body">
+
+                        <form action="@Url.Action("LeaveTypeSubmit", "EPeople")" method="post" id="step-form-horizontal" class="step-form-horizontal">
+                            @Html.ValidationSummary(true)
+                            @Html.HiddenFor(model => model.TypeId)
+                            <section>
+                                <div class="basic-form">
+                                    <div class="row">
+                                        @Html.Label("Leave Description", new { @class = "col-sm-2 col-form-label" })
+                                        <div class="col-sm-4 form-group">
+                                            @Html.TextBoxFor(model => model.LeaveDesc, new { @Placeholder = "Leave Description", @class = "form-control input-rounded required" })
+                                        </div>
+                                        @Html.Label("Leaves", new { @class = "col-sm-1 col-form-label" })
+                                        <div class="col-sm-4 form-group">
+                                            @Html.TextBoxFor(model => model.LeaveCount, new { @Placeholder = "Leave Count", @class = "form-control input-rounded required" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
+                                <div class="basic-form">
+                                    <div class="row">
+                                        @Html.Label("Leave Year", new { @class = "col-sm-2 col-form-label" })
+                                        <div class="col-sm-4 form-group">
+                                            @Html.TextBoxFor(model => model.LeaveYear, new { @Placeholder = "Leave Year", @class = "form-control input-rounded required",@min=Model.LeaveYear,@max=Model.LeaveYear, @onkeypress = "javascript:return validInt(event,this.getAttribute('id'))" ,@type="number"})
+                                        </div>
+                                        @Html.Label("Active", new { @class = "col-sm-1 col-form-label pull-right" })
+                                        <div class="col-sm-1 form-group">
+                                            @Html.CheckBoxFor(model => model.IsActive,new { @class="chk pull-left"})
+                                        </div>
+                                        @Html.Label("CarryForward", new { @class = "col-sm-2 col-form-label pull-right" })
+                                        <div class="col-sm-1 form-group">
+                                            @Html.CheckBoxFor(model => model.IsCarryForward,new { @class="chk pull-left"})
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <section>
+                                <button type="button" id="btnback" class="btn btn-success center nextBtndata" style="margin-left: 10px;"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp; Back To List</button>
+                                <button type="button" id="btnsave" class="btn btn-success center nextBtndata" style="margin-left: 10px;">Submit&nbsp;&nbsp; <i class="fa fa-check"></i></button>
+                            </section>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function validFloat(e, txtid) {
+        var code;
+        var tb = document.getElementById(txtid);
+        var txt = tb.value;
+        if (!e) var e = window.event;
+        if (e.keyCode)
+            code = e.keyCode;
+        else if (e.which)
+            code = e.which;
+        else
+            return true;
+        if (code == 13 || code == 8 || code == 9)
+            return true;
+        if (code == 46)
+            if (txt.indexOf('.') != -1)
+                code = 0;
+        if ((code < 46 || code > 57) || code == 47) {
+            code = 0;
+            return false;
+        }
+    }
+    function validInt(event) {
+    if (event.keyCode == 13) {
+        return true;
+    }
+    if (event.keyCode < 48 || event.keyCode > 57) {
+        event.keyCode = 0;
+        return false;
+    }
+}
+    $("#btnback").on("click", function (event) {
+        event.preventDefault();
+        var addNewUrl = "/EPeople/LeaveTypeList";
+        $('#RenderPageId').load(addNewUrl);
+    });
+    $("#btnsave").on("click", function (event) {
+        //$("#step-form-horizontal").submit();
+        //var addNewUrl = "/InvoiceManagement/ItemList";
+        //$('#RenderPageId').load(addNewUrl);
+
+        if (!$("#step-form-horizontal").valid()) {
+            return false;
+        }
+        else {
+
+            $.ajax({
+                type: 'POST',
+                url: '/EPeople/LeaveTypeSubmit',
+                data: $("#step-form-horizontal").serialize(),
+                success: function (data) {
+                    var addNewUrl = "/EPeople/LeaveTypeList";
+                    $('#RenderPageId').load(addNewUrl);
+                }
+            });
+        }
+    });
+    $("#ItemCode").blur(function (event) {
+        if ($(this).val() != "") {
+            $.ajax({
+                type: 'POST',
+                url: '/InvoiceManagement/CheckItemCode?ItemCode=' + $(this).val()+'&Id='+$("#Id").val(),
+                datatype: 'json',
+                contentType: "application/json",
+                success: function (data) {
+                    if (data == "0") {
+                        $("#ItemCode").val("");
+                        $("#ItemCode").focus();
+                    }
+                }
+            });
+        }
+    });
+</script>

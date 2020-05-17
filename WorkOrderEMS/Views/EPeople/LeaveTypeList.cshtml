@@ -1,0 +1,282 @@
+﻿@{
+    ViewBag.Title = "Item List";
+
+    var isRefresh = ViewBag.IsPageRefresh;
+    if (isRefresh == true)
+    {
+        Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = null;
+    }
+}
+@*<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+    <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />*@
+<link href="~/Content/NewAdminContent/VENDOR/c3/css/c3.min.css" rel="stylesheet" />
+
+<style>
+    #chartdiv, #EmployeeCount1 {
+        width: 100%;
+        height: 250px;
+    }
+
+    .package {
+        margin-top: 0px !important;
+        display: inline-flex;
+        justify-items: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    label .req {
+        margin: 2px;
+        color: #ed2f35;
+    }
+
+    .form-control {
+        border: 1px solid #a0b3b0 !important;
+    }
+
+    .jsgrid-grid-body {
+        height: 100% !important;
+    }
+
+    .headerSize {
+        height: 36px;
+    }
+</style>
+<br />
+<div class="content-body" style="min-height: 920px;">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card aos-init" data-aos="fade-up">
+                    <div class="card-header" style="height: 45px;">
+                        <div class="card-header headerSize" style="height:45px;width:100%;padding:0px;">
+                            <div class="basic-form">
+                                <div class="form-group mb-0">
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            <a href="javascript:void(0)"><span><i id="AddItem" class="mdi mdi-plus" style="vertical-align:bottom;color:white;font-size:25px;"></i></span></a>
+                                        </div>&nbsp;&nbsp;
+                                        <div class="col-md-6" style="padding:5px">
+                                            <input id="SearchText" class="inputSearch form-control input-rounded" placeholder="Search by Leave Type Description/Id" style="width:350px;height: 25px;padding: 10px;" onkeyup="doSearch()" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="jsGrid-basic" class="jsgrid" style="position: relative; height: 400px; width: 100%;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal bs-example-modal-lg fade preview" id="myModalForGetItemDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Customer Details</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div id="divVendorDetailPreview" class="">
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Leave Description</label>
+                                <div id="lblItemCode" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Leave Count</label>
+                                <div id="lblItemDescription" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Leave Year</label>
+                                <div id="lblCategory" class="form-control-static"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>Active</label>
+                                <div id="lblItemUnit" class="form-control-static"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label>CarryForward</label>
+                                <div id="lblItemRate" class="form-control-static"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" class="btn btn-secondary" style="border-radius:25px;width:90px;" id="btnCancel">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
+<script>
+    var UnApprovedCompanyurl = '/EPeople/GetAllLeaveTypeList';
+    $(function () {
+        var act;
+        $("#jsGrid-basic").jsGrid({
+            heading: true,
+            height: "170%",
+            width: "100%",
+            inserting: true,
+            filtering: false,
+            editing: true,
+            sorting: true,
+            paging: true,
+            autoload: true,
+            pageButtonCount: 5,
+            pageSize: 10,
+
+            controller: {
+                loadData: function (filter) {
+                    return $.ajax({
+                        type: "GET",
+                        url: UnApprovedCompanyurl + '?flagApproved=N',
+                        data: filter,
+                        dataType: "json"
+                    });
+                },
+                //insertItem: function (insertingClient) {
+                //    insertingClient.Id = 0;
+                //    insertingClient.LastUpdate = new Date();
+                //    return $.ajax({
+                //        type: 'POST',
+                //        url: DomainName + '/Master/UpsertCityJson',
+                //        data: insertingClient,
+                //        success: function (data) {
+                //            TosterNotification("success", "Done Successfully.", "Success");
+                //        },
+                //        error: function () {
+                //            TosterNotification("error", "Error.", "Error");
+                //        }
+                //    });
+                //},
+                updateItem: function (filter) {
+                    return $.ajax({
+                        type: "POST",
+                        url: '/EPeople/LeaveTypeSubmit',
+                        data: filter,
+                        success: function (data) {
+                            GridLoad();
+                        },
+                        error: function () {
+                            alert('Failed');
+                            mApp.unblockPage();
+                        }
+                    })
+                }
+            },
+
+            fields: [
+                { name: "LeaveDesc", title: "Leave Description", type: "text", width: 50 },
+                { name: "LeaveCount", title: "Leave Count", type: "number", width: 50 },
+                { name: "LeaveYear", title: "Leave Year", type: "text", width: 50 },
+                { name: "IsActive", title: "Active", type: "checkbox", width: 50 },
+                { name: "IsCarryForward", title: "CarryForward", type: "checkbox", width: 50 },
+                { type: "control", deleteButton: false }
+            ]
+        });
+
+        var GridLoad = function () {
+            $("#jsGrid-basic").jsGrid({
+                heading: true,
+                height: "170%",
+                width: "100%",
+                filtering: false,
+                editing: true,
+                inserting: true,
+                sorting: false,
+                paging: true,
+                autoload: true,
+                pageSize: 10,
+                pageButtonCount: 5,
+
+                controller: {
+                    loadData: function (filter) {
+                        return $.ajax({
+                            type: "GET",
+                            url: UnApprovedCompanyurl + '?flagApproved=N',
+                            data: filter,
+                            dataType: "json"
+                        });
+                    },
+                },
+
+                fields: [
+                    { name: "LeaveDesc", title: "Leave Description", type: "text", width: 50 },
+                    { name: "LeaveCount", title: "Leave Count", type: "number", width: 50 },
+                    { name: "LeaveYear", title: "Leave Year", type: "text", width: 50 },
+                    { name: "IsActive", title: "Active", type: "checkbox", width: 50 },
+                    { name: "IsCarryForward", title: "CarryForward", type: "checkbox", width: 50 },
+                    { type: "control", deleteButton: false }
+                ]
+            });
+        }
+        $("#AddItem").on("click", function (event) {
+            event.preventDefault();
+            var addNewUrl = "/EPeople/LeaveType?TypeId=0";
+            $('#RenderPageId').load(addNewUrl);
+        });
+    });
+    GridLoad();
+    function doSearch(ev) {
+        var act;
+        $("#jsGrid-basic").jsGrid({
+            heading: true,
+            height: "170%",
+            width: "100%",
+            filtering: false,
+            editing: true,
+            inserting: true,
+            sorting: false,
+            paging: true,
+            autoload: true,
+            pageSize: 10,
+            pageButtonCount: 5,
+
+            controller: {
+                loadData: function (filter) {
+                    return $.ajax({
+                        type: "GET",
+                        url: UnApprovedCompanyurl + '?_search=' + $("#SearchText").val() + '&CustomerType=' + $("#CustomerType").val(),
+                        data: filter,
+                        dataType: "json"
+                    });
+                }
+            },
+
+            fields: [
+                { name: "LeaveDesc", title: "Leave Description", type: "text", width: 50 },
+                    { name: "LeaveCount", title: "Leave Count", type: "number", width: 50 },
+                    { name: "LeaveYear", title: "Leave Year", type: "text", width: 50 },
+                    { name: "IsActive", title: "Active", type: "checkbox", width: 50 },
+                    { name: "IsCarryForward", title: "CarryForward", type: "checkbox", width: 50 },
+                    { type: "control", deleteButton: false }
+            ]
+        });
+    }
+</script>

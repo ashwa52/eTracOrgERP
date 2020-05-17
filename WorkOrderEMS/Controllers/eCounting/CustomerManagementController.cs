@@ -72,7 +72,7 @@ namespace WorkOrderEMS.Controllers
                     }
                 }
                 ViewBag.AdministratorList = null;
-                ViewBag.IsPageRefresh = IsPageRefresh;
+                //ViewBag.IsPageRefresh = IsPageRefresh;
             }
             catch (Exception ex)
             {
@@ -100,7 +100,7 @@ namespace WorkOrderEMS.Controllers
                     }
                 }
                 ViewBag.AdministratorList = null;
-                ViewBag.IsPageRefresh = IsPageRefresh;
+                //ViewBag.IsPageRefresh = IsPageRefresh;
             }
             catch (Exception ex)
             {
@@ -109,8 +109,6 @@ namespace WorkOrderEMS.Controllers
             }
             return View();
         }
-
-
         [HttpGet]
         public ActionResult ListCustomerEnquiry()
         {
@@ -325,7 +323,7 @@ namespace WorkOrderEMS.Controllers
             {
                 ViewBag.Message = ex.Message; ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger; return View("Error");
             }
-            ViewBag.IsPageRefresh = IsPageRefresh;
+           // ViewBag.IsPageRefresh = IsPageRefresh;
             return View(objmodel);
         }
 
@@ -680,7 +678,7 @@ namespace WorkOrderEMS.Controllers
                         Year = x.Year,
                         Make = x.Make,
                         Model = x.Model,
-                        Color = x.Model,
+                        Color = x.Color,
                     }).ToList();
                     //getData.LocationAssignedModel = _workorderems.spGetLocationCompanyMappingForApproval(CustomerId).Select
                     //(x => new LocationDataModel()
@@ -939,7 +937,7 @@ namespace WorkOrderEMS.Controllers
             }
             catch (Exception ex)
             {
-                Exception_B.exceptionHandel_Runtime(ex, "public string ApprovePOByPOId(long Id)", "Exception While Approving PO.", null);
+                Exception_B.exceptionHandel_Runtime(ex, "public string ApproveCustomer(ApproveRejectCustomerModel objCustomerApproveRejectModel)", "Exception While Approving Customer.", null);
                 return Json(ex.Message, JsonRequestBehavior.AllowGet);
             }
             return Json(result, JsonRequestBehavior.AllowGet);
@@ -949,7 +947,7 @@ namespace WorkOrderEMS.Controllers
        {
             eTracLoginModel ObjLoginModel = null;
             CustomerSetupManagementModel objeFleetDriverModel = new CustomerSetupManagementModel();
-            ViewBag.IsPageRefresh = IsPageRefresh;
+            //ViewBag.IsPageRefresh = IsPageRefresh;
             long CountryId = 1;
             try
             {
@@ -996,7 +994,6 @@ namespace WorkOrderEMS.Controllers
             }
             return View("CustomerManagementSetup");
         }
-
         public CustomerSetupManagementModel GetCustomerDetailsByCustomerId(long CustomerId)
         {
             var data = new CustomerSetupManagementModel();

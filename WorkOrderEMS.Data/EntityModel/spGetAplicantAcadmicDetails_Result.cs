@@ -24,5 +24,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<int> AAD_Zip { get; set; }
         public Nullable<System.DateTime> AAD_Date { get; set; }
         public string AAD_IsActive { get; set; }
+        public string AAD_Address { get; set; }
     }
 }

@@ -13,6 +13,7 @@ namespace WorkOrderEMS.Data.EntityModel
     
     public partial class spGetApplicantContactInfo_Result
     {
+        public long ACI_Id { get; set; }
         public Nullable<long> ACI_APT_ApplicantId { get; set; }
         public Nullable<long> ACI_PhoneNo { get; set; }
         public string ACI_eMail { get; set; }

@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Entity.Core.Objects;
+using System.Data.SqlClient;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -500,5 +502,46 @@ namespace WorkOrderEMS.Controllers.NewAdmin
 
         #endregion
 
+        #region Getdata Method
+        public string GetData(string Method, IDictionary<string, string> parameters)
+        {
+            System.Data.DataSet DS = getdatasetFromParams("USP_" + Method, parameters);
+            if (DS.Tables.Count == 1)
+            {
+                return JsonConvert.SerializeObject(DS.Tables[0]);
+            }
+            else
+            {
+                return JsonConvert.SerializeObject(DS);
+            }
+        }
+
+        public DataSet getdatasetFromParams(string Squery, IDictionary<string, string> parameters)
+        {
+            DataSet dataTable = new DataSet();
+            // dataTable.TableName = "datatable1";
+            var conn = new SqlConnection(ConfigurationManager.AppSettings["SQLConnection"].ToString());
+
+            using (var cmd = conn.CreateCommand())
+            {
+
+                cmd.CommandText = Squery;//
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.CommandTimeout = 100000;
+                foreach (var itm in parameters)
+                {
+                    cmd.Parameters.AddWithValue("@" + itm.Key, itm.Value);
+                }
+                SqlDataAdapter da = new SqlDataAdapter(cmd);
+                conn.Close();
+                // this will query your database and return the result to your datatable
+                da.Fill(dataTable);
+
+                da.Dispose();
+                conn.Close();
+            }
+            return dataTable;
+        }
+        #endregion
     }
 }

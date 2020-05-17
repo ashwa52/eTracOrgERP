@@ -1307,5 +1307,90 @@ namespace WorkOrderEMS.BusinessLogic
             else
                 return new BenefitList();
         }
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 13-05-2020
+        /// Created For : To get Employee status
+        /// </summary>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
+        public string GetApplicantStatus(long ApplicantId)
+        {
+            string Status = string.Empty;
+            try
+            {
+                if (ApplicantId > 0)
+                {
+                    var getAptDetails = objworkorderEMSEntities.spGetMyOpening(null).Where(x => x.APT_ApplicantId == ApplicantId).FirstOrDefault();
+                    if (getAptDetails.APT_Status != null)
+                    {
+                        Status = getAptDetails.APT_Status == "Applied" ? "Applied"
+                             : getAptDetails.APT_Status == "Screened" ? "Screened"
+                             : getAptDetails.APT_Status == "IntervieweSchedule" ? "Interview Schedule"
+                             : getAptDetails.APT_Status == "InterviewCanceled" ? "Interview Canceled"
+                             : getAptDetails.APT_Status == "Shortlisted" ? "Shortlisted"
+                             : getAptDetails.APT_Status == "AssessmentSend" ? "Assessment Send"
+                             : getAptDetails.APT_Status == "AssessmentPass" ? "Assessment Pass"
+                             : getAptDetails.APT_Status == "AssessmentFail" ? "Assessment Fail"
+                             : getAptDetails.APT_Status == "OnHold" ? "On Hold"
+                             : getAptDetails.APT_Status == "Hired" ? "Hired"
+                             : getAptDetails.APT_Status == "OfferSent" ? "Offer Sent"
+                             : getAptDetails.APT_Status == "OfferAccepted" ? "Offer Accepted"
+                             : getAptDetails.APT_Status == "OfferCountered" ? "Offer Countered"
+                             : getAptDetails.APT_Status == "OfferDeclined" ? "Offer Declined"
+                             : getAptDetails.APT_Status == "OfferCancled" ? "Offer Cancled"
+                             : getAptDetails.APT_Status == "Onboarding" ? "On boarding"
+                             : getAptDetails.APT_Status == "Onboarded" ? "On boarded"
+                             : getAptDetails.APT_Status == "OnboardingDrop" ? "Onboarding Drop"
+                             : getAptDetails.APT_Status == "BackgroundCheckSend" ? "Background Check Send"
+                             : getAptDetails.APT_Status == "BackgroundCheckPass" ? "Background Check Pass"
+                             : getAptDetails.APT_Status == "BackgroundCheckFail" ? "Background Check Fail"
+                             : getAptDetails.APT_Status == "OrientationSchedule" ? "Orientation Schedule"
+                             : getAptDetails.APT_Status == "OrientationDone" ? "Orientation Done"
+                             : getAptDetails.APT_Status == "OrientationNotDone" ? "Orientation Not Done"
+                             : "No Entry";
+                             
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public string GetEmployeeStatus(long ApplicantId)", "Exception While getting applicant status", ApplicantId);
+                throw;
+            }
+            return Status;
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 14-05-2020
+        /// Created For : To set job status by job id
+        /// </summary>
+        /// <param name="JobId"></param>
+        /// <param name="JobStatus"></param>
+        /// <returns></returns>
+        public bool UpdateCloseHoldOpenJob(long JobId, string JobStatus)
+        {
+            bool isUpdate = false;
+            try
+            {
+                if (JobId > 0 && JobStatus != null)
+                {
+                    var getJobDetails = objworkorderEMSEntities.JobPostings.Where(x => x.JPS_JobPostingId == JobId).FirstOrDefault();
+                    var update = objworkorderEMSEntities.spSetJobPosting("U", JobId, getJobDetails.JPS_JobPostingIdRecruitee, getJobDetails.JPS_JobTitleID,
+                        getJobDetails.JPS_HiringManagerID, getJobDetails.JPS_LocationId, getJobDetails.JPS_NumberOfPost, getJobDetails.JPS_DrivingType, JobStatus);
+                    isUpdate = true;
+                }
+                else
+                    isUpdate = false;
+            }
+            catch (Exception ex)
+            {
+                isUpdate = false;
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool UpdateCloseHoldOpenJob(long JobId, string JobStatus)", "Exception While updating job status", JobId);
+                throw;
+            }
+            return isUpdate;
+        }
     }
 }

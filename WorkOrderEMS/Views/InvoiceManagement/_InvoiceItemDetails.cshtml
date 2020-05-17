@@ -1,0 +1,125 @@
+﻿@model WorkOrderEMS.Models.InvoiceItemDetails
+@using WorkOrderEMS.Helpers;
+@using WorkOrderEMS.Data.Classes;
+@using WorkOrderEMS.BusinessLogic;
+@using WorkOrderEMS.Service;
+@using WorkOrderEMS.Models;
+@{
+    //ICommonMethod _ICommonMethod;
+    //long CountryId = 1;
+    //ViewBag.StateList = _ICommonMethod.GetStateByCountryId(CountryId);
+
+    ARService ARS = new ARService();
+    List<ItemServiceModel> ItemList = DataRowToObject.CreateListFromTable<ItemServiceModel>(ARS.GetItemMasterDetails(0));
+}
+<div class="row editorRow_@Model.SrNo divHover">
+    @Html.Hidden("hdnblnk", Model.SrNo, new { @class = "iHidden" })
+    @using (Html.BeginCollectionItem("InvoiceItemDetailsList", Model.SrNo.ToString()))
+    {
+        <div class="row">
+            <div class="col-md-3">
+                <label class="col-sm-12 col-form-label" for="ItemNo"> Item No.<span class="req">*</span></label>
+                <div class="col-sm-12">
+                    @Html.DropDownListFor(model => model.ItemNo, new SelectList(ItemList, "Id", "ItemCode"), "--Select Item--", new { @class = "form-control input-rounded required Invoiceitem" })
+                    <div class="errorspace">
+                        @Html.ValidationMessageFor(model => model.ItemNo)
+                        @Html.HiddenFor(c => c.Id)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="col-sm-12 col-form-label" for="ItemDescription">Description</label>
+                <div class="col-sm-12">
+                    @Html.TextBoxFor(c => c.ItemDescription, new { @class = "form-control input-rounded ", @placeholder = "Item Description", @readonly = true })
+                    <div class="errorspace">
+                        @Html.ValidationMessageFor(model => model.ItemDescription)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="col-sm-12 col-form-label" for="ItemType">Item Type</label>
+                <div class="col-sm-12">
+                    @Html.HiddenFor(c => c.ItemType)
+                    @Html.TextBoxFor(c => c.ItemTypeDesc, new { @class = "form-control input-rounded", @placeholder = "Item Type", @readonly = true })
+                    <div class="errorspace">
+                        @Html.ValidationMessageFor(c => c.ItemType)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <label class="col-sm-12 col-form-label" for="RevenueAccount"> Revenue A/C</label>
+                <div class="col-sm-12">
+                    @Html.HiddenFor(c => c.RevenueAccount)
+                    @Html.TextBoxFor(model => model.RevenueAccountDesc, new { @class = "form-control input-rounded ", @placeholder = "Revenue Account", @readonly = true })
+                    <div class="errorspace">
+                        @Html.ValidationMessageFor(model => model.RevenueAccount)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2">
+                <label class="col-sm-12 col-form-label" for="VendorName"> Qty<span class="req">*</span></label>
+                <div class="col-sm-12">
+                    @Html.TextBoxFor(c => c.ItemQty, new { @class = "form-control input-rounded ", @placeholder = "Qty", @onkeypress = "javascript:return validInt(event);", @min = 1 })
+                    <div class="errorspace">
+                        @Html.ValidationMessageFor(model => model.ItemQty)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <label class="col-sm-12 col-form-label" for="ItemUnitCost"> Unit Cost</label>
+                <div class="col-sm-12">
+                    @Html.TextBoxFor(c => c.ItemUnitCost, new { @class = "form-control input-rounded", @placeholder = "Unit Cost", @onkeypress = "javascript:return validFloat(event,this.id);", @readonly = true })
+                    <div class="errorspace">
+                        @Html.ValidationMessageFor(c => c.ItemUnitCost)
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-md-2">
+                <label class="col-sm-12 col-form-label" for="TaxPercentage"> Tax (%)</label>
+                <div class="col-sm-12">
+                    @Html.TextBoxFor(c => c.TaxPercentage, new { @class = "form-control input-rounded", @placeholder = "Tax (%)", @onkeypress = "javascript:return validFloat(event,this);", @readonly = true })
+                    <div class="errorspace">
+                        @Html.ValidationMessageFor(c => c.TaxPercentage)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <label class="col-sm-12 col-form-label" for="TaxAmount"> Tax Amount</label>
+                <div class="col-sm-12">
+                    @Html.TextBoxFor(c => c.TaxAmount, new { @class = "form-control input-rounded clsItemTaxAmt", @placeholder = "Tax Amount", @onkeypress = "javascript:return validFloat(event,this);", @readonly = true })
+                    <div class="errorspace">
+                        @Html.ValidationMessageFor(c => c.TaxAmount)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2" style="width:10%">
+                <label class="col-sm-12 col-form-label" for="TotalCost"> Total Cost</label>
+                <div class="col-sm-12">
+                    @Html.TextBoxFor(c => c.TotalCost, new { @class = "form-control input-rounded clsItemTotal", @placeholder = "Total Cost", @readonly = true })
+                    @Html.HiddenFor(c => c.SubTotal, new { @class = "clsItemSubTotal" })
+                    <div class="errorspace">
+                        @Html.ValidationMessageFor(c => c.TotalCost)
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2" style="width:10%">
+                <label class="col-sm-12 col-form-label" for="TotalCost">Action</label>
+                <div class="col-sm-12">
+                    @if (Model.SrNo > 1)
+                    {
+                        <button type="button" class="btn btn-default bluebutton nxt-btn deleteRow" id="btnDeleterow_@Model.SrNo" style="background-color:red;border-radius:18px;color:white;" data-id="@Model.SrNo"><i class="fa fa-times"></i></button>
+                    }
+                    <button type="button" class="btn btn-default bluebutton nxt-btn btnAddrows Add_@Model.SrNo" id="btnAddrows_@Model.SrNo" value="AddRows" style="background-color:cornflowerblue;border-radius:18px;color:white;"><i class="fa fa-plus"></i></button>
+                </div>
+            </div>
+        </div>
+
+    }
+    <br />
+</div>
+
+<hr />
+

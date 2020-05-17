@@ -1,0 +1,52 @@
+﻿@model WorkOrderEMS.Models.HolidayManagment
+<div class="row">
+    <div class="" id="DivContractDetailsIndexRequisition">
+        <form id="SaveVCSChartFormForRequisition">
+            @Html.HiddenFor(model => model.Id)
+            <div class="basic-form">
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(model => model.HolidayName, new { @Placeholder = "Holiday Name", @id = "HolidayName", @class = "form-control input-rounded required " })
+                        @Html.HiddenFor(model => model.HolidayName)
+                    </div>
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(model => model.Description, new { @Placeholder = "Description", @id = "Description", @class = "form-control input-rounded required " })
+                        @Html.HiddenFor(model => model.Description)
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(model => model.HolidayDate, "{0:MM/dd/yyyy}", new { @id = "HolidayDate", @onkeydown = "return false;", @class = "form-control input-rounded required " })
+                    </div>
+                    <div class="col-sm-6">
+                        @Html.DropDownListFor(x => x.HolidayType, new List<SelectListItem>
+                        {
+                            new SelectListItem() {Text = "--Select Holiday Type--", Value=""},
+                            new SelectListItem() {Text = "General Holidays", Value="1"},
+                            new SelectListItem() {Text = "Ristricted Holidays", Value="2"},
+                            }, new { @class = "form-control input-rounded requiredselect", @id = "HolidayType" })
+
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        @Html.CheckBoxFor(model => model.IsActive)
+                        @Html.HiddenFor(model => model.IsActive)
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+
+        $('#HolidayDate').datepicker({
+            format: "mm/dd/yyyy",
+            startDate: new Date()
+
+        });
+        $("#HolidayDate").datepicker();
+    });</script>

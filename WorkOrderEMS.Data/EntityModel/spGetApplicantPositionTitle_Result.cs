@@ -21,5 +21,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<System.DateTime> APT_ToMoYr { get; set; }
         public Nullable<System.DateTime> APT_Date { get; set; }
         public string APT_IsActive { get; set; }
+        public string APT_CompanyName { get; set; }
     }
 }

@@ -564,22 +564,24 @@ namespace WorkOrderEMS.Data
         /// <returns></returns>
         public List<NotAssignedUserModel> GetNotAssignedUsers(long? requestedBy, int? pageIndex, string sortColumnName, string sortOrderBy, int? numberOfRows, string textSearch, string userType, ObjectParameter totalRecords)
         {
+            var lst = new List<NotAssignedUserModel>();
             try
             {
-                return _workorderEMSEntities.SP_GetAllNotAssignedUsers(requestedBy, pageIndex, sortColumnName, sortOrderBy, numberOfRows, textSearch, userType, totalRecords).Select(x => new NotAssignedUserModel()
-                {
-                    RN = x.RN,
-                    CodeName = x.CodeName,
-                    GlobalCodeId = x.GlobalCodeId,
-                    UserId = x.UserId,
-                    UserEmail = x.UserEmail,
-                    Name = x.Name,
-                    Gender = x.Gender,
-                    DOB = x.DOB,
-                    ProfileImage = x.ProfileImage,
-                    IsLoginActive = x.IsLoginActive,
+                //return _workorderEMSEntities.SP_GetAllNotAssignedUsers(requestedBy, pageIndex, sortColumnName, sortOrderBy, numberOfRows, textSearch, userType, totalRecords).Select(x => new NotAssignedUserModel()
+                //{
+                //    RN = x.RN,
+                //    CodeName = x.CodeName,
+                //    GlobalCodeId = x.GlobalCodeId,
+                //    UserId = x.UserId,
+                //    UserEmail = x.UserEmail,
+                //    Name = x.Name,
+                //    Gender = x.Gender,
+                //    DOB = x.DOB,
+                //    ProfileImage = x.ProfileImage,
+                //    IsLoginActive = x.IsLoginActive,
 
-                }).ToList();
+                //}).ToList();
+                return lst;
 
             }
             catch (Exception)

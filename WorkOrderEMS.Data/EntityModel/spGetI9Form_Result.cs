@@ -37,11 +37,17 @@ namespace WorkOrderEMS.Data.EntityModel
         public string I9F_Sec1_SignatureOfPreparerOrTranslator { get; set; }
         public Nullable<System.DateTime> I9F_Sec1_DateOfPreparerOrTranslatorSign { get; set; }
         public string I9F_Sec1_FirstName { get; set; }
+        public string I9F_Sec1_MiddleInitial { get; set; }
         public string I9F_Sec1_LastName { get; set; }
+        public string I9F_Sec1_OtherLastName { get; set; }
+        public Nullable<System.DateTime> I9F_Sec1_dateOfBirth { get; set; }
         public string I9F_Sec1_Address { get; set; }
+        public string I9F_Sec1_AptNumber { get; set; }
         public string I9F_Sec1_City { get; set; }
         public string I9F_Sec1_State { get; set; }
         public Nullable<int> I9F_Sec1_ZipCode { get; set; }
+        public string I9F_Sec1_Email { get; set; }
+        public Nullable<long> I9F_Sec1_EmployeeTelephoneNumber { get; set; }
         public string I9F_Sec2_ListA_DocumentTitle1 { get; set; }
         public string I9F_Sec2_ListA_IssuingAuthority1 { get; set; }
         public string I9F_Sec2_ListA_DocumentNumber1 { get; set; }
@@ -75,17 +81,20 @@ namespace WorkOrderEMS.Data.EntityModel
         public string I9F_Sec2_EmployersBusinessOrgnization_City { get; set; }
         public string I9F_Sec2_EmployersBusinessOrgnization_State { get; set; }
         public Nullable<int> I9F_Sec2_EmployersBusinessOrgnization_ZipCode { get; set; }
-        public string I9F_Sec2_A_LastName { get; set; }
-        public string I9F_Sec2_A_FirstName { get; set; }
-        public string I9F_Sec2_A_MiddleInitial { get; set; }
-        public Nullable<System.DateTime> I9F_Sec2_B_DateOfReHire { get; set; }
-        public string I9F_Sec2_C_DocumentTitle { get; set; }
-        public string I9F_Sec2_C_DocumentNumber { get; set; }
-        public Nullable<System.DateTime> I9F_Sec2_C_ExpirationDate { get; set; }
-        public string I9F_Sec2_C_SignatureOfEmployerOrAuthorized { get; set; }
-        public Nullable<System.DateTime> I9F_Sec2_C_DateOfEmployerOrAuthorizedSign { get; set; }
-        public string I9F_Sec2_C_NameOfEmployerOrAuthorized { get; set; }
+        public string I9F_Sec2_TitleOfEmployerOrOthrizedRepresentative { get; set; }
+        public string I9F_Sec2_CitizenshipImmigrationStatus { get; set; }
+        public string I9F_Sec3_A_LastName { get; set; }
+        public string I9F_Sec3_A_FirstName { get; set; }
+        public string I9F_Sec3_A_MiddleInitial { get; set; }
+        public Nullable<System.DateTime> I9F_Sec3_B_DateOfReHire { get; set; }
+        public string I9F_Sec3_C_DocumentTitle { get; set; }
+        public string I9F_Sec3_C_DocumentNumber { get; set; }
+        public Nullable<System.DateTime> I9F_Sec3_C_ExpirationDate { get; set; }
+        public string I9F_Sec3_C_SignatureOfEmployerOrAuthorized { get; set; }
+        public Nullable<System.DateTime> I9F_Sec3_C_DateOfEmployerOrAuthorizedSign { get; set; }
+        public string I9F_Sec3_C_NameOfEmployerOrAuthorized { get; set; }
         public Nullable<System.DateTime> I9F_Date { get; set; }
         public string I9F_IsActive { get; set; }
+        public string I9F_CaseNumber { get; set; }
     }
 }

@@ -22,5 +22,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public string LocationName { get; set; }
         public Nullable<System.DateTime> EMP_DateOfJoining { get; set; }
         public string VST_Level { get; set; }
+        public Nullable<long> UserId { get; set; }
     }
 }

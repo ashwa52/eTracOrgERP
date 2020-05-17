@@ -1,0 +1,940 @@
+﻿@model WorkOrderEMS.Models.CreditMemoDataModel
+@using WorkOrderEMS.Service;
+@{
+    ViewBag.Title = "Client Invoice";
+    var isRefresh = ViewBag.IsPageRefresh;
+    if (isRefresh == true)
+    {
+        Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = null;
+    }
+
+    long locationId = 0;
+    long userType = 0;
+    string StateID = string.Empty, LocationTypeID = string.Empty;
+    string ServiceId = string.Empty;
+    string LocationIdData = string.Empty;
+    string backtolist = string.Empty;
+    if (ViewBag.UpdateMode != null && ViewBag.UpdateMode == true)
+    {
+        ViewBag.Title = "Update Credit Invoice"; LocationIdData = ViewBag.AllocatedLocation; //ServiceId = ViewBag.ServicesID;
+        backtolist = "ClientInvoiceList";
+    }
+    else
+    {
+        backtolist = "ClientInvoiceList";
+    }
+
+    if (Model.InvoiceDate <= DateTime.MinValue || Model.InvoiceDate == Convert.ToDateTime("01/01/1900"))
+    {
+        Model.InvoiceDate = DateTime.Today;
+    }
+    if (Model.CreditIssuedDate <= DateTime.MinValue || Model.CreditIssuedDate == Convert.ToDateTime("01/01/1900"))
+    {
+        Model.CreditIssuedDate = DateTime.Today;
+    }
+
+    if (Model.InvoiceDueDate <= DateTime.MinValue || Model.InvoiceDueDate == Convert.ToDateTime("01/01/1900"))
+    {
+        Model.InvoiceDueDate = DateTime.Today;
+    }
+
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    string CompanyDocPath = System.Configuration.ConfigurationManager.AppSettings["CompanyDocuments"];
+    string InvoicedocumentPath = System.Configuration.ConfigurationManager.AppSettings["InvoiceDocuments"];
+    string url = Url.Action("CompanyList", "VendorManagement");
+    var Title = "Create";
+    if (ViewBag.UpdateMode == true)
+    {
+        Title = "Update";
+    }
+    ARService ARS = new ARService();
+    var ReasonList = ARS.GetGlobalCodes(0, "OffScheduleInvoiceReason");
+
+}
+@section scripts{
+    <script type="text/javascript">
+        var $_locationId = '@locationId';
+        var $_userTypeId = '@userType';
+        var IsUpdate = '@ViewBag.UpdateMode';
+        //var $_LocationIdData = @ViewBag.AllocatedLocation;
+        var ServiceID;
+        var LocationIDs;
+
+    </script>
+}
+
+<style>
+
+    .form-control {
+        border: 1px solid #a0b3b0 !important;
+    }
+
+    label .req {
+        margin: 2px;
+        color: #ed2f35;
+    }
+
+    .form-control:hover, .form-control:focus, .form-control.active {
+        box-shadow: none;
+        background: #fff;
+        color: #454545;
+    }
+
+    .stepwizard {
+        display: table;
+        width: 100% !important;
+        position: relative;
+        margin-left: 0% !important;
+    }
+
+    .headerSize {
+        height: 36px;
+    }
+
+    .error {
+        color: red;
+    }
+
+    .stepwizard-step p {
+        margin-top: 0px;
+        color: #666;
+        font-size: 20px;
+        margin-left: -35px;
+    }
+
+    .stepwizard-row {
+        display: table-row;
+    }
+
+
+
+    .stepwizard-step button[disabled] {
+        /*opacity: 1 !important;
+    filter: alpha(opacity=100) !important;*/
+    }
+
+    .stepwizard .btn.disabled, .stepwizard .btn[disabled], .stepwizard fieldset[disabled] .btn {
+        opacity: 1 !important;
+        color: #bbb;
+    }
+
+    .stepwizard-row:before {
+        top: 14px;
+        bottom: 0;
+        position: absolute;
+        content: " ";
+        width: 100%;
+        height: 1px;
+        background-color: #ccc;
+        z-index: 0;
+    }
+
+    .stepwizard-step {
+        display: table-cell;
+        /*text-align: center;*/
+        position: relative;
+    }
+
+    .btn-circledata {
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        padding: 6px 0;
+        font-size: 12px;
+        line-height: 1.428571429;
+        border-radius: 15px;
+    }
+
+    .stepwizard-step {
+        width: 20%;
+        text-align: center;
+        font-size: 14px;
+    }
+
+        .stepwizard-step p {
+            font-size: 14px;
+            margin-left: 0;
+            text-align: center;
+        }
+
+    .multiselect-container .checkbox input {
+        margin-right: 8px;
+    }
+
+    .multiselect-container label.checkbox {
+        margin: 6px 0 0 !important;
+        padding: 0 0 0 30px;
+        width: 100%;
+    }
+
+    .multiselect-container input {
+        float: left;
+        margin-rop: 7px !important;
+    }
+
+    input[type="checkbox"]:after {
+        background: #0aa0cd;
+    }
+
+</style>
+
+<script type="text/javascript" src="~/Scripts/common/Common.js"></script>
+<script type="text/javascript" src="~/Scripts/BindDropDown/DropDownList.js"></script>
+<script src="~/Scripts/simple.money.format.js"></script>
+<script type="text/javascript" src="~/Scripts/common/Masking.js"></script>
+<style>
+
+    .input-disabled {
+        background-color: #EBEBE4;
+    }
+</style>
+<br />
+
+@using (Html.BeginForm("CreateClientInvoiceSubmit", "InvoiceManagement", FormMethod.Post, new { enctype = "multipart/form-data", @id = "CreditMemoForm" }))
+{
+    @Html.ValidationSummary(true)
+    @Html.AntiForgeryToken()
+    <!-- fieldsets -->
+    if (ViewBag.UpdateMode != false)
+    {
+        //@Html.HiddenFor(model => model.CustomerType, new { @id = "CustomerTypeForEdit" })
+        //@Html.HiddenFor(model => model.TCBD_ID)
+    }
+    @*<div class="content-body">
+        <div class="container-fluid">*@
+    <!-- row -->
+    <div class="row">
+        <div class="col-xl-12 col-xxl-12">
+            <div class="card aos-init aos-animate" data-aos="fade-up">
+                <div class="card-header headerSize">
+                    <h4 class="card-title" style="color:white;"><strong>@Title Manual Credit Invoice</strong></h4>
+                </div>
+                <div class="card-body CreditInvoiceDetails">
+                    <br />
+                    <div class="panel panel-primary setup-content">
+                        <div class="basic-form">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="Location">Location</label>
+                                <div class="col-sm-4">
+                                    @if (Session != null)
+                                    {
+                                        if (Session["eTrac_UserLocations"] != null)
+                                        {
+                                            @Html.DropDownList("ClientLocationCode", new SelectList((List<WorkOrderEMS.Models.UserLocations>)Session["eTrac_UserLocations"], "LocationId", "LocationName"), "--Select Location--", new { @id = "ClientLocationCode", @class = "form-control input-rounded required required2", @disabled = true })
+                                        }
+                                    }
+                                    <div class="errorspace">
+                                        @Html.ValidationMessageFor(model => model.ClientLocationCode)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="FirstName">Client Company Name<span class="req">*</span></label>
+                                <div class="col-sm-4">
+                                    @Html.HiddenFor(model => model.CompanyId)
+                                    @Html.TextBoxFor(model => model.ClientCompanyName, new { @class = "form-control input-rounded", @placeholder = "Client Company Name", @readonly = true })
+                                </div>
+                                <label class="col-sm-2 col-form-label" for="ContractType">Employee Issuing Credit</label>
+                                <div class="col-sm-4">
+                                    @Html.HiddenFor(model => model.ContractType)
+                                    @Html.HiddenFor(model => model.CreditMemoId)
+                                    @Html.HiddenFor(model => model.CreditMemoStatus)
+                                    @Html.HiddenFor(model => model.DraftCreditMemoNumber)
+                                    @Html.HiddenFor(model => model.SubTotal)
+                                    @Html.HiddenFor(model => model.TaxPercentage)
+                                    @Html.HiddenFor(model => model.TaxAmount)
+                                    @Html.HiddenFor(model => model.GrandTotal)
+                                    @Html.TextBoxFor(model => model.EmployeeIssuingCredit, new { @class = "form-control input-rounded", @placeholder = "Employee Issuing Credit", @readonly = true })
+                                    @Html.ValidationMessageFor(model => model.EmployeeIssuingCredit)
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="ClientPointOfContactName">Client Point of Contact Name</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.ClientPointOfContactName, new { @id = "ClientPointOfContactName", @class = "form-control input-rounded ", @placeholder = "Client Point of Contact Name", @readonly = true })
+                                    <div class="errorspace">
+                                        @Html.ValidationMessageFor(model => model.ClientPointOfContactName)
+                                    </div>
+                                </div>
+                                <label class="col-sm-2 col-form-label" for="InvoiceNumber"> Invoice Number</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.InvoiceNumber, new { @id = "InvoiceNumber", @class = "form-control input-rounded", @placeholder = "Invoice Number", @readonly = true })
+                                    <div class="errorspace">
+                                        @Html.ValidationMessageFor(model => model.InvoiceNumber)
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="PositionTitle">Position Title</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.PositionTitle, new { @id = "PositionTitle", @class = "form-control input-rounded", @placeholder = "Position Title", @readonly = true })
+                                    <div class="errorspace">
+                                        @Html.ValidationMessageFor(model => model.PositionTitle)
+                                    </div>
+                                </div>
+                                <label class="col-sm-2 col-form-label" for="InvoiceNumber"> Credit Memo Number</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.CreditMemoNumber, new { @class = "form-control input-rounded", @placeholder = "Credit Memo Number", @readonly = true })
+                                    <div class="errorspace">
+                                        @Html.ValidationMessageFor(model => model.CreditMemoNumber)
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="LocationCode">Location Code</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.LocationCode, new { @class = "form-control input-rounded", @placeholder = "Location Code", @readonly = true })
+                                    <div class="errorspace">
+                                        @Html.ValidationMessageFor(model => model.LocationCode)
+                                    </div>
+                                </div>
+                                <label class="col-sm-2 col-form-label" for="InvoiceStatusDesc">Invoice Status</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.InvoiceStatusDescForCredit, new { @class = "form-control input-rounded", @placeholder = "Invoice Status", @readonly = true })
+                                    <div class="errorspace">
+                                        @Html.ValidationMessageFor(model => model.InvoiceStatusDescForCredit)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="LocationAddress">Location Address</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(model => model.LocationAddress, new { @class = "form-control input-rounded", @placeholder = "Location Address", @readonly = true })
+                                    <div class="errorspace">
+                                        @Html.ValidationMessageFor(model => model.LocationAddress)
+                                    </div>
+                                </div>
+                                <label class="col-sm-2 col-form-label" for="Email">Invoice Date</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBox("InvoiceDate", Model.InvoiceDate.ToString("MM/dd/yyyy"), new { @Placeholder = "Invoice Date", @class = "form-control input-rounded required required2 ", @maxlength = "10", disabled = "disabled" })
+                                    <div class="errorspace">
+                                        @Html.ValidationMessageFor(model => model.InvoiceDate)
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label" for="Email">Credit Issued Date</label>
+                                <div class="col-sm-4">
+                                    @Html.TextBoxFor(c => c.CreditIssuedDate, Model.CreditIssuedDate.ToString("MM/dd/yyyy"), new { @Placeholder = "Credit Issued Date", @class = "form-control input-rounded required required2 ", @maxlength = "10" })
+                                    <div class="errorspace">
+                                        @Html.ValidationMessageFor(model => model.CreditIssuedDate)
+
+                                    </div>
+                                </div>
+                            </div>
+                            @*<div id="divNext">
+            <span class="w-100 text-right float-left">
+                <button type="button" class="btn btn-default bluebutton" onclick="return callCancel();" style="background-color:red;border-radius:18px;margin-left: 20px;width:160px;color:white;" value="Cancel" id="btnCancel">Cancel</button>
+                <button type="button" class="btn btn-default bluebutton nxt-btn" value="Next" id="btnNext" style="background-color:forestgreen;border-radius:18px;width:120px;color:white;">Next</button>
+            </span>
+        </div>*@
+                        </div>
+                        <div class="marbottom"></div>
+                        <div class="clearfix"></div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="divInvoiceItem">
+        <div class="col-xl-12 col-xxl-12">
+            <div class="card aos-init">
+                <div class="card-header headerSize">
+                    <h4 class="card-title" style="color:white;"><strong>Invoice Item</strong></h4>
+                </div>
+                <div class="card-body">
+                    <div id="tblCreditInvoiceItem">
+
+                        @*<table id="tblSubItem" class="table table-striped table-bordered table-hover">
+                            <tbody id="containerTblSubItem">*@
+                        @foreach (var item in Model.ListInvoiceItemDetails)
+                        {
+                            Html.RenderPartial("_CreditMemoInvoiceItemDetailsStep2", item);
+                        }
+                        @*</tbody>
+                            </table>*@
+                        <div class="col-md-12 pull-right">
+                            @*<a id="btnAddRows" class="btn btn-lg right">
+                                    <i class="fa fa-plus"></i> Add More Items
+                                </a>*@
+                            @*<button type="button" class="btn btn-default bluebutton nxt-btn" value="AddRows" id="btnAddRows" style="background-color:cornflowerblue;border-radius:18px;color:white;"><i class="fa fa-plus"></i> Add More Items</button>*@
+                        </div>
+
+                    </div>
+                    <br />
+                    <br />
+                    <div class="panel panel-primary setup-content">
+                        <div class="basic-form">
+                            <div class="form-group row ">
+                                @*<label class="col-sm-2 col-form-label" for="SubTotal">Subtotal</label>*@
+                                @*<div class="col-sm-2">
+                                        @Html.TextBoxFor(model => model.SubTotal, new { @class = "form-control input-rounded", @placeholder = "SubTotal" })
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.SubTotal)
+                                        </div>
+                                </div>*@
+                                <label class="col-sm-2 col-form-label" for="InvoiceSubTotal">Invoice Sub Total</label>
+                                <div class="col-sm-2">
+                                    @Html.TextBoxFor(model => model.InvoiceSubTotal, new { @class = "form-control input-rounded", @placeholder = "Invoice SubTotal", @readonly = true })
+                                    <div class="errorspace">
+                                        @Html.ValidationMessageFor(model => model.InvoiceSubTotal)
+                                    </div>
+                                </div>
+                                @*<label class="col-sm-2 col-form-label" for="TaxAmount">Tax</label>*@
+                                @*<div class="col-sm-2">
+                                            @Html.TextBoxFor(model => model.TaxAmount, new { @class = "form-control input-rounded", @placeholder = "Tax Amount" })
+                                            <div class="errorspace">
+                                                @Html.ValidationMessageFor(model => model.TaxAmount)
+                                            </div>
+                                    </div>*@
+                                <label class="col-sm-2 col-form-label" for="TotalCreditAmount">Credit Sub Total</label>
+                                <div class="col-sm-2">
+                                    @Html.TextBoxFor(model => model.TotalCreditAmount, new { @class = "form-control input-rounded", @placeholder = "Credit SubTotal" , @readonly = true})
+                                    <div class="errorspace">
+                                        @Html.ValidationMessageFor(model => model.TotalCreditAmount)
+                                    </div>
+                                </div>
+                                @*<label class="col-sm-2 col-form-label" for="GrandTotal">Grand Total</label>*@
+                                @*<div class="col-sm-2">
+                                            @Html.TextBoxFor(model => model.GrandTotal, new { @class = "form-control input-rounded", @placeholder = "Grand Total" })
+                                            <div class="errorspace">
+                                                @Html.ValidationMessageFor(model => model.GrandTotal)
+                                            </div>
+                                    </div>*@
+                                <label class="col-sm-2 col-form-label" for="NewGrandTotal">New Grand Total</label>
+                                <div class="col-sm-2">
+                                    @Html.TextBoxFor(model => model.NewGrandTotal, new { @class = "form-control input-rounded", @placeholder = "New Grand Total", @readonly = true })
+                                    <div class="errorspace">
+                                        @Html.ValidationMessageFor(model => model.NewGrandTotal)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12 col-xxl-12">
+            <div class="card aos-init">
+                <div class="card-header headerSize">
+                    <h4 class="card-title" style="color:white;"><strong>Credit Justification</strong></h4>
+                </div>
+                <div class="card-body">
+                    <div class="col-sm-6">
+                        @Html.DisplayFor(model => model.Comment, new { @class = "form-control input-rounded", @placeholder = "Comment", @readonly = true })
+                        <div class="errorspace">
+                            @Html.ValidationMessageFor(model => model.Comment)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="FileUploadDiv">
+        <div class="col-xl-12 col-xxl-12">
+            <div class="card aos-init">
+                <div class="card-header headerSize">
+                    <h4 class="card-title" style="color:white;"><strong>Attached Invoice Document</strong></h4>
+                </div>
+                <div class="card-body">
+                    <label class="col-sm-2 col-form-label" id="lblCostDuringPeriod">Invoice Document</label>
+                    <div class="col-sm-12">
+                        <div id="dvDocPreview">
+                        </div>
+                        <input id="fileupload" type="file" style="margin-left:auto;" name="CreditMemoDocumentFile" />
+                        @if (Model.InvoiceDocument != null && Model.InvoiceDocument != "")
+                        {
+                            <span>
+                                <a class="title" target="_blank" href="@Url.Content(InvoicedocumentPath + Model.InvoiceDocument)">@Model.InvoiceDocument</a>
+                                @Html.HiddenFor(c => c.InvoiceDocument);
+                            </span>
+                        }
+                        @*<ul class="attachment">
+                                @Html.HiddenFor(c => c.InvoiceDocument)
+                                @if (Model.InvoiceDocument != null && Model.InvoiceDocument != "")
+                                {
+                                    <li style="margin-left :25%;margin-top:20px;">
+                                        <span>
+                                            <a class="title" target="_blank" href="@Url.Content(InvoicedocumentPath+Model.InvoiceDocument)">@Model.InvoiceDocument</a>
+                                        </span>
+                                    </li>
+                                }
+                            </ul>*@
+                        <br />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12 col-xxl-12">
+            <div class="card-body">
+                <span class="w-100 text-right center float-right">
+                </span>
+            </div>
+        </div>
+    </div>
+    <div id="divSubmit">
+
+        @if (ViewBag.UpdateMode != null && ViewBag.UpdateMode == true)
+        {
+            <span class="w-100 text-right float-left">
+                @if (Model.CreditMemoStatus == "0")
+                {
+                    <button type="button" class="btn btn-default bluebutton nxt-btn SubmitCreditInvoice" value="CreateInvoice" id="DraftCreditInvoice" style="background-color:blueviolet;border-radius:18px;color:white;">@(String.IsNullOrEmpty(Model.DraftCreditMemoNumber) ? "Save As Draft" : "Update Draft")</button>
+                }
+                <button type="button" class="btn btn-default bluebutton nxt-btn SubmitCreditInvoice" id="btnCreditMemoSubmit" value="EditPO" style="background-color:forestgreen;border-radius:18px;margin-left: 20px;width:160px;color:white; ">@(String.IsNullOrEmpty(Model.CreditMemoNumber) ? "Convert To Credit Invoice" : "Update Credit Invoice")</button>
+            </span>
+
+        }
+        else
+        {
+            <span class="w-100 text-right float-left">
+                <button type="button" class="btn btn-default bluebutton nxt-btn" value="CreateInvoice" id="btnCancel" style="background-color:red;border-radius:18px;color:white;" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default bluebutton nxt-btn SubmitCreditInvoice" value="CreateInvoice" id="DraftCreditInvoice" style="background-color:blueviolet;border-radius:18px;color:white;margin-left: 10px">Save As Draft</button>
+                <button type="button" class="btn btn-default bluebutton nxt-btn SubmitCreditInvoice" value="CreateInvoice" id="btnCreditMemoSubmit" style="background-color:forestgreen;border-radius:18px;color:white;margin-left: 10px">Approve & Submit</button>
+            </span>
+        }
+        <br />
+        <br />
+        <br />
+
+    </div>
+
+    @*</div>
+        </div>*@
+}
+<script src="~/Content/NewAdminContent/VENDOR/jquery-steps/build/jquery.steps.min.js"></script>
+<script src="~/Scripts/NewAdminJS/plugins-init/jquery-steps-init.js"></script>
+<script type="text/javascript">
+
+    function validInt(event) {
+        if (event.keyCode == 13) {
+            return true;
+        }
+        if (event.keyCode < 48 || event.keyCode > 57) {
+            event.keyCode = 0;
+            return false;
+        }
+    }
+
+    function validFloat(e, txtid) {
+        var code;
+        var tb = document.getElementById(txtid);
+        var txt = tb.value;
+        if (!e) var e = window.event;
+        if (e.keyCode)
+            code = e.keyCode;
+        else if (e.which)
+            code = e.which;
+        else
+            return true;
+        if (code == 13 || code == 8 || code == 9)
+            return true;
+        if (code == 46)
+            if (txt.indexOf('.') != -1)
+                code = 0;
+        if ((code < 46 || code > 57) || code == 47) {
+            code = 0;
+            return false;
+        }
+    }
+</script>
+<script>
+    $(function () {
+        //var itemIndex = $("#tblCreditInvoiceItem input.iHidden").length + 1;
+        $('#InvoiceDate').datepicker({
+            format: "mm/dd/yyyy",
+        });
+
+        $('#InvoiceDueDate').datepicker({
+            format: "mm/dd/yyyy",
+            startDate: new Date($("#InvoiceDate").val())
+        });
+
+        $('#InvoiceDate').on("change", function () {
+            $("#InvoiceDueDate").val($(this).val())
+            $('.InvoiceDueDateDatePicker').datepicker("remove");
+            $('#InvoiceDueDate').datepicker({
+                format: "mm/dd/yyyy",
+                startDate: new Date($(this).val())
+            });
+        });
+        $('#CreditIssuedDate').datepicker({
+            format: "mm/dd/yyyy",
+            startDate : new Date()
+        });
+
+        $("#btnIssueCredit").on("click", function (event) {
+            if (!$("#msform").valid()) {
+                return false;
+            }
+            else {
+                fn_showMaskloader('Please wait...Loading');
+                $(".CreditInvoiceDetails *").prop('disabled', false);
+                var form = $('#msform')[0];
+                var data = new FormData(form);
+                $.ajax({
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    url: '/InvoiceManagement/GetCreateCreditInvoice',
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    timeout: 600000,
+                    success: function (data) {
+                        if (data.Status = true) {
+                            $("#myModalForGetInvoiceDateForCreditMemo").modal("hide");
+                            $("#divCreditInvoiceMemo").html('');
+                            $("#divCreditInvoiceMemo").html(data);
+                            $("#myModalForCreateCreditMemo").modal("show");
+                            fn_hideMaskloader();
+                            $("#jsGrid-basic").jsGrid("loadData");
+                        }
+                        else {
+                            toastr.error(data.Message);
+                            $("#myModalForAddEditCreateInvoice").modal("hide");
+                            $("#jsGrid-basic").jsGrid("loadData");
+                            fn_hideMaskloader();
+                        }
+                    },
+                    error: function (e) {
+                        toastr.error("error");
+                        fn_hideMaskloader();
+                    }
+                });
+            }
+        });
+
+        $(".SubmitCreditInvoice").on("click", function (event) {
+            if ($(this).attr('id') == "DraftCreditInvoice") {
+                $("#CreditMemoStatus").val("0");
+            }
+            else {
+                $("#CreditMemoStatus").val("1");
+            }
+
+            if (!$("#CreditMemoForm").valid()) {
+                return false;
+            }
+            else {
+                fn_showMaskloader('Please wait...Loading');
+                var form = $('#CreditMemoForm')[0];
+                var data = new FormData(form);
+                $.ajax({
+                    type: "POST",
+                    enctype: 'multipart/form-data',
+                    url: '/InvoiceManagement/CreateCreditMemoInvoiceSubmit',
+                    data: data,
+                    processData: false,
+                    contentType: false,
+                    cache: false,
+                    timeout: 600000,
+                    success: function (data) {
+                        console.log(data)
+                        if (data.Status = true) {
+                            $("#myModalForGetInvoiceDateForCreditMemo").modal("hide");
+                            fn_hideMaskloader();
+                            $("#jsGrid-basic").jsGrid("loadData");
+                            toastr.success(data.Message);
+                            //var addNewUrl = "/InvoiceManagement/ClientInvoiceList";
+                            //$('#RenderPageId').load(addNewUrl);
+                        } else {
+                            toastr.error(data.Message);
+                            $("#myModalForGetInvoiceDateForCreditMemo").modal("hide");
+                            $("#jsGrid-basic").jsGrid("loadData");
+                            fn_hideMaskloader();
+                        }
+                    },
+                    error: function (e) {
+                        toastr.error("error");
+                        fn_hideMaskloader();
+                    }
+                });
+            }
+        });
+
+
+        //$("#btnNext").on("click", function (event) {
+        //    if (!$("#msform").valid()) {
+        //        return false;
+        //    }
+        //    $(".InvoiceDetails *").prop('disabled', true);
+        //    $("#btnNext").prop('disabled', false);
+        //    $("#divInvoiceItem").show();
+        //    $("#FileUploadDiv").show();
+        //    $("#divSubmit").show();
+        //    $("#divNext").hide();
+        //});
+
+        //$(".btnAddrows").click(function () {
+        //    setTimeout(function () {
+        //        itemIndex = itemIndex + 1;
+        //        AddInvoiceItemList(itemIndex);
+        //    }, 350);
+        //});
+        //$(".deleteRow").on("click", function () {
+        //    id = $(this).data('id');
+        //    $(".editorRow_" + id).remove();
+        //    $('.btnAddrows').each(function () {
+        //        $(this).hide();
+        //    });
+        //    $('.Add_' + $("#tblCreditInvoiceItem input.iHidden").last().val()).show();
+        //    //itemIndex = itemIndex - 1;
+        //    return false;
+        //});
+
+        $("#ClientLocationCode").change(function () {
+            $.ajax({
+                type: "POST",
+                url: $_HostPrefix + 'InvoiceManagement/GetDataFromLocationMasterSetting/?Id=' + $(this).val(),
+                datatype: 'json',
+                success: function (result) {
+                    $("#LocationAddress").val(result.LocationAddress);
+                    $("#LocationCode").val(result.LocationCode);
+                    $("#ContractType").val(result.ContractType);
+                    $("#ContractTypeDesc").val(result.ContractTypeDesc);
+                    $("#InvoicePaymentTerms").val(result.PaymentTerm);
+                    $("#InvoicePaymentTermsDesc").val(result.PaymentTermDesc);
+                }
+            });
+        });
+
+
+        $('#SendToLoationList').click(function () {
+            var addNewUrl = "@Url.Action(@backtolist, "CustomerManagement")";
+            //$('#RenderPageId').load(addNewUrl);
+            window.location.href = addNewUrl;
+        })
+
+        if (IsUpdate == "True")
+        {
+            $('label').addClass('active highlight');
+            $('#CustomerId').val(@ViewBag.CustomerId);
+            $("#divInvoiceItem").show();
+            $("#FileUploadDiv").show();
+            $("#divSubmit").show();
+            $("#divNext").hide();
+        }
+    });
+
+    $(document).ready(function () {
+
+
+        if ("@ViewBag.UpdateMode" == "True")
+        {
+            $('label').addClass('active highlight');
+            $('#CustomerId').val(@ViewBag.CustomerId);
+            $("#divInvoiceItem").show();
+            $("#FileUploadDiv").show();
+            $("#divSubmit").show();
+            $("#divNext").hide();
+        }
+        //$('.btnAddrows').each(function () {
+        //    $(this).hide();
+        //});
+        //$('.Add_' + $("#tblCreditInvoiceItem input.iHidden").last().val()).show();
+
+        //$(".btnAddrows").click(function () {
+        //    setTimeout(function () {
+        //        itemIndex = itemIndex + 1;
+        //        AddInvoiceItemList(itemIndex);
+        //    }, 350);
+        //});
+        //$(".deleteRow").click(function () {
+        //    $(this).parents("tr.editorRow:first").remove();
+        //    $('.btnAddrows').each(function () {
+        //        $(this).hide();
+        //    });
+        //    $('.Add_' + $("#tblSubItem input.iHidden").last().val()).show();
+        //    itemIndex = itemIndex - 1;
+        //    return false;
+        //});
+        for (i = 1; i <=@Model.ListInvoiceItemDetails.Count; i++) {
+            checkDuplicateDropDownValue(i);
+            calculateQtyTotal(i);
+        }
+    });
+
+    function callCancel() {
+        bootbox.confirm("Are you sure, All Information Previously Entered Will be Deleted ?", function (result) {
+            if (result) {
+                var addNewUrl = "/InvoiceManagement/ClientInvoiceList";
+                $('#RenderPageId').load(addNewUrl);
+            }
+        });
+    }
+
+    var checkDuplicateDropDownValue = function (itemIndex) {
+        $('#InvoiceItemDetailsList_' + itemIndex + '__ItemNo').on("change", function () {
+            var IsDuplicate = false;
+            var currentid = $(this).attr('id');
+            var currentvalue = $("#" + currentid).val();
+            var Currenetselectedoptiontext = $("#" + currentid).find('option:selected').text();
+            $('.Invoiceitem').each(function () {
+                var listid = $(this).attr('id');
+                var listvalue = $("#" + listid).val();
+                if (currentid != listid && currentvalue == listvalue) {
+                    $("#" + currentid).val("");
+                    toastr.error(Currenetselectedoptiontext + ' is already selected.');
+                    IsDuplicate = true;
+                    return false;
+                }
+            });
+            if (IsDuplicate == false) {
+                $("#InvoiceItemDetailsList_" + itemIndex + "__ItemQty").val("0");
+                $("#InvoiceItemDetailsList_" + itemIndex + "__ItemQty").trigger("change");
+                $.ajax({
+                    type: "POST",
+                    url: $_HostPrefix + 'InvoiceManagement/GetItemMasterDataByItemId/?Id=' + $(this).val(),
+                    datatype: 'json',
+                    success: function (result) {
+                        $('#InvoiceItemDetailsList_' + itemIndex + '__ItemDescription').val(result.ItemDescription);
+                        $('#InvoiceItemDetailsList_' + itemIndex + '__ItemType').val(result.CategoryType);
+                        $('#InvoiceItemDetailsList_' + itemIndex + '__ItemTypeDesc').val(result.CategoryTypeDesc);
+                        $('#InvoiceItemDetailsList_' + itemIndex + '__RevenueAccount').val(result.RevenueAccount);
+                        $('#InvoiceItemDetailsList_' + itemIndex + '__RevenueAccountDesc').val(result.RevenueAccountDesc);
+                        $('#InvoiceItemDetailsList_' + itemIndex + '__ItemUnitCost').val(result.ItemRate);
+                        $('#InvoiceItemDetailsList_' + itemIndex + '__TaxPercentage').val(result.TaxPercentage);
+                    }
+                });
+            }
+        });
+    };
+    var calculateQtyTotal = function (itemIndex)  {
+        $('#InvoiceItemDetailsList_' + itemIndex + '__CreditAmt').on("change", function () {
+            var currentid = $(this).attr('id');
+            var currentvalue = $("#" + currentid).val();
+            if (currentvalue == "")
+                currentvalue = 0;
+
+            var subtotal = parseFloat(currentvalue);
+            $('#InvoiceItemDetailsList_' + itemIndex + '__CreditAmt').val(parseFloat(subtotal).toFixed(2));
+            calculateSubTotalTaxGrandTotal();
+        });
+        calculateSubTotalTaxGrandTotal();
+    }
+    var calculateSubTotalTaxGrandTotal = function () {
+        var InvoiceTotal = 0, CreditTotal = 0;
+        $(".clsInvoiceTotal").each(function () {
+            var itemsubtotal = $(this).val();
+            InvoiceTotal = parseFloat(InvoiceTotal) + parseFloat(itemsubtotal == "" ? "0" : itemsubtotal);
+        });
+
+        $(".clsCreditTotal").each(function () {
+            var ItemValue = $(this).val();
+            CreditTotal = parseFloat(CreditTotal) + parseFloat(ItemValue == "" ? "0" : ItemValue);
+        });
+
+        var NewGrandTotal = parseFloat(InvoiceTotal) - parseFloat(CreditTotal);
+
+        $("#InvoiceSubTotal").val(parseFloat(InvoiceTotal).toFixed(2));
+        $("#TotalCreditAmount").val(parseFloat(CreditTotal).toFixed(2));
+        $("#NewGrandTotal").val(parseFloat(NewGrandTotal).toFixed(2));
+    }
+    //var calculateQtyTotal = function (itemIndex)  {
+    //    $('#InvoiceItemDetailsList_' + itemIndex + '__CreditAmt').on("change", function () {
+    //        var currentid = $(this).attr('id');
+    //        var currentvalue = $("#" + currentid).val();
+    //        var ItemRate = $('#InvoiceItemDetailsList_' + itemIndex + '__ItemUnitCost').val();
+    //        var taxPer = $('#InvoiceItemDetailsList_' + itemIndex + '__TaxPercentage').val();
+
+    //        if (taxPer == "")
+    //            taxPer = 0;
+
+    //        if (ItemRate == "")
+    //            ItemRate = 0;
+
+    //        if (currentvalue == "")
+    //            currentvalue = 0;
+
+    //        var subtotal = parseFloat(currentvalue) * parseFloat(ItemRate);
+    //        var perAmt = (parseFloat(subtotal) * parseFloat(taxPer)) / 100;
+    //        var total = parseFloat(subtotal) + parseFloat(perAmt);
+
+    //        $('#InvoiceItemDetailsList_' + itemIndex + '__SubTotal').val(parseFloat(subtotal).toFixed(2));
+    //        $('#InvoiceItemDetailsList_' + itemIndex + '__TaxAmount').val(parseFloat(perAmt).toFixed(2));
+    //        $('#InvoiceItemDetailsList_' + itemIndex + '__TotalCost').val(parseFloat(total).toFixed(2));
+    //        calculateSubTotalTaxGrandTotal();
+    //    });
+    //}
+
+    //var calculateSubTotalTaxGrandTotal = function () {
+    //    var totalamt = 0, subtotalamt = 0, taxamt=0;
+
+    //    $(".clsItemSubTotal").each(function () {
+    //        var itemsubtotal = $(this).val();
+    //        subtotalamt = parseFloat(subtotalamt) + parseFloat(itemsubtotal == "" ? "0" : itemsubtotal);
+    //    });
+
+    //    $(".clsItemTaxAmt").each(function () {
+    //        var itemtaxamt = $(this).val();
+    //        taxamt = parseFloat(taxamt) + parseFloat(itemtaxamt == "" ? "0" : itemtaxamt);
+    //    });
+
+    //    $(".clsItemTotal").each(function () {
+    //        var ItemValue = $(this).val();
+    //        totalamt = parseFloat(totalamt) + parseFloat(ItemValue == "" ? "0" : ItemValue);
+    //    });
+
+    //    $("#SubTotal").val(parseFloat(subtotalamt).toFixed(2));
+    //    $("#TaxAmount").val(parseFloat(taxamt).toFixed(2));
+    //    $("#GrandTotal").val(parseFloat(totalamt).toFixed(2));
+    //}
+
+    //var AddInvoiceItemList = function (itemIndex) {
+    //        var StrURL = $_HostPrefix + '/InvoiceManagement/AddInvoiceItemList?id=' + itemIndex;
+    //        $.ajax({
+    //            url: StrURL,
+    //            cache: false,
+    //            data: {},
+    //            type: 'POST',
+    //            success: function (html) {
+    //                $("#tblCreditInvoiceItem").append(html);
+    //                checkDuplicateDropDownValue(itemIndex);
+    //                calculateQtyTotal(itemIndex);
+    //                $('.btnAddrows').each(function () {
+    //                    $(this).hide();
+    //                });
+    //                $('.Add_' + itemIndex).show();
+
+    //                $("#btnAddrows_" + itemIndex).click(function () {
+    //                    console.log(itemIndex)
+    //                    setTimeout(function () {
+    //                        itemIndex = itemIndex + 1;
+    //                        AddInvoiceItemList(itemIndex);
+    //                    }, 350);
+    //                });
+
+    //                $("#btnDeleterow_" + itemIndex).click(function () {
+    //                    id = $(this).data('id');
+    //                    $(".editorRow_" + id).remove();
+    //                    $('.btnAddrows').each(function () {
+    //                        $(this).hide();
+    //                    });
+    //                    $('.Add_' + $("#tblCreditInvoiceItem input.iHidden").last().val()).show();
+    //                    return false;
+    //                });
+    //            },
+    //            error: function (jqXHR, exception) {
+    //                //TosterNotification("error", errorResult(jqXHR, exception), "Error");
+    //            }
+    //        });
+    //    }
+</script>

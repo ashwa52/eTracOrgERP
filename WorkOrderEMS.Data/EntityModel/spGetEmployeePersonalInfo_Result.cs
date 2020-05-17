@@ -24,10 +24,10 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<System.DateTime> EMP_DateOfBirth { get; set; }
         public string EMP_SSN { get; set; }
         public string EMP_Photo { get; set; }
-        public string EMP_Gender { get; set; }
+        public Nullable<long> EMP_Gender { get; set; }
         public string EMP_MilitaryService { get; set; }
         public Nullable<long> EMP_JobTitleId { get; set; }
-        public Nullable<long> EMP_ManagerId { get; set; }
+        public string EMP_ManagerId { get; set; }
         public Nullable<System.DateTime> EMP_DateOfJoining { get; set; }
         public Nullable<long> EMP_LocationId { get; set; }
         public string EMA_Address { get; set; }

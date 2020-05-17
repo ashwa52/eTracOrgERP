@@ -182,6 +182,7 @@
     <Compile Include="CommonModels\ReportModel.cs" />
     <Compile Include="CommonModels\TemplateModel.cs" />
     <Compile Include="CommonModels\UnClosedWOModel.cs" />
+    <Compile Include="CommonModels\UploadEmployeeFiles.cs" />
     <Compile Include="CommonModels\UserDetailsForVerificationModel.cs" />
     <Compile Include="CommonModels\WorkRequestAssignmentModel.cs" />
     <Compile Include="DARModels\DARModel.cs" />
@@ -192,7 +193,9 @@
     <Compile Include="eCounting\BillNumber.cs" />
     <Compile Include="eCounting\Bill\BillFacilityModel.cs" />
     <Compile Include="eCounting\CompanyFacility\CompanyFacilityModel.cs" />
+    <Compile Include="eCounting\CreditMemoDataModel.cs" />
     <Compile Include="eCounting\CustomerAllViewDataModel.cs" />
+    <Compile Include="eCounting\ClientInvoiceDataModel.cs" />
     <Compile Include="eCounting\CustomerSetupManagementModel.cs" />
     <Compile Include="eCounting\DebitMemo\DebitMemoModel.cs" />
     <Compile Include="eCounting\DOTAllViewDataModel.cs" />
@@ -248,6 +251,7 @@
     <Compile Include="Emp_ManApp\EmployeeManagerModel.cs" />
     <Compile Include="eTime\Employee_AttendanceModel.cs" />
     <Compile Include="eTime\Employee_PunchTimeRequestModel.cs" />
+    <Compile Include="eTime\eTimeAPIModels.cs" />
     <Compile Include="GlobalSettings\Invoices.cs" />
     <Compile Include="GlobalSettings\BankAccount.cs" />
     <Compile Include="GlobalSettings\ARRules.cs" />
@@ -298,6 +302,7 @@
     <Compile Include="NewAdminModel\OnBoarding\Applicant\CommonApplicantModel.cs" />
     <Compile Include="NewAdminModel\OnBoarding\Applicant\InterviewQuestionAnswerModel.cs" />
     <Compile Include="NewAdminModel\OnBoarding\Applicant\JobPostingDropDownModel.cs" />
+    <Compile Include="NewAdminModel\OnBoarding\Applicant\OfferAcceptRejectCounterModel.cs" />
     <Compile Include="NewAdminModel\OnBoarding\Applicant\OriantationModel.cs" />
     <Compile Include="NewAdminModel\OnBoarding\Applicant\SelfIdentificationModel.cs" />
     <Compile Include="NewAdminModel\OnBoarding\AssetsAllocationModel.cs" />

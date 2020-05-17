@@ -120,13 +120,14 @@
 
             <div class="form-group row">
                 <div class="col-sm-6">
-                    @Html.DropDownListFor(x => x.DOT_Status, new List<SelectListItem>
+                    @*@Html.DropDownListFor(x => x.DOT_Status, new List<SelectListItem>
                    {
                      new SelectListItem() {Text = "--Select DOT--", Value=""},
                      new SelectListItem() {Text = "DOT Driver", Value="DOT Driver"},
                      new SelectListItem() {Text = "Non Driver", Value="Non Driver"},
                      new SelectListItem() {Text = "Driver", Value="Driver"}
-                   }, new { @class = "form-control input-rounded requiredselect", @id = "DOT" })
+                   }, new { @class = "form-control input-rounded requiredselect", @id = "DOT" })*@
+                    @Html.TextBoxFor(x => x.DOT_Status,new { @id = "DOTStatus",@style= "cursor: not-allowed;background:#efefef;display:none;", @readonly="readonly", @class = "form-control input-rounded"})
                 </div>                
             </div>
         </div>
@@ -136,10 +137,12 @@
 
 <script>
     $(document).ready(function () {
+        var valDOT;
         $("#SaveJobPost").click(function () {
             debugger
-            if ($("#SaveJobPostingFormVSC").valid()); {
+            //if ($("#SaveJobPostingFormVSC").valid()); {
                 var value = $("#JobTitleId option:selected").text();
+                $("#DOTStatus").val(valDOT)
                 $("SaveJobTitleWithText").val(value);
                 var dataObject = $("#SaveJobPostingFormVSC").serialize();
                 $.ajax({
@@ -161,17 +164,46 @@
                         fn_hideMaskloader();
                     }
                 });
-            }
+           // }
         });
-
+        debugger
+        //if (selectedText == "Shuttle Driver") {
+        //    $("#DOTStatus").attr("value", "DOT Driver");
+        //    valDOT = "DOT Driver";
+        //}
+        //else if (selectedText == "Parking Attendant" || selectedText == "Valet Parker") {
+        //    $("#DOTStatus").attr("value","Driver");
+        //    valDOT = "Driver";
+        //}
+        //else {
+        //    $("#DOTStatus").attr("value", "Non Driver");
+        //    valDOT = "Non Driver";
+        //}
         $("#JobTitleId").change(function () {
             debugger
             var selectedText = $(this).find("option:selected").text();
-            if (selectedText == "Parking Attendant" || selectedText == "Shuttle Driver" || selectedText == "Valet Parker") {
-                $("#DOT").show();
+            //if (selectedText == "Parking Attendant" || selectedText == "Shuttle Driver" || selectedText == "Valet Parker") {
+            //    $("#DOTStatus").val("DOT Driver");
+            //    valDOT = "DOT Driver";
+            //}
+            //else {
+            //    $("#DOTStatus").val("Non Driver");
+            //    valDOT = "Non Driver";
+            //}
+            $("#DOTStatus").show();
+            if (selectedText == "Shuttle Driver") {
+                $("#DOTStatus").attr("value", "DOT Driver");
+                //$("#DOTStatus").val("DOT Driver");
+                valDOT = "DOT Driver";
             }
-            else 
-                $("#DOT").hide();
+            else if (selectedText == "Parking Attendant" || selectedText == "Valet Parker") {
+                $("#DOTStatus").attr("value", "Driver");
+                valDOT = "Driver";
+            }
+            else {
+                $("#DOTStatus").attr("value", "Non Driver");
+                valDOT = "Non Driver";
+            }
         });
     });
 

@@ -3713,20 +3713,32 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             if (status == false)
             {
                 //2 Operating , 3 Subsidery
-                lstCompanyHolder = _workorderems.Companies.Where(x => x.CMP_COT_Id == 2 || x.CMP_COT_Id == 3 && x.CMP_IsActive == "Y").Select(x => new ContractDropdownDetailsModel()
+                //lstCompanyHolder = _workorderems.Companies.Where(x => x.CMP_COT_Id == 2 || x.CMP_COT_Id == 3 && x.CMP_IsActive == "Y").Select(x => new ContractDropdownDetailsModel()
+                //{
+                //    CompanyId = x.CMP_Id,
+                //    CompanyName = x.CMP_NameLegal,
+                //    ContractTypeId = x.CMP_COT_Id
+                //}).ToList();
+                lstCompanyHolder = _workorderems.Companies.Where(x => x.CompanyType.COT_Id == 2 || x.CompanyType.COT_Id == 3 && x.CMP_IsActive == "Y").Select(x => new ContractDropdownDetailsModel()
                 {
                     CompanyId = x.CMP_Id,
                     CompanyName = x.CMP_NameLegal,
-                    ContractTypeId = x.CMP_COT_Id
+                    ContractTypeId = x.CompanyType.COT_Id
                 }).ToList();
             }
             else
             {
-                lstCompanyHolder = _workorderems.Companies.Where(x => x.CMP_COT_Id == 2 && x.CMP_IsActive == "Y").Select(x => new ContractDropdownDetailsModel()
+                //lstCompanyHolder = _workorderems.Companies.Where(x => x.CMP_COT_Id == 2 && x.CMP_IsActive == "Y").Select(x => new ContractDropdownDetailsModel()
+                //{
+                //    CompanyId = x.CMP_Id,
+                //    CompanyName = x.CMP_NameLegal,
+                //    ContractTypeId = x.CMP_COT_Id
+                //}).ToList();
+                lstCompanyHolder = _workorderems.Companies.Where(x => x.CompanyType.COT_Id == 2 && x.CMP_IsActive == "Y").Select(x => new ContractDropdownDetailsModel()
                 {
                     CompanyId = x.CMP_Id,
                     CompanyName = x.CMP_NameLegal,
-                    ContractTypeId = x.CMP_COT_Id
+                    ContractTypeId = x.CompanyType.COT_Id
                 }).ToList();
             }
             return lstCompanyHolder;
@@ -3906,7 +3918,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
             //return lst;
         }
-        public List<spGetApplicantInfo_Result2> GetApplicantInfo(long userId)
+        public List<spGetApplicantInfo_Result> GetApplicantInfo(long userId)
         {
             ObjnewAdminRepository = new NewAdminDataRepository();
             try
@@ -4302,8 +4314,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 using (workorderEMSEntities context = new workorderEMSEntities())
                 {
                     var res = context.spGetInterviewScore(ApplicantId).FirstOrDefault();
-                    if (res.HasValue)
-                        return res.Value;
+                    if (res.FinalScore > 0)
+                        return Convert.ToInt32(res.FinalScore);
                     else
                         return 0;
                 }
@@ -4616,7 +4628,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         //        throw ex;
         //    }
         //}
-        public List<spGetJobPosting_ForCompanyOpening_Result1> GetJobPostingForCompanyOpening(string HiringManagerId)
+        public List<spGetJobPosting_ForCompanyOpening_Result> GetJobPostingForCompanyOpening(string HiringManagerId)
         {
             try
             {

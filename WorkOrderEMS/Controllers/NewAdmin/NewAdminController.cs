@@ -860,6 +860,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
 
         }
 
+        #region Hiring ob boarding
         [HttpGet]
         public ActionResult HiringOnBoardingDashboard()
         {
@@ -1346,6 +1347,39 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             return Json(isSaved, JsonRequestBehavior.AllowGet);
         }
 
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 14--5-2020
+        /// Created For : TO open close and hold job by job id
+        /// </summary>
+        /// <param name="JobId"></param>
+        /// <param name="JobStatus"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult CloseHoldOpenJob(long JobId, string JobStatus)
+        {
+            try
+            {
+                if(JobId > 0 && JobStatus != null)
+                {
+                    var update = _IePeopleManager.UpdateCloseHoldOpenJob(JobId, JobStatus);
+                    if(update)
+                    return Json(true,JsonRequestBehavior.AllowGet);
+                    else
+                        return Json(false, JsonRequestBehavior.AllowGet);
+                }
+                else
+                {
+                    return Json(false, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch(Exception ex)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        #endregion Hiring onboarding
         [HttpPost]
         public ActionResult SaveApplicant(CommonApplicantModel model)
         {
@@ -1601,7 +1635,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
         {
             eTracLoginModel ObjLoginModel = null;
             var _workorderems = new workorderEMSEntities();
-            var data = new List<spGetJobPosting_ForCompanyOpening_Result1>();
+            var data = new List<spGetJobPosting_ForCompanyOpening_Result>();
             if (Session["eTrac"] != null)
             {
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
