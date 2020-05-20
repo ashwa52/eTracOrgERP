@@ -27,6 +27,7 @@
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/VENDOR/c3/css/c3.min.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
 
 <style>
 
@@ -110,10 +111,10 @@
                                             @Html.TextBoxFor(model => model.HolidayName, new { @class = "form-control input-rounded required" })
                                             @Html.HiddenFor(model => model.HolidayName)
                                             <div class="errorspace">
-                                            @Html.ValidationMessageFor(model => model.HolidayName)
+                                                @Html.ValidationMessageFor(model => model.HolidayName)
+                                            </div>
                                         </div>
-                                        </div>
-                                        
+
                                     </div>
                                     <div class="form-group row ShowNormalPO">
                                         <label class="col-sm-2 col-form-label" id="lblIssueDate">Description<span class="req">*</span></label>
@@ -124,7 +125,7 @@
                                                 @Html.ValidationMessageFor(model => model.Description)
                                             </div>
                                         </div>
-                                        
+
                                         <label class="col-sm-2 col-form-label" id="lblDeliveryDate"> Active<span class="req">*</span></label>
                                         <div class="col-sm-4">
                                             @Html.CheckBoxFor(model => model.IsActive)
@@ -138,13 +139,16 @@
                             <span class="w-100 text-right float-left">
                                 <button type="submit" class="btn btn-default bluebutton nxt-btn" id="btnSaveVehicle" value="EditPO" style="background-color:forestgreen;border-radius:18px;margin-left: 20px;width:160px;color:white; ">Submit</button>
                             </span>
-                         }
+                        }
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script type="text/javascript" src="@Url.Content("~/Content/Dashboard/plugins/timepicker/bootstrap-timepicker.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
 
 <script>
     $(document).ready(function () {

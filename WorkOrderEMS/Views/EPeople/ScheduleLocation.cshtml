@@ -52,6 +52,7 @@
 }
 <link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
 <link rel="stylesheet" href="@Url.Content("~/Content/Dashboard/plugins/timepicker/bootstrap-timepicker.min.css")" />
+<link rel="stylesheet" href="@Url.Content("~/Scripts/Bootstrap-DateTimePicker/css/datetimepicker.css")" />
 
 
 
@@ -160,6 +161,11 @@
 </div>
 @Styles.Render("~/Scripts/ClockPickerCss")
 @Scripts.Render("~/Scripts/ClockPickerJs")
+
+<script type="text/javascript" src="@Url.Content("~/Scripts/Bootstrap-DateTimePicker/js/bootstrap-datetimepicker.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
+
 <script type="text/javascript">
     function validInt(event) {
         if (event.keyCode == 13) {
@@ -349,10 +355,10 @@
         var loopcnt = $(this).val();
         itemIndex = parseInt($("#tblLocationSeatHead input.iHidden").first().val());
         for (var i = 1; i <= loopcnt; i++) {
-            console.log(itemIndex)    
-             
+            console.log(itemIndex)
+
                 itemIndex += 1;
-            
+
             AddLocationSeatHeadList(itemIndex);
         }
     });

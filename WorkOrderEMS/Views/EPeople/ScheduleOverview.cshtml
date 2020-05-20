@@ -25,6 +25,7 @@
     }
 }
 <link href="~/Content/NewAdminContent/CSS/clockPicker.css" rel="stylesheet" />
+<link rel="stylesheet" href="@Url.Content("~/Content/Dashboard/plugins/daterangepicker/daterangepicker-bs3.css")" />
 
 <div class="content-body">
     <div class="container-fluid" style="margin-top:20px;">
@@ -105,8 +106,13 @@
         </div>
     </div>
 </div>
-<script src="~/Content/NewAdminContent/JQUERY/clockPicker.js"></script>
-<script src="~/Scripts/NewAdminJS/plugins-init/bs-daterange-picker-init.js"></script>
+
+@*<script src="~/Content/NewAdminContent/JQUERY/clockPicker.js"></script>
+<script src="~/Scripts/NewAdminJS/plugins-init/bs-daterange-picker-init.js"></script>*@
+<script type="text/javascript" src="@Url.Content("~/Content/Dashboard/plugins/daterangepicker/daterangepicker.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Content/NewAdminContent/JQUERY/clockPicker.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/NewAdminJS/plugins-init/bs-daterange-picker-init.js")"></script>
+
 <script>
     $(document).ready(function () {
         $('#DOT_form').on("click", ":submit", function () {

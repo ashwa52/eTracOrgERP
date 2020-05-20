@@ -1,4 +1,5 @@
 ﻿@model WorkOrderEMS.Models.HolidayManagment
+<link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
 <div class="row">
     <div class="" id="DivContractDetailsIndexRequisition">
         <form id="SaveVCSChartFormForRequisition">
@@ -38,7 +39,8 @@
         </form>
     </div>
 </div>
-
+<script type="text/javascript" src="@Url.Content("~/Content/Dashboard/plugins/timepicker/bootstrap-timepicker.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
 
 <script>
     $(document).ready(function () {

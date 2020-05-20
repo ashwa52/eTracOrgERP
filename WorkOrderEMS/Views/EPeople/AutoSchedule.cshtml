@@ -90,8 +90,11 @@
 </div>
 @Styles.Render("~/Scripts/ClockPickerCss")
 @Scripts.Render("~/Scripts/ClockPickerJs")
-<script src="@Url.Content("~/Content/Dashboard/plugins/timepicker/bootstrap-timepicker.min.js")"></script>
-<script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Content/Dashboard/plugins/timepicker/bootstrap-timepicker.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
+
 <script type="text/javascript">
     $("#btnback").on("click", function (event) {
         event.preventDefault();
