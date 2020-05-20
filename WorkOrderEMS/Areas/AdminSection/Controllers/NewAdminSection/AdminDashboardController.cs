@@ -287,27 +287,34 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
             }
             return Json(lst, JsonRequestBehavior.AllowGet);
         }
-
-        //public JsonResult DeleteJobTitleById(long JobTitleId)
-        //{
-        //    eTracLoginModel ObjLoginModel = null;
-        //    var lst = new AddChartModel();
-        //    if (Session != null)
-        //    {
-        //        if (Session["eTrac"] != null)
-        //        {
-        //            ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-        //        }
-        //    }
-        //    try
-        //    {
-        //        var data = _IAdminDashboard.DeleteJobTitleById(JobTitleId);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ViewBag.Message = ex.Message; ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger;
-        //    }
-        //    return Json(lst, JsonRequestBehavior.AllowGet);
-        //}
+        /// <summary>
+        /// Created By  : Ashwajit Bansod
+        /// Created Date: 20-05-2020
+        /// Created For : TO soft delete job title
+        /// </summary>
+        /// <param name="JobId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult DeleteJobTitleById(long JobId)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            bool delete = false;
+            if (Session != null)
+            {
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                }
+            }
+            try
+            {
+                delete = _IAdminDashboard.DeleteJobTitleById(JobId);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message; ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger;
+            }
+            return Json(delete, JsonRequestBehavior.AllowGet);
+        }
     }
 }

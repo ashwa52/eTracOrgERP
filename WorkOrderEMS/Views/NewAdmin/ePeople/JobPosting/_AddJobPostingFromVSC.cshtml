@@ -1,4 +1,13 @@
 ﻿@model WorkOrderEMS.Models.JobPostingModel
+    @{ 
+        WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+        string loginUserName = "",empId ="", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+        if(ObjLogin != null)
+        {
+            loginUserName = ObjLogin.FName + " " + ObjLogin.LName;
+            empId = ObjLogin.UserName;
+        }
+    }
 <div>
     <form id="SaveJobPostingFormVSC">
         @Html.HiddenFor(model => model.AddChartModel.Id)
@@ -8,6 +17,8 @@
         @Html.HiddenFor(model => model.AddChartModel.DepartmentName)
         @Html.HiddenFor(model => model.AddChartModel.RateOfPay)
         @Html.HiddenFor(model => model.AddChartModel.JobDescription)
+        @Html.HiddenFor(model => model.HiringManager,new { @id="HiringManagerData"})
+        @Html.Hidden("HiringManagerHidden")
         <div class="row">
             <label class="col-lg-2">Seating Name</label>
             <div class="form-control-static col-lg-4">@Model.AddChartModel.SeatingName</div>
@@ -52,6 +63,18 @@
             </div>
         </div>*@
             <div class="form-group row">
+                  <label class="col-sm-3"><b>Hiring Manager :</b></label>
+                <div class="col-sm-3">
+                    <label><b>@loginUserName</b></label>
+                    @*@if (ViewBag.GetHiringManagerList != null)
+                    {
+                      @Html.DropDownListFor(model => model.HiringManager, new SelectList(ViewBag.GetHiringManagerList, "HiringManager", "HiringManagerName"), "--Select Hiring Manager--", new { @id = "HiringManager", @class = "form-control input-rounded" })
+                    }
+                    else
+                    {
+                      <select id="HiringManager"><option value="-1">@ViewBag.GetHiringManagerList</option></select>
+                    }*@
+                </div>
                 <div class="col-sm-6">
                     @Html.DropDownListFor(x => x.EmployeeStatus, new List<SelectListItem>
                                                                                                         {
@@ -60,16 +83,7 @@
                                                                                                              new SelectListItem() {Text = "NON-EXEMPT", Value="N"}
                                                                                                         }, new { @class = "form-control input-rounded requiredselect", @id = "EmployeeStatusJobPosting" })
                 </div>
-                <div class="col-sm-6">
-                    @Html.DropDownListFor(x => x.JobType, new List<SelectListItem>
-                           {
-                             new SelectListItem() {Text = "--Select Job Type--", Value="0"},
-                             new SelectListItem() {Text = "FT", Value="FT"},
-                             new SelectListItem() {Text = "PT", Value="PT"},
-                             new SelectListItem() {Text = "TEMP", Value="TEMP"}
-                           }, new { @class = "form-control input-rounded requiredselect", @id = "JobTypeJobPosting" })
-
-                </div>
+                
             </div>
             <div class="form-group row">
                 <div class="col-sm-6">
@@ -81,14 +95,14 @@
             </div>
             <div class="form-group row">
                 <div class="col-sm-6">
-                    @if (ViewBag.GetHiringManagerList != null)
-                    {
-                      @Html.DropDownListFor(model => model.HiringManager, new SelectList(ViewBag.GetHiringManagerList, "HiringManager", "HiringManagerName"), "--Select Hiring Manager--", new { @id = "HiringManager", @class = "form-control input-rounded" })
-                    }
-                    else
-                    {
-                      <select id="HiringManager"><option value="-1">@ViewBag.GetHiringManagerList</option></select>
-                    }
+                    @Html.DropDownListFor(x => x.JobType, new List<SelectListItem>
+                           {
+                             new SelectListItem() {Text = "--Select Job Type--", Value="0"},
+                             new SelectListItem() {Text = "FT", Value="FT"},
+                             new SelectListItem() {Text = "PT", Value="PT"},
+                             new SelectListItem() {Text = "TEMP", Value="TEMP"}
+                           }, new { @class = "form-control input-rounded requiredselect", @id = "JobTypeJobPosting" })
+
                 </div>
                 <div class="col-sm-6">
                     @if (ViewBag.JobTitle != null)
@@ -140,10 +154,13 @@
         var valDOT;
         $("#SaveJobPost").click(function () {
             debugger
+            var empIdData = "@empId";
             //if ($("#SaveJobPostingFormVSC").valid()); {
                 var value = $("#JobTitleId option:selected").text();
                 $("#DOTStatus").val(valDOT)
-                $("SaveJobTitleWithText").val(value);
+                $("#SaveJobTitleWithText").val(value);
+                //$("#HiringManagerHidden").val();
+                $("#HiringManagerData").val(empIdData);
                 var dataObject = $("#SaveJobPostingFormVSC").serialize();
                 $.ajax({
                     type: 'POST',

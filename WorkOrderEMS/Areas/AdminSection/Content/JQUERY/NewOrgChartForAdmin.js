@@ -103,33 +103,33 @@
         r._draw(!0, OrgChart.action.xScroll)
     })), this._gragStartedId = null, this._timeout = null, this._touch = null, this._initialized = !1, this.response = null, this.nodes = null, this._setInitialSizeIfNotSet(), 0 < this.config.nodes.length && this._draw(!1, OrgChart.action.init))
 };
-OrgChart.prototype.load = function(t) {
+OrgChart.prototype.load = function (t) {
     return this.config.nodes = t, this._draw(!1, OrgChart.action.init), this
-}, OrgChart.prototype.loadXML = function(t) {
+}, OrgChart.prototype.loadXML = function (t) {
     var e = OrgChart._xml2json(t);
     this.load(e)
-}, OrgChart.prototype.getXML = function() {
+}, OrgChart.prototype.getXML = function () {
     return OrgChart._json2xml(this.config.nodes)
-}, OrgChart.prototype.on = function(t, e) {
+}, OrgChart.prototype.on = function (t, e) {
     return OrgChart.events.on(t, e, this._event_id), this
-}, OrgChart.prototype.draw = function(t, e, r) {
+}, OrgChart.prototype.draw = function (t, e, r) {
     null == t && (t = OrgChart.action.update), this._draw(!1, t, e, r)
-}, OrgChart.prototype._get = function(t) {
+}, OrgChart.prototype._get = function (t) {
     for (var e = 0; e < this.config.nodes.length; e++)
         if (this.config.nodes[e].id == t) return this.config.nodes[e];
     return null
-}, OrgChart.prototype.get = function(t) {
+}, OrgChart.prototype.get = function (t) {
     for (var e = 0; e < this.config.nodes.length; e++)
         if (this.config.nodes[e].id == t) return JSON.parse(JSON.stringify(this.config.nodes[e]));
     return null
-}, OrgChart.prototype.getByParentId = function(t) {
+}, OrgChart.prototype.getByParentId = function (t) {
     for (var e = [], r = 0; r < this.config.nodes.length; r++) this.config.nodes[r].pid == t && e.push(JSON.parse(JSON.stringify(this.config.nodes[r])));
     return e
-}, OrgChart.prototype._draw = function(t, O, v, y) {
+}, OrgChart.prototype._draw = function (t, O, v, y) {
     var x = this;
     this._hideBeforeAnimationCompleted = !1;
     var e = O == OrgChart.action.init ? null : this.getViewBox();
-    this.server.read(t, this.width(), this.height(), e, O, v, function(t) {
+    this.server.read(t, this.width(), this.height(), e, O, v, function (t) {
         O != OrgChart.action.exporting && (x.nodes = t.nodes), x.editUI.fields = t.allFields;
         var e = {
             defs: ""
@@ -167,25 +167,25 @@ OrgChart.prototype.load = function(t) {
             if (0 < g[0].length) {
                 x._hideBeforeAnimation(g[0].length);
                 for (var p = 0; p < g[0].length; p++) g[0][p] = x.getNodeElement(g[0][p]);
-                OrgChart.anim(g[0], g[1], g[2], x.config.anim.duration, x.config.anim.func, function() {
+                OrgChart.anim(g[0], g[1], g[2], x.config.anim.duration, x.config.anim.func, function () {
                     c || (y && y(), OrgChart.events.publish("redraw", [x]), x._showAfterAnimation(), c = !0)
                 })
             }
             O === OrgChart.action.centerNode ? OrgChart.anim(x.getSvg(), {
                 viewbox: a
             }, {
-                viewbox: x.response.viewBox
-            }, x.config.anim.duration, x.config.anim.func, function() {
-                x.ripple(v.options.rippleId), c || (y && y(), OrgChart.events.publish("redraw", [x]), x._showAfterAnimation(), c = !0)
-            }, function() {
-                x.xScrollUI.setPosition(), x.yScrollUI.setPosition()
-            }) : !a || !x.response || a[0] == x.response.viewBox[0] && a[1] == x.response.viewBox[1] && a[2] == x.response.viewBox[2] && a[3] == x.response.viewBox[3] || O !== OrgChart.action.insert && O !== OrgChart.action.expandCollapse && O !== OrgChart.action.update && O !== OrgChart.action.init ? 0 == g[0].length && (c || (y && y(), OrgChart.events.publish("redraw", [x]), c = !0)) : OrgChart.anim(x.getSvg(), {
-                viewbox: a
-            }, {
-                viewbox: x.response.viewBox
-            }, 500, OrgChart.anim.inOutPow, function() {
-                x.xScrollUI.setPosition(), x.yScrollUI.setPosition(), c || (y && y(), OrgChart.events.publish("redraw", [x]), c = !0)
-            }), x._initialized || (x._initialized = !0, OrgChart.events.publish("init", [x]))
+                    viewbox: x.response.viewBox
+                }, x.config.anim.duration, x.config.anim.func, function () {
+                    x.ripple(v.options.rippleId), c || (y && y(), OrgChart.events.publish("redraw", [x]), x._showAfterAnimation(), c = !0)
+                }, function () {
+                    x.xScrollUI.setPosition(), x.yScrollUI.setPosition()
+                }) : !a || !x.response || a[0] == x.response.viewBox[0] && a[1] == x.response.viewBox[1] && a[2] == x.response.viewBox[2] && a[3] == x.response.viewBox[3] || O !== OrgChart.action.insert && O !== OrgChart.action.expandCollapse && O !== OrgChart.action.update && O !== OrgChart.action.init ? 0 == g[0].length && (c || (y && y(), OrgChart.events.publish("redraw", [x]), c = !0)) : OrgChart.anim(x.getSvg(), {
+                    viewbox: a
+                }, {
+                        viewbox: x.response.viewBox
+                    }, 500, OrgChart.anim.inOutPow, function () {
+                        x.xScrollUI.setPosition(), x.yScrollUI.setPosition(), c || (y && y(), OrgChart.events.publish("redraw", [x]), c = !0)
+                    }), x._initialized || (x._initialized = !0, OrgChart.events.publish("init", [x]))
         } else {
             var f = t.boundary,
                 u = f.maxX - f.minX,
@@ -193,24 +193,24 @@ OrgChart.prototype.load = function(t) {
                 m = x.ui.svg(u, C, [f.minX, f.minY, u, C], x.config, r, i);
             y(m)
         }
-    }, function(t) {
+    }, function (t) {
         OrgChart.events.publish("ready", [x, t])
     })
-}, OrgChart.prototype._setInitialSizeIfNotSet = function() {
+}, OrgChart.prototype._setInitialSizeIfNotSet = function () {
     this.element.style.overflow = "hidden", this.element.style.position = "relative", 0 == this.element.offsetHeight && (this.element.style.height = "100%", 0 == this.element.offsetHeight && (this.element.style.height = "700px")), 0 == this.element.offsetWidth && (this.element.style.width = "100%", 0 == this.element.offsetWidth && (this.element.style.width = "700px"))
-}, OrgChart.prototype.getViewBox = function() {
+}, OrgChart.prototype.getViewBox = function () {
     var t = this.getSvg(),
         e = null;
     return t ? (e = (e = "[" + (e = t.getAttribute("viewBox")) + "]").replace(/\ /g, ","), e = JSON.parse(e)) : null
-}, OrgChart.prototype.setViewBox = function(t) {
+}, OrgChart.prototype.setViewBox = function (t) {
     this.getSvg().setAttribute("viewBox", t.toString())
-}, OrgChart.prototype.width = function() {
+}, OrgChart.prototype.width = function () {
     return this.element.offsetWidth
-}, OrgChart.prototype.height = function() {
+}, OrgChart.prototype.height = function () {
     return this.element.offsetHeight
-}, OrgChart.prototype.getScale = function(t) {
+}, OrgChart.prototype.getScale = function (t) {
     return t || (t = this.getViewBox()), OrgChart.getScale(t, this.width(), this.height(), this.config.scaleInitial, this.config.scaleMax, this.config.scaleMin)
-}, OrgChart.prototype.ripple = function(t, e, r) {
+}, OrgChart.prototype.ripple = function (t, e, r) {
     var i = this.getBGNode(t);
     if (null != i) {
         var a = this.getNodeElement(t);
@@ -238,14 +238,14 @@ OrgChart.prototype.load = function(t) {
                 r: 0,
                 opacity: 1
             }, {
-                r: p,
-                opacity: 0
-            }, 500, OrgChart.anim.outPow, function() {
-                a.removeChild(f)
-            })
+                    r: p,
+                    opacity: 0
+                }, 500, OrgChart.anim.outPow, function () {
+                    a.removeChild(f)
+                })
         }
     }
-}, OrgChart.prototype.center = function(t, e, r) {
+}, OrgChart.prototype.center = function (t, e, r) {
     var i, a, o = t,
         n = !0,
         l = !0;
@@ -261,20 +261,20 @@ OrgChart.prototype.load = function(t) {
         id: t,
         options: s
     }, r)
-}, OrgChart.prototype.fit = function(t) {
+}, OrgChart.prototype.fit = function (t) {
     this.config.scaleInitial = OrgChart.match.boundary, this._draw(!0, OrgChart.action.init, void 0, t)
-}, OrgChart.prototype.getBGNode = function(t) {
+}, OrgChart.prototype.getBGNode = function (t) {
     var e = this.nodes[t];
     if (null == e)
         for (var r in this.nodes)
             for (var i = this.nodes[r].bgnodes, a = 0; a < i.length; a++)
                 if (i[a].id == t) return i[a];
     return e
-}, OrgChart.prototype.setLayout = function(t) {
+}, OrgChart.prototype.setLayout = function (t) {
     this.config.layout = t, this._draw(!1, OrgChart.action.update)
-}, OrgChart.prototype.find = function(t) {
+}, OrgChart.prototype.find = function (t) {
     return this.server.find(t)
-}, OrgChart.prototype._hideBeforeAnimation = function(t) {
+}, OrgChart.prototype._hideBeforeAnimation = function (t) {
     if (1 != this._hideBeforeAnimationCompleted && !(t && t < OrgChart.ANIM_THRESHOLD)) {
         var e = this.element.getElementsByTagName("text");
         if (e.length > OrgChart.TEXT_THRESHOLD)
@@ -290,7 +290,7 @@ OrgChart.prototype.load = function(t) {
             for (r = 0; r < o.length; r++) o[r].style.display = "none";
         this._hideBeforeAnimationCompleted = !0
     }
-}, OrgChart.prototype._showAfterAnimation = function() {
+}, OrgChart.prototype._showAfterAnimation = function () {
     for (var t = this.element.getElementsByTagName("text"), e = 0; e < t.length; e++) t[e].style.display = "";
     var r = this.element.getElementsByTagName("image");
     for (e = 0; e < r.length; e++) r[e].style.display = "";
@@ -299,9 +299,9 @@ OrgChart.prototype.load = function(t) {
     var a = this.element.querySelectorAll("[control-expcoll-id]");
     for (e = 0; e < a.length; e++) a[e].style.display = "";
     this._hideBeforeAnimationCompleted = !1
-}, OrgChart.prototype.destroy = function() {
+}, OrgChart.prototype.destroy = function () {
     this._removeEvent(window, "resize"), OrgChart.events.removeForEventId(this._event_id), this.element.innerHTML = null
-}, (BALKANGraph = OrgChart).prototype._canUpdateLink = function(t, e) {
+}, (BALKANGraph = OrgChart).prototype._canUpdateLink = function (t, e) {
     if (null == e || null == e) return !1;
     if (null == t || null == t) return !1;
     if (t == e) return !1;
@@ -313,12 +313,12 @@ OrgChart.prototype.load = function(t) {
         a = a.parent
     }
     return !i
-}, OrgChart.prototype.link = function(t, e) {
+}, OrgChart.prototype.link = function (t, e) {
     if (this._canUpdateLink(t, e)) {
         var r = this.get(t);
         r.pid = e, this.update(r, !0)
     }
-}, OrgChart.prototype.linkNode = function(t, e) {
+}, OrgChart.prototype.linkNode = function (t, e) {
     if (this._canUpdateLink(t, e)) {
         var r = this.getBGNode(t),
             i = this.getBGNode(e);
@@ -339,30 +339,30 @@ OrgChart.prototype.load = function(t) {
         var l = this;
         this._draw(!1, OrgChart.action.update, {
             visId: t
-        }, function() {
+        }, function () {
             l.ripple(r.id)
         })
     }
-}, OrgChart.prototype.updateNode = function(t, e) {
+}, OrgChart.prototype.updateNode = function (t, e) {
     var r = this;
     if (!1 === this.update(t, e)) return !1;
     var i = t.pid;
     return null != i && null != i && "" != i || (i = t.id), this._draw(!1, OrgChart.action.update, {
         id: i
-    }, function() {
+    }, function () {
         r.ripple(t.id)
     }), !0
-}, OrgChart.prototype.update = function(t, e) {
+}, OrgChart.prototype.update = function (t, e) {
     var r = this.get(t.id);
     if (!0 === e && !1 === OrgChart.events.publish("update", [this, r, t])) return !1;
     for (var i = 0; i < this.config.nodes.length; i++) this.config.nodes[i].id == t.id && (this.config.nodes[i] = t);
     return !0
-}, OrgChart.prototype.removeNode = function(t, e) {
+}, OrgChart.prototype.removeNode = function (t, e) {
     var r = this;
-    return !1 !== this.remove(t, e) && (this._draw(!1, OrgChart.action.update, null, function() {
+    return !1 !== this.remove(t, e) && (this._draw(!1, OrgChart.action.update, null, function () {
         r.config.sticky && OrgChart._moveToBoundaryArea(r.getSvg(), r.getViewBox(), r.response.boundary)
     }), !0)
-}, OrgChart.prototype.remove = function(t, e) {
+}, OrgChart.prototype.remove = function (t, e) {
     var r = this.getBGNode(t);
     if ((r.isChildOfGroup && this._removeGroupIfHasOneNode(r._groupParentNodeId, r.id), !0 === e) && !1 === OrgChart.events.publish("remove", [this, t])) return !1;
     for (var i = null, a = this.config.nodes.length - 1; 0 <= a; a--)
@@ -373,7 +373,7 @@ OrgChart.prototype.load = function(t) {
     var o = this.getByParentId(t);
     for (a = o.length - 1; 0 <= a; a--) o[a].pid = i, this.update(o[a], e);
     return !0
-}, OrgChart.prototype.addNode = function(t, e) {
+}, OrgChart.prototype.addNode = function (t, e) {
     if (!1 === this.add(t, e)) return !1;
     var r = OrgChart.action.insert;
     null != t.pid && null != t.pid || (r = OrgChart.action.update);
@@ -383,38 +383,38 @@ OrgChart.prototype.load = function(t) {
         id: a,
         insertedNodeId: t.id
     }), !0
-}, OrgChart.prototype.add = function(t, e) {
+}, OrgChart.prototype.add = function (t, e) {
     if ((null == t.id && console.error("Call addNode without id"), !0 === e) && !1 === OrgChart.events.publish("add", [this, t])) return !1;
     return this.config.nodes.push(t), !0
-}, OrgChart.prototype.addTag = function(t, e, r) {
+}, OrgChart.prototype.addTag = function (t, e, r) {
     var i = OrgChart.copy(this.config.tags);
     if ((i[t] = e, !0 === r) && !1 === OrgChart.events.publish("updatetags", [this, i])) return !1;
     return this.config.tags = i, !0
-}, OrgChart.prototype.hasTag = function(t) {
+}, OrgChart.prototype.hasTag = function (t) {
     return null != this.config.tags[t]
-}, OrgChart.prototype.removeTag = function(t, e) {
+}, OrgChart.prototype.removeTag = function (t, e) {
     var r = JSON.parse(JSON.stringify(this.config.tags));
     if ((delete r[t], !0 === e) && !1 === OrgChart.events.publish("updatetags", [this, r])) return !1;
     return this.config.tags = r, !0
-}, OrgChart.prototype._updateTag = function(t, e, r) {
+}, OrgChart.prototype._updateTag = function (t, e, r) {
     var i = JSON.parse(JSON.stringify(this.config.tags));
     if (i[t][e] = r, !1 === OrgChart.events.publish("updatetags", [this, i])) return !1;
     this.config.tags = i;
     var a = this;
     this._draw(!1, OrgChart.action.update, {
         id: t
-    }, function() {
+    }, function () {
         a.ripple(t)
     })
-}, OrgChart.prototype.addNodeTag = function(t, e, r) {
+}, OrgChart.prototype.addNodeTag = function (t, e, r) {
     var i = this.get(t);
     Array.isArray(i.tags) || (i.tags = []), -1 == i.tags.indexOf(e) && (i.tags.push(e), this.update(i, r))
-}, OrgChart.prototype.removeNodeTag = function(t, e, r) {
+}, OrgChart.prototype.removeNodeTag = function (t, e, r) {
     var i = this.get(t);
     if (Array.isArray(i.tags)) {
         var a = i.tags.indexOf(e); - 1 != a && (i.tags.splice(a, 1), this.update(i, r))
     }
-}, OrgChart.prototype._removeGroupIfHasOneNode = function(t, e) {
+}, OrgChart.prototype._removeGroupIfHasOneNode = function (t, e) {
     if (OrgChart.REMOVE_GROUP_IF_HAS_ONE_NODE) {
         var r = this.getBGNode(t);
         if (2 == r.bgnodes.length) {
@@ -425,15 +425,15 @@ OrgChart.prototype.load = function(t) {
             }
         }
     }
-}, OrgChart.prototype.groupNode = function(t, e, r, i) {
+}, OrgChart.prototype.groupNode = function (t, e, r, i) {
     var a = this,
         o = this.group(t, e, r, i);
     this._draw(!1, OrgChart.action.update, {
         id: o.id
-    }, function() {
+    }, function () {
         a.ripple(o.rippleId)
     })
-}, OrgChart.prototype.group = function(t, e, r, i) {
+}, OrgChart.prototype.group = function (t, e, r, i) {
     if (!0 === i && !1 === OrgChart.events.publish("group", [this, t, e])) return !1;
     var a = this.getBGNode(t),
         o = this.getBGNode(e),
@@ -443,20 +443,20 @@ OrgChart.prototype.load = function(t) {
             if (a.isGroup || o.isGroup || a.isChildOfGroup || !o.isChildOfGroup)
                 if (!a.isGroup && !o.isGroup && a.isChildOfGroup && o.isChildOfGroup) this._removeGroupIfHasOneNode(a._groupParentNodeId, a.id), this.removeNodeTag(a.id, a._groupParentNodeId, !0), this.addNodeTag(a.id, o._groupParentNodeId, !0), this.link(a.id, o.pid);
                 else if (!a.isGroup && o.isGroup && a.isChildOfGroup && !o.isChildOfGroup) this._removeGroupIfHasOneNode(a._groupParentNodeId, a.id), this.removeNodeTag(a.id, a._groupParentNodeId, !0), this.addNodeTag(a.id, o.id, !0);
-    else if (a.isGroup || !o.isGroup || a.isChildOfGroup || o.isChildOfGroup) {
-        if (a.isGroup && o.isGroup && !a.isChildOfGroup && !o.isChildOfGroup)
-            for (var l = 0; l < a.bgnodes.length; l++) this.removeNodeTag(a.bgnodes[l].id, a.id, !0), this.addNodeTag(a.bgnodes[l].id, o.id, !0)
-    } else this.addNodeTag(a.id, o.id, !0);
-    else this.addNodeTag(a.id, o._groupParentNodeId, !0), this.link(a.id, o.pid);
-    else {
-        s = null != r ? r : OrgChart._randomId();
-        this.addTag(s, {
-            group: !0,
-            groupName: "",
-            groupState: OrgChart.EXPAND,
-            template: "group_grey"
-        }, !0), this._removeGroupIfHasOneNode(a._groupParentNodeId, a.id), this.removeNodeTag(a.id, a._groupParentNodeId, !0), this.addNodeTag(a.id, s, !0), this.addNodeTag(o.id, s, !0)
-    } else {
+                else if (a.isGroup || !o.isGroup || a.isChildOfGroup || o.isChildOfGroup) {
+                    if (a.isGroup && o.isGroup && !a.isChildOfGroup && !o.isChildOfGroup)
+                        for (var l = 0; l < a.bgnodes.length; l++) this.removeNodeTag(a.bgnodes[l].id, a.id, !0), this.addNodeTag(a.bgnodes[l].id, o.id, !0)
+                } else this.addNodeTag(a.id, o.id, !0);
+            else this.addNodeTag(a.id, o._groupParentNodeId, !0), this.link(a.id, o.pid);
+        else {
+            s = null != r ? r : OrgChart._randomId();
+            this.addTag(s, {
+                group: !0,
+                groupName: "",
+                groupState: OrgChart.EXPAND,
+                template: "group_grey"
+            }, !0), this._removeGroupIfHasOneNode(a._groupParentNodeId, a.id), this.removeNodeTag(a.id, a._groupParentNodeId, !0), this.addNodeTag(a.id, s, !0), this.addNodeTag(o.id, s, !0)
+        } else {
         var s = null != r ? r : OrgChart._randomId();
         this.addTag(s, {
             group: !0,
@@ -471,21 +471,21 @@ OrgChart.prototype.load = function(t) {
         rippleId: a.id,
         id: n
     }
-}, void 0 === OrgChart && (OrgChart = {}), OrgChart._ajax = function(t, e, r, i, a) {
+}, void 0 === OrgChart && (OrgChart = {}), OrgChart._ajax = function (t, e, r, i, a) {
     null == i && (i = "arraybuffer");
     var o = new XMLHttpRequest;
-    o.onload = function(t) {
+    o.onload = function (t) {
         o.readyState == XMLHttpRequest.DONE && 200 === this.status && a(t.target.response)
-    }, o.onerror = function(t) {
+    }, o.onerror = function (t) {
         a({
             error: t
         })
     }, o.open(e, t), o.responseType = i, o.setRequestHeader("Content-Type", "application/json"), null == r ? o.send() : o.send(r)
-}, void 0 === OrgChart && (OrgChart = {}), OrgChart.anim = function(c, g, p, f, u, C, m) {
+}, void 0 === OrgChart && (OrgChart = {}), OrgChart.anim = function (c, g, p, f, u, C, m) {
     var O, v = 1,
         y = f / 10 + 1;
     document.getElementsByTagName("g");
-    Array.isArray(c) || (c = [c]), Array.isArray(g) || (g = [g]), Array.isArray(p) || (p = [p]), O = setInterval(function() {
+    Array.isArray(c) || (c = [c]), Array.isArray(g) || (g = [g]), Array.isArray(p) || (p = [p]), O = setInterval(function () {
         for (var t = 0; t < c.length; t++)
             for (var e in p[t]) {
                 var r = OrgChart._arrayContains(["top", "left", "right", "bottom", "width", "height"], e.toLowerCase()) ? "px" : "";
@@ -528,60 +528,60 @@ OrgChart.prototype.load = function(t) {
             }
         m && m(), 1 + y < (v += 1) && (clearInterval(O), C && C(c))
     }, 10)
-}, OrgChart.anim.inPow = function(t) {
+}, OrgChart.anim.inPow = function (t) {
     return t < 0 ? 0 : 1 < t ? 1 : Math.pow(t, 2)
-}, OrgChart.anim.outPow = function(t) {
+}, OrgChart.anim.outPow = function (t) {
     if (t < 0) return 0;
     if (1 < t) return 1;
     return -1 * (Math.pow(t - 1, 2) + -1)
-}, OrgChart.anim.inOutPow = function(t) {
+}, OrgChart.anim.inOutPow = function (t) {
     if (t < 0) return 0;
     if (1 < t) return 1;
     if ((t *= 2) < 1) return OrgChart.anim.inPow(t, 2) / 2;
     return -.5 * (Math.pow(t - 2, 2) + -2)
-}, OrgChart.anim.inSin = function(t) {
+}, OrgChart.anim.inSin = function (t) {
     return t < 0 ? 0 : 1 < t ? 1 : 1 - Math.cos(t * (Math.PI / 2))
-}, OrgChart.anim.outSin = function(t) {
+}, OrgChart.anim.outSin = function (t) {
     return t < 0 ? 0 : 1 < t ? 1 : Math.sin(t * (Math.PI / 2))
-}, OrgChart.anim.inOutSin = function(t) {
+}, OrgChart.anim.inOutSin = function (t) {
     return t < 0 ? 0 : 1 < t ? 1 : -.5 * (Math.cos(Math.PI * t) - 1)
-}, OrgChart.anim.inExp = function(t) {
+}, OrgChart.anim.inExp = function (t) {
     return t < 0 ? 0 : 1 < t ? 1 : Math.pow(2, 10 * (t - 1))
-}, OrgChart.anim.outExp = function(t) {
+}, OrgChart.anim.outExp = function (t) {
     return t < 0 ? 0 : 1 < t ? 1 : 1 - Math.pow(2, -10 * t)
-}, OrgChart.anim.inOutExp = function(t) {
+}, OrgChart.anim.inOutExp = function (t) {
     return t < 0 ? 0 : 1 < t ? 1 : t < .5 ? .5 * Math.pow(2, 10 * (2 * t - 1)) : .5 * (2 - Math.pow(2, 10 * (-2 * t + 1)))
-}, OrgChart.anim.inCirc = function(t) {
+}, OrgChart.anim.inCirc = function (t) {
     return t < 0 ? 0 : 1 < t ? 1 : -(Math.sqrt(1 - t * t) - 1)
-}, OrgChart.anim.outCirc = function(t) {
+}, OrgChart.anim.outCirc = function (t) {
     return t < 0 ? 0 : 1 < t ? 1 : Math.sqrt(1 - (t - 1) * (t - 1))
-}, OrgChart.anim.inOutCirc = function(t) {
+}, OrgChart.anim.inOutCirc = function (t) {
     return t < 0 ? 0 : 1 < t ? 1 : t < 1 ? -.5 * (Math.sqrt(1 - t * t) - 1) : .5 * (Math.sqrt(1 - (2 * t - 2) * (2 * t - 2)) + 1)
-}, OrgChart.anim.rebound = function(t) {
+}, OrgChart.anim.rebound = function (t) {
     return t < 0 ? 0 : 1 < t ? 1 : t < 1 / 2.75 ? 1 - 7.5625 * t * t : t < 2 / 2.75 ? 1 - (7.5625 * (t - 1.5 / 2.75) * (t - 1.5 / 2.75) + .75) : t < 2.5 / 2.75 ? 1 - (7.5625 * (t - 2.25 / 2.75) * (t - 2.25 / 2.75) + .9375) : 1 - (7.5625 * (t - 2.625 / 2.75) * (t - 2.625 / 2.75) + .984375)
-}, OrgChart.anim.inBack = function(t) {
+}, OrgChart.anim.inBack = function (t) {
     return t < 0 ? 0 : 1 < t ? 1 : t * t * (2.70158 * t - 1.70158)
-}, OrgChart.anim.outBack = function(t) {
+}, OrgChart.anim.outBack = function (t) {
     return t < 0 ? 0 : 1 < t ? 1 : (t - 1) * (t - 1) * (2.70158 * (t - 1) + 1.70158) + 1
-}, OrgChart.anim.inOutBack = function(t) {
+}, OrgChart.anim.inOutBack = function (t) {
     return t < 0 ? 0 : 1 < t ? 1 : t < .5 ? 4 * t * t * (7.1898 * t - 2.5949) * .5 : .5 * ((2 * t - 2) * (2 * t - 2) * (3.5949 * (2 * t - 2) + 2.5949) + 2)
-}, OrgChart.anim.impulse = function(t) {
+}, OrgChart.anim.impulse = function (t) {
     var e = 2 * t;
     return e * Math.exp(1 - e)
-}, OrgChart.anim.expPulse = function(t) {
+}, OrgChart.anim.expPulse = function (t) {
     return Math.exp(-2 * Math.pow(t, 2))
-}, void 0 === OrgChart && (OrgChart = {}), OrgChart.prototype._attachInitEventHandlers = function(t) {
+}, void 0 === OrgChart && (OrgChart = {}), OrgChart.prototype._attachInitEventHandlers = function (t) {
     this._addEvent(window, "resize", this._resizeHandler)
-}, OrgChart.prototype._attachEventHandlers = function(t) {
+}, OrgChart.prototype._attachEventHandlers = function (t) {
     t = this.getSvg();
     this.config.enableTouch || /Mobi/i.test(navigator.userAgent) || /Android/i.test(navigator.userAgent) ? (this._addEvent(t, "touchstart", this._globalMouseDownHandler), this._addEvent(t, "touchend", this._globalClickHandler)) : (this._addEvent(t, "mousedown", this._globalMouseDownHandler), this._addEvent(t, "click", this._globalClickHandler), this._addEvent(t, "contextmenu", this._globalContextHandler), this._addEvent(t, "dblclick", this._globalDbClickHandler), this.config.mouseScrool == OrgChart.action.zoom && (this._addEvent(t, "DOMMouseScroll", this._mouseScrollHandler), this._addEvent(t, "mousewheel", this._mouseScrollHandler)));
     var e = this.getExportMenuButton();
     e && this._addEvent(e, "click", this._exportMenuClickHandler)
-}, OrgChart.prototype._addEvent = function(e, t, r, i) {
+}, OrgChart.prototype._addEvent = function (e, t, r, i) {
     var a, o;
-    (i || (i = ""), e.getListenerList || (e.getListenerList = {}), e.getListenerList[t + i]) || (a = this, o = r, r = function() {
+    (i || (i = ""), e.getListenerList || (e.getListenerList = {}), e.getListenerList[t + i]) || (a = this, o = r, r = function () {
         if (o) return o.apply(a, [this, arguments[0]])
-    }, e.addEventListener ? e.addEventListener(t, n, !1) : e.attachEvent("on" + t, function() {
+    }, e.addEventListener ? e.addEventListener(t, n, !1) : e.attachEvent("on" + t, function () {
         var t = r.call(e, window.event);
         return !1 === t && (window.event.returnValue = !1, window.event.cancelBubble = !0), t
     }), e.getListenerList[t + i] = n);
@@ -590,7 +590,7 @@ OrgChart.prototype.load = function(t) {
         var e = r.apply(this, arguments);
         return !1 === e && (t.stopPropagation(), t.preventDefault()), e
     }
-}, OrgChart.prototype._removeEvent = function(t, e) {
+}, OrgChart.prototype._removeEvent = function (t, e) {
     if (t.getListenerList[e]) {
         var r = t.getListenerList[e];
         t.removeEventListener(e, r, !1), delete t.getListenerList[e]
@@ -598,30 +598,30 @@ OrgChart.prototype.load = function(t) {
 }, void 0 === OrgChart && (OrgChart = {}), OrgChart.VERSION = "6.1.91", OrgChart.orientation = {}, OrgChart.orientation.top = 0, OrgChart.orientation.bottom = 1, OrgChart.orientation.right = 2, OrgChart.orientation.left = 3, OrgChart.orientation.top_left = 4, OrgChart.orientation.bottom_left = 5, OrgChart.orientation.right_top = 6, OrgChart.orientation.left_top = 7, OrgChart.CENTER = 8, OrgChart.ORIENTATION = 9, OrgChart.TEXT_THRESHOLD = 150, OrgChart.IMAGES_THRESHOLD = 70, OrgChart.LINKS_THRESHOLD = 150, OrgChart.EXPCOLL_THRESHOLD = 40, OrgChart.ANIM_THRESHOLD = 50, OrgChart.ID = "id", OrgChart.PID = "pid", OrgChart.TAGS = "tags", OrgChart.NODES = "nodes", OrgChart.ELASTIC = "elastic", OrgChart.MAX_DEPTH = 100, OrgChart.SCALE_FACTOR = 1.44, OrgChart.EXPAND = 0, OrgChart.COLLAPSE = 1, OrgChart.LAZY_LOADING_FACTOR = 500, OrgChart.action = {}, OrgChart.action.expandCollapse = 0, OrgChart.action.groupMaxMin = 100, OrgChart.action.edit = 1, OrgChart.action.zoom = 2, OrgChart.action.scroll = 41, OrgChart.action.xScroll = 3, OrgChart.action.yScroll = 4, OrgChart.action.none = 5, OrgChart.action.init = 6, OrgChart.action.update = 7, OrgChart.action.pan = 8, OrgChart.action.centerNode = 9, OrgChart.action.resize = 10, OrgChart.action.insert = 11, OrgChart.action.insertfirst = 12, OrgChart.action.details = 13, OrgChart.action.exporting = 14, OrgChart.none = 400001, OrgChart.scroll = {}, OrgChart.scroll.visible = 1, OrgChart.scroll.smooth = 12, OrgChart.scroll.speed = 120, OrgChart.scroll.safari = {
     smooth: 12,
     speed: 250
-}, OrgChart.match = {}, OrgChart.match.height = 100001, OrgChart.match.width = 100002, OrgChart.match.boundary = 100003, OrgChart.COLLAPSE_PARENT_NEIGHBORS = 1, OrgChart.COLLAPSE_SUB_CHILDRENS = 2, OrgChart.normal = 0, OrgChart.mixed = 1, OrgChart.tree = 2, OrgChart.treeLeftOffset = 3, OrgChart.treeRightOffset = 4, OrgChart.nodeOpenTag = '<g node-id="{id}" style="opacity: {opacity}" transform="matrix(1,0,0,1,{x},{y})" class="{class}" level="{level}">', OrgChart.linkOpenTag = '<g link-id="[{id}][{child-id}]" class="{class}" level="{level}">', OrgChart.expcollOpenTag = '<g control-expcoll-id="{id}" transform="matrix(1,0,0,1,{x},{y})"  style="cursor:pointer;">', OrgChart.groupNodesOpenTag = '<g transform="matrix(1,0,0,1,{x},{y})">', OrgChart.linkFieldsOpenTag = '<g transform="matrix(1,0,0,1,{x},{y}) rotate({rotate})">', OrgChart.grCloseTag = "</g>", OrgChart.IT_IS_LONELY_HERE = '<g transform="translate(-100, 0)" style="cursor:pointer;"  control-add="control-add"><text fill="#039be5">{link}</text></g>', OrgChart.RES = {}, OrgChart.RES.IT_IS_LONELY_HERE_LINK = "It's lonely here, add your first node", OrgChart.MAXIMIZE = '<g style="cursor:pointer;" transform="matrix(1,0,0,1,{x},20)" control-maxmin-id="{id}"><rect x="0" y="0" width="26" height="26" fill="#EEEEEE" stroke="#aeaeae" stroke-width="1" rx="2"></rect><polyline  stroke="#aeaeae" stroke-width="2" points="9,6 17,13 9,20" fill="none"></polyline></g>', OrgChart.MINIMIZE = '<g style="cursor:pointer;" transform="matrix(1,0,0,1,{x},20)" control-maxmin-id="{id}"><rect x="0" y="0" width="26" height="26" fill="#EEEEEE" stroke="#aeaeae" stroke-width="1" rx="2"></rect><polyline stroke="#aeaeae" stroke-width="2" points="17,6 9,13 17,20" fill="none"></polyline></g>', OrgChart.MAX_NODES_MESS = "The trial has expired or 200 nodes limit was reached! <br /><a style='color: #039BE5;' target='_blank' href='https://balkangraph.com/OrgChartJS/Docs/Evaluation'>See more</a>", OrgChart.OFFLINE_MESS = "The evaluation version requires intermet connection! <br /><a style='color: #039BE5;' target='_blank' href='https://balkangraph.com/OrgChartJS/Docs/Evaluation'>See more</a>", OrgChart.SEARCH_PLACEHOLDER = "Search", OrgChart.A4w = 595, OrgChart.A4h = 842, OrgChart.A3w = 842, OrgChart.A3h = 1191, OrgChart.A2w = 1191, OrgChart.A2h = 1684, OrgChart.A1w = 1684, OrgChart.A1h = 2384, OrgChart.MIXED_LAYOUT_ALL_NODES = !0, OrgChart.CLINK_CURVE = 1, OrgChart.REMOVE_GROUP_IF_HAS_ONE_NODE = !0, "undefined" != typeof module && (module.exports = OrgChart), OrgChart.input = function(t, e, r, i, a, o) {
+}, OrgChart.match = {}, OrgChart.match.height = 100001, OrgChart.match.width = 100002, OrgChart.match.boundary = 100003, OrgChart.COLLAPSE_PARENT_NEIGHBORS = 1, OrgChart.COLLAPSE_SUB_CHILDRENS = 2, OrgChart.normal = 0, OrgChart.mixed = 1, OrgChart.tree = 2, OrgChart.treeLeftOffset = 3, OrgChart.treeRightOffset = 4, OrgChart.nodeOpenTag = '<g node-id="{id}" style="opacity: {opacity}" transform="matrix(1,0,0,1,{x},{y})" class="{class}" level="{level}">', OrgChart.linkOpenTag = '<g link-id="[{id}][{child-id}]" class="{class}" level="{level}">', OrgChart.expcollOpenTag = '<g control-expcoll-id="{id}" transform="matrix(1,0,0,1,{x},{y})"  style="cursor:pointer;">', OrgChart.groupNodesOpenTag = '<g transform="matrix(1,0,0,1,{x},{y})">', OrgChart.linkFieldsOpenTag = '<g transform="matrix(1,0,0,1,{x},{y}) rotate({rotate})">', OrgChart.grCloseTag = "</g>", OrgChart.IT_IS_LONELY_HERE = '<g transform="translate(-100, 0)" style="cursor:pointer;"  control-add="control-add"><text fill="#039be5">{link}</text></g>', OrgChart.RES = {}, OrgChart.RES.IT_IS_LONELY_HERE_LINK = "It's lonely here, add your first node", OrgChart.MAXIMIZE = '<g style="cursor:pointer;" transform="matrix(1,0,0,1,{x},20)" control-maxmin-id="{id}"><rect x="0" y="0" width="26" height="26" fill="#EEEEEE" stroke="#aeaeae" stroke-width="1" rx="2"></rect><polyline  stroke="#aeaeae" stroke-width="2" points="9,6 17,13 9,20" fill="none"></polyline></g>', OrgChart.MINIMIZE = '<g style="cursor:pointer;" transform="matrix(1,0,0,1,{x},20)" control-maxmin-id="{id}"><rect x="0" y="0" width="26" height="26" fill="#EEEEEE" stroke="#aeaeae" stroke-width="1" rx="2"></rect><polyline stroke="#aeaeae" stroke-width="2" points="17,6 9,13 17,20" fill="none"></polyline></g>', OrgChart.MAX_NODES_MESS = "The trial has expired or 200 nodes limit was reached! <br /><a style='color: #039BE5;' target='_blank' href='https://balkangraph.com/OrgChartJS/Docs/Evaluation'>See more</a>", OrgChart.OFFLINE_MESS = "The evaluation version requires intermet connection! <br /><a style='color: #039BE5;' target='_blank' href='https://balkangraph.com/OrgChartJS/Docs/Evaluation'>See more</a>", OrgChart.SEARCH_PLACEHOLDER = "Search", OrgChart.A4w = 595, OrgChart.A4h = 842, OrgChart.A3w = 842, OrgChart.A3h = 1191, OrgChart.A2w = 1191, OrgChart.A2h = 1684, OrgChart.A1w = 1684, OrgChart.A1h = 2384, OrgChart.MIXED_LAYOUT_ALL_NODES = !0, OrgChart.CLINK_CURVE = 1, OrgChart.REMOVE_GROUP_IF_HAS_ONE_NODE = !0, "undefined" != typeof module && (module.exports = OrgChart), OrgChart.input = function (t, e, r, i, a, o) {
     null == i && (i = !1);
     var n = document.createElement("div"),
         l = document.createElement("div"),
         s = document.createElement("input"),
         h = document.createElement("hr"),
         d = document.createElement("button");
-    if (d.innerHTML = "Upload", d.style.position = "absolute", d.style.right = 0, n.style.margin = "14px 14px 7px 14px", n.style.textAlign = "left", n.style.position = "relative", n.setAttribute("data-field-name", t), h.style.border = "1px solid #d7d7d7", h.style.backgroundColor = "#d7d7d7", h.style.display = "block", h.style.width = "100%", l.style.color = "#bcbcbc", s.style.border = "none", s.style.outline = "none", s.style.width = "100%", s.setAttribute("val", ""), a && (s.style.width = "80%"), s.style.fontSize = "16px", s.readOnly = i, null != e && null != e && (s.value = e), null != r && null != r && (s.placeholder = r), null != t && null != t && (l.innerHTML = t), l.setAttribute("lbl", ""), s.style.color = "#7a7a7a", i || s.addEventListener("focus", function() {
-            var t = this.parentNode.getElementsByTagName("hr")[0];
-            t.style.border = "1px solid #039BE5", OrgChart.anim(t, {
-                width: 10
-            }, {
+    if (d.innerHTML = "Upload", d.style.position = "absolute", d.style.right = 0, n.style.margin = "14px 14px 7px 14px", n.style.textAlign = "left", n.style.position = "relative", n.setAttribute("data-field-name", t), h.style.border = "1px solid #d7d7d7", h.style.backgroundColor = "#d7d7d7", h.style.display = "block", h.style.width = "100%", l.style.color = "#bcbcbc", s.style.border = "none", s.style.outline = "none", s.style.width = "100%", s.setAttribute("val", ""), a && (s.style.width = "80%"), s.style.fontSize = "16px", s.readOnly = i, null != e && null != e && (s.value = e), null != r && null != r && (s.placeholder = r), null != t && null != t && (l.innerHTML = t), l.setAttribute("lbl", ""), s.style.color = "#7a7a7a", i || s.addEventListener("focus", function () {
+        var t = this.parentNode.getElementsByTagName("hr")[0];
+        t.style.border = "1px solid #039BE5", OrgChart.anim(t, {
+            width: 10
+        }, {
                 width: n.clientWidth
             }, 250, OrgChart.anim.inOutSin)
-        }), d.addEventListener("click", function() {
-            var e = this,
-                t = document.createElement("INPUT");
-            t.setAttribute("type", "file"), t.style.display = "none", t.onchange = function() {
-                var t = this.files[0];
-                OrgChart.events.publish("imageuploaded", [o, t, e.parentNode.querySelector("input")])
-            }, document.body.appendChild(t), t.click()
-        }), s.addEventListener("blur", function() {
-            this.parentNode.getElementsByTagName("hr")[0].style.border = "1px solid #d7d7d7"
-        }), n.appendChild(l), n.appendChild(s), a && n.appendChild(d), n.appendChild(h), OrgChart.addValidation) {
+    }), d.addEventListener("click", function () {
+        var e = this,
+            t = document.createElement("INPUT");
+        t.setAttribute("type", "file"), t.style.display = "none", t.onchange = function () {
+            var t = this.files[0];
+            OrgChart.events.publish("imageuploaded", [o, t, e.parentNode.querySelector("input")])
+        }, document.body.appendChild(t), t.click()
+    }), s.addEventListener("blur", function () {
+        this.parentNode.getElementsByTagName("hr")[0].style.border = "1px solid #d7d7d7"
+    }), n.appendChild(l), n.appendChild(s), a && n.appendChild(d), n.appendChild(h), OrgChart.addValidation) {
         var c = {
             wrapper: n,
             label: l,
@@ -631,7 +631,7 @@ OrgChart.prototype.load = function(t) {
         OrgChart.addValidation(t, e, c)
     }
     return n
-}, OrgChart._intersects = function(t, e, r) {
+}, OrgChart._intersects = function (t, e, r) {
     var i = t.x - r.siblingSeparation / 4,
         a = t.y,
         o = t.x + t.w + r.siblingSeparation / 4,
@@ -648,7 +648,7 @@ OrgChart.prototype.load = function(t) {
         g = e.r,
         p = e.s;
     return 0 != (l = (o - i) * (p - c) - (g - d) * (n - a)) && (s = ((a - n) * (g - i) + (o - i) * (p - a)) / l, 0 < (h = ((p - c) * (g - i) + (d - g) * (p - a)) / l) && h < 1 && 0 < s && s < 1)
-}, OrgChart._addPoint = function(t, e, r, i, a) {
+}, OrgChart._addPoint = function (t, e, r, i, a) {
     switch (r.orientation) {
         case OrgChart.orientation.top:
         case OrgChart.orientation.top_left:
@@ -663,23 +663,23 @@ OrgChart.prototype.load = function(t) {
         case OrgChart.orientation.right_top:
             return OrgChart._addPointRight(t, e, r, i, a)
     }
-}, OrgChart._addPointTop = function(t, e, r, i, a) {
+}, OrgChart._addPointTop = function (t, e, r, i, a) {
     var o, n, l;
     return "left" == a ? o = t.leftNeighbor ? t.x + (t.leftNeighbor.x + t.leftNeighbor.w - t.x) / 2 : t.x - r.siblingSeparation / 2 : "right" == a && (o = t.rightNeighbor ? t.x + t.w + (t.rightNeighbor.x - (t.x + t.w)) / 2 : t.x + t.w + r.siblingSeparation / 2), e.push([o, e[e.length - 1][1]]), e.push([o, t.y - r.levelSeparation / 3]), n = e[e.length - 1][1], l = o, i.p = o, i.q = n, i.r = l, i
-}, OrgChart._addPointBottom = function(t, e, r, i, a) {
+}, OrgChart._addPointBottom = function (t, e, r, i, a) {
     var o, n, l;
     return "left" == a ? o = t.leftNeighbor ? t.x + (t.leftNeighbor.x + t.leftNeighbor.w - t.x) / 2 : t.x - r.siblingSeparation / 2 : "right" == a && (o = t.rightNeighbor ? t.x + t.w + (t.rightNeighbor.x - (t.x + t.w)) / 2 : t.x + t.w + r.siblingSeparation / 2), e.push([o, e[e.length - 1][1]]), e.push([o, t.y + t.h + r.levelSeparation / 3]), n = e[e.length - 1][1], l = o, i.p = o, i.q = n, i.r = l, i
-}, OrgChart._addPointLeft = function(t, e, r, i, a) {
+}, OrgChart._addPointLeft = function (t, e, r, i, a) {
     var o, n = e[e.length - 1][0];
     return "bottom" == a ? o = t.rightNeighbor ? t.y + t.h + (t.rightNeighbor.y - (t.y + t.h)) / 2 : t.y + t.h + r.siblingSeparation / 2 : "top" == a && (o = t.leftNeighbor ? t.y + (t.leftNeighbor.y + t.leftNeighbor.h - t.y) / 2 : t.y - r.siblingSeparation / 2), e.push([e[e.length - 1][0], o]), e.push([t.x - r.levelSeparation / 3, o]), n = e[e.length - 1][0], s = o, i.p = n, i.q = o, i.s = s, i
-}, OrgChart._addPointRight = function(t, e, r, i, a) {
+}, OrgChart._addPointRight = function (t, e, r, i, a) {
     var o, n = e[e.length - 1][0];
     return "bottom" == a ? o = t.rightNeighbor ? t.y + t.h + (t.rightNeighbor.y - (t.y + t.h)) / 2 : t.y + t.h + r.siblingSeparation / 2 : "top" == a && (o = t.leftNeighbor ? t.y + (t.leftNeighbor.y + t.leftNeighbor.h - t.y) / 2 : t.y - r.siblingSeparation / 2), e.push([e[e.length - 1][0], o]), e.push([t.x + t.w + r.levelSeparation / 3, o]), n = e[e.length - 1][0], s = o, i.p = n, i.q = o, i.s = s, i
-}, OrgChart.editUI = function() {}, OrgChart.editUI.prototype.init = function(t) {
+}, OrgChart.editUI = function () { }, OrgChart.editUI.prototype.init = function (t) {
     this.obj = t, this.fields = null, this.node = null, this._event_id = OrgChart._guid()
-}, OrgChart.editUI.prototype.on = function(t, e) {
+}, OrgChart.editUI.prototype.on = function (t, e) {
     return OrgChart.events.on(t, e, this._event_id), this
-}, OrgChart.editUI.prototype.show = function(t, e) {
+}, OrgChart.editUI.prototype.show = function (t, e) {
     if (this.hide(), !1 === OrgChart.events.publish("show", [this, t])) return !1;
     this.node = this.obj.getBGNode(t), this.wrapperElement = document.getElementById("bgEditForm"), this.wrapperElement && this.obj.element.removeChild(this.wrapperElement), this.wrapperElement = document.createElement("div"), this.wrapperElement.className = "edit-wrapper";
     var r = document.createElement("div");
@@ -698,7 +698,7 @@ OrgChart.prototype.load = function(t) {
         height: "100%",
         "background-color": "#ffffff"
     }), e ? this._createDetailsView(this.node, i) : this._createEditView(this.node, r)
-}, OrgChart.editUI.prototype._createDetailsView = function(t, e) {
+}, OrgChart.editUI.prototype._createDetailsView = function (t, e) {
     var r = this,
         i = document.createElement("div");
     i.className = "edit-photo";
@@ -751,25 +751,25 @@ OrgChart.prototype.load = function(t) {
                 }
         } else this._addField(o, OrgChart.input(l[h], d, null, !0, void 0, r), l[h], "details")
     }
-    this.obj.element.appendChild(this.wrapperElement), i.addEventListener("click", function() {
+    this.obj.element.appendChild(this.wrapperElement), i.addEventListener("click", function () {
         r.hide(!1)
     }), this.obj._hideBeforeAnimation(), OrgChart.anim(this.wrapperElement, {
         right: -150,
         opacity: 0
     }, {
-        right: 0,
-        opacity: .9
-    }, 300, OrgChart.anim.inOutSin, function() {
-        r.obj._showAfterAnimation(), o.style.height = r.obj.element.offsetHeight - i.offsetHeight + "px"
-    })
-}, OrgChart.editUI.prototype._addField = function(t, e, r, i) {
+            right: 0,
+            opacity: .9
+        }, 300, OrgChart.anim.inOutSin, function () {
+            r.obj._showAfterAnimation(), o.style.height = r.obj.element.offsetHeight - i.offsetHeight + "px"
+        })
+}, OrgChart.editUI.prototype._addField = function (t, e, r, i) {
     var a = {
         name: r,
         field: e,
         type: i
     };
     !1 !== OrgChart.events.publish("field", [this, a]) && t.appendChild(a.field)
-}, OrgChart.editUI.prototype._createEditView = function(t, e) {
+}, OrgChart.editUI.prototype._createEditView = function (t, e) {
     var i = this,
         r = document.createElement("div");
     r.className = "edit-photo";
@@ -819,70 +819,70 @@ OrgChart.prototype.load = function(t) {
                 this._addField(n, OrgChart.input(h[c], g, null, !1, !0, i), h[c], "edit")
             } else this._addField(n, OrgChart.input(h[c], g, null, !1, void 0, i), h[c], "edit")
     }
-    t.isGroup || t.isChildOfGroup || 0 != t.childrenIds.length || this._addField(n, l, "isAssistant", "edit"), t.isGroup || this._addField(n, o, "Add new field", "edit"), this.obj.element.appendChild(this.wrapperElement), r.addEventListener("click", function() {
+    t.isGroup || t.isChildOfGroup || 0 != t.childrenIds.length || this._addField(n, l, "isAssistant", "edit"), t.isGroup || this._addField(n, o, "Add new field", "edit"), this.obj.element.appendChild(this.wrapperElement), r.addEventListener("click", function () {
         i.hide(!0)
-    }), o.addEventListener("click", function() {
+    }), o.addEventListener("click", function () {
         if ("Save" == o.innerHTML) OrgChart.anim(o, {
             opacity: 1
         }, {
-            opacity: 0
-        }, 200, OrgChart.anim.inSin, function() {
-            o.innerHTML = "Add new field", o.style.textAlign = "left";
-            var t = document.getElementById("bgNewField"),
-                e = t.getElementsByTagName("input")[0].value;
-            if (n.removeChild(t), e && !OrgChart._arrayContains(i.fields, e)) {
-                var r = OrgChart.input(e);
-                r.style.opacity = 0, n.insertBefore(r, o), OrgChart.anim(r, {
+                opacity: 0
+            }, 200, OrgChart.anim.inSin, function () {
+                o.innerHTML = "Add new field", o.style.textAlign = "left";
+                var t = document.getElementById("bgNewField"),
+                    e = t.getElementsByTagName("input")[0].value;
+                if (n.removeChild(t), e && !OrgChart._arrayContains(i.fields, e)) {
+                    var r = OrgChart.input(e);
+                    r.style.opacity = 0, n.insertBefore(r, o), OrgChart.anim(r, {
+                        opacity: 0
+                    }, {
+                            opacity: 1
+                        }, 200, OrgChart.anim.inSin, function () {
+                            r.getElementsByTagName("input")[0].focus()
+                        })
+                }
+                OrgChart.anim(o, {
                     opacity: 0
                 }, {
-                    opacity: 1
-                }, 200, OrgChart.anim.inSin, function() {
-                    r.getElementsByTagName("input")[0].focus()
-                })
-            }
-            OrgChart.anim(o, {
-                opacity: 0
-            }, {
-                opacity: 1
-            }, 200, OrgChart.anim.inSin)
-        });
+                        opacity: 1
+                    }, 200, OrgChart.anim.inSin)
+            });
         else {
             OrgChart.anim(o, {
                 opacity: 1
             }, {
-                opacity: 0
-            }, 200, OrgChart.anim.inSin, function() {
-                o.innerHTML = "Save", o.style.textAlign = "right", OrgChart.anim(o, {
                     opacity: 0
-                }, {
-                    opacity: 1
-                }, 200, OrgChart.anim.inSin)
-            });
+                }, 200, OrgChart.anim.inSin, function () {
+                    o.innerHTML = "Save", o.style.textAlign = "right", OrgChart.anim(o, {
+                        opacity: 0
+                    }, {
+                            opacity: 1
+                        }, 200, OrgChart.anim.inSin)
+                });
             var t = OrgChart.input(null, null, "Field name");
             t.style.opacity = 0, t.id = "bgNewField", n.appendChild(t), OrgChart.anim(t, {
                 opacity: 0
             }, {
-                opacity: 1
-            }, 200, OrgChart.anim.inSin, function() {
-                t.getElementsByTagName("input")[0].focus()
-            })
+                    opacity: 1
+                }, 200, OrgChart.anim.inSin, function () {
+                    t.getElementsByTagName("input")[0].focus()
+                })
         }
     }), this.obj._hideBeforeAnimation(), OrgChart.anim(this.wrapperElement, {
         right: -150,
         opacity: 0
     }, {
-        right: 0,
-        opacity: .9
-    }, 300, OrgChart.anim.inOutSin, function() {
-        i.obj._showAfterAnimation(), n.style.height = i.obj.element.offsetHeight - r.offsetHeight + "px", 1 < i.wrapperElement.getElementsByTagName("input").length && i.wrapperElement.getElementsByTagName("input")[0].focus()
-    })
-}, OrgChart.editUI.prototype.hide = function(t) {
+            right: 0,
+            opacity: .9
+        }, 300, OrgChart.anim.inOutSin, function () {
+            i.obj._showAfterAnimation(), n.style.height = i.obj.element.offsetHeight - r.offsetHeight + "px", 1 < i.wrapperElement.getElementsByTagName("input").length && i.wrapperElement.getElementsByTagName("input")[0].focus()
+        })
+}, OrgChart.editUI.prototype.hide = function (t) {
     if (this.wrapperElement) {
         if (!1 === OrgChart.events.publish("hide", [this])) return !1;
         var e = this.obj.get(this.node.id);
         if (this.node.isGroup && (e = {
-                Name: this.obj.config.tags[this.node.id].groupName
-            }), t) {
+            Name: this.obj.config.tags[this.node.id].groupName
+        }), t) {
             for (var r = this.wrapperElement.querySelectorAll("[data-field-name]"), i = 0; i < r.length; i++) {
                 var a = r[i].getAttribute("data-field-name");
                 if (a) {
@@ -899,29 +899,29 @@ OrgChart.prototype.load = function(t) {
                 right: 0,
                 opacity: 1
             }, {
-                right: -150,
-                opacity: 0
-            }, 300, OrgChart.anim.inOutSin, function() {
-                l.obj._showAfterAnimation(), l.node.isGroup ? l.obj._updateTag(l.node.id, "groupName", e.Name) : l.obj.updateNode(e, !0), l.obj.element.removeChild(l.wrapperElement), l.wrapperElement = null
-            })
+                    right: -150,
+                    opacity: 0
+                }, 300, OrgChart.anim.inOutSin, function () {
+                    l.obj._showAfterAnimation(), l.node.isGroup ? l.obj._updateTag(l.node.id, "groupName", e.Name) : l.obj.updateNode(e, !0), l.obj.element.removeChild(l.wrapperElement), l.wrapperElement = null
+                })
         } else this.obj.element.removeChild(this.wrapperElement), this.wrapperElement = null
     }
-}, OrgChart.prototype.getSvg = function() {
+}, OrgChart.prototype.getSvg = function () {
     var t = this.element.getElementsByTagName("svg");
     return t && t.length ? t[0] : null
-}, OrgChart.prototype.getPointerElement = function() {
+}, OrgChart.prototype.getPointerElement = function () {
     return this.element.querySelector("g[data-pointer]")
-}, OrgChart.prototype.getNodeElement = function(t) {
+}, OrgChart.prototype.getNodeElement = function (t) {
     return this.element.querySelector("g[node-id='" + t + "']")
-}, OrgChart.prototype.getExportMenuButton = function() {
+}, OrgChart.prototype.getExportMenuButton = function () {
     return this.element.querySelector("[control-export-menu]")
-}, OrgChart.menuUI = function() {}, OrgChart.menuUI.prototype.init = function(t, e) {
+}, OrgChart.menuUI = function () { }, OrgChart.menuUI.prototype.init = function (t, e) {
     this.obj = t, this.wrapper = null, this.menu = e, this._event_id = OrgChart._guid()
-}, OrgChart.menuUI.prototype.showStickIn = function(t, e, r, i) {
+}, OrgChart.menuUI.prototype.showStickIn = function (t, e, r, i) {
     this._show(t, null, e, r, i)
-}, OrgChart.menuUI.prototype.show = function(t, e, r, i, a) {
+}, OrgChart.menuUI.prototype.show = function (t, e, r, i, a) {
     this._show(t, e, r, i, a)
-}, OrgChart.menuUI.prototype._show = function(t, e, o, n, l) {
+}, OrgChart.menuUI.prototype._show = function (t, e, o, n, l) {
     var s = this;
     this.hide();
     var r = "";
@@ -939,16 +939,16 @@ OrgChart.prototype.load = function(t) {
     }
     if ("" != r) {
         if (this.wrapper = document.createElement("div"), Object.assign(this.wrapper.style, {
-                opacity: 0,
-                "background-color": "#FFFEFF",
-                "box-shadow": "#DCDCDC 0px 1px 2px 0px",
-                display: "inline-block",
-                border: "1px solid #D7D7D7;border-radius:5px",
-                "z-index": 1e3,
-                position: "absolute",
-                "text-align": "left",
-                "user-select": "none"
-            }), this.wrapper.style.left = "-99999px", this.wrapper.style.top = "-99999px", this.wrapper.innerHTML = r, this.obj.element.appendChild(this.wrapper), null == e) {
+            opacity: 0,
+            "background-color": "#FFFEFF",
+            "box-shadow": "#DCDCDC 0px 1px 2px 0px",
+            display: "inline-block",
+            border: "1px solid #D7D7D7;border-radius:5px",
+            "z-index": 1e3,
+            position: "absolute",
+            "text-align": "left",
+            "user-select": "none"
+        }), this.wrapper.style.left = "-99999px", this.wrapper.style.top = "-99999px", this.wrapper.innerHTML = r, this.obj.element.appendChild(this.wrapper), null == e) {
             var c = OrgChart._menuPosition(t, this.wrapper, this.obj.getSvg());
             t = c.x, e = c.y
         }
@@ -959,15 +959,15 @@ OrgChart.prototype.load = function(t) {
             opacity: 0,
             left: g - this.wrapper.offsetWidth
         }, {
-            opacity: 1,
-            left: p
-        }, 300, OrgChart.anim.inOutPow);
+                opacity: 1,
+                left: p
+            }, 300, OrgChart.anim.inOutPow);
         for (var f = this.wrapper.getElementsByTagName("div"), u = 0; u < f.length; u++) {
-            (a = f[u]).addEventListener("mouseover", function() {
+            (a = f[u]).addEventListener("mouseover", function () {
                 this.style.backgroundColor = "#F0F0F0"
-            }), a.addEventListener("mouseleave", function() {
+            }), a.addEventListener("mouseleave", function () {
                 this.style.backgroundColor = "#FFFFFF"
-            }), a.addEventListener("click", function(t) {
+            }), a.addEventListener("click", function (t) {
                 var e, r = this.getAttribute("data-item");
                 if (void 0 === l[r].onClick)
                     if ("add" === r) {
@@ -980,104 +980,114 @@ OrgChart.prototype.load = function(t) {
                             type: "POST",
                             url: '../AdminSection/AdminDashboard/GetJobTitleById?CSVChartId=' + i.pid, //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
                             success: function (Data) {
+                                debugger
+                                $(".removeContent input[type='text']").val("");
                                 if (Data.length > 0) {
                                     $("#addJobTitleLabel").html("");
                                     $("#JobTitleId").val("");
-                                    for (var ii = 0 ; ii < Data.length; ii++) {
+                                    for (var ii = 0; ii < Data.length; ii++) {
                                         //$("#JobTitleId").val(Data[ii].parentId);
 
                                         var divID = $('#addJobTitleLabel div.dymanicDelete').length;
-                                        $('#addJobTitleLabel').append('<div class="form-group row dymanicDelete d_' + ii + '"><div class="col-sm-10 getJobTitleData"><label class="col-sm-5 col-form-label">' + Data[ii].JobTitleLabel + '</label></div><a class="addjobtitleDeleterows col-sm-1"  id=d' + ii + ' jobtitleid =' + Data[ii].Id + '><i class="fa fa-trash addColorTrash fa-2x" style="cursor:pointer;margin-left: 30px;color:#cd0a2499;" aria-hidden="true"></i></a></div>');
+                                        $('#addJobTitleLabel').append('<div class="form-group row dymanicDelete d_' + ii + '"><div class="col-sm-10 getJobTitleData"><label class="col-sm-5 col-form-label">' + Data[ii].JobTitleLabel + '</label></div><a onclick="DeleteJobTitle(' + Data[ii].Id + ',this)" class="addjobtitleDeleterows col-sm-1"  id=d' + ii + ' jobtitleid =' + Data[ii].Id + '><i class="fa fa-trash addColorTrash fa-2x" style="cursor:pointer;margin-left: 30px;color:#cd0a2499;" aria-hidden="true" ></i></a></div>');
                                     }
+                                    $("#myModalForAddingJobTitle").modal('show');
+                                    /// $("#myModalForAddingJobTitle")
+                                } else {
+
+                                    $("#addJobTitleLabel").html("");
+                                    $("#JobTitleId").val("");
+                                    $("#myModalForAddingJobTitle").modal('show');
+
                                 }
-                                $("#myModalForAddingJobTitle").modal('show');
+
                                 $("#parentIdForJobTitle").val(i.pid);
                             },
                             error: function (err) {
                             }
                         });
                     } else if ("edit" === r) {
-                    var a = s.obj.getBGNode(o);
-                    $.ajax({
-                        type: "POST",
-                        url: '../AdminSection/AdminDashboard/GetChartDetailsById?CSVChartId=' + a.id, //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
-                        success: function (Data) {
-                            var roles;
-                            if (Data != null) {
-                                $("#SeatingName").val(Data.SeatingName);
-                                $("#Superior").val(Data.parentId);
-                                $("#Department").val(Data.Department);
-                                $("#VCSId").val(Data.Id);
-                                $("#routeDiv").html("");
-                                if (Data.RolesAndResponsibility != null) {
-                                    roles = Data.RolesAndResponsibility;
-                                }
-                                if (Data.JobDescription != null) {
-                                    var getJobData = Data.JobDescription.split("|");
-                                    for (var ii = 0 ; ii < getJobData.length; ii++) {
-                                        //$("#JobTitleId").val(Data[ii].parentId);
-                                        if (ii == 0) {
-                                            $("#JobDescription").val(getJobData[ii]);
-                                        }
-                                        else {
-                                            if (getJobData[ii] != "" && getJobData[ii] != " ") {
-                                                var divID = $('#routeDiv div.dymanicAdd').length;
-                                                $('#routeDiv').append('<div class="form-group row dymanicAdd d' + divID + '"><div class="col-sm-11 getJobDesc"><input type="text" class="form-control input-rounded required" placeholder="Job Description" value="' + getJobData[ii] + '" /></div><div class="col-sm-1"><a class="addrows minusSign" id=d' + divID + '><i class="fa fa-minus-circle addColorPlusMinus fa-2x" style="cursor:pointer;" aria-hidden="true"></i></a></div></div>');
+                        var a = s.obj.getBGNode(o);
+                        $.ajax({
+                            type: "POST",
+                            url: '../AdminSection/AdminDashboard/GetChartDetailsById?CSVChartId=' + a.id, //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
+                            success: function (Data) {
+                                var roles;
+                                if (Data != null) {
+                                    $("#SeatingName").val(Data.SeatingName);
+                                    $("#Superior").val(Data.parentId);
+                                    $("#Department").val(Data.Department);
+                                    $("#VCSId").val(Data.Id);
+                                    $("#routeDiv").html("");
+                                    if (Data.RolesAndResponsibility != null) {
+                                        roles = Data.RolesAndResponsibility;
+                                    }
+                                    if (Data.JobDescription != null) {
+                                        var getJobData = Data.JobDescription.split("|");
+                                        for (var ii = 0; ii < getJobData.length; ii++) {
+                                            //$("#JobTitleId").val(Data[ii].parentId);
+                                            if (ii == 0) {
+                                                $("#JobDescription").val(getJobData[ii]);
+                                            }
+                                            else {
+                                                if (getJobData[ii] != "" && getJobData[ii] != " ") {
+                                                    var divID = $('#routeDiv div.dymanicAdd').length;
+                                                    $('#routeDiv').append('<div class="form-group row dymanicAdd d' + divID + '"><div class="col-sm-11 getJobDesc"><input type="text" class="form-control input-rounded required" placeholder="Job Description" value="' + getJobData[ii] + '" /></div><div class="col-sm-1"><a class="addrows minusSign" id=d' + divID + '><i class="fa fa-minus-circle addColorPlusMinus fa-2x" style="cursor:pointer;" aria-hidden="true"></i></a></div></div>');
+                                                }
                                             }
                                         }
                                     }
                                 }
+                                $("#myModalForChart").modal("show");
+                                //$("#RolesAndResponsibility").val(roles);
+                                tinymce.activeEditor.setContent(roles);
+                                //tinymce.editors.RolesAndResponsibility.setContent(roles);
+                                $("#parentIdForJobTitle").val(a.id);
+                            },
+                            error: function (err) {
                             }
-                            $("#myModalForChart").modal("show");
-                            //$("#RolesAndResponsibility").val(roles);
-                            tinymce.activeEditor.setContent(roles);
-                            //tinymce.editors.RolesAndResponsibility.setContent(roles);
-                            $("#parentIdForJobTitle").val(a.id);
-                        },
-                        error: function (err) {
-                        }
-                    });
+                        });
                     } else if ("details" === r) {
-                    a = s.obj.getBGNode(o);
-                    s.obj.editUI.show(a.id, !0)
-                } else "remove" === r ? s.obj.removeNode(o, !0) : "svg" === r ? s.obj.exportSVG({
-                    filename: "OrgChart.svg",
-                    expandChildren: !1,
-                    nodeId: o
-                }) : "pdf" === r ? s.obj.exportPDF({
-                    filename: "OrgChart.pdf",
-                    expandChildren: !1,
-                    nodeId: o
-                }) : "png" === r ? s.obj.exportPNG({
-                    filename: "OrgChart.png",
-                    expandChildren: !1,
-                    nodeId: o
-                }) : "csv" === r ? s.obj.exportCSV() : "xml" === r ? s.obj.exportXML() : "addInGroup" === r ? s.obj.groupNode(o, n) : "addAsChild" === r && s.obj.linkNode(o, n);
+                        a = s.obj.getBGNode(o);
+                        s.obj.editUI.show(a.id, !0)
+                    } else "remove" === r ? s.obj.removeNode(o, !0) : "svg" === r ? s.obj.exportSVG({
+                        filename: "OrgChart.svg",
+                        expandChildren: !1,
+                        nodeId: o
+                    }) : "pdf" === r ? s.obj.exportPDF({
+                        filename: "OrgChart.pdf",
+                        expandChildren: !1,
+                        nodeId: o
+                    }) : "png" === r ? s.obj.exportPNG({
+                        filename: "OrgChart.png",
+                        expandChildren: !1,
+                        nodeId: o
+                    }) : "csv" === r ? s.obj.exportCSV() : "xml" === r ? s.obj.exportXML() : "addInGroup" === r ? s.obj.groupNode(o, n) : "addAsChild" === r && s.obj.linkNode(o, n);
                 else e = l[r].onClick.call(s.obj, o, n);
                 0 != e && s.hide()
             })
         }
     }
-}, OrgChart.menuUI.prototype.hide = function() {
+}, OrgChart.menuUI.prototype.hide = function () {
     null != this.wrapper && (this.obj.element.removeChild(this.wrapper), this.wrapper = null)
-}, OrgChart.menuUI.prototype.on = function(t, e) {
+}, OrgChart.menuUI.prototype.on = function (t, e) {
     return OrgChart.events.on(t, e, this._event_id), this
 }, void 0 === OrgChart && (OrgChart = {}), OrgChart.idb = {
     version: 1,
     dbName: "balkangraph",
     tableName: "orgchart-js",
     keyPath: "id"
-}, window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB, OrgChart.idb.db = null, OrgChart.idb._open = function(e) {
+}, window.indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB, OrgChart.idb.db = null, OrgChart.idb._open = function (e) {
     if ((0 < navigator.userAgent.toLowerCase().indexOf("safari") || 0 < navigator.userAgent.toLowerCase().indexOf("firefox")) && window.location !== window.parent.location) e && e(!1);
     else {
-        if (!window.indexedDB) return console.error("Your browser doesn't support a stable version of IndexedDB."), void(e && e(!1));
+        if (!window.indexedDB) return console.error("Your browser doesn't support a stable version of IndexedDB."), void (e && e(!1));
         if (null == OrgChart.idb.db) {
             var t = indexedDB.open(OrgChart.idb.dbName, OrgChart.idb.version);
-            t.onerror = function(t) {
+            t.onerror = function (t) {
                 console.error("Cannot open database!"), e && e(!1)
-            }, t.onsuccess = function(t) {
+            }, t.onsuccess = function (t) {
                 OrgChart.idb.db = t.target.result, e && e(!0)
-            }, t.onupgradeneeded = function(t) {
+            }, t.onupgradeneeded = function (t) {
                 var e = t.target.result;
                 e.objectStoreNames.contains(OrgChart.idb.tableName) && e.deleteObjectStore(OrgChart.idb.tableName);
                 e.createObjectStore(OrgChart.idb.tableName, {
@@ -1086,29 +1096,29 @@ OrgChart.prototype.load = function(t) {
             }
         } else e && e(!0)
     }
-}, OrgChart.idb.read = function(r, i) {
-    OrgChart.idb._open(function(t) {
+}, OrgChart.idb.read = function (r, i) {
+    OrgChart.idb._open(function (t) {
         if (t) {
             var e = OrgChart.idb.db.transaction([OrgChart.idb.tableName]).objectStore(OrgChart.idb.tableName).get(r);
-            e.onerror = function(t) {
+            e.onerror = function (t) {
                 console.error("Unable to retrieve data from database!"), i && i(!1)
-            }, e.onsuccess = function(t) {
+            }, e.onsuccess = function (t) {
                 e.result ? i && i(!0, e.result) : i && i(null)
             }
         } else i && i(!1)
     })
-}, OrgChart.idb.write = function(r, i) {
-    OrgChart.idb.read(r.id, function(t) {
+}, OrgChart.idb.write = function (r, i) {
+    OrgChart.idb.read(r.id, function (t) {
         if (null == t) {
             var e = OrgChart.idb.db.transaction([OrgChart.idb.tableName], "readwrite").objectStore(OrgChart.idb.tableName).add(r);
-            e.onerror = function(t) {
+            e.onerror = function (t) {
                 console.error("Unable to add data to database!"), i && i(!1)
-            }, e.onsuccess = function(t) {
+            }, e.onsuccess = function (t) {
                 i && i(!0)
             }
         } else i && i(t)
     })
-}, OrgChart.toolbarUI = function() {}, OrgChart.toolbarUI.expandAllIcon = '<svg style="margin-bottom:7px;box-shadow: 0px 1px 4px rgba(0,0,0,0.3); border: 1px solid #cacaca;background-color: #f9f9f9;display: block;cursor: pointer;" width="32px" height="32px"><marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#757575" /></marker><line x1="11" y1="11" x2="6" y2="6" stroke="#757575" stroke-width="2" marker-end="url(#arrow)" /><line x1="21" y1="11" x2="26" y2="6" stroke="#757575" stroke-width="2" marker-end="url(#arrow)" /><line x1="21" y1="21" x2="26" y2="26" stroke="#757575" stroke-width="2" marker-end="url(#arrow)" /><line x1="11" y1="21" x2="6" y2="26" stroke="#757575" stroke-width="2" marker-end="url(#arrow)" /><rect x="12" y="12" width="8" height="8" fill="#757575"></rect></svg>', OrgChart.toolbarUI.fitIcon = '<svg  style="margin-bottom:7px;box-shadow: 0px 1px 4px rgba(0,0,0,0.3); border: 1px solid #cacaca;background-color: #f9f9f9;display: block;cursor: pointer;" width="32px" height="32px"><path stroke-width="3" fill="none" stroke="#757575" d="M4,11 L4,4 L11,4"></path><path stroke-width="3" fill="none" stroke="#757575" d="M28,11 L28,4 L21,4"></path><path stroke-width="3" fill="none" stroke="#757575" d="M28,21 L28,28 L21,28"></path><path stroke-width="3" fill="none" stroke="#757575" d="M4,21 L4,28 L11,28"></path><circle cx="16" cy="16" r="5" fill="#757575"></circle></svg>', OrgChart.toolbarUI.zoomInIcon = '<svg style="box-shadow: 0px 1px 4px rgba(0,0,0,0.3); border-left: 1px solid #cacaca; border-right: 1px solid #cacaca; border-top: 1px solid #cacaca; background-color: #f9f9f9;display: block; cursor: pointer;" width="32px" height="32px" ><g><rect fill="#f9f9f9" x="0" y="0" width="32" height="32" ></rect><line x1="8" y1="16" x2="24" y2="16" stroke-width="3" stroke="#757575"></line><line x1="16" y1="8" x2="16" y2="24" stroke-width="3" stroke="#757575"></line></g><line x1="4" y1="32" x2="28" y2="32" stroke-width="1" stroke="#cacaca"></line></svg>', OrgChart.toolbarUI.zoomOutIcon = '<svg style="box-shadow: 0px 1px 4px rgba(0,0,0,0.3); margin-bottom:7px; border-left: 1px solid #cacaca; border-right: 1px solid #cacaca; border-bottom: 1px solid #cacaca; background-color: #f9f9f9;display: block; cursor: pointer;" width="32px" height="32px" ><g><rect fill="#f9f9f9" x="0" y="0" width="32" height="32" ></rect><line x1="8" y1="16" x2="24" y2="16" stroke-width="3" stroke="#757575"></line></g></svg>', OrgChart.toolbarUI.layoutIcon = '<svg data-tlbr="layout" style="box-shadow: 0px 1px 4px rgba(0,0,0,0.3); border: 1px solid #cacaca;background-color: #f9f9f9;display: block;cursor: pointer;" width="32px" height="32px"><path stroke-width="3" fill="none" stroke="#757575" d="M8,24 L16,14 L24,24"></path><path stroke-width="3" fill="none" stroke="#757575" d="M8,16 L16,8 L24,16"></path></svg>', OrgChart.toolbarUI.prototype.init = function(t, e) {
+}, OrgChart.toolbarUI = function () { }, OrgChart.toolbarUI.expandAllIcon = '<svg style="margin-bottom:7px;box-shadow: 0px 1px 4px rgba(0,0,0,0.3); border: 1px solid #cacaca;background-color: #f9f9f9;display: block;cursor: pointer;" width="32px" height="32px"><marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="4" markerHeight="4" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#757575" /></marker><line x1="11" y1="11" x2="6" y2="6" stroke="#757575" stroke-width="2" marker-end="url(#arrow)" /><line x1="21" y1="11" x2="26" y2="6" stroke="#757575" stroke-width="2" marker-end="url(#arrow)" /><line x1="21" y1="21" x2="26" y2="26" stroke="#757575" stroke-width="2" marker-end="url(#arrow)" /><line x1="11" y1="21" x2="6" y2="26" stroke="#757575" stroke-width="2" marker-end="url(#arrow)" /><rect x="12" y="12" width="8" height="8" fill="#757575"></rect></svg>', OrgChart.toolbarUI.fitIcon = '<svg  style="margin-bottom:7px;box-shadow: 0px 1px 4px rgba(0,0,0,0.3); border: 1px solid #cacaca;background-color: #f9f9f9;display: block;cursor: pointer;" width="32px" height="32px"><path stroke-width="3" fill="none" stroke="#757575" d="M4,11 L4,4 L11,4"></path><path stroke-width="3" fill="none" stroke="#757575" d="M28,11 L28,4 L21,4"></path><path stroke-width="3" fill="none" stroke="#757575" d="M28,21 L28,28 L21,28"></path><path stroke-width="3" fill="none" stroke="#757575" d="M4,21 L4,28 L11,28"></path><circle cx="16" cy="16" r="5" fill="#757575"></circle></svg>', OrgChart.toolbarUI.zoomInIcon = '<svg style="box-shadow: 0px 1px 4px rgba(0,0,0,0.3); border-left: 1px solid #cacaca; border-right: 1px solid #cacaca; border-top: 1px solid #cacaca; background-color: #f9f9f9;display: block; cursor: pointer;" width="32px" height="32px" ><g><rect fill="#f9f9f9" x="0" y="0" width="32" height="32" ></rect><line x1="8" y1="16" x2="24" y2="16" stroke-width="3" stroke="#757575"></line><line x1="16" y1="8" x2="16" y2="24" stroke-width="3" stroke="#757575"></line></g><line x1="4" y1="32" x2="28" y2="32" stroke-width="1" stroke="#cacaca"></line></svg>', OrgChart.toolbarUI.zoomOutIcon = '<svg style="box-shadow: 0px 1px 4px rgba(0,0,0,0.3); margin-bottom:7px; border-left: 1px solid #cacaca; border-right: 1px solid #cacaca; border-bottom: 1px solid #cacaca; background-color: #f9f9f9;display: block; cursor: pointer;" width="32px" height="32px" ><g><rect fill="#f9f9f9" x="0" y="0" width="32" height="32" ></rect><line x1="8" y1="16" x2="24" y2="16" stroke-width="3" stroke="#757575"></line></g></svg>', OrgChart.toolbarUI.layoutIcon = '<svg data-tlbr="layout" style="box-shadow: 0px 1px 4px rgba(0,0,0,0.3); border: 1px solid #cacaca;background-color: #f9f9f9;display: block;cursor: pointer;" width="32px" height="32px"><path stroke-width="3" fill="none" stroke="#757575" d="M8,24 L16,14 L24,24"></path><path stroke-width="3" fill="none" stroke="#757575" d="M8,16 L16,8 L24,16"></path></svg>', OrgChart.toolbarUI.prototype.init = function (t, e) {
     if (e) {
         this.obj = t, this.toolbar = e, this._visible = !1, this.div = document.createElement("div"), this.div.classList.add("bg-toolbar-container"), Object.assign(this.div.style, {
             position: "absolute",
@@ -1131,17 +1141,17 @@ OrgChart.prototype.load = function(t) {
             a = this.div.querySelector('[data-tlbr="fit"]'),
             o = this.div.querySelector('[data-tlbr="expand"]'),
             n = this;
-        r && r.addEventListener("click", function() {
+        r && r.addEventListener("click", function () {
             n.obj.zoom(!0, null, !0)
-        }), i && i.addEventListener("click", function() {
+        }), i && i.addEventListener("click", function () {
             n.obj.zoom(!1, null, !0)
-        }), a && a.addEventListener("click", function() {
+        }), a && a.addEventListener("click", function () {
             n.obj.fit()
-        }), o && o.addEventListener("click", function() {
+        }), o && o.addEventListener("click", function () {
             n.obj.expand(null, "all")
-        }), this.layoutBtn && this.layoutBtn.addEventListener("click", function() {
+        }), this.layoutBtn && this.layoutBtn.addEventListener("click", function () {
             n._visible ? n.hideLayout() : n.showLayout()
-        }), this.layouts && this.layouts.addEventListener("click", function(t) {
+        }), this.layouts && this.layouts.addEventListener("click", function (t) {
             for (var e = t.target; e;) {
                 if (e.hasAttribute("data-layout")) {
                     e = e.getAttribute("data-layout"), n.obj.setLayout(OrgChart[e]);
@@ -1151,29 +1161,29 @@ OrgChart.prototype.load = function(t) {
             }
         })
     }
-}, OrgChart.toolbarUI.prototype.showLayout = function() {
+}, OrgChart.toolbarUI.prototype.showLayout = function () {
     this._visible = !0, this.layoutBtn.style.transform = "rotate(180deg) translateX(0px) translateY(0px)", OrgChart.anim(this.div, {
         bottom: this.obj.config.padding
     }, {
-        bottom: this.obj.config.padding + 145
-    }, this.obj.config.anim.duration, this.obj.config.anim.func), OrgChart.anim(this.layouts, {
-        bottom: -145
-    }, {
-        bottom: 0
-    }, this.obj.config.anim.duration, this.obj.config.anim.func)
-}, OrgChart.toolbarUI.prototype.hideLayout = function() {
+            bottom: this.obj.config.padding + 145
+        }, this.obj.config.anim.duration, this.obj.config.anim.func), OrgChart.anim(this.layouts, {
+            bottom: -145
+        }, {
+                bottom: 0
+            }, this.obj.config.anim.duration, this.obj.config.anim.func)
+}, OrgChart.toolbarUI.prototype.hideLayout = function () {
     this._visible = !1, this.layoutBtn.style.transform = "rotate(0deg) translateX(0px) translateY(0px)", OrgChart.anim(this.div, {
         bottom: this.obj.config.padding + 145
     }, {
-        bottom: this.obj.config.padding
-    }, this.obj.config.anim.duration, this.obj.config.anim.func), OrgChart.anim(this.layouts, {
-        bottom: 0
-    }, {
-        bottom: -145
-    }, this.obj.config.anim.duration, this.obj.config.anim.func)
-}, OrgChart.notifierUI = function() {}, OrgChart.notifierUI.prototype.init = function(t) {
+            bottom: this.obj.config.padding
+        }, this.obj.config.anim.duration, this.obj.config.anim.func), OrgChart.anim(this.layouts, {
+            bottom: 0
+        }, {
+                bottom: -145
+            }, this.obj.config.anim.duration, this.obj.config.anim.func)
+}, OrgChart.notifierUI = function () { }, OrgChart.notifierUI.prototype.init = function (t) {
     this.obj = t
-}, OrgChart.notifierUI.prototype.show = function(t, e) {
+}, OrgChart.notifierUI.prototype.show = function (t, e) {
     if (null != t) {
         1 == t && (t = OrgChart.MAX_NODES_MESS, e = "#FFCA28"), 2 == t && (t = OrgChart.OFFLINE_MESS, e = "#FFCA28");
         var r = document.createElement("div");
@@ -1196,80 +1206,80 @@ OrgChart.prototype.load = function(t) {
             opacity: 0,
             width: 10
         }, {
-            opacity: 1,
-            width: o
-        }, this.obj.config.anim.duration, this.obj.config.anim.func)
+                opacity: 1,
+                width: o
+            }, this.obj.config.anim.duration, this.obj.config.anim.func)
     }
-}, OrgChart.icon = {}, OrgChart.icon.png = function(t, e, r) {
+}, OrgChart.icon = {}, OrgChart.icon.png = function (t, e, r) {
     return '<svg width="' + t + '" height="' + e + '" viewBox="0 0 550.801 550.801"><path fill="' + r + '" d="M146.747,276.708c0-13.998-9.711-22.352-26.887-22.352c-6.99,0-11.726,0.675-14.204,1.355v44.927 c2.932,0.676,6.539,0.896,11.52,0.896C135.449,301.546,146.747,292.28,146.747,276.708z"/><path fill="' + r + '" d="M488.426,197.019H475.2v-63.816c0-0.398-0.063-0.799-0.116-1.202c-0.021-2.534-0.827-5.023-2.562-6.995L366.325,3.694 c-0.032-0.031-0.063-0.042-0.085-0.076c-0.633-0.707-1.371-1.295-2.151-1.804c-0.231-0.155-0.464-0.285-0.706-0.419 c-0.676-0.369-1.393-0.675-2.131-0.896c-0.2-0.056-0.38-0.138-0.58-0.19C359.87,0.119,359.037,0,358.193,0H97.2 c-11.918,0-21.6,9.693-21.6,21.601v175.413H62.377c-17.049,0-30.873,13.818-30.873,30.873v160.545 c0,17.043,13.824,30.87,30.873,30.87h13.224V529.2c0,11.907,9.682,21.601,21.6,21.601h356.4c11.907,0,21.6-9.693,21.6-21.601 V419.302h13.226c17.044,0,30.871-13.827,30.871-30.87v-160.54C519.297,210.838,505.47,197.019,488.426,197.019z M97.2,21.605 h250.193v110.513c0,5.967,4.841,10.8,10.8,10.8h95.407v54.108H97.2V21.605z M234.344,335.86v45.831h-31.601V229.524h40.184 l31.611,55.759c9.025,16.031,18.064,34.983,24.825,52.154h0.675c-2.257-20.103-2.933-40.643-2.933-63.44v-44.473h31.614v152.167 h-36.117l-32.516-58.703c-9.049-16.253-18.971-35.892-26.438-53.727l-0.665,0.222C233.906,289.58,234.344,311.027,234.344,335.86z M71.556,381.691V231.56c10.613-1.804,25.516-3.159,46.506-3.159c21.215,0,36.353,4.061,46.509,12.192 c9.698,7.673,16.255,20.313,16.255,35.219c0,14.897-4.959,27.549-13.999,36.123c-11.738,11.063-29.123,16.031-49.441,16.031 c-4.522,0-8.593-0.231-11.736-0.675v54.411H71.556V381.691z M453.601,523.353H97.2V419.302h356.4V523.353z M485.652,374.688 c-10.61,3.607-30.713,8.585-50.805,8.585c-27.759,0-47.872-7.003-61.857-20.545c-13.995-13.1-21.684-32.97-21.452-55.318 c0.222-50.569,37.03-79.463,86.917-79.463c19.644,0,34.783,3.829,42.219,7.446l-7.214,27.543c-8.369-3.617-18.752-6.55-35.458-6.55 c-28.656,0-50.341,16.256-50.341,49.22c0,31.382,19.649,49.892,47.872,49.892c7.895,0,14.218-0.901,16.934-2.257v-31.835h-23.493 v-26.869h56.679V374.688z"/></svg>'
-}, OrgChart.icon.pdf = function(t, e, r) {
+}, OrgChart.icon.pdf = function (t, e, r) {
     return '<svg width="' + t + '" height="' + e + '" viewBox="0 0 550.801 550.801"><path fill="' + r + '" d="M160.381,282.225c0-14.832-10.299-23.684-28.474-23.684c-7.414,0-12.437,0.715-15.071,1.432V307.6 c3.114,0.707,6.942,0.949,12.192,0.949C148.419,308.549,160.381,298.74,160.381,282.225z"/><path fill="' + r + '" d="M272.875,259.019c-8.145,0-13.397,0.717-16.519,1.435v105.523c3.116,0.729,8.142,0.729,12.69,0.729 c33.017,0.231,54.554-17.946,54.554-56.474C323.842,276.719,304.215,259.019,272.875,259.019z"/><path fill="' + r + '" d="M488.426,197.019H475.2v-63.816c0-0.398-0.063-0.799-0.116-1.202c-0.021-2.534-0.827-5.023-2.562-6.995L366.325,3.694 c-0.032-0.031-0.063-0.042-0.085-0.076c-0.633-0.707-1.371-1.295-2.151-1.804c-0.231-0.155-0.464-0.285-0.706-0.419 c-0.676-0.369-1.393-0.675-2.131-0.896c-0.2-0.056-0.38-0.138-0.58-0.19C359.87,0.119,359.037,0,358.193,0H97.2 c-11.918,0-21.6,9.693-21.6,21.601v175.413H62.377c-17.049,0-30.873,13.818-30.873,30.873v160.545 c0,17.043,13.824,30.87,30.873,30.87h13.224V529.2c0,11.907,9.682,21.601,21.6,21.601h356.4c11.907,0,21.6-9.693,21.6-21.601 V419.302h13.226c17.044,0,30.871-13.827,30.871-30.87v-160.54C519.297,210.838,505.47,197.019,488.426,197.019z M97.2,21.605 h250.193v110.513c0,5.967,4.841,10.8,10.8,10.8h95.407v54.108H97.2V21.605z M362.359,309.023c0,30.876-11.243,52.165-26.82,65.333 c-16.971,14.117-42.82,20.814-74.396,20.814c-18.9,0-32.297-1.197-41.401-2.389V234.365c13.399-2.149,30.878-3.346,49.304-3.346 c30.612,0,50.478,5.508,66.039,17.226C351.828,260.69,362.359,280.547,362.359,309.023z M80.7,393.499V234.365 c11.241-1.904,27.042-3.346,49.296-3.346c22.491,0,38.527,4.308,49.291,12.928c10.292,8.131,17.215,21.534,17.215,37.328 c0,15.799-5.25,29.198-14.829,38.285c-12.442,11.728-30.865,16.996-52.407,16.996c-4.778,0-9.1-0.243-12.435-0.723v57.67H80.7 V393.499z M453.601,523.353H97.2V419.302h356.4V523.353z M484.898,262.127h-61.989v36.851h57.913v29.674h-57.913v64.848h-36.593 V232.216h98.582V262.127z"/></svg>'
-}, OrgChart.icon.svg = function(t, e, r) {
+}, OrgChart.icon.svg = function (t, e, r) {
     return '<svg width="' + t + '" height="' + e + '" viewBox="0 0 550.801 550.801"><path fill="' + r + '" d="M488.426,197.019H475.2v-63.816c0-0.398-0.063-0.799-0.116-1.202c-0.021-2.534-0.827-5.023-2.562-6.995L366.325,3.694 c-0.032-0.031-0.063-0.042-0.085-0.076c-0.633-0.707-1.371-1.295-2.151-1.804c-0.231-0.155-0.464-0.285-0.706-0.419 c-0.676-0.369-1.393-0.675-2.131-0.896c-0.2-0.056-0.38-0.138-0.58-0.19C359.87,0.119,359.037,0,358.193,0H97.2 c-11.918,0-21.6,9.693-21.6,21.601v175.413H62.377c-17.049,0-30.873,13.818-30.873,30.873v160.545 c0,17.043,13.824,30.87,30.873,30.87h13.224V529.2c0,11.907,9.682,21.601,21.6,21.601h356.4c11.907,0,21.6-9.693,21.6-21.601 V419.302h13.226c17.044,0,30.871-13.827,30.871-30.87v-160.54C519.297,210.838,505.47,197.019,488.426,197.019z M97.2,21.605 h250.193v110.513c0,5.967,4.841,10.8,10.8,10.8h95.407v54.108H97.2V21.605z M338.871,225.672L284.545,386.96h-42.591 l-51.69-161.288h39.967l19.617,68.196c5.508,19.143,10.531,37.567,14.36,57.67h0.717c4.061-19.385,9.089-38.527,14.592-56.953 l20.585-68.918h38.77V225.672z M68.458,379.54l7.415-30.153c9.811,5.021,24.888,10.051,40.439,10.051 c16.751,0,25.607-6.935,25.607-17.465c0-10.052-7.662-15.795-27.05-22.734c-26.8-9.328-44.263-24.168-44.263-47.611 c0-27.524,22.971-48.579,61.014-48.579c18.188,0,31.591,3.823,41.159,8.131l-8.126,29.437c-6.465-3.116-17.945-7.657-33.745-7.657 c-15.791,0-23.454,7.183-23.454,15.552c0,10.296,9.089,14.842,29.917,22.731c28.468,10.536,41.871,25.365,41.871,48.094 c0,27.042-20.812,50.013-65.09,50.013C95.731,389.349,77.538,384.571,68.458,379.54z M453.601,523.353H97.2V419.302h356.4V523.353z M488.911,379.54c-11.243,3.823-32.537,9.103-53.831,9.103c-29.437,0-50.73-7.426-65.57-21.779 c-14.839-13.875-22.971-34.942-22.738-58.625c0.253-53.604,39.255-84.235,92.137-84.235c20.81,0,36.852,4.073,44.74,7.896 l-7.657,29.202c-8.859-3.829-19.849-6.95-37.567-6.95c-30.396,0-53.357,17.233-53.357,52.173c0,33.265,20.81,52.882,50.73,52.882 c8.375,0,15.072-0.96,17.94-2.395v-33.745h-24.875v-28.471h60.049V379.54L488.911,379.54z" /></svg>'
-}, OrgChart.icon.csv = function(t, e, r) {
+}, OrgChart.icon.csv = function (t, e, r) {
     return '<svg width="' + t + '" height="' + e + '" viewBox="0 0 548.29 548.291" ><path fill="' + r + '" d="M486.2,196.121h-13.164V132.59c0-0.399-0.064-0.795-0.116-1.2c-0.021-2.52-0.824-5-2.551-6.96L364.656,3.677 c-0.031-0.034-0.064-0.044-0.085-0.075c-0.629-0.707-1.364-1.292-2.141-1.796c-0.231-0.157-0.462-0.286-0.704-0.419 c-0.672-0.365-1.386-0.672-2.121-0.893c-0.199-0.052-0.377-0.134-0.576-0.188C358.229,0.118,357.4,0,356.562,0H96.757 C84.893,0,75.256,9.649,75.256,21.502v174.613H62.093c-16.972,0-30.733,13.756-30.733,30.73v159.81 c0,16.966,13.761,30.736,30.733,30.736h13.163V526.79c0,11.854,9.637,21.501,21.501,21.501h354.777 c11.853,0,21.502-9.647,21.502-21.501V417.392H486.2c16.966,0,30.729-13.764,30.729-30.731v-159.81 C516.93,209.872,503.166,196.121,486.2,196.121z M96.757,21.502h249.053v110.006c0,5.94,4.818,10.751,10.751,10.751h94.973v53.861 H96.757V21.502z M258.618,313.18c-26.68-9.291-44.063-24.053-44.063-47.389c0-27.404,22.861-48.368,60.733-48.368 c18.107,0,31.447,3.811,40.968,8.107l-8.09,29.3c-6.43-3.107-17.862-7.632-33.59-7.632c-15.717,0-23.339,7.149-23.339,15.485 c0,10.247,9.047,14.769,29.78,22.632c28.341,10.479,41.681,25.239,41.681,47.874c0,26.909-20.721,49.786-64.792,49.786 c-18.338,0-36.449-4.776-45.497-9.77l7.38-30.016c9.772,5.014,24.775,10.006,40.264,10.006c16.671,0,25.488-6.908,25.488-17.396 C285.536,325.789,277.909,320.078,258.618,313.18z M69.474,302.692c0-54.781,39.074-85.269,87.654-85.269 c18.822,0,33.113,3.811,39.549,7.149l-7.392,28.816c-7.38-3.084-17.632-5.939-30.491-5.939c-28.822,0-51.206,17.375-51.206,53.099 c0,32.158,19.051,52.4,51.456,52.4c10.947,0,23.097-2.378,30.241-5.238l5.483,28.346c-6.672,3.34-21.674,6.919-41.208,6.919 C98.06,382.976,69.474,348.424,69.474,302.692z M451.534,520.962H96.757v-103.57h354.777V520.962z M427.518,380.583h-42.399 l-51.45-160.536h39.787l19.526,67.894c5.479,19.046,10.479,37.386,14.299,57.397h0.709c4.048-19.298,9.045-38.352,14.526-56.693 l20.487-68.598h38.599L427.518,380.583z" /></svg>'
-}, OrgChart.icon.excel = function(t, e, r) {
+}, OrgChart.icon.excel = function (t, e, r) {
     return '<svg width="' + t + '" height="' + e + '" viewBox="0 0 512 512"><path fill="#ECEFF1" d="M496,432.011H272c-8.832,0-16-7.168-16-16s0-311.168,0-320s7.168-16,16-16h224 c8.832,0,16,7.168,16,16v320C512,424.843,504.832,432.011,496,432.011z" /><path fill="' + r + '" d="M336,176.011h-64c-8.832,0-16-7.168-16-16s7.168-16,16-16h64c8.832,0,16,7.168,16,16 S344.832,176.011,336,176.011z" /><path fill="' + r + '" d="M336,240.011h-64c-8.832,0-16-7.168-16-16s7.168-16,16-16h64c8.832,0,16,7.168,16,16 S344.832,240.011,336,240.011z" /><path fill="' + r + '" d="M336,304.011h-64c-8.832,0-16-7.168-16-16s7.168-16,16-16h64c8.832,0,16,7.168,16,16 S344.832,304.011,336,304.011z" /><path fill="' + r + '" d="M336,368.011h-64c-8.832,0-16-7.168-16-16s7.168-16,16-16h64c8.832,0,16,7.168,16,16 S344.832,368.011,336,368.011z" /><path fill="' + r + '" d="M432,176.011h-32c-8.832,0-16-7.168-16-16s7.168-16,16-16h32c8.832,0,16,7.168,16,16 S440.832,176.011,432,176.011z" /><path fill="' + r + '" d="M432,240.011h-32c-8.832,0-16-7.168-16-16s7.168-16,16-16h32c8.832,0,16,7.168,16,16 S440.832,240.011,432,240.011z" /><path fill="' + r + '" d="M432,304.011h-32c-8.832,0-16-7.168-16-16s7.168-16,16-16h32c8.832,0,16,7.168,16,16 S440.832,304.011,432,304.011z" /><path fill="' + r + '" d="M432,368.011h-32c-8.832,0-16-7.168-16-16s7.168-16,16-16h32c8.832,0,16,7.168,16,16 S440.832,368.011,432,368.011z" /><path fill="' + r + '"  d="M282.208,19.691c-3.648-3.04-8.544-4.352-13.152-3.392l-256,48C5.472,65.707,0,72.299,0,80.011v352 c0,7.68,5.472,14.304,13.056,15.712l256,48c0.96,0.192,1.952,0.288,2.944,0.288c3.712,0,7.328-1.28,10.208-3.68 c3.68-3.04,5.792-7.584,5.792-12.32v-448C288,27.243,285.888,22.731,282.208,19.691z" /><path fill="#FAFAFA" d="M220.032,309.483l-50.592-57.824l51.168-65.792c5.44-6.976,4.16-17.024-2.784-22.464 c-6.944-5.44-16.992-4.16-22.464,2.784l-47.392,60.928l-39.936-45.632c-5.856-6.72-15.968-7.328-22.56-1.504 c-6.656,5.824-7.328,15.936-1.504,22.56l44,50.304L83.36,310.187c-5.44,6.976-4.16,17.024,2.784,22.464 c2.944,2.272,6.432,3.36,9.856,3.36c4.768,0,9.472-2.112,12.64-6.176l40.8-52.48l46.528,53.152 c3.168,3.648,7.584,5.504,12.032,5.504c3.744,0,7.488-1.312,10.528-3.968C225.184,326.219,225.856,316.107,220.032,309.483z" /></svg>'
-}, OrgChart.icon.edit = function(t, e, r) {
+}, OrgChart.icon.edit = function (t, e, r) {
     return '<svg width="' + t + '" height="' + e + '" viewBox="0 0 528.899 528.899"><path fill="' + r + '" d="M328.883,89.125l107.59,107.589l-272.34,272.34L56.604,361.465L328.883,89.125z M518.113,63.177l-47.981-47.981 c-18.543-18.543-48.653-18.543-67.259,0l-45.961,45.961l107.59,107.59l53.611-53.611 C532.495,100.753,532.495,77.559,518.113,63.177z M0.3,512.69c-1.958,8.812,5.998,16.708,14.811,14.565l119.891-29.069 L27.473,390.597L0.3,512.69z" /></svg>'
-}, OrgChart.icon.details = function(t, e, r) {
+}, OrgChart.icon.details = function (t, e, r) {
     return '<svg width="' + t + '" height="' + e + '" viewBox="0 0 512 512"><path fill="' + r + '" d="M447.933,103.629c-0.034-3.076-1.224-6.09-3.485-8.352L352.683,3.511c-0.004-0.004-0.007-0.005-0.011-0.008 C350.505,1.338,347.511,0,344.206,0H89.278C75.361,0,64.04,11.32,64.04,25.237v461.525c0,13.916,11.32,25.237,25.237,25.237 h333.444c13.916,0,25.237-11.32,25.237-25.237V103.753C447.96,103.709,447.937,103.672,447.933,103.629z M356.194,40.931 l50.834,50.834h-49.572c-0.695,0-1.262-0.567-1.262-1.262V40.931z M423.983,486.763c0,0.695-0.566,1.261-1.261,1.261H89.278 c-0.695,0-1.261-0.566-1.261-1.261V25.237c0-0.695,0.566-1.261,1.261-1.261h242.94v66.527c0,13.916,11.322,25.239,25.239,25.239 h66.527V486.763z"/><path fill="' + r + '" d="M362.088,164.014H149.912c-6.62,0-11.988,5.367-11.988,11.988c0,6.62,5.368,11.988,11.988,11.988h212.175 c6.62,0,11.988-5.368,11.988-11.988C374.076,169.381,368.707,164.014,362.088,164.014z"/><path fill="' + r + '" d="M362.088,236.353H149.912c-6.62,0-11.988,5.368-11.988,11.988c0,6.62,5.368,11.988,11.988,11.988h212.175 c6.62,0,11.988-5.368,11.988-11.988C374.076,241.721,368.707,236.353,362.088,236.353z"/><path fill="' + r + '" d="M362.088,308.691H149.912c-6.62,0-11.988,5.368-11.988,11.988c0,6.621,5.368,11.988,11.988,11.988h212.175 c6.62,0,11.988-5.367,11.988-11.988C374.076,314.06,368.707,308.691,362.088,308.691z"/><path fill="' + r + '" d="M256,381.031H149.912c-6.62,0-11.988,5.368-11.988,11.988c0,6.621,5.368,11.988,11.988,11.988H256 c6.62,0,11.988-5.367,11.988-11.988C267.988,386.398,262.62,381.031,256,381.031z"/></svg>'
-}, OrgChart.icon.remove = function(t, e, r) {
+}, OrgChart.icon.remove = function (t, e, r) {
     return '<svg width="' + t + '" height="' + e + '"  viewBox="0 0 900.5 900.5"><path fill="' + r + '" d="M176.415,880.5c0,11.046,8.954,20,20,20h507.67c11.046,0,20-8.954,20-20V232.487h-547.67V880.5L176.415,880.5z M562.75,342.766h75v436.029h-75V342.766z M412.75,342.766h75v436.029h-75V342.766z M262.75,342.766h75v436.029h-75V342.766z"/><path fill="' + r + '" d="M618.825,91.911V20c0-11.046-8.954-20-20-20h-297.15c-11.046,0-20,8.954-20,20v71.911v12.5v12.5H141.874 c-11.046,0-20,8.954-20,20v50.576c0,11.045,8.954,20,20,20h34.541h547.67h34.541c11.046,0,20-8.955,20-20v-50.576 c0-11.046-8.954-20-20-20H618.825v-12.5V91.911z M543.825,112.799h-187.15v-8.389v-12.5V75h187.15v16.911v12.5V112.799z"/></svg>'
-}, OrgChart.icon.add = function(t, e, r) {
+}, OrgChart.icon.add = function (t, e, r) {
     return '<svg width="' + t + '" height="' + e + '"   viewBox="0 0 922 922"><path fill="' + r + '" d="M922,453V81c0-11.046-8.954-20-20-20H410c-11.045,0-20,8.954-20,20v149h318c24.812,0,45,20.187,45,45v198h149 C913.046,473.001,922,464.046,922,453z" /><path fill="' + r + '" d="M557,667.001h151c11.046,0,20-8.954,20-20v-174v-198c0-11.046-8.954-20-20-20H390H216c-11.045,0-20,8.954-20,20v149h194 h122c24.812,0,45,20.187,45,45v4V667.001z" /><path fill="' + r + '" d="M0,469v372c0,11.046,8.955,20,20,20h492c11.046,0,20-8.954,20-20V692v-12.501V667V473v-4c0-11.046-8.954-20-20-20H390H196 h-12.5H171H20C8.955,449,0,457.955,0,469z" /></svg>'
-}, OrgChart.icon.search = function(t, e) {
+}, OrgChart.icon.search = function (t, e) {
     return '<svg width="' + t + '" height="' + e + '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 485.213 485.213"><path fill="#757575" d="M471.882,407.567L360.567,296.243c-16.586,25.795-38.536,47.734-64.331,64.321l111.324,111.324 c17.772,17.768,46.587,17.768,64.321,0C489.654,454.149,489.654,425.334,471.882,407.567z" /><path fill="#757575" d="M363.909,181.955C363.909,81.473,282.44,0,181.956,0C81.474,0,0.001,81.473,0.001,181.955s81.473,181.951,181.955,181.951 C282.44,363.906,363.909,282.437,363.909,181.955z M181.956,318.416c-75.252,0-136.465-61.208-136.465-136.46 c0-75.252,61.213-136.465,136.465-136.465c75.25,0,136.468,61.213,136.468,136.465 C318.424,257.208,257.206,318.416,181.956,318.416z" /><path fill="#757575" d="M75.817,181.955h30.322c0-41.803,34.014-75.814,75.816-75.814V75.816C123.438,75.816,75.817,123.437,75.817,181.955z" /></svg>'
-}, OrgChart.icon.addInGroup = function(t, e, r) {
+}, OrgChart.icon.addInGroup = function (t, e, r) {
     return '<svg width="' + t + '" height="' + e + '"   viewBox="0 0 922 922"><path fill="' + r + '" d="M922,453V81c0-11.046-8.954-20-20-20H410c-11.045,0-20,8.954-20,20v149h318c24.812,0,45,20.187,45,45v198h149 C913.046,473.001,922,464.046,922,453z" /><path fill="' + r + '" d="M557,667.001h151c11.046,0,20-8.954,20-20v-174v-198c0-11.046-8.954-20-20-20H390H216c-11.045,0-20,8.954-20,20v149h194 h122c24.812,0,45,20.187,45,45v4V667.001z" /><path fill="' + r + '" d="M0,469v372c0,11.046,8.955,20,20,20h492c11.046,0,20-8.954,20-20V692v-12.501V667V473v-4c0-11.046-8.954-20-20-20H390H196 h-12.5H171H20C8.955,449,0,457.955,0,469z" /></svg>'
-}, OrgChart.icon.addAsChild = function(t, e, r) {
+}, OrgChart.icon.addAsChild = function (t, e, r) {
     return '<svg width="' + t + '" height="' + e + '" viewBox="0 0 922 922"><path fill="' + r + '" d="M922,453V81c0-11.046-8.954-20-20-20H410c-11.045,0-20,8.954-20,20v149h318c24.812,0,45,20.187,45,45v198h149 C913.046,473.001,922,464.046,922,453z" /><path fill="' + r + '" d="M557,667.001h151c11.046,0,20-8.954,20-20v-174v-198c0-11.046-8.954-20-20-20H390H216c-11.045,0-20,8.954-20,20v149h194 h122c24.812,0,45,20.187,45,45v4V667.001z" /><path fill="' + r + '" d="M0,469v372c0,11.046,8.955,20,20,20h492c11.046,0,20-8.954,20-20V692v-12.501V667V473v-4c0-11.046-8.954-20-20-20H390H196 h-12.5H171H20C8.955,449,0,457.955,0,469z" /></svg>'
-}, OrgChart.icon.xml = function(t, e, r) {
+}, OrgChart.icon.xml = function (t, e, r) {
     return '<svg width="' + t + '" height="' + e + '" viewBox="0 0 550.801 550.801"><path fill="' + r + '"  d="M488.426,197.019H475.2v-63.816c0-0.401-0.063-0.799-0.116-1.205c-0.021-2.534-0.827-5.023-2.562-6.992L366.325,3.691 c-0.032-0.031-0.063-0.042-0.085-0.073c-0.633-0.707-1.371-1.298-2.151-1.804c-0.231-0.158-0.464-0.287-0.706-0.422 c-0.676-0.366-1.393-0.675-2.131-0.896c-0.2-0.053-0.38-0.135-0.58-0.19C359.87,0.119,359.037,0,358.193,0H97.2 c-11.918,0-21.6,9.693-21.6,21.601v175.413H62.377c-17.049,0-30.873,13.818-30.873,30.87v160.542 c0,17.044,13.824,30.876,30.873,30.876h13.224V529.2c0,11.907,9.682,21.601,21.6,21.601h356.4c11.907,0,21.6-9.693,21.6-21.601 V419.302h13.226c17.044,0,30.871-13.827,30.871-30.87V227.89C519.297,210.838,505.47,197.019,488.426,197.019z M97.2,21.605 h250.193v110.51c0,5.967,4.841,10.8,10.8,10.8h95.407v54.108H97.2V21.605z M369.531,374.53h-32.058l-2.156-55.519 c-0.644-17.434-1.298-38.518-1.298-59.611h-0.633c-4.514,18.516-10.547,39.166-16.137,56.162l-17.645,56.601h-25.618 l-15.494-56.157c-4.725-16.996-9.671-37.658-13.123-56.6h-0.43c-0.854,19.585-1.508,41.961-2.586,60.038l-2.576,55.086h-30.343 l9.26-145.035h43.677l14.207,48.421c4.517,16.774,9.041,34.847,12.258,51.843h0.654c4.081-16.77,9.038-35.923,13.774-52.064 l15.493-48.199h42.82L369.531,374.53z M69.992,374.53l41.955-73.385l-40.444-71.65h37.655l12.688,26.465 c4.316,8.828,7.533,15.928,10.99,24.092h0.422c3.438-9.242,6.23-15.694,9.893-24.092l12.274-26.465h37.434l-40.89,70.796 l43.044,74.239h-37.866l-13.134-26.257c-5.376-10.108-8.817-17.639-12.909-26.04h-0.433c-3.009,8.401-6.674,15.932-11.19,26.04 l-12.042,26.257H69.992z M453.601,523.353H97.2V419.302h356.4V523.353z M485.325,374.53h-90.608V229.495h32.933v117.497h57.682 v27.538H485.325z"/></svg>'
-}, OrgChart.prototype.exportPDF = function(t, e) {
+}, OrgChart.prototype.exportPDF = function (t, e) {
     t = this._defaultExportOptions(t, "pdf"), this._export(t, e)
-}, OrgChart.prototype.exportPNG = function(t, e) {
+}, OrgChart.prototype.exportPNG = function (t, e) {
     t = this._defaultExportOptions(t, "png"), this._export(t, e)
-}, OrgChart.prototype.exportSVG = function(t, e) {
+}, OrgChart.prototype.exportSVG = function (t, e) {
     t = this._defaultExportOptions(t, "svg"), this._export(t, e)
-}, OrgChart.prototype._defaultExportOptions = function(t, e) {
+}, OrgChart.prototype._defaultExportOptions = function (t, e) {
     if (null == t && (t = {}), "svg" == e ? (t.ext = "svg", t.mime = "image/svg+xml") : "pdf" == e ? (t.mime = "application/pdf", t.ext = "pdf") : "png" == e && (t.mime = "image/png", t.ext = "png"), null == t.margin && (t.margin = [50, 40, 50, 40]), null == t.landscape && (t.landscape = !1), null == t.filename && (t.filename = "OrgChart." + t.ext), null == t.scale && (t.scale = "fit"), null == t.format && (t.format = "fit"), null == t.header && (t.header = ""), null == t.footer && (t.footer = ""), null != t.nodeId) {
         var r = this.getBGNode(t.nodeId);
         r.isChildOfGroup && (t.nodeId = r._groupParentNodeId)
     }
     return t
-}, OrgChart.prototype._export = function(a, o) {
+}, OrgChart.prototype._export = function (a, o) {
     var n = this,
         t = {
             id: a.nodeId,
             expandChildren: a.expandChildren
         };
-    this._draw(!1, OrgChart.action.exporting, t, function(t) {
+    this._draw(!1, OrgChart.action.exporting, t, function (t) {
         var r = document.createElement("div");
         if (r.innerHTML = t, "svg" == a.ext)
             if (o) o(a, r.innerHTML);
             else {
                 var e = {
-                        content: r.innerHTML,
-                        options: a
-                    },
+                    content: r.innerHTML,
+                    options: a
+                },
                     i = OrgChart.events.publish("exportstart", [n, e]);
                 if (!1 === i) return !1;
                 if (OrgChart._downloadFile(a.mime, e.content, e.options.filename), !1 === (i = OrgChart.events.publish("exportend", [n, e]))) return !1
-            } else n._pages(a, r.querySelector("svg"), function(t) {
-            var e = {
-                content: r.innerHTML,
-                options: a,
-                pages: t
-            };
-            if (console.log(JSON.stringify(e)), !1 === OrgChart.events.publish("exportstart", [n, e])) return !1;
-            o || OrgChart.loading.show(n), o ? o(n, e, r.querySelector("svg")) : (e = JSON.stringify(e), OrgChart._ajax(n.config.exportUrl + "/v3", "POST", e, "arraybuffer", function(t) {
-                if (!1 === OrgChart.events.publish("exportend", [n, t])) return !1;
-                OrgChart.loading.hide(n), OrgChart._downloadFile(a.mime, t, a.filename)
-            }))
-        })
+            } else n._pages(a, r.querySelector("svg"), function (t) {
+                var e = {
+                    content: r.innerHTML,
+                    options: a,
+                    pages: t
+                };
+                if (console.log(JSON.stringify(e)), !1 === OrgChart.events.publish("exportstart", [n, e])) return !1;
+                o || OrgChart.loading.show(n), o ? o(n, e, r.querySelector("svg")) : (e = JSON.stringify(e), OrgChart._ajax(n.config.exportUrl + "/v3", "POST", e, "arraybuffer", function (t) {
+                    if (!1 === OrgChart.events.publish("exportend", [n, t])) return !1;
+                    OrgChart.loading.hide(n), OrgChart._downloadFile(a.mime, t, a.filename)
+                }))
+            })
     })
-}, OrgChart.prototype.exportCSV = function(t) {
+}, OrgChart.prototype.exportCSV = function (t) {
     t || (t = "OrgChart.csv");
     var e = {
         ext: "csv",
@@ -1286,7 +1296,7 @@ OrgChart.prototype.load = function(t) {
         };
     if (!1 === OrgChart.events.publish("exportend", [this, i])) return !1;
     OrgChart._downloadFile("text/csv;charset=utf-8;", "\ufeff" + i.content, i.filename)
-}, OrgChart.prototype.exportXML = function(t) {
+}, OrgChart.prototype.exportXML = function (t) {
     t || (t = "OrgChart.xml");
     var e = {
         ext: "xml",
@@ -1303,9 +1313,9 @@ OrgChart.prototype.load = function(t) {
         };
     if (!1 === OrgChart.events.publish("exportend", [this, i])) return !1;
     OrgChart._downloadFile("application/xml", i.content, i.filename)
-}, OrgChart.prototype._pages = function(t, e, r) {
+}, OrgChart.prototype._pages = function (t, e, r) {
     "fit2Levels" == t.format ? this._pagesFit2Levels(t, r) : "A42Levels" == t.format || "A32Levels" == t.format || "A22Levels" == t.format || "A12Levels" == t.format ? this._pagesA2Levels(t, r) : "A4" == t.format && 100 == t.scale || "A3" == t.format && 100 == t.scale || "A2" == t.format && 100 == t.scale || "A1" == t.format && 100 == t.scale ? r(this._pagesA100(t, e)) : "A4" == t.format && "fit" == t.scale || "A3" == t.format && "fit" == t.scale || "A2" == t.format && "fit" == t.scale || "A1" == t.format && "fit" == t.scale ? r(this._pagesAfit(t, e)) : "fit" == t.format && r(this._pagesFit(t, e))
-}, OrgChart.prototype._pagesA2Levels = function(n, l) {
+}, OrgChart.prototype._pagesA2Levels = function (n, l) {
     var s = this,
         h = this.config.collapse,
         d = this.config.roots;
@@ -1313,9 +1323,9 @@ OrgChart.prototype.load = function(t) {
         level: 2
     };
     var t = {
-            id: n.nodeId,
-            expandChildren: n.expandChildren
-        },
+        id: n.nodeId,
+        expandChildren: n.expandChildren
+    },
         c = [],
         g = [];
     for (var e in this.nodes) {
@@ -1325,11 +1335,11 @@ OrgChart.prototype.load = function(t) {
         e = g[r];
         var i = this.nodes[e];
         this.config.roots = [i.id],
-            function(r) {
-                s._draw(!1, OrgChart.action.exporting, t, function(t) {
+            function (r) {
+                s._draw(!1, OrgChart.action.exporting, t, function (t) {
                     var e = document.createElement("div");
                     e.innerHTML = t,
-                        function(t, e) {
+                        function (t, e) {
                             for (var r = t.querySelector("svg"), i = s._pagesAfit(n, r), a = 0; a < i.length; a++) {
                                 var o = i[a];
                                 o.html = t.innerHTML, c.push(o)
@@ -1339,7 +1349,7 @@ OrgChart.prototype.load = function(t) {
                 })
             }(r)
     }
-}, OrgChart.prototype._pagesFit2Levels = function(n, l) {
+}, OrgChart.prototype._pagesFit2Levels = function (n, l) {
     var s = this,
         h = this.config.collapse,
         d = this.config.roots;
@@ -1347,9 +1357,9 @@ OrgChart.prototype.load = function(t) {
         level: 2
     };
     var t = {
-            id: n.nodeId,
-            expandChildren: n.expandChildren
-        },
+        id: n.nodeId,
+        expandChildren: n.expandChildren
+    },
         c = [],
         g = [];
     for (var e in this.nodes) {
@@ -1359,11 +1369,11 @@ OrgChart.prototype.load = function(t) {
     for (var i = 0; i < g.length; i++) {
         e = g[i];
         this.config.roots = [e],
-            function(r) {
-                s._draw(!1, OrgChart.action.exporting, t, function(t) {
+            function (r) {
+                s._draw(!1, OrgChart.action.exporting, t, function (t) {
                     var e = document.createElement("div");
                     e.innerHTML = t,
-                        function(t, e) {
+                        function (t, e) {
                             for (var r = t.querySelector("svg"), i = s._pagesFit(n, r), a = 0; a < i.length; a++) {
                                 var o = i[a];
                                 o.html = t.innerHTML, c.push(o)
@@ -1373,7 +1383,7 @@ OrgChart.prototype.load = function(t) {
                 })
             }(i)
     }
-}, OrgChart.prototype._pagesFit = function(t, e) {
+}, OrgChart.prototype._pagesFit = function (t, e) {
     var r = e.getAttribute("width"),
         i = e.getAttribute("height"),
         a = OrgChart.pdfPrevUI._getViewBox(e),
@@ -1389,7 +1399,7 @@ OrgChart.prototype.load = function(t) {
         },
         innerSize: o
     }]
-}, OrgChart.prototype._pagesAfit = function(t, e) {
+}, OrgChart.prototype._pagesAfit = function (t, e) {
     var r = e.getAttribute("width"),
         i = e.getAttribute("height"),
         a = 0,
@@ -1435,7 +1445,7 @@ OrgChart.prototype.load = function(t) {
         }), O += l.h, i < (C += l.h) && (C = i)
     }
     return v
-}, OrgChart.prototype._pagesA100 = function(t, e) {
+}, OrgChart.prototype._pagesA100 = function (t, e) {
     var r = e.getAttribute("width"),
         i = e.getAttribute("height"),
         a = OrgChart.pdfPrevUI._getViewBox(e),
@@ -1481,24 +1491,24 @@ OrgChart.prototype.load = function(t) {
         u += c.w, r < (p += c.w) && (p = r), C = s
     }
     return m
-}, void 0 === OrgChart && (OrgChart = {}), OrgChart.events = function() {
+}, void 0 === OrgChart && (OrgChart = {}), OrgChart.events = function () {
     var n = {};
     return {
-        on: function(t, e, r) {
+        on: function (t, e, r) {
             Array.isArray(n[t]) || (n[t] = []), n[t].push({
                 listener: e,
                 event_id: r
             })
         },
-        removeAll: function(t) {
+        removeAll: function (t) {
             Array.isArray(n[t]) || (n[t] = []), n[t] = []
         },
-        removeForEventId: function(t) {
+        removeForEventId: function (t) {
             for (var e in n)
                 if (Array.isArray(n[e]))
                     for (var r = n[e].length - 1; 0 <= r; r--) n[e][r].event_id == t && n[e].splice(r, 1)
         },
-        publish: function(t, e) {
+        publish: function (t, e) {
             if (n[t]) {
                 for (var r = [], i = 0; i < n[t].length; i++) {
                     var a = n[t][i];
@@ -1512,13 +1522,13 @@ OrgChart.prototype.load = function(t) {
             }
         }
     }
-}(), OrgChart.prototype.importCSV = function() {
+}(), OrgChart.prototype.importCSV = function () {
     var h = this,
         t = document.createElement("INPUT");
-    t.setAttribute("type", "file"), t.setAttribute("accept", ".csv"), t.style.display = "none", t.onchange = function(t) {
+    t.setAttribute("type", "file"), t.setAttribute("accept", ".csv"), t.style.display = "none", t.onchange = function (t) {
         var e = t.target,
             s = new FileReader;
-        s.onload = function() {
+        s.onload = function () {
             for (var t = s.result, e = OrgChart._csvToArray(t, ","), r = [], i = 1; i < e.length; i++) {
                 for (var a = {}, o = 0; o < e[i].length; o++) {
                     var n = e[0][o],
@@ -1532,52 +1542,52 @@ OrgChart.prototype.load = function(t) {
             0 != OrgChart.events.publish("import", [h, r]) && (h.config.nodes = r, h.draw())
         }, s.readAsText(e.files[0])
     }, t.click()
-}, OrgChart.prototype.importXML = function() {
+}, OrgChart.prototype.importXML = function () {
     var i = this,
         t = document.createElement("INPUT");
-    t.setAttribute("type", "file"), t.setAttribute("accept", ".xml"), t.style.display = "none", t.onchange = function(t) {
+    t.setAttribute("type", "file"), t.setAttribute("accept", ".xml"), t.style.display = "none", t.onchange = function (t) {
         var e = t.target,
             r = new FileReader;
-        r.onload = function() {
+        r.onload = function () {
             var t = r.result,
                 e = OrgChart._xml2json(t);
             0 != OrgChart.events.publish("import", [i, e]) && (i.config.nodes = e, i.draw())
         }, r.readAsText(e.files[0])
     }, t.click()
-}, OrgChart.prototype.expand = function(t, e, r) {
+}, OrgChart.prototype.expand = function (t, e, r) {
     var i = {
         id: t,
         ids: e,
         state: OrgChart.EXPAND
     };
     this._draw(!1, OrgChart.action.expandCollapse, i, r)
-}, OrgChart.prototype.collapse = function(t, e, r) {
+}, OrgChart.prototype.collapse = function (t, e, r) {
     var i = {
         id: t,
         ids: e,
         state: OrgChart.COLLAPSE
     };
     this._draw(!1, OrgChart.action.expandCollapse, i, r)
-}, OrgChart.prototype.expandCollapseToLevel = function(t, e, r, i) {
+}, OrgChart.prototype.expandCollapseToLevel = function (t, e, r, i) {
     this.config.collapse = e, null == r && (r = {}), this.config.expand = r;
     var a = {
         id: t,
         method: "expandCollapseToLevel"
     };
     this._draw(!1, OrgChart.action.expandCollapse, a, i)
-}, OrgChart.prototype.maximize = function(t, e) {
+}, OrgChart.prototype.maximize = function (t, e) {
     var r = {
         id: t,
         state: OrgChart.EXPAND
     };
     this._draw(!1, OrgChart.action.groupMaxMin, r, e)
-}, OrgChart.prototype.minimize = function(t, e) {
+}, OrgChart.prototype.minimize = function (t, e) {
     var r = {
         id: t,
         state: OrgChart.COLLAPSE
     };
     this._draw(!1, OrgChart.action.groupMaxMin, r, e)
-}, OrgChart.prototype._expCollHandler = function(t) {
+}, OrgChart.prototype._expCollHandler = function (t) {
     this.nodeMenuUI.hide(), this.nodeContextMenuUI.hide(), this.dragDropMenuUI.hide(), this.menuUI.hide();
     var e = this.getBGNode(t);
     if (e.collapsedChildrenIds.length) {
@@ -1587,7 +1597,7 @@ OrgChart.prototype.load = function(t) {
         if (!1 === OrgChart.events.publish("expcollclick", [this, OrgChart.COLLAPSE, t, e.childrenIds])) return !1;
         this.collapse(t, e.childrenIds, !1)
     }
-}, OrgChart.prototype._maxMinHandler = function(t) {
+}, OrgChart.prototype._maxMinHandler = function (t) {
     this.nodeMenuUI.hide(), this.nodeContextMenuUI.hide(), this.dragDropMenuUI.hide(), this.menuUI.hide();
     var e = this.getBGNode(t);
     if (e.groupState == OrgChart.EXPAND) {
@@ -1597,12 +1607,12 @@ OrgChart.prototype.load = function(t) {
         if (!1 === OrgChart.events.publish("expcollclick", [this, OrgChart.EXPAND, t])) return !1;
         this.maximize(t)
     }
-}, String.prototype.replaceAll = function(t, e) {
+}, String.prototype.replaceAll = function (t, e) {
     return this.replace(new RegExp(t, "g"), e)
-}, String.prototype.splice = function(t, e, r) {
+}, String.prototype.splice = function (t, e, r) {
     return this.slice(0, t) + r + this.slice(t + Math.abs(e))
 }, "function" != typeof Object.assign && Object.defineProperty(Object, "assign", {
-    value: function(t, e) {
+    value: function (t, e) {
         "use strict";
         if (null == t) throw new TypeError("Cannot convert undefined or null to object");
         for (var r = Object(t), i = 1; i < arguments.length; i++) {
@@ -1614,27 +1624,27 @@ OrgChart.prototype.load = function(t) {
     },
     writable: !0,
     configurable: !0
-}), "function" != typeof String.prototype.endsWith && (String.prototype.endsWith = function(t) {
+}), "function" != typeof String.prototype.endsWith && (String.prototype.endsWith = function (t) {
     return -1 !== this.indexOf(t, this.length - t.length)
-}), OrgChart.prototype._globalMouseDownHandler = function(t, e) {
+}), OrgChart.prototype._globalMouseDownHandler = function (t, e) {
     var r = {
         move: "mousemove",
         up: "mouseup",
         leave: "mouseleave"
     };
     if (-1 != e.type.indexOf("touch") && (1 == e.touches.length ? this._touch = {
-            x: e.touches[0].clientX,
-            y: e.touches[0].clientY
-        } : this._touch = null, r = {
-            move: "touchmove",
-            up: "touchend",
-            touchstart: "touchstart"
-        }), t == e.target) return e.stopPropagation(), e.preventDefault(), void this._mouseDownHandler(t, e, r);
+        x: e.touches[0].clientX,
+        y: e.touches[0].clientY
+    } : this._touch = null, r = {
+        move: "touchmove",
+        up: "touchend",
+        touchstart: "touchstart"
+    }), t == e.target) return e.stopPropagation(), e.preventDefault(), void this._mouseDownHandler(t, e, r);
     for (var i = e.target; i != t;) {
         if (i.hasAttribute("node-id")) return e.stopPropagation(), e.preventDefault(), void this._nodeMouseDownHandler(i, e, r);
         i = i.parentNode
     }
-}, OrgChart.prototype._globalClickHandler = function(t, e) {
+}, OrgChart.prototype._globalClickHandler = function (t, e) {
     if (-1 != e.type.indexOf("touch") && this._touch && 1 == e.changedTouches.length) {
         if (e.changedTouches.length) {
             var r = e.changedTouches[0].clientX,
@@ -1667,7 +1677,7 @@ OrgChart.prototype.load = function(t) {
         if (s.hasAttribute("control-add")) return void this._lonelyButtonHandler();
         s = s.parentNode
     }
-}, OrgChart.prototype._globalContextHandler = function(t, e) {
+}, OrgChart.prototype._globalContextHandler = function (t, e) {
     for (var r = e.target; r != t;) {
         if (r.hasAttribute("node-id")) {
             var i = r.getAttribute("node-id");
@@ -1675,7 +1685,7 @@ OrgChart.prototype.load = function(t) {
         }
         r = r.parentNode
     }
-}, OrgChart.prototype._nodeContextHandler = function(t, e) {
+}, OrgChart.prototype._nodeContextHandler = function (t, e) {
     e.preventDefault(), this.searchUI.hide(), this.nodeMenuUI.hide(), this.nodeContextMenuUI.hide(), this.dragDropMenuUI.hide(), this.menuUI.hide();
     var r = this.get(t),
         i = null;
@@ -1685,7 +1695,7 @@ OrgChart.prototype.load = function(t) {
             this.config.tags[o] && this.config.tags[o].nodeContextMenu && (i = this.config.tags[o].nodeContextMenu)
         }
     this.nodeContextMenuUI.show(e.pageX, e.pageY, t, null, i)
-}, OrgChart.prototype._globalDbClickHandler = function(t, e) {
+}, OrgChart.prototype._globalDbClickHandler = function (t, e) {
     for (var r = e.target; r != t;) {
         if (r.hasAttribute("node-id")) {
             var i = r.getAttribute("node-id");
@@ -1693,7 +1703,7 @@ OrgChart.prototype.load = function(t) {
         }
         r = r.parentNode
     }
-}, OrgChart.prototype._mouseScrollHandler = function(t, e) {
+}, OrgChart.prototype._mouseScrollHandler = function (t, e) {
     var r = this,
         i = !1,
         a = this.config.zoom.speed,
@@ -1701,7 +1711,7 @@ OrgChart.prototype.load = function(t) {
         n = 0,
         l = this.getScale(),
         s = OrgChart._centerPointInPercent(r.getSvg(), e.pageX, e.pageY);
-    var h = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(t) {
+    var h = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (t) {
         setTimeout(t, 20)
     };
     e.preventDefault();
@@ -1709,9 +1719,9 @@ OrgChart.prototype.load = function(t) {
     void 0 === d && (d = -e.detail), d = Math.max(-1, Math.min(1, d)), n += -d * a, i || function t() {
         i = !0;
         var e = (n - l) / o;
-        0 < e ? e++ : e--, l += e, r.zoom(1 - e / 12 / 50, s), parseInt(l) == parseInt(n) ? i = !1 : h(t)
+        0 < e ? e++ : e-- , l += e, r.zoom(1 - e / 12 / 50, s), parseInt(l) == parseInt(n) ? i = !1 : h(t)
     }()
-}, OrgChart.prototype._nodeMouseDownHandler = function(t, e, n) {
+}, OrgChart.prototype._nodeMouseDownHandler = function (t, e, n) {
     if (this.config.enableDragDrop) {
         var r = OrgChart._getClientXY(e),
             i = t.getAttribute("node-id"),
@@ -1736,13 +1746,13 @@ OrgChart.prototype.load = function(t) {
                     o = OrgChart._getTransform(a);
                 f += o[4], u += o[5], p[4] = f, p[5] = u, m.setAttribute("transform", "matrix(" + p.toString() + ")")
             }
-            var O = function(t, e) {
-                    if (null != t) {
-                        var r = d.getBGNode(t);
-                        r.isChildOfGroup && (d.getNodeElement(r._groupParentNodeId).style.opacity = 1), e.style.opacity = 1
-                    }
-                },
-                v = function(t) {
+            var O = function (t, e) {
+                if (null != t) {
+                    var r = d.getBGNode(t);
+                    r.isChildOfGroup && (d.getNodeElement(r._groupParentNodeId).style.opacity = 1), e.style.opacity = 1
+                }
+            },
+                v = function (t) {
                     var e = OrgChart._getClientXY(t),
                         r = document.elementFromPoint(e.x, e.y);
                     if (O(s, h), h = s = null, d.config.enableDragDrop)
@@ -1764,11 +1774,11 @@ OrgChart.prototype.load = function(t) {
                         n = (e.y - g.y) / C;
                     p[4] = f + o, p[5] = u + n, m.setAttribute("transform", "matrix(" + p.toString() + ")")
                 },
-                y = function(t) {
-                    if (c.removeEventListener(n.move, v), c.removeEventListener(n.up, y), n.leave && c.removeEventListener(n.leave, y), l.id == s || l.isChildOfGroup && l._groupParentNodeId == s || null == s) return O(s, h), c.removeChild(m), void(d._gragStartedId = null);
+                y = function (t) {
+                    if (c.removeEventListener(n.move, v), c.removeEventListener(n.up, y), n.leave && c.removeEventListener(n.leave, y), l.id == s || l.isChildOfGroup && l._groupParentNodeId == s || null == s) return O(s, h), c.removeChild(m), void (d._gragStartedId = null);
                     var e = d.getBGNode(s);
-                    if (e.isChildOfGroup && l.isChildOfGroup && e._groupParentNodeId == l._groupParentNodeId) return O(s, h), c.removeChild(m), void(d._gragStartedId = null);
-                    if (!1 === OrgChart.events.publish("drop", [d, l.id, e.id])) return O(s, h), c.removeChild(m), void(d._gragStartedId = null);
+                    if (e.isChildOfGroup && l.isChildOfGroup && e._groupParentNodeId == l._groupParentNodeId) return O(s, h), c.removeChild(m), void (d._gragStartedId = null);
+                    if (!1 === OrgChart.events.publish("drop", [d, l.id, e.id])) return O(s, h), c.removeChild(m), void (d._gragStartedId = null);
                     if (null == d.config.dragDropMenu || l.isGroup && !e.isGroup) d._canUpdateLink(l.id, s) ? d.linkNode(l.id, s) : c.removeChild(m);
                     else if (d._canUpdateLink(l.id, s)) {
                         var r = OrgChart._getOffsetXY(d.element, t),
@@ -1785,7 +1795,7 @@ OrgChart.prototype.load = function(t) {
             c.addEventListener(n.move, v), c.addEventListener(n.up, y), n.leave && c.addEventListener(n.leave, y)
         }
     }
-}, OrgChart.prototype._resizeHandler = function(t, e) {
+}, OrgChart.prototype._resizeHandler = function (t, e) {
     var r = this.getViewBox(),
         i = this.getSvg(),
         a = i.getAttribute("width"),
@@ -1794,13 +1804,13 @@ OrgChart.prototype.load = function(t) {
         l = o / r[3],
         s = l < n ? l : n;
     i.setAttribute("width", this.width()), i.setAttribute("height", this.height()), r[2] = this.width() / s, r[3] = this.height() / s, this.setViewBox(r), this.xScrollUI.create(this.width()), this.yScrollUI.create(this.height()), this._draw(!1, OrgChart.action.resize)
-}, OrgChart.prototype._nodeDbClickHandler = function(t, e) {
+}, OrgChart.prototype._nodeDbClickHandler = function (t, e) {
     if (!1 === OrgChart.events.publish("dbclick", [this, this.get(t)])) return !1;
     this._commonClickHandler(t, e, this.config.nodeMouseDbClick)
-}, OrgChart.prototype._nodeClickHandler = function(t, e) {
+}, OrgChart.prototype._nodeClickHandler = function (t, e) {
     if (!1 === OrgChart.events.publish("click", [this, this.get(t)])) return !1;
     this._commonClickHandler(t, e, this.config.nodeMouseClick)
-}, OrgChart.prototype._commonClickHandler = function(t, e, r) {
+}, OrgChart.prototype._commonClickHandler = function (t, e, r) {
     this.searchUI.hide(), this.nodeMenuUI.hide(), this.nodeContextMenuUI.hide(), this.dragDropMenuUI.hide(), this.menuUI.hide();
     var i = this.getBGNode(t);
     if (r == OrgChart.action.expandCollapse) {
@@ -1814,9 +1824,9 @@ OrgChart.prototype.load = function(t) {
         this.ripple(i.id, e.clientX, e.clientY)
     }
     r == OrgChart.action.edit && (this.editUI.show(i.id), this.ripple(i.id, e.clientX, e.clientY)), r == OrgChart.action.details && (this.editUI.show(i.id, !0), this.ripple(i.id, e.clientX, e.clientY))
-}, OrgChart.prototype._menuHandlerMouseDownHandler = function(t, e) {
+}, OrgChart.prototype._menuHandlerMouseDownHandler = function (t, e) {
     e.stopPropagation(), e.preventDefault()
-}, OrgChart.prototype._nodeMenuClickHandler = function(t, e, r) {
+}, OrgChart.prototype._nodeMenuClickHandler = function (t, e, r) {
     this.searchUI.hide(), this.nodeMenuUI.hide(), this.nodeContextMenuUI.hide(), this.dragDropMenuUI.hide(), this.menuUI.hide();
     var i = this.getBGNode(t),
         a = null;
@@ -1826,18 +1836,18 @@ OrgChart.prototype.load = function(t) {
             this.config.tags[n] && this.config.tags[n].nodeMenu && (a = this.config.tags[n].nodeMenu)
         }
     this.nodeMenuUI.showStickIn(e, t, null, a)
-}, OrgChart.prototype._exportMenuClickHandler = function(t, e) {
+}, OrgChart.prototype._exportMenuClickHandler = function (t, e) {
     e.stopPropagation(), e.preventDefault(), this.nodeMenuUI.hide(), this.nodeContextMenuUI.hide(), this.dragDropMenuUI.hide(), this.menuUI.show(t.offsetLeft, t.offsetTop)
-}, OrgChart.prototype._lonelyButtonHandler = function() {
+}, OrgChart.prototype._lonelyButtonHandler = function () {
     var t = new OrgChart.node(OrgChart._randomId(), null, [], this.config.template);
     !1 !== this.addNode(t, !0) && this.center(t.id)
-}, OrgChart.prototype._move = function(t, e, r) {
+}, OrgChart.prototype._move = function (t, e, r) {
     r[0] = e, r[1] = t, this.setViewBox(r), this.xScrollUI.setPosition(), this.yScrollUI.setPosition()
-}, void 0 === OrgChart && (OrgChart = {}), OrgChart.node = function(t, e, r, i) {
+}, void 0 === OrgChart && (OrgChart = {}), OrgChart.node = function (t, e, r, i) {
     this.templateName = i, this.id = t, this.pid = e, this.x = null, this.y = null, this.level = null, this.leftNeighbor = null, this.rightNeighbor = null, this._prelim = 0, this._modifier = 0, this.children = [], this.parent = null, this.isAssistant = !1, this.tags = r, this.collapsedChildrenIds = [], this.childrenIds = [];
     var a = OrgChart.t(this.templateName);
     this.w = a && a.size ? a.size[0] : 0, this.h = a && a.size ? a.size[1] : 0, this.groupState = OrgChart.EXPAND, this.isChildOfGroup = !1, this.isGroup = !1, this._groupParentNodeId = null, this._groupSettings = null, this.bgnodes = []
-}, OrgChart.prototype._mouseDownHandler = function(t, e, r) {
+}, OrgChart.prototype._mouseDownHandler = function (t, e, r) {
     var s = this;
     document.body.style.mozUserSelect = document.body.style.webkitUserSelect = document.body.style.userSelect = "none", this.editUI.hide(), this.searchUI.hide(), this.nodeMenuUI.hide(), this.nodeContextMenuUI.hide(), this.dragDropMenuUI.hide(), this.menuUI.hide();
     var h = this.getViewBox(),
@@ -1864,33 +1874,33 @@ OrgChart.prototype.load = function(t) {
             transform: [0, 0, 0, 0, l, g],
             opacity: 0
         }, {
-            transform: [1 / d, 0, 0, 1 / d, l, g],
-            opacity: 1
-        }, 300, OrgChart.anim.outBack)
+                transform: [1 / d, 0, 0, 1 / d, l, g],
+                opacity: 1
+            }, 300, OrgChart.anim.outBack)
     }
-    var p = function(t) {
-            var e = OrgChart._getClientTouchesXY(t, 0);
-            if (c && "pan" == c.type) {
-                s._hideBeforeAnimation(), c.diffX = e.x - c.x0, c.diffY = e.y - c.y0;
-                var r = -c.diffY / d + c.viewBoxTop,
-                    i = -c.diffX / d + c.viewBoxLeft;
-                s._move(r, i, h)
-            } else if (c && "pinch" == c.type) {
-                var a = OrgChart._getClientTouchesXY(t, 1),
-                    o = Math.sqrt((e.x - a.x) * (e.x - a.x) + (e.y - a.y) * (e.y - a.y)),
-                    n = 1 + (o - c.dist) / (c.dist / 100) / 100;
-                c.dist = o;
-                var l = OrgChart._pinchMiddlePointInPercent(s.element, s.width(), s.height(), t);
-                s.zoom(n, l)
-            }
-        },
-        f = function() {
-            "pan" == c.type && s.config.sticky ? OrgChart._moveToBoundaryArea(t, s.getViewBox(), s.response.boundary, function() {
+    var p = function (t) {
+        var e = OrgChart._getClientTouchesXY(t, 0);
+        if (c && "pan" == c.type) {
+            s._hideBeforeAnimation(), c.diffX = e.x - c.x0, c.diffY = e.y - c.y0;
+            var r = -c.diffY / d + c.viewBoxTop,
+                i = -c.diffX / d + c.viewBoxLeft;
+            s._move(r, i, h)
+        } else if (c && "pinch" == c.type) {
+            var a = OrgChart._getClientTouchesXY(t, 1),
+                o = Math.sqrt((e.x - a.x) * (e.x - a.x) + (e.y - a.y) * (e.y - a.y)),
+                n = 1 + (o - c.dist) / (c.dist / 100) / 100;
+            c.dist = o;
+            var l = OrgChart._pinchMiddlePointInPercent(s.element, s.width(), s.height(), t);
+            s.zoom(n, l)
+        }
+    },
+        f = function () {
+            "pan" == c.type && s.config.sticky ? OrgChart._moveToBoundaryArea(t, s.getViewBox(), s.response.boundary, function () {
                 s._draw(!0, OrgChart.action.pan)
             }) : "pan" != c.type || s.config.sticky || s._draw(!0, OrgChart.action.pan), c = null, o.style.display = "none", t.removeEventListener(r.move, p), t.removeEventListener(r.up, f), r.leave && t.removeEventListener(r.leave, f), r.touchstart && t.removeEventListener(r.touchstart, f)
         };
     t.addEventListener(r.move, p), t.addEventListener(r.up, f), r.leave && t.addEventListener(r.leave, f), r.touchstart && t.addEventListener(r.touchstart, f)
-}, void 0 === OrgChart && (OrgChart = {}), void 0 === OrgChart.remote && (OrgChart.remote = {}), OrgChart.LIMIT_NODES = !0, OrgChart.remote._fromResDTO = function(t, e, r, i) {
+}, void 0 === OrgChart && (OrgChart = {}), void 0 === OrgChart.remote && (OrgChart.remote = {}), OrgChart.LIMIT_NODES = !0, OrgChart.remote._fromResDTO = function (t, e, r, i) {
     var a = e[t.id];
     if (t.x = a.p[0], t.y = a.p[1], t.level = a.p[2], null != a.l) {
         var o = OrgChart.remote._find(i, a.l);
@@ -1901,21 +1911,21 @@ OrgChart.prototype.load = function(t) {
         t.rightNeighbor = n
     }
     for (var l = 0; l < t.children.length; l++) OrgChart.remote._fromResDTO(t.children[l], e, r, i)
-}, OrgChart.remote._find = function(t, r) {
+}, OrgChart.remote._find = function (t, r) {
     var i;
     return t.some(function t(e) {
         return e.id === r ? (i = e, !0) : e.children.some(t)
     }), i
-}, OrgChart.remote._toReqDTO = function(t, e, r) {
+}, OrgChart.remote._toReqDTO = function (t, e, r) {
     var i = {
         p: [t.id, null != t.parent ? t.parent.id : null, t.w, t.h]
     };
     0 < t.children.length && (i.c = OrgChart.remote._convertToIdArray(t.children)), null != t.layout && 0 != t.layout && (i.l = t.layout), t.isAssistant && (i.a = 1), t.templateName != r && (i.t = t.templateName), e.push(i);
     for (var a = 0; a < t.children.length; a++) OrgChart.remote._toReqDTO(t.children[a], e, r)
-}, OrgChart.remote._convertToIdArray = function(t) {
+}, OrgChart.remote._convertToIdArray = function (t) {
     for (var e = [], r = 0; r < t.length; r++) e.push(t[r].id);
     return e
-}, OrgChart.remote._walk = function(r, t, i) {
+}, OrgChart.remote._walk = function (r, t, i) {
     for (var e = [], a = [], o = [t.orientation, t.levelSeparation, t.mixedHierarchyNodesSeparation, t.subtreeSeparation, t.siblingSeparation, t.template], n = 0; n < r.length; n++) a.push(r[n].id), OrgChart.remote._toReqDTO(r[n], e, t.template);
     var l = {
         n: e,
@@ -1923,12 +1933,12 @@ OrgChart.prototype.load = function(t) {
         r: a,
         v: "6.0.0"
     };
-    OrgChart.LIMIT_NODES || (l.l = !0), null != OrgChart.remote._fromReqDTO ? OrgChart.remote._fromReqDTO(l.n, l.r, l.c, function(t) {
+    OrgChart.LIMIT_NODES || (l.l = !0), null != OrgChart.remote._fromReqDTO ? OrgChart.remote._fromReqDTO(l.n, l.r, l.c, function (t) {
         for (var e = 0; e < r.length; e++) OrgChart.remote._fromResDTO(r[e], t, 0, r);
         i()
-    }) : (l = JSON.stringify(l), OrgChart.idb.read(l, function(t, e) {
-        t ? OrgChart.remote._proceed(r, e.res, i) : OrgChart.remote._findRegion(function(t) {
-            OrgChart._ajax(t, "post", l, "json", function(t) {
+    }) : (l = JSON.stringify(l), OrgChart.idb.read(l, function (t, e) {
+        t ? OrgChart.remote._proceed(r, e.res, i) : OrgChart.remote._findRegion(function (t) {
+            OrgChart._ajax(t, "post", l, "json", function (t) {
                 t.error ? i(2) : (OrgChart.remote._proceed(r, t, i), OrgChart.idb.write({
                     id: l,
                     res: t
@@ -1936,25 +1946,25 @@ OrgChart.prototype.load = function(t) {
             })
         })
     }))
-}, OrgChart.remote._proceed = function(t, e, r) {
+}, OrgChart.remote._proceed = function (t, e, r) {
     if ("string" == typeof e && (e = JSON.parse(e)), e.limit && 1 == e.limit) r(e.limit);
     else {
         for (var i = 0; i < t.length; i++) OrgChart.remote._fromResDTO(t[i], e, 0, t);
         r()
     }
-}, OrgChart.remote.getItem = function(t) {
+}, OrgChart.remote.getItem = function (t) {
     return OrgChart._browser().msie || OrgChart._browser().edge ? OrgChart.remote[t] : localStorage.getItem(t)
-}, OrgChart.remote.setItem = function(t, e) {
+}, OrgChart.remote.setItem = function (t, e) {
     OrgChart._browser().msie || OrgChart._browser().edge ? OrgChart.remote[t] = e : localStorage.setItem(t, e)
-}, OrgChart.remote._findRegion = function(r) {
+}, OrgChart.remote._findRegion = function (r) {
     var t = OrgChart.remote.getItem("funcUrl");
     if (t) r(t);
     else {
         for (var i = ["au-e", "au-se", "brs", "ca", "ca-e", "easia", "eus-2", "eus", "fr", "ind", "jp-e", "jp-w", "kr", "n-eu", "se-asia", "s-ind", "uk-s", "uk-w", "us", "us-n-c", "us-s-c", "w-c-us", "w-eu", "w-ind", "w-us-2", "wus"], a = [], o = 0; o < i.length; o++) a.push(new XMLHttpRequest);
-        for (o = 0; o < i.length; o++) ! function() {
+        for (o = 0; o < i.length; o++) ! function () {
             var e = "https://" + i[o] + "-balkangraph.azurewebsites.net/api/OrgChartJS",
                 t = a[o];
-            t.onreadystatechange = function() {
+            t.onreadystatechange = function () {
                 if (4 == this.readyState && 200 == this.status) {
                     OrgChart.remote.setItem("funcUrl", e), r(e);
                     for (var t = 0; t < a.length; t++) a[t].abort()
@@ -1962,9 +1972,9 @@ OrgChart.prototype.load = function(t) {
             }, t.open("GET", e, !0), t.send()
         }()
     }
-}, OrgChart.searchUI = function() {}, OrgChart.searchUI.prototype.init = function(t) {
+}, OrgChart.searchUI = function () { }, OrgChart.searchUI.prototype.init = function (t) {
     this.obj = t
-}, OrgChart.searchUI.prototype.hide = function() {
+}, OrgChart.searchUI.prototype.hide = function () {
     var t = this.obj.element.querySelector('[data-id="search"]');
     if (t) {
         var e = t.querySelector('[data-id="cell-1"]'),
@@ -1973,73 +1983,73 @@ OrgChart.prototype.load = function(t) {
         r.value = "", i.innerHTML = "", "none" != e.style.display && "none" != t.style.display && OrgChart.anim(e, {
             opacity: e.style.opacity
         }, {
-            opacity: 0
-        }, 200, OrgChart.anim.inOutSin, function() {
-            e.style.display = "none", OrgChart.anim(t, {
-                width: 300,
-                opacity: 1
-            }, {
-                width: 50,
                 opacity: 0
-            }, 300, OrgChart.anim.inBack, function() {
-                t.style.display = "none"
+            }, 200, OrgChart.anim.inOutSin, function () {
+                e.style.display = "none", OrgChart.anim(t, {
+                    width: 300,
+                    opacity: 1
+                }, {
+                        width: 50,
+                        opacity: 0
+                    }, 300, OrgChart.anim.inBack, function () {
+                        t.style.display = "none"
+                    })
             })
-        })
     }
-}, OrgChart.searchUI.prototype.show = function(t) {
+}, OrgChart.searchUI.prototype.show = function (t) {
     var e = this.obj.element.querySelector('[data-id="search"]'),
         r = e.querySelector('[data-id="cell-1"]');
     r.style.display = "none", e.style.width = "50px", e.style.display = "block", e.style.opacity = 0, OrgChart.anim(e, {
         width: 50,
         opacity: 0
     }, {
-        width: 300,
-        opacity: 1
-    }, 300, OrgChart.anim.outBack, function() {
-        r.style.display = "inherit", r.style.opacity = 0, OrgChart.anim(r, {
-            opacity: 0
-        }, {
+            width: 300,
             opacity: 1
-        }, 200, OrgChart.anim.inOutSin), t && t()
-    })
-}, OrgChart.searchUI.prototype.addSearchControl = function() {
+        }, 300, OrgChart.anim.outBack, function () {
+            r.style.display = "inherit", r.style.opacity = 0, OrgChart.anim(r, {
+                opacity: 0
+            }, {
+                    opacity: 1
+                }, 200, OrgChart.anim.inOutSin), t && t()
+        })
+}, OrgChart.searchUI.prototype.addSearchControl = function () {
     var r = this,
         t = document.createElement("div");
     t.innerHTML = OrgChart.searchUI.createSearchIcon(this.obj.config.padding), t.innerHTML += OrgChart.searchUI.createInputField(this.obj.config.padding), this.obj.element.appendChild(t);
     var e = this.obj.element.querySelector('[data-id="search-icon"]'),
         i = this.obj.element.querySelector('[data-id="search"]'),
         a = this.obj.element.getElementsByTagName("input")[0];
-    e.addEventListener("mouseover", function() {
+    e.addEventListener("mouseover", function () {
         r.show()
-    }), i.addEventListener("mouseleave", function() {
+    }), i.addEventListener("mouseleave", function () {
         document.activeElement != a && r.hide()
-    }), i.addEventListener("click", function() {
+    }), i.addEventListener("click", function () {
         a.focus()
-    }), a.addEventListener("keyup", function(t) {
+    }), a.addEventListener("keyup", function (t) {
         40 == t.keyCode ? o() : 38 == t.keyCode ? n() : 13 == t.keyCode ? l() : 27 == t.keyCode ? r.hide() : r._serverSearch(this.value)
     });
-    var o = function() {
-            var t = i.querySelectorAll("[data-search-item-id]"),
-                e = i.querySelector('[data-selected="yes"]');
-            null == e && 0 < t.length ? (t[0].setAttribute("data-selected", "yes"), t[0].style.backgroundColor = "#F0F0F0") : 0 < t.length && e.nextSibling && (e.setAttribute("data-selected", "no"), e.style.backgroundColor = "inherit", e.nextSibling.setAttribute("data-selected", "yes"), e.nextSibling.style.backgroundColor = "#F0F0F0")
-        },
-        n = function() {
+    var o = function () {
+        var t = i.querySelectorAll("[data-search-item-id]"),
+            e = i.querySelector('[data-selected="yes"]');
+        null == e && 0 < t.length ? (t[0].setAttribute("data-selected", "yes"), t[0].style.backgroundColor = "#F0F0F0") : 0 < t.length && e.nextSibling && (e.setAttribute("data-selected", "no"), e.style.backgroundColor = "inherit", e.nextSibling.setAttribute("data-selected", "yes"), e.nextSibling.style.backgroundColor = "#F0F0F0")
+    },
+        n = function () {
             var t = i.querySelectorAll("[data-search-item-id]"),
                 e = i.querySelector('[data-selected="yes"]');
             null == e && 0 < t.length ? (t[t.length - 1].setAttribute("data-selected", "yes"), t[t.length - 1].style.backgroundColor = "#F0F0F0") : 0 < t.length && e.previousSibling && (e.setAttribute("data-selected", "no"), e.style.backgroundColor = "inherit", e.previousSibling.setAttribute("data-selected", "yes"), e.previousSibling.style.backgroundColor = "#F0F0F0")
         },
-        l = function() {
+        l = function () {
             var t = i.querySelector('[data-selected="yes"]').getAttribute("data-search-item-id"),
                 e = OrgChart.events.publish("searchclick", [r.obj, t]);
             null != e && 1 != e || r.obj.center(t)
         }
-}, OrgChart.searchUI.prototype.find = function(e) {
+}, OrgChart.searchUI.prototype.find = function (e) {
     var r = this;
-    this.show(function() {
+    this.show(function () {
         var t = r.obj.element.getElementsByTagName("input")[0];
         t.value = e, r._serverSearch(e), t.focus()
     })
-}, OrgChart.searchUI.prototype._serverSearch = function(t) {
+}, OrgChart.searchUI.prototype._serverSearch = function (t) {
     for (var e = this, r = this.obj.element.querySelector('[data-id="container"]'), i = this.obj.element.querySelector('[data-id="search"]'), a = this.obj.server.find(t), o = "", n = 0; n < a.length; n++) {
         var l = a[n],
             s = "";
@@ -2047,23 +2057,23 @@ OrgChart.prototype.load = function(t) {
     }
     r.innerHTML = o;
     var h = i.querySelectorAll("[data-search-item-id]");
-    for (n = 0; n < h.length; n++) h[n].addEventListener("click", function() {
+    for (n = 0; n < h.length; n++) h[n].addEventListener("click", function () {
         var t = OrgChart.events.publish("searchclick", [e.obj, this.getAttribute("data-search-item-id")]);
         null != t && 1 != t || e.obj.center(this.getAttribute("data-search-item-id"))
-    }), h[n].addEventListener("mouseover", function() {
+    }), h[n].addEventListener("mouseover", function () {
         this.setAttribute("data-selected", "yes"), this.style.backgroundColor = "#F0F0F0"
-    }), h[n].addEventListener("mouseleave", function() {
+    }), h[n].addEventListener("mouseleave", function () {
         this.style.backgroundColor = "inherit", this.setAttribute("data-selected", "no")
     })
-}, OrgChart.searchUI.createInputField = function(t) {
+}, OrgChart.searchUI.createInputField = function (t) {
     return '<div data-id="search" style="display:none;border-radius: 20px 20px;padding:5px; box-shadow: #808080 0px 1px 2px 0px; font-family:Roboto-Regular, Helvetica;color:#7a7a7a;font-size:14px;border:1px solid #d7d7d7;width:300px;position:absolute;top:' + t + "px;left:" + t + 'px;background-color:#ffffff;"><div><div style="float:left;">' + OrgChart.icon.search(32, 32) + '</div><div data-id="cell-1" style="float:right; width:83%"><input placeholder="' + OrgChart.SEARCH_PLACEHOLDER + '" style="font-size:14px;font-family:Roboto-Regular, Helvetica;color:#7a7a7a;width:100%;border:none;outline:none; padding-top:10px;" type="text" /></div><div style="clear:both;"></div></div><div data-id="container"></div></div>'
-}, OrgChart.searchUI.createItem = function(t, e) {
+}, OrgChart.searchUI.createItem = function (t, e) {
     return '<div data-search-item-id="' + e.id + '" style="border-top:1px solid #d7d7d7; padding: 7px 0 7px 0;cursor:pointer;"><div style="float:left;">' + t + '</div><div style="float:right; width:83%"><div style="overflow:hidden; white-space: nowrap;text-overflow:ellipsis;text-align:left;">' + e.textId + '</div><div style="overflow:hidden; white-space: nowrap;text-overflow:ellipsis;text-align:left;">' + e.textInNode + '</div></div><div style="clear:both;"></div></div>'
-}, OrgChart.searchUI.createSearchIcon = function(t) {
+}, OrgChart.searchUI.createSearchIcon = function (t) {
     return '<div data-id="search-icon" style="padding:5px; position:absolute;top:' + t + "px;left:" + t + 'px;border:1px solid transparent;"><div><div style="float:left;">' + OrgChart.icon.search(32, 32) + "</div></div></div>"
-}, void 0 === OrgChart && (OrgChart = {}), OrgChart.server = function(t) {
+}, void 0 === OrgChart && (OrgChart = {}), OrgChart.server = function (t) {
     this.config = t, this.visibleNodes = null, this.viewBox = null, this.action = null, this.actionParams = null, this.groupChildren = {}, this.nodes = {}, this.oldNodes = {}, this.maxX = null, this.maxY = null, this.minX = null, this.minY = null, this.root = null
-}, OrgChart.server.prototype.read = function(t, r, i, e, a, o, n, l) {
+}, OrgChart.server.prototype.read = function (t, r, i, e, a, o, n, l) {
     var s = this;
     this.viewBox = e, this.action = a, this.actionParams = o;
     var h = this.maxX,
@@ -2076,19 +2086,19 @@ OrgChart.prototype.load = function(t) {
     if (t) {
         var C = OrgChart.server._getResponse(r, i, this.visibleNodes, this.config, h, d, c, g, this.viewBox, p, this.action, this.actionParams, f, u, this.oldNodes);
         a != OrgChart.action.exporting && (this.maxX = h, this.maxY = d, this.minX = c, this.minY = g, this.root = p, this.nodes = f, this.groupChildren = u, this.visibleNodes = C.visibleNodes), n(C)
-    } else this.oldNodes = f || null, this._read(function(t) {
+    } else this.oldNodes = f || null, this._read(function (t) {
         h = t.maxX, d = t.maxY, c = t.minX, g = t.minY, p = t.roots[0], f = t.nodes, u = t.groupChildren;
         var e = OrgChart.server._getResponse(r, i, s.visibleNodes, s.config, h, d, c, g, s.viewBox, p, s.action, s.actionParams, f, u, s.oldNodes);
         e.notif = t.limit, a != OrgChart.action.exporting && (s.maxX = h, s.maxY = d, s.minX = c, s.minY = g, s.root = p, s.nodes = f, s.groupChildren = u, s.visibleNodes = e.visibleNodes), n(e)
     }, l)
-}, OrgChart.server.prototype._read = function(a, t) {
+}, OrgChart.server.prototype._read = function (a, t) {
     var o = this,
         n = OrgChart.server._createNodes(this.config, this.action, this.actionParams, this.oldNodes);
     t(n);
     var l = n.nodes,
         s = n.roots,
         e = OrgChart.remote;
-    null == e && (e = OrgChart.local), e._walk(s, this.config, function(t) {
+    null == e && (e = OrgChart.local), e._walk(s, this.config, function (t) {
         OrgChart.server._doNotChangePositionOfClickedNodeIfAny(s, l, o.action, o.actionParams, o.oldNodes, o.config.orientation);
         var e = {
             minX: null,
@@ -2111,15 +2121,15 @@ OrgChart.prototype.load = function(t) {
             limit: t
         })
     })
-}, OrgChart.server.prototype.find = function(t) {
+}, OrgChart.server.prototype.find = function (t) {
     var r = this;
     if (null == t || null == t || "" == t) return [];
     t = OrgChart.accentFold(t);
-    for (var e, i, a, o = function(t) {
-            for (var e in r.config.nodeBinding)
-                if (r.config.nodeBinding[e] == t) return !0;
-            return !1
-        }, n = [], l = [], s = 0; s < this.config.nodes.length; s++) {
+    for (var e, i, a, o = function (t) {
+        for (var e in r.config.nodeBinding)
+            if (r.config.nodeBinding[e] == t) return !0;
+        return !1
+    }, n = [], l = [], s = 0; s < this.config.nodes.length; s++) {
         var h = this.config.nodes[s];
         for (var d in h) {
             var c = h[d];
@@ -2133,7 +2143,7 @@ OrgChart.prototype.load = function(t) {
             })
         }
     }
-    n.sort(function(t, e) {
+    n.sort(function (t, e) {
         return 1 == t.isId && 0 == e.isId ? -1 : 1 == e.isId && 0 == t.isId ? 1 : 1 == t.isNodeParam && 0 == e.isNodeParam ? -1 : 1 == e.isNodeParam && 0 == t.isNodeParam ? 1 : t.weight < e.weight ? -1 : t.weight > e.weight ? 1 : 0
     });
     for (s = 0; s < n.length && 10 != s; s++) {
@@ -2166,7 +2176,7 @@ OrgChart.prototype.load = function(t) {
         }
     }
     return l
-}, void 0 === OrgChart && (OrgChart = {}), OrgChart.server._createNodes = function(t, e, r, i) {
+}, void 0 === OrgChart && (OrgChart = {}), OrgChart.server._createNodes = function (t, e, r, i) {
     for (var a = t.nodes, o = {}, n = [], l = [], s = [], h = {}, d = !1, c = 0; c < a.length; c++) {
         var g = a[c],
             p = Array.isArray(g.tags) ? g.tags.slice(0) : [],
@@ -2181,11 +2191,11 @@ OrgChart.prototype.load = function(t) {
             v.isChildOfGroup = !0, v._groupParentNodeId = f.name, o[f.name].bgnodes.push(v), 1 == v.isAssistant && (o[f.name].isAssistant = !0), h[v.id] = f.name, d = !0
         } else null != t.orderBy && (v.order = g[t.orderBy]), o[g.id] = v, n.push(g.id)
     }
-    if (null != t.orderBy && n.sort(function(t, e) {
-            var r = o[t].order,
-                i = o[e].order;
-            return "number" == typeof r || "number" == typeof i ? (null == r && (r = -1), null == i && (i = -1), r - i) : "string" == typeof r || "string" == typeof i ? (null == r && (r = ""), null == i && (i = ""), r.localeCompare(i)) : void 0
-        }), d)
+    if (null != t.orderBy && n.sort(function (t, e) {
+        var r = o[t].order,
+            i = o[e].order;
+        return "number" == typeof r || "number" == typeof i ? (null == r && (r = -1), null == i && (i = -1), r - i) : "string" == typeof r || "string" == typeof i ? (null == r && (r = ""), null == i && (i = ""), r.localeCompare(i)) : void 0
+    }), d)
         for (c = 0; c < n.length; c++) {
             h[(v = o[n[c]]).pid] && v.id != h[v.pid] && (v.pid = h[v.pid])
         }
@@ -2194,7 +2204,7 @@ OrgChart.prototype.load = function(t) {
         var O = n[c],
             v = o[O],
             y = i ? i[O] : null;
-        if (OrgChart.server._isNotNullEmptyUndefined(v.pid))(H = o[v.pid]) ? ((v.parent = H).children.push(v), H.childrenIds.push(v.id)) : (v.pid = null, v.parent = null, v.isAssistant = !1, l.push(v));
+        if (OrgChart.server._isNotNullEmptyUndefined(v.pid)) (H = o[v.pid]) ? ((v.parent = H).children.push(v), H.childrenIds.push(v.id)) : (v.pid = null, v.parent = null, v.isAssistant = !1, l.push(v));
         else v.isAssistant = !1, l.push(v);
         e == OrgChart.action.exporting && null != r.id && (l = [o[r.id]]), y ? (v.state = y.state, v.state == OrgChart.COLLAPSE && m.push(v.id), OrgChart.server._setNodeGroupState(v, y.groupState, t.orientation)) : OrgChart.server._setNodeGroupState(v, OrgChart.EXPAND, t.orientation), OrgChart.server._initStates(v, o, e, t, r, m), OrgChart.server._initGroupStates(v, o, e, t, r)
     }
@@ -2243,7 +2253,7 @@ OrgChart.prototype.load = function(t) {
             }
             var N = 1;
             for (b = k.length - 1; 0 <= b; b--) {
-                if (b % 2 && b != k.length - 1)(J = new OrgChart.node(H.id + "_split_" + N, null, [], "split")).isAssistant = !0, o[J.id] = J, k.splice(b, 0, J.id), N++;
+                if (b % 2 && b != k.length - 1) (J = new OrgChart.node(H.id + "_split_" + N, null, [], "split")).isAssistant = !0, o[J.id] = J, k.splice(b, 0, J.id), N++;
                 else b % 2 && k.splice(b, 0, _.id)
             }
             for (b = 0; b < k.length; b += 3) {
@@ -2315,7 +2325,7 @@ OrgChart.prototype.load = function(t) {
     if (t.layout == OrgChart.tree || t.layout == OrgChart.treeRightOffset || t.layout == OrgChart.treeLeftOffset) {
         var q = [];
         for (c = 0; c < n.length; c++) {
-            if (0 == (v = o[n[c]]).childrenIds.length && !v.isAssistant && "split" != v.templateName)(H = v.parent) && -1 == q.indexOf(H.id) && q.push(H.id)
+            if (0 == (v = o[n[c]]).childrenIds.length && !v.isAssistant && "split" != v.templateName) (H = v.parent) && -1 == q.indexOf(H.id) && q.push(H.id)
         }
         for (c = 0; c < q.length; c++) {
             H = o[q[c]], _ = new OrgChart.node(H.id + "_split_0", H.id, [], "split");
@@ -2340,7 +2350,7 @@ OrgChart.prototype.load = function(t) {
             }
             for (N = 1, b = V.length - 1; 0 <= b; b--) {
                 var J;
-                if (b % 2 && b != V.length - 1)(J = new OrgChart.node(H.id + "_split_" + N, null, [], "split")).layout = OrgChart.tree, o[J.id] = J, V.splice(b, 0, J.id), N++;
+                if (b % 2 && b != V.length - 1) (J = new OrgChart.node(H.id + "_split_" + N, null, [], "split")).layout = OrgChart.tree, o[J.id] = J, V.splice(b, 0, J.id), N++;
                 else b % 2 && V.splice(b, 0, _.id)
             }
             for (b = 0; b < V.length; b += 3) {
@@ -2356,22 +2366,22 @@ OrgChart.prototype.load = function(t) {
         roots: l,
         groupChildren: h
     }
-}, OrgChart.server._mixedLayoutAllNodes = function(t) {
+}, OrgChart.server._mixedLayoutAllNodes = function (t) {
     if (OrgChart.MIXED_LAYOUT_ALL_NODES) return !0;
     for (var e = t.children.length - 1; 0 <= e; e--) {
         var r = t.children[e];
         if (0 < r.childrenIds.length || r.isAssistant || "split" == r.templateName) return !1
     }
     return !0
-}, OrgChart.server._isSplit = function(t) {
+}, OrgChart.server._isSplit = function (t) {
     return !!t && "split" == t.templateName
-}, OrgChart.server._getRealParent = function(t) {
+}, OrgChart.server._getRealParent = function (t) {
     if (!t) return null;
     if (!t.parent) return null;
     if ("split" != t.parent.templateName) return t.parent;
     for (var e = t.parent; e && "split" == e.templateName;) e = e.parent;
     return e
-}, OrgChart.server._initStates = function(t, e, r, i, a, o) {
+}, OrgChart.server._initStates = function (t, e, r, i, a, o) {
     if (r == OrgChart.action.init && t) {
         if (t.tags)
             for (var n = 0; n < t.tags.length; n++) {
@@ -2388,7 +2398,7 @@ OrgChart.prototype.load = function(t) {
         }
         t.state = a.state
     }
-}, OrgChart.server._expandCollapseToLevel = function(t, e, r, i, a, o) {
+}, OrgChart.server._expandCollapseToLevel = function (t, e, r, i, a, o) {
     if (i.collapse.level) {
         var n = 0;
         if (!i.roots || -1 == i.roots.indexOf(t.id)) {
@@ -2414,10 +2424,10 @@ OrgChart.prototype.load = function(t) {
                     }
                     s || (s = -1 != i.expand.nodes.indexOf(t.id))
                 } else s = -1 != i.expand.nodes.indexOf(t.id);
-                !s && i.collapse.allChildren ? (o.push(t.id), t.state = OrgChart.COLLAPSE) : s || i.collapse.allChildren || n != i.collapse.level || (o.push(t.id), t.state = OrgChart.COLLAPSE)
+            !s && i.collapse.allChildren ? (o.push(t.id), t.state = OrgChart.COLLAPSE) : s || i.collapse.allChildren || n != i.collapse.level || (o.push(t.id), t.state = OrgChart.COLLAPSE)
         }
     }
-}, OrgChart.server._initGroupStates = function(t, e, r, i, a) {
+}, OrgChart.server._initGroupStates = function (t, e, r, i, a) {
     if (r == OrgChart.action.exporting && 1 == a.expandChildren && t) OrgChart.server._setNodeGroupState(t, OrgChart.EXPAND, i.orientation);
     else {
         if (r == OrgChart.action.init && t && t.isGroup) {
@@ -2426,7 +2436,7 @@ OrgChart.prototype.load = function(t) {
         }
         r == OrgChart.action.groupMaxMin && OrgChart.server._setNodeGroupState(e[a.id], a.state, i.orientation)
     }
-}, OrgChart.server._initNodeSize = function(t, e, r) {
+}, OrgChart.server._initNodeSize = function (t, e, r) {
     var i = OrgChart.t(e),
         a = i.size[0],
         o = i.size[1];
@@ -2469,9 +2479,9 @@ OrgChart.prototype.load = function(t) {
         }, OrgChart.server._setGroupNodes(t, r)
     }
     t.w = a, t.h = o
-}, OrgChart.server._setNodeGroupState = function(t, e, r) {
+}, OrgChart.server._setNodeGroupState = function (t, e, r) {
     t.groupState = e, OrgChart.server._initNodeSize(t, t.templateName, r)
-}, OrgChart.server._getNodeWidth = function(t, e) {
+}, OrgChart.server._getNodeWidth = function (t, e) {
     switch (e.orientation) {
         case OrgChart.orientation.top:
         case OrgChart.orientation.top_left:
@@ -2485,7 +2495,7 @@ OrgChart.prototype.load = function(t) {
             return t.h
     }
     return 0
-}, OrgChart.server._isVisible = function(t, e, r, i) {
+}, OrgChart.server._isVisible = function (t, e, r, i) {
     if (null != t.x && null != t.y) {
         if (e.lazyLoading && i !== OrgChart.action.exporting) {
             function a(t, e) {
@@ -2507,13 +2517,13 @@ OrgChart.prototype.load = function(t) {
         }
         return !0
     }
-}, OrgChart.server.getAllFields = function(t) {
+}, OrgChart.server.getAllFields = function (t) {
     var e = [OrgChart.TAGS];
     for (var r in t.nodeParams) e.push(t.nodeBinding[r]);
     for (r = 0; r < t.nodes.length; r++)
         for (var i in t.nodes[r]) i !== OrgChart.ID && i !== OrgChart.TAGS && i !== OrgChart.NODES && i !== OrgChart.PID && (t.nodeBinding[i] || OrgChart._arrayContains(e, i) || e.push(i));
     return e
-}, OrgChart.server._doNotChangePositionOfClickedNodeIfAny = function(t, e, r, i, a, o) {
+}, OrgChart.server._doNotChangePositionOfClickedNodeIfAny = function (t, e, r, i, a, o) {
     if (r == OrgChart.action.expandCollapse || r == OrgChart.action.groupMaxMin || r == OrgChart.action.centerNode || r == OrgChart.action.update || r == OrgChart.action.insert) {
         if (r == OrgChart.action.update && (!i || null == i.id)) {
             if (!t || !t.length) return;
@@ -2559,7 +2569,7 @@ OrgChart.prototype.load = function(t) {
             }
         }
     }
-}, OrgChart.server._getMostDeepChild = function(t) {
+}, OrgChart.server._getMostDeepChild = function (t) {
     if (t) {
         var i = t;
         return function t(e) {
@@ -2567,13 +2577,13 @@ OrgChart.prototype.load = function(t) {
             for (var r = 0; r < e.children.length; r++) t(e.children[r])
         }(t), i
     }
-}, OrgChart.server._setGroupNodes = function(t, e) {
+}, OrgChart.server._setGroupNodes = function (t, e) {
     if (t.isGroup && t.groupState == OrgChart.EXPAND)
         for (var r = OrgChart.t(t.templateName), i = 0, a = 0, o = 0; o < t.bgnodes.length; o++) {
             var n = t.bgnodes[o];
             n.x = t._groupSettings._cellWidth / 2 - n.w / 2 + r.groupNodesSeparation + (t._groupSettings._cellWidth * i + r.groupNodesSeparation * i), n.y = t._groupSettings._cellHeight / 2 - n.h / 2 + r.groupNodesSeparation + (t._groupSettings._cellHeight * a + r.groupNodesSeparation * a), i >= t._groupSettings._columns - 1 ? (i = 0, a++) : i++
         }
-}, OrgChart.server._getResponse = function(t, e, r, i, a, o, n, l, s, h, d, c, g, p, f) {
+}, OrgChart.server._getResponse = function (t, e, r, i, a, o, n, l, s, h, d, c, g, p, f) {
     var u = {},
         C = {
             top: null,
@@ -2659,9 +2669,9 @@ OrgChart.prototype.load = function(t) {
     d == OrgChart.action.centerNode && ((B = g[c.id]) || (B = g[p[c.id]]), 1 == c.options.horizontal && (s[0] = B.x + B.w / 2 - s[2] / 2), 1 == c.options.vertical && (s[1] = B.y + B.h / 2 - s[3] / 2), i.sticky && (s[0] < C.left && s[0] < C.right && (s[0] = C.left > C.right ? C.right : C.left), s[0] > C.right && s[0] > C.left && (s[0] = C.left > C.right ? C.left : C.right), s[1] < C.top && s[1] < C.bottom && (s[1] = C.top > C.bottom ? C.bottom : C.top), s[1] > C.bottom && s[1] > C.top && (s[1] = C.top > C.bottom ? C.top : C.bottom)));
     if (d == OrgChart.action.insert || d == OrgChart.action.expandCollapse || d == OrgChart.action.update || d == OrgChart.action.centerNode) {
         var k = null;
-        if (d == OrgChart.action.insert && c && null != c.insertedNodeId && null != c.insertedNodeId)(k = g[c.insertedNodeId]) || (k = g[p[c.insertedNodeId]]);
-        else if (d == OrgChart.action.update && c && null != c.visId && null != c.visId)(k = g[c.visId]) || (k = g[p[c.visId]]);
-        else if (d == OrgChart.action.expandCollapse && c && null != c.id && null != c.id)(k = g[c.id]) || (k = g[p[c.id]]), k = OrgChart.server._getMostDeepChild(k, g);
+        if (d == OrgChart.action.insert && c && null != c.insertedNodeId && null != c.insertedNodeId) (k = g[c.insertedNodeId]) || (k = g[p[c.insertedNodeId]]);
+        else if (d == OrgChart.action.update && c && null != c.visId && null != c.visId) (k = g[c.visId]) || (k = g[p[c.visId]]);
+        else if (d == OrgChart.action.expandCollapse && c && null != c.id && null != c.id) (k = g[c.id]) || (k = g[p[c.id]]), k = OrgChart.server._getMostDeepChild(k, g);
         else if (d == OrgChart.action.centerNode) {
             switch (i.orientation) {
                 case OrgChart.orientation.top:
@@ -2707,9 +2717,9 @@ OrgChart.prototype.load = function(t) {
             var N = null;
             if (d == OrgChart.action.expandCollapse && f && f[I.id] && "expandCollapseToLevel" == c.method) {
                 if (N = {
-                        x: (T = f[I.id]).x,
-                        y: T.y
-                    }, T) {
+                    x: (T = f[I.id]).x,
+                    y: T.y
+                }, T) {
                     N = {
                         x: T.x,
                         y: T.y
@@ -2730,9 +2740,9 @@ OrgChart.prototype.load = function(t) {
             } else if (d == OrgChart.action.expandCollapse && f && f[I.id]) {
                 var L;
                 if (N = {
-                        x: (T = f[I.id]).x,
-                        y: T.y
-                    }, "all" == c.ids && T) {
+                    x: (T = f[I.id]).x,
+                    y: T.y
+                }, "all" == c.ids && T) {
                     N = {
                         x: T.x,
                         y: T.y
@@ -2753,9 +2763,9 @@ OrgChart.prototype.load = function(t) {
             } else if (d == OrgChart.action.centerNode && f && f[I.id]) {
                 var B;
                 if (null != (T = f[I.id]).x && null != T.y && (N = {
-                        x: T.x,
-                        y: T.y
-                    }), (B = g[c.id]) && B == I)(M = I.parent) && M.id == c.id && (N = {
+                    x: T.x,
+                    y: T.y
+                }), (B = g[c.id]) && B == I) (M = I.parent) && M.id == c.id && (N = {
                     x: B.x + B.w / 2 - I.w / 2,
                     y: B.y + B.h / 2 - I.h / 2
                 })
@@ -2794,9 +2804,9 @@ OrgChart.prototype.load = function(t) {
         nodes: g,
         allFields: OrgChart.server.getAllFields(i)
     }
-}, OrgChart.server._setMinMaxXY = function(t, e) {
+}, OrgChart.server._setMinMaxXY = function (t, e) {
     (null == e.minX || null != t.x && t.x < e.minX) && (e.minX = t.x), (null == e.minY || null != t.y && t.y < e.minY) && (e.minY = t.y), (null == e.maxX || null != t.x && t.x + t.w > e.maxX) && (e.maxX = t.x + t.w), (null == e.maxY || null != t.y && t.y + t.h > e.maxY) && (e.maxY = t.y + t.h)
-}, OrgChart.server._isNotNullEmptyUndefined = function(t) {
+}, OrgChart.server._isNotNullEmptyUndefined = function (t) {
     return null != t && null != t && "" !== t
 }, void 0 === OrgChart && (OrgChart = {}), OrgChart.templates = {}, OrgChart.templates.base = {
     defs: "",
@@ -2879,7 +2889,7 @@ OrgChart.prototype.load = function(t) {
     }
 }, OrgChart.templates.deborah = Object.assign({}, OrgChart.templates.polina), OrgChart.templates.deborah.size = [150, 150], OrgChart.templates.deborah.node = '<rect x="0" y="0" height="150" width="150" fill="#039BE5" stroke-width="1" stroke="#686868" rx="15" ry="15"></rect>', OrgChart.templates.deborah.img_0 = '<clipPath id="{randId}"><rect fill="#ffffff" stroke="#039BE5" stroke-width="1" x="5" y="5" rx="15" ry="15" width="140" height="140"></rect></clipPath><image preserveAspectRatio="xMidYMid slice" clip-path="url(#{randId})" xlink:href="{val}" x="5" y="5"  width="140" height="140"></image><rect x="3" y="5" height="30" width="144" fill="#039BE5" opacity="0.5" rx="3" ry="3"></rect><rect x="3" y="115" height="30" width="144" fill="#039BE5" opacity="0.5" rx="3" ry="3"></rect>', OrgChart.templates.deborah.field_0 = '<text width="125" text-overflow="ellipsis" style="font-size: 18px;" fill="#ffffff" x="15" y="25" text-anchor="start">{val}</text>', OrgChart.templates.deborah.field_1 = '<text width="105" text-overflow="ellipsis" style="font-size: 11px;" fill="#ffffff" x="15" y="135" text-anchor="start">{val}</text>', OrgChart.templates.deborah.nodeMenuButton = '<g style="cursor:pointer;" transform="matrix(1,0,0,1,125,130)" control-node-menu-id="{id}"><rect x="-4" y="-10" fill="#000000" fill-opacity="0" width="22" height="22"></rect><circle cx="0" cy="60" r="2" fill="#ffffff"></circle><circle cx="7" cy="60" r="2" fill="#ffffff"></circle><circle cx="14" cy="60" r="2" fill="#ffffff"></circle></g>', OrgChart.ui = {
     _defsIds: {},
-    defs: function(t) {
+    defs: function (t) {
         var e = "";
         for (var r in OrgChart.templates) {
             var i = OrgChart.templates[r];
@@ -2887,16 +2897,16 @@ OrgChart.prototype.load = function(t) {
         }
         return "<defs>" + e + t + "</defs>"
     },
-    css: function() {
+    css: function () {
         return '<style>.bg-ripple-container {position: absolute; top: 0; right: 0; bottom: 0; left: 0; } .bg-ripple-container span {transform: scale(0);border-radius:100%;position:absolute;opacity:0.75;background-color:#fff;animation: bg-ripple 1000ms; }@-moz-keyframes bg-ripple {to {opacity: 0;transform: scale(2);}}@-webkit-keyframes bg-ripple {to {opacity: 0;transform: scale(2);}}@-o-keyframes bg-ripple {to {opacity: 0;transform: scale(2);}}@keyframes bg-ripple {to {opacity: 0;transform: scale(2);}}.bg-switch {position:relative;display:inline-block;width:60px;height:24px;float:right;}.bg-switch input {opacity:0;width:0;height:0;}.bg-slider {position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background-color: #ccc;-webkit-transition:.4s;transition: .4s;}.bg-slider:before {position:absolute;content:"";height:16px;width:16px;left:4px;bottom:4px;background-color:white;-webkit-transition:.4s;transition:.4s;}input:checked + .bg-slider {background-color:#2196F3;}input:focus + .bg-slider {box-shadow:0 0 1px #2196F3;}input:checked + .bg-slider:before {-webkit-transform:translateX(34px);-ms-transform:translateX(34px);transform:translateX(34px);}.bg-slider.round {border-radius:24px;}.bg-slider.round:before {border-radius:50%;}svg text:hover {cursor:default;}</style>'
     },
-    lonely: function(t) {
+    lonely: function (t) {
         return t.nodes && t.nodes.length ? "" : OrgChart.IT_IS_LONELY_HERE.replace("{link}", OrgChart.RES.IT_IS_LONELY_HERE_LINK)
     },
-    pointer: function(t, e, r) {
+    pointer: function (t, e, r) {
         return e === OrgChart.action.exporting ? "" : OrgChart.t(t.template, r).pointer
     },
-    node: function(t, e, r, i, a, o, n, l, s, h) {
+    node: function (t, e, r, i, a, o, n, l, s, h) {
         var d = OrgChart.t(t.templateName, s),
             c = d.node.replaceAll("{w}", t.w).replaceAll("{h}", t.h);
         if (d.defs && (c = c.replace("{randId}", OrgChart.ui._defsIds[t.templateName])), null == n && (n = i.nodeBinding), t.isGroup) {
@@ -2922,7 +2932,7 @@ OrgChart.prototype.load = function(t) {
         var x = OrgChart.ui._renderGroupedNodes(t, d, i, r, n, a, o, l, s, h);
         return t.isGroup && l != OrgChart.action.exporting && (t.groupState == OrgChart.EXPAND ? c += OrgChart.MINIMIZE.replace("{x}", t.w - 45).replace("{id}", t.id) : c += OrgChart.MAXIMIZE.replace("{x}", t.w - 45).replace("{id}", t.id)), c = v + c + x + OrgChart.grCloseTag
     },
-    _renderGroupedNodes: function(t, e, r, i, a, o, n, l, s, h) {
+    _renderGroupedNodes: function (t, e, r, i, a, o, n, l, s, h) {
         var d = "";
         if (t.isGroup && t.groupState == OrgChart.EXPAND) {
             e.groupPadding || console.error("groupPadding is not defined in template " + t.templateName);
@@ -2934,7 +2944,7 @@ OrgChart.prototype.load = function(t) {
         }
         return d
     },
-    expandCollapse: function(t, e, r, i) {
+    expandCollapse: function (t, e, r, i) {
         if (r === OrgChart.action.exporting) return "";
         if (0 == t.childrenIds.length) return "";
         if (t.isAssistant) return "";
@@ -2962,7 +2972,7 @@ OrgChart.prototype.load = function(t) {
         }
         return o -= l.expandCollapseSize / 2, n -= l.expandCollapseSize / 2, t.collapsedChildrenIds.length ? (a += OrgChart.expcollOpenTag.replace("{id}", t.id).replace("{x}", o).replace("{y}", n), a += l.plus) : (a += OrgChart.expcollOpenTag.replace("{id}", t.id).replace("{x}", o).replace("{y}", n), a += l.minus), a += OrgChart.grCloseTag
     },
-    link: function(t, e, r, i) {
+    link: function (t, e, r, i) {
         var a = OrgChart.t(t.templateName, i),
             o = [],
             n = r.levelSeparation / 2;
@@ -2984,55 +2994,55 @@ OrgChart.prototype.load = function(t) {
                 },
                 d = (a = OrgChart.t(s.templateName, i)).link;
             if ((s.isAssistant || 2 == s.layout) && s.rightNeighbor && "split" == s.rightNeighbor.templateName) switch (r.orientation) {
-                    case OrgChart.orientation.top:
-                    case OrgChart.orientation.top_left:
-                        h = OrgChart.ui._linkRightToLeft(s.rightNeighbor, s, a, n);
-                        break;
-                    case OrgChart.orientation.bottom:
-                    case OrgChart.orientation.bottom_left:
-                        h = OrgChart.ui._linkRightToLeft(s.rightNeighbor, s, a, n);
-                        break;
-                    case OrgChart.orientation.right:
-                    case OrgChart.orientation.right_top:
-                        h = OrgChart.ui._linkBottomToTop(s.rightNeighbor, s, a, n);
-                        break;
-                    case OrgChart.orientation.left:
-                    case OrgChart.orientation.left_top:
-                        h = OrgChart.ui._linkBottomToTop(s.rightNeighbor, s, a, n)
-                } else if ((s.isAssistant || 2 == s.layout) && s.leftNeighbor && "split" == s.leftNeighbor.templateName) switch (r.orientation) {
-                    case OrgChart.orientation.top:
-                    case OrgChart.orientation.top_left:
-                        h = OrgChart.ui._linkLeftToRight(s.leftNeighbor, s, a, n);
-                        break;
-                    case OrgChart.orientation.bottom:
-                    case OrgChart.orientation.bottom_left:
-                        h = OrgChart.ui._linkLeftToRight(s.leftNeighbor, s, a, n);
-                        break;
-                    case OrgChart.orientation.right:
-                    case OrgChart.orientation.right_top:
-                        h = OrgChart.ui._linkTopToBottom(s.leftNeighbor, s, a, n);
-                        break;
-                    case OrgChart.orientation.left:
-                    case OrgChart.orientation.left_top:
-                        h = OrgChart.ui._linkTopToBottom(s.leftNeighbor, s, a, n)
-                } else switch (r.orientation) {
-                    case OrgChart.orientation.top:
-                    case OrgChart.orientation.top_left:
-                        h = OrgChart.ui._linkTopToBottom(t, s, a, n);
-                        break;
-                    case OrgChart.orientation.bottom:
-                    case OrgChart.orientation.bottom_left:
-                        h = OrgChart.ui._linkBottomToTop(t, s, a, n);
-                        break;
-                    case OrgChart.orientation.right:
-                    case OrgChart.orientation.right_top:
-                        h = OrgChart.ui._linkRightToLeft(t, s, a, n);
-                        break;
-                    case OrgChart.orientation.left:
-                    case OrgChart.orientation.left_top:
-                        h = OrgChart.ui._linkLeftToRight(t, s, a, n)
-                }
-                d = d.replace("{xa}", h.xa).replace("{ya}", h.ya).replace("{xb}", h.xb).replace("{yb}", h.yb).replace("{xc}", h.xc).replace("{yc}", h.yc).replace("{xd}", h.xd).replace("{yd}", h.yd), o.push(OrgChart.linkOpenTag.replace("{id}", t.id).replace("{class}", "link " + s.tags.join(" ")).replace("{level}", t.level).replace("{child-id}", s.id)), o.push(d);
+                case OrgChart.orientation.top:
+                case OrgChart.orientation.top_left:
+                    h = OrgChart.ui._linkRightToLeft(s.rightNeighbor, s, a, n);
+                    break;
+                case OrgChart.orientation.bottom:
+                case OrgChart.orientation.bottom_left:
+                    h = OrgChart.ui._linkRightToLeft(s.rightNeighbor, s, a, n);
+                    break;
+                case OrgChart.orientation.right:
+                case OrgChart.orientation.right_top:
+                    h = OrgChart.ui._linkBottomToTop(s.rightNeighbor, s, a, n);
+                    break;
+                case OrgChart.orientation.left:
+                case OrgChart.orientation.left_top:
+                    h = OrgChart.ui._linkBottomToTop(s.rightNeighbor, s, a, n)
+            } else if ((s.isAssistant || 2 == s.layout) && s.leftNeighbor && "split" == s.leftNeighbor.templateName) switch (r.orientation) {
+                case OrgChart.orientation.top:
+                case OrgChart.orientation.top_left:
+                    h = OrgChart.ui._linkLeftToRight(s.leftNeighbor, s, a, n);
+                    break;
+                case OrgChart.orientation.bottom:
+                case OrgChart.orientation.bottom_left:
+                    h = OrgChart.ui._linkLeftToRight(s.leftNeighbor, s, a, n);
+                    break;
+                case OrgChart.orientation.right:
+                case OrgChart.orientation.right_top:
+                    h = OrgChart.ui._linkTopToBottom(s.leftNeighbor, s, a, n);
+                    break;
+                case OrgChart.orientation.left:
+                case OrgChart.orientation.left_top:
+                    h = OrgChart.ui._linkTopToBottom(s.leftNeighbor, s, a, n)
+            } else switch (r.orientation) {
+                case OrgChart.orientation.top:
+                case OrgChart.orientation.top_left:
+                    h = OrgChart.ui._linkTopToBottom(t, s, a, n);
+                    break;
+                case OrgChart.orientation.bottom:
+                case OrgChart.orientation.bottom_left:
+                    h = OrgChart.ui._linkBottomToTop(t, s, a, n);
+                    break;
+                case OrgChart.orientation.right:
+                case OrgChart.orientation.right_top:
+                    h = OrgChart.ui._linkRightToLeft(t, s, a, n);
+                    break;
+                case OrgChart.orientation.left:
+                case OrgChart.orientation.left_top:
+                    h = OrgChart.ui._linkLeftToRight(t, s, a, n)
+            }
+            d = d.replace("{xa}", h.xa).replace("{ya}", h.ya).replace("{xb}", h.xb).replace("{yb}", h.yb).replace("{xc}", h.xc).replace("{yc}", h.yc).replace("{xd}", h.xd).replace("{yd}", h.yd), o.push(OrgChart.linkOpenTag.replace("{id}", t.id).replace("{class}", "link " + s.tags.join(" ")).replace("{level}", t.level).replace("{child-id}", s.id)), o.push(d);
             var c = "";
             for (var g in r.linkBinding) {
                 var p = r.linkBinding[g],
@@ -3046,13 +3056,13 @@ OrgChart.prototype.load = function(t) {
         }
         return o.join("")
     },
-    svg: function(t, e, r, i, a, o) {
+    svg: function (t, e, r, i, a, o) {
         return OrgChart.t(i.template, o).svg.replace("{w}", t).replace("{h}", e).replace("{viewBox}", r).replace("{content}", a)
     },
-    exportMenuButton: function(t) {
+    exportMenuButton: function (t) {
         return null == t.menu ? "" : OrgChart.t(t.template).exportMenuButton.replaceAll("{p}", t.padding)
     },
-    _linkTopToBottom: function(t, e, r, i) {
+    _linkTopToBottom: function (t, e, r, i) {
         var a, o, n, l, s, h, d, c = 0;
         return a = t.x + t.w / 2 + r.linkAdjuster.toX, o = t.y + t.h + r.linkAdjuster.toY, s = l = e.x + e.w / 2 + r.linkAdjuster.fromX, h = e.y + r.linkAdjuster.fromY, {
             xa: n = a,
@@ -3068,7 +3078,7 @@ OrgChart.prototype.load = function(t) {
             rotate: 0
         }
     },
-    _linkBottomToTop: function(t, e, r, i) {
+    _linkBottomToTop: function (t, e, r, i) {
         var a, o, n, l, s, h, d, c = 0;
         return a = t.x + t.w / 2 + r.linkAdjuster.toX, o = t.y + r.linkAdjuster.toY, s = l = e.x + e.w / 2 + r.linkAdjuster.fromX, h = e.y + e.h + r.linkAdjuster.fromY, {
             xa: n = a,
@@ -3084,7 +3094,7 @@ OrgChart.prototype.load = function(t) {
             rotate: 0
         }
     },
-    _linkRightToLeft: function(t, e, r, i) {
+    _linkRightToLeft: function (t, e, r, i) {
         var a, o, n, l, s, h, d, c = 0;
         return a = t.x + r.linkAdjuster.toX, o = t.y + t.h / 2 + r.linkAdjuster.toY, s = e.x + e.w + r.linkAdjuster.fromX, h = l = e.y + e.h / 2 + r.linkAdjuster.fromY, {
             xa: a,
@@ -3100,7 +3110,7 @@ OrgChart.prototype.load = function(t) {
             rotate: 90
         }
     },
-    _linkLeftToRight: function(t, e, r, i) {
+    _linkLeftToRight: function (t, e, r, i) {
         var a, o, n, l, s, h, d, c = 0;
         return a = t.x + t.w + r.linkAdjuster.toX, o = t.y + t.h / 2 + r.linkAdjuster.toY, s = e.x + r.linkAdjuster.fromX, h = l = e.y + e.h / 2 + r.linkAdjuster.fromY, {
             xa: a,
@@ -3116,14 +3126,14 @@ OrgChart.prototype.load = function(t) {
             rotate: 270
         }
     }
-}, void 0 === OrgChart && (OrgChart = {}), OrgChart._validateConfig = function(t) {
+}, void 0 === OrgChart && (OrgChart = {}), OrgChart._validateConfig = function (t) {
     return !!t || (console.error("config is not defined"), !1)
-}, OrgChart._arrayContains = function(t, e) {
+}, OrgChart._arrayContains = function (t, e) {
     if (t && Array.isArray(t))
         for (var r = t.length; r--;)
             if (t[r] === e) return !0;
     return !1
-}, OrgChart._interceptions = function(t, e) {
+}, OrgChart._interceptions = function (t, e) {
     if (!t) return [];
     if (!e) return [];
     var r = [];
@@ -3137,19 +3147,19 @@ OrgChart.prototype.load = function(t) {
         for (var i in t)
             for (var a in e) i == e[a] && r.push(e[a]);
     return r
-}, OrgChart._getTags = function(t) {
+}, OrgChart._getTags = function (t) {
     return t.tags && !Array.isArray(t.tags) ? t.tags.split(",") : t.tags && Array.isArray(t.tags) ? t.tags : []
-}, OrgChart._centerPointInPercent = function(t, e, r) {
+}, OrgChart._centerPointInPercent = function (t, e, r) {
     var i = t.getBoundingClientRect(),
         a = e - i.left,
         o = r - i.top;
     return [a / (i.width / 100), o / (i.height / 100)]
-}, OrgChart._trim = function(t) {
+}, OrgChart._trim = function (t) {
     return t.replace(/^\s+|\s+$/g, "")
-}, OrgChart._getTransform = function(t) {
+}, OrgChart._getTransform = function (t) {
     var e = t.getAttribute("transform");
     return e = e.replace("matrix", "").replace("(", "").replace(")", ""), OrgChart._browser().msie && (e = e.replace(/ /g, ",")), e = "[" + (e = OrgChart._trim(e)) + "]", e = JSON.parse(e)
-}, OrgChart.getScale = function(t, e, r, i, a, o, n, l) {
+}, OrgChart.getScale = function (t, e, r, i, a, o, n, l) {
     var s = 1;
     if (t || i !== OrgChart.match.boundary)
         if (t || i !== OrgChart.match.width)
@@ -3158,54 +3168,54 @@ OrgChart.prototype.load = function(t) {
                     var h, d = e / t[2];
                     s = (h = r / t[3]) < d ? h : d
                 } else s = i;
-    else s = r / l;
-    else s = e / n;
+            else s = r / l;
+        else s = e / n;
     else s = (h = r / l) < (d = e / n) ? h : d;
     return s && a < s && (s = a), s && s < o && (s = o), s
-}, OrgChart._mergeObject = function(t, e) {
+}, OrgChart._mergeObject = function (t, e) {
     var r = {};
     for (var i in t) r[i] = t[i];
     for (i in e) r[i] = e[i];
     return r
-}, OrgChart._lblIsImg = function(t, e) {
+}, OrgChart._lblIsImg = function (t, e) {
     return !(!t.nodeBinding || -1 == e.indexOf("img") || !t.nodeBinding[e])
-}, OrgChart._fieldIsImg = function(t, e) {
+}, OrgChart._fieldIsImg = function (t, e) {
     if (t.nodeBinding)
         for (var r in t.nodeBinding)
             if (t.nodeBinding[r] == e) return OrgChart._lblIsImg(t, r);
     return !1
-}, OrgChart._guid = function() {
+}, OrgChart._guid = function () {
     function t() {
         return Math.floor(65536 * (1 + Math.random())).toString(16).substring(1)
     }
     return t() + t() + "-" + t() + "-" + t() + "-" + t() + "-" + t() + t() + t()
-}, OrgChart.htmlRipple = function(n) {
+}, OrgChart.htmlRipple = function (n) {
     var t = document.createElement("style");
     t.type = "text/css", t.innerHTML = " .bg-ripple-container {position: absolute; top: 0; right: 0; bottom: 0; left: 0; } .bg-ripple-container span {transform: scale(0);border-radius:100%;position:absolute;opacity:0.75;background-color:#fff;animation: bg-ripple 1000ms; }@-moz-keyframes bg-ripple {to {opacity: 0;transform: scale(2);}}@-webkit-keyframes bg-ripple {to {opacity: 0;transform: scale(2);}}@-o-keyframes bg-ripple {to {opacity: 0;transform: scale(2);}}@keyframes bg-ripple {to {opacity: 0;transform: scale(2);}}", document.head.appendChild(t);
     var r, i, a, e = document.createElement("div");
-    e.className = "bg-ripple-container", n.addEventListener("mousedown", function(t) {
+    e.className = "bg-ripple-container", n.addEventListener("mousedown", function (t) {
         var e, r, i, a, o;
         return r = document.createElement("span"), i = this.offsetWidth, e = this.getBoundingClientRect(), o = t.pageX - e.left - i / 2, a = "top:" + (t.pageY - e.top - i / 2) + "px; left: " + o + "px; height: " + i + "px; width: " + i + "px;", n.rippleContainer.appendChild(r), r.setAttribute("style", a)
-    }), n.addEventListener("mouseup", (r = function() {
+    }), n.addEventListener("mouseup", (r = function () {
         for (; this.rippleContainer.firstChild;) this.rippleContainer.removeChild(this.rippleContainer.firstChild)
-    }, i = 2e3, a = void 0, function() {
+    }, i = 2e3, a = void 0, function () {
         var t, e;
-        return e = this, t = arguments, clearTimeout(a), a = setTimeout(function() {
+        return e = this, t = arguments, clearTimeout(a), a = setTimeout(function () {
             return r.apply(e, t)
         }, i)
     })), n.rippleContainer = e, n.appendChild(e)
-}, OrgChart._moveToBoundaryArea = function(t, e, r, i) {
+}, OrgChart._moveToBoundaryArea = function (t, e, r, i) {
     var a = e.slice(0);
     e[0] < r.left && e[0] < r.right && (a[0] = r.left > r.right ? r.right : r.left), e[0] > r.right && e[0] > r.left && (a[0] = r.left > r.right ? r.left : r.right), e[1] < r.top && e[1] < r.bottom && (a[1] = r.top > r.bottom ? r.bottom : r.top), e[1] > r.bottom && e[1] > r.top && (a[1] = r.top > r.bottom ? r.top : r.bottom), e[0] !== a[0] || e[1] !== a[1] ? OrgChart.anim(t, {
         viewBox: e
     }, {
-        viewBox: a
-    }, 300, OrgChart.anim.outPow, function() {
-        i && i()
-    }) : i && i()
+            viewBox: a
+        }, 300, OrgChart.anim.outPow, function () {
+            i && i()
+        }) : i && i()
 }, OrgChart._randomId = function () {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
-}, OrgChart._getClientXY = function(t) {
+}, OrgChart._getClientXY = function (t) {
     return -1 == t.type.indexOf("touch") ? {
         x: t.clientX,
         y: t.clientY
@@ -3213,26 +3223,26 @@ OrgChart.prototype.load = function(t) {
         x: t.changedTouches[0].clientX,
         y: t.changedTouches[0].clientY
     } : void 0
-}, OrgChart._getClientTouchesXY = function(t, e) {
+}, OrgChart._getClientTouchesXY = function (t, e) {
     return -1 != t.type.indexOf("touch") ? t.touches.length < e + 1 ? {
         x: null,
         y: null
     } : {
-        x: t.touches[e].clientX,
-        y: t.touches[e].clientY
-    } : {
-        x: t.clientX,
-        y: t.clientY
-    }
-}, OrgChart._getOffset = function(t, e) {
+            x: t.touches[e].clientX,
+            y: t.touches[e].clientY
+        } : {
+            x: t.clientX,
+            y: t.clientY
+        }
+}, OrgChart._getOffset = function (t, e) {
     t && (e.x += t.offsetLeft, e.y += t.offsetTop, OrgChart._getOffset(t.offsetParent, e))
-}, OrgChart._getTopLeft = function(t) {
+}, OrgChart._getTopLeft = function (t) {
     var e = {
         x: 0,
         y: 0
     };
     return OrgChart._getOffset(t, e), e
-}, OrgChart._getOffsetXY = function(t, e) {
+}, OrgChart._getOffsetXY = function (t, e) {
     if (-1 == e.type.indexOf("touch")) return {
         x: e.offsetX,
         y: e.offsetY
@@ -3251,14 +3261,14 @@ OrgChart.prototype.load = function(t) {
             y: e.changedTouches[0].pageY - r.y
         }
     }
-}, OrgChart._pinchMiddlePointInPercent = function(t, e, r, i) {
+}, OrgChart._pinchMiddlePointInPercent = function (t, e, r, i) {
     var a = OrgChart._getTopLeft(t),
         o = i.touches[0].pageX - a.x,
         n = i.touches[0].pageY - a.y,
         l = i.touches[1].pageX - a.x,
         s = i.touches[1].pageY - a.y;
     return [((o - l) / 2 + l) / (e / 100), ((n - s) / 2 + s) / (r / 100)]
-}, OrgChart._browser = function() {
+}, OrgChart._browser = function () {
     var t = !!window.opr && !!opr.addons || !!window.opera || 0 <= navigator.userAgent.indexOf(" OPR/"),
         e = "undefined" != typeof InstallTrigger,
         r = /constructor/i.test(window.HTMLElement) || "[object SafariRemoteNotification]" === (!window.safari || "undefined" != typeof safari && safari.pushNotification).toString(),
@@ -3274,7 +3284,7 @@ OrgChart.prototype.load = function(t) {
         chrome: o,
         blink: (o || t) && !!window.CSS
     }
-}, OrgChart._menuPosition = function(t, e, r) {
+}, OrgChart._menuPosition = function (t, e, r) {
     var i = t.getBoundingClientRect(),
         a = r.getBoundingClientRect(),
         o = e.getBoundingClientRect(),
@@ -3284,14 +3294,14 @@ OrgChart.prototype.load = function(t) {
         x: n,
         y: l
     }
-}, OrgChart._getTemplate = function(t, e, r) {
+}, OrgChart._getTemplate = function (t, e, r) {
     if (Array.isArray(t))
         for (var i = 0; i < t.length; i++) {
             var a = e[t[i]];
             if (a && !a.group && a.template) return a.template
         }
     return r
-}, OrgChart._getGroup = function(t, e) {
+}, OrgChart._getGroup = function (t, e) {
     for (var r = 0; r < t.length; r++) {
         var i = e[t[r]];
         if (i && i.group && i.template) return {
@@ -3300,19 +3310,19 @@ OrgChart.prototype.load = function(t) {
         }
     }
     return null
-}, OrgChart._isHTML = function(t) {
+}, OrgChart._isHTML = function (t) {
     var e = document.createElement("div");
     e.innerHTML = t;
     for (var r = e.childNodes, i = r.length; i--;)
         if (1 == r[i].nodeType) return !0;
     return !1
-}, OrgChart._getTestDiv = function() {
+}, OrgChart._getTestDiv = function () {
     var t = document.getElementById("orgchart_js_test_div");
     return t || ((t = document.createElement("div")).id = "orgchart_js_test_div", t.style.position = "fixed", t.style.top = "-10000px", t.style.left = "-10000px", document.body.appendChild(t)), t
-}, OrgChart._getLabelSize = function(t) {
+}, OrgChart._getLabelSize = function (t) {
     var e = OrgChart._getTestDiv();
     return e.innerHTML = "<svg>" + t + "</svg>", e.querySelector("text").getBoundingClientRect()
-}, OrgChart.wrapText = function(t, e) {
+}, OrgChart.wrapText = function (t, e) {
     if (-1 == e.indexOf("<text")) return t;
     if (-1 == e.indexOf("width")) return t;
     if (OrgChart._isHTML(t)) return t;
@@ -3335,13 +3345,13 @@ OrgChart.prototype.load = function(t) {
     if ("multiline" == s) {
         //debugger
         $(".field_0").attr("y", "20");
-        $(".field_0").attr("style","font-size:16px;")
+        $(".field_0").attr("style", "font-size:16px;")
         var p = t.split(" "),
             f = d.getBBox().height;
         d.textContent = "";
         p[0] = p[0].replace(",", " ");
         var u = document.createElementNS(h, "tspan"),
-            C = document.createTextNode("*"+" "+p[0]);
+            C = document.createTextNode("*" + " " + p[0]);
         //var xx = 120;
         //var yy = 50;
         //u.setAttributeNS(null, "x", a), u.setAttributeNS(null, "y", o), u.setAttributeNS(null, "text-anchor", n), u.appendChild(C), d.appendChild(u);
@@ -3352,7 +3362,7 @@ OrgChart.prototype.load = function(t) {
         var xxMinus = 125; var yyPlus = 65;
         for (var m = 1; m < p.length; m++) {
             //debugger
-            
+
             if (p[m] != "") {
                 p[m] = p[m].replace(",", " ");
                 var O = u.firstChild.data.length;
@@ -3365,7 +3375,7 @@ OrgChart.prototype.load = function(t) {
             }
         }
         var v = "";
-        
+
         if (null != d.innerHTML) {
             //var first = p[0].replace(",", " ");
             //var text = '<tspan x="140" y="50" text-anchor="end">* ' + first + ' </tspan>';
@@ -3385,7 +3395,7 @@ OrgChart.prototype.load = function(t) {
         }
         return v
     }
-}, OrgChart._downloadFile = function(t, e, r) {
+}, OrgChart._downloadFile = function (t, e, r) {
     var i = new Blob([e], {
         type: t
     });
@@ -3397,7 +3407,7 @@ OrgChart.prototype.load = function(t) {
             a.setAttribute("href", o), a.setAttribute("download", r), a.style.visibility = "hidden", document.body.appendChild(a), a.click(), document.body.removeChild(a)
         }
     }
-}, OrgChart._getPosition = function(t, e, r, i) {
+}, OrgChart._getPosition = function (t, e, r, i) {
     var a = {
         x: e.x,
         y: e.y
@@ -3406,13 +3416,13 @@ OrgChart.prototype.load = function(t) {
         var o = t[0].indexOf(e.id); - 1 != o && null != t[1][o].transform && (null == r && (a.x = t[1][o].transform[4]), null == i && (a.y = t[1][o].transform[5]))
     }
     return a
-}, OrgChart._getOpacity = function(t, e) {
+}, OrgChart._getOpacity = function (t, e) {
     var r = 1;
     if (t && 3 == t.length) {
         var i = t[0].indexOf(e.id); - 1 != i && null != t[1][i].opacity && (r = t[1][i].opacity)
     }
     return r
-}, OrgChart.t = function(t, e) {
+}, OrgChart.t = function (t, e) {
     var r = OrgChart.templates[t],
         i = null;
     if (null != e && r.scaleLessThen) {
@@ -3422,7 +3432,7 @@ OrgChart.prototype.load = function(t) {
             e < n && a.push(n)
         }
         if (0 < a.length) {
-            a.sort(function(t, e) {
+            a.sort(function (t, e) {
                 return t - e
             });
             var l = r.scaleLessThen[a[0]];
@@ -3430,47 +3440,47 @@ OrgChart.prototype.load = function(t) {
         }
     }
     return null == i ? r : i
-}, OrgChart._imgs2base64 = function(t, e, i, a) {
+}, OrgChart._imgs2base64 = function (t, e, i, a) {
     var o = t.getElementsByTagName(e),
         n = o.length;
     0 == n && a();
-    for (var l = 0; l < n; l++) ! function() {
+    for (var l = 0; l < n; l++) ! function () {
         var e = l,
             r = o[e];
-        OrgChart._getDataUri(r.getAttribute(i), function(t) {
+        OrgChart._getDataUri(r.getAttribute(i), function (t) {
             t.success && r.setAttribute(i, t.result), e == n - 1 && a()
         })
     }()
-}, OrgChart._getDataUri = function(t, e) {
+}, OrgChart._getDataUri = function (t, e) {
     if (-1 != t.indexOf("base64")) e({
         success: !1
     });
     else {
         var r = new XMLHttpRequest;
-        r.open("GET", t), r.responseType = "blob", r.onload = function() {
+        r.open("GET", t), r.responseType = "blob", r.onload = function () {
             200 === r.status ? i.readAsDataURL(r.response) : 404 === r.status && e({
                 success: !1,
                 result: r.status
             })
         };
         var i = new FileReader;
-        i.onloadend = function() {
+        i.onloadend = function () {
             e({
                 success: !0,
                 result: i.result
             })
         }, r.send()
     }
-}, OrgChart._csvToArray = function(t, e) {
+}, OrgChart._csvToArray = function (t, e) {
     e = e || ",";
     for (var r = new RegExp("(\\" + e + '|\\r?\\n|\\r|^)(?:"([^"]*(?:""[^"]*)*)"|([^"\\' + e + "\\r\\n]*))", "gi"), i = [
-            []
-        ], a = null; a = r.exec(t);) {
+        []
+    ], a = null; a = r.exec(t);) {
         var o, n = a[1];
         n.length && n !== e && i.push([]), o = a[2] ? a[2].replace(new RegExp('""', "g"), '"') : a[3], i[i.length - 1].push(o)
     }
     return i
-}, OrgChart._json2xml = function(t) {
+}, OrgChart._json2xml = function (t) {
     for (var e = document.implementation.createDocument("", "", null), r = e.createElement("nodes"), i = 0; i < t.length; i++) {
         var a = e.createElement("node"),
             o = t[i];
@@ -3481,7 +3491,7 @@ OrgChart.prototype.load = function(t) {
         r.appendChild(a)
     }
     return e.appendChild(r), '<?xml version="1.0" encoding="utf-8" ?>' + (new XMLSerializer).serializeToString(e.documentElement)
-}, OrgChart._xml2json = function(t) {
+}, OrgChart._xml2json = function (t) {
     for (var e = (new DOMParser).parseFromString(t, "text/xml").getElementsByTagName("node"), r = [], i = 0; i < e.length; i++) {
         for (var a = e[i], o = {}, n = 0; n < a.attributes.length; n++) {
             var l = a.attributes[n],
@@ -3491,64 +3501,64 @@ OrgChart.prototype.load = function(t) {
         r.push(o)
     }
     return r
-}, OrgChart._json2csv = function(t) {
-    for (var o = [], e = function(t) {
-            for (var e = "", r = 0; r < o.length; r++) {
-                var i;
-                (i = "reportsTo" == o[r] ? null : null == t[o[r]] ? "" : t[o[r]]) instanceof Date && (i = i.toLocaleString());
-                var a = (i = null === i ? "" : i.toString()).replace(/"/g, '""');
-                0 <= a.search(/("|,|\n)/g) && (a = '"' + a + '"'), 0 < r && (e += ","), e += a
-            }
-            return e + "\n"
-        }, r = "", i = 0; i < t.length; i++)
+}, OrgChart._json2csv = function (t) {
+    for (var o = [], e = function (t) {
+        for (var e = "", r = 0; r < o.length; r++) {
+            var i;
+            (i = "reportsTo" == o[r] ? null : null == t[o[r]] ? "" : t[o[r]]) instanceof Date && (i = i.toLocaleString());
+            var a = (i = null === i ? "" : i.toString()).replace(/"/g, '""');
+            0 <= a.search(/("|,|\n)/g) && (a = '"' + a + '"'), 0 < r && (e += ","), e += a
+        }
+        return e + "\n"
+    }, r = "", i = 0; i < t.length; i++)
         for (var a in t[i]) OrgChart._arrayContains(o, a) || (o.push(a), r += a + ",");
     r += "\n";
     for (i = 0; i < t.length; i++) r += e(t[i]);
     return r
-}, OrgChart.accentFold = function(t) {
-    return (t = t.toString().toLowerCase()).replace(/([Ã Ã¡Ã¢Ã£Ã¤Ã¥])|([Ã§])|([Ã¨Ã©ÃªÃ«])|([Ã¬Ã­Ã®Ã¯])|([Ã±])|([Ã²Ã³Ã´ÃµÃ¶Ã¸])|([ÃŸ])|([Ã¹ÃºÃ»Ã¼])|([Ã¿])|([Ã¦])/g, function(t, e, r, i, a, o, n, l, s, h, d) {
+}, OrgChart.accentFold = function (t) {
+    return (t = t.toString().toLowerCase()).replace(/([Ã Ã¡Ã¢Ã£Ã¤Ã¥])|([Ã§])|([Ã¨Ã©ÃªÃ«])|([Ã¬Ã­Ã®Ã¯])|([Ã±])|([Ã²Ã³Ã´ÃµÃ¶Ã¸])|([ÃŸ])|([Ã¹ÃºÃ»Ã¼])|([Ã¿])|([Ã¦])/g, function (t, e, r, i, a, o, n, l, s, h, d) {
         return e ? "a" : r ? "c" : i ? "e" : a ? "i" : o ? "n" : n ? "o" : l ? "s" : s ? "u" : h ? "y" : d ? "ae" : void 0
     })
-}, OrgChart.copy = function(t) {
+}, OrgChart.copy = function (t) {
     if (null === t || "object" != typeof t || "isActiveClone" in t) return t;
     if (t instanceof Date) var e = new t.constructor;
     else e = t.constructor();
     for (var r in t) Object.prototype.hasOwnProperty.call(t, r) && (t.isActiveClone = null, e[r] = OrgChart.copy(t[r]), delete t.isActiveClone);
     return e
-}, OrgChart._getScrollSensitivity = function() {
+}, OrgChart._getScrollSensitivity = function () {
     var t = OrgChart._browser();
     return t.msie && OrgChart.scroll.ie ? OrgChart.scroll.ie : t.edge && OrgChart.scroll.edge ? OrgChart.scroll.edge : t.safari && OrgChart.scroll.safari ? OrgChart.scroll.safari : t.chrome && OrgChart.scroll.chrome ? OrgChart.scroll.chrome : t.firefox && OrgChart.scroll.firefox ? OrgChart.scroll.firefox : t.opera && OrgChart.scroll.opera ? OrgChart.scroll.opera : {
         smooth: OrgChart.scroll.smooth,
         speed: OrgChart.scroll.speed
     }
-}, OrgChart.xScrollUI = function(t, e, r, i, a) {
+}, OrgChart.xScrollUI = function (t, e, r, i, a) {
     this.element = t, this.requestParams = r, this.config = e, this.onSetViewBoxCallback = i, this.onDrawCallback = a, this.pos = 0
-}, OrgChart.xScrollUI.prototype.addListener = function(t) {
+}, OrgChart.xScrollUI.prototype.addListener = function (t) {
     var n = this;
     if ((this.config.mouseScrool == OrgChart.action.xScroll || this.config.mouseScrool == OrgChart.action.scroll) && this.bar) {
         var e = OrgChart._getScrollSensitivity();
-        ! function(t, i, e) {
+        ! function (t, i, e) {
             var a = !1;
 
             function o() {
                 a = !0;
                 var t = (n.pos - n.bar.scrollLeft) / e;
-                0 < t ? t++ : t--, n.bar.scrollLeft += t, n.bar.scrollLeft == n.pos ? a = !1 : r(o)
+                0 < t ? t++ : t-- , n.bar.scrollLeft += t, n.bar.scrollLeft == n.pos ? a = !1 : r(o)
             }
-            t.addEventListener("wheel", function(t) {
+            t.addEventListener("wheel", function (t) {
                 var e = 0;
-                if (n.config.mouseScrool == OrgChart.action.xScroll)(e = t.deltaX || t.wheelDeltaX) || (e = t.deltaY || t.wheelDeltaY);
+                if (n.config.mouseScrool == OrgChart.action.xScroll) (e = t.deltaX || t.wheelDeltaX) || (e = t.deltaY || t.wheelDeltaY);
                 else if (n.config.mouseScrool == OrgChart.action.scroll && !(e = t.shiftKey ? t.deltaY || t.wheelDeltaY : t.deltaX || t.wheelDeltaX)) return;
                 e = -e, t.preventDefault(), e = Math.max(-1, Math.min(1, e)), n.pos += -e * i;
                 var r = parseFloat(n.innerBar.clientWidth) - parseFloat(n.bar.clientWidth);
                 n.pos < 0 && (n.pos = 0), n.pos > r && (n.pos = r), a || o()
             }, !1);
-            var r = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(t) {
+            var r = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (t) {
                 setTimeout(t, 20)
             }
         }(t, e.speed, e.smooth)
     }
-}, OrgChart.xScrollUI.prototype.create = function(t) {
+}, OrgChart.xScrollUI.prototype.create = function (t) {
     if (this.config.showXScroll === OrgChart.scroll.visible || this.config.mouseScrool === OrgChart.action.scroll || this.config.mouseScrool === OrgChart.action.xScroll) {
         var a = this;
         this.bar && this.bar.parentNode.removeChild(this.bar), this.bar = document.createElement("div"), this.config.showXScroll !== OrgChart.scroll.visible && (this.bar.style.visibility = "hidden"), this.innerBar = document.createElement("div");
@@ -3560,20 +3570,20 @@ OrgChart.prototype.load = function(t) {
             width: t + "px",
             "overflow-x": "scroll",
             height: "20px"
-        }), this.element.appendChild(this.bar), this.bar.appendChild(this.innerBar), this.bar.addEventListener("scroll", function() {
+        }), this.element.appendChild(this.bar), this.bar.appendChild(this.innerBar), this.bar.addEventListener("scroll", function () {
             if (this.ignore) this.ignore = !1;
             else {
                 var t = a.requestParams(),
                     e = (parseFloat(a.innerBar.clientWidth) - parseFloat(a.bar.clientWidth)) / 100,
                     r = this.scrollLeft / e,
                     i = (t.boundary.right - t.boundary.left) / 100;
-                t.viewBox[0] = r * i + t.boundary.left, a.onSetViewBoxCallback(t.viewBox), clearTimeout(this._timeout), this._timeout = setTimeout(function() {
+                t.viewBox[0] = r * i + t.boundary.left, a.onSetViewBoxCallback(t.viewBox), clearTimeout(this._timeout), this._timeout = setTimeout(function () {
                     a.onDrawCallback()
                 }, 500)
             }
         })
     }
-}, OrgChart.xScrollUI.prototype.setPosition = function() {
+}, OrgChart.xScrollUI.prototype.setPosition = function () {
     if (this.bar) {
         var t = this.requestParams(),
             e = (t.boundary.maxY, t.scale, Math.abs(t.boundary.maxX - t.boundary.minX) * t.scale);
@@ -3595,34 +3605,34 @@ OrgChart.prototype.load = function(t) {
     }
     $(".field_0").attr("y", "20");
     $('[node-id="' + $("#VSCIdPointingEMP").val() + '"]').children().first().css("fill", "green");
-}, OrgChart.yScrollUI = function(t, e, r, i, a) {
+}, OrgChart.yScrollUI = function (t, e, r, i, a) {
     this.element = t, this.requestParams = r, this.config = e, this.onSetViewBoxCallback = i, this.onDrawCallback = a, this.pos = 0
-}, OrgChart.yScrollUI.prototype.addListener = function(t) {
+}, OrgChart.yScrollUI.prototype.addListener = function (t) {
     var n = this;
     if (this.config.mouseScrool == OrgChart.action.yScroll || this.config.mouseScrool == OrgChart.action.scroll) {
         var e = OrgChart._getScrollSensitivity();
-        ! function(t, i, e) {
+        ! function (t, i, e) {
             var a = !1;
 
             function o() {
                 a = !0;
                 var t = (n.pos - n.bar.scrollTop) / e;
-                0 < t ? t++ : t--, n.bar.scrollTop += t, n.bar.scrollTop == n.pos ? a = !1 : r(o)
+                0 < t ? t++ : t-- , n.bar.scrollTop += t, n.bar.scrollTop == n.pos ? a = !1 : r(o)
             }
-            t.addEventListener("wheel", function(t) {
+            t.addEventListener("wheel", function (t) {
                 var e = 0;
-                if (n.config.mouseScrool == OrgChart.action.yScroll)(e = t.deltaY || t.wheelDeltaY) || (e = t.deltaX || t.wheelDeltaX);
+                if (n.config.mouseScrool == OrgChart.action.yScroll) (e = t.deltaY || t.wheelDeltaY) || (e = t.deltaX || t.wheelDeltaX);
                 else if (n.config.mouseScrool == OrgChart.action.scroll && !(e = t.shiftKey ? t.deltaX || t.wheelDeltaX : t.deltaY || t.wheelDeltaY)) return;
                 e = -e, t.preventDefault(), e = Math.max(-1, Math.min(1, e)), n.pos += -e * i;
                 var r = parseFloat(n.innerBar.clientHeight) - parseFloat(n.bar.clientHeight);
                 n.pos < 0 && (n.pos = 0), n.pos > r && (n.pos = r), a || o()
             }, !1);
-            var r = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function(t) {
+            var r = window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || window.oRequestAnimationFrame || window.msRequestAnimationFrame || function (t) {
                 setTimeout(t, 20)
             }
         }(t, e.speed, e.smooth)
     }
-}, OrgChart.yScrollUI.prototype.create = function(t) {
+}, OrgChart.yScrollUI.prototype.create = function (t) {
     if (this.config.showYScroll === OrgChart.scroll.visible || this.config.mouseScrool === OrgChart.action.scroll || this.config.mouseScrool === OrgChart.action.yScroll) {
         var a = this;
         this.bar && this.bar.parentNode.removeChild(this.bar), this.bar = document.createElement("div"), this.config.showYScroll !== OrgChart.scroll.visible && (this.bar.style.visibility = "hidden"), this.innerBar = document.createElement("div"), this.innerBar.innerHTML = "&nbsp", Object.assign(this.bar.style, {
@@ -3632,20 +3642,20 @@ OrgChart.prototype.load = function(t) {
             height: t + "px",
             "overflow-y": "scroll",
             width: "20px"
-        }), this.element.appendChild(this.bar), this.bar.appendChild(this.innerBar), this.bar.addEventListener("scroll", function() {
+        }), this.element.appendChild(this.bar), this.bar.appendChild(this.innerBar), this.bar.addEventListener("scroll", function () {
             if (this.ignore) this.ignore = !1;
             else {
                 var t = a.requestParams(),
                     e = (parseFloat(a.innerBar.clientHeight) - parseFloat(a.bar.clientHeight)) / 100,
                     r = this.scrollTop / e,
                     i = (t.boundary.bottom - t.boundary.top) / 100;
-                t.viewBox[1] = r * i + t.boundary.top, a.onSetViewBoxCallback(t.viewBox), clearTimeout(this._timeout), this._timeout = setTimeout(function() {
+                t.viewBox[1] = r * i + t.boundary.top, a.onSetViewBoxCallback(t.viewBox), clearTimeout(this._timeout), this._timeout = setTimeout(function () {
                     a.onDrawCallback()
                 }, 500)
             }
         })
     }
-}, OrgChart.yScrollUI.prototype.setPosition = function() {
+}, OrgChart.yScrollUI.prototype.setPosition = function () {
     if (this.bar) {
         var t = this.requestParams(),
             e = t.boundary.maxY * t.scale;
@@ -3666,7 +3676,7 @@ OrgChart.prototype.load = function(t) {
         var a = i * ((parseFloat(this.innerBar.clientHeight) - parseFloat(this.bar.clientHeight)) / 100);
         this.bar.ignore = !0, this.bar.scrollTop = a, this.pos = this.bar.scrollTop
     }
-}, OrgChart.prototype.zoom = function(t, e, r) {
+}, OrgChart.prototype.zoom = function (t, e, r) {
     var i = this.getViewBox().slice(0),
         a = i,
         o = i[2],
@@ -3679,22 +3689,22 @@ OrgChart.prototype.load = function(t) {
         r ? (clearTimeout(s._timeout), OrgChart.anim(this.getSvg(), {
             viewbox: this.getViewBox()
         }, {
-            viewbox: i
-        }, this.config.anim.duration, this.config.anim.func, function() {
-            clearTimeout(s._timeout), s._timeout = setTimeout(function() {
+                viewbox: i
+            }, this.config.anim.duration, this.config.anim.func, function () {
+                clearTimeout(s._timeout), s._timeout = setTimeout(function () {
+                    s._draw(!0, OrgChart.action.zoom)
+                }, 500)
+            })) : (this.setViewBox(i), clearTimeout(s._timeout), s._timeout = setTimeout(function () {
                 s._draw(!0, OrgChart.action.zoom)
-            }, 500)
-        })) : (this.setViewBox(i), clearTimeout(s._timeout), s._timeout = setTimeout(function() {
-            s._draw(!0, OrgChart.action.zoom)
-        }, 500))
+            }, 500))
     }
-}, OrgChart.loading = {}, OrgChart.loading.show = function(t) {
+}, OrgChart.loading = {}, OrgChart.loading.show = function (t) {
     var e = document.createElement("div");
     e.id = "bg-loading", e.innerHTML = '<style>@-webkit-keyframes dot-keyframes {0% { opacity: .4; -webkit-transform: scale(1, 1);transform: scale(1, 1);}50% {opacity: 1;-webkit-transform: scale(1.2, 1.2);transform: scale(1.2, 1.2);}100% {opacity: .4;-webkit-transform: scale(1, 1);transform: scale(1, 1);}}@keyframes dot-keyframes {0% {opacity: .4;-webkit-transform: scale(1, 1);transform: scale(1, 1);}50% {opacity: 1;-webkit-transform: scale(1.2, 1.2);transform: scale(1.2, 1.2);}100% {opacity: .4;-webkit-transform: scale(1, 1);transform: scale(1, 1);}}.bg-loading-dots div {margin: 10px;}      .bg-dot-1 {background-color: #039BE5;}.bg-dot-2 {background-color: #F57C00;}.bg-dot-3 {background-color: #FFCA28;}      .bg-loading-dots {text-align: center;width: 100%; position: absolute; top: 0;}.bg-loading-dots--dot {-webkit-animation: dot-keyframes 1.5s infinite ease-in-out;animation: dot-keyframes 1.5s infinite ease-in-out;        border-radius: 10px;display: inline-block;height: 10px;width: 10px;}.bg-loading-dots--dot:nth-child(2) {-webkit-animation-delay: .5s;animation-delay: .5s;}.bg-loading-dots--dot:nth-child(3) {-webkit-animation-delay: 1s;animation-delay: 1s;}</style><div class="bg-loading-dots"><div class="bg-loading-dots--dot bg-dot-1"></div><div class="bg-loading-dots--dot bg-dot-2"></div><div class="bg-loading-dots--dot bg-dot-3"></div></div>', t.element.appendChild(e)
-}, OrgChart.loading.hide = function(t) {
+}, OrgChart.loading.hide = function (t) {
     var e = t.element.querySelector("#bg-loading");
     e && e.parentNode.removeChild(e)
-}, OrgChart.pdfPrevUI = {}, OrgChart.loc || (OrgChart.loc = {}), OrgChart.loc.ppdfCmdTitle = "PDF Preview", OrgChart.loc.ppdfSave = "Save", OrgChart.loc.ppdfCancel = "Cancel", OrgChart.loc.ppdfFormat = "Format", OrgChart.loc.ppdfFitToDrwaing = "Fit", OrgChart.loc.ppdfFitToDrwaing2Levels = "Fit (2 Levels Page)", OrgChart.loc.ppdfA4 = "A4", OrgChart.loc.ppdfA3 = "A3", OrgChart.loc.ppdfA2 = "A2", OrgChart.loc.ppdfA1 = "A1", OrgChart.loc.ppdfA42Levels = "A4 (2 Levels Page)", OrgChart.loc.ppdfA32Levels = "A3 (2 Levels Page)", OrgChart.loc.ppdfA22Levels = "A2 (2 Levels Page)", OrgChart.loc.ppdfA12Levels = "A1 (2 Levels Page)", OrgChart.loc.ppdfLayout = "Layout", OrgChart.loc.ppdfPortrait = "Portrait", OrgChart.loc.ppdfLandscape = "Landscape", OrgChart.loc.ppdfFittopagewidth = "Fit to page width", OrgChart.loc.ppdfMargin = "Margin", OrgChart.loc.ppdfHeader = "Header", OrgChart.loc.ppdfFooter = "Footer", OrgChart.loc.ppdfScale = "Scale", OrgChart.pdfPrevUI.show = function(r, i) {
+}, OrgChart.pdfPrevUI = {}, OrgChart.loc || (OrgChart.loc = {}), OrgChart.loc.ppdfCmdTitle = "PDF Preview", OrgChart.loc.ppdfSave = "Save", OrgChart.loc.ppdfCancel = "Cancel", OrgChart.loc.ppdfFormat = "Format", OrgChart.loc.ppdfFitToDrwaing = "Fit", OrgChart.loc.ppdfFitToDrwaing2Levels = "Fit (2 Levels Page)", OrgChart.loc.ppdfA4 = "A4", OrgChart.loc.ppdfA3 = "A3", OrgChart.loc.ppdfA2 = "A2", OrgChart.loc.ppdfA1 = "A1", OrgChart.loc.ppdfA42Levels = "A4 (2 Levels Page)", OrgChart.loc.ppdfA32Levels = "A3 (2 Levels Page)", OrgChart.loc.ppdfA22Levels = "A2 (2 Levels Page)", OrgChart.loc.ppdfA12Levels = "A1 (2 Levels Page)", OrgChart.loc.ppdfLayout = "Layout", OrgChart.loc.ppdfPortrait = "Portrait", OrgChart.loc.ppdfLandscape = "Landscape", OrgChart.loc.ppdfFittopagewidth = "Fit to page width", OrgChart.loc.ppdfMargin = "Margin", OrgChart.loc.ppdfHeader = "Header", OrgChart.loc.ppdfFooter = "Footer", OrgChart.loc.ppdfScale = "Scale", OrgChart.pdfPrevUI.show = function (r, i) {
     i = r._defaultExportOptions(i, "pdf");
     var t = document.createElement("div");
     t.id = "bg-ppdf-btns", Object.assign(t.style, {
@@ -3731,76 +3741,76 @@ OrgChart.prototype.load = function(t) {
     l.value = i.format, s.value = i.landscape, h.value = i.scale, d.value = i.margin, c.value = i.header, g.value = i.footer, OrgChart.anim(r.element.querySelector("#bg-ppdf-btns"), {
         margin: [0, 0, 0, -250]
     }, {
-        margin: [0, 0, 0, 0]
-    }, 300, OrgChart.anim.outSin, function() {
-        r.exportPDF(i, OrgChart.pdfPrevUI._handler)
-    }), r.element.querySelector("#bg-prev-cancel").addEventListener("click", function() {
-        OrgChart.pdfPrevUI.hide(r)
-    }), r.element.querySelector("#bg-prev-save").addEventListener("click", function() {
-        r.exportPDF(i), OrgChart.pdfPrevUI.hide(r)
-    }), OrgChart.pdfPrevUI._showHide(l, s, h), l.addEventListener("change", function() {
-        OrgChart.anim(r.element.querySelector("#bg-ppdf-content"), {
-            opacity: 1
-        }, {
-            opacity: 0
-        }, 300, OrgChart.anim.inSin, function() {
-            r.element.querySelector("#bg-ppdf-content").innerHTML = "", i.format = l.value, r.exportPDF(i, OrgChart.pdfPrevUI._handler), OrgChart.pdfPrevUI._showHide(l, s, h)
-        })
-    }), s.addEventListener("change", function() {
-        OrgChart.anim(r.element.querySelector("#bg-ppdf-content"), {
-            opacity: 1
-        }, {
-            opacity: 0
-        }, 300, OrgChart.anim.inSin, function() {
-            r.element.querySelector("#bg-ppdf-content").innerHTML = "", i.landscape = "true" == s.value, r.exportPDF(i, OrgChart.pdfPrevUI._handler), OrgChart.pdfPrevUI._showHide(l, s, h)
-        })
-    }), h.addEventListener("change", function() {
-        OrgChart.anim(r.element.querySelector("#bg-ppdf-content"), {
-            opacity: 1
-        }, {
-            opacity: 0
-        }, 300, OrgChart.anim.inSin, function() {
-            r.element.querySelector("#bg-ppdf-content").innerHTML = "", i.scale = h.value, r.exportPDF(i, OrgChart.pdfPrevUI._handler), OrgChart.pdfPrevUI._showHide(l, s, h)
-        })
-    }), d.addEventListener("keyup", function() {
-        clearTimeout(a), a = setTimeout(function() {
+            margin: [0, 0, 0, 0]
+        }, 300, OrgChart.anim.outSin, function () {
+            r.exportPDF(i, OrgChart.pdfPrevUI._handler)
+        }), r.element.querySelector("#bg-prev-cancel").addEventListener("click", function () {
+            OrgChart.pdfPrevUI.hide(r)
+        }), r.element.querySelector("#bg-prev-save").addEventListener("click", function () {
+            r.exportPDF(i), OrgChart.pdfPrevUI.hide(r)
+        }), OrgChart.pdfPrevUI._showHide(l, s, h), l.addEventListener("change", function () {
             OrgChart.anim(r.element.querySelector("#bg-ppdf-content"), {
                 opacity: 1
             }, {
-                opacity: 0
-            }, 300, OrgChart.anim.inSin, function() {
-                r.element.querySelector("#bg-ppdf-content").innerHTML = "";
-                var t = d.value.split(",");
-                if (4 == t.length) {
-                    for (var e = 0; e < t.length; e++) t[e] = parseInt(t[e]);
-                    i.margin = t, r.exportPDF(i, OrgChart.pdfPrevUI._handler)
-                }
-            })
-        }, 1e3)
-    }), c.addEventListener("keyup", function() {
-        clearTimeout(o), o = setTimeout(function() {
+                    opacity: 0
+                }, 300, OrgChart.anim.inSin, function () {
+                    r.element.querySelector("#bg-ppdf-content").innerHTML = "", i.format = l.value, r.exportPDF(i, OrgChart.pdfPrevUI._handler), OrgChart.pdfPrevUI._showHide(l, s, h)
+                })
+        }), s.addEventListener("change", function () {
             OrgChart.anim(r.element.querySelector("#bg-ppdf-content"), {
                 opacity: 1
             }, {
-                opacity: 0
-            }, 300, OrgChart.anim.inSin, function() {
-                r.element.querySelector("#bg-ppdf-content").innerHTML = "", i.header = c.value, r.exportPDF(i, OrgChart.pdfPrevUI._handler)
-            })
-        }, 1e3)
-    }), g.addEventListener("keyup", function() {
-        clearTimeout(n), n = setTimeout(function() {
+                    opacity: 0
+                }, 300, OrgChart.anim.inSin, function () {
+                    r.element.querySelector("#bg-ppdf-content").innerHTML = "", i.landscape = "true" == s.value, r.exportPDF(i, OrgChart.pdfPrevUI._handler), OrgChart.pdfPrevUI._showHide(l, s, h)
+                })
+        }), h.addEventListener("change", function () {
             OrgChart.anim(r.element.querySelector("#bg-ppdf-content"), {
                 opacity: 1
             }, {
-                opacity: 0
-            }, 300, OrgChart.anim.inSin, function() {
-                r.element.querySelector("#bg-ppdf-content").innerHTML = "", i.footer = g.value, r.exportPDF(i, OrgChart.pdfPrevUI._handler)
-            })
-        }, 1e3)
-    })
-}, OrgChart.pdfPrevUI._showHide = function(t, e, r) {
+                    opacity: 0
+                }, 300, OrgChart.anim.inSin, function () {
+                    r.element.querySelector("#bg-ppdf-content").innerHTML = "", i.scale = h.value, r.exportPDF(i, OrgChart.pdfPrevUI._handler), OrgChart.pdfPrevUI._showHide(l, s, h)
+                })
+        }), d.addEventListener("keyup", function () {
+            clearTimeout(a), a = setTimeout(function () {
+                OrgChart.anim(r.element.querySelector("#bg-ppdf-content"), {
+                    opacity: 1
+                }, {
+                        opacity: 0
+                    }, 300, OrgChart.anim.inSin, function () {
+                        r.element.querySelector("#bg-ppdf-content").innerHTML = "";
+                        var t = d.value.split(",");
+                        if (4 == t.length) {
+                            for (var e = 0; e < t.length; e++) t[e] = parseInt(t[e]);
+                            i.margin = t, r.exportPDF(i, OrgChart.pdfPrevUI._handler)
+                        }
+                    })
+            }, 1e3)
+        }), c.addEventListener("keyup", function () {
+            clearTimeout(o), o = setTimeout(function () {
+                OrgChart.anim(r.element.querySelector("#bg-ppdf-content"), {
+                    opacity: 1
+                }, {
+                        opacity: 0
+                    }, 300, OrgChart.anim.inSin, function () {
+                        r.element.querySelector("#bg-ppdf-content").innerHTML = "", i.header = c.value, r.exportPDF(i, OrgChart.pdfPrevUI._handler)
+                    })
+            }, 1e3)
+        }), g.addEventListener("keyup", function () {
+            clearTimeout(n), n = setTimeout(function () {
+                OrgChart.anim(r.element.querySelector("#bg-ppdf-content"), {
+                    opacity: 1
+                }, {
+                        opacity: 0
+                    }, 300, OrgChart.anim.inSin, function () {
+                        r.element.querySelector("#bg-ppdf-content").innerHTML = "", i.footer = g.value, r.exportPDF(i, OrgChart.pdfPrevUI._handler)
+                    })
+            }, 1e3)
+        })
+}, OrgChart.pdfPrevUI._showHide = function (t, e, r) {
     "A4" == t.value || "A3" == t.value || "A2" == t.value || "A1" == t.value ? (e.parentNode.style.display = "block", r.parentNode.style.display = "block") : ("A42Levels" == t.value || "A32Levels" == t.value || "A22Levels" == t.value || "A12Levels" == t.value ? e.parentNode.style.display = "block" : e.parentNode.style.display = "none", r.parentNode.style.display = "none")
-}, OrgChart.pdfPrevUI._handler = function(t, e, r) {
+}, OrgChart.pdfPrevUI._handler = function (t, e, r) {
     var i = e.options,
         a = e.pages,
         o = i.margin[0],
@@ -3837,42 +3847,42 @@ OrgChart.prototype.load = function(t) {
     OrgChart.anim(v, {
         opacity: 0
     }, {
-        opacity: 1
-    }, 300, OrgChart.anim.outSin)
-}, OrgChart.pdfPrevUI._getViewBox = function(t) {
+            opacity: 1
+        }, 300, OrgChart.anim.outSin)
+}, OrgChart.pdfPrevUI._getViewBox = function (t) {
     var e = null;
     return t ? (e = (e = "[" + (e = t.getAttribute("viewBox")) + "]").replace(/\ /g, ","), e = JSON.parse(e)) : null
-}, OrgChart._exportHtml = function(t, e, r, i, a, o) {
+}, OrgChart._exportHtml = function (t, e, r, i, a, o) {
     for (var n = "", l = 0; l < e.margin.length; l++) n += e.margin[l] + "px ";
     var s = '<!DOCTYPE html><html style="margin:0;padding:0;"><head></head><body style="margin:0; padding:0;"><div style="margin: ' + n + ";overflow:hidden;width:" + r + "px;height:" + i + 'px">';
     return a && (s += '<div id="bg-header" style="width:' + r + "px;color:#757575;position:absolute;left:" + e.margin[3] + 'px;top:0;">' + a + "</div>"), s += t, o && (s += '<div id="bg-footer" style="width:' + r + "px;color:#757575;position:absolute;left:" + e.margin[3] + 'px;bottom:0;">' + o + "</div>"), s += "</div>", s += "</body></html>"
-}, OrgChart.pdfPrevUI.hide = function(e) {
+}, OrgChart.pdfPrevUI.hide = function (e) {
     var r = e.element.querySelector("#bg-ppdf-wrapper");
     r && OrgChart.anim(r, {
         opacity: 1
     }, {
-        opacity: 0
-    }, 300, OrgChart.anim.inSin, function() {
-        r.parentNode.removeChild(r);
-        var t = e.element.querySelector("#bg-ppdf-btns");
-        OrgChart.anim(t, {
-            margin: [0, 0, 0, 0]
-        }, {
-            margin: [0, 0, 0, -280]
-        }, 300, OrgChart.anim.inSin, function() {
-            t.parentNode.removeChild(t)
+            opacity: 0
+        }, 300, OrgChart.anim.inSin, function () {
+            r.parentNode.removeChild(r);
+            var t = e.element.querySelector("#bg-ppdf-btns");
+            OrgChart.anim(t, {
+                margin: [0, 0, 0, 0]
+            }, {
+                    margin: [0, 0, 0, -280]
+                }, 300, OrgChart.anim.inSin, function () {
+                    t.parentNode.removeChild(t)
+                })
         })
-    })
-}, void 0 === OrgChart && (OrgChart = {}), OrgChart.events.on("renderdefs", function(t, e) {
+}, void 0 === OrgChart && (OrgChart = {}), OrgChart.events.on("renderdefs", function (t, e) {
     for (var r = 0; r < t.config.clinks.length; r++) {
         var i = t.config.clinks[r].template;
         i || (i = "orange");
         var a = OrgChart.clinkTemplates[i];
         e.defs += a.defs
     }
-}), OrgChart.events.on("render", function(t, e) {
+}), OrgChart.events.on("render", function (t, e) {
     t._clink(t, e)
-}), OrgChart.prototype._clink = function(t, e) {
+}), OrgChart.prototype._clink = function (t, e) {
     for (var r, i, a, o, n, l = "", s = 0; s < this.config.clinks.length; s++) {
         var h = this.config.clinks[s],
             d = t.getBGNode(h.from),
@@ -3939,14 +3949,14 @@ OrgChart.prototype.load = function(t) {
         }
     }
     e.content += l
-}, OrgChart.prototype.addClink = function(t, e, r, i) {
+}, OrgChart.prototype.addClink = function (t, e, r, i) {
     return this.removeClink(t, e), this.config.clinks.push({
         from: t,
         to: e,
         label: r,
         template: i
     }), this
-}, OrgChart.prototype.removeClink = function(t, e) {
+}, OrgChart.prototype.removeClink = function (t, e) {
     for (var r = this.config.clinks.length - 1; 0 <= r; r--) {
         var i = this.config.clinks[r];
         i.from == t && i.to == e && this.config.clinks.splice(r, 1)
@@ -3964,16 +3974,16 @@ OrgChart.prototype.load = function(t) {
     defs: '<marker id="arrowYellow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path fill="#FFCA28" d="M 0 0 L 10 5 L 0 10 z" /></marker><marker id="dotYellow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5"> <circle cx="5" cy="5" r="5" fill="#FFCA28" /></marker>',
     link: '<path marker-start="url(#dotYellow)" marker-end="url(#arrowYellow)" stroke="#FFCA28" stroke-width="2" fill="none" d="{d}" />',
     label: '<text fill="#FFCA28"  text-anchor="middle" x="{x}" y="{y}">{val}</text>'
-}, void 0 === OrgChart && (OrgChart = {}), OrgChart.events.on("renderdefs", function(t, e) {
+}, void 0 === OrgChart && (OrgChart = {}), OrgChart.events.on("renderdefs", function (t, e) {
     for (var r = 0; r < t.config.slinks.length; r++) {
         var i = t.config.slinks[r].template;
         i || (i = "orange");
         var a = OrgChart.slinkTemplates[i];
         e.defs += a.defs
     }
-}), OrgChart.events.on("render", function(t, e) {
+}), OrgChart.events.on("render", function (t, e) {
     t._slinks(t, e)
-}), OrgChart.prototype._slinks = function(_, k) {
+}), OrgChart.prototype._slinks = function (_, k) {
     var A = "",
         S = this.getScale(),
         I = k.res.boundary;
@@ -4113,7 +4123,7 @@ OrgChart.prototype.load = function(t) {
                 break;
             case "middle":
                 var O = Math.ceil(i.length / 2);
-                m = function(t, e) {
+                m = function (t, e) {
                     return {
                         x: (t[0] + e[0]) / 2,
                         y: (t[1] + e[1]) / 2
@@ -4150,14 +4160,14 @@ OrgChart.prototype.load = function(t) {
             r.level >= i.level ? t(r, i, !1) : t(i, r, !0)
         }
     }
-}, OrgChart.prototype.addSlink = function(t, e, r, i) {
+}, OrgChart.prototype.addSlink = function (t, e, r, i) {
     return this.removeClink(t, e), this.config.slinks.push({
         from: t,
         to: e,
         label: r,
         template: i
     }), this
-}, OrgChart.prototype.removeSlink = function(t, e) {
+}, OrgChart.prototype.removeSlink = function (t, e) {
     for (var r = this.config.slinks.length - 1; 0 <= r; r--) {
         var i = this.config.slinks[r];
         i.from == t && i.to == e && this.config.slinks.splice(r, 1)
@@ -4181,3 +4191,4 @@ OrgChart.prototype.load = function(t) {
 };
 $(".field_0").attr("y", "20");
 $('[node-id="' + $("#VSCIdPointingEMP").val() + '"]').children().first().css("fill", "green");
+

@@ -3905,7 +3905,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             using (workorderEMSEntities context = new workorderEMSEntities())
             {
                 var hiringManagerId = context.UserRegistrations.Where(x => x.UserId == userId)?.FirstOrDefault().EmployeeID;
-                return context.spGetJobPosting(hiringManagerId).Select(x => new WorkOrderEMS.Models.NewAdminModel.JobPosting
+                return context.spGetJobPosting(hiringManagerId).Where(x => x.Status != "C").Select(x => new WorkOrderEMS.Models.NewAdminModel.JobPosting
                 {
                     Applicant = x.ApplicantCount,
                     DatePosted = x.JobPostingDate,

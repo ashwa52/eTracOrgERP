@@ -39,7 +39,7 @@ $(document).ready(function () {
     });
     $('.addjobtitlerows').click(function (e) {       
         var divID = $('#jobTitleDiv div.dymanicAdd').length;
-        $('#jobTitleDiv').append('<div class="form-group row dymanicAdd d' + divID + '"><div class="col-sm-8 getJobTitleDesc"><input type="text" class="form-control input-rounded required" placeholder="Job Title" value="" style="width: 441px;" /></div><div class="col-sm-3 getJobCount"><input type="text" class="form-control input-rounded required" placeholder="Job Count" value="" style="width: 130px;" /></div><div class="col-sm-1"><a class="addjobtitlerows minusSign" id=d' + divID + '><i class="fa fa-minus-circle addColorPlusMinus fa-2x" style="cursor:pointer;margin-left: 30px;" aria-hidden="true"></i></a></div></div>');
+        $('#jobTitleDiv').append('<div class="form-group row dymanicAdd d' + divID + '"><div class="col-sm-8 getJobTitleDesc"><input type="text" class="form-control input-rounded required removeContent" placeholder="Job Title" value="" style="width: 441px;" /></div><div class="col-sm-3 getJobCount"><input type="text" class="form-control input-rounded required removeContent" placeholder="Job Count" value="" style="width: 130px;" /></div><div class="col-sm-1"><a class="addjobtitlerows minusSign" id=d' + divID + '><i class="fa fa-minus-circle addColorPlusMinus fa-2x" style="cursor:pointer;margin-left: 30px;" aria-hidden="true"></i></a></div></div>');
         $('#jobTitleDiv').append('<script>jQuery("a.minusSign#d' + divID + '").click(function (){$("div.d' + divID + '").remove();  });</script>');
     });
     //$('.addjobtitlerows').click(function (e) {

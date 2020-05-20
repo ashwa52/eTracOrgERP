@@ -217,10 +217,10 @@
                                     </span>
                                     <div class="form-group row">
                                         <div class="col-sm-8">
-                                            @Html.TextBoxFor(model => model.JobTitle, new { @Placeholder = "Job Title", @id = "JobTitle", @style = "width: 441px;", @class = "form-control input-rounded required" })
+                                            @Html.TextBoxFor(model => model.JobTitle, new { @Placeholder = "Job Title", @id = "JobTitle", @style = "width: 441px;", @class = "form-control input-rounded required removeContent" })
                                         </div>
                                         <div class="col-sm-3">
-                                            @Html.TextBoxFor(model => model.JobTitleCount, new { @Placeholder = "Job Count", @id = "JobCount", @style = "width: 130px;", @class = "form-control input-rounded required" })
+                                            @Html.TextBoxFor(model => model.JobTitleCount, new { @Placeholder = "Job Count", @id = "JobCount", @style = "width: 130px;", @class = "form-control input-rounded required removeContent" })
                                             @*<input type="text" class="form-control input-rounded required" placeholder="Job Count" value="" style="width: 130px;" />*@
                                         </div>
                                         <a class="addjobtitlerows col-sm-1"><i class="fa fa-plus-circle fa-2x addColorPlusMinus" style="cursor:pointer;margin-left:30px;" aria-hidden="true"></i></a>
@@ -265,7 +265,6 @@
         </div>
     </div>
 </div>
-
 
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForAccessManagementTree">
     <div class="modal-dialog modal-lg">
@@ -550,3 +549,45 @@
         background-position: 0 -64px;
     }
 </style>
+
+<script>
+    function DeleteJobTitle(jobId, $_this) {
+    debugger
+    $.ajax({
+        type: "POST",
+        url: '../AdminSection/AdminDashboard/DeleteJobTitleById?jobId=' + jobId, 
+        success: function (Data) {
+            debugger
+            if (Data == true) {
+                var rem = $_this.previousElementSibling.parentElement.remove();
+            }
+            else {
+
+            }
+            //$(".removeContent input[type='text']").val("");
+            //if (Data.length > 0) {
+            //    $("#addJobTitleLabel").html("");
+            //    $("#JobTitleId").val("");
+            //    for (var ii = 0; ii < Data.length; ii++) {
+            //        //$("#JobTitleId").val(Data[ii].parentId);
+
+            //        var divID = $('#addJobTitleLabel div.dymanicDelete').length;
+            //        $('#addJobTitleLabel').append('<div class="form-group row dymanicDelete d_' + ii + '"><div class="col-sm-10 getJobTitleData"><label class="col-sm-5 col-form-label">' + Data[ii].JobTitleLabel + '</label></div><a onclick="DeleteJobTitle(' + Data[ii].Id + ')" class="addjobtitleDeleterows col-sm-1"  id=d' + ii + ' jobtitleid =' + Data[ii].Id + '><i class="fa fa-trash addColorTrash fa-2x" style="cursor:pointer;margin-left: 30px;color:#cd0a2499;" aria-hidden="true" ></i></a></div>');
+            //    }
+            //    $("#myModalForAddingJobTitle").modal('show');
+            //    /// $("#myModalForAddingJobTitle")
+            //} else {
+
+            //    $("#addJobTitleLabel").html("");
+            //    $("#JobTitleId").val("");
+            //    $("#myModalForAddingJobTitle").modal('show');
+
+            //}
+
+            $("#parentIdForJobTitle").val(i.pid);
+        },
+        error: function (err) {
+        }
+    });
+}
+</script>

@@ -13,8 +13,8 @@
 
     }
 
-@*< img src = "~/Content/Images/ProfilePic/7_636530235980373604.png" />*@
-     long locationId = 0;
+    @*< img src = "~/Content/Images/ProfilePic/7_636530235980373604.png" />*@
+    long locationId = 0;
     long userType = 0;
     WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
 
@@ -110,8 +110,10 @@
     </div>
 </div>
 
-
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
 <script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
+
 <script>
 
     $(document).ready(function () {
@@ -181,7 +183,7 @@
                 ]
             });
         })(jQuery);
-        
+
         $("#SearchText").keyup(function () {
             var act;
             $("#tbl_AllLocationLeavList").jsGrid({
@@ -321,7 +323,7 @@
         }
 
         $('#IsActive').change(function () {
-             
+
             if ($("#IsActive").prop(":checked")) {
                 $("#IsActive").val(false);
             }

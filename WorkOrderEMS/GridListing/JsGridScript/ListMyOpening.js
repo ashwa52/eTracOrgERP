@@ -2,7 +2,8 @@
 var base_url = window.location.origin;
 var clients;
 var apt_id = 0;
-var JobPostingId = 0;
+var JobPostingId = 0, refreshGridId = "";
+var JobStatus;
 var isInterviewDone = false;
 let ManagerList;
 var JobTitle;
@@ -10,6 +11,7 @@ var $_LocationId = $("#drp_MasterLocation1 option:selected").val();
 var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_RequestedBy = 0;//= $("#drp_MasterLocation option:selected").val();
 
 function myOpenings(PostingId) {
+    refreshGridId = "ListMyOpening";
     $("#ListMyOpening").show();
     $("#ListMyOpening").jsGrid({
         width: "100%",
@@ -145,29 +147,7 @@ function myOpenings(PostingId) {
                           .attr({ id: "btn-Background-" + item.ApplicantId }).click(function (e) {
                               API_id = item.ApplicantId;
                               $("#myModalForAddEmployee").modal("show");
-                              //$("#myModalToShowLocation").modal("show");
-
-                              //$.ajax({
-                              //    type: "POST",
-                              //    url: base_url + '/NewAdmin/BackgroundStatusChange?Status=' + "F" + "&IsActive=" + "S" + "&ApplicantId=" + item.ApplicantId,
-                              //    beforeSend: function () {
-                              //        new fn_showMaskloader('Please wait...');
-                              //    },
-                              //    success: function (message) {
-                              //        if (message != null) {
-                              //            toastr.success(message);
-                              //        }
-                              //        else {
-                              //            toastr.success(message);
-                              //        }
-                              //        $("#myModalForDemotionEmployee").modal("hide");
-                              //    },
-                              //    error: function (err) {
-                              //    },
-                              //    complete: function () {
-                              //        fn_hideMaskloader();
-                              //    }
-                              //});
+                             
                           }).append($iconBackground);
 
                      var $customIsInterviewDone = $("<span>")
@@ -264,6 +244,7 @@ function myOpenings(PostingId) {
 
 }
 function MyInterviews() {
+    refreshGridId = "myinterviews";
     $("#myinterview").show();
     $("#myinterviews").jsGrid({
         width: "100%",
@@ -330,6 +311,7 @@ function MyInterviews() {
 
 }
 function MyOpeningSummery() {
+    refreshGridId = "MyOpeningSummery";
     $("#btnBack").hide();
     $("#ListMyOpening").hide();
     $("#MyOpeningSummery").show();
@@ -355,7 +337,21 @@ function MyOpeningSummery() {
                 return d.promise();
             }
         },
+        //onRefreshed: function (args) {
+        //    debugger
+        //    $(".jsgrid-insert-row").hide();
+        //    $(".jsgrid-filter-row").hide()
+        //    $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
+        //    $(".HoldJob").attr({ style: "color:blue;"});
 
+        //},
+        //rowClass: function (item, itemIndex) //item is the data in a row, index is the row number.
+        //{
+            
+        //    if (item.Status == "Hold") {
+        //        return "HoldJob";
+        //    }
+        //},
         fields: [
 			{ name: "JobTitle", type: "text", width: 300 },
 			{ name: "Employee", type: "text", width: 70 },
@@ -400,24 +396,60 @@ function MyOpeningSummery() {
                             JobTitle = item.JobTitle;
                         }).append($iconUpdatePanel);
                     var $iconJobHoldStatus = $("<i>").attr({ class: "fa fa-hourglass-half whiteS" }).attr({ style: "color:blue;font-size:22px;margin-left:8px;" });
+
                     var $customJobHoldButton = $("<span>")
                         .attr({ title: jsGrid.fields.control.prototype.HoldJobButtonTooltip })
                         .attr({ id: "btn-HoldJob-" + item.Employee }).click(function (e) {
+                            
+                            $("#ModalForJobStatusChange").modal("show");
+                            JobPostingId = item.JobPostingId;
+                            JobStatus = "H";
+                            //CloseHoldJob(item.JobId,"H");
+                            $("#HoldOpenCloseJobId").html("");
+                            $("#HoldOpenCloseJobId").html("Do you realy want to hold " +item.JobTitle+ " this job.")
                             e.stopPropagation();
-                            CloseHoldJob(item.JobId,"H");
                         }).append($iconJobHoldStatus);
                     var $iconJobCloseStatus = $("<i>").attr({ class: "fa fa-window-close whiteS" }).attr({ style: "color:red;font-size:22px;margin-left:8px;" });
+
                     var $customJobCloseButton = $("<span>")
                         .attr({ title: jsGrid.fields.control.prototype.CloseJobButtonTooltip })
                         .attr({ id: "btn-CloseJob-" + item.Employee }).click(function (e) {
+                            $("#ModalForJobStatusChange").modal("show");
+                            JobPostingId = item.JobPostingId;
+                            JobStatus = "C";
+                            $("#HoldOpenCloseJobId").html("");
+                            $("#HoldOpenCloseJobId").html("Do you realy want to close " + item.JobTitle + " this job.")
                             e.stopPropagation();
-                            CloseHoldJob(item.JobId, "C");
-                        }).append($iconJobHoldStatus);
-                    return $("<div>").append($("<div id='detailDiv'>").addClass('text').text("asdadfaf")).append($("<div>").addClass("inlineDivdonut").append("<img src='Images/donut.png' class='donutC' onmouseover='GetSummeryDetail(this);' onmouseout='HideDetail(this)'>"))
-						.append($("<div>").append("<i>").addClass("fa fa-envelope-o fa-lg actionBtn"))
-                        .append($("<div>").append("<i>").addClass("fa fa-trash fa-lg actionBtn"))
-                        .append($customOpenCalendarButton).append($customUpdatePanelButton)
-                        .append($customJobHoldButton).append($customJobCloseButton);
+                            //CloseHoldJob(item.JobId, "C");
+                        }).append($iconJobCloseStatus);
+
+                    var $iconJobOpenStatus = $("<i>").attr({ class: "fa fa-suitcase whiteS" }).attr({ style: "color:gray;font-size:22px;margin-left:8px;" });
+
+                    var $customJobOpenButton = $("<span>")
+                        .attr({ title: jsGrid.fields.control.prototype.OpenJobButtonTooltip })
+                        .attr({ id: "btn-CloseJob-" + item.Employee }).click(function (e) {
+                            $("#ModalForJobStatusChange").modal("show");
+                            JobPostingId = item.JobPostingId;
+                            JobStatus = "Y";
+                            $("#HoldOpenCloseJobId").html("");
+                            $("#HoldOpenCloseJobId").html("Do you realy want to open " + item.JobTitle + " this job.")
+                            e.stopPropagation();
+                            //CloseHoldJob(item.JobId, "C");
+                        }).append($iconJobOpenStatus);
+
+                    if (item.Status == "Hold") {
+                        return $("<div>").append($("<div id='detailDiv'>").addClass('text').text("asdadfaf"))//.append($("<div>").addClass("inlineDivdonut").append("<img src='Images/donut.png' class='donutC' onmouseover='GetSummeryDetail(this);' onmouseout='HideDetail(this)'>"))
+                            //.append($("<div>").append("<i>").addClass("fa fa-envelope-o fa-lg actionBtn"))
+                            .append($("<div>").append("<i>").addClass("fa fa-trash fa-lg actionBtn"))
+                            .append($customJobOpenButton);
+                    }
+                    else {
+                        return $("<div>").append($("<div id='detailDiv'>").addClass('text').text("asdadfaf")).append($("<div>").addClass("inlineDivdonut").append("<img src='Images/donut.png' class='donutC' onmouseover='GetSummeryDetail(this);' onmouseout='HideDetail(this)'>"))
+                            .append($("<div>").append("<i>").addClass("fa fa-envelope-o fa-lg actionBtn"))
+                            .append($("<div>").append("<i>").addClass("fa fa-trash fa-lg actionBtn"))
+                            .append($customOpenCalendarButton).append($customUpdatePanelButton)
+                            .append($customJobHoldButton).append($customJobCloseButton);
+                    }
 			    }
 			}
         ],
@@ -1153,6 +1185,7 @@ function MarkAbsent() {
 
 
 function GetCompanyOpening() {
+    refreshGridId = "companyOpening";
     var records = [
         { "JobTitle": "Otto Clay", "PositionCount": 1, "ApplicantCount": 1, "JobPostingDate": "28/12/2019", "Duration": "30", "Status": true}
     ];
@@ -1700,40 +1733,25 @@ function UpdateInterviewPanel() {
     });
 }
 //--End Schedule Interview
-function CloseHoldJob(JobId, JobStatus) {
-    debugger
-    var dialog = bootbox.dialog({
-        message: '<label class="text-center">Do you want to ' + JobStatus == "H"?"Hold":"Cancel" + 'this job</label>',
-        closeButton: false,
-        buttons: {
-            confirm: {
-                label: 'Yes',
-                className: 'btn-danger',
-                callback: function () {
-                    $.ajax({
-                        type: 'POST',
-                        url: base_url +"/NewAdmin/CloseHoldOpenJob",
-                        data: { "JobId": JobId, "JobStatus": JobStatus },
-                        success: function (response) {
-                            $(".bootbox").modal("hide");
-                        }
-                    });
-                }
-            },
-            cancel: {
-                label: 'No',
-                className: 'btn-success',
-                callback: function () {
-                    $.ajax({
-                        type: 'POST',
-                        url: base_url + "/NewAdmin/CloseHoldeOpenJob",
-                        data: { "JobId": JobId, "JobStatus": JobStatus },
-                        success: function (response) {
-                            $(".bootbox").modal("hide");
-                        }
-                    });
-                }
-            }
+function CloseHoldJob() {
+    $.ajax({
+        type: 'POST',
+        url: base_url + "/NewAdmin/CloseHoldOpenJob?JobId=" + JobPostingId + "&JobStatus=" + JobStatus,
+        //data: { "ApplicantId": ApplicantId },
+        success: function (response) {
+            debugger
+            $("#ModalForJobStatusChange").modal("hide");
+            if (response)
+                toastr.success("job status change successfully");
+            else
+                toastr.success("error while changing job status please try again.");
+            $("#MyOpeningSummery").jsGrid("loadData");
         },
+        error: function (err) {
+        }
     });
 }
+function RefreshGrid() {
+    $("#" + refreshGridId).jsGrid("loadData");
+}
+

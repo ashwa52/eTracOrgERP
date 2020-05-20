@@ -1,5 +1,8 @@
 ﻿@model WorkOrderEMS.Models.CommonApplicantModel
-
+@{ 
+    string yrFrom = string.Empty;
+    string yrTo = string.Empty;
+}
 @Html.HiddenFor(model => model.ApplicantId,new { @id="ApplicantIdForView"})
 <div id="divVendorDetailPreview" class="">
     <div class="row">
@@ -110,11 +113,12 @@
        
             @foreach (var item in Model.ApplicantAddress)
             {
+
                 <tr>
                     <td>@item.APA_Apartment</td>
                     <td>@item.APA_City</td>
                     <td>@item.APA_State</td>
-                    <td>@item.APA_StreetAddress</td>
+                    <td>@item.APA_StreetAddress</td>               
                     <td>@item.APA_YearsAddressFrom</td>
                     <td>@item.APA_YearsAddressTo</td>
                 </tr>              
@@ -144,7 +148,9 @@
                  <tr>
                     <td>@item.ACI_eMail</td>
                     <td>@item.ACI_PhoneNo</td>
-                    <td>@item.ACI_PrefredContactMethod</td>
+                     @if(item.ACI_PrefredContactMethod == "P")
+                     {<td>Phone</td>}
+                     else { <td>Phone</td>}
                 </tr>              
             }
          </table>
@@ -176,8 +182,11 @@
                 </tr>
             @foreach (var item in Model.ApplicantAdditionalInfo)
             {
-                <tr>
-                    <td>@item.AAI_Age21Completed</td>
+                @*<tr>
+                    @if (item.AAI_Age21Completed == 'Y')
+                    {<td>Yes</td>}
+                    else{<td>No</td>}
+                    @if()
                     <td>@item.AAI_AnyRefOrEmployeeInELITE</td>
                     <td>@item.AAI_AvailableDate</td>
                     <td>@item.AAI_DepartureDate</td>
@@ -186,7 +195,30 @@
                     <td>@item.AAI_PriorMilitaryService</td>
                     <td>@item.AAI_ReasonForLeaving</td>
                     <td>@item.AAI_WorkEligibilityUS</td>
-                </tr>               
+                </tr>*@    
+                <tr>
+                    @if (item.AAI_Age21Completed == 'Y')
+                    {<td>Yes</td>}
+                    else{<td>No</td>}
+                    @if (item.AAI_AnyRefOrEmployeeInELITE == 'Y')
+                    {<td>Yes</td>}
+                    else {<td>No</td> }
+                    
+                    <td>@item.AAI_AvailableDate</td>
+                    <td>@item.AAI_DepartureDate</td>
+                    @if (item.AAI_EverWorkForELITE == 'Y') {
+                    <td>Yes</td>}
+                    else {<td>No</td> }
+                    <td>@item.AAI_NameOfRefOrEmployeeInELITE</td>
+                    @if(item.AAI_PriorMilitaryService == 'Y') { 
+                    <td>Yes</td>}
+                    else {<td>No</td> }
+
+                    <td>@item.AAI_ReasonForLeaving</td>
+                    @if(item.AAI_WorkEligibilityUS == 'Y') { <td>Yes</td>}
+                    else {<td>No</td> }
+                    
+                </tr>      
             }
           </table>
         }
@@ -259,11 +291,14 @@
                     <td>@item.ABH_State</td>
                     <td>@item.ABH_ZIPCode</td>
                     <td>@item.ABH_Phone</td>
-                    <td>@item.ABH_StillEmployed</td>
+                    @if(item.ABH_StillEmployed == 'Y')
+                    {<td>Yes</td>}else {<td>No</td> }
                     <td>@item.ABH_ReasonforLeaving</td>
                     <td>@item.ABH_ReasonForGAP</td>
-                    <td>@item.ABH_SubToFedralMotor</td>
-                    <td>@item.ABH_SafetySensitiveFunction</td>
+                    @if(item.ABH_SubToFedralMotor == 'Y')
+                    {<td>Yes</td>}else {<td>No</td> }
+                    @if(item.ABH_SafetySensitiveFunction == 'Y')
+                    {<td>Yes</td>}else{<td>No</td>}
                 </tr>
                 
             }
@@ -354,8 +389,10 @@
                     <td>@item.ATC_ConvictedDate</td>
                     <td>@item.ATC_Violation</td>
                     <td>@item.ATC_StateOfViolation</td>
-                    <td>@item.ATC_AtFaultAccident</td>  
-                    <td>@item.ATC_AtMovingViolation</td>  
+                    @if(item.ATC_AtFaultAccident == true) { <td>Yes</td> }
+                    else {<td>No</td> }
+                    @if(item.ATC_AtMovingViolation == true) {<td>Yes</td> }
+                    else { <td>Yes</td>}
                 </tr>
                 
             }

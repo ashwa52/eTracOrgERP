@@ -460,5 +460,45 @@ namespace WorkOrderEMS.BusinessLogic
             }
             return isSaved;
         }
+        /// <summary>
+        /// Created By  : Ashwajit Bansod
+        /// Created Date: 20-05-2020
+        /// Created For : TO soft delete job title
+        /// </summary>
+        /// <param name="JobId"></param>
+        /// <returns></returns>
+        public bool DeleteJobTitleById(long JobId)
+        {
+            var _VSCRepository = new VehicleSeatingChartRepository();
+            var Obj = new AddChartModel();
+            bool isSaved = false;
+            workorderEMSEntities _db = new workorderEMSEntities();
+            try
+            {
+                if(JobId > 0)
+                {
+                    var getJobTitleData = _db.JobTitles.Where(x => x.JBT_Id == JobId && x.JBT_IsActive == "Y").FirstOrDefault();
+                    Obj.IsActive = "X";
+                    Obj.Action = "U";
+                    Obj.JobTitleDesc = getJobTitleData.JBT_JobTitle;
+                    Obj.JobTitleCount = getJobTitleData.JBT_JobCount;
+                    Obj.Id = JobId;
+                    Obj.parentId = getJobTitleData.JBT_VST_Id;
+                    isSaved = _VSCRepository.SaveJobTitleRepository(Obj);
+                    isSaved = true;
+                }
+                else
+                {
+                    isSaved = false;
+                }
+            }
+            catch(Exception ex)
+            {
+                isSaved = false;
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool DeleteJobTitleById(long JobId)", "Exception While delete job title", JobId);
+                throw;
+            }
+            return isSaved;
+        }
     }
 }

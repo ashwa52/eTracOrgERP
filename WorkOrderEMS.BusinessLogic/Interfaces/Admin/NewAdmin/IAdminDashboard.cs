@@ -19,5 +19,6 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
         bool SaceAccessPermission(AccessPermisionTreeViewModel obj);
         bool SaveJobPosting(JobPostingModel Obj);
         List<JobPostingModel> GetChartHiringManager(long VSCId);
+        bool DeleteJobTitleById(long JobId);
     }
 }
