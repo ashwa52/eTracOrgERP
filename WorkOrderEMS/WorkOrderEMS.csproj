@@ -5999,6 +5999,7 @@
     <Content Include="Areas\AdminSection\Views\OrgChart\_JobTitilView.cshtml" />
     <Content Include="Documents\random.pdf" />
     <Content Include="App_Browsers\qt.browser" />
+    <Content Include="Documents\random.pdf" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\eTrac - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\eTrac - Web Deploy.pubxml" />

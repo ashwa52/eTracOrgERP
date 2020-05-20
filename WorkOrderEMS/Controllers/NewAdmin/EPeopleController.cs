@@ -1493,7 +1493,7 @@ namespace WorkOrderEMS.Controllers.NewAdmin
             }
         }
         [HttpPost]
-        public string LeaveTypeSubmit(WorkTbl_LeaveType_Setup LTS)
+        public string LeaveTypeSubmit(Tbl_LeaveType_Setup LTS)
         {
             var status = "";
             DataTable Dt = new DataTable();

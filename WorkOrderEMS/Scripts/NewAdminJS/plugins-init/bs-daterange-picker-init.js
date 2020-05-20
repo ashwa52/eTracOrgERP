@@ -28,4 +28,10 @@
             days: 6
         }
     });
+    $('.input-daterange-datepicker-new').daterangepicker({
+        buttonClasses: ['btn', 'btn-sm'],
+        applyClass: 'btn-danger',
+        cancelClass: 'btn-inverse',
+        format : "MM/DD/YYYY"
+    });
 })(jQuery);

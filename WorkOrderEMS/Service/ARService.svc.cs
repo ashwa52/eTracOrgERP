@@ -472,11 +472,11 @@ namespace WorkOrderEMS.Service
 
         #region EmployeeList For Schedule
         
-        public List<WorkOrderEMS.Models.ApplicantSchecduleAvaliblity> GetScheduleEmployeeList(long Location,string EmployeeId)
+        public List<ApplicantSchecduleAvaliblity> GetScheduleEmployeeList(long Location,string EmployeeId)
         {
             string SQRY = "EXEC USP_GetScheduleEmployeeList N'" + Location + "','"+ EmployeeId + "'";
             DataTable DT = DB.GetDTResponse(SQRY);
-            List<WorkOrderEMS.Models.ApplicantSchecduleAvaliblity> ItemList = DataRowToObject.CreateListFromTable<WorkOrderEMS.Models.ApplicantSchecduleAvaliblity>(DT);
+            List<ApplicantSchecduleAvaliblity> ItemList = DataRowToObject.CreateListFromTable<ApplicantSchecduleAvaliblity>(DT);
             return ItemList;
         }
 

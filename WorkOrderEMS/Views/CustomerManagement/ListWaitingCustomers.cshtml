@@ -82,6 +82,7 @@
                 <div class="card aos-init aos-animate" data-aos="fade-up">
                     <div class="card-header headerSize">
                         <h4 class="card-title" style="color:white;"><strong>Waiting List of Customers</strong></h4>
+                        <a id="BackToAdmin" title="Back to Admin Dahsboard" style="cursor:pointer;"><i class="fa fa-long-arrow-left fa-2x"></i></a>
                     </div>
                 </div>
             </div>
@@ -533,4 +534,10 @@
             }
         });
     });
+
+    $("#BackToAdmin").click(function () {
+        var url = "@Url.Action("Index", "AdminDashboard", new { area = "AdminSection" })";
+        window.location.href = url;
+    });
+
 </script>

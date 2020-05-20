@@ -1901,7 +1901,7 @@ namespace WorkOrderEMS.Controllers
                 //QueryService<Item> itemQueryService = new QueryService<Item>(serviceContext);
                 //Item item = itemQueryService.ExecuteIdsQuery("Select * From Item MaxResults 1000").FirstOrDefault();
 
-                Intuit.Ipp.Data.Invoice invoice = new Intuit.Ipp.Data.Invoice();
+                Invoice invoice = new Invoice();
                 //invoice.Deposit = new Decimal(0.00);
                 //invoice.DepositSpecified = true;
                 
@@ -1988,7 +1988,7 @@ namespace WorkOrderEMS.Controllers
 
                 invoice.Line = lineList.ToArray();
 
-                Intuit.Ipp.Data.Invoice addedInvoice = commonServiceQBO.Add<Intuit.Ipp.Data.Invoice>(invoice);
+                Invoice addedInvoice = commonServiceQBO.Add<Invoice>(invoice);
                 booResult = true;
             }
             catch (Exception ex)

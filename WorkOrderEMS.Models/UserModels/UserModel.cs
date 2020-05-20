@@ -342,25 +342,21 @@ namespace WorkOrderEMS.Models
         public long EventId { get; set; }
         public string FTTime { get; set; }
     }
-    public class WorkTbl_LeaveType_Setup {
-        public string EntryBy { get; set; }
-        public int TypeId { get; set; }
+    public class ApplicantSchecduleAvaliblity
+    {
+        public long ASA_Id { get; set; }
+        public long ASA_ApplicantId { get; set; }
+        public string ASA_EMP_EmployeeId { get; set; }
+        public TimeSpan ASA_AvaliableStartTime { get; set; }
+        public TimeSpan ASA_AvaliableEndTime { get; set; }
+        public DateTime ASA_Date { get; set; }
+        public string ASA_IsActive { get; set; }
+        public long ASA_AvaliableUserLocation { get; set; }
+        public char ASA_Action { get; set; }
+        public string ASA_WeekDay { get; set; }
+        //public Nullable<DateTime> ASA_AvaliableStartTime { get; set; }
+        //public Nullable<DateTime> ASA_AvaliableEndTime { get; set; }
+        
     }
-    //public class ApplicantSchecduleAvaliblity
-    //{
-    //    public long ASA_Id { get; set; }
-    //    public long ASA_ApplicantId { get; set; }
-    //    public string ASA_EMP_EmployeeId { get; set; }
-    //    public TimeSpan ASA_AvaliableStartTime { get; set; }
-    //    public TimeSpan ASA_AvaliableEndTime { get; set; }
-    //    public DateTime ASA_Date { get; set; }
-    //    public string ASA_IsActive { get; set; }
-    //    public long ASA_AvaliableUserLocation { get; set; }
-    //    public char ASA_Action { get; set; }
-    //    public string ASA_WeekDay { get; set; }
-    //    //public Nullable<DateTime> ASA_AvaliableStartTime { get; set; }
-    //    //public Nullable<DateTime> ASA_AvaliableEndTime { get; set; }
-
-    //}
 
 }
