@@ -26,12 +26,14 @@
     .error {
         color: red;
     }
-    .chk{
+
+    .chk {
         margin-top: 10px !important;
     }
-    .nextBtndata{
-        border-radius:25px;
-        background-color:#0aa0cd;
+
+    .nextBtndata {
+        border-radius: 25px;
+        background-color: #0aa0cd;
     }
 </style>
 @section scripts{
@@ -41,6 +43,7 @@
     var $_VendorStatus = "false";
     </script>
 }
+
 <div class="content-body">
     <div class="container-fluid" style="margin-top:20px;">
         <!-- row -->
@@ -74,15 +77,15 @@
                                     <div class="row">
                                         @Html.Label("Leave Year", new { @class = "col-sm-2 col-form-label" })
                                         <div class="col-sm-4 form-group">
-                                            @Html.TextBoxFor(model => model.LeaveYear, new { @Placeholder = "Leave Year", @class = "form-control input-rounded required",@min=Model.LeaveYear,@max=Model.LeaveYear, @onkeypress = "javascript:return validInt(event,this.getAttribute('id'))" ,@type="number"})
+                                            @Html.TextBoxFor(model => model.LeaveYear, new { @Placeholder = "Leave Year", @class = "form-control input-rounded required", @min = Model.LeaveYear, @max = Model.LeaveYear, @onkeypress = "javascript:return validInt(event,this.getAttribute('id'))", @type = "number" })
                                         </div>
                                         @Html.Label("Active", new { @class = "col-sm-1 col-form-label pull-right" })
                                         <div class="col-sm-1 form-group">
-                                            @Html.CheckBoxFor(model => model.IsActive,new { @class="chk pull-left"})
+                                            @Html.CheckBoxFor(model => model.IsActive, new { @class = "chk pull-left" })
                                         </div>
                                         @Html.Label("CarryForward", new { @class = "col-sm-2 col-form-label pull-right" })
                                         <div class="col-sm-1 form-group">
-                                            @Html.CheckBoxFor(model => model.IsCarryForward,new { @class="chk pull-left"})
+                                            @Html.CheckBoxFor(model => model.IsCarryForward, new { @class = "chk pull-left" })
                                         </div>
                                     </div>
                                 </div>
@@ -98,6 +101,10 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
+
 <script type="text/javascript">
     function validFloat(e, txtid) {
         var code;
@@ -121,14 +128,14 @@
         }
     }
     function validInt(event) {
-    if (event.keyCode == 13) {
-        return true;
+        if (event.keyCode == 13) {
+            return true;
+        }
+        if (event.keyCode < 48 || event.keyCode > 57) {
+            event.keyCode = 0;
+            return false;
+        }
     }
-    if (event.keyCode < 48 || event.keyCode > 57) {
-        event.keyCode = 0;
-        return false;
-    }
-}
     $("#btnback").on("click", function (event) {
         event.preventDefault();
         var addNewUrl = "/EPeople/LeaveTypeList";
@@ -159,7 +166,7 @@
         if ($(this).val() != "") {
             $.ajax({
                 type: 'POST',
-                url: '/InvoiceManagement/CheckItemCode?ItemCode=' + $(this).val()+'&Id='+$("#Id").val(),
+                url: '/InvoiceManagement/CheckItemCode?ItemCode=' + $(this).val() + '&Id=' + $("#Id").val(),
                 datatype: 'json',
                 contentType: "application/json",
                 success: function (data) {
