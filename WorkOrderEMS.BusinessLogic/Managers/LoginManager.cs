@@ -723,6 +723,15 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                 throw new Exception("You are not authorised to login, Please contact to your superior.");
                             }
                             break;
+                        case (Int64)(UserType.HR):
+                            obj_LocationMasterModel = GetSuperAdminUserLocation();
+                            if (obj_LocationMasterModel != null)
+                            {
+                                loginViewModel.LocationID = obj_LocationMasterModel.LocationId;
+                                loginViewModel.Location = obj_LocationMasterModel.LocationName;
+                                loginViewModel.LocationCode = obj_LocationMasterModel.LocationCode;
+                            }
+                            break;
                         default:
                             eTracLoginModel locationDetails = ObjUserRepository.GetLocationDetailsByUserID(authuser.UserId);
                             loginViewModel.LocationID = locationDetails == null ? 0 : locationDetails.LocationID;

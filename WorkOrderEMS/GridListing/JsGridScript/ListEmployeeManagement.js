@@ -4,9 +4,10 @@ var HOBurl = '/EPeople/EmployeeManagementList';
 var clients;
 var GetEMPId;
 var FileId;
-var $_LocationId = $("#drp_MasterLocation1 option:selected").val();
+var $_LocationId = ("#drp_MasterLocation1 option:selected").val()$;
 var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_RequestedBy = 0;//= $("#drp_MasterLocation option:selected").val();
-(function ($) {
+(function ($)
+{
     'use strict'
     var data;
     $("#ListEmployeeManagement").jsGrid({

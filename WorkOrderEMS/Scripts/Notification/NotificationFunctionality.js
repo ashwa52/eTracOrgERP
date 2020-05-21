@@ -1,4 +1,4 @@
-﻿var url, data;
+﻿var url, data, FormId;
 var base_url = window.location.origin;
 
 function OpenCommonView(result, action) {
@@ -15,6 +15,11 @@ function OpenCommonView(result, action) {
         case 'EvaluationComplete':
             url = base_url + '/Notification/GetViewForApplicantDetails';
             data = { "ApplicantId": getSubModuleId, "ApplicantStatus": getStatus };
+            break;
+        case 'ScheduleMeetingView':
+            url = base_url + '/Notification/ViewForMeeting';
+            data = { "emp_id": getSubModuleId, "NotificationId": Number(getNotificationId) };
+            FormId = "ScheduleMeetingForm";
             break;
     }
 
@@ -121,3 +126,24 @@ function NotificationRead(NotificationId) {
         }
     });
 }
+$("#SaveNotificationAction").click(function () {
+    debugger
+    var FormData = $("#ScheduleMeetingForm").serialize();
+    $.ajax({
+        type: "POST",
+        data: FormData,
+        url: base_url + '/Corrective/SaveMeetingDateTime',
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
+        success: function (Data) {
+
+        },
+        error: function (err) {
+
+        },
+        complete: function () {
+            fn_hideMaskloader();
+        }
+    });
+});

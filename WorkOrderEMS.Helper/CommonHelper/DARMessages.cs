@@ -98,10 +98,10 @@ namespace WorkOrderEMS.Helper
         {
             return string.Format(CultureInfo.InvariantCulture, "User : {0} has been manually verified.", userName);
         }
-        public static string UpdateVehicle(string QRCCodeID,string locationName)
-        {          
+        public static string UpdateVehicle(string QRCCodeID, string locationName)
+        {
             return "Vehicle: " + QRCCodeID + " for the location :" + locationName + " has been updated.";
-        }       
+        }
         public static string DarUpdateTaskStatus(string userName, string clientUserName)
         {
             return string.Format(CultureInfo.InvariantCulture, "Employee :{0} has accepted the work order requested by client:{1}.", userName, clientUserName);
@@ -281,11 +281,11 @@ namespace WorkOrderEMS.Helper
         {
             return string.Format(CultureInfo.InvariantCulture, "Vendor is Updated");
         }
-        public static string CreatePO(string locationName,long PONumber)
+        public static string CreatePO(string locationName, long PONumber)
         {
             return string.Format(CultureInfo.InvariantCulture, "PO :{1} is created for the location :{0}.", locationName, PONumber);
         }
-        public static string ApproveRejectPO(string locationName, long PONumber,string ApptoveRemoveSatus)
+        public static string ApproveRejectPO(string locationName, long PONumber, string ApptoveRemoveSatus)
         {
             return string.Format(CultureInfo.InvariantCulture, "PO :{1} is {2} for the location :{0}.", locationName, PONumber, ApptoveRemoveSatus);
         }
@@ -301,7 +301,7 @@ namespace WorkOrderEMS.Helper
         {
             return string.Format(CultureInfo.InvariantCulture, "Miscellaneous :{1} is {2} for the location :{0}.", locationName, MISID, Status);
         }
-        public static string BillCreated(string UserName,string locationName, long POID)
+        public static string BillCreated(string UserName, string locationName, long POID)
         {
             return string.Format(CultureInfo.InvariantCulture, "Bill :{1} is Created for the location :{0} by {2}.", locationName, POID, UserName);
         }
@@ -315,7 +315,7 @@ namespace WorkOrderEMS.Helper
         }
         public static string VendorApprovedCancel(string UserName, string locationName, string Status)
         {
-            return string.Format(CultureInfo.InvariantCulture, "Vendor {2} is {1} for the location :{0}",  locationName, Status, UserName);
+            return string.Format(CultureInfo.InvariantCulture, "Vendor {2} is {1} for the location :{0}", locationName, Status, UserName);
         }
         public static string AddInsuranceAndLicense(string VendorName, string UserName)
         {
@@ -376,6 +376,49 @@ namespace WorkOrderEMS.Helper
         public static string EvaluationCompleteByManager(string EmployeeName, string ManagerName, string Assessment)
         {
             return string.Format(CultureInfo.InvariantCulture, " The Manager {0} has been completed the evaluation {1} for employee {2}.", EmployeeName, Assessment, ManagerName);
+        }
+        public static string AssetLost(string EmployeeName)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "Asset lost by {0}", EmployeeName);
+        }
+        public static string TerminationDeny(string EmployeeName)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "Termination denied for {0}", EmployeeName);
+        }
+        public static string TerminationApprove(string EmployeeName)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "Termination Approved for {0}", EmployeeName);
+        }
+        public static string CorrectiveActionRequest(string EmployeeName)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "Corrective Action for {0}", EmployeeName);
+        }
+        public static string CorrectiveActionApprove(string EmployeeName)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "Corrective Action Approve for {0}", EmployeeName);
+        }
+        public static string CorrectiveActionDeny(string EmployeeName)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "Corrective Action Denied for {0}", EmployeeName);
+        }
+
+        public static string CorrectiveActionMeeting(string EmployeeName)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "Meeting for Corrective Action with {0}", EmployeeName);
+        }
+
+        public static string EmployeeCorrectiveActionDispute(string EmployeeName)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "Corrective Action Dispute by {0}", EmployeeName);
+        }
+
+        public static string CorrectiveActionMeetingDateTime(string ManagerName, string DTone, string DTtwo, string DTthree)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "Corrective Action Meeting Date&Time with {0}, {1}+ {2}+ {3}", ManagerName, DTone, DTtwo, DTthree);
+        }
+        public static string CorrectiveActionMeetingDateTime(string ManagerName, string DTone)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "Corrective Action Meeting Date&Time with {0}, {1}", ManagerName, DTone);
         }
     }
 }

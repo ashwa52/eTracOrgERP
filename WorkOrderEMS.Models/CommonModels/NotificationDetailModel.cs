@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace WorkOrderEMS.Models
 {
     public class NotificationDetailModel
     {
         public long? ModuleId { get; set; }
+        public string SubModuleId1 { get; set; }//changed
         public long? AssignTo { get; set; }
         public long? WorkOrderID { get; set; }
         public long? eFleetID { get; set; }
@@ -46,5 +48,8 @@ namespace WorkOrderEMS.Models
         public long ApplicantId { get; set; }
         public string Module { get; set; }
         public string EmployeeStatus { get; set; }
+        public Nullable<DateTime> MeetingDateTime { get; set; } //Added by Rajat Toppo
+        public string IsExempt { get; set; } // Added by Rajat Toppo
+        public string emp_id { get; set; }
     }
 }

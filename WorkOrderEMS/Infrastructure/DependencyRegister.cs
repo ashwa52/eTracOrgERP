@@ -10,13 +10,17 @@ using WorkOrderEMS.BusinessLogic;
 using WorkOrderEMS.BusinessLogic.Interface;
 using WorkOrderEMS.BusinessLogic.Interfaces;
 using WorkOrderEMS.BusinessLogic.Interfaces.Accounts;
+using WorkOrderEMS.BusinessLogic.Interfaces;
 using WorkOrderEMS.BusinessLogic.Interfaces.eCounting;
 using WorkOrderEMS.BusinessLogic.Interfaces.eFleet;
 using WorkOrderEMS.BusinessLogic.Managers;
 using WorkOrderEMS.BusinessLogic.Managers.Accounts;
 using WorkOrderEMS.BusinessLogic.Managers.eFleet;
+using WorkOrderEMS.BusinessLogic.Managers;
 using WorkOrderEMS.Data.DataRepository;
 using WorkOrderEMS.Data.Interfaces;
+
+
 
 namespace WorkOrderEMS.Infrastructure
 {
@@ -104,8 +108,12 @@ namespace WorkOrderEMS.Infrastructure
                 For<INewAdminRepository>().Use<NewAdminDataRepository>();
                 For<IDebitMemo>().Use<DebitMemoManager>();
                 For<IApplicantManager>().Use<ApplicantManager>();
+                For<ITerminationManager>().Use<TerminationManager>();
+                For<ICorrectiveManager>().Use<CorrectiveManager>();
                 For<INotification>().Use<NotificationManager>();
             }
         }
+
+
     }
 }

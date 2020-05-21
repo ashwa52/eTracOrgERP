@@ -1,0 +1,431 @@
+﻿@model WorkOrderEMS.Models.NewAdminModel.TCAPIP.TerminationModel
+
+@{
+    Layout = null;
+}
+
+<style>
+
+    * {
+        color: black;
+    }
+
+    .SpanSize {
+        font-size: 14px;
+    }
+
+    .SetScale {
+        transform: scale(1.3);
+    }
+
+    .MLspan {
+        margin-left: 15px;
+    }
+
+    .TerminationBorderLayout {
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px solid black;
+    }
+
+    .ImgLayout {
+        width: 250px;
+        height: 130px
+    }
+</style>
+
+@*<link href="~/Content/bootstrap.min.css" rel="stylesheet" />*@
+<link href="~/Content/NewAdminContent/CSS/clockPicker.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12" style="padding-right: 0px;padding-left: 2px;margin:2px 0 0 0;">
+                <div class="card" data-aos="fade-up">
+                    <div style="height: 45px;background:#0aa0cd;">
+                        <div class="form-group row" style="margin-left:10px;margin-top:6px;">
+                            <a id="BackToEmployeeGrid" title="Back to Employee List" style="cursor:pointer;"><i class="fa fa-long-arrow-left fa-2x" style="color:white;"></i></a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="container">
+
+                            <form id="TerminationFormDetails">
+
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <img src="~/Images/etrac-logo-inner.jpg" alt="EliteParking" class="ImgLayout" />
+                                        @*<img src="eparking.jpg" alt="EliteParking" class="ImgLayout">*@
+                                    </div>
+                                </div>
+                                <div class="row" style="border:1px solid black; margin-bottom:4%;">
+                                    <div class="col-md-12 text-center">
+                                        <h4 style="padding-top: 0%;">EMPLOYEMENT TERMINATION REQUEST FORM</h4>
+                                    </div>
+                                </div>
+                                <div class="row SpanSize" style="margin-bottom: 1%;">
+                                    <div class="col-md-6 col-sm-12">
+                                        <span>Employee Name:</span>
+                                        @Html.TextBoxFor(m => m.Emp_Name, null, new { @class = "TerminationBorderLayout", @style = "width: 65%; margin-left: 28px;" })
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <span>Employee ID#:</span>
+                                        @Html.TextBoxFor(m => m.EmpId, null, new { @class = "TerminationBorderLayout", @style = "width: 65%; margin-left: 47px;" })
+                                    </div>
+
+                                </div>
+
+                                <div class="row SpanSize" style="margin-bottom: 1%;">
+                                    <div class="col-md-6 col-sm-12">
+                                        @Html.HiddenFor(m => m.IsExempt, new { })
+                                        @Html.HiddenFor(m => m.ManagerId, new { })
+                                        <span>Manager Name:</span>
+                                        @Html.TextBoxFor(m => m.Manager_Name, null, new { @class = "TerminationBorderLayout", @style = "width: 65%; margin-left: 33px;" })
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <span>Last Day Worked:</span>
+                                        @Html.TextBoxFor(m => m.Last_Day_Worked, null, new { @class = "TerminationBorderLayout", @style = "width: 65%; margin-left: 28px; " })
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="row SpanSize" style="margin-bottom: 1%;">
+                                    <div class="col-md-6 col-sm-12">
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <span>Termination Date:</span>
+                                        @Html.TextBoxFor(m => m.Termination_Date, null, new { @class = "TerminationBorderLayout", @style = "width: 65%; margin-left: 23px;" })
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="row SpanSize" style="margin-bottom: 2%;">
+                                    <div class="col-md-12 col-sm-12">
+                                        <span><u>Reason for leaving (Mark Only One): </u></span>
+                                    </div>
+                                </div>
+                                <div class="row SpanSize" style="margin-bottom: 1%;">
+                                    <div class="col-md-4 col-sm-4">
+                                        @Html.RadioButtonFor(m => m.Reason_For_Leaving, "Voluntary Resignation", new { @class = "SetScale" })
+                                        <span class="MLspan">Voluntary Resignation</span>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4">
+                                        @Html.RadioButtonFor(m => m.Reason_For_Leaving, "Temporary Layoff", new { @class = "SetScale" })
+
+                                        <span class="MLspan">Temporary Layoff</span>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4">
+                                        @Html.RadioButtonFor(m => m.Reason_For_Leaving, "Permanent Layoff", new { @class = "SetScale" })
+                                        <span class="MLspan">Permanent Layoff</span>
+                                    </div>
+                                </div>
+
+                                <div class="row SpanSize" style="margin-bottom: 1%;">
+                                    <div class="col-md-4 col-sm-4">
+                                        @Html.RadioButtonFor(m => m.Reason_For_Leaving, "Retirement", new { @class = "SetScale" })
+                                        <span class="MLspan">Retirement</span>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4">
+                                        @Html.RadioButtonFor(m => m.Reason_For_Leaving, "Job Abandoment", new { @class = "SetScale" })
+                                        <span class="MLspan">Job Abandonment</span>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4">
+
+                                    </div>
+                                </div>
+
+                                <div class="row SpanSize" style="margin-bottom: 2%;">
+                                    <div class="col-md-4 col-sm-4">
+                                        @Html.RadioButtonFor(m => m.Reason_For_Leaving, "Dismissal", new { @class = "SetScale" })
+                                        <span class="MLspan">Dismissal</span>
+                                    </div>
+                                    <div class="col-md-4 col-sm-4">
+
+                                    </div>
+                                    <div class="col-md-4 col-sm-4">
+
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row SpanSize">
+                                    <div class="col-md-12 col-sm-12">
+                                        <span>Explanation. Please be as detailed as possible. Use additional sheet if necessary</span>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom: 1%;">
+                                    <div class="col-md-12 col-sm-12">
+                                        @Html.HiddenFor(m => m.detailed_Expalnation, new { })
+                                        @Html.TextBox("Detailed_explanation_one", null, new { @class = "TerminationBorderLayout", @style = "width: -webkit-fill-available;" })
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom: 1%;">
+                                    <div class="col-md-12 col-sm-12">
+                                        @Html.TextBox("Detailed_explanation_two", null, new { @class = "TerminationBorderLayout", @style = "width: -webkit-fill-available;" })
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom: 1%;">
+                                    <div class="col-md-12 col-sm-12">
+                                        @Html.TextBox("Detailed_explanation_three", null, new { @class = "TerminationBorderLayout", @style = "width: -webkit-fill-available;" })
+                                    </div>
+                                </div>
+                                @*<div class="row" style="margin-bottom: 2%;">
+                                        <div class="col-md-12 col-sm-12">
+                                            @Html.TextBox("Detailed_explanation_four", null, new { @class = "TerminationBorderLayout", @style = "width: -webkit-fill-available;" })
+                                        </div>
+                                    </div>*@
+
+                                <div class="row SpanSize">
+                                    <div class="col-md-12 col-sm-12">
+                                        <span>If there were multiple reasons, what was the final incident that resulted in termination?</span>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom: 1%;">
+                                    <div class="col-md-12 col-sm-12">
+                                        @Html.TextBoxFor(m => m.Final_Incident_Termination, null, new { @style = "display:none;" })
+                                        @Html.TextBox("FITone", null, new { @class = "TerminationBorderLayout", @style = "width: -webkit-fill-available;" })
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom: 2%;">
+                                    <div class="col-md-12 col-sm-12">
+                                        @Html.TextBox("FITtwo", null, new { @class = "TerminationBorderLayout", @style = "width: -webkit-fill-available;" })
+
+                                    </div>
+                                </div>
+
+
+                                <div class="row SpanSize" style="margin-bottom: 2%;">
+                                    <div class="col-md-12 col-sm-12">
+                                        <span>Check the following: Does the employee have any items owned by the company in their possesion? </span>
+                                    </div>
+                                </div>
+                                <div class="row SpanSize" style="margin-bottom: 2%;">
+                                    <div class="col-md-3">
+                                    </div>
+                                    <div class="col-md-3 col-sm-6 text-center">
+                                        @Html.RadioButtonFor(m => m.Items_Owned_ByEmployee, "Yes", new { @class = "SetScale" })
+                                        <span class="MLspan">Yes</span>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        @Html.RadioButtonFor(m => m.Items_Owned_ByEmployee, "No", new { @class = "SetScale" })
+                                        <span class="MLspan">No</span>
+                                    </div>
+                                    <div class="col-md-3">
+                                    </div>
+                                </div>
+
+
+                                <div class="row SpanSize" style="margin-bottom: 1%;">
+                                    <div class="col-md-12 col-sm-12">
+                                        <span>If "Yes" Please list all items and their applicable cost per the employee deduction form:</span>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom: 1%;">
+                                    <div class="col-md-12 col-sm-12">
+                                        @Html.TextBoxFor(m => m.ItemsList_Cost, null, new { @style = "display:none;" })
+                                        @Html.TextBox("ILCone", null, new { @class = "TerminationBorderLayout", @style = "width: -webkit-fill-available;" })
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom: 2%;">
+                                    <div class="col-md-12 col-sm-12">
+                                        @Html.TextBox("ILCtwo", null, new { @class = "TerminationBorderLayout", @style = "width: -webkit-fill-available;" })
+                                    </div>
+                                </div>
+                                <div class="row SpanSize" style="margin-bottom: 5%;">
+                                    <div class="col-md-6 col-sm-6">
+                                        @*<span>Is Serverance?</span><br><br>*@
+                                        <span>Would this employee be recommended for rehire?</span><br><br>
+                                        @*<span>Human Resources Decision?</span>*@
+                                    </div>
+                                    <div class="col-md-2 col-sm-2">
+
+                                    </div>
+                                    <div class="col-md-2 col-sm-2">
+                                        @*@Html.RadioButtonFor(m => m.IsSeverence, "Yes", new { @class = "SetScale" })
+                                            <span class="MLspan">Yes</span><br><br>*@
+                                        @Html.RadioButtonFor(m => m.Re_Hire, "Yes", new { @class = "SetScale" })
+                                        <span class="MLspan">Yes</span><br><br>
+                                        @*@Html.RadioButtonFor(m => m.HR_Decision, "Approve", new { @class = "SetScale" })
+                                            <span class="MLspan">Approve</span>*@
+                                    </div>
+
+                                    <div class="col-md-2 col-sm-2">
+                                        @*@Html.RadioButtonFor(m => m.IsSeverence, "No", new { @class = "SetScale" })
+                                            <span class="MLspan">No</span><br><br>*@
+                                        @Html.RadioButtonFor(m => m.Re_Hire, "No", new { @class = "SetScale" })
+                                        <span class="MLspan">No</span><br><br>
+                                        @*@Html.RadioButtonFor(m => m.HR_Decision, "Deny", new { @class = "SetScale" })
+                                            <span class="MLspan">Deny</span>*@
+                                    </div>
+
+                                </div>
+                                <div class="row SpanSize" style="margin-bottom: 5%;">
+                                    <div class="col-md-4 col-sm-4">
+                                        <input type="text" name="" value="" style="border-top: none; border-left: none; border-right: none; border-bottom: 1px solid black; width: -webkit-fill-available;">
+                                        <br>
+                                        <span>Manager’s Electronic Signature</span>
+                                    </div>
+
+                                    <div class="col-md-2 col-sm-2">
+
+                                    </div>
+
+                                    <div class="col-md-2 col-sm-2">
+
+                                    </div>
+                                    <div class="col-md-2 col-sm-2">
+                                        <input type="text" name="" value="" style="border-top: none; border-left: none; border-right: none; border-bottom: 1px solid black; width: -webkit-fill-available;">
+                                        <br>
+                                        <span>Date</span>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2">
+
+                                    </div>
+
+                                </div>
+
+                                <div class="row SpanSize" style="margin-bottom: 5%;">
+                                    <div class="col-md-4 col-sm-4">
+                                        <input type="text" name="" value="" style="border-top: none; border-left: none; border-right: none; border-bottom: 1px solid black; width: -webkit-fill-available;">
+                                        <br>
+                                        <span>Director of People and Culture Electronic Signature</span>
+                                    </div>
+
+                                    <div class="col-md-2 col-sm-2">
+
+                                    </div>
+
+                                    <div class="col-md-2 col-sm-2">
+
+                                    </div>
+                                    <div class="col-md-2 col-sm-2">
+                                        <input type="text" name="" value="" style="border-top: none; border-left: none; border-right: none; border-bottom: 1px solid black; width: -webkit-fill-available;">
+                                        <br>
+                                        <span>Date</span>
+                                    </div>
+                                    <div class="col-md-2 col-sm-2">
+
+                                    </div>
+
+                                </div>
+                                <div class="row SpanSize" style="margin-bottom: 5%;">
+                                    <div class="col-md-8 col-sm-8">
+                                        <span><b>Date HR e-mailed payroll termination information:</b></span>
+                                        <input type="text" name="" value="" style="border-top: none; border-left: none; border-right: none; border-bottom: 1px solid black;">
+                                    </div>
+                                    <div class="col-md-4 col-sm-4">
+
+                                    </div>
+
+                                </div>
+                                <div class="row" style="margin-bottom: 5%;">
+                                    <div class="col-md-12 col-sm-12 text-center">
+                                        <span style="font-size:13px;">76 South Laura Street, Suite 1702, Jacksonville, FL 32202    Phone: (904) 297-4437</span>
+
+                                    </div>
+
+                                </div>
+                            </form>
+                            <div class="row ButtonPosition" style="margin-bottom: 5%;">
+                                <div class="col-md-12 col-sm-12 text-center">
+                                    @*<button class="btn btn-primary SaveTermination">Submit Form</button>*@
+                                    <button class="TerminationFormSave" style="width: 15%;height: 150%;color: #fefdff;font-size: 14px;font-family: sans-serif;border-radius: 9px;background-color: #ff0000a6;border-color: #ff0000a6;">Submit Form</button>
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                        <div id="ChartContainerEmployeeList" class="card" data-aos="fade-up"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*Is Severenace Details*@
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForSureTocheckIsSeverance">
+    <div class="modal-dialog modal-lg" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header" style="display: inherit;">
+                <h5 class="modal-title">Reason For Severance</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+
+                    <div class="row" style="margin-top:2%;">
+                        <div class="col-md-12">
+                            <span style="font-size: 17px;">Length of Severance:</span>
+                            @Html.TextBoxFor(m => m.LengthOfSeverence, null, new { @style = "margin-left:18%;border-radius: 17px;font-size: 15px;text-align: center;" })
+                        </div>
+                        <div class="col-md-12">
+                            <span style="font-size: 17px;">Severance Commencement Date:<span id="SeveranceCommencementDate" style="margin-left:2%;"></span></span>
+
+                        </div>
+
+
+                    </div>
+                </form>
+
+                <div class="modal-footer" style="background: white;">
+                    @*<button type="button" class="btn btn-success pull-left" id="ViewVSC" style="border-radius:100px;">View Chart</button>*@
+                    <input type="button" class="btn btn-primary" id="CloseSeverance" style="border-radius:100px;" data-dismiss="modal" value="Close" />
+                    <button type="button" class="btn btn-secondary" id="SaveSeveranceInfo" style="border-radius:100px;" data-dismiss="modal">Save</button>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+@*<script src="~/Scripts/jquery-3.2.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>*@
+<script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+<script src="~/Content/NewAdminContent/JQUERY/clockPicker.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+
+
+        $(".TerminationFormSave").click(function () {
+            debugger
+            var Full_Detailed_Explanation = $("#Detailed_explanation_one").val() + "\n" + $("#Detailed_explanation_two").val() + "\n" + $("#Detailed_explanation_three").val() + "\n" + $("#Detailed_explanation_three").val();
+            $("#detailed_Expalnation").val(Full_Detailed_Explanation);
+
+            var Final_Incident_Termination = $("#FITone").val() + "\n" + $("#FITtwo").val();
+            $("#Final_Incident_Termination").val(Final_Incident_Termination);
+
+            var Items_List_Cost = $("#ILCone").val() + "\n" + $("#ILCtwo").val();
+            $("#ItemsList_Cost").val(Items_List_Cost);
+
+            var TerminationData = $("#TerminationFormDetails").serializeArray();
+            debugger
+            var IsSeverancePaid = $("#IsExempt").val();
+            IsSeverance(IsSeverancePaid, TerminationData);
+
+
+
+        });
+
+    });
+
+</script>
+@*<script type="text/javascript">
+        $(function () { // will trigger when the document is ready
+            $('#Last_Day_Worked').datepicker();
+            $('#Termination_Date').datepicker();
+        });
+    </script>*@
