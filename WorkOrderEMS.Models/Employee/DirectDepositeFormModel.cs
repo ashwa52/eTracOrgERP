@@ -18,7 +18,8 @@ namespace WorkOrderEMS.Models.Employee
 		public AccountModel Account2 { get; set; }
 		[Required]
 		public string Signature { get; set; }
-		[Required]
+        public string EmployeeSignatureName { get; set; }
+        [Required]
 		public string PrintedName { get; set; }
 		[Required]
 		public string EmployeeId { get; set; }

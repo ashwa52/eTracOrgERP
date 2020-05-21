@@ -1,5 +1,7 @@
 ﻿@{
     Layout = null;
+
+    //Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
     string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
     WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
     string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
@@ -21,18 +23,20 @@
 <!--**********************************
            Content body start
        ***********************************-->
-<script src="https://www.amcharts.com/lib/4/core.js"></script>
-<script src="https://www.amcharts.com/lib/4/charts.js"></script>
-<script src="https://www.amcharts.com/lib/4/themes/material.js"></script>
-<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
-<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
-<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/Core4.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/Chart4.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/Material4.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/Animated4.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/amchart3.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/serial3.js"></script>
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />
 <link href="~/Content/NewAdminContent/VENDOR/toastr/css/toastr.min.css" rel="stylesheet" />
 <link href="@Url.Content("~/Content/NewAdminContent/CSS/RadioButtonCSS.css")" rel="stylesheet" />
-@*<link href="~/Areas/AdminSection/Content/CSS/GetOrg.css" rel="stylesheet" />*@
+<link href="~/Content/NewAdminContent/CSS/clockPicker.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
+<link href="~/Areas/AdminSection/Content/CSS/GetOrg.css" rel="stylesheet" />
 <style>
     .addWhite {
         color: white;
@@ -49,7 +53,7 @@
 
     .SaveEdit {
         border-radius: 100px;
-        width: 9%;
+        width: 16%;
         margin-right: 10px;
         display: none;
         cursor: pointer;
@@ -62,11 +66,24 @@
         margin-right: 7px;
         cursor: pointer;
     }
+
     .RequisitionRadioButtonCss {
         font-size: 16px;
         margin-left: -20px;
     }
+
+    .closeClass {
+        border-radius: 100px;
+        width: 16%;
+        cursor: pointer;
+        background: #0c89ad;
+    }
+
+    .modal-header {
+        display: inherit;
+    }
 </style>
+<br />
 <div class="content-body">
     <!-- row -->
     <div class="container-fluid">
@@ -81,7 +98,6 @@
                 <button type="button" id="EmplooyeeManagement" class="btn btn-primary pull-right" style="border-radius: 35px;">Employee Management</button>
             </div>
         </div>
-        <br />
         <div class="row">
             <div class="col-lg-6">
                 <div class="card" data-aos="fade-up">
@@ -89,31 +105,30 @@
                         <h4 class="card-title addWhite" style="color: white;">Employee</h4>
                     </div>
                     <div class="card-body">
-                        <div id="QRCCount"></div>
+                        <div id="eTimediv" style="height:185px;"></div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6">
                 <div class="card" data-aos="fade-up">
                     <div class="card-header widthHeader ">
-                        <h4 class="card-title addWhite" style="color: white;">eTime</h4>
+                        <h4 class="card-title addWhite" style="color: white;">Requisition</h4>
                     </div>
                     <div class="card-body">
-                        <div id="eTimediv"></div>
+                        <div style="height:185px;" id="RequisitionGraph"></div>
                         @*<div id="c3-combination"></div>*@
                     </div>
                 </div>
             </div>
         </div>
-        <br />
-        <div class="row">
+        <div class="row" style="margin-top:-20px;">
             <div class="col-lg-12" id="EmployeeManagementDiv">
                 <div class="card" data-aos="fade-up">
                     <div style="height: 45px;background:#0aa0cd;">
                         <div class="form-group row" style="margin-top:6px;margin-left:10px;">
                             <div class="col-sm-2">
                                 <input type="text" id="SearchbyAssignUser" class="form-control input-rounded dispayListWOName" placeholder="Search by User">
-                            </div>                          
+                            </div>
                         </div>
                     </div>
                     <div class="card-body">
@@ -122,8 +137,14 @@
                                 <li class="nav-item WidthForTab">
                                     <a class="nav-link active CenterText" data-toggle="tab" href="#EMPList">Employee Management</a>
                                 </li>
-                                <li class="nav-item WidthForTab">
-                                    <a class="nav-link CenterText" data-toggle="tab" href="#ListRequisition">Requisition</a>
+                                <li class="nav-item WidthForTab" style="width:190px;">
+                                    <a class="nav-link CenterText" style="text-align: center;" data-toggle="tab" href="#ListRequisition">Requisition</a>
+                                </li>
+                                <li class="nav-item WidthForTab" style="width:190px;">
+                                    <a class="nav-link CenterText" style="text-align: center;" data-toggle="tab" href="#EmployeeStatusChange">Employee Status</a>
+                                </li>
+                                <li class="nav-item WidthForTab" style="width:191px;">
+                                    <a class="nav-link CenterText" style="text-align: center;" data-toggle="tab" href="#UserSetting">Employee Management</a>
                                 </li>
                             </ul>
                             <div class="tab-content">
@@ -134,7 +155,7 @@
                                 </div>
                                 <div class="tab-pane fade" id="ListRequisition">
                                     <div class="pt-4">
-                                        <div class="row" style="margin-top:-20px;">                                    
+                                        <div class="row" style="margin-top:-20px;">
                                             <div class="col-sm-11"></div>
                                             <div class="col-sm-1">
                                                 <span id="AddRequisition" style="cursor:pointer;" title="Requisition Action"><i class="fa fa-plus fa-2x" style="color:forestgreen;" aria-hidden="true"></i></span>
@@ -142,6 +163,16 @@
                                             </div>
                                         </div>
                                         <div id="ListRquisitionData"></div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="EmployeeStatusChange">
+                                    <div class="pt-4">
+                                        <div id="EmployeeStatusChangeGrid"></div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="UserSetting">
+                                    <div class="pt-4">
+                                        <div id="UserSettingId"></div>
                                     </div>
                                 </div>
                             </div>
@@ -157,11 +188,10 @@
 <!-----------------------------------------
     star Modal Body
  ------------------------------------>
-
 <div class="modal fade  bd-example-modal-lg" @*data-backdrop="false" *@ id="ModalProfilePreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title">View Profile</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -172,7 +202,7 @@
                 </div>
             </div>
             <div class="modal-footer" style="background: white;">
-                <button type="button" class="btn btn-secondary" id="close" style="border-radius:100px;width:9%;" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary closeClass" style="width: 11%;" id="close" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -180,7 +210,7 @@
 <div class="modal fade  bd-example-modal-lg" id="myModalForViewUserChart" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title">View User</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -188,11 +218,11 @@
             </div>
             <div class="modal-body">
                 <div id="viewUserTreeData">
-                    @Html.Partial("~/Views/NewAdmin/ePeople/_TreeViewUser1.cshtml")
+                    @*@Html.Partial("~/Views/NewAdmin/ePeople/_TreeViewUser1.cshtml")*@
                 </div>
             </div>
             <div class="modal-footer" style="background: white;">
-                <button type="button" class="btn btn-secondary" id="close" style="border-radius:100px;width:9%;" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary closeClass" style="width: 11%;" id="close" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -200,7 +230,7 @@
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForUserList">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title">User List</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -212,7 +242,7 @@
             </div>
         </div>
         <div class="modal-footer" style="background: white;">
-            <button type="button" class="btn btn-secondary" id="closeUserView" style="border-radius:100px;width:9%;" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary closeClass" style="width: 11%;" id="closeUserView" data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>
@@ -220,7 +250,7 @@
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForViewVCSData">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title">User Vehicle Seating Chart</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -233,7 +263,7 @@
             </div>
         </div>
         <div class="modal-footer" style="background: white;">
-            <button type="button" class="btn btn-secondary" id="closeVSC" style="border-radius:100px;width:9%;" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary closeClass" style="width: 11%;" id="closeVSC" data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>
@@ -241,7 +271,7 @@
 <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForChangeStatusData">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title">Status Change</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -255,7 +285,7 @@
             </div>
         </div>
         <div class="modal-footer" style="background: white;">
-            <button type="button" class="btn btn-secondary" id="closeStatus" style="border-radius:100px;width:23%;" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary closeClass" id="closeStatus" style="width:23%;" data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>
@@ -263,13 +293,13 @@
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForAddFileData">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title">Personnel Files</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="margin-left: 1px;">
                 <div class="card-body">
                     @*@Html.Partial("_FilesEmployeeManagement.cshtml")*@
                     @*@Html.Partial("~/Views/NewAdmin/ePeople/_FilesEmployeeManagement.cshtml")*@
@@ -279,7 +309,7 @@
         </div>
         <div class="modal-footer" style="background: white;">
             @*<button type="button" class="btn btn-secondary" id="SaveFiles" style="border-radius:100px;width:9%;" data-dismiss="modal">Save</button>*@
-            <button type="button" class="btn btn-secondary" id="closeStatus" style="border-radius:100px;width:9%;" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary closeClass" style="width: 11%;" id="closeStatus" data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>
@@ -288,7 +318,7 @@
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForeditUserInfoData">
     <div class="modal-dialog modal-lg" style="width:980px;">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title">Edit User Info</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -299,9 +329,9 @@
                     <div id="ContaierEditUserInfo"></div>
                 </div>
             </div>
-            <div style="background:white; height: 46px;">
-                <button type="button" class="btn btn-primary pull-right SaveEdit" id="SaveEditInfo">Verify</button>
-                <button type="button" class="btn btn-secondary pull-right CloseEdit" id="closeEdit" data-dismiss="modal">Close</button>
+            <div class="modal-footer" style="background:white; height: 46px;">
+                <button type="button" class="btn btn-success pull-right" style="width: 11%;border-radius: 30px;margin-right: 8px; display:none;" id="SaveEditInfo">Verify</button>
+                <button type="button" class="btn btn-primary pull-right" style="width: 11%;border-radius: 30px;margin-right: 7px;" id="closeEdit" data-dismiss="modal">Close</button>
             </div>
         </div>
 
@@ -315,7 +345,7 @@
 <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForTreeViewUserData">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title">Tree View</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -328,7 +358,7 @@
             </div>
         </div>
         <div class="modal-footer" style="background: white;">
-            <button type="button" class="btn btn-secondary" id="closeStatus" style="border-radius:100px;width:23%;" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary closeClass" id="closeStatus" style="border-radius:100px;width:23%;" data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>
@@ -338,11 +368,11 @@
     <div class="modal-dialog modal-lg" style="width:800px;margin-top: 102px;">
         <div class="modal-content">
             @*<div class="modal-header" style="display:none">
-                <h5 class="modal-title">Requisition Action</h5>
-                <button type="button" class="close" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
-            </div>*@
+                    <h5 class="modal-title">Requisition Action</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>*@
             <div class="modal-body">
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -370,8 +400,8 @@
                 </div>
             </div>
             @*<div class="modal-footer" style="background: white;display:none;">
-                <button type="button" class="btn btn-secondary" style="border-radius:100px;" data-dismiss="modal">Close</button>
-            </div>*@
+                    <button type="button" class="btn btn-secondary" style="border-radius:100px;" data-dismiss="modal">Close</button>
+                </div>*@
         </div>
     </div>
 </div>
@@ -379,7 +409,7 @@
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForRequisitionVSCChart">
     <div class="modal-dialog modal-lg" style="width:800px;">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title">Add Vehicle Seating Chart </h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -390,8 +420,8 @@
                     @*@Html.Partial("~/Views/NewAdmin/ePeople/_AddVSCForRequisition.cshtml")*@
                 </div>
                 <div>
-                    <button type="button" class="btn btn-secondary pull-right" id="closeVSCRequisition" style="border-radius:100px;" data-dismiss="modal">Close</button>
-                    <input type="button" class="btn btn-primary pull-right" id="SendVSCForApproval" style="border-radius:100px;margin-right: 10px;" value="Send For Approval" />
+                    <button type="button" class="btn btn-primary pull-right closeClass" id="closeVSCRequisition" style="border-radius:100px; width:11%;" data-dismiss="modal">Close</button>
+                    <input type="button" class="btn btn-success pull-right SaveEdit" id="SendVSCForApproval" style="border-radius:100px;margin-right: 10px;width:11%;" value="Send For Approval" />
                 </div>
             </div>
         </div>
@@ -406,8 +436,8 @@
 <!--Get Details of Requisition for Delete-->
 <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForGetDetailsToDeleteRequisition">
     <div class="modal-dialog ">
-        <div class="modal-content">
-            <div class="modal-header">
+        <div class="modal-content" id="MaintainSizeForDelete">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title">Details</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -418,17 +448,17 @@
                 </div>
             </div>
             <div class="modal-footer" style="background: white;">
-                <button type="button" class="btn btn-secondary" style="border-radius:100px;" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-secondary" @*id="DeleteRequisition"*@ onclick="DeleteRequisition()" style="border-radius:100px;" >Delete</button>
+                <button type="button" class="btn btn-primary closeClass" style="border-radius:100px;width:11%;" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-danger" @*id="DeleteRequisition"*@ onclick="DeleteRequisition()" style="border-radius:100px;background-color:crimson;width:11%;">Delete</button>
             </div>
         </div>
     </div>
 </div>
 
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForDemotionEmployee">
-    <div class="modal-dialog modal-lg" style="width:750px;">
+    <div class="modal-dialog modal-lg" style="width:882px;">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title" id="ChangeTitle">Demotion</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
@@ -440,39 +470,50 @@
                 </div>
             </div>
             <div class="modal-footer" style="background: white;">
-                <button type="button" class="btn btn-success" style="border-radius:100px;">Save</button>
-                <button type="button" class="btn btn-primary" style="border-radius:100px;" data-dismiss="modal">Close</button>
+                <button type="button" id="SaveDemotion" class="btn btn-success" onclick="SaveEmployeeStatus(this);" style="border-radius:100px;width:11%;background: green;">Save</button>
+                <button type="button" class="btn btn-primary closeClass" style="border-radius:100px;width:11%;" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
 <div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForVSCDropDown">
     <div class="modal-dialog ">
-        <div class="modal-content" style="background:transparent;">          
-            <div class="modal-body" >               
+        <div class="modal-content" style="background:transparent;">
+            <div class="modal-body">
                 <div id="divForVSCDropDown" class="">
                 </div>
-            </div>         
+            </div>
         </div>
     </div>
 </div>
-
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForNoRecordFound">
+    <div class="modal-dialog ">
+        <div class="modal-content" style="background:white;margin-top: 165px;">
+            <button type="button" class="close" data-dismiss="modal">
+                <span>&times;</span>
+            </button>
+            <div class="modal-body">
+                <label>No Record found</label>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" id="myModalToAddRemoveJobCount">
-    <div class="modal-dialog " >
+    <div class="modal-dialog ">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="display: inherit;">
                 <h5 class="modal-title" id="ChangeTitle">Job Count</h5>
                 <button type="button" class="close" data-dismiss="modal">
                     <span>&times;</span>
                 </button>
             </div>
             <div class="modal-body" style="margin-left: 2px;">
-                <div id="divAddRemoveJobTitle" class="">                  
+                <div id="divAddRemoveJobTitle" class="">
                 </div>
             </div>
             <div class="modal-footer" style="background: white;">
-                <button type="button" class="btn btn-success" id="PlusMinusJobTitle" style="border-radius:100px;">Save</button>
-                <button type="button" class="btn btn-primary"  style="border-radius:100px;" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-success SaveEdit" id="PlusMinusJobTitle" style="border-radius:100px;width:11%;">Save</button>
+                <button type="button" class="btn btn-primary closeClass" style="border-radius:100px;width:11%;" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -487,6 +528,120 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalToAddInputAndFileName">
+    <div class="modal-dialog modal-lg" style="width:700px;">
+        <div class="modal-content">
+            <div class="modal-header" style="display: inherit;">
+                <h5 class="modal-title">Details</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="FileUploadModalForm">
+                    <div class="form-group row">
+                        <div class="input-group col-sm-6">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="myfileUpload">
+                                <label class="custom-file-label" id="addFileName">Choose file</label>
+                            </div>
+                        </div>
+                        @*<div class="col-sm-8" style="margin-bottom: 12px;">
+                                <input id="myfileUpload" type="file" style="margin-left:50%;" />
+                            </div>*@
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control input-rounded" id="fileNameInputVal" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="background: white;">
+                <button type="button" class="btn btn-success" id="UploadDoc" onclick="saveFile()" style="border-radius:100px;width:18%;">Upload</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="myModelForComment">
+    <div class="modal-dialog" style="width:882px;">
+        <div class="modal-content">
+            <div class="modal-header" style="display: inherit;">
+                <h5 class="modal-title" id="ChangeTitle">Add Rejection Comment</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="margin-left: 2px;">
+                @Html.TextBox("CommentBox", null, new { @id = "rejectComment", @placeholder = "Add Reject Comment", @class = "form-control input-rounded" })
+            </div>
+            <div class="modal-footer" style="background: white;">
+                <button type="button" id="AddComment" class="btn btn-success" style="border-radius:100px;width:23%;background: green;">Save</button>
+                <button type="button" class="btn btn-primary closeClass" style="border-radius:100px;width:23%;" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade " tabindex="-1" role="dialog" aria-hidden="true" id="myModalToAddEmployeeOrietation">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header" style="display: inherit;">
+                <h5 class="modal-title">Employee Orientation</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="margin-left: 2px;">
+                <form id="SaveOrientationForm">
+                    @Html.Hidden("OTN_EMP_EmployeeID", new { @id = "OTN_EMP_EmployeeID" })
+                    <div id="divOriantation">
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <label>Employee Id : </label>
+                            </div>
+                            <div class="col-sm-8">
+                                <label id="GetEmployeeIdForOrientation"></label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <label>Location: </label>
+                            </div>
+                            <div class="col-sm-8">
+                                @Html.DropDownList("OTN_LocationId", new SelectList((List<WorkOrderEMS.Models.UserLocations>)Session["eTrac_UserLocations"], "LocationId", "LocationName"), null, new { @class = "form-control input-rounded", @id = "drp_MasterLocationForOrientation" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <label>Orientation Date: </label>
+                            </div>
+                            <div class="col-sm-8">
+                                @Html.TextBox("ONT_OrientationDate", null, new { @id = "ONT_OrientationDate", @class = "form-control input-rounded required" })
+                                @Html.ValidationMessage("ONT_OrientationDate")
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-4">
+                                <label>Orientation Time: </label>
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" id="ONT_Orientationtime" class="form-control input-rounded required clockpicker">
+                                <span class="pull-left text-info" style="color:gray;"><i>(HH:MM i.e 00:30)</i></span>
+                                @*@Html.TextBox("ONT_Orientationtime", null, new { @id = "ONT_Orientationtime", @class = "ONT_Orientationtime form-control input-rounded required" })
+                                    @Html.ValidationMessage("ONT_Orientationtime")*@
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="background: white;">
+                <button type="button" class="btn btn-success" id="SaveOrientation" style="border-radius:100px;width:21%;">Save</button>
+                <button type="button" class="btn btn-primary" style="border-radius:100px;width:21%;" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-----------------------------------------
    End star Modal Body
  ------------------------------------>
@@ -494,118 +649,34 @@
     Content body end
 ***********************************-->
 <script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
-@*<script src="~/Areas/AdminSection/Content/JQUERY/GetOrg.js"></script>*@
+<script src="~/Areas/AdminSection/Content/JQUERY/GetOrg.js"></script>
 <script src="~/GridListing/JsGridScript/ListOnBoarding.js"></script>
 <script src="~/GridListing/JsGridScript/ListMyOpening.js"></script>
 <script src="~/Content/NewAdminContent/JQUERY/MaskLoaderNew.js"></script>
 <script src="~/Content/NewAdminContent/VENDOR/toastr/js/toastr.min.js"></script>
 <script src="~/GridListing/JsGridScript/ListEmployeeManagement.js"></script>
 <script src="~/GridListing/JsGridScript/ListRequisitionData.js"></script>
+<script src="~/GridListing/JsGridScript/EmployeeStatusChangeList.js"></script>
 <script type="text/javascript" src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
-<script>
-am4core.ready(function() {
+<script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+<script src="~/Content/NewAdminContent/JQUERY/clockPicker.js"></script>
 
-// Themes begin
-am4core.useTheme(am4themes_material);
-am4core.useTheme(am4themes_animated);
-// Themes end
-
-// Create chart instance
-var chart = am4core.create("EmployeePieChart", am4charts.PieChart);
-
-// Add data
-chart.data = [{
-    "User Type": "Administrator",
-    "Count": 2//dataJSON.CountPanel[0].ManagerCount
-}, {
-    "User Type": "Manager",
-    "Count": 4
-}, {
-    "User Type": "Employee",
-    "Count": 12//dataJSON.CountPanel[0].EmpCount
-}];
-
-// Add and configure Series
-var pieSeries = chart.series.push(new am4charts.PieSeries());
-pieSeries.dataFields.value = "Count";
-pieSeries.dataFields.category = "User Type";
-pieSeries.innerRadius = am4core.percent(50);
-pieSeries.ticks.template.disabled = true;
-pieSeries.labels.template.disabled = true;
-
-var rgm = new am4core.RadialGradientModifier();
-rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, - 0.5);
-pieSeries.slices.template.fillModifier = rgm;
-pieSeries.slices.template.strokeModifier = rgm;
-pieSeries.slices.template.strokeOpacity = 0.4;
-pieSeries.slices.template.strokeWidth = 0;
-
-chart.legend = new am4charts.Legend();
-chart.legend.position = "right";
-
-}); // end am4core.ready()
-</script>
-<script>
-    var chartDAR = AmCharts.makeChart("eTimediv", {
-    "theme": "none",
-    "type": "serial",
-    "startDuration": 7,
-    "dataProvider": [{
-        "Cost Code": "Travel",
-        "Budget": 4334,
-        "color": "#1740AE"
-    }, {
-        "Cost Code": "Marketing",
-        "Budget": 4000,
-        "color": "#758DCB"
-    }, {
-        "Cost Code": "Other Travel",
-        "Budget": 3466,
-        "color": "#86E2E8"
-    }],
-    "valueAxes": [{
-        "position": "left",
-        "axisAlpha":0,
-        "gridAlpha":0
-    }],
-    "graphs": [{
-        "balloonText": "[[category]]: <b>[[value]]</b>",
-        "colorField": "color",
-        "fillAlphas": 0.85,
-        "lineAlpha": 0.1,
-        "type": "column",
-        "topRadius":1,
-        "valueField": "Budget"
-    }],
-    "depth3D": 40,
-    "angle": 30,
-    "chartCursor": {
-        "categoryBalloonEnabled": false,
-        "cursorAlpha": 0,
-        "zoomable": false
-    },
-    "categoryField": "Cost Code",
-    "categoryAxis": {
-        "gridPosition": "start",
-        "axisAlpha":1,
-        "gridAlpha":0,
-        "labelRotation": 20,
-    },
-    "export": {
-    	"enabled": true
-     }
-
-}, 0);
-</script>
+@*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>*@
+@*<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>*@
 
 <script>
     $(document).ready(function () {
+        var base_url = window.location.origin;
+        $('#ONT_OrientationDate').datepicker({
+            format: "yyyy/mm/dd",
+        });
+        $('.clockpicker').clockpicker();
         $("#SaveEditInfo").click(function () {
             debugger
             var dataObject = $("#SaveEditableUserInfo").serialize();
             $.ajax({
                 type: "POST",
-                url: '../EPeople/SaveUserEditableInfo',
+                url: base_url+ '/EPeople/SaveUserEditableInfo',
                 data: dataObject,
                 beforeSend: function () {
                     new fn_showMaskloader('Please wait...');
@@ -628,53 +699,6 @@ chart.legend.position = "right";
                 }
             });
         });
-        $.ajax({
-            type: "GET",
-            url: "@Url.Action("GetDashboardHeadCount", "GlobalAdmin")",
-            data: {},
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (jsondata) {
-        //successFuncPie(response);
-        if (jsondata != null && jsondata != "" && jsondata.dataJson.trim() != "") {
-            var dataJSON = JSON.parse(jsondata.dataJson);
-            dataJSON.CountPanel[0].AdminCount;
-            am4core.ready(function () {
-                am4core.useTheme(am4themes_animated);
-                var chartQRC = am4core.create("QRCCount", am4charts.PieChart);
-                chartQRC.data = [{
-                    "UserType": "Administrator",
-                    "Count": 20
-                }, {
-                    "UserType": "Manager",
-                    "Count": 5//dataJSON.CountPanel[0].EmpCount
-                }, {
-                    "UserType": "Employee",
-                    "Count": 3//dataJSON.CountPanel[0].ManagerCount
-                }];
-
-                // Add and configure Series
-                var pieSeries = chartQRC.series.push(new am4charts.PieSeries());
-                pieSeries.dataFields.value = "Count";
-                pieSeries.dataFields.category = "UserType";
-                pieSeries.innerRadius = am4core.percent(50);
-                pieSeries.ticks.template.disabled = true;
-                pieSeries.labels.template.disabled = true;
-
-                var rgm = new am4core.RadialGradientModifier();
-                rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
-                pieSeries.slices.template.fillModifier = rgm;
-                pieSeries.slices.template.strokeModifier = rgm;
-                pieSeries.slices.template.strokeOpacity = 0.4;
-                pieSeries.slices.template.strokeWidth = 0;
-
-                chartQRC.legend = new am4charts.Legend();
-                chartQRC.legend.position = "right";
-
-            }); // end am4core.ready()
-        }
-    }
-        });
 
         $("#HiringOnBoard").click(function () {
             $("#hiringOnBordingDiv").show();
@@ -691,31 +715,70 @@ chart.legend.position = "right";
                 scrollTop: $("#EmployeeManagementDiv").offset().top
             }, 'slow');
         });
+        $.ajax({
+            url: base_url + '/EPeople/GetCountEmployeeRequisition',
+            type: 'GET',
+            success: function (countData) {
+                var arrData = [];
+                var arrRequisiotionData = [];
+                if (countData.length > 0 && countData != null) {
+                    for (var i = 0; i < countData.length; i++) {
+                        if (countData[i].Employee > 0 ) {
+                            arrData.push({
+                                "User Type": countData[i].JobTitle,
+                                "Count": parseInt(countData[i].Employee)
+                            });
+                        }
+                        if (countData[i].Requisition > 0) {
+                            arrRequisiotionData.push({
+                                "Requisition Type": countData[i].RequisitionName,
+                                "Count": parseInt(countData[i].Requisition)
+                            });
+                        }
+                    }
+                }
+                am4core.ready(function () {
+                    am4core.useTheme(am4themes_material);
+                    am4core.useTheme(am4themes_animated);
+                    var chart = am4core.create("eTimediv", am4charts.PieChart);
+                    chart.data = arrData;
+                    var pieSeries = chart.series.push(new am4charts.PieSeries());
+                    pieSeries.dataFields.value = "Count";
+                    pieSeries.dataFields.category = "User Type";
+                    pieSeries.innerRadius = am4core.percent(50);
+                    pieSeries.ticks.template.disabled = true;
+                    pieSeries.labels.template.disabled = true;
+                    var rgm = new am4core.RadialGradientModifier();
+                    rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
+                    pieSeries.slices.template.fillModifier = rgm;
+                    pieSeries.slices.template.strokeModifier = rgm;
+                    pieSeries.slices.template.strokeOpacity = 0.4;
+                    pieSeries.slices.template.strokeWidth = 0;
+                    chart.legend = new am4charts.Legend();
+                    chart.legend.position = "right";
+                });
+                am4core.ready(function () {
+                    am4core.useTheme(am4themes_material);
+                    am4core.useTheme(am4themes_animated);
+                    var chart = am4core.create("RequisitionGraph", am4charts.PieChart);
+                    chart.data = arrRequisiotionData;
+                    var pieSeries = chart.series.push(new am4charts.PieSeries());
+                    pieSeries.dataFields.value = "Count";
+                    pieSeries.dataFields.category = "Requisition Type";
+                    pieSeries.innerRadius = am4core.percent(50);
+                    pieSeries.ticks.template.disabled = true;
+                    pieSeries.labels.template.disabled = true;
+                    var rgm = new am4core.RadialGradientModifier();
+                    rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
+                    pieSeries.slices.template.fillModifier = rgm;
+                    pieSeries.slices.template.strokeModifier = rgm;
+                    pieSeries.slices.template.strokeOpacity = 0.4;
+                    pieSeries.slices.template.strokeWidth = 0;
+                    chart.legend = new am4charts.Legend();
+                    chart.legend.position = "right";
 
-        //$("#GetDetailsRequisition").change(function () {
-        //    debugger
-        //    var value = $("#GetDetailsRequisition option:selected").val();
-        //    $.ajax({
-        //        url: '../EPeople/GetVCSDetailsById?VSCId=' + value,
-        //        type: 'POST',
-        //        contentType: "application/json",
-        //        success: function (result) {
-        //            $("#divOpenRquisitionActionDelete").html(result);
-        //            $("#myModalForRequisitionAction").modal("hide");
-        //            $("#txtSeatingName").html(result.SeatingName);
-        //            $("#txtJobDescription").html(result.JobDescription);
-        //            $("#txtDepartmentName").html(result.DepartmentName);
-        //            $("#txtRateOfPay").html(result.RateOfPay);
-        //            $("#txtEmploymentClassification").html(result.EmploymentClassification);
-        //            $("#txtEmploymentStatus").html(result.EmploymentStatus);
-        //            $("#txtRolesAndResponsibility").html(result.RolesAndResponsibility);
-        //            $("#myModalForGetDetailsToDeleteRequisition").modal('show');
-        //        },
-        //        error: function (er) {
-        //        }
-        //    });
-
-        //})
-
+                });
+            }
+        });
  });
 </script>

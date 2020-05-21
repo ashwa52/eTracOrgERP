@@ -1,0 +1,82 @@
+/////////////////////////////////////For Get/////////////////////////////////////////////////////////////////
+public async Task<string> GetRecruitee(string URL)
+        {
+            string str = "";
+            try
+            {
+                const string uri = "https://api.recruitee.com/c/40359/candidates/";
+                using (var client1 = new HttpClient())
+                {
+                    var header = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes("terralwright@eliteparkingsoa.com:Elite19!!")));///username:password for auth
+                    client1.DefaultRequestHeaders.Authorization = header;
+                    str = await client1.GetStringAsync(uri);
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return str;
+        }
+		
+		
+/////////////////////////////////////////////////////Fro Post///////////////////////////////////////////////////////////////////////////////////////
+
+public async Task<ActionResult> POSTreq()
+        {
+            try
+            {
+                using (HttpClient objClint = new HttpClient())
+                {
+                    //var objClint = new System.Net.Http.HttpClient();
+                Uri requestUri = new Uri("https://api.recruitee.com/c/40359/offers/"); //replace your Url  
+                    string requestUri1 = "https://api.recruitee.com/c/40359/offers/";
+                    objClint.DefaultRequestHeaders.Authorization =
+                new AuthenticationHeaderValue("Bearer", "dkpEaHRJSzJiempBUlVNOC9QN3JlUT09");
+                var dynamicJson = new Models.PostDataOffer.RootObjectData();
+                var offfer = new Models.PostDataOffer.Offer();
+                offfer.title = "eCommand Manager1";
+                offfer.department = "Operation";
+                offfer.description = "Testing";
+                offfer.kind = "Job";
+                offfer.postal_code = "34343";
+                offfer.position = 4;
+                //offfer.country_code = "1";
+                offfer.state_code = "10";
+                offfer.city = "Jacksonvilley";
+                offfer.requirements = "Job";
+                //offfer.remote = false;
+                dynamicJson.offer = offfer;
+                    #region Demo Code
+                    string message = JsonConvert.SerializeObject(dynamicJson);
+                    var stringContent = new StringContent(dynamicJson.ToString());
+                    var response = await objClint.PostAsync(requestUri1, stringContent);
+    
+                    var response1 = objClint.PostAsJsonAsync(requestUri, message).Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        // return response.Content.ReadAsAsync<dynamicJson>().Result;
+                    }
+                    else
+                    {
+                        var result = response.Content.ReadAsStringAsync().Result;
+                        Console.WriteLine(result);
+                    }
+                    #endregion Demo Code
+
+                }
+
+            }
+
+            catch (Exception Ex)
+            {
+
+            }
+            return null;
+        }
+		
+		
+////////////////////////////////////////////////////////////////Link////////////////////////////////////////////////////////////////////////////////
+https://docs.recruitee.com/reference#candidates		
+
+bearer token    dkpEaHRJSzJiempBUlVNOC9QN3JlUT09

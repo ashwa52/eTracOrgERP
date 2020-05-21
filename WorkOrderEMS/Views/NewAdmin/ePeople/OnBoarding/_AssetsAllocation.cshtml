@@ -1,0 +1,193 @@
+﻿@model WorkOrderEMS.Models.AssetsAllocationModel
+    <style>
+        .FifthDivComputer, .FirstDivComputer, .SecondDivComputer, .ThirdDivComputer, .FourthDivComputer {
+            display: none;
+        }
+        .TopView {
+            margin-top: 11px;
+        }
+    </style>
+<div class="row">    
+    <form id="SaveAssetsAllocation">
+        @Html.HiddenFor(model => model.EmployeeId, new { @id = "EmployeeId" })
+        @Html.HiddenFor(model => model.ApplicantId)
+        @Html.HiddenFor(model => model.IsComputerAssets, new { @id = "IsComputerAssets" })
+        @Html.HiddenFor(model => model.IsCellPhoneAssets, new { @id = "IsCellPhoneAssets" })
+        @Html.HiddenFor(model => model.IsMiscAssets, new { @id = "IsMiscAssets" })
+        @Html.HiddenFor(model => model.IsOfficePhone, new { @id = "IsOfficePhone" })
+        @Html.HiddenFor(model => model.IsPrinterAssets, new { @id = "IsPrinterAssets" })
+        <div class="basic-form" style="margin-right: 40px;">
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <div class="form-check">
+                        @*@Html.CheckBoxFor(model => model.IsComputerAssets, new { @class= "form-check-input", @value="Computer"})*@
+                        @*@Html.CheckBoxFor(model => model.IsComputerAssets, new { @class= "form-check-input", @data-value = "Computer" })*@
+                        <input class="form-check-input" @*name="IsComputerAssets"*@ type="checkbox" data-value="Computer" />
+                        <label class="form-check-label">Computer</label>
+                    </div>
+                </div>
+
+                <div class="col-sm-3 FirstDivComputer">
+                    @Html.TextBoxFor(model => model.ComputerAssets.AssetsName, new { @Placeholder = "Asset Name", @id = "RateOfPay", @class = "form-control input-rounded required " })
+                </div>
+                <div class="col-sm-3 FirstDivComputer">
+                    @Html.TextBoxFor(model => model.ComputerAssets.Model, new { @Placeholder = "Model", @id = "Make", @class = "form-control input-rounded required " })
+                </div>
+                <div class="col-sm-3 FirstDivComputer">
+                    @Html.TextBoxFor(model => model.ComputerAssets.Make, new { @Placeholder = "Make", @id = "Model", @class = "form-control input-rounded required " })
+                </div>
+                <div class="col-sm-3 FirstDivComputer TopView">
+                    @Html.TextBoxFor(model => model.ComputerAssets.AssetDescription, new { @Placeholder = "Asset Description", @id = "Make", @class = "form-control input-rounded required " })
+                </div>
+                <div class="col-sm-3 FirstDivComputer TopView">
+                    @Html.TextBoxFor(model => model.ComputerAssets.SerialNumber, new { @Placeholder = "Serial Number", @id = "SerialNumber", @class = "form-control input-rounded required " })
+                </div>
+                <div class="col-sm-3 FirstDivComputer TopView">
+                    @Html.TextBoxFor(model => model.ComputerAssets.Login, new { @Placeholder = "Login", @id = "Make", @class = "form-control input-rounded required " })
+                </div>
+                <div class="col-sm-3 FirstDivComputer TopView">
+                    @Html.TextBoxFor(model => model.ComputerAssets.Password, new { @Placeholder = "Password", @id = "Login", @class = "form-control input-rounded required " })
+                </div>
+            </div>
+            <hr class="FirstDivComputer" />
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <div class="form-check">
+                        @*@Html.CheckBoxFor(model => model.IsCellPhoneAssets, new { @class= "form-check-input", @value= "Cellphone" })*@
+                        <input class="form-check-input" type="checkbox" data-value="Cellphone">
+                        <label class="form-check-label">Cellphone</label>
+                    </div>
+                </div>
+                <div class="col-sm-3 SecondDivComputer">
+                    @Html.TextBoxFor(model => model.CellPhoneAssets.AssetsName, new { @Placeholder = "Asset Name", @id = "RateOfPay", @class = "form-control input-rounded required " })
+                </div>
+                <div class="col-sm-3 SecondDivComputer">
+                    @Html.TextBoxFor(model => model.CellPhoneAssets.Make, new { @Placeholder = "Make", @id = "Make", @class = "form-control input-rounded required " })
+                </div>
+                <div class="col-sm-3 SecondDivComputer">
+                    @Html.TextBoxFor(model => model.CellPhoneAssets.Model, new { @Placeholder = "Model", @id = "Model", @class = "form-control input-rounded required " })
+                </div>
+                <div class="col-sm-3 SecondDivComputer TopView">
+                    @Html.TextBoxFor(model => model.CellPhoneAssets.SerialNumber, new { @Placeholder = "Serial Number", @id = "SerialNumber", @class = "form-control input-rounded required " })
+                </div>
+                <div class="col-sm-3 SecondDivComputer TopView">
+                    @Html.TextBoxFor(model => model.CellPhoneAssets.AssetDescription, new { @Placeholder = "Asset Description", @id = "Make", @class = "form-control input-rounded required " })
+                </div>
+                <div class="col-sm-3 SecondDivComputer TopView">
+                    @Html.TextBoxFor(model => model.CellPhoneAssets.Number, new { @Placeholder = "Serial Number", @id = "SerialNumber", @class = "form-control input-rounded required " })
+                </div>
+                <div class="col-sm-3 SecondDivComputer TopView">
+                    @Html.TextBoxFor(model => model.CellPhoneAssets.VoiceMailCode, new { @Placeholder = "Login", @id = "Make", @class = "form-control input-rounded required " })
+                </div>
+            </div>
+            <hr class="SecondDivComputer" />
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <div class="form-check">
+                        @*@Html.CheckBoxFor(model => model.IsPrinterAssets, new { @class= "form-check-input", @value= "Printer" })*@
+                        <input class="form-check-input" name="IsPrinterAssets" type="checkbox" data-value="Printer">
+                        <label class="form-check-label">Printer</label>
+                    </div>
+                </div>
+                <div class="col-sm-3 ThirdDivComputer">
+                    @Html.TextBoxFor(model => model.PrinterAssets.AssetsName, new { @Placeholder = "Asset Name", @id = "RateOfPay", @class = "form-control input-rounded required " })
+                </div>
+                <div class="col-sm-3 ThirdDivComputer">
+                    @Html.TextBoxFor(model => model.PrinterAssets.Make, new { @Placeholder = "Make", @id = "Make", @class = "form-control input-rounded required " })
+                </div>
+                <div class="col-sm-3 ThirdDivComputer">
+                    @Html.TextBoxFor(model => model.PrinterAssets.Model, new { @Placeholder = "Model", @id = "Model", @class = "form-control input-rounded required " })
+                </div>
+                <div class="col-sm-3 ThirdDivComputer TopView">
+                    @Html.TextBoxFor(model => model.PrinterAssets.SerialNumber, new { @Placeholder = "Serial Number", @id = "SerialNumber", @class = "form-control input-rounded required " })
+                </div>
+            </div>
+            <hr class="ThirdDivComputer" />
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <div class="form-check">
+                        <input class="form-check-input" name="IsOfficePhone" type="checkbox" data-value="Office Phone">
+                        <label class="form-check-label">Office Phone</label>
+                    </div>
+                </div>
+                <div class="col-sm-3 FourthDivComputer">
+                    @Html.TextBoxFor(model => model.OfficePhone.AssetsName, new { @Placeholder = "Asset Name", @id = "RateOfPay", @class = "form-control input-rounded required " })
+                </div>
+                <div class="col-sm-3 FourthDivComputer">
+                    @Html.TextBoxFor(model => model.OfficePhone.Make, new { @Placeholder = "Make", @id = "Make", @class = "form-control input-rounded required " })
+                </div>
+                <div class="col-sm-3 FourthDivComputer">
+                    @Html.TextBoxFor(model => model.OfficePhone.VoiceMailCode, new { @Placeholder = "Model", @id = "Model", @class = "form-control input-rounded required " })
+                </div>
+            </div>
+            <hr class="FourthDivComputer" />
+            <div class="form-group row">
+                <div class="col-sm-3">
+                    <div class="form-check">
+                        <input class="form-check-input" name="IsMiscAssets" type="checkbox" data-value="Misc Equipment">
+                        <label class="form-check-label">Misc Equipment</label>
+                    </div>
+                </div>
+                <div class="col-sm-3 FifthDivComputer">
+                    @Html.TextBoxFor(model => model.MiscAssets.AssetsName, new { @Placeholder = "Asset Name", @id = "RateOfPay", @class = "form-control input-rounded required " })
+                </div>
+                <div class="col-sm-3 FifthDivComputer">
+                    @Html.TextBoxFor(model => model.MiscAssets.Make, new { @Placeholder = "Make", @id = "Make", @class = "form-control input-rounded required " })
+                </div>
+                <div class="col-sm-3 FifthDivComputer">
+                    @Html.TextBoxFor(model => model.MiscAssets.Model, new { @Placeholder = "Model", @id = "Model", @class = "form-control input-rounded required " })
+                </div>
+                <div class="col-sm-3 FifthDivComputer TopView">
+                    @Html.TextBoxFor(model => model.MiscAssets.SerialNumber, new { @Placeholder = "Serial Number", @id = "SerialNumber", @class = "form-control input-rounded required " })
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<script src="~/Scripts/NewAdminJS/AssetsAndOffer.js"></script>
+<script>
+
+    $(document).ready(function () {
+        $('input[type="checkbox"]').click(function () {
+            debugger
+            var $_this = this;
+            var getCurrentValue = $($_this).attr("data-value");
+            var isChecked = $($_this).prop("checked");
+            if (getCurrentValue == "Computer" && isChecked == true) {
+                $(".FirstDivComputer").show();
+                $("#IsComputerAssets").val(true);
+            }
+            else if (getCurrentValue == "Computer" && isChecked == false) {
+                $(".FirstDivComputer").hide();
+                $("#IsComputerAssets").val(false);
+            }
+            if (getCurrentValue == "Cellphone" && isChecked == true) {
+                $(".SecondDivComputer").show();
+            }
+            else if (getCurrentValue == "Cellphone" && isChecked == false) {
+                $(".SecondDivComputer").hide();
+            }
+            if (getCurrentValue == "Printer" && isChecked == true) {
+                $(".ThirdDivComputer").show();
+            }
+            else if (getCurrentValue == "Printer" && isChecked == false) {
+                $(".ThirdDivComputer").hide();
+            }
+            if (getCurrentValue == "Office Phone" && isChecked == true) {
+                $(".FourthDivComputer").show();
+            }
+            else if (getCurrentValue == "Office Phone" && isChecked == false) {
+                $(".FourthDivComputer").hide();
+            }
+            if (getCurrentValue == "Misc Equipment" && isChecked == true) {
+                $(".FifthDivComputer").show();
+            }
+            else if (getCurrentValue == "Misc Equipment" && isChecked == false) {
+                $(".FifthDivComputer").hide();
+            }
+        });
+
+    });
+
+
+</script>

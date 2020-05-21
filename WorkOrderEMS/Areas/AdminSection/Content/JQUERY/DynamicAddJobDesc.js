@@ -37,12 +37,17 @@ $(document).ready(function () {
         $('#routeDiv').append('<div class="form-group row dymanicAdd d' + divID + '"><div class="col-sm-11 getJobDesc"><input type="text" class="form-control input-rounded required" placeholder="Job Description" value="" /></div><div class="col-sm-1"><a class="addrows minusSign" id=d' + divID + '><i class="fa fa-minus-circle addColorPlusMinus fa-2x" style="cursor:pointer;" aria-hidden="true"></i></a></div></div>');
         $('#routeDiv').append('<script>jQuery("a.minusSign#d' + divID + '").click(function (){$("div.d' + divID + '").remove();  });</script>');
     });
-    $('.addjobtitlerows').click(function (e) {
-        debugger
+    $('.addjobtitlerows').click(function (e) {       
         var divID = $('#jobTitleDiv div.dymanicAdd').length;
-        $('#jobTitleDiv').append('<div class="form-group row dymanicAdd d' + divID + '"><div class="col-sm-10 getJobTitleDesc"><input type="text" class="form-control input-rounded required" placeholder="Job Title" value="" style="width: 600px;" /></div><div class="col-sm-1"><a class="addjobtitlerows minusSign" id=d' + divID + '><i class="fa fa-minus-circle addColorPlusMinus fa-2x" style="cursor:pointer;margin-left: 30px;" aria-hidden="true"></i></a></div></div>');
+        $('#jobTitleDiv').append('<div class="form-group row dymanicAdd d' + divID + '"><div class="col-sm-8 getJobTitleDesc"><input type="text" class="form-control input-rounded required removeContent" placeholder="Job Title" value="" style="width: 441px;" /></div><div class="col-sm-3 getJobCount"><input type="text" class="form-control input-rounded required removeContent" placeholder="Job Count" value="" style="width: 130px;" /></div><div class="col-sm-1"><a class="addjobtitlerows minusSign" id=d' + divID + '><i class="fa fa-minus-circle addColorPlusMinus fa-2x" style="cursor:pointer;margin-left: 30px;" aria-hidden="true"></i></a></div></div>');
         $('#jobTitleDiv').append('<script>jQuery("a.minusSign#d' + divID + '").click(function (){$("div.d' + divID + '").remove();  });</script>');
     });
+    //$('.addjobtitlerows').click(function (e) {
+    //    debugger
+    //    var divID = $('#jobTitleDiv div.dymanicAdd').length;
+    //    $('#jobTitleDiv').append('<div class="form-group row dymanicAdd d' + divID + '"><div class="col-sm-8 getJobTitleDesc"><input type="text" class="form-control input-rounded required" placeholder="Job Title" value="" style="width: 441px;" /></div> <div class="col-sm-3 getJobCount"><input type="text" class="form-control input-rounded required" placeholder="Job Count" value="" style="width: 130px;" /></div><a class="addjobtitlerows minusSign col-sm-1" id=d' + divID + '><i class="fa fa-minus-circle addColorPlusMinus fa-2x" style="cursor:pointer;margin-left: 30px;" aria-hidden="true"></i></a></div>');
+    //    $('#jobTitleDiv').append('<script>jQuery("a.minusSign#d' + divID + '").click(function (){$("div.d' + divID + '").remove();  });</script>');
+    //});
     $("#AddChart").click(function () {
         $("#routeDiv").html("");
         $("#SeatingName").val("");
@@ -83,10 +88,8 @@ $(document).ready(function () {
 
     ///This is use to add job description seperated by line
     function createAddJobDescArray() {
-        debugger
         JobDescFormat = $('#JobDescription').val() + '|';
         $("#routeDiv div.dymanicAdd .getJobDesc").each(function () {
-            debugger
             var myObjJson = {};
             $this = $(this)
             var job = $this.find("input").val();
@@ -97,7 +100,6 @@ $(document).ready(function () {
 
     //This is to save Job Title for Chart
     $('#SaveJobTitle').click(function (e) {
-        debugger
         createAddJobTitleArray();
         var getId = $("#parentIdForJobTitle").val();
         var dataJobTitleObject = $("#SaveJobTitleForm").serialize();
@@ -107,10 +109,10 @@ $(document).ready(function () {
             data: dataJobTitleObject,
 
             success: function (Data) {
-                debugger
                 $("#jobTitleDiv").html("");
                 $("#parentIdForJobTitle").val("");
                 $("#JobTitle").val("");
+                $("#JobCount").val("");
                 $("#myModalForAddingJobTitle").modal("hide");
             },
             error: function (err) {
@@ -119,6 +121,7 @@ $(document).ready(function () {
     })
     function createAddJobTitleArray() {
         JobTitleFormat = $('#JobTitle').val() + '|';
+        JobTitleCountFormat = $("#JobCount").val() + '|';
         $("#jobTitleDiv div.dymanicAdd .getJobTitleDesc").each(function () {
             var myObjJson = {};
             $this = $(this)
@@ -126,6 +129,35 @@ $(document).ready(function () {
             JobTitleFormat = JobTitleFormat + jobTitle + '| ';
         });
         $('#JobTitleDesc').val(JobTitleFormat);
+
+        $(".getJobCount").each(function () {
+            var myObjJson = {};
+            $this = $(this)
+            var jobTitleCount = $this.find("input").val();
+            JobTitleCountFormat = JobTitleCountFormat + jobTitleCount + '| ';
+        });
+        $('#JobTitleCountDesc').val(JobTitleCountFormat);
     }
-  
+    //function SaveJobPost(){
+    //    debugger
+    //}
+    //$('#SaveJobPost').click(function (e) {
+    //    debugger
+    //    if ($("#SaveJobPostingForm").valid()) {
+    //        //var dataObject = $("#SaveJobPostingForm").serialize();
+    //        var dataJobTitleObject = $("#SaveJobPostingForm").serialize();
+    //        $.ajax({
+    //            type: "POST",
+    //            url: '../AdminSection/OrgChart/SaveJobPosting', //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
+    //            data: dataJobTitleObject,
+
+    //            success: function (Data) {
+    //                debugger
+                    
+    //            },
+    //            error: function (err) {
+    //            }
+    //        });
+    //    }
+    //    });
 })

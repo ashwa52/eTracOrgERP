@@ -1,0 +1,24 @@
+﻿@model WorkOrderEMS.Models.ApplicantDetails
+@{ 
+    Layout = null;
+}
+<div class="row">
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label>Applicant Name</label>
+            <div class="form-control-static">@Model.ApplicantName</div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label>Applicant Status</label>
+            <div class="form-control-static">@Model.ApplicantStatus</div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="form-group">
+            <label>Applicant Comment</label>
+            <div class="form-control-static">@Model.ApplicantComment</div>
+        </div>
+    </div>
+</div>

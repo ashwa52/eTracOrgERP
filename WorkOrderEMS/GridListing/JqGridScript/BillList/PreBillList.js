@@ -55,8 +55,8 @@ $(function () {
                 { name: "VendorId", title: "VendorId", type: "text", width: 50, visible: false },
                 {
                     name: "act", items: act, title: "View Details", width: 50, css: "text-center", itemTemplate: function (value, item) {
-                        var $iconPencil = $("<i>").attr({ class: "fa fa-list" }).attr({ style: "color:black;font-size: 22px;" });
-                        var $customEditButton = $("<span style='padding: 0 5px 0 0;'>")
+                        var $iconPencil = $("<i>").attr({ class: "fa fa-list list-icon" }).attr({ style: "" });
+                        var $customEditButton = $("<span class='view-detail-icon'>")
                             .attr({ title: "View Details" })
                             .attr({ id: "btn-edit-" + item.Id }).click(function (e) {
                                 ViewDetails(item);
@@ -126,8 +126,8 @@ function doSearch() {
             { name: "VendorId", title: "VendorId", type: "text", width: 50, visible: false },
             {
                 name: "act", items: act, title: "View Details", width: 50, css: "text-center", itemTemplate: function (value, item) {
-                    var $iconPencil = $("<i>").attr({ class: "fa fa-list" }).attr({ style: "color:black;font-size: 22px;" });
-                    var $customEditButton = $("<span style='padding: 0 5px 0 0;'>")
+                    var $iconPencil = $("<i>").attr({ class: "fa fa-list" }).attr({ style: " " });
+                    var $customEditButton = $("<span calss='view-detail-icon'>")
                         .attr({ title: "View Details" })
                         .attr({ id: "btn-edit-" + item.Id }).click(function (e) {
                             ViewDetails(item);
@@ -362,7 +362,7 @@ function ViewAllLocation() {
             {
                 name: "act", items: act, title: "View Details", width: 50, css: "text-center", itemTemplate: function (value, item) {
                     var $iconPencil = $("<i>").attr({ class: "fa fa-list" }).attr({ style: "color:black;font-size: 22px;" });
-                    var $customEditButton = $("<span style='padding: 0 5px 0 0;'>")
+                    var $customEditButton = $("<span class='view-detail-icon'>")
                         .attr({ title: "View Details" })
                         .attr({ id: "btn-edit-" + item.Id }).click(function (e) {
                             ViewDetails(item);

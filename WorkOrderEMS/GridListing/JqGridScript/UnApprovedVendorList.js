@@ -21,7 +21,7 @@ $(function () {
         autoload: true,
         pageSize: 10,
         pageButtonCount: 5,
-
+         
         controller: {
             loadData: function (filter) {
                 return $.ajax({
@@ -32,30 +32,31 @@ $(function () {
                 });
             }
         },
-
+      
         fields: [
-            { name: "VendorId", title: "Vendor Id", type: "text", width: 50 },
+            { name: "VendorId", title: "Vendor Id",  type: "text", width: 50 },
             { name: "CompanyNameLegal", title: "Vendor Name", type: "text", width: 50 },
             { name: "Address1", title: "Address", type: "text", width: 50 },
             { name: "Phone1", title: "Phone Number", type: "text", width: 50 },
             { name: "PointOfContact", title: "Point Of Contact", type: "text", width: 50 },
-            { name: "VendorTypeData", title: "Vendor Type", type: "text", width: 50 },
-            { name: "Status", title: "Status", type: "text", width: 50 },
+            { name: "VendorTypeData", title: "Vendor Type", type: "text", width: 50 }, 
+            { name: "Status", title: "Status", type: "text", width: 50 }, 
             {
                 name: "act", items: act, title: "View Details", width: 50, css: "text-center", itemTemplate: function (value, item) {
                     //TO add icon edit and delete to perform update and delete operation
-                    var $iconPencil = $("<i>").attr({ class: "fa fa-list" }).attr({ style: "color:black;font-size: 22px;" });
+                    var $iconPencil = $("<i>").attr({ class: "fa fa-list list-icon" }).attr({ style: "" }); 
 
-                    var $customEditButton = $("<span style='padding: 0 5px 0 0;'>")
-                        .attr({ title: "View Details" })
-                        .attr({ id: "btn-edit-" + item.Id }).click(function (e) {
-
+                    var $customEditButton = $("<span class='view-detail-icon'>")
+                        .attr({ title:"View Details"})
+                        .attr({ id: "btn-edit-" + item.Id }).click(function (e)
+                        {
+                            
                             ViewDetails(item);
                             //var addNewUrl = "../GlobalAdmin/EditLocationSetup?loc=" + item.Id;
                             //$('#RenderPageId').load(addNewUrl);
                             //e.stopPropagation();
                         }).append($iconPencil);
-
+                    
 
                     return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton);
 
@@ -65,11 +66,10 @@ $(function () {
                     ////return $("<span>").attr("class", ed);
                     //var alldiv = "<span>" + ed + "</span>" + "<span>" + de + "</span>" + "<span>" + vi + "</span>";
                     //return $("<div>").html(alldiv);
-                }
-            }
+                } }
         ]
     });
-
+   
 
 });
 $(function () {
@@ -112,10 +112,10 @@ $(function () {
     //            ad = '<a href="javascript:void(0)" class="EditRecord" id="addAccountdetails" aid="' + cl + '" title="edit" style="float:left;margin-right: 10px;cursor:pointer;"><span class="fa fa-university fa-2x texthover-greenlight"></span><span class="tooltips">List Account</span></a>';
     //            vi = '<a href="javascript:void(0)" class="viewRecord" id="ViewUnApprovedVendorData" title="view" vid="' + cl + '" style="float: left;margin-right: 10px;cursor:pointer;">view<span class="ui-icon ui-icon-disk fa-2x"></span><span class="tooltips">View</span></a></div>';
     //            ai = '<a href="javascript:void(0)" id="AddInsurance" class="Assign" InsuraceVendorId="' + cl + '" title="assign" style=" float: left;margin-right: 3px;cursor:pointer;"><span class="fa fa-medkit fa-2x texthover-yellowlight"></span><span class="tooltips">List Insurance/License</span></a></div>';
-
+               
     //            jQuery("#tbl_AllUnApprovedList").jqGrid('setRowData', ids[i], { act: vi }); ///+ qrc + vi + ad + ai  + be 
     //        }
-
+           
 
 
 
@@ -137,15 +137,15 @@ $(function () {
     //}
 });
 function ViewDetails(item) {
-
+     
     VendorId = item.VendorId;
-
+    
     $.ajax({
         type: "POST",
         url: $_HostPrefix + veiwVedorDetails + '?VendorId=' + item.VendorId,
         datatype: 'json',
-        success: function (result) {
-
+        success: function (result) { 
+            
             $("#lblVendorNameLegal").html(result.CompanyNameLegal);
             $("#lblVendorNameDBA").html(result.CompanyNameDBA);
             $("#lblVendorType").html(result.VendorTypeData);
@@ -156,7 +156,7 @@ function ViewDetails(item) {
             $("#lblEmail").html(result.Email);
             $("#lblWebsite").html(result.Website);
 
-            $("#lblLicenseName").html(result.LicenseName);
+            $("#lblLicenseName").html(result.LicenseName);            
             $("#lblLicenseNumber").html(result.LicenseNumber);
             $("#lblLicenseExpirationDate").html(result.LicenseExpirationDate);
             $("#lblInsuranceCarries").html(result.InsuranceCarries);
@@ -209,7 +209,7 @@ function ViewDetails(item) {
                 $('#UnVendorFacility_table').html("");
                 $('#UnVendorFacility_table tbody').empty();
                 var thHTML = '';
-                thHTML += '<tr style="background-color:#0792bc;"><th>Cost Code</th><th>Facility Type</th><th>Description</th><th>Unit Price</th><th>Tax</th></tr>';
+                thHTML += '<tr style="background-color:#0792bc; color:#fff;"><th>Cost Code</th><th>Facility Type</th><th>Description</th><th>Unit Price</th><th>Tax</th></tr>';
                 $('#UnVendorFacility_table').append(thHTML);
                 if (result.VendorFacilityModel.length > 0) {
                     for (i = 0; i < result.VendorFacilityModel.length; i++) {
@@ -231,15 +231,13 @@ function ViewDetails(item) {
         }
     });
     // $("#lblPOStatus").html(POStatus);
-
+   
 }
 var timeoutHnd;
 var flAuto = true;
 function doSearch(ev) {
     var act;
-    $("#jsGrid-basic").jsGrid({
-        height: "170%",
-        width: "100%",
+    $("#jsGrid-basic").jsGrid({       
         filtering: false,
         editing: false,
         inserting: false,
@@ -271,7 +269,7 @@ function doSearch(ev) {
             {
                 name: "act", items: act, title: "View Details", width: 50, css: "text-center", itemTemplate: function (value, item) {
                     //TO add icon edit and delete to perform update and delete operation
-                    var $iconPencil = $("<i>").attr({ class: "fa fa-list" }).attr({ style: "color:black;font-size: 22px;" });
+                    var $iconPencil = $("<i>").attr({ class: "fa fa-list list-icon" }).attr({ style: "" });
 
                     var $customEditButton = $("<span style='padding: 0 5px 0 0;'>")
                         .attr({ title: "View Details" })
@@ -298,9 +296,9 @@ function doSearch(ev) {
     });
 }
 function filter(args) {
-
-
-}
+ 
+   
+} 
 //function gridReload() {
 
 //    var txtSearch = jQuery("#SearchText").val();
@@ -391,7 +389,7 @@ $("#ViewUnApprovedVendorData").on("click", function (event) {
                 var arrData = [];
                 $('#UnVendorFacility_table tbody').empty();
                 var thHTML = '';
-                thHTML += '<tr style="background-color:#0792bc;"><th>Cost Code</th><th>Facility Type</th><th>Description</th><th>Unit Price</th><th>Tax</th></tr>';
+                thHTML += '<tr style="background-color:#0792bc; color:#fff;"><th>Cost Code</th><th>Facility Type</th><th>Description</th><th>Unit Price</th><th>Tax</th></tr>';
                 $('#UnVendorFacility_table').append(thHTML);
                 if (result.VendorFacilityModel.length > 0) {
                     for (i = 0; i < result.VendorFacilityModel.length; i++) {
@@ -416,7 +414,7 @@ $("#ViewUnApprovedVendorData").on("click", function (event) {
 });
 
 function RejectVendor() {
-
+ 
     $("#myModelApproveRejectVendor").modal('show');
 }
 function AppproveVendor() {
@@ -425,18 +423,18 @@ function AppproveVendor() {
     callAjaxVendor();
 }
 function RejectVendorAfterComment() {
-
-
-    if ($("#Comment").val() != "") {
-
+    
+    
+    if ($("#Comment").val()!="") {
+       
         callAjaxVendor();
     }
-    else {
+    else {       
         return false;
     }
 }
-function callAjaxVendor() {
-    var objData = new Object();
+function callAjaxVendor() {    
+    var objData = new Object();    
     objData.VendorId = VendorId;
     objData.LocationId = $_locationId;
     objData.Comment = $("#CommentVendor").val();
@@ -450,12 +448,12 @@ function callAjaxVendor() {
         beforeSend: function () {
             new fn_showMaskloader('Please wait...');
         },
-        success: function (result) {
+        success: function (result) { 
             toastr.success(result);
             $("#myModalForGetUnApprovedVendorDetails").modal('hide');
             //$("#myModelApproveRejectVendor").modal('hide');
-            $("#btnApproveData").removeClass("disabled");
-            $("#jsGrid-basic").jsGrid("loadData");
+            $("#btnApproveData").removeClass("disabled"); 
+            $("#jsGrid-basic").jsGrid("loadData"); 
         },
         error: function () { toastr.error(result); },
         complete: function () {

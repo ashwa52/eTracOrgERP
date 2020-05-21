@@ -1,5 +1,5 @@
-﻿var RequisitonList = '../EPeople/RequisitionList';
-
+﻿var RequisitonList = '/EPeople/RequisitionList';
+var base_url = window.location.origin;
 (function ($) {
     'use strict'
     var data;
@@ -17,10 +17,9 @@
             loadMessage: "Please, wait...",
             controller: {
                 loadData: function (filter) {
-                    debugger
                     return $.ajax({
                         type: "GET",
-                        url: RequisitonList,
+                        url: base_url+RequisitonList,
                         datatype: 'json',
                         contentType: "application/json",
                     });
@@ -74,11 +73,10 @@
 
 function ApproveRejectStatus(Id, Status)
 {
-    debugger
     $.ajax({
         type: "POST",
         // data: { 'Id': item.id},
-        url: '../EPeople/ApproveRejectRequisition?Id=' + Id + "&Status=" + Status,
+        url: base_url+'/EPeople/ApproveRejectRequisition?Id=' + Id + "&Status=" + Status,
         beforeSend: function () {
             new fn_showMaskloader('Please wait...');
         },

@@ -1,10 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web;
 using System.Web.Mvc;
+using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
 using WorkOrderEMS.Models.CommonModels;
 using WorkOrderEMS.Models.ManagerModels;
+using WorkOrderEMS.Models.NewAdminModel;
 using static WorkOrderEMS.Models.PrintQRCModel;
 
 namespace WorkOrderEMS.BusinessLogic
@@ -119,7 +122,7 @@ namespace WorkOrderEMS.BusinessLogic
         /// <returns></returns>
         List<EmailToUserModel> GetUsersToEmail(long locationId, long? employeeId);
 
-        // List<SelectListItem> GetAssetList(long LocationID);
+       // List<SelectListItem> GetAssetList(long LocationID);
 
         List<LocationListModel> GetLocationByAdminId(long? adminId);
 
@@ -163,7 +166,7 @@ namespace WorkOrderEMS.BusinessLogic
         /// <returns></returns>
 
         bool EmailLog(long userId, long? sentTo, string emailId, string subject, long locationId);
-
+   
         IsMapped isUserMappedWithLocation(long UserID, long LocationID);
         List<PermissionDetailsModel> GetPermissionsWithFilterByUserTypeLocationId(long locationId, long UserID);
 
@@ -192,21 +195,12 @@ namespace WorkOrderEMS.BusinessLogic
         bool SaveNotificationDetail(NotificationDetailModel obj);
         bool UpdateNotificationDetail(NotificationDetailModel obj);
         List<EmailHelper> GetUnseenList(NotificationDetailModel objDetails);
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="obj"></param>
-		/// <returns></returns>
         ServiceResponseModel<List<POListSelfServiceModel>> GetPOList(eTracLoginModel obj);
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="employeeId"></param>
-		/// <returns></returns>
-		bool CheckEmployeeIdExist(string employeeId);
         List<EmailHelper> GetUnseenNotifications(long UserId);
-        //List<EmailHelper> GetUnseenList(long UserId);
-
+        bool SetIsReadNotification(long NotificationId);
+        List<EmailHelper> GeteScanNotifications(long UserId);
+        bool CheckEmployeeIdExist(string employeeId);
+        List<CustomSlotTime> GetSlotTimings(long userid,string date);
 
     }
 }

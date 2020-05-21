@@ -15,9 +15,15 @@ namespace WorkOrderEMS.Data.EntityModel
     {
         public long JPS_JobPostingId { get; set; }
         public Nullable<long> JBT_Id { get; set; }
-        public long JPS_HiringManagerID { get; set; }
+        public string JPS_HiringManagerID { get; set; }
+        public Nullable<long> JPS_LocationId { get; set; }
+        public string LocationName { get; set; }
         public string JobTitle { get; set; }
+        public string VST_JobDescription { get; set; }
         public Nullable<int> PositionCount { get; set; }
+        public string JPS_DrivingType { get; set; }
+        public string VST_IsExempt { get; set; }
+        public string VST_RolesAndResponsiblities { get; set; }
         public Nullable<int> ApplicantCount { get; set; }
         public string JobPostingDate { get; set; }
         public Nullable<int> Duration { get; set; }

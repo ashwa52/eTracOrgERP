@@ -1,8 +1,13 @@
-﻿
+﻿<link href="~/Content/Report-NavBar/bootstrap-clockpicker.css" rel="stylesheet" />
+
 <div class="card" data-aos="fade-up" id="gridArea">
     <div class="card-header" style="height: 45px; display:none">
         <h4 class="card-title addWhite"><b>Performance Management</b></h4>
     </div>
+    <button class="btn btn-danger"  onclick="SelfAssessment();" title="Self Assessment" style="cursor:pointer;display:inline;position: absolute;right: 2%;margin: 1% 0px 0px 0px;">
+        <i class="fa fa-user-circle-o fa-2x" aria-hidden="true" onclick="SelfAssessment();" title="Self Assessment"></i>
+        Self Assessment
+    </button>
     <div class="card-body">
         <div class="custom-tab-1">
             <ul class="nav nav-tabs">
@@ -15,7 +20,12 @@
                 <li class="nav-item">
                     <a class="nav-link" data-toggle="tab" href="#Evaluations">Q-Evaluations</a>
                 </li>
-
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#CorrectiveAction">Corrective Action</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#TabMeetingDetails">Meeting Details</a>
+                </li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="th306090" role="tabpanel">
@@ -25,11 +35,15 @@
                     <div id="ListQExpectations"></div>
                 </div>
                 <div class="tab-pane fade" id="Evaluations">
-                    Evaluations
+                    <div id="ListQEvaluations"></div>
                 </div>
-
+                <div class="tab-pane fade" id="CorrectiveAction">
+                    <div id="ListCorrectiveAction"></div>
+                </div>
+                <div class="tab-pane fade" id="TabMeetingDetails">
+                    <div id="ListScheduledMeeting"></div>
+                </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -37,3 +51,199 @@
 
 
 </div>
+<div class="modal fade" id="SetUpMeetingModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="">Setup Meeting </h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+
+            </div>
+            <div class="modal-body">
+                <h4>Setup Meeting </h4>
+                <div>
+                    <form id="SetupMeetingForm" class="step-form-horizontal" role="form">
+                        <input id="ReceipientEmailId" name="ReceipientEmailId" type="hidden" />
+                        <input id="FinYear" name="FinYear" type="hidden" />
+                        <input id="FinQrtr" name="FinQrtr" type="hidden" />
+
+                        <div class="basic-form">
+                            <div class="ContinuesWODIV" style="">
+                                <div class="form-group row">
+                                    <div class="col-sm-4">
+                                        <label>To</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input class="form-control input-rounded required" type="text" readonly id="EmailTo" name="EmailTo" />
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4">
+                                        <label>Subject</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <input class="form-control input-rounded required" type="text" readonly id="Subject" name="Subject" value="Meeting before Evaluation process" />
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4">
+                                        <label>Date</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <input placeholder="Start Date" class="form-control input-rounded required " data-val="true" data-val-date="The field Start Date must be a date." data-val-required="Start Date field is required." id="StartDate" name="StartDate" type="text" value="">
+                                    </div>
+                                    @*<div class="col-sm-4">
+                                        <input class="form-control input-rounded required" data-val="true" data-val-date="The field End Date must be a date." data-val-required="End Date field is required." id="EndDate" name="EndDate" onkeypress="return isNumberKey(event)" placeholder="End Date" type="text" value="">
+                                    </div>*@
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4">
+                                        <label>Time</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <div class="input-group clockpicker" data-placement="bottom" data-align="top" data-autoclose="true">
+                                            <input type="text" class="form-control input-rounded" value="" placeholder="Start Time" id="StartTime" name="StartTime">
+                                            <span class="input-group-addon">
+                                                <span class="fa fa-clock"></span>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-4">
+                                        <label>Body</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        <textarea id="Body" name="Body" class="form-control input-rounded"></textarea>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <input type="button" id="SetUpMeeting" class="btn btn-primary pull-right" style="width: 90px;background-color:#0aa0cd;" value="Save">
+                            </div>
+                            </div>
+</form>
+                </div>
+            </div>
+            @*<div class="modal-footer">
+                <button type="submit" id="" class="btn btn-primary">OK</button>
+            </div>*@
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="SuccessModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="SaveMeetingDetails">Setup Meeting </h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body ">
+                <div>
+                    <label id="successSaveMeetingDetails">
+                        Meeting setup successfully
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button   class="btn btn-primary" data-dismiss="modal" style="width: 90px">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="ErrorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="SaveMeetingDetails">Setup Meeting </h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body ">
+                <div>
+                    <label id="successSaveMeetingDetails">
+                        Please enter proper date and time
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal" style="width: 90px">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="MeetingNotDoneModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="SaveMeetingDetails">Meeting Not Completed </h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body ">
+                <div>
+                    <label id="labelAddCalendar">
+                        Please complete the meeting before submitting the Evaluation
+                        </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-dismiss="modal" style="width:90px;">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="/Content/NewAdminContent/JQUERY/clockPicker.js"></script>
+<script src="/Scripts/bootstrap-datepicker.js"></script>
+<script>
+
+    $('#StartDate,#EndDate').datepicker({
+        format: "yyyy/mm/dd",
+    });
+    $("#Year").datepicker({
+        format: "yyyy",
+    });
+    $('.clockpicker').clockpicker();
+
+    $("#SetUpMeeting").on('click', function () {
+        var obj = {};
+        ReceipientEmailId = $("#ReceipientEmailId").val();
+        EmailTo= $("#EmailTo").val();
+        Subject= $("#Subject").val();
+        StartDate= $("#StartDate").val();
+        StartTime= $("#StartTime").val();
+        Body= $("#Body").val();
+        FinYear= $("#FinYear").val();
+        FinQrtr = $("#FinQrtr").val();
+        obj = {
+            'ReceipientEmailId': ReceipientEmailId
+            , 'EmailTo': EmailTo
+            , 'Subject': Subject
+            , 'StartDate': StartDate
+            , 'StartTime': StartTime
+            , 'Body': Body
+            , 'FinYear': FinYear
+            , 'FinQrtr': FinQrtr
+        };
+        $.ajax({
+            type: "POST",
+            data: obj,
+            dataType:'JSON',
+            url: '../NewAdmin/SetupMeeting/',
+            error: function (xhr, status, error) {
+                $("#SetUpMeetingModal").modal('hide');
+                    $("#ErrorModal").modal('show');
+
+            },
+            success: function (result) {
+
+                    $("#SetUpMeetingModal").modal('hide');
+                    $("#SuccessModal").modal('show');
+                
+            }
+        });
+    });
+</script>

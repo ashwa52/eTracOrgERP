@@ -48,11 +48,11 @@ $(function () {
 
                 name: "act", type: "control", items: act, title: "Action", width: 50, css: "text-center", itemTemplate: function (value, item) {
 
-                    var $iconPencilForAccountApprove = $("<i>").attr({ class: "fa fa-check" }).attr({ style: "color:green;font-size: 22px;" });
+                    var $iconPencilForAccountApprove = $("<i>").attr({ class: "fa fa-check check-icon" }).attr({ style: "" });
 
-                    var $customButtonForEdit = $("<i>").attr({ class: "fa fa-pencil" }).attr({ style: "color:green;font-size: 22px;" });
+                    var $customButtonForEdit = $("<i>").attr({ class: "fa fa-pencil pencil-icon" }).attr({ style: "" });
 
-                    var $iconPencil = $("<i>").attr({ class: "fa fa-list" }).attr({ style: "color:black;font-size: 22px;" });
+                    var $iconPencil = $("<i>").attr({ class: "fa fa-list list-icon" }).attr({ style: "" });
                     var $customButtonForAcandDeActive = "";
 
                     if (item.POStatus == "Y")

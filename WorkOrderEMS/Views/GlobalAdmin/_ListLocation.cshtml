@@ -1,8 +1,8 @@
 ﻿@{
 
 
-    var isRefresh =ViewBag.IsPageRefresh;
-    if(isRefresh == true)
+    var isRefresh = ViewBag.IsPageRefresh;
+    if (isRefresh == true)
     {
         Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
     }
@@ -91,15 +91,16 @@
         <div class="row">
             <div class="col-12">
                 <div class="card" data-aos="fade-up">
-                    <div class="card-header headerSize" id="addNewlocation" style="height: 45px;">
-                        <a href="javascript:void(0)"><span><i class="mdi mdi-plus" style="color:white;font-size:50px;"></i></span></a>
-                        <div class="basic-form">
-                            <div class="form-group" style="    margin-left: -200px;">
-                                <input type="text" style="margin-top: 15px;" class="form-control input-rounded" placeholder="Location Name">
+                    <div style="height: 45px;background:#0aa0cd;">
+                        <div class="form-group row" style="margin-top:-9px;margin-left:10px;">
+                            <div class="col-sm-1" id="addNewlocation" style="margin-top:-6px;">
+                                <a href="javascript:void(0)"><span><i class="mdi mdi-plus" style="color:white;font-size:50px;"></i></span></a>
                             </div>
-                        </div>
-                        <div class="basic-form" style="margin-right: 830px;">
-                            <div class="form-group">
+                            <div class="col-sm-2">
+                                <input id="SearchText" type="text" style="margin-top:15px;" class="form-control input-rounded" placeholder="Location Name" onkeyup="doSearch()">
+                                @*<input type="text" id="SearchbyAssignUser" class="form-control input-rounded dispayListWOName" placeholder="Search by User">*@
+                            </div>
+                            <div class="col-sm-2">
                                 <select class="form-control input-rounded" style="margin-top: 15px;">
                                     <option selected>Zip Code</option>
                                     <option value="1">45355</option>
@@ -111,6 +112,26 @@
                             </div>
                         </div>
                     </div>
+                    @*<div class="card-header headerSize" id="addNewlocation" style="height: 45px;">
+                            <a href="javascript:void(0)"><span><i class="mdi mdi-plus" style="color:white;font-size:50px;"></i></span></a>
+                            <div class="basic-form">
+                                <div class="form-group" style="    margin-left: -200px;">
+                                    <input id="SearchText" type="text" style="margin-top:15px;" class="form-control input-rounded" placeholder="Location Name" onkeyup="doSearch()">
+                                </div>
+                            </div>
+                            <div class="basic-form" style="margin-right: 830px;">
+                                <div class="form-group">
+                                    <select class="form-control input-rounded" style="margin-top: 15px;">
+                                        <option selected>Zip Code</option>
+                                        <option value="1">45355</option>
+                                        <option value="2">35235</option>
+                                        <option value="3">56463</option>
+                                        <option value="2">34567</option>
+                                        <option value="3">55445</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>*@
                     <div class="card-body">
                         <div id="jsGrid-basic"></div>
                     </div>
@@ -121,7 +142,8 @@
 </div>
 
 <script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
-<script src="~/Scripts/NewAdminJS/plugins-init/jsgrid-init.js"></script>
+<script src="~/GridListing/JsGridScript/ListLocation.js"></script>
+@*<script src="~/Scripts/NewAdminJS/plugins-init/jsgrid-init.js"></script>*@
 <script src="~/Content/NewAdminContent/VENDOR/d3/d3.min.js"></script>
 <script src="~/Content/NewAdminContent/VENDOR/c3/js/c3.min.js"></script>
 <script src="~/Scripts/NewAdminJS/plugins-init/c3-init.js"></script>
@@ -133,7 +155,7 @@
     $(document).ready(function () {
         @*var isRefresh = '@ViewBag.IsPageRefresh';
         if (isRefresh == "True")
-        {           
+        {
             var addNewUrl = "../GlobalAdmin/ListLocation";
             $('#RenderPageId').load(addNewUrl);
         }*@
@@ -142,6 +164,7 @@
         $(".jsgrid-insert-row").hide();
         $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
         $("#addNewlocation a").click(function (event) {
+            debugger
             if (hitCount == 1) {
                 hitCount++;
                 $(".jsgrid-insert-row").hide();
@@ -418,64 +441,58 @@ var chart = AmCharts.makeChart("chartdiv", {
 </script>
 <script>
     $(document).ready(function () {
+        new fn_hideMaskloader();
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("GetDashboardHeadCount", "GlobalAdmin")",
+            data: {},
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (jsondata) {
+                //successFuncPie(response);
+                if (jsondata != null && jsondata != "" && jsondata.dataJson.trim() != "") {
+                    var dataJSON = JSON.parse(jsondata.dataJson);
+                    dataJSON.CountPanel[0].AdminCount;
+                    am4core.ready(function () {
+                        // Themes begin
+                        am4core.useTheme(am4themes_animated);
+                        // Themes end
+                        // Create chart instance
+                        var chart = am4core.create("EmployeeCount1", am4charts.PieChart);
+                        // Add data
+                        chart.data = [{
+                            "User": "Administrator",
+                            "Count": dataJSON.CountPanel[0].AdminCount
+                        }, {
+                            "User": "Employee",
+                            "Count": 5//dataJSON.CountPanel[0].EmpCount
+                        }, {
+                            "User": "Manager",
+                            "Count": 3//dataJSON.CountPanel[0].ManagerCount
+                            }];
 
-    $.ajax({
-        type: "GET",
-        url: "@Url.Action("GetDashboardHeadCount", "GlobalAdmin")",
-        data: {},
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (jsondata) {
-        //successFuncPie(response);
-        if (jsondata != null && jsondata != "" && jsondata.dataJson.trim() != "") {
-            var dataJSON = JSON.parse(jsondata.dataJson);
-            dataJSON.CountPanel[0].AdminCount;
-            am4core.ready(function () {
+                        // Add and configure Series
 
-                // Themes begin
-                am4core.useTheme(am4themes_animated);
-                // Themes end
+                        var pieSeries = chart.series.push(new am4charts.PieSeries());
+                        pieSeries.dataFields.value = "Count";
+                        pieSeries.dataFields.category = "User";
+                        pieSeries.innerRadius = am4core.percent(50);
+                        pieSeries.ticks.template.disabled = true;
+                        pieSeries.labels.template.disabled = true;
+                        var rgm = new am4core.RadialGradientModifier();
+                        rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
+                        pieSeries.slices.template.fillModifier = rgm;
+                        pieSeries.slices.template.strokeModifier = rgm;
+                        pieSeries.slices.template.strokeOpacity = 0.4;
+                        pieSeries.slices.template.strokeWidth = 0;
 
-                // Create chart instance
-                var chart = am4core.create("EmployeeCount1", am4charts.PieChart);
+                        chart.legend = new am4charts.Legend();
+                        chart.legend.position = "right";
+                    }); // end am4core.ready()
+                }
+            }
+        });
 
-                // Add data
-                chart.data = [{
-                    "User": "Administrator",
-                    "Count": dataJSON.CountPanel[0].AdminCount
-                }, {
-                    "User": "Employee",
-                    "Count": 5//dataJSON.CountPanel[0].EmpCount
-                }, {
-                    "User": "Manager",
-                    "Count": 3//dataJSON.CountPanel[0].ManagerCount
-                }];
-
-                // Add and configure Series
-                var pieSeries = chart.series.push(new am4charts.PieSeries());
-                pieSeries.dataFields.value = "Count";
-                pieSeries.dataFields.category = "User";
-                pieSeries.innerRadius = am4core.percent(50);
-                pieSeries.ticks.template.disabled = true;
-                pieSeries.labels.template.disabled = true;
-                var rgm = new am4core.RadialGradientModifier();
-                rgm.brightnesses.push(-0.8, -0.8, -0.5, 0, -0.5);
-                pieSeries.slices.template.fillModifier = rgm;
-                pieSeries.slices.template.strokeModifier = rgm;
-                pieSeries.slices.template.strokeOpacity = 0.4;
-                pieSeries.slices.template.strokeWidth = 0;
-
-                chart.legend = new am4charts.Legend();
-                chart.legend.position = "right";
-
-            }); // end am4core.ready()
-        }
-    }
-    });
-    });
-</script>
-<script>
-    $(document).ready(function () {
         $('#main-wrapper').removeClass("menu-toggle");
         $(".hamburger").show();
         $("ul li a").click(function (e) {
@@ -484,5 +501,138 @@ var chart = AmCharts.makeChart("chartdiv", {
             $('#RenderPageId').load(url);
         });
     });
-</script>
+    function doSearch(ev) {
+        var act;
+        $("#jsGrid-basic").jsGrid({
+            width: "100%",
+            height: "400px",
+            filtering: false,
+            editing: false,
+            inserting: false,
+            sorting: false,
+            paging: true,
+            autoload: true,
+            pageSize: 10,
+            pageButtonCount: 5,
+            controller: {
+                loadData: function (filter) {
+                    return $.ajax({
+                        type: "GET",
+                        url: '/NewAdmin/GetListLocation?_search=' + $("#SearchText").val(),
+                        data: filter,
+                        dataType: "json"
+                    });
+                }
+            },
+            fields: [
+                //{ name: "Id", visible: false },
+                { name: "Address", css: "text-center", validate: "required" },//visible: true
+                { name: "City", css: "text-center" },
+                { name: "LocationName", title: "Location Name", css: "text-center" },
+                { name: "PhoneNo", title: "Phone No", css: "text-center" },
+                { name: "ZipCode", title: "Zip Code", css: "text-center" },
+                {
+                    name: "act", items: act, title: "Action ", css: "text-center", itemTemplate: function (value, item) {
+                        //TO add icon edit and delete to perform update and delete operation
+                        var $iconPencil = $("<i>").attr({ class: "fa fa-pencil" }).attr({ style: "color:yellow;font-size: 22px;" });
+                        var $iconTrash = $("<i>").attr({ class: "fa fa-trash" }).attr({ style: "color:red;font-size: 22px;" });
+                        var $iconChart = $("<i>").attr({ class: "fa fa-plus" }).attr({ style: "color:#149D48;font-size: 22px;" });
+                        var $iconDollar = $("<i>").attr({ class: "fa fa-usd" }).attr({ style: "color:#166C88;font-size: 22px;" });
+                        var $iconLocSetting = $("<i>").attr({ class: "fa fa-cog" }).attr({ style: "color:#818688;font-size: 22px;" });
+                        var $iconOffers = $("<i>").attr({ class: "fa fa-tag" }).attr({ style: "color:#da63c6;font-size: 22px;" });
 
+                        var $customEditButton = $("<span style='padding: 0 10px 0 0;'>")
+                            .attr({ title: jsGrid.fields.control.prototype.editButtonTooltip })
+                            .attr({ id: "btn-edit-" + item.Id }).click(function (e) {
+                                new fn_showMaskloader('Please wait...');
+                                var addNewUrl = "../GlobalAdmin/EditLocationSetup?loc=" + item.Id;
+                                $('#RenderPageId').load(addNewUrl);
+                                e.stopPropagation();
+                                new fn_hideMaskloader();
+                            }).append($iconPencil);
+
+                        var $customDeleteButton = $("<span style='padding: 0 10px 0 0;'>")
+                            .attr({ title: jsGrid.fields.control.prototype.deleteButtonTooltip })
+                            .attr({ id: "btn-delete-" + item.Id }).click(function (e) {
+                                if (confirm("Are you sure you want to delete this?")) {
+                                    new fn_showMaskloader('Please wait...');
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "../GlobalAdmin/DeleteLocation?id=" + item.Id,
+                                        success: function (Data) {
+                                            var addNewUrl = "../GlobalAdmin/ListLocation";
+                                            $('#RenderPageId').load(addNewUrl);
+                                            new fn_hideMaskloader();
+                                        },
+                                        error: function (err) {
+                                            new fn_hideMaskloader();
+                                        }
+
+                                    });
+                                }
+                                e.stopPropagation();
+                            }).append($iconTrash);
+
+                        var $customChartButton = $("<span style='padding: 0 10px 0 0;'>")
+                            .attr({ title: jsGrid.fields.control.prototype.costCodeButtonTooltip })
+                            .attr({ id: "btn-chart-" + item.Id }).click(function (e) {
+                                new fn_showMaskloader('Please wait...');
+                                window.location.href = '../GlobalAdmin/TreeView/?loc=' + item.Id;
+                                e.stopPropagation();
+                            }).append($iconChart);
+                        var $customDollarButton = $("<span style='padding: 0 10px 0 0;'>")
+                            .attr({ title: jsGrid.fields.control.prototype.budgetButtonTooltip })
+                            .attr({ id: "btn-dollar-" + item.Id }).click(function (e) {
+                                new fn_showMaskloader('Please wait...');
+                                window.location.href = '../GlobalAdmin/BudgetAllocation/?loc=' + item.Id;
+                                e.stopPropagation();
+                            }).append($iconDollar);
+                        var $customLocSettingButton = $("<span style='padding: 0 10px 0 0;'>")
+                            .attr({ title: jsGrid.fields.control.prototype.editButtonTooltip })
+                            .attr({ id: "btn-LocSetting-" + item.Id }).click(function (e) {
+                                new fn_showMaskloader('Please wait...');
+                                var addNewUrl = "../GlobalAdmin/LocationSettiing?loc=" + item.Id;
+                                $('#RenderPageId').load(addNewUrl);
+                                e.stopPropagation();
+                                new fn_hideMaskloader();
+                            }).append($iconLocSetting);
+                        var $customiconOffersButton = $("<span style='padding: 0 10px 0 0;'>")
+                            .attr({ title: jsGrid.fields.control.prototype.editButtonTooltip })
+                            .attr({ id: "btn-LocSetting-" + item.Id }).click(function (e) {
+                                new fn_showMaskloader('Please wait...');
+                                var addNewUrl = "../GlobalAdmin/ListDealsSpecific?loc=" + item.Id + "&type=" + 0;
+                                $('#RenderPageId').load(addNewUrl);
+                                e.stopPropagation();
+                                new fn_hideMaskloader();
+                            }).append($iconOffers);
+                        return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton).append($customDeleteButton).append($customChartButton).append($customDollarButton).append($customLocSettingButton).append($customiconOffersButton);
+
+                        //var ed = "<a href='javascript:void(0)' class='EditRecord' Id='" + item.Id + "' style='margin-right: 10px;cursor:pointer;'><span class='mdi mdi-pencil fa-1x' style='color:yellow;'></span></a>";
+                        //var de = "<a href='javascript:void(0)' class='DeleteRecord' Id='" + item.Id + "' style='margin-right: 10px;cursor:pointer;'><span class='mdi mdi-delete fa-1x' style='color:black;'></span></a>";
+                        //var vi = "<a href='javascript:void(0)' class='ViewRecord' Id='" + item.Id + "' style='margin-right: 10px;cursor:pointer;'><span class='mdi mdi-eye fa-1x' style='color:black'></span></a>";
+                        ////return $("<span>").attr("class", ed);
+                        //var alldiv = "<span>" + ed + "</span>" + "<span>" + de + "</span>" + "<span>" + vi + "</span>";
+                        //return $("<div>").html(alldiv);
+                    }
+                },
+                //{ type: "control" }
+            ],
+            //On row click show location details
+            rowClick: function (args) {
+
+                console.log(args)
+                var getData = args.item;
+                var keys = Object.keys(getData);
+                var text = [];
+                var url = "../NewAdmin/DisplayLocationData/?LocationId=" + getData.LocationId;
+                $('#RenderPageId').load(url);
+                //window.location.href = "../NewAdmin/DisplayLocationData/?LocationId=" + getData.LocationId;
+                //$.each(keys, function (idx, value) {
+                //    text.push(value + " : " + getData[value])
+                //});
+
+                //$("#label").text(text.join(", "))
+            }
+        });
+    }
+</script>

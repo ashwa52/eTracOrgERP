@@ -19,6 +19,8 @@ namespace WorkOrderEMS.Data.EntityModel
         public string JBT_JobTitle { get; set; }
         public Nullable<long> EMP_JobTitleId { get; set; }
         public Nullable<long> EMP_LocationId { get; set; }
-        public Nullable<long> EMP_ManagerId { get; set; }
+        public Nullable<long> UserId { get; set; }
+        public string EMP_ManagerId { get; set; }
+        public string OrientationStatus { get; set; }
     }
 }

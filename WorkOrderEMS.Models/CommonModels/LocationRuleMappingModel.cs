@@ -19,6 +19,14 @@ namespace WorkOrderEMS.Models
         public Nullable<System.DateTime> ModifiedDate { get; set; }
         public bool IsDeleted { get; set; }
         public Nullable<long> DeletedBy { get; set; }
-        public Nullable<System.DateTime> DeletedDate { get; set; }      
+        public Nullable<System.DateTime> DeletedDate { get; set; }
+
+
+        // jemin 
+        public decimal? ChargeDepositeMonthlyParkerCard { get; set; }
+        public bool IsChargeDepositeMonthlyParkerCard { get; set; }
+        public decimal? AviailableSpaces { get; set; }
+        public bool IsSpecialRulesHourlyMan { get; set; }
+
     }
 }

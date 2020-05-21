@@ -16,10 +16,13 @@ namespace WorkOrderEMS.Data.EntityModel
         public string EMP_EmployeeID { get; set; }
         public string EMP_Photo { get; set; }
         public string EmployeeName { get; set; }
+        public string VST_Level { get; set; }
         public string DepartmentName { get; set; }
         public string JBT_JobTitle { get; set; }
         public string LocationName { get; set; }
         public Nullable<System.DateTime> EMP_DateOfJoining { get; set; }
         public Nullable<int> Assesment { get; set; }
+        public string SAM_IsActive { get; set; }
+        public string EMP_ManagerId { get; set; }
     }
 }

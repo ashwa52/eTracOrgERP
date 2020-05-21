@@ -3,8 +3,10 @@ using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Drawing;
 using System.IO;
+using System.Reflection;
 using System.Web;
 
 namespace WorkOrderEMS.Helper
@@ -164,6 +166,21 @@ namespace WorkOrderEMS.Helper
             }
             return false;
         }
+
+        public static bool StaticDeleteFIle(HttpPostedFileBase myFile, string path, string fileName)
+        {
+            //message = string.Empty;
+            //if (myFile != null && myFile.ContentLength != 0)
+            //{
+                if (File.Exists(Path.Combine(path, fileName)))
+                {
+                    // If file found, delete it    
+                    File.Delete(Path.Combine(path, fileName));                    
+                }
+
+            //}
+            return false;
+        }
         private bool CreateFolderIfNeeded(string path)
         {
             bool result = true;
@@ -266,6 +283,6 @@ namespace WorkOrderEMS.Helper
                 }
             }
             return status;
-        }       
+        }
     }
 }

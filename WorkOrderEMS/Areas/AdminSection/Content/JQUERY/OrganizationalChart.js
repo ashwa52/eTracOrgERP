@@ -17,9 +17,9 @@
         factory(jQuery, window, document);
     }
 }(function ($, window, document, undefined) {
-    debugger
+    
     var OrgChart = function (elem, opts) {
-        debugger
+        
         this.$chartContainer = $(elem);
         this.opts = opts;
         this.defaultOptions = {
@@ -45,7 +45,7 @@
         //debugger
 
         init: function (opts) {
-            debugger
+            
             var that = this;
             this.options = $.extend({}, this.defaultOptions, this.opts, opts);
             // build the org-chart
@@ -67,14 +67,14 @@
                 this.triggerInitEvent();
             }
             if ($.type(data) === 'object') {
-                debugger
+                
                 if (data instanceof $) { // ul datasource
                     this.buildHierarchy($chart, this.buildJsonDS(data.children()), 0, this.options);
                 } else { // local json datasource
                     this.buildHierarchy($chart, this.options.ajaxURL ? data : this.attachRel(data, '00'));
                 }
             } else {
-                debugger
+                
                 $chart.append('<i class="fa fa-circle-o-notch fa-spin spinner"></i>');
                 $.ajax({
                     'url': data,
@@ -1425,7 +1425,7 @@
     //    return new OrgChart(this, opts).init();
     //}
     $.fn.orgchart = function (opts) {
-        debugger
+        
 
         return new OrgChart(this, opts).init();
     };

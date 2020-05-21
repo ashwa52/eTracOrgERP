@@ -37,10 +37,23 @@ $(function () {
             { name: "BillAmount", title: "Bill Amount", type: "text", width: 20 },
             { name: "BillDate", title: "Bill Date", type: "text", width: 30, visible: false},
             { name: "DisplayDate", title: "Bill Date", type: "text", width: 30 },
-            { name: "GracePeriod", title: "Grace Period", type: "text", width: 10 },
-            { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20 },//, visible: false 
-            { name: "Description", title: "Description", type: "text", width: 20 },
-            { name: "Status", title: "Status", type: "text", width: 20 },
+            { name: "GracePeriod", title: "Grace Period", type: "text", width: 10, visible: false },
+            { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20, visible: false },//, visible: false 
+            { name: "Description", title: "Description", type: "text", width: 20, visible: false},
+            { name: "Status", title: "Status", type: "text", width: 20, visible: false },
+            {
+                name: "act", items: act, title: "Action", width: 15, css: "text-center", itemTemplate: function (value, item) {
+                    var $iconCheck = $("<a style='color:blue'><b>View Details</b></a>");                    
+
+                    var $customCheck = $("<span style='padding: 0 5px 0 0;'>")
+                        .attr({ title: "Payment status" })
+                        .attr({ id: "Payment" + item.BillNo }).click(function (e) {
+                            PaymentStatus(item);
+                        }).append($iconCheck);
+                    
+                    return $("<div>").attr({ class: "btn-toolbar" }).append($customCheck);
+                }
+            },
             { name: "VendorId", title: "VendorId", type: "text", width: 20, visible: false },
             { name: "OperatingCompanyId", title: "Operating Company Id", type: "text", width: 20, visible: false },
             { name: "LocationId", title: "Location Id", type: "text", width: 20, visible: false },
@@ -154,11 +167,25 @@ function doPaymentSearchresult()
             { name: "OperatingCompany", title: "Operating Company", type: "text", width: 30 },
             { name: "BillType", title: "Bill Type", type: "text", width: 20 },
             { name: "BillAmount", title: "Bill Amount", type: "text", width: 20 },
-            { name: "BillDate", title: "Bill Date", type: "text", width: 30 },
-            { name: "GracePeriod", title: "Grace Period", type: "text", width: 10 },
-            { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20 },//, visible: false 
-            { name: "Description", title: "Description", type: "text", width: 20 },
-            { name: "Status", title: "Status", type: "text", width: 20 },
+            { name: "BillDate", title: "Bill Date", type: "text", width: 30, visible: false},
+            { name: "DisplayDate", title: "Bill Date", type: "text", width: 30 },
+            { name: "GracePeriod", title: "Grace Period", type: "text", width: 10, visible: false },
+            { name: "PaymentMode", title: "Payment Mode", type: "text", width: 20, visible: false},//, visible: false 
+            { name: "Description", title: "Description", type: "text", width: 20, visible: false},
+            { name: "Status", title: "Status", type: "text", width: 20, visible: false },
+            {
+                name: "act", items: act, title: "Action", width: 15, css: "text-center", itemTemplate: function (value, item) {
+                    var $iconCheck = $("<a style='color:blue'><b>View Details</b></a>");  
+
+                    var $customCheck = $("<span style='padding: 0 5px 0 0;'>")
+                        .attr({ title: "Payment status" })
+                        .attr({ id: "Payment" + item.BillNo }).click(function (e) {
+                            PaymentStatus(item);
+                        }).append($iconCheck);
+
+                    return $("<div>").attr({ class: "btn-toolbar" }).append($customCheck);
+                }
+            },
             { name: "VendorId", title: "VendorId", type: "text", width: 20, visible: false },
             { name: "OperatingCompanyId", title: "Operating Company Id", type: "text", width: 20, visible: false },
             { name: "LocationId", title: "Location Id", type: "text", width: 20, visible: false },
@@ -173,6 +200,26 @@ function imageFormat(cellvalue, options, rowObject) {
     else {
         return '<img src="' + cellvalue + '" class="gridimage" id="driverImage" onclick="EnlargeImageView(this);"/>';
     }
+}
+
+function PaymentStatus(item) {
+    $("#lblViewAmountPaid").html(item.BillAmount);
+    $("#lblViewPaymentMode").html(item.PaymentMode);
+    $("#lblViewNotes").html(item.PaymentNote);
+    $("#lblActionDoneOn").html(item.ActionDoneOn);
+    $("#lblActionDoneBy").html(item.ActionDoneBy);
+    $("#lblCardNumberDisplay").html(item.BillAmount);
+    $("#lblAccountnumberDisplay").html(item.BillAmount);
+    $("#lblCheckNumberDisplay").html(item.BillAmount);
+    if (item.Status == "X") {
+        $("#lblViewStatus").html("Cancelled");
+        $("#lblViewPaymentModeDiv").hide();
+    }
+    if (item.Status == "P") {
+        $("#lblViewStatus").html("Paid");
+        $("#lblViewPaymentModeDiv").show();
+    }    
+    $('#myModalForPOStatus').modal('show');
 }
 //#endregion
 

@@ -134,11 +134,19 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     }
                     else if (authuser != null && authuser.UserId > 0 && obj.TaskType == 280)
                     {
+                        var objLoginLogRepository = new LoginLogRepository();
                         obj.ActivityDetails = DarMessage.ShiftEnd(obj.UserName);
                         var result = objDARRepository.SaveDARDetails(obj);
-
                         if (result != null && result > 0)
                         {
+                            var loginlog = objLoginLogRepository.GetSingleOrDefault(x => x.UserID == authuser.UserId && x.LogId == obj.LogId && x.IsDeleted == false && x.IsActive == true);
+                            if (loginlog.LogId != 0)
+                            {
+                                loginlog.IsActive = false;
+                                loginlog.ShiftEnd = DateTime.Now;
+                                objLoginLogRepository.Update(loginlog);
+                                objLoginLogRepository.SaveChanges();
+                            }
                             var data = ObjUserRepository.GetSingleOrDefault(v => v.UserId == obj.UserId && v.IsDeleted == false);
                             if (data != null)
                             {

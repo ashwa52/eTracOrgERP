@@ -127,18 +127,18 @@ hr {
     color: #FFDFB0;
     float: right;
     position: static;
-    margin-right: -39px;
-    margin-top: 9px;
-    font-size: 20px;
+    margin-right: -43px;
+    margin-top: 13px;
+    font-size: 18px;
 }
 
 .faemail i {
     color: #1ec632;
     float: right;
     position: static;
-    margin-right: -38px;
+    margin-right: -43px;
     margin-top: -5px;
-    font-size: 12px;
+    font-size: 18px;
 }
 /*.devider {
         border-right: 1px solid;

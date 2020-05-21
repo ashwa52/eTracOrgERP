@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
+using System.Text.RegularExpressions;
 using System.Web;
-
 
 namespace WorkOrderEMS.Helper
 {
@@ -112,7 +113,8 @@ namespace WorkOrderEMS.Helper
         public long? FacilityRequest { get; set; }
         public string AddressFacilityReq { get; set; }
         public string LicensePlateNo { get; set; }
-
+        public string CreatedBy { get; set; }
+        public string EmployeeImage { get; set; }
         //Added by Ashwajit Bansod for WO
         public long WorkRequestProjectType { get; set; }
         public long? PriorityLevel { get; set; }
@@ -228,14 +230,33 @@ namespace WorkOrderEMS.Helper
 
         //Added By Ashwajit Bansod
         public string MISId { get; set; }
-
+        public string AcceptAssessmentLink { get; set; }
+        public string RejectAssessmentLink { get; set; }
         //Added By Ashwajit Bansod
         public string CalculatedAmount { get; set; }
         public string CostCode { get; set; }
 
-        public string EmployeeImage { get; set; }
-        public string CreatedBy { get; set; }
+        //public string EmployeeImage { get; set; }
+        //public string CreatedBy { get; set; }
+        //Added By Mayur 10112019
+        public string EmailTo { get; set; }
+        public string ReceipientEmailId { get; set; }
+        public string EmailFrom { get; set; }
+        public string Body { get; set; }
 
+        public long NotificationId { get; set; }
+        public long? WorkOrderID { get; set; }
+        public long? eScanQRCID { get; set; }
+
+        public string LoginId { get; set; }
+        public string NewPassword { get; set; }
+		
+        #region InvoiceMailProperties
+        private const string TableRows = "[TableRows]";
+        private const string TableRows_Regex = @"\[TableRows]\{(?<Row>[^}]*)\}";
+        public DataSet DtInvoiceDetails { get; set; }
+        public string JobTitle { get; set; }
+        #endregion
 
         public bool SendEmailWithTemplate(string[] attachedUrl = null)
         {
@@ -1055,7 +1076,282 @@ namespace WorkOrderEMS.Helper
                         strMailBody = strMailBody.Replace("##LocationName", LocationName);
                         strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
                         break;
-                  
+                    case "SETUPEVALUATIONMEETING":
+                        TemplatePath = ConfigurationManager.AppSettings["SetupEvaluationMeetingTemplate"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";
+                        Subject = "eTrac: "+Subject;
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##Year", Year);
+                        strMailBody = strMailBody.Replace("##Logo", LogoPath);
+                        strMailBody = strMailBody.Replace("##MailHeading", strMailHeading);
+                        strMailBody = strMailBody.Replace("##EmployeeName", EmailTo);
+                        strMailBody = strMailBody.Replace("##StartTime", StartTime);
+                        strMailBody = strMailBody.Replace("##StartDate", StartDate);
+                        strMailBody = strMailBody.Replace("##Body", Body);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+                        break;
+
+                    case "EMPLOYEEHIRED":
+
+                        TemplatePath = ConfigurationManager.AppSettings["EmployeeHired"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";
+                        Subject = "eTrac: Your username and password is generated";
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##UserName", UserName);
+                        strMailBody = strMailBody.Replace("##Email", emailid);
+                        strMailBody = strMailBody.Replace("##Name", Name);
+                        strMailBody = strMailBody.Replace("##LOGINLINK", RegistrationLink);
+                        strMailBody = strMailBody.Replace("##PASSWORD", Password);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+                        break;
+
+                    case "SENDFORASSESSMENT":
+
+                        TemplatePath = ConfigurationManager.AppSettings["SendForAssessment"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";
+                        Subject = "eTrac: Check Assessment";
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##UserName", UserName);
+                        strMailBody = strMailBody.Replace("##Email", emailid);
+                        strMailBody = strMailBody.Replace("##Name", Name);
+                        strMailBody = strMailBody.Replace("##AcceptLink", AcceptAssessmentLink);
+                        strMailBody = strMailBody.Replace("##PASSWORD", Password);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+                        break;
+
+                    case "SENDFORBACKGROUNDCHECK":
+
+                        TemplatePath = ConfigurationManager.AppSettings["SendForBackground"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";
+                        Subject = "eTrac: Background check";
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##UserName", UserName);
+                        strMailBody = strMailBody.Replace("##Email", emailid);
+                        strMailBody = strMailBody.Replace("##Name", Name);
+                        strMailBody = strMailBody.Replace("##AcceptLink", AcceptAssessmentLink);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+                        break;
+
+                    case "SENDOFFER":
+                        TemplatePath = ConfigurationManager.AppSettings["SendOffer"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";
+                        string CompanyLogo = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/etrac-logo-inner.png" + ">";
+                        Subject = "eTrac: Offer Letter";
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##UserName", UserName);
+                        strMailBody = strMailBody.Replace("##CompanyLogo", CompanyLogo);
+                        strMailBody = strMailBody.Replace("##LogoPath", LogoPath);
+                        strMailBody = strMailBody.Replace("##Email", emailid);
+                        strMailBody = strMailBody.Replace("##Name", Name);
+                        strMailBody = strMailBody.Replace("##AcceptLink", RegistrationLink);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+                        break;
+
+                    case "OFFERACCEPTED":
+                        TemplatePath = ConfigurationManager.AppSettings["SendOfferAccepted"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo.png" + ">";
+                        CompanyLogo = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/image-form.jpg" + ">";
+                        //Subject = "eTrac: Thanks for";
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##UserName", UserName);
+                        strMailBody = strMailBody.Replace("##CompanyLogo", CompanyLogo);
+                        strMailBody = strMailBody.Replace("##LogoPath", LogoPath);
+                        strMailBody = strMailBody.Replace("##Email", emailid);
+                        strMailBody = strMailBody.Replace("##Name", Name);
+                        strMailBody = strMailBody.Replace("##Password", Password);
+                        strMailBody = strMailBody.Replace("##JobTitle", JobTitle);
+                        strMailBody = strMailBody.Replace("##AcceptLink", AcceptAssessmentLink);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+                        break;
+
+                    case "OFFERCOUNTER":
+                        TemplatePath = ConfigurationManager.AppSettings["OfferLetterCounter"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo.png" + ">";
+                        CompanyLogo = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/image-form.jpg" + ">";
+                        //Subject = "eTrac: Thanks for";
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##CompanyLogo", CompanyLogo);
+                        strMailBody = strMailBody.Replace("##LogoPath", LogoPath);
+                        strMailBody = strMailBody.Replace("##Email", emailid);
+                        strMailBody = strMailBody.Replace("##Name", Name);
+                        strMailBody = strMailBody.Replace("##JobTitle", JobTitle);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+                        break;
+
+                    case "OFFERREJECTED":
+                        TemplatePath = ConfigurationManager.AppSettings["OffereLetterRejected"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo.png" + ">";
+                        CompanyLogo = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/image-form.jpg" + ">";
+                        //Subject = "eTrac: Thanks for";
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##CompanyLogo", CompanyLogo);
+                        strMailBody = strMailBody.Replace("##LogoPath", LogoPath);
+                        strMailBody = strMailBody.Replace("##Email", emailid);
+                        strMailBody = strMailBody.Replace("##Name", Name);
+                        strMailBody = strMailBody.Replace("##JobTitle", JobTitle);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+                        break;
+
+                    case "SIGNUPAPPLICANT":
+                        TemplatePath = ConfigurationManager.AppSettings["SignUpApplicant"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";                        
+                        Subject = "eTrac: Successfully register to Elite Parking Services";
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##UserName", LoginId);
+                        strMailBody = strMailBody.Replace("##LogoPath", LogoPath);
+                        strMailBody = strMailBody.Replace("##Email", emailid);
+                        strMailBody = strMailBody.Replace("##Name", Name);
+                        strMailBody = strMailBody.Replace("##Password", Password); 
+                        strMailBody = strMailBody.Replace("##REGISTRATIONLINK", AcceptAssessmentLink);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+                        break;
+
+                    case "CHANGEPASSWORDAPPLICANT":
+                        TemplatePath = ConfigurationManager.AppSettings["ChangePassword"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";
+                        Subject = "eTrac: Password changed successfully";
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##UserName", LoginId);
+                        strMailBody = strMailBody.Replace("##LogoPath", LogoPath);
+                        strMailBody = strMailBody.Replace("##Name", Name);
+                        strMailBody = strMailBody.Replace("##Password", NewPassword);
+                        strMailBody = strMailBody.Replace("##REGISTRATIONLINK", AcceptAssessmentLink);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+                        break;
+
+                    case "FORGOTPASSWORDAPPLICANT":
+                        TemplatePath = ConfigurationManager.AppSettings["ChangePassword"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";
+                        Subject = "eTrac: Password changed successfully";
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##UserName", LoginId);
+                        strMailBody = strMailBody.Replace("##LogoPath", LogoPath);
+                        strMailBody = strMailBody.Replace("##Name", Name);
+                        strMailBody = strMailBody.Replace("##Password", NewPassword);
+                        strMailBody = strMailBody.Replace("##REGISTRATIONLINK", AcceptAssessmentLink);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+                        break;
+						
+                    case "InvoiceSubmissionTemplate":
+
+                        TemplatePath = ConfigurationManager.AppSettings["InvoiceSubmissionTemplate"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";
+                        Subject = "eTrac: Invoice Submission";
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+
+                        strMailBody = strMailBody.Replace("##ClientCompanyName", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["ClientCompanyName"]));
+                        strMailBody = strMailBody.Replace("##ContractType", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["ContractTypeDesc"]));
+                        strMailBody = strMailBody.Replace("##InvoiceNumber", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["InvoiceNumber"]));
+                        strMailBody = strMailBody.Replace("##InvoiceDate", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["InvoiceDateDisplay"]));
+                        strMailBody = strMailBody.Replace("##InvoiceDueDate", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["InvoiceDueDateDisplay"]));
+                        strMailBody = strMailBody.Replace("##ReasonForOffScheduleInvoice", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["ReasonForOffScheduleInvoiceDesc"]));
+                        strMailBody = strMailBody.Replace("##InvoiceSubTotal", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["SubTotal"]));
+                        strMailBody = strMailBody.Replace("##InvoiceTaxAmount", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["TaxAmount"]));
+                        strMailBody = strMailBody.Replace("##GrandTotal", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["GrandTotal"]));
+
+                        strMailBody = strMailBody.Replace("##Year", Year);
+                        strMailBody = strMailBody.Replace("##Logo", LogoPath);
+                        strMailBody = strMailBody.Replace("##MailHeading", strMailHeading);
+                        strMailBody = strMailBody.Replace("##ClientName", ClientName);
+                        strMailBody = strMailBody.Replace("##UserName", UserName);
+                        strMailBody = strMailBody.Replace("##LocationName", LocationName);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+
+                        int i = 1;
+                        string ListAtt = "";
+                        string TableRow = "";
+                        Match m = Regex.Match(strMailBody, TableRows_Regex);
+                        TableRow = m.Groups["Row"].Value;
+
+                        foreach (DataRow dr in DtInvoiceDetails.Tables[1].Rows)
+                        {
+                            string strNewRow = "";
+                            strNewRow = TableRow;
+
+                            strNewRow = strNewRow.Replace("##ItemNo", Convert.ToString(dr["ItemNoDesc"]));
+                            strNewRow = strNewRow.Replace("##Description", Convert.ToString(dr["ItemDescription"]));
+                            strNewRow = strNewRow.Replace("##ItemType", Convert.ToString(dr["ItemTypeDesc"].ToString()));
+                            strNewRow = strNewRow.Replace("##RevenueAC", Convert.ToString(dr["RevenueAccountDesc"]));
+                            strNewRow = strNewRow.Replace("##Qty", Convert.ToString(dr["ItemQty"]));
+                            strNewRow = strNewRow.Replace("##UnitCost", Convert.ToString(dr["ItemUnitCost"]));
+                            strNewRow = strNewRow.Replace("##TaxPercentage", Convert.ToString(dr["TaxPercentage"]));
+                            strNewRow = strNewRow.Replace("##TaxAmount", Convert.ToString(dr["TaxAmount"]));
+                            strNewRow = strNewRow.Replace("##TotalCost", Convert.ToString(dr["TotalCost"]));
+                            ListAtt += strNewRow;
+                            i++;
+                        }
+
+                        strMailBody = Regex.Replace(strMailBody, TableRows_Regex, ListAtt);
+
+
+                        break;
+
+                    case "InvoicePaymentReminderTemplate":
+
+                        TemplatePath = ConfigurationManager.AppSettings["InvoicePaymentReminder"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";
+                        Subject = "eTrac: Invoice Payment Reminder";
+                        strMailHeading = "Welcome to eTrac";
+                        strMailBody = GetMailBody(TemplatePath);
+
+                        strMailBody = strMailBody.Replace("##ClientCompanyName", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["ClientCompanyName"]));
+                        strMailBody = strMailBody.Replace("##ContractType", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["ContractTypeDesc"]));
+                        strMailBody = strMailBody.Replace("##InvoiceNumber", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["InvoiceNumber"]));
+                        strMailBody = strMailBody.Replace("##InvoiceDate", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["InvoiceDateDisplay"]));
+                        strMailBody = strMailBody.Replace("##InvoiceDueDate", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["InvoiceDueDateDisplay"]));
+                        strMailBody = strMailBody.Replace("##ReasonForOffScheduleInvoice", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["ReasonForOffScheduleInvoiceDesc"]));
+                        strMailBody = strMailBody.Replace("##InvoiceSubTotal", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["SubTotal"]));
+                        strMailBody = strMailBody.Replace("##InvoiceTaxAmount", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["TaxAmount"]));
+                        strMailBody = strMailBody.Replace("##GrandTotal", Convert.ToString(DtInvoiceDetails.Tables[0].Rows[0]["GrandTotal"]));
+
+                        strMailBody = strMailBody.Replace("##Year", Year);
+                        strMailBody = strMailBody.Replace("##Logo", LogoPath);
+                        strMailBody = strMailBody.Replace("##MailHeading", strMailHeading);
+                        strMailBody = strMailBody.Replace("##ClientName", ClientName);
+                        strMailBody = strMailBody.Replace("##UserName", UserName);
+                        strMailBody = strMailBody.Replace("##LocationName", LocationName);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+
+                        int i1 = 1;
+                        string ListAtt1 = "";
+                        string TableRow1 = "";
+                        Match m1 = Regex.Match(strMailBody, TableRows_Regex);
+                        TableRow1 = m1.Groups["Row"].Value;
+
+                        foreach (DataRow dr in DtInvoiceDetails.Tables[1].Rows)
+                        {
+                            string strNewRow = "";
+                            strNewRow = TableRow1;
+
+                            strNewRow = strNewRow.Replace("##ItemNo", Convert.ToString(dr["ItemNoDesc"]));
+                            strNewRow = strNewRow.Replace("##Description", Convert.ToString(dr["ItemDescription"]));
+                            strNewRow = strNewRow.Replace("##ItemType", Convert.ToString(dr["ItemTypeDesc"].ToString()));
+                            strNewRow = strNewRow.Replace("##RevenueAC", Convert.ToString(dr["RevenueAccountDesc"]));
+                            strNewRow = strNewRow.Replace("##Qty", Convert.ToString(dr["ItemQty"]));
+                            strNewRow = strNewRow.Replace("##UnitCost", Convert.ToString(dr["ItemUnitCost"]));
+                            strNewRow = strNewRow.Replace("##TaxPercentage", Convert.ToString(dr["TaxPercentage"]));
+                            strNewRow = strNewRow.Replace("##TaxAmount", Convert.ToString(dr["TaxAmount"]));
+                            strNewRow = strNewRow.Replace("##TotalCost", Convert.ToString(dr["TotalCost"]));
+                            ListAtt1 += strNewRow;
+                            i1++;
+                        }
+
+                        strMailBody = Regex.Replace(strMailBody, TableRows_Regex, ListAtt1);
+
+
+                        break;
                 }
                 string body = System.Web.HttpUtility.HtmlDecode(strMailBody);
                 List<Attachment> tt = new List<Attachment>();

@@ -11,12 +11,14 @@ namespace WorkOrderEMS.BusinessLogic.Interfaces
     {
         List<AddChartModel> ListSuperiour();
         AddChartModel SaveVSC(AddChartModel Obj);
-        //bool SaveVSC(AddChartModel Obj);
         List<AddChartModel> ListVehicleSeatingChart(long? LocationId);
         bool SaveJobTitleVSC(AddChartModel Obj);
         List<AddChartModel> GetJobTitleData(long CSVChartId);
         AddChartModel GetChartData(long CSVChartId);
         List<AccessPermisionTreeViewModel> ListTreeViewAccessPermission(long VST_Id);
         bool SaceAccessPermission(AccessPermisionTreeViewModel obj);
+        bool SaveJobPosting(JobPostingModel Obj);
+        List<JobPostingModel> GetChartHiringManager(long VSCId);
+        bool DeleteJobTitleById(long JobId);
     }
 }

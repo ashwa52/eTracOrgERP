@@ -1,8 +1,9 @@
-﻿var DARurl = '../NewAdmin/GeDARList';
+﻿var DARurl = '/NewAdmin/GeDARList';
 var clients;
 var $_LocationId = $("#drp_MasterLocation option:selected").val();
 var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_RequestedBy = 0;//= $("#drp_MasterLocation option:selected").val();
-var FromDate = "", ToDate = "", FromTime = "", ToTime = "", TastType = "";
+var FromDate = "", ToDate = "", FromTime = "", ToTime = "", TastType="";
+var url = window.location.origin;
 $("#ShowDAR").click(function () {
     debugger
     FromDate = $("#FromDate").val();
@@ -31,7 +32,7 @@ $("#ShowDAR").click(function () {
                 debugger
                 return $.ajax({
                     type: "GET",
-                    url: DARurl + '?LocationId=' + $("#drp_MasterLocation1 option:selected").val() + '&TastType=' + TastType + '&FromDate=' + FromDate + '&ToDate=' + ToDate + '&FromTime=' + FromTime + '&ToTime=' + ToTime,
+                    url: url + DARurl + '?LocationId=' + $("#drp_MasterLocation1 option:selected").val() + '&TastType=' + TastType + '&FromDate=' + FromDate + '&ToDate=' + ToDate + '&FromTime=' + FromTime + '&ToTime=' + ToTime,
                     datatype: 'json',
                     contentType: "application/json",
                 });
@@ -47,6 +48,12 @@ $("#ShowDAR").click(function () {
         //},
         //data: response,
         onRefreshed: function (args) {
+            //return $.ajax({
+            //    type: "GET",
+            //    url: url + DARurl + '?LocationId=' + $("#drp_MasterLocation1 option:selected").val() + '&TastType=' + TastType + '&FromDate=' + FromDate + '&ToDate=' + ToDate + '&FromTime=' + FromTime + '&ToTime=' + ToTime,
+            //    datatype: 'json',
+            //    contentType: "application/json",
+            //});
             $(".jsgrid-insert-row").hide();
             $(".jsgrid-filter-row").hide()
             $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");

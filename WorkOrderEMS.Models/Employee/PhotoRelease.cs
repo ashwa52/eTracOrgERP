@@ -13,5 +13,6 @@ namespace WorkOrderEMS.Models.Employee
 		public string Name { get; set; }
 		public long? PRFId { get; set; }
 		public bool IsSave { get; set; }
-	}
+        public string Signature { get; set; }
+    }
 }

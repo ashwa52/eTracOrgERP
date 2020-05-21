@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data.Entity.Core.Objects;
 using System.Linq;
 using WorkOrderEMS.Helper;
+using WorkOrderEMS.Models;
 
 namespace WorkOrderEMS.Hubs
 {
@@ -247,6 +248,25 @@ namespace WorkOrderEMS.Hubs
                 WorkOrderEMS.BusinessLogic.Managers.GlobalAdminManager _GlobalAdminManager = new WorkOrderEMS.BusinessLogic.Managers.GlobalAdminManager();
                 var dataJson = _GlobalAdminManager.GetDashboardHeadCount(LocationId, UserId, FromDate, ToDate, UserType);
                 return dataJson;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return null;
+            }
+        }
+
+
+        [HubMethodName("getOnlineInterviewer")]
+        public string GetOnlineInterviewer(long getApplicantId)
+        {
+            var _GlobalAdminManager = new WorkOrderEMS.BusinessLogic.Managers.GlobalAdminManager();
+            try
+            {
+                var  _WorkRequestManager = new WorkOrderEMS.BusinessLogic.Managers.WorkRequestManager();
+                var ObjLoginModel = new eTracLoginModel();
+                var interviewersList = _GlobalAdminManager.GetInterviewersList(getApplicantId, ObjLoginModel.UserId);
+                return new System.Web.Script.Serialization.JavaScriptSerializer().Serialize(interviewersList);
             }
             catch (Exception ex)
             {

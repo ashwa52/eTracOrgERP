@@ -19,7 +19,7 @@
 
         .profile img {
             width: 60px;
-            height: auto;
+            height: 60px;
             border-radius: 50%;
             border: 1px solid #ddd;
         }
@@ -36,45 +36,52 @@
                 <img src="@Model.Image" />
             </div>
             <div class="info">
-                <label style="margin-left:30px;">Employee Id</label><span style="color:black;">:&nbsp;&nbsp;&nbsp; @Model.EmpId</span>
-                <label style="margin-left:092px">Name</label><span style="color:black;">:&nbsp;&nbsp;&nbsp; @Model.Name</span>
+                <label @*style="margin-left:30px;"*@>Employee Id :</label><span style="color:#030ae3;">&nbsp;&nbsp;&nbsp; @Model.EmpId</span>
+                <label style="margin-left:092px">Name :</label><span style="color:#030ae3;">&nbsp;&nbsp;&nbsp; @Model.Name</span>
+                <label style="margin-left:092px">Location :</label><span style="color:#030ae3;">&nbsp;&nbsp;&nbsp; @Model.LocationName</span>
             </div>
         </div>
-        <form id="SaveDemotionsEmployee">
+        <form id="SaveStatusEmployee">
             @*<div class="middle">
             </div>*@
+            @Html.HiddenFor(model => model.EmpId)
+            @Html.HiddenFor(model => model.StatusAction)
+            @Html.HiddenFor(model => model.JobTitleCurrent)
             <div class="bottom-sec" style="margin-top: 28px;">
                 <div class="basic-form">
                     <div class="form-group row">
                         <div class="col-sm-6">
                             @Html.TextBoxFor(model => model.EffectiveDate, new { @class = "form-control input-rounded",@id= "EffectiveDate", placeholder = "Effective Date", @readonly = "readonly" })
-
                         </div>
                         <div class="col-sm-6">
-                            @Html.DropDownListFor(x => x.Position, new List<SelectListItem>
-                                                                {
-                            //new SelectListItem() {Text = "Select Position", Value="0"},
-                                                                     new SelectListItem() {Text = "Exempt", Value="Y"},
-                                                                     new SelectListItem() {Text = "Non Exempt", Value="N"},
-                                                                }, new { @class = "form-control input-rounded" })
-                           
-                        </div>                  
+                          @if (ViewBag.VSCList != null)
+                          {
+                              @Html.DropDownListFor(model => model.VSC_Id, new SelectList(ViewBag.VSCList, "Id", "SeatingName"), "--Select VSC--", new { @id = "VSC_Id", @class = "form-control input-rounded required requiredselect" })                       
+                          }
+                          else
+                          {
+                              <select class="form-control input-rounded required"><option value="0">--Select VSC--</option></select>
+                          }
+                        </div>                 
                     </div>
                     <div class="form-group row">
+                        <div class="col-sm-6">
+                           <select id="GetVacantJobTitle" name="JobTitleId" class="form-control input-rounded required">
+                               <option value="0">--Select Job Tile--</option>
+                           </select>
+                            <span id="HideShowMessege" style="display:none;color:red;">No job title present please select other VSC from dropdown</span>
+                        </div>
                         <div class="col-sm-2">
                             <label>Add Years</label>
                         </div>
-                            <div class="col-sm-2">
-                                <input type="radio" class="AddDate" name="AddDate" id="YesDate" value="1" /><label for="YesDate" class="radio">yes</label>
-                            </div>
-                            <div class="col-sm-2">
-                                &nbsp;&nbsp;&nbsp;<input type="radio" name="AddDate" class="AddDate" id="NoDate" value="0" /><label for="NoDate" class="radio">No</label>
-                            </div>
-                            <div class="col-sm-6">
-                                @Html.TextBoxFor(model => model.TempDate, new { @class = "form-control input-rounded", @id = "TempDate", placeholder = "Temp Date", @readonly = "readonly", @disable="disabled" })
-                            </div>
+                        <div class="col-sm-2">
+                            <input type="radio" class="AddDate" name="AddDate" id="YesDate" value="1" /><label for="YesDate" class="radio">yes</label>
                         </div>
+                        <div class="col-sm-2">
+                            &nbsp;&nbsp;&nbsp;<input type="radio" name="AddDate" class="AddDate" id="NoDate" value="0" /><label for="NoDate" class="radio">No</label>
+                        </div>               
                     </div>
+                 </div>
             </div>
         </form>
     </div>
@@ -83,4 +90,42 @@
 
 <script>
     $("#TempDate, #EffectiveDate").datepicker();
+    $(document).ready(function () {
+        var base_url = window.location.origin;
+        $("#VSC_Id").change(function () {
+            debugger
+            var value = $("#VSC_Id option:selected").val();
+            $.ajax({
+                url: base_url + '/EPeople/GetVacantJobTitle?VSCId=' + value,
+                type: 'POST',
+                contentType: "application/json",
+                beforeSend: function () {
+                    new fn_showMaskloader('Please wait...');
+                },
+                success: function (result) {
+                    debugger
+                    $('#GetVacantJobTitle').html('');
+                    var options = '';
+                    options += '<option value="Select">--Select Job Tile--</option>';
+                    if (result.length > 0) {
+                        $("#HideShowMessege").hide();
+                        
+                        for (var i = 0; i < result.length; i++) {
+                            options += '<option value="' + result[i].JobTitleId + '">' + result[i].JobTitle + '</option>';
+                        }
+                        $('#GetVacantJobTitle').append(options);
+                    }
+                    else {
+                        $('#GetVacantJobTitle').append(options);
+                        $("#HideShowMessege").show();
+                    }
+                },
+                error: function (er) {
+                },
+                complete: function () {
+                    fn_hideMaskloader();
+                }
+            });
+        });
+    });
 </script>

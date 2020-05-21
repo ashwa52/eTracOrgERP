@@ -6,6 +6,7 @@ using Intuit.Ipp.Security;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Data.Entity.Core.Objects;
 using System.Globalization;
 using System.IO;
@@ -15,10 +16,14 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Script.Serialization;
+using System.Xml;
+using System.Xml.Serialization;
 using WorkOrderEMS.App_Start;
 using WorkOrderEMS.BusinessLogic;
+using WorkOrderEMS.BusinessLogic.Interfaces;
 using WorkOrderEMS.BusinessLogic.Managers;
 using WorkOrderEMS.Controllers.QuickBookData;
+using WorkOrderEMS.Data.Classes;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Helpers;
 using WorkOrderEMS.Models;
@@ -41,8 +46,10 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
         private readonly IEmployeeManager _IEmployeeManager;
         private readonly IClientManager _IClientManager;
         private readonly IQRCSetup _IQRCSetup;
+        private readonly IVendorManagement _IVendorManagement;
 
         AlertMessageClass ObjAlertMessageClass = new AlertMessageClass();
+        DBUtilities DBUtilitie = new DBUtilities();
 
         private string path = ConfigurationManager.AppSettings["ProjectLogoPath"];
         private string WorkRequestImagepath = ConfigurationManager.AppSettings["WorkRequestImage"];
@@ -51,7 +58,8 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
         private string eTracVerifyLocation = ConfigurationManager.AppSettings["eTracVerifyLocation"];
         private string ProfileImagePath = ConfigurationManager.AppSettings["ProfilePicPath"];
         private string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
-        public GlobalAdminController(ICommonMethod _ICommonMethod, IGlobalAdmin _IGlobalAdmin, IManageManager _IManageManager, IUser _IUser, IWorkRequestAssignment _IWorkRequestAssignment, IEmployeeManager _IEmployeeManager, ILogin _ILogin, IQRCSetup _IQRCSetup)
+        private bool IsPageRefresh = Convert.ToBoolean(ConfigurationManager.AppSettings["IsPageRefresh"] ?? "false");
+        public GlobalAdminController(ICommonMethod _ICommonMethod, IGlobalAdmin _IGlobalAdmin, IManageManager _IManageManager, IUser _IUser, IWorkRequestAssignment _IWorkRequestAssignment, IEmployeeManager _IEmployeeManager, ILogin _ILogin, IQRCSetup _IQRCSetup, IVendorManagement _IVendorManagement)
         {
             this._ICommonMethod = _ICommonMethod;
             this._IGlobalAdmin = _IGlobalAdmin;
@@ -61,6 +69,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
             this._IWorkRequestAssignment = _IWorkRequestAssignment;
             this._IEmployeeManager = _IEmployeeManager;
             this._IQRCSetup = _IQRCSetup;
+            this._IVendorManagement = _IVendorManagement;
             if (!long.TryParse(eTracDefaultCountryString, out eTracDefaultCountry)) { eTracDefaultCountry = 0; }
         }
         public GlobalAdminController()
@@ -242,7 +251,8 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
 
                 ViewBag.AdministratorList = null;
                 ViewBag.IsPageRefresh = false;
-                return View("~/Views/GlobalAdmin/_ListLocation.cshtml");
+                return PartialView("~/Views/GlobalAdmin/_ListLocation.cshtml");
+                //return View("~/Views/GlobalAdmin/_ListLocation.cshtml");
                 //return View();
             }
             catch (Exception)
@@ -1132,16 +1142,16 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 }
                 UserId = ObjLoginModel.UserId;
             }
-            if(UserType == null)
+            if (UserType == null)
             {
                 UserType = "All Users";
             }
             sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
             sidx = string.IsNullOrEmpty(sidx) ? "Name" : sidx;
-            txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; 
+            txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch;
             long TotalRows = 0;
             try
-            {              
+            {
                 long paramTotalRecords = 0;
                 List<UserModelList> ITAdministratorList = _IGlobalAdmin.GetAllITAdministratorList(UserId, Convert.ToInt64(locationId), page, rows, sidx, sord, txtSearch, UserType, out paramTotalRecords);
                 foreach (var ITAdmin in ITAdministratorList)
@@ -1168,8 +1178,6 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
         {
             try
             {
-
-
                 if (TempData != null && TempData["exceptionRaisedWhileUpdating"] != null && TempData["exceptionRaisedWhileUpdating"].ToString().Length > 0)
                 {
                     ViewBag.Message = TempData["exceptionRaisedWhileUpdating"].ToString();
@@ -1211,7 +1219,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                         UserEmail = x.UserEmail,
                     });
 
-                }
+                }         
 
                 //ViewBag.AdministratorList = _IGlobalAdmin.GetAllITAdministratorList(objLoginSession.UserId, objLoginSession.LocationID, 1, 1000, "Name", "asc", "", (UserType.Administrator).ToString(), out Totalrecords);
 
@@ -1229,6 +1237,10 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 ViewBag.ContractHolderId = _LocationMasterModel.ContractDetailsModel.ContractHolder;
                 ViewBag.ReportingTypeId = _LocationMasterModel.ContractDetailsModel.ReportingType;
                 ViewBag.Years = _LocationMasterModel.ContractDetailsModel.Years;
+                ViewBag.PaymentTerms = _IVendorManagement.PaymentTermList();
+                _LocationMasterModel.LocationRuleMappingModel = GetNewLocationDetailsRuleMappingModel(locid).First();
+                _LocationMasterModel.ContractDetailsModel = GetNewLocationDetailsContractDetails(locid).First();
+                ViewBag.AdditionalYears = _LocationMasterModel.ContractDetailsModel.AdditonalYears;
                 return PartialView("~/Views/NewAdmin/_AddNewLocation.cshtml", _LocationMasterModel);
                 //return View("LocationSetup", _LocationMasterModel);
             }
@@ -1288,9 +1300,16 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 ViewBag.CompanyHolder = _IGlobalAdmin.ListCompanyHolder(false);
                 ViewBag.OperatingHolder = _IGlobalAdmin.ListCompanyHolder(true);
                 ViewBag.ClientInvoicingTerm = _IGlobalAdmin.ListClientInvoicingTerm();
+                ViewBag.PaymentTerms = _IVendorManagement.PaymentTermList();
                 // LocationMasterModel LocationMasterModel = IGlobalAdmin.GetLocationDetailsByLocationID(locid);
                 //return View("~/Views/NewAdmin/AddNewLocation.cshtml");
-                return PartialView("~/Views/NewAdmin/_AddNewLocation.cshtml");
+                LocationMasterModel _LocationMasterModel = new LocationMasterModel
+                {
+                    LocationRuleMappingModel = new LocationRuleMappingModel(),
+                    ContractDetailsModel = new ContractDetailsModel()
+                };
+
+                return PartialView("~/Views/NewAdmin/_AddNewLocation.cshtml", _LocationMasterModel);
             }
             catch (Exception ex)
             { ViewBag.Message = ex.Message; ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger; return View("Error"); }
@@ -1507,6 +1526,13 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                     objDAR.UserId = objLoginSession.UserId;
                     objDAR.CreatedBy = objLoginSession.UserId;
                     objDAR.CreatedOn = DateTime.UtcNow;
+
+                    DataTable Dt = new DataTable();
+                    Dt = InsertNewLocationDetails(ObjLocationMasterModel.PaymenttermsId, ObjLocationMasterModel.ContractDetailsModel.ClientInvoicingDate, ObjLocationMasterModel.ContractDetailsModel.Automaticbillingdate, ObjLocationMasterModel.ContractDetailsModel.Cutoffcarddate,
+                        ObjLocationMasterModel.ContractDetailsModel.FrequencyOfInvoicing, ObjLocationMasterModel.LocationRuleMappingModel.ChargeDepositeMonthlyParkerCard, ObjLocationMasterModel.LocationRuleMappingModel.IsChargeDepositeMonthlyParkerCard, ObjLocationMasterModel.LocationRuleMappingModel.AviailableSpaces,
+                        ObjLocationMasterModel.LocationRuleMappingModel.IsSpecialRulesHourlyMan, ObjLocationMasterModel.LocationId);
+
+
                     //eTracVerifyLocation flag == null                                  //if (!string.IsNullOrEmpty(eTracVerifyLocation) && Convert.ToInt16(eTracVerifyLocation)>0)
                     if (string.IsNullOrEmpty(eTracVerifyLocation) || !int.TryParse(eTracVerifyLocation, out eTracVerifyLocationFlag) || eTracVerifyLocationFlag == 0)
                     {   //eTracVerifyLocation old Dec 29 2014                        
@@ -2249,11 +2275,18 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 // eTracLoginModel ObjLogin = (eTracLoginModel)Session["eTrac"];
                 UserType _UserType = (WorkOrderEMS.Helper.UserType)objeTracLoginModel.UserRoleId;
                 if (_UserType == UserType.Administrator)
+                {
                     ViewBag.Location = _ICommonMethod.GetLocationByAdminId(objeTracLoginModel.UserId);
+                }
                 else if (_UserType == UserType.Manager)
+                {
                     ViewBag.Location = _ICommonMethod.GetLocationByManagerId(objeTracLoginModel.UserId);
+                }
                 else
+                {
                     ViewBag.Location = _ICommonMethod.GetAllLocation();
+                }
+
                 ViewBag.AssignToUserWO = _IGlobalAdmin.GetLocationEmployeeWO(objeTracLoginModel.LocationID);
                 ViewBag.AssignToUser = _IGlobalAdmin.GetLocationEmployee(objeTracLoginModel.LocationID);
                 ViewBag.Asset = _ICommonMethod.GetAssetList(objeTracLoginModel.LocationID);
@@ -2352,7 +2385,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                         //else
                         //{
                         //will use if image not saved
-                            //objWorkRequestAssignmentModel.WorkRequestImage = objWorkRequestAssignmentModel.WorkRequestImg != null ? objWorkRequestAssignmentModel.WorkRequestImg.FileName : string.Empty;
+                        //objWorkRequestAssignmentModel.WorkRequestImage = objWorkRequestAssignmentModel.WorkRequestImg != null ? objWorkRequestAssignmentModel.WorkRequestImg.FileName : string.Empty;
                         //}
                         objWorkRequestAssignmentModel.IsDeleted = false;
                         objWorkRequestAssignmentModel.LocationID = objeTracLoginModel.LocationID;
@@ -2403,7 +2436,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
 
                     _objWorkRequestAssignmentModel = _IGlobalAdmin.SaveWorkRequestAssignment(objWorkRequestAssignmentModel); //saving Data
 
-                    if(objWorkRequestAssignmentModel != null && _objWorkRequestAssignmentModel.Result == Result.Completed)
+                    if (objWorkRequestAssignmentModel != null && _objWorkRequestAssignmentModel.Result == Result.Completed)
                     {
                         var obj = new NotificationDetailModel();
                         obj.CreatedBy = objWorkRequestAssignmentModel.CreatedBy;
@@ -2412,7 +2445,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                         obj.WorkOrderID = _objWorkRequestAssignmentModel.WorkRequestAssignmentID;
                         var saveDataForNotification = _ICommonMethod.SaveNotificationDetail(obj);
                     }
-                    
+
                     ViewBag.WorkAssignmet = _objWorkRequestAssignmentModel.WorkOrderCode + _objWorkRequestAssignmentModel.WorkOrderCodeID;
                     ViewBag.ProjectType = _objWorkRequestAssignmentModel.WorkRequestProjectType;
                     ViewBag.ProrityLevel = _objWorkRequestAssignmentModel.PriorityLevel;
@@ -2606,7 +2639,9 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 //return Json(_objWorkRequestAssignmentModel);
                 if (isUpdate == true) { return View("WorkAssignmentList"); }
                 else
+                {
                     return Json(new { Message = ViewBag.Message, AlertMessageClass = ViewBag.AlertMessageClass }, JsonRequestBehavior.AllowGet);
+                }
                 //return View(new WorkRequestAssignmentModel());
             }
             catch (Exception)
@@ -2620,11 +2655,18 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 ViewBag.GetAssetListWO = _ICommonMethod.GetAssetListWO(objeTracLoginModel.LocationID);
                 UserType _UserType = (WorkOrderEMS.Helper.UserType)objeTracLoginModel.UserRoleId;
                 if (_UserType == UserType.Administrator)
+                {
                     ViewBag.Location = _ICommonMethod.GetLocationByAdminId(objeTracLoginModel.UserId);
+                }
                 else if (_UserType == UserType.Manager)
+                {
                     ViewBag.Location = _ICommonMethod.GetLocationByManagerId(objeTracLoginModel.UserId);
+                }
                 else
+                {
                     ViewBag.Location = _ICommonMethod.GetAllLocation();
+                }
+
                 ViewBag.PriorityLevel = _ICommonMethod.GetGlobalCodeData("WORKPRIORITY");
                 ViewBag.WorkRequestType = _ICommonMethod.GetGlobalCodeData("WORKREQUESTTYPE");
                 ViewBag.WorkRequestProjectTypeID = _ICommonMethod.GetGlobalCodeData("WORKREQUESTPROJECTTYPE");
@@ -2645,7 +2687,9 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
             {
                 UserType _usertype = (WorkOrderEMS.Helper.UserType)objeTracLoginModel.UserRoleId;
                 if (_usertype == UserType.Manager || _usertype == UserType.Administrator)
+                {
                     ViewBag.UserID = objeTracLoginModel.UserId;
+                }
                 //Added by Bhushan Dod on 27/06/2016 for scenario as if viewalllocation is enabled and user navigate any of module list but when click on any create from module so not able to create.
                 //ViewAllLocation need to apply on dashboard only so when ever click on list we have to set Session["eTrac_SelectedDasboardLocationID"] is objeTracLoginModel.LocationID.
                 if (Convert.ToInt64(Session["eTrac_SelectedDasboardLocationID"]) == 0)
@@ -2680,11 +2724,18 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 ViewBag.GetAssetListWO = _ICommonMethod.GetAssetListWO(objeTracLoginModel.LocationID);
                 UserType _UserType = (WorkOrderEMS.Helper.UserType)objeTracLoginModel.UserRoleId;
                 if (_UserType == UserType.Administrator)
+                {
                     ViewBag.Location = _ICommonMethod.GetLocationByAdminId(objeTracLoginModel.UserId);
+                }
                 else if (_UserType == UserType.Manager)
+                {
                     ViewBag.Location = _ICommonMethod.GetLocationByManagerId(objeTracLoginModel.UserId);
+                }
                 else
+                {
                     ViewBag.Location = _ICommonMethod.GetAllLocation();
+                }
+
                 ViewBag.PriorityLevel = _ICommonMethod.GetGlobalCodeData("WORKPRIORITY");
                 ViewBag.WorkRequestType = _ICommonMethod.GetGlobalCodeData("WORKREQUESTTYPE");
                 ViewBag.WorkRequestProjectTypeID = _ICommonMethod.GetGlobalCodeData("WORKREQUESTPROJECTTYPE");
@@ -2825,6 +2876,15 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                     //Added by Bhushan Dod
                     listForEmployeeDevice res = _IGlobalAdmin.sendNotificationContinuousRequestToEmployee(ObjLoginModel.LocationID, objWorkRequestAssignmentModel.AssignToUserId, objWorkRequestAssignmentModel);
                 }
+                if (objWorkRequestAssignmentModel != null && result == Result.Completed)
+                {
+                    var obj = new NotificationDetailModel();
+                    obj.CreatedBy = ObjLoginModel.UserId;
+                    obj.CreatedDate = Convert.ToDateTime(DateTime.UtcNow);
+                    obj.AssignTo = objWorkRequestAssignmentModel.AssignToUserId;
+                    obj.WorkOrderID = objWorkRequestAssignmentModel.WorkRequestAssignmentID;
+                    var saveDataForNotification = _ICommonMethod.SaveNotificationDetail(obj);
+                }
                 if (result == Result.Completed)
                 {
                     ViewBag.Message = CommonMessage.SaveSuccessMessage();
@@ -2912,9 +2972,13 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
             try
             {
                 if (LocId != 0)
+                {
                     Session["eTrac_SelectedDasboardLocationID"] = LocId;
+                }
                 else
+                {
                     Session["eTrac_SelectedDasboardLocationID"] = 0;
+                }
 
                 Session["eTrac_DashboardWidget"] = null;
                 Session["eTrac_DashboardWidget"] = this.GetUserDashboardWidgetRolesViewAll();
@@ -3347,7 +3411,9 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                     if (ToDate != null)
                     {
                         if (ToDate.Value.ToLongTimeString() == "12:00:00 AM")
+                        {
                             ToDate = (ToDate.Value.Date == DateTime.UtcNow.Date) ? DateTime.UtcNow : ToDate;
+                        }
                     }
 
                     if (FromDate != null && ToDate != null)
@@ -3401,7 +3467,9 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                     if (ToDate != null)
                     {
                         if (ToDate.Value.ToLongTimeString() == "12:00:00 AM")
+                        {
                             ToDate = (ToDate.Value.Date == DateTime.UtcNow.Date) ? DateTime.UtcNow : ToDate;
+                        }
                     }
 
                     if (FromDate != null && ToDate != null)
@@ -3565,7 +3633,8 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
             {
                 ViewBag.LocationName = _budgetLocationManager.GetLocationName(LocationId);
             }
-            return View();
+            return PartialView("~/Views/GlobalAdmin/Location/_CostCodeTreeView.cshtml");
+            //return View();
         }
 
         /// <summary>
@@ -3646,8 +3715,8 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                         ViewBag.Message = CommonMessage.eFleetDriverSaveSuccessMessage();
                         ViewBag.AlertMessageClass = ObjAlertMessageClass.Success;
                     }
-                    
-                }               
+
+                }
             }
             catch (Exception ex)
             {
@@ -3684,7 +3753,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 ViewBag.LocationName = _budgetLocationManager.GetLocationName(LocationId);
             }
 
-            return View(obj);
+            return View("~/Views/GlobalAdmin/Location/_AddBudget.cshtml", obj);
         }
 
         /// <summary>
@@ -3763,6 +3832,50 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
+        public JsonResult GetBudgetListByLocationId(string Loc, string _search, long? UserId, long? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            var _BudgetLocationManager = new BudgetLocationManager();
+            long LocationId = 0;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                if (locationId == null)
+                {
+                    locationId = ObjLoginModel.LocationID;
+                }
+                UserId = ObjLoginModel.UserId;
+            }
+
+            if (!string.IsNullOrEmpty(Loc))
+            {
+                ViewBag.UpdateMode = true;
+                Loc = Cryptography.GetDecryptedData(Loc, true);
+                long.TryParse(Loc, out LocationId);
+            }
+            var objBudgetForLocationModel = new List<BudgetForLocationModel>();
+            JQGridResults result = new JQGridResults();
+            List<JQGridRow> rowss = new List<JQGridRow>();
+            sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
+            sidx = string.IsNullOrEmpty(sidx) ? "UserEmail" : sidx;
+            txtSearch = string.IsNullOrEmpty(txtSearch) ? "" : txtSearch; //UserType = Convert.ToInt64(Helper.UserType.ITAdministrator);   
+            try
+            {
+                var budgetCostCodeList = _BudgetLocationManager.GetListBudgetDetails(LocationId, UserId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);               
+                objBudgetForLocationModel = budgetCostCodeList.rows;
+                //foreach (var budgetList in budgetCostCodeList.rows)
+                //{
+                //    objBudgetForLocationModel = budgetCostCodeList.rows;//.Add(budgetList);
+                //}
+                //This is for JSGrid
+                //var tt = objBudgetForLocationModel.ToArray();
+            }
+            catch (Exception ex)
+            { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
+            return Json(objBudgetForLocationModel.ToArray(), JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -3936,7 +4049,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 CostCodeId = Cryptography.GetDecryptedData(CostCodeId, true);
                 long.TryParse(CostCodeId, out CostId);
             }
-            
+
             ViewBag.CostCodeToTransfer = CostCodeId;
             if (CostId > 0 && LocId > 0)
             {
@@ -3998,7 +4111,7 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
         /// <param name="UserType"></param>
         /// <returns></returns>
         [HttpGet]
-        public JsonResult GetListOFTransferCostCodeForLocation( string Loc, decimal RemainingAmt ,string CLM_Id, string _search, long? UserId, long? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
+        public JsonResult GetListOFTransferCostCodeForLocation(string Loc, decimal RemainingAmt, string CLM_Id, string _search, long? UserId, long? locationId, int? rows = 20, int? page = 1, int? TotalRecords = 10, string sord = null, string txtSearch = null, string sidx = null, string UserType = null)
         {
             eTracLoginModel ObjLoginModel = null;
             var _BudgetLocationManager = new BudgetLocationManager();
@@ -4037,10 +4150,10 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                         //row.cell[0] = driverList.QRCCodeID;
                         row.cell[0] = budgetList.Description.ToString();
                         //row.cell[1] = budgetList.AssignedPercent.ToString();
-                       // row.cell[2] = budgetList.AssignedAmount.ToString();
+                        // row.cell[2] = budgetList.AssignedAmount.ToString();
                         row.cell[1] = budgetList.RemainingAmount.ToString();
                         row.cell[2] = budgetList.CostCode.ToString();
-                         row.cell[3] = budgetList.Year.ToString();
+                        row.cell[3] = budgetList.Year.ToString();
                         //row.cell[6] = budgetList.BudgetAmount.ToString();
                         row.cell[4] = budgetList.BCM_Id.ToString();
                         row.cell[5] = budgetList.CLM_Id.ToString();
@@ -4131,7 +4244,8 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 Loc = Cryptography.GetDecryptedData(Loc, true);
                 long.TryParse(Loc, out LocationId);
             }
-            var objBudgetForLocationModel = new BudgetForLocationModel();
+            
+            var objBudgetForLocationModel = new List<BudgetForLocationModel>();
             JQGridResults result = new JQGridResults();
             List<JQGridRow> rowss = new List<JQGridRow>();
             sord = string.IsNullOrEmpty(sord) ? "desc" : sord;
@@ -4140,35 +4254,12 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
             try
             {
                 var budgetCostCodeList = _BudgetLocationManager.GetListOfCostCodeAfterTransferBudgetDetails(LocationId, UserId, rows, TotalRecords, sidx, sord, locationId, txtSearch, UserType);
-                foreach (var budgetList in budgetCostCodeList.rows)
-                {
-                    if (budgetList != null)
-                    {
-                        JQGridRow row = new JQGridRow();
-                        row.id = Cryptography.GetEncryptedData(Convert.ToString(budgetList.CostCode), true);
-                        row.cell = new string[10];
-                        //row.cell[0] = driverList.QRCCodeID;
-                        row.cell[0] = budgetList.Description.ToString();
-                        row.cell[1] = budgetList.AssignedPercent.ToString();
-                        row.cell[2] = budgetList.AssignedAmount.ToString();
-                        row.cell[3] = budgetList.RemainingAmount.ToString();
-                        row.cell[4] = budgetList.CostCode.ToString();
-                        row.cell[5] = budgetList.Year.ToString();
-                        row.cell[6] = budgetList.BudgetAmount.ToString();
-                        row.cell[7] = budgetList.BCM_Id.ToString();
-                        row.cell[8] = budgetList.CLM_Id.ToString();
-                        row.cell[9] = budgetList.BudgetStatus.ToString();
-                        rowss.Add(row);
-                    }
-                }
-                result.rows = rowss.ToArray();
-                result.page = Convert.ToInt32(page);
-                result.total = (int)Math.Ceiling((decimal)Convert.ToInt32(TotalRecords.Value) / rows.Value);
-                result.records = Convert.ToInt32(TotalRecords.Value);
+                objBudgetForLocationModel = budgetCostCodeList.rows;
+               
             }
             catch (Exception ex)
             { return Json(ex.Message, JsonRequestBehavior.AllowGet); }
-            return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(objBudgetForLocationModel.ToArray(), JsonRequestBehavior.AllowGet);
         }
         //[HttpPost]
         //public JsonResult SavingTransferAmountOfCostCode(decimal BudgetAmount,long Location,int Year,int? BCM_Id, int? CLM_Id, int? BCM_CLM_TransferId, int? AssignedPercent, string BudgetSource)//BudgetForLocationModel objBudgetForLocationModel)
@@ -4219,8 +4310,336 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
         //}
         #endregion Budget
 
-        ///Get Unseen Notification
-        ///
+        #region Location Master
+        public ActionResult ListDealsSpecific(string loc, int type)
+        {
+            try
+            {
+                //Added by Bhushan Dod on 27/06/2016 for scenario as if viewalllocation is enabled and user navigate any of module list but when click on any create from module so not able to create.
+                //ViewAllLocation need to apply on dashboard only so when ever click on list we have to set Session["eTrac_SelectedDasboardLocationID"] is objeTracLoginModel.LocationID.
+                eTracLoginModel ObjLoginModel = null;
+                if (Session != null)
+                {
+                    if (Session["eTrac"] != null)
+                    {
+                        ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                        if (Convert.ToInt64(Session["eTrac_SelectedDasboardLocationID"]) == 0)
+                        {
+                            (Session["eTrac_SelectedDasboardLocationID"]) = ObjLoginModel.LocationID;
+                        }
+                    }
+                }
+                if (!string.IsNullOrEmpty(loc) && type == 0)
+                {
+                    loc = Cryptography.GetDecryptedData(loc, true);
+                }
+                ViewBag.LocationId = loc;
+                ViewBag.AdministratorList = null;
+                if (type == 1)
+                {
+                    ViewBag.IsPageRefresh = true;
+                }
+                else
+                {
+                    ViewBag.IsPageRefresh = false;
+                }
+
+                return View("~/Views/GlobalAdmin/_ListDealsSpecific.cshtml");
+                //return View();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        
+        public ActionResult DealsSpecific(int id, int LocationId)
+        {
+            try
+            {
+                //eTracLoginModel objLoginSession = new eTracLoginModel();
+                //objLoginSession = (eTracLoginModel)Session["eTrac"];
+                //long Totalrecords = 0;
+                //var Administrators = _IGlobalAdmin.GetAllITAdministratorList(objLoginSession.UserId, 0, 1, 100000, "Name", "asc", "", (UserType.Administrator).ToString(), out Totalrecords).ToList();
+                //if (Administrators.Count() > 0)
+                //{
+                //    ViewBag.AdministratorList = Administrators;
+                //}
+                //else
+                //{
+                //    var admlist = _IGlobalAdmin.GetApplicationAdminDomain().Select(x => new UserModelList()
+                //    {
+                //        Name = x.FirstName + " " + x.LastName,
+                //        UserId = x.UserID,
+                //        UserEmail = x.UserEmail,
+                //    });
+                //    if (admlist.Count() > 0)
+                //    {
+                //        ViewBag.AdministratorList = admlist;
+                //    }
+                //    else
+                //    {
+                //        return RedirectToAction("initialsetup", "Administrator");
+                //    }
+                //}
+                ListDealsSpecificToLocation LDSTL = new ListDealsSpecificToLocation();
+                if (id != 0)
+                {
+                    LDSTL = GetDealsSpecificList(id).First();
+                    ViewBag.UpdateMode = true;
+                }
+                LDSTL.LocationID = LocationId;
+                ViewBag.UpdateMode = false;
+                return PartialView("~/Views/NewAdmin/_AddDealsSpecificToLocation.cshtml", LDSTL);
+            }
+            catch (Exception ex)
+            { ViewBag.Message = ex.Message; ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger; return View("Error"); }
+        }
+        [HttpPost]
+        public ActionResult DealsSpecific(ListDealsSpecificToLocation ObjDealsSpecificToLocation)
+        {
+            string TranXaction = "";
+            string PickTicketNo = "";
+            DataTable Dt = new DataTable();
+            try
+            {
+                XmlDocument xmlPTDET = new XmlDocument();
+                XmlSerializer xmlSerializer = new XmlSerializer(ObjDealsSpecificToLocation.GetType());
+                using (MemoryStream xmlStream = new MemoryStream())
+                {
+                    xmlSerializer.Serialize(xmlStream, ObjDealsSpecificToLocation);
+                    xmlStream.Position = 0;
+                    xmlPTDET.Load(xmlStream);
+                }
+                if (ObjDealsSpecificToLocation.Id != 0)
+                {
+                    Dt = InsertDealsSpecific(xmlPTDET.InnerXml, "U", ObjDealsSpecificToLocation.Id);
+                }
+                else
+                {
+                    Dt = InsertDealsSpecific(xmlPTDET.InnerXml, "E", 0);
+                }
+                return PartialView("~/Views/NewAdmin/_AddDealsSpecificToLocation.cshtml", ObjDealsSpecificToLocation);
+                //return RedirectToAction("ListDealsSpecific", new { loc = ObjDealsSpecificToLocation.LocationID.ToString(), type = 1 });
+            }
+            catch (Exception ex)
+            {
+                return View("ErrorTransaction");
+            }
+        }
+        
+        [HttpGet]
+        public ActionResult LocationSettiing(string loc)
+        {
+            try
+            {
+                eTracLoginModel ObjLoginModel = null;
+                if (Session != null)
+                {
+                    if (Session["eTrac"] != null)
+                    {
+                        ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                        if (Convert.ToInt64(Session["eTrac_SelectedDasboardLocationID"]) == 0)
+                        {
+                            (Session["eTrac_SelectedDasboardLocationID"]) = ObjLoginModel.LocationID;
+                        }
+                    }
+                }
+                LocationSettingMaster LSM = new LocationSettingMaster();
+                LSM.Automaticbillingdate = System.DateTime.Now;
+                LSM.Transpireclosingprocesson = System.DateTime.Now;
+                LSM.InvoicingDate = System.DateTime.Now;
+                LSM.SetClosingDate = System.DateTime.Now;
+                LSM.Cutoffcarddate = System.DateTime.Now;
+                if (!string.IsNullOrEmpty(loc))
+                {
+                    loc = Cryptography.GetDecryptedData(loc, true);
+                }
+                List<LocationSettingMaster> LSML = new List<LocationSettingMaster>();
+                if (loc != null)
+                {
+                    LSM.LocationID = Convert.ToInt32(loc);
+                    LSML = GetLocationSettiingDetails(loc);
+                    if (LSML.Count > 0)
+                    {
+                        LSM = LSML.First();
+                    }
+                }
+                ViewBag.AdministratorList = null;
+                ViewBag.IsPageRefresh = false;
+                //return RedirectToAction("ListLocation");
+                return View("~/Views/GlobalAdmin/_LocationSettiing.cshtml", LSM);
+                //return View();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        [HttpPost]
+        public ActionResult LocationSettiing(LocationSettingMaster ObjLocationSettingMaster)
+        {
+            string TranXaction = "";
+            string PickTicketNo = "";
+            DataTable Dt = new DataTable();
+            try
+            {
+                XmlDocument xmlPTDET = new XmlDocument();
+                XmlSerializer xmlSerializer = new XmlSerializer(ObjLocationSettingMaster.GetType());
+                using (MemoryStream xmlStream = new MemoryStream())
+                {
+                    xmlSerializer.Serialize(xmlStream, ObjLocationSettingMaster);
+                    xmlStream.Position = 0;
+                    xmlPTDET.Load(xmlStream);
+                }
+                if (ObjLocationSettingMaster.Id != 0)
+                {
+                    Dt = InsertLocationSettiing(xmlPTDET.InnerXml, "U", ObjLocationSettingMaster.Id);
+                }
+                else
+                {
+                    Dt = InsertLocationSettiing(xmlPTDET.InnerXml, "E", 0);
+                }
+                return RedirectToAction("ListLocation");
+            }
+            catch (Exception ex)
+            {
+                return View("ErrorTransaction");
+            }
+        }
+       
+        public List<LocationSettingMaster> GetLocationSettiingDetails(string id)
+        {
+            string QueryString = "Select * from LocationSettingMaster where LocationID=" + id + "";
+            DataTable dataTable = DBUtilitie.GetDTResponse(QueryString);
+            List<LocationSettingMaster> ItemList = DataRowToObject.CreateListFromTable<LocationSettingMaster>(dataTable);
+            return ItemList;
+        }
+        #endregion Location Master
+        public ActionResult GlobalSettingsMaster()
+        {
+            try
+            {
+                eTracLoginModel ObjLoginModel = null;
+                if (Session != null)
+                {
+                    if (Session["eTrac"] != null)
+                    {
+                        ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                        if (Convert.ToInt64(Session["eTrac_SelectedDasboardLocationID"]) == 0)
+                        {
+                            (Session["eTrac_SelectedDasboardLocationID"]) = ObjLoginModel.LocationID;
+                        }
+                    }
+                }
+                GlobalSetting GS = new GlobalSetting();
+                GS.Transpireclosingprocesson = DateTime.Now;
+                GS.InvoicingDate = DateTime.Now;
+                GS.SetClosingDate = DateTime.Now;
+                if (GlobalSettingsList().Count > 0)
+                {
+                    GS = GlobalSettingsList().First();
+                }
+                ViewBag.AdministratorList = null;
+                ViewBag.IsPageRefresh = false;
+                //return RedirectToAction("ListLocation");
+                return View("~/Views/GlobalAdmin/_GlobalSettingsMaster.cshtml", GS);
+                //return View();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        [HttpPost]
+        public ActionResult GlobalSettingSubmit(GlobalSetting ObjGlobalSettingMaster)
+        {
+            string TranXaction = "";
+            string PickTicketNo = "";
+            DataTable Dt = new DataTable();
+            try
+            {
+                XmlDocument xmlPTDET = new XmlDocument();
+                XmlSerializer xmlSerializer = new XmlSerializer(ObjGlobalSettingMaster.GetType());
+                using (MemoryStream xmlStream = new MemoryStream())
+                {
+                    xmlSerializer.Serialize(xmlStream, ObjGlobalSettingMaster);
+                    xmlStream.Position = 0;
+                    xmlPTDET.Load(xmlStream);
+                }
+                if (ObjGlobalSettingMaster.Id != 0)
+                {
+                    Dt = InsertGlobalSetting(xmlPTDET.InnerXml, "U", ObjGlobalSettingMaster.Id);
+                }
+                else
+                {
+                    Dt = InsertGlobalSetting(xmlPTDET.InnerXml, "E", 0);
+                }
+                return RedirectToAction("ListLocation");
+            }
+            catch (Exception ex)
+            {
+                return View("ErrorTransaction");
+            }
+        }
+
+        #region DB Changes
+        public DataTable InsertGlobalSetting(string xmlPTDET, string type, long? id)
+        {
+            string QueryString = "exec Usp_Insert_GlobalSettingMaster '" + xmlPTDET + "','" + type + "','" + id + "'";
+            return DBUtilitie.GetDTResponse(QueryString);
+        }
+        public List<GlobalSetting> GlobalSettingsDetails(string id)
+        {
+            string QueryString = "exec Usp_GlobalSettingsDetails '" + id + "'";
+            DataTable dataTable = DBUtilitie.GetDTResponse(QueryString);
+            List<GlobalSetting> ItemList = DataRowToObject.CreateListFromTable<GlobalSetting>(dataTable);
+            return ItemList;
+        }
+        public List<GlobalSetting> GlobalSettingsList()
+        {
+            string QueryString = "exec Usp_GlobalSettingsList";
+            DataTable dataTable = DBUtilitie.GetDTResponse(QueryString);
+            List<GlobalSetting> ItemList = DataRowToObject.CreateListFromTable<GlobalSetting>(dataTable);
+            return ItemList;
+        }
+        public DataTable InsertLocationSettiing(string xmlPTDET, string type, long? id)
+        {
+            string QueryString = "exec Usp_Insert_LocationSettingMaster '" + xmlPTDET + "','" + type + "','" + id + "'";
+            return DBUtilitie.GetDTResponse(QueryString);
+        }
+        public DataTable InsertDealsSpecific(string xmlPTDET, string type, int id)
+        {
+            string QueryString = "exec Usp_Insert_DealsSpecificToLocation '" + xmlPTDET + "','" + type + "','" + id + "'";
+            return DBUtilitie.GetDTResponse(QueryString);
+        }
+        public DataTable InsertNewLocationDetails(int? PaymenttermsId, DateTime ClientInvoicingDate, DateTime Automaticbillingdate, DateTime Cutoffcarddate, decimal? FrequencyOfInvoicing, decimal? ChargeDepositeMonthlyParkerCard, bool IsChargeDepositeMonthlyParkerCard, decimal? AviailableSpaces, bool IsSpecialRulesHourlyMan, long LocationID)
+        {
+            string QueryString = "exec Usp_Insert_NewLocationDetails '" + PaymenttermsId + "','" + ClientInvoicingDate + "','" + Automaticbillingdate + "','" + Cutoffcarddate + "','" + FrequencyOfInvoicing + "','" + ChargeDepositeMonthlyParkerCard + "','" + IsChargeDepositeMonthlyParkerCard + "','" + AviailableSpaces + "','" + IsSpecialRulesHourlyMan + "','" + LocationID + "'";
+            return DBUtilitie.GetDTResponse(QueryString);
+        }
+        public List<ListDealsSpecificToLocation> GetDealsSpecificList(int id)
+        {
+            string QueryString = "exec Usp_GetDealsSpecificEdit '" + id + "'";
+            DataTable dataTable = DBUtilitie.GetDTResponse(QueryString);
+            List<ListDealsSpecificToLocation> ItemList = DataRowToObject.CreateListFromTable<ListDealsSpecificToLocation>(dataTable);
+            return ItemList;
+        }
+        public List<LocationRuleMappingModel> GetNewLocationDetailsRuleMappingModel(long id)
+        {
+            string QueryString = "exec Usp_GetContractInfo '" + id + "'";
+            DataTable dataTable = DBUtilitie.GetDTResponse(QueryString);
+            List<LocationRuleMappingModel> ItemList = DataRowToObject.CreateListFromTable<LocationRuleMappingModel>(dataTable);
+            return ItemList;
+        }
+        public List<ContractDetailsModel> GetNewLocationDetailsContractDetails(long id)
+        {
+            string QueryString = "exec Usp_GetContractInfo '" + id + "'";
+            DataTable dataTable = DBUtilitie.GetDTResponse(QueryString);
+            List<ContractDetailsModel> ItemList = DataRowToObject.CreateListFromTable<ContractDetailsModel>(dataTable);
+            return ItemList;
+        }
+        #endregion DB Changes
         [HttpGet]
         public ActionResult GetUnseenNotifications()
         {
@@ -4231,8 +4650,48 @@ namespace WorkOrderEMS.Controllers.GlobalAdmin
                 ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
                 UserId = ObjLoginModel.UserId;
             }
-            return PartialView("_Notifications",_ICommonMethod.GetUnseenNotifications(UserId));
+            return PartialView("_Notifications", _ICommonMethod.GetUnseenNotifications(UserId));
         }
 
+        [HttpPost]
+        public ActionResult SetIsReadNotification(long NotificationId, string NotificationType)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            long UserId = 0;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                UserId = ObjLoginModel.UserId;
+            }
+            _ICommonMethod.SetIsReadNotification(NotificationId);
+            if (NotificationType == "UrgentWorkOrdersList")
+            {
+                return PartialView("_Notifications", _ICommonMethod.GetUnseenNotifications(UserId));
+            }
+            else
+            {
+                return PartialView("_Notifications", _ICommonMethod.GeteScanNotifications(UserId));
+
+            }
+        }
+        ///Get Unseen Notification
+        ///
+        [HttpGet]
+        public ActionResult GeteScanNotifications()
+        {
+            eTracLoginModel ObjLoginModel = null;
+            long UserId = 0;
+            if (Session["eTrac"] != null)
+            {
+                ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                UserId = ObjLoginModel.UserId;
+            }
+            var result = _ICommonMethod.GeteScanNotifications(UserId);
+            foreach (var item in result)
+            {
+                item.EmployeeImage = ((item.EmployeeImage == "" || item.EmployeeImage == null) ? HostingPrefix + "/Content/Images/ProjectLogo/no-profile-pic.jpg" : HostingPrefix + ProfileImagePath.Replace("~", "") + item.EmployeeImage);
+            }
+            return PartialView("_Notifications", result);
+        }
     }
 }

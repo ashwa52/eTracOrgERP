@@ -1,0 +1,121 @@
+﻿@model WorkOrderEMS.Models.NewAdminModel.AnswerModel
+
+@{
+    //Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    Layout = null;
+    int count = 0;
+    var isSubmitted = "Y";
+    //var employeeInfo = ViewData["employeeInfo"] as WorkOrderEMS.Models.NewAdminModel.GWCQUestionModel;
+    @*@Html.Hidden(isSubmitted, new { id = "isSubmitted" })*@
+    <input type="hidden" value="@isSubmitted" id="isSubmitted" />
+
+}
+<style>
+    td.ans div {
+        display: inline-flex;
+    }
+    .rowExpectation {
+        background-image: linear-gradient(to right, #3588CD, #fff);
+        margin-left: 0px;
+        margin-right: 0px;
+        padding-top: 10px;
+    }
+    .FontClass {
+        color: black;
+    }
+</style>
+<style>
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+
+    /*tr:nth-child(even) {
+        background-color: #dddddd;
+    }*/
+</style>
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="" data-aos="fade-up">
+                    <div style="margin: 2px -13px 0px -13px;">
+                        <div id="GetQuestionViewData" class="card" data-aos="fade-up">
+                            <div class="row rowExpectation">
+                                <div class="col-sm-3" style="margin: 0px 0px 10px 10px;">
+                                    <div style="display: inline-block;">
+                                        <img src="@Model.ApplicantImage" alt="" class="rounded-circle" style="width:75px;height:75px;" id="ProfileImage">
+                                    </div>
+                                    <div style="display: inline-block;margin: 0px 0px 0px 20px;list-style: none;">
+                                        <span class="FontClass" style="font-size: 16px;    font-weight: 600;" id="EmployeeName">@Model.ApplicantName</span>
+                                    </div>
+                                </div>
+                               
+                           </div>
+                              <hr />
+                              <table>
+                                  <tr style="background: #3588CD;color: antiquewhite;">
+                                      <th>Question</th>
+                                      <th>Comment</th>
+                                      <th>Answer</th>
+                                  </tr>
+                                  @if (Model.ListAnswerModel.Count > 0)
+                                  {
+                                      foreach (var item in Model.ListAnswerModel)
+                                      {
+
+                                          <tr style="background-color: #dddddd;">
+                                              <td>@item.IQM_Question</td>
+                                              <td></td>
+                                              <td></td>
+                                          </tr>
+                                          if (item.ListAnswerMainModel.Count > 0)
+                                          {
+                                              foreach (var item1 in item.ListAnswerMainModel)
+                                              {
+                                                  <tr>
+                                                     <td>@item1.IQM_Question</td>
+                                                     <td>@item1.IQM_Comment</td>
+                                                     <td style="background-color:aquamarine;">@item1.IQM_Answer </td>
+                                                  </tr>
+                                              }                                     
+                                          }
+                                      }
+                                  }
+                                  @if (Model.IsShortlisted == false)
+                                  {
+                                  <tr align="center">
+                                     <td>    
+                                         <center>
+                                                <button id="submit" class="btn btn-success" onclick="RedirectToApplicantGrid()" style="width: 18%; font-size: 20px;">Submit</button>  
+                                         </center>
+                                     </td>
+                                  </tr>
+                                  }
+                                  else
+                                  {
+                                      <tr align="center">
+                                     <td>    
+                                         <center>
+                                                <button id="submit"value="D" class="btn btn-success" applicantid="@Model.ApplicantId" onclick="ToAcceptRejectAfterInterview(this)" style="width: 18%; font-size: 20px;">Shortlisted</button>
+                                                <button id="submit" value="C" class="btn btn-success" applicantid="@Model.ApplicantId" onclick="ToAcceptRejectAfterInterview(this)" style="width: 18%; font-size: 20px;">Reject</button>
+                                         </center>
+                                     </td>
+                                  </tr>
+                                  }
+                              </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/GridListing/JsGridScript/ListEmployeeManagement.js"></script>

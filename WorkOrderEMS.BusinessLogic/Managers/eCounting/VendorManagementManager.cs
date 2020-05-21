@@ -399,7 +399,9 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                                                Obj.VendorEmail, Obj.Website, Obj.UserId, null, "Y");
                     ///var SaveTax = _workorderems.spSetTaxDetail(Action, null, Obj.VendorId, Obj.TaxNo, null, Obj.UserId, null, "N");
                     }
-                    var _companyLogDetails = _workorderems.LogCompanies.Where(n => n.LCMP_CMP_Id == Obj.VendorId && n.LCMP_IsApprove == "W").OrderByDescending(x=>x.LCMP_Id).FirstOrDefault();
+                    //var _companyLogDetails = _workorderems.LogCompanies.Where(n => n.LCMP_CMP_Id == Obj.VendorId && n.LCMP_IsApprove == "W").OrderByDescending(x=>x.LCMP_Id).FirstOrDefault();
+                    var _companyLogDetails = _workorderems.LogCompanies.Where(n => n.Company.CMP_Id == Obj.VendorId && n.LCMP_IsApprove == "W").OrderByDescending(x => x.LCMP_Id).FirstOrDefault();
+
                     if (_companyLogDetails !=null) {
                         _companyLogDetails.LCMP_IsApprove = "Y";
                         _workorderems.SaveChanges();
@@ -1410,11 +1412,16 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 if (AccountsId > 0)
                 {
 
-                    var getDetails = _workorderems.LogCompanyAccountDetails.Where(x => x.LCAD_CAD_Id == AccountsId)//(action, null)
+                    var getDetails = _workorderems.LogCompanyAccountDetails.Where(x => x.CompanyAccountDetail.CAD_Id == AccountsId)//(action, null)
                         .FirstOrDefault();
-                    var Update = _workorderems.spSetCompanyAccountDetail(action, AccountsId, getDetails.LCAD_CMP_Id, getDetails.LCAD_PMD_Id,
+                    //var getDetails = _workorderems.LogCompanyAccountDetails.Where(x => x.LCAD_CAD_Id == AccountsId)//(action, null)
+                    //   .FirstOrDefault();
+                    //var Update = _workorderems.spSetCompanyAccountDetail(action, AccountsId, getDetails.LCAD_CMP_Id, getDetails.LCAD_PMD_Id,
+                    //                                                  getDetails.LCAD_CardOrBankName, getDetails.LCAD_BankLocation, getDetails.LCAD_AccountNumber,
+                    //                                                  getDetails.LCAD_CreditCardNumber, getDetails.LCAD_IFSCcode, getDetails.LCAD_SwiftBICcode, getDetails.LCAD_AccountDocument, UserId, getDetails.LCAD_ApprovedBy, IsActive, getDetails.LCAD_Balance, null, getDetails.LCAD_CardHolderName,getDetails.LCAD_CardExpirationDate," ");
+                    var Update = _workorderems.spSetCompanyAccountDetail(action, AccountsId, getDetails.Company.CMP_Id, getDetails.PaymentMode.PMD_Id,
                                                                       getDetails.LCAD_CardOrBankName, getDetails.LCAD_BankLocation, getDetails.LCAD_AccountNumber,
-                                                                      getDetails.LCAD_CreditCardNumber, getDetails.LCAD_IFSCcode, getDetails.LCAD_SwiftBICcode, getDetails.LCAD_AccountDocument, UserId, getDetails.LCAD_ApprovedBy, IsActive, getDetails.LCAD_Balance, null, getDetails.LCAD_CardHolderName,getDetails.LCAD_CardExpirationDate," ");
+                                                                      getDetails.LCAD_CreditCardNumber, getDetails.LCAD_IFSCcode, getDetails.LCAD_SwiftBICcode, getDetails.LCAD_AccountDocument, UserId, getDetails.LCAD_ApprovedBy, IsActive, getDetails.LCAD_Balance, null, getDetails.LCAD_CardHolderName, getDetails.LCAD_CardExpirationDate, " ");
                     result = true;
                 }
                 else
@@ -1825,21 +1832,27 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         {
             try
             {
-                var _companyDetails = _workorderems.CompanyAccountDetails.Where(n => n.CAD_CMP_Id == VendorId && n.CAD_Id != AccountId).ToList();
+                //var _companyDetails = _workorderems.CompanyAccountDetails.Where(n => n.CAD_CMP_Id == VendorId && n.CAD_Id != AccountId).ToList();
+                var _companyDetails = _workorderems.CompanyAccountDetails.Where(n => n.Company.CMP_Id == VendorId && n.CAD_Id != AccountId).ToList();
+
                 if (_companyDetails != null)
                 {
                     _companyDetails.ForEach(a => a.CAD_IsPrimary = "N"); 
                     _workorderems.SaveChanges();
 
                 }
-                var _companyDetails1 = _workorderems.CompanyAccountDetails.Where(n => n.CAD_CMP_Id == VendorId && n.CAD_Id == AccountId).ToList();
+                //var _companyDetails1 = _workorderems.CompanyAccountDetails.Where(n => n.CAD_CMP_Id == VendorId && n.CAD_Id == AccountId).ToList();
+                var _companyDetails1 = _workorderems.CompanyAccountDetails.Where(n => n.Company.CMP_Id == VendorId && n.CAD_Id == AccountId).ToList();
+
                 if (_companyDetails1 != null)
                 {
                     _companyDetails1.ForEach(a => a.CAD_IsPrimary = "Y"); 
                     _workorderems.SaveChanges();
 
                 }
-                var _companyLogDetails = _workorderems.LogCompanyAccountDetails.Where(n => n.LCAD_CMP_Id == VendorId && n.LCAD_CAD_Id  != AccountId).ToList();
+                //var _companyLogDetails = _workorderems.LogCompanyAccountDetails.Where(n => n.LCAD_CMP_Id == VendorId && n.LCAD_CAD_Id  != AccountId).ToList();
+                var _companyLogDetails = _workorderems.LogCompanyAccountDetails.Where(n => n.Company.CMP_Id == VendorId && n.CompanyAccountDetail.CAD_Id != AccountId).ToList();
+
                 if (_companyLogDetails != null)
                 {
                     _companyLogDetails.ForEach(a => a.LCAD_IsPrimary = "N"); 
@@ -1847,7 +1860,9 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                    
 
                 }
-                var _companyLogDetails1 = _workorderems.LogCompanyAccountDetails.Where(n => n.LCAD_CMP_Id == VendorId && n.LCAD_CAD_Id == AccountId).ToList();
+                //var _companyLogDetails1 = _workorderems.LogCompanyAccountDetails.Where(n => n.LCAD_CMP_Id == VendorId && n.LCAD_CAD_Id == AccountId).ToList();
+                var _companyLogDetails1 = _workorderems.LogCompanyAccountDetails.Where(n => n.Company.CMP_Id == VendorId && n.CompanyAccountDetail.CAD_Id == AccountId).ToList();
+
                 if (_companyLogDetails1 != null)
                 {
                     _companyLogDetails1.ForEach(a => a.LCAD_IsPrimary = "Y");
@@ -1866,33 +1881,33 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         public CompanyCountForGraph GetCompanyCountForGraph()
         {
             CompanyCountForGraph model = new CompanyCountForGraph();
-            var result = _workorderems.spGetCompanyCountForGraph().FirstOrDefault();
-            if (result != null) {
-                model.RejectedVendorCount = result.RejectedVendorCount;
-                model.ApprovedVendorCount = result.ApprovedVendorCount;
-                model.WaitingVendorCount = result.WaitingVendorCount;
-                model.TotalVendorCount = result.TotalVendorCount;
-            }
+            //var result = _workorderems.spGetCompanyCountForGraph().FirstOrDefault();
+            //if (result != null) {
+            //    model.RejectedVendorCount = result.RejectedVendorCount;
+            //    model.ApprovedVendorCount = result.ApprovedVendorCount;
+            //    model.WaitingVendorCount = result.WaitingVendorCount;
+            //    model.TotalVendorCount = result.TotalVendorCount;
+            //}
             return model;
         }
         public List<LocationAllocationCompanyCountForGraph> GetCompanyAllocationLocationCountForGraph()
         {
             List<LocationAllocationCompanyCountForGraph> modellist = new List<LocationAllocationCompanyCountForGraph>();
-              var result = _workorderems.spGetCompanyAllocationLocationCountForGraph().ToList();
-            if (result.Count()>0)
-            {
-                Random r = new Random();
-                foreach (var item in result)
-                {
+            //  var result = _workorderems.spGetCompanyAllocationLocationCountForGraph().ToList();
+            //if (result.Count()>0)
+            //{
+            //    Random r = new Random();
+            //    foreach (var item in result)
+            //    {
                      
-                    LocationAllocationCompanyCountForGraph model = new LocationAllocationCompanyCountForGraph();
-                    model.LocationName = item.LocationName;
-                    model.VendorCount = item.VendorCount;
-                    model.colour =   String.Format("#{0:X6}", r.Next(0x1000000)); // = "#A197B9";
-                    modellist.Add(model);
-                }
+            //        LocationAllocationCompanyCountForGraph model = new LocationAllocationCompanyCountForGraph();
+            //        model.LocationName = item.LocationName;
+            //        model.VendorCount = item.VendorCount;
+            //        model.colour =   String.Format("#{0:X6}", r.Next(0x1000000)); // = "#A197B9";
+            //        modellist.Add(model);
+            //    }
                 
-            }
+            //}
             return modellist;
         }
 
@@ -1914,6 +1929,30 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             else
             {
                 var status = _workorderems.TaxDetails.Any(u => u.TXD_TaxIdNumber.ToLower() == taxNumber.Trim().ToLower());
+                result = status == true ? result = false : result = true;
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Created By : Ajay Kumar
+        /// Created Date : 10-Oct-2019
+        /// Crated For : To check duplicate Point Of Contact  for vendor
+        /// </summary>
+        /// <param name="taxNumber"></param>
+        /// <returns></returns>
+        public bool PointOfContactIsExists(string txtPointOfContact, long VendorId)
+        {
+            bool result = false;
+            if (VendorId > 0)
+            {
+                var status = _workorderems.CompanyDetails.Any(u => u.COD_PointOfContact.ToLower() == txtPointOfContact.Trim().ToLower() && u.COD_CMP_Id == VendorId);
+                result = status == true ? result = true : result = false;
+            }
+            else
+            {
+                var status = _workorderems.CompanyDetails.Any(u => u.COD_PointOfContact.ToLower() == txtPointOfContact.Trim().ToLower());
                 result = status == true ? result = false : result = true;
             }
 
@@ -1987,5 +2026,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
             return true;
         }
+
+        
     }
 }

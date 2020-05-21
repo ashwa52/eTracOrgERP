@@ -1,0 +1,245 @@
+﻿@model WorkOrderEMS.Models.ListDealsSpecificToLocation
+@{
+    ViewBag.Title = "Add New Deals Specific to Location";
+    //Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    Layout = null;
+    string eTracScriptVersion = System.Configuration.ConfigurationManager.AppSettings["eTracScriptVersion"];
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+    long loginUserType = 0;
+    long locationId = 0;
+    string ServiceId = string.Empty;
+    if (ObjLogin != null)
+    {
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+        loginUserType = ObjLogin.UserRoleId;
+        //loginUserContactNo = ObjLogin.ContactNo;
+        locationId = ObjLogin.LocationID;
+    }
+    if (ViewBag.UpdateMode == true)
+    {
+        ViewBag.Title = "Update Deals Specific to Location"; ServiceId = ViewBag.ServicesID;
+    }
+
+    var Conditionlist = new List<SelectListItem>
+{
+new SelectListItem{ Text="Increase %", Value = "1" },
+new SelectListItem{ Text="Decrease %", Value = "2" },
+new SelectListItem{ Text="Set Amount", Value = "3"},
+new SelectListItem{ Text="Give Discount", Value = "4"},
+
+};
+}
+<!--Multistep wizard CSS-->
+<style>
+
+    .error {
+        color: red;
+    }
+
+    .stepwizard-step p {
+        margin-top: 0px;
+        color: #666;
+        font-size: 20px;
+        margin-left: -35px;
+    }
+
+    .stepwizard-row {
+        display: table-row;
+    }
+
+    .stepwizard {
+        display: table;
+        width: 40%;
+        position: relative;
+        margin-left: 33%;
+    }
+
+    .stepwizard-step button[disabled] {
+        /*opacity: 1 !important;
+    filter: alpha(opacity=100) !important;*/
+    }
+
+    .stepwizard .btn.disabled, .stepwizard .btn[disabled], .stepwizard fieldset[disabled] .btn {
+        opacity: 1 !important;
+        color: #bbb;
+    }
+
+    .stepwizard-row:before {
+        top: 14px;
+        bottom: 0;
+        position: absolute;
+        content: " ";
+        width: 58%;
+        height: 1px;
+        background-color: #ccc;
+        z-index: 0;
+    }
+
+    .stepwizard-step {
+        display: table-cell;
+        /*text-align: center;*/
+        position: relative;
+    }
+
+    .btn-circledata {
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        padding: 6px 0;
+        font-size: 12px;
+        line-height: 1.428571429;
+        border-radius: 15px;
+    }
+</style>
+@Scripts.Render("~/bundles/modernizr")
+<link href="~/Content/NewAdminContent/VENDOR/bootstrap-multiselect/css/bootstrap-multiselect.css" rel="stylesheet" />
+@*<link href="~/Content/NewAdminContent/VENDOR/jquery-steps/css/jquery.steps.css" rel="stylesheet" />*@
+<link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
+<link href="@Url.Content("~/Content/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+<!-- daterange picker -->
+<link rel="stylesheet" href="@Url.Content("~/Content/Dashboard/plugins/daterangepicker/daterangepicker-bs3.css")" />
+<!-- Bootstrap Color Picker -->
+<link rel="stylesheet" href="@Url.Content("~/Content/Dashboard/plugins/colorpicker/bootstrap-colorpicker.min.css")" />
+<!-- Bootstrap time Picker -->
+<link rel="stylesheet" href="@Url.Content("~/Content/Dashboard/plugins/timepicker/bootstrap-timepicker.min.css")" />
+<link href="@Url.Content("~/Content/NewAdminContent/CSS/RadioButtonCSS.css")" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/CSS/style.css" rel="stylesheet" />
+<br />
+@Html.AntiForgeryToken()
+@Html.ValidationSummary(true)
+<div class="content-body">
+    <div class="container-fluid">
+        <!-- row -->
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header headerSize" style="padding: 19px;">
+                        <h3 class="card-title" style="color:white;"><strong>@ViewBag.Title</strong></h3>
+                    </div>
+                    <div class="card-body">
+                        <br />
+                        <form action="@Url.Action("DealsSpecific", "GlobalAdmin")" method="post" id="step-form-horizontal" class="step-form-horizontal" role="form" style="margin-left:80px;">
+                            @Html.ValidationSummary(true)
+                            @Html.HiddenFor(model => model.Id)
+                            @Html.HiddenFor(model => model.LocationID)
+
+                            <div class="basic-form">
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.DealName, new { @class = "col-sm-2 col-form-label" })
+                                    <div class="col-sm-4">
+                                        @Html.TextBoxFor(model => model.DealName, new { @Placeholder = "DealName Name", @class = "form-control input-rounded required " })
+                                        <span style="display:none;" data-valmsg-replace="true" class="field-validation-error"><span class="">Location Name already exists.</span></span>
+                                    </div>
+                                    @Html.LabelFor(model => model.Condition, new { @class = "col-sm-1 col-form-label" })
+                                    <div class="col-sm-4">
+                                        @Html.DropDownListFor(model => model.Condition, new SelectList(Conditionlist, "Value", "Text"), new { @class = "form-control input-rounded required requiredselect", @id = "Country", @onchange = "BindState()" })
+                                        @Html.TextBoxFor(model => model.NewCost, new { @Placeholder = "NewCost", @class = "form-control input-rounded required" })
+                                        @Html.ValidationMessageFor(model => model.Condition)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.StartDate, new { @class = "col-sm-2 col-form-label" })
+                                    <div class="col-sm-4">
+                                        @Html.TextBox("StartDate", Model.StartDate.ToString("MM/dd/yyyy"), new { @Placeholder = "Start Date", @id = "StartDate", @class = "form-control input-rounded required" })
+                                        @Html.ValidationMessageFor(model => model.StartDate)
+                                    </div>
+                                    @Html.LabelFor(model => model.EndDate, new { @class = "col-sm-1 col-form-label" })
+                                    <div class="col-sm-4">
+                                        @Html.TextBox("EndDate", Model.StartDate.ToString("MM/dd/yyyy"), new { @Placeholder = "End Date", @class = "form-control input-rounded required", @id = "EndDate", @onkeydown = "return false;" })
+                                        @Html.ValidationMessageFor(model => model.EndDate)
+                                    </div>
+                                </div>
+
+                            </div>
+                            <input type="button" id="submitDealsData" class="btn btn-success pull-right" style="margin-left: 30px;" value="Submit" />
+                            <button type="button" class="btn btn-success pull-right" id="SendToDealsList"><i class="fa fa-arrow-left"></i>&nbsp;Back to List</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--**********************************
+    Content body end
+***********************************-->
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
+<script src="~/Content/NewAdminContent/VENDOR/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+<!-- daterangepicker -->
+<script src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js")"></script>
+<script src="@Url.Content("~/Content/Dashboard/plugins/daterangepicker/daterangepicker.js")"></script>
+<!-- bootstrap color picker -->
+<script src="@Url.Content("~/Content/Dashboard/plugins/colorpicker/bootstrap-colorpicker.min.js")"></script>
+<!-- bootstrap time picker -->
+<script src="@Url.Content("~/Content/Dashboard/plugins/timepicker/bootstrap-timepicker.min.js")"></script>
+<script type="text/javascript" src="~/Scripts/BindDropDown/DropDownList.js"></script>
+
+<script>
+    $(document).ready(function () {
+        //Edit location loca
+        if ('@ViewBag.UpdateMode' == 'False')
+        {
+            //Add Services for edoting
+            $('#StartDate,#EndDate').datepicker({
+                format: "mm/dd/yyyy",
+                startDate: new Date()
+            });
+        }
+
+    });
+
+
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        //While change open pop up to match both contract holder or Operating company
+        $('#StartDate,#EndDate').datepicker({
+            format: "mm/dd/yyyy",
+            startDate: new Date()
+        });
+
+        $("#submitDealsData").click(function (e) {
+            var url = '@Url.Action("DealsSpecific", "GlobalAdmin")'
+            var dataObject = $("#step-form-horizontal").serialize()
+            $("#submitDealsData").attr("disabled", true);
+        $.ajax({
+                    type: "POST",
+                    url: url,
+                    data : dataObject,
+                    success: function (Data) {
+                      $("#submitlocationData").attr("disabled", false);
+                        var url = '@Url.Action("ListDealsSpecific","GlobalAdmin",new {loc=Model.LocationID,type=1})';
+                        //var url = '/NewAdmin/ListDealsSpecific?loc=' + @Model.LocationID+'&type=' + 1;
+                        window.location.href = url.replace("&amp;","&");
+                      $('#RenderPageId').load(url);
+                    },
+                    error: function (err) {
+                    }
+                });
+        });
+        $('#SendToDealsList').click(function () {
+            var url = '@Url.Action("ListDealsSpecific","GlobalAdmin",new {loc=Model.LocationID,type=1})';
+            //var url = '/NewAdmin/ListDealsSpecific?loc=' + @Model.LocationID+'&type=' + 1;
+            window.location.href = url.replace("&amp;", "&");
+            $('#RenderPageId').load(url);
+        });
+        $("#EndDate").change(function () {
+            var startDate = new Date($('#StartDate').val());
+            var endDate = new Date($('#EndDate').val());
+            if (endDate < startDate) {
+                alert("* End date must be Greater than start date")
+                $('#EndDate').val("");
+                return false;
+                //break;
+            }
+        });
+    });
+</script>

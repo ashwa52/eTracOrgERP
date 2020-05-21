@@ -1,0 +1,319 @@
+﻿
+@model WorkOrderEMS.Models.ScheduleOverview
+@{
+    ViewBag.Title = "Schedule Overview";
+    var isRefresh = ViewBag.IsPageRefresh;
+    if (isRefresh == true)
+    {
+        Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = null;
+    }
+    long locationId = 0;
+    long userType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserProfile = "";
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+    }
+}
+<link href="~/Content/NewAdminContent/CSS/clockPicker.css" rel="stylesheet" />
+<link rel="stylesheet" href="@Url.Content("~/Content/Dashboard/plugins/daterangepicker/daterangepicker-bs3.css")" />
+
+<div class="content-body">
+    <div class="container-fluid" style="margin-top:20px;">
+        <!-- row -->
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card aos-init" data-aos="fade-up">
+                    <div class="card-header headerSize" style="height: 45px;">
+                        <h4 class="card-title" style="color:white;"><strong> @ViewBag.Title</strong></h4>
+                    </div>
+
+
+                    @using (Html.BeginForm("LocationSeatSubmit", "EPeople", FormMethod.Post, new { enctype = "multipart/form-data", @id = "DOT_form" }))
+                    {
+                        <div class="card-body">
+                            <div class="panel panel-primary setup-content">
+                                <div class="basic-form">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label">Date Range<span class="req">*</span></label>
+                                        @*<label class="col-sm-2 col-form-label">To Date<span class="req">*</span></label>*@
+                                        <label class="col-sm-2 col-form-label">Location<span class="req">*</span></label>
+                                        <label class="col-sm-2 col-form-label">Time<span class="req">*</span></label>
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-sm-2">
+                                            @Html.TextBox("DateRangeFilter", "", new { @class = "form-control input-daterange-datepicker-new input-rounded", @placeholder = "Date Range", @onchange = "doSearch()" })
+                                            @Html.Hidden("FromDate")
+                                            @Html.Hidden("ToDate")
+                                            @*@Html.TextBoxFor(model => model.FromDate, "", new { @Placeholder = "Schedule From Date", @class = "form-control input-rounded required" })*@
+                                        </div>
+                                        @*<div class="col-sm-2">
+                                                @Html.TextBoxFor(model => model.ToDate, new { @Placeholder = "Schedule To Date", @class = "form-control input-rounded required" })
+                                            </div>*@
+                                        <div class="col-sm-2">
+                                            @Html.DropDownListFor(model => model.Location, new SelectList(Model.ListLS, "SeatId", "LocationSeatName"), "Select Location", new { @id = "SeatLocationType", @class = "form-control input-rounded" })
+                                        </div>
+                                        <div class="col-sm-2">
+                                            @Html.TextBoxFor(model => model.StartTime, new { @class = "form-control input-rounded required clockpicker", @onkeypress = "return isNumberKey(event)", @id = "StartTime", @placeholder = "Time" })
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button type="button" class="btn btn-default bluebutton nxt-btn" id="btnsave" value="EditPO" style="background-color:forestgreen;border-radius:18px;margin-left: 20px;width:160px;color:white; ">Search</button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card aos-init" data-aos="fade-up">
+                                <div class="card-header" style="height: 45px;">
+                                    <div class="card-header headerSize" style="height:45px;width:100%;padding:0px;">
+                                        <div class="basic-form">
+                                            <div class="form-group mb-0">
+                                                <div class="row">
+                                                    <div class="col-md-1">
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <input id="SearchText" class="inputSearch form-control input-rounded" placeholder="Serach By Employee Name" style="width: 260px;" type="text">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div id="tbl_AllLocationLeavList" class="jsGrid" style="position: relative; height: 400px; width: 100%;">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<script src="~/Content/NewAdminContent/JQUERY/clockPicker.js"></script>
+<script src="~/Scripts/NewAdminJS/plugins-init/bs-daterange-picker-init.js"></script>*@
+<script type="text/javascript" src="@Url.Content("~/Content/Dashboard/plugins/daterangepicker/daterangepicker.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Content/NewAdminContent/JQUERY/clockPicker.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/NewAdminJS/plugins-init/bs-daterange-picker-init.js")"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#DOT_form').on("click", ":submit", function () {
+        });
+        $("#DateRangeFilter").on("change", function () {
+            var datevalue = $(this).val();
+            $("#FromDate").val(datevalue.split('-')[0])
+            $("#ToDate").val(datevalue.split('-')[1])
+        });
+        $('.clockpicker').clockpicker();
+        //$('#FromDate').datepicker({
+        //    format: "mm/dd/yyyy",
+        //    startDate: new Date()
+        //});
+        //var now = new Date();
+        //var date = ((now.getMonth() + 1) + '/' + (now.getDate()) + '/' + now.getFullYear());
+        //$('#FromDate').val(date);
+
+        //$('#ToDate').datepicker({
+        //    format: "mm/dd/yyyy",
+        //    startDate: new Date()
+        //});
+        //var now = new Date();
+        //var date = ((now.getMonth() + 1) + '/' + (now.getDate()) + '/' + now.getFullYear());
+        //$('#ToDate').val(date);
+        //$("#ToDate").change(function () {
+        //    var startDate = new Date($('#FromDate').val());
+        //    var endDate = new Date($('#ToDate').val());
+        //    if (endDate < startDate) {
+        //        alert("* To date must be Greater than From date")
+        //        $('#ToDate').val("");
+        //        return false;
+        //        //break;
+        //    }
+        //});
+
+        function GetHeaders(obj) {
+            var cols = new Array();
+            var count = false;
+            for (var key in obj) {
+                cols.push({
+                    data: key,
+                    title: key
+                });
+            }
+            return cols;
+        }
+
+        $("#btnsave").on("click", function (event) {
+            var result = "";
+            var strUrl = "@Url.Action("GetData", "GlobalSettings")";
+                var parameters = {};
+                parameters['FromDate'] = $("#FromDate").val(),
+                parameters['ToDate'] = $("#ToDate").val()
+            parameters['SeatLocationType'] = $("#SeatLocationType").val()
+            parameters['Search'] = $("#SearchText").val()
+                result = $.ajax({
+
+                async: false,
+                type: 'POST',
+                url: strUrl,
+                dataType: 'json',
+                data: {
+                    Method: 'GetScheduleOverview',
+                    parameters: parameters
+                },
+                });
+            //$.each(JSON.parse(result.responseText), function (i, item) {
+            //    console.log(item[i]);
+            //});
+
+                jsonObj = [];
+            var Kdata = JSON.parse(result.responseText).map((obj) => {
+               // console.log(obj);
+                $.each(obj, function (k, v) {
+                    item = {}
+                    //display the key and value pair
+                    item["name"] = k;
+                    item["title"] = k;
+                    jsonObj.push(item);
+                });
+            });
+            var ids = [];
+            var clean = [];
+
+            $.each(jsonObj, function (index, value) {
+                if ($.inArray(value.name, ids) == -1) {
+                    ids.push(value.name);
+                    clean.push(value);
+                }
+            });
+            console.log(clean);
+            (function ($) {
+                'use strict'
+                var data;
+                var act;
+                $("#tbl_AllLocationLeavList").jsGrid({
+                    width: "100%",
+                    height: "400px",
+                    filtering: true,
+                    inserting: true,
+                    editing: true,
+                    sorting: true,
+                    paging: true,
+                    autoload: true,
+                    pageSize: 10,
+                    pageButtonCount: 5,
+                    loadMessage: "Please, wait...",
+                    controller: {
+                        loadData: function (filter) {
+                            return result;
+                        }
+                    },
+                    onRefreshed: function (args) {
+                        $(".jsgrid-insert-row").hide();
+                        $(".jsgrid-filter-row").hide();
+                        $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
+
+                    },
+                    fields: clean
+                });
+            })(jQuery);
+        });
+        $("#SearchText").keyup(function () {
+            var result = "";
+            var strUrl = "@Url.Action("GetData", "GlobalSettings")";
+                var parameters = {};
+                parameters['FromDate'] = $("#FromDate").val(),
+                parameters['ToDate'] = $("#ToDate").val()
+                parameters['SeatLocationType'] = $("#SeatLocationType").val()
+            parameters['Search'] = $("#SearchText").val()
+                result = $.ajax({
+
+                async: false,
+                type: 'POST',
+                url: strUrl,
+                dataType: 'json',
+                data: {
+                    Method: 'GetScheduleOverview',
+                    parameters: parameters
+                },
+                });
+            //$.each(JSON.parse(result.responseText), function (i, item) {
+            //    console.log(item[i]);
+            //});
+
+                jsonObj = [];
+            var Kdata = JSON.parse(result.responseText).map((obj) => {
+               // console.log(obj);
+                $.each(obj, function (k, v) {
+                    item = {}
+                    //display the key and value pair
+                    item["name"] = k;
+                    item["title"] = k;
+                    jsonObj.push(item);
+                });
+            });
+            var ids = [];
+            var clean = [];
+
+            $.each(jsonObj, function (index, value) {
+                if ($.inArray(value.name, ids) == -1) {
+                    ids.push(value.name);
+                    clean.push(value);
+                }
+            });
+            console.log(clean);
+            (function ($) {
+                'use strict'
+                var data;
+                var act;
+                $("#tbl_AllLocationLeavList").jsGrid({
+                    width: "100%",
+                    height: "400px",
+                    filtering: true,
+                    inserting: true,
+                    editing: true,
+                    sorting: true,
+                    paging: true,
+                    autoload: true,
+                    pageSize: 10,
+                    pageButtonCount: 5,
+                    loadMessage: "Please, wait...",
+                    controller: {
+                        loadData: function (filter) {
+                            return result;
+                        }
+                    },
+                    onRefreshed: function (args) {
+                        $(".jsgrid-insert-row").hide();
+                        $(".jsgrid-filter-row").hide();
+                        $(".jsgrid-grid-header").removeClass("jsgrid-header-scrollbar");
+
+                    },
+                    fields: clean
+                });
+            })(jQuery);
+        });
+
+
+    });</script>
+
+
+

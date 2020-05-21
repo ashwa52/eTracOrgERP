@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WorkOrderEMS.Data.EntityModel;
+using WorkOrderEMS.Models;
 
 namespace WorkOrderEMS.Data.DataRepository
 {
@@ -35,7 +36,7 @@ namespace WorkOrderEMS.Data.DataRepository
         /// </summary>
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
-        public spGetDirectDepositForm_Result1 GetDirectDepositeDetails(string EmployeeId)
+        public spGetDirectDepositForm_Result GetDirectDepositeDetails(string EmployeeId)
         {
             try
             {
@@ -53,11 +54,29 @@ namespace WorkOrderEMS.Data.DataRepository
         /// </summary>
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
-        public spGetEmergencyContactForm_Result1 GetEmergencyContactForm(string EmployeeId)
+        public spGetEmergencyContactForm_Result GetEmergencyContactForm(string EmployeeId)
         {
             try
             {
                 return _workorderems.spGetEmergencyContactForm(EmployeeId).FirstOrDefault();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created For : TO get W4 form data
+        /// Created Date : 09-Dec-2019
+        /// </summary>
+        /// <param name="EmployeeId"></param>
+        /// <returns></returns>
+        public spGetW4Form_Result GetW4FormData(string EmployeeId)
+        {
+            try
+            {
+                return _workorderems.spGetW4Form(EmployeeId).FirstOrDefault();
             }
             catch (Exception ex)
             {
@@ -75,6 +94,17 @@ namespace WorkOrderEMS.Data.DataRepository
             try
             {
                 return _workorderems.FileTypes.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        public int SetFiles(UploadedFiles Obj, string EmployeeId)
+        {
+            try
+            {
+                return _workorderems.spSetFileUpload(Obj.Action,Obj.Id, Obj.FileEmployeeId, Obj.FileId, Obj.FileName,Obj.AttachedFileName,EmployeeId,"Y");
             }
             catch (Exception ex)
             {

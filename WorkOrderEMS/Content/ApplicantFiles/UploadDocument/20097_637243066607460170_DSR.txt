@@ -1,0 +1,55 @@
+************************  02/05/2017 ***********************
+created methods for timezone for mobile app.
+************************ 03/05/2017 ************************
+modified services for timezone.
+DAR changes done.
+
+************************ 04/05/2017 ************************
+Laptop setup 
+checked idle time issue.
+************************ 05/05/2017 ************************
+Shuttle bus web service
+estimation of new changes.
+date range issue
+
+*********************** 08/05/2017 **************************
+Shuttle bus web services
+Employee doesn't have rights to create and edit QRC.
+********************** 09/05/2017 ***************************
+Email sending for shuttle damage, tire damage, change mileage
+modified web service for shuttle model.
+anaylsis of employe dashboard. 
+
+********************** 10/05/2017 ***************************
+CreateShuttleWorkOrder - web service for creating work order when user click for on work request tab from QRC scan main menu
+ShuttleDamagedImgUpload - web service for image upload.
+ 
+********************** 11/0502017 ***************************
+ worked on webservice
+ 
+********************** 12/0502017 ***************************
+ worked on employee dashboard.
+ working on timer js.
+ 
+********************** 15/0502017 **************************
+ Working on timer in eMaintenance report.
+ Working on timer in DAR Reports.
+ 
+*********************** 16/05/2017 *************************
+  Working on timer in DAR Reports.
+  Worked on service getemployeecontinuoustasklist.
+  Worked on QRC type list.
+  Worked on DAR start time,end time and adescription issue service
+  
+*********************** 23/05/2017 *************************
+   continuous request start time and end time
+   fixed timereport
+*********************** 24/05/2017 *************************
+workorderissued all employees dropdown.
+[sp_GetWorkOrderIssuedForLocation]
+changes in DAR list and sp, sp_GetAllDARDetails
+
+*********************** 25/05/2017 ******************************
+Web service for savingDAR disclaimer
+added web key - DARSignature
+added folder in content - DARDisclaimer

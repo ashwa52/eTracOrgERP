@@ -14,6 +14,7 @@ using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
 using WorkOrderEMS.Models.CommonModels;
 using WorkOrderEMS.Models.ManagerModels;
+using WorkOrderEMS.Models.NewAdminModel;
 using static WorkOrderEMS.Models.PrintQRCModel;
 
 namespace WorkOrderEMS.BusinessLogic.Managers
@@ -26,6 +27,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         private string ProfileImagePath = ConfigurationManager.AppSettings["ProfilePicPath"];
         private string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private string ImagePathSignature = ConfigurationManager.AppSettings["UserSignature"];
+
 
         CommonRepository objCommonRepository = new CommonRepository();
 
@@ -1778,7 +1780,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 lstManagerList = _workorderems.UserRegistrations.Where(x => x.IsDeleted == false && x.IsEmailVerify == true).Select(a => new ManagerModel()
                 {
                     UserName = a.FirstName + " " + a.LastName,
-                    UserID = a.UserId
+                    UserEmail = a.EmployeeID
                 }).ToList();
             }
             catch (Exception ex)
@@ -1866,19 +1868,23 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             {
                 if (obj != null)
                 {
-                    if (obj != null && obj.WorkOrderID != null) {
+                    if (obj != null && obj.WorkOrderID != null)
+                    {
                         objData = repository.GetSingleOrDefault(x => x.WorkOrderID == obj.WorkOrderID && x.IsDeleted == false);
                         objData.IsRead = true;
                     }
-                    else if (obj != null && obj.eFleetID != null) {
+                    else if (obj != null && obj.eFleetID != null)
+                    {
                         objData = repository.GetSingleOrDefault(x => x.eFleetID == obj.eFleetID && x.IsDeleted == false);
                         objData.IsRead = true;
                     }
-                    else if (obj != null && obj.MiscellaneousID != null) {
+                    else if (obj != null && obj.MiscellaneousID != null)
+                    {
                         objData = repository.GetSingleOrDefault(x => x.MiscellaneousID == obj.MiscellaneousID && x.IsDeleted == false);
                         objData.IsRead = true;
                     }
-                    else if (obj != null && obj.POID != null) {
+                    else if (obj != null && obj.POID != null)
+                    {
                         objData = repository.GetSingleOrDefault(x => x.POID == obj.POID && x.IsDeleted == false);
                         if (obj.AssignTo > 0)
                         {
@@ -1901,7 +1907,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     {
                         objData.ReadDate = DateTime.UtcNow;
                         repository.Update(objData);
-                        _db.SaveChanges();
+                        repository.SaveChanges();
                         isUpdate = true;
                     }
                 }
@@ -2336,7 +2342,8 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     MiscellaneousID = a.MiscellaneousID,
                     eScanQRCID = a.eScanId,
                     IsRead = a.IsRead,
-                    CreatedBy=a.CreatedBy
+                    CreatedBy = a.CreatedBy,
+                    NotificationId = a.NID
                 }).ToList();
                 var userDetails = _db.UserRegistrations.Where(x => x.UserId == UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
                 if (notification.Count() > 0)
@@ -2383,9 +2390,10 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                           FacilityRequest = a.q.FacilityRequestId,
                                           AddressFacilityReq = a.q.Address,
                                           LicensePlateNo = a.q.LicensePlateNo,
-                                          CreatedBy=assignedBy.FirstName+" "+assignedBy.LastName,
-                                          EmployeeImage = assignedBy.ProfileImage// == null ? HostingPrefix + "/Content/Images/ProjectLogo/no-profile-pic.jpg" : HostingPrefix + (ConfigurationManager.AppSettings["WorkRequestImage"]).Replace("~", "") + assignedBy.ProfileImage
-
+                                          CreatedBy = assignedBy.FirstName + " " + assignedBy.LastName,
+                                          EmployeeImage = assignedBy.ProfileImage,// == null ? HostingPrefix + "/Content/Images/ProjectLogo/no-profile-pic.jpg" : HostingPrefix + (ConfigurationManager.AppSettings["WorkRequestImage"]).Replace("~", "") + assignedBy.ProfileImage
+                                          NotificationId = item.NotificationId,
+                                          WorkOrderID = item.WorkOrderID
 
                                       }).FirstOrDefault();
                             if (obj != null)
@@ -2417,15 +2425,18 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                 ///This is for Continues WO to send notification as per days 
                                 if (obj.WorkRequestProjectType == Convert.ToInt64(WorkRequestProjectType.ContinuousRequest))
                                 {
-                                    var dateList = obj.WeekDays.Split(',').ToList();
-                                    var todaysDate = DateTime.Now.ToShortDateString();
-                                    obj.Message = "Continous request " + obj.WorkOrderCodeId + " has not been started after arrived time" + obj.StartTime;
-                                    foreach (var date in dateList)
+                                    if (obj.WeekDays != null)
                                     {
-                                        if (date == todaysDate)
+                                        var dateList = obj.WeekDays.Split(',').ToList();
+                                        var todaysDate = DateTime.Now.ToShortDateString();
+                                        obj.Message = "Continous request " + obj.WorkOrderCodeId + " has not been started after arrived time" + obj.StartTime;
+                                        foreach (var date in dateList)
                                         {
-                                            //obj.IsWorkable = false;
-                                            listTask.Add(obj);
+                                            if (date == todaysDate)
+                                            {
+                                                //obj.IsWorkable = false;
+                                                listTask.Add(obj);
+                                            }
                                         }
                                     }
                                 }
@@ -2620,11 +2631,185 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
             catch (Exception ex)
             {
-                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<EmailHelper> GetUnseenList(NotificationDetailModel objDetails)", "Exception while getting the list for notification details", obj);
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<EmailHelper> GetUnseenNotifications(NotificationDetailModel objDetails)", "Exception while getting the list for notification details", obj);
                 throw;
             }
 
 
+        }
+        public bool SetIsReadNotification(long NotificationId)
+        {
+            var _db = new workorderEMSEntities();
+            bool result = false;
+            try
+            {
+                var Notification = _db.NotificationDetails.Where(x => x.NID == NotificationId).First();
+                if (Notification != null)
+                {
+                    Notification.IsRead = true;
+                    _db.SaveChanges();
+                    result = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                result = false;
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SetIsReadNotification(long NotificationId)", "Exception while Updating Notification IsRead Flag", NotificationId);
+
+                throw;
+            }
+            return result;
+        }
+
+        public List<EmailHelper> GeteScanNotifications(long UserId)
+        {
+            var _db = new workorderEMSEntities();
+            var listTask = new List<EmailHelper>();
+            var objEmailHelper = new EmailHelper();
+            var notification = new List<NotificationDetailModel>();
+            var obj = new EmailHelper();
+            var underMe = _db.UserRegistrations.Where(x => x.ManagerForUser == UserId && x.IsDeleted == false && x.IsEmailVerify == true).ToList();
+            try
+            {
+                notification = _db.NotificationDetails.Where(x => x.IsRead == false && x.IsDeleted == false && x.CreatedBy == UserId && x.eScanId != null).Select(a => new NotificationDetailModel()
+                {
+                    WorkOrderID = a.WorkOrderID,
+                    AssignTo = a.AssignUserId,
+                    POID = a.POID,
+                    BillID = a.BillID,
+                    MiscellaneousID = a.MiscellaneousID,
+                    eScanQRCID = a.eScanId,
+                    IsRead = a.IsRead,
+                    CreatedBy = a.CreatedBy,
+                    NotificationId = a.NID,
+                }).ToList();
+                foreach (var item in underMe)
+                {
+                    var result = _db.NotificationDetails.Where(x => x.IsRead == false && x.IsDeleted == false && x.CreatedBy == item.UserId && x.eScanId != null).Select(a => new NotificationDetailModel()
+                    {
+                        WorkOrderID = a.WorkOrderID,
+                        AssignTo = a.AssignUserId,
+                        POID = a.POID,
+                        BillID = a.BillID,
+                        MiscellaneousID = a.MiscellaneousID,
+                        eScanQRCID = a.eScanId,
+                        IsRead = a.IsRead,
+                        CreatedBy = a.CreatedBy,
+                        NotificationId = a.NID,
+                    }).ToList();
+                    notification.AddRange(result);
+                }
+
+                var userDetails = _db.UserRegistrations.Where(x => x.UserId == UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
+
+                if (notification.Count() > 0)
+                {
+                    foreach (var item in notification)
+                    {
+                        var assignedBy = _db.UserRegistrations.Where(x => x.UserId == item.CreatedBy && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
+                        #region eScan
+                        if (item.eScanQRCID != null && item.eScanQRCID > 0)
+                        {
+                            var eScanData = new EmailHelper();
+                            if (item.IsRead == false)
+                            {
+                                eScanData = _db.QRCMasters.Where(x => x.QRCID == item.eScanQRCID && x.IsDeleted == false)
+                                   .Select(a => new EmailHelper()
+                                   {
+                                       MailType = a.IsDamage == true ? "QRCVEHICLEDAMAGE" : a.CheckOutStatus == true ? "CHECKINCHECKOUT" : null,
+                                       ManagerName = userDetails.FirstName + " " + userDetails.LastName,
+                                       LocationName = a.LocationMaster.LocationName,
+                                       QrCodeId = a.QRCodeID.ToString(),
+                                       SentBy = userDetails.UserId,
+                                       LocationID = a.LocationId,
+                                       IsWorkable = false,
+                                       CheckoutUserName = a.UserName,
+                                       CreatedBy = assignedBy.FirstName + " " + assignedBy.LastName,
+                                       EmployeeImage = assignedBy.ProfileImage,// == null ? HostingPrefix + "/Content/Images/ProjectLogo/no-profile-pic.jpg" : HostingPrefix + (ConfigurationManager.AppSettings["WorkRequestImage"]).Replace("~", "") + assignedBy.ProfileImage
+                                       NotificationId = item.NotificationId,
+                                       eScanQRCID = item.eScanQRCID
+                                   }).FirstOrDefault();
+                            }
+                            if (eScanData != null)
+                            {
+                                eScanData.Message = "Someone want to checkout QRC " + eScanData.QrCodeId + " which is already checked out by" + eScanData.CheckoutUserName;
+                                eScanData.WorkOrderImage = HostingPrefix + "/Content/Images/WorkRequest/no-asset-pic.png";
+                                ///To approve PO need company name so added this code just for approval process.                        
+                                listTask.Add(eScanData);
+                            }
+                        }
+                        #endregion eScan
+                    }
+                }
+                return listTask.OrderByDescending(x => x.WorkRequestAssignmentID).OrderByDescending(x => x.PONumber).ToList();
+
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<EmailHelper> GetUnseenNotifications(NotificationDetailModel objDetails)", "Exception while getting the list for notification details", obj);
+                throw;
+            }
+
+        }
+        public List<CustomSlotTime> GetSlotTimings(long userid, string date)
+        {
+            List<CustomSlotTime> ListSlotTime = new List<CustomSlotTime>();
+            try
+            {
+                using (var _db = new workorderEMSEntities())
+                {
+                    //ListSlotTime= _db.SlotTimes.Select(x => new CustomSlotTime()
+                    //{
+                    //    SLT_Id = x.SLT_Id,
+                    //    SLT_IsActive = x.SLT_IsActive,
+                    //    SLT_fromTime = x.SLT_fromTime.ToString()
+
+                    //}).ToList();
+                    ListSlotTime = _db.spGetFreeSlote(userid.ToString(),Convert.ToDateTime(date)).Select(x => new CustomSlotTime()
+                    {
+                        SLT_Id = x.SLT_Id,
+                        SLT_fromTime = x.SLT_fromTime.ToString()
+
+                    }).ToList();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return ListSlotTime;
+        }
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 06-04-2020
+        /// Created For : To convert get object and conver into string in json format
+        /// </summary>
+        /// <param name="APIName"></param>
+        /// <returns></returns>
+        public string GetJsoSerializeDataForAPI(string apiNameInput,object obj)
+        {
+            string outputData = string.Empty;
+            switch (apiNameInput)
+            {
+                case APIName.I9AuthenticationAPI:
+                    var authModel = new I9Authentication();
+                    authModel.username = ConfigurationManager.AppSettings["I9UserName"];
+                    authModel.password = ConfigurationManager.AppSettings["I9Password"];
+                    outputData = Newtonsoft.Json.JsonConvert.SerializeObject(authModel);
+                    break;
+                case APIName.I9PostDataCase:
+                    outputData = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+                    break;
+                case APIName.I9CaseSubmit:
+                    outputData = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+                    break;
+                case APIName.BackGroudScreening:
+                    outputData = Newtonsoft.Json.JsonConvert.SerializeObject(obj);
+                    break;
+            }           
+            return outputData;
         }
     }
 }

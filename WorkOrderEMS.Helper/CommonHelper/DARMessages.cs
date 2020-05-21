@@ -333,5 +333,49 @@ namespace WorkOrderEMS.Helper
         {
             return string.Format(CultureInfo.InvariantCulture, "Facility is added for vendor {0} by user {1}", VendorName, UserName);
         }
+        public static string AddAssetsForHiredApplicant(string ApplicantName, string HiringManagerName, string LocationName)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "{0} has been hired by {1}  for location {2} please add assets for him.", ApplicantName, HiringManagerName, LocationName);
+        }
+        public static string OfferCouterByAppicant(string ApplicantName, string JobTitle, string LocationName)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "{0} has been counter offer for postition {1} . please check comment and send onother offer if needed.", ApplicantName, JobTitle);
+        }
+        public static string OfferRejectByAppicant(string ApplicantName, string JobTitle, string LocationName)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "{0} has been reject offer for position {1}  for location {2} .", ApplicantName, JobTitle, LocationName);
+        }
+        public static string SelectedAsInterviewer( string JobTitle)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "You got selected as a interview for {0} .", JobTitle);
+        }
+        public static string InterviewAcceptByApplicant(string JobTitle,string Status)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "Applicant Has selected {1} for interview for{0} .", JobTitle, Status);
+        }
+        public static string InterviewDenyByApplicant(string JobTitle)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "Candidate Has been rejected for this {0} .", JobTitle);
+        }
+        public static string AssessmentReject(string JobTitle)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "Candidate Has been rejected for this {0} .", JobTitle);
+        }
+        public static string AssessmentClear(string JobTitle)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "Candidate Has been selected for this {0} .", JobTitle);
+        }
+        public static string OnboardingComplete(string ApplicantName)
+        {
+            return string.Format(CultureInfo.InvariantCulture, "{0} has been completed onboarding process please schedule the orientation.", ApplicantName);
+        }
+        public static string EvaluationStartManager(string EmployeeName, string Assessment)
+        {
+            return string.Format(CultureInfo.InvariantCulture, " The employee {0} has been completed their self assessment {1}, please complete evaluation for this employee.", EmployeeName, Assessment);
+        }
+        public static string EvaluationCompleteByManager(string EmployeeName, string ManagerName, string Assessment)
+        {
+            return string.Format(CultureInfo.InvariantCulture, " The Manager {0} has been completed the evaluation {1} for employee {2}.", EmployeeName, Assessment, ManagerName);
+        }
     }
 }

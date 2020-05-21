@@ -1,0 +1,142 @@
+﻿@model WorkOrderEMS.Models.BudgetForLocationModel
+@{
+    //ViewBag.Title = "Budget Allocation for Location : " + ViewBag.LocationName;
+    //Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+    Layout = null;
+    long locationId = 0;
+    long userType = 0;
+    string loCId = ViewBag.LocationId;
+    string loginUserName = string.Empty;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+        loginUserName = ObjLogin.FName + "'s";
+    }
+}
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+@section scripts{
+    <script type="text/javascript">
+    var $_locationId = '@locationId';
+            var $_userTypeId = '@userType';
+            var $_locId = '@loCId';
+    </script>
+    @*<script src="~/GridListing/JqGridScript/ListBudgetForLocation.js"></script>*@
+
+}
+<input type="hidden" value="@loCId" id="AddBudgetForLocation" />
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3" data-aos="fade-up">
+            <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
+                <div class="welcome-text">
+                    <h4>Hi, welcome back! @loginUserName</h4>
+                    <p class="mb-0">Add Budget for <strong style="color:black;font-size:13px;background: yellow;">@ViewBag.LocationName</strong></p>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-top:-20px;">
+            <div class="col-lg-12">
+                <div class="card" data-aos="fade-up">
+                    <div style="height: 45px;background:#0aa0cd;">
+                        <div class="form-group row" style="margin-top:6px;margin-left:10px;">
+                            <div class="col-sm-1">
+                                <a href="javascript:void(0)" id="callListLocation"><span><i class="fa fa-arrow-left" title="Back to List" style="color:white;font-size:28px;"></i></span></a>
+                            </div>
+                            <div class="col-sm-2">
+                                <select class="form-control input-rounded" id="YearSelected">
+                                    <option value="2019">2019</option>
+                                    <option value="2020">2020</option>
+                                </select>
+
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="button" id="AddBudget" class="btn btn-primary" value="Add Budget" style="border-radius: 30px;background: darkgreen;width: 144px;" />
+                            </div>
+                            <div class="col-sm-2">
+                                <label style="color:white;font-size:15px;"><strong> Budget Amount : <span id="BudgetAmount"></span></strong></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="custom-tab-1">
+                            <ul class="nav nav-tabs">
+                                <li class="nav-item WidthForTab">
+                                    <a class="nav-link active CenterText" style="width: 181px;text-align: center;" data-toggle="tab" href="#BudgetList">Add Budget</a>
+                                </li>
+                                <li class="nav-item WidthForTab" style="width:190px;">
+                                    <a class="nav-link CenterText" style="text-align: center;" data-toggle="tab" href="#AllocatedBudgetList">Allocated Budget</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="BudgetList" role="tabpanel">
+                                    <div class="pt-4">
+                                        <div id="ListBudgetAllocation"></div>
+                                    </div>
+                                    <div>
+                                        <input type="button" style="border-radius:30px;width: 115px;" class="btn btn-success" id="btnSaveAllBudget" value="Save Budget" />
+                                        <input type="button" style="border-radius:30px;width: 115px;margin-left:10px;" class="btn btn-success" id="btnAddCostCode" value="Add Cost Code" />
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="AllocatedBudgetList">
+                                    <div class="pt-4">
+                                        <div id="ListAllocatedBudget"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForBudgetAmount">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="display: inherit;">
+                <h4 class="modal-title" id="myModalLabel">Add Budget Amount for location :@ViewBag.LocationName</h4>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary(true)
+            <div class="modal-body" style="margin-left: 0px;">
+                <div class="card-body">
+                    <div class="basic-form">
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.BudgetAmount, htmlAttributes: new { @class = "control-label col-sm-4" })
+                            <div class="col-sm-8">
+                                @Html.TextBoxFor(model => model.BudgetAmount, new { @class = "form-control input-rounded", placeholder = "$", @id = "NewBudgetAmount" })
+                                @Html.ValidationMessageFor(model => model.BudgetAmount, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button data-dismiss="modal" style="border-radius:30px;width: 90px;" class="btn btn-primary" id="btnCancelqwe">Close</button>
+                <input type="button" style="border-radius:30px;width: 90px;" class="btn btn-success" id="btnSaveForCostCode" value="Save" />
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="~/Scripts/BootStrap-Multiselect/JS/bootbox.js"></script>
+<script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
+<script src="~/GridListing/JsGridScript/ListBudgetForLocation.js"></script>
+<script src="~/GridListing/JsGridScript/ListAllocatedBudget.js"></script>
+@*<script src="~/GridListing/JqGridScript/ListOfBudgetAfterSavingTransferAmoutForCostCode.js"></script>*@
+<script>
+    $("#drp_MasterLocation1").hide();
+    $("#callListLocation").click(function () {
+        var addNewUrl = "@Url.Action("ListLocation", "GlobalAdmin")";
+        $('#RenderPageId').load(addNewUrl);
+    });
+</script>

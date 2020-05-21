@@ -1,0 +1,594 @@
+﻿@*@model WorkOrderEMS.Models.AddChartModel*@
+@{
+
+    string EmployeeId = (Convert.ToString(Session["EmployeeId"]));
+    Layout = null;
+}
+
+@*<link href="~/Areas/AdminSection/Content/CSS/GetOrg.css" rel="stylesheet" />*@
+<link href="~/Content/NewAdminContent/CSS/NewTreeVSC.css" rel="stylesheet" />
+@*<link href="~/Content/NewAdminContent/CSS/GetOrgForRequision.css" rel="stylesheet" />*@
+<br />
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card" data-aos="fade-up">
+                    <div style="height: 45px;background:#0aa0cd;">
+                        <div class="form-group row" style="margin-left:10px;margin-top:6px;">
+                            <a id="BackToEmployeeGrid" title="Back to Employee List" style="cursor:pointer;"><i class="fa fa-long-arrow-left fa-2x" style="color:white;"></i></a>
+                            <a class="font-button plus">A+</a> <a class="font-button minus">A-</a>
+                        </div>
+                    </div>
+                    <div class="card-body">                       
+                            <div class="row">                                
+                                    <div class="tree">
+                                        <ul>
+                                            <li id="TreeId">
+                                                <a href="#">
+                                                    <div class="container-fluid">
+                                                        <div class="row RowVSC" style="margin: -10px;">
+                                                            <strong> <p style="padding-top: 6px;color: black;">Visionary</p></strong>
+                                                        </div>
+                                                        <div class="row RowImgVSC" style="margin-top:20px;">
+                                                            <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />                           
+                                                        </div>
+
+                                                        <div class="row">
+                                                            * LMA
+                                                            <br>
+                                                            * Sales
+                                                            <br>
+                                                            * Financial Service
+                                                            <br>
+
+                                                        </div>
+                                                        <div class="row" style="margin-top: 25px;">
+                                                            <span>
+                                                                <i class="fa fa-plus-square fa-2x" title="Add VSC"></i>
+                                                                <i class="fa fa-dot-circle-o fa-2x" style="margin-left: 5px;" title="Add Job"></i>
+                                                                <i class="fa fa-trash fa-2x" style="margin-left: 5px;" title="Delete VSC"></i>
+                                                                <i class="fa fa-plus-circle fa-2x" style="margin-left: 5px;" title="Head Count"></i>
+                                                            </span>
+                                                        </div>
+
+                                                    </div>
+
+                                                </a>
+                                                <ul>
+                                                    <li>
+                                                        <a href="#">
+
+                                                            <div class="container-fluid">
+                                                                <div class="row RowVSC" style="margin: -10px;">
+                                                                    <strong> <p style="padding-top: 6px;color: black;"> Operations</p></strong>
+                                                                </div>
+                                                                <div class="row RowImgVSC" style="margin-top:20px;">
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <span id="li1" class="trigger">+5</span>
+                                                                </div>
+                                                                <div class="row">
+                                                                    * LMA
+                                                                    <br>
+                                                                    * Client Operation and Customer Services
+                                                                    <br>
+                                                                    * Business Operation
+                                                                    <br>
+                                                                </div>
+                                                                <div class="row" style="margin-top: 25px;">
+                                                                    <span>
+                                                                        <i class="fa fa-plus-square fa-2x" title="Add VSC"></i>
+                                                                        <i class="fa fa-dot-circle-o fa-2x" style="margin-left: 5px;" title="Add Job"></i>
+                                                                        <i class="fa fa-trash fa-2x" style="margin-left: 5px;" title="Delete VSC"></i>
+                                                                        <i class="fa fa-plus-circle fa-2x" style="margin-left: 5px;" title="Head Count"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                        </a>
+                                                        <div id="pop-up" style="display:none;">
+                                                            <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                            <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                            <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                            <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                            <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                        </div>
+                                                        <ul>
+                                                            <li>
+                                                                <a href="#">
+
+                                                                    <div class="container-fluid">
+                                                                        <div class="row RowVSC" style="margin: -10px;">
+                                                                            <strong> <p style="padding-top: 6px;color: black;">eCommand</p></strong>
+                                                                        </div>
+
+                                                                        <div class="row RowImgVSC" style="margin-top:20px;">
+                                                                            <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                            <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                            <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                            <span>+5</span>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            * LMA
+                                                                            <br>
+                                                                            * Operation Oversight
+                                                                            <br>
+                                                                            * Facility Monitoring
+                                                                        </div>
+                                                                        <div class="row" style="margin-top: 25px;">
+                                                                            <span>
+                                                                                <i class="fa fa-plus-square fa-2x" title="Add VSC"></i>
+                                                                                <i class="fa fa-dot-circle-o fa-2x" title="Add Job"></i>
+                                                                                <i class="fa fa-trash fa-2x" title="Delete VSC"></i>
+                                                                                <i class="fa fa-plus-circle fa-2x" title="Head Count"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </a>
+                                                            </li>
+
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">
+
+                                                            <div class="container-fluid">
+                                                                <div class="row RowVSC" style="margin: -10px;">
+                                                                    <strong> <p style="padding-top: 6px;color: black;">Financial Services</p></strong>
+                                                                </div>
+                                                                <div class="row RowImgVSC" style="margin-top:20px;">
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <span>+5</span>
+                                                                </div>
+                                                                <div class="row">
+                                                                    * LMA
+                                                                    <br>
+                                                                    * Budget Cashflow and Monthly Report
+                                                                    <br>
+                                                                    * Organizational Serviceservices
+                                                                    <br>
+                                                                </div>
+                                                                <div class="row" style="margin-top: 25px;">
+                                                                    <span>
+                                                                        <i class="fa fa-plus-square fa-2x" title="Add VSC"></i>
+                                                                        <i class="fa fa-dot-circle-o fa-2x" style="margin-left: 5px;" title="Add Job"></i>
+                                                                        <i class="fa fa-trash fa-2x" style="margin-left: 5px;" title="Delete VSC"></i>
+                                                                        <i class="fa fa-plus-circle fa-2x" style="margin-left: 5px;" title="Head Count"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">
+
+                                                            <div class="container-fluid">
+                                                                <div class="row RowVSC" style="margin: -10px;">
+                                                                    <strong> <p style="padding-top: 6px;color: black;">Compliance</p></strong>
+                                                                </div>
+                                                                <div class="row RowImgVSC" style="margin-top:20px;">
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <span>+5</span>
+                                                                </div>
+                                                                <div class="row">
+                                                                    * LMA
+                                                                    <br>
+                                                                    * Internal Audit
+                                                                    <br>
+                                                                    * Risk Management
+                                                                    <br>
+                                                                    * PCI Complaince
+                                                                    </br>
+                                                                    * Operation
+                                                                </div>
+                                                                <div class="row" style="margin-top: 25px;">
+                                                                    <span>
+                                                                        <i class="fa fa-plus-square fa-2x" title="Add VSC"></i>
+                                                                        <i class="fa fa-dot-circle-o fa-2x" style="margin-left: 5px;" title="Add Job"></i>
+                                                                        <i class="fa fa-trash fa-2x" style="margin-left: 5px;" title="Delete VSC"></i>
+                                                                        <i class="fa fa-plus-circle fa-2x" style="margin-left: 5px;" title="Head Count"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">
+
+                                                            <div class="container-fluid">
+                                                                <div class="row RowVSC" style="margin: -10px;">
+                                                                    <strong> <p style="padding-top: 6px;color: black;">Business Development</p></strong>
+                                                                </div>
+                                                                <div class="row RowImgVSC" style="margin-top:20px;">
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <span>+5</span>
+                                                                </div>
+                                                                <div class="row">
+                                                                    * Contract Management
+                                                                    <br>
+
+                                                                </div>
+                                                                <div class="row" style="margin-top: 25px;">
+                                                                    <span>
+                                                                        <i class="fa fa-plus-square fa-2x" title="Add VSC"></i>
+                                                                        <i class="fa fa-dot-circle-o fa-2x" style="margin-left: 5px;" title="Add Job"></i>
+                                                                        <i class="fa fa-trash fa-2x" style="margin-left: 5px;" title="Delete VSC"></i>
+                                                                        <i class="fa fa-plus-circle fa-2x" style="margin-left: 5px;" title="Head Count"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">
+
+                                                            <div class="container-fluid">
+                                                                <div class="row RowVSC" style="margin: -10px;">
+                                                                    <strong> <p style="padding-top: 6px;color: black;">Director of Product Development</p></strong>
+                                                                </div>
+                                                                <div class="row RowImgVSC" style="margin-top:20px;">
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <span>+5</span>
+                                                                </div>
+                                                                <div class="row">
+                                                                    * LMA
+                                                                    <br>
+                                                                    * AV Software Management
+                                                                </div>
+                                                                <div class="row" style="margin-top: 25px;">
+                                                                    <span>
+                                                                        <i class="fa fa-plus-square fa-2x" title="Add VSC"></i>
+                                                                        <i class="fa fa-dot-circle-o fa-2x" style="margin-left: 5px;" title="Add Job"></i>
+                                                                        <i class="fa fa-trash fa-2x" style="margin-left: 5px;" title="Delete VSC"></i>
+                                                                        <i class="fa fa-plus-circle fa-2x" style="margin-left: 5px;" title="Head Count"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">
+
+                                                            <div class="container-fluid">
+                                                                <div class="row RowVSC" style="margin: -10px;">
+                                                                    <strong> <p style="padding-top: 6px;color: black;">Customer</p></strong>
+                                                                </div>
+                                                                <div class="row RowImgVSC" style="margin-top:20px;">
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <span>+5</span>
+                                                                </div>
+                                                                <div class="row">
+                                                                    3 Failed Tests
+                                                                </div>
+                                                                <div class="row" style="margin-top: 25px;">
+                                                                    <span>
+                                                                        <i class="fa fa-plus-square fa-2x" title="Add VSC"></i>
+                                                                        <i class="fa fa-dot-circle-o fa-2x" style="margin-left: 5px;" title="Add Job"></i>
+                                                                        <i class="fa fa-trash fa-2x" style="margin-left: 5px;" title="Delete VSC"></i>
+                                                                        <i class="fa fa-plus-circle fa-2x" style="margin-left: 5px;" title="Head Count"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">
+
+                                                            <div class="container-fluid">
+                                                                <div class="row RowVSC" style="margin: -10px;">
+                                                                    <strong> <p style="padding-top: 6px;color: black;">Customer</p></strong>
+                                                                </div>
+                                                                <div class="row" style="margin-top:20px;">
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <span>+5</span>
+                                                                </div>
+                                                                <div class="row">
+                                                                    3 Failed Tests
+                                                                </div>
+                                                                <div class="row" style="margin-top: 25px;">
+                                                                    <span>
+                                                                        <i class="fa fa-plus-square fa-2x" title="Add VSC"></i>
+                                                                        <i class="fa fa-dot-circle-o fa-2x" style="margin-left: 5px;" title="Add Job"></i>
+                                                                        <i class="fa fa-trash fa-2x" style="margin-left: 5px;" title="Delete VSC"></i>
+                                                                        <i class="fa fa-plus-circle fa-2x" style="margin-left: 5px;" title="Head Count"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">
+
+                                                            <div class="container-fluid">
+                                                                <div class="row RowVSC" style="margin: -10px;">
+                                                                    <strong> <p style="padding-top: 6px;color: black;">Payments</p></strong>
+                                                                </div>
+                                                                <div class="row RowImgVSC" style="margin-top:20px;">
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <p>+5</p>
+                                                                </div>
+                                                                <div class="row">
+                                                                    5 Failed Tests
+                                                                </div>
+                                                                <div class="row" style="margin-top: 25px;">
+                                                                    <span>
+                                                                        <i class="fa fa-plus-square fa-2x" title="Add VSC"></i>
+                                                                        <i class="fa fa-dot-circle-o fa-2x" style="margin-left: 5px;" title="Add Job"></i>
+                                                                        <i class="fa fa-trash fa-2x" style="margin-left: 5px;" title="Delete VSC"></i>
+                                                                        <i class="fa fa-plus-circle fa-2x" style="margin-left: 5px;" title="Head Count"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                        <ul>
+                                                            <li>
+                                                                <a href="#">
+
+                                                                    <div class="container-fluid">
+                                                                        <div class="row RowVSC" style="margin: -10px;">
+                                                                            <strong> <p style="padding-top: 6px;color: black;"> Send Money</p></strong>
+                                                                        </div>
+                                                                        <div class="row RowImgVSC" style="margin-top:20px;">
+                                                                            <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                            <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                            <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                            <p>+5</p>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            3 Failed Tests
+                                                                        </div>
+                                                                        <div class="row" style="margin-top: 25px;">
+                                                                            <span>
+                                                                                <i class="fa fa-plus-square fa-2x" title="Add VSC"></i>
+                                                                                <i class="fa fa-dot-circle-o fa-2x" title="Add Job"></i>
+                                                                                <i class="fa fa-trash fa-2x" title="Delete VSC"></i>
+                                                                                <i class="fa fa-plus-circle fa-2x" title="Head Count"></i>
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="#">
+
+                                                                    <div class="container-fluid">
+                                                                        <div class="row RowVSC" style="margin: -10px;">
+                                                                            <strong> <p style="padding-top: 6px;color: black;">Send Request</p></strong>
+                                                                        </div>
+                                                                        <div class="row" style="margin-top:20px;">
+                                                                            <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                            <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                            <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                            <p>+5</p>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            2 Failed Tests
+                                                                        </div>
+                                                                    </div>
+
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">
+
+                                                            <div class="container-fluid">
+                                                                <div class="row RowVSC" style="margin: -10px;">
+                                                                    <strong> <p style="padding-top: 6px;color: black;">Online</p></strong>
+                                                                </div>
+                                                                <div class="row RowImgVSC" style="margin-top:20px;">
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <p>+5</p>
+                                                                </div>
+                                                                <div class="row">
+                                                                    7 Failed Tests
+                                                                </div>
+                                                                <div class="row" style="margin-top: 25px;">
+                                                                    <span>
+                                                                        <i class="fa fa-plus-square fa-2x" title="Add VSC"></i>
+                                                                        <i class="fa fa-dot-circle-o fa-2x" style="margin-left: 5px;" title="Add Job"></i>
+                                                                        <i class="fa fa-trash fa-2x" style="margin-left: 5px;" title="Delete VSC"></i>
+                                                                        <i class="fa fa-plus-circle fa-2x" style="margin-left: 5px;" title="Head Count"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="#">
+
+                                                            <div class="container-fluid">
+                                                                <div class="row RowVSC" style="margin: -10px;">
+                                                                    <strong> <p style="padding-top: 6px;color: black;">Online</p></strong>
+                                                                </div>
+                                                                <div class="row RowImgVSC" style="margin-top:20px;">
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <img class="VSCImg" src="~/Content/Images/ProfilePic/4_636778117199057068.png" />
+                                                                    <p>+5</p>
+                                                                </div>
+                                                                <div class="row">
+                                                                    7 Failed Tests
+                                                                </div>
+                                                                <div class="row" style="margin-top: 25px;">
+                                                                    <span>
+                                                                        <i class="fa fa-plus-square fa-2x"  title="Add VSC"></i>
+                                                                        <i class="fa fa-dot-circle-o fa-2x" style="margin-left: 5px;" title="Add Job"></i>
+                                                                        <i class="fa fa-trash fa-2x" style="margin-left: 5px;" title="Delete VSC"></i>
+                                                                        <i class="fa fa-plus-circle fa-2x" style="margin-left: 5px;" title="Head Count"></i>
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </li>
+
+                                        </ul>
+                                    </div>                                
+                            </div>   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalToAddJobPost">
+    <div class="modal-dialog modal-lg" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Post Job</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="divOpenJobPostForm" class=""></div>
+            </div>
+            <div style="margin-bottom:20px;">
+                <button type="button" class="btn btn-secondary pull-right" id="closeJobPost" style="border-radius:100px;width:16%;margin-right: 10px;" data-dismiss="modal">Close</button>
+                <input type="button" class="btn btn-primary pull-right" id="SaveJobPost" style="border-radius:100px;width:16%;margin-right: 8px;" value="Save" />
+            </div>
+        </div>
+    </div>
+</div>
+@*<script src="~/Content/NewAdminContent/JQUERY/GetOrgForRequisition.js"></script>*@
+<script src="~/Areas/AdminSection/Content/JQUERY/JobPostingJs.js"></script>
+<script type="text/javascript">
+        $(function () {
+            $(".font-button").bind("click", function () {
+                debugger
+                var size = parseInt($('#imgstones').css("width"));
+                if ($(this).hasClass("plus")) {
+                    size = size + 2;
+                } else {
+                    size = size - 2;
+                    if (size <= 10) {
+                        size = 10;
+                    }
+                }
+                $('#imgstones').css("font-size", size);
+            });
+        });
+</script>
+<script>
+    $(document).ready(function(){
+        var moveLeft = 20;
+        var moveDown = 10;
+
+        $('.trigger').hover(function(e) {
+            debugger
+            $('#pop-up').show();
+        }, function() {
+            $('#pop-up').hide();
+        });
+    });
+        $("#BackToEmployeeGrid").click(function () {
+            var addNewUrl = "@Url.Action("ePeopleDashboard", "NewAdmin")";
+            $('#RenderPageId').load(addNewUrl);
+        });
+        var VSCId;
+        debugger
+        var empId = '@EmployeeId';
+        $.ajax({
+            type: "POST",
+            // data: { 'Id': item.id},
+            url: '../EPeople/GetVehicleSeatingChartPositionedUser?Id=' + empId,
+            beforeSend: function () {
+                new fn_showMaskloader('Please wait...');
+            },
+            contentType: "application/json; charset=utf-8",
+            error: function (xhr, status, error) {
+            },
+            success: function (result) {
+                debugger
+                if (result != null) {
+                    VSCId = result.VSTId;
+                }
+            },
+            complete: function () {
+                fn_hideMaskloader();
+            }
+        });
+    var peopleElement = document.getElementById("ChartContainerEmployeeList");
+    var addNewUrl = "@Url.Action("GetChartDisplayData", "AdminDashboard", new { area = "AdminSection" })";
+    //$.ajax({
+    //    type: "POST",
+    //    url: addNewUrl,
+    //    success: function (listData) {
+    //        debugger
+    //        var PointingId;
+    //        var tabledata = [];
+    //        if (listData != null)
+    //        {
+    //            for (var i = 0; i < listData.length; i++)
+    //            {
+    //                var data = {};
+    //                if (i == 0)
+    //                {
+    //                    listData[i].parentId = null;
+    //                }
+    //                //$(".get-level-1 ").children().attr("class").attr({ "style": "fill:green" }); css('opacity', 1);
+    //                //$(".get-level-1 ").children().attr("class").attr({ "style": "fill:green" }); css('opacity', 1);
+    //                //if (listData[i].Id == VSCId)
+    //                //{
+    //                //    PointingId = VSCId;
+    //                //    $(".get-level-" + VSCId + " ").children().css('background', 'green');
+    //                //}
+    //                data.id = listData[i].Id;
+    //                data.parentId = listData[i].parentId;
+    //                data.SeatingName = listData[i].SeatingName;
+    //                data.JobDescription = listData[i].JobDescription;
+    //                data.DepartmentName = listData[i].DepartmentName;
+
+    //                tabledata.push(data);
+    //            }
+    //            var orgChart = new getOrgChart(peopleElement, {
+    //                primaryFields: ["SeatingName", "JobDescription", "DepartmentName"],
+    //                dataSource: tabledata,
+    //            });
+    //            $(".get-text-0").attr("y", "30"); $(".get-text-0").attr("y", "30");
+    //            $(".get-text-1").attr("y", "65"); $(".get-text-2").attr("y", "90");
+    //            $(".get-text-3").attr("y", "120"); $(".get-text-4").attr("y", "150");
+    //            $(".get-text-4").attr("y", "180"); $(".get-text-6").attr("y", "210");
+    //            $(".get-text-7").attr("y", "240"); $(".get-text-8").attr("y", "270");
+    //            $(".get-text-9").attr("y", "300"); $(".get-text-10").attr("y", "330");
+    //            $('[data-node-id="' + VSCId + '"]').children().first().css("fill", "green");
+    //        }
+    //        $('[data-node-id="' + VSCId + '"]').children().first().css("fill", "green");
+    //        //$(".get-level-" + PointingId + " ").children().css('fill', 'green');
+    //    },
+    //    error: function (err) {
+    //    }
+    //});
+
+
+</script>

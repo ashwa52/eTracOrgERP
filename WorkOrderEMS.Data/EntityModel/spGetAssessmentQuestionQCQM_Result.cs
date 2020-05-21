@@ -17,7 +17,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string EEL_EMP_EmployeeId { get; set; }
         public string EEL_EMP_EmployeeIdManager { get; set; }
         public string ASQ_QuestionType { get; set; }
-        public long ASQ_Id { get; set; }
+        public Nullable<long> ASQ_Id { get; set; }
         public string ASQ_Question { get; set; }
         public string EEL_FinencialYear { get; set; }
         public string EEL_FinQuarter { get; set; }

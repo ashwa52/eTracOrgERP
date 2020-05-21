@@ -1,0 +1,254 @@
+﻿@model WorkOrderEMS.Models.LocationSettingMaster
+@{
+    ViewBag.Title = "Add New Location";
+    //Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    Layout = null;
+    string eTracScriptVersion = System.Configuration.ConfigurationManager.AppSettings["eTracScriptVersion"];
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+    long loginUserType = 0;
+    long locationId = 0;
+    string ServiceId = string.Empty;
+    if (ObjLogin != null)
+    {
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+        loginUserType = ObjLogin.UserRoleId;
+        //loginUserContactNo = ObjLogin.ContactNo;
+        locationId = ObjLogin.LocationID;
+    }
+    if (ViewBag.UpdateMode == true)
+    {
+        ViewBag.Title = "Update Location"; ServiceId = ViewBag.ServicesID;
+    }
+
+    var Conditionlist = new List<SelectListItem>
+{
+new SelectListItem{ Text="Increase %", Value = "1" },
+new SelectListItem{ Text="Decrease %", Value = "2" },
+new SelectListItem{ Text="Set Amount", Value = "3"},
+new SelectListItem{ Text="Give Discount", Value = "4"},
+
+};
+}
+@Styles.Render("~/Scripts/ClockPickerCss")
+@Scripts.Render("~/Scripts/ClockPickerJs")
+<style>
+    .sign::after {
+        content: attr(data-sign) !important;
+        position: absolute !important;
+        top: 8px !important;
+        display: block !important;
+        left: 13em !important;
+    }
+</style>
+
+<br />
+<div class="content-body">
+    <div class="container-fluid">
+        <!-- row -->
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card" data-aos="fade-up">
+                    <div class="card-header headerSize" style="padding: 19px;">
+                        <h3 class="card-title" style="color:white;"><strong>Location Settings</strong></h3>
+                    </div>
+                    <div class="card-body">
+                        <br />
+                        <form action="@Url.Action("LocationSettiing", "GlobalAdmin")" method="post" id="step-form-horizontal" class="step-form-horizontal" role="form">
+                            <div class="basic-form">
+                                <div class="form-group row">
+                                    @Html.Label("Monthly Parker Invoicing Cost", new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(model => model.ParkerInvoicingCost, new { @Placeholder = "Monthly Parker Invoicing Cost", @class = "form-control input-rounded required " })
+                                        @Html.HiddenFor(model => model.LocationID)
+                                        @Html.HiddenFor(model => model.Id)
+
+                                    </div>
+                                    @Html.Label("Stop Monthly Parking Registration", new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-2">
+                                        @Html.RadioButtonFor(model => model.StopParkingRegistration, "ON", new { @class = "rbtn" })<span class="radio_span">
+                                            &nbsp;ON &nbsp;&nbsp;
+                                        </span>
+                                        @Html.RadioButtonFor(model => model.StopParkingRegistration, "OFF", new { @style = "margin-left:20%;", @class = "radio rbtn" })<span class="radio_span">
+                                            &nbsp;OFF
+                                        </span>
+                                        @Html.ValidationMessageFor(model => model.StopParkingRegistration)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.Label("Monthly Parkering Annual Rate Increases", new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-2 sign" data-sign="%">
+                                        @Html.TextBoxFor(model => model.ParkeringRateIncreases, new { @Placeholder = "Monthly Parkering Annual Rate Increases", @class = "form-control input-rounded" })
+                                        @Html.ValidationMessageFor(model => model.ParkeringRateIncreases)
+                                    </div>
+                                    @Html.Label("Transpire monthly closing process on", new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-2">
+                                        @*@Html.TextBoxFor(model => model.Transpireclosingprocesson, new { @Placeholder = "Transpire monthly closing process on", @class = "form-control input-rounded", @id = "Transpireclosingprocesson", @onkeydown = "return false;" })*@
+                                        @Html.TextBox("Transpireclosingprocesson", Model.Transpireclosingprocesson.ToString("MM/dd/yyyy"), new { @Placeholder = "Transpire monthly closing process on", @class = "form-control input-rounded", @id = "Transpireclosingprocesson", @onkeydown = "return false;" })
+                                        @Html.ValidationMessageFor(model => model.Transpireclosingprocesson)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.Label("Review Invoice Before Sending", new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-2">
+                                        @Html.RadioButtonFor(model => model.ReviewInvoiceBeforeSending, "ON", new { @class = "rbtn" })<span class="radio_span">
+                                            &nbsp;ON &nbsp;&nbsp;
+                                        </span>
+                                        @Html.RadioButtonFor(model => model.ReviewInvoiceBeforeSending, "OFF", new { @style = "margin-left:20%;", @class = "radio rbtn" })<span class="radio_span">
+                                            &nbsp;OFF
+                                        </span>
+                                        @Html.ValidationMessageFor(model => model.ReviewInvoiceBeforeSending)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.Label("Invoicing Date", new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-2">
+                                        @*@Html.TextBoxFor(model => model.InvoicingDate, new { @Placeholder = "Invoicing Date", @id = "InvoicingDate", @class = "form-control input-rounded" })*@
+                                        @Html.TextBox("InvoicingDate", Model.InvoicingDate.ToString("MM/dd/yyyy"), new { @Placeholder = "Invoicing Date", @id = "InvoicingDate", @class = "form-control input-rounded" })
+                                        @Html.ValidationMessageFor(model => model.InvoicingDate)
+                                    </div>
+                                    @Html.Label("Request permission to send collections email", new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-2">
+                                        @Html.RadioButtonFor(model => model.Requestcollectionsemail, "ON", new { @class = "rbtn" })<span class="radio_span">
+                                            &nbsp;ON &nbsp;&nbsp;
+                                        </span>
+                                        @Html.RadioButtonFor(model => model.Requestcollectionsemail, "OFF", new { @style = "margin-left:20%;", @class = "radio rbtn" })<span class="radio_span">
+                                            &nbsp;OFF
+                                        </span>
+                                        @Html.ValidationMessageFor(model => model.Requestcollectionsemail)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label" for="ScheduleAppointTime">Set time & frequency for automatic recons</label>
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(model => model.Settimefrequency, new { @Placeholder = "Set time & frequency for automatic recons", @id = "Settimefrequency", @class = "form-control clockpicker input-rounded" })
+                                        @Html.TextBoxFor(model => model.frequencyautomaticrecons, new { @Placeholder = "Set time & frequency for automatic recons", @class = "form-control input-rounded" })
+                                    </div>
+                                    @Html.Label("Set Monthly Closing Date ", new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-2">
+                                        @*@Html.TextBoxFor(model => model.SetClosingDate, new { @Placeholder = "Set Closing Date", @class = "form-control input-rounded", @id = "SetClosingDate", @onkeydown = "return false;" })*@
+                                        @Html.TextBox("SetClosingDate", Model.SetClosingDate.ToString("MM/dd/yyyy"), new { @Placeholder = "Set Closing Date", @class = "form-control input-rounded", @id = "SetClosingDate", @onkeydown = "return false;" })
+                                        @Html.ValidationMessageFor(model => model.SetClosingDate)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.Label("Frequency of invoices", new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-2">
+                                        @Html.TextBoxFor(model => model.Frequencyinvoices, new { @Placeholder = "Frequency of invoices", @class = "form-control input-rounded" })
+                                        @Html.ValidationMessageFor(model => model.Frequencyinvoices)
+                                    </div>
+                                    @Html.Label("Cut off card date", new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-2">
+                                        @*@Html.TextBoxFor(model => model.Cutoffcarddate, new { @Placeholder = "Cut off card date", @id = "Cutoffcarddate", @class = "form-control input-rounded" })*@
+                                        @Html.TextBox("Cutoffcarddate", Model.Cutoffcarddate.ToString("MM/dd/yyyy"), new { @Placeholder = "Cut off card date", @id = "Cutoffcarddate", @class = "form-control input-rounded" })
+                                        @Html.ValidationMessageFor(model => model.Cutoffcarddate)
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.Label("Automatic billing date", new { @class = "col-sm-4 col-form-label" })
+                                    <div class="col-sm-2">
+                                        @*@Html.TextBoxFor(model => model.Automaticbillingdate, new { @Placeholder = "Automatic billing date", @class = "form-control input-rounded", @id = "Automaticbillingdate" })*@
+                                        @Html.TextBox("Automaticbillingdate", Model.Automaticbillingdate.ToString("MM/dd/yyyy"), new { @Placeholder = "Automatic billing date", @class = "form-control input-rounded", @id = "Automaticbillingdate" })
+                                        @Html.ValidationMessageFor(model => model.Automaticbillingdate)
+                                    </div>
+                                </div>
+                            </div>
+
+                            <input type="button" id="submitLocationSettingData" class="btn btn-success pull-right" style="margin-left: 10px;" value="Submit" />
+                            <button type="button" class="btn btn-success pull-right" id="SendToLoationList"><i class="fa fa-arrow-left"></i>&nbsp;Back to List</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--**********************************
+    Content body end
+***********************************-->
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
+<script src="~/Content/NewAdminContent/VENDOR/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
+<script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+<!-- daterangepicker -->
+<script src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js")"></script>
+<script src="@Url.Content("~/Content/Dashboard/plugins/daterangepicker/daterangepicker.js")"></script>
+<!-- bootstrap color picker -->
+<script src="@Url.Content("~/Content/Dashboard/plugins/colorpicker/bootstrap-colorpicker.min.js")"></script>
+<!-- bootstrap time picker -->
+<script src="@Url.Content("~/Content/Dashboard/plugins/timepicker/bootstrap-timepicker.min.js")"></script>
+<script type="text/javascript" src="~/Scripts/BindDropDown/DropDownList.js"></script>
+
+<script>
+    $('.clockpicker').clockpicker();
+</script>
+
+<script>
+    $(document).ready(function () {
+        //While change open pop up to match both contract holder or Operating company
+
+        $('#Transpireclosingprocesson,#InvoicingDate,#SetClosingDate,#Cutoffcarddate,#Automaticbillingdate').datepicker({
+            format: "mm/dd/yyyy"
+            //,
+            //startDate: new Date("@Model.SetClosingDate")
+        });
+        //$('#Settimefrequency').timepicker({ timeFormat: "hh:mm tt" });
+        //$('#Settimefrequency').datetimepicker();
+        //$('input.timepicker').timepicker({ timeFormat: 'h:mm:ss p' });
+
+        $('input[type=radio][name=Registration]').change(function () {
+            if (this.value == 'ON') {
+                $("#StopParkingRegistration").val("ON");
+            }
+            else if (this.value == 'OFF') {
+                $("#StopParkingRegistration").val("OFF");
+            }
+        });
+        $('input[type=radio][name=ReviewInvoice]').change(function () {
+            if (this.value == 'ON') {
+                $("#ReviewInvoiceBeforeSending").val("ON");
+            }
+            else if (this.value == 'OFF') {
+                $("#ReviewInvoiceBeforeSending").val("OFF");
+            }
+        });
+        $('input[type=radio][name=permissionemai]').change(function () {
+            if (this.value == 'ON') {
+                $("#ReviewInvoiceBeforeSending").val("ON");
+            }
+            else if (this.value == 'OFF') {
+                $("#ReviewInvoiceBeforeSending").val("OFF");
+            }
+        });
+
+         $('#SendToLoationList').click(function () {
+            var addNewUrl = "@Url.Action("ListLocation", "GlobalAdmin")";
+            $('#RenderPageId').load(addNewUrl);
+        })
+
+        $("#submitLocationSettingData").click(function (e) {
+            var url = '@Url.Action("LocationSettiing", "GlobalAdmin")'
+            var dataObject = $("#step-form-horizontal").serialize()
+            $("#submitDealsData").attr("disabled", true);
+
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: dataObject,
+                success: function (Data) {
+                    $("#submitlocationData").attr("disabled", false);
+                    var addNewUrl = "@Url.Action("ListLocation", "GlobalAdmin")";
+                    $('#RenderPageId').load(addNewUrl);
+                },
+                error: function (err) {
+                }
+            });
+        });
+
+       
+
+    });
+</script>

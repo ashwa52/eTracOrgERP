@@ -1,0 +1,295 @@
+﻿@model WorkOrderEMS.Models.BackgroundCheckForm
+@{
+    Layout = null;
+}
+<style>
+    body {
+        overflow-y: scroll;
+    }
+    /*.BGBoxLInput{
+        width:29%;
+    }*/
+</style>
+<link href="~/Content/NewAdminContent/CSS/MyGuestStyle.css" rel="stylesheet" />
+<div class="container PADlerig" style="padding-top:45px;">
+    <div class="imgMAR">
+        <img id="imgWID" src="~/Images/FormImages/image-form.jpg" alt="Elite Parking" />
+    </div>
+    <div class="text-center BGhead">
+        <h4><u>ELITE PARKING SERVICES OF AMERICA, INC.</u></h4>
+        <h5>Background Check Authorization</h5>
+    </div>
+    @using (Html.BeginForm("_BackGroundCheckForm", "Guest", FormMethod.Post, new { id = "BackGroundCheckForm" }))
+    {
+        <div class="form-group">
+            <label for="name" class="BGtext" id="BGMGtop">Name:</label>
+            <span>
+                @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_FirstName, null, new { @class = "BoxLayout BGBoxLInput col-md-3" })
+                @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_MiddleName, null, new { @class = "BoxLayout BGBoxLInput col-md-3" })
+                @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_LastName, null, new { @class = "BoxLayout BGBoxLInput col-md-4" })
+                @*<input type="text" class="BoxLayout BGBoxLInput" name="name" value="">
+                    <input type="text" class="BoxLayout BGBoxLInput" name="name" value="">
+                    <input type="text" class="BoxLayout BGBoxLInput" name="name" value="">*@
+            </span>
+        </div>
+        <div class="row ROWalign BGMTop">
+            <div class="col">
+                <p class="BGtextp">(first)</p>
+            </div>
+            <div class="col">
+                <p class="BGtextp">(middle)</p>
+            </div>
+            <div class="col">
+                <p class="BGtextp">(last)</p>
+            </div>
+        </div>
+
+        <div class="form-group BGMGbottom">
+            <label for="name" class="BGtext" id="">Former Names(s) and Dates Used:</label>
+            @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_FirstName, null, new { @class = "BoxLayout col-md-11", })
+            @*<input type="text" class="BoxLayout" id="BGBoxL4" name="name" value="">*@
+        </div>
+        if (Model != null && Model.ApplicantAddress.Count() > 0)
+        {
+            foreach (var item in Model.ApplicantAddress)
+            {
+                <div class="form-group">
+                    <label for="name" class="BGtext" id="">Current Address Since:</label>
+                    <span>
+                        @Html.TextBoxFor(model => item.APA_StreetAddress, null, new { @class = "BoxLayout BGBoxLInput" })
+                        @Html.TextBoxFor(model => item.APA_City, null, new { @class = "BoxLayout BGBoxLInput" })
+                        @Html.TextBoxFor(model => item.APA_State, null, new { @class = "BoxLayout BGBoxLInput" })
+                        @Html.TextBoxFor(model => item.APA_Zip, null, new { @class = "BoxLayout BGBoxLInput" })
+                    </span>
+                </div>
+                <div class="row ROWalign1 BGMTop">
+                    <div class="col">
+                        <p></p>
+                    </div>
+                    <div class="col">
+                        <p class="BGtextp">(Mo/Yr)</p>
+                    </div>
+                    <div class="col">
+                        <p class="BGtextp">(Street)</p>
+                    </div>
+                    <div class="col">
+                        <p class="BGtextp">(City)</p>
+                    </div>
+                    <div class="col">
+                        <p class="BGtextp">(Zip/State)</p>
+                    </div>
+                </div>
+            }
+        }
+        <div class="row BGMGbottom">
+            <div class="col">
+                <div class="form-inline">
+                    <label for="lastname" class="BGtext">Social Security Number:</label>
+                    @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_SSN, null, new { @class = "BoxLayout col-md-10"})
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-inline">
+                    <label for="firstname" class="BGtext">Date of Birth:</label>
+                    @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_IsActive, null, new { @class = "BoxLayout col-md-10"})
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group BGMGbottom">
+            <label for="name" class="BGtext" id="">Telephone Number:</label>
+            @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_Id, null, new { @class = "BoxLayout col-md-11" })
+            @*<input type="text" class="BoxLayout" id="BGBoxL9" name="name" value="">*@
+        </div>
+
+        <div class="form-group BGMGbottom">
+            <label for="name" class="BGtext" id="">DriversLicense Number/State:</label>
+            @Html.TextBoxFor(model => model.ApplicantPersonalInfo.API_DLNumber, null, new { @class = "BoxLayout col-md-11" })
+            @*<input type="text" class="BoxLayout" id="BGBoxL10" name="name" value="">*@
+        </div>
+
+        <div class="">
+            <p>
+                The information contained in this application is correct to the best of my knowledge. I hereby authorize Elite
+                Parking Services of America,Inc. and its designated agents and representatives to conduct a 10 year
+                comprehensive review of my background causing a customer report and/or an investigative consumer report to be
+                generated for emplyoment and/or volunteer purposes. I understand that the scope of the consumer report/
+                investigative consumer report may include, but is not limited to the following areas: verification of social security
+                number;current and previous residencies; employment history, education background, character references; drug
+                testing, civil and criminal history records from any criminal justice agency in any or all federal, state, county
+                jurisdictions; driving records, birth records, and any other public records.
+            </p>
+
+        </div>
+        <div class="">
+            <p>
+                I further authorize any individual, company, firm, corporation, or public agency(including the Social
+                Security Administration and law enforcement agencies) to divulge any and all information, verbal or written,
+                pertaining to me, to Elite Parking Services of America,Inc. or its agents. I further authorize the complete release of
+                any records or data pertaining to me which the individual, company, firm, corporation, or public agency may have,
+                to include information or data recieved from other sources.
+            </p>
+        </div>
+        <div class="BGMGbottom1">
+            <p>
+                I here by release Elite Parking Services of America,Inc., the Social Security Administration, and its agents, officials,
+                representatives, or assigned agencies, including officers, employees, or related personnel both individually and
+                collectively, from any and all liabillity for damages of whatever kind, which may, at anytime, result to me, my heirs,
+                family, or associates because of complaince with this authorization and request to release.
+            </p>
+
+        </div>
+
+        <div class="row BGMGbottom2">
+            <div class="col-lg-6 col-md-6">
+                <div class="form-inline">
+                    <label for="lastname" class="BGtext">Signature:</label>
+                    <img id="openItForSignature" style="display:none;width:163px;height:47px;" />
+                    <span id="ShowHideSignatureSpan">
+                        <input type="text" class="BoxLayout" id="BGBoxL11" name="middlename">
+                    </span>
+                    <span class="btn btn-success" style="border-radius:100px;width:26%;" id="AddSignature">Add Signature</span>
+
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6  DatePadding">
+                <div class="form-inline">
+                    <label for="firstname" class="BGtext">Date:</label>
+                    <input type="text" class="BoxLayout" id="BGBoxL12" name="ssn">
+                </div>
+            </div>
+        </div>
+    }
+
+    <span style="cursor:pointer;" id="btnNext" onclick="SubmitForm(this, BackGroundCheckForm)" title="Send For Backgroud check">
+        <a><i class="fa fa-long-arrow-right" style="font-size: 40px;color: steelblue;margin-left: 874px;margin-bottom:0px"></i></a>
+    </span>
+</div>
+<div id="openModalForDocument">
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" data-keyboard="false" data-backdrop="static" role="dialog" aria-hidden="true" id="myModalToAddDocumentUpload">
+        <div class="modal-dialog modal-lg" style="width:620px;">
+            <div class="modal-content">
+                <div class="modal-header" style="display: inherit;">
+                    <h5 class="modal-title">Document Uplaod</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="margin-right:15px;">
+                    <form id="FileUploadModalForm">
+                        <div class="form-group row">
+                            <div class="col-sm-3">Add License</div>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="myLicensefileUpload">
+                                        <label class="custom-file-label" id="addLicenseFileName">Choose file</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-3">Add SSN</div>
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <div class="custom-file">
+                                        <input type="file" class="custom-file-input" id="mySSNfileUpload">
+                                        <label class="custom-file-label" id="addSSNFileName">Choose file</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer" style="background: white;">
+                    <button type="button" class="btn btn-success" id="UploadDocApplicant" style="border-radius:100px;width:18%;">Upload</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade preview" id="myModalForSignatureApplicant" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:40%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">X</span></button>
+                <h4 class="modal-title" id="myModalLabel">Add Signature</h4>
+            </div>
+            <div class="modal-body">
+                <div id="divDetailPreview" class="">
+                    <div class="row">
+                        <div class="" id="DivSignatureDetailsIndex">
+
+                            <br />
+                            <div class="form-group">
+                                <div class="col-lg-7 col-md-8 col-sm-8 col-xs-12">
+                                    <div class="tools">
+                                        <a href="#colors_sketch" data-tool="marker">Marker</a> <a href="#colors_sketch" data-tool="eraser">
+                                            Eraser
+                                        </a>
+                                    </div>
+                                    <br />
+                                    <canvas id="colors_sketch" width="500" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background: white;">
+                <input type="button" class="btn btn-primary savesignaturInfo" id="btnSave" is-update="true" data-tool="eraser" value="No" />
+            </div>            
+        </div>
+    </div>
+</div>
+<script>
+     debugger
+     var dt = new Date();
+     var strDate = dt.getFullYear() + "/" + (dt.getMonth() + 1) + "/" + dt.getDate();
+     $("#BGBoxL12").val(strDate);
+     $('body').css('overflow-y', 'auto');
+     $('body').css('padding-right', '0px');
+
+</script>
+<script src="~/Scripts/ePeople/ApplicantFunctionality.js"></script>
+<script src="~/Scripts/Guest/SketchSignature.js"></script>
+@*<script src="https://cdn.rawgit.com/mobomo/sketch.js/master/lib/sketch.min.js" type="text/javascript"></script>*@
+<script src="~/Scripts/Guest/ApplicantFormSave.js"></script>
+<script>
+    $("#myLicensefileUpload").change(function () {
+        debugger
+        //$("#dvAccountPreview").html("");
+        var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
+        //$("#addFileName").html();
+        var size = this.files[0].size;
+        $("#addLicenseFileName").html(this.files[0].name);
+        if (!allowedExtensions.exec($(this).val().toLowerCase())) {
+            alert("Invalid file type");
+            $(this).val("");
+            return false;
+        }
+        else if (size >= 4194304) {
+            alert("Max file size 4 mb.");
+            $(this).val("");
+            return false;
+        }
+    })
+    $("#mySSNfileUpload").change(function () {
+        debugger
+        //$("#dvAccountPreview").html("");
+        var allowedExtensions = /(\.pdf|\.doc|\.docx|\.txt)$/i;
+        //$("#addFileName").html();
+        var size = this.files[0].size;
+        $("#addSSNFileName").html(this.files[0].name);
+        if (!allowedExtensions.exec($(this).val().toLowerCase())) {
+            alert("Invalid file type");
+            $(this).val("");
+            return false;
+        }
+        else if (size >= 4194304) {
+            alert("Max file size 4 mb.");
+            $(this).val("");
+            return false;
+        }
+    })
+</script>

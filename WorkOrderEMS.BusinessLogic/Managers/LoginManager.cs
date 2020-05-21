@@ -380,12 +380,24 @@ namespace WorkOrderEMS.BusinessLogic.Managers
         /// <UpdatedFor>To add multiple location string</UpdatedFor>
         public eTracLoginModel AuthenticateUser(eTracLoginModel loginViewModel)
         {
+            //var clientUrl = new ApplicantAPI();
+            
+            //var data = clientUrl.Configuration("https://api.availity.com/availity/v1/configurations");
             ObjUserRepository = new UserRepository();
             //objLocationServicesRepository = new LocationServicesRepository();
             objPermissionDetailsRepository = new PermissionDetailsRepository();
             try
             {
+                //var ApplicantAPI = new RecruiteeAPI();
+                //var getCVList = new Login() {
+                //    password = "Elite76!!",
+                //    username = "AMIS1739"
+                //};
+                ////var tt = ApplicantAPI.Configuration("");
+                //string message = Newtonsoft.Json.JsonConvert.SerializeObject(getCVList);
+                //var getLogin = ApplicantAPI.LoginE_Verify(message,null);
                 string mypassword = Cryptography.GetEncryptedData(loginViewModel.Password, true); 
+                 //string mypassword23 = Cryptography.GetDecryptedData("RUNPkrIID3Q=", true); 
 
                 var authuser = ObjUserRepository.GetAll(x => x.AlternateEmail == loginViewModel.UserName && x.Password == mypassword && x.IsDeleted == false && x.IsLoginActive == true && x.IsEmailVerify == true).FirstOrDefault();
 
@@ -443,6 +455,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                             authuser.Longitude = loginViewModel.Long;
                         }
                         ObjUserRepository.Update(authuser);
+                        ObjUserRepository.SaveChanges();
                     }
                     else
                     {
@@ -493,10 +506,10 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         }
                         ObjUserRepository.Update(authuser);
                     }
-					
-					#endregion Validate Login through Serivce call
-					//loginViewModel.Location = string.IsNullOrEmpty(locationDetails.Location) ? "Not Avaialable" : locationDetails.Location;
-					LocationMasterModel obj_LocationMasterModel = new LocationMasterModel();
+
+                    #endregion Validate Login through Serivce call
+                    //loginViewModel.Location = string.IsNullOrEmpty(locationDetails.Location) ? "Not Avaialable" : locationDetails.Location;
+                    LocationMasterModel obj_LocationMasterModel = new LocationMasterModel();
                     switch (authuser.UserType)
                     {
                         case (Int64)(UserType.GlobalAdmin):
@@ -682,6 +695,34 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                                 throw new Exception("You are not authorised to login, Please contact to your superior.");
                             }
                             break;
+                        case (Int64)(UserType.GuestUser):
+                            eTracLoginModel locationDetailsHR = ObjUserRepository.GetLocationDetailsByUserIDForHR(authuser.UserId);
+                            //obj_LocationMasterModel = GetClientUserLocation_First(authuser.UserId);
+                            #region API
+                            var objCommon = new CommonMethodManager();
+                            var convertedClass = new CommonAPIJsonConvertToClass<object>();
+                            var getStringLogin  = objCommon.GetJsoSerializeDataForAPI(APIName.I9AuthenticationAPI,null);
+                            var clientUrl = new Helper.CommonHTTPClient();              
+                            var getOutputData = clientUrl.I9PostData(getStringLogin, APIName.I9AuthenticationLink);
+                            var getClassData = Newtonsoft.Json.JsonConvert.DeserializeObject<LoginI9AuthenticationModel.RootObjectLoginI9>(getOutputData);
+                            //Refresh Token
+                            
+                            var getOutputDataRefreshToken = clientUrl.I9RefreshToken(getClassData.access_token, APIName.I9refreshTokenLink);
+                            var getClassDataRefreshToken = Newtonsoft.Json.JsonConvert.DeserializeObject<LoginI9AuthenticationModel.RootObjectRefreshToken>(getOutputDataRefreshToken);
+                            loginViewModel.RefreshI9Token = getClassDataRefreshToken.access_token;
+                            loginViewModel.I9CompanyId = getClassDataRefreshToken.user_info.agency_employer_id;
+                            #endregion API
+                            if (obj_LocationMasterModel != null)
+                            {
+                                loginViewModel.LocationID = locationDetailsHR.LocationID;
+                                loginViewModel.Location = locationDetailsHR.LocationNames;
+                                loginViewModel.LocationCode = locationDetailsHR.LocationCode;
+                            }
+                            else
+                            {
+                                throw new Exception("You are not authorised to login, Please contact to your superior.");
+                            }
+                            break;
                         default:
                             eTracLoginModel locationDetails = ObjUserRepository.GetLocationDetailsByUserID(authuser.UserId);
                             loginViewModel.LocationID = locationDetails == null ? 0 : locationDetails.LocationID;
@@ -733,13 +774,11 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         }
                     }
                     //Commented by Bhushan Dod for maintaining log of each and every login user.
-                    if (((loginViewModel.DeviceId == null || loginViewModel.DeviceId.Trim().Length <= 0) && authuser.UserType == 3) || (loginViewModel.DeviceId == null || loginViewModel.DeviceId.Trim().Length <= 0)) //it will let us know that user is loged in from web or from mobile.. 
+                    if (((loginViewModel.DeviceId == null || loginViewModel.DeviceId.Trim().Length <= 0) && authuser.UserType == 3) || (loginViewModel.DeviceId == null || loginViewModel.DeviceId.Trim().Length <= 0) || (loginViewModel.DeviceId != null || loginViewModel.DeviceId.Trim().Length >= 0)) //it will let us know that user is loged in from web or from mobile.. 
                     {
-						//For login log maintian
-						if (loginViewModel.LocationID != 0) { 
+                        //For login log maintian
                         objLoginLogRepository = new LoginLogRepository();
                         LoginLog Obj = new LoginLog();
-
                         Obj.UserID = authuser.UserId;
                         Obj.LocationId = loginViewModel.LocationID;
                         Obj.UserType = authuser.UserType;
@@ -752,13 +791,9 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         Obj.ModifiedOn = null;
                         Obj.IsActive = true;
                         objLoginLogRepository.Add(Obj);
-
                         loginViewModel.LogId = Obj.LogId;
-						}
-						loginViewModel.IdleTime = authuser.IdleTimeLimit.ToString("HH:mm:ss");
-
-						// TODO :
-                        //loginViewModel.LoginTime = Obj.CreatedOn.ToString();
+                        loginViewModel.IdleTime = authuser.IdleTimeLimit.ToString("HH:mm:ss");
+                        loginViewModel.LoginTime = Obj.CreatedOn.ToString();
                     }
                 }
                 else
@@ -935,6 +970,7 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                     {
                         loginlog.IsActive = false;
                         objLoginLogRepository.Update(loginlog);
+                        objLoginLogRepository.SaveChanges();
                     }
                     #endregion Validate Logout through Serivce call
 
@@ -1406,5 +1442,6 @@ namespace WorkOrderEMS.BusinessLogic.Managers
             }
 
         }
+        
     }
 }

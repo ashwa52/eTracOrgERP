@@ -39,8 +39,8 @@
             $('.CardSelectHideShow').hide()
             $('.wiredSelectHideShow').hide();
         }
-        
-        if ($("#msform").valid()) 
+         
+        if ($("#msform").valid())
         {
          
             if ($('#VendorFacilityInformation').is(":visible") && $('#ProductList').val() === '') {
@@ -49,9 +49,8 @@
             }
             if (animating) return false;
             animating = true;
-
-            current_fs = $(this).parent();
-            next_fs = $(this).parent().next();
+            current_fs = $(this).closest("fieldset")//.parent();
+            next_fs = current_fs.next();
              
             //activate next step on progressbar using the index of next_fs
             $("#progressbar div a").eq($("fieldset").index(current_fs)).removeClass("active btn-success");
@@ -90,8 +89,8 @@
         if (animating) return false;
         animating = true;
 
-        current_fs = $(this).parent();
-        previous_fs = $(this).parent().prev();
+        current_fs = $(this).closest("fieldset")//.parent(); 
+        previous_fs = current_fs.prev();
 
         //de-activate current step on progressbar
 

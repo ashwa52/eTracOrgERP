@@ -184,21 +184,22 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                 {
                     //UserType = obj_UserRegistration.UserType;
                     workorderEMSEntities Context = new workorderEMSEntities();
+                    //Will use later once EF issue solve
+                    //List<ssp_DeleteUser_Result> resu = Context.ssp_DeleteUser(UserId, DeletedBy).ToList();
 
-                    var resu = Context.ssp_DeleteUser(UserId, DeletedBy).ToList();
 
 
-
-                    count = Convert.ToInt32(resu.Select(x => x.Result).FirstOrDefault());
+                    //count = Convert.ToInt32(resu.Select(x => x.Result).FirstOrDefault());
                     if (count == 0) //--SELECT 0,0,0,'There is one or more than one location where he is only one manager'
                     {
 
 
                         sb.Append("You can't delete this user because is the only manager for location(s) ");
-                        foreach (var locName in resu)
-                        {
-                            sb.Append("<strong>" + locName.LocationName + "<strong>, ");
-                        }
+                        //Will use later once EF issue solve
+                        //foreach (var locName in resu)
+                        //{
+                        //    sb.Append("<strong>" + locName.LocationName + "<strong>, ");
+                        //}
 
                         try
                         {
@@ -230,12 +231,14 @@ namespace WorkOrderEMS.BusinessLogic.Managers
                         #endregion Save DAR
 
                         sb.Clear();
-                        sb.Append(resu.Select(x => x.LocationName).FirstOrDefault() + ".");
+                        //Will use later once EF issue solve
+                        //sb.Append(resu.Select(x => x.LocationName).FirstOrDefault() + ".");
                     }
                     else if (count == 2) //--SELECT 2,0,0,'You are not authorised to delete this user'
                     {
                         sb.Clear();
-                        sb.Append(resu.Select(x => x.LocationName).FirstOrDefault() + ".");
+                        //Will use later once EF issue solve
+                        //sb.Append(resu.Select(x => x.LocationName).FirstOrDefault() + ".");
 
 
                     }

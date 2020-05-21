@@ -54,18 +54,34 @@
 	</div>
 	@using (Html.BeginForm("_photoreleaseform", "Guest", FormMethod.Post, new { id = "photoreleaseform" }))
 	{
-	<div>
-		<p>
-			I,  @Html.TextBoxFor(x => x.Name, new { @class = "text-line" }) give Elite Parking Services of America, Inc. (Elite) the right to take photographic and/or video images of myself as I perform the duties assigned to
-			me as an employee of Elite.
-		</p>
-		<p>I understand these photographs/videos will be used for training and marketing purposes and do not object to the company's use.</p>
-		<p>
-			<input type="text" style="width:290px;" class="text-line" /><span style="margin-left:177px;"><input style="width:290px;" type="text" class="text-line" /></span><span style="margin-left:11px;">(PRINT)</span><br />
-			First Name<span style="margin-left:380px;">Last Name</span>
-		</p>
-		<p><input type="text" style="width:290px;" class="text-line" /><br />Signature</p>
-		<p> @Html.CheckBoxFor(x => x.IsSave, new { @style = "height: 18px;width: 31px;", onchange = "SubmitForm(this,photoreleaseform)" })    i hereby declare that the above information is true to the best of my knowledge </p>
-	</div>
+    <div>
+        @Html.HiddenFor(x => x.PRFId)
+        <p>
+            I,  @Html.TextBoxFor(x => x.Name, new { @class = "text-line" }) give Elite Parking Services of America, Inc. (Elite) the right to take photographic and/or video images of myself as I perform the duties assigned to
+            me as an employee of Elite.
+        </p>
+        <p>I understand these photographs/videos will be used for training and marketing purposes and do not object to the company's use.</p>
+        <p>
+            <input type="text" style="width:290px;" class="text-line" /><span style="margin-left:177px;"><input style="width:290px;" type="text" class="text-line" /></span><span style="margin-left:11px;">(PRINT)</span><br />
+            First Name<span style="margin-left:380px;">Last Name</span>
+        </p>
+        <span>
+
+            <img id="openItForSignature" style="display:none;width:163px;height:47px;" />
+            <span id="ShowHideSignatureSpan">
+                <input type="text" style="width:290px;" class="text-line" />
+                @Html.TextBoxFor(x => x.Signature, new { @class = "text-line", @style = "width: 290px;" })
+            </span>
+            <span>
+                <span class="btn btn-success" style="border-radius:100px;width:8%;" id="AddSignature">
+                    Add Signature
+                </span>
+            </span>
+            <br />Signature
+        </span>
+        <span> @Html.CheckBox("IsSave", new { @style = "height: 18px;width: 31px;" })    i hereby declare that the above information is true to the best of my knowledge <span style="cursor:pointer;" onclick="SubmitForm(this, photoreleaseform)" title="Go to next I-9"><a><i class="fa fa-long-arrow-right" style="font-size: 40px;color: steelblue;margin-left: 967px;"></i></a></span> </span>
+        @*<p> @Html.CheckBoxFor(x => x.IsSave, new { @style = "height: 18px;width: 31px;", onchange = "SubmitForm(this,photoreleaseform)" })    i hereby declare that the above information is true to the best of my knowledge </p>*@
+    </div>
 	}
 </div>
+<script src="~/Scripts/Guest/ApplicantFormSave.js"></script>

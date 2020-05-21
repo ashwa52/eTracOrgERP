@@ -1,0 +1,227 @@
+﻿@model WorkOrderEMS.Models.JobPostingModel
+    @{ 
+        WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+        string loginUserName = "",empId ="", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+        if(ObjLogin != null)
+        {
+            loginUserName = ObjLogin.FName + " " + ObjLogin.LName;
+            empId = ObjLogin.UserName;
+        }
+    }
+<div>
+    <form id="SaveJobPostingFormVSC">
+        @Html.HiddenFor(model => model.AddChartModel.Id)
+        @Html.HiddenFor(model => model.JobPostingId, new { @id = "JobPostingId" })
+        @Html.HiddenFor(model => model.AddChartModel.JobTitle, new { @id = "SaveJobTitleWithText" })
+        @Html.HiddenFor(model => model.AddChartModel.SeatingName)
+        @Html.HiddenFor(model => model.AddChartModel.DepartmentName)
+        @Html.HiddenFor(model => model.AddChartModel.RateOfPay)
+        @Html.HiddenFor(model => model.AddChartModel.JobDescription)
+        @Html.HiddenFor(model => model.HiringManager,new { @id="HiringManagerData"})
+        @Html.Hidden("HiringManagerHidden")
+        <div class="row">
+            <label class="col-lg-2">Seating Name</label>
+            <div class="form-control-static col-lg-4">@Model.AddChartModel.SeatingName</div>
+            <label class="col-lg-2">Department Name</label>
+            <div class="form-control-static col-lg-4">@Model.AddChartModel.DepartmentName</div>
+        </div>
+        <div class="row">
+            <label class="col-lg-2">Rate Of Pay</label>
+            <div class="form-control-static col-lg-4">@Model.AddChartModel.RateOfPay</div>
+            <label class="col-lg-2">Job Description</label>
+            <div class="form-control-static col-lg-4">@Model.AddChartModel.JobDescription</div>
+        </div>
+        <div class="row">
+            <label class="col-lg-2">Roles and Responsibility</label>
+            @Html.TextAreaFor(model => model.AddChartModel.RolesAndResponsibility, new { @rows = "12", @style = "color:#9ba6b2;margin-left: -15px;", @id = "RolesAndResponsibilityJobPost", @class = "col-lg-10" })
+        </div>
+        <br />
+        <hr style="height:7px;background:cornflowerblue;" />
+        <div class="basic-form" style="margin-right: 40px;">
+            @*<div class="form-group row">
+            <div class="col-sm-6">
+                @Html.TextBoxFor(model => model.AddChartModel.SeatingName, new { @id = "SeatingNameJobPosting", @Placeholder = "Seating Name", @class = "form-control input-rounded required" })
+            </div>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(model => model.AddChartModel.DepartmentName, new { @id = "DepartmentNameJobPosting", @Placeholder = "Department Name", @class = "form-control input-rounded required" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-6">
+                @Html.TextAreaFor(model => model.AddChartModel.RolesAndResponsibility, new { @Placeholder = "Job Title", @id = "RolesAndResponsibilityJobPosting", @class = "form-control input-rounded required" })
+            </div>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(model => model.AddChartModel.JobDescription, new { @Placeholder = "Job Description", @id = "JobDescriptionVCS", @class = "form-control input-rounded required" })
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="col-sm-6">
+                @Html.TextBoxFor(model => model.Location, new { @Placeholder = "Location", @id = "LocationJobPosting", @class = "form-control input-rounded required" })
+            </div>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(model => model.Education, new { @Placeholder = "Education", @id = "EducationJobPosting", @class = "form-control input-rounded required" })
+            </div>
+        </div>*@
+            <div class="form-group row">
+                  <label class="col-sm-3"><b>Hiring Manager :</b></label>
+                <div class="col-sm-3">
+                    <label><b>@loginUserName</b></label>
+                    @*@if (ViewBag.GetHiringManagerList != null)
+                    {
+                      @Html.DropDownListFor(model => model.HiringManager, new SelectList(ViewBag.GetHiringManagerList, "HiringManager", "HiringManagerName"), "--Select Hiring Manager--", new { @id = "HiringManager", @class = "form-control input-rounded" })
+                    }
+                    else
+                    {
+                      <select id="HiringManager"><option value="-1">@ViewBag.GetHiringManagerList</option></select>
+                    }*@
+                </div>
+                <div class="col-sm-6">
+                    @Html.DropDownListFor(x => x.EmployeeStatus, new List<SelectListItem>
+                                                                                                        {
+                                                   new SelectListItem() {Text = "--Select Employee Status--", Value="0"},
+                                                                                                             new SelectListItem() {Text = "EXEMPT", Value="Y"},
+                                                                                                             new SelectListItem() {Text = "NON-EXEMPT", Value="N"}
+                                                                                                        }, new { @class = "form-control input-rounded requiredselect", @id = "EmployeeStatusJobPosting" })
+                </div>
+                
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.State, new { @Placeholder = "State", @id = "StateJobPosting", @class = "form-control input-rounded required" })
+                </div>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.Country, new { @Placeholder = "Country", @id = "CountryJobPosting", @class = "form-control input-rounded required" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    @Html.DropDownListFor(x => x.JobType, new List<SelectListItem>
+                           {
+                             new SelectListItem() {Text = "--Select Job Type--", Value="0"},
+                             new SelectListItem() {Text = "FT", Value="FT"},
+                             new SelectListItem() {Text = "PT", Value="PT"},
+                             new SelectListItem() {Text = "TEMP", Value="TEMP"}
+                           }, new { @class = "form-control input-rounded requiredselect", @id = "JobTypeJobPosting" })
+
+                </div>
+                <div class="col-sm-6">
+                    @if (ViewBag.JobTitle != null)
+                    {
+                       @Html.DropDownListFor(model => model.AddChartModel.JobTitleId, new SelectList(ViewBag.JobTitle, "Id", "JobTitleLabel"), "--Select Job Title--", new { @id = "JobTitleId", @class = "form-control input-rounded" })
+                    }
+                    else
+                    {
+                      <select id="JobTitleId"><option value="-1">@ViewBag.JobTitle</option></select>
+                    }
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.NumberOfPost, new { @Placeholder = "Number of Post", @id = "NumberOfPost", @class = "form-control input-rounded required" })
+                </div>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.City, new { @Placeholder = "City", @id = "City", @class = "form-control input-rounded required" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(model => model.zipCode, new { @Placeholder = "ZipCode", @id = "ZipCode", @class = "form-control input-rounded required" })
+                </div>
+                <div class="col-sm-6">
+                    @Html.DropDownListFor(model=>model.LocationId, new SelectList((List<WorkOrderEMS.Models.UserLocations>)Session["eTrac_UserLocations"], "LocationId", "LocationName"), "--Select Location--", new { @class = "form-control input-rounded", @id = "JobPostingLocation" })
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-sm-6">
+                    @*@Html.DropDownListFor(x => x.DOT_Status, new List<SelectListItem>
+                   {
+                     new SelectListItem() {Text = "--Select DOT--", Value=""},
+                     new SelectListItem() {Text = "DOT Driver", Value="DOT Driver"},
+                     new SelectListItem() {Text = "Non Driver", Value="Non Driver"},
+                     new SelectListItem() {Text = "Driver", Value="Driver"}
+                   }, new { @class = "form-control input-rounded requiredselect", @id = "DOT" })*@
+                    @Html.TextBoxFor(x => x.DOT_Status,new { @id = "DOTStatus",@style= "cursor: not-allowed;background:#efefef;display:none;", @readonly="readonly", @class = "form-control input-rounded"})
+                </div>                
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        var valDOT;
+        $("#SaveJobPost").click(function () {
+            debugger
+            var empIdData = "@empId";
+            //if ($("#SaveJobPostingFormVSC").valid()); {
+                var value = $("#JobTitleId option:selected").text();
+                $("#DOTStatus").val(valDOT)
+                $("#SaveJobTitleWithText").val(value);
+                //$("#HiringManagerHidden").val();
+                $("#HiringManagerData").val(empIdData);
+                var dataObject = $("#SaveJobPostingFormVSC").serialize();
+                $.ajax({
+                    type: 'POST',
+                    //contentType: "application/json",
+                    url: '../EPeople/SaveJobPostingData/',
+                    data: dataObject,//{ objWorkRequestAssignmentModel: dataObject, fileData: file },
+                    beforeSend: function () {
+                        new fn_showMaskloader('Please wait...');
+                    },
+                    success: function (result) {
+                        debugger
+                        $("#divOpenJobPostForm").html("");
+                        $("#myModalToAddJobPost").modal('hide');
+                    },
+                    error: function (err) {
+                    },
+                    complete: function () {
+                        fn_hideMaskloader();
+                    }
+                });
+           // }
+        });
+        debugger
+        //if (selectedText == "Shuttle Driver") {
+        //    $("#DOTStatus").attr("value", "DOT Driver");
+        //    valDOT = "DOT Driver";
+        //}
+        //else if (selectedText == "Parking Attendant" || selectedText == "Valet Parker") {
+        //    $("#DOTStatus").attr("value","Driver");
+        //    valDOT = "Driver";
+        //}
+        //else {
+        //    $("#DOTStatus").attr("value", "Non Driver");
+        //    valDOT = "Non Driver";
+        //}
+        $("#JobTitleId").change(function () {
+            debugger
+            var selectedText = $(this).find("option:selected").text();
+            //if (selectedText == "Parking Attendant" || selectedText == "Shuttle Driver" || selectedText == "Valet Parker") {
+            //    $("#DOTStatus").val("DOT Driver");
+            //    valDOT = "DOT Driver";
+            //}
+            //else {
+            //    $("#DOTStatus").val("Non Driver");
+            //    valDOT = "Non Driver";
+            //}
+            $("#DOTStatus").show();
+            if (selectedText == "Shuttle Driver") {
+                $("#DOTStatus").attr("value", "DOT Driver");
+                //$("#DOTStatus").val("DOT Driver");
+                valDOT = "DOT Driver";
+            }
+            else if (selectedText == "Parking Attendant" || selectedText == "Valet Parker") {
+                $("#DOTStatus").attr("value", "Driver");
+                valDOT = "Driver";
+            }
+            else {
+                $("#DOTStatus").attr("value", "Non Driver");
+                valDOT = "Non Driver";
+            }
+        });
+    });
+
+</script>

@@ -1,0 +1,286 @@
+﻿@model WorkOrderEMS.Models.CustomerSetupManagementModel
+@*@model dynamic*@
+@{
+    long UserType = 0; bool GloblaAdminUser, ITAdminUser, OnlyAdminUser, ManagerUser, EmployeeUser, ClientUser;
+    GloblaAdminUser = ITAdminUser = OnlyAdminUser = ManagerUser = EmployeeUser = ClientUser = false;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    if (ObjLogin != null)
+    {
+        UserType = ObjLogin.UserRoleId;
+
+        #region Get Active User Type Flag
+        /*Get Active User Type Flag*/
+
+        switch ((WorkOrderEMS.Helper.UserType)ObjLogin.UserRoleId)
+        {
+            case WorkOrderEMS.Helper.UserType.GlobalAdmin:
+                GloblaAdminUser = true;
+                break;
+            case WorkOrderEMS.Helper.UserType.ITAdministrator:
+                ITAdminUser = true;
+                break;
+            case WorkOrderEMS.Helper.UserType.Administrator:
+                OnlyAdminUser = true;
+                break;
+            case WorkOrderEMS.Helper.UserType.Manager:
+                ManagerUser = true;
+                break;
+            case WorkOrderEMS.Helper.UserType.Employee:
+                EmployeeUser = true;
+                break;
+            case WorkOrderEMS.Helper.UserType.Client:
+                ClientUser = true;
+                break;
+            default:
+                GloblaAdminUser = ITAdminUser = OnlyAdminUser = ManagerUser = EmployeeUser = ClientUser = false;
+                break;
+        }
+
+        /*Get Active User Type Flag*/
+        #endregion Get Active User Type Flag
+    }
+    else
+    {
+        WorkOrderEMS.Helper.AlertMessageClass ObjAlertMessageClass = new WorkOrderEMS.Helper.AlertMessageClass();
+        ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger; ViewBag.Message = WorkOrderEMS.Helper.CommonMessage.SessionExpired();
+        Response.Redirect("~/Views/Shared/_GlobalAdminLayout.cshtml");
+    }
+
+    string myModelprefix = ViewBag.myModelprefixName;
+    string UserTypeControlName = myModelprefix + "UserType";
+    var routeValues = HttpContext.Current.Request.RequestContext.RouteData.Values;
+    string Controller = string.Empty, ActionName = string.Empty;
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    string ContractDocPath = System.Configuration.ConfigurationManager.AppSettings["CompanyDocuments"];
+
+    if (routeValues != null)
+    {
+        if (routeValues.ContainsKey("controller"))
+        {
+            Controller = ViewContext.RouteData.GetRequiredString("controller");
+            //Controller = routeValues["controller"].ToString();
+        }
+        if (routeValues.ContainsKey("action"))
+        {
+            ActionName = ViewContext.RouteData.GetRequiredString("action");
+        }
+    }
+
+    long hiddnUserType = 0;
+    if (!string.IsNullOrEmpty(ViewBag.ActionSection) && (ViewBag.ActionSection == "employee" || ViewBag.ActionSection == "user"))
+    { hiddnUserType = Convert.ToInt64(WorkOrderEMS.Helper.UserType.Employee); }
+
+}
+<link href="~/Content/NewAdminContent/VENDOR/bootstrap-multiselect/css/bootstrap-multiselect.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/jquery-steps/css/jquery.steps.css" rel="stylesheet" />
+<script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+@Html.ValidationSummary(true)
+<input type="hidden" value='@hiddnUserType' name='@UserTypeControlName'>
+@*<input type="hidden" name="UserModel.EmployeeCategory" id="UserCategory" value='@Controller' />*@
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.maskedinput-1.3.min.js")"></script>
+<div class="panel panel-primary setup-content" id="myVendorContractDetails">
+    <div class="basic-form">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">  MONTHLY PARKING PAID FOR BY - <span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.RadioButtonFor(model => model.CustomerPaymentModel.IsMonthlyParkingPaidFor, "C", new { @class = "rbtn", data_title = "Company" })<span class="radio_span">
+                    &nbsp;Company &nbsp;&nbsp;
+                </span>
+                @Html.RadioButtonFor(model => model.CustomerPaymentModel.IsMonthlyParkingPaidFor, "I", new { @style = "margin-left:20%;", @class = "radio rbtn", data_title = "Individual" })<span class="radio_span">
+                    &nbsp;Individual
+                </span>
+                @Html.ValidationMessageFor(model => model.CustomerPaymentModel.IsMonthlyParkingPaidFor)
+                @Html.HiddenFor(model => model.CustomerPaymentModel.ID)
+            </div>
+        </div>
+        <div class="form-group row clsPaidForCompany" style="display:none;">
+            <label class="col-sm-2 col-form-label" for="LicenseName"> Company Name<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.CustomerPaymentModel.CompanyName, null, new { @id = "CompanyName", @class = "form-control input-rounded", @placeholder = "Company Name" })
+                @Html.ValidationMessageFor(model => model.CustomerPaymentModel.CompanyName)
+            </div>
+            <label class="col-sm-2 col-form-label">  Would you like invoice sent directly to Company & You - <span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.RadioButtonFor(model => model.CustomerPaymentModel.IsSendDirectInvoiceToCompany, "true", new { @class = "rbtn", data_title = "Yes" })<span class="radio_span">
+                    &nbsp;Yes &nbsp;&nbsp;
+                </span>
+                @Html.RadioButtonFor(model => model.CustomerPaymentModel.IsSendDirectInvoiceToCompany, "false", new { @style = "margin-left:20%;", @class = "radio rbtn", data_title = "No" })<span class="radio_span">
+                    &nbsp;No
+                </span>
+                @Html.ValidationMessageFor(model => model.CustomerPaymentModel.IsSendDirectInvoiceToCompany)
+            </div>
+        </div>
+        <div class="form-group row clsSendDirectToCompany" style="display:none;">
+            <label class="col-sm-2 col-form-label" for="LicenseName"> Company Email<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.CustomerPaymentModel.CompanyEmail, null, new { @id = "CompanyEmail", @class = "form-control input-rounded email", @placeholder = "Company Email" })
+                @Html.ValidationMessageFor(model => model.CustomerPaymentModel.CompanyEmail)
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">  Method of Paymnet - <span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.RadioButtonFor(model => model.CustomerPaymentModel.PaymentMethod, "BD", new { @class = "rbtn", data_title = "Bank Draft" })<span class="radio_span">
+                    &nbsp;Bank Draft &nbsp;&nbsp;
+                </span>
+                @Html.RadioButtonFor(model => model.CustomerPaymentModel.PaymentMethod, "CC", new { @style = "margin-left:20%;", @class = "radio rbtn", data_title = "Credit Card" })<span class="radio_span">
+                    &nbsp;Credit Card
+                </span>
+                @Html.ValidationMessageFor(model => model.CustomerPaymentModel.PaymentMethod)
+            </div>
+        </div>
+        <div class="form-group row clsBankDraft" style="display:none;">
+            <label class="col-sm-2 col-form-label" for="LicenseName"> Account Number<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.CustomerPaymentModel.BankAccountNo, null, new { @id = "BankAccountNo", @class = "form-control input-rounded", @placeholder = "Account Number" })
+                @Html.ValidationMessageFor(model => model.CustomerPaymentModel.BankAccountNo)
+            </div>
+            <label class="col-sm-2 col-form-label" for="LicenseName"> Bank Name<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.CustomerPaymentModel.BankName, null, new { @id = "BankName", @class = "form-control input-rounded", @placeholder = "Bank Name" })
+                @Html.ValidationMessageFor(model => model.CustomerPaymentModel.BankName)
+            </div>
+        </div>
+        <div class="form-group row clsBankDraft" style="display:none;">
+            <label class="col-sm-2 col-form-label" for="LicenseName"> IFSC<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.CustomerPaymentModel.BankIFSC, null, new { @id = "BankIFSC", @class = "form-control input-rounded", @placeholder = "IFSC" })
+                @Html.ValidationMessageFor(model => model.CustomerPaymentModel.BankIFSC)
+            </div>
+            <label class="col-sm-2 col-form-label" for="LicenseName"> Routing Number<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.CustomerPaymentModel.BankRoutingNo, null, new { @id = "BankRoutingNo", @class = "form-control input-rounded", @placeholder = "Bank Routing No" })
+                @Html.ValidationMessageFor(model => model.CustomerPaymentModel.BankRoutingNo)
+            </div>
+        </div>
+
+        <div class="form-group row clsCreditCard" style="display:none;">
+            <label class="col-sm-2 col-form-label" for="LicenseName"> Name as it appears on card<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.CustomerPaymentModel.CardFirstName, null, new { @id = "CardFirstName", @class = "form-control input-sm input-rounded", @placeholder = "Card Holder Name" })
+                @Html.ValidationMessageFor(model => model.CustomerPaymentModel.CardFirstName)
+                &nbsp;&nbsp;
+                @*@Html.TextBoxFor(model => model.CustomerPaymentModel.CardLastName, null, new { @id = "CardLastName", @class = "form-control input-sm input-rounded", @placeholder = "Last Name" })
+                    @Html.ValidationMessageFor(model => model.CustomerPaymentModel.CardLastName)*@
+            </div>
+            <label class="col-sm-2 col-form-label" for="LicenseName"> Address<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.CustomerPaymentModel.Address, null, new { @id = "Address", @class = "form-control input-rounded", @placeholder = "Address" })
+                @Html.ValidationMessageFor(model => model.CustomerPaymentModel.Address)
+            </div>
+        </div>
+        <div class="form-group row clsCreditCard" style="display:none;">
+            <label class="col-sm-2 col-form-label" for="CardType"> Card Type<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.CustomerPaymentModel.CardType, new SelectList(ViewBag.CardType, "GlobalCodeId", "CodeName"), "--Select Card Type--", new { @class = "form-control input-rounded" })
+                <div class="errorspace">
+                    @Html.ValidationMessageFor(model => model.CustomerPaymentModel.CardType)
+                </div>
+            </div>
+            <label class="col-sm-2 col-form-label" for="CardNo"> Card Number<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.CustomerPaymentModel.CardNo, null, new { @id = "CardNo", @class = "form-control input-rounded", @placeholder = "Card Number" })
+                @Html.ValidationMessageFor(model => model.CustomerPaymentModel.CardNo)
+            </div>
+        </div>
+        <div class="form-group row clsCreditCard" style="display:none;">
+            <label class="col-sm-2 col-form-label" for="CardExpirationDate">Expiration Date<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBox("CustomerPaymentModel.CardExpirationDate",Model.CustomerPaymentModel.CardExpirationDate.ToString("MM/dd/yyyy"), new { @id="CardExpirationDate",@Placeholder = "Expiration Date", @class = "form-control-sm input-rounded", @maxlength = "10" })
+                @Html.ValidationMessageFor(model => model.CustomerPaymentModel.CardExpirationDate)
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label" for="IsSignupForAutomaticPayment">Sign up for automatic payments</label>
+            <div class="col-sm-4">
+                @Html.CheckBoxFor(model => model.CustomerPaymentModel.IsSignupForAutomaticPayment, new { @class = "myclass", data_title = "Yes" })
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //$('#CostDuringPeriod,#AnnualValueOfAggriment,#MinimumBillAmount,#LateFine').simpleMoneyFormat();
+    $(document).ready(function () {
+        $('#CustomerPaymentModel_IsMonthlyParkingPaidFor[value="C"]').click(function () {
+            $('.clsPaidForCompany').show();
+            $("#CompanyName").addClass('required');
+            if ($('input[id=CustomerPaymentModel_IsSendDirectInvoiceToCompany]:checked').val() == 'true') {
+                $('.clsSendDirectToCompany').show();
+                $("#CompanyEmail").addClass('required');
+            }
+            else
+                $('.clsSendDirectToCompany').hide();
+        });
+        $('#CustomerPaymentModel_IsMonthlyParkingPaidFor[value="I"]').click(function () {
+            $("#CompanyEmail").val('');
+            $('.clsSendDirectToCompany').hide();
+            $("#CompanyName").val('')
+            $('.clsPaidForCompany').hide();
+            $("#CompanyName").removeClass('required');
+        });
+        $('#CustomerPaymentModel_IsSendDirectInvoiceToCompany[value="true"]').click(function () {
+            $('.clsSendDirectToCompany').show();
+            $("#CompanyEmail").addClass('required');
+        });
+        $('#CustomerPaymentModel_IsSendDirectInvoiceToCompany[value="false"]').click(function () {
+            bootbox.confirm("Are you sure, this will help ensure a member of management is available?", function (result) {
+                    if (result) {
+                        $('.clsSendDirectToCompany').hide();
+                        $("#CompanyEmail").val('');
+                        $("#CompanyEmail").removeClass('required');
+                    } else {
+                        $('input:radio[id="CustomerPaymentModel_IsSendDirectInvoiceToCompany"][value=true]').prop('checked', true);
+                    }
+                });
+
+            //$('.clsSendDirectToCompany').hide();
+            //$("#CompanyEmail").val('');
+            //$("#CompanyEmail").removeClass('required');
+        });
+        $('#CustomerPaymentModel_PaymentMethod[value="BD"]').click(function () {
+            $('.clsBankDraft').show();
+            $('.clsCreditCard').hide();
+            $("#BankAccountNo").addClass('required');
+            $("#BankName").addClass('required');
+            $("#BankIFSC").addClass('required');
+            $("#BankRoutingNo").addClass('required');
+
+            $("#CardFirstName").val('');
+            $("#Address").val('');
+            $("#CustomerPaymentModel_CardType").val('');
+            $("#CardNo").val('');
+            $("#CardExpirationDate").val('');
+
+            $("#CardFirstName").removeClass('required');
+            $("#Address").removeClass('required');
+            $("#CustomerPaymentModel_CardType").removeClass('required');
+            $("#CardNo").removeClass('required');
+            $("#CardExpirationDate").removeClass('required');
+        });
+        $('#CustomerPaymentModel_PaymentMethod[value="CC"]').click(function () {
+            $('.clsBankDraft').hide();
+            $('.clsCreditCard').show();
+
+            $("#BankAccountNo").val('');
+            $("#BankName").val('');
+            $("#BankIFSC").val('');
+            $("#BankRoutingNo").val('');
+
+            $("#BankAccountNo").removeClass('required');
+            $("#BankName").removeClass('required');
+            $("#BankIFSC").removeClass('required');
+            $("#BankRoutingNo").removeClass('required');
+
+            $("#CardFirstName").addClass('required');
+            $("#Address").addClass('required');
+            $("#CustomerPaymentModel_CardType").addClass('required');
+            $("#CardNo").addClass('required');
+            $("#CardExpirationDate").addClass('required');
+        });
+
+        $('#CardExpirationDate').datepicker({
+            format: "mm/dd/yyyy"
+        });
+    });
+</script>

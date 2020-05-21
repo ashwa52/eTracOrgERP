@@ -42,7 +42,7 @@
 
 	.btmcomment {
 		bottom: 0;
-		position: absolute;
+		/*position: absolute;*/
 		margin: 12px;
 	}
 
@@ -65,15 +65,16 @@
 			font-size: 44px;
 			
 		}
+    #interviewArea {
+        height: auto;
+    }
 </style>
 
 
 <div class="">
 	<div class="row" id="startInterview">
 		<div id="questionArea">
-
 		</div>
-
 		<div class="col-md-12 btmcomment" id="qus_view_btn">
 			<span class="help-inline" style="color: red;padding-left: 12px;display:none" id="lblmsg">Please input a comment..</span>
 			<input type="text" class="form-control input-rounded inputComment" placeholder="Comment" id="commentbox" />
@@ -85,5 +86,4 @@
 			<button class="btn btn-default btnfinish" onclick="FinishInterview();">Finish Interview</button>
 		</div>
 	</div>
-
 </div>

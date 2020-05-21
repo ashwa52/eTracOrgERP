@@ -70,12 +70,12 @@
 
 
 /* Effect 8 */
-.hovicon.effect-8 {
-    background: #5fa09ac7;
-    -webkit-transition: -webkit-transform ease-out 0.1s, background 0.2s;
-    -moz-transition: -moz-transform ease-out 0.1s, background 0.2s;
-    transition: transform ease-out 0.1s, background 0.2s;
-}
+    .hovicon.effect-8 {
+        background: #032c28c7;
+        -webkit-transition: -webkit-transform ease-out 0.1s, background 0.2s;
+        -moz-transition: -moz-transform ease-out 0.1s, background 0.2s;
+        transition: transform ease-out 0.1s, background 0.2s;
+    }
 
     .hovicon.effect-8:after {
         top: 0;

@@ -21,5 +21,6 @@ namespace WorkOrderEMS.Models
         public string DDF_BankRountingNumber_2 { get; set; }
         public string DDF_VoidCheck { get; set; }
         public string EmployeeName { get; set; }
+        public decimal? DDF_PercentageOrDollarAmount_2 { get; set; }
     }
 }

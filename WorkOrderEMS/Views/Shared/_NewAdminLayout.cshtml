@@ -66,8 +66,8 @@
     <!-- Favicon icon -->
 
     <link rel="icon" href="~/Images/logo.png" type="image/gif" sizes="16x16">
+    @*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
     <script src="~/Scripts/jquery-3.2.1.min.js"></script>
-
     <link href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css" rel="stylesheet" />
     <link href="~/Content/NewAdminContent/VENDOR/owl-carousel/css/owl.theme.default.min.css" rel="stylesheet" />
     <link href="~/Content/NewAdminContent/VENDOR/owl-carousel/css/owl.carousel.min.css" rel="stylesheet" />
@@ -89,13 +89,14 @@
         <link href="@Url.Content("~/Content/JqGridCSS/ui.jqgrid.css")" rel="stylesheet" />
         <link href="@Url.Content("~/Content/JqGridCSS/DilogPopup.css")" rel="stylesheet" />*@
     <link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
-    <link href="@Url.Content("~/Content/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
     <!-- daterange picker -->
     <link rel="stylesheet" href="@Url.Content("~/Content/Dashboard/plugins/daterangepicker/daterangepicker-bs3.css")" />
     <!-- Bootstrap Color Picker -->
     <link rel="stylesheet" href="@Url.Content("~/Content/Dashboard/plugins/colorpicker/bootstrap-colorpicker.min.css")" />
     <!-- Bootstrap time Picker -->
     <link rel="stylesheet" href="@Url.Content("~/Content/Dashboard/plugins/timepicker/bootstrap-timepicker.min.css")" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.2/fullcalendar.min.css" rel="stylesheet" />
+    <link href="~/Scripts/Bootstrap-DateTimePicker/css/datetimepicker.css" rel="stylesheet" />
     @RenderSection("scripts", required: false)
     <style>
         #loader-wrapper {
@@ -149,6 +150,13 @@
                 -webkit-animation: spin 1.5s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
                 animation: spin 1.5s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
             }
+
+        .modal-body-popup {
+            position: relative;
+            flex: 1 1 auto;
+            padding: 1rem;
+            margin-left: 0px;
+        }
     </style>
     <!--File Upload-->
     <script type="text/javascript" src="@Url.Content("~/Scripts/1.9.1-js/jquery-ui-1.9.2.min.js")"></script>
@@ -160,6 +168,8 @@
     <script type="text/javascript" src="@Url.Content("~/Scripts/BootStrap-Multiselect/JS/bootstrap-multiselect.js")"></script>
     <link href="~/Content/toastr.css" rel="stylesheet" />
     <script src="@Url.Content("~/Content/common/plugins/Loader/maskLoader.js")"></script>
+    @*<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>*@
     <script type="text/javascript">
     var $_hostingPrefix = '@hostingPrefix';
         var $_HostPrefix = '@hostingPrefix';
@@ -195,48 +205,48 @@
         <div class="nav-header">
             @if (GloblaAdminUser || ITAdminUser)
             {
-                <a href="~/GlobalAdmin" class="brand-logo">
-                    <img src="~/Images/logo2.png" style="width: 110px;" />
-                    @*<span class="logo-abbr"></span>
-                        <span class="logo-compact">eTrac</span>
-                        <span class="brand-title">eTrac</span>*@
-                </a>
+            <a href="~/GlobalAdmin" class="brand-logo">
+                <img src="~/Images/logo2.png" style="width: 110px;" />
+                @*<span class="logo-abbr"></span>
+                <span class="logo-compact">eTrac</span>
+                <span class="brand-title">eTrac</span>*@
+            </a>
             }
             @if (OnlyAdminUser)
             {
-                <a href="~/Administrator" class="brand-logo">
-                    <img src="~/Images/logo2.png" style="width: 110px;" />
-                    @*<span class="logo-abbr"></span>
-                        <span class="logo-compact">eTrac</span>
-                        <span class="brand-title">eTrac</span>*@
-                </a>
+            <a href="~/Administrator" class="brand-logo">
+                <img src="~/Images/logo2.png" style="width: 110px;" />
+                @*<span class="logo-abbr"></span>
+                <span class="logo-compact">eTrac</span>
+                <span class="brand-title">eTrac</span>*@
+            </a>
             }
             @if (ManagerUser)
             {
-                <a href="~/Manager/Dashboard" class="brand-logo">
-                    <img src="~/Images/logo2.png" style="width: 110px;" />
-                    @*<span class="logo-abbr"></span>
-                        <span class="logo-compact">eTrac</span>
-                        <span class="brand-title">eTrac</span>*@
-                </a>
+            <a href="~/Manager/Dashboard" class="brand-logo">
+                <img src="~/Images/logo2.png" style="width: 110px;" />
+                @*<span class="logo-abbr"></span>
+                <span class="logo-compact">eTrac</span>
+                <span class="brand-title">eTrac</span>*@
+            </a>
             }
             @if (EmployeeUser)
             {
-                <a href="~/Employee/Dashboard" class="brand-logo">
-                    <img src="~/Images/logo2.png" style="width: 110px;" />
-                    @*<span class="logo-abbr"></span>
-                        <span class="logo-compact">eTrac</span>
-                        <span class="brand-title">eTrac</span>*@
-                </a>
+            <a href="~/Employee/Dashboard" class="brand-logo">
+                <img src="~/Images/logo2.png" style="width: 110px;" />
+                @*<span class="logo-abbr"></span>
+                <span class="logo-compact">eTrac</span>
+                <span class="brand-title">eTrac</span>*@
+            </a>
             }
             @if (ClientUser)
             {
-                <a href="~/Client" class="brand-logo">
-                    <img src="~/Images/logo2.png" style="width: 110px;" />
-                    @*<span class="logo-abbr"></span>
-                        <span class="logo-compact">eTrac</span>
-                        <span class="brand-title">eTrac</span>*@
-                </a>
+            <a href="~/Client" class="brand-logo">
+                <img src="~/Images/logo2.png" style="width: 110px;" />
+                @*<span class="logo-abbr"></span>
+                <span class="logo-compact">eTrac</span>
+                <span class="brand-title">eTrac</span>*@
+            </a>
             }
             <div class="nav-control">
                 <div class="hamburger">
@@ -255,11 +265,11 @@
         <!--Side Menu-->
         @if (@ViewBag.AccountSection == true)
         {
-            @Html.Partial("_NewAdminSideMenu")
+        @*@Html.Partial("_NewAdminSideMenu")*@
         }
         else
         {
-            @Html.Partial("_NewSideMenu")
+        @Html.Partial("_NewSideMenu")
         }
         <div id="loader-wrapper" style="display:none;">
             <div id="loader"></div>
@@ -301,10 +311,45 @@
 
             </div>
         </div>
-       
-    </div>
 
+    </div>
+    <!--Start Choose Requisition Action-->
+    <div class="modal fade bd-example-modal-lg ActionPaymentReceive" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForPaymentReceiveAction" style="overflow:scroll;">
+        <div class="modal-dialog modal-lg" style="max-width: 1100px;">
+            <div class="modal-content" style="width:1150px">
+                <div class="modal-header" style="display: inherit;">
+                    <h4 style="color:white;">Receive Payment</h4>
+                    @*<h4 class="card-title" style="color:white;"><strong>Create Manual Client Invoice</strong></h4>*@
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body-popup">
+                    <div id="divOpenPaymentReceiveForm" class="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--End Choose Requisition Action-->
     <!--End Modal connect to quickbook-->
+    <!--Choose Requisition Action-->
+    <div class="modal fade bd-example-modal-lg ActionRequisition" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForRequisitionAction" style="overflow:scroll;">
+        <div class="modal-dialog modal-lg" style="max-width: 1021px;">
+            <div class="modal-content" style="width:1000px">
+                <div class="modal-header" style="display: inherit;">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body-popup">
+                    <div id="divOpenRquisitionForm" class="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Add VSC-->
     <!--**********************************
         Main wrapper end
     ***********************************-->
@@ -342,33 +387,38 @@
     <script src="~/Scripts/NewAdminJS/dashboard/dashboard-1.js"></script>
 
 
-    <script type="text/javascript" src="@Url.Content("~/Scripts/BootStrap-Multiselect/JS/bootstrap-multiselect.js")"></script>
-    @*<script type="text/javascript" src="@Url.Content("~/Scripts/BootStrap-Multiselect/JS/bootstrap-tooltip.js")"></script>*@
-    <script type="text/javascript" src="@Url.Content("~/Scripts/BootStrap-Multiselect/JS/bootstrap-confirmation.js")"></script>
-    <script type="text/javascript" src="@Url.Content("~/Scripts/BootStrap-Multiselect/JS/bootbox.js")"></script>
-    <script src="@Url.Content("~/Content/Dashboard/bootstrap/js/jquery-ui.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content(" ~/Scripts/BootStrap-Multiselect/JS/bootstrap-multiselect.js")"></script>
+    @*
+    <script type="text/javascript" src="@Url.Content(" ~/Scripts/BootStrap-Multiselect/JS/bootstrap-tooltip.js")"></script>*@
+    <script type="text/javascript" src="@Url.Content(" ~/Scripts/BootStrap-Multiselect/JS/bootstrap-confirmation.js")"></script>
+    <script type="text/javascript" src="@Url.Content(" ~/Scripts/BootStrap-Multiselect/JS/bootbox.js")"></script>
+    <script src="@Url.Content(" ~/Content/Dashboard/bootstrap/js/jquery-ui.min.js")"></script>
 
-    <script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
-    <script type="text/javascript" src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.js")"></script>
+    <script type="text/javascript" src="@Url.Content(" ~/Scripts/jquery.validate.js")"></script>
+    <script type="text/javascript" src="@Url.Content(" https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.11/jquery.validate.unobtrusive.js")"></script>
     <!-- Select2 -->
-    <script src="@Url.Content("~/Content/Dashboard/plugins/select2/select2.full.min.js")"></script>
+    <script src="@Url.Content(" ~/Content/Dashboard/plugins/select2/select2.full.min.js")"></script>
     <!-- InputMask -->
-    <script src="@Url.Content("~/Content/Dashboard/plugins/input-mask/jquery.inputmask.js")"></script>
-    <script src="@Url.Content("~/Content/Dashboard/plugins/input-mask/jquery.inputmask.date.extensions.js")"></script>
-    <script src="@Url.Content("~/Content/Dashboard/plugins/input-mask/jquery.inputmask.extensions.js")"></script>
+    <script src="@Url.Content(" ~/Content/Dashboard/plugins/input-mask/jquery.inputmask.js")"></script>
+    <script src="@Url.Content(" ~/Content/Dashboard/plugins/input-mask/jquery.inputmask.date.extensions.js")"></script>
+    <script src="@Url.Content(" ~/Content/Dashboard/plugins/input-mask/jquery.inputmask.extensions.js")"></script>
     <script src="~/Scripts/toastr.js"></script>
-    <script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+    <script src="@Url.Content(" ~/Scripts/bootstrap-datepicker.js")"></script>
     <!-- daterangepicker -->
 
-    <script src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js")"></script>
-    <script src="@Url.Content("~/Content/Dashboard/plugins/daterangepicker/daterangepicker.js")"></script>
+    <script src="@Url.Content(" https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.2/moment.min.js")"></script>
+    <script src="@Url.Content(" ~/Content/Dashboard/plugins/daterangepicker/daterangepicker.js")"></script>
     <!-- bootstrap color picker -->
-    <script src="@Url.Content("~/Content/Dashboard/plugins/colorpicker/bootstrap-colorpicker.min.js")"></script>
+    <script src="@Url.Content(" ~/Content/Dashboard/plugins/colorpicker/bootstrap-colorpicker.min.js")"></script>
     <!-- bootstrap time picker -->
-    <script src="@Url.Content("~/Content/Dashboard/plugins/timepicker/bootstrap-timepicker.min.js")"></script>
-    <script type="text/javascript" src="@Url.Content("~/Scripts/BootStrap-Multiselect/JS/bootstrap-confirmation.js")"></script>
-    <script type="text/javascript" src="@Url.Content("~/Scripts/BootStrap-Multiselect/JS/bootbox.js")"></script>
+    <script src="@Url.Content(" ~/Content/Dashboard/plugins/timepicker/bootstrap-timepicker.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content(" ~/Scripts/BootStrap-Multiselect/JS/bootstrap-confirmation.js")"></script>
+    <script type="text/javascript" src="@Url.Content(" ~/Scripts/BootStrap-Multiselect/JS/bootbox.js")"></script>
     <script src="~/Content/NewAdminContent/JQUERY/MaskLoaderNew.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
+    <script src="~/Scripts/Bootstrap-DateTimePicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="~/Scripts/Notification/NotificationFunctionality.js"></script>
 </body>
 </html>
 
@@ -390,12 +440,26 @@
               $('#RenderPageId').load(url);
         }
         });
+
+        $("#MenuAdminDashBord a").click(function (e) {
+            //new fn_showMaskloader('Please wait...');
+            e.preventDefault(); // prevent default link button redirect behaviour
+            var url = $(this).attr("href");
+            var dashValue = $(this).attr("data-oldDash");
+            if (dashValue == "Yes") {
+                window.location.href = url;
+            }else{
+              $('#RenderPageId').load(url);
+        }
+        });
+
         $("#drp_MasterLocation1").change(function () {
             var LocationID = $(this).val();
             var LocationName = $("#drp_MasterLocation1 option:selected").text();
             $.ajax({
                 type: "POST",
-                url: '@Url.Action("SetUserSelectedLocation", "Login")',
+                //url: '@Url.Action("SetUserSelectedLocation", "Login")',
+                url: '/Login/SetUserSelectedLocation',
                 data: { LocationID: LocationID, LocationName: LocationName },
                 success: function (Data) {
                     $('.jsgrid').jsGrid("loadData");
@@ -424,7 +488,7 @@
 
             if ($_AuthorizeURL == null || $_AuthorizeURL == "")
             {
-                $("#ConnectToQuickBookModal").modal('show');
+                $("#ConnectToQuickBookModal").modal('hide');
             }
             else {
                 @*if (@ViewBag.QuickBookMessage != null) {*@
@@ -477,6 +541,14 @@
                     $ele.css("top", top);
                 }
                 $ele.animate({ top: (parseInt(top) - 60) }, 2000, 'linear', function () { doScroll($(this)) });
-            }</script>
+    }
+     function isNumberKey(evt)
+     {
+         var charCode = (evt.which) ? evt.which : event.keyCode
+         if (charCode > 31 && (charCode < 48 || charCode > 57))
+            return false;
+            return true;
+      }
+</script>
 
 @RenderSection("scriptsbottom", required: false)

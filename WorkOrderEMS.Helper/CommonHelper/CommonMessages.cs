@@ -502,10 +502,18 @@ namespace WorkOrderEMS.Helper
         {
             return "Vendor approved successfully.";
         }
+        public static string CustomerApprove()
+        {
+            return "Customer approved successfully.";
+        }
 
         public static string VendorReject()
         {
             return "Vendor reject successfully.";
+        }
+        public static string CustomerReject()
+        {
+            return "Customer reject successfully.";
         }
         public static string VendorSave()
         {
@@ -562,15 +570,75 @@ namespace WorkOrderEMS.Helper
         }
         public static string ApprovedRequisition()
         {
-            return "The requisition has been approved successfully.";
+            return "Requisition has been approve";
         }
         public static string RejectRequisition()
         {
-            return "The requisition has been rejected successfully.";
+            return "Requisition has been reject";
         }
         public static string JobCountSendApproval()
         {
-            return "The Job count has been send for approval.";
+            return "Send for approval";
         }
+        public static string ApprovedEmployeeStatus()
+        {
+            return "Employee has been approve";
+        }
+        public static string RejectEmployeeStatus()
+        {
+            return "Employee has been reject";
+        }
+        public static string SendAssessment()
+        {
+            return "Send assessment HR will get back to you.";
+        }
+        public static string SendPassword()
+        {
+            return "New Password is sent to your mail.";
+        }
+        public static string SignUp()
+        {
+            return "You are successfully signed up, login Id and Password sent to your mail id.";
+        }
+        public static string SignUpError()
+        {
+            return "Getting error while siging in please sign up again.";
+        }
+        public static string PasswordChangedError()
+        {
+            return "Getting error while changing password please change it again.";
+        }
+        public static string AlreadyExist()
+        {
+            return "Login Id already exist, please add other.";
+        }
+        public static string NotExist()
+        {
+            return "Login Id not exist.";
+        }
+        public static string PasswordSaved()
+        {
+            return "Password saved successfully, please login.";
+        }
+        public static string ForgotMailSend()
+        {
+            return "Password reset mail sent to your mail id please check and add new password.";
+        }
+        public static string SaveOrientation()
+        {
+            return "Orientation for the employee has been scheduled succesfully.";
+        }
+        public static string ApplicantReject()
+        {
+            return "Applicant Rejected";
+        }
+        public static string ApplicantScreened()
+        {
+            return "Applicant screened succesfully.";
+        }
+        //public static string ApplicantClear()
+        //{
+        //    return "Applicant screened succesfully.";
+        //}
     }
 }

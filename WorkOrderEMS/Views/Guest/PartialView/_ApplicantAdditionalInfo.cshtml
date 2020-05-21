@@ -1,0 +1,105 @@
+﻿@model WorkOrderEMS.Models.CommonApplicantModel
+
+@{
+    Layout = null;
+}
+
+
+<div class="row">
+    <div class="colmn col-md-12 text-center">
+        <div class="form-group">
+            <label class="form-label">Please fill out the additional information</label>
+        </div>
+    </div>
+</div>
+@Html.HiddenFor(x => x.ApplicantAdditionalInfo[0].AAI_ApplicantId)
+@for (var i = 0; i < Model.ApplicantAdditionalInfo.Count(); i++)
+{
+    <div class="row aditinal_top">
+        <div class="colmn col-md-4">
+            <div class="form-group conact_method">
+                <label class="form-label">Eligible to work in US</label>
+                <label class="form-label checkbox_label">
+                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_WorkEligibilityUS, 'Y', new { @class = "form-label checkbox_label" }) Yes
+                </label>
+                <label class="form-label checkbox_label">
+                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_WorkEligibilityUS, 'N', new { @class = "form-label checkbox_label" }) No
+                </label>
+            </div>
+        </div>
+
+        <div class="colmn col-md-4 date_available">
+            <div class="form-group d-flex align-item-center">
+                <label class="form-label">Date Avalible</label>
+                @Html.TextBoxFor(model => model.ApplicantAdditionalInfo[i].AAI_AvailableDate, new { @class = "form-control", @placeholder = "Date Avalible", @type = "date" })
+                @Html.ValidationMessageFor(model => model.ApplicantAdditionalInfo[i].AAI_AvailableDate)
+            </div>
+        </div>
+
+        <div class="colmn col-md-4">
+            <div class="form-group">
+                <label class="form-label">Are you 21 years of age</label>
+                <label class="form-label checkbox_label">
+                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_Age21Completed, 'Y', new { @class = "form-label checkbox_label" }) Yes
+                </label>
+                <label class="form-label checkbox_label">
+                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_Age21Completed, 'N', new { @class = "form-label checkbox_label" }) No
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="colmn col-md-12 relative_sec ">
+            <div class="form-group">
+                <label class="form-label">DO you have any friend, Relative or Aquantiances that work elite?</label>
+                <label class="form-label checkbox_label">
+                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_AnyRefOrEmployeeInELITE, 'Y', new { @class = "form-label checkbox_label" }) Yes
+                </label>
+                <label class="form-label checkbox_label">
+                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_AnyRefOrEmployeeInELITE, 'N', new { @class = "form-label checkbox_label" }) No
+                </label>
+            </div>
+        </div>
+        <div class="colmn col-md-4 relative_sec ">
+            <div class="form-group">
+                <label class="form-label">Prior Militory</label>
+                <label class="form-label checkbox_label">
+                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_PriorMilitaryService, 'Y', new { @class = "form-label checkbox_label" }) Yes
+                </label>
+                <label class="form-label checkbox_label">
+                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_PriorMilitaryService, 'N', new { @class = "form-label checkbox_label" }) No
+                </label>
+            </div>
+        </div>
+        <div class="colmn col-md-8 relative_sec ">
+            <div class="form-group">
+                <input type="text" class="form-control" placeholder="If yes, please identify who">
+            </div>
+        </div>
+        <div class="colmn col-md-12">
+            <div class="form-group ever_worked">
+                <label class="form-label">Have you ever worked for Elite and/or any of its subsidairies</label>
+                <label class="form-label checkbox_label">
+                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_EverWorkForELITE, 'Y', new { @class = "form-label checkbox_label" }) Yes
+                </label>
+                <label class="form-label checkbox_label">
+                    @Html.RadioButtonFor(model => model.ApplicantAdditionalInfo[i].AAI_EverWorkForELITE, 'N', new { @class = "form-label checkbox_label" }) No
+                </label>
+            </div>
+        </div>
+        <div class="colmn col-md-12 date_departute">
+            <div class="form-group d-flex align-item-center">
+                <label class="form-label">If Yes, Date of departure</label>
+                @Html.TextBoxFor(model => model.ApplicantAdditionalInfo[i].AAI_DepartureDate, new { @class = "form-control", @placeholder = "Date of departure", @type = "date" })
+                @Html.ValidationMessageFor(model => model.ApplicantAdditionalInfo[i].AAI_DepartureDate)
+            </div>
+        </div>
+        <div class="colmn col-md-12 reason_living ">
+            <div class="form-group">
+                @Html.TextBoxFor(model => model.ApplicantAdditionalInfo[i].AAI_ReasonForLeaving, new { @class = "form-control", @placeholder = "Reason for leaving" })
+                @Html.ValidationMessageFor(model => model.ApplicantAdditionalInfo[i].AAI_ReasonForLeaving)
+            </div>
+        </div>
+    </div>
+}
+

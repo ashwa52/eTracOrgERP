@@ -93,27 +93,44 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
         /// </summary>
         /// <param name="CSVChartId"></param>
         /// <returns></returns>
-        [HttpGet]
-        public ActionResult OpenJobPostingForm(long CSVChartId)
-        {
-            var objeTracLoginModel = new eTracLoginModel();
-            var model = new JobPostingModel();
-            var chartModel = new AddChartModel();
-            if (CSVChartId > 0)
-            {
-                var data = _IAdminDashboard.GetChartData(CSVChartId);
-                if(data != null)
-                {
-                    chartModel.DepartmentName = data.DepartmentName;
-                    chartModel.SeatingName = data.SeatingName;
-                    chartModel.JobDescription = data.JobDescription.Replace("|",",");
-                    chartModel.RolesAndResponsibility = data.RolesAndResponsibility;
-                    chartModel.Id = data.Id;
-                    model.AddChartModel = chartModel;
-                }
-            }
-            //return Json("Acc", JsonRequestBehavior.AllowGet);
-           return PartialView("~/Areas/AdminSection/Views/OrgChart/_AddJobPosting.cshtml", model);
-        }
+        //[HttpGet]
+        //public ActionResult OpenJobPostingForm(long CSVChartId)
+        //{
+        //    var objeTracLoginModel = new eTracLoginModel();
+        //    var model = new JobPostingModel();
+        //    var chartModel = new AddChartModel();
+        //    if (CSVChartId > 0)
+        //    {
+        //        var data = _IAdminDashboard.GetChartData(CSVChartId);
+        //        if(data != null)
+        //        {
+        //            chartModel.DepartmentName = data.DepartmentName;
+        //            chartModel.SeatingName = data.SeatingName;
+        //            chartModel.JobDescription = data.JobDescription.Replace("|",",");
+        //            chartModel.RolesAndResponsibility = data.RolesAndResponsibility;
+        //            chartModel.Id = data.Id;
+        //            model.AddChartModel = chartModel;
+        //        }
+        //    }
+        //    //return Json("Acc", JsonRequestBehavior.AllowGet);
+        //   return PartialView("~/Areas/AdminSection/Views/OrgChart/_AddJobPosting.cshtml", model);
+        //}
+
+        //[HttpPost]
+        //public JsonResult SaveJobPosting(JobPostingModel Obj)
+        //{
+        //    try
+        //    {
+        //        if (Obj != null)
+        //        {
+        //            var isSaved = _IAdminDashboard.SaveJobPosting(Obj);
+        //        }
+        //    }
+        //    catch(Exception ex)
+        //    {
+
+        //    }
+        //    return null;
+        //}
     }
 }

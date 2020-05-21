@@ -36,6 +36,7 @@ namespace WorkOrderEMS.Data.EntityModel
             this.LocationCompanyMappings = new HashSet<LocationCompanyMapping>();
             this.WorkRequestAssignments = new HashSet<WorkRequestAssignment>();
             this.LocationServices = new HashSet<LocationService>();
+            this.LocationSettingMasters = new HashSet<LocationSettingMaster>();
             this.LogBills = new HashSet<LogBill>();
             this.LoginLogs = new HashSet<LoginLog>();
             this.LogLocationCompanyMappings = new HashSet<LogLocationCompanyMapping>();
@@ -91,6 +92,15 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<bool> AdditionalYears { get; set; }
         public string Years { get; set; }
         public Nullable<long> QuickBookLocId { get; set; }
+        public Nullable<int> PaymenttermsId { get; set; }
+        public Nullable<System.DateTime> ClientInvoicingDate { get; set; }
+        public Nullable<System.DateTime> Automaticbillingdate { get; set; }
+        public Nullable<System.DateTime> Cutoffcarddate { get; set; }
+        public Nullable<decimal> FrequencyOfInvoicing { get; set; }
+        public Nullable<decimal> ChargeDepositeMonthlyParkerCard { get; set; }
+        public Nullable<bool> IsChargeDepositeMonthlyParkerCard { get; set; }
+        public Nullable<decimal> AviailableSpaces { get; set; }
+        public Nullable<bool> IsSpecialRulesHourlyMan { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AdminLocationMapping> AdminLocationMappings { get; set; }
@@ -131,6 +141,8 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual ICollection<WorkRequestAssignment> WorkRequestAssignments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LocationService> LocationServices { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<LocationSettingMaster> LocationSettingMasters { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LogBill> LogBills { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -1,0 +1,105 @@
+﻿@{
+    Layout = null;
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
+    long loginUserType = 0;
+    long locationId = 0;
+    long UserId = 0;
+    if (ObjLogin != null)
+    {
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+        loginUserType = ObjLogin.UserRoleId;
+        locationId = ObjLogin.LocationID;
+        UserId = ObjLogin.UserId;
+    }
+}
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+<style>
+
+    .addWhite {
+        color: white;
+    }
+
+    .widthHeader {
+        height: 40px;
+    }
+</style>
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3" data-aos="fade-up">
+            <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
+                <div class="welcome-text">
+                    <h4>Hi, welcome back! @loginUserName</h4>
+                    <p class="mb-0">Employee Management Dashboard</p>
+                </div>
+            </div>
+            <div class="col-sm-8">
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card" data-aos="fade-up">
+                    <div style="height: 45px;background:#0aa0cd;">
+                        <div class="form-group row" style="margin-top:6px;margin-left:10px;">
+                            <div class="col-sm-3">
+                                <select class="form-control input-rounded" id="MonthList">
+                                    <option value="1">January</option>
+                                    <option value="2">February</option>
+                                    <option value="3">March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3">
+                                <a href="@Url.Action("AddPunchTimerequest", "eTime")" class="btn btn-warning"><i class="fa fa-clock-o"></i> Request Punch Time</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="ListEmployeeManagement"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForPayOff">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">User List</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="ViewUserListDetails">
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer" style="background: white;">
+            <button type="button" class="btn btn-secondary" id="closeUserView" style="border-radius:100px;" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+<script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
+<script src="~/GridListing/JsGridScript/ListEmployeeForAttendance.js"></script>
+
+<script>
+    $(document).ready(function () {
+ });
+</script>

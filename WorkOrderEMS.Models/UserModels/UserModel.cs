@@ -190,4 +190,173 @@ namespace WorkOrderEMS.Models
         public int records { get; set; }
         public List<UserModel> rows { get; set; }
     }
+    public class ShiftModel
+    {
+        public int Id { get; set; }
+        public string ShiftCode { get; set; }
+        public string ShiftName { get; set; }
+        public string Description { get; set; }
+        public bool IsActive { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string StartTime { get; set; }
+        public string EndTime { get; set; }
+    }
+    public class HolidayManagment    {
+        public int Id { get; set; }
+        public int SrNo { get; set; }
+        public string HolidayDates { get; set; }
+        public DateTime HolidayDate { get; set; }
+        public string HolidayName { get; set; }
+        public string Description { get; set; }
+        public bool IsActive { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public List<HolidayManagment> HMM { get; set; }
+        public string HolidayDateString { get; set; }
+        public long Location { get; set; }
+        public string HolidayType { get; set; }
+        public string LocationName { get; set; }
+    }
+
+    public class tbl_Staffing_Addition
+    {
+        public long EventId { get; set; }
+        public bool IsHCTS { get; set; }
+        public bool IsSTS { get; set; }
+        public bool IsAutoSchedule { get; set; }
+        public DateTime ScheduleDate { get; set; }
+        public long Location { get; set; }
+        public long UserLocation { get; set; }
+        public int HeadCnt { get; set; }
+        public string EntryBy { get; set; }
+        public DateTime EntryDate { get; set; }
+        public string UpdateBy { get; set; }
+        public DateTime UpdateDate { get; set; }
+    }
+    public class tbl_Staffing_Addition_Details
+    {
+        public long Id { get; set; }
+        public long EventId { get; set; }
+        public string EmployeeId { get; set; }
+        public string EntryBy { get; set; }
+        public DateTime EntryDate { get; set; }
+        public DateTime EventStart { get; set; }
+        public DateTime EventEnd { get; set; }
+        public string EventColor { get; set; }
+        public string UpdateBy { get; set; }
+        public DateTime UpdateDate { get; set; }
+        public DateTime FromDateTime { get; set; }
+        public DateTime ToDateTime { get; set; }
+        public long Location { get; set; }
+    }
+    public class VMtbl_Staffing_Addition
+    {
+        public tbl_Staffing_Addition TSAM { get; set; }
+        public tbl_Staffing_Addition_Details TSADM { get; set; }
+        public List<tbl_Staffing_Addition_Details> listTSADM { get; set; }
+        public List<tbl_LocationSeats> ListLS { get; set; }
+    }
+        public class Tbl_LeaveType_Setup
+    {
+        public int TypeId { get; set; }
+        public string LeaveDesc { get; set; }
+        public decimal LeaveCount { get; set; }
+        public string LeaveYear { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsCarryForward { get; set; }
+        public string EntryBy { get; set; }
+        public DateTime EntryDate { get; set; }
+        public string UpdateBy { get; set; }
+        public DateTime UpdateDate { get; set; }
+
+    }
+    public class Tbl_Employee_Leave_Management
+    {
+        public int Id { get; set; }
+        public int SrNo { get; set; }
+        public int EmployeeId { get; set; }
+        public string EmployeeName { get; set; }
+
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+        public string LeaveReason { get; set; }
+        public string LeaveType { get; set; }
+        public bool IsActive { get; set; }
+        public bool IsApproved { get; set; }
+        public bool IsRejected { get; set; }
+        public int ApprovedRejectBy { get; set; }
+        public string RejectReason { get; set; }
+        public int IdHid { get; set; }
+        public DateTime RejectDate { get; set; }
+        public DateTime ApprovedDate { get; set; }
+        public int CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string FromDateString { get; set; }
+        public string ToDateString { get; set; }
+        public string Status { get; set; }
+        public int LeaveDay { get; set; }
+        public List<LeaveManagementchartData> ListLTSM { get; set; }
+        public List<Tbl_Employee_Leave_Management> TELM { get; set; }
+    }
+    public class WebEmployeeAttendance
+    {
+        public int Id { get; set; }
+        public int SrNo { get; set; }
+        public string CreatedBy { get; set; }
+        public List<WebEmployeeAttendance> HMM { get; set; }
+    }
+
+    public class LeaveManagementchartData
+    {
+
+        public int TypeId { get; set; }
+        public string LeaveDesc { get; set; }
+        public decimal TotalLeave { get; set; }
+        public decimal TakenLeave { get; set; }
+        public decimal RemainingLeave { get; set; }
+
+    }
+
+    public class tbl_LocationSeats
+    {
+        public int SeatId { get; set; }
+        public string LocationSeatName { get; set; }
+        public string Colour { get; set; }
+        public bool IsActive { get; set; }
+        public long CreatedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
+    }
+    public class ScheduleOverview
+    {
+        public DateTime FromDate { get; set; }
+        public DateTime ToDate { get; set; }
+        public long Location { get; set; }
+        public string StartTime { get; set; }
+        public List<tbl_LocationSeats> ListLS { get; set; }
+        public string EmployeeId { get; set; }
+        public string ScheduleDate { get; set; }
+        public TimeSpan FromTime { get; set; }
+        public TimeSpan ToTime { get; set; }
+        public long UserLocation { get; set; }
+        public long EventId { get; set; }
+        public string FTTime { get; set; }
+    }
+    //public class ApplicantSchecduleAvaliblity
+    //{
+    //    public long ASA_Id { get; set; }
+    //    public long ASA_ApplicantId { get; set; }
+    //    public string ASA_EMP_EmployeeId { get; set; }
+    //    public TimeSpan ASA_AvaliableStartTime { get; set; }
+    //    public TimeSpan ASA_AvaliableEndTime { get; set; }
+    //    public DateTime ASA_Date { get; set; }
+    //    public string ASA_IsActive { get; set; }
+    //    public long ASA_AvaliableUserLocation { get; set; }
+    //    public char ASA_Action { get; set; }
+    //    public string ASA_WeekDay { get; set; }
+    //    //public Nullable<DateTime> ASA_AvaliableStartTime { get; set; }
+    //    //public Nullable<DateTime> ASA_AvaliableEndTime { get; set; }
+        
+    //}
+
 }

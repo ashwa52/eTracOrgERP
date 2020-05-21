@@ -1,0 +1,108 @@
+﻿@model WorkOrderEMS.Models.NewAdminModel.ContactListModel
+@{
+    Layout = null;
+}
+<div class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" id="myModelForContactDetails">
+    <div class="modal-dialog" style="width:882px;">
+        <div class="modal-content">
+            <div class="modal-header" style="display: inherit;color:white">
+                <h5>Conform Contact Details</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body" style="margin-left: 2px;">
+                <p style="margin-left:2px;">Please checked below contact option if you need to add more please click below button</p>
+                <form id="ContactSavedForm">
+                    @Html.HiddenFor(m => m.ContactModel, new { @id = "ContactModelList" })
+                    @if (Model != null)
+                    {
+                        if (Model.ContactModel != null)
+                        {
+                            foreach (var item in Model.ContactModel)
+                            {
+                            <div class="basic-form">
+                                <div class="form-group row">
+                                    <div class="col-sm-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input isCheckedContact" id="idPhone_@item.ContactId" data-val="@item.ContactNo" type="checkbox" value="@item.ContactId" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        @Html.Label("Phone No : ", null, new { @class = "" })
+                                    </div>
+                                    <div class="col-sm-9">
+                                        @Html.TextBoxFor(model => item.ContactNo, new { @class = "form-control input-rounded" })
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-1">
+                                        <div class="form-check">
+                                            <input class="form-check-input isCheckedContact" id="idEmail_@item.ContactId" data-val="@item.EmailId" type="checkbox" value="@item.ContactId" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        @Html.Label("E-Mail : ", null, new { @class = "" })
+                                    </div>
+                                    <div class="col-sm-9">
+                                        @Html.TextBoxFor(model => item.EmailId, new { @class = "form-control input-rounded" })
+                                    </div>
+                                </div>
+                            </div>
+                            }
+                        }
+                    }
+                    <span class="btn btn-primary pull-right" style="border-radius:100px;width:23%;background: green;" id="ClickToAddMoreContact">Add More</span>
+                    <br />
+                     <br />
+                    @if(Model != null && Model.ContactModelData != null) { 
+
+                    @Html.HiddenFor(model => model.ContactModelData.ACI_APT_ApplicantId)
+                    <div class="basic-form" id="openNextContactForm" style="display:none;">
+                        <div class="form-group row">
+                            <div class="col-sm-1">
+                                <div class="form-check">
+                                    <input class="form-check-input isCheckedContact" name="@Model.ContactModelData.IsChecked" type="checkbox" value="Y" />
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                @Html.Label("Phone No : ", null, new { @class = "" })
+                            </div>
+                            <div class="col-sm-9">
+                                @Html.TextBoxFor(model => model.ContactModelData.ContactNo, new { @id = "ContactNo", @class = "form-control input-rounded" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-1">
+                                <div class="form-check">
+                                    <input class="form-check-input isCheckedContact" name="@Model.ContactModelData.IsChecked" type="checkbox" value="Y" />
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                @Html.Label("E-Mail : ", null, new { @class = "" })
+                            </div>
+                            <div class="col-sm-9">
+                                @Html.TextBoxFor(model => model.ContactModelData.EmailId, new { @id = "EmailId", @class = "form-control input-rounded" })
+                            </div>
+                        </div>
+                    </div>
+                    }
+                </form>
+            </div>
+            <div class="modal-footer" style="background: white;">
+                <button type="button" id="SaveContact" class="btn btn-success" style="border-radius:100px;width:23%;background: green;" onclick="SubmitForm(this, ContactSavedForm)">Save</button>
+                <button type="button" class="btn btn-primary" style="border-radius:100px;width:23%;" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/Guest/ApplicantFormSave.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#ClickToAddMoreContact").click(function (e) {           
+            $("#openNextContactForm").show();
+            e.stopPropagation();
+        });
+    })
+</script>

@@ -209,6 +209,7 @@ namespace WorkOrderEMS.Controllers
                             vendor.PrimaryPhone = mobileNumber;
                             Vendor resultVendor = commonServiceQBO.Add(vendor) as Vendor;
                             var resultQuickBook = _IVendorManagement.SaveQuickBookId(resultVendor.Id, Obj.VendorId);
+                            List<Account> accountData12 = querySvcAccount.ExecuteIdsQuery("SELECT * FROM Account").ToList();
                             if (Obj.VendorFacilityListModel.Count() > 0)
                             {
                                 foreach (var item in Obj.VendorFacilityListModel)
@@ -322,6 +323,16 @@ namespace WorkOrderEMS.Controllers
         }
         #endregion
         #region "Ajay Kumar"
+        public ActionResult Reconciliationsreports()
+        { 
+           
+            return View();
+        }
+        public JsonResult IsPointOfContactIsExists(string PointOfContact, long? VendorId)
+        {
+            bool result = _IVendorManagement.PointOfContactIsExists(PointOfContact, Convert.ToInt32(VendorId));
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         public JsonResult PrimeryAccounts(string AccountsId, string IsActive,string VendorId)
         {

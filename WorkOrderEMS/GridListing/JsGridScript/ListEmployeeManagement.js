@@ -1,7 +1,9 @@
 ﻿//var HOBurl = '../GlobalAdmin/GetListITAdministratorForJSGrid';
-var HOBurl = '../EPeople/EmployeeManagementList';
+var base_url = window.location.origin;
+var HOBurl = '/EPeople/EmployeeManagementList';
 var clients;
 var GetEMPId;
+var FileId;
 var $_LocationId = $("#drp_MasterLocation1 option:selected").val();
 var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_RequestedBy = 0;//= $("#drp_MasterLocation option:selected").val();
 (function ($) {
@@ -23,7 +25,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
             loadData: function (filter) {
                 return $.ajax({
                     type: "GET",
-                    url: HOBurl + '?locationId=' + $_LocationId,
+                    url: base_url + HOBurl + '?locationId=' + $_LocationId,
                     datatype: 'json',
                     contentType: "application/json",
                 });
@@ -61,9 +63,9 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                 .attr({ id: "btn-file-" + item.id }).click(function (e) {
                                     debugger
                                     $.ajax({
-                                        type: "GET",
+                                        type: "POST",
                                         // data: { 'Id': item.id},
-                                        url: '../EPeople/GetFileView?Id=' + item.id,
+                                        url: base_url + '/EPeople/GetFileViewTest?EMPId=' + item.id,
                                         beforeSend: function () {
                                             new fn_showMaskloader('Please wait...');
                                         },
@@ -91,7 +93,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                       $.ajax({
                                           type: "POST",
                                          // data: { 'Id': item.id},
-                                          url: '../EPeople/GetEmployeeDetailsForEdit?Id=' + item.id,
+                                          url: base_url+'/EPeople/GetEmployeeDetailsForEdit?Id=' + item.id,
                                           beforeSend: function () {
                                               new fn_showMaskloader('Please wait...');
                                           },
@@ -132,7 +134,7 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                        $.ajax({
                                            type: "GET",
                                            data: { 'Id': item.id, 'LocationId': $("#drp_MasterLocation1 option:selected").val() },
-                                           url: '../EPeople/GetUserListByUserId/',
+                                           url: base_url+'/EPeople/GetUserListByUserId/',
                                            contentType: "application/json; charset=utf-8",
                                            beforeSend: function () {
                                                new fn_showMaskloader('Please wait...');
@@ -172,25 +174,8 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                var $customEditButton = $("<span>")
                                    .attr({ title: jsGrid.fields.control.prototype.diagramEmployeeTooltip })
                                    .attr({ id: "btn-diagram-" + item.id }).click(function (e) {
-                                       $('#RenderPageId').load('../EPeople/ChartDetailsView?Id=' + item.id);
-                                       //$.ajax({
-                                       //    type: "POST",
-                                       //    // data: { 'Id': item.id},
-                                       //    url: '../EPeople/ChartDetailsView',
-                                       //    beforeSend: function () {
-                                       //        new fn_showMaskloader('Please wait...');
-                                       //    },
-                                       //    contentType: "application/json; charset=utf-8",
-                                       //    error: function (xhr, status, error) {
-                                       //    },
-                                       //    success: function (result) {
-                                       //        debugger
-                                       //        $("#containerDivForViewChart").html(result);
-                                       //    },
-                                       //    complete: function () {
-                                       //        fn_hideMaskloader();
-                                       //    }
-                                       //});                                 
+                                       //$('#RenderPageId').load(base_url + '/EPeople/ChartDetailsView?Id=' + item.id);
+                                       $('#RenderPageId').load(base_url + '/EPeople/ChartDetailsViewDemo?Id=' + item.id);
                                    }).append($DiagramView);
                                return $("<div>").attr({ class: "btn-toolbar" }).append($customEditButton);
                            }
@@ -202,8 +187,27 @@ var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_Request
                                     .attr({ title: jsGrid.fields.control.prototype.userEmployeeTooltip })
                                     .attr({ id: "btn-user-view" + item.id }).click(function (e) {
                                         debugger
+                                        $.ajax({
+                                            type: "POST",
+                                            url: base_url + '/EPeople/GetUserTreeViewList1?Id=' + item.id + "&LocationId=" + $_LocationId,
+                                            beforeSend: function () {
+                                                new fn_showMaskloader('Please wait...');
+                                            },
+                                            contentType: "application/json; charset=utf-8",
+                                            error: function (xhr, status, error) {
+                                            },
+                                            success: function (result) {
+                                                debugger
+                                                $("#viewUserTreeData").html(result);
+                                                $("#myModalForViewUserChart").modal('show');
+                                            },
+                                            complete: function () {
+                                                fn_hideMaskloader();
+                                            }
+                                        });
+                                        $("#viewUserTreeData").html()
                                         $("#myModalForViewUserChart").modal("show");
-                                        ViewTreeUserData(item.id);
+                                        //ViewTreeUserData(item.id);
 
                                       
                                         e.stopPropagation();
@@ -228,7 +232,7 @@ $(".callNextEmployeeData").click(function () {
     $.ajax({
         type: "POST",
         data: { 'Id': id, 'model': '@Model' },
-        url: '../EPeople/GetUserTreeViewListTesting/',
+        url: base_url+'/EPeople/GetUserTreeViewListTesting/',
         beforeSend: function () {
             new fn_showMaskloader('Please wait...');
         },
@@ -265,11 +269,29 @@ $(".callNextEmployeeData").click(function () {
     });
 })
 $(document).ready(function () {
+    UserSettingId
+    $.ajax({
+        type: "POST",
+        url: base_url + '/EPeople/GetUserTreeViewList1?Id=' + null + "&LocationId=" + $_LocationId,
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
+        contentType: "application/json; charset=utf-8",
+        error: function (xhr, status, error) {
+        },
+        success: function (result) {
+            debugger
+            $("#UserSettingId").html(result);           
+        },
+        complete: function () {
+            fn_hideMaskloader();
+        }
+    });
+
     $("#AddRequisition").click(function () {
         $("#myModalForRequisitionAction").modal("show");
     })
 
-    //$(".ActionRequisition").change(function () {
         $(".ActionRequisition").click(function () {
        debugger
        var value =  $(this).attr("value");
@@ -277,7 +299,7 @@ $(document).ready(function () {
            $.ajax({
                type: "POST",
                // data: { 'Id': item.id},
-               url: '../EPeople/OpenVSCFormForRequistion',
+               url: base_url+'/EPeople/OpenVSCFormForRequistion',
                beforeSend: function () {
                    new fn_showMaskloader('Please wait...');
                },
@@ -296,7 +318,7 @@ $(document).ready(function () {
        }
        else if (value == 2) {
            $.ajax({
-               url: '../EPeople/GetListOfVSCChart',
+               url: base_url+'/EPeople/GetListOfVSCChart',
                type: 'POST',
                contentType: "application/json",
                success: function (result) {
@@ -308,6 +330,7 @@ $(document).ready(function () {
                    VSCDDL = VSCDDL + '</select>';
                    $("#divOpenRquisitionActionDelete").html(VSCDDL);
                    $("#myModalForRequisitionAction").modal("hide");
+                   $("#MaintainSizeForDelete").css("width", "");
                    $("#myModalForGetDetailsToDeleteRequisition").modal('show');
                },
                error: function (er) {
@@ -316,7 +339,7 @@ $(document).ready(function () {
        }
        else {
            $.ajax({
-               url: '../EPeople/GetListOfVSCChart',
+               url: base_url+'/EPeople/GetListOfVSCChart',
                type: 'POST',
                contentType: "application/json",
                success: function (result) {
@@ -338,71 +361,76 @@ $(document).ready(function () {
        }
     })
 
-    $("#AddDemotion").click(function () {
-        $.ajax({
-            type: "GET",
-            // data: { 'Id': item.id},
-            url: '../EPeople/OpenDemotionForm?Id=' + GetEMPId,
-            beforeSend: function () {
-                new fn_showMaskloader('Please wait...');
-            },
-            success: function (FormView) {
-                $("#divOpenDemotionForm").html(FormView);
-                $("#myModalForDemotionEmployee").modal("show");
-                $("#myModalForChangeStatusData").modal("hide");
-                $("#ChangeTitle").html("Demotion");
-            },
-            complete: function () {
-                fn_hideMaskloader();
-            }
-        });
-    })
+    //$("#AddDemotion").click(function () {
+    //    $.ajax({
+    //        type: "GET",
+    //        // data: { 'Id': item.id},
+    //        url: base_url+'/EPeople/OpenDemotionForm?Id=' + GetEMPId,
+    //        beforeSend: function () {
+    //            new fn_showMaskloader('Please wait...');
+    //        },
+    //        success: function (FormView) {
+    //            $("#divOpenDemotionForm").html(FormView);
+    //            $("#myModalForDemotionEmployee").modal("show");
+    //            $("#myModalForChangeStatusData").modal("hide");
+    //            $("#ChangeTitle").html("Demotion");
+    //        },
+    //        complete: function () {
+    //            fn_hideMaskloader();
+    //        }
+    //    });
+    //})
 
-    $("#EmploymentStatusChange").click(function () {
-        $.ajax({
-            type: "GET",
-            // data: { 'Id': item.id},
-            url: '../EPeople/OpenEmploymentStatusChange?Id=' + GetEMPId,
-            beforeSend: function () {
-                new fn_showMaskloader('Please wait...');
-            },
-            success: function (FormView) {
-                $("#divOpenDemotionForm").html(FormView);
-                $("#myModalForDemotionEmployee").modal("show");
-                $("#myModalForChangeStatusData").modal("hide");
-                $("#ChangeTitle").html("Employment Status Change");
-            },
-            complete: function () {
-                fn_hideMaskloader();
-            }
-        });
-    });
+    //$("#EmploymentStatusChange").click(function () {
+    //    $.ajax({
+    //        type: "GET",
+    //        // data: { 'Id': item.id},
+    //        url: base_url+'/EPeople/OpenEmploymentStatusChange?Id=' + GetEMPId,
+    //        beforeSend: function () {
+    //            new fn_showMaskloader('Please wait...');
+    //        },
+    //        success: function (FormView) {
+    //            $("#divOpenDemotionForm").html(FormView);
+    //            $("#myModalForDemotionEmployee").modal("show");
+    //            $("#myModalForChangeStatusData").modal("hide");
+    //            $("#ChangeTitle").html("Employment Status Change");
+    //        },
+    //        complete: function () {
+    //            fn_hideMaskloader();
+    //        }
+    //    });
+    //});
+
+    //$("#LocationTransfer").click(function () {
+    //    $.ajax({
+    //        type: "GET",
+    //        // data: { 'Id': item.id},
+    //        url: base_url + '/EPeople/OpenLocationForTransfer?Id=' + GetEMPId,
+    //        beforeSend: function () {
+    //            new fn_showMaskloader('Please wait...');
+    //        },
+    //        success: function (FormView) {
+    //            $("#divOpenDemotionForm").html(FormView);
+    //            $("#myModalForDemotionEmployee").modal("show");
+    //            $("#myModalForChangeStatusData").modal("hide");
+    //            $("#ChangeTitle").html("Location Transfer");
+    //        },
+    //        complete: function () {
+    //            fn_hideMaskloader();
+    //        }
+    //    });
+    //});
 
     $("#PlusMinusJobTitle").click(function () {
         debugger
-
-        //var model = $("#getallInputDetails").serialize();
         var object = new Object();
         object.JobTitleLastCount = $('#JobTitleLastCount').val();
         object.JobTitleId = $('#JobTitleId').val();
         object.JobTitleCount = $('#NewCount').val();
         var JobTitleIdOriginal, JobTitleValueOriginal, JobTitleIdNew, JobTitleValuenew;
-        //$(".mainClassTOMap").each(function () {
-        //    debugger
-        //    var myObjJson = {};
-        //    $this = $(this);
-        //    //var job = $this.find(".getallOriginalValue").val();
-        //    //var JobId = $this.find(".getallOriginalValue").attr("data-id");
-        //    var newJobId = $this.find(".counterInput").attr("data-id-copy");
-        //    var newJobVal = $this.find(".getallOriginalValue").val();
-        //    //JobTitleIdOriginal = JobTitleIdOriginal + job + ',';
-        //    //JobTitleValueOriginal = JobTitleValueOriginal + JobId + ',';
-        //    JobTitleIdNew = JobTitleIdNew + newJobId + ',';
-        //    JobTitleValuenew = JobTitleValuenew + newJobVal + ',';
-        //})
         $.ajax({
             type: 'POST',
-            url: '../EPeople/SendJobCountForApproval?JobTitleLastCount=' + object.JobTitleLastCount + "&JobTitleId=" + object.JobTitleId + "&JobTitleCount=" + object.JobTitleCount,
+            url: base_url+'/EPeople/SendJobCountForApproval?JobTitleLastCount=' + object.JobTitleLastCount + "&JobTitleId=" + object.JobTitleId + "&JobTitleCount=" + object.JobTitleCount,
             //data: { model: object },
             contentType: "application/json",
             beforeSend: function () {
@@ -412,6 +440,7 @@ $(document).ready(function () {
                 debugger
                 $("#divAddRemoveJobTitle").html("");
                 $("#myModalToAddRemoveJobCount").modal("hide");
+                $("#ListRquisitionData").jsGrid("loadData");
                 toastr.success(result.Message)
             },
             error: function (er) {
@@ -421,13 +450,52 @@ $(document).ready(function () {
             }
         });
     });
+
+    $('#SearchbyAssignUser').on('keyup', function () {
+        var searchTerm = $(this).val().toLowerCase();
+        $('#ListEmployeeManagement table tbody tr').each(function () {
+            var lineStr = $(this).text().toLowerCase();
+            if (lineStr.indexOf(searchTerm) === -1) {
+                $(this).hide();
+            } else {
+                $(this).show();
+            }
+        });
+    });
+
+    $(".SaveDemotion").click(function () {
+        debugger
+        var modelData = $("#SaveStatusEmployee").serialize();
+        $.ajax({
+            type: "POST",
+            url: base_url + '/EPeople/SaveStatus',
+            data: modelData,
+            beforeSend: function () {
+                new fn_showMaskloader('Please wait...');
+            },
+            success: function (message) {
+                if (message != null) {
+                    toastr.success(message);
+                }
+                else {
+                    toastr.success(message);
+                }
+                $("#myModalForDemotionEmployee").modal("hide");
+            },
+            error: function (err) {
+            },
+            complete: function () {
+                fn_hideMaskloader();
+            }
+        });
+    })
 })
 
 function myFunction() {
     debugger
     var value = $("#GetDetailsRequisition option:selected").val();
         $.ajax({
-            url: '../EPeople/GetVCSDetailsById?VSCId=' + value,
+            url: base_url+'/EPeople/GetVCSDetailsById?VSCId=' + value,
             //data:{VSCID : value},
             type: 'POST',
             contentType: "application/json",
@@ -437,7 +505,8 @@ function myFunction() {
             success: function (result) {
                 debugger
                 $("#divOpenRquisitionActionDelete").html("");
-                $("#divOpenRquisitionActionDelete").html(result);                
+                $("#divOpenRquisitionActionDelete").html(result);
+                $("#MaintainSizeForDelete").css("width", "805px");
                 $("#myModalForGetDetailsToDeleteRequisition").modal('show');
             },
             error: function (er) {
@@ -453,7 +522,7 @@ function DeleteRequisition() {
     var value = $("#VSTIdToDelete").val();
     //var value = $("#GetDetailsRequisition option:selected").val();
     $.ajax({
-        url: '../EPeople/SendVCSForDeleteApproval?VSCId=' + value,
+        url: base_url+'/EPeople/SendVCSForDeleteApproval?VSCId=' + value,
         type: 'POST',
         contentType: "application/json",
         beforeSend: function () {
@@ -462,6 +531,7 @@ function DeleteRequisition() {
         success: function (result) {
             debugger
             $("#divOpenRquisitionActionDelete").html("");
+            $("#MaintainSizeForDelete").css("width", "");
             $("#myModalForGetDetailsToDeleteRequisition").modal('hide');
             toastr.success(result.Message)
             $("#ListRquisitionData").jsGrid("loadData");
@@ -487,16 +557,20 @@ function GetJobTitleCount() {
         success: function (result) {
             debugger
             if (result.length > 0) {
-            var VSCDDL = '<select style="    width: 559px;height: 58px;margin-top: 110px;" id="GetJobTitle" onchange="BindJobTitleDetailsForPlusMinus()" class="form-control input-rounded"><option value="0">-Select Job Title to add remove head count-</option>'
+                var VSCDDL = '<select style="    width: 559px;height: 58px;margin-top: 110px;" id="GetJobTitle" onchange="BindJobTitleDetailsForPlusMinus()" class="form-control input-rounded"><option value="0">-Select Job Title to add remove head count-</option>'
                 for (var i = 0; i < result.length; i++) {
                     VSCDDL = VSCDDL + '<option value="' + result[i].Id + '">' + result[i].JobTitle + '</option>';
                 }
+                VSCDDL = VSCDDL + '</select>';
+                $("#divForVSCDropDown").html("");
+                $("#divForVSCDropDown").html(VSCDDL);
+                $("#myModalForRequisitionAction").modal("hide");
+                $("#myModalForVSCDropDown").modal('show');
             }
-            VSCDDL = VSCDDL + '</select>';
-            $("#divForVSCDropDown").html("");
-            $("#divForVSCDropDown").html(VSCDDL);
-            $("#myModalForRequisitionAction").modal("hide");
-            $("#myModalForVSCDropDown").modal('show');
+            else {              
+                $("#myModalForNoRecordFound").modal('show');
+                $("#myModalForVSCDropDown").modal('hide');
+            }
                     
         },
         error: function (er) {
@@ -508,6 +582,7 @@ function GetJobTitleCount() {
 }
 
 function BindJobTitleDetailsForPlusMinus() {
+    debugger
     var value = $("#GetJobTitle option:selected").val();
     $.ajax({
         url: '../EPeople/GetJobTitleCountById?JobId=' + value ,
@@ -529,4 +604,96 @@ function BindJobTitleDetailsForPlusMinus() {
         }
     });
        
+}
+
+function GetFileId($_this) {
+    debugger
+    FileId = $_this.value;
+    $("#myModalToAddInputAndFileName").modal('show');
+    $("#myModalForAddFileData").modal('hide');
+
+}
+function saveFile() {
+    debugger
+    var fileUpload = $("#myfileUpload").get(0);
+    var EmployeeIdFile = $("#EmployeeIdFile").val();
+    var fileName = $("#fileNameInputVal").val();
+    var files = fileUpload.files;
+
+    // Create FormData object  
+    var fileData = new FormData();
+
+    // Looping over all files and add it to FormData object  
+    for (var i = 0; i < files.length; i++) {
+        fileData.append(files[i].name, files[i]);
+    }
+    $.ajax({
+        url: '../EPeople/UploadFiles?EMPId=' + EmployeeIdFile + '&FileId=' + FileId + '&FileName=' + fileName,
+        type: "POST",
+        contentType: false, // Not to set any content header  
+        processData: false, // Not to process data  
+        data: fileData,
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
+        success: function (result) {
+            toastr.success(result)
+            $("#fileNameInputVal").val("");
+            $("#addFileName").val("");
+            $("#addFileName").html("Choose file");
+            $("#myModalToAddInputAndFileName").modal('hide');           
+            //alert(result);
+        },
+        error: function (err) {
+            alert(err.statusText);
+        },
+        complete: function () {
+            fn_hideMaskloader();
+        }
+    });
+}
+
+function SaveEmployeeStatus(data) {
+    debugger
+    var modelData = $("#SaveStatusEmployee").serialize();
+    $.ajax({
+        type: "POST",
+        url: base_url + '/EPeople/SaveStatus',
+        data: modelData,
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
+        success: function (message) {
+            $("#EmployeeStatusChangeGrid").jsGrid("loadData");
+            if (message != null) {
+                toastr.success(message);
+            }
+            else {
+                toastr.success(message);
+            }
+            $("#myModalForDemotionEmployee").modal("hide");
+        },
+        error: function (err) {
+        },
+        complete: function () {
+            fn_hideMaskloader();
+        }
+    });
+}
+
+//Author : deepak , Desc : Open Job posting form
+function OpenJobPostingForm(id) {
+    var origin_Url = window.location.origin;
+    $.ajax({
+        type: "GET",
+        url: origin_Url + '/EPeople/OpenJobPostingForm?CSVChartId=' + id, //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
+        success: function (Data) {
+            debugger
+            $("#divOpenJobPostForm").html("");
+            $("#divOpenJobPostForm").html(Data)
+            $("#myModalToAddJobPost").modal('show');
+        },
+        error: function (err) {
+        }
+    });
 }

@@ -1,0 +1,471 @@
+﻿@*@model WorkOrderEMS.Models.Employee.EmployeeVIewModel*@
+
+@model WorkOrderEMS.Models.CommonApplicantModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_GuestLayout.cshtml";
+}
+<style>
+    .info {
+        display: inline-block;
+        margin: 10px;
+    }
+
+    .profile {
+        display: inline-block;
+    }
+
+        .profile img {
+            width: 100px;
+            height: auto;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+        }
+
+    .middle {
+        text-align: center;
+        background-color: yellow;
+        margin-top: 12px;
+        height: 28px;
+    }
+
+    .input-rounded {
+        border: 1px solid #000;
+    }
+
+    .btnverify {
+        background-color: #0CCC14;
+        width: 157px;
+        height: 58px;
+        font-size: 20px;
+        color: wheat;
+    }
+
+    #RenderPageId {
+        background-image: url(https://eliteparkingofamerica.com/wp-content/uploads/2017/12/parking.gif) !important;
+    }
+
+    label {
+        margin-top: 3px;
+    }
+
+    .mgr10 {
+        margin-top: 10px;
+    }
+
+    .mgr6 {
+        margin-top: 6px;
+    }
+</style>
+<script>
+    function EnableEdit(elm) {
+        var inputs = $('.basic-form :input');
+        if (elm.checked) {
+            inputs.each(function (i, elm) {
+                $(elm).removeAttr('disabled');
+            })
+            $("#hdnIsEditEnable").val(true);
+        }
+        else {
+            inputs.each(function (i, elm) {
+                $(elm).attr('disabled', true);
+            })
+            $("#hdnIsEditEnable").val(false);
+        }
+    }
+</script>
+<link href="~/Content/eCounting/VendorWizard.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/CSS/custom.css" rel="stylesheet" />
+<script type="text/javascript" src="~/Scripts/common/Common.js"></script>
+<script type="text/javascript" src="~/Scripts/BindDropDown/DropDownList.js"></script>
+<script src="~/Scripts/simple.money.format.js"></script>
+<script type="text/javascript" src="~/Scripts/common/Masking.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/MaskLoaderNew.js"></script>
+<style>
+    .input-disabled {
+        background-color: #EBEBE4;
+    }
+
+    .panelData {
+        background: #eceaea;
+        padding: 14px 24px;
+    }
+</style>
+<br />
+<div class="content-body">
+    <div class="container-fluid" style="margin-top:-46px;">
+        <!-- row -->
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card aos-init aos-animate" data-aos="fade-up">
+                    <div class="card-header">
+                        <h4 class="card-title">On-Boarding/Personal Information</h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="page" class="animsition equal" style="z-index:0">
+                            <!--/ End Navbar -->
+                            <div id="page-2">
+                                <section id="form_tab_sec" class="section tab_sec">
+                                    <div class="container">
+                                        <div class="section-title">
+                                            <div class=" section-title-more">Online Employment Application - Dot Driving Reauirement</div>
+                                            <div>
+                                                <h1 class="section-title-heading">Personal Details</h1>
+                                            </div>
+                                        </div>
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(false)
+                                        @using (Html.BeginForm(new { @id= "msform" }))
+                                        {
+
+                                            <div class="tab_pannel_sec panel-default">
+                                                <div class="tab_con">
+                                                    <ul class="nav nav-tabs" id="myTab">
+                                                        <li class="nav-item active">
+                                                            <a data-toggle="tab" href="#personal_detail" class="nav-link active"><span class="step_count">1</span><span class="class_name">Personal Detail</span></a>
+                                                        </li>
+                                                        <li class="nav-item"><a data-toggle="tab" href="#acadmic_detail" class="nav-link"><span class="step_count">2</span><span class="class_name">Academic Detail</span></a></li>
+                                                        <li class="nav-item"><a data-toggle="tab" href="#employment_history" class="nav-link"><span class="step_count">3</span><span class="class_name">Employee History</span></a></li>
+                                                        @*<li class="nav-item"><a data-toggle="tab" href="#shedule_avalibility" class="nav-link"><span class="step_count">4</span><span class="class_name">Schedule Avalibility</span></a></li>*@
+                                                    </ul>
+                                                    @Html.HiddenFor(x => x.ApplicantId)
+
+                                                    <div class="tab-content">
+                                                        <div id="personal_detail" class="tab-pane fade show active">
+                                                            <div>
+                                                                <fieldset id="personaldetails">
+                                                                    @{ViewBag.myModelprefixName = "ApplicantPersonalInfo."; ViewBag.ActionSection = "personaldetails";}
+                                                                    <div>
+                                                                        @Html.Partial("~/Views/Guest/PartialView/_ApplicantPersonalInfo.cshtml")
+                                                                    </div>
+                                                                </fieldset>
+                                                                <fieldset id="addressdetails">
+                                                                    @{ViewBag.myModelprefixName = "ApplicantAddress."; ViewBag.ActionSection = "addressdetails";}
+                                                                    <div>
+                                                                        @Html.Partial("~/Views/Guest/PartialView/_ApplicantAddress.cshtml")
+                                                                    </div>
+                                                                </fieldset>
+                                                                <div class="main_row">
+                                                                    <fieldset id="contactdetails">
+                                                                        @{ViewBag.myModelprefixName = "ApplicantContactInfo."; ViewBag.ActionSection = "contactdetails";}
+                                                                        <div>
+                                                                            @Html.Partial("~/Views/Guest/PartialView/_ApplicantContactInfo.cshtml")
+                                                                        </div>
+                                                                    </fieldset>
+                                                                </div>
+
+                                                                <div class="main_row">
+                                                                    <fieldset id="additionalinfo">
+                                                                        @{ViewBag.myModelprefixName = "ApplicantAdditionalInfo."; ViewBag.ActionSection = "additionalinfo";}
+                                                                        <div>                                                                    
+                                                                            @Html.Partial("~/Views/Guest/PartialView/_ApplicantAdditionalInfo.cshtml")
+                                                                        </div>
+                                                                    </fieldset>
+                                                                </div>
+                                                                <div class="btn_row">
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-12 d-flex space-between">
+                                                                            <button class="btn" style="visibility:hidden" type="button">Previous</button>
+                                                                            <button class="btn" onclick="AcademicDetails()" type="button">Next</button>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <script>
+                                                                    function AcademicDetails() {
+                                                                        $('#myTab a[href="#acadmic_detail"]').tab('show');
+                                                                        $('#myTab li').removeClass('active');
+                                                                        $('#myTab a[href="#acadmic_detail"]').parent().addClass('active');
+
+                                                                    }
+                                                                </script>
+                                                            </div>
+
+                                                        </div>
+                                                        <div id="acadmic_detail" class="tab-pane fade">
+                                                            <fieldset id="academicdetails">
+                                                                @{ViewBag.myModelprefixName = "AplicantAcadmicDetails."; ViewBag.ActionSection = "academicdetails";}
+                                                                <div>
+                                                                    @Html.Partial("~/Views/Guest/PartialView/_AcademicDetailsApplicant.cshtml")
+                                                                </div>
+                                                            </fieldset>
+                                                        </div>
+                                                        <div id="employment_history" class="tab-pane fade">
+                                                            <fieldset id="employeehistory">
+                                                                @{ViewBag.myModelprefixName = "ApplicantBackgroundHistory."; ViewBag.ActionSection = "employeehistory";}
+                                                                <div>
+                                                                    @Html.Partial("~/Views/Guest/PartialView/_EmploymentHistory.cshtml")
+                                                                </div>
+                                                            </fieldset>
+                                                            <fieldset id="positionheld">
+                                                                @{ViewBag.myModelprefixName = "ApplicantBackgroundHistory.ApplicantPositionTitle"; ViewBag.ActionSection = "positionheld";}
+                                                                <div>
+                                                                    @Html.Partial("~/Views/Guest/PartialView/_ApplicantPositionTitle.cshtml")
+                                                                </div>
+                                                            </fieldset>
+                                                            <fieldset id="accidentrecord">
+                                                                @{ViewBag.myModelprefixName = "ApplicantBackgroundHistory.ApplicantAccidentRecord."; ViewBag.ActionSection = "accidentrecord";}
+                                                                <div class="main_row">
+                                                                    @Html.Partial("~/Views/Guest/PartialView/_ApplicantAccidentRecord.cshtml")
+                                                                </div>
+                                                            </fieldset>
+                                                            <fieldset id="trafficconviction">
+                                                                @{ViewBag.myModelprefixName = "ApplicantBackgroundHistory.ListAppTrafficConvictions"; ViewBag.ActionSection = "trafficconviction";}
+                                                                <div class="main_row">
+
+                                                                    @Html.Partial("~/Views/Guest/PartialView/_ApplicantTrafficConvictions.cshtml")
+                                                                </div>
+                                                            </fieldset>
+                                                            <fieldset id="licenseheld">
+                                                                @{ViewBag.myModelprefixName = "ApplicantBackgroundHistory.ApplicantLicenseHeald."; ViewBag.ActionSection = "licenseheld";}
+                                                                <div class="main_row">
+                                                                    @Html.Partial("~/Views/Guest/PartialView/_ApplicantLicenseHeald.cshtml")
+                                                                </div>
+                                                            </fieldset>
+                                                            <fieldset id="vehicleoperated">
+                                                                @{ViewBag.myModelprefixName = "ApplicantBackgroundHistory.ApplicantVehiclesOperated."; ViewBag.ActionSection = "vehicleoperated";}
+                                                                <div class="main_row">
+                                                                    @Html.Partial("~/Views/Guest/PartialView/_ApplicantVehiclesOperated.cshtml")
+                                                                </div>
+                                                            </fieldset>
+                                                            <span @*type="submit"*@ id="SaveApplicantInfo" class="form-control btn btn-info ">
+                                                                Submit
+                                                            </span>
+
+                                                        </div>
+
+                                                        @*<div id="shedule_avalibility" class="tab-pane fade">
+                                                                <div class="main_row">
+                                                                    <div class="row mb-20">
+                                                                        <div class="colmn col-md-12 text-center">
+                                                                            <div class="form-group">
+                                                                                <label class="form-label">Schedule Avalibility</label>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-12 text-center">
+                                                                            <table>
+                                                                                <tbody>
+                                                                                    <tr>
+                                                                                        <th></th>
+                                                                                        <th>Avalible start time</th>
+                                                                                        <th>Avalible End time</th>
+                                                                                        <th>Total Daily <br>Hours of Avalibility</th>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Sunday</td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Monday</td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Tuesday</td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Wednesday</td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Thursday</td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Friday</td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td>Saturday</td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <input type="time" class="form-control" placeholder="city">
+                                                                                        </td>
+                                                                                        <td></td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="main_row  authorise_row">
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-12">
+                                                                            <div class="form-group">
+                                                                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
+                                                                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur</p>
+                                                                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</p>
+                                                                                <ul>
+                                                                                    <li>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</li>
+                                                                                    <li>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</li>
+                                                                                    <li>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</li>
+                                                                                </ul>
+                                                                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+
+
+                                                                    <div class="btn_row">
+                                                                        <div class="row">
+                                                                            <div class="colmn col-md-12 d-flex space-between">
+                                                                                <button class="btn">Previous</button>
+
+                                                                                <a data-toggle="tab" class="btn" href="#customer_decleration"><span class="class_name ">Next</span></a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>*@
+
+
+
+                                                        @*<div id="customer_decleration" class="tab-pane fade">
+                                                                <div class="authorise_row">
+                                                                    <div class="main_row">
+                                                                        <div class="row ">
+                                                                            <div class="colmn col-md-12 text-center">
+                                                                                <div class="form-group">
+                                                                                    <label class="form-label">DRIVING TEST HOLD HARMLESS</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-12">
+                                                                            <div class="form-group">
+                                                                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
+                                                                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur</p>
+                                                                                <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia</p>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <br><br>
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-12 text-right">
+                                                                            <div class="form-group">
+                                                                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Provide Signature</button>
+                                                                            </div>
+                                                                        </div>
+
+                                                                    </div>
+
+
+                                                                    <br>
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-4">
+                                                                            <input type="text" placeholder="Signature Here">
+                                                                        </div>
+                                                                        <div class="colmn col-md-4">
+                                                                        </div>
+                                                                        <div class="colmn col-md-4">
+                                                                            <input type="text" placeholder="Print Applicant name here">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-4">
+                                                                        </div>
+                                                                        <div class="colmn col-md-4">
+                                                                        </div>
+                                                                        <div class="colmn col-md-4">
+                                                                            <input type="text" placeholder="Date Signed">
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="btn_row">
+                                                                        <div class="row">
+                                                                            <div class="colmn col-md-12 d-flex space-between">
+                                                                                <button class="btn">Previous</button>
+                                                                                <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#thankyouModal">Submit</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>*@
+
+
+                                                        @*<div id="thankyou_message" class="tab-pane fade">
+                                                                <div class="authorise_row">
+                                                                    <div class="row">
+                                                                        <div class="colmn col-md-12">
+                                                                            <div class="form-group">
+                                                                                <p> Congratulations </p>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+
+
+                                                                </div>
+                                                            </div>*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                    <!--/ .container -->
+                                </section>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<script src="~/Scripts/bootstrap.js"></script>*@
+<script src="~/Scripts/ePeople/ApplicantFunctionality.js"></script>
+<script src="~/Scripts/ePeople/CustomMultistepWizardApplicant.js"></script>
+<script src="~/Content/NewAdminContent/VENDOR/jquery-steps/build/jquery.steps.min.js"></script>
+@*<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>*@
+<script src="~/Scripts/NewAdminJS/plugins-init/jquery-steps-init.js"></script>

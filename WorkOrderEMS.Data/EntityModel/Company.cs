@@ -18,6 +18,14 @@ namespace WorkOrderEMS.Data.EntityModel
         public Company()
         {
             this.Bills = new HashSet<Bill>();
+            this.Tbl_Customer_Vehicle_Details = new HashSet<Tbl_Customer_Vehicle_Details>();
+            this.Tbl_Customer_Payment_Details = new HashSet<Tbl_Customer_Payment_Details>();
+            this.Tbl_Customer_Vehicle_Details1 = new HashSet<Tbl_Customer_Vehicle_Details>();
+            this.Tbl_Customer_Payment_Details1 = new HashSet<Tbl_Customer_Payment_Details>();
+            this.Tbl_Customer_Basic_Details = new HashSet<Tbl_Customer_Basic_Details>();
+            this.Tbl_Log_Customer_Basic_Details = new HashSet<Tbl_Log_Customer_Basic_Details>();
+            this.Tbl_Log_Customer_Vehicle_Details = new HashSet<Tbl_Log_Customer_Vehicle_Details>();
+            this.Tbl_Log_Customer_Payment_Details = new HashSet<Tbl_Log_Customer_Payment_Details>();
             this.CompanyAccountDetails = new HashSet<CompanyAccountDetail>();
             this.CompanyAccountTransactions = new HashSet<CompanyAccountTransaction>();
             this.CompanyAccountTransactions1 = new HashSet<CompanyAccountTransaction>();
@@ -56,6 +64,22 @@ namespace WorkOrderEMS.Data.EntityModel
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Bill> Bills { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tbl_Customer_Vehicle_Details> Tbl_Customer_Vehicle_Details { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tbl_Customer_Payment_Details> Tbl_Customer_Payment_Details { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tbl_Customer_Vehicle_Details> Tbl_Customer_Vehicle_Details1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tbl_Customer_Payment_Details> Tbl_Customer_Payment_Details1 { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tbl_Customer_Basic_Details> Tbl_Customer_Basic_Details { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tbl_Log_Customer_Basic_Details> Tbl_Log_Customer_Basic_Details { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tbl_Log_Customer_Vehicle_Details> Tbl_Log_Customer_Vehicle_Details { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Tbl_Log_Customer_Payment_Details> Tbl_Log_Customer_Payment_Details { get; set; }
         public virtual CompanyType CompanyType { get; set; }
         public virtual VendorType VendorType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

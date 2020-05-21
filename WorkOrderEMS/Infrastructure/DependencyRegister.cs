@@ -97,9 +97,14 @@ namespace WorkOrderEMS.Infrastructure
                 For<IDepartment>().Use<DepartmentManager>();
                 For<IAdminDashboard>().Use<VehicleSeatingChartManager>();
                 For<IePeopleManager>().Use<ePeopleManager>();
+                For<ICustomerManagement>().Use<CustomerManagementManager>();
                 For<IGuestUser>().Use<GuestUserRepository>();
                 For<IGuestUserRepository>().Use<GuestUserRepositoryData>();
                 For<IFillableFormManager>().Use<FillableFormManager>();
+                For<INewAdminRepository>().Use<NewAdminDataRepository>();
+                For<IDebitMemo>().Use<DebitMemoManager>();
+                For<IApplicantManager>().Use<ApplicantManager>();
+                For<INotification>().Use<NotificationManager>();
             }
         }
     }

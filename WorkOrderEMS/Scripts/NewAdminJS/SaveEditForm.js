@@ -1,4 +1,5 @@
-﻿function SubmitForm(element, formName) {
+﻿var base_url = window.location.origin;
+function SubmitForm(element, formName) {
     debugger
     var url = '';
     var data = '';
@@ -6,12 +7,12 @@
     if (isSubmit) {
         switch (formName.id) {
             case 'depositeForm':
-                url = '../EPeople/_DirectDepositeForm';
+                url = base_url+'/EPeople/_DirectDepositeForm';
                 data = $('#depositeForm').serialize();
                 break;
-            case 'employeeHandbook':
-                url = '../EPeople/_EmployeeHandbook';
-                data = $('#employeeHandbook').serialize();
+            case 'EmergencyContactForm':
+                url = base_url + '/EPeople/_EmergencyContactForm';
+                data = $('#EmergencyContactForm').serialize();
                 break;
         }
             debugger

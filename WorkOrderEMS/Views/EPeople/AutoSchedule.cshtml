@@ -1,0 +1,144 @@
+﻿
+@model WorkOrderEMS.Models.VMtbl_Staffing_Addition
+@{
+    ViewBag.Title = "Auto Schedule";
+    var isRefresh = ViewBag.IsPageRefresh;
+    if (isRefresh == true)
+    {
+        Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = null;
+    }
+    long locationId = 0;
+    long userType = 0;
+    long UserId = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserProfile = "";
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+        UserId = ObjLogin.UserId;
+    }
+}
+<style>
+    .error {
+        color: red;
+    }
+
+    .chk {
+        margin-top: 10px !important;
+    }
+
+    .nextBtndata {
+        border-radius: 25px;
+        background-color: #0aa0cd;
+    }
+</style>
+@section scripts{
+    <script type="text/javascript">
+    var $_locationId = '@locationId';
+    var $_userTypeId = '@userType';
+    var $_VendorStatus = "false";
+    </script>
+}
+<link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
+<link rel="stylesheet" href="@Url.Content("~/Content/Dashboard/plugins/timepicker/bootstrap-timepicker.min.css")" />
+<div class="content-body">
+    <div class="container-fluid" style="margin-top:20px;">
+        <!-- row -->
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card aos-init" data-aos="fade-up">
+                    <div class="card-header headerSize" style="height: 45px;">
+                        <h4 class="card-title" style="color:white;"><strong><i class="fa fa-sticky-note"></i> @ViewBag.Title</strong></h4>
+                    </div>
+                    <div class="card-body">
+
+                        <form action="@Url.Action("AutoSchedule", "EPeople")" method="post" id="step-form-horizontal" class="step-form-horizontal">
+                            @Html.ValidationSummary(true)
+                            @Html.HiddenFor(model => model.TSAM.UserLocation)
+                            <section>
+                                <div class="basic-form">
+                                    <div class="row">
+                                        @Html.Label("Schedule Date", new { @class = "col-sm-2 col-form-label" })
+                                        <div class="col-sm-4 form-group">
+                                            @Html.TextBoxFor(model => model.TSAM.ScheduleDate, new { @Placeholder = "Schedule Date", @class = "form-control input-rounded required" })
+                                        </div>
+                                        @Html.Label("Location", new { @class = "col-sm-2 col-form-label" })
+                                        <div class="col-sm-4 form-group">
+                                            @Html.DropDownListFor(model => model.TSAM.Location, new SelectList(Model.ListLS, "SeatId", "LocationSeatName"), "--Select Location seat--", new { @id = "SeatLocationType", @class = "form-control input-rounded required" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                            <span class="w-100 text-right float-left">
+                                <button type="button" id="btnback" class="btn btn-success center nextBtndata" style="margin-left: 10px;"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp; Back To List</button>
+                                <button type="button" id="btnsave" class="btn btn-success center nextBtndata" style="margin-left: 10px;">Submit&nbsp;&nbsp; <i class="fa fa-check"></i></button>
+                            </span>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@Styles.Render("~/Scripts/ClockPickerCss")
+@Scripts.Render("~/Scripts/ClockPickerJs")
+<script type="text/javascript" src="@Url.Content("~/Content/Dashboard/plugins/timepicker/bootstrap-timepicker.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
+
+<script type="text/javascript">
+    $("#btnback").on("click", function (event) {
+        event.preventDefault();
+        var addNewUrl = "/EPeople/CoverageMapFormate";
+        $('#RenderPageId').load(addNewUrl);
+    });
+    $('#TSAM_ScheduleDate').datepicker({
+        format: "mm/dd/yyyy",
+        startDate: new Date()
+    });
+    var now = new Date();
+    var date = ((now.getMonth() + 1) + '/' + (now.getDate()) + '/' + now.getFullYear());
+    $('#TSAM_ScheduleDate').val(date);
+    var itemIndex = $("#tblLocationSeatHead input.iHidden").length;
+
+
+
+    $("#btnsave").on("click", function (event) {
+        if (!$("#step-form-horizontal").valid()) {
+            return false;
+        }
+        else {
+
+            var strUrl = "@Url.Action("GetData", "GlobalSettings")";
+            var parameters = {};
+            parameters['SeatLocation'] = $("#SeatLocationType").val()
+            parameters['AutoSchecduleDate'] = $("#TSAM_ScheduleDate").val(),
+            parameters['UserLocation'] = $_locationId,
+            parameters['UserId'] = @UserId;
+            result = $.ajax({
+                async: false,
+                type: 'POST',
+                url: strUrl,
+                dataType: 'json',
+                data: {
+                    Method: 'AutoSchecdule',
+                    parameters: parameters
+                },
+            });
+            var addNewUrl = "/EPeople/CoverageMapFormate";
+            $('#RenderPageId').load(addNewUrl);
+        }
+    });
+</script>
+
+
+

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.Serialization;
 
 namespace WorkOrderEMS.Models
@@ -39,10 +40,11 @@ namespace WorkOrderEMS.Models
 
         [DataMember]
         public string ServiceAuthKey { get; set; }
-
         [DataMember]
         public string FormName { get; set; }
-
+        //public string Form { get; set; }
+        [DataMember]
+        public string EmployeeID { get; set; }
         #endregion Service Login Data
 
         #region Other Login Data
@@ -75,6 +77,7 @@ namespace WorkOrderEMS.Models
         public string FName { get; set; }
         [DataMember]
         public string LName { get; set; }
+
         public string ContactNo { get; set; }
         [DataMember]
         public string Location { get; set; }
@@ -122,6 +125,33 @@ namespace WorkOrderEMS.Models
         public string Lat { get; set; }
         [DataMember]
         public string Long { get; set; }
+        [DataMember]
+        public string MName { get; set; }
+        [DataMember]
+        public string LoginId { get; set; }
+        [DataMember]
+        public string Question { get; set; }
+        [DataMember]
+        public string Answer { get; set; }
+        [DataMember]
+        public long? ApplicantId { get; set; }
+        [DataMember]
+        public long? JobPostingId { get; set; }
+        [DataMember]
+        public string ApplicantPhoto { get; set; }
+        [DataMember]
+        public Nullable<DateTime> DateOFJoining { get; set; }
+
+        [DataMember]
+        public string RefreshI9Token { get; set; }
+        [DataMember]
+        public long I9CompanyId { get; set; }
         #endregion Other Login Data
+    }
+    public class Login
+    {
+        public string username { get; set; }
+        public string password { get; set; }
+
     }
 }

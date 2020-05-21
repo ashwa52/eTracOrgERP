@@ -1,9 +1,10 @@
-﻿var HOBurl = '../HirinngOnBoarding/GetHiringOnBoardingList';
+﻿var base_url = window.location.origin;
+var HOBurl = '../HirinngOnBoarding/GetHiringOnBoardingList';
 var clients;
 var $_LocationId = $("#drp_MasterLocation option:selected").val();
 var $_OperationName = "", $_workRequestAssignmentId = 0, $_UserId = 0, $_RequestedBy = 0;//= $("#drp_MasterLocation option:selected").val();
 
-
+var API_id;
 let details = [];
 
 var datadetails = "";
@@ -77,7 +78,7 @@ $('#SaveVCSChartForm1').validate({
 function saveApplicantInfo() {
     var isValid = $('#SaveVCSChartForm1').valid();
     if (isValid) {
-        alert(isValid);
+        //alert(isValid);
         var myData = {
 			FirstName: $("#onboardFirstName").val(),
 			MiddleName: $("#onboardMobile").val(),
@@ -94,7 +95,7 @@ function saveApplicantInfo() {
 			API_JobTitleID: $("#job_title").val()
         }
         $.ajax({
-            url: '/NewAdmin/SaveApplicantInfo',
+            url: base_url+'/NewAdmin/SaveApplicantInfo',
             type: 'POST',
             dataType: "json",
             contentType: 'application/json',
@@ -121,7 +122,7 @@ function getStateList() {
 	$('#onboardState').empty()
 	$.ajax({
 		type: "GET",
-		url: "/NewAdmin/GetStateList",
+		url: base_url+"/NewAdmin/GetStateList",
 		success: function (data) {
 				$('#onboardState').append('<option value="-1">--Select--</option>');
 			// Use jQuery's each to iterate over the opts value
@@ -136,7 +137,7 @@ function getStateList() {
 function getApplicantInfo() {
     $.ajax({
         type: 'GET',
-        url: "/NewAdmin/GetApplicantInfo",
+        url: base_url+"/NewAdmin/GetApplicantInfo",
         success: function (data) {
             datadetails = data;
             //var data;
@@ -175,25 +176,15 @@ function getApplicantInfo() {
                                 .attr({ id: "btn-edit-" + item.Id }).click(function (e) {
                                     //call function to render the page
                                     debugger;
-
+                                    API_id = item.API_ApplicantId;
                                     addNewOnboardingDetail(item);
                                     
                                 }).append($iconPencil);
                             var $customDeleteButton = $("<span>")
                                 .attr({ title: jsGrid.fields.control.prototype.deleteButtonTooltip })
                                 .attr({ id: "btn-delete-" + item.Id }).click(function (e) {
-                                    $.ajax({
-                                        type: "POST",
-                                        url: "../GlobalAdmin/DeleteLocation?id=" + item.Id,
-                                        success: function (Data) {
-                                            //$("#jsGrid-basic").jsGrid("loadData");
-                                            var addNewUrl = "../GlobalAdmin/ListLocation";
-                                            $('#RenderPageId').load(addNewUrl);
-                                        },
-                                        error: function (err) {
-                                        }
-                                    });
-
+                                    API_id = item.API_ApplicantId;
+                                    $("#myModalForAddEmployee").modal("show");
                                     e.stopPropagation();
                                 }).append($iconTrash);
 
@@ -220,7 +211,7 @@ function checkempID() {
 	if (empId == '')
 		return;
     $.ajax({
-        url: '/NewAdmin/ValidateEmployeeID?empId=' + empId,
+        url: base_url+'/NewAdmin/ValidateEmployeeID?empId=' + empId,
         type: 'GET',
         success: function (data) {
 			if (data == true) {
@@ -236,3 +227,24 @@ function checkempID() {
         }
     });
 }
+
+function VerifyEmployee() {
+    debugger
+    var object = new Object();
+    object.Status = "I";
+    object.App_Id = API_id;
+    object.LocationId = $("#ddl_LocationForEmployee option:selected").val();
+    $.ajax({
+        type: "POST",
+        url: base_url + "/NewAdmin/VerifyEmployeeAfterGenerate",
+        data: { onboardingDetailRequestModel: object },
+        success: function (Data) {
+            debugger
+            $("#myModalToShowLocation").modal("hide");
+        },
+        error: function (err) {
+        }
+    });
+
+}
+

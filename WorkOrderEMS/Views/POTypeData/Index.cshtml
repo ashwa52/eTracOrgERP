@@ -15,17 +15,13 @@
 }
 @*<link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text'>
 <link href="~/Content/eFleetVehicle/eFleetstyle.css" rel="stylesheet" />*@
+    <link href="~/Content/NewAdminContent/CSS/custom.css" rel="stylesheet" />
 <style type="text/css">
-       .form-control {
-        border: 1px solid #a0b3b0 !important;
-    }
-        label .req {
+   label .req {
         margin: 2px;
         color: #ed2f35;
     }
-          .headerSize {
-        height: 36px;
-    }
+  
 
     input[type="radio"] {
         height: 20px;
@@ -37,10 +33,7 @@
     .errorspace {
         margin-top: -5px
     }
-      .jsgrid-grid-body {
-        height: 100% !important;
-    }
-    
+  
 </style>
  
 @section scripts{
@@ -86,11 +79,22 @@
 <div class="content-body">
     <div class="container-fluid">
         <!-- row -->
+        <div class="row page-titles mx-0 aos-init aos-animate" data-aos="fade-up">
+            <div class="col-sm-6 p-md-0">
+                <div class="welcome-text">
+                    <h4>Create PO</h4>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="javascript:void(0)">PO</a></li>
+                        <li class="breadcrumb-item active"><a href="javascript:void(0)">Create PO</a></li>
+                    </ol>
+                </div>
+            </div>
+        </div>
         <div class="row">
             <div class="col-xl-12 col-xxl-12">
                 <div class="card aos-init aos-animate" data-aos="fade-up">
                     <div class="card-header headerSize">
-                        <h4 class="card-title" style="color:white;"><strong>Create PO</strong></h4>
+                        <h4 class="card-title">Create PO</h4>
                     </div>
                     <div class="card-body">
 
@@ -100,7 +104,7 @@
                             @Html.AntiForgeryToken()
                             @Html.ValidationSummary(true)
                             @Html.HiddenFor(model => model.POId)
-                            <br />
+                         
 
                             <div class="panel panel-primary setup-content">
                                 <div class="basic-form">
@@ -109,21 +113,23 @@
 
                                     </div>
                                     <div class="form-group row">
+                                        <div class="col-md-12">
                                         @if (@ViewBag.UpdateMode == true)
                                         {
-                                            <input type="text" value="@ViewBag.PONumberData" id="PONumber" name="PONumber" class="form-control input-rounded" style="background-color:#EBEBE4;text-align:center;" readonly />
+                                            <input type="text" value="@ViewBag.PONumberData" id="PONumber" name="PONumber" class="form-control input-rounded text-center" readonly />
                                         }
                                         else
                                         {
-                                            <input type="text" value="@ViewBag.PONumber" id="PONumber" name="PONumber" class="form-control input-rounded" style="background-color:#EBEBE4;text-align:center;" readonly />
+                                            <input type="text" value="@ViewBag.PONumber" id="PONumber" name="PONumber" class="form-control input-rounded text-center" readonly />
                                         }
 
-
+                                    </div>
                                     </div>
 
                                     <div class="form-group row">
-                                        <label class="col-sm-2 col-form-label" id="">Select Location<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+                                        <div class="col-md-6">
+                                            <label class="col-form-label" id="">Select Location<span class="req">*</span></label>
+
                                             @if (Session != null)
                                             {
                                                 if (Session["eTrac_UserLocations"] != null)
@@ -135,9 +141,11 @@
                                             <div class="errorspace">
                                                 @Html.ValidationMessageFor(model => model.Location)
                                             </div>
+
                                         </div>
-                                        <label class="col-sm-2 col-form-label" for="VendorName">Select PO Type<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+                                        <div class="form-group col-md-6">
+                                            <label class="col-form-label" for="VendorName">Select PO Type<span class="req">*</span></label>
+
                                             <select name="POType" id="POType" class="form-control input-rounded">
                                                 <option value="0">--Select POType--</option>
                                                 <option value="1">Normal PO</option>
@@ -148,59 +156,59 @@
                                             <div class="errorspace">
                                                 @Html.ValidationMessageFor(model => model.POType)
                                             </div>
+
                                         </div>
-                                    </div>
-                                    <!--Div Emeregency-->
-                                    <div class="form-group row ShowRowForEmergency" style="display:none">
+
+                                        <!--Div Emeregency-->
+                                        <div class="form-group col-md-6 ShowRowForEmergency" style="display:none">
+                                            <h6 class="col-form-label"> Is Vendor is registered ? <span class="req">*</span></h6>
 
 
-                                        <label style="font-size:15px;">
-                                            Is Vendor is registered ?<span class="req">*</span>
-                                        </label>
-                                        <span style="margin-left:250px;">
-                                            <input type="radio" id='IsVendorRegisterYes' value="1" name="IsVendorRegister" class="IsVendorRegister" /><span>&nbsp;&nbsp;</span>Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <input type="radio" id='IsVendorRegisterNo' value="0" name="IsVendorRegister" class="IsVendorRegister" /><span>&nbsp;&nbsp;</span>No
-                                        </span>
+                                            <span>
+                                                <input type="radio" id='IsVendorRegisterYes' value="1" name="IsVendorRegister" class="IsVendorRegister" /><span class="radio_span"> Yes</span>
+                                                <input type="radio" id='IsVendorRegisterNo' value="0" name="IsVendorRegister" class="IsVendorRegister" /><span class="radio_span"> No</span>
+                                            </span>
 
-                                    </div>
-                                    <!--End Div Emeregency-->
+                                        </div>
+                                        <!--End Div Emeregency-->
 
-                                    <div class="form-group row WhenVenderRegister">
-                                        <label class="col-sm-2 col-form-label" id="">Company<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+                                        <div class="form-group col-md-6 WhenVenderRegister">
+                                            <label class="col-form-label" id="">Company<span class="req">*</span></label>
+
                                             @if (@ViewBag.UpdateMode == true)
                                             {
                                                 if (ViewBag.VendorList != null)
                                                 {
                                                     @Html.DropDownListFor(model => model.SelectedVendor, new SelectList(ViewBag.VendorList, "CompanyId", "CompanyNameLegal"), "--Select Company--", new { @id = "SelectedVendor", @class = "VendorClass form-control input-rounded" })}
-                                            else
+                                                else
+                                                {
+                                                    <select id="State" class="form-control input-rounded"><option value="-1">@ViewBag.POType</option></select>}
+                                            }
+                                            else // This is temorary need to use Razor
                                             {
-                                                <select id="State" class="form-control input-rounded"><option value="-1">@ViewBag.POType</option></select>}
-                                           }
-                                        else // This is temorary need to use Razor
-                                        {
-                                            <select class="form-control input-rounded" name="@Html.NameFor(model => model.Vendor)"
-                                                    id="@Html.IdFor(model => model.Vendor)">
-                                                <option>--Select Company--</option>
-                                            </select>
-                                        }
+                                                <select class="form-control input-rounded" name="@Html.NameFor(model => model.Vendor)"
+                                                        id="@Html.IdFor(model => model.Vendor)">
+                                                    <option>--Select Company--</option>
+                                                </select>
+                                            }
                                             <div class="errorspace">
                                                 @Html.ValidationMessageFor(model => model.Vendor)
                                             </div>
                                         </div>
-                                        <label class="col-sm-2 col-form-label" id="lblPointOfContact"> Point of Contact<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+                                        <div class="form-group col-md-6  WhenVenderRegister">
+                                            <label class="col-form-label" id="lblPointOfContact"> Point of Contact<span class="req">*</span></label>
+
                                             @Html.TextBoxFor(model => model.PointOfContactName, new { @id = "PointOfContactName", @readonly = "readonly", @class = "form-control input-rounded" })
                                             <div class="errorspace">
                                                 @Html.ValidationMessageFor(model => model.PointOfContactName)
                                             </div>
                                             @Html.HiddenFor(model => model.PointOfContactNameHidden, new { @id = "PointOfContactNameHidden" })
-                                        </div>
-                                    </div>
 
-                                    <div class="form-group row ShowNormalPO">
-                                        <label class="col-sm-2 col-form-label" id="lblIssueDate">Issue Date<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+                                        </div>
+
+                                        <div class="form-group col-md-6 ShowNormalPO">
+                                            <label class="col-form-label" id="lblIssueDate">Issue Date<span class="req">*</span></label>
+
                                             @if (@ViewBag.UpdateMode == true)
                                             {
                                                 @Html.TextBoxFor(model => model.IssueDate, "{0:MM/dd/yyyy}", new { @id = "IssueDateEdit", @onkeydown = "return false;", @style = "background-color:#EBEBE4;", @class = "form-control input-rounded" })
@@ -209,49 +217,63 @@
                                             {
                                                 @Html.TextBoxFor(model => model.IssueDate, "{0:MM/dd/yyyy}", new { @id = "IssueDate", @onkeydown = "return false;", @style = "background-color:#EBEBE4;", @class = "form-control input-rounded" })
                                             }
+
                                         </div>
-                                        <label class="col-sm-2 col-form-label" id="lblDeliveryDate"> Delivery Date<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+                                        <div class="form-group col-md-6 ShowNormalPO">
+                                            <label class="col-form-label" id="lblDeliveryDate"> Delivery Date<span class="req">*</span></label>
+
                                             @Html.TextBoxFor(model => model.DeliveryDate, "{0:MM/dd/yyyy}", new { @id = "DeliveryDate", @onkeydown = "return false;", @class = "form-control input-rounded" })
+
                                         </div>
-                                    </div>
-                                    <!-- Div for Recurrence -->
-                                    <div class="form-group row ShowReccuringType" style="display:none">
-                                        <label class="col-sm-2 col-form-label" id="lblInvoicingFrequency"> Invoicing Frequency<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+                                        <!-- Div for Recurrence -->
+                                        <div class="form-group col-md-6 ShowReccuringType" style="display:none">
+                                            <label class="col-form-label" id="lblInvoicingFrequency"> Invoicing Frequency<span class="req">*</span></label>
+
                                             @Html.TextBoxFor(model => model.InvoicingFrequency, new { @id = "InvoicingFrequency", @onkeydown = "return false;", @style = "background-color:#EBEBE4;", @class = "form-control input-rounded" })
+
                                         </div>
-                                        <label class="col-sm-2 col-form-label" id="lblCostDuringPeriod">  Cost During Period<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+                                        <div class="form-group col-md-6 ShowReccuringType" style="display:none">
+                                            <label class="col-form-label" id="lblCostDuringPeriod">  Cost During Period<span class="req">*</span></label>
+
                                             @Html.TextBoxFor(model => model.CostDuringPeriod, new { @id = "CostDuringPeriod", @onkeydown = "return false;", @style = "background-color:#EBEBE4;", @class = "form-control input-rounded" })
-                                        </div>
-                                    </div>
 
-                                    <div class="form-group row ShowReccuringType" style="display:none">
-                                        <label class="col-sm-2 col-form-label" id="lblBillDate">Bill Date<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+                                        </div>
+
+                                        <div class="form-group col-md-6 ShowReccuringType" style="display:none">
+                                            <label class="col-form-label" id="lblBillDate">Bill Date<span class="req">*</span></label>
+
                                             @Html.TextBoxFor(model => model.BillDate, "{0:MM/dd/yyyy}", new { @id = "BillDate", @onkeydown = "return false;", @class = "form-control input-rounded" })
+
+
                                         </div>
 
-                                    </div>
 
 
+                                        <!--End Div for Recurrence -->
+                                        <div class="form-group col-md-6 AdressShowHide">
+                                            <label class="col-form-label" id="lblAddress">Address<span class="req">*</span></label>
 
-                                    <!--End Div for Recurrence -->
-                                    <div class="form-group row AdressShowHide">
-                                        <label class="col-sm-2 col-form-label" id="lblAddress">Address<span class="req">*</span></label>
-                                        <div class="col-sm-4">
                                             @Html.TextAreaFor(model => model.PointOfContactAddress, new { @id = "PointOfContactAddress", @readonly = "readonly", @class = "form-control input-rounded" })
+
                                         </div>
-                                        <label class="col-sm-2 col-form-label" id="lblCostDuringPeriod"> PO Document</label>
-                                        <div class="col-sm-4">
+
+
+                                        <div class="form-group col-md-6 AdressShowHide">
+                                            <label class="col-form-label" id="lblCostDuringPeriod"> PO Document</label>
+
                                             <div id="dvDocPreview">
                                             </div>
-                                            <input id="fileuploadEmergency" type="file" style="margin-left:auto;" name="POD_EmergencyPODocumentFile" />
+
+                                            <div class="custom-file">
+                                                <input id="fileuploadEmergency" type="file" style="" class="custom-file-input" name="POD_EmergencyPODocumentFile" />
+                                                <label class="custom-file-label">Choose file</label>
+                                            </div>
+
+                                          
                                             <ul class="attachment">
                                                 @if (Model.POD_EmergencyPODocument != null && Model.POD_EmergencyPODocument != "")
                                                 {
-                                                    <li style="margin-left :25%;margin-top:20px;">
+                                                    <li>
                                                         <a class="title" href="@Url.Content(EMD+Model.POD_EmergencyPODocument)">@Model.POD_EmergencyPODocument</a>
                                                     </li>
                                                 }
@@ -259,27 +281,45 @@
                                             <div class="errorspace">
                                                 @Html.ValidationMessageFor(model => model.POD_EmergencyPODocumentFile)
                                             </div>
-                                        </div>
-                                    </div>
-                                    @Html.HiddenFor(model => model.PointOfContactAddressHidden, new { @id = "PointOfContactAddressHidden" })
 
-                                    <div class="form-group row IsVendorNotRegister" style="display:none;">
-                                        <label class="col-sm-2 col-form-label">Vendor Name<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+                                        </div>
+
+
+
+                                       
+
+
+
+
+
+
+
+
+                                        @Html.HiddenFor(model => model.PointOfContactAddressHidden, new { @id = "PointOfContactAddressHidden" })
+
+                                        <div class="form-group col-md-6 IsVendorNotRegister" style="display:none;">
+                                            <label class="col-form-label">Vendor Name<span class="req">*</span></label>
+
                                             @Html.TextBoxFor(model => model.VendorName, new { @id = "VendorName", @class = "form-control input-rounded" })
+
                                         </div>
-                                        <label class="col-sm-2 col-form-label" id="lblCostDuringPeriod"> Comment<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+                                        <div class="form-group col-md-6 IsVendorNotRegister" style="display:none;">
+                                            <label class="col-form-label" id="lblCostDuringPeriod"> Comment<span class="req">*</span></label>
+
                                             @Html.TextBoxFor(model => model.Comment, new { @id = "Comment", @class = "form-control input-rounded" })
+
                                         </div>
-                                    </div>
-                                    <div class="form-group row IsVendorNotRegister" style="display:none;">
-                                        <label class="col-sm-2 col-form-label">Ammount<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+
+                                        <div class="form-group col-md-6 IsVendorNotRegister" style="display:none;">
+                                            <label class="col-form-label">Ammount<span class="req">*</span></label>
+
                                             @Html.TextBoxFor(model => model.Amount, new { @id = "Amount", @class = "form-control input-rounded" })
+
                                         </div>
-                                        <label class="col-sm-2 col-form-label" id="">   PO Document<span class="req">*</span></label>
-                                        <div class="col-sm-4">
+
+                                        <div class="form-group col-md-12 IsVendorNotRegister" style="display:none;">
+                                            <label class="col-form-label" id="">PO Document<span class="req">*</span></label>
+
                                             <div id="dvDocPreview">
                                             </div>
                                             <input id="fileuploadEmergency" type="file" style="margin-left:auto;" name="POD_EmergencyPODocumentFile" />
@@ -294,159 +334,147 @@
                                             <div class="errorspace">
                                                 @Html.ValidationMessageFor(model => model.POD_EmergencyPODocumentFile)
                                             </div>
+
                                         </div>
-                                    </div>
 
 
-                                    <div class="form-group row EmergencyQuestionsInjured" style="display:none;">
-                                        <label style="font-size:14px;">
-                                            Q.1)&nbsp;&nbsp;&nbsp;&nbsp; Is Someone Injured or Life Endangered ?<span class="req">*</span>
-                                        </label>
+                                        <div class="form-group col-md-6 EmergencyQuestionsInjured" style="display:none;">
+                                            <h6 class="col-form-label">Q.1) Is Someone Injured or Life Endangered ?<span class="req">*</span></h6>
+                                            <span>
+                                                <input type="radio" id='IsInjuredYes' value="Y" name="IsInjured" class="IsVendorRegister" /><span class="radio_span">Yes</span>
+                                                <input type="radio" id='IsInjuredNo' value="N" name="IsInjured" class="IsVendorRegister" /><span class="radio_span">NO</span>
+                                            </span>
 
-                                        <span style="margin-left:106px;">
-                                            <input type="radio" id='IsInjuredYes' value="Y" name="IsInjured" class="IsVendorRegister" /><span>&nbsp;&nbsp;</span>Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <input type="radio" id='IsInjuredNo' value="N" name="IsInjured" class="IsVendorRegister" /><span>&nbsp;&nbsp;</span>No
-                                        </span>
+                                        </div>
 
-                                    </div>
+                                        <div class="form-group col-md-6 EmergencyQuestionsContinues" style="display:none;">
+                                            <h6 class="col-form-label">Q.2) Is continuation of operation and low contractual obligation ?<span class="req">*</span></h6>
 
-                                    <div class="form-group row EmergencyQuestionsContinues" style="display:none;">
-                                        <label style="font-size:14px;">
-                                            Q.2)&nbsp;&nbsp;&nbsp;&nbsp; Is continuation of operation and low contractual obligation ?<span class="req">*</span>
-                                        </label>
-                                        <span style="margin-left:106px;">
-                                            <input type="radio" id='IscontinuationYes' value="Y" name="Iscontinuation" class="IsVendorRegister" /><span>&nbsp;&nbsp;</span>Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <input type="radio" id='IscontinuationNo' value="N" name="Iscontinuation" class="IsVendorRegister" /><span>&nbsp;&nbsp;</span>No
-                                        </span>
+                                            <span>
+                                                <input type="radio" id='IscontinuationYes' value="Y" name="Iscontinuation" class="IsVendorRegister" /><span class="radio_span">Yes</span>
+                                                <input type="radio" id='IscontinuationNo' value="N" name="Iscontinuation" class="IsVendorRegister" /><span class="radio_span">No</span>
+                                            </span>
+                                        </div>
 
-                                    </div>
+                                        <div class="form-group col-md-6 EmergencyQuestionsBill" style="display:none;">
+                                            <h6 class="col-form-label">Q.3) Vendor Requesting pay immediately ?<span class="req">*</span></h6>
+                                            <span>
+                                                <input type="radio" id='IsVendorRequestYes' value="Y" name="IsVendorRequest" class="IsVendorRegister" /><span class="radio_span">Yes</span>
+                                                <input type="radio" id='IsVendorRequestNo' value="N" name="IsVendorRequest" class="IsVendorRegister" /><span class="radio_span">No</span>
+                                            </span>
+                                        </div>
 
+                                        <div class="form-group col-md-6 EmergencyQuestionsBill" style="display:none;">
+                                            <h6 class="col-form-label"> Q.4) Vendor willing to bill ?<span class="req">*</span></h6>
+                                            <span>
+                                                <input type="radio" id='IsVendorbillYes' value="Y" name="IsVendorwillingToBill" class="IsVendorRegister" /><span class="radio_span">Yes</span>
+                                                <input type="radio" id='IsVendorbillNo' value="N" name="IsVendorwillingToBill" class="IsVendorRegister" /><span class="radio_span">No</span>
+                                            </span>
 
-
-                                    <div class="form-group row EmergencyQuestionsBill" style="display:none;">
-                                        <label style="font-size:14px;">
-                                            Q.3)&nbsp;&nbsp;&nbsp;&nbsp; Vendor Requesting pay immediately ?<span class="req">*</span>
-                                        </label>
-                                        <span style="margin-left:112px;">
-                                            <input type="radio" id='IsVendorRequestYes' value="Y" name="IsVendorRequest" class="IsVendorRegister" /><span>&nbsp;&nbsp;</span>Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <input type="radio" id='IsVendorRequestNo' value="N" name="IsVendorRequest" class="IsVendorRegister" /><span>&nbsp;&nbsp;</span>No
-                                        </span>
-
-                                    </div>
-
-                                    <div class="form-group row EmergencyQuestionsBill" style="display:none;">
-                                        <label style="font-size:14px;">
-                                            Q.4)&nbsp;&nbsp;&nbsp;&nbsp; Vendor willing to bill ?<span class="req">*</span>
-                                        </label>
-                                        <span style="margin-left:229px;">
-                                            <input type="radio" id='IsVendorbillYes' value="Y" name="IsVendorwillingToBill" class="IsVendorRegister" /><span>&nbsp;&nbsp;</span>Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            <input type="radio" id='IsVendorbillNo' value="N" name="IsVendorwillingToBill" class="IsVendorRegister" /><span>&nbsp;&nbsp;</span>No
-                                        </span>
+                                        </div>
 
                                     </div>
+                                        <div>
+                                            @if (ViewBag.UpdateMode != null && ViewBag.UpdateMode == true)
+                                            {
+                                                <div class="" style="margin-bottom: 40px;">
+                                                    <div id="jqGrid_container">
+                                                        <div class="" style="margin-bottom: 40px;">
+                                                            <div id="jqGrid_container">
+                                                                <div class="row">
+                                                                    <div class="col-lg-12">
+                                                                        <div class="card aos-init" data-aos="fade-up">
+                                                                            <div class="card-header" style="height: 45px;">
+                                                                                <div class="card-header headerSize" style="height:45px; padding:0;">
+                                                                                    <div class="form-group mb-0">
+                                                                                        <div class="row">
 
-                                    <br />
-                                    <div>
-                                        @if (ViewBag.UpdateMode != null && ViewBag.UpdateMode == true)
-                                        {
-                                            <div class="" style="margin-bottom: 40px;">
-                                                <div id="jqGrid_container">
-                                                    <div class="" style="margin-bottom: 40px;">
-                                                        <div id="jqGrid_container">
-                                                            <div class="row">
-                                                                <div class="col-lg-12">
-                                                                    <div class="card aos-init" data-aos="fade-up">
-                                                                        <div class="card-header" style="height: 45px;">
-                                                                            <div class="card-header headerSize" style="height:45px; padding:0;">
-                                                                                <div class="form-group mb-0">
-                                                                                    <div class="row">
+                                                                                            <div class="col-md-5">
+                                                                                                <input id="" class="inputSearch form-control input-rounded" placeholder="" mtype="text">
+                                                                                            </div>
 
-                                                                                        <div class="col-md-5">
-                                                                                            <input id="" class="inputSearch form-control input-rounded" placeholder="" style="width: 260px;" type="text">
                                                                                         </div>
 
                                                                                     </div>
-
                                                                                 </div>
                                                                             </div>
-                                                                        </div>
-                                                                        <div class="card-body">
-                                                                            <table id="tbl_CompanyFacilityDataEditList" class="jsgrid" style="position: relative; height: 400px; width: 100%;"></table>
-                                                                        </div>
-
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            @*<table id="tbl_CompanyFacilityDataList" border="0" cellpadding="0" cellspacing="0"></table>
-                <div id="divCompanyFacilityListPager"></div>*@
-                                                        </div>
-                                                    </div>
-
-
-
-
-
-
-
-
-
-                                                    @*<table id="" border="0" cellpadding="0" cellspacing="0"></table>
-                                                    <div id="divCompanyFacilityEditListPager"></div>*@
-                                                </div>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="gridShowHide" style="margin-bottom: 40px;display:none" id="divheaderforPo">
-                                                <div id="jqGrid_container">
-                                                    <div class="row">
-                                                        <div class="col-lg-12">
-                                                            <div class="card aos-init" data-aos="fade-up">
-                                                                <div class="card-header" style="height: 45px;">
-                                                                    <div class="card-header headerSize" style="height:45px; padding:0;">
-                                                                        <div class="form-group mb-0">
-                                                                            <div class="row">
-
-                                                                                <div class="col-md-5">
-                                                                                    <input id="" class="inputSearch form-control input-rounded" placeholder="" style="width: 260px;" type="text">
-                                                                                </div>
-
+                                                                            <div class="card-body">
+                                                                                <table id="tbl_CompanyFacilityDataEditList" class="jsgrid"></table>
                                                                             </div>
 
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="card-body">
-                                                                    <table id="tbl_CompanyFacilityDataList" class="jsgrid" style="position: relative; height: 400px; width: 100%;"></table>
-                                                                </div>
-
+                                                                @*<table id="tbl_CompanyFacilityDataList" border="0" cellpadding="0" cellspacing="0"></table>
+                                <div id="divCompanyFacilityListPager"></div>*@
                                                             </div>
                                                         </div>
+
+
+
+
+
+
+
+
+
+                                                        @*<table id="" border="0" cellpadding="0" cellspacing="0"></table>
+                        <div id="divCompanyFacilityEditListPager"></div>*@
                                                     </div>
-                                                    @*<table id="tbl_CompanyFacilityDataList" border="0" cellpadding="0" cellspacing="0"></table>
-                                                    <div id="divCompanyFacilityListPager"></div>*@
                                                 </div>
-                                            </div>
-                                        }
-                                        <!---End Div for Emergency PO-->
-                                        @if (ViewBag.UpdateMode != null && ViewBag.UpdateMode == true)
-                                        {
-                                            <span class="w-100 text-right float-left">
-                                                <button type="submit" class="btn btn-default bluebutton nxt-btn" id="btnSaveVehicle" value="EditPO" style="background-color:forestgreen;border-radius:18px;margin-left: 20px;width:160px;color:white; ">Update</button>
-                                            </span>
-                                        }
-                                        else
-                                        {
-                                            <span class="w-100 text-right float-left">
-                                                <button type="submit" class="btn btn-default bluebutton next  nxt-btn" style="background-color:forestgreen;border-radius:18px;margin-left: 20px;width:160px; " value="ApprovePO" id="btnApprovePO">Send For Approval</button>
-                                                <button type="submit" class="btn btn-default bluebutton nxt-btn" value="SavePO" id="btnSavePO" style="background-color:royalblue;border-radius:18px;width:120px;color:white;">Save</button>
-                                            </span>
-                                        }
+                                            }
+                                            else
+                                            {
+                                                <div class="gridShowHide" style="margin-bottom: 40px;display:none" id="divheaderforPo">
+                                                    <div id="jqGrid_container">
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="card aos-init" data-aos="fade-up">
+                                                                    
+                                                                        <div class="card-header headerSize">
+                                                                            <div class="form-group mb-0">
+                                                                                <div class="row">
+
+                                                                                    <div class="col-md-5">
+                                                                                        <input id="" class="inputSearch form-control input-rounded" placeholder="" style="width: 260px;" type="text">
+                                                                                    </div>
+
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                   
+                                                                    <div class="card-body">
+                                                                        <table id="tbl_CompanyFacilityDataList" class="jsgrid" style="position: relative; height: 400px; width: 100%;"></table>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        @*<table id="tbl_CompanyFacilityDataList" border="0" cellpadding="0" cellspacing="0"></table>
+                        <div id="divCompanyFacilityListPager"></div>*@
+                                                    </div>
+                                                </div>
+                                            }
+                                            <!---End Div for Emergency PO-->
+                                            @if (ViewBag.UpdateMode != null && ViewBag.UpdateMode == true)
+                                            {
+                                                <span class="w-100 text-right float-left">
+                                                    <button type="submit" class="btn btn-default bluebutton nxt-btn" id="btnSaveVehicle" value="EditPO" style="background-color:forestgreen;border-radius:18px;margin-left: 20px;width:160px;color:white; ">Update</button>
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="w-100 text-right float-left">
+                                                    <button type="submit" class="btn btn-primary btn-rounded bluebutton"  value="ApprovePO" id="btnApprovePO">Send For Approval</button>
+                                                    <button type="submit" class="btn btn-success btn-rounded bluebutton" value="SavePO" id="btnSavePO">Save</button>
+                                                </span>
+                                            }
+
+                                        </div>
+
 
                                     </div>
-
-
-                                </div>
                                 <div class="marbottom"></div>
                                 <div class="clearfix"></div>
                             </div>
@@ -810,6 +838,7 @@
                     });
                 }
             }*@
+
             var SaveUrl = 'POTypeData/SavePOTypeDetails/';
             $.ajax({
             url: $_HostPrefix + SaveUrl,

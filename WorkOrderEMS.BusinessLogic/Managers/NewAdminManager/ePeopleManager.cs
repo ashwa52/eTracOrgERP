@@ -4,7 +4,9 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkOrderEMS.BusinessLogic.Managers;
 using WorkOrderEMS.Data;
+using WorkOrderEMS.Data.DataRepository;
 using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
@@ -15,9 +17,11 @@ namespace WorkOrderEMS.BusinessLogic
     public class ePeopleManager : IePeopleManager
     {
         ePeopleRepository _ePeopleRepository = new ePeopleRepository();
+        
         workorderEMSEntities objworkorderEMSEntities = new workorderEMSEntities();
         private readonly string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private readonly string ProfilePicPath = System.Configuration.ConfigurationManager.AppSettings["ProfilePicPath"];
+        private readonly string FilePath = System.Configuration.ConfigurationManager.AppSettings["FilesUploadRedYellowGreen"];
         public List<UserModelList> GetUserList(long? LocationId)
         {
             try
@@ -140,7 +144,9 @@ namespace WorkOrderEMS.BusinessLogic
                             JobTitle = x.JBT_JobTitle,
                             LocationId = x.EMP_LocationId,
                             JobTitleId = x.EMP_JobTitleId,
-                            ProfilePhoto = x.EMP_Photo == null ? HostingPrefix + ProfilePicPath.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + x.EMP_Photo
+                            UserId = Cryptography.GetEncryptedData(x.UserId.ToString(), true),
+                            ProfilePhoto = x.EMP_Photo == null ? HostingPrefix + ProfilePicPath.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + x.EMP_Photo,
+                            IsOrientation = x.OrientationStatus
                         }).ToList();
                     }
                 }
@@ -392,7 +398,10 @@ namespace WorkOrderEMS.BusinessLogic
                             UserModel.Name = selfData.EmployeeName;
                             UserModel.EmpId = selfData.EMP_EmployeeID;
                             UserModel.LocationName = selfData.LocationName;
+                            UserModel.LocationIdCurrent = selfData.EMP_LocationId;
+                            UserModel.JobTitleCurrent = selfData.EMP_JobTitleId;
                             UserModel.Image = selfData.EMP_Photo == null ? HostingPrefix + ProfilePicPath.Replace("~", "") + "no-profile-pic.jpg" : HostingPrefix + ProfilePicPath.Replace("~", "") + selfData.EMP_Photo;
+                            UserModel.EmployeeCurrentStatus = selfData.EMP_EmploymentStatus;
                         }
                     }
                 }
@@ -423,7 +432,7 @@ namespace WorkOrderEMS.BusinessLogic
             {
                 var ePeopleRepository = new ePeopleRepository();
                 string Action = string.Empty;
-                
+
                 var getEmpDetails = _workorderEMS.UserRegistrations.Where(x => x.UserId == Obj.UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
                 if (getEmpDetails != null)
                 {
@@ -431,7 +440,7 @@ namespace WorkOrderEMS.BusinessLogic
                     if (Obj.IsDeleted == false)
                     {
                         if (Obj != null && Obj.SeatingName != null)
-                        {                        
+                        {
                             if (Obj.RequisitionId == 0)
                             {
                                 Obj.Action = "I";
@@ -453,7 +462,7 @@ namespace WorkOrderEMS.BusinessLogic
                         Obj.ActionStatus = "X";
                         Obj.RequisitionType = "Remove Seat";
                         isSaved = ePeopleRepository.SendForApproval(Obj);
-                    }                    
+                    }
                     isSaved = true;
                 }
                 else
@@ -484,7 +493,7 @@ namespace WorkOrderEMS.BusinessLogic
                     RequisitionId = x.RQS_Id,
                     Id = x.RQS_ActivityId,
                     RequisitionType = x.RQS_RequizationType,
-                    ActionStatus = x.RQS_ApprovalStatus == "W"?"Waiting": x.RQS_ApprovalStatus == "A"?"Approved":"Reject",
+                    ActionStatus = x.RQS_ApprovalStatus == "W" ? "Waiting" : x.RQS_ApprovalStatus == "A" ? "Approved" : "Reject",
                     SeatingName = x.Activity
                 }).ToList();
                 return lst;
@@ -576,7 +585,8 @@ namespace WorkOrderEMS.BusinessLogic
             {
                 var ePeopleRepository = new ePeopleRepository();
                 var data = ePeopleRepository.GetJobCount(JobId);
-                if (data != null) {
+                if (data != null)
+                {
 
                     details.JobTitleCount = data.JBT_JobCount;
                     details.JobTitleId = data.JBT_Id;
@@ -601,30 +611,36 @@ namespace WorkOrderEMS.BusinessLogic
         /// <returns></returns>
         public bool SendJobTitleForApproval(JobTitleModel model)
         {
+            var _workorderEMS = new workorderEMSEntities();
             bool isSaved = false;
             var Obj = new AddChartModel();
             try
             {
                 var ePeopleRepository = new ePeopleRepository();
-                if (model != null)
+                var getEmpDetails = _workorderEMS.UserRegistrations.Where(x => x.UserId == model.UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
+                if (getEmpDetails != null)
                 {
-                    Obj.JobTitleCount = model.JobTitleCount;
-                    Obj.Id = model.JobTitleId;
-                    if (model.JobTitleCount > model.JobTitleLastCount)
+                    if (model != null)
                     {
-                        Obj.ActionStatus = "Y";
-                        Obj.IsActive = "Y";
-                        Obj.RequisitionType = "Add Head Count";
-                    }
-                    else
-                    {
-                        Obj.ActionStatus = "Y";
-                        Obj.IsActive = "Y";
-                        Obj.RequisitionType = "Remove Head Count";
+                        Obj.JobTitleCount = model.JobTitleCount;
+                        Obj.Id = model.JobTitleId;
+                        Obj.EmployeeId = getEmpDetails.EmployeeID;
+                        if (model.JobTitleCount > model.JobTitleLastCount)
+                        {
+                            Obj.ActionStatus = "Y";
+                            Obj.IsActive = "Y";
+                            Obj.RequisitionType = "Add Head Count";
+                        }
+                        else
+                        {
+                            Obj.ActionStatus = "Y";
+                            Obj.IsActive = "Y";
+                            Obj.RequisitionType = "Remove Head Count";
 
+                        }
+                        isSaved = ePeopleRepository.SendForApproval(Obj);
+                        isSaved = true;
                     }
-                    isSaved = ePeopleRepository.SendForApproval(Obj);
-                    isSaved = true;
                 }
                 else
                     isSaved = false;
@@ -673,17 +689,80 @@ namespace WorkOrderEMS.BusinessLogic
         /// </summary>
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
-        public List<UploadedFiles> GetUploadedFilesOfUser(string EmployeeId)
+        //public IEnumerable<UploadedFiles> GetUploadedFilesOfUser(string EmployeeId)
+        //{
+        //    var lst = new List<UploadedFiles>();
+        //    var objworkorderEMSEntities = new workorderEMSEntities();
+        //    try
+        //    {
+        //        var ePeopleRepository = new ePeopleRepository();
+        //        if (EmployeeId != null)
+        //        {
+        //            var getFileList = ePeopleRepository.GetUploadFilesList(EmployeeId).ToList();
+        //            if (getFileList.Count() > 0)
+        //            {
+        //                lst = getFileList.Select(x => new UploadedFiles()
+        //                {
+        //                    FileName = x.FLU_FileName == null ? null : x.FLU_FileName,
+        //                    FileTypeName = x.FLT_FileType == null ? null : x.FLT_FileType,
+        //                    AttachedFileName = x.FLU_FileAttached == null ? null : x.FLU_FileAttached,
+        //                    FileId = x.FLU_FLT_Id > 0 ? 0 : x.FLU_FLT_Id,
+        //                    AttachedFileLink = x.FLU_FileAttached == null ? null : HostingPrefix + FilePath.Replace("~", "") + x.FLU_FileAttached
+        //                }).ToList();
+        //            }
+        //        }
+        //        return lst;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public UploadedFiles GetUploadedFilesOfUser(string EmployeeId)", "Exception While getting list of files by user id.", EmployeeId);
+        //        throw;
+        //    }
+        //}
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 25-Oct-2019
+        /// Created For : To get uploaded files data
+        /// </summary>
+        /// <param name="EmployeeId"></param>
+        /// <returns></returns>
+        public List<UploadedFiles> GetUploadedFilesOfUserTesting(string EmployeeId)
         {
             var lst = new List<UploadedFiles>();
+            var model = new UploadedFiles();
+            var objworkorderEMSEntities = new workorderEMSEntities();
             try
             {
                 var ePeopleRepository = new ePeopleRepository();
-                lst = ePeopleRepository.GetUploadFilesList(EmployeeId).Select(x => new UploadedFiles()
+                if (EmployeeId != null)
                 {
-
-                }).ToList();
-                return null;
+                    var getFileList = ePeopleRepository.GetUploadFilesListTesting(EmployeeId);
+                    if (getFileList.Count() > 0)
+                    {
+                        //foreach (var item in getFileList)
+                        //{
+                        //    model.FileName = item.FLU_FileName;
+                        //    model.FileTypeName = item.FLT_FileType;
+                        //    model.AttachedFileName = item.FLU_FileAttached;
+                        //    //model.FileId1 = Convert.ToInt32(item.FLU_FLT_Id);
+                        //    model.FileId = item.FLU_FileId;
+                        //    //model.FileId = item.FLU_FLT_Id;
+                        //    model.AttachedFileLink = item.FLU_FileAttached == null ? null : HostingPrefix + FilePath.Replace("~", "") + item.FLU_FileAttached;
+                        //    lst.Add(model);
+                        //}
+                        lst = getFileList.Select(x => new UploadedFiles()
+                        {
+                            FileName = x.FLU_FileName,
+                            FileTypeName = x.FLT_FileType,
+                            AttachedFileName = x.FLU_FileAttached,
+                            //FileId = x.FLU_FLT_Id,
+                            FileId = x.FLU_FileId,
+                            AttachedFileLink = x.FLU_FileAttached == null ? null : HostingPrefix + FilePath.Replace("~", "") + x.FLU_FileAttached
+                        }).ToList();
+                    }
+                }
+                return lst;
             }
             catch (Exception ex)
             {
@@ -692,5 +771,626 @@ namespace WorkOrderEMS.BusinessLogic
             }
         }
         #endregion Files
+        #region GRAPH COUNT
+        public List<GraphCountModel> GetEMP_ReqCount()
+        {
+            var repository = new ePeopleRepository();
+            var lst = new List<GraphCountModel>();
+            try
+            {
+                var getEmpCount = repository.GetEmployeeManagementListData(0, null).GroupBy(x => x.JBT_JobTitle)
+                    .Select(x => new GraphCountModel()
+                    {
+                        Employee = x.Count(),
+                        JobTitle = x.Key
+
+                    });
+                var requisitionlst = repository.GetRequisitionlist().GroupBy(x => x.RQS_RequizationType).
+                    Select(x => new GraphCountModel()
+                    {
+                        RequisitionName = x.Key,
+                        Requisition = x.Count()
+                    }).ToList();
+                lst.AddRange(getEmpCount);
+                lst.AddRange(requisitionlst);
+                return lst;
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<GraphCountModel> GetEMP_ReqCount()", "Exception While getting count list.", null);
+                throw;
+            }
+        }
+        #endregion GRAPH COUNT
+        #region Status Change
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 11-Nov-2019
+        /// Created For : TO get vacant job title
+        /// </summary>
+        /// <param name="VSC_Id"></param>
+        /// <returns></returns>
+        public List<JobTitleModel> GetJobTitleVacantList(long VSC_Id)
+        {
+            var jobTitle = new List<JobTitleModel>();
+            var repository = new ePeopleRepository();
+            try
+            {
+                if(VSC_Id> 0)
+                {
+                    jobTitle =  repository.GetJobTitleVacant(VSC_Id).Select(x => new JobTitleModel() {
+                        JobTitle = x.JBT_JobTitle,
+                        JobTitleId = x.JBT_Id
+                    }).ToList();
+                }
+                return jobTitle;
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<JobTitleModel> GetJobTitleVacantList(long VSC_Id)", "Exception While getting Job title list.", VSC_Id);
+                throw;
+            }
+        }
+        /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created Date : 11-Nov-2019
+        /// Created For : To save demotion promotion
+        /// </summary>
+        /// <param name="Obj"></param>
+        /// <returns></returns>
+        public bool SaveCommonStatusOfEmployee(DemotionModel Obj)
+        {
+            bool isSaved = false;
+            var repository = new ePeopleRepository();
+            var _workorderEMS = new workorderEMSEntities();
+            try
+            {
+                if(Obj != null)
+                {
+                    var getEmpDetails = _workorderEMS.UserRegistrations.Where(x => x.UserId == Obj.UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
+                    if (getEmpDetails != null)
+                    {
+                        Obj.CreatedBy = getEmpDetails.EmployeeID;
+                        Obj.FromDate = Obj.EffectiveDate;
+                        if (Obj.StatusAction == EmployeeStatusChnage.L)
+                        {        
+                            Obj.ChangeType = "Location Change";
+                            Obj.JobTitleCurrent = null;
+                            Obj.Action = "I";
+                            Obj.JobTitleId = null;
+                            Obj.ToDate = Obj.EffectiveDate.Value.AddDays(Convert.ToDouble(Obj.TempDays));
+                            var saveLocationTransfer = repository.SaveEmployeeStatus(Obj);
+                        }
+                        else if (Obj.StatusAction == EmployeeStatusChnage.S)
+                        {
+                            Obj.ChangeType = "Status Change";
+                            Obj.Action = "I";
+                            Obj.LocationIdCurrent = null;
+                            Obj.JobTitleCurrent = null;
+                            Obj.JobTitleId = null;
+                            var saveEmployeeStatus = repository.SaveEmployeeStatus(Obj);
+                        }
+                        else
+                        {
+                            Obj.ChangeType = "Promotion/Demotion";
+                            Obj.Action = "I";
+                            Obj.LocationIdCurrent = null;
+                            Obj.EmployeeCurrentStatus = null;
+                            var saveDemotion = repository.SaveEmployeeStatus(Obj);
+                        }
+                    }
+                    isSaved = true;
+                }
+                else
+                {
+                    isSaved = false;
+                }
+                return isSaved;
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool SavePromoDemo(DemotionModel Obj)", "Exception While saving promotion demotion.", Obj);
+                throw;
+            }
+        }
+        /// <summary>
+        /// Created By :Ashwajit Bansod
+        /// Created Date : 14-Nov-2019
+        /// Created For : To get Employee status List
+        /// </summary>
+        /// <returns></returns>
+        public List<EmployeeStatusList> GetEmployeeStatusList()
+        {
+            var repository = new ePeopleRepository();
+            var lst = new List<EmployeeStatusList>();
+            try
+            {
+                lst = repository.GetEmployeeStatusList().Select(x => new EmployeeStatusList() {
+                   ESC_ApprovalStatus= x.ESC_ApprovalStatus == null ? "Not Approved": x.ESC_ApprovalStatus == "A" ? "Approved" :"Reject",
+                   ESC_ApprovedBy = x.ESC_ApprovedBy == null?"N/A": x.ESC_ApprovedBy,
+                   ESC_ChangeType= x.ESC_ChangeType,
+                   ESC_Date= x.ESC_Date.Value.ToString("MM/dd/yyyy"),
+                   ESC_EMP_EmployeeId= x.ESC_EMP_EmployeeId,
+                   ESC_Id = x.ESC_Id
+                }).ToList();
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public List<EmployeeStatusList> GetEmployeeStatusList()", "Exception While getting list of Employee Status.", null);
+                throw;
+            }
+            return lst;
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 15-Nov-2019
+        /// Created For  : To approve reject employee status
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Status"></param>
+        /// <param name="UserId"></param>
+        /// <param name="Comment"></param>
+        /// <returns></returns>
+        public bool ApproveRejectEmployeeStatus(long Id, string Status, long UserId, string Comment)
+        {
+            var _workorderEMS = new workorderEMSEntities();
+            bool IsApproveReject = false;
+            try
+            {
+                var ePeopleRepository = new ePeopleRepository();
+                if (UserId > 0)
+                {
+                    var getEmpDetails = _workorderEMS.UserRegistrations.Where(x => x.UserId == UserId && x.IsDeleted == false && x.IsEmailVerify == true).FirstOrDefault();
+                    if (getEmpDetails != null)
+                    {
+                        if (Id > 0 && Status != null)
+                        {
+                            var Statusdata = ePeopleRepository.ApproveRejectEmployeeReject(Id, Status, getEmpDetails.EmployeeID, Comment);
+                            IsApproveReject = true;
+                        }
+                        else
+                        {
+                            IsApproveReject = false;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool ApproveRejectEmployeeStatus(long Id, string Status, long UserId, string Comment)", "Exception While approve reject employee status", Id);
+                throw;
+            }
+            return IsApproveReject;
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bnasod
+        /// Created Date : 18-Nov-2019
+        /// Created For : To send backgroud check for approve reject via mail.
+        /// </summary>
+        /// <param name="Status"></param>
+        /// <param name="IsActive"></param>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
+        public bool SendForAssessment(string Status, string IsActive, long ApplicantId, long UserId)
+        {
+            var ePeopleRepository = new ePeopleRepository();
+            bool isSend = false;
+            try
+            {
+                var sendForAssessment = ePeopleRepository.SendForAssessment(Status, IsActive, ApplicantId);
+                isSend = true;
+                #region Email
+                if (ApplicantId > 0)
+                {
+                    var objEmailLogRepository = new EmailLogRepository();
+                    var objEmailReturn = new List<EmailToManagerModel>();
+                    var objListEmailog = new List<EmailLog>();
+                    var objTemplateModel = new TemplateModel();
+                    if (isSend == true)
+                    {
+                        bool IsSent = false;
+                        var objEmailHelper = new EmailHelper();
+                        objEmailHelper.emailid = "assessment.check@gmail.com";
+                        //objEmailHelper.AcceptAssessmentLink = HostingPrefix + "api/ServiceApi/GetAssessmentList?ApplicantId="+ ApplicantId+"&";
+                        objEmailHelper.AcceptAssessmentLink = HostingPrefix + "GetMailData/GetAssessmentStatus?ApplicantId=" + ApplicantId + "&Status="+"Y";
+                        //objEmailHelper.InfractionStatus = obj.Status;
+                        objEmailHelper.MailType = "SENDFORASSESSMENT";
+                        objEmailHelper.SentBy = UserId;
+                        objEmailHelper.TimeAttempted = DateTime.UtcNow.ToMobileClientTimeZone(objTemplateModel.TimeZoneName, objTemplateModel.TimeZoneOffset, objTemplateModel.IsTimeZoneinDaylight, false).ToString();
+                        IsSent = objEmailHelper.SendEmailWithTemplate();
+
+                        //if (IsSent == true)
+                        //{
+                        //    var objEmailog = new EmailLog();
+                        //    try
+                        //    {
+                        //        objEmailog.CreatedBy = userData.u.UserId;
+                        //        objEmailog.CreatedDate = DateTime.UtcNow;
+                        //        objEmailog.DeletedBy = null;
+                        //        objEmailog.DeletedOn = null;
+                        //        objEmailog.LocationId = userData.q.LPOD_LocationId;
+                        //        objEmailog.ModifiedBy = null;
+                        //        objEmailog.ModifiedOn = null;
+                        //        objEmailog.SentBy = userData.u.UserId;
+                        //        objEmailog.SentEmail = getRuleData.Email;
+                        //        objEmailog.Subject = objEmailHelper.Subject;
+                        //        objEmailog.SentTo = getRuleData.UserId;
+                        //        objListEmailog.Add(objEmailog);
+                        //    }
+                        //    catch (Exception)
+                        //    {
+                        //        throw;
+                        //    }
+                        //}
+
+                        using (var context = new workorderEMSEntities())
+                        {
+                            context.EmailLogs.AddRange(objListEmailog);
+                            context.SaveChanges();
+                        }
+                        #endregion Email
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "bool SendForAssessment(string Status, string IsActive, long ApplicantId)", "Exception While sending assessment", ApplicantId);
+                throw;
+            }
+            return isSend;
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bnasod
+        /// Created Date : 18-Nov-2019
+        /// Created For : To send assessment for approve reject via mail.
+        /// </summary>
+        /// <param name="Status"></param>
+        /// <param name="IsActive"></param>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
+        public bool SendForBackgroundCheck(string Status, string IsActive, long ApplicantId, long UserId)
+        {
+            var ePeopleRepository = new ePeopleRepository();
+            var _workorderems = new workorderEMSEntities();
+            bool isSend = false;
+            try
+            {
+                var sendForBackgroundCheck = ePeopleRepository.SendForAssessment(Status, IsActive, ApplicantId);
+                isSend = true;
+                #region Email
+                if (ApplicantId > 0)
+                {
+                    var getEMPData = _workorderems.ApplicantInfoes.Where(x => x.API_ApplicantId == ApplicantId).FirstOrDefault();
+                    var objEmailLogRepository = new EmailLogRepository();
+                    var objEmailReturn = new List<EmailToManagerModel>();
+                    var objListEmailog = new List<EmailLog>();
+                    var objTemplateModel = new TemplateModel();
+                    if (isSend == true)
+                    {
+                        bool IsSent = false;
+                        var objEmailHelper = new EmailHelper();
+                        objEmailHelper.emailid = "background360.check@gmail.com";
+                        objEmailHelper.Name = getEMPData.API_FirstName + " " + getEMPData.API_LastName;
+                        //objEmailHelper.AcceptAssessmentLink = HostingPrefix + "api/ServiceApi/GetAssessmentList?ApplicantId="+ ApplicantId+"&";
+                        objEmailHelper.AcceptAssessmentLink = HostingPrefix + "GetMailData/GetBackGroundStatus?ApplicantId=" + ApplicantId + "&Status=" + "Y";
+                        //objEmailHelper.InfractionStatus = obj.Status;
+                        objEmailHelper.MailType = "SENDFORBACKGROUNDCHECK";
+                        objEmailHelper.SentBy = UserId;
+                        //objEmailHelper.TimeAttempted = DateTime.UtcNow.ToMobileClientTimeZone(objTemplateModel.TimeZoneName, objTemplateModel.TimeZoneOffset, objTemplateModel.IsTimeZoneinDaylight, false).ToString();
+                        IsSent = objEmailHelper.SendEmailWithTemplate();
+
+                        //if (IsSent == true)
+                        //{
+                        //    var objEmailog = new EmailLog();
+                        //    try
+                        //    {
+                        //        objEmailog.CreatedBy = userData.u.UserId;
+                        //        objEmailog.CreatedDate = DateTime.UtcNow;
+                        //        objEmailog.DeletedBy = null;
+                        //        objEmailog.DeletedOn = null;
+                        //        objEmailog.LocationId = userData.q.LPOD_LocationId;
+                        //        objEmailog.ModifiedBy = null;
+                        //        objEmailog.ModifiedOn = null;
+                        //        objEmailog.SentBy = userData.u.UserId;
+                        //        objEmailog.SentEmail = getRuleData.Email;
+                        //        objEmailog.Subject = objEmailHelper.Subject;
+                        //        objEmailog.SentTo = getRuleData.UserId;
+                        //        objListEmailog.Add(objEmailog);
+                        //    }
+                        //    catch (Exception)
+                        //    {
+                        //        throw;
+                        //    }
+                        //}
+
+                        using (var context = new workorderEMSEntities())
+                        {
+                            context.EmailLogs.AddRange(objListEmailog);
+                            context.SaveChanges();
+                        }
+                        #endregion Email
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "bool SendForAssessment(string Status, string IsActive, long ApplicantId)", "Exception While sending assessment", ApplicantId);
+                throw;
+            }
+            return isSend;
+        }
+        #endregion Status Change
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created For : To Make assessmennt , offer accept or active or deny, send mail when offer is accepted or counter
+        /// Created Date : 20-03-2020
+        /// </summary>
+        /// <param name="IsActive"></param>
+        /// <param name="ActionVal"></param>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
+        public bool ClearedOrNot(string IsActive, string ActionVal, long ApplicantId)
+        {
+            bool isCleared = false;
+            var ePeopleRepository = new ePeopleRepository();
+            var _ICommonMethod = new CommonMethodManager();
+            string employeeID = string.Empty;
+            string Status = string.Empty;
+            try
+            {
+                if (IsActive != null && ActionVal != null && ApplicantId > 0)
+                {
+                    if (ActionVal == "Assessment")
+                    {
+                        if(IsActive == "Y")
+                        Status = IsActive == "Y" ? ApplicantStatus.Hired : ApplicantIsActiveStatus.Pass;
+                        else
+                            Status = IsActive == "N" ? ApplicantStatus.Assessment : ApplicantIsActiveStatus.Fail;
+                        var isSaved = ePeopleRepository.SendForAssessment(Status, IsActive, ApplicantId);
+                        var getApplicantDetails =  objworkorderEMSEntities.spGetApplicantAllDetails(ApplicantId).FirstOrDefault();
+                        string message = IsActive == "N" ? DarMessage.AssessmentReject(getApplicantDetails.JBT_JobTitle) : DarMessage.AssessmentClear(getApplicantDetails.JBT_JobTitle);
+                        var saveNotification = objworkorderEMSEntities.spSetNotification("I", null, message,
+                                                       ModuleSubModule.ePeople, ModuleSubModule.AssessmentStatus, ApplicantId.ToString(), getApplicantDetails.HiringManagerEmployeeId, getApplicantDetails.HiringManagerEmployeeId, true, false, Priority.Medium, null, false, "Y");
+                    }
+                    else if (ActionVal == "Offer")
+                    {
+                        var isSaved = ePeopleRepository.SendForAssessment(ApplicantStatus.Offer, IsActive, ApplicantId);
+                        
+                        #region Email
+                        var getEMPData = objworkorderEMSEntities.spGetApplicantAllDetails(ApplicantId).FirstOrDefault();
+                        var getLocationCode = objworkorderEMSEntities.LocationMasters.Where(x => x.LocationId == getEMPData.LocationId).FirstOrDefault().Address2.Substring(0,3).ToUpper();
+                        var getLastEmp_Id = objworkorderEMSEntities.Employees.OrderByDescending(x => x.EMP_Id).FirstOrDefault().EMP_Id;
+                        if (getEMPData != null && getLocationCode != null && getLastEmp_Id > 0)
+                        {
+                            if (IsActive == ApplicantIsActiveStatus.OfferAccepted)
+                            {
+                                //Make Employee by last Id and Location code
+                                var value = getLastEmp_Id + 1;
+                                employeeID = getLocationCode + "000" + value;
+                                var saveEployee = objworkorderEMSEntities.spSetEmployee("I", null, employeeID, ApplicantId, getEMPData.API_FirstName, getEMPData.API_MidName,
+                                                                          getEMPData.API_LastName, getEMPData.ACI_eMail, getEMPData.ACI_PhoneNo, null, null,null, getEMPData.ALA_Photo, null, 9,
+                                                                          null, getEMPData.HiringManagerEmployeeId, getEMPData.APT_DateOfJoining, getEMPData.LocationId,
+                                                                          getEMPData.UserId, DateTime.Now, "Y", Convert.ToInt64(UserType.GuestUser), null, null, null, null, null);
+                                
+                            }
+                            string applicantName = getEMPData.API_FirstName + getEMPData.API_LastName;
+                            string message = IsActive == ApplicantIsActiveStatus.OfferAccepted ? DarMessage.AddAssetsForHiredApplicant(applicantName, getEMPData.HiringManagerName, getEMPData.LocationName) : IsActive == "C" ? DarMessage.OfferCouterByAppicant(applicantName, getEMPData.JBT_JobTitle, getEMPData.LocationName) : DarMessage.OfferRejectByAppicant(applicantName, getEMPData.JBT_JobTitle, getEMPData.LocationName);
+                            var saveNotification = objworkorderEMSEntities.spSetNotification("I", null, message,
+                                                        "ePeople", ModuleSubModule.OnBoarding, ApplicantId.ToString(), getEMPData.HiringManagerEmployeeId, getEMPData.HiringManagerEmployeeId, true, false, "H", null, false, "Y");
+                            if (ApplicantId > 0 && IsActive == ApplicantIsActiveStatus.OfferAccepted)
+                            {
+                                //var objEmailLogRepository = new EmailLogRepository();
+                                var objEmailReturn = new List<EmailToManagerModel>();
+                                var objListEmailog = new List<EmailLog>();
+                                var objTemplateModel = new TemplateModel();
+                                if (getEMPData != null)
+                                {
+                                    bool IsSent = false;
+                                    var objEmailHelper = new EmailHelper();
+                                    objEmailHelper.emailid = getEMPData.ACI_eMail;
+                                    objEmailHelper.Name = getEMPData.API_FirstName + " "+ getEMPData.API_LastName;
+                                    //By Default password will be this will change it if requirment changes
+                                    objEmailHelper.Password = "Elite@123";
+                                    objEmailHelper.UserName = employeeID;
+                                    objEmailHelper.emailid = getEMPData.ACI_eMail;
+                                    objEmailHelper.JobTitle = getEMPData.JBT_JobTitle;
+                                    //objEmailHelper.AcceptAssessmentLink = HostingPrefix + "api/ServiceApi/GetAssessmentList?ApplicantId="+ ApplicantId+"&";
+                                    objEmailHelper.AcceptAssessmentLink = HostingPrefix + "GetMailData/LoginForOnboarding?ApplicantId=" + ApplicantId;
+                                    objEmailHelper.MailType = IsActive == ApplicantIsActiveStatus.OfferAccepted ? "OFFERACCEPTED": IsActive == "C"?"OFFERCOUNTER":"OFFERREJECTED";
+                                    objEmailHelper.Subject = IsActive == ApplicantIsActiveStatus.OfferAccepted ? "eTrac : Thanks for accepting offer letter": IsActive == "C"? "eTrac : Thanks for Countering offer" :"eTrac : Offer Rejected";
+                                    objEmailHelper.SentBy = Convert.ToInt64(getEMPData.UserId);
+                                    objEmailHelper.TimeAttempted = DateTime.UtcNow.ToMobileClientTimeZone(objTemplateModel.TimeZoneName, objTemplateModel.TimeZoneOffset, objTemplateModel.IsTimeZoneinDaylight, false).ToString();
+                                    IsSent = objEmailHelper.SendEmailWithTemplate();
+                                    if (IsSent == true)
+                                    {
+                                        var objEmailog = new EmailLog();
+                                        try
+                                        {
+                                            objEmailog.CreatedBy = Convert.ToInt64(getEMPData.UserId);
+                                            objEmailog.CreatedDate = DateTime.UtcNow;
+                                            objEmailog.DeletedBy = null;
+                                            objEmailog.DeletedOn = null;
+                                            objEmailog.LocationId = getEMPData.LocationId;
+                                            objEmailog.ModifiedBy = null;
+                                            objEmailog.ModifiedOn = null;
+                                            objEmailog.SentBy = getEMPData.UserId;
+                                            objEmailog.SentEmail = getEMPData.ACI_eMail;
+                                            objEmailog.Subject = objEmailHelper.Subject;
+                                            objEmailog.SentTo = ApplicantId;
+                                            objListEmailog.Add(objEmailog);
+                                        }
+                                        catch (Exception)
+                                        {
+                                            throw;
+                                        }
+                                    }
+                                    using (var context = new workorderEMSEntities())
+                                    {
+                                        context.EmailLogs.AddRange(objListEmailog);
+                                        context.SaveChanges();
+                                    }
+                                    #endregion Email
+                                }
+                            }
+                        }
+                    }
+                    //if(ActionVal == "Background")
+                    //{
+                    //    Status = "F";
+                    //}
+                    //else
+                    //{
+                    //    Status = "E";
+                    //}
+                    
+                    isCleared = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool ClearedOrNot(string IsActive, string ActionVal, long ApplicantId)", "Exception While cleared or not clear employee", ApplicantId);
+                throw;
+            }
+            return isCleared;
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 21-March-2020
+        /// Created For : To schedule interview for applicant
+        /// </summary>
+        /// <param name="IPT_Id"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        public void ScheduleInterviewOfApplicant(long IPT_Id, string status)
+        {
+            var common_B = new Common_B();
+            if (IPT_Id > 0 && status != null)
+            {
+                objworkorderEMSEntities.spSetScheduleInterview_ForMailFromApplicant(IPT_Id, status);
+                var getDetails = objworkorderEMSEntities.InterviewProposalTimes.Where(x => x.IPT_Id == IPT_Id).
+                    Select(a => new ApplicantDetails()
+                    {
+                        JobId = a.IPT_JPS_JobPostingId,
+                        ApplicantId = a.IPT_APT_ApplicantId,
+                        HiringManagerId = a.IPT_EMP_EmployeeID_HM,
+                        IPT_Id = a.IPT_Id
+                    }).FirstOrDefault();
+                var getJobDetails = objworkorderEMSEntities.spGetMyOpening(getDetails.JobId).FirstOrDefault().JBT_JobTitle;
+                var message = status == "A"?  DarMessage.InterviewAcceptByApplicant(getJobDetails,status == "A"?"Accept":"Reject"): DarMessage.InterviewDenyByApplicant(getJobDetails);
+                var saveNotification = objworkorderEMSEntities.spSetNotification("I", null, message,
+                                                        ModuleSubModule.ePeople, ModuleSubModule.InterviewerAcceptDeny, getDetails.IPT_Id.ToString(), getDetails.HiringManagerId, getDetails.HiringManagerId, true, false, Priority.Medium, null, false, "Y");
+            }
+        }
+
+        /// <summary>
+        /// Created y  :Ashwajit Bansod
+        /// Created Date : 11-04-2020
+        /// Created For : get benifit list
+        /// </summary>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
+        public BenefitList GetBenifitList(long ApplicantId)
+        {
+            var clientUrl = new Helper.CommonHTTPClient();
+            var convertedClass = new CommonAPIJsonConvertToClass<object>();
+            if (ApplicantId > 0)
+            {
+                var objCommon = new CommonMethodManager();              
+                //var getStringLogin = objCommon.GetJsoSerializeDataForAPI(APIName.FloridaBlueAuthentication, null);                
+                var getOutputData = clientUrl.FloridaBlueAuthentication(APIName.FloridaBlueAuthenticationLink);
+                var getClassData = Newtonsoft.Json.JsonConvert.DeserializeObject<FloridaBlueAuthentication>(getOutputData);
+                //Florida blue benefit list
+                var getListData = clientUrl.FloridaBluePost(APIName.FloridaBlueGetLink, getClassData.access_token);
+                var getListDataModel = Newtonsoft.Json.JsonConvert.DeserializeObject<BenefitList>(getListData);
+                return getListDataModel;
+            }
+            else
+                return new BenefitList();
+        }
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 13-05-2020
+        /// Created For : To get Employee status
+        /// </summary>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
+        public string GetApplicantStatus(long ApplicantId)
+        {
+            string Status = string.Empty;
+            try
+            {
+                if (ApplicantId > 0)
+                {
+                    var getAptDetails = objworkorderEMSEntities.spGetMyOpening(null).Where(x => x.APT_ApplicantId == ApplicantId).FirstOrDefault();
+                    if (getAptDetails.APT_Status != null)
+                    {
+                        Status = getAptDetails.APT_Status == "Applied" ? "Applied"
+                             : getAptDetails.APT_Status == "Screened" ? "Screened"
+                             : getAptDetails.APT_Status == "IntervieweSchedule" ? "Interview Schedule"
+                             : getAptDetails.APT_Status == "InterviewCanceled" ? "Interview Canceled"
+                             : getAptDetails.APT_Status == "Shortlisted" ? "Shortlisted"
+                             : getAptDetails.APT_Status == "AssessmentSend" ? "Assessment Send"
+                             : getAptDetails.APT_Status == "AssessmentPass" ? "Assessment Pass"
+                             : getAptDetails.APT_Status == "AssessmentFail" ? "Assessment Fail"
+                             : getAptDetails.APT_Status == "OnHold" ? "On Hold"
+                             : getAptDetails.APT_Status == "Hired" ? "Hired"
+                             : getAptDetails.APT_Status == "OfferSent" ? "Offer Sent"
+                             : getAptDetails.APT_Status == "OfferAccepted" ? "Offer Accepted"
+                             : getAptDetails.APT_Status == "OfferCountered" ? "Offer Countered"
+                             : getAptDetails.APT_Status == "OfferDeclined" ? "Offer Declined"
+                             : getAptDetails.APT_Status == "OfferCancled" ? "Offer Cancled"
+                             : getAptDetails.APT_Status == "Onboarding" ? "On boarding"
+                             : getAptDetails.APT_Status == "Onboarded" ? "On boarded"
+                             : getAptDetails.APT_Status == "OnboardingDrop" ? "Onboarding Drop"
+                             : getAptDetails.APT_Status == "BackgroundCheckSend" ? "Background Check Send"
+                             : getAptDetails.APT_Status == "BackgroundCheckPass" ? "Background Check Pass"
+                             : getAptDetails.APT_Status == "BackgroundCheckFail" ? "Background Check Fail"
+                             : getAptDetails.APT_Status == "OrientationSchedule" ? "Orientation Schedule"
+                             : getAptDetails.APT_Status == "OrientationDone" ? "Orientation Done"
+                             : getAptDetails.APT_Status == "OrientationNotDone" ? "Orientation Not Done"
+                             : "No Entry";
+                             
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public string GetEmployeeStatus(long ApplicantId)", "Exception While getting applicant status", ApplicantId);
+                throw;
+            }
+            return Status;
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 14-05-2020
+        /// Created For : To set job status by job id
+        /// </summary>
+        /// <param name="JobId"></param>
+        /// <param name="JobStatus"></param>
+        /// <returns></returns>
+        public bool UpdateCloseHoldOpenJob(long JobId, string JobStatus)
+        {
+            bool isUpdate = false;
+            try
+            {
+                if (JobId > 0 && JobStatus != null)
+                {
+                    var getJobDetails = objworkorderEMSEntities.JobPostings.Where(x => x.JPS_JobPostingId == JobId).FirstOrDefault();
+                    var update = objworkorderEMSEntities.spSetJobPosting("U", JobId, getJobDetails.JPS_JobPostingIdRecruitee, getJobDetails.JPS_JobTitleID,
+                        getJobDetails.JPS_HiringManagerID, getJobDetails.JPS_LocationId, getJobDetails.JPS_NumberOfPost, getJobDetails.JPS_DrivingType, JobStatus);
+                    isUpdate = true;
+                }
+                else
+                    isUpdate = false;
+            }
+            catch (Exception ex)
+            {
+                isUpdate = false;
+                Exception_B.Exception_B.exceptionHandel_Runtime(ex, "public bool UpdateCloseHoldOpenJob(long JobId, string JobStatus)", "Exception While updating job status", JobId);
+                throw;
+            }
+            return isUpdate;
+        }
     }
 }

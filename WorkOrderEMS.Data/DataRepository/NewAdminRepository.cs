@@ -9,11 +9,11 @@ using WorkOrderEMS.Models.NewAdminModel;
 
 namespace WorkOrderEMS.Data.DataRepository
 {
-	public class NewAdminRepository : BaseRepository<ApplicantInfo>, INewAdminRepository
+	public class NewAdminDataRepository : BaseRepository<ApplicantInfo>, INewAdminRepository
 	{
 		workorderEMSEntities _workorderEMSEntities = new workorderEMSEntities();
 
-		public List<spGetApplicantInfo_Result1> GetApplicantInfo(string employeeId)
+		public List<spGetApplicantInfo_Result> GetApplicantInfo(string employeeId)
 		{
 			return _workorderEMSEntities.spGetApplicantInfo(employeeId).ToList();
 		}
@@ -27,6 +27,10 @@ namespace WorkOrderEMS.Data.DataRepository
 		{
 			return true;
 		}
-
-	}
+        public int Verify(OnboardingDetailRequestModel onboardingDetailRequestModel)
+        {
+            return _workorderEMSEntities.spSetUserVerify(onboardingDetailRequestModel.EmpId, onboardingDetailRequestModel.LocationId,
+                                                          onboardingDetailRequestModel.CreatedBy);
+        }
+    }
 }

@@ -1,0 +1,167 @@
+﻿@model WorkOrderEMS.Models.ShiftModel
+@{
+    ViewBag.Title = "Shift Master";
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    long locationId = 0;
+    long userType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+    }
+}
+@section scripts{
+    <script type="text/javascript">
+    var $_locationId = '@locationId';
+    var $_userTypeId = '@userType';
+    var $_VendorStatus = "false";
+    </script>
+}
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/c3/css/c3.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/CSS/clockPicker.css" rel="stylesheet" />
+
+<style>
+
+    #chartdiv, #EmployeeCount1 {
+        width: 100%;
+        height: 250px;
+    }
+
+    .package {
+        margin-top: 0px !important;
+        display: inline-flex;
+        justify-items: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    label .req {
+        margin: 2px;
+        color: #ed2f35;
+    }
+
+    .form-control {
+        border: 1px solid #a0b3b0 !important;
+    }
+
+    .jsgrid-grid-body {
+        height: 100% !important;
+    }
+
+    .headerSize {
+        height: 36px;
+    }
+</style>
+<script src="~/Scripts/BootStrap-Multiselect/JS/jquery.multi-select.js"></script>
+<div class="content-body">
+    <div class="container-fluid">
+        <!-- row -->
+        <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3 aos-init aos-animate" data-aos="fade-up">
+            <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
+                <div class="welcome-text">
+
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card aos-init aos-animate" data-aos="fade-up">
+                    <div class="card-header headerSize">
+                        <h4 class="card-title" style="color:white;"><strong>Shift Add/Edit</strong></h4>
+                    </div>
+                    <div class="card-body">
+
+                        @using (Html.BeginForm("ShiftManagmentSubmit", "HRMS", FormMethod.Post, new { enctype = "multipart/form-data", @id = "DOT_form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true)
+                            @Html.HiddenFor(model => model.Id)
+                            <br />
+                            <div class="panel panel-primary setup-content">
+                                <div class="basic-form">
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label" id="">Shift Code<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @if (Model.Id == 0)
+                                            {
+                                                @Html.TextBoxFor(model => model.ShiftCode, new { @id = "ShiftCode", @class = "form-control input-rounded required" })
+                                            }
+                                            else
+                                            {
+                                                @Html.TextBoxFor(model => model.ShiftCode, new { @id = "ShiftCode", @class = "form-control input-rounded required", @readonly = "readonly", @style = "background-color:#EBEBE4;" })
+                                            }
+
+                                            <div class="errorspace">
+                                                @Html.ValidationMessageFor(model => model.ShiftCode)
+                                            </div>
+                                        </div>
+                                        
+                                        <label class="col-sm-2 col-form-label" id="">Shift Name<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.ShiftName, new { @id = "ShiftName", @class = "form-control input-rounded required" })
+                                            <div class="errorspace">
+                                                @Html.ValidationMessageFor(model => model.ShiftCode)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 col-form-label" id="">Start Time<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.StartTime, new { @class = "form-control input-rounded required clockpicker", @onkeypress = "return isNumberKey(event)", @id = "StartTime", @placeholder = "In Time" })
+                                            <span class="pull-left text-info" style="color:gray;"><i>(HH:MM i.e 00:30)</i></span>
+                                            @Html.ValidationMessageFor(model => model.StartTime)
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" id="">End Time<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.EndTime, new { @class = "form-control input-rounded required clockpicker", @onkeypress = "return isNumberKey(event)", @id = "EndTime", @placeholder = "Out Time" })
+                                            <span class="pull-left text-info" style="color:gray;"><i>(HH:MM i.e 00:30)</i></span>
+                                            @Html.ValidationMessageFor(model => model.EndTime)
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="form-group row ">
+                                        <label class="col-sm-2 col-form-label" id="">Description<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextAreaFor(model => model.Description, new { @id = "Description", @class = "form-control input-rounded required" })
+                                            <div class="errorspace">
+                                                @Html.ValidationMessageFor(model => model.ShiftCode)
+                                            </div>
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" id="">Active</label>
+                                        <div class="col-sm-4">
+                                            @Html.CheckBoxFor(model => model.IsActive, new { @id = "IsActive" })
+                                        </div>
+                                    </div>
+                                    @if (ViewBag.UpdateMode != null && ViewBag.UpdateMode == true)
+                                    {
+                                        <span class="w-100 text-right float-left">
+                                            <button type="submit" class="btn btn-default bluebutton nxt-btn" id="btnSaveVehicle" value="EditPO" style="background-color:forestgreen;border-radius:18px;margin-left: 20px;width:160px;color:white; ">Update</button>
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="w-100 text-right float-left">
+                                            <button type="submit" class="btn btn-default bluebutton nxt-btn" value="SavePO" id="btnSavePO" style="background-color:royalblue;border-radius:18px;width:120px;color:white;">Save</button>
+                                        </span>
+                                    }
+                                </div>
+                            </div>
+                             
+                         }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Content/NewAdminContent/JQUERY/clockPicker.js"></script>
+<script>
+    $('.clockpicker').clockpicker();
+</script>
+

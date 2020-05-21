@@ -99,13 +99,13 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
                         System.Text.RegularExpressions.Regex rx = new System.Text.RegularExpressions.Regex("<[^>]*>");
                         Obj.RolesAndResponsibility = removeSpace;//rx.Replace(Obj.RolesAndResponsibility, "");
                     }
-                    if(Obj.Id == null)
+                    if (Obj.Id == null)
                     {
                         Obj.Action = "I";
                         Obj.IsActive = "Y";
                     }
-                    var SavedData = _IAdminDashboard.SaveVSC(Obj);
-                    if (SavedData.Id > 0)
+                    var isSaved = _IAdminDashboard.SaveVSC(Obj);
+                    if (isSaved != null)
                     {
                         ViewBag.Message = CommonMessage.SaveSuccessMessage();
                     }
@@ -189,6 +189,7 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
             {
                 if (Obj != null && Obj.JobTitleDesc != null)
                 {
+                    //Obj.Id = Obj.parentId;
                     var isSaved = _IAdminDashboard.SaveJobTitleVSC(Obj);
                     if (isSaved == true)
                     {
@@ -286,27 +287,34 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
             }
             return Json(lst, JsonRequestBehavior.AllowGet);
         }
-
-        //public JsonResult DeleteJobTitleById(long JobTitleId)
-        //{
-        //    eTracLoginModel ObjLoginModel = null;
-        //    var lst = new AddChartModel();
-        //    if (Session != null)
-        //    {
-        //        if (Session["eTrac"] != null)
-        //        {
-        //            ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
-        //        }
-        //    }
-        //    try
-        //    {
-        //        var data = _IAdminDashboard.DeleteJobTitleById(JobTitleId);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        ViewBag.Message = ex.Message; ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger;
-        //    }
-        //    return Json(lst, JsonRequestBehavior.AllowGet);
-        //}
+        /// <summary>
+        /// Created By  : Ashwajit Bansod
+        /// Created Date: 20-05-2020
+        /// Created For : TO soft delete job title
+        /// </summary>
+        /// <param name="JobId"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult DeleteJobTitleById(long JobId)
+        {
+            eTracLoginModel ObjLoginModel = null;
+            bool delete = false;
+            if (Session != null)
+            {
+                if (Session["eTrac"] != null)
+                {
+                    ObjLoginModel = (eTracLoginModel)(Session["eTrac"]);
+                }
+            }
+            try
+            {
+                delete = _IAdminDashboard.DeleteJobTitleById(JobId);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message; ViewBag.AlertMessageClass = ObjAlertMessageClass.Danger;
+            }
+            return Json(delete, JsonRequestBehavior.AllowGet);
+        }
     }
 }

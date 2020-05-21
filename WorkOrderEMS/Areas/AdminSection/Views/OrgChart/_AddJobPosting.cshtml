@@ -1,6 +1,6 @@
 ﻿@model WorkOrderEMS.Models.JobPostingModel
-<div class="row">
-        <form id="SaveJobTitleForm">
+<div>
+        <form id="SaveJobPostingForm">
             @Html.HiddenFor(model => model.AddChartModel.Id)
             @Html.HiddenFor(model => model.JobPostingId, new { @id = "JobPostingId" })
             <div class="basic-form" style="margin-right: 40px;">
@@ -8,15 +8,15 @@
                 </span>
                 <div class="form-group row">
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(model => model.AddChartModel.SeatingName, new {  @id = "SeatingNameJobPosting", @class = "form-control input-rounded required" })
+                        @Html.TextBoxFor(model => model.AddChartModel.SeatingName, new { @id = "SeatingNameJobPosting", @Placeholder="Seating Name", @class = "form-control input-rounded required" })
                     </div>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(model => model.AddChartModel.DepartmentName, new {  @id = "DepartmentNameJobPosting", @class = "form-control input-rounded required" })
+                        @Html.TextBoxFor(model => model.AddChartModel.DepartmentName, new { @id = "DepartmentNameJobPosting", @Placeholder = "Department Name", @class = "form-control input-rounded required" })
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-6">
-                        @Html.TextAreaFor(model => model.AddChartModel.RolesAndResponsibility, new { @Placeholder = "Job Title", @id = "RolesAndResponsibilityJobPosting",  @class = "form-control input-rounded required isValidLocationName" })
+                        @Html.TextAreaFor(model => model.AddChartModel.RolesAndResponsibility, new { @Placeholder = "Job Title", @id = "RolesAndResponsibilityJobPosting", @class = "form-control input-rounded required isValidLocationName" })
                     </div>
                     <div class="col-sm-6">
                         <label>@Model.AddChartModel.JobDescription</label>
@@ -24,18 +24,30 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(model => model.Location, new { @Placeholder = "Location", @id = "LocationJobPosting", @style = "width: 600px;", @class = "form-control input-rounded required isValidLocationName" })
+                        @Html.TextBoxFor(model => model.Location, new { @Placeholder = "Location", @id = "LocationJobPosting", @class = "form-control input-rounded required isValidLocationName" })
                     </div>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(model => model.Education, new { @Placeholder = "Education", @id = "EducationJobPosting",  @class = "form-control input-rounded required isValidLocationName" })
+                        @Html.TextBoxFor(model => model.Education, new { @Placeholder = "Education", @id = "EducationJobPosting", @class = "form-control input-rounded required isValidLocationName" })
                     </div>
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(model => model.EmployeeStatus, new { @Placeholder = "Employee Status", @id = "EmployeeStatusJobPosting",  @class = "form-control input-rounded required" })
+                        @Html.DropDownListFor(x => x.EmployeeStatus, new List<SelectListItem>
+                                                                            {
+                       new SelectListItem() {Text = "--Select Employee Status--", Value="0"},
+                                                                                 new SelectListItem() {Text = "EXEMPT", Value="Y"},
+                                                                                 new SelectListItem() {Text = "NON-EXEMPT", Value="N"}
+                                                                            }, new { @class = "form-control input-rounded requiredselect", @id = "EmployeeStatusJobPosting" })
                     </div>
                     <div class="col-sm-6">
-                        @Html.TextBoxFor(model => model.JobType, new { @Placeholder = "Job Type", @id = "JobTypeJobPosting", @class = "form-control input-rounded required" })
+                        @Html.DropDownListFor(x => x.JobType, new List<SelectListItem>
+                                                                            {
+                                                                     new SelectListItem() {Text = "--Select Job Type--", Value="0"},
+                                                                                 new SelectListItem() {Text = "FT", Value="FT"},
+                                                                                 new SelectListItem() {Text = "PT", Value="PT"},
+                                                                                 new SelectListItem() {Text = "TEMP", Value="TEMP"}
+                                                                            }, new { @class = "form-control input-rounded requiredselect", @id = "JobTypeJobPosting" })
+
                     </div>
                 </div>
                 <div class="form-group row">
@@ -54,10 +66,16 @@
                         @Html.TextBoxFor(model => model.Country, new { @Placeholder = "Country", @id = "CountryJobPosting", @class = "form-control input-rounded required" })
                     </div>
                 </div>
+                <div class="form-group row">
+                    <div class="col-sm-6">
+                        @Html.TextBoxFor(model => model.NumberOfPost, new { @Placeholder = "Number of Post", @id = "NumberOfPost", @class = "form-control input-rounded required" })
+                    </div>
+                   
+                </div>
             </div>
         </form>
 </div>
-
+<script src="~/Areas/AdminSection/Content/JQUERY/JobPostingJs.js"></script>
 <script>
     $(document).ready(function () {
         debugger

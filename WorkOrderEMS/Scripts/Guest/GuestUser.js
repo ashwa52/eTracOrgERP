@@ -5,9 +5,9 @@
 		if ($(ielm).hasClass('fa-lock'))
 			isLocked=true;
 	});
-	if (isLocked)
+	if (isLocked) {
 		return;
-	unblink('w4formicn');
+	}
 	switch (formname) {
 		case 'directdeposite':
 			geturl = '/Guest/_DirectDepositeForm';
@@ -21,7 +21,7 @@
 		case 'I9Form':
 			geturl = '/Guest/_I9Form';
 			break;
-		case 'EmergencyContectForm':
+		case 'EmergencyContactForm':
 			geturl = '/Guest/_emergencyContactForm';
 			break;
 		case 'photorelease':
@@ -73,10 +73,6 @@ function SubmitForm(element, formName) {
 				url = '/Guest/_emergencyContactForm';
 				data = $('#emergencycontactform').serialize();
 				break;
-			case 'emergencycontactform':
-				url = '/Guest/_emergencyContactForm';
-				data = $('#emergencycontactform').serialize();
-				break;
 			case 'confidentialityagreementform':
 				url = '/Guest/_ConfidentialityAgreementForm';
 				data = $('#confidentialityagreementform').serialize();
@@ -94,6 +90,7 @@ function SubmitForm(element, formName) {
 			if (successResponse == true) {
 				LockItem(formName.id);
 				$("#formModel").modal('hide');
+				location.href = '/Guest/PersonalFile';
 			}
 			else {
 				
@@ -153,31 +150,49 @@ function LockItem(formId) {
 			var elm = $("#directdepositeicn").find('.lock i').first();
 			elm.removeClass('fa-unlock');
 			elm.addClass('fa-lock');
+			var elm = $("#directdepositeicn").find('.bluesky').first();
+			elm.removeClass('bluesky');
+			elm.addClass('grn-icn');
 			break;
 		case 'employeeHandbook':
-			var elm = $("#employeeHandbookicn").find('.lock i').first();
+			var elm = $("#employeehandbookicn").find('.lock i').first();
 			elm.removeClass('fa-unlock');
 			elm.addClass('fa-lock');
+			var elm = $("#employeehandbookicn").find('.bluesky').first();
+			elm.removeClass('bluesky');
+			elm.addClass('grn-icn');
 			break;
 		case 'photoreleaseform':
 			var elm = $("#photoreleaseicn").find('.lock i').first();
 			elm.removeClass('fa-unlock');
 			elm.addClass('fa-lock');
+			var elm = $("#photoreleaseicn").find('.bluesky').first();
+			elm.removeClass('bluesky');
+			elm.addClass('grn-icn');
 			break;
 		case 'emergencycontactform':
 			var elm = $("#emergencycontactformicn").find('.lock i').first();
 			elm.removeClass('fa-unlock');
 			elm.addClass('fa-lock');
+			var elm = $("#emergencycontactformicn").find('.bluesky').first();
+			elm.removeClass('bluesky');
+			elm.addClass('grn-icn');
 			break;
 		case 'confidentialityagreementform':
 			var elm = $("#confidentialityagreementicn").find('.lock i').first();
 			elm.removeClass('fa-unlock');
 			elm.addClass('fa-lock');
+			var elm = $("#confidentialityagreementicn").find('.bluesky').first();
+			elm.removeClass('bluesky');
+			elm.addClass('grn-icn');
 			break;
 		case 'educationverificationform':
 			var elm = $("#educationverificationformicn").find('.lock i').first();
 			elm.removeClass('fa-unlock');
 			elm.addClass('fa-lock');
+			var elm = $("#educationverificationformicn").find('.bluesky').first();
+			elm.removeClass('bluesky');
+			elm.addClass('grn-icn');
 			break;
 		case 'w4form':
 			var elm = $("#w4formicn").find('.lock i').first();
@@ -189,8 +204,8 @@ function LockItem(formId) {
 			break;
 	}
 }
-function blink(id) {
-	$("#"+id).fadeOut('slow', function () {
+function blink() {
+	$(".blink").fadeOut('slow', function () {
 		$(this).fadeIn('slow', function () {
 			blink(this.id);
 		});
@@ -200,8 +215,61 @@ function unblink(id) {
 	$("#" + id).stop().fadeIn();
 	NextBlink(id);
 } 
-blink('w4formicn');
+//blink('w4formicn');
 function NextBlink(id) {
-	var siblingid = $("#" + id).siblings()[0].id;
+	
+	var siblingid = $("#" + id).next()[0].id;
 	blink(siblingid);
+}
+function SetFormStatus() {
+	$.ajax({
+		url: '/Guest/GetFormsStatus',
+		method: 'GET',
+		success: function (response) {
+			debugger;
+			if (response.W4Status == 'Y') {
+				$("#w4formicn").removeClass('blink');
+				$($("#w4formicn").find('.bluesky')[0]).removeClass('bluesky').addClass('grn-icn');
+				LockItem('w4form');
+
+			}
+			if (response.EmergencyContactFormStatus == 'Y') {
+				$("#emergencycontactformicn").removeClass('blink');
+				$($("#emergencycontactformicn").find('.bluesky')[0]).removeClass('bluesky').addClass('grn-icn');
+				LockItem('emergencycontactform');
+
+			}
+			if (response.EmployeeHandbook == 'Y') {
+				$("#employeehandbookicn").removeClass('blink');
+				$($("#employeehandbookicn").find('.bluesky')[0]).removeClass('bluesky').addClass('grn-icn');
+				LockItem('employeehandbook');
+			}
+			if (response.DirectDepositForm == 'Y') {
+				$("#directdepositeicn").removeClass('blink');
+				$($("#directdepositeicn").find('.bluesky')[0]).removeClass('bluesky').addClass('grn-icn');
+				LockItem('depositeForm');
+
+			}
+			if (response.PhotoReleaseForm == 'Y') {
+				$("#photoreleaseicn").removeClass('blink');
+				$($("#photoreleaseicn").find('.bluesky')[0]).removeClass('bluesky').addClass('grn-icn')
+
+			}
+			if (response.ConfidentialityAgreement == 'Y') {
+				$("#confidentialityagreementicn").removeClass('blink');
+				$($("#confidentialityagreementicn").find('.bluesky')[0]).removeClass('bluesky').addClass('grn-icn')
+
+			}
+			if (response.EducationVerificationForm == 'Y') {
+				$("#educationverificationformicn").removeClass('blink');
+				$($("#educationverificationformicn").find('.bluesky')[0]).removeClass('bluesky').addClass('grn-icn');
+				LockItem('educationverificationform');
+
+			}
+			var $div2blink = $(".blink"); // Save reference, only look this item up once, then save
+			var backgroundInterval = setInterval(function () {
+				$div2blink.toggleClass("backgroundRed");
+			}, 1500)
+		}
+	});
 }

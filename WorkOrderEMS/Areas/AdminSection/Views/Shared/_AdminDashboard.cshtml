@@ -25,27 +25,144 @@
     .addChart:hover {
         background-color: #545454;
     }
+    .blockWidth{
+        width:10%;
+    }
+    .moveicon:hover {
+        color: red;
+        transition: 0.9s;
+        transform: rotateY(360deg);
+    }
+    /*a:hover .moveicon {
+        -webkit-transform: rotateZ(360deg);
+        -moz-transform: rotateZ(360deg);
+        transform: rotateZ(360deg);
+    }*/
+
 </style>
 @*https://codepen.io/lyriat/pen/ZvxvdQ*@
 
 <link href="~/Areas/AdminSection/Content/CSS/IconDisplayCSS.css" rel="stylesheet" />
-<div class="row">
+
+<div class="row" style="margin-right: 40px;">
     <div class="col-lg-12">
         <div class="card" data-aos="fade-up">
+            <div style="height: 45px;background:#0aa0cd;">
+                <div class="form-group row" style="margin-top:6px;margin-left:10px;">
+                    <div class="col-sm-6">
+                        <strong><label style="color: white;font-size: 20px;">Menu</label></strong>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row" style="overflow-y: scroll;">
+                    <div class="col-lg-12" id="MenuAdminDashBord">
+                        <div class="block blockWidth" style="width:11%;">
+                            <div class="hovicon effect-8" title="Cost Code">
+                                <a href="@Url.Action("ListCostCode", "CostCode")"><i class="fa fa-cc moveicon" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div class="block blockWidth" style="width:11%;">
+                            <div class="hovicon effect-8" title="Add Rules">
+                                <a href="@Url.Action("Index", "Rule")"> <i class="fa fa-registered moveicon" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div class="block blockWidth" style="width:11%;">
+                            <div class="hovicon effect-8" title="Payment Term">
+                                <a href="@Url.Action("Index", "PaymentTerms")"><i class="fa fa-suitcase moveicon" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div class="block blockWidth" style="width:11%;">
+                            <div class="hovicon effect-8" title="Payment Mode">
+                                <a href="@Url.Action("Index", "PaymentMode")"><i class="fa fa-money moveicon" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div class="block blockWidth" style="width:10%;">
+                            <div class="hovicon effect-8" title="Contract Type">
+                                <a href="@Url.Action("Index", "ContractType")"><i class="fa fa-ticket moveicon" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div class="block blockWidth" style="width:10%;">
+                            <div class="hovicon effect-8" title="PO Type">
+                                <a href="@Url.Action("Index", "POType")"><i class="fa fa-product-hunt moveicon" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div class="block blockWidth" style="width:10%;">
+                            <div class="hovicon effect-8" title="Vendor Type">
+                                <a href="@Url.Action("Index", "VendorType")"><i class="fa fa-vimeo moveicon" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div class="block blockWidth" style="width:10%;">
+                            <div class="hovicon effect-8" title="Add Company">
+                                <a href="@Url.Action("CompanyListAdmin", "AdminCompany")"><i class="fa fa-user-circle moveicon" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div class="block blockWidth" style="width:10%;">
+                            <div class="hovicon effect-8" title="Add PDF Form">
+                                <a href="@Url.Action("Index", "PDFForm")"><i class="fa fa-file-pdf-o moveicon" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+
+                        <div class="block blockWidth" style="width:10%;">
+                            <div class="hovicon effect-8" title="Add Monthly Parker">
+                                <a href="~/CustomerManagement/ListWaitingCustomers" data-oldDash="No"><i class="fa fa-group moveicon" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div class="block blockWidth" style="width:10%;">
+                            <div class="hovicon effect-8" title="Client Invoice">
+                                <a href="~/InvoiceManagement/InvoiceDashboard" data-oldDash="No"><i class="fa fa-file-text moveicon" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div class="block blockWidth" style="width:10%;">
+                            <div class="hovicon effect-8" title="Holiday Management">
+                                <a href="~/EPeople/HolidayMaster" data-oldDash="No"><i class="fa fa-tree moveicon" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div class="block blockWidth" style="width:10%;">
+                            <div class="hovicon effect-8" title="Leave Setup ">
+                                <a href="~/EPeople/LeaveTypeList" data-oldDash="No"><i class="fa fa-umbrella moveicon" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+                        <div class="block blockWidth" style="width:10%;">
+                            <div class="hovicon effect-8" title="Location Seats ">
+                                <a href="~/EPeople/LocationSeats" data-oldDash="No"><i class="fa fa-location-arrow moveicon" aria-hidden="true"></i></a>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="row" style="margin-right: 40px;">
+    <div class="col-lg-12">
+        <div class="card" data-aos="fade-up">
+            <div style="height: 45px;background:#0aa0cd;">
+                <div class="form-group row" style="margin-top:6px;margin-left:10px;">
+                    <div class="col-sm-6">
+                        <strong><label style="color: white;font-size: 20px;">ePeople</label></strong>
+                    </div>
+                </div>
+            </div>
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-12">
-                        <h4 class="card-title mb-4">ePeople</h4>
+
                         <div class="block">
                             <div class="hovicon effect-8" title="View Vehicle Seating Chart">
                                 <img src="~/Areas/AdminSection/Content/IMAGE/orgChart.png" id="ViewChart" style="width:60px;transition: all ease-in-out 0.2s;" />
                             </div>
                         </div>
                         @*<div class="block">
-                            <div class="hovicon effect-8" title="Add Chart">
-                                <img src="~/Areas/AdminSection/Content/IMAGE/orgChartAdd.jpg" id="addChart" style="width:60px;transition: all ease-in-out 0.2s;" />
-                            </div>
-                        </div>*@
+                        <div class="hovicon effect-8" title="Add Chart">
+                            <img src="~/Areas/AdminSection/Content/IMAGE/orgChartAdd.jpg" id="addChart" style="width:60px;transition: all ease-in-out 0.2s;" />
+                        </div>
+                    </div>*@
                         <div class="block">
                             <div class="hovicon effect-8" id="AddDepartment" title="Department List">
                                 <img src="~/Areas/AdminSection/Content/IMAGE/department.png" style="width:60px;" />
@@ -58,11 +175,12 @@
     </div>
 </div>
 
+
 <!--Modal To Add -->
 <!--Add all Partial View for Admin Dahsboard-->
 @*<div id="Data_AddChart">
-    @Html.Partial("_AddChart")
-</div>*@
+        @Html.Partial("_AddChart")
+    </div>*@
 <!--End Partial View for Admin Dahsboard-->
 <script type="text/javascript" src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>
 <script>
@@ -70,7 +188,7 @@
         $("#addChart").click(function () {
             $("#myModalForChart").modal("show");
         });
-        
+
         $("#AddDepartment").click(function () {
             var addNewUrl = "@Url.Action("Index", "Department", new { area = "AdminSection" })";
             $('#RenderPageId').load(addNewUrl);

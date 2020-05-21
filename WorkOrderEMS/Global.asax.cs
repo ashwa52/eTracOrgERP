@@ -30,7 +30,7 @@ namespace WorkOrderEMS
             //Start SqlDependency with application initializationAuthenticat
             System.Data.SqlClient.SqlDependency.Start(connString);
             objNotificationAlertRepository.WorkOrderDetailsForPushNotificationSignalRGlobal(true);
-            //  }
+            //}
         }        
         protected void Application_End()
         {

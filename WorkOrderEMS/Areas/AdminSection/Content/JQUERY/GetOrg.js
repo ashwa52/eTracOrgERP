@@ -1484,13 +1484,13 @@ getOrgChart.node.prototype.draw = function(a) {
                 }
                 break;
             case "text":
-                debugger
+                
                 var j = 0;
                 for (k = 0; k < a.primaryFields.length; k++) {
                     var g = l[j];
                     var c = a.primaryFields[k];
                     if (!g || !this.data || !this.data[c]) {
-                        continue
+                        
                     }
                     h.push(m.text.replace("[index]", j).replace("[text]", this.data[c]).replace("[y]", g.y).replace("[x]", g.x).replace("[rotate]", g.rotate).replace("[width]", g.width));
                     j++
@@ -3364,31 +3364,37 @@ getOrgChart.prototype._aY = function(d, b) {
     var c = d.getAttribute("data-btn-id");
     var a = d.getAttribute("data-btn-action");
     if (a == "del") {
-        debugger
-        JobPosting(c);
         
-        
+        $.ajax({
+            type: "GET",
+            url: '../AdminSection/OrgChart/OpenJobPostingForm?CSVChartId=' + c, //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
+            success: function (Data) {
+                
+                $("#AddDivContentToAddJob").html(Data)
+                $("#ModalAddJobPostal").modal('show');
+                $("#myModalForAddingJobTitle").modal('hide');
+            },
+            error: function (err) {
+            }
+        });
         //this.removeNode(c)
     } else {
         if (a == "add") {
-            debugger
+            
             $.ajax({
                 type: "POST",
                 url: '../AdminSection/AdminDashboard/GetJobTitleById?CSVChartId=' + c, //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
                 success: function (Data) {
-                    debugger
+                    
                     if (Data.length > 0) {
                         $("#addJobTitleLabel").html("");
                         $("#JobTitleId").val("");
                         for (var ii = 0 ; ii < Data.length; ii++) {
                             //$("#JobTitleId").val(Data[ii].parentId);
+                            
                             var divID = $('#addJobTitleLabel div.dymanicDelete').length;
                             $('#addJobTitleLabel').append('<div class="form-group row dymanicDelete d_' + ii + '"><div class="col-sm-10 getJobTitleData"><label class="col-sm-5 col-form-label">' + Data[ii].JobTitleLabel + '</label></div><a class="addjobtitleDeleterows col-sm-1"  id=d' + ii + ' jobtitleid =' + Data[ii].Id + '><i class="fa fa-trash addColorTrash fa-2x" style="cursor:pointer;margin-left: 30px;color:#cd0a2499;" aria-hidden="true"></i></a></div>');
                         }
-                    }
-                    else {
-                        $("#addJobTitleLabel").html("");
-                        $("#JobTitleId").val("");
                     }
                     $("#myModalForAddingJobTitle").modal('show');
                     $("#parentIdForJobTitle").val(c);
@@ -3399,7 +3405,7 @@ getOrgChart.prototype._aY = function(d, b) {
             //this.insertNode(c)
         } else {
             if (a == "details") {
-               debugger
+               
                         homogeneous = new kendo.data.HierarchicalDataSource({
                             transport: {
                                 read: {
@@ -3415,7 +3421,7 @@ getOrgChart.prototype._aY = function(d, b) {
                                 }
                             }
                         });
-                debugger
+                
                         $("#treeData").kendoTreeView({
                             dataSource: homogeneous,
                             dataTextField: ["name"],
@@ -3437,7 +3443,7 @@ getOrgChart.prototype._aY = function(d, b) {
                         type: "POST",
                         url: '../AdminSection/AdminDashboard/GetChartDetailsById?CSVChartId=' + c, //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
                         success: function (Data) {
-                            debugger
+                            
                             var roles;
                             if (Data != null) {
                                 $("#SeatingName").val(Data.SeatingName);
@@ -3465,6 +3471,7 @@ getOrgChart.prototype._aY = function(d, b) {
                                 }
                             }
                             $("#myModalForChart").modal("show");
+                           
                             tinymce.editors.RolesAndResponsibility.setContent(roles);
                             $("#parentIdForJobTitle").val(c);
                         },
@@ -4200,23 +4207,23 @@ getOrgChart.prototype._aL = function(c, b) {
 
 //to delete
 $(".deletejobtitlerows").click(function (e) {
-    debugger
+    
     var jobId = this.attr("jobtitleid");
     var valId = $(this).find('option:selected').val();
     $.ajax({
         type: "POST",
         url: '../AdminSection/AdminDashboard/DeleteJobTitleById?JobTitleId=' + jobId, //'@Url.Action("SaveVCS", "AdminDashboard", new { area = "AdminSection" })',
         success: function (Data) {
-            debugger
+            
             if (Data != null) {
-                debugger
+                
                 $("#addJobTitleLabel").html("");
                 $("#JobTitleId").val("");
                 if (Data.JobTitleLabel != null) {
                     $("#JobTitleId").val(Data.Id);
                     var nameArr = Data.JobTitleLabel.split('|');
                     for (var splited = 0; splited < nameArr.length; splited++) {
-                        debugger
+                        
                         if (nameArr[splited] != " " && nameArr[splited] != "") {
                             var divID = $('#addJobTitleLabel div.dymanicDelete').length;
                             $('#addJobTitleLabel').append('<div class="form-group row dymanicDelete d_' + splited + '"><div class="col-sm-10 getJobTitleData"><label class="col-sm-2 col-form-label">' + nameArr[splited] + '</label></div><div class="col-sm-1"><a class="addjobtitleDeleterows" id=d' + splited + ' jobtitleid =' + Data.Id + '><i class="fa fa-trash addColorTrash fa-2x" style="cursor:pointer;margin-left: 30px;color:#cd0a2499;" aria-hidden="true"></i></a></div></div>');

@@ -26,6 +26,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public Nullable<long> DeletedBy { get; set; }
         public Nullable<System.DateTime> DeletedOn { get; set; }
         public Nullable<bool> IsActive { get; set; }
+        public Nullable<System.DateTime> ShiftEnd { get; set; }
     
         public virtual LocationMaster LocationMaster { get; set; }
         public virtual LocationMaster LocationMaster1 { get; set; }

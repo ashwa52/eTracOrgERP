@@ -20,7 +20,7 @@
 
         .profile img {
             width: 60px;
-            height: auto;
+            height: 60px;
             border-radius: 50%;
             border: 1px solid #ddd;
         }
@@ -38,35 +38,41 @@
                 <img src="@Model.Image" />
             </div>
             <div class="info">
-                <label style="margin-left:30px;">Employee Id</label><span style="color:black;">:&nbsp;&nbsp;&nbsp; @Model.EmpId</span>
-                <label style="margin-left:092px">Name</label><span style="color:black;">:&nbsp;&nbsp;&nbsp; @Model.Name</span>
+                <label @*style="margin-left:30px;"*@>Employee Id :</label><span style="color:#030ae3;">&nbsp;&nbsp;&nbsp; @Model.EmpId</span>
+                <label style="margin-left:092px">Name :</label><span style="color:#030ae3;">&nbsp;&nbsp;&nbsp; @Model.Name</span>
+                <label style="margin-left:092px">Location :</label><span style="color:#030ae3;">&nbsp;&nbsp;&nbsp; @Model.LocationName</span>
             </div>
         </div>
-        <form id="SaveDemotionsEmployee">
+        <form id="SaveStatusEmployee">
             @*<div class="middle">
                 </div>*@
+            @Html.HiddenFor(model => model.EmpId)
+            @Html.HiddenFor(model => model.StatusAction)
+            @Html.HiddenFor(model => model.EmployeeCurrentStatus)
             <div class="bottom-sec" style="margin-top: 28px;">
                 <div class="basic-form">
                     <div class="form-group row">
                         <div class="col-sm-6">
-                            @Html.TextBoxFor(model => model.EffectiveDate, new { @class = "form-control input-rounded", @id = "EffectiveDate", placeholder = "Effective Date", @readonly = "readonly" })
+                            @Html.DropDownListFor(x => x.EmploymentStatus, new List<SelectListItem>
+                                                                            {
+                                        new SelectListItem() {Text = "--Select Position--", Value="0"},
+                                        new SelectListItem() {Text = "FT", Value="FT"},
+                                        new SelectListItem() {Text = "PT", Value="PT"},
+                                        new SelectListItem() {Text = "OnCall", Value="OnCall"},
+                                        new SelectListItem() {Text = "TEMP", Value="TEMP"}
+                                        }, new { @class = "form-control input-rounded", @id = "EmploymentStatus" })
 
                         </div>
                         <div class="col-sm-6">
-                            @Html.DropDownListFor(x => x.Position, new List<SelectListItem>
-                                                                                {
-                                            new SelectListItem() {Text = "Select Position", Value="0"},
-                                            new SelectListItem() {Text = "FT", Value="FT"},
-                                            new SelectListItem() {Text = "PT", Value="PT"},
-                                            new SelectListItem() {Text = "OnCall", Value="OnCall"},
-                                            new SelectListItem() {Text = "TEMP", Value="TEMP"}
-                                            }, new { @class = "form-control input-rounded", @id = "EmploymentStatus" })
-
+                            @Html.TextBoxFor(model => model.EffectiveDate, new { @class = "form-control input-rounded", @id = "EffectiveDate", placeholder = "Effective Date", @readonly = "readonly" })
                         </div>
                     </div>
-                    <div class="form-group row">                       
-                        <div class="col-sm-6" id="HideShowYear" style="display:none;">
-                            @Html.TextBoxFor(model => model.TempDate, new { @class = "form-control input-rounded", @id = "TempDate", placeholder = "Temp Date", @readonly = "readonly", @disable = "disabled" })
+                    <div class="form-group row" id="HideShowYear" style="display:none;">
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(model => model.FromDate, new { @class = "form-control input-rounded", @id = "FromDate", placeholder = "From Date", @readonly = "readonly", @disable = "disabled" })
+                        </div>
+                        <div class="col-sm-6">
+                            @Html.TextBoxFor(model => model.ToDate, new { @class = "form-control input-rounded", @id = "ToDate", placeholder = "To Date", @readonly = "readonly", @disable = "disabled" })
                         </div>
                     </div>
                 </div>
@@ -77,16 +83,18 @@
 <script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
 
 <script>
-    $("#TempDate, #EffectiveDate").datepicker();
+    $("#ToDate, #EffectiveDate, #FromDate").datepicker();
     $(document).ready(function () {
         $("#EmploymentStatus").change(function () {
             var value = $("#EmploymentStatus option:selected").val();
 
             if (value == 'TEMP') {
                 $("#HideShowYear").show();
+                $("#EffectiveDate").hide();
             }
             else {
                 $("#HideShowYear").hide();
+                $("#EffectiveDate").show();
             }
         });
     });

@@ -3,6 +3,9 @@
     ViewBag.Title = "VenderDocument";
     Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
 }
+
+     <link href="~/Content/NewAdminContent/CSS/custom.css" rel="stylesheet" />
+
 <div class="content-body" style="min-height: 920px;">
     <!-- row -->
     <div class="container-fluid">
@@ -10,8 +13,8 @@
             <div class="col-lg-12">
                 <div class="card aos-init" data-aos="fade-up">
                     <div class="card-body">
-                        <div class="card-header" style="height: 45px;">
-                            <h4 class="card-title addWhite"><b>Company documents</b></h4>
+                        <div class="card-header">
+                            <h4 class="card-title">Company Documents</h4>
                         </div>
                         @if (Model != null)
                         {
@@ -27,14 +30,14 @@
                                     {
                                         <tr>
                                             <td>Company Document</td>
-                                            <td><a href="@Model.CMP_CompanyDocument" download><span style="padding: 0 5px 0 0;" title="Contract Document"><i class="fa fa-download" style="color:green;font-size: 22px;"></i></span></a></td>
+                                            <td><a href="@Model.CMP_CompanyDocument" download><span style="padding: 0 5px 0 0;" title="Contract Document"><i class="fa fa-download download-icon"></i></span></a></td>
                                         </tr>
                                     }
                                     @if (!string.IsNullOrEmpty(Model.CNT_ContractDocument))
                                     {
                                         <tr>
                                             <td>Contract Document</td>
-                                            <td><a href="@Model.CNT_ContractDocument" download><span style="padding: 0 5px 0 0;" title="Contract Document" ><i class="fa fa-download" style="color:green;font-size: 22px;"></i></span></a></td>
+                                            <td><a href="@Model.CNT_ContractDocument" download><span style="padding: 0 5px 0 0;" title="Contract Document" ><i class="fa fa-download download-icon"></i></span></a></td>
                                         </tr>
                                     }
                                 </tbody>

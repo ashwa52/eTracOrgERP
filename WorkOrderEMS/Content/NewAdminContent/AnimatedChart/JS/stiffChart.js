@@ -155,7 +155,6 @@
         // hide show child depending from data-parent value
         //---------------------------------------------------------------------------------------------
         function toggleChilds(that, what) {
-            debugger
             var myName = $(that).data('parent');
             if ($('[data-child-from=' + myName + ']').length) {
                 if (what == 'show') {

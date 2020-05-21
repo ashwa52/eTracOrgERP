@@ -95,7 +95,7 @@ namespace WorkOrderEMS.Data
         /// </summary>
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
-        public List<spGetOrgnizationUserView_Result1> UserTreeViewDetails(string EmployeeId)
+        public List<spGetOrgnizationUserView_Result> UserTreeViewDetails(string EmployeeId)
         {
             try
             {
@@ -115,7 +115,7 @@ namespace WorkOrderEMS.Data
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
         /// 
-        public List<spGetVehicleSeating_Result2> GetVSCDetails(long VSCId)
+        public List<spGetVehicleSeating_Result> GetVSCDetails(long VSCId)
         {
             try
             {
@@ -135,7 +135,7 @@ namespace WorkOrderEMS.Data
         /// <param name="LocationId"></param>
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
-        public List<spGetEmployeeManagementList_Result1> GetEmployeeManagementListData(long LocationId, string EmployeeId)
+        public List<spGetEmployeeManagementList_Result> GetEmployeeManagementListData(long LocationId, string EmployeeId)
         {
             try
             {
@@ -174,7 +174,7 @@ namespace WorkOrderEMS.Data
         /// Created For : To get all requisition list
         /// </summary>
         /// <returns></returns>
-        public List<spGetRequisitionList_Result1> GetRequisitionlist()
+        public List<spGetRequisitionList_Result> GetRequisitionlist()
         {
             try
             {
@@ -213,7 +213,7 @@ namespace WorkOrderEMS.Data
         /// </summary>
         /// <param name="Id"></param>
         /// <returns></returns>
-        public List<spGetJobTitle_Result1> GetJobTitleCount(long? Id)
+        public List<spGetJobTitle_Result> GetJobTitleCount(long? Id)
         {
             try
             {
@@ -249,11 +249,102 @@ namespace WorkOrderEMS.Data
         /// </summary>
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
-        public List<spGetFileUpload_Result1> GetUploadFilesList(string EmployeeId)
+        //public List<spGetFileUpload_Result1> GetUploadFilesList(string EmployeeId)
+        //{
+        //    try
+        //    {
+        //        return objworkorderEMSEntities.spGetFileUpload(EmployeeId).ToList();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw;
+        //    }
+        //}
+
+        public List<spGetFileUpload_Result> GetUploadFilesListTesting(string EmployeeId)
+        {
+            var lst = new List<spGetFileUpload_Result>();
+            try
+            {
+                lst =  objworkorderEMSEntities.spGetFileUpload(EmployeeId).ToList();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+            return lst;
+        }
+
+        public List<spGetVacant_JobTitle_Result> GetJobTitleVacant(long VSC_Id)
+        {
+            return objworkorderEMSEntities.spGetVacant_JobTitle(VSC_Id).ToList();
+        }
+        /// <summary>
+        /// Created By  :Ashwajit bansod
+        /// Created Date : 14-Nov-2019
+        /// Created For :To save Employee Status
+        /// </summary>
+        /// <param name="Obj"></param>
+        /// <returns></returns>
+        public int SaveEmployeeStatus(DemotionModel Obj)
         {
             try
             {
-                return objworkorderEMSEntities.spGetFileUpload(EmployeeId).ToList();
+                return objworkorderEMSEntities.spSetEmployeeStatusChange(Obj.ChangeType,Obj.EmpId,Obj.JobTitleCurrent,
+                                                                         Obj.JobTitleId,Obj.LocationIdCurrent,Obj.LocationId,
+                                                                         Obj.EmployeeCurrentStatus,Obj.EmploymentStatus, Obj.FromDate,
+                                                                         Obj.ToDate,Obj.CreatedBy);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 14-Nov-2019
+        /// Created For : To get Employee status list
+        /// </summary>
+        /// <param name="VSC_Id"></param>
+        /// <returns></returns>
+        public List<spGetEmployeeStatusChangeList_Result> GetEmployeeStatusList()
+        {
+            return objworkorderEMSEntities.spGetEmployeeStatusChangeList().ToList();
+        }
+        /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created Date : 15_Nov-2019
+        /// Created For : To approve reject Employee Status
+        /// </summary>
+        /// <param name="Id"></param>
+        /// <param name="Status"></param>
+        /// <param name="EmployeeId"></param>
+        /// <returns></returns>
+        public int ApproveRejectEmployeeReject(long Id, string Status, string EmployeeId, string Comment)
+        {
+            try
+            {
+                return objworkorderEMSEntities.spSetEmployeeStatusChangeApproval(Id, EmployeeId, Status, Comment);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bnasod
+        /// Created Date : 18-Nov-2019
+        /// Created For : To send assessment for approve reject via mail.
+        /// </summary>
+        /// <param name="Status"></param>
+        /// <param name="IsActive"></param>
+        /// <param name="ApplicantId"></param>
+        /// <returns></returns>
+        public int SendForAssessment(string Status, string IsActive, long ApplicantId)
+        {
+            try
+            {
+                return objworkorderEMSEntities.spSetApplicantStatus(ApplicantId, Status, IsActive);
             }
             catch (Exception ex)
             {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Models;
 using WorkOrderEMS.Models.Employee;
 
@@ -28,6 +29,19 @@ namespace WorkOrderEMS.BusinessLogic
         JobTitleModel GetJobTitleCount(long JobId);
         bool SendJobTitleForApproval(JobTitleModel model);
         bool SaveDirectDepositeForm(DirectDepositeFormModel model);
-        List<UploadedFiles> GetUploadedFilesOfUser(string EmployeeId);
+        //IEnumerable<UploadedFiles> GetUploadedFilesOfUser(string EmployeeId);
+        List<UploadedFiles> GetUploadedFilesOfUserTesting(string EmployeeId);
+        List<GraphCountModel> GetEMP_ReqCount();
+        List<JobTitleModel> GetJobTitleVacantList(long VSC_Id);
+        bool SaveCommonStatusOfEmployee(DemotionModel Obj);
+        List<EmployeeStatusList> GetEmployeeStatusList();
+        bool ApproveRejectEmployeeStatus(long Id, string Status, long UserId, string Comment);
+        bool SendForAssessment(string Status, string IsActive, long ApplicantId, long UserId);
+        bool ClearedOrNot(string IsActive, string ActionVal, long ApplicantId);
+        bool SendForBackgroundCheck(string Status, string IsActive, long ApplicantId, long UserId);
+        void ScheduleInterviewOfApplicant(long IPT_Id, string status);
+        BenefitList GetBenifitList(long ApplicantId);
+        string GetApplicantStatus(long ApplicantId);
+        bool UpdateCloseHoldOpenJob(long JobId, string JobStatus);
     }
 }

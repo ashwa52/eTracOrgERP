@@ -3,36 +3,28 @@
 <link href="~/Content/NewAdminContent/CSS/FilesUICss.css" rel="stylesheet" />
 
 <style>
-
     .info {
         display: inline-block;
         margin: 10px;
     }
-
     .profile {
         display: inline-block;
     }
-
-        .profile img {
-            width: 89px;
-            height: 89px;
-            border-radius: 50%;
-            border: 1px solid #ddd;
-        }
-
-
-
+   .profile img {
+       width: 70px;
+       height: 70px;
+       border-radius: 50%;
+       border: 1px solid #ddd;
+   }
     .middle {
         text-align: center;
         background-color: yellow;
         margin-top: 13px;
-        height: 28px;
+        height: 22px;
     }
-
     .input-rounded {
         border: 1px solid #000;
     }
-
     .btnverify {
         background-color: #156baf;
         width: 157px;
@@ -41,25 +33,24 @@
         color: white;
         border-radius: 30px;
     }
-
     label {
         margin-bottom: 0;
     }
-
     .form-control:disabled, .form-control[readonly] {
         background: #ddd;
         opacity: 1;
     }
-
-    input[type=checkbox] {
+    /*input[type=checkbox] {
+        display: none;
+    }*/
+    #box1 {
         display: none;
     }
-        /* to hide the checkbox itself */
-        input[type=checkbox] + label:before {
-            font-family: FontAwesome;
-            display: inline-block;
-        }
-
+    /* to hide the checkbox itself */
+    input[type=checkbox] + label:before {
+        font-family: FontAwesome;
+        display: inline-block;
+    }
         input[type=checkbox] + label:before {
             content: "\f096";
         }
@@ -68,7 +59,6 @@
             letter-spacing: 10px;
         }
         /* space between checkbox and label */
-
         input[type=checkbox]:checked + label:before {
             content: "\f046";
         }
@@ -79,7 +69,8 @@
     /* allow space for check mark */
     .top {
         border: 1px solid #bbbbdb;
-        padding: 9px 18px 8px 21px;
+        padding: 3px 0px 4px 3px;
+        /*padding: 9px 18px 8px 21px;*/
         background-image: linear-gradient(to right, #3588CD, #fff);
     }
 </style>
@@ -100,7 +91,6 @@
 		}
 	}
 </script>
-
 <div>
     <div>
         <div class="top">
@@ -108,8 +98,8 @@
                 <img src="@Model.Image" />
             </div>
             <div class="info">
-                <label style="margin-left:30px;">Employee Id</label><span style="color:black;">:&nbsp;&nbsp;&nbsp; @Model.EmpId</span>
-                <label style="margin-left:092px">Name</label><span style="color:black;">:&nbsp;&nbsp;&nbsp; @Model.FirstName  @Model.LastName</span>
+                <label style="margin-left:30px;">Employee Id</label><span style="color:black;">:&nbsp;&nbsp;&nbsp;<label style="color: floralwhite"> @Model.EmpId</label></span>
+                <label style="margin-left:092px">Name</label><span style="color:black;">:&nbsp;&nbsp;&nbsp;<label style="color: floralwhite"> @Model.FirstName  @Model.LastName</label></span>
             </div>
             @*<div class="info">
                 <span style="color:black"><b>Employee Id</b>: @Model.EmpId</span>
@@ -159,17 +149,19 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-3">
-                            @Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "ZipCode", @disabled = "disabled" } })
+                            @*@Html.EditorFor(model => model.Zip, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "ZipCode", @disabled = "disabled" } })*@
+                            @Html.TextBoxFor(model => model.Zip,  new { @class = "form-control input-rounded", placeholder = "ZipCode", @disabled = "disabled", @pattern = "[0-9]", @minLength = "5", @maxLength = "5" })
 
                         </div>
                         <div class="col-sm-3">
-                            @Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Phone", @disabled = "disabled" } })
+                            @*@Html.EditorFor(model => model.Phone, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Phone", @disabled = "disabled" } })*@
+                            @Html.TextBoxFor(model => model.Phone,  new { @class = "form-control input-rounded", placeholder = "Phone", @disabled = "disabled", @pattern = "[0-9]", @minLength = "10", @maxLength = "10" })
 
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-6">
-                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Email", @disabled = "disabled" } })
+                            @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Email", @readonly = "readonly"} })
                         </div>
                         <div class="col-sm-6">
                             @Html.TextBoxFor(model => model.Dob, new { @class = "form-control input-rounded", @disabled = "disabled", @id = "DOBEMP" })
@@ -185,7 +177,7 @@
                     </div>
                     <div class="form-group row">
                         <div class="col-sm-6">
-                            @Html.EditorFor(model => model.LicenseNumber, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Driver License Number" } })
+                            @Html.EditorFor(model => model.DlNumber, new { htmlAttributes = new { @class = "form-control input-rounded", placeholder = "Driver License Number" } })
                         </div>
                     </div>
                 </div>
@@ -241,6 +233,7 @@
 <script src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
 <script>
     $(document).ready(function () {
+        var base_url = window.location.origin;
         $("#DOBEMP").datepicker();
 
     });
@@ -249,7 +242,7 @@
         if (formname === 'DirectDeposit') {
             debugger
             $.ajax({
-                url: '../EPeople/_DirectDepositeForm?Id=' + "@Model.EmpId",
+                url: base_url+'/EPeople/_DirectDepositeForm?Id=' + "@Model.EmpId",
                 type: 'GET',
                 success: function (response) {
                     debugger
@@ -258,12 +251,13 @@
                 }
             });
         }
-        if (formname === 'employeehandbook') {
+        if (formname === 'EmergencyContactForm') {
             $.ajax({
-                url: '/EPeople/_EmployeeHandbook',
+                url: base_url + '/EPeople/_EmergencyContactForm?Id=' + "@Model.EmpId",
                 method: 'GET',
                 success: function (response) {
                     $("#formidEditInfo").html(response);
+                    $("#formModelEdit").modal('show');
                 }
             });
         }

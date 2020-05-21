@@ -9,6 +9,7 @@ using iTextSharp.text.html.simpleparser;
 using iTextSharp.text.pdf;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -22,6 +23,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Hosting;
 using System.Web.Http;
+using System.Web.Script.Serialization;
 using WorkOrderEMS.BusinessLogic;
 using WorkOrderEMS.BusinessLogic.Exception_B;
 using WorkOrderEMS.BusinessLogic.Interfaces;
@@ -30,6 +32,7 @@ using WorkOrderEMS.BusinessLogic.Interfaces.eFleet;
 using WorkOrderEMS.BusinessLogic.Managers;
 using WorkOrderEMS.BusinessLogic.Managers.eFleet;
 using WorkOrderEMS.Controllers.QuickBookData;
+using WorkOrderEMS.Data.DataRepository;
 using WorkOrderEMS.Data.EntityModel;
 using WorkOrderEMS.Helper;
 using WorkOrderEMS.Infrastructure;
@@ -54,16 +57,20 @@ namespace WorkOrderEMS.Controllers.Services
         private readonly IBillDataManager _IBillDataManager;
         private readonly IMiscellaneousManager _IMiscellaneousManager;
         private readonly ICommonMethod _ICommonMethod;
-        private readonly IFillableFormManager _IFillableFormManager; 
-
+        private readonly IFillableFormManager _IFillableFormManager;
+        private readonly INotification _INotification;
+        private readonly IePeopleManager _IePeopleManager;
+        private readonly IApplicantManager _IApplicantManager;
+        //private readonly IFillableFormRepository
         private string HostingPrefix = Convert.ToString(System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"], CultureInfo.InvariantCulture);
         private string EmeregencyImagePath = ConfigurationManager.AppSettings["POEmeregencyImage"];
         private string MiscellaneousImagePath = ConfigurationManager.AppSettings["MiscellaneousImage"];
+        private string ApplicantSignature = ConfigurationManager.AppSettings["ApplicantSignature"];
         //private readonly IEfleetPM _IEfleetPM;
         public ServiceApiController()
         {
         }
-        public ServiceApiController(IEfleetPM _IEfleetPM, IeFleetFuelingManager _IFuelingManager, IEfleetVehicle _IEfleetVehicle, IDARManager _IDARManager, IEfleetVehicleIncidentReport _IEfleetVehicleIncidentReport, IEfleetMaintenance _IEfleetMaintenance, IPassengerTracking _IPassengerTracking, IHoursOfServices _IHoursOfServices, IBillDataManager _IBillDataManager, IMiscellaneousManager _IMiscellaneousManager, ICommonMethod _ICommonMethod, IFillableFormManager _IFillableFormManager)
+        public ServiceApiController(IEfleetPM _IEfleetPM, IeFleetFuelingManager _IFuelingManager, IEfleetVehicle _IEfleetVehicle, IDARManager _IDARManager, IEfleetVehicleIncidentReport _IEfleetVehicleIncidentReport, IEfleetMaintenance _IEfleetMaintenance, IPassengerTracking _IPassengerTracking, IHoursOfServices _IHoursOfServices, IBillDataManager _IBillDataManager, IMiscellaneousManager _IMiscellaneousManager, ICommonMethod _ICommonMethod, IFillableFormManager _IFillableFormManager, INotification _INotification, IePeopleManager _IePeopleManager, IApplicantManager _IApplicantManager)
         {
             this._IFuelingManager = _IFuelingManager;
             this._IEfleetPM = _IEfleetPM;
@@ -77,13 +84,15 @@ namespace WorkOrderEMS.Controllers.Services
             this._IMiscellaneousManager = _IMiscellaneousManager;
             this._ICommonMethod = _ICommonMethod;
             this._IFillableFormManager = _IFillableFormManager;
+            this._INotification = _INotification;
+            this._IePeopleManager = _IePeopleManager;
+            this._IApplicantManager = _IApplicantManager;
         }
         // GET: api/ServiceApi
         public IHttpActionResult Get()
         {
             return Ok("Hello");
         }
-   
 
         /// <summary>Get eFleetVehicleID Details 
         /// <CreatedBy>Bhushan Dod</CreatedBY>
@@ -2300,6 +2309,7 @@ namespace WorkOrderEMS.Controllers.Services
                                     {
 
                                         var dataFacility = _IBillDataManager.GetFacilityDataByFacilityId(item);
+
                                         long CostCodeId = Convert.ToInt64(dataFacility.CostCode);
                                         var costCodeName = _IBillDataManager.GetCostCodeData(CostCodeId);
                                         var dataget = accountData.Where(x => x.Name == costCodeName.Description).FirstOrDefault();
@@ -2913,17 +2923,18 @@ namespace WorkOrderEMS.Controllers.Services
             //ServiceResponseModel<eTracLoginModel> serviceresponse = new ServiceResponseModel<eTracLoginModel>();
             var ObjServiceResponseModel = new ServiceResponseModel<eTracLoginModel>();
             LoginManager _ILogin = new LoginManager();
-            long userType = 0;
+            //long userType = 0;
             try
             {
                 if (objLogIn != null && objLogIn.UserName != null && objLogIn.Password != null)
                 {
-                    if (objLogIn.UserType > 0)
-                    {
-                        userType = objLogIn.UserType;
-                    }
+                    //if (objLogIn.UserType > 0)
+                    //{
+                    //    userType = objLogIn.UserType;
+                    //}
                     var result = _ILogin.AuthenticateUser(objLogIn);
-                    if (result.UserRoleId == userType)
+                    //if (result.UserRoleId == userType)
+                    if(result != null)
                     {
                         // This condition for invalid user
                         // Added By Bhushan Dod on Jan 12 2015
@@ -3463,7 +3474,8 @@ namespace WorkOrderEMS.Controllers.Services
             }
 
             return Ok(serviceresponse);
-        }		
+        }
+
         #region Facility
 
         /// <summary>
@@ -4657,9 +4669,19 @@ namespace WorkOrderEMS.Controllers.Services
                     }
                     var ImageLocationCust = DARImagePath + ImageURL;
                     var ImageLocationEmp = DARImagePath + ImageURLEmp;
+                    var ImageCust = objServiceDisclaimerModel.ImageCust.Replace(" ", "+");
+                    
+                    //int mod4 = ImageCust.Length % 4;
+                    //if (mod4 > 0)
+                    //{
+                    //    ImageCust += new string('=', 4 - mod4);
+                    //}
+                    //string converted = objServiceDisclaimerModel.ImageCust.Replace('-', '+');
+                    //converted = converted.Replace('_', '/');
 
+                    //byte[] b = Convert.FromBase64String(CypherText.Replace("", "+"));
                     //Save the image to directory
-                    using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(objServiceDisclaimerModel.ImageCust)))
+                    using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(ImageCust)))
                     {
                         using (Bitmap bm2 = new Bitmap(ms))
                         {
@@ -4669,12 +4691,13 @@ namespace WorkOrderEMS.Controllers.Services
                         }
                     }
                     //Save the image to directory
-                    using (MemoryStream ms1 = new MemoryStream(Convert.FromBase64String(objServiceDisclaimerModel.ImageEmp)))
+                    //objServiceDisclaimerModel.ImageEmp = objServiceDisclaimerModel.ImageEmp.Replace(" ", "+");
+                    var ImageEmp = objServiceDisclaimerModel.ImageEmp.Replace(" ", "+");
+                    using (MemoryStream ms1 = new MemoryStream(Convert.FromBase64String(ImageEmp)))
                     {
                         using (Bitmap bm21 = new Bitmap(ms1))
                         {
                             bm21.Save(ImageLocationEmp);
-
                             objServiceDisclaimerModel.ImageEmp = ImageURLEmp;
                             objServiceDisclaimerModel.ImageUrlEmp = ImageLocationEmp;
                         }
@@ -5231,11 +5254,13 @@ namespace WorkOrderEMS.Controllers.Services
         public IHttpActionResult NotificationUnseenList(NotificationDetailModel ObjServiceBaseModel)
         {
             var ObjServiceResponseModel = new ServiceResponseModel<List<EmailHelper>>();
+            var _notificationManager = new NotificationManager();
             try
             {
                 if (ObjServiceBaseModel != null && ObjServiceBaseModel.UserId > 0)
                 {
-                    var result = _ICommonMethod.GetUnseenList(ObjServiceBaseModel);
+                    var result = _notificationManager.GetEmaintanaceUnseenList(ObjServiceBaseModel);
+                    //var result = _ICommonMethod.GetUnseenList(ObjServiceBaseModel);
                     if (result.Count() > 0)
                     {
                         ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
@@ -5265,6 +5290,54 @@ namespace WorkOrderEMS.Controllers.Services
                 return Ok(ObjServiceResponseModel);
             }
         }
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 13-Nov-2019
+        /// Created For: To get WO Unseen WO list
+        /// </summary>
+        /// <param name="ObjServiceBaseModel"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult EmaintenanceUnseenList(NotificationDetailModel ObjServiceBaseModel)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<List<EmailHelper>>();
+            try
+            {
+                if (ObjServiceBaseModel != null && ObjServiceBaseModel.UserId > 0)
+                {
+                    var result = _INotification.GetEmaintanaceUnseenList(ObjServiceBaseModel);
+                    if (result.Count() > 0)
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.Successful();
+                        ObjServiceResponseModel.Data = result;
+                    }
+                    else
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.NoRecordMessage();
+                        ObjServiceResponseModel.Data = result;
+                    }
+                    return Ok(ObjServiceResponseModel);
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.InvalidUser();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+
+
 
         /// <summary>
         /// Created By : Ashwajit bansod
@@ -5450,7 +5523,922 @@ namespace WorkOrderEMS.Controllers.Services
                 return Ok(ObjServiceResponseModel);
             }
         }
+
+        /// <summary>
+        /// Creted By : Ashwajit Bansod
+        /// Created For : To save files
+        /// Created Date : -2-Nov-2019
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult SaveForm(CommonFormModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<string>();
+            var model = new CommonFormModel();
+            try
+            {
+                if (obj != null && obj.ServiceAuthKey != null && obj.UserId > 0)
+                {
+                    model.FormName = obj.FormName;
+                    model.ServiceAuthKey = obj.ServiceAuthKey;
+                    model.UserId = obj.UserId;
+                    var result = _IFillableFormManager.SaveFileList(obj);
+                    if (result != null)
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.Successful();
+                        //ObjServiceResponseModel.Data = result;
+                    }
+                    else
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.NoRecordMessage();
+                        ObjServiceResponseModel.Data = null;
+                    }
+                    return Ok(ObjServiceResponseModel);
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.InvalidUser();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 21-Nov-2019
+        /// Created For  : To get all red green blue files list
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult GetFileList(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<List<Data.EntityModel.FileType>>();
+            var model = new CommonFormModel();
+            var _FillableFormRepository = new FillableFormRepository();
+            try
+            {
+                if (obj != null && obj.ServiceAuthKey != null)
+                {
+                    var getDetails = _FillableFormRepository.GetFileList().ToList();
+                    if (getDetails != null)
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.Successful();
+                        ObjServiceResponseModel.Data = getDetails;
+                    }
+                    else
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.NoRecordMessage();
+                        ObjServiceResponseModel.Data = null;
+                    }
+                    return Ok(ObjServiceResponseModel);
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.InvalidUser();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+        
+        /// <summary>
+        /// Created By :  Ashwajit Bansod
+        /// Created Date : 21-Nov-2019
+        /// Created For : To get uploaded files of user
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult GetUploadedRGYFileList(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<List<UploadedFiles>>();
+            var model = new CommonFormModel();
+            var _FillableFormRepository = new FillableFormRepository();
+            try
+            {
+                if (obj != null && obj.ServiceAuthKey != null && obj.EmployeeID != null)
+                {
+                    var getDetailsList = _IePeopleManager.GetUploadedFilesOfUserTesting(obj.EmployeeID);
+                    if (getDetailsList != null)
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.Successful();
+                        ObjServiceResponseModel.Data = getDetailsList;
+                    }
+                    else
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.NoRecordMessage();
+                        ObjServiceResponseModel.Data = null;
+                    }
+                    return Ok(ObjServiceResponseModel);
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.InvalidUser();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+
+        [HttpPost]
+        public async Task<string> FileUpload()
+        //public async Task<string> FileUpload()
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<string>();
+            var Obj = new UploadedFiles();
+            string name = string.Empty;
+
+            var ctx = HttpContext.Current;
+            var root = ctx.Server.MapPath("~/Content/FilesRGY");
+            var provider = new MultipartFormDataStreamProvider(root);
+            try
+            {
+                 await Request.Content.ReadAsMultipartAsync(provider);
+                var FileName = provider.FormData.GetValues("FileName")[0];
+                var FileId = provider.FormData.GetValues("FileId")[0];
+                var EMPId = provider.FormData.GetValues("EMPId")[0];
+
+                foreach (var file in provider.FileData)
+                {
+                     name = file.Headers.ContentDisposition.FileName;
+                    name = name.Trim('"');
+                    var localname  = file.LocalFileName;
+                    var filepath = Path.Combine(root, name);
+                    File.Move(localname, filepath);
+                }
+                Obj.FileName = FileName;
+                Obj.FileId = Convert.ToInt64(FileId);
+                Obj.FileEmployeeId = EMPId;
+                string LoginEmployeeId = EMPId;
+                Obj.AttachedFileName = name;
+                var IsSaved = _IFillableFormManager.SaveFile(Obj, LoginEmployeeId);
+                if (IsSaved == true)
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.Successful();
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.FailureMessage();
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return ObjServiceResponseModel.Message;
+            }
+            return ObjServiceResponseModel.Message;
+        }
         #endregion ePeople
+
+        #region Applicant Portal Wordpress
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 28-Dec-2019
+        /// Created For : To validate applicant using Username and password.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult ApplicantLogin(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<eTracLoginModel>();
+            try
+            {
+                if (obj != null && obj.LoginId != null)
+                {
+                    var getDetails = _IApplicantManager.ValidateApplicant(obj);
+                    if (getDetails != null)
+                    {
+                        return Ok(getDetails);
+                    }
+                    else
+                    {
+                        return Ok(getDetails);                        
+                    }                   
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.WrongParameterMessage();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : To forgot password of applicant
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult ForgotPassword(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<eTracLoginModel>();
+            try
+            {
+                if (obj != null && obj.Email != null)
+                {
+                    var getDetails = _IApplicantManager.ForgotPassword(obj);
+                    return Ok(getDetails);                   
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.WrongParameterMessage();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created For : To set forgot password
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult SetForgotPassword(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<eTracLoginModel>();
+            try
+            {
+                if (obj.NewPassword != null && obj.LoginId != null)
+                {
+                    var getDetails = _IApplicantManager.SetForgotPassword(obj);
+                    return Ok(getDetails);
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.WrongParameterMessage();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+
+        /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created Date : 28-Dec-2019
+        /// Created For : To change password of Applicant
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult ChangePassword(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<string>();
+            try
+            {
+                if (obj != null && obj.LoginId != null)
+                {
+                    var getDetails = _IApplicantManager.ChangePassword(obj);
+                    if (getDetails != null)
+                    {
+                        return Ok(getDetails);
+                    }
+                    else
+                    {
+                        return Ok(getDetails);
+                    }
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.InvalidUser();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+        /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created Date : 28-Dec-2019
+        /// Created For : To sign Up Applicant
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult SignUpApplicant(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<string>();
+            try
+            {
+                if (obj != null)
+                {
+                    if(obj.ApplicantPhoto != null && obj.ApplicantPhoto != "")
+                    {
+                        string ImagePath = string.Empty;
+                        string ImageUniqueName = string.Empty;
+                        string url = string.Empty;
+                        string ImageURL = string.Empty;
+                        if (obj != null)
+                        {
+                            if (obj.ApplicantPhoto != null && obj.ApplicantPhoto != "")
+                            {
+                                ImagePath = HttpContext.Current.Server.MapPath(ConfigurationManager.AppSettings["ApplicantSignature"].ToString());
+                                ImageUniqueName = DateTime.Now.ToString("yyyyMMddHHmm") + obj.FName + "_" + obj.LName;
+                                url = HostingPrefix + ApplicantSignature.Replace("~", "") + ImageUniqueName + ".jpg";
+                                ImageURL = ImageUniqueName + ".jpg";
+                                if (!Directory.Exists(ImagePath))
+                                {
+                                    Directory.CreateDirectory(ImagePath);
+                                }
+                                var ImageLocation = ImagePath + ImageURL;
+                                //Save the image to directory
+                                using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(obj.ApplicantPhoto)))
+                                {
+                                    using (Bitmap bm2 = new Bitmap(ms))
+                                    {
+                                        bm2.Save(ImageLocation);
+                                        obj.ApplicantPhoto = ImageURL;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    var getDetails = _IApplicantManager.SignUpApplicant(obj);
+
+                    if (getDetails != null)
+                    {
+                        return Ok(getDetails);
+                    }
+                    else
+                    {
+                        return Ok(getDetails);
+                    }
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.InvalidUser();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created For : To check for Login Id is already exist or not
+        /// Created Date : 28-Dec-2019
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult IsLoginIdExist(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<string>();
+            try
+            {
+                if (obj != null)
+                {
+                    var getDetails = _IApplicantManager.CheckLoginId(obj);
+                    if (getDetails != null)
+                    {
+                        return Ok(getDetails);
+                    }
+                    else
+                    {
+                        return Ok(getDetails);
+                    }
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.InvalidUser();
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 04-Jan-2020
+        /// Created For -  To save applicant using data table
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult  SaveApplicant(CommonApplicantModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<string>();
+            try
+            {
+                if (obj != null)
+                {
+                    obj.ApplicantPersonalInfo.RemoveAll(x => x.API_Action == '\0');
+                    obj.AplicantAcadmicDetails.RemoveAll(x => x.AAD_Action == '\0');
+                    obj.ApplicantAccidentRecord.RemoveAll(x => x.AAR_Action == '\0');
+                    obj.ApplicantAdditionalInfo.RemoveAll(x => x.AAI_Action == '\0');
+                    obj.ApplicantAddress.RemoveAll(x => x.APA_Action == '\0');
+                    obj.ApplicantBackgroundHistory.RemoveAll(x => x.ABH_Action == '\0');
+                    obj.ApplicantContactInfo.RemoveAll(x => x.ACI_Action == '\0');
+                    obj.ApplicantLicenseHeald.RemoveAll(x => x.ALH_Action == '\0');
+                    obj.ApplicantPositionTitle.RemoveAll(x => x.APT_Action == '\0');
+                    obj.ApplicantSchecduleAvaliblity.RemoveAll(x => x.ASA_Action == '\0');
+                    obj.ApplicantTrafficConvictions.RemoveAll(x => x.ATC_Action == '\0');
+                    obj.ApplicantVehiclesOperated.RemoveAll(x => x.AVO_Action == '\0');
+                    var getDetails = _IApplicantManager.SaveApplicantData(obj);
+                    if (getDetails == true)
+                    {
+                        string ImagePath = string.Empty;
+                        string ImageUniqueName = string.Empty;
+                        string url = string.Empty;
+                        string ImageURL = string.Empty;
+                        if (obj != null)
+                        {
+                            if (obj.Desclaimer.Signature != null)
+                            {
+                                ImagePath = HttpContext.Current.Server.MapPath(ConfigurationManager.AppSettings["ApplicantSignature"].ToString());
+                                ImageUniqueName = DateTime.Now.ToString("yyyyMMddHHmm") + obj.Desclaimer.EmployeeId + "_" + obj.ApplicantId;
+                                url = HostingPrefix + ApplicantSignature.Replace("~", "") + ImageUniqueName + ".jpg";
+                                ImageURL = ImageUniqueName + ".jpg";
+                                if (!Directory.Exists(ImagePath))
+                                {
+                                    Directory.CreateDirectory(ImagePath);
+                                }
+                                var ImageLocation = ImagePath + ImageURL;
+                                //Save the image to directory
+                                using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(obj.Desclaimer.Signature)))
+                                {
+                                    using (Bitmap bm2 = new Bitmap(ms))
+                                    {
+                                        //bm2.Save("SavingPath" + "ImageName.jpg");
+                                        bm2.Save(ImageLocation);
+                                        obj.Desclaimer.Signature = ImageURL;
+                                        //imgupload.ImageUrl = ImageLocation;
+                                    }
+                                }
+                                var getDetailsDesclaimer = _IApplicantManager.SaveDesclaimerData(obj.Desclaimer);
+                            }
+                            ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                            ObjServiceResponseModel.Message = CommonMessage.UserSaveSuccessMessage();
+                            //ObjServiceResponseModel.Data = result;
+                        }
+                    }
+                    else
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.FailureMessage();
+                        ObjServiceResponseModel.Data = null;
+                    }                                           
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.NoRecord, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.WrongParameterMessage();
+                    return Ok(ObjServiceResponseModel);
+                }
+                return Ok(ObjServiceResponseModel);
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+
+        /// <summary>
+        /// Created By  :Ashwajit Bansod
+        /// Created Date  :19-Feb-2020
+        /// Created For : To save desclaimer data(signature) of applicant
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult SaveDesclaimer(Desclaimer obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<string>();
+            try
+            {
+                string ImagePath = string.Empty;
+                string ImageUniqueName = string.Empty;
+                string url = string.Empty;
+                string ImageURL = string.Empty;
+                if (obj != null)
+                {
+                    
+                    if (obj.Signature != null)
+                    {
+                        ImagePath = HttpContext.Current.Server.MapPath(ConfigurationManager.AppSettings["ApplicantSignature"].ToString());
+                        ImageUniqueName = DateTime.Now.ToString("yyyyMMddHHmm") + obj.EmployeeId + "_" + obj.ApplicantId;
+                        url = HostingPrefix + ApplicantSignature.Replace("~", "") + ImageUniqueName + ".jpg";
+                        ImageURL = ImageUniqueName + ".jpg";
+                        if (!Directory.Exists(ImagePath))
+                        {
+                            Directory.CreateDirectory(ImagePath);
+                        }
+                        var ImageLocation = ImagePath + ImageURL;
+                        //Save the image to directory
+                        using (MemoryStream ms = new MemoryStream(Convert.FromBase64String(obj.Signature)))
+                        {
+                            using (Bitmap bm2 = new Bitmap(ms))
+                            {
+                                //bm2.Save("SavingPath" + "ImageName.jpg");
+                                bm2.Save(ImageLocation);
+                                obj.Signature = ImageURL;
+                                //imgupload.ImageUrl = ImageLocation;
+                            }
+                        }
+                    }
+                    var getDetails = _IApplicantManager.SaveDesclaimerData(obj);
+                    if (getDetails == true)
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.SaveSuccessMessage();
+                        //ObjServiceResponseModel.Data = result;
+                    }
+                    else
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.FailureMessage();
+                        ObjServiceResponseModel.Data = null;
+                    }
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.NoRecord, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.WrongParameterMessage();
+                    return Ok(ObjServiceResponseModel);
+                }
+                return Ok(ObjServiceResponseModel);
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+        #endregion Applicant Portal Wordpress
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 01-March-2020
+        /// Created For : To get all job posting list with id
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult GetJobList(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<List<JobPostingDropDownModel>>();
+            try
+            {
+                var getDetails = _IApplicantManager.GetListJobPosting(obj);
+                if (getDetails.Count() > 0)
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.Successful();
+                    ObjServiceResponseModel.Data = getDetails;
+                    return Ok(ObjServiceResponseModel);
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.FailureMessage();
+                    ObjServiceResponseModel.Data = getDetails;
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+
+        /// <summary>
+        /// Created By : Ashwajit Bansod
+        /// Created Date : 01-04-2020
+        /// Created For : TO save files of acadmic certificate
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public async Task<string> EducationCertificateApplicantUpload()
+        {
+            var _FillableFormRepository = new FillableFormRepository();
+            var ObjServiceResponseModel = new ServiceResponseModel<string>();
+            var Obj = new UploadedFiles();
+            string name = string.Empty;
+            bool isSave = false;
+            var ctx = HttpContext.Current;
+            var root = ctx.Server.MapPath("~/Content/ApplicantFiles/UploadDocument");
+            var provider = new MultipartFormDataStreamProvider(root);
+            try
+            {
+                await Request.Content.ReadAsMultipartAsync(provider);
+                var Data = provider.FormData.GetValues("CertificationData")[0];
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+                var data = serializer.Deserialize<List<AcadmicCertification>>(Data.Replace("/", "-"));
+                foreach (var item in data)
+                {
+                    foreach (var file in provider.FileData)
+                    {                        
+                        name = file.Headers.ContentDisposition.FileName;
+                        name = name.Trim('"');
+                       
+                        if (item.ACD_CertificateFileName == name)
+                        {
+                            name = item.ACD_APT_ApplicantId + "_" + DateTime.Now.Ticks.ToString()+ "_" + name;
+                            var localname = file.LocalFileName;
+                            var filepath = Path.Combine(root, name);
+                            File.Move(localname, filepath);
+                            isSave = _IApplicantManager.SaveAcadmicertificate(item);
+                            //var getDetails = _FillableFormRepository.GetFileList().Where(x => x.FLT_FileType == "Yellow" && x.FLT_Id == Convert.ToInt64(FileTypeId.W4)).FirstOrDefault();
+                            //Obj.FileName = name;
+                            //Obj.FileId = Convert.ToInt64(getDetails.FLT_Id);
+                            //Obj.FileEmployeeId = EMPId;
+                            //string LoginEmployeeId = EMPId;
+                            //Obj.AttachedFileName = name;
+                            //_IFillableFormManager.SaveFile(Obj, LoginEmployeeId);
+                        }
+                    }
+                }
+                if (isSave == true)
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.Successful();
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.FailureMessage();
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return ObjServiceResponseModel.Message;
+            }
+            return ObjServiceResponseModel.Message;
+        }
+        /// <summary>
+        /// Created By  :Ashwajit bansod
+        /// Created Date : 12-05-2020
+        /// Created For : To accept reject and couter offer by applicant from applicant portal.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult AceeptCounterRejectOffer(OfferAcceptRejectCounterModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<string>();
+            try
+            {
+                if (obj != null)
+                {
+                    var isSaved = _IePeopleManager.ClearedOrNot(obj.IsActive, obj.Action, obj.ApplicantId);
+                    if (isSaved == true)
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.Successful();
+                        ObjServiceResponseModel.Data = null;                        
+                    }
+                    else
+                    {
+                        ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                        ObjServiceResponseModel.Message = CommonMessage.FailureMessage();
+                        ObjServiceResponseModel.Data = null;                      
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+               
+            }
+            return Ok(ObjServiceResponseModel);
+        }
+
+        /// <summary>
+        /// Created by : Ashwajit Bansod
+        /// Created For : To get applicant Status
+        /// Created Date : 13-05-2020
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public IHttpActionResult ApplicantStatusDetails(eTracLoginModel obj)
+        {
+            var ObjServiceResponseModel = new ServiceResponseModel<string>();
+            try
+            {
+                var getStatus = _IePeopleManager.GetApplicantStatus(Convert.ToInt64(obj.ApplicantId));
+                if (getStatus != null)
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.Successful();
+                    ObjServiceResponseModel.Data = getStatus;
+                    return Ok(ObjServiceResponseModel);
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.FailureMessage();
+                    ObjServiceResponseModel.Data = getStatus;
+                    return Ok(ObjServiceResponseModel);
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return Ok(ObjServiceResponseModel);
+            }
+        }
+
+        [HttpPost]
+        public async Task<string> UploadAllEmployeeFiles()
+        {
+            var _FillableFormRepository = new FillableFormRepository();
+            var ObjServiceResponseModel = new ServiceResponseModel<string>();
+            var Obj = new UploadedFiles();
+            string name = string.Empty;
+            bool isSave = false;
+            var ctx = HttpContext.Current;
+            var root = ctx.Server.MapPath("~/Content/ApplicantFiles/UploadDocument");
+            var provider = new MultipartFormDataStreamProvider(root);
+            try
+            {
+                await Request.Content.ReadAsMultipartAsync(provider);
+                var FileType = provider.FormData.GetValues("FileType")[0];
+                var Id = provider.FormData.GetValues("Id")[0];
+                if (FileType == "Resume") { 
+                    foreach (var file in provider.FileData)
+                    {
+                        name = file.Headers.ContentDisposition.FileName;
+                        name = name.Trim('"');
+                            name = Id + "_" + DateTime.Now.Ticks.ToString() + "_" + name;
+                            var localname = file.LocalFileName;
+                            var filepath = Path.Combine(root, name);
+                            File.Move(localname, filepath);
+                            isSave = _IApplicantManager.SaveResume(name, Convert.ToInt64(Id));
+                            //var getDetails = _FillableFormRepository.GetFileList().Where(x => x.FLT_FileType == "Yellow" && x.FLT_Id == Convert.ToInt64(FileTypeId.W4)).FirstOrDefault();
+                            //Obj.FileName = name;
+                            //Obj.FileId = Convert.ToInt64(getDetails.FLT_Id);
+                            //Obj.FileEmployeeId = EMPId;
+                            //string LoginEmployeeId = EMPId;
+                            //Obj.AttachedFileName = name;
+                            //_IFillableFormManager.SaveFile(Obj, LoginEmployeeId);                        
+                    }
+                }
+                if (isSave == true)
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.Successful();
+                }
+                else
+                {
+                    ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+                    ObjServiceResponseModel.Message = CommonMessage.FailureMessage();
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjServiceResponseModel.Message = ex.Message;
+                ObjServiceResponseModel.Response = -1;
+                ObjServiceResponseModel.Data = null;
+                return ObjServiceResponseModel.Message;
+            }
+            return ObjServiceResponseModel.Message;
+        }
+        //[HttpPost]
+        //public async Task<string> UploadFile()
+        //{
+        //    var _FillableFormRepository = new FillableFormRepository();
+        //    var ObjServiceResponseModel = new ServiceResponseModel<string>();
+        //    var Obj = new UploadedFiles();
+        //    string name = string.Empty;
+        //    bool isSave = false;
+        //    var ctx = HttpContext.Current;
+        //    var root = ctx.Server.MapPath("~/Content/FilesRGY");
+        //    var provider = new MultipartFormDataStreamProvider(root);
+        //    try
+        //    {
+        //        await Request.Content.ReadAsMultipartAsync(provider);
+        //        var fileType = provider.FormData.GetValues("FileType")[0];
+        //        var UserId = provider.FormData.GetValues("UserId")[0];
+        //        JavaScriptSerializer serializer = new JavaScriptSerializer();
+        //            foreach (var file in provider.FileData)
+        //            {
+        //                name = file.Headers.ContentDisposition.FileName;
+        //                name = name.Trim('"');
+        //                var localname = file.LocalFileName;
+        //                var filepath = Path.Combine(root, name);
+        //                File.Move(localname, filepath);
+        //                var getDetails = _FillableFormRepository.GetFileList().Where(x => x.FLT_FileType == "Yellow" && x.FLT_Id == Convert.ToInt64(FileTypeId.W4)).FirstOrDefault();
+        //                Obj.FileName = name;
+        //                Obj.FileId = Convert.ToInt64(getDetails.FLT_Id);
+        //                Obj.FileEmployeeId = EMPId;
+        //                string LoginEmployeeId = EMPId;
+        //                Obj.AttachedFileName = name;
+        //                _IFillableFormManager.SaveFile(Obj, LoginEmployeeId);
+
+
+        //        }
+        //        if (isSave == true)
+        //        {
+        //            ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.SuccessResponse, CultureInfo.CurrentCulture);
+        //            ObjServiceResponseModel.Message = CommonMessage.Successful();
+        //        }
+        //        else
+        //        {
+        //            ObjServiceResponseModel.Response = Convert.ToInt32(ServiceResponse.FailedResponse, CultureInfo.CurrentCulture);
+        //            ObjServiceResponseModel.Message = CommonMessage.FailureMessage();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        ObjServiceResponseModel.Message = ex.Message;
+        //        ObjServiceResponseModel.Response = -1;
+        //        ObjServiceResponseModel.Data = null;
+        //        return ObjServiceResponseModel.Message;
+        //    }
+        //    return ObjServiceResponseModel.Message;
+        //}
         #endregion New Employee App
     }
+
+
 }

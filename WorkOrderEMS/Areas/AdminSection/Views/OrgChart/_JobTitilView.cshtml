@@ -1,0 +1,24 @@
+﻿@model WorkOrderEMS.Models.AddChartModel
+    <div class="row">
+        <div class="" id="DivContractDetailsIndex">
+            <form id="SaveJobTitleForm">
+                @Html.HiddenFor(model => model.JobTitleDesc)
+                @Html.HiddenFor(model => model.JobTitleId, new { @id = "JobTitleId" })
+                @Html.HiddenFor(model => model.parentId, new { @id = "parentIdForJobTitle" })
+                <div class="basic-form" style="margin-right: 40px;">
+                    <span id="addJobTitleLabel">
+                    </span>
+                    <div class="form-group row">
+                        <div class="col-sm-8">
+                            @Html.TextBoxFor(model => model.JobTitle, new { @Placeholder = "Job Title", @id = "JobTitle", @style = "width: 600px;", @class = "form-control input-rounded required isValidLocationName" })
+                        </div>
+                        
+                        <a class="addjobtitlerows col-sm-1"><i class="fa fa-plus-circle fa-2x addColorPlusMinus" style="cursor:pointer;margin-left:30px;" aria-hidden="true"></i></a>
+                    </div>
+                    <span id="jobTitleDiv">
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="~/Areas/AdminSection/Content/JQUERY/DynamicAddJobDesc.js"></script>

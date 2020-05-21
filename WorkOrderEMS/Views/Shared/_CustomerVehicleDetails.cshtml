@@ -1,0 +1,86 @@
+﻿@model WorkOrderEMS.Models.CustomerVehicleDetails
+@using WorkOrderEMS.Helpers;
+@using WorkOrderEMS.Data.Classes;
+@using WorkOrderEMS.BusinessLogic;
+
+@{
+//ICommonMethod _ICommonMethod;
+//long CountryId = 1;
+//ViewBag.StateList = _ICommonMethod.GetStateByCountryId(CountryId);
+}
+<style>
+    .divHover:hover {
+        background-color: #D3D3D3;
+        border-color: #c9e2b3;
+    }
+</style>
+<div class="row editorRow_@Model.SrNo divHover" style="padding:5px">
+    @Html.Hidden("hdnblnk", Model.SrNo, new { @class = "iHidden" })
+    @using (Html.BeginCollectionItem("CustomerVehicleDetailsList", Model.SrNo.ToString()))
+        {
+        <div class="form-group row"  style="width:100%">
+            <label class="col-sm-2 col-form-label" for="VendorName"> License Plate No.<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(model => model.LicensePlateNo, new { @class = "form-control input-rounded required", @placeholder = "LicensePlateNo" })
+                <div class="errorspace">
+                    @Html.ValidationMessageFor(model => model.LicensePlateNo)
+                </div>
+                @Html.HiddenFor(model => model.ID)
+            </div>
+            <label class="col-sm-2 col-form-label" for="VendorName"> State<span class="req">*</span></label>
+            <div class="col-sm-4">
+                @Html.DropDownListFor(model => model.State, new SelectList(ViewBag.StateList, "StateId", "StateName"), "--Select State--", new { @class = "form-control input-rounded required" })
+                <div class="errorspace">
+                    @Html.ValidationMessageFor(model => model.State)
+                </div>
+            </div>
+        </div>
+        <div class="form-group row"  style="width: 100%">
+            <label class="col-sm-2 col-form-label" for="VendorName"> Year</label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(c => c.Year, new { @class = "form-control input-rounded ", @placeholder = "Year" })
+                <div class="errorspace">
+                    @Html.ValidationMessageFor(model => model.Year)
+                </div>
+            </div>
+            <label class="col-sm-2 col-form-label" for="VendorName"> Make</label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(c => c.Make, new { @class = "form-control input-rounded ", @placeholder = "Make" })
+                <div class="errorspace">
+                    @Html.ValidationMessageFor(model => model.Make)
+                </div>
+            </div>
+        </div>
+        <div class="form-group row"  style="width:100%">
+            <label class="col-sm-2 col-form-label" for="VendorName"> Model</label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(c => c.Model, new { @class = "form-control input-rounded", @placeholder = "Model" })
+                <div class="errorspace">
+                    @Html.ValidationMessageFor(c => c.Model)
+                </div>
+            </div>
+            <label class="col-sm-2 col-form-label" for="VendorName"> Color</label>
+            <div class="col-sm-4">
+                @Html.TextBoxFor(c => c.Color, new { @class = "form-control input-rounded", @placeholder = "Color" })
+                <div class="errorspace">
+                    @Html.ValidationMessageFor(c => c.Color)
+                </div>
+            </div>
+        </div>
+        <div class="form-group row" style="width:100%">
+            <div class="col-sm-12">
+                @if (Model.SrNo > 1)
+                {
+                    <button type="button" class="btn btn-default bluebutton nxt-btn deleteRow" id="btnDeleterow_@Model.SrNo" style="background-color:red;border-radius:18px;color:white;" data-id="@Model.SrNo"><i class="fa fa-times"></i></button>
+                    @*<a id="btnDeleterow_@Model.SrNo" class="btn btn-lg right deleteRow" data-id="@Model.SrNo">
+                        <i class="fa fa-minus"></i> Remove Vehicle
+                    </a>*@
+                }
+                <button type="button" class="btn btn-default bluebutton nxt-btn btnAddrows Add_@Model.SrNo" id="btnAddrows_@Model.SrNo" value="AddRows" style="background-color:cornflowerblue;border-radius:18px;color:white;"><i class="fa fa-plus"></i></button>
+                @*<a id="btnAddrows_@Model.SrNo" class="btn btn-lg right btnAddrows Add_@Model.SrNo" value="AddRows">
+                    <i class="fa fa-plus"></i> Add More Vehicle
+                </a>*@
+            </div>
+        </div>
+        }
+</div>

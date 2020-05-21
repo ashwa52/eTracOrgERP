@@ -1,18 +1,13 @@
-﻿<link href="~/Areas/AdminSection/Content/CSS/GetOrg.css" rel="stylesheet" />
-<div id="containerForViewChart"></div>
-<script src="~/Areas/AdminSection/Content/JQUERY/GetOrg.js"></script>
-<script>
-    debugger
-    var peopleElement = document.getElementById("containerForViewChart");
-    var addNewUrl = "@Url.Action("GetChartDisplayDataForEmployee", "EPeople")";
+﻿@*<link href="~/Areas/AdminSection/Content/CSS/GetOrg.css" rel="stylesheet" />
+<script src="~/Areas/AdminSection/Content/JQUERY/GetOrg.js"></script>*@
+@*<script>
+    var peopleElement = document.getElementById("containerForView");
+    var addNewUrl = "@Url.Action("GetChartDisplayData", "AdminDashboard", new { area = "AdminSection" })";
     $.ajax({
         type: "POST",
-        url: addNewUrl + "?LocationId=" + $("#drp_MasterLocation1 option:selected").val(),
-        beforeSend: function () {
-            new fn_showMaskloader('Please wait...');
-        },
+        url: addNewUrl,
         success: function (listData) {
-            $("#myModalForViewVCSData").modal("show");
+            $("#myModalForViewVCS").modal("show");
             var tabledata = [];
             if (listData != null)
             {
@@ -43,9 +38,6 @@
             }            
         },
         error: function (err) {
-        },
-        complete: function () {
-            fn_hideMaskloader();
         }
     });
-</script>
+</script>*@

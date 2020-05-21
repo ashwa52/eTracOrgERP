@@ -1,5 +1,6 @@
 ﻿@model WorkOrderEMS.Models.AddChartModel
 @*<script type="text/javascript" src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>*@
+@*<link href="http://jhollingworth.github.io/bootstrap-wysihtml5/src/bootstrap-wysihtml5.css" />*@
 <div class="row">
     <div class="" id="DivContractDetailsIndexRequisition">
         <form id="SaveVCSChartFormForRequisition">
@@ -18,18 +19,20 @@
                 <div class="form-group row">
                     <div class="col-sm-6">
                         @Html.DropDownListFor(x => x.EmploymentStatus, new List<SelectListItem>
-                                                                                    {
-                                                                                         new SelectListItem() {Text = "FT", Value="FT"},
-                                                                                         new SelectListItem() {Text = "PT", Value="PT"},
-                                                                                         new SelectListItem() {Text = "TEMP", Value="TEMP"}
-                                                                                    }, new { @class = "form-control input-rounded requiredselect", @id = "EmploymentStatus" })
+                         {
+                              new SelectListItem() {Text = "--Select Job type--", Value=""},
+                              new SelectListItem() {Text = "FT", Value="FT"},
+                              new SelectListItem() {Text = "PT", Value="PT"},
+                              new SelectListItem() {Text = "TEMP", Value="TEMP"}
+                         }, new { @class = "form-control input-rounded requiredselect", @id = "EmploymentStatus" })
                     </div>
                     <div class="col-sm-6">
                         @Html.DropDownListFor(x => x.EmploymentClassification, new List<SelectListItem>
-                                                                                    {
-                                                                                         new SelectListItem() {Text = "EXEMPT", Value="Y"},
-                                                                                         new SelectListItem() {Text = "NON-EXEMPT", Value="N"}
-                                                                                    }, new { @class = "form-control input-rounded requiredselect", @id = "EmploymentClassification" })
+                         {
+                              new SelectListItem() {Text = "--Employee type--", Value=""},
+                              new SelectListItem() {Text = "EXEMPT", Value="Y"},
+                              new SelectListItem() {Text = "NON-EXEMPT", Value="N"}
+                         }, new { @class = "form-control input-rounded requiredselect", @id = "EmploymentClassification" })
                     </div>
                 </div>
                 <div class="form-group row">
@@ -49,7 +52,7 @@
                 <span id="routeDivRequisition">
                 </span>
                 <div class="form-group row">
-                    @Html.TextAreaFor(model => model.RolesAndResponsibility, new { rows = "20", style = "width:400px;", placeholder = Html.DisplayNameFor(model => model.RolesAndResponsibility), @id = "RolesAndResponsibilityRequisition", @class = "form-control input-rounded required textarea-editor" })
+                    @Html.TextAreaFor(model => model.RolesAndResponsibility, new { rows = "18", style = "width:721px;", placeholder = Html.DisplayNameFor(model => model.RolesAndResponsibility), @id = "RolesAndResponsibilityRequisition", @class = "form-control required textarea-editor" })
                 </div>
             </div>
         </form>
@@ -59,12 +62,13 @@
 <script src="~/Scripts/NewAdminJS/CustomizeJSForVSC.js"></script>
 @*<script type="text/javascript" src="//tinymce.cachefly.net/4.0/tinymce.min.js"></script>*@
 <script>
-    tinymce.init({
-        selector: '#RolesAndResponsibilityRequisition', width: 730, height: 300, setup: function (editor) {
-            editor.on('change', function () {
-                tinymce.triggerSave();
-            })
-        }
-    });
+    //$('#RolesAndResponsibilityRequisition').wysihtml5();
+    //tinymce.init({
+    //    selector: '#RolesAndResponsibilityRequisition', width: 730, height: 300, setup: function (editor) {
+    //        editor.on('change', function () {
+    //            tinymce.triggerSave();
+    //        })
+    //    }
+    //});
    
 </script>

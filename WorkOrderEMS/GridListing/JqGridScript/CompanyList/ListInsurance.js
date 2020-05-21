@@ -36,10 +36,10 @@ $(function () {
             {
                 name: "act", type: "control", items: act, title: "Action", width: 50, css: "text-center", itemTemplate: function (value, item) {
 
-                    var $iconPencilForAccountApprove = $("<i>").attr({ class: "fa fa-check" }).attr({ style: "color:green;font-size: 22px;" });
-                    var $iconPencilForAccountDeactivate = $("<i>").attr({ class: "fa fa-close" }).attr({ style: "color:red;font-size: 22px;" });
-                    var $iconFileFordocument = $("<i>").attr({ class: "fa fa-download" }).attr({ style: "color:#0080ff;font-size: 22px;" });
-                    var $iconForExpired = $("<i>").attr({ class: "fa fa-close" }).attr({ style: "color:#0080ff;font-size: 22px;" });
+                    var $iconPencilForAccountApprove = $("<i>").attr({ class: "fa fa-check check-icon" }).attr({ style: "" });
+                    var $iconPencilForAccountDeactivate = $("<i>").attr({ class: "fa fa-close close-icon" }).attr({ style: "" });
+                    var $iconFileFordocument = $("<i>").attr({ class: "fa fa-download download-icon" }).attr({ style: "" });
+                    var $iconForExpired = $("<i>").attr({ class: "fa fa-close close-icon" }).attr({ style: "" });
                     if (item.Status == "Activated")
                     {
                         $customButtonForAcandDeActive = $("<span style='padding: 0 5px 0 0;'>").attr({ title: "Click to Deactivate" }).attr({ id: "btn-edit-" + item.Id }).click(function (e) {

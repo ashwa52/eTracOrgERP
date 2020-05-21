@@ -52,6 +52,7 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
                 ViewBag.Country = _ICommonMethod.GetAllcountries();
                 ViewBag.StateList = _ICommonMethod.GetStateByCountryId(CountryId);
                 ViewBag.JobTitleList = _ICommonMethod.GetGlobalCodeData("UserJobTitle");
+                ViewBag.LEAVETYPELIST = _ICommonMethod.GetGlobalCodeData("LEAVETYPE");
                 ViewBag.ClientInvoicingTerm = _IGlobalAdmin.ListClientInvoicingTerm();
                 ViewBag.VendorType = _IVendorManagement.ListVendorType();
                 ViewBag.OperatingHolder = _IGlobalAdmin.ListCompanyHolder(true);
@@ -124,6 +125,7 @@ namespace WorkOrderEMS.Areas.AdminSection.Controllers
                         string AccessToken = CallbackController.AccessToken.ToString();// Session["access_token"].ToString();
                         var principal = User as ClaimsPrincipal;
                         var cmp_Data = new CompanyInfo();
+                       //companyi
                         OAuth2RequestValidator oauthValidator = new OAuth2RequestValidator(AccessToken);
 
                         // Create a ServiceContext with Auth tokens and realmId

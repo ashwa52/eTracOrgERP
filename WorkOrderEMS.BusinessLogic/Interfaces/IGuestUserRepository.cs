@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WorkOrderEMS.Models;
 using WorkOrderEMS.Models.Employee;
 
 namespace WorkOrderEMS.BusinessLogic
@@ -10,7 +11,8 @@ namespace WorkOrderEMS.BusinessLogic
 	public interface IGuestUser
 	{
 		EmployeeVIewModel GetEmployee(long UserId);
-		bool UpdateApplicantInfo(EmployeeVIewModel onboardingDetailRequestModel);
+        EmployeeVIewModel GetEmployeeDetails(long userId);
+        bool UpdateApplicantInfo(EmployeeVIewModel onboardingDetailRequestModel);
 		DirectDepositeFormModel GetDirectDepositeDataByUserId(long UserId);
 		DirectDepositeFormModel GetDirectDepositeDataByEmployeeId(string EmployeeId);
 		bool SetDirectDepositeFormData(DirectDepositeFormModel model, long UserId);
@@ -27,5 +29,9 @@ namespace WorkOrderEMS.BusinessLogic
 		EducationVarificationModel GetEducationVerificationForm(long userId);
 		void SetW4Form(long userId, W4FormModel model);
 		W4FormModel GetW4Form(long userId);
-	}
+		PersonalFileModel GetFormsStatus(long userId);
+		CommonApplicantModel GetApplicantAllDetails(long userId);
+        CommonApplicantModel GetApplicantAllDetailsToView(long Applicant);
+
+    }
 }

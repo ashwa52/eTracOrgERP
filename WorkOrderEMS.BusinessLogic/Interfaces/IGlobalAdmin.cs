@@ -266,25 +266,51 @@ namespace WorkOrderEMS.BusinessLogic
         List<ContractDropdownDetailsModel> ListClientInvoicingTerm();
         List<listForEmployeeDevice> send30SecFRNotificaitonToAllManager(long LocationId, long UserId);
         List<listForEmployeeDevice> GetAllManagerList(long LocationId, long UserId);
-		List<MyOpeningModel> GetMyOpenings();
-		List<JobPosting> GetJobPostong(long userId);
-		List<spGetApplicantInfo_Result1> GetApplicantInfo(long userId);
-		bool SaveApplicantInfo(OnboardingDetailRequestModel onboardingDetailRequestModel);
-		bool SaveGuestEmployeeBasicInfo(GuestEmployeeBasicInfoRequestModel guestEmployeeBasicInfoRequestModel);
-		InterviewersViewModel GetInterviewersList(long applicantId, long userId);
-		IEnumerable<spGetInterviewQuestion_Result> GetInterviewQuestions();
-		bool SaveInterviewAnswers(InterviewAnswerModel model, long UserId);
-		List<MyOpeningModel> GetMyInterviews(long userId);
-		bool IsInterviewerOnline(long ApplicantId, long UserId, string IsAvailable, string Comment);
-		int GetScore(long ApplicantId);
-		bool CheckIfAllRespondedForQuestion(long ApplicantId);
-        List<PerformanceModel> GetListOf306090ForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords);
-        List<GWCQUestionModel> GetGWCQuestions(string Id,string AssessmetType);
-        bool saveSelfAssessment(List<GWCQUestionModel> data, string action);
-        bool saveEvaluation(List<GWCQUestionModel> data, string action);
-        List<PerformanceModel> GetListOfExpectationsForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords);
 
+        List<MyOpeningModel> GetMyOpenings(long PostingId);
+        List<WorkOrderEMS.Models.NewAdminModel.JobPosting> GetJobPostong(long userId);
+        List<spGetApplicantInfo_Result> GetApplicantInfo(long userId);
+        bool SaveApplicantInfo(OnboardingDetailRequestModel onboardingDetailRequestModel);
+        bool SaveGuestEmployeeBasicInfo(GuestEmployeeBasicInfoRequestModel guestEmployeeBasicInfoRequestModel);
+        InterviewersViewModel GetInterviewersList(long applicantId, long userId);       
+        List<InterviewQuestionMaster> GetInterviewQuestions(string isExempt);
+        //List<spGetQuestionsForInterview_Result4> GetInterviewQuestions(string isExempt);
+        //bool SaveInterviewAnswers(InterviewAnswerModel model, long UserId);
+        bool SaveInterviewAnswers(InterviewQuestionAnswerModel model, List<AnswerArr> AnswerArr, long UserId);
+        List<MyOpeningModel> GetMyInterviews(long userId);
+        bool IsInterviewerOnline(long ApplicantId, long UserId, string IsAvailable, string Comment);
+        int GetScore(long ApplicantId);
+        bool CheckIfAllRespondedForQuestion(long ApplicantId, long QusId);
+        List<PerformanceModel> GetListOf306090ForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords);
+        bool saveSelfAssessment(List<GWCQUestionModel> data, string action, string UserName);
+        bool saveEvaluation(List<GWCQUestionModel> data, string action, string UserName);
+        //bool saveEvaluation(List<GWCQUestionModel> data, string action);
+        List<PerformanceModel> GetListOfExpectationsForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords);
         bool saveExpectations(List<GWCQUestionModel> data, string action);
+        List<PerformanceModel> GetListOfQEvaluationsForJSGrid(string userId, long locationId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, string searchText, string myUserType, out long totalRecords);
+        bool VerifyEmployee(OnboardingDetailRequestModel onboardingDetailRequestModel);
+        //List<spGetJobPostingDetails_ForCompanyOpening_Result> GetJobPostingDetailsForCompanyOpening(long JPS_JobPostingId);
         // BudgetDetails GetListBudgetDetails(long? LocationId, long? UserId, int? pageIndex, int? numberOfRows, string sortColumnName, string sortOrderBy, long? locationId, string textSearch, string statusType);
+        List<spGetJobPosting_ForCompanyOpening_Result> GetJobPostingForCompanyOpening(string HiringManagerId);
+        bool saveQEvaluations(List<GWCQUestionModel> data, string action);
+        bool SetupMeetingEmail(SetupMeeting objSetupMeeting);
+        string GetMeetingDetail(string Id,string  FinYear, string FinQuarter);
+        List<ReviewMeeting> GetMeetingList();
+        bool SetInterviewAcceptCancel(string status, long ApplicantId, string IsActive);
+        spGetHiringGraph_Result HiringGraphCount(long PostingId);
+        List<EventModel> GetMyEvents(string UserName, string start, string end);
+        string CreateNewEvent(string Title, string NewEventDate, string NewEventTime, string NewEventDuration, string JobId, string ApplicantName, string ApplicantEmail,string ManagerId,string selectedManagers);
+        bool UpdateEvent(int id, string NewEventStart, string NewEventEnd);
+        List<EventModel> GetBookedSlots(string UserName);
+        List<EventModel> GetOutlookMeetingDetails(string start, string end);
+        List<ChildrenQuestionModel> GetInterviewChildQuestions(int num);
+        AnswerModel GetInterviewAnswerByApplicantId(int Applicant);
+		        PerformanceModel GetManagerAssessmentDetails(string userId);
+
+        bool saveChangedExpectations(List<GWCQUestionModel> data, string action,string Manager);
+
+        List<GWCQUestionModel> GetSelfAssessmentView(string Id, string AssessmetType);
+        List<GWCQUestionModel> GetGWCQuestions(string Id, string AssessmetType, string type);
+        bool UpdateInterviewPanel(string selectedManagers, string Manager, string JobId, string JobTitle);
     }
 }

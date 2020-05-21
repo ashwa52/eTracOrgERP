@@ -1,0 +1,90 @@
+﻿@model WorkOrderEMS.Models.BenefitList
+
+
+<div style="margin: 83px; padding:0px 0 0 44px">
+    <div class="form-group row" style="text-align: center;padding: 36px;background: darkblue;">
+        <div class="col-sm-3">
+            <img src="~/Images/floridablue.png" style="width: 155px;" />
+        </div>
+        <div class="col-sm-6">
+            <label style="font-size: 45px;color: #3c94e0;font-weight: 500;">Benefits</label>
+        </div>
+        <div class="col-sm-3">
+            <img src="~/Images/floridablue.png" style="width: 155px;" />
+        </div>
+    </div>
+    <form id="SaveBenifit">
+
+        <div class="form-group row">
+            @foreach (var item in Model.configurations[0].elements.serviceType.values)
+            {
+                <div class="col-sm-3" style="padding:7px;">
+                    <input type="checkbox" value="@item.code" />&nbsp;&nbsp;&nbsp;&nbsp;@item.value<br />
+                </div>
+            }
+        </div>
+
+        @*<input type="checkbox" />Benifit 1<br /><br />
+            <input type="checkbox" />Benifit 2<br /><br />
+            <input type="checkbox" />Benifit 3<br /><br />
+            <input type="checkbox" />Benifit 4<br /><br />
+            <input type="checkbox" />Benifit 5<br /><br />
+            <input type="checkbox" />Benifit 6<br /><br />*@
+    </form>
+    <span style="cursor:pointer;" onclick="SubmitForm(this, SaveBenifit)" title="Submit"><a><i class="fa fa-long-arrow-right" style="font-size: 40px;color: steelblue;margin-left: 88%;"></i></a></span>
+</div>
+    <div id="AddDisclaimerEEO"></div>
+
+    <div class="modal fade" tabindex="-1" role="dialog" data-keyboard="false" data-backdrop="static" id="myModelForDesclaimerEEO">
+        <div class="modal-dialog" style="width:882px;">
+            <div class="modal-content">
+                <div class="modal-header" style="display: inherit;color:white">
+                    <h5>Desclaimer</h5>
+                    @*<button type="button" class="close" data-dismiss="modal">
+                            <span>&times;</span>
+                        </button>*@
+                </div>
+                <div class="modal-body" id="ScrollDesclaimer" style="margin-left: 2px;margin-left: 2px;overflow-y: scroll;height: 300px;">
+                    <div class="container" style="border: 1px solid;">
+                        <div class="text-center">
+                            <h6>EEO Applicant Section</h6>
+                            <h5>AN INITIAL PROMPT SHOULD MAKE THE BELOW STATEMENT:</h5>
+                        </div>
+                        <div class="">
+                            <p>
+                                Federal laws and regulations require us to report on our workforce by
+                                race, gender and veteran status and to offer the opportunity for self-
+                                identification as to disabilities. Please assist us by completing this form.
+                                YOU ARE NOT REQUIRED TO PROVIDE THIS INFORMATION. Data which
+                                you provide shall be kept strictly confidential, except that
+                            </p>
+                            <p>
+                                (i) supervisors and managers may be informed regarding restrictions on the work or
+                                the duties of the disabled individuals and/or disabled veterans;
+                            </p>
+                            <p>
+                                (ii) first aid and safety personnel may be informed, to the extent appropriate,
+                                if the condition might require emergency treatment; and
+                            </p>
+                            <p>
+                                (iii) government officials reviewing the Company's compliance status shall be informed.
+                                would you like to proceed:
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer" style="background: white;">
+                    <button type="button" id="DesclaimerYes" class="btn btn-success IsHide" style="border-radius:100px;width:23%;background: green;display:none;" onclick="GotoNextForm(true)">Yes</button>
+                    <button type="button" id="DesclaimerNo" class="btn btn-primary IsHide" style="border-radius:100px;width:23%;display:none;" onclick="GotoNextForm(false)">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    $(document).ready(function () {
+        $("#ScrollDesclaimer").scroll(function () {
+            $(".IsHide").show();
+        })
+    });
+    </script>

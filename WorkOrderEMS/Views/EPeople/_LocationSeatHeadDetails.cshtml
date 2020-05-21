@@ -1,0 +1,68 @@
+﻿@model WorkOrderEMS.Models.tbl_Staffing_Addition_Details
+@using WorkOrderEMS.Helpers;
+@using WorkOrderEMS.Data.Classes;
+@using WorkOrderEMS.BusinessLogic;
+@using WorkOrderEMS.Service;
+@using WorkOrderEMS.Models;
+@using WorkOrderEMS.Data;
+@using WorkOrderEMS.Data.EntityModel;
+@{
+    //ICommonMethod _ICommonMethod;
+    //long CountryId = 1;
+    //ViewBag.StateList = _ICommonMethod.GetStateByCountryId(CountryId);
+    long locationId = 0;
+    long userType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserProfile = "";
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+    }
+    ARService ARS = new ARService();
+    EmployeeLocationMappingRepository obj_EmployeeLocationMappingRepository = new EmployeeLocationMappingRepository();
+    List<ApplicantSchecduleAvaliblity> EmpList = ARS.GetScheduleEmployeeList(locationId, "").ToList();
+    //Model.FromDateTime = String.IsNullOrEmpty(ViewBag.Start) ? System.DateTime.Now : Convert.ToDateTime(ViewBag.Start);
+    //Model.ToDateTime = String.IsNullOrEmpty(ViewBag.End) ? System.DateTime.Now : Convert.ToDateTime(ViewBag.End);
+}
+
+<tr class="editorRow_@Model.Id divHover">
+@Html.Hidden("hdnblnk", Model.Id, new { @class = "iHidden" })
+    @using (Html.BeginCollectionItem("LocationSeatHeadDetailsList", Model.Id.ToString()))
+    {
+        <td>
+            <div class="col-sm-12">
+                @Html.DropDownListFor(model => model.EmployeeId, new SelectList(EmpList, "ASA_EMP_EmployeeId", "ASA_EMP_EmployeeId", Model.EmployeeId), "--Select Employee--", new { @class = "form-control input-rounded required Invoiceitem EmployeeId ", data_loop = "EmployeeId", data_id = Model.Id })
+                <div class="errorspace">
+                    @Html.ValidationMessageFor(model => model.EmployeeId)
+                    @Html.HiddenFor(c => c.Id)
+                </div>
+            </div>
+        </td>
+        <td>
+            @Html.TextBoxFor(c => c.FromDateTime, String.Format("{0:yyyy-MM-dd hh:mm}", Convert.ToDateTime(Model.FromDateTime).ToString("yyyy-MM-dd hh:mm")), new { @class = "form-control round input-rounded form_datetime required required2 ", @readonly = "true", @placeholder = "yyyy-MM-dd hh:mm" })
+        </td>
+        <td>
+            @Html.TextBoxFor(c => c.ToDateTime, String.Format("{0:yyyy-MM-dd hh:mm}", Convert.ToDateTime(Model.ToDateTime).ToString("yyyy-MM-dd hh:mm")), new { @class = "form-control round input-rounded form_datetime required required2 ", @readonly = "true", @placeholder = "yyyy-MM-dd hh:mm" })
+        </td>
+        <td>
+            <div class="col-sm-12">
+                @*@if (Model.Id > 0)
+                {
+                    <button type="button" class="btn btn-default bluebutton nxt-btn deleteRow" id="btnDeleterow_@Model.Id" style="background-color:red;border-radius:18px;color:white;" data-id="@Model.Id"><i class="fa fa-times"></i></button>
+                }*@
+                @if (Model.Id == 0)
+                    {
+                        <button type="button" class="btn btn-primary bluebutton nxt-btn btnAddrows" id="btnAddrows_@Model.Id" style="border-radius:18px;color:white;" data-id="@Model.Id"><i class="fa fa-plus"></i></button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-default bluebutton nxt-btn deleteRow" id="btnDeleterow_@Model.Id" style="background-color:red;border-radius:18px;color:white;" data-id="@Model.Id"><i class="fa fa-times"></i></button>
+                    }
+            </div>
+        </td>
+    }
+</tr>

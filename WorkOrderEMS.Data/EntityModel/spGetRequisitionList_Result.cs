@@ -15,6 +15,7 @@ namespace WorkOrderEMS.Data.EntityModel
     {
         public long RQS_Id { get; set; }
         public string RQS_RequizationType { get; set; }
+        public string Activity { get; set; }
         public long RQS_ActivityId { get; set; }
         public string RQS_ActionStatus { get; set; }
         public string RQS_CreatedBy { get; set; }

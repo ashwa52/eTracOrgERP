@@ -18,17 +18,21 @@ namespace WorkOrderEMS.Models.NewAdminModel
         public int? Assesment { get; set; }
         public string Status { get; set; }
         public string Expectation { get; set; }
-
         public string VST_Level { get; set; }
-
         public int FinYear { get; set; }
         public string IsLoggedInUser { get; set; }
         public string AssessmentType { get; set; }
+        public string PRMeetingStatus { get; set; }
+        public DateTime? PRMeetingDateTime { get; set; }
+        public string MeetingDate { get; set; }
+
+        public string MeetingTime { get; set; }
+
 
     }
     public class GWCQUestionModel
     {
-        public long QuestionId { get; set; }
+        public long? QuestionId { get; set; }
         public string AssessmentType{ get; set; }
         public string QuestionType{ get; set; }
         public string Question{ get; set; }
@@ -62,15 +66,76 @@ namespace WorkOrderEMS.Models.NewAdminModel
         public string EEL_AnswerManager { get; set; }
         public string EEL_EMP_EmployeeId { get; set; }
         public string EEL_EMP_EmployeeIdManager { get; set; }
-        public long? EEL_Id { get; set; }
+        public Nullable<long> EEL_Id { get; set; }
         public string EEL_IsActive { get; set; }
         public string EEL_Comments { get; set; }
 
         public string EEL_FinencialYear { get; set; }
 
         public string EEL_FinQuarter { get; set; }
-
         public string ASQ_QuestionType { get; set; }
+        public decimal? EEL_ScoreSelf { get; set; }
+        public string LocationName { get; set; }
+        public string Department { get; set; }
+        public string CHE_IsActive { get; set; }
+        public string CHE_ASQ_Question { get; set; }
+        public long  CHE_Id { get; set; }
+
+    }
+
+    public class SetupMeeting { 
+        public string EmailTo { get; set; }
+        public string ReceipientEmailId { get; set; }
+        public string EmailFrom { get; set; }
+        public string StartTime { get; set; }
+        public string StartDate { get; set; }
+        public string Subject { get; set; }
+        public string Body { get; set; }
+        public string FinYear { get; set; }
+        public string FinQrtr{ get; set; }
+        public long RMS_Id { get; set; }
+        public Nullable<System.DateTime> RMS_InterviewDateTime { get; set; }
+        public Nullable<System.DateTime> RMS_Date { get; set; }
+        public string RMS_IsActive { get; set; }
+    }
+    public  class ReviewMeeting
+    {
+        public string EMP_ManagerId { get; set; }
+        public string ManagerPhoto { get; set; }
+        public string ManagerName { get; set; }
+        public string EMP_EmployeeID { get; set; }
+        public string EmployeePhoto { get; set; }
+        public string EmployeeName { get; set; }
+        public Nullable<System.DateTime> PRMeetingDateTime { get; set; }
+
+        public string MeetingDate { get; set; }
+        public string MeetingTime { get; set; }
+
+    }
+    public class EventModel
+    {
+        public long id { get; set; }
+        public string title { get; set; }
+
+        public string StatusString { get; set; }
+        public string StatusColor { get; set; }
+
+        public string ClassName { get; set; }
+        public string start { get; set; }
+        public DateTime? StartDate { get; set; }
+        public string end { get; set; }
+        public DateTime? EndDate { get; set; }
+
+
+        public string Descitpion { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public string CreatedFor { get; set; }
+
+        public string CreatedDate { get; set; }
+        public Boolean IsDeleted { get; set; }
+
     }
 
 }

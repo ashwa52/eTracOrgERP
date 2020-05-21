@@ -15,7 +15,7 @@ namespace WorkOrderEMS.Data.EntityModel
     public partial class InterviewAnswer
     {
         public long INA_Id { get; set; }
-        public Nullable<long> INA_INQ_Id { get; set; }
+        public Nullable<long> INA_IQC_Id { get; set; }
         public Nullable<long> INA_API_ApplicantId { get; set; }
         public string INA_EMP_EmployeeId { get; set; }
         public string INA_Answer { get; set; }

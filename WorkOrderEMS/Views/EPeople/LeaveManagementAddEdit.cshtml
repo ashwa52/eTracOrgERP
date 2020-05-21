@@ -1,0 +1,239 @@
+﻿@model WorkOrderEMS.Models.Tbl_Employee_Leave_Management
+@{
+    ViewBag.Title = "Leave Management";
+    var isRefresh = ViewBag.IsPageRefresh;
+    if (isRefresh == true)
+    {
+        Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    }
+    else
+    {
+        Layout = null;
+    }
+
+    long locationId = 0;
+    long userType = 0;
+
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+
+    //List<SelectListItem> LeaveType = new List<SelectListItem>(){
+    //        new SelectListItem { Text = "Sick Leave", Value = "Sick Leave"},
+    //        new SelectListItem { Text = "Privileged Leave", Value = "Privileged Leave"},
+    //       };
+
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+
+    }
+    Model.EmployeeName = ObjLogin.UserName;
+
+
+}
+@section scripts{
+    <script type="text/javascript">
+    var $_locationId = '@locationId';
+    var $_userTypeId = '@userType';
+    var $_VendorStatus = "false";
+    </script>
+}
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/c3/css/c3.min.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
+
+<style>
+
+    #chartdiv, #EmployeeCount1 {
+        width: 100%;
+        height: 250px;
+    }
+
+    .package {
+        margin-top: 0px !important;
+        display: inline-flex;
+        justify-items: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    label .req {
+        margin: 2px;
+        color: #ed2f35;
+    }
+
+    .form-control {
+        border: 1px solid #a0b3b0 !important;
+    }
+
+    .jsgrid-grid-body {
+        height: 100% !important;
+    }
+
+    .headerSize {
+        height: 36px;
+    }
+</style>
+
+<div class="content-body">
+    <div class="container-fluid" style="margin-top:20px;">
+        <!-- row -->
+
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card aos-init aos-animate" data-aos="fade-up">
+                    <div class="card-header headerSize">
+                        <h4 class="card-title" style="color:white;"><strong>Leave Management</strong></h4>
+                    </div>
+                    <div class="card-body">
+
+                        @using (Html.BeginForm("LeaveManagmentSubmit", "EPeople", FormMethod.Post, new { enctype = "multipart/form-data", @id = "DOT_form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true)
+                            @Html.HiddenFor(model => model.Id)
+                            <br />
+                            @*if (Layout != null)
+                                {
+                                    <div class="card-header headerSize" style="background-color:blue;">
+                                        <h4 class="card-title" style="color:white;"><strong>Leave Management</strong></h4>
+                                    </div>
+                                    <br />
+                                    <br />
+                                    <br />
+
+                                }*@
+                            <div class="panel panel-primary setup-content">
+                                <div class="basic-form">
+                                    <div class="form-group row ShowRowForEmergency" style="display:none">
+
+                                        <label style="font-size:15px;">
+                                            Is Vendor is registered ?<span class="req">*</span>
+                                        </label>
+                                        <span style="margin-left:250px;">
+                                            <input type="radio" id='IsVendorRegisterYes' value="1" name="IsVendorRegister" class="IsVendorRegister" /><span>&nbsp;&nbsp;</span>Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <input type="radio" id='IsVendorRegisterNo' value="0" name="IsVendorRegister" class="IsVendorRegister" /><span>&nbsp;&nbsp;</span>No
+                                        </span>
+                                    </div>
+                                    <!--End Div Emeregency-->
+                                    <div class="form-group row ">
+                                        <label class="col-sm-2 col-form-label" id="lblIssueDate">From Date<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBox("FromDate", Model.FromDate.ToString("MM/dd/yyyy"), new { @Placeholder = "From Date", @class = "form-control required input-rounded" })
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" id="lblDeliveryDate"> To Date<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBox("ToDate", Model.ToDate.ToString("MM/dd/yyyy"), new { @Placeholder = "To Date", @class = "form-control required input-rounded" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group row ">
+                                        <label class="col-sm-2 col-form-label" id="lblIssueDate">Employee Name<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.EmployeeName, new { @class = "form-control input-rounded required", @readonly = true })
+                                        </div>
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.EmployeeName)
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" id="lblDeliveryDate"> Leave Reason<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextAreaFor(model => model.LeaveReason, new { @class = "form-control input-rounded required" })
+                                            @Html.HiddenFor(model => model.LeaveReason)
+                                            <div class="errorspace">
+                                                @Html.ValidationMessageFor(model => model.LeaveReason)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row ">
+                                        <label class="col-sm-2 col-form-label" id="lblIssueDate">Leave Type<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.DropDownList("LeaveType", new SelectList(Model.ListLTSM, "TypeId", "LeaveDesc"), "--Select Leave Type--", new { @id = "LeaveType", @onchange = "getVendorList(false)", @class = "form-control input-rounded required" })
+                                        </div>
+                                        <div class="errorspace">
+                                            @Html.ValidationMessageFor(model => model.LeaveType)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="marbottom"></div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <span class="w-100 text-right float-left">
+                                <button type="button" id="btnback" class="btn btn-success center nextBtndata" style="background-color:forestgreen;border-radius:18px;margin-left: 10px;width:160px;color:white;"><i class="fa fa-arrow-left"></i>&nbsp;&nbsp; Back To List</button>
+                                <button type="button" class="btn btn-default bluebutton nxt-btn" id="btnsave" value="EditPO" style="background-color:forestgreen;border-radius:18px;margin-left: 20px;width:160px;color:white; ">Submit</button>
+                            </span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="@Url.Content("~/Content/Dashboard/plugins/timepicker/bootstrap-timepicker.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.js")"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#DOT_form').on("click", ":submit", function () {
+        });
+        $('#FromDate').datepicker({
+            format: "mm/dd/yyyy",
+            startDate: new Date()
+        });
+        var now = new Date();
+        var date = ((now.getMonth() + 1) + '/' + (now.getDate()) + '/' + now.getFullYear());
+        $('#FromDate').val(date);
+
+        $('#ToDate').datepicker({
+            format: "mm/dd/yyyy",
+            startDate: new Date()
+        });
+        var now = new Date();
+        var date = ((now.getMonth() + 1) + '/' + (now.getDate()) + '/' + now.getFullYear());
+        $('#ToDate').val(date);
+        $("#ToDate").change(function () {
+            var startDate = new Date($('#FromDate').val());
+            var endDate = new Date($('#ToDate').val());
+            if (endDate < startDate) {
+                alert("* To date must be Greater than From date")
+                $('#ToDate').val("");
+                return false;
+                //break;
+            }
+        });
+
+
+        $("#btnsave").on("click", function (event) {
+
+            if (!$("#DOT_form").valid()) {
+                return false;
+            }
+            else {
+
+                $.ajax({
+                    type: 'POST',
+                    url: '/EPeople/LeaveManagmentSubmit',
+                    data: $("#DOT_form").serialize(),
+                    success: function (data) {
+                        var addNewUrl = "/EPeople/LeaveManagement";
+                        $('#RenderPageId').load(addNewUrl);
+                    }
+                });
+            }
+        });
+
+        $("#btnback").on("click", function (event) {
+            event.preventDefault();
+            var addNewUrl = "/EPeople/LeaveManagement";
+            $('#RenderPageId').load(addNewUrl);
+        });
+
+    });</script>
+

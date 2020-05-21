@@ -1,0 +1,165 @@
+﻿@model WorkOrderEMS.Models.HolidayManagment
+@{
+    ViewBag.Title = "Holiday Management";
+    Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    long locationId = 0;
+    long userType = 0;
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+
+    if (ObjLogin != null)
+    {
+        locationId = ObjLogin.LocationID;
+        userType = ObjLogin.UserRoleId;
+    }
+}
+@section scripts{
+    <script type="text/javascript">
+    var $_locationId = '@locationId';
+    var $_userTypeId = '@userType';
+    var $_VendorStatus = "false";
+    </script>
+}
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="https://www.amcharts.com/lib/3/amcharts.js"></script>
+<script src="https://www.amcharts.com/lib/3/serial.js"></script>
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/c3/css/c3.min.css" rel="stylesheet" />
+<link href="@Url.Content("~/Content/datepicker.css")" rel="stylesheet" />
+
+<style>
+
+    #chartdiv, #EmployeeCount1 {
+        width: 100%;
+        height: 250px;
+    }
+
+    .package {
+        margin-top: 0px !important;
+        display: inline-flex;
+        justify-items: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    label .req {
+        margin: 2px;
+        color: #ed2f35;
+    }
+
+    .form-control {
+        border: 1px solid #a0b3b0 !important;
+    }
+
+    .jsgrid-grid-body {
+        height: 100% !important;
+    }
+
+    .headerSize {
+        height: 36px;
+    }
+</style>
+
+<div class="content-body">
+    <div class="container-fluid">
+        <!-- row -->
+        <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3 aos-init aos-animate" data-aos="fade-up">
+            <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12">
+                <div class="welcome-text">
+
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-xl-12 col-xxl-12">
+                <div class="card aos-init aos-animate" data-aos="fade-up">
+                    <div class="card-header headerSize">
+                        <h4 class="card-title" style="color:white;"><strong>Holiday Management</strong></h4>
+                    </div>
+                    <div class="card-body">
+
+                        @using (Html.BeginForm("HolidayManagmentSubmit", "EPeople", FormMethod.Post, new { enctype = "multipart/form-data", @id = "DOT_form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true)
+                            @Html.HiddenFor(model => model.Id)
+                            <br />
+                            <div class="panel panel-primary setup-content">
+                                <div class="basic-form">
+                                    <div class="form-group row ShowRowForEmergency" style="display:none">
+
+                                        <label style="font-size:15px;">
+                                            Is Vendor is registered ?<span class="req">*</span>
+                                        </label>
+                                        <span style="margin-left:250px;">
+                                            <input type="radio" id='IsVendorRegisterYes' value="1" name="IsVendorRegister" class="IsVendorRegister" /><span>&nbsp;&nbsp;</span>Yes&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <input type="radio" id='IsVendorRegisterNo' value="0" name="IsVendorRegister" class="IsVendorRegister" /><span>&nbsp;&nbsp;</span>No
+                                        </span>
+                                    </div>
+                                    <!--End Div Emeregency-->
+                                    <div class="form-group row ShowNormalPO">
+                                        <label class="col-sm-2 col-form-label" id="lblIssueDate">Holiday Date<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBox("HolidayDate", Model.HolidayDate.ToString("MM/dd/yyyy"), new { @Placeholder = "Holiday Date", @class = "form-control required input-rounded" })
+                                            @*@Html.TextBoxFor(model => model.HolidayDate, "{0:MM/dd/yyyy}", new { @onkeydown = "return false;", @style = "background-color:#EBEBE4;", @class = "form-control input-rounded" })*@
+                                        </div>
+                                        <label class="col-sm-2 col-form-label" id="lblDeliveryDate"> Holiday Name<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.HolidayName, new { @class = "form-control input-rounded required" })
+                                            @Html.HiddenFor(model => model.HolidayName)
+                                            <div class="errorspace">
+                                                @Html.ValidationMessageFor(model => model.HolidayName)
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group row ShowNormalPO">
+                                        <label class="col-sm-2 col-form-label" id="lblIssueDate">Description<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.TextAreaFor(model => model.Description, new { @class = "form-control input-rounded required" })
+                                            @Html.HiddenFor(model => model.Description)
+                                            <div class="errorspace">
+                                                @Html.ValidationMessageFor(model => model.Description)
+                                            </div>
+                                        </div>
+
+                                        <label class="col-sm-2 col-form-label" id="lblDeliveryDate"> Active<span class="req">*</span></label>
+                                        <div class="col-sm-4">
+                                            @Html.CheckBoxFor(model => model.IsActive)
+                                            @Html.HiddenFor(model => model.IsActive)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="marbottom"></div>
+                                <div class="clearfix"></div>
+                            </div>
+                            <span class="w-100 text-right float-left">
+                                <button type="submit" class="btn btn-default bluebutton nxt-btn" id="btnSaveVehicle" value="EditPO" style="background-color:forestgreen;border-radius:18px;margin-left: 20px;width:160px;color:white; ">Submit</button>
+                            </span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="@Url.Content("~/Content/Dashboard/plugins/timepicker/bootstrap-timepicker.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Scripts/bootstrap-datepicker.js")"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#DOT_form').on("click", ":submit", function () {
+        });
+        $('#HolidayDate').datepicker({
+            format: "mm/dd/yyyy",
+            startDate: new Date()
+        });
+        //var now = new Date();
+        //var date = ((now.getMonth() + 1) + '/' + (now.getDate()) + '/' + now.getFullYear());
+        //$('#HolidayDate').val(date);
+    });</script>
+

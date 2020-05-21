@@ -17,6 +17,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string ASQ_AssessmentType { get; set; }
         public string ASQ_QuestionType { get; set; }
         public string ASQ_Question { get; set; }
+        public string SAM_IsActive { get; set; }
         public Nullable<long> SAM_Id { get; set; }
         public string SAM_Answer { get; set; }
     }

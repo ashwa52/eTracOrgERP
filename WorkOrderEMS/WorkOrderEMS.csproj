@@ -70,6 +70,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="InMemoryMultipartFormDataStreamProvider, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\InMemoryMultipartFormDataStreamProvider.1.0.1\lib\net45\InMemoryMultipartFormDataStreamProvider.dll</HintPath>
+    </Reference>
     <Reference Include="Intuit.Ipp.Core, Version=5.9.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\IppDotNetSdkForQuickBooksApiV3.5.9.1\lib\Intuit.Ipp.Core.dll</HintPath>
     </Reference>
@@ -134,6 +137,9 @@
       <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.0\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Extensions.Primitives, Version=3.1.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.Primitives.3.1.0-preview3.19553.2\lib\netstandard2.0\Microsoft.Extensions.Primitives.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Office.Interop.PowerPoint, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -192,6 +198,9 @@
     <Reference Include="Quartz, Version=3.0.7.0, Culture=neutral, PublicKeyToken=f6b8c98a402cc8a4, processorArchitecture=MSIL">
       <HintPath>..\packages\Quartz.3.0.7\lib\net452\Quartz.dll</HintPath>
     </Reference>
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.7.3\lib\net461\Rotativa.dll</HintPath>
+    </Reference>
     <Reference Include="StructureMap">
       <HintPath>..\packages\structuremap.3.1.4.143\lib\net40\StructureMap.dll</HintPath>
     </Reference>
@@ -205,11 +214,24 @@
       <HintPath>..\packages\Swashbuckle.Core.5.6.0\lib\net40\Swashbuckle.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.2\lib\netstandard2.0\System.Memory.dll</HintPath>
+    </Reference>
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.4.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.6.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.7.0-preview3.19551.4\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
     <Reference Include="System.Runtime.InteropServices.RuntimeInformation, Version=4.0.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.InteropServices.RuntimeInformation.4.3.0\lib\net45\System.Runtime.InteropServices.RuntimeInformation.dll</HintPath>
@@ -364,15 +386,21 @@
     <Compile Include="Areas\AdminSection\Controllers\VendorTypeController.cs" />
     <Compile Include="Controllers\Account\AccountSectionController.cs" />
     <Compile Include="Controllers\Administrator\AdministratorController.cs" />
+    <Compile Include="Controllers\Administrator\BaseController.cs" />
+    <Compile Include="Controllers\API\ETimeAPIController.cs" />
     <Compile Include="Controllers\Client\ClientController.cs" />
     <Compile Include="Controllers\Client\NewClientController.cs" />
     <Compile Include="Controllers\Common\CommonController.cs" />
     <Compile Include="Controllers\Common\DropDownController.cs" />
     <Compile Include="Controllers\Common\JobSchedular.cs" />
     <Compile Include="Controllers\Common\Schedular.cs" />
+    <Compile Include="Controllers\Common\SchedularForPO.cs" />
     <Compile Include="Controllers\DAR\DARController.cs" />
     <Compile Include="Controllers\eCounting\BillController.cs" />
+    <Compile Include="Controllers\eCounting\InvoiceManagementController.cs" />
+    <Compile Include="Controllers\eCounting\CustomerManagementController.cs" />
     <Compile Include="Controllers\eCounting\DebitMemoController.cs" />
+    <Compile Include="Controllers\eCounting\DOTmanagement.cs" />
     <Compile Include="Controllers\eCounting\eCountingReportController.cs" />
     <Compile Include="Controllers\eCounting\MiscellaneousController.cs" />
     <Compile Include="Controllers\eCounting\PaymentController.cs" />
@@ -390,6 +418,7 @@
     <Compile Include="Controllers\EmployeeIdle\IdleEmployeeController.cs" />
     <Compile Include="Controllers\GlobalAdmin\GlobalAdminController.cs" />
     <Compile Include="Controllers\Guest\GuestController.cs" />
+    <Compile Include="Controllers\HRMS\HRMSController.cs" />
     <Compile Include="Controllers\ITAdministrator\ITAdministratorController.cs" />
     <Compile Include="Controllers\Login\AccountController.cs" />
     <Compile Include="Controllers\Login\LoginController.cs" />
@@ -397,7 +426,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Controllers\NewAdmin\EPeopleController.cs" />
+    <Compile Include="Controllers\NewAdmin\eTimeController.cs" />
+    <Compile Include="Controllers\NewAdmin\GetMailDataController.cs" />
+    <Compile Include="Controllers\NewAdmin\GlobalSettingsController.cs" />
     <Compile Include="Controllers\NewAdmin\NewAdminController.cs" />
+    <Compile Include="Controllers\Notification\NotificationController.cs" />
     <Compile Include="Controllers\PDF\PDFDataController.cs" />
     <Compile Include="Controllers\QRCSetup\QRCSetupController.cs" />
     <Compile Include="Controllers\QuickBookData\App1Controller.cs" />
@@ -415,6 +448,7 @@
     <Compile Include="Controllers\Search\SearchController.cs" />
     <Compile Include="Controllers\Services\RecruiteeAPIController.cs" />
     <Compile Include="Controllers\Services\ServiceApiController.cs" />
+    <Compile Include="Controllers\Services\WebAPIDocController.cs" />
     <Compile Include="Controllers\Staff\EmployeeController.cs" />
     <Compile Include="Controllers\WorkOrderAssignment\WorkOrderController.cs" />
     <Compile Include="DependencyResolution\DefaultRegistry.cs" />
@@ -476,6 +510,10 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Service\ARService.svc.cs">
+      <DependentUpon>ARService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Service\IARService.cs" />
     <Compile Include="Service\IService.cs" />
     <Compile Include="Service\Service.svc.cs">
       <DependentUpon>Service.svc</DependentUpon>
@@ -497,6 +535,7 @@
     <Content Include="Areas\AdminSection\Content\JQUERY\JobPostingJs.js" />
     <Content Include="Areas\AdminSection\Content\JQUERY\Jquery_3.js" />
     <Content Include="Areas\AdminSection\Content\JQUERY\MockJax.js" />
+    <Content Include="Areas\AdminSection\Content\JQUERY\NewOrgChartForAdmin.js" />
     <Content Include="Areas\AdminSection\Content\JQUERY\OrganizationalChart.js" />
     <Content Include="Areas\AdminSection\GridList\ContractType.js" />
     <Content Include="Areas\AdminSection\GridList\JsGrid\ListDepartment.js" />
@@ -511,6 +550,7 @@
     <Content Include="Content\Blink.css" />
     <Content Include="Content\bootstrap-datepicker3.css" />
     <Content Include="Content\bootstrap-datetimepicker.min.css" />
+    <Content Include="Content\bootstrap-datetimepicker.min.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\common\admin.css" />
@@ -1215,6 +1255,9 @@
     <Content Include="Content\Dashboard\plugins\fullcalendar\fullcalendar.min.css" />
     <Content Include="Content\Dashboard\plugins\fullcalendar\fullcalendar.min.js" />
     <Content Include="Content\Dashboard\plugins\fullcalendar\fullcalendar.print.css" />
+    <Content Include="Content\Dashboard\plugins\fullcalendar\MultiselectManager.css" />
+    <Content Include="Content\Dashboard\plugins\fullcalendar\MultiselectManager.js" />
+    <Content Include="Content\Dashboard\plugins\fullcalendar\mySchedule.js" />
     <Content Include="Content\Dashboard\plugins\iCheck\all.css" />
     <Content Include="Content\Dashboard\plugins\iCheck\flat\aero%402x.png" />
     <Content Include="Content\Dashboard\plugins\iCheck\flat\aero.css" />
@@ -1412,6 +1455,9 @@
     <Content Include="Content\dataTables.jqueryui.css" />
     <Content Include="Content\dataTables.jqueryuiReport.css" />
     <Content Include="Content\datepicker.css" />
+    <Content Include="Content\datetimepicker.css" />
+    <Content Include="Content\eCountingDocs\InvoiceDocs\4_637131458365819385_2019-12-28_1553.png" />
+    <Content Include="Content\eCountingDocs\InvoiceDocs\4_637153808574307944_InvoiceSubmission.jpg" />
     <Content Include="Content\eCounting\VendorMultiStepWizard.css" />
     <Content Include="Content\eCounting\VendorWizard.css" />
     <Content Include="Content\eFleetDocs\AttachmentMaintenance\FileNotFound.png" />
@@ -1552,10 +1598,17 @@
     <Content Include="Content\NewAdminContent\AnimatedChart\CSS\reset-html5.css" />
     <Content Include="Content\NewAdminContent\AnimatedChart\CSS\stiff-chart.css" />
     <Content Include="Content\NewAdminContent\AnimatedChart\JS\stiffChart.js" />
+    <Content Include="Content\NewAdminContent\CSS\ClearNotClearPage.css" />
     <Content Include="Content\NewAdminContent\CSS\clockPicker.css" />
     <Content Include="Content\NewAdminContent\CSS\Common.css" />
+    <Content Include="Content\NewAdminContent\CSS\custom.css" />
     <Content Include="Content\NewAdminContent\CSS\FilesUICss.css" />
+    <Content Include="Content\NewAdminContent\CSS\GetOrgForRequision.css" />
     <Content Include="Content\NewAdminContent\CSS\MultstepWizardNew.css" />
+    <Content Include="Content\NewAdminContent\CSS\MyGuestStyle.css" />
+    <Content Include="Content\NewAdminContent\CSS\NewTreeUserView.css" />
+    <Content Include="Content\NewAdminContent\CSS\NewTreeVSC.css" />
+    <Content Include="Content\NewAdminContent\CSS\Notification.css" />
     <Content Include="Content\NewAdminContent\CSS\perfect-scrollbar.css" />
     <Content Include="Content\NewAdminContent\CSS\RadioButtonCSS.css" />
     <Content Include="Content\NewAdminContent\CSS\style.css" />
@@ -1671,6 +1724,7 @@
     <Content Include="Content\NewAdminContent\IMAGES\user\7.jpg" />
     <Content Include="Content\NewAdminContent\IMAGES\user\8.png" />
     <Content Include="Content\NewAdminContent\IMAGES\user\form-user.png" />
+    <Content Include="Content\NewAdminContent\JQUERY\ChartGraphDemo.js" />
     <Content Include="Content\NewAdminContent\JQUERY\Charts\amchart3.js" />
     <Content Include="Content\NewAdminContent\JQUERY\Charts\amcharts.js" />
     <Content Include="Content\NewAdminContent\JQUERY\Charts\animated.js" />
@@ -1680,6 +1734,7 @@
     <Content Include="Content\NewAdminContent\JQUERY\Charts\serial.js" />
     <Content Include="Content\NewAdminContent\JQUERY\Charts\serial3.js" />
     <Content Include="Content\NewAdminContent\JQUERY\clockPicker.js" />
+    <Content Include="Content\NewAdminContent\JQUERY\GetOrgForRequisition.js" />
     <Content Include="Content\NewAdminContent\JQUERY\MaskLoaderNew.js" />
     <Content Include="Content\NewAdminContent\JQUERY\tinymce.min.js" />
     <Content Include="Content\NewAdminContent\VENDOR\amcharts\amcharts.js" />
@@ -5098,6 +5153,12 @@
     <Content Include="GridListing\JqGridScript\CompanyList\ListCompanyProduct.js" />
     <Content Include="GridListing\JqGridScript\CompanyList\ListInsurance.js" />
     <Content Include="GridListing\JqGridScript\CompanyList\ListLicense.js" />
+    <Content Include="GridListing\JqGridScript\CustomersList.js" />
+    <Content Include="GridListing\JqGridScript\ListCreditInvoice.js" />
+    <Content Include="GridListing\JqGridScript\ListInvoice.js" />
+    <Content Include="GridListing\JqGridScript\CustomersWaitingList.js" />
+    <Content Include="GridListing\JqGridScript\LeaveManagementJS.js" />
+    <Content Include="GridListing\JqGridScript\ListAllHolidayJS.js" />
     <Content Include="GridListing\JqGridScript\ListAllPO.js" />
     <Content Include="GridListing\JqGridScript\ListAllSelfCreatedPO.js" />
     <Content Include="GridListing\JqGridScript\ListBudgetForLocation.js" />
@@ -5112,6 +5173,7 @@
     <Content Include="GridListing\JqGridScript\ListeFleetVehicleIncident.js" />
     <Content Include="GridListing\JqGridScript\ListEmail.js" />
     <Content Include="GridListing\JqGridScript\ListFueling.js" />
+    <Content Include="GridListing\JqGridScript\ListItem.js" />
     <Content Include="GridListing\JqGridScript\ListLocation.js" />
     <Content Include="GridListing\JqGridScript\ListNewVendorFacility.js" />
     <Content Include="GridListing\JqGridScript\ListOfBudgetAfterSavingTransferAmoutForCostCode.js" />
@@ -5141,9 +5203,18 @@
     <Content Include="GridListing\JqGridScript\WorkOrderWeekHistory.js" />
     <Content Include="GridListing\JqGridScript\WorkRequestAssignment.js" />
     <Content Include="GridListing\JqGridScript\WorkRequestList.js" />
+    <Content Include="GridListing\JsGridScript\EmpShiftList.js" />
+    <Content Include="GridListing\JsGridScript\EmployeeStatusChangeList.js" />
+    <Content Include="GridListing\JsGridScript\ListAllocatedBudget.js" />
+    <Content Include="GridListing\JsGridScript\ListAllShiftJS.js" />
+    <Content Include="GridListing\JsGridScript\ListBudgetForLocation.js" />
     <Content Include="GridListing\JsGridScript\ListDAR.js" />
     <Content Include="GridListing\JsGridScript\List306090.js" />
+    <Content Include="GridListing\JsGridScript\ListDebitMemo.js" />
+    <Content Include="GridListing\JsGridScript\ListEmployeeForAttendance.js" />
     <Content Include="GridListing\JsGridScript\ListEmployeeManagement.js" />
+    <Content Include="GridListing\JsGridScript\ListLocation.js" />
+    <Content Include="GridListing\JsGridScript\ListHoliday.js" />
     <Content Include="GridListing\JsGridScript\ListMyOpening.js" />
     <Content Include="GridListing\JsGridScript\ListOnBoarding.js" />
     <Content Include="GridListing\JsGridScript\ListQRCList.js" />
@@ -5155,6 +5226,7 @@
     <Content Include="Images\bg.png" />
     <Content Include="Images\buy11.png" />
     <Content Include="Images\CarLogo.png" />
+    <Content Include="Images\CreditCard.jpg" />
     <Content Include="Images\Credit_Card.png" />
     <Content Include="Images\delete.png" />
     <Content Include="Images\DIRECT-DEPOSIT.jpg" />
@@ -5165,6 +5237,10 @@
     <Content Include="Images\eTrac450-light.png" />
     <Content Include="Images\eTrac450.png" />
     <Content Include="Images\etracblur450.png" />
+    <Content Include="Images\floridablue.png" />
+    <Content Include="Images\FormImages\I-9-stop.jpg" />
+    <Content Include="Images\FormImages\I-9.jpg" />
+    <Content Include="Images\FormImages\image-form.jpg" />
     <Content Include="Images\headerbg_wht.png" />
     <Content Include="Images\HighChartsImageForExport\00335944-7762-464c-8ad4-de8ee11a049e.png" />
     <Content Include="Images\HighChartsImageForExport\0262c4a5-a7ee-47f1-92b9-b8c35e1bfe6c.png" />
@@ -5191,12 +5267,25 @@
     <Content Include="Images\user.png" />
     <Content Include="Images\version.png" />
     <Content Include="IOSTimePicker.html" />
+    <Content Include="MailTemplate\Applicant\ChangePassword.html" />
+    <Content Include="MailTemplate\Applicant\ForgotPasswordApplicant.html" />
+    <Content Include="MailTemplate\Applicant\OffereLetterRejected.html" />
+    <Content Include="MailTemplate\Applicant\OfferLetterAccepted.html" />
+    <Content Include="MailTemplate\Applicant\OfferLetterCounter.html" />
+    <Content Include="MailTemplate\Applicant\SignUpApplicant.html" />
+    <Content Include="MailTemplate\EPeople\Backgroundcheck.html" />
+    <Content Include="MailTemplate\EPeople\OfferLetter.html" />
+    <Content Include="MailTemplate\EPeople\SendForAssessment.html" />
+    <Content Include="MailTemplate\SetupEvaluationMeetingTemplate.html" />
     <Content Include="MailTemplate\AddMoreBudgetForLocationTemplate.html" />
     <Content Include="MailTemplate\ApprovedRejectPOTemplate.html" />
     <Content Include="MailTemplate\ApproveMiscellaneous.html" />
     <Content Include="MailTemplate\ApproveRejectVendorTemplate.html" />
     <Content Include="MailTemplate\CreateVendorTemplate.html" />
     <Content Include="MailTemplate\DailyAPTrendInCountTemplate.html" />
+    <Content Include="MailTemplate\EPeople\EmployeeHired.html" />
+    <Content Include="MailTemplate\InvoicePaymentReminder.html" />
+    <Content Include="MailTemplate\InvoiceSubmissionTemplate.html" />
     <Content Include="MailTemplate\POSendForApprovalTemplate.html" />
     <Content Include="MailTemplate\CellphoneButtonsTemplate.html" />
     <Content Include="MailTemplate\CellphoneFunctionalTemplate.html" />
@@ -5226,6 +5315,10 @@
     <Content Include="MailTemplate\VehicleDamage.html" />
     <Content Include="MailTemplate\VehicleMileageTemplate.html" />
     <Content Include="MailTemplate\WorkOrderRequestTemplate.html" />
+    <Content Include="Rotativa\help-wkhtmltoimage.txt" />
+    <Content Include="Rotativa\help-wkhtmltopdf.txt" />
+    <Content Include="Rotativa\wkhtmltoimage.exe" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
     <Content Include="Scripts\1.9.1-js\jquery-ui-1.9.2.min.js" />
     <Content Include="Scripts\BindDropDown\DropDownList.js" />
     <Content Include="Scripts\bootstrap-checkbox.js" />
@@ -5903,6 +5996,10 @@
     <Content Include="Content\NewAdminContent\AnimatedChart\SCSS\_horizontal.scss" />
     <Content Include="Content\NewAdminContent\AnimatedChart\SCSS\_vertical.scss" />
     <Content Include="Areas\AdminSection\Views\OrgChart\_AddJobPosting.cshtml" />
+    <Content Include="Areas\AdminSection\Views\OrgChart\_JobTitilView.cshtml" />
+    <Content Include="Documents\random.pdf" />
+    <Content Include="App_Browsers\qt.browser" />
+    <Content Include="Documents\random.pdf" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\eTrac - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\eTrac - Web Deploy.pubxml" />
@@ -5949,13 +6046,20 @@
     <Content Include="Scripts\DurationFlipbox\jquery.mousewheel.min.js" />
     <Content Include="Scripts\DurationFlipbox\jtsage-datebox-4.1.1.bootstrap.min.css" />
     <Content Include="Scripts\DurationFlipbox\jtsage-datebox-4.1.1.bootstrap.min.js" />
+    <Content Include="Scripts\eCounting\CustomerMultiStepWizard.js" />
     <Content Include="Scripts\eCounting\VendorMultiStepWizard.js" />
     <Content Include="Scripts\eFleetVehicle\reg.js" />
     <Content Include="Scripts\eFleet\PassengerTracking.js" />
+    <Content Include="Scripts\ePeople\ApplicantFunctionality.js" />
+    <Content Include="Scripts\ePeople\CustomMultistepWizardApplicant.js" />
+    <Content Include="Scripts\ePeople\Google_Jquery.js" />
+    <Content Include="Scripts\ePeople\Google_Org_Chart_Api.js" />
     <Content Include="Scripts\FileUpload\jquery.fileupload-ui.js" />
     <Content Include="Scripts\FileUpload\jquery.fileupload.js" />
     <Content Include="Scripts\FileUpload\jquery.iframe-transport.js" />
+    <Content Include="Scripts\Guest\ApplicantFormSave.js" />
     <Content Include="Scripts\Guest\GuestUser.js" />
+    <Content Include="Scripts\Guest\SketchSignature.js" />
     <Content Include="Scripts\ImageUpload\FileUpload.js" />
     <Content Include="Scripts\iwc-all.min.js" />
     <Content Include="Scripts\iwc-signalr.js" />
@@ -5967,6 +6071,7 @@
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.8.3.js" />
     <Content Include="Scripts\jquery-3.2.1.min.js" />
     <Content Include="Scripts\jquery-easing\jquery.easing.min.js" />
     <Content Include="Scripts\Jquery-TimePicker\jquery-ui-timepicker-addon.js" />
@@ -6071,6 +6176,7 @@
     <Content Include="Scripts\Morris\morris-data.js" />
     <Content Include="Scripts\Morris\morris.min.js" />
     <Content Include="Scripts\Morris\raphael.min.js" />
+    <Content Include="Scripts\NewAdminJS\AssetsAndOffer.js" />
     <Content Include="Scripts\NewAdminJS\custom.min.js" />
     <Content Include="Scripts\NewAdminJS\CustomizeJSForVSC.js" />
     <Content Include="Scripts\NewAdminJS\dashboard\dashboard-1.js" />
@@ -6142,14 +6248,17 @@
     <Content Include="Scripts\NewAdminJS\plugins-init\webticker-init.js" />
     <Content Include="Scripts\NewAdminJS\plugins-init\widgets-script-init.js" />
     <Content Include="Scripts\NewAdminJS\QRCHideShowFunctionality.js" />
+    <Content Include="Scripts\NewAdminJS\QuestionAnswerFuncionality.js" />
     <Content Include="Scripts\NewAdminJS\quixnav-init.js" />
     <Content Include="Scripts\NewAdminJS\SaveEditForm.js" />
     <Content Include="Scripts\NewAdminJS\settings.js" />
     <Content Include="Scripts\NewAdminJS\styleSwitcher.js" />
     <Content Include="Scripts\NewAdminJS\tynamice.min.js" />
+    <Content Include="Scripts\NewAdminJS\UserTreeFunctionality.js" />
     <Content Include="Scripts\NewAdminJS\WorkOrderHideShowFunctionality.js" />
     <Content Include="Scripts\NewTimePicker\jquery.timesetter.js" />
     <Content Include="Scripts\NewTimePicker\jquery.timesetter.min.css" />
+    <Content Include="Scripts\Notification\NotificationFunctionality.js" />
     <Content Include="Scripts\QRCode\generateEfleetQRCode.js" />
     <Content Include="Scripts\QRCode\generateQRC.js" />
     <Content Include="Scripts\QRCode\jquery.qrcode-0.9.5.js" />
@@ -6188,7 +6297,295 @@
     <Content Include="Scripts\UserDefine\LoginEmailValidation.js" />
     <Content Include="Scripts\UserDefine\NewDashboard.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Service\ARService.svc" />
     <Content Include="Service\Service.svc" />
+    <Content Include="Views\Customer\Scripts\1.9.1-js\jquery-ui-1.9.2.min.js" />
+    <Content Include="Views\Customer\Scripts\BindDropDown\DropDownList.js" />
+    <Content Include="Views\Customer\Scripts\bootstrap-checkbox.js" />
+    <Content Include="Views\Customer\Scripts\bootstrap-datatable.js" />
+    <Content Include="Views\Customer\Scripts\bootstrap-datepicker.js" />
+    <Content Include="Views\Customer\Scripts\Bootstrap-DateTimePicker\css\bootstrap-datetimepicker.css" />
+    <Content Include="Views\Customer\Scripts\Bootstrap-DateTimePicker\css\bootstrap-datetimepicker.min.css" />
+    <Content Include="Views\Customer\Scripts\Bootstrap-DateTimePicker\js\bootstrap-datetimepicker.js" />
+    <Content Include="Views\Customer\Scripts\Bootstrap-DateTimePicker\js\bootstrap-datetimepicker.min.js" />
+    <Content Include="Views\Customer\Scripts\Bootstrap-DateTimePicker\js\moment-with-locales.js" />
+    <Content Include="Views\Customer\Scripts\BootStrap-Multiselect\CSS\bootstrap-multiselect.css" />
+    <Content Include="Views\Customer\Scripts\BootStrap-Multiselect\CSS\demo-styles.css" />
+    <Content Include="Views\Customer\Scripts\BootStrap-Multiselect\CSS\example-styles.css" />
+    <Content Include="Views\Customer\Scripts\BootStrap-Multiselect\JS\bootbox.js" />
+    <Content Include="Views\Customer\Scripts\BootStrap-Multiselect\JS\bootstrap-confirmation.js" />
+    <Content Include="Views\Customer\Scripts\BootStrap-Multiselect\JS\bootstrap-multiselect.js" />
+    <Content Include="Views\Customer\Scripts\BootStrap-Multiselect\JS\bootstrap-tooltip.js" />
+    <Content Include="Views\Customer\Scripts\BootStrap-Multiselect\JS\jquery.multi-select.js" />
+    <Content Include="Views\Customer\Scripts\BootStrap-Multiselect\JS\MultiSelectSpec.js" />
+    <Content Include="Views\Customer\Scripts\bootstrap.js" />
+    <Content Include="Views\Customer\Scripts\bootstrap.min.js" />
+    <Content Include="Views\Customer\Scripts\common\bootstrap.js" />
+    <Content Include="Views\Customer\Scripts\common\bootstrap.min.js" />
+    <Content Include="Views\Customer\Scripts\common\Common.js" />
+    <Content Include="Views\Customer\Scripts\common\demo\dashboard-demo.js" />
+    <Content Include="Views\Customer\Scripts\common\demo\flot-demo.js" />
+    <Content Include="Views\Customer\Scripts\common\demo\morris-demo.js" />
+    <Content Include="Views\Customer\Scripts\common\jquery-1.10.2.js" />
+    <Content Include="Views\Customer\Scripts\common\Masking.js" />
+    <Content Include="Views\Customer\Scripts\common\plugins\dataTables\dataTables.bootstrap.js" />
+    <Content Include="Views\Customer\Scripts\common\plugins\dataTables\jquery.dataTables.js" />
+    <Content Include="Views\Customer\Scripts\common\plugins\flot\excanvas.min.js" />
+    <Content Include="Views\Customer\Scripts\common\plugins\flot\jquery.flot.js" />
+    <Content Include="Views\Customer\Scripts\common\plugins\flot\jquery.flot.pie.js" />
+    <Content Include="Views\Customer\Scripts\common\plugins\flot\jquery.flot.resize.js" />
+    <Content Include="Views\Customer\Scripts\common\plugins\flot\jquery.flot.tooltip.min.js" />
+    <Content Include="Views\Customer\Scripts\common\plugins\metisMenu\jquery.metisMenu.js" />
+    <Content Include="Views\Customer\Scripts\common\plugins\morris\morris.js" />
+    <Content Include="Views\Customer\Scripts\common\plugins\morris\raphael-2.1.0.min.js" />
+    <Content Include="Views\Customer\Scripts\common\sb-admin.js" />
+    <Content Include="Views\Customer\Scripts\dropzone\basic.css" />
+    <Content Include="Views\Customer\Scripts\dropzone\basic.min.css" />
+    <Content Include="Views\Customer\Scripts\dropzone\dropzone-amd-module.js" />
+    <Content Include="Views\Customer\Scripts\dropzone\dropzone-amd-module.min.js" />
+    <Content Include="Views\Customer\Scripts\dropzone\dropzone.css" />
+    <Content Include="Views\Customer\Scripts\dropzone\dropzone.js" />
+    <Content Include="Views\Customer\Scripts\dropzone\dropzone.min.css" />
+    <Content Include="Views\Customer\Scripts\dropzone\dropzone.min.js" />
+    <Content Include="Views\Customer\Scripts\DurationFlipbox\jquery.mousewheel.min.js" />
+    <Content Include="Views\Customer\Scripts\DurationFlipbox\jtsage-datebox-4.1.1.bootstrap.min.css" />
+    <Content Include="Views\Customer\Scripts\DurationFlipbox\jtsage-datebox-4.1.1.bootstrap.min.js" />
+    <Content Include="Views\Customer\Scripts\eCounting\VendorMultiStepWizard.js" />
+    <Content Include="Views\Customer\Scripts\eFleetVehicle\reg.js" />
+    <Content Include="Views\Customer\Scripts\eFleet\PassengerTracking.js" />
+    <Content Include="Views\Customer\Scripts\FileUpload\jquery.fileupload-ui.js" />
+    <Content Include="Views\Customer\Scripts\FileUpload\jquery.fileupload.js" />
+    <Content Include="Views\Customer\Scripts\FileUpload\jquery.iframe-transport.js" />
+    <Content Include="Views\Customer\Scripts\ImageUpload\FileUpload.js" />
+    <Content Include="Views\Customer\Scripts\iwc-all.min.js" />
+    <Content Include="Views\Customer\Scripts\iwc-signalr.js" />
+    <Content Include="Views\Customer\Scripts\JqGrid\DilogPopUP.js" />
+    <Content Include="Views\Customer\Scripts\JqGrid\grid.common.js" />
+    <Content Include="Views\Customer\Scripts\JqGrid\i18n\grid.locale-en.js" />
+    <Content Include="Views\Customer\Scripts\JqGrid\jquery.jqGrid.min.js" />
+    <Content Include="Views\Customer\Scripts\JqGrid\jquery.js" />
+    <None Include="Views\Customer\Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Views\Customer\Scripts\jquery-1.10.2.js" />
+    <Content Include="Views\Customer\Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Views\Customer\Scripts\jquery-3.2.1.min.js" />
+    <Content Include="Views\Customer\Scripts\jquery-easing\jquery.easing.min.js" />
+    <Content Include="Views\Customer\Scripts\Jquery-TimePicker\jquery-ui-timepicker-addon.js" />
+    <Content Include="Views\Customer\Scripts\Jquery-TimePicker\JQuery.ui.Slider.js" />
+    <Content Include="Views\Customer\Scripts\jquery.cookie.min.js" />
+    <Content Include="Views\Customer\Scripts\jquery.dataTables.js" />
+    <Content Include="Views\Customer\Scripts\jquery.dataTables.min.js" />
+    <Content Include="Views\Customer\Scripts\jquery.maskedinput-1.3.min.js" />
+    <Content Include="Views\Customer\Scripts\jquery.nanoscroller.min.js" />
+    <Content Include="Views\Customer\Scripts\jquery.signalR-2.2.0.js" />
+    <Content Include="Views\Customer\Scripts\jquery.signalR-2.2.0.min.js" />
+    <Content Include="Views\Customer\Scripts\jquery.ui.core.js" />
+    <Content Include="Views\Customer\Scripts\jquery.ui.datepicker.js" />
+    <Content Include="Views\Customer\Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Views\Customer\Scripts\jquery.unobtrusive-ajax.min.js" />
+    <None Include="Views\Customer\Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Views\Customer\Scripts\jquery.validate.js" />
+    <Content Include="Views\Customer\Scripts\jquery.validate.min.js" />
+    <Content Include="Views\Customer\Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Views\Customer\Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Views\Customer\Scripts\Jquery2.1.js" />
+    <Content Include="Views\Customer\Scripts\jstz.min.js" />
+    <Content Include="Views\Customer\Scripts\KendoTreeView\kendo.all.min.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.android-holo-light.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.animation.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.frame.android-holo.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.frame.android.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.frame.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.frame.ios-classic.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.frame.ios.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.frame.jqm.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.frame.sense-ui.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.frame.wp.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.icons.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.image.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.mobiscroll-dark.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.scroller.android-holo.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.scroller.android.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.scroller.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.scroller.ios-classic.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.scroller.ios.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.scroller.jqm.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.scroller.sense-ui.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.scroller.wp.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\css\mobiscroll.wp-light.css" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\i18n\mobiscroll.i18n.cs.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\i18n\mobiscroll.i18n.de.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\i18n\mobiscroll.i18n.en-UK.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\i18n\mobiscroll.i18n.es.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\i18n\mobiscroll.i18n.fa.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\i18n\mobiscroll.i18n.fr.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\i18n\mobiscroll.i18n.hu.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\i18n\mobiscroll.i18n.it.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\i18n\mobiscroll.i18n.ja.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\i18n\mobiscroll.i18n.nl.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\i18n\mobiscroll.i18n.no.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\i18n\mobiscroll.i18n.pl.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\i18n\mobiscroll.i18n.pt-BR.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\i18n\mobiscroll.i18n.pt-PT.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\i18n\mobiscroll.i18n.ro.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\i18n\mobiscroll.i18n.ru-UA.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\i18n\mobiscroll.i18n.ru.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\i18n\mobiscroll.i18n.sk.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\i18n\mobiscroll.i18n.sv.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\i18n\mobiscroll.i18n.tr.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\i18n\mobiscroll.i18n.zh.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.android-holo-light.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.appframework.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.core.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.datetime.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.datetimebase.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.datetimebaseEdited.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.frame.android-holo.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.frame.android.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.frame.ios-classic.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.frame.ios.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.frame.jqm.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.frame.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.frame.sense-ui.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.frame.wp.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.image.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.jqmwidget.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.listbase.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.mobiscroll-dark.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.scroller.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.select.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.treelist.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.util.datetime.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.wp-light.js" />
+    <Content Include="Views\Customer\Scripts\MobiTimePicker\mobiscroll.zepto.js" />
+    <Content Include="Views\Customer\Scripts\modernizr-2.6.2.js" />
+    <Content Include="Views\Customer\Scripts\moment-timezone-utils.js" />
+    <Content Include="Views\Customer\Scripts\moment-timezone-with-data-2010-2020.js" />
+    <Content Include="Views\Customer\Scripts\moment-timezone-with-data-2010-2020.min.js" />
+    <Content Include="Views\Customer\Scripts\moment-timezone-with-data.js" />
+    <Content Include="Views\Customer\Scripts\moment-timezone-with-data.min.js" />
+    <Content Include="Views\Customer\Scripts\moment-timezone.js" />
+    <Content Include="Views\Customer\Scripts\moment-timezone.min.js" />
+    <Content Include="Views\Customer\Scripts\moment-with-langs.js" />
+    <Content Include="Views\Customer\Scripts\moment-with-langs.min.js" />
+    <Content Include="Views\Customer\Scripts\moment.js" />
+    <Content Include="Views\Customer\Scripts\moment.min.js" />
+    <Content Include="Views\Customer\Scripts\Morris\morris-data.js" />
+    <Content Include="Views\Customer\Scripts\Morris\morris.min.js" />
+    <Content Include="Views\Customer\Scripts\Morris\raphael.min.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\custom.min.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\dashboard\dashboard-1.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\dashboard\dashboard-2.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\amchart-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\blockui-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\bootstrap-editable-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\bootstrap-multiselect-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\bootstrap-tagsinput-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\bootstrap-touchpin-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\bs-daterange-picker-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\bs-notify-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\bs-select-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\c3-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\chartist-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\chartjs-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\circle-progress-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\clipboard-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\clock-picker-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\color-picker-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\counter-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\counterup-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\cropperjs-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\datamap-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\datatables-adv-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\datatables-api-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\datatables-datasuorce-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\datatables-plugin-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\datatables-styles-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\datatables.init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\datedropper-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\dropify-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\easy-pie-chart-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\echarts-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\editor-ck-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\editor-tinymice-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\flot-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\footable-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\form-bootstrap-validate-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\fullcalendar-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\highcharts-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\jquery-asColorPicker.init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\jquery-steps-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\jquery.bootgrid-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\jquery.validate-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\jqvmap-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\jsgrid-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\justgage.init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\knob.init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\material-date-picker-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\morris-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\nestable-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\nouislider-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\pickadate-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\piety-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\pignose.init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\quill-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\rickshaw-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\select2-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\sparkline-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\summernote-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\sweetalert-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\sweetalert.init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\switchery-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\timepicki-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\toastr-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\typehead.js-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\ui-slider-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\webticker-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\plugins-init\widgets-script-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\QRCHideShowFunctionality.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\quixnav-init.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\settings.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\styleSwitcher.js" />
+    <Content Include="Views\Customer\Scripts\NewAdminJS\WorkOrderHideShowFunctionality.js" />
+    <Content Include="Views\Customer\Scripts\NewTimePicker\jquery.timesetter.js" />
+    <Content Include="Views\Customer\Scripts\NewTimePicker\jquery.timesetter.min.css" />
+    <Content Include="Views\Customer\Scripts\QRCode\generateEfleetQRCode.js" />
+    <Content Include="Views\Customer\Scripts\QRCode\generateQRC.js" />
+    <Content Include="Views\Customer\Scripts\QRCode\jquery.qrcode-0.9.5.js" />
+    <Content Include="Views\Customer\Scripts\Report\exporting.js" />
+    <Content Include="Views\Customer\Scripts\Report\highcharts-3d.js" />
+    <Content Include="Views\Customer\Scripts\Report\highcharts.js" />
+    <Content Include="Views\Customer\Scripts\Report\Report.js" />
+    <Content Include="Views\Customer\Scripts\Report\StyleReport.css" />
+    <Content Include="Views\Customer\Scripts\respond.js" />
+    <Content Include="Views\Customer\Scripts\respond.min.js" />
+    <Content Include="Views\Customer\Scripts\Search\Searching.js" />
+    <Content Include="Views\Customer\Scripts\signalr-patch.js" />
+    <Content Include="Views\Customer\Scripts\simple.money.format.js" />
+    <Content Include="Views\Customer\Scripts\TableExport\html2canvas.js" />
+    <Content Include="Views\Customer\Scripts\TableExport\icons\csv.png" />
+    <Content Include="Views\Customer\Scripts\TableExport\icons\json.png" />
+    <Content Include="Views\Customer\Scripts\TableExport\icons\pdf.png" />
+    <Content Include="Views\Customer\Scripts\TableExport\icons\png.png" />
+    <Content Include="Views\Customer\Scripts\TableExport\icons\ppt.png" />
+    <Content Include="Views\Customer\Scripts\TableExport\icons\sql.png" />
+    <Content Include="Views\Customer\Scripts\TableExport\icons\txt.png" />
+    <Content Include="Views\Customer\Scripts\TableExport\icons\word.png" />
+    <Content Include="Views\Customer\Scripts\TableExport\icons\xls.png" />
+    <Content Include="Views\Customer\Scripts\TableExport\icons\xml.png" />
+    <Content Include="Views\Customer\Scripts\TableExport\jquery.base64.js" />
+    <Content Include="Views\Customer\Scripts\TableExport\jspdf\jspdf.js" />
+    <Content Include="Views\Customer\Scripts\TableExport\jspdf\libs\base64.js" />
+    <Content Include="Views\Customer\Scripts\TableExport\jspdf\libs\sprintf.js" />
+    <Content Include="Views\Customer\Scripts\TableExport\table2Export.js" />
+    <Content Include="Views\Customer\Scripts\TableExport\tableExport.js" />
+    <Content Include="Views\Customer\Scripts\TableExport\tableExportEdit.js" />
+    <Content Include="Views\Customer\Scripts\toastr.js" />
+    <Content Include="Views\Customer\Scripts\toastr.min.js" />
+    <Content Include="Views\Customer\Scripts\UserDefine\Dashboard.js" />
+    <Content Include="Views\Customer\Scripts\UserDefine\JobTitleChange.js" />
+    <Content Include="Views\Customer\Scripts\UserDefine\LoginEmailValidation.js" />
+    <Content Include="Views\Customer\Scripts\UserDefine\NewDashboard.js" />
+    <None Include="Views\Customer\Scripts\_references.js" />
     <Content Include="Views\Manager\Dashboard.cshtml" />
     <Content Include="Views\QRCSetup\Index.cshtml">
       <SubType>Code</SubType>
@@ -6473,6 +6870,111 @@
     <Content Include="Views\NewAdmin\userAssessmentView.cshtml" />
     <Content Include="Views\NewAdmin\userEvaluationView.cshtml" />
     <Content Include="Views\NewAdmin\userExpectationsView.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\JobPosting\_AddJobPostingFromVSC.cshtml" />
+    <Content Include="Views\CustomerManagement\CustomerEnquiryView.cshtml" />
+    <Content Include="Views\CustomerManagement\CustomerManagementSetup.cshtml" />
+    <Content Include="Views\CustomerManagement\ListCustomerEnquiry.cshtml" />
+    <Content Include="Views\CustomerManagement\ListCustomers.cshtml" />
+    <Content Include="Views\CustomerManagement\ListWaitingCustomers.cshtml" />
+    <Content Include="Views\EPeople\HolidayMaster.cshtml" />
+    <Content Include="Views\EPeople\HolidayMasterAddEdit.cshtml" />
+    <Content Include="Views\EPeople\LeaveManagement.cshtml" />
+    <Content Include="Views\EPeople\LeaveManagementAddEdit.cshtml" />
+    <Content Include="Views\EPeople\WebEmployeeAttendance.cshtml" />
+    <Content Include="Views\GlobalAdmin\ListDealsSpecific.cshtml" />
+    <Content Include="Views\GlobalAdmin\Shift.cshtml" />
+    <Content Include="Views\GlobalAdmin\_GlobalSettingsMaster.cshtml" />
+    <Content Include="Views\GlobalAdmin\_ListDealsSpecific.cshtml" />
+    <Content Include="Views\GlobalAdmin\_LocationSettiing.cshtml" />
+    <Content Include="Views\GlobalAdmin\_Shift.cshtml" />
+    <Content Include="Views\GlobalSettings\_AddBankAccount.cshtml" />
+    <Content Include="Views\GlobalSettings\_AddNewARRule.cshtml" />
+    <Content Include="Views\GlobalSettings\_BankAccountList.cshtml" />
+    <Content Include="Views\GlobalSettings\_InvoiceList.cshtml" />
+    <Content Include="Views\GlobalSettings\_NewInvoice.cshtml" />
+    <Content Include="Views\GlobalSettings\_RuleList.cshtml" />
+    <Content Include="Views\HRMS\ShiftMaster.cshtml" />
+    <Content Include="Views\HRMS\ShiftMasterAddEdit.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_PunchTimeRequest.cshtml" />
+    <Content Include="Views\NewAdmin\_AddDealsSpecificToLocation.cshtml" />
+    <Content Include="Views\Shared\_AttandanceManager.cshtml" />
+    <Content Include="Views\Shared\CustomerVehicleInformation.cshtml" />
+    <Content Include="Views\Shared\Registration.cshtml" />
+    <Content Include="Views\Shared\_CustomerPaymentDetails.cshtml" />
+    <Content Include="Views\Shared\_CustomerRecapDetails.cshtml" />
+    <Content Include="Views\Shared\_CustomerVehicleDetails.cshtml" />
+    <Content Include="Views\NewAdmin\QEvaluationView.cshtml" />
+    <Content Include="Views\InvoiceManagement\ClientInvoiceList.cshtml" />
+    <Content Include="Views\InvoiceManagement\CreateClientInvoice.cshtml" />
+    <Content Include="Views\InvoiceManagement\_InvoiceItemDetails.cshtml" />
+    <Content Include="Views\InvoiceManagement\Item.cshtml" />
+    <Content Include="Views\InvoiceManagement\ItemList.cshtml" />
+    <Content Include="Views\InvoiceManagement\ReceivePaymentClientInvoice.cshtml" />
+    <Content Include="Views\InvoiceManagement\_InvoiceItemDetailsForView.cshtml" />
+    <Content Include="Views\InvoiceManagement\InvoiceDashboard.cshtml" />
+    <Content Include="Views\InvoiceManagement\CreateCreditInvoice.cshtml" />
+    <Content Include="Views\InvoiceManagement\GetCreateCreditInvoice.cshtml" />
+    <Content Include="Views\InvoiceManagement\_CreditMemoInvoiceItemDetails.cshtml" />
+    <Content Include="Views\InvoiceManagement\_CreditMemoInvoiceItemDetailsStep2.cshtml" />
+    <Content Include="Views\InvoiceManagement\ClientCreditInvoiceList.cshtml" />
+    <Content Include="Views\EPeople\CoverageMapFormate.cshtml" />
+    <Content Include="Views\EPeople\LeaveType.cshtml" />
+    <Content Include="Views\EPeople\LeaveTypeList.cshtml" />
+    <Content Include="Views\EPeople\ListEmpShift.cshtml" />
+    <Content Include="Views\EPeople\LocationSeats.cshtml" />
+    <Content Include="Views\EPeople\ScheduleLocation.cshtml" />
+    <Content Include="Views\EPeople\ScheduleOverview.cshtml" />
+    <Content Include="Views\EPeople\_HolidayMasterDashboard.cshtml" />
+    <Content Include="Views\EPeople\_LeaveManagementForAdmin.cshtml" />
+    <Content Include="Views\EPeople\_LocationSeatHeadDetails.cshtml" />
+    <Content Include="Views\EPeople\AutoSchedule.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_AddOpenGeneralHoliday.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\StatusChaneForm\_LocationTransfer.cshtml" />
+    <Content Include="Views\GetMailData\GetAssessmentStatus.cshtml" />
+    <Content Include="Views\Customer\Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\NewAdmin\ePeople\EmployeeManagement.cshtml" />
+    <Content Include="Views\GlobalAdmin\Location\_AddBudget.cshtml" />
+    <Content Include="Views\GlobalAdmin\Location\_CostCodeTreeView.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\Requisition\_Chart.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\NewViewForEMP\_NewTreeView.cshtml" />
+    <Content Include="Views\Guest\Index1.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\OnBoarding\_AssetsAllocation.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\OnBoarding\_OfferLetter.cshtml" />
+    <Content Include="Views\Guest\PartialView\_AcademicDetailsApplicant.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ExperianceDetailsApplicant.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\OnBoarding\_CheckForDOT.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\OnBoarding\_ViewAnswerQuestion.cshtml" />
+    <Content Include="Views\Guest\PartialView\_EmploymentHistory.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantInfomation.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantAccidentRecord.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantTrafficConvictions.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantLicenseHeald.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantPersonalInfo.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantAddress.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantContactInfo.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantAdditionalInfo.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantVehiclesOperated.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantPositionTitle.cshtml" />
+    <Content Include="Views\NewAdmin\SelfAssessmentView.cshtml" />
+    <Content Include="Views\Guest\PartialView\_CommonModals.cshtml" />
+    <Content Include="Views\Guest\PartialView\_BackGroundCheckForm.cshtml" />
+    <Content Include="Views\Guest\PartialView\_BenifitSectionFloridaBlue.cshtml" />
+    <Content Include="Views\Guest\PartialView\_SelfIdentificationForm.cshtml" />
+    <Content Include="Views\Guest\PartialView\_DesclaimerEEO.cshtml" />
+    <Content Include="Views\Guest\PartialView\_ApplicantFunFact.cshtml" />
+    <Content Include="Views\Guest\_RateOfPay.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\_HiringOnBoardingDashboardNew.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\NewViewForEMP\EmployeeChartList.cshtml" />
+    <Content Include="Views\NewAdmin\DAR\DARDashboard.cshtml" />
+    <Content Include="Views\NewAdmin\ePeople\OnBoarding\_ViewApplicantDetails.cshtml" />
+    <Content Include="Views\Error\_Error.cshtml" />
+    <Content Include="Views\Error\_ThankYou.cshtml" />
+    <Content Include="Views\Guest\FormPDF\_W4FormPDF.cshtml" />
+    <Content Include="Views\Guest\FormPDF\_I9FormPDF.cshtml" />
+    <Content Include="Views\Notification\_ApplicantDetailsWhenAcceptRejectCounterOffer.cshtml" />
+    <Content Include="Views\Notification\_NotificationList.cshtml" />
+    <Content Include="Views\Notification\_ApplicantDetails.cshtml" />
+    <Content Include="Views\InvoiceManagement\CreditInvoicePDF.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -6484,11 +6986,15 @@
     <Folder Include="Areas\AdminSection\Models\AdminSectionModel\" />
     <Folder Include="Areas\AdminSection\Views\SendEmailTemplate\" />
     <Folder Include="Content\AdminDocs\PDFForm\" />
+    <Folder Include="Content\ApplicantFiles\PDFUpload\" />
+    <Folder Include="Content\ApplicantFiles\Signature\" />
+    <Folder Include="Content\ApplicantFiles\UploadDocument\" />
     <Folder Include="Content\DARDisclaimer\" />
     <Folder Include="Content\eCountingDocs\BankAccountDocs\" />
     <Folder Include="Content\eCountingDocs\BillDocs\" />
     <Folder Include="Content\eCountingDocs\CompanyDocs\" />
     <Folder Include="Content\eCountingDocs\ContractDocs\" />
+    <Folder Include="Content\eCountingDocs\CreditInvoiceTempPdf\" />
     <Folder Include="Content\eCountingDocs\EmergencyDocs\" />
     <Folder Include="Content\eCountingDocs\ImageFacility\" />
     <Folder Include="Content\eCountingDocs\LicenseAndInsurance\" />
@@ -6501,6 +7007,7 @@
     <Folder Include="Content\eFleetDocs\VehicleImage\" />
     <Folder Include="Content\eFleetDocs\VehicleIncident\" />
     <Folder Include="Content\eMaintenance\SurveyDownload\" />
+    <Folder Include="Content\FilesRGY\" />
     <Folder Include="Content\Images\DARSignature\" />
     <Folder Include="Content\Images\Default\" />
     <Folder Include="Content\Images\FRSignature\" />
@@ -6514,15 +7021,20 @@
     <Folder Include="Content\ProjectDocs\VendorAckForm\" />
     <Folder Include="Content\ProjectDocs\VendorW9Form\" />
     <Folder Include="obj\" />
+    <Folder Include="Pdf\" />
     <Folder Include="ReportPDF\FullPageReport\eFleet\" />
     <Folder Include="Views\DebitMemo\" />
+    <Folder Include="Views\NewAdmin\ePeople\EditEmployeeForm\" />
     <Folder Include="Views\NewClient\" />
+    <Folder Include="Views\WebAPIDoc\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="packages.config" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>

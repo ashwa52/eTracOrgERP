@@ -24,7 +24,7 @@ $(function () {
         { name: 'Description', width: 40, sortable: false }],
        // { name: 'IsActive', width: 20, sortable: true }],
         //{ name: 'act', index: 'act', width: 30, sortable: false }],
-        rownum: 10,
+        rownum: 20,
         rowList: [10, 20, 30],
         scrollOffset: 0,
         pager: '#divCostCodeListPager',
@@ -103,7 +103,7 @@ $('#ActiveCostCode').live("click", function (event) {
             new fn_showmaskloader('please wait...');
         },
         success: function (data) {
-            debugger
+            
             jQuery("#tbl_SubCostCodeDetails").jqGrid('setGridParam', { url: $_HostPrefix + 'CostCode/GetListOfSubCostCode?id=' + activeMasterId, type: "GET", page: 1 }).trigger("reloadGrid");
             $('#tbl_SubCostCodeDetails').trigger('reloadGrid');
             GridReloadData(activeMasterId);
@@ -124,7 +124,7 @@ $('#ActiveCostCode').live("click", function (event) {
 
 function GridReloadData(rowid)
 {
-    debugger
+    
     $.ajax({
         //type: "post",
         url: $_HostPrefix + 'CostCode/GetListOfSubCostCode' + '?id=' + rowid,

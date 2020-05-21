@@ -20,6 +20,7 @@ namespace WorkOrderEMS.Data.EntityModel
         public string EMA_City { get; set; }
         public string EMA_State { get; set; }
         public Nullable<int> EMA_Zip { get; set; }
+        public long W4F_Id { get; set; }
         public string W4F_EMP_EmployeeId { get; set; }
         public string W4F_SSN { get; set; }
         public string w4F_3MaritalStatus { get; set; }
@@ -30,6 +31,5 @@ namespace WorkOrderEMS.Data.EntityModel
         public string w4F_8EmployersName { get; set; }
         public Nullable<System.DateTime> w4F_9 { get; set; }
         public string w4F_10 { get; set; }
-        public long W4F_Id { get; set; }
     }
 }

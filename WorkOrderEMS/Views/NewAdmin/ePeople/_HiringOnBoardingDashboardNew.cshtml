@@ -1,0 +1,697 @@
+﻿
+@{
+    //Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+    Layout = null;
+
+    string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
+    WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "", CurrentUser = "";
+    bool isScheduled = Convert.ToBoolean(Session["IsInterviewDone"]);
+    long loginUserType = 0;
+    long locationId = 0;
+    long UserId = 0;
+    if (ObjLogin != null)
+    {
+        loginUserName = ObjLogin.FName + "'s";
+        loginUserEmail = ObjLogin.Email;
+        loginUserProfile = ObjLogin.UserProfile;
+        loginUserType = ObjLogin.UserRoleId;
+        //loginUserContactNo = ObjLogin.ContactNo;
+        locationId = ObjLogin.LocationID;
+        UserId = ObjLogin.UserId;
+        CurrentUser = WorkOrderEMS.Helper.Cryptography.GetEncryptedData(ObjLogin.UserName, true);
+    }
+}
+<style>
+    .CloseJob{
+        background-color:red;
+    }
+    .HoldJob{
+background-color:cadetblue;
+    }
+    .client-photo {
+        border-radius: 50%;
+        height: auto;
+        width: 50px;
+    }
+
+    .actionbox {
+        /*background-color: #118434;*/
+        text-align: center;
+        border-radius: 2px;
+        padding: 2px;
+        min-width: 20px;
+        min-height: 20px;
+        color: #000 !important;
+    }
+
+    .actionboxR {
+        /*background-color: #118434;*/
+        text-align: center;
+        border-radius: 2px;
+        padding: 2px;
+        min-width: 20px;
+        min-height: 20px;
+        color: green !important;
+    }
+
+    .actionboxS {
+        /*background-color: #118434;*/
+        text-align: center;
+        border-radius: 2px;
+        padding: 2px;
+        min-width: 20px;
+        min-height: 20px;
+        color: red !important;
+    }
+    /*.actionDiv {
+        width: 175px;
+    }*/
+
+    .whiteR {
+        color: #E26257 !important;
+        font-size: 25px;
+    }
+
+    .whiteB {
+        color: blue !important;
+        font-size: 25px;
+    }
+
+    .whiteGr {
+        color: #121a80 !important;
+        font-size: 25px;
+    }
+
+
+    .inline {
+        display: inline-block;
+        position: relative;
+    }
+
+    .white {
+        color: white;
+        font-size: 25px;
+    }
+
+    .whiteD {
+        color: #000;
+        font-size: 25px;
+    }
+
+    .whiteY {
+        color: #9e15af !important;
+        font-size: 25px;
+    }
+
+    .action1 {
+        margin: 2px;
+    }
+
+    .actionBtn {
+        margin: 4px;
+        color: #000000;
+    }
+
+    .inlineDivdonut {
+        display: inline-block;
+    }
+
+    .donutC {
+        width: 27px;
+        height: auto;
+    }
+
+    .text {
+        z-index: 999999;
+        width: 495px;
+        height: 200px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        box-shadow: 0 0 3px rgba(0, 0, 0, .3);
+        -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, .3);
+        border-radius: 3px;
+        -webkit-border-radius: 3px;
+        position: absolute;
+        top: 21px;
+        /* left: 50px; */
+        background: #ddd;
+        display: none;
+        right: 116px;
+    }
+
+    .select-pure__select {
+        align-items: center;
+        background: #f9f9f8;
+        border-radius: 4px;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        box-sizing: border-box;
+        color: #363b3e;
+        cursor: pointer;
+        display: flex;
+        font-size: 16px;
+        font-weight: 500;
+        justify-content: left;
+        min-height: 44px;
+        padding: 5px 10px;
+        position: relative;
+        transition: 0.2s;
+        width: 100%;
+    }
+
+    .select-pure__options {
+        border-radius: 4px;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+        box-sizing: border-box;
+        color: #363b3e;
+        display: none;
+        left: 0;
+        max-height: 221px;
+        overflow-y: scroll;
+        position: absolute;
+        top: 50px;
+        width: 100%;
+        z-index: 5;
+    }
+
+    .select-pure__select--opened .select-pure__options {
+        display: block;
+    }
+
+    .select-pure__option {
+        background: #fff;
+        border-bottom: 1px solid #e4e4e4;
+        box-sizing: border-box;
+        height: 44px;
+        line-height: 25px;
+        padding: 10px;
+    }
+
+    .select-pure__option--selected {
+        color: #e4e4e4;
+        cursor: initial;
+        pointer-events: none;
+    }
+
+    .select-pure__option--hidden {
+        display: none;
+    }
+
+    .select-pure__selected-label {
+        align-items: 'center';
+        background: #0A9FCC;
+        border-radius: 4px;
+        color: #fff;
+        cursor: initial;
+        display: inline-flex;
+        justify-content: 'center';
+        margin: 5px 10px 5px 0;
+        padding: 3px 7px;
+    }
+
+        .select-pure__selected-label:last-of-type {
+            margin-right: 0;
+        }
+
+        .select-pure__selected-label i {
+            cursor: pointer;
+            display: inline-block;
+            margin-left: 7px;
+        }
+
+        .select-pure__selected-label img {
+            cursor: pointer;
+            display: inline-block;
+            height: 18px;
+            margin-left: 7px;
+            width: 14px;
+        }
+
+        .select-pure__selected-label i:hover {
+            color: #e4e4e4;
+        }
+
+    .select-pure__autocomplete {
+        background: #f9f9f8;
+        border-bottom: 1px solid #e4e4e4;
+        border-left: none;
+        border-right: none;
+        border-top: none;
+        box-sizing: border-box;
+        font-size: 16px;
+        outline: none;
+        padding: 10px;
+        width: 100%;
+    }
+
+    .select-pure__placeholder--hidden {
+        display: none;
+    }
+</style>
+<script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/Core4.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/Chart4.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/Material4.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/Animated4.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/amchart3.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/Charts/serial3.js"></script>
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />
+<link href="~/Content/Dashboard/plugins/fullcalendar/fullcalendar.css" rel="stylesheet" />
+<link href="~/Content/NewAdminContent/CSS/clockPicker.css" rel="stylesheet" />
+<style>
+    .addWhite {
+        color: white;
+    }
+
+    .widthHeader {
+        height: 40px;
+    }
+
+    .WidthForTab {
+        width: 14%;
+    }
+
+    .CenterText {
+        text-align: center;
+    }
+
+    #loading {
+        display: none;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+
+    #calendar {
+        max-width: 900px;
+    }
+
+    /*.ENQUIRY {
+            background-color: #FF9933;
+            border-color: #C0C0C0;
+            color: White;
+            background-position: 1px 1px;
+            background-repeat: no-repeat;
+            background-image: url('Bubble.png');
+            padding-left: 50px;
+        }
+
+        .BOOKED {
+            background-color: #33CCFF;
+            border-color: #C0C0C0;
+            color: White;
+            background-position: 1px 1px;
+            background-repeat: no-repeat;
+            background-image: url('ok.png');
+            padding-left: 50px;
+        }
+
+        .CONFIRMED {
+            background-color: #33CC33;
+            border-color: #C0C0C0;
+            color: White;
+            background-position: 1px 1px;
+            background-repeat: no-repeat;
+            background-image: url('Money.png');
+            padding-left: 50px;
+        }*/
+    /*a.fc-day-grid-event.fc-event.fc-start.fc-end.fc-draggable {
+        background-color: #0074D9!important;
+        border-color: #0074D9!important;
+    }*/
+</style>
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+        <div class="row page-titles mx-0 mb-0 mb-md-3 mb-sm-3" data-aos="fade-up">
+            <div class="col-sm-12 col-xxl-4 col-lg-4 col-md-12 col-12" id="showHideHiringOnBoardingDashboard">
+                <div class="welcome-text">
+                    <h4>Hi, welcome back! @loginUserName</h4>
+                </div>
+            </div>
+
+        </div>
+        <div id="infofactsheet">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card" data-aos="fade-up">
+                        <div class="card-header widthHeader ">
+                            <h4 class="card-title addWhite" style="color: white;">Employee</h4>
+                        </div>
+                        <div class="card-body">
+                            <div id="QRCCount"></div>
+                            @*<div id="EmployeeCount"></div>*@
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card" data-aos="fade-up">
+                        <div class="card-header widthHeader ">
+                            <h4 class="card-title addWhite" style="color: white;">Hiring</h4>
+                        </div>
+                        <div class="card-body">
+                            <div id="eTimediv"></div>
+                            @*<div id="c3-combination"></div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" style="margin-top: -18px;">
+                <div class="col-lg-12" id="hiringOnBordingDiv">
+                    <div class="card" data-aos="fade-up">
+                        <div class="card-header" style="height: 45px;">
+                            <h4 class="card-title addWhite"><b>Hiring & On-Boarding</b></h4>
+                        </div>
+                        <span>
+                            <i class="fa fa-refresh fa-2x" aria-hidden="true" onclick="RefreshGrid();" title="Refresh"></i>                          
+                        </span>
+                        <div class="card-body">
+                            <div class="custom-tab-1">
+                                <ul class="nav nav-tabs">
+                                    <li class="nav-item WidthForTab">
+                                        <a class="nav-link active CenterText" data-toggle="tab" href="#home1">On-Boarding</a>
+                                    </li>
+                                    <li class="nav-item WidthForTab">
+                                        <a class="nav-link CenterText" data-toggle="tab" onclick="MyOpeningSummery();" href="#profile1">My Opening</a>
+                                    </li>
+                                    <li class="nav-item WidthForTab">
+                                        <a class="nav-link CenterText" data-toggle="tab" href="#contact1" onclick="GetCompanyOpening()">Company Opening</a>
+                                    </li>
+                                    <li class="nav-item WidthForTab">
+                                        <a class="nav-link CenterText" data-toggle="tab" href="#myinterview" onclick="MyInterviews()">My Interview</a>
+                                    </li>
+
+                                </ul>
+                                <div class="nav-item" style="float:right;display:inline-block" id="JobPostBackBtn">
+                                    <a onclick="JobPosting();">
+                                        <i class="fa fa-chevron-circle-left" id="btnBack" aria-hidden="true" style="font-size: 32px;color: black;padding: 11px 5px 6px 5px;display:none"></i>
+                                    </a>
+                                </div>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade show active" id="home1" role="tabpanel">
+                                        <div class="pt-4">
+
+                                            <input type="hidden" value="false" id="isScheduled" />
+                                            <div id="ListOnBoarding"></div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="profile1">
+                                        <div class="pt-4">
+                                            <div id="ListMyOpening"></div>
+                                            <div id="MyOpeningSummery"></div>
+                                            <div class="row mx-md-n5">
+                                            </div>
+                                            <div id="Scheduler" style="display:none" class="row">
+                                                <div class="nav-item" style="float:right;display:inline-block;position: absolute;right: 0;top: 5%;">
+                                                    <a onclick="ShowMyOpeningGrid();">
+                                                        <i class="fa fa-chevron-circle-left" aria-hidden="true" style="font-size: 32px;color: black;padding: 11px 5px 6px 5px;"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="col-sm-8 col-lg-8">
+                                                    <div id="calendar"></div>
+                                                </div>
+                                                <div id="SchedulerList" class="col-sm-4 col-lg-4">
+                                                    @*<ul class="list-group">
+                                        <li class="list-group-item list-group-item-success">
+                                            <label>Applicant Id:</label>
+                                            <label id="lblApplicantId"></label>
+                                        </li>
+                                        <li class="list-group-item list-group-item-info">
+                                            <label>Applicant Name:</label>
+                                            <label id="lblApplicantName"></label>
+                                        </li>
+                                        <li class="list-group-item list-group-item-warning">
+                                            <label>Applicant Email:</label>
+                                            <label id="lblApplicantEmail"></label>
+                                        </li>
+                                    </ul>*@
+                                                    <hr />
+                                                    @*<label>Select additional interviewers</label>
+                                    <div id="inpManageName">
+                                        <span class="autocomplete-select"></span>
+                                    </div>
+                                    <hr />*@
+                                                    <h2>Booked Slots</h2>
+                                                    <div id="BookedSlots">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div id="Scheduler" style="display:none" class="row">
+                                                <div class="nav-item" style="float:right;display:inline-block;position: absolute;right: 0;top: 1%;">
+                                                    <a onclick="ShowMyOpeningGrid();">
+                                                        <i class="fa fa-chevron-circle-left" aria-hidden="true" style="font-size: 32px;color: black;padding: 11px 5px 6px 5px;"></i>
+                                                    </a>
+                                                </div>
+                                                <div class="col-sm-8 col-lg-8">
+                                                    <div id="calendar"></div>
+                                                </div>
+                                                <div id="SchedulerList" class="col-sm-4 col-lg-4">
+                                                    @*<ul class="list-group">
+                                        <li class="list-group-item list-group-item-success">
+                                            <label>Applicant Id:</label>
+                                            <label id="lblApplicantId"></label>
+                                        </li>
+                                        <li class="list-group-item list-group-item-info">
+                                            <label>Applicant Name:</label>
+                                            <label id="lblApplicantName"></label>
+                                        </li>
+                                        <li class="list-group-item list-group-item-warning">
+                                            <label>Applicant Email:</label>
+                                            <label id="lblApplicantEmail"></label>
+                                        </li>
+                                    </ul>*@
+                                                    <hr />
+                                                    @*<label>Select additional interviewers</label>
+                                    <div id="inpManageName">
+                                        <span class="autocomplete-select"></span>
+                                    </div>
+                                    <hr />*@
+                                                    <h2>Booked Slots</h2>
+                                                    <div id="BookedSlots">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="contact1">
+                                            <div class="pt-4">
+                                                <div id="companyOpening"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="tab-pane fade" id="myinterview">
+                                        <div class="pt-4">
+                                            <div id="myinterviews"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @*<div id="infofactsheet">
+
+            </div>*@
+    </div>
+</div>
+@Html.Partial("~/Views/NewAdmin/ePeople/_HiringOnBoarding.cshtml")
+<div class="modal fade  bd-example-modal-lg" @*data-backdrop="false" *@ id="ModalProfilePreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">View Profile</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="viewProfileData">
+
+                </div>
+            </div>
+            <div class="modal-footer" style="background: white;">
+
+                <button type="button" class="btn btn-secondary" id="close" style="border-radius:100px;" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade  bd-example-modal-lg" id="ModalScheduleInterview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Schedule Interview</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="EventForm" class="well">
+                    <input type="hidden" id="eventID" class="form-control">
+                    <input type="hidden" id="JobId" />
+                    <input type="text" id="eventTitle" placeholder="Title here" class="form-control col-sm-8"><br />
+                    <input type="text" id="eventDate" class="form-control col-sm-8" readonly><br />
+                    <div id="eventTime" class="col-sm-8" style="padding: 0px;"></div><br />
+                    <input type="text" id="eventDuration" placeholder="60 min" class="form-control col-sm-8" readonly><br />
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnPopupCancel" data-dismiss="modal" class="btn btn-danger">Cancel</button>
+                <button type="button" id="btnPopupSave" data-dismiss="modal" class="btn btn-primary">Save event</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="popupEventForm" class="modal hide" style="display: none;">
+    <div class="modal-header"><h3>Add new event</h3></div>
+    <div class="modal-body">
+        <form id="EventForm" class="well">
+            <input type="hidden" id="eventID">
+            <label>Event title</label>
+            <input type="text" id="eventTitle" placeholder="Title here"><br />
+            <label>Scheduled date</label>
+            <input type="text" id="eventDate"><br />
+            <label>Scheduled time</label>
+            <input type="text" id="eventTime"><br />
+            <label>Appointment length (minutes)</label>
+            <input type="text" id="eventDuration" placeholder="15"><br />
+        </form>
+    </div>
+</div>
+<div class="modal fade  bd-example-modal-lg" id="ModalForOfferLetter" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content" style="width:1582px;margin: -30px 0px -47px -382px;">
+            <div class="modal-body" style="margin-left: -157px;">
+                <div id="viewOffer"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade  bd-example-modal-lg" @*data-backdrop="false"*@ id="ModalForAssetsAdd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content" style="width:1000px;">
+            <div class="modal-header">
+                <h5 class="modal-title">Add Assets</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="viewAssetsData">
+                </div>
+            </div>
+            <div class="modal-footer" style="background: white;">
+                <button type="button" class="btn btn-success" id="SaveAssetsApplicant" style="border-radius:100px;">Add Assets</button>
+                <button type="button" class="btn btn-primary" id="CloseAssest" style="border-radius:100px;width:98px;" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--modal to view applicant all details-->
+<div class="modal bs-example-modal-lg fade preview" id="myModalForGetApplicantDetails" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content" style="width: 120%;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Applicant Details</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="ApplicantDetailsDiv"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary bluebutton text-right" style="border-radius:25px;width:90px;" onclick="return AppproveRejectApplicant(true);" id="btnApproveData">Approve</button>
+                <button class="btn btn-danger" onclick="return AppproveRejectApplicant(false);" style="border-radius:25px;width:90px;" id="btnRejectPO">Reject</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="modal bs-example-modal-lg fade preview" id="myModalUpdatePanel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg ">
+        <div class="modal-content" style="width: 120%;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Update Interview Panel</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <hr />
+                <label>Select additional interviewers</label>
+                <div id="inpManageName">
+                    <span class="autocomplete-select"></span>
+                </div>
+                <hr />
+                <span id="DisplayMessage" style="color:red; display:none">Interview panel has been saved successfully </span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary bluebutton text-right" style="border-radius:25px;width:90px;" onclick="return UpdateInterviewPanel();" id="btnApproveData">Update</button>
+                <button class="btn btn-danger" onclick="" style="border-radius:25px;width:90px;" id="btnRejectPO">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade  bd-example-modal-lg" id="ModalForJobStatusChange" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="myModalLabel">Job Status Change</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="HoldOpenCloseJobDiv">
+                    <label id="HoldOpenCloseJobId"></label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary bluebutton" style="border-radius:25px;width:90px;" id="HoldOpenCloseYes" onclick="CloseHoldJob();">Yes</button>
+                <button class="btn btn-danger" onclick="" style="border-radius:25px;width:90px;" id="HoldOpenCloseNo">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Content/NewAdminContent/VENDOR/jsgrid/js/jsgrid.min.js"></script>
+<script src="~/GridListing/JsGridScript/ListOnBoarding.js"></script>
+<script src="~/GridListing/JsGridScript/ListMyOpening.js"></script>
+<script src="~/GridListing/JsGridScript/ListEmployeeManagement.js"></script>
+<script src="~/Scripts/moment.min.js"></script>
+<script src="~/Content/Dashboard/plugins/fullcalendar/fullcalendar.min.js"></script>
+<script src="~/Scripts/NewAdminJS/AssetsAndOffer.js"></script>
+<link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />
+<script src="~/Content/Dashboard/plugins/fullcalendar/mySchedule.js"></script>
+<script src="~/Content/NewAdminContent/JQUERY/clockPicker.js"></script>
+<script src="~/Scripts/BootStrap-Multiselect/JS/bootbox.js"></script>
+<script>
+
+    $("#HiringOnBoard").click(function () {
+        $("#hiringOnBordingDiv").show();
+        $("#EmployeeManagementDiv").hide();
+        $('html,body').animate({
+            scrollTop: $("#hiringOnBordingDiv").offset().top
+        }, 'slow');
+    });
+
+    $("#EmplooyeeManagement").click(function () {
+        $("#EmployeeManagementDiv").show();
+        $("#hiringOnBordingDiv").hide();
+        $('html,body').animate({
+            scrollTop: $("#EmployeeManagementDiv").offset().top
+        }, 'slow');
+    });
+</script>

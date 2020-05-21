@@ -663,4 +663,142 @@ namespace WorkOrderEMS.Helper
         [StringValue("InsuranceVander")]
         VendorType = 3,
     }
+    public enum POType
+    {
+        [StringValue("NormalPO")]
+        NormalPO = 1,
+    }
+    public enum FileType
+    {
+        [StringValue("FileTypeSSNLicense")]
+        FileType = 2,
+    }
+
+    public enum POReccuringStaus
+    {
+        Pending,
+        Completed,
+    }
+    public static class EmployeeStatusChnage
+    {
+        public const string L = "LocationTransfer";
+        public const string S = "EmployeeStatus";
+        public const string D = "Demotion";
+    }
+    public static class ApplicantStatus
+    {
+        public const string BackgroundCheck = "F";       
+        public const string Screened = "S";
+        public const string Reject = "R";
+        public const string Applied = "A";
+        public const string Shortlisted = "D";
+        public const string Assessment = "E";
+        public const string Onboarding = "I";
+        public const string Offer = "O";
+        public const string Hired = "H";
+        public const string InterviewScheduled = "Hired";
+    }
+    public static class ApplicantIsActiveStatus
+    {
+        public const string Sent = "S";
+        public const string Pass = "Y";
+        public const string Fail = "N";
+        public const string OfferAccepted = "A";
+        public const string OfferRejected = "D";
+        public const string OfferCounter = "C";
+        public const string Onboarding = "I";
+    }
+    public static class VendorName
+    {
+        public const string BackgroundCheck = "Employment Screening";
+    }
+    /// <summary>
+    /// Created By : Ashwajit Bansod
+    /// </summary>
+    public enum InterviewQuestionsId
+    {
+        MasterId_1 = 1,
+        QuestionId_2 = 2,
+        QuestionId_3 = 3,
+        MasterId_2 = 2,
+        QuestionId_4 = 4,
+        QuestionId_6 = 6,
+        MasterId_3 = 3,
+        QuestionId_7 = 7,
+        QuestionId_8 = 8,
+        QuestionId_10 = 10,
+        QuestionId_11 = 11,
+        MasterId_4 = 4,
+        QuestionId_12 = 12,
+        QuestionId_13 = 13,
+        QuestionId_15 = 15,
+        QuestionId_16 = 16,
+        MasterId_5 = 5,
+        QuestionId_22 = 22,
+        QuestionId_23 = 23,
+        MasterId_6 = 6,
+        QuestionId_26 = 26,
+        MasterId = 11,
+        QuestionId_45 = 45,
+        QuestionId_46 = 46,
+        QuestionId_47 = 47,
+        QuestionId_48 = 48,
+
+    }
+    public static class SelfIdentification
+    {
+        public const string HL = "Hispanic or Latino";
+        public const string S = "EmployeeStatus";
+        public const string D = "Demotion";
+    }
+    public enum FileTypeId
+    {
+        I9 = 17,
+        W4 = 19
+    }
+    public static class ActiveStatus
+    {
+        public const string N = "N";
+        public const string Y = "Y";
+    }
+    public static class ModuleSubModule
+    {
+        //Epeople
+        public const string ePeople = "ePeople";
+        public const string OnBoarded = "OnBoarded";
+        public const string OnBoarding = "OnBoarding";
+        public const string Interviewer = "Interviewer";
+        public const string InterviewerAcceptDeny = "InterviewAcceptDeny";
+        public const string AssessmentStatus = "AssessmentStatus";
+        public const string OnBoardingComplete = "OnBoardingComplete";
+        public const string AssessmentStart = "AssessmentStart";
+
+        //Performance
+        public const string Performance = "Performance";
+        public const string EvaluationStart = "EvaluationStart";
+        public const string EvaluationComplete = "EvaluationComplete";
+    }
+    public static class Priority
+    {
+        public const string High = "H";
+        public const string Medium = "M";
+        public const string Low = "L";
+    }
+    public static class APIName
+    {
+        public const string I9AuthenticationAPI= "I9Authentication";
+        public const string I9AuthenticationLink = "/authentication/login";
+        public const string I9CaseAPI = "I9CaseAPI";
+        public const string I9CaseAPILink = "https://stage-everify.uscis.gov/api/v30/cases";
+        public const string I9refreshTokenLink = "/authentication/refresh";
+        public const string I9CaseSubmitLink = "https://stage-everify.uscis.gov/api/v30/cases/";
+        public const string I9refreshToken = "I9TokenRefresh";
+        public const string I9PostDataCase = "I9PostDataCase";
+        public const string I9CaseSubmit = "I9CaseSubmit";
+        public const string FloridaBlueAuthentication = "FloridaBlueAuthentication";
+        public const string FloridaBlueAuthenticationLink = "https://api.availity.com/availity/v1/token";
+        public const string FloridaBlueGetLink = "https://api.availity.com/availity/v1/configurations?type=270";
+        public const string BackGroudScreeningPostLink = "https://uat-api.applicantinsight.net/v1/api/Screenings";
+        public const string BackGroudScreening = "BackGroudScreening";
+    }
 }
