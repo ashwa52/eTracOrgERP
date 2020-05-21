@@ -28,9 +28,6 @@ namespace WorkOrderEMS.Models
         public string ReturnStatus { get; set; }
         public Nullable<DateTime> Date { get; set; }
         public string IsActive { get; set; }
-        public string EmployeeName { get; set; }
-        public string OperationalHead { get; set; }
-        public string employeephoto { get; set; }
     }
     public class ComputerAssets
     {

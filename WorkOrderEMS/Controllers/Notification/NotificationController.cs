@@ -90,31 +90,5 @@ namespace WorkOrderEMS.Controllers
             }
             return View("_ApplicantDetailsWhenAcceptRejectCounterOffer", getData);
         }
-        [HttpPost]
-        public ActionResult ViewForMeeting(NotificationDetailModel obj)
-        {
-
-
-            try
-            {
-                if (obj != null)
-                {
-
-                    var getnotificationdetails = _INotification.NotificationDetailsforMeetingDateTime(obj);
-
-                    return View("~/Views/CorrectiveAction/MeetingScheduler.cshtml", getnotificationdetails);
-                }
-                else
-                {
-                    return View("~/Views/CorrectiveAction/MeetingScheduler.cshtml");
-                }
-            }
-            catch (Exception ex)
-            {
-
-            }
-            return View("~/Views/CorrectiveAction/MeetingScheduler.cshtml");
-        }
-
     }
 }

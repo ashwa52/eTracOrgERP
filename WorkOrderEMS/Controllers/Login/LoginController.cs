@@ -323,15 +323,6 @@ namespace WorkOrderEMS.Controllers.Login
                                 //QuickBookIndex();
                                 return RedirectToAction("Index", "Client");
                                 break;
-
-                                //Added by Rajat Toppo
-                            case ((Int64)(UserType.HR)):
-                                Session["eTrac_UserLocations"] = _ILogin.GetEmployeeAssignedLocation(result.UserId);
-                                //QuickBookIndex();
-                                return RedirectToAction("Index", "NewAdmin");
-                                //return RedirectToAction("Index", "Employee");
-                                break;
-
                             case ((Int64)(UserType.GuestUser)):
                                 Session["eTrac_UserLocations"] = _ILogin.GetUserAssignedLocations(result.UserRoleId, result.UserId);
                                 Session["eTrac_UserRoles"] = Session["eTrac_LocationServices"];

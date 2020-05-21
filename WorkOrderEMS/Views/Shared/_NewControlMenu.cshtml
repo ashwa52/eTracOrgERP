@@ -42,12 +42,12 @@
     }
 }
 @section Script{
-    <script>
+<script>
     debugger
         var $_locId = '@locationId';
         $("#drp_MasterLocation option:selected").val($_locId);
     $("#drp_MasterLocation").val($_locId).attr("selected", "selected");
-    </script>
+</script>
 }
 
 <!--**********************************
@@ -70,24 +70,24 @@
                     </div>
 
                     @*<div class="dropdown create-option-btn">
-                            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-                                Create
-                            </button>
-                            <div class="dropdown-menu create-option animated fadeInUp">
-                                <a href="@Url.Action("LocationSetup", "GlobalAdmin")" class="dropdown-item">
-                                    <i class="mdi mdi-account-plus"></i>
-                                    <span class="ml-2">Location Setup</span>
-                                </a>
-                                <a href="#!" class="dropdown-item">
-                                    <i class="mdi mdi-account-plus"></i>
-                                    <span class="ml-2">QRC Setup</span>
-                                </a>
-                                <a href="#!" class="dropdown-item">
-                                    <i class="mdi mdi-account-plus"></i>
-                                    <span class="ml-2">Create Work Order</span>
-                                </a>
-                            </div>
-                        </div>*@
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                            Create
+                        </button>
+                        <div class="dropdown-menu create-option animated fadeInUp">
+                            <a href="@Url.Action("LocationSetup", "GlobalAdmin")" class="dropdown-item">
+                                <i class="mdi mdi-account-plus"></i>
+                                <span class="ml-2">Location Setup</span>
+                            </a>
+                            <a href="#!" class="dropdown-item">
+                                <i class="mdi mdi-account-plus"></i>
+                                <span class="ml-2">QRC Setup</span>
+                            </a>
+                            <a href="#!" class="dropdown-item">
+                                <i class="mdi mdi-account-plus"></i>
+                                <span class="ml-2">Create Work Order</span>
+                            </a>
+                        </div>
+                    </div>*@
                 </div>
 
                 <ul class="navbar-nav header-right">
@@ -104,7 +104,7 @@
                             @if (Session != null)
                             {
                                 if (Session["eTrac_UserLocations"] != null)
-                                {
+                                {                           
                                     @Html.DropDownList("drp_MasterLocation", new SelectList((List<WorkOrderEMS.Models.UserLocations>)Session["eTrac_UserLocations"], "LocationId", "LocationName"), null, new { @class = "form-control input-rounded", @id = "drp_MasterLocation1" })
                                 }
                             }
@@ -148,22 +148,6 @@
                             </div>
                         </div>
                     </li>
-
-
-
-                    <li class="nav-item dropdown" id="ShowHideCorrectiveAction" style="display:none;">
-                        <a class="nav-link" href="#" role="button" data-toggle="dropdown">
-                            <button id="CorrectiveActionAcceptDeny" style="margin-top: 6px;border-radius: 15px;width: 15px;height: 15px;background-color: red;border: 1px;"></button>
-                        </a>
-                        <div class="dropdown-menu dropdown-menu-right animated fadeInDown" style="padding:5px 0 5px 0;background-color: #15252333;">
-                            <div>
-                                <button id="AcceptDenyDispute" style="border-radius: 12px;background-color: #000000e6;border: 1px;margin: 0px 0px 0px 9px;width: 140px;height: 27px;color: #ccc6c6eb">Corrective Action</button>
-                                @*<p class="mb-0" style="margin-left:16px;">Corrective Action</p>*@
-                            </div>
-
-                        </div>
-                    </li>
-
 
                     <li class="nav-item dropdown notification_dropdown">
                         <a class="nav-link" href="#" role="button" data-toggle="dropdown">
@@ -231,25 +215,25 @@
                                 <span class="ml-2">My Profile</span>
                             </a>
                             @*<a href="#!" class="dropdown-item">
-                                    <i class="mdi mdi-wallet"></i>
-                                    <span class="ml-2">My Wallet</span>
-                                </a>
-                                <a href="#!" class="dropdown-item">
-                                    <i class="mdi mdi-email"></i>
-                                    <span class="ml-2">Inbox</span>
-                                </a>
-                                <a href="#!" class="dropdown-item">
-                                    <i class="mdi mdi-settings"></i>
-                                    <span class="ml-2">Setting</span>
-                                </a>
-                                <a href="#!" class="dropdown-item">
-                                    <i class="mdi mdi-lock"></i>
-                                    <span class="ml-2">Lock Screen</span>
-                                </a>*@
+                                <i class="mdi mdi-wallet"></i>
+                                <span class="ml-2">My Wallet</span>
+                            </a>
+                            <a href="#!" class="dropdown-item">
+                                <i class="mdi mdi-email"></i>
+                                <span class="ml-2">Inbox</span>
+                            </a>
+                            <a href="#!" class="dropdown-item">
+                                <i class="mdi mdi-settings"></i>
+                                <span class="ml-2">Setting</span>
+                            </a>
+                            <a href="#!" class="dropdown-item">
+                                <i class="mdi mdi-lock"></i>
+                                <span class="ml-2">Lock Screen</span>
+                            </a>*@
                             @*<a href="../Login/LogOut?id='@ObjLogin.UserId'" class="dropdown-item">
-                                    <i class="mdi mdi-power"></i>
-                                    <span class="ml-2">Logout</span>
-                                </a>*@
+                                <i class="mdi mdi-power"></i>
+                                <span class="ml-2">Logout</span>
+                            </a>*@
                             <a href="javascript:void(0)" id="logout" class="dropdown-item">
                                 <i class="mdi mdi-power"></i>
                                 <span class="ml-2">Logout</span>
@@ -261,37 +245,6 @@
         </nav>
     </div>
 </div>
-
-@*Employee Accept Deny*@ 
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true" id="myModalForCAEmployeeAcceptDispute">
-    <div class="modal-dialog modal-lg" style="width:800px;">
-        <div class="modal-content">
-            <div class="modal-header" style="display: inherit;">
-                <h5 class="modal-title">Accept or Dispute the right up</h5>
-                <button type="button" class="close" data-dismiss="modal">
-                    <span>&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form id="EmployeeAcceptDeny">
-
-                    
-
-                    <div class="modal-footer" style="background: white;">
-                        @*<button type="button" class="btn btn-success pull-left" id="ViewVSC" style="border-radius:100px;">View Chart</button>*@
-                        <button type="button" class="btn btn-secondary" id="EmployeeAccept" style="border-radius:100px;" data-dismiss="modal">Accept</button>
-                        <button type="button" class="btn btn-primary" id="EmployeeDispute" style="border-radius:100px;" data-dismiss="modal">Dispute</button>
-                        @*<input type="button" class="btn btn-primary" id="SaveCADenialReason" style="border-radius:100px;" data-dismiss="modal" value="Save" />*@
-                    </div>
-            </div>
-        </div>
-        </form>
-
-    </div>
-</div>
-
-
-
 <!--**********************************
     Header end ti-comment-alt
 ***********************************-->
@@ -305,48 +258,6 @@
     $("#logout").click(function () {
         window.location.href = '../Login/LogOut?id=@ObjLogin.UserId'
     });
-
-    $.ajax({
-        type: "POST",
-        url: window.location.origin + '/Corrective/GetCorrectiveActionIsActiveA?UserId=@ObjLogin.UserId',
-        success: function (ResultData) {
-            if (ResultData.Is_Active == 'A')
-            {
-                $("#ShowHideCorrectiveAction").show();
-            }
-            else
-            {
-                $("#ShowHideCorrectiveAction").hide();
-            }
-        }
-    })
-
-    $("#AcceptDenyDispute").click(function () {
-
-        $("#myModalForCAEmployeeAcceptDispute").modal();
-
-        $("#EmployeeAccept").click(function () {
-            
-              $.ajax({
-                     type: "POST",
-                     url: window.location.origin + '/Corrective/EmployeeAcceptCommentAfterMeeting?UserId=@ObjLogin.UserId',
-                     success: function (ResultData) {
-                         $('#RenderPageId').html(ResultData);
-                     }
-              });
-        });
-        $("#EmployeeDispute").click(function () {
-            $.ajax({
-                     type: "POST",
-                     url: window.location.origin + '/Corrective/EmployeeDisputeCommentAfterMeeting?UserId=@ObjLogin.UserId',
-                    success: function (ResultData) {
-                        $('#RenderPageId').html(ResultData);
-                     }
-              });
-        });
-
-    });
-
     $("#drp_MasterLocation1").change(function () {
         var LocationID = $(this).val();
         var LocationName = $("#drp_MasterLocation1 option:selected").text();
