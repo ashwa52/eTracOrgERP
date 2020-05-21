@@ -1,0 +1,706 @@
+﻿@model WorkOrderEMS.Models.NewAdminModel.Termination.TerminationModel
+@{
+    // Layout = "~/Views/Shared/_NewAdminLayout.cshtml";
+}
+
+<style>
+
+
+    span {
+        color: black;
+    }
+
+    .checkServance {
+        color: black;
+        font-weight: 200;
+    }
+
+    input[type="radio"] {
+        display: inline !important;
+    }
+
+    .SetScale {
+        transform: scale(1.5);
+    }
+
+    .TerminationBorderLayout {
+        border-top: none;
+        border-left: none;
+        border-right: none;
+        border-bottom: 1px solid black;
+    }
+
+    .ImgLayout {
+        width: 250px;
+        height: 130px
+    }
+
+    table {
+        width: 100%;
+    }
+
+    td, tr {
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 20px;
+        padding-bottom: 10px;
+        text-align: center;
+        color: black;
+        font-weight: 200;
+    }
+</style>
+
+
+
+
+<link href="@Server.MapPath("~/Content/bootstrap.css")" rel="stylesheet">
+<script src="@Server.MapPath("~/Scripts/bootstrap.js")"></script>
+
+@*<link href="@Server.MapPath("~/Scripts/bootstrap.js")" rel="stylesheet">*@
+
+
+
+<div class="content-body" style="margin-top:2px;">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card" data-aos="fade-up" style="margin-left:-13px;margin-right:-14px;">
+                    <div style="height: 45px;background:#0aa0cd;margin-left: 12px;margin-right: 12px;">
+                        @*//margin-left: 12px;margin-right: 12px;*@
+                        <div class="form-group row" style="margin-left: 2px; margin-top: 6px;">
+                            <a id="BackToEmployeeGrid" title="Back to Employee List" style="cursor:pointer;"><i class="fa fa-long-arrow-left fa-2x" style="color:white;"></i></a>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+
+                            <div class="container" style="padding: 0 10% 0 10%">
+                                <form id="TerminationForm">
+                                    <div class="row">
+                                        <div class="col-md-12 text-center" style="margin-left:0px">
+
+                                            <img src="@Server.MapPath(@"~/Images/image-form.jpg")" alt="EliteParking" class="ImgLayout">
+                                        </div>
+                                    </div>
+                                    <div class="row" style="border:1px solid black; margin-bottom:4%;">
+                                        <div class="col-md-12 text-center      text-align: center; ">
+                                            <h4>EMPLOYEMENT TERMINATION REQUEST FORM</h4>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row" style="margin-bottom: 1%;">
+                                        <div class="col-md-6 col-sm-6">
+                                            <span>Employee Name:</span>
+                                            @Html.HiddenFor(m => m.ManagerId)
+
+                                            @Html.TextBoxFor(m => m.Emp_Name, null, new { @class = "TerminationBorderLayout", @style = "width: 65%;position: absolute;left: 28%;" })
+                                        </div>
+                                        <div class="col-md-6 col-sm-6">
+                                            <span>Employee ID#:</span>
+                                            @Html.TextBoxFor(m => m.EmpId, null, new { @class = "TerminationBorderLayout", @style = "width: 67%;position: absolute;left: 30%;" })
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row" style="margin-bottom: 1%;">
+                                        <div class="col-md-6 col-sm-6">
+                                            <span>Manager Name:</span>
+                                            @Html.TextBoxFor(m => m.Manager_Name, null, new { @class = "TerminationBorderLayout", @style = "width: 65%;position: absolute;left: 28%;" })
+                                        </div>
+                                        <div class="col-md-6 col-sm-6">
+                                            <span>Last Day Worked:</span>
+                                            @Html.TextBoxFor(m => m.Last_Day_Worked, null, new { @class = "datepicker TerminationBorderLayout", @style = "width: 67%;position: absolute;left: 30%;" })
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="row" style="margin-bottom: 1%;">
+                                        <div class="col-md-6 col-sm-12">
+                                        </div>
+                                        <div class="col-md-6 col-sm-12">
+                                            <span>Termination Date:</span>
+                                            @Html.TextBoxFor(m => m.Termination_Date, null, new { @class = "datepicker TerminationBorderLayout", @style = "width: 67%;position: absolute;left: 30%;" })
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="row" style="margin-bottom: 2%;">
+                                        <div class="col-md-12 col-sm-12">
+                                            <span><u>Reason for leaving (Mark Only One): </u></span>
+                                        </div>
+                                    </div>
+                                    <div id="GetValue">
+                                        <div class="row" style="margin-bottom: 1%;">
+                                            <div class="col-md-4 col-sm-4">
+                                                @Html.RadioButtonFor(m => m.Reason_For_Leaving, "Voluntary Resignation", new { @class = "SetScale GetValue", @id = "Voluntary_Resignation" })
+                                                &nbsp;&nbsp;
+                                                <span>Voluntary Resignation</span>
+                                            </div>
+                                            <div class="col-md-4 col-sm-4">
+                                                @Html.RadioButtonFor(m => m.Reason_For_Leaving, "Temporary Layoff", new { @class = "SetScale GetValue", @id = "Temporary_Layoff" })
+                                                &nbsp;&nbsp;
+                                                <span>Temporary Layoff</span>
+                                            </div>
+                                            <div class="col-md-4 col-sm-4">
+                                                @Html.RadioButtonFor(m => m.Reason_For_Leaving, "Permanent Layoff", new { @class = "SetScale GetValue", @id = "Permanent_Layoff" })
+                                                &nbsp;&nbsp;
+                                                <span>Permanent Layoff</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" style="margin-bottom: 1%;">
+                                            <div class="col-md-4 col-sm-4">
+                                                @Html.RadioButtonFor(m => m.Reason_For_Leaving, "Retirement", new { @class = "SetScale GetValue", @id = "Retirement" })
+                                                &nbsp;&nbsp;
+                                                <span>Retirement</span>
+                                            </div>
+                                            <div class="col-md-4 col-sm-4">
+                                                @Html.RadioButtonFor(m => m.Reason_For_Leaving, "Job Abandoment", new { @class = "SetScale GetValue", @id = "Job_Abandonment" })
+                                                &nbsp;&nbsp;
+                                                <span>Job Abandonment</span>
+                                            </div>
+                                            <div class="col-md-4 col-sm-4">
+
+                                            </div>
+                                        </div>
+
+                                        <div class="row" style="margin-bottom: 2%;">
+                                            <div class="col-md-4 col-sm-4">
+                                                @Html.RadioButtonFor(m => m.Reason_For_Leaving, "Dismissal", new { @class = "SetScale GetValue", @id = "Dismissal" })
+                                                &nbsp;&nbsp;
+                                                <span>Dismissal</span>
+                                            </div>
+                                            <div class="col-md-4 col-sm-4">
+
+                                            </div>
+                                            <div class="col-md-4 col-sm-4">
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12">
+                                            <span>Explanation. Please be as detailed as possible. Use additional sheet if necessary</span>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 1%;">
+                                        <div class="col-md-12 col-sm-12">
+                                            @Html.HiddenFor(m => m.detailed_Expalnation, new { })
+                                            @Html.TextBox("Detailed_explanation_one", null, new { @class = "TerminationBorderLayout", @style = "width: -webkit-fill-available;" })
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 1%;">
+                                        <div class="col-md-12 col-sm-12">
+                                            @Html.TextBox("Detailed_explanation_two", null, new { @class = "TerminationBorderLayout", @style = "width: -webkit-fill-available;" })
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 1%;">
+                                        <div class="col-md-12 col-sm-12">
+                                            @Html.TextBox("Detailed_explanation_three", null, new { @class = "TerminationBorderLayout", @style = "width: -webkit-fill-available;" })
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 2%;">
+                                        <div class="col-md-12 col-sm-12">
+                                            @Html.TextBox("Detailed_explanation_four", null, new { @class = "TerminationBorderLayout", @style = "width: -webkit-fill-available;" })
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12">
+                                            <span>If there were multiple reasons, what was the final incident that resulted in termination?</span>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 1%;">
+                                        <div class="col-md-12 col-sm-12">
+                                            @Html.TextBoxFor(m => m.Final_Incident_Termination, null, new { @style = "display:none;" })
+                                            @Html.TextBox("FITone", null, new { @class = "TerminationBorderLayout", @style = "width: -webkit-fill-available;" })
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-bottom: 2%;">
+                                        <div class="col-md-12 col-sm-12">
+                                            @Html.TextBox("FITtwo", null, new { @class = "TerminationBorderLayout", @style = "width: -webkit-fill-available;" })
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="row" style="margin-bottom: 2%;">
+                                        <div class="col-md-12 col-sm-12">
+                                            <span>Check the following: Does the employee have any items owned by the company in their possesion? </span>
+                                        </div>
+                                    </div>
+                                    @*<div class="row" style="margin-bottom: 2%;">
+                                            <div class="col-md-3">
+                                            </div>
+                                            <div class="col-md-3 col-sm-6 text-center">
+                                                @Html.RadioButtonFor(m => m.Items_Owned_ByEmployee, "Yes", new { @class = "SetScale", @id = "Items_Owned_ByEmployee_Yes" })
+                                                &nbsp;&nbsp;
+                                                <span>Yes</span>
+                                            </div>
+                                            <div class="col-md-3 col-sm-6">
+                                                @Html.RadioButtonFor(m => m.Items_Owned_ByEmployee, "No", new { @class = "SetScale", @id = "Items_Owned_ByEmployee_No" })
+                                                &nbsp;&nbsp;
+                                                <span>No</span>
+                                            </div>
+                                            <div class="col-md-3">
+                                            </div>
+                                        </div>*@
+
+
+                                    @*<div class="row" style="margin-bottom: 1%;">
+                                            <div class="col-md-12 col-sm-12">
+                                                <span>If "Yes" Please list all items and their applicable cost per the employee deduction form:</span>
+                                            </div>
+                                        </div>*@
+                                    <div class="row" style="margin-bottom: 1%;">
+                                        <div>
+                                            @*class="col-md-12 col-sm-12"*@
+                                            <table>
+                                                <tr>
+
+                                                    <td>
+                                                        <span style="color:black;font-size:15px;font-weight:bold">   Assets Name </span>
+                                                    </td>
+                                                </tr>
+
+                                                @*@foreach (var item in ViewBag.AssetsList)
+                                                    {
+                                                        <tr>
+
+                                                            <td>
+                                                                <span style="color:black;font-size:15px;font-weight:bold">   @item.ATA_AssetName </span>
+                                                            </td>
+                                                        </tr>
+
+                                                    }*@
+                                            </table>
+                                            @*@Html.TextBoxFor(m => m.ItemsList_Cost, null, new { @style = "display:none;" })
+                                                @Html.TextBox("ILCone", null, new { @class = "TerminationBorderLayout", @style = "width: -webkit-fill-available;" })*@
+                                        </div>
+                                    </div>
+                                    @*<div class="row" style="margin-bottom: 2%;">
+                                            <div class="col-md-12 col-sm-12">
+                                                @Html.TextBox("ILCtwo", null, new { @class = "TerminationBorderLayout", @style = "width: -webkit-fill-available;" })
+                                            </div>
+                                        </div>*@
+
+                                    <div class="row" style="margin-bottom: 1%;">
+                                        <div class="col-md-6 col-sm-6">
+                                            <span>Would this employee be recommended for rehire?</span><br>
+                                            <br />
+                                            <span>Human Resources Decision?</span>
+                                        </div>
+                                        <div class="col-md-2 col-sm-2">
+
+                                        </div>
+                                        <div class="col-md-2 col-sm-2">
+                                            @Html.RadioButtonFor(m => m.Re_Hire, "Yes", new { @class = "SetScale", @id = "Re_Hire_Yes" })
+                                            &nbsp;&nbsp;
+                                            <span>Yes</span><br />
+                                            <br />
+                                            @Html.RadioButtonFor(m => m.HR_Decision, "Approve", new { @class = "SetScale", @id = "Approve" })
+                                            &nbsp;&nbsp;
+                                            <span>Approve</span>
+                                        </div>
+
+                                        <div class="col-md-2 col-sm-2">
+                                            @Html.RadioButtonFor(m => m.Re_Hire, "No", new { @class = "SetScale", @id = "Re_Hire_No" })
+                                            &nbsp;&nbsp;
+                                            <span>No</span><br />
+                                            <br />
+                                            @Html.RadioButtonFor(m => m.HR_Decision, "Deny", new { @class = "SetScale", @id = "Deny" })
+                                            &nbsp;&nbsp;
+                                            <span>Deny</span>
+                                        </div>
+
+                                    </div>
+                                    <div class="row" style="margin-bottom: 2%;">
+                                        <div class="col-md-4 col-sm-4">
+                                            <input type="text" name="" value="" style="border-top: none; border-left: none; border-right: none; border-bottom: 1px solid black; width: -webkit-fill-available;">
+                                            <br>
+                                            <span>Manager’s Electronic Signature</span>
+                                        </div>
+
+                                        <div class="col-md-2 col-sm-2">
+
+                                        </div>
+
+                                        <div class="col-md-2 col-sm-2">
+
+                                        </div>
+                                        <div class="col-md-2 col-sm-2">
+                                            <input type="text" name="" value="" style="border-top: none; border-left: none; border-right: none; border-bottom: 1px solid black; width: 280px;">
+                                            <br>
+                                            <span>Date</span>
+                                        </div>
+                                        <div class="col-md-2 col-sm-2">
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row" style="margin-bottom: 2%;">
+                                        <div class="col-md-4 col-sm-4">
+                                            <input type="text" name="" value="" style="border-top: none; border-left: none; border-right: none; border-bottom: 1px solid black; width: -webkit-fill-available;">
+                                            <br>
+                                            <span>Director of People and Culture Electronic Signature</span>
+                                        </div>
+
+                                        <div class="col-md-2 col-sm-2">
+
+                                        </div>
+
+                                        <div class="col-md-2 col-sm-2">
+
+                                        </div>
+                                        <div class="col-md-2 col-sm-2">
+                                            <input type="text" name="" value="" style="border-top: none; border-left: none; border-right: none; border-bottom: 1px solid black; width: 280px">
+                                            <br>
+                                            <span>Date</span>
+                                        </div>
+                                        <div class="col-md-2 col-sm-2">
+
+                                        </div>
+
+                                    </div>
+                                    <div class="row" style="margin-bottom: 2%;">
+                                        <div class="col-md-8 col-sm-8">
+                                            <span><b>Date HR e-mailed payroll termination information:</b></span>
+                                            <input type="text" name="" value="" style="border-top: none; border-left: none; border-right: none; border-bottom: 1px solid black;">
+                                        </div>
+                                        <div class="col-md-4 col-sm-4">
+
+                                        </div>
+
+                                    </div>
+                                    <div class="row" style="margin-bottom: 5%;">
+                                        <div class="col-md-12 col-sm-12 text-center">
+                                            <span style="font-size:13px;">76 South Laura Street, Suite 1702, Jacksonville, FL 32202    Phone: (904) 297-4437</span>
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="row" style="margin-bottom: 5%;color:black;font-weight:400;@(ViewBag.EMP_IsExempt =="Y"  ? "display:block" : "display:none")">
+
+                                        <table>
+                                            <tr>
+                                                <td style="color:orange;font-weight:200;font-size:20px;text-align:left;">
+                                                    Is Servance Paid
+                                                </td>
+                                                <td colspan="4">
+                                                </td>
+                                                <td>
+
+                                                    <fieldset id="foobar">
+
+                                                        @Html.RadioButtonFor(m => m.tMN_IsSeverance, "Y", new { @class = "SetScale  ", @id = "Servance_Yes" }) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                        &nbsp;
+                                                        <span>Yes</span>
+                                                        &nbsp;
+                                                        @Html.RadioButtonFor(m => m.tMN_IsSeverance, "N", new { @class = "SetScale", @id = "Servance_No" })
+                                                        &nbsp;&nbsp;
+                                                        <span>No</span>
+
+                                                    </fieldset>
+
+                                                </td>
+                                            </tr>
+                                        </table>
+
+
+
+                                    </div>
+
+                                    <div class="row" style="margin-bottom: 5%;display:none;" id="CheckServance">
+                                        <div class="col-md-12 col-sm-12 text-center">
+
+                                            <table>
+                                                <tr>
+                                                    <td style="color:black;font-weight:200;font-size:15px;text-align:left;">
+                                                        Manager Name
+                                                    </td>
+                                                    <td colspan="4">
+                                                    </td>
+                                                    <td>
+                                                        @Html.DisplayFor(m => m.Manager_Name, new { @style = "color:black;font-weight:200;font-size:15px;" })
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="color:black;font-weight:200;font-size:15px;text-align:left;">
+                                                        Purpose of Termination
+                                                    </td>
+                                                    <td colspan="4">
+                                                    </td>
+                                                    <td>
+                                                        <label id="lblTPurpose" style="color:black;font-weight:200;font-size:15px;"></label>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td style="color:black;font-weight:200;font-size:15px;text-align:left;">
+                                                        Length of Termination
+                                                    </td>
+                                                    <td colspan="4">
+                                                    </td>
+                                                    <td>
+                                                        @Html.TextBoxFor(x => x.tMN_LengthOfSeverance, new { @class = "TerminationBorderLayout", @style = "width:265px;left:71%;position:absolute;color:black;font-weight:200;font-size:15px;" })
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row ButtonPosition" style="margin-bottom: 5%;">
+                                        <div class="col-md-12 col-sm-12 text-center">
+                                            <input type="button" class="SaveTerminationForm btn btn-primary" style="width:13%" name="" value="Submit Form">
+
+                                            @*<button value="Submit Form" class="SaveTerminationForm"></button>*@
+                                        </div>
+                                    </div>
+
+                                </form>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid.min.css" rel="stylesheet" />
+    <link href="~/Content/NewAdminContent/VENDOR/jsgrid/css/jsgrid-theme.min.css" rel="stylesheet" />
+    <link href="~/Content/NewAdminContent/CSS/Common.css" rel="stylesheet" />
+    <link href="~/Content/NewAdminContent/VENDOR/toastr/css/toastr.min.css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/NewAdminContent/CSS/RadioButtonCSS.css")" rel="stylesheet" />*@
+
+<script type="text/javascript">
+    $(function () {
+        $('#foobar input[type=radio]').change(function () {
+            // alert($(this).val())
+            debugger;
+            var value = $(this).val();
+            if (value == "Y") {
+                //  $("#Servance_Yes").html(value);
+                $("#CheckServance").show();
+            }
+            else if (value == "N") {
+                //  $("#Servance_No").html(value);
+                $("#CheckServance").hide();
+            }
+
+
+
+        })
+    })
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        $('#GetValue input[type=radio]').change(function () {
+            // alert($(this).val())
+            debugger;
+            var value = $(this).val();
+
+            // $("#lblTPurpose").val() = value;
+
+            $("#lblTPurpose").html(value);
+
+
+        })
+    })
+</script>
+
+
+@*<div class="modal fade show" tabindex="-1" role="dialog" id="myModalForVSCDropDown" aria-modal="true">
+        <div class="modal-dialog ">
+            <div class="modal-content" id="MaintainSizeForDelete">
+                <div class="modal-header" style="display: inherit;">
+                    <h5 class="modal-title">Details</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table>
+                        <tr>
+                            <td>
+                                <span class="checkServance"> Employee Name</span>
+                            </td>
+                            <td>
+
+                                @Html.TextBoxFor(m => m.Emp_Name, null, new { @class = "TerminationBorderLayout form-control input-rounded required", @style = "width: 100%;", @id = "Emp_Name1" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="checkServance">      Employee Id</span>
+                            </td>
+                            <td>
+
+                                @Html.TextBoxFor(m => m.EmpId, null, new { @class = "TerminationBorderLayout form-control input-rounded required", @style = "width: 100%;", @id = "Emp_Id1" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="checkServance">  Manager Name</span>
+                            </td>
+                            <td>
+
+                                @Html.TextBoxFor(m => m.Manager_Name, null, new { @class = "TerminationBorderLayout form-control input-rounded required", @style = "width: 100%;", @id = "Emp_Manager1" })
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="checkServance"> Servance Need To Pay</span>
+                            </td>
+                            <td>
+
+
+
+                                <fieldset id="foobar">
+                                    <span>Yes</span>&nbsp;&nbsp;
+            @Html.RadioButtonFor(m => m.Re_Hire, "Yes", new { @class = "SetScale  ", @id = "Servance_Yes" }) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span>No</span>&nbsp;&nbsp;
+            @Html.RadioButtonFor(m => m.Re_Hire, "No", new { @class = "SetScale", @id = "Servance_No" })
+
+
+                                </fieldset>
+                                                       </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="modal-footer" style="background: white;">
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+
+@*<div class="modal fade show" tabindex="-1" role="dialog" id="servanceComment" aria-modal="true">
+        <div class="modal-dialog ">
+            <div class="modal-content" id="MaintainSizeForDelete">
+                <div class="modal-header" style="display: inherit;">
+                    <h5 class="modal-title">Details</h5>
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span>×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table>
+                        <tr>
+                            <td>
+                                Termination Purpose
+                            </td>
+
+                            <td>
+                                @Html.DropDownList("Termination_Purpose", new List<SelectListItem>
+        {
+        new SelectListItem{ Text="Registration", Value = "1" },
+        new SelectListItem{ Text="Retirement", Value = "2" }
+
+        },new {@class="form-control input-rounded required"})
+    </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                Length of Servance
+                            </td>
+                            <td>
+                                <input type="text" class="form-control input-rounded required" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="modal-footer" style="background: white;">
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+
+
+<script>
+    debugger;
+    $(document).ready(function () {
+        debugger;
+        $(".SaveTerminationForm").click(function () {
+
+            var Full_Detailed_Explanation = $("#Detailed_explanation_one").val() + "\n" + $("#Detailed_explanation_two").val() + "\n" + $("#Detailed_explanation_three").val() + "\n" + $("#Detailed_explanation_four").val();
+            $("#detailed_Expalnation").val(Full_Detailed_Explanation);
+
+            var Final_Incident_Termination = $("#FITone").val() + "\n" + $("#FITtwo").val();
+            $("#Final_Incident_Termination").val(Final_Incident_Termination);
+
+            var Items_List_Cost = $("#ILCone").val() + "\n" + $("#ILCtwo").val();
+            $("#ItemsList_Cost").val(Items_List_Cost);
+
+            var TerminationData = $("#TerminationForm").serialize();
+            if (TerminationData != null) {
+                $.ajax({
+                    type: "POST",
+
+                    url: "/TerminationDetaills/TerminationFormAllDetails",
+
+                    data: TerminationData,
+                    success: function (data) {
+                        debugger;
+
+
+
+                        $("#MainDiv").hide();
+                        $("#myModalForVSCDropDown").modal('show');
+                        // $("#servanceComment").modal('show')
+                        // $("#myModalForVSCDropDown").dialog();
+
+                        //}
+                    }
+
+
+                });
+            }
+
+        });
+    });
+
+    //$("#Servance_Yes").change()
+    //{
+    //    $("#MainDiv").hide();
+    //    $("#myModalForVSCDropDown").modal('hide');
+    //    $("#servanceComment").modal('show')
+
+    //}
+</script>
+
+
+
+
+
+
+
+<script type="text/javascript">
+    $(function () { // will trigger when the document is ready
+        $('.datepicker').datepicker(); //Initialise any date pickers
+    });
+</script>
+

@@ -17,6 +17,7 @@ using WorkOrderEMS.Helper;
 using WorkOrderEMS.Models;
 using WorkOrderEMS.Models.Employee;
 using WorkOrderEMS.Models.NewAdminModel;
+using WorkOrderEMS.Models.NewAdminModel.TCAPIP;
 
 namespace WorkOrderEMS.Controllers.Guest
 {
@@ -324,27 +325,28 @@ namespace WorkOrderEMS.Controllers.Guest
         [HttpPost]
         public ActionResult _W4Form(W4FormModel model)
         {
+            TerminationModel model1 = new TerminationModel();
             var _FillableFormRepository = new FillableFormRepository();
             var getI9Info = new I9FormModel();
             var objloginmodel = (eTracLoginModel)(Session["etrac"]);
             if (model != null)
             {
-                string viewName = "_W4Form";
+                string viewName =  "~/Views/Guest/View.cshtml";
                 string path = Session["ApplicantId"] + model.FirstName + "_W4Form";
                 var employeeId = objloginmodel.UserName;
                 _IGuestUserRepository.SetW4Form(objloginmodel.UserId, model);
-                if (model.IsSignature == true)
-                {
+                //if (model.IsSignature == true)
+                //{
                     //19 id is for W-4 form id
                     var getDetails = _FillableFormRepository.GetFileList().Where(x => x.FLT_FileType == "Yellow" && x.FLT_Id == Convert.ToInt64(FileTypeId.W4)).FirstOrDefault();
-                    var getpdf = HtmlConvertToPdf(viewName, model, path, getDetails.FLT_Id, employeeId);
+                    var getpdf = HtmlConvertToPdf(viewName, model1, path, getDetails.FLT_Id, employeeId);
                     var applicantId = Convert.ToInt64(Session["ApplicantId"]);          
                     getI9Info = _IApplicantManager.GetI9FormData(applicantId, objloginmodel.UserId);
                     getI9Info.IsSignature = true;
                     return PartialView("_I9Form", getI9Info);
-                }
-                else
-                    return RedirectToAction("_I9Form");
+                //}
+                //else
+                //    return RedirectToAction("_I9Form");
             }
             return RedirectToAction("_I9Form",model.IsSignature);
             //return PartialView("_I9Form", model);

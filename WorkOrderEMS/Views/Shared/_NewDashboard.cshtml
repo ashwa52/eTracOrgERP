@@ -3,9 +3,11 @@
     //Layout = null;
     string hostingPrefix = System.Configuration.ConfigurationManager.AppSettings["hostingPrefix"];
     WorkOrderEMS.Models.eTracLoginModel ObjLogin = (WorkOrderEMS.Models.eTracLoginModel)Session["eTrac"];
+    //WorkOrderEMS.Models.NotificationDetailModel _model = (WorkOrderEMS.Models.NotificationDetailModel)Session["NotificationList"];
     string loginUserName = "", loginUserEmail = "", loginUserContactNo = "", loginUserProfile = "";
     long loginUserType = 0;
     long locationId = 0;
+    //List<WorkOrderEMS.Models.NotificationDetailModel> notificationList = Session["NotificationList"] as List<WorkOrderEMS.Models.NotificationDetailModel>;
     if (ObjLogin != null)
     {
         loginUserName = ObjLogin.FName + "'s";
@@ -34,7 +36,23 @@
     .widthHeader {
         height: 40px;
     }
+
+    .my-custom-scrollbar {
+        position: relative;
+        height: 240px;
+        overflow: auto;
+    }
+
+    .table-wrapper-scroll-y {
+        display: block;
+    }
+
+    .table thead th {
+        font-size: 9px;
+        color: black;
+    }
 </style>
+<link href="~/Content/NewAdminContent/CSS/Notification.css" rel="stylesheet" />
 <div class="content-body">
     <!-- row -->
     <div class="container-fluid">
@@ -90,7 +108,7 @@
         </div>
         <div class="row justify-content-center">
             <div class="col-lg-2">
-                <div class="pricing_table_content mt-5">                   
+                <div class="pricing_table_content mt-5">
                     <p style="margin-left: 80px;margin-top:-20px;font-size:20px;"><b>4</b></p>
                     <div class="package" style="margin-top: -30px;"><i class="mdi mdi-map-marker" style="font-size:30px;"></i>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Location</b></div>
                 </div>
@@ -136,7 +154,7 @@
                                 <div class="card-header widthHeader ">
                                     <h4 class="card-title addWhite"><span><b>Cost Code</b></span></h4>
                                 </div>
-                                <div class="card-body">
+                                <div class="card-body" style="height: 292px;">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="widget-content">
                                             @*<h4>Cost Code</h4>*@
@@ -158,26 +176,28 @@
                     </div>
 
 
-                    <div class="col-xl-4 col-lg-4 col-sm-12 col-xxl-4">
+                    <div class="col-lg-8">
                         <div class="widget-expenses" data-aos="fade-up">
                             <div class="card">
                                 <div class="card-header widthHeader ">
-                                    <h4 class="card-title addWhite"><span><b>Expenses</b></span></h4>
+                                    <h4 class="card-title addWhite col-sm-4"><span><b>Notification</b></span></h4>
+                                    <span class="col-sm-7"></span>
+                                    <main rel="main" class="col-sm-1">
+                                        <div class="notification">
+                                            <svg viewBox="0 0 166 197">
+                                                <path d="M82.8652955,196.898522 C97.8853137,196.898522 110.154225,184.733014 110.154225,169.792619 L55.4909279,169.792619 C55.4909279,184.733014 67.8452774,196.898522 82.8652955,196.898522 L82.8652955,196.898522 Z" class="notification--bellClapper"></path>
+                                                <path d="M146.189736,135.093562 L146.189736,82.040478 C146.189736,52.1121695 125.723173,27.9861651 97.4598237,21.2550099 L97.4598237,14.4635396 C97.4598237,6.74321823 90.6498186,0 82.8530327,0 C75.0440643,0 68.2462416,6.74321823 68.2462416,14.4635396 L68.2462416,21.2550099 C39.9707102,27.9861651 19.5163297,52.1121695 19.5163297,82.040478 L19.5163297,135.093562 L0,154.418491 L0,164.080956 L165.706065,164.080956 L165.706065,154.418491 L146.189736,135.093562 Z" class="notification--bell"></path>
+                                            </svg>
+                                            <span class="notification--num"><span style="font-size: 11px;" id="getNotificationCount"></span></span>
+                                        </div>
+
+                                    </main>
                                 </div>
                                 <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="widget-content">
-                                          
-                                            <p>
-                                                <span class="text-success"><i class="mdi mdi-arrow-up"></i></span>
-                                                <!-- Last week   -->
-                                                <strong> 2.00%</strong>
-                                            </p>
+                                    <div class="table-wrapper-scroll-y my-custom-scrollbar">
+                                        <div id="GetUnseenList">
+
                                         </div>
-                                        <h4>$ <span class="counter">3587</span></h4>
-                                    </div>
-                                    <div class="chart mt-3">
-                                        <canvas id="widget-expenses1"></canvas>
                                     </div>
                                 </div>
                             </div>
@@ -185,31 +205,31 @@
                     </div>
 
 
-                    <div class="col-xl-4 col-lg-4 col-sm-12 col-xxl-4">
-                        <div class="widget-revenue" data-aos="fade-up">
-                            <div class="card">
-                                <div class="card-header widthHeader ">
-                                    <h4 class="card-title addWhite"><span><b>Revenue</b></span></h4>
-                                </div>
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="widget-content">
-
-                                            <p>
-                                                <span class="text-success"><i class="mdi mdi-arrow-up"></i></span>
-                                                <!-- Last week   -->
-                                                <strong> 2.00%</strong>
-                                            </p>
-                                        </div>
-                                        <h4>$ <span class="counter">7350</span></h4>
+                    @*<div class="col-xl-4 col-lg-4 col-sm-12 col-xxl-4">
+                            <div class="widget-revenue" data-aos="fade-up">
+                                <div class="card">
+                                    <div class="card-header widthHeader ">
+                                        <h4 class="card-title addWhite"><span><b>Revenue</b></span></h4>
                                     </div>
-                                    <div class="chart">
-                                        <canvas id="widget-revenue1"></canvas>
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <div class="widget-content">
+
+                                                <p>
+                                                    <span class="text-success"><i class="mdi mdi-arrow-up"></i></span>
+                                                    <!-- Last week   -->
+                                                    <strong> 2.00%</strong>
+                                                </p>
+                                            </div>
+                                            <h4>$ <span class="counter">7350</span></h4>
+                                        </div>
+                                        <div class="chart">
+                                            <canvas id="widget-revenue1"></canvas>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
+                        </div>*@
                 </div>
             </div>
             <div class="col-xl-5 col-xxl-12">
@@ -1378,8 +1398,8 @@
                                         </td>
                                         <td>George Marley</td>
                                         @*<td>
-                                            <span><a href="javascript:void()" class="mr-4" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil color-muted"></i> </a><a href="javascript:void()" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close color-danger"></i></a></span>
-                                        </td>*@
+                                                <span><a href="javascript:void()" class="mr-4" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil color-muted"></i> </a><a href="javascript:void()" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close color-danger"></i></a></span>
+                                            </td>*@
                                     </tr>
                                     <tr>
                                         <td>TAMCON32033</td>
@@ -1398,8 +1418,8 @@
                                         </td>
                                         <td>David Warner</td>
                                         @*<td>
-                                            <span><a href="javascript:void()" class="mr-4" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil color-muted"></i> </a><a href="javascript:void()" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close color-danger"></i></a></span>
-                                        </td>*@
+                                                <span><a href="javascript:void()" class="mr-4" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil color-muted"></i> </a><a href="javascript:void()" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close color-danger"></i></a></span>
+                                            </td>*@
                                     </tr>
                                     <tr>
                                         <td>UFFAR20033</td>
@@ -1418,8 +1438,8 @@
                                         </td>
                                         <td>Daniel Mark</td>
                                         @*<td>
-                                            <span><a href="javascript:void()" class="mr-4" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil color-muted"></i> </a><a href="javascript:void()" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close color-danger"></i></a></span>
-                                        </td>*@
+                                                <span><a href="javascript:void()" class="mr-4" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil color-muted"></i> </a><a href="javascript:void()" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close color-danger"></i></a></span>
+                                            </td>*@
                                     </tr>
                                     <tr>
                                         <td>LSVWOR40084</td>
@@ -1438,14 +1458,34 @@
                                         </td>
                                         <td>George Marley</td>
                                         @*<td>
-                                            <span><a href="javascript:void()" class="mr-4" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil color-muted"></i> </a><a href="javascript:void()" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close color-danger"></i></a></span>
-                                        </td>*@
+                                                <span><a href="javascript:void()" class="mr-4" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-pencil color-muted"></i> </a><a href="javascript:void()" data-toggle="tooltip" data-placement="top" title="Close"><i class="fa fa-close color-danger"></i></a></span>
+                                            </td>*@
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-hidden="true" id="myModelToVeiwDetails">
+    <div class="modal-dialog" style="width:882px;">
+        <div class="modal-content">
+            <div class="modal-header" style="display: inherit;">
+                <h5 class="modal-title" id="ChangeTitle">View Details</h5>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span>&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" style="margin-left: 2px;">
+                <div id="DivForViewDetails"></div>
+            </div>
+            <div class="modal-footer" style="background: white;">
+                <button type="button" id="SaveNotificationAction" class="btn btn-success" style="border-radius:100px;width:23%;background: green;" data-dismiss="modal">Save</button>
+                <button type="button" class="btn btn-primary closeClass" style="border-radius:100px;width:23%;" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -1500,3 +1540,24 @@ chart.legend.position = "right";
 
 }); // end am4core.ready()
 </script>
+<script>
+    var base_url = window.location.origin;
+    $.ajax({
+        type: "GET",
+        url: base_url + '/Notification/GetUnseenList',
+        beforeSend: function () {
+            new fn_showMaskloader('Please wait...');
+        },
+        success: function (Data) {
+            debugger
+            $("#getNotificationCount").text()
+            $("#GetUnseenList").html(Data);
+        },
+        error: function (err) {
+        },
+        complete: function () {
+            fn_hideMaskloader();
+        }
+    });
+</script>
+

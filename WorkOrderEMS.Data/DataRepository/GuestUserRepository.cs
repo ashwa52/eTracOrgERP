@@ -27,23 +27,23 @@ namespace WorkOrderEMS.Data.DataRepository
                 var getDetailsOfApplicant = objworkorderEMSEntities.spGetApplicantAllDetails(userId).//spGetEmployeePersonalInfo(employeeId).
                 Select(x => new EmployeeVIewModel
                 {
-                    Address = x.ABH_Address,
-                    City = x.ABH_City,
-                    State = x.AAD_State,
+                    //Address = x.ABH_Address,
+                    //City = x.ABH_City,
+                    //State = x.AAD_State,
                     //Cityzenship = x.c,
-                    DlNumber = x.API_DLNumber,
+                    //DlNumber = x.API_DLNumber,
                     //Dob = x.Da,
                     //Email = x.E,
-                    EmpId = x.ABH_StillEmployed,
+                    EmpId = x.HiringManagerEmployeeId,
                     FirstName = x.API_FirstName,
                     LastName = x.API_LastName,
                     MiddleName = x.API_MidName,
                     //Image = x.Ph,
-                    Phone = x.ABH_Phone,
-                    SocialSecurityNumber = x.API_SSN,
-                    Zip = x.AAD_Zip,
-                    LicenseNumber = x.ALH_LicenceNumber,
-                    ApplicantId = Convert.ToInt64(x.APT_Id)
+                    Phone = x.ACI_PhoneNo,
+                    //SocialSecurityNumber = x.API_SSN,
+                    //Zip = x.AAD_Zip,
+                    //LicenseNumber = x.ALH_LicenceNumber,
+                    //ApplicantId = Convert.ToInt64(x.)
                 }).FirstOrDefault();
             return getDetailsOfApplicant;
         }

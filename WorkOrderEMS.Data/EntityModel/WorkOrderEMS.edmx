@@ -80,6 +80,7 @@
           <Property Name="APT_Status" Type="char" MaxLength="1" />
           <Property Name="APT_Date" Type="datetime" />
           <Property Name="APT_IsActive" Type="char" MaxLength="1" />
+          <Property Name="APT_DateOfJoining" Type="date" />
         </EntityType>
         <EntityType Name="ApplicantContactInfo">
           <Key>
@@ -145,6 +146,7 @@
           <Property Name="ALA_Answer" Type="varchar" MaxLength="50" />
           <Property Name="ALA_Date" Type="datetime" />
           <Property Name="ALA_IsActive" Type="char" MaxLength="1" />
+          <Property Name="ALA_Photo" Type="varchar(max)" />
         </EntityType>
         <EntityType Name="ApplicantPersonalInfo">
           <Key>
@@ -162,6 +164,27 @@
           <Property Name="API_Date" Type="datetime" />
           <Property Name="API_IsActive" Type="char" MaxLength="1" />
           <Property Name="API_Title" Type="varchar" MaxLength="5" />
+        </EntityType>
+        <EntityType Name="AssetAllocation">
+          <Key>
+            <PropertyRef Name="ATA_Id" />
+          </Key>
+          <Property Name="ATA_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ATA_EMP_EmployeeId" Type="varchar" MaxLength="20" />
+          <Property Name="ATA_Type" Type="varchar" MaxLength="20" />
+          <Property Name="ATA_AssetName" Type="varchar" MaxLength="30" />
+          <Property Name="ATA_AssetDescription" Type="varchar" MaxLength="100" />
+          <Property Name="ATA_Make" Type="date" />
+          <Property Name="ATA_Model" Type="varchar" MaxLength="40" />
+          <Property Name="ATA_SerialNumber" Type="varchar" MaxLength="40" />
+          <Property Name="ATA_Login" Type="varchar" MaxLength="20" />
+          <Property Name="ATA_Password" Type="varchar" MaxLength="20" />
+          <Property Name="ATA_AssignDate" Type="datetime" />
+          <Property Name="ATA_ReturnAcceptBy" Type="varchar" MaxLength="20" />
+          <Property Name="ATA_ReturnDate" Type="datetime" />
+          <Property Name="ATA_ReturnStatus" Type="char" MaxLength="1" />
+          <Property Name="ATA_Date" Type="datetime" />
+          <Property Name="ATA_IsActive" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="Bill">
           <Key>
@@ -418,6 +441,30 @@
           <Property Name="CTT_ContractType" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="CTT_Discription" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="CTT_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="CorrectiveActionForm">
+          <Key>
+            <PropertyRef Name="CTA_Id" />
+          </Key>
+          <Property Name="CTA_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CTA_EmployeeId" Type="varchar" MaxLength="20" />
+          <Property Name="CTA_ManagerId" Type="varchar" MaxLength="20" />
+          <Property Name="CTA_LevelOfCorrectiveAction" Type="varchar" MaxLength="20" />
+          <Property Name="CTA_IncidentDate" Type="date" />
+          <Property Name="CTA_IncidentTime" Type="time" Precision="0" />
+          <Property Name="CTA_TypeOfIncident" Type="varchar" MaxLength="20" />
+          <Property Name="CTA_EmployeesExplanation" Type="varchar(max)" />
+          <Property Name="CTA_PolicyViolation" Type="varchar" MaxLength="50" />
+          <Property Name="CTA_ExpectationCorrectiveActionPlan" Type="varchar(max)" />
+          <Property Name="CTA_ActionTaken" Type="varchar(max)" />
+          <Property Name="CTA_NextActionStep" Type="varchar(max)" />
+          <Property Name="CTA_HRApproal" Type="char" MaxLength="1" />
+          <Property Name="CTA_IsGuilty" Type="char" MaxLength="1" />
+          <Property Name="CTA_Date" Type="datetime" />
+          <Property Name="CTA_IsActive" Type="char" MaxLength="1" />
+          <Property Name="CTA_HRDenyReason" Type="varchar" MaxLength="20" />
+          <Property Name="CTA_HRDenyComment" Type="varchar" MaxLength="100" />
+          <Property Name="CTA_MeetingDateTime" Type="varchar" MaxLength="20" />
         </EntityType>
         <EntityType Name="CostCode">
           <Key>
@@ -1772,6 +1819,25 @@ warning 6002: The table/view 'workorderemslive.dbo.IdleEmployee' does not have a
           <Property Name="MDL_Date" Type="datetime" />
           <Property Name="MDL_IsActive" Type="char" MaxLength="1" />
         </EntityType>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="NTF_Id" />
+          </Key>
+          <Property Name="NTF_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NTF_Details" Type="varchar(max)" Nullable="false" />
+          <Property Name="NTF_Module" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="NTF_Submodule" Type="varchar" MaxLength="20" />
+          <Property Name="NTF_SubmoduleId" Type="varchar" MaxLength="20" />
+          <Property Name="NTF_AssignTo" Type="varchar" MaxLength="20" />
+          <Property Name="NTF_AssignToIsWorkable" Type="bit" />
+          <Property Name="NTF_IsRead" Type="bit" />
+          <Property Name="NTF_DeletedDate" Type="date" />
+          <Property Name="NTF_CreatedBy" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="NTF_CreatedByIsWorkable" Type="bit" />
+          <Property Name="NFT_Severity" Type="char" MaxLength="1" />
+          <Property Name="NTF_CreatedDate" Type="datetime" />
+          <Property Name="NTF_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
         <EntityType Name="NotificationDetails">
           <Key>
             <PropertyRef Name="NID" />
@@ -2145,6 +2211,28 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="TXD_TaxDocument" Type="nvarchar(max)" />
           <Property Name="TXD_IsActive" Type="char" MaxLength="1" />
         </EntityType>
+        <EntityType Name="TerminationForm">
+          <Key>
+            <PropertyRef Name="TMN_Id" />
+          </Key>
+          <Property Name="TMN_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TMN_EmployeeId" Type="varchar" MaxLength="20" />
+          <Property Name="TMN_ManagerId" Type="bigint" />
+          <Property Name="TMN_HRTerminationDate" Type="date" />
+          <Property Name="TMN_LastWorkingDay" Type="date" />
+          <Property Name="TMN_TerminationReason" Type="varchar" MaxLength="200" />
+          <Property Name="TMN_TerminationDiscription" Type="varchar(max)" />
+          <Property Name="TMN_RehireRecommended" Type="char" MaxLength="1" />
+          <Property Name="TMN_HRApproal" Type="char" MaxLength="1" />
+          <Property Name="TMN_IsSeverance" Type="char" MaxLength="1" />
+          <Property Name="TMN_LengthOfSeverance" Type="int" />
+          <Property Name="TMN_SeveranceApproval" Type="char" MaxLength="1" />
+          <Property Name="TMN_WitnessId" Type="bigint" />
+          <Property Name="TMN_Date" Type="datetime" />
+          <Property Name="TMN_IsActive" Type="char" MaxLength="1" />
+          <Property Name="TMN_HRDenyReason" Type="varchar" MaxLength="20" />
+          <Property Name="TMN_HRDenyComment" Type="varchar" MaxLength="100" />
+        </EntityType>
         <EntityType Name="TimeZones">
           <Key>
             <PropertyRef Name="TimezoneId" />
@@ -2284,6 +2372,20 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="VDT_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="VDT_VendorType" Type="varchar" MaxLength="20" Nullable="false" />
           <Property Name="VDT_IsActive" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="Witness">
+          <Key>
+            <PropertyRef Name="WTS_Id" />
+          </Key>
+          <Property Name="WTS_Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="WTS_TMN_Id" Type="bigint" />
+          <Property Name="WTS_IsEliteEmployee" Type="char" MaxLength="1" />
+          <Property Name="WTS_WitnessName" Type="varchar" MaxLength="40" />
+          <Property Name="WTS_Position" Type="varchar" MaxLength="20" />
+          <Property Name="WTS_LocationId" Type="bigint" />
+          <Property Name="WTS_CompanyTheyWorkFor" Type="varchar" MaxLength="30" />
+          <Property Name="WTS_Date" Type="datetime" />
+          <Property Name="WTS_IsActive" Type="char" MaxLength="1" />
         </EntityType>
         <EntityType Name="WorkRequestAssignment">
           <Key>
@@ -5086,11 +5188,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         <Function Name="spGetApplicantLicenseHeald" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="APT_ApplicantId" Type="bigint" Mode="In" />
         </Function>
-        <Function Name="spGetApplicantLogin" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="ALA_LiginId" Type="varchar" Mode="In" />
-          <Parameter Name="ALA_Password" Type="nvarchar(max)" Mode="In" />
-          <Parameter Name="ALA_UserId" Type="bigint" Mode="InOut" />
-        </Function>
         <Function Name="spGetApplicantNewLoginCheckAvailability" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="ALA_LiginId" Type="varchar" Mode="In" />
           <Parameter Name="Availability" Type="varchar" Mode="InOut" />
@@ -5140,6 +5237,9 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         <Function Name="spGetAssessmentQuestionQCQM" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
           <Parameter Name="AssessmentType" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spGetAssetAllocation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ATA_EMP_EmployeeId" Type="varchar" Mode="In" />
         </Function>
         <Function Name="spGetBillFacilityItemForApproval" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="PBL_Id" Type="bigint" Mode="In" />
@@ -5215,6 +5315,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         <Function Name="spGetContract" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetContractLocationAllocation" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetContractType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetCorrectiveActionForm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetCostCode" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Action" Type="char" Mode="In" />
           <Parameter Name="CCD_CCM_CostCode" Type="bigint" Mode="In" />
@@ -5229,6 +5330,9 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="Status" Type="int" Mode="In" />
         </Function>
         <Function Name="spGetDepartment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetDepartmentEmail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="DPT_Id" Type="bigint" Mode="In" />
+        </Function>
         <Function Name="spGetDirectDepositForm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
         </Function>
@@ -5348,6 +5452,13 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="ApplicantId" Type="bigint" Mode="In" />
           <Parameter Name="IsNext" Type="char" Mode="InOut" />
         </Function>
+        <Function Name="spGetNotification" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NTF_Module" Type="varchar" Mode="In" />
+          <Parameter Name="NTF_Submodule" Type="varchar" Mode="In" />
+          <Parameter Name="NTF_SubmoduleId" Type="bigint" Mode="In" />
+          <Parameter Name="NTF_CreatedBy" Type="varchar" Mode="In" />
+          <Parameter Name="NTF_AssignTo" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spGetOrgnizationCommonview" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
         </Function>
@@ -5387,6 +5498,11 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         </Function>
         <Function Name="spGetPhotoReleaseForm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmployeeID" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spGetPIP_Termination_CorrectiveAction" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ManagerId" Type="bigint" Mode="In" />
+          <Parameter Name="fromDate" Type="date" Mode="In" />
+          <Parameter Name="ToDate" Type="date" Mode="In" />
         </Function>
         <Function Name="spGetPODetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="POD_Id" Type="bigint" Mode="In" />
@@ -5454,6 +5570,9 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="CLM_CCM_CostCode" Type="bigint" Mode="In" />
         </Function>
         <Function Name="spGetTaxDetail" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetTerminationForm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TMN_EmployeeId" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spGetUserOverrideUsertype" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UOU_UserId" Type="bigint" Mode="In" />
         </Function>
@@ -5486,6 +5605,9 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
         <Function Name="spGetVendorType" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <Function Name="spGetW4Form" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="EmployeeId" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spGetWitness" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="WTS_TMN_Id" Type="bigint" Mode="In" />
         </Function>
         <Function Name="spPaymentDesk" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LocationId" Type="bigint" Mode="In" />
@@ -5934,6 +6056,31 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="CTT_Discription" Type="varchar" Mode="In" />
           <Parameter Name="CTT_IsActive" Type="char" Mode="In" />
         </Function>
+        <Function Name="spSetCorrectiveAction_HRApproval" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CTA_Id" Type="bigint" Mode="In" />
+          <Parameter Name="CTA_HRApproal" Type="char" Mode="In" />
+          <Parameter Name="CTA_HRDenyReason" Type="varchar" Mode="In" />
+          <Parameter Name="CTA_HRDenyComment" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spSetCorrectiveActionForm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Action" Type="char" Mode="In" />
+          <Parameter Name="CTA_Id" Type="bigint" Mode="In" />
+          <Parameter Name="CTA_EmployeeId" Type="varchar" Mode="In" />
+          <Parameter Name="CTA_ManagerId" Type="varchar" Mode="In" />
+          <Parameter Name="CTA_LevelOfCorrectiveAction" Type="varchar" Mode="In" />
+          <Parameter Name="CTA_IncidentDate" Type="date" Mode="In" />
+          <Parameter Name="CTA_IncidentTime" Type="time" Mode="In" />
+          <Parameter Name="CTA_TypeOfIncident" Type="varchar" Mode="In" />
+          <Parameter Name="CTA_EmployeesExplanation" Type="varchar(max)" Mode="In" />
+          <Parameter Name="CTA_PolicyViolation" Type="varchar" Mode="In" />
+          <Parameter Name="CTA_ExpectationCorrectiveActionPlan" Type="varchar(max)" Mode="In" />
+          <Parameter Name="CTA_ActionTaken" Type="varchar(max)" Mode="In" />
+          <Parameter Name="CTA_NextActionStep" Type="varchar(max)" Mode="In" />
+          <Parameter Name="CTA_HRApproal" Type="char" Mode="In" />
+          <Parameter Name="CTA_IsGuilty" Type="char" Mode="In" />
+          <Parameter Name="CTA_Date" Type="datetime" Mode="In" />
+          <Parameter Name="CTA_IsActive" Type="char" Mode="In" />
+        </Function>
         <Function Name="spSetCostCode" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LCCDAction" Type="char" Mode="In" />
           <Parameter Name="QBKId" Type="bigint" Mode="In" />
@@ -6294,6 +6441,10 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="LCM_ApprovedBy" Type="bigint" Mode="In" />
           <Parameter Name="LCM_IsActive" Type="char" Mode="In" />
         </Function>
+        <Function Name="spSetMeetingDateTime" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="CTA_Id" Type="bigint" Mode="In" />
+          <Parameter Name="CTA_MeetingDateTime" Type="varchar" Mode="In" />
+        </Function>
         <Function Name="spSetMiscellaneous" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="MISAction" Type="char" Mode="In" />
           <Parameter Name="MIS_Id" Type="bigint" Mode="In" />
@@ -6313,6 +6464,22 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="MDL_Id" Type="bigint" Mode="In" />
           <Parameter Name="MDL_ModuleName" Type="varchar" Mode="In" />
           <Parameter Name="MDL_IsActive" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetNotification" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Action" Type="char" Mode="In" />
+          <Parameter Name="NTF_Id" Type="bigint" Mode="In" />
+          <Parameter Name="NTF_Details" Type="varchar(max)" Mode="In" />
+          <Parameter Name="NTF_Module" Type="varchar" Mode="In" />
+          <Parameter Name="NTF_Submodule" Type="varchar" Mode="In" />
+          <Parameter Name="NTF_SubmoduleId" Type="varchar" Mode="In" />
+          <Parameter Name="NTF_CreatedBy" Type="varchar" Mode="In" />
+          <Parameter Name="NTF_AssignTo" Type="varchar" Mode="In" />
+          <Parameter Name="NTF_AssignToIsWorkable" Type="bit" Mode="In" />
+          <Parameter Name="NTF_CreatedByIsWorkable" Type="bit" Mode="In" />
+          <Parameter Name="NFT_Severity" Type="char" Mode="In" />
+          <Parameter Name="NTF_DeletedDate" Type="date" Mode="In" />
+          <Parameter Name="NTF_IsRead" Type="bit" Mode="In" />
+          <Parameter Name="NTF_IsActive" Type="char" Mode="In" />
         </Function>
         <Function Name="spSetPaymentStatusForBill" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="LBLL_Id" Type="bigint" Mode="In" />
@@ -6503,6 +6670,33 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="TXD_ApprovedBy" Type="bigint" Mode="In" />
           <Parameter Name="TXD_IsActive" Type="char" Mode="In" />
         </Function>
+        <Function Name="spSetTermination_HRApproval" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TMN_Id" Type="bigint" Mode="In" />
+          <Parameter Name="TMN_HRApproal" Type="char" Mode="In" />
+          <Parameter Name="TMN_HRDenyReason" Type="varchar" Mode="In" />
+          <Parameter Name="TMN_HRDenyComment" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="spSetTermination_SeveranceApproval" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="TMN_Id" Type="bigint" Mode="In" />
+          <Parameter Name="TMN_SeveranceApproval" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetTerminationForm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Action" Type="char" Mode="In" />
+          <Parameter Name="TMN_Id" Type="bigint" Mode="In" />
+          <Parameter Name="TMN_EmployeeId" Type="varchar" Mode="In" />
+          <Parameter Name="TMN_ManagerId" Type="varchar" Mode="In" />
+          <Parameter Name="TMN_HRTerminationDate" Type="date" Mode="In" />
+          <Parameter Name="TMN_LastWorkingDay" Type="date" Mode="In" />
+          <Parameter Name="TMN_TerminationReason" Type="varchar" Mode="In" />
+          <Parameter Name="TMN_TerminationDiscription" Type="varchar(max)" Mode="In" />
+          <Parameter Name="TMN_RehireRecommended" Type="char" Mode="In" />
+          <Parameter Name="TMN_HRApproal" Type="char" Mode="In" />
+          <Parameter Name="TMN_IsSeverance" Type="char" Mode="In" />
+          <Parameter Name="TMN_LengthOfSeverance" Type="int" Mode="In" />
+          <Parameter Name="TMN_SeveranceApproval" Type="char" Mode="In" />
+          <Parameter Name="TMN_WitnessId" Type="bigint" Mode="In" />
+          <Parameter Name="TMN_IsActive" Type="char" Mode="In" />
+        </Function>
         <Function Name="spSetUserOverrideUsertype" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UOUAction" Type="char" Mode="In" />
           <Parameter Name="UOU_Id" Type="bigint" Mode="In" />
@@ -6557,6 +6751,17 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Parameter Name="w4F_9" Type="date" Mode="In" />
           <Parameter Name="w4F_10" Type="varchar" Mode="In" />
           <Parameter Name="w4F_IsActive" Type="char" Mode="In" />
+        </Function>
+        <Function Name="spSetWitness" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Action" Type="char" Mode="In" />
+          <Parameter Name="WTS_TMN_Id" Type="bigint" Mode="In" />
+          <Parameter Name="WTS_IsEliteEmployee" Type="char" Mode="In" />
+          <Parameter Name="WTS_WitnessName" Type="varchar" Mode="In" />
+          <Parameter Name="WTS_LocationId" Type="bigint" Mode="In" />
+          <Parameter Name="WTS_Position" Type="varchar" Mode="In" />
+          <Parameter Name="WTS_CompanyTheyWorkFor" Type="varchar" Mode="In" />
+          <Parameter Name="WTS_IsActive" Type="char" Mode="In" />
+          <Parameter Name="WTS_Id" Type="bigint" Mode="InOut" />
         </Function>
         <Function Name="spSupplyRule" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="UserId" Type="bigint" Mode="In" />
@@ -6700,6 +6905,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="ApplicantInfo" EntityType="Self.ApplicantInfo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ApplicantLoginAccess" EntityType="Self.ApplicantLoginAccess" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ApplicantPersonalInfo" EntityType="Self.ApplicantPersonalInfo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AssetAllocation" EntityType="Self.AssetAllocation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BillFacilityItem" EntityType="Self.BillFacilityItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="BillType" EntityType="Self.BillType" Schema="dbo" store:Type="Tables" />
@@ -6718,6 +6924,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="Contract" EntityType="Self.Contract" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContractLocationAllocation" EntityType="Self.ContractLocationAllocation" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ContractType" EntityType="Self.ContractType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CorrectiveActionForm" EntityType="Self.CorrectiveActionForm" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CostCode" EntityType="Self.CostCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CostCodeLocationMapping" EntityType="Self.CostCodeLocationMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CostCodeMaster" EntityType="Self.CostCodeMaster" Schema="dbo" store:Type="Tables" />
@@ -6791,6 +6998,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="Miscellaneous" EntityType="Self.Miscellaneous" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MisNumber" EntityType="Self.MisNumber" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Module" EntityType="Self.Module" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Notification" EntityType="Self.Notification" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NotificationDetails" EntityType="Self.NotificationDetails" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PaymentMode" EntityType="Self.PaymentMode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PaymentTerm" EntityType="Self.PaymentTerm" Schema="dbo" store:Type="Tables" />
@@ -6813,6 +7021,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="SubCostCode" EntityType="Self.SubCostCode" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SubModule" EntityType="Self.SubModule" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TaxDetail" EntityType="Self.TaxDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TerminationForm" EntityType="Self.TerminationForm" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TimeZones" EntityType="Self.TimeZones" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TrackEmployeeStatus" EntityType="Self.TrackEmployeeStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserOverrideUsertype" EntityType="Self.UserOverrideUsertype" Schema="dbo" store:Type="Tables" />
@@ -6822,6 +7031,7 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <EntitySet Name="VehicleSeating_DepartmentMapping" EntityType="Self.VehicleSeating_DepartmentMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VehicleSeatingSubModuleMapping" EntityType="Self.VehicleSeatingSubModuleMapping" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="VendorType" EntityType="Self.VendorType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Witness" EntityType="Self.Witness" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="WorkRequestAssignment" EntityType="Self.WorkRequestAssignment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="IdleEmployee" EntityType="Self.IdleEmployee" store:Type="Tables" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -14572,9 +14782,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="API_IsActive" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="Employees" EntityType="WorkOrderEMS.Data.EntityModel.Employee" />
-          <FunctionImport Name="spGetOrgnizationCommonview" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetOrgnizationCommonview_Result1)">
-          <Parameter Name="EmployeeId" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="spGetIsTremination">
             <Parameter Name="EmployeeId" Mode="In" Type="String" />
             <Parameter Name="IsTermination" Mode="InOut" Type="String" />
@@ -14634,7 +14841,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="ATA_ReturnStatus" Mode="In" Type="String" />
             <Parameter Name="ATA_IsActive" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="Applicants" EntityType="WorkOrderEMS.Data.EntityModel.Applicant" />
           <FunctionImport Name="spGetApplicantLogin" ReturnType="Collection(Int64)">
             <Parameter Name="ALA_LiginId" Mode="In" Type="String" />
             <Parameter Name="ALA_Password" Mode="In" Type="String" />
@@ -14653,7 +14859,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="LoginID" Mode="In" Type="String" />
             <Parameter Name="NewPassword" Mode="In" Type="String" />
           </FunctionImport>
-          <EntitySet Name="ApplicantLoginAccesses" EntityType="WorkOrderEMS.Data.EntityModel.ApplicantLoginAccess" />
           <FunctionImport Name="spSetApplicantCreateLoginAccess" ReturnType="Collection(Int64)">
             <Parameter Name="ALA_LoginId" Mode="In" Type="String" />
             <Parameter Name="ALA_Password" Mode="In" Type="String" />
@@ -14711,9 +14916,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="IPT_IsActive" Mode="In" Type="String" />
           </FunctionImport>
           <EntitySet Name="BookSlotTimes" EntityType="WorkOrderEMS.Data.EntityModel.BookSlotTime" />
-          <FunctionImport Name="spGetApplicantAllDetails" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantAllDetails_Result)">
-          <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
-          </FunctionImport>
           <FunctionImport Name="spSetEmergencyContactForm">
             <Parameter Name="ECFAction" Mode="In" Type="String" />
             <Parameter Name="ECF_Id" Mode="In" Type="Int64" />
@@ -14920,7 +15122,128 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             <Parameter Name="EEO_DisabilityDiscloseDiscription" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="spGetFormRateOfPay" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetFormRateOfPay_Result3)">
-            <Parameter Name="ApplicantId" Mode="In" Type="Int64" />
+          <Parameter Name="ApplicantId" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spGetTerminationForm" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetTerminationForm_Result)">
+          <Parameter Name="TMN_EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetTerminationForm">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="TMN_Id" Mode="In" Type="Int64" />
+            <Parameter Name="TMN_EmployeeId" Mode="In" Type="String" />
+            <Parameter Name="TMN_ManagerId" Mode="In" Type="String" />
+            <Parameter Name="TMN_HRTerminationDate" Mode="In" Type="DateTime" />
+            <Parameter Name="TMN_LastWorkingDay" Mode="In" Type="DateTime" />
+            <Parameter Name="TMN_TerminationReason" Mode="In" Type="String" />
+            <Parameter Name="TMN_TerminationDiscription" Mode="In" Type="String" />
+            <Parameter Name="TMN_RehireRecommended" Mode="In" Type="String" />
+            <Parameter Name="TMN_HRApproal" Mode="In" Type="String" />
+            <Parameter Name="TMN_IsSeverance" Mode="In" Type="String" />
+            <Parameter Name="TMN_LengthOfSeverance" Mode="In" Type="Int32" />
+            <Parameter Name="TMN_SeveranceApproval" Mode="In" Type="String" />
+            <Parameter Name="TMN_WitnessId" Mode="In" Type="Int64" />
+            <Parameter Name="TMN_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="CorrectiveActionForms" EntityType="WorkOrderEMS.Data.EntityModel.CorrectiveActionForm" />
+          <FunctionImport Name="spSetCorrectiveActionForm">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="CTA_Id" Mode="In" Type="Int64" />
+            <Parameter Name="CTA_EmployeeId" Mode="In" Type="String" />
+            <Parameter Name="CTA_ManagerId" Mode="In" Type="String" />
+            <Parameter Name="CTA_LevelOfCorrectiveAction" Mode="In" Type="String" />
+            <Parameter Name="CTA_IncidentDate" Mode="In" Type="DateTime" />
+            <Parameter Name="CTA_IncidentTime" Mode="In" Type="Time" />
+            <Parameter Name="CTA_TypeOfIncident" Mode="In" Type="String" />
+            <Parameter Name="CTA_EmployeesExplanation" Mode="In" Type="String" />
+            <Parameter Name="CTA_PolicyViolation" Mode="In" Type="String" />
+            <Parameter Name="CTA_ExpectationCorrectiveActionPlan" Mode="In" Type="String" />
+            <Parameter Name="CTA_ActionTaken" Mode="In" Type="String" />
+            <Parameter Name="CTA_NextActionStep" Mode="In" Type="String" />
+            <Parameter Name="CTA_HRApproal" Mode="In" Type="String" />
+            <Parameter Name="CTA_IsGuilty" Mode="In" Type="String" />
+            <Parameter Name="CTA_Date" Mode="In" Type="DateTime" />
+            <Parameter Name="CTA_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="TerminationForms" EntityType="WorkOrderEMS.Data.EntityModel.TerminationForm" />
+          <FunctionImport Name="spGetOrgnizationCommonview" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetOrgnizationCommonview_Result2)">
+          <Parameter Name="EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Witnesses" EntityType="WorkOrderEMS.Data.EntityModel.Witness" />
+          <FunctionImport Name="spGetNotification" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetNotification_Result)">
+            <Parameter Name="NTF_Module" Mode="In" Type="String" />
+            <Parameter Name="NTF_Submodule" Mode="In" Type="String" />
+            <Parameter Name="NTF_SubmoduleId" Mode="In" Type="Int64" />
+            <Parameter Name="NTF_CreatedBy" Mode="In" Type="String" />
+            <Parameter Name="NTF_AssignTo" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetWitness" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetWitness_Result)">
+          <Parameter Name="WTS_TMN_Id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spSetNotification">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="NTF_Id" Mode="In" Type="Int64" />
+            <Parameter Name="NTF_Details" Mode="In" Type="String" />
+            <Parameter Name="NTF_Module" Mode="In" Type="String" />
+            <Parameter Name="NTF_Submodule" Mode="In" Type="String" />
+            <Parameter Name="NTF_SubmoduleId" Mode="In" Type="String" />
+            <Parameter Name="NTF_CreatedBy" Mode="In" Type="String" />
+            <Parameter Name="NTF_AssignTo" Mode="In" Type="String" />
+            <Parameter Name="NTF_AssignToIsWorkable" Mode="In" Type="Boolean" />
+            <Parameter Name="NTF_CreatedByIsWorkable" Mode="In" Type="Boolean" />
+            <Parameter Name="NFT_Severity" Mode="In" Type="String" />
+            <Parameter Name="NTF_DeletedDate" Mode="In" Type="DateTime" />
+            <Parameter Name="NTF_IsRead" Mode="In" Type="Boolean" />
+            <Parameter Name="NTF_IsActive" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetPIP_Termination_CorrectiveAction" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetPIP_Termination_CorrectiveAction_Result1)">
+            <Parameter Name="ManagerId" Mode="In" Type="Int64" />
+            <Parameter Name="fromDate" Mode="In" Type="DateTime" />
+            <Parameter Name="ToDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="spSetWitness">
+            <Parameter Name="Action" Mode="In" Type="String" />
+            <Parameter Name="WTS_TMN_Id" Mode="In" Type="Int64" />
+            <Parameter Name="WTS_IsEliteEmployee" Mode="In" Type="String" />
+            <Parameter Name="WTS_WitnessName" Mode="In" Type="String" />
+            <Parameter Name="WTS_LocationId" Mode="In" Type="Int64" />
+            <Parameter Name="WTS_Position" Mode="In" Type="String" />
+            <Parameter Name="WTS_CompanyTheyWorkFor" Mode="In" Type="String" />
+            <Parameter Name="WTS_IsActive" Mode="In" Type="String" />
+            <Parameter Name="WTS_Id" Mode="InOut" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spGetAssetAllocation" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetAssetAllocation_Result)">
+          <Parameter Name="ATA_EMP_EmployeeId" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="AssetAllocations" EntityType="WorkOrderEMS.Data.EntityModel.AssetAllocation" />
+          <FunctionImport Name="spGetDepartmentEmail" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetDepartmentEmail_Result)">
+          <Parameter Name="DPT_Id" Mode="In" Type="Int64" />
+          </FunctionImport>
+          <FunctionImport Name="spSetTermination_HRApproval">
+            <Parameter Name="TMN_Id" Mode="In" Type="Int64" />
+            <Parameter Name="TMN_HRApproal" Mode="In" Type="String" />
+            <Parameter Name="TMN_HRDenyReason" Mode="In" Type="String" />
+            <Parameter Name="TMN_HRDenyComment" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetTermination_SeveranceApproval">
+            <Parameter Name="TMN_Id" Mode="In" Type="Int64" />
+            <Parameter Name="TMN_SeveranceApproval" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spSetCorrectiveAction_HRApproval">
+            <Parameter Name="CTA_Id" Mode="In" Type="Int64" />
+            <Parameter Name="CTA_HRApproal" Mode="In" Type="String" />
+            <Parameter Name="CTA_HRDenyReason" Mode="In" Type="String" />
+            <Parameter Name="CTA_HRDenyComment" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetCorrectiveActionForm" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetCorrectiveActionForm_Result)" />
+          <FunctionImport Name="spSetMeetingDateTime">
+            <Parameter Name="CTA_Id" Mode="In" Type="Int64" />
+            <Parameter Name="CTA_MeetingDateTime" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="Notifications" EntityType="WorkOrderEMS.Data.EntityModel.Notification" />
+          <EntitySet Name="Applicants" EntityType="WorkOrderEMS.Data.EntityModel.Applicant" />
+          <EntitySet Name="ApplicantLoginAccesses" EntityType="WorkOrderEMS.Data.EntityModel.ApplicantLoginAccess" />
+          <FunctionImport Name="spGetApplicantAllDetails" ReturnType="Collection(WorkOrderEMS.Data.EntityModel.spGetApplicantAllDetails_Result1)">
+            <Parameter Name="APT_ApplicantId" Mode="In" Type="Int64" />
           </FunctionImport>
         </EntityContainer>
         <ComplexType Name="Proc_GetAllWorkAssignedToEmployee_Result">
@@ -18783,33 +19106,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Name="ECF_Date" Type="DateTime" Precision="3" />
           <Property Name="ECF_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
         </EntityType>
-        <EntityType Name="Applicant">
-          <Key>
-            <PropertyRef Name="APT_ApplicantId" />
-          </Key>
-          <Property Name="APT_ApplicantId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="APT_ALA_UserId" Type="Int64" />
-          <Property Name="APT_JobPostingId" Type="Int64" />
-          <Property Name="APT_Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-          <Property Name="APT_Date" Type="DateTime" Precision="3" />
-          <Property Name="APT_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-        </EntityType>
-        <EntityType Name="ApplicantLoginAccess">
-          <Key>
-            <PropertyRef Name="ALA_UserId" />
-          </Key>
-          <Property Name="ALA_UserId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ALA_LoginId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ALA_Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="ALA_FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ALA_MidName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ALA_LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ALA_eMailId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ALA_Question" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ALA_Answer" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <Property Name="ALA_Date" Type="DateTime" Precision="3" />
-          <Property Name="ALA_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
-        </EntityType>
         <EntityType Name="ApplicantPersonalInfo">
           <Key>
             <PropertyRef Name="API_Id" />
@@ -19407,6 +19703,265 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
           <Property Type="String" Name="VST_IsExempt" Nullable="true" MaxLength="1" />
           <Property Type="Decimal" Name="VST_RateOfPay" Nullable="true" Precision="18" Scale="2" />
           <Property Type="String" Name="TypeOfPayChange" Nullable="false" MaxLength="8" />
+        </ComplexType>
+        <ComplexType Name="spGetTerminationForm_Result">
+          <Property Type="Int64" Name="TMN_Id" Nullable="false" />
+          <Property Type="Int64" Name="TMN_EmployeeId" Nullable="true" />
+          <Property Type="Int64" Name="TMN_ManagerId" Nullable="true" />
+          <Property Type="DateTime" Name="TMN_TerminationDate" Nullable="true" />
+          <Property Type="String" Name="TMN_TerminationReason" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="TMN_TerminationDiscription" Nullable="true" />
+          <Property Type="String" Name="TMN_RehireRecommended" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="TMN_HRApproal" Nullable="true" MaxLength="1" />
+          <Property Type="DateTime" Name="TMN_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="TMN_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <EntityType Name="CorrectiveActionForm">
+          <Key>
+            <PropertyRef Name="CTA_Id" />
+          </Key>
+          <Property Name="CTA_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CTA_EmployeeId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CTA_ManagerId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CTA_LevelOfCorrectiveAction" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CTA_IncidentDate" Type="DateTime" Precision="0" />
+          <Property Name="CTA_IncidentTime" Type="Time" Precision="0" />
+          <Property Name="CTA_TypeOfIncident" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CTA_EmployeesExplanation" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CTA_PolicyViolation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CTA_ExpectationCorrectiveActionPlan" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CTA_ActionTaken" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CTA_NextActionStep" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="CTA_HRApproal" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="CTA_IsGuilty" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="CTA_Date" Type="DateTime" Precision="3" />
+          <Property Name="CTA_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="CTA_HRDenyReason" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CTA_HRDenyComment" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CTA_MeetingDateTime" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="TerminationForm">
+          <Key>
+            <PropertyRef Name="TMN_Id" />
+          </Key>
+          <Property Name="TMN_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TMN_EmployeeId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TMN_ManagerId" Type="Int64" />
+          <Property Name="TMN_HRTerminationDate" Type="DateTime" Precision="0" />
+          <Property Name="TMN_LastWorkingDay" Type="DateTime" Precision="0" />
+          <Property Name="TMN_TerminationReason" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="TMN_TerminationDiscription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TMN_RehireRecommended" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="TMN_HRApproal" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="TMN_IsSeverance" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="TMN_LengthOfSeverance" Type="Int32" />
+          <Property Name="TMN_SeveranceApproval" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="TMN_WitnessId" Type="Int64" />
+          <Property Name="TMN_Date" Type="DateTime" Precision="3" />
+          <Property Name="TMN_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="TMN_HRDenyReason" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TMN_HRDenyComment" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="spGetOrgnizationCommonview_Result2">
+          <Property Type="String" Name="EMP_EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EMP_Photo" Nullable="true" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+          <Property Type="String" Name="DepartmentName" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="VST_JobDescription" Nullable="true" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
+          <Property Type="Int64" Name="EMP_JobTitleId" Nullable="true" />
+          <Property Type="Int64" Name="EMP_LocationId" Nullable="true" />
+          <Property Type="String" Name="EMP_EmploymentStatus" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="EMP_ManagerId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ManagerName" Nullable="true" MaxLength="94" />
+          <Property Type="String" Name="EMP_IsExempt" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <EntityType Name="Witness">
+          <Key>
+            <PropertyRef Name="WTS_Id" />
+          </Key>
+          <Property Name="WTS_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="WTS_TMN_Id" Type="Int64" />
+          <Property Name="WTS_IsEliteEmployee" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="WTS_WitnessName" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="WTS_Position" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="WTS_LocationId" Type="Int64" />
+          <Property Name="WTS_CompanyTheyWorkFor" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="WTS_Date" Type="DateTime" Precision="3" />
+          <Property Name="WTS_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="spGetNotification_Result">
+          <Property Type="Int64" Name="NTF_Id" Nullable="false" />
+          <Property Type="String" Name="NTF_Details" Nullable="false" />
+          <Property Type="String" Name="NTF_Module" Nullable="false" MaxLength="20" />
+          <Property Type="String" Name="NTF_Submodule" Nullable="true" MaxLength="20" />
+          <Property Type="Int64" Name="NTF_SubmoduleId" Nullable="true" />
+          <Property Type="String" Name="NTF_AssignTo" Nullable="true" MaxLength="20" />
+          <Property Type="Boolean" Name="NTF_AssignToIsWorkable" Nullable="true" />
+          <Property Type="Boolean" Name="NTF_IsRead" Nullable="true" />
+          <Property Type="DateTime" Name="NTF_DeletedDate" Nullable="true" />
+          <Property Type="String" Name="NTF_CreatedBy" Nullable="false" MaxLength="20" />
+          <Property Type="Boolean" Name="NTF_CreatedByIsWorkable" Nullable="true" />
+          <Property Type="String" Name="NFT_Severity" Nullable="true" MaxLength="1" />
+          <Property Type="DateTime" Name="NTF_CreatedDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="NTF_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetWitness_Result">
+          <Property Type="Int64" Name="WTS_Id" Nullable="false" />
+          <Property Type="Int64" Name="WTS_TMN_Id" Nullable="true" />
+          <Property Type="String" Name="WTS_IsEliteEmployee" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="WTS_WitnessName" Nullable="true" MaxLength="40" />
+          <Property Type="String" Name="WTS_Position" Nullable="true" MaxLength="20" />
+          <Property Type="Int64" Name="WTS_LocationId" Nullable="true" />
+          <Property Type="String" Name="WTS_CompanyTheyWorkFor" Nullable="true" MaxLength="30" />
+          <Property Type="DateTime" Name="WTS_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="WTS_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <ComplexType Name="spGetPIP_Termination_CorrectiveAction_Result">
+          <Property Type="String" Name="type" Nullable="false" MaxLength="16" />
+          <Property Type="String" Name="EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="TStatus" Nullable="true" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="spGetPIP_Termination_CorrectiveAction_Result1">
+          <Property Type="String" Name="type" Nullable="false" MaxLength="16" />
+          <Property Type="String" Name="EmployeeID" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+          <Property Type="String" Name="EMP_Photo" Nullable="true" />
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="TStatus" Nullable="true" MaxLength="30" />
+        </ComplexType>
+        <ComplexType Name="spGetAssetAllocation_Result">
+          <Property Type="Int64" Name="ATA_Id" Nullable="false" />
+          <Property Type="String" Name="ATA_EMP_EmployeeId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ATA_Type" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ATA_AssetName" Nullable="true" MaxLength="30" />
+          <Property Type="String" Name="ATA_AssetDescription" Nullable="true" MaxLength="100" />
+          <Property Type="DateTime" Name="ATA_Make" Nullable="true" />
+          <Property Type="String" Name="ATA_Model" Nullable="true" MaxLength="40" />
+          <Property Type="String" Name="ATA_SerialNumber" Nullable="true" MaxLength="40" />
+          <Property Type="String" Name="ATA_Login" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="ATA_Password" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="ATA_AssignDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ATA_ReturnAcceptBy" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="ATA_ReturnDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ATA_ReturnStatus" Nullable="true" MaxLength="1" />
+          <Property Type="DateTime" Name="ATA_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ATA_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <EntityType Name="AssetAllocation">
+          <Key>
+            <PropertyRef Name="ATA_Id" />
+          </Key>
+          <Property Name="ATA_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ATA_EMP_EmployeeId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ATA_Type" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ATA_AssetName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ATA_AssetDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ATA_Make" Type="DateTime" Precision="0" />
+          <Property Name="ATA_Model" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="ATA_SerialNumber" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="ATA_Login" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ATA_Password" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ATA_AssignDate" Type="DateTime" Precision="3" />
+          <Property Name="ATA_ReturnAcceptBy" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ATA_ReturnDate" Type="DateTime" Precision="3" />
+          <Property Name="ATA_ReturnStatus" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="ATA_Date" Type="DateTime" Precision="3" />
+          <Property Name="ATA_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="spGetDepartmentEmail_Result">
+          <Property Type="String" Name="DepartmentName" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="eMail" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="EmployeeId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="EmployeeName" Nullable="true" MaxLength="94" />
+        </ComplexType>
+        <ComplexType Name="spGetCorrectiveActionForm_Result">
+          <Property Type="Int64" Name="CTA_Id" Nullable="false" />
+          <Property Type="String" Name="CTA_EmployeeId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="CTA_ManagerId" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="CTA_LevelOfCorrectiveAction" Nullable="true" MaxLength="20" />
+          <Property Type="DateTime" Name="CTA_IncidentDate" Nullable="true" />
+          <Property Type="Time" Name="CTA_IncidentTime" Nullable="true" />
+          <Property Type="String" Name="CTA_TypeOfIncident" Nullable="true" MaxLength="20" />
+          <Property Type="String" Name="CTA_EmployeesExplanation" Nullable="true" />
+          <Property Type="String" Name="CTA_PolicyViolation" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="CTA_ExpectationCorrectiveActionPlan" Nullable="true" />
+          <Property Type="String" Name="CTA_ActionTaken" Nullable="true" />
+          <Property Type="String" Name="CTA_NextActionStep" Nullable="true" />
+          <Property Type="String" Name="CTA_IsGuilty" Nullable="true" MaxLength="1" />
+          <Property Type="DateTime" Name="CTA_Date" Nullable="true" Precision="23" />
+          <Property Type="String" Name="CTA_HRApproal" Nullable="true" MaxLength="1" />
+          <Property Type="String" Name="CTA_IsActive" Nullable="true" MaxLength="1" />
+        </ComplexType>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="NTF_Id" />
+          </Key>
+          <Property Name="NTF_Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NTF_Details" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="NTF_Module" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NTF_Submodule" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NTF_SubmoduleId" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NTF_AssignTo" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NTF_AssignToIsWorkable" Type="Boolean" />
+          <Property Name="NTF_IsRead" Type="Boolean" />
+          <Property Name="NTF_DeletedDate" Type="DateTime" Precision="0" />
+          <Property Name="NTF_CreatedBy" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="NTF_CreatedByIsWorkable" Type="Boolean" />
+          <Property Name="NFT_Severity" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="NTF_CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="NTF_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Applicant">
+          <Key>
+            <PropertyRef Name="APT_ApplicantId" />
+          </Key>
+          <Property Name="APT_ApplicantId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="APT_ALA_UserId" Type="Int64" />
+          <Property Name="APT_JobPostingId" Type="Int64" />
+          <Property Name="APT_Status" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="APT_Date" Type="DateTime" Precision="3" />
+          <Property Name="APT_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="APT_DateOfJoining" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="ApplicantLoginAccess">
+          <Key>
+            <PropertyRef Name="ALA_UserId" />
+          </Key>
+          <Property Name="ALA_UserId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ALA_LoginId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ALA_Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ALA_FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ALA_MidName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ALA_LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ALA_eMailId" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ALA_Question" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ALA_Answer" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ALA_Date" Type="DateTime" Precision="3" />
+          <Property Name="ALA_IsActive" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="ALA_Photo" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <ComplexType Name="spGetApplicantAllDetails_Result1">
+          <Property Type="String" Name="JBT_JobTitle" Nullable="true" MaxLength="70" />
+          <Property Type="String" Name="API_FirstName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_MidName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="API_LastName" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="ALA_Photo" Nullable="true" />
+          <Property Type="Int64" Name="ACI_PhoneNo" Nullable="true" />
+          <Property Type="String" Name="ACI_eMail" Nullable="true" MaxLength="50" />
+          <Property Type="Decimal" Name="API_DesireSalaryWages" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="DateTime" Name="APT_DateOfJoining" Nullable="true" />
+          <Property Type="DateTime" Name="OFL_OfferLetterDueDate" Nullable="true" />
+          <Property Type="Decimal" Name="OFL_OfferAmount" Nullable="true" Precision="18" Scale="2" />
+          <Property Type="String" Name="HiringManagerEmployeeId" Nullable="true" MaxLength="20" />
+          <Property Type="Int64" Name="UserId" Nullable="true" />
+          <Property Type="String" Name="HiringManagerName" Nullable="true" MaxLength="94" />
+          <Property Type="Int64" Name="LocationId" Nullable="true" />
+          <Property Type="String" Name="LocationName" Nullable="true" MaxLength="200" />
+          <Property Type="String" Name="VST_IsExempt" Nullable="true" MaxLength="1" />
+          <Property Type="Decimal" Name="VST_RateOfPay" Nullable="true" Precision="18" Scale="2" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -25020,23 +25575,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spGetOrgnizationCommonview" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetOrgnizationCommonview">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetOrgnizationCommonview_Result1">
-                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
-                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
-                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
-                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
-                <ScalarProperty Name="VST_JobDescription" ColumnName="VST_JobDescription" />
-                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
-                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
-                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
-                <ScalarProperty Name="EMP_EmploymentStatus" ColumnName="EMP_EmploymentStatus" />
-                <ScalarProperty Name="EMP_IsExempt" ColumnName="EMP_IsExempt" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spGetIsTremination" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetIsTremination" />
           <FunctionImportMapping FunctionImportName="spGetReviewMeetingList" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetReviewMeetingList">
             <ResultMapping>
@@ -25161,39 +25699,9 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spSetAssetAllocation" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetAssetAllocation" />
-          <EntitySetMapping Name="Applicants">
-            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.Applicant">
-              <MappingFragment StoreEntitySet="Applicant">
-                <ScalarProperty Name="APT_IsActive" ColumnName="APT_IsActive" />
-                <ScalarProperty Name="APT_Date" ColumnName="APT_Date" />
-                <ScalarProperty Name="APT_Status" ColumnName="APT_Status" />
-                <ScalarProperty Name="APT_JobPostingId" ColumnName="APT_JobPostingId" />
-                <ScalarProperty Name="APT_ALA_UserId" ColumnName="APT_ALA_UserId" />
-                <ScalarProperty Name="APT_ApplicantId" ColumnName="APT_ApplicantId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spGetApplicantLogin" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetApplicantLogin" />
           <FunctionImportMapping FunctionImportName="spGetApplicantNewLoginCheckAvailability" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetApplicantNewLoginCheckAvailability" />
           <FunctionImportMapping FunctionImportName="spSetApplicantChangePassword" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetApplicantChangePassword" />
           <FunctionImportMapping FunctionImportName="spSetApplicantForgotPassword" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetApplicantForgotPassword" />
-          <EntitySetMapping Name="ApplicantLoginAccesses">
-            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.ApplicantLoginAccess">
-              <MappingFragment StoreEntitySet="ApplicantLoginAccess">
-                <ScalarProperty Name="ALA_IsActive" ColumnName="ALA_IsActive" />
-                <ScalarProperty Name="ALA_Date" ColumnName="ALA_Date" />
-                <ScalarProperty Name="ALA_Answer" ColumnName="ALA_Answer" />
-                <ScalarProperty Name="ALA_Question" ColumnName="ALA_Question" />
-                <ScalarProperty Name="ALA_eMailId" ColumnName="ALA_eMailId" />
-                <ScalarProperty Name="ALA_LastName" ColumnName="ALA_LastName" />
-                <ScalarProperty Name="ALA_MidName" ColumnName="ALA_MidName" />
-                <ScalarProperty Name="ALA_FirstName" ColumnName="ALA_FirstName" />
-                <ScalarProperty Name="ALA_Password" ColumnName="ALA_Password" />
-                <ScalarProperty Name="ALA_LoginId" ColumnName="ALA_LoginId" />
-                <ScalarProperty Name="ALA_UserId" ColumnName="ALA_UserId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="spSetApplicantCreateLoginAccess" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetApplicantCreateLoginAccess" />
           <EntitySetMapping Name="ApplicantPersonalInfoes">
             <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.ApplicantPersonalInfo">
@@ -25316,101 +25824,6 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="spGetApplicantAllDetails" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetApplicantAllDetails">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetApplicantAllDetails_Result">
-                <ScalarProperty Name="API_Id" ColumnName="API_Id" />
-                <ScalarProperty Name="API_FirstName" ColumnName="API_FirstName" />
-                <ScalarProperty Name="API_MidName" ColumnName="API_MidName" />
-                <ScalarProperty Name="API_LastName" ColumnName="API_LastName" />
-                <ScalarProperty Name="API_Resume" ColumnName="API_Resume" />
-                <ScalarProperty Name="API_SSN" ColumnName="API_SSN" />
-                <ScalarProperty Name="API_DLNumber" ColumnName="API_DLNumber" />
-                <ScalarProperty Name="API_DesireSalaryWages" ColumnName="API_DesireSalaryWages" />
-                <ScalarProperty Name="API_IsActive" ColumnName="API_IsActive" />
-                <ScalarProperty Name="APA_Id" ColumnName="APA_Id" />
-                <ScalarProperty Name="APA_StreetAddress" ColumnName="APA_StreetAddress" />
-                <ScalarProperty Name="APA_Apartment" ColumnName="APA_Apartment" />
-                <ScalarProperty Name="APA_City" ColumnName="APA_City" />
-                <ScalarProperty Name="APA_State" ColumnName="APA_State" />
-                <ScalarProperty Name="APA_Zip" ColumnName="APA_Zip" />
-                <ScalarProperty Name="APA_YearsAddressFrom" ColumnName="APA_YearsAddressFrom" />
-                <ScalarProperty Name="APA_YearsAddressTo" ColumnName="APA_YearsAddressTo" />
-                <ScalarProperty Name="APA_IsActive" ColumnName="APA_IsActive" />
-                <ScalarProperty Name="ACI_Id" ColumnName="ACI_Id" />
-                <ScalarProperty Name="ACI_PhoneNo" ColumnName="ACI_PhoneNo" />
-                <ScalarProperty Name="ACI_eMail" ColumnName="ACI_eMail" />
-                <ScalarProperty Name="ACI_PrefredContactMethod" ColumnName="ACI_PrefredContactMethod" />
-                <ScalarProperty Name="AAI_Id" ColumnName="AAI_Id" />
-                <ScalarProperty Name="AAI_WorkEligibilityUS" ColumnName="AAI_WorkEligibilityUS" />
-                <ScalarProperty Name="AAI_AvailableDate" ColumnName="AAI_AvailableDate" />
-                <ScalarProperty Name="AAI_Age21Completed" ColumnName="AAI_Age21Completed" />
-                <ScalarProperty Name="AAI_AnyRefOrEmployeeInELITE" ColumnName="AAI_AnyRefOrEmployeeInELITE" />
-                <ScalarProperty Name="AAI_NameOfRefOrEmployeeInELITE" ColumnName="AAI_NameOfRefOrEmployeeInELITE" />
-                <ScalarProperty Name="AAI_PriorMilitaryService" ColumnName="AAI_PriorMilitaryService" />
-                <ScalarProperty Name="AAI_EverWorkForELITE" ColumnName="AAI_EverWorkForELITE" />
-                <ScalarProperty Name="AAI_DepartureDate" ColumnName="AAI_DepartureDate" />
-                <ScalarProperty Name="AAI_ReasonForLeaving" ColumnName="AAI_ReasonForLeaving" />
-                <ScalarProperty Name="AAI_IsActive" ColumnName="AAI_IsActive" />
-                <ScalarProperty Name="AAD_Id" ColumnName="AAD_Id" />
-                <ScalarProperty Name="AAD_EducationType" ColumnName="AAD_EducationType" />
-                <ScalarProperty Name="AAD_InstituteName" ColumnName="AAD_InstituteName" />
-                <ScalarProperty Name="AAD_AttendedFrom" ColumnName="AAD_AttendedFrom" />
-                <ScalarProperty Name="AAD_AttendedTo" ColumnName="AAD_AttendedTo" />
-                <ScalarProperty Name="AAD_City" ColumnName="AAD_City" />
-                <ScalarProperty Name="AAD_State" ColumnName="AAD_State" />
-                <ScalarProperty Name="AAD_Zip" ColumnName="AAD_Zip" />
-                <ScalarProperty Name="AAD_IsActive" ColumnName="AAD_IsActive" />
-                <ScalarProperty Name="ABH_Id" ColumnName="ABH_Id" />
-                <ScalarProperty Name="ABH_CompanyName" ColumnName="ABH_CompanyName" />
-                <ScalarProperty Name="ABH_Address" ColumnName="ABH_Address" />
-                <ScalarProperty Name="ABH_City" ColumnName="ABH_City" />
-                <ScalarProperty Name="ABH_State" ColumnName="ABH_State" />
-                <ScalarProperty Name="ABH_ZIPCode" ColumnName="ABH_ZIPCode" />
-                <ScalarProperty Name="ABH_Phone" ColumnName="ABH_Phone" />
-                <ScalarProperty Name="ABH_StillEmployed" ColumnName="ABH_StillEmployed" />
-                <ScalarProperty Name="ABH_ReasonforLeaving" ColumnName="ABH_ReasonforLeaving" />
-                <ScalarProperty Name="ABH_ReasonForGAP" ColumnName="ABH_ReasonForGAP" />
-                <ScalarProperty Name="ABH_SubToFedralMotor" ColumnName="ABH_SubToFedralMotor" />
-                <ScalarProperty Name="ABH_SafetySensitiveFunction" ColumnName="ABH_SafetySensitiveFunction" />
-                <ScalarProperty Name="APT_Id" ColumnName="APT_Id" />
-                <ScalarProperty Name="APT_PositionTitle" ColumnName="APT_PositionTitle" />
-                <ScalarProperty Name="APT_Salary" ColumnName="APT_Salary" />
-                <ScalarProperty Name="APT_FromMoYr" ColumnName="APT_FromMoYr" />
-                <ScalarProperty Name="APT_ToMoYr" ColumnName="APT_ToMoYr" />
-                <ScalarProperty Name="AAR_Id" ColumnName="AAR_Id" />
-                <ScalarProperty Name="AAR_AccidantDate" ColumnName="AAR_AccidantDate" />
-                <ScalarProperty Name="AAR_Discription" ColumnName="AAR_Discription" />
-                <ScalarProperty Name="AAR_NumberOfFatalities" ColumnName="AAR_NumberOfFatalities" />
-                <ScalarProperty Name="AAR_NumberOfInjuries" ColumnName="AAR_NumberOfInjuries" />
-                <ScalarProperty Name="AAR_IsActive" ColumnName="AAR_IsActive" />
-                <ScalarProperty Name="ATC_Id" ColumnName="ATC_Id" />
-                <ScalarProperty Name="ATC_ConvictedDate" ColumnName="ATC_ConvictedDate" />
-                <ScalarProperty Name="ATC_Violation" ColumnName="ATC_Violation" />
-                <ScalarProperty Name="ATC_StateOfViolation" ColumnName="ATC_StateOfViolation" />
-                <ScalarProperty Name="ATC_AtFaultAccident" ColumnName="ATC_AtFaultAccident" />
-                <ScalarProperty Name="ATC_AtMovingViolation" ColumnName="ATC_AtMovingViolation" />
-                <ScalarProperty Name="ATC_IsActive" ColumnName="ATC_IsActive" />
-                <ScalarProperty Name="AVO_Id" ColumnName="AVO_Id" />
-                <ScalarProperty Name="AVO_DenideLicensePermit" ColumnName="AVO_DenideLicensePermit" />
-                <ScalarProperty Name="AVO_DeniedLicensePermitExplanation" ColumnName="AVO_DeniedLicensePermitExplanation" />
-                <ScalarProperty Name="AVO_SuspendRevokeLicensePermit" ColumnName="AVO_SuspendRevokeLicensePermit" />
-                <ScalarProperty Name="AVO_SuspendRevokeLicensePermitExplanation" ColumnName="AVO_SuspendRevokeLicensePermitExplanation" />
-                <ScalarProperty Name="AVO_IsActive" ColumnName="AVO_IsActive" />
-                <ScalarProperty Name="ALH_Id" ColumnName="ALH_Id" />
-                <ScalarProperty Name="ALH_State" ColumnName="ALH_State" />
-                <ScalarProperty Name="ALH_LicenceNumber" ColumnName="ALH_LicenceNumber" />
-                <ScalarProperty Name="ALH_LicenseType" ColumnName="ALH_LicenseType" />
-                <ScalarProperty Name="ALH_IssueDate" ColumnName="ALH_IssueDate" />
-                <ScalarProperty Name="ALH_ExpirationDate" ColumnName="ALH_ExpirationDate" />
-                <ScalarProperty Name="ALH_IsActive" ColumnName="ALH_IsActive" />
-                <ScalarProperty Name="ASA_Id" ColumnName="ASA_Id" />
-                <ScalarProperty Name="ASA_AvaliableStartTime" ColumnName="ASA_AvaliableStartTime" />
-                <ScalarProperty Name="ASA_AvaliableEndTime" ColumnName="ASA_AvaliableEndTime" />
-                <ScalarProperty Name="ASA_IsActive" ColumnName="ASA_IsActive" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="spSetEmergencyContactForm" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetEmergencyContactForm" />
           <EntitySetMapping Name="ApplicantContactInfoes">
             <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.ApplicantContactInfo">
@@ -25799,6 +26212,310 @@ warning 6002: The table/view 'workorderemslive.dbo.QRCMaster1' does not have a p
                 <ScalarProperty Name="VST_IsExempt" ColumnName="VST_IsExempt" />
                 <ScalarProperty Name="VST_RateOfPay" ColumnName="VST_RateOfPay" />
                 <ScalarProperty Name="TypeOfPayChange" ColumnName="TypeOfPayChange" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetTerminationForm" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetTerminationForm">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetTerminationForm_Result">
+                <ScalarProperty Name="TMN_Id" ColumnName="TMN_Id" />
+                <ScalarProperty Name="TMN_EmployeeId" ColumnName="TMN_EmployeeId" />
+                <ScalarProperty Name="TMN_ManagerId" ColumnName="TMN_ManagerId" />
+                <ScalarProperty Name="TMN_TerminationDate" ColumnName="TMN_TerminationDate" />
+                <ScalarProperty Name="TMN_TerminationReason" ColumnName="TMN_TerminationReason" />
+                <ScalarProperty Name="TMN_TerminationDiscription" ColumnName="TMN_TerminationDiscription" />
+                <ScalarProperty Name="TMN_RehireRecommended" ColumnName="TMN_RehireRecommended" />
+                <ScalarProperty Name="TMN_HRApproal" ColumnName="TMN_HRApproal" />
+                <ScalarProperty Name="TMN_Date" ColumnName="TMN_Date" />
+                <ScalarProperty Name="TMN_IsActive" ColumnName="TMN_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetTerminationForm" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetTerminationForm" />
+          <EntitySetMapping Name="CorrectiveActionForms">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.CorrectiveActionForm">
+              <MappingFragment StoreEntitySet="CorrectiveActionForm">
+                <ScalarProperty Name="CTA_MeetingDateTime" ColumnName="CTA_MeetingDateTime" />
+                <ScalarProperty Name="CTA_HRDenyComment" ColumnName="CTA_HRDenyComment" />
+                <ScalarProperty Name="CTA_HRDenyReason" ColumnName="CTA_HRDenyReason" />
+                <ScalarProperty Name="CTA_IsActive" ColumnName="CTA_IsActive" />
+                <ScalarProperty Name="CTA_Date" ColumnName="CTA_Date" />
+                <ScalarProperty Name="CTA_IsGuilty" ColumnName="CTA_IsGuilty" />
+                <ScalarProperty Name="CTA_HRApproal" ColumnName="CTA_HRApproal" />
+                <ScalarProperty Name="CTA_NextActionStep" ColumnName="CTA_NextActionStep" />
+                <ScalarProperty Name="CTA_ActionTaken" ColumnName="CTA_ActionTaken" />
+                <ScalarProperty Name="CTA_ExpectationCorrectiveActionPlan" ColumnName="CTA_ExpectationCorrectiveActionPlan" />
+                <ScalarProperty Name="CTA_PolicyViolation" ColumnName="CTA_PolicyViolation" />
+                <ScalarProperty Name="CTA_EmployeesExplanation" ColumnName="CTA_EmployeesExplanation" />
+                <ScalarProperty Name="CTA_TypeOfIncident" ColumnName="CTA_TypeOfIncident" />
+                <ScalarProperty Name="CTA_IncidentTime" ColumnName="CTA_IncidentTime" />
+                <ScalarProperty Name="CTA_IncidentDate" ColumnName="CTA_IncidentDate" />
+                <ScalarProperty Name="CTA_LevelOfCorrectiveAction" ColumnName="CTA_LevelOfCorrectiveAction" />
+                <ScalarProperty Name="CTA_ManagerId" ColumnName="CTA_ManagerId" />
+                <ScalarProperty Name="CTA_EmployeeId" ColumnName="CTA_EmployeeId" />
+                <ScalarProperty Name="CTA_Id" ColumnName="CTA_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spSetCorrectiveActionForm" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetCorrectiveActionForm" />
+          <EntitySetMapping Name="TerminationForms">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.TerminationForm">
+              <MappingFragment StoreEntitySet="TerminationForm">
+                <ScalarProperty Name="TMN_HRDenyComment" ColumnName="TMN_HRDenyComment" />
+                <ScalarProperty Name="TMN_HRDenyReason" ColumnName="TMN_HRDenyReason" />
+                <ScalarProperty Name="TMN_IsActive" ColumnName="TMN_IsActive" />
+                <ScalarProperty Name="TMN_Date" ColumnName="TMN_Date" />
+                <ScalarProperty Name="TMN_WitnessId" ColumnName="TMN_WitnessId" />
+                <ScalarProperty Name="TMN_SeveranceApproval" ColumnName="TMN_SeveranceApproval" />
+                <ScalarProperty Name="TMN_LengthOfSeverance" ColumnName="TMN_LengthOfSeverance" />
+                <ScalarProperty Name="TMN_IsSeverance" ColumnName="TMN_IsSeverance" />
+                <ScalarProperty Name="TMN_HRApproal" ColumnName="TMN_HRApproal" />
+                <ScalarProperty Name="TMN_RehireRecommended" ColumnName="TMN_RehireRecommended" />
+                <ScalarProperty Name="TMN_TerminationDiscription" ColumnName="TMN_TerminationDiscription" />
+                <ScalarProperty Name="TMN_TerminationReason" ColumnName="TMN_TerminationReason" />
+                <ScalarProperty Name="TMN_LastWorkingDay" ColumnName="TMN_LastWorkingDay" />
+                <ScalarProperty Name="TMN_HRTerminationDate" ColumnName="TMN_HRTerminationDate" />
+                <ScalarProperty Name="TMN_ManagerId" ColumnName="TMN_ManagerId" />
+                <ScalarProperty Name="TMN_EmployeeId" ColumnName="TMN_EmployeeId" />
+                <ScalarProperty Name="TMN_Id" ColumnName="TMN_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetOrgnizationCommonview" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetOrgnizationCommonview">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetOrgnizationCommonview_Result2">
+                <ScalarProperty Name="EMP_EmployeeID" ColumnName="EMP_EmployeeID" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="VST_JobDescription" ColumnName="VST_JobDescription" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="EMP_JobTitleId" ColumnName="EMP_JobTitleId" />
+                <ScalarProperty Name="EMP_LocationId" ColumnName="EMP_LocationId" />
+                <ScalarProperty Name="EMP_EmploymentStatus" ColumnName="EMP_EmploymentStatus" />
+                <ScalarProperty Name="EMP_ManagerId" ColumnName="EMP_ManagerId" />
+                <ScalarProperty Name="ManagerName" ColumnName="ManagerName" />
+                <ScalarProperty Name="EMP_IsExempt" ColumnName="EMP_IsExempt" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="Witnesses">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.Witness">
+              <MappingFragment StoreEntitySet="Witness">
+                <ScalarProperty Name="WTS_IsActive" ColumnName="WTS_IsActive" />
+                <ScalarProperty Name="WTS_Date" ColumnName="WTS_Date" />
+                <ScalarProperty Name="WTS_CompanyTheyWorkFor" ColumnName="WTS_CompanyTheyWorkFor" />
+                <ScalarProperty Name="WTS_LocationId" ColumnName="WTS_LocationId" />
+                <ScalarProperty Name="WTS_Position" ColumnName="WTS_Position" />
+                <ScalarProperty Name="WTS_WitnessName" ColumnName="WTS_WitnessName" />
+                <ScalarProperty Name="WTS_IsEliteEmployee" ColumnName="WTS_IsEliteEmployee" />
+                <ScalarProperty Name="WTS_TMN_Id" ColumnName="WTS_TMN_Id" />
+                <ScalarProperty Name="WTS_Id" ColumnName="WTS_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetNotification" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetNotification">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetNotification_Result">
+                <ScalarProperty Name="NTF_Id" ColumnName="NTF_Id" />
+                <ScalarProperty Name="NTF_Details" ColumnName="NTF_Details" />
+                <ScalarProperty Name="NTF_Module" ColumnName="NTF_Module" />
+                <ScalarProperty Name="NTF_Submodule" ColumnName="NTF_Submodule" />
+                <ScalarProperty Name="NTF_SubmoduleId" ColumnName="NTF_SubmoduleId" />
+                <ScalarProperty Name="NTF_AssignTo" ColumnName="NTF_AssignTo" />
+                <ScalarProperty Name="NTF_AssignToIsWorkable" ColumnName="NTF_AssignToIsWorkable" />
+                <ScalarProperty Name="NTF_IsRead" ColumnName="NTF_IsRead" />
+                <ScalarProperty Name="NTF_DeletedDate" ColumnName="NTF_DeletedDate" />
+                <ScalarProperty Name="NTF_CreatedBy" ColumnName="NTF_CreatedBy" />
+                <ScalarProperty Name="NTF_CreatedByIsWorkable" ColumnName="NTF_CreatedByIsWorkable" />
+                <ScalarProperty Name="NFT_Severity" ColumnName="NFT_Severity" />
+                <ScalarProperty Name="NTF_CreatedDate" ColumnName="NTF_CreatedDate" />
+                <ScalarProperty Name="NTF_IsActive" ColumnName="NTF_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetWitness" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetWitness">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetWitness_Result">
+                <ScalarProperty Name="WTS_Id" ColumnName="WTS_Id" />
+                <ScalarProperty Name="WTS_TMN_Id" ColumnName="WTS_TMN_Id" />
+                <ScalarProperty Name="WTS_IsEliteEmployee" ColumnName="WTS_IsEliteEmployee" />
+                <ScalarProperty Name="WTS_WitnessName" ColumnName="WTS_WitnessName" />
+                <ScalarProperty Name="WTS_Position" ColumnName="WTS_Position" />
+                <ScalarProperty Name="WTS_LocationId" ColumnName="WTS_LocationId" />
+                <ScalarProperty Name="WTS_CompanyTheyWorkFor" ColumnName="WTS_CompanyTheyWorkFor" />
+                <ScalarProperty Name="WTS_Date" ColumnName="WTS_Date" />
+                <ScalarProperty Name="WTS_IsActive" ColumnName="WTS_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetNotification" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetNotification" />
+          <FunctionImportMapping FunctionImportName="spGetPIP_Termination_CorrectiveAction" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetPIP_Termination_CorrectiveAction">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetPIP_Termination_CorrectiveAction_Result1">
+                <ScalarProperty Name="type" ColumnName="type" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="EMP_Photo" ColumnName="EMP_Photo" />
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="TStatus" ColumnName="TStatus" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetWitness" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetWitness" />
+          <FunctionImportMapping FunctionImportName="spGetAssetAllocation" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetAssetAllocation">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetAssetAllocation_Result">
+                <ScalarProperty Name="ATA_Id" ColumnName="ATA_Id" />
+                <ScalarProperty Name="ATA_EMP_EmployeeId" ColumnName="ATA_EMP_EmployeeId" />
+                <ScalarProperty Name="ATA_Type" ColumnName="ATA_Type" />
+                <ScalarProperty Name="ATA_AssetName" ColumnName="ATA_AssetName" />
+                <ScalarProperty Name="ATA_AssetDescription" ColumnName="ATA_AssetDescription" />
+                <ScalarProperty Name="ATA_Make" ColumnName="ATA_Make" />
+                <ScalarProperty Name="ATA_Model" ColumnName="ATA_Model" />
+                <ScalarProperty Name="ATA_SerialNumber" ColumnName="ATA_SerialNumber" />
+                <ScalarProperty Name="ATA_Login" ColumnName="ATA_Login" />
+                <ScalarProperty Name="ATA_Password" ColumnName="ATA_Password" />
+                <ScalarProperty Name="ATA_AssignDate" ColumnName="ATA_AssignDate" />
+                <ScalarProperty Name="ATA_ReturnAcceptBy" ColumnName="ATA_ReturnAcceptBy" />
+                <ScalarProperty Name="ATA_ReturnDate" ColumnName="ATA_ReturnDate" />
+                <ScalarProperty Name="ATA_ReturnStatus" ColumnName="ATA_ReturnStatus" />
+                <ScalarProperty Name="ATA_Date" ColumnName="ATA_Date" />
+                <ScalarProperty Name="ATA_IsActive" ColumnName="ATA_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="AssetAllocations">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.AssetAllocation">
+              <MappingFragment StoreEntitySet="AssetAllocation">
+                <ScalarProperty Name="ATA_IsActive" ColumnName="ATA_IsActive" />
+                <ScalarProperty Name="ATA_Date" ColumnName="ATA_Date" />
+                <ScalarProperty Name="ATA_ReturnStatus" ColumnName="ATA_ReturnStatus" />
+                <ScalarProperty Name="ATA_ReturnDate" ColumnName="ATA_ReturnDate" />
+                <ScalarProperty Name="ATA_ReturnAcceptBy" ColumnName="ATA_ReturnAcceptBy" />
+                <ScalarProperty Name="ATA_AssignDate" ColumnName="ATA_AssignDate" />
+                <ScalarProperty Name="ATA_Password" ColumnName="ATA_Password" />
+                <ScalarProperty Name="ATA_Login" ColumnName="ATA_Login" />
+                <ScalarProperty Name="ATA_SerialNumber" ColumnName="ATA_SerialNumber" />
+                <ScalarProperty Name="ATA_Model" ColumnName="ATA_Model" />
+                <ScalarProperty Name="ATA_Make" ColumnName="ATA_Make" />
+                <ScalarProperty Name="ATA_AssetDescription" ColumnName="ATA_AssetDescription" />
+                <ScalarProperty Name="ATA_AssetName" ColumnName="ATA_AssetName" />
+                <ScalarProperty Name="ATA_Type" ColumnName="ATA_Type" />
+                <ScalarProperty Name="ATA_EMP_EmployeeId" ColumnName="ATA_EMP_EmployeeId" />
+                <ScalarProperty Name="ATA_Id" ColumnName="ATA_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetDepartmentEmail" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetDepartmentEmail">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetDepartmentEmail_Result">
+                <ScalarProperty Name="DepartmentName" ColumnName="DepartmentName" />
+                <ScalarProperty Name="eMail" ColumnName="eMail" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetTermination_HRApproval" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetTermination_HRApproval" />
+          <FunctionImportMapping FunctionImportName="spSetTermination_SeveranceApproval" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetTermination_SeveranceApproval" />
+          <FunctionImportMapping FunctionImportName="spSetCorrectiveAction_HRApproval" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetCorrectiveAction_HRApproval" />
+          <FunctionImportMapping FunctionImportName="spGetCorrectiveActionForm" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetCorrectiveActionForm">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetCorrectiveActionForm_Result">
+                <ScalarProperty Name="CTA_Id" ColumnName="CTA_Id" />
+                <ScalarProperty Name="CTA_EmployeeId" ColumnName="CTA_EmployeeId" />
+                <ScalarProperty Name="CTA_ManagerId" ColumnName="CTA_ManagerId" />
+                <ScalarProperty Name="CTA_LevelOfCorrectiveAction" ColumnName="CTA_LevelOfCorrectiveAction" />
+                <ScalarProperty Name="CTA_IncidentDate" ColumnName="CTA_IncidentDate" />
+                <ScalarProperty Name="CTA_IncidentTime" ColumnName="CTA_IncidentTime" />
+                <ScalarProperty Name="CTA_TypeOfIncident" ColumnName="CTA_TypeOfIncident" />
+                <ScalarProperty Name="CTA_EmployeesExplanation" ColumnName="CTA_EmployeesExplanation" />
+                <ScalarProperty Name="CTA_PolicyViolation" ColumnName="CTA_PolicyViolation" />
+                <ScalarProperty Name="CTA_ExpectationCorrectiveActionPlan" ColumnName="CTA_ExpectationCorrectiveActionPlan" />
+                <ScalarProperty Name="CTA_ActionTaken" ColumnName="CTA_ActionTaken" />
+                <ScalarProperty Name="CTA_NextActionStep" ColumnName="CTA_NextActionStep" />
+                <ScalarProperty Name="CTA_IsGuilty" ColumnName="CTA_IsGuilty" />
+                <ScalarProperty Name="CTA_Date" ColumnName="CTA_Date" />
+                <ScalarProperty Name="CTA_HRApproal" ColumnName="CTA_HRApproal" />
+                <ScalarProperty Name="CTA_IsActive" ColumnName="CTA_IsActive" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spSetMeetingDateTime" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spSetMeetingDateTime" />
+          <EntitySetMapping Name="Notifications">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.Notification">
+              <MappingFragment StoreEntitySet="Notification">
+                <ScalarProperty Name="NTF_IsActive" ColumnName="NTF_IsActive" />
+                <ScalarProperty Name="NTF_CreatedDate" ColumnName="NTF_CreatedDate" />
+                <ScalarProperty Name="NFT_Severity" ColumnName="NFT_Severity" />
+                <ScalarProperty Name="NTF_CreatedByIsWorkable" ColumnName="NTF_CreatedByIsWorkable" />
+                <ScalarProperty Name="NTF_CreatedBy" ColumnName="NTF_CreatedBy" />
+                <ScalarProperty Name="NTF_DeletedDate" ColumnName="NTF_DeletedDate" />
+                <ScalarProperty Name="NTF_IsRead" ColumnName="NTF_IsRead" />
+                <ScalarProperty Name="NTF_AssignToIsWorkable" ColumnName="NTF_AssignToIsWorkable" />
+                <ScalarProperty Name="NTF_AssignTo" ColumnName="NTF_AssignTo" />
+                <ScalarProperty Name="NTF_SubmoduleId" ColumnName="NTF_SubmoduleId" />
+                <ScalarProperty Name="NTF_Submodule" ColumnName="NTF_Submodule" />
+                <ScalarProperty Name="NTF_Module" ColumnName="NTF_Module" />
+                <ScalarProperty Name="NTF_Details" ColumnName="NTF_Details" />
+                <ScalarProperty Name="NTF_Id" ColumnName="NTF_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Applicants">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.Applicant">
+              <MappingFragment StoreEntitySet="Applicant">
+                <ScalarProperty Name="APT_DateOfJoining" ColumnName="APT_DateOfJoining" />
+                <ScalarProperty Name="APT_IsActive" ColumnName="APT_IsActive" />
+                <ScalarProperty Name="APT_Date" ColumnName="APT_Date" />
+                <ScalarProperty Name="APT_Status" ColumnName="APT_Status" />
+                <ScalarProperty Name="APT_JobPostingId" ColumnName="APT_JobPostingId" />
+                <ScalarProperty Name="APT_ALA_UserId" ColumnName="APT_ALA_UserId" />
+                <ScalarProperty Name="APT_ApplicantId" ColumnName="APT_ApplicantId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ApplicantLoginAccesses">
+            <EntityTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.ApplicantLoginAccess">
+              <MappingFragment StoreEntitySet="ApplicantLoginAccess">
+                <ScalarProperty Name="ALA_Photo" ColumnName="ALA_Photo" />
+                <ScalarProperty Name="ALA_IsActive" ColumnName="ALA_IsActive" />
+                <ScalarProperty Name="ALA_Date" ColumnName="ALA_Date" />
+                <ScalarProperty Name="ALA_Answer" ColumnName="ALA_Answer" />
+                <ScalarProperty Name="ALA_Question" ColumnName="ALA_Question" />
+                <ScalarProperty Name="ALA_eMailId" ColumnName="ALA_eMailId" />
+                <ScalarProperty Name="ALA_LastName" ColumnName="ALA_LastName" />
+                <ScalarProperty Name="ALA_MidName" ColumnName="ALA_MidName" />
+                <ScalarProperty Name="ALA_FirstName" ColumnName="ALA_FirstName" />
+                <ScalarProperty Name="ALA_Password" ColumnName="ALA_Password" />
+                <ScalarProperty Name="ALA_LoginId" ColumnName="ALA_LoginId" />
+                <ScalarProperty Name="ALA_UserId" ColumnName="ALA_UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spGetApplicantAllDetails" FunctionName="WorkOrderEMS.Data.EntityModel.Store.spGetApplicantAllDetails">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="WorkOrderEMS.Data.EntityModel.spGetApplicantAllDetails_Result1">
+                <ScalarProperty Name="JBT_JobTitle" ColumnName="JBT_JobTitle" />
+                <ScalarProperty Name="API_FirstName" ColumnName="API_FirstName" />
+                <ScalarProperty Name="API_MidName" ColumnName="API_MidName" />
+                <ScalarProperty Name="API_LastName" ColumnName="API_LastName" />
+                <ScalarProperty Name="ALA_Photo" ColumnName="ALA_Photo" />
+                <ScalarProperty Name="ACI_PhoneNo" ColumnName="ACI_PhoneNo" />
+                <ScalarProperty Name="ACI_eMail" ColumnName="ACI_eMail" />
+                <ScalarProperty Name="API_DesireSalaryWages" ColumnName="API_DesireSalaryWages" />
+                <ScalarProperty Name="APT_DateOfJoining" ColumnName="APT_DateOfJoining" />
+                <ScalarProperty Name="OFL_OfferLetterDueDate" ColumnName="OFL_OfferLetterDueDate" />
+                <ScalarProperty Name="OFL_OfferAmount" ColumnName="OFL_OfferAmount" />
+                <ScalarProperty Name="HiringManagerEmployeeId" ColumnName="HiringManagerEmployeeId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="HiringManagerName" ColumnName="HiringManagerName" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
+                <ScalarProperty Name="VST_IsExempt" ColumnName="VST_IsExempt" />
+                <ScalarProperty Name="VST_RateOfPay" ColumnName="VST_RateOfPay" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

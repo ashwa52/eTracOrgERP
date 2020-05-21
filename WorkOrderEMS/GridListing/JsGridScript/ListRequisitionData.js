@@ -2,6 +2,7 @@
 var base_url = window.location.origin;
 (function ($) {
     'use strict'
+    debugger
     var data;
         $("#ListRquisitionData").jsGrid({
             width: "100%",

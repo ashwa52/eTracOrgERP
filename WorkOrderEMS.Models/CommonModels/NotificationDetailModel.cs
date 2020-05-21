@@ -4,18 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace WorkOrderEMS.Models
 {
     public class NotificationDetailModel
     {
         public long? ModuleId { get; set; }
+        public string SubModuleId1 { get; set; }//changed
         public long? AssignTo { get; set; }
         public long? WorkOrderID { get; set; }
         public long? eFleetID { get; set; }
         public long? POID { get; set; }
         public long? MiscellaneousID { get; set; }
         public long? BillID { get; set; }
-        public bool IsRead { get; set; }
+        public bool? IsRead { get; set; }
         public long ReadBy { get; set; }
         public DateTime ReadDate { get; set; }
         public long CreatedBy { get; set; }
@@ -30,5 +32,22 @@ namespace WorkOrderEMS.Models
         public bool? IsDamage { get; set; }
         public bool? IsCheckOut { get; set; }
         public long NotificationId { get; set; }
+        public string SubModule { get; set; }
+        public string SubModuleId { get; set; }
+        public string Priority { get; set; }
+        public bool? AssignToIsWorkable { get; set; }
+        public bool? CreatedByIsWorkable { get; set; }
+        public string CreatedByUser { get; set; }
+        public string AssignToUser { get; set; }
+        public string Photo { get; set; }
+        public string OfferAcceptRejectCounterStatus { get; set; }
+        public string ApplicantStatus { get; set; }
+        public string Details { get; set; }
+        public string Message { get; set; }
+        public long ApplicantId { get; set; }
+        public string Module { get; set; }
+        public Nullable<DateTime> MeetingDateTime { get; set; } //Added by Rajat Toppo
+        public string IsExempt { get; set; } // Added by Rajat Toppo
+        public string emp_id { get; set; }
     }
 }

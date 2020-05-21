@@ -150,8 +150,6 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<LoginLog> LoginLogs { get; set; }
         public virtual DbSet<EmergencyContactForm> EmergencyContactForms { get; set; }
-        public virtual DbSet<Applicant> Applicants { get; set; }
-        public virtual DbSet<ApplicantLoginAccess> ApplicantLoginAccesses { get; set; }
         public virtual DbSet<ApplicantPersonalInfo> ApplicantPersonalInfoes { get; set; }
         public virtual DbSet<InterviewQuestionChild> InterviewQuestionChilds { get; set; }
         public virtual DbSet<InterviewQuestionMaster> InterviewQuestionMasters { get; set; }
@@ -161,6 +159,13 @@ namespace WorkOrderEMS.Data.EntityModel
         public virtual DbSet<BookSlotTime> BookSlotTimes { get; set; }
         public virtual DbSet<ApplicantContactInfo> ApplicantContactInfoes { get; set; }
         public virtual DbSet<JobPosting> JobPostings { get; set; }
+        public virtual DbSet<CorrectiveActionForm> CorrectiveActionForms { get; set; }
+        public virtual DbSet<TerminationForm> TerminationForms { get; set; }
+        public virtual DbSet<Witness> Witnesses { get; set; }
+        public virtual DbSet<AssetAllocation> AssetAllocations { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
+        public virtual DbSet<Applicant> Applicants { get; set; }
+        public virtual DbSet<ApplicantLoginAccess> ApplicantLoginAccesses { get; set; }
     
         [DbFunction("workorderEMSEntities", "fn_Split")]
         public virtual IQueryable<fn_Split_Result> fn_Split(string sText, string sDelim)
@@ -6317,15 +6322,6 @@ namespace WorkOrderEMS.Data.EntityModel
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetApplicantStatus", applicantIdParameter, aPI_ApplicantStatusParameter, aPI_IsActiveParameter);
         }
     
-        public virtual ObjectResult<spGetOrgnizationCommonview_Result1> spGetOrgnizationCommonview(string employeeId)
-        {
-            var employeeIdParameter = employeeId != null ?
-                new ObjectParameter("EmployeeId", employeeId) :
-                new ObjectParameter("EmployeeId", typeof(string));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetOrgnizationCommonview_Result1>("spGetOrgnizationCommonview", employeeIdParameter);
-        }
-    
         public virtual int spGetIsTremination(string employeeId, ObjectParameter isTermination)
         {
             var employeeIdParameter = employeeId != null ?
@@ -6685,15 +6681,6 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("IPT_IsActive", typeof(string));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetInterviewPanel", actionParameter, iPT_IdParameter, iPT_JPS_JobPostingIdParameter, iPT_EMP_EmployeeID_HMParameter, iPT_EMP_EmployeeID_SEParameter, iPT_EMP_EmployeeID_TEParameter, iPT_StatusParameter, iPT_IsActiveParameter);
-        }
-    
-        public virtual ObjectResult<spGetApplicantAllDetails_Result> spGetApplicantAllDetails(Nullable<long> aPT_ApplicantId)
-        {
-            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
-                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
-                new ObjectParameter("APT_ApplicantId", typeof(long));
-    
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantAllDetails_Result>("spGetApplicantAllDetails", aPT_ApplicantIdParameter);
         }
     
         public virtual int spSetEmergencyContactForm(string eCFAction, Nullable<long> eCF_Id, string eCF_EMP_EmployeeID, string eCF_NickName, Nullable<long> eCF_HomePhone, string eCF_HomeAddress, string eCF_HomeEmail, string eCF_FirstName, string eCF_MiddleName, string eCF_LastName, string eCF_Address, string eCF_Gender, string eCF_Citizenship, Nullable<System.DateTime> eCF_BirthDate, string eCF_DriverLicense, string eCF_EmergencyContactName, Nullable<long> eCF_Mobile, Nullable<long> eCF_PhoneNumber, string eCF_SSN, string eCF_Relationship, string eCF_IsActive)
@@ -7443,6 +7430,411 @@ namespace WorkOrderEMS.Data.EntityModel
                 new ObjectParameter("ApplicantId", typeof(long));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetFormRateOfPay_Result3>("spGetFormRateOfPay", applicantIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetTerminationForm_Result> spGetTerminationForm(string tMN_EmployeeId)
+        {
+            var tMN_EmployeeIdParameter = tMN_EmployeeId != null ?
+                new ObjectParameter("TMN_EmployeeId", tMN_EmployeeId) :
+                new ObjectParameter("TMN_EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetTerminationForm_Result>("spGetTerminationForm", tMN_EmployeeIdParameter);
+        }
+    
+        public virtual int spSetTerminationForm(string action, Nullable<long> tMN_Id, string tMN_EmployeeId, string tMN_ManagerId, Nullable<System.DateTime> tMN_HRTerminationDate, Nullable<System.DateTime> tMN_LastWorkingDay, string tMN_TerminationReason, string tMN_TerminationDiscription, string tMN_RehireRecommended, string tMN_HRApproal, string tMN_IsSeverance, Nullable<int> tMN_LengthOfSeverance, string tMN_SeveranceApproval, Nullable<long> tMN_WitnessId, string tMN_IsActive)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var tMN_IdParameter = tMN_Id.HasValue ?
+                new ObjectParameter("TMN_Id", tMN_Id) :
+                new ObjectParameter("TMN_Id", typeof(long));
+    
+            var tMN_EmployeeIdParameter = tMN_EmployeeId != null ?
+                new ObjectParameter("TMN_EmployeeId", tMN_EmployeeId) :
+                new ObjectParameter("TMN_EmployeeId", typeof(string));
+    
+            var tMN_ManagerIdParameter = tMN_ManagerId != null ?
+                new ObjectParameter("TMN_ManagerId", tMN_ManagerId) :
+                new ObjectParameter("TMN_ManagerId", typeof(string));
+    
+            var tMN_HRTerminationDateParameter = tMN_HRTerminationDate.HasValue ?
+                new ObjectParameter("TMN_HRTerminationDate", tMN_HRTerminationDate) :
+                new ObjectParameter("TMN_HRTerminationDate", typeof(System.DateTime));
+    
+            var tMN_LastWorkingDayParameter = tMN_LastWorkingDay.HasValue ?
+                new ObjectParameter("TMN_LastWorkingDay", tMN_LastWorkingDay) :
+                new ObjectParameter("TMN_LastWorkingDay", typeof(System.DateTime));
+    
+            var tMN_TerminationReasonParameter = tMN_TerminationReason != null ?
+                new ObjectParameter("TMN_TerminationReason", tMN_TerminationReason) :
+                new ObjectParameter("TMN_TerminationReason", typeof(string));
+    
+            var tMN_TerminationDiscriptionParameter = tMN_TerminationDiscription != null ?
+                new ObjectParameter("TMN_TerminationDiscription", tMN_TerminationDiscription) :
+                new ObjectParameter("TMN_TerminationDiscription", typeof(string));
+    
+            var tMN_RehireRecommendedParameter = tMN_RehireRecommended != null ?
+                new ObjectParameter("TMN_RehireRecommended", tMN_RehireRecommended) :
+                new ObjectParameter("TMN_RehireRecommended", typeof(string));
+    
+            var tMN_HRApproalParameter = tMN_HRApproal != null ?
+                new ObjectParameter("TMN_HRApproal", tMN_HRApproal) :
+                new ObjectParameter("TMN_HRApproal", typeof(string));
+    
+            var tMN_IsSeveranceParameter = tMN_IsSeverance != null ?
+                new ObjectParameter("TMN_IsSeverance", tMN_IsSeverance) :
+                new ObjectParameter("TMN_IsSeverance", typeof(string));
+    
+            var tMN_LengthOfSeveranceParameter = tMN_LengthOfSeverance.HasValue ?
+                new ObjectParameter("TMN_LengthOfSeverance", tMN_LengthOfSeverance) :
+                new ObjectParameter("TMN_LengthOfSeverance", typeof(int));
+    
+            var tMN_SeveranceApprovalParameter = tMN_SeveranceApproval != null ?
+                new ObjectParameter("TMN_SeveranceApproval", tMN_SeveranceApproval) :
+                new ObjectParameter("TMN_SeveranceApproval", typeof(string));
+    
+            var tMN_WitnessIdParameter = tMN_WitnessId.HasValue ?
+                new ObjectParameter("TMN_WitnessId", tMN_WitnessId) :
+                new ObjectParameter("TMN_WitnessId", typeof(long));
+    
+            var tMN_IsActiveParameter = tMN_IsActive != null ?
+                new ObjectParameter("TMN_IsActive", tMN_IsActive) :
+                new ObjectParameter("TMN_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetTerminationForm", actionParameter, tMN_IdParameter, tMN_EmployeeIdParameter, tMN_ManagerIdParameter, tMN_HRTerminationDateParameter, tMN_LastWorkingDayParameter, tMN_TerminationReasonParameter, tMN_TerminationDiscriptionParameter, tMN_RehireRecommendedParameter, tMN_HRApproalParameter, tMN_IsSeveranceParameter, tMN_LengthOfSeveranceParameter, tMN_SeveranceApprovalParameter, tMN_WitnessIdParameter, tMN_IsActiveParameter);
+        }
+    
+        public virtual int spSetCorrectiveActionForm(string action, Nullable<long> cTA_Id, string cTA_EmployeeId, string cTA_ManagerId, string cTA_LevelOfCorrectiveAction, Nullable<System.DateTime> cTA_IncidentDate, Nullable<System.TimeSpan> cTA_IncidentTime, string cTA_TypeOfIncident, string cTA_EmployeesExplanation, string cTA_PolicyViolation, string cTA_ExpectationCorrectiveActionPlan, string cTA_ActionTaken, string cTA_NextActionStep, string cTA_HRApproal, string cTA_IsGuilty, Nullable<System.DateTime> cTA_Date, string cTA_IsActive)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var cTA_IdParameter = cTA_Id.HasValue ?
+                new ObjectParameter("CTA_Id", cTA_Id) :
+                new ObjectParameter("CTA_Id", typeof(long));
+    
+            var cTA_EmployeeIdParameter = cTA_EmployeeId != null ?
+                new ObjectParameter("CTA_EmployeeId", cTA_EmployeeId) :
+                new ObjectParameter("CTA_EmployeeId", typeof(string));
+    
+            var cTA_ManagerIdParameter = cTA_ManagerId != null ?
+                new ObjectParameter("CTA_ManagerId", cTA_ManagerId) :
+                new ObjectParameter("CTA_ManagerId", typeof(string));
+    
+            var cTA_LevelOfCorrectiveActionParameter = cTA_LevelOfCorrectiveAction != null ?
+                new ObjectParameter("CTA_LevelOfCorrectiveAction", cTA_LevelOfCorrectiveAction) :
+                new ObjectParameter("CTA_LevelOfCorrectiveAction", typeof(string));
+    
+            var cTA_IncidentDateParameter = cTA_IncidentDate.HasValue ?
+                new ObjectParameter("CTA_IncidentDate", cTA_IncidentDate) :
+                new ObjectParameter("CTA_IncidentDate", typeof(System.DateTime));
+    
+            var cTA_IncidentTimeParameter = cTA_IncidentTime.HasValue ?
+                new ObjectParameter("CTA_IncidentTime", cTA_IncidentTime) :
+                new ObjectParameter("CTA_IncidentTime", typeof(System.TimeSpan));
+    
+            var cTA_TypeOfIncidentParameter = cTA_TypeOfIncident != null ?
+                new ObjectParameter("CTA_TypeOfIncident", cTA_TypeOfIncident) :
+                new ObjectParameter("CTA_TypeOfIncident", typeof(string));
+    
+            var cTA_EmployeesExplanationParameter = cTA_EmployeesExplanation != null ?
+                new ObjectParameter("CTA_EmployeesExplanation", cTA_EmployeesExplanation) :
+                new ObjectParameter("CTA_EmployeesExplanation", typeof(string));
+    
+            var cTA_PolicyViolationParameter = cTA_PolicyViolation != null ?
+                new ObjectParameter("CTA_PolicyViolation", cTA_PolicyViolation) :
+                new ObjectParameter("CTA_PolicyViolation", typeof(string));
+    
+            var cTA_ExpectationCorrectiveActionPlanParameter = cTA_ExpectationCorrectiveActionPlan != null ?
+                new ObjectParameter("CTA_ExpectationCorrectiveActionPlan", cTA_ExpectationCorrectiveActionPlan) :
+                new ObjectParameter("CTA_ExpectationCorrectiveActionPlan", typeof(string));
+    
+            var cTA_ActionTakenParameter = cTA_ActionTaken != null ?
+                new ObjectParameter("CTA_ActionTaken", cTA_ActionTaken) :
+                new ObjectParameter("CTA_ActionTaken", typeof(string));
+    
+            var cTA_NextActionStepParameter = cTA_NextActionStep != null ?
+                new ObjectParameter("CTA_NextActionStep", cTA_NextActionStep) :
+                new ObjectParameter("CTA_NextActionStep", typeof(string));
+    
+            var cTA_HRApproalParameter = cTA_HRApproal != null ?
+                new ObjectParameter("CTA_HRApproal", cTA_HRApproal) :
+                new ObjectParameter("CTA_HRApproal", typeof(string));
+    
+            var cTA_IsGuiltyParameter = cTA_IsGuilty != null ?
+                new ObjectParameter("CTA_IsGuilty", cTA_IsGuilty) :
+                new ObjectParameter("CTA_IsGuilty", typeof(string));
+    
+            var cTA_DateParameter = cTA_Date.HasValue ?
+                new ObjectParameter("CTA_Date", cTA_Date) :
+                new ObjectParameter("CTA_Date", typeof(System.DateTime));
+    
+            var cTA_IsActiveParameter = cTA_IsActive != null ?
+                new ObjectParameter("CTA_IsActive", cTA_IsActive) :
+                new ObjectParameter("CTA_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetCorrectiveActionForm", actionParameter, cTA_IdParameter, cTA_EmployeeIdParameter, cTA_ManagerIdParameter, cTA_LevelOfCorrectiveActionParameter, cTA_IncidentDateParameter, cTA_IncidentTimeParameter, cTA_TypeOfIncidentParameter, cTA_EmployeesExplanationParameter, cTA_PolicyViolationParameter, cTA_ExpectationCorrectiveActionPlanParameter, cTA_ActionTakenParameter, cTA_NextActionStepParameter, cTA_HRApproalParameter, cTA_IsGuiltyParameter, cTA_DateParameter, cTA_IsActiveParameter);
+        }
+    
+        public virtual ObjectResult<spGetOrgnizationCommonview_Result2> spGetOrgnizationCommonview(string employeeId)
+        {
+            var employeeIdParameter = employeeId != null ?
+                new ObjectParameter("EmployeeId", employeeId) :
+                new ObjectParameter("EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetOrgnizationCommonview_Result2>("spGetOrgnizationCommonview", employeeIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetNotification_Result> spGetNotification(string nTF_Module, string nTF_Submodule, Nullable<long> nTF_SubmoduleId, string nTF_CreatedBy, string nTF_AssignTo)
+        {
+            var nTF_ModuleParameter = nTF_Module != null ?
+                new ObjectParameter("NTF_Module", nTF_Module) :
+                new ObjectParameter("NTF_Module", typeof(string));
+    
+            var nTF_SubmoduleParameter = nTF_Submodule != null ?
+                new ObjectParameter("NTF_Submodule", nTF_Submodule) :
+                new ObjectParameter("NTF_Submodule", typeof(string));
+    
+            var nTF_SubmoduleIdParameter = nTF_SubmoduleId.HasValue ?
+                new ObjectParameter("NTF_SubmoduleId", nTF_SubmoduleId) :
+                new ObjectParameter("NTF_SubmoduleId", typeof(long));
+    
+            var nTF_CreatedByParameter = nTF_CreatedBy != null ?
+                new ObjectParameter("NTF_CreatedBy", nTF_CreatedBy) :
+                new ObjectParameter("NTF_CreatedBy", typeof(string));
+    
+            var nTF_AssignToParameter = nTF_AssignTo != null ?
+                new ObjectParameter("NTF_AssignTo", nTF_AssignTo) :
+                new ObjectParameter("NTF_AssignTo", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetNotification_Result>("spGetNotification", nTF_ModuleParameter, nTF_SubmoduleParameter, nTF_SubmoduleIdParameter, nTF_CreatedByParameter, nTF_AssignToParameter);
+        }
+    
+        public virtual ObjectResult<spGetWitness_Result> spGetWitness(Nullable<long> wTS_TMN_Id)
+        {
+            var wTS_TMN_IdParameter = wTS_TMN_Id.HasValue ?
+                new ObjectParameter("WTS_TMN_Id", wTS_TMN_Id) :
+                new ObjectParameter("WTS_TMN_Id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetWitness_Result>("spGetWitness", wTS_TMN_IdParameter);
+        }
+    
+        public virtual int spSetNotification(string action, Nullable<long> nTF_Id, string nTF_Details, string nTF_Module, string nTF_Submodule, string nTF_SubmoduleId, string nTF_CreatedBy, string nTF_AssignTo, Nullable<bool> nTF_AssignToIsWorkable, Nullable<bool> nTF_CreatedByIsWorkable, string nFT_Severity, Nullable<System.DateTime> nTF_DeletedDate, Nullable<bool> nTF_IsRead, string nTF_IsActive)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var nTF_IdParameter = nTF_Id.HasValue ?
+                new ObjectParameter("NTF_Id", nTF_Id) :
+                new ObjectParameter("NTF_Id", typeof(long));
+    
+            var nTF_DetailsParameter = nTF_Details != null ?
+                new ObjectParameter("NTF_Details", nTF_Details) :
+                new ObjectParameter("NTF_Details", typeof(string));
+    
+            var nTF_ModuleParameter = nTF_Module != null ?
+                new ObjectParameter("NTF_Module", nTF_Module) :
+                new ObjectParameter("NTF_Module", typeof(string));
+    
+            var nTF_SubmoduleParameter = nTF_Submodule != null ?
+                new ObjectParameter("NTF_Submodule", nTF_Submodule) :
+                new ObjectParameter("NTF_Submodule", typeof(string));
+    
+            var nTF_SubmoduleIdParameter = nTF_SubmoduleId != null ?
+                new ObjectParameter("NTF_SubmoduleId", nTF_SubmoduleId) :
+                new ObjectParameter("NTF_SubmoduleId", typeof(string));
+    
+            var nTF_CreatedByParameter = nTF_CreatedBy != null ?
+                new ObjectParameter("NTF_CreatedBy", nTF_CreatedBy) :
+                new ObjectParameter("NTF_CreatedBy", typeof(string));
+    
+            var nTF_AssignToParameter = nTF_AssignTo != null ?
+                new ObjectParameter("NTF_AssignTo", nTF_AssignTo) :
+                new ObjectParameter("NTF_AssignTo", typeof(string));
+    
+            var nTF_AssignToIsWorkableParameter = nTF_AssignToIsWorkable.HasValue ?
+                new ObjectParameter("NTF_AssignToIsWorkable", nTF_AssignToIsWorkable) :
+                new ObjectParameter("NTF_AssignToIsWorkable", typeof(bool));
+    
+            var nTF_CreatedByIsWorkableParameter = nTF_CreatedByIsWorkable.HasValue ?
+                new ObjectParameter("NTF_CreatedByIsWorkable", nTF_CreatedByIsWorkable) :
+                new ObjectParameter("NTF_CreatedByIsWorkable", typeof(bool));
+    
+            var nFT_SeverityParameter = nFT_Severity != null ?
+                new ObjectParameter("NFT_Severity", nFT_Severity) :
+                new ObjectParameter("NFT_Severity", typeof(string));
+    
+            var nTF_DeletedDateParameter = nTF_DeletedDate.HasValue ?
+                new ObjectParameter("NTF_DeletedDate", nTF_DeletedDate) :
+                new ObjectParameter("NTF_DeletedDate", typeof(System.DateTime));
+    
+            var nTF_IsReadParameter = nTF_IsRead.HasValue ?
+                new ObjectParameter("NTF_IsRead", nTF_IsRead) :
+                new ObjectParameter("NTF_IsRead", typeof(bool));
+    
+            var nTF_IsActiveParameter = nTF_IsActive != null ?
+                new ObjectParameter("NTF_IsActive", nTF_IsActive) :
+                new ObjectParameter("NTF_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetNotification", actionParameter, nTF_IdParameter, nTF_DetailsParameter, nTF_ModuleParameter, nTF_SubmoduleParameter, nTF_SubmoduleIdParameter, nTF_CreatedByParameter, nTF_AssignToParameter, nTF_AssignToIsWorkableParameter, nTF_CreatedByIsWorkableParameter, nFT_SeverityParameter, nTF_DeletedDateParameter, nTF_IsReadParameter, nTF_IsActiveParameter);
+        }
+    
+        public virtual ObjectResult<spGetPIP_Termination_CorrectiveAction_Result1> spGetPIP_Termination_CorrectiveAction(Nullable<long> managerId, Nullable<System.DateTime> fromDate, Nullable<System.DateTime> toDate)
+        {
+            var managerIdParameter = managerId.HasValue ?
+                new ObjectParameter("ManagerId", managerId) :
+                new ObjectParameter("ManagerId", typeof(long));
+    
+            var fromDateParameter = fromDate.HasValue ?
+                new ObjectParameter("fromDate", fromDate) :
+                new ObjectParameter("fromDate", typeof(System.DateTime));
+    
+            var toDateParameter = toDate.HasValue ?
+                new ObjectParameter("ToDate", toDate) :
+                new ObjectParameter("ToDate", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetPIP_Termination_CorrectiveAction_Result1>("spGetPIP_Termination_CorrectiveAction", managerIdParameter, fromDateParameter, toDateParameter);
+        }
+    
+        public virtual int spSetWitness(string action, Nullable<long> wTS_TMN_Id, string wTS_IsEliteEmployee, string wTS_WitnessName, Nullable<long> wTS_LocationId, string wTS_Position, string wTS_CompanyTheyWorkFor, string wTS_IsActive, ObjectParameter wTS_Id)
+        {
+            var actionParameter = action != null ?
+                new ObjectParameter("Action", action) :
+                new ObjectParameter("Action", typeof(string));
+    
+            var wTS_TMN_IdParameter = wTS_TMN_Id.HasValue ?
+                new ObjectParameter("WTS_TMN_Id", wTS_TMN_Id) :
+                new ObjectParameter("WTS_TMN_Id", typeof(long));
+    
+            var wTS_IsEliteEmployeeParameter = wTS_IsEliteEmployee != null ?
+                new ObjectParameter("WTS_IsEliteEmployee", wTS_IsEliteEmployee) :
+                new ObjectParameter("WTS_IsEliteEmployee", typeof(string));
+    
+            var wTS_WitnessNameParameter = wTS_WitnessName != null ?
+                new ObjectParameter("WTS_WitnessName", wTS_WitnessName) :
+                new ObjectParameter("WTS_WitnessName", typeof(string));
+    
+            var wTS_LocationIdParameter = wTS_LocationId.HasValue ?
+                new ObjectParameter("WTS_LocationId", wTS_LocationId) :
+                new ObjectParameter("WTS_LocationId", typeof(long));
+    
+            var wTS_PositionParameter = wTS_Position != null ?
+                new ObjectParameter("WTS_Position", wTS_Position) :
+                new ObjectParameter("WTS_Position", typeof(string));
+    
+            var wTS_CompanyTheyWorkForParameter = wTS_CompanyTheyWorkFor != null ?
+                new ObjectParameter("WTS_CompanyTheyWorkFor", wTS_CompanyTheyWorkFor) :
+                new ObjectParameter("WTS_CompanyTheyWorkFor", typeof(string));
+    
+            var wTS_IsActiveParameter = wTS_IsActive != null ?
+                new ObjectParameter("WTS_IsActive", wTS_IsActive) :
+                new ObjectParameter("WTS_IsActive", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetWitness", actionParameter, wTS_TMN_IdParameter, wTS_IsEliteEmployeeParameter, wTS_WitnessNameParameter, wTS_LocationIdParameter, wTS_PositionParameter, wTS_CompanyTheyWorkForParameter, wTS_IsActiveParameter, wTS_Id);
+        }
+    
+        public virtual ObjectResult<spGetAssetAllocation_Result> spGetAssetAllocation(string aTA_EMP_EmployeeId)
+        {
+            var aTA_EMP_EmployeeIdParameter = aTA_EMP_EmployeeId != null ?
+                new ObjectParameter("ATA_EMP_EmployeeId", aTA_EMP_EmployeeId) :
+                new ObjectParameter("ATA_EMP_EmployeeId", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetAssetAllocation_Result>("spGetAssetAllocation", aTA_EMP_EmployeeIdParameter);
+        }
+    
+        public virtual ObjectResult<spGetDepartmentEmail_Result> spGetDepartmentEmail(Nullable<long> dPT_Id)
+        {
+            var dPT_IdParameter = dPT_Id.HasValue ?
+                new ObjectParameter("DPT_Id", dPT_Id) :
+                new ObjectParameter("DPT_Id", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetDepartmentEmail_Result>("spGetDepartmentEmail", dPT_IdParameter);
+        }
+    
+        public virtual int spSetTermination_HRApproval(Nullable<long> tMN_Id, string tMN_HRApproal, string tMN_HRDenyReason, string tMN_HRDenyComment)
+        {
+            var tMN_IdParameter = tMN_Id.HasValue ?
+                new ObjectParameter("TMN_Id", tMN_Id) :
+                new ObjectParameter("TMN_Id", typeof(long));
+    
+            var tMN_HRApproalParameter = tMN_HRApproal != null ?
+                new ObjectParameter("TMN_HRApproal", tMN_HRApproal) :
+                new ObjectParameter("TMN_HRApproal", typeof(string));
+    
+            var tMN_HRDenyReasonParameter = tMN_HRDenyReason != null ?
+                new ObjectParameter("TMN_HRDenyReason", tMN_HRDenyReason) :
+                new ObjectParameter("TMN_HRDenyReason", typeof(string));
+    
+            var tMN_HRDenyCommentParameter = tMN_HRDenyComment != null ?
+                new ObjectParameter("TMN_HRDenyComment", tMN_HRDenyComment) :
+                new ObjectParameter("TMN_HRDenyComment", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetTermination_HRApproval", tMN_IdParameter, tMN_HRApproalParameter, tMN_HRDenyReasonParameter, tMN_HRDenyCommentParameter);
+        }
+    
+        public virtual int spSetTermination_SeveranceApproval(Nullable<long> tMN_Id, string tMN_SeveranceApproval)
+        {
+            var tMN_IdParameter = tMN_Id.HasValue ?
+                new ObjectParameter("TMN_Id", tMN_Id) :
+                new ObjectParameter("TMN_Id", typeof(long));
+    
+            var tMN_SeveranceApprovalParameter = tMN_SeveranceApproval != null ?
+                new ObjectParameter("TMN_SeveranceApproval", tMN_SeveranceApproval) :
+                new ObjectParameter("TMN_SeveranceApproval", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetTermination_SeveranceApproval", tMN_IdParameter, tMN_SeveranceApprovalParameter);
+        }
+    
+        public virtual int spSetCorrectiveAction_HRApproval(Nullable<long> cTA_Id, string cTA_HRApproal, string cTA_HRDenyReason, string cTA_HRDenyComment)
+        {
+            var cTA_IdParameter = cTA_Id.HasValue ?
+                new ObjectParameter("CTA_Id", cTA_Id) :
+                new ObjectParameter("CTA_Id", typeof(long));
+    
+            var cTA_HRApproalParameter = cTA_HRApproal != null ?
+                new ObjectParameter("CTA_HRApproal", cTA_HRApproal) :
+                new ObjectParameter("CTA_HRApproal", typeof(string));
+    
+            var cTA_HRDenyReasonParameter = cTA_HRDenyReason != null ?
+                new ObjectParameter("CTA_HRDenyReason", cTA_HRDenyReason) :
+                new ObjectParameter("CTA_HRDenyReason", typeof(string));
+    
+            var cTA_HRDenyCommentParameter = cTA_HRDenyComment != null ?
+                new ObjectParameter("CTA_HRDenyComment", cTA_HRDenyComment) :
+                new ObjectParameter("CTA_HRDenyComment", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetCorrectiveAction_HRApproval", cTA_IdParameter, cTA_HRApproalParameter, cTA_HRDenyReasonParameter, cTA_HRDenyCommentParameter);
+        }
+    
+        public virtual ObjectResult<spGetCorrectiveActionForm_Result> spGetCorrectiveActionForm()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetCorrectiveActionForm_Result>("spGetCorrectiveActionForm");
+        }
+    
+        public virtual int spSetMeetingDateTime(Nullable<long> cTA_Id, string cTA_MeetingDateTime)
+        {
+            var cTA_IdParameter = cTA_Id.HasValue ?
+                new ObjectParameter("CTA_Id", cTA_Id) :
+                new ObjectParameter("CTA_Id", typeof(long));
+    
+            var cTA_MeetingDateTimeParameter = cTA_MeetingDateTime != null ?
+                new ObjectParameter("CTA_MeetingDateTime", cTA_MeetingDateTime) :
+                new ObjectParameter("CTA_MeetingDateTime", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("spSetMeetingDateTime", cTA_IdParameter, cTA_MeetingDateTimeParameter);
+        }
+    
+        public virtual ObjectResult<spGetApplicantAllDetails_Result1> spGetApplicantAllDetails(Nullable<long> aPT_ApplicantId)
+        {
+            var aPT_ApplicantIdParameter = aPT_ApplicantId.HasValue ?
+                new ObjectParameter("APT_ApplicantId", aPT_ApplicantId) :
+                new ObjectParameter("APT_ApplicantId", typeof(long));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<spGetApplicantAllDetails_Result1>("spGetApplicantAllDetails", aPT_ApplicantIdParameter);
         }
     }
 }

@@ -56,7 +56,7 @@ namespace WorkOrderEMS.Data
         /// </summary>
         /// <param name="EmployeeId"></param>
         /// <returns></returns>
-        public spGetOrgnizationCommonview_Result1 GetUserSelfDetailsByUserId(string EmployeeId)
+        public spGetOrgnizationCommonview_Result2 GetUserSelfDetailsByUserId(string EmployeeId)
         {
             try
             {

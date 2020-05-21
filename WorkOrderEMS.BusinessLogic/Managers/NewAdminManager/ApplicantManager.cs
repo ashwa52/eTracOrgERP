@@ -876,7 +876,7 @@ namespace WorkOrderEMS.BusinessLogic
             {
                 if (model != null && model.ApplicantPersonalInfo.API_APT_ApplicantId > 0)
                 {
-                    var sentForBackgroudCheck = _db.spSetApplicantStatus(model.ApplicantPersonalInfo.API_APT_ApplicantId, ApplicantStatus.F, ApplicantStatus.S);
+                    var sentForBackgroudCheck = _db.spSetApplicantStatus(model.ApplicantPersonalInfo.API_APT_ApplicantId, ApplicantStatus.BackgroundCheck, ApplicantIsActiveStatus.Sent);
                     #region Create PO
                     var poNum = _db.spGetPONumber().FirstOrDefault();
                     var poNumber = "PO" + poNum.ToString();

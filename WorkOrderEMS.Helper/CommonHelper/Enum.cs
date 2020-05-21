@@ -164,7 +164,29 @@ namespace WorkOrderEMS.Helper
         public const string Manager = "Manager";
         public const string Employee = "Employee";
         public const string Client = "Client";
+        
     }
+    public static class ModuleSubModule
+    {
+        public const string ePeople = "ePeople";
+        public const string OnBoarded = "OnBoarded";
+        public const string OnBoarding = "OnBoarding";
+        public const string Interviewer = "Interviewer";
+        public const string InterviewerAcceptDeny = "InterviewAcceptDeny";
+        public const string AssessmentStatus = "AssessmentStatus";
+        public const string OnBoardingComplete = "OnBoardingComplete";
+        public const string TerminateEmployee = "EmployeeAsset";
+        public const string TerminateApproveDeny = "EmployeeTermination";
+        public const string CorrectiveAction = "CorrectiveAction";
+        public const string ScheduleMeeting = "ScheduleMeeting";
+        public const string AssessmentStart = "AssessmentStart";
+        public const string EvaluationStart = "EvaluationStart";
+        public const string EvaluationComplete = "EvaluationComplete";
+        
+
+    }
+
+
 
     public enum TaskTypeCategory
     {
@@ -687,14 +709,35 @@ namespace WorkOrderEMS.Helper
     }
     public static class ApplicantStatus
     {
-        public const string F = "BackgroundCheck";
-        public const string S = "Sent For Background Check";
-        public const string Y = "Background Check Pass";
-        public const string N = "Background Check Fail";
+        public const string BackgroundCheck = "F";
+        public const string Screened = "S";
+        public const string Reject = "R";
+        public const string Applied = "A";
+        public const string Shortlisted = "D";
+        public const string Assessment = "E";
+        public const string Onboarding = "I";
+        public const string Offer = "O";
+        public const string Hired = "H";
+        public const string InterviewScheduled = "Hired";
+        //public const string F = "BackgroundCheck";
+        //public const string S = "Sent For Background Check";
+        //public const string Y = "Background Check Pass";
+        //public const string N = "Background Check Fail";
+    }
+    public static class ApplicantIsActiveStatus
+
+    {
+        public const string Sent = "S";
+        public const string Pass = "Y";
+        public const string Fail = "N";
+        public const string OfferAccepted = "A";
+        public const string OfferRejected = "D";
+        public const string OfferCounter = "C";
+        public const string Onboarding = "I";
     }
     public static class VendorName
     {
-        public const string BackgroundCheck = "Accredited Employment Screenin";
+        public const string BackgroundCheck = "Employment Screening";
     }
     /// <summary>
     /// Created By : Ashwajit Bansod
@@ -738,6 +781,13 @@ namespace WorkOrderEMS.Helper
     public enum FileTypeId
     {
         I9 = 17,
-        W4 = 19
+        W4 = 19,
+        ComplaintFile = 22
+    }
+    public static class Priority
+    {
+        public const string High = "H";
+        public const string Medium = "M";
+        public const string Low = "L";
     }
 }

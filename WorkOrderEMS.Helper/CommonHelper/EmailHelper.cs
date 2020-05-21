@@ -250,6 +250,23 @@ namespace WorkOrderEMS.Helper
         public string LoginId { get; set; }
         public string NewPassword { get; set; }
 
+        // Added by Rajat Toppo for Severance email
+
+        public string EmployeeId { get; set; }
+        public Nullable<DateTime> LastDayWorked { get; set; }
+        public Nullable<DateTime> TerminationDate { get; set; }
+        public string ReasonForLeaving { get; set; }
+        public string DetailedExplanation { get; set; }
+        public string FinalIncidentTermination { get; set; }
+        public string ItemsOwnedByEmployee { get; set; }
+        public string ItemListCost { get; set; }
+        public string ReHire { get; set; }
+        public string HrDecision { get; set; }
+        public string IsServerance { get; set; }
+        public string TableBody { get; set; }
+
+
+
 
 
         public bool SendEmailWithTemplate(string[] attachedUrl = null)
@@ -1187,6 +1204,61 @@ namespace WorkOrderEMS.Helper
                         strMailBody = strMailBody.Replace("##REGISTRATIONLINK", AcceptAssessmentLink);
                         strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
                         break;
+
+                    case "EMPLOYEETERMINATION":
+                        TemplatePath = ConfigurationManager.AppSettings["SendForTermination"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "/Images/etrac-logo-inner.jpg" + ">";
+                        Subject = "eTrac:Employee Termination.";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##employe_name", Name);
+                        strMailBody = strMailBody.Replace("##employee_id", EmployeeId);
+                        strMailBody = strMailBody.Replace("##manager_name ", ManagerName);
+                        strMailBody = strMailBody.Replace("##Last_day_worked", Convert.ToString(LastDayWorked));
+                        strMailBody = strMailBody.Replace("##Termination_date", Convert.ToString(TerminationDate));
+                        strMailBody = strMailBody.Replace("##Voluntary Resignation", ReasonForLeaving);
+                        strMailBody = strMailBody.Replace("##Explanation", DetailedExplanation);
+                        strMailBody = strMailBody.Replace("##Reasons", FinalIncidentTermination);
+                        strMailBody = strMailBody.Replace("##Check", ItemsOwnedByEmployee);
+                        strMailBody = strMailBody.Replace("##ItemList", ItemListCost);
+                        strMailBody = strMailBody.Replace("##ReHire", ReHire);
+                        //strMailBody = strMailBody.Replace("##HRdecision", Year);
+                        strMailBody = strMailBody.Replace("##Logo", LogoPath);
+                        strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+                        break;
+
+                    case "EMPLOYEESERVERANCE":
+                        TemplatePath = ConfigurationManager.AppSettings["SendForServerance"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";
+                        Subject = "eTrac:Serverance Agreement.";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##employe_name", Name);
+                        //strMailBody = strMailBody.Replace("##employee_id", EmployeeId);
+                        // strMailBody = strMailBody.Replace("##manager_name ", ManagerName);
+                        strMailBody = strMailBody.Replace("##Last_day_worked", Convert.ToString(LastDayWorked));
+                        strMailBody = strMailBody.Replace("##Termination_date", Convert.ToString(TerminationDate));
+                        //strMailBody = strMailBody.Replace("##Voluntary Resignation", RegistrationLink);
+                        //strMailBody = strMailBody.Replace("##Explanation", Year);
+                        //strMailBody = strMailBody.Replace("##employe_name", Year);
+                        //strMailBody = strMailBody.Replace("##Reasons", Year);
+                        //strMailBody = strMailBody.Replace("##Check", Year);
+                        //strMailBody = strMailBody.Replace("##ItemList", Year);
+                        //strMailBody = strMailBody.Replace("##ReHire", Year);
+                        //strMailBody = strMailBody.Replace("##HRdecision", Year);
+                        //strMailBody = strMailBody.Replace("##Logo", LogoPath);
+                        //strMailBody = strMailBody.Replace("##Sign", "<img height='50px' src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">");
+                        break;
+
+
+                    case "ASSETSINFORMATION":
+                        TemplatePath = ConfigurationManager.AppSettings["SendEmployeeAssestList"];
+                        LogoPath = "<img src=" + ConfigurationManager.AppSettings["hostingPrefix"] + "Images/logo2.png" + ">";
+                        Subject = "eTrac:Serverance Agreement.";
+                        strMailBody = GetMailBody(TemplatePath);
+                        strMailBody = strMailBody.Replace("##employe_name", Name);
+                        strMailBody = strMailBody.Replace("##employee_id", EmployeeId);
+                        strMailBody = strMailBody.Replace("##TableBody", TableBody);
+                        break;
+
 
                 }
                 string body = System.Web.HttpUtility.HtmlDecode(strMailBody);
